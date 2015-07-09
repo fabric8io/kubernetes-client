@@ -4,6 +4,7 @@ import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import io.fabric8.kubernetes.api.model.NamespaceList;
 import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import org.jboss.netty.handler.ssl.util.InsecureTrustManagerFactory;
 
 import javax.net.ssl.*;
@@ -123,5 +124,9 @@ public class KubernetesClient {
 
     public ResourceList<PodList> pods() {
         return new ResourceList<PodList>(httpClient, masterUrl, "pods", PodList.class);
+    }
+
+    public ResourceList<ReplicationControllerList> replicationControllers() {
+        return new ResourceList<ReplicationControllerList>(httpClient, masterUrl, "replicationcontrollers", ReplicationControllerList.class);
     }
 }

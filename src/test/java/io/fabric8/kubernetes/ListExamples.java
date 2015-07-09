@@ -21,10 +21,17 @@ public class ListExamples {
                             .withLabel("test", "something")
                             .get().getItems().size()
             );
-            
+
             System.out.println(
                     client.pods()
                             .withField("metadata.name", "rabbitmq-pod")
+                            .withNamespace("default")
+                            .get().getItems().size()
+            );
+
+            System.out.println(
+                    client.replicationControllers()
+                            .withField("metadata.name", "rabbitmq-rc")
                             .withNamespace("default")
                             .get().getItems().size()
             );
