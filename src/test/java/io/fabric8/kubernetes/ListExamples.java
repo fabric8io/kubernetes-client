@@ -13,9 +13,12 @@ public class ListExamples {
 
     private static final Logger logger = LoggerFactory.getLogger(ListExamples.class);
 
-    public static void main(String[] args) throws InterruptedException, ExecutionException, IOException, KeyManagementException, NoSuchAlgorithmException, TimeoutException, KubernetesClientException {
-        KubernetesClient client = new KubernetesClient("https://localhost:8443/api/v1/");
+    public static void main(String[] args) {
+        KubernetesClient client = null;
+
         try {
+            client = new KubernetesClient("https://localhost:8443/api/v1/");
+
             System.out.println(
                     client.namespaces()
                             .withLabel("test", "something")
@@ -38,7 +41,9 @@ public class ListExamples {
         } catch (KubernetesClientException e) {
             logger.error(e.getMessage(), e);
         } finally {
-            client.close();
+            if (client != null) {
+                client.close();
+            }
         }
     }
 

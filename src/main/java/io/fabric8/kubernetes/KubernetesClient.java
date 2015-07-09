@@ -116,27 +116,35 @@ public class KubernetesClient {
         return builder.build();
     }
 
-    public Resource<Namespace> namespaces(String name) {
-        return new Resource<Namespace>(httpClient, masterUrl, "namespaces", name, Namespace.class);
-    }
-
-    public Resource<Pod> pods(String name) {
-        return new Resource<Pod>(httpClient, masterUrl, "pods", name, Pod.class);
-    }
-
     public ResourceList<NamespaceList> namespaces() {
         return new ResourceList<NamespaceList>(httpClient, masterUrl, "namespaces", NamespaceList.class);
+    }
+
+    public Resource<Namespace> namespaces(String name) {
+        return new Resource<Namespace>(httpClient, masterUrl, "namespaces", name, Namespace.class);
     }
 
     public ResourceList<PodList> pods() {
         return new ResourceList<PodList>(httpClient, masterUrl, "pods", PodList.class);
     }
 
+    public Resource<Pod> pods(String name) {
+        return new Resource<Pod>(httpClient, masterUrl, "pods", name, Pod.class);
+    }
+
     public ResourceList<ReplicationControllerList> replicationControllers() {
         return new ResourceList<ReplicationControllerList>(httpClient, masterUrl, "replicationcontrollers", ReplicationControllerList.class);
     }
 
+    public Resource<ReplicationController> replicationControllers(String name) {
+        return new Resource<ReplicationController>(httpClient, masterUrl, "replicationcontrollers", name, ReplicationController.class);
+    }
+
     public ResourceList<ServiceList> services() {
         return new ResourceList<ServiceList>(httpClient, masterUrl, "services", ServiceList.class);
+    }
+
+    public Resource<Service> services(String name) {
+        return new Resource<Service>(httpClient, masterUrl, "services", name, Service.class);
     }
 }

@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.Response;
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.base.Status;
 
 import java.io.IOException;
@@ -32,7 +34,7 @@ public class Resource<ResourceType extends HasMetadata> {
         this.clazz = clazz;
     }
 
-    public Resource<ResourceType> withNamespace(String namespace) {
+    public Resource<ResourceType> inNamespace(String namespace) {
         this.namespace = namespace;
         return this;
     }
@@ -55,13 +57,13 @@ public class Resource<ResourceType extends HasMetadata> {
         } catch (MalformedURLException e) {
             throw new KubernetesClientException("Malformed resource URL", e);
         } catch (InterruptedException e) {
-            throw new KubernetesClientException("Unable to delete resource", e);
+            throw new KubernetesClientException("Unable to get resource", e);
         } catch (ExecutionException e) {
-            throw new KubernetesClientException("Unable to delete resource", e);
+            throw new KubernetesClientException("Unable to get resource", e);
         } catch (JsonProcessingException e) {
-            throw new KubernetesClientException("Unable to delete resource", e);
+            throw new KubernetesClientException("Unable to get resource", e);
         } catch (IOException e) {
-            throw new KubernetesClientException("Unable to delete resource", e);
+            throw new KubernetesClientException("Unable to get resource", e);
         }
     }
 
@@ -91,6 +93,43 @@ public class Resource<ResourceType extends HasMetadata> {
         } catch (IOException e) {
             throw new KubernetesClientException("Unable to delete resource", e);
         }
+    }
+
+    public ResourceType update(ResourceUpdate<ResourceType> resourceUpdate) throws KubernetesClientException {
+        try {
+            URL requestUrl = rootUrl;
+            if (namespace != null) {
+                requestUrl = new URL(requestUrl, "namespaces/" + namespace + "/");
+            }
+            requestUrl = new URL(requestUrl, resourceType + "/" + resourceName);
+
+            ResourceType current = this.get();
+            ResourceType updated = resourceUpdate.update(new PodBuilder((Pod) current));
+
+            AsyncHttpClient.BoundRequestBuilder requestBuilder = httpClient.preparePut(requestUrl.toString());
+            requestBuilder.setBody(mapper.writer().writeValueAsString(updated));
+            Future<Response> f = requestBuilder.execute();
+            Response r = f.get();
+            if (r.getStatusCode() != 200) {
+                Status status = mapper.reader(Status.class).readValue(r.getResponseBodyAsStream());
+                throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
+            }
+            return mapper.reader(clazz).readValue(r.getResponseBodyAsStream());
+        } catch (MalformedURLException e) {
+            throw new KubernetesClientException("Malformed resource URL", e);
+        } catch (InterruptedException e) {
+            throw new KubernetesClientException("Unable to update resource", e);
+        } catch (ExecutionException e) {
+            throw new KubernetesClientException("Unable to update resource", e);
+        } catch (JsonProcessingException e) {
+            throw new KubernetesClientException("Unable to update resource", e);
+        } catch (IOException e) {
+            throw new KubernetesClientException("Unable to update resource", e);
+        }
+    }
+
+    public interface ResourceUpdate<ResourceType extends HasMetadata> {
+        ResourceType update(PodBuilder pod);
     }
 
 }
