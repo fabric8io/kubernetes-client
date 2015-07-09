@@ -1,5 +1,6 @@
 package io.fabric8.kubernetes;
 
+import io.fabric8.common.Builder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import org.slf4j.Logger;
@@ -16,18 +17,15 @@ public class UpdateExamples {
             client = new KubernetesClient("https://localhost:8443/api/v1/");
 
             System.out.println(
-                    client.pods("rabbitmq-pod").inNamespace("default").update(new Resource.ResourceUpdate<Pod>() {
-
-                        @Override
-                        public Pod update(PodBuilder podBuilder) {
-                            return podBuilder.
-                                        editMetadata().
-                                            addToLabels("jimmi", "rocks")
-                                        .endMetadata()
-                                    .build();
-                        }
-
-                    })
+                    client.pods("rabbitmq-pod").inNamespace("default").update(
+                            new Resource.ResourceUpdate<Pod, Builder<Pod>>() {
+                                @Override
+                                public Pod update(Builder<Pod> builder) {
+                                    PodBuilder podBuilder = (PodBuilder) builder;;
+                                    return podBuilder.editMetadata().addToLabels("i", "rock").endMetadata().build();
+                                }
+                            }
+                    )
             );
         } catch (KubernetesClientException e) {
             logger.error(e.getMessage(), e);

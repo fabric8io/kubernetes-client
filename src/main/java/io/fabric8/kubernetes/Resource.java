@@ -4,9 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.Response;
+import io.fabric8.common.Builder;
+import io.fabric8.common.Editable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.base.Status;
 
 import java.io.IOException;
@@ -24,14 +24,16 @@ public class Resource<ResourceType extends HasMetadata> {
     private String resourceType;
     private String resourceName;
     private Class<ResourceType> clazz;
+    private Class<? extends Builder<ResourceType>> clazzBuilder;
     private String namespace;
 
-    public Resource(AsyncHttpClient httpClient, URL rootUrl, String resourceType, String resourceName, Class<ResourceType> clazz) {
+    public Resource(AsyncHttpClient httpClient, URL rootUrl, String resourceType, String resourceName, Class<ResourceType> clazz, Class<? extends Builder<ResourceType>> clazzBuilder) {
         this.httpClient = httpClient;
         this.rootUrl = rootUrl;
         this.resourceType = resourceType;
         this.resourceName = resourceName;
         this.clazz = clazz;
+        this.clazzBuilder = clazzBuilder;
     }
 
     public Resource<ResourceType> inNamespace(String namespace) {
@@ -95,7 +97,7 @@ public class Resource<ResourceType extends HasMetadata> {
         }
     }
 
-    public ResourceType update(ResourceUpdate<ResourceType> resourceUpdate) throws KubernetesClientException {
+    public ResourceType update(ResourceUpdate<ResourceType, Builder<ResourceType>> resourceUpdate) throws KubernetesClientException {
         try {
             URL requestUrl = rootUrl;
             if (namespace != null) {
@@ -104,7 +106,7 @@ public class Resource<ResourceType extends HasMetadata> {
             requestUrl = new URL(requestUrl, resourceType + "/" + resourceName);
 
             ResourceType current = this.get();
-            ResourceType updated = resourceUpdate.update(new PodBuilder((Pod) current));
+            ResourceType updated = resourceUpdate.update(clazzBuilder.cast(((Editable<ResourceType>) current).edit()));
 
             AsyncHttpClient.BoundRequestBuilder requestBuilder = httpClient.preparePut(requestUrl.toString());
             requestBuilder.setBody(mapper.writer().writeValueAsString(updated));
@@ -128,8 +130,8 @@ public class Resource<ResourceType extends HasMetadata> {
         }
     }
 
-    public interface ResourceUpdate<ResourceType extends HasMetadata> {
-        ResourceType update(PodBuilder pod);
+    public interface ResourceUpdate<ResourceType extends HasMetadata, ResourceBuilder extends Builder<ResourceType>> {
+        ResourceType update(ResourceBuilder builder);
     }
 
 }
