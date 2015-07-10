@@ -12,8 +12,13 @@ public class UpdateExamples {
     public static void main(String[] args) {
         KubernetesClient client = null;
 
+        String master = "https://localhost:8443/api/v1/";
+        if (args.length == 1) {
+            master = args[0];
+        }
+
         try {
-            client = new KubernetesClient("https://localhost:8443/api/v1/");
+            client = new KubernetesClient(master);
 
             System.out.println(
                     client.pods("rabbitmq-pod").inNamespace("default").update(
