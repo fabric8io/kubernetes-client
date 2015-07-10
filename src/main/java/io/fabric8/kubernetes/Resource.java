@@ -16,134 +16,157 @@ import java.util.concurrent.Future;
 
 public class Resource<ResourceType extends HasMetadata, ResourceBuilder extends Builder<ResourceType>> {
 
-    private static final ObjectMapper mapper = new ObjectMapper();
+  private static final ObjectMapper mapper = new ObjectMapper();
 
-    private AsyncHttpClient httpClient;
-    private URL rootUrl;
-    private String resourceType;
-    private String resourceName;
-    private Class<ResourceType> clazz;
-    private Class<ResourceBuilder> clazzBuilder;
-    private String namespace;
+  private AsyncHttpClient httpClient;
+  private URL rootUrl;
+  private String resourceType;
+  private String resourceName;
+  private Class<ResourceType> clazz;
+  private Class<ResourceBuilder> clazzBuilder;
+  private String namespace;
 
-    public Resource(AsyncHttpClient httpClient, URL rootUrl, String resourceType, String resourceName, Class<ResourceType> clazz, Class<ResourceBuilder> clazzBuilder) {
-        this.httpClient = httpClient;
-        this.rootUrl = rootUrl;
-        this.resourceType = resourceType;
-        this.resourceName = resourceName;
-        this.clazz = clazz;
-        this.clazzBuilder = clazzBuilder;
+  public Resource(AsyncHttpClient httpClient, URL rootUrl, String resourceType, String resourceName, Class<ResourceType> clazz, Class<ResourceBuilder> clazzBuilder) {
+    this.httpClient = httpClient;
+    this.rootUrl = rootUrl;
+    this.resourceType = resourceType;
+    this.resourceName = resourceName;
+    this.clazz = clazz;
+    this.clazzBuilder = clazzBuilder;
+  }
+
+  public Resource<ResourceType, ResourceBuilder> inNamespace(String namespace) {
+    this.namespace = namespace;
+    return this;
+  }
+
+  public ResourceType get() throws KubernetesClientException {
+    try {
+      URL requestUrl = rootUrl;
+      if (namespace != null) {
+        requestUrl = new URL(requestUrl, "namespaces/" + namespace + "/");
+      }
+      requestUrl = new URL(requestUrl, resourceType + "/" + resourceName);
+      AsyncHttpClient.BoundRequestBuilder requestBuilder = httpClient.prepareGet(requestUrl.toString());
+      Future<Response> f = requestBuilder.execute();
+      Response r = f.get();
+      if (r.getStatusCode() != 200) {
+        Status status = mapper.reader(Status.class).readValue(r.getResponseBodyAsStream());
+        throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
+      }
+      return mapper.reader(clazz).readValue(r.getResponseBodyAsStream());
+    } catch (MalformedURLException e) {
+      throw new KubernetesClientException("Malformed resource URL", e);
+    } catch (InterruptedException | ExecutionException | IOException e) {
+      throw new KubernetesClientException("Unable to get resource", e);
     }
+  }
 
-    public Resource<ResourceType,ResourceBuilder> inNamespace(String namespace) {
-        this.namespace = namespace;
-        return this;
+  public ResourceType delete() throws KubernetesClientException {
+    try {
+      URL requestUrl = rootUrl;
+      if (namespace != null) {
+        requestUrl = new URL(requestUrl, "namespaces/" + namespace + "/");
+      }
+      requestUrl = new URL(requestUrl, resourceType + "/" + resourceName);
+      AsyncHttpClient.BoundRequestBuilder requestBuilder = httpClient.prepareDelete(requestUrl.toString());
+      Future<Response> f = requestBuilder.execute();
+      Response r = f.get();
+      if (r.getStatusCode() != 200) {
+        Status status = mapper.reader(Status.class).readValue(r.getResponseBodyAsStream());
+        throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
+      }
+      return mapper.reader(clazz).readValue(r.getResponseBodyAsStream());
+    } catch (MalformedURLException e) {
+      throw new KubernetesClientException("Malformed resource URL", e);
+    } catch (InterruptedException | ExecutionException | IOException e) {
+      throw new KubernetesClientException("Unable to delete resource", e);
     }
+  }
 
-    public ResourceType get() throws KubernetesClientException {
-        try {
-            URL requestUrl = rootUrl;
-            if (namespace != null) {
-                requestUrl = new URL(requestUrl, "namespaces/" + namespace + "/");
-            }
-            requestUrl = new URL(requestUrl, resourceType + "/" + resourceName);
-            AsyncHttpClient.BoundRequestBuilder requestBuilder = httpClient.prepareGet(requestUrl.toString());
-            Future<Response> f = requestBuilder.execute();
-            Response r = f.get();
-            if (r.getStatusCode() != 200) {
-                Status status = mapper.reader(Status.class).readValue(r.getResponseBodyAsStream());
-                throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
-            }
-            return mapper.reader(clazz).readValue(r.getResponseBodyAsStream());
-        } catch (MalformedURLException e) {
-            throw new KubernetesClientException("Malformed resource URL", e);
-        } catch (InterruptedException | ExecutionException | IOException e) {
-            throw new KubernetesClientException("Unable to get resource", e);
-        }
+  public ResourceType update(BuilderUpdate<ResourceType, ResourceBuilder> builder) throws KubernetesClientException {
+    try {
+      URL requestUrl = rootUrl;
+      if (namespace != null) {
+        requestUrl = new URL(requestUrl, "namespaces/" + namespace + "/");
+      }
+      requestUrl = new URL(requestUrl, resourceType + "/" + resourceName);
+
+      ResourceType current = this.get();
+      ResourceType updated = builder.update(clazzBuilder.getDeclaredConstructor(clazz).newInstance(current));
+
+      AsyncHttpClient.BoundRequestBuilder requestBuilder = httpClient.preparePut(requestUrl.toString());
+      requestBuilder.setBody(mapper.writer().writeValueAsString(updated));
+      Future<Response> f = requestBuilder.execute();
+      Response r = f.get();
+      if (r.getStatusCode() != 200) {
+        Status status = mapper.reader(Status.class).readValue(r.getResponseBodyAsStream());
+        throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
+      }
+      return mapper.reader(clazz).readValue(r.getResponseBodyAsStream());
+    } catch (MalformedURLException e) {
+      throw new KubernetesClientException("Malformed resource URL", e);
+    } catch (InterruptedException | ExecutionException | IOException | InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException e) {
+      throw new KubernetesClientException("Unable to update resource", e);
     }
+  }
 
-    public ResourceType delete() throws KubernetesClientException {
-        try {
-            URL requestUrl = rootUrl;
-            if (namespace != null) {
-                requestUrl = new URL(requestUrl, "namespaces/" + namespace + "/");
-            }
-            requestUrl = new URL(requestUrl, resourceType + "/" + resourceName);
-            AsyncHttpClient.BoundRequestBuilder requestBuilder = httpClient.prepareDelete(requestUrl.toString());
-            Future<Response> f = requestBuilder.execute();
-            Response r = f.get();
-            if (r.getStatusCode() != 200) {
-                Status status = mapper.reader(Status.class).readValue(r.getResponseBodyAsStream());
-                throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
-            }
-            return mapper.reader(clazz).readValue(r.getResponseBodyAsStream());
-        } catch (MalformedURLException e) {
-            throw new KubernetesClientException("Malformed resource URL", e);
-        } catch (InterruptedException | ExecutionException | IOException e) {
-            throw new KubernetesClientException("Unable to delete resource", e);
-        }
+  public ResourceType update(Update<ResourceType> resourceUpdate) throws KubernetesClientException {
+    try {
+      URL requestUrl = rootUrl;
+      if (namespace != null) {
+        requestUrl = new URL(requestUrl, "namespaces/" + namespace + "/");
+      }
+      requestUrl = new URL(requestUrl, resourceType + "/" + resourceName);
+
+      ResourceType current = this.get();
+      ResourceType updated = resourceUpdate.update(current);
+
+      AsyncHttpClient.BoundRequestBuilder requestBuilder = httpClient.preparePut(requestUrl.toString());
+      requestBuilder.setBody(mapper.writer().writeValueAsString(updated));
+      Future<Response> f = requestBuilder.execute();
+      Response r = f.get();
+      if (r.getStatusCode() != 200) {
+        Status status = mapper.reader(Status.class).readValue(r.getResponseBodyAsStream());
+        throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
+      }
+      return mapper.reader(clazz).readValue(r.getResponseBodyAsStream());
+    } catch (MalformedURLException e) {
+      throw new KubernetesClientException("Malformed resource URL", e);
+    } catch (InterruptedException | ExecutionException | IOException e) {
+      throw new KubernetesClientException("Unable to update resource", e);
     }
+  }
 
-    public ResourceType update(BuilderUpdate<ResourceType, ResourceBuilder> builder) throws KubernetesClientException {
-        try {
-            URL requestUrl = rootUrl;
-            if (namespace != null) {
-                requestUrl = new URL(requestUrl, "namespaces/" + namespace + "/");
-            }
-            requestUrl = new URL(requestUrl, resourceType + "/" + resourceName);
+  public ResourceType create(ResourceType resource) throws KubernetesClientException {
+    try {
+      URL requestUrl = rootUrl;
+      if (namespace != null) {
+        requestUrl = new URL(requestUrl, "namespaces/" + namespace + "/");
+      }
 
-            ResourceType current = this.get();
-            ResourceType updated = builder.update(clazzBuilder.getDeclaredConstructor(clazz).newInstance(current));
-
-            AsyncHttpClient.BoundRequestBuilder requestBuilder = httpClient.preparePut(requestUrl.toString());
-            requestBuilder.setBody(mapper.writer().writeValueAsString(updated));
-            Future<Response> f = requestBuilder.execute();
-            Response r = f.get();
-            if (r.getStatusCode() != 200) {
-                Status status = mapper.reader(Status.class).readValue(r.getResponseBodyAsStream());
-                throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
-            }
-            return mapper.reader(clazz).readValue(r.getResponseBodyAsStream());
-        } catch (MalformedURLException e) {
-            throw new KubernetesClientException("Malformed resource URL", e);
-        } catch (InterruptedException | ExecutionException | IOException | InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException e) {
-            throw new KubernetesClientException("Unable to update resource", e);
-        }
+      AsyncHttpClient.BoundRequestBuilder requestBuilder = httpClient.preparePut(requestUrl.toString());
+      requestBuilder.setBody(mapper.writer().writeValueAsString(resource));
+      Future<Response> f = requestBuilder.execute();
+      Response r = f.get();
+      if (r.getStatusCode() != 200) {
+        Status status = mapper.reader(Status.class).readValue(r.getResponseBodyAsStream());
+        throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
+      }
+      return mapper.reader(clazz).readValue(r.getResponseBodyAsStream());
+    } catch (MalformedURLException e) {
+      throw new KubernetesClientException("Malformed resource URL", e);
+    } catch (InterruptedException | ExecutionException | IOException e) {
+      throw new KubernetesClientException("Unable to create resource", e);
     }
+  }
 
-    public ResourceType update(Update<ResourceType> resourceUpdate) throws KubernetesClientException {
-        try {
-            URL requestUrl = rootUrl;
-            if (namespace != null) {
-                requestUrl = new URL(requestUrl, "namespaces/" + namespace + "/");
-            }
-            requestUrl = new URL(requestUrl, resourceType + "/" + resourceName);
+  public interface Update<ResourceType extends HasMetadata> {
+    ResourceType update(ResourceType resource);
+  }
 
-            ResourceType current = this.get();
-            ResourceType updated = resourceUpdate.update(current);
-
-            AsyncHttpClient.BoundRequestBuilder requestBuilder = httpClient.preparePut(requestUrl.toString());
-            requestBuilder.setBody(mapper.writer().writeValueAsString(updated));
-            Future<Response> f = requestBuilder.execute();
-            Response r = f.get();
-            if (r.getStatusCode() != 200) {
-                Status status = mapper.reader(Status.class).readValue(r.getResponseBodyAsStream());
-                throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
-            }
-            return mapper.reader(clazz).readValue(r.getResponseBodyAsStream());
-        } catch (MalformedURLException e) {
-            throw new KubernetesClientException("Malformed resource URL", e);
-        } catch (InterruptedException | ExecutionException | IOException e) {
-            throw new KubernetesClientException("Unable to update resource", e);
-        }
-    }
-
-    public interface Update<ResourceType extends HasMetadata> {
-        ResourceType update(ResourceType resource);
-    }
-
-    public interface BuilderUpdate<ResourceType extends HasMetadata, ResourceBuilder extends Builder<ResourceType>> {
-        ResourceType update(ResourceBuilder builder);
-    }
+  public interface BuilderUpdate<ResourceType extends HasMetadata, ResourceBuilder extends Builder<ResourceType>> {
+    ResourceType update(ResourceBuilder builder);
+  }
 
 }

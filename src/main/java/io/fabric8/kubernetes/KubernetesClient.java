@@ -3,21 +3,21 @@ package io.fabric8.kubernetes;
 import io.fabric8.kubernetes.api.model.*;
 
 public interface KubernetesClient {
-    void close();
+  void close();
 
-    ResourceList<NamespaceList> namespaces();
+  ResourceList<NamespaceList> namespaces();
 
-    Resource<Namespace, NamespaceBuilder> namespaces(String name);
+  Resource<Namespace, NamespaceBuilder> namespaces(String name);
 
-    ResourceList<PodList> pods();
+  ResourceList<PodList> pods();
 
-    Resource<Pod, PodBuilder> pods(String name);
+  Resource<Pod, PodBuilder> pods(String name);
 
-    ResourceList<ReplicationControllerList> replicationControllers();
+  ResourceList<ReplicationControllerList> replicationControllers();
 
-    Resource<ReplicationController, ReplicationControllerBuilder> replicationControllers(String name);
+  Resource<ReplicationController, ReplicationControllerBuilder> replicationControllers(String name);
 
-    ResourceList<ServiceList> services();
+  ResourceList<ServiceList> services();
 
-    Resource<Service, ServiceBuilder> services(String name);
+  Resource<Service, ServiceBuilder> services(String name);
 }
