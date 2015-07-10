@@ -72,8 +72,18 @@ public class DefaultKubernetesClient implements KubernetesClient {
   }
 
   @Override
+  public Resource<EndpointsList, Endpoints, EndpointsBuilder> endpoints() {
+    return new Resource<>(httpClient, masterUrl, "endpoints", EndpointsList.class, Endpoints.class, EndpointsBuilder.class);
+  }
+
+  @Override
   public Resource<NamespaceList, Namespace, NamespaceBuilder> namespaces() {
     return new Resource<>(httpClient, masterUrl, "namespaces", NamespaceList.class, Namespace.class, NamespaceBuilder.class);
+  }
+
+  @Override
+  public Resource<NodeList, Node, NodeBuilder> nodes() {
+    return new Resource<>(httpClient, masterUrl, "nodes", NodeList.class, Node.class, NodeBuilder.class);
   }
 
   @Override
@@ -87,8 +97,18 @@ public class DefaultKubernetesClient implements KubernetesClient {
   }
 
   @Override
+  public Resource<SecretList, Secret, SecretBuilder> secrets() {
+    return new Resource<>(httpClient, masterUrl, "secrets", SecretList.class, Secret.class, SecretBuilder.class);
+  }
+
+  @Override
   public Resource<ServiceList, Service, ServiceBuilder> services() {
     return new Resource<>(httpClient, masterUrl, "services", ServiceList.class, Service.class, ServiceBuilder.class);
+  }
+
+  @Override
+  public Resource<ServiceAccountList, ServiceAccount, ServiceAccountBuilder> serviceAccounts() {
+    return new Resource<>(httpClient, masterUrl, "serviceaccounts", ServiceAccountList.class, ServiceAccount.class, ServiceAccountBuilder.class);
   }
 
   public static class Builder {

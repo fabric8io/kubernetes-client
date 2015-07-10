@@ -41,6 +41,10 @@ public class ListExamples {
           .inNamespace("default")
           .list().getItems().size()
       );
+
+      System.out.println(
+        client.endpoints().list()
+      );
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);
     } finally {
