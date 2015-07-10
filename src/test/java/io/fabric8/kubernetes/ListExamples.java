@@ -32,6 +32,10 @@ public class ListExamples {
       );
 
       System.out.println(
+        client.pods().list().getItems().size()
+      );
+
+      System.out.println(
         client.replicationControllers()
           .withField("metadata.name", "rabbitmq-rc")
           .inNamespace("default")
