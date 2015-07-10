@@ -1,16 +1,19 @@
-package io.fabric8.kubernetes;
+package io.fabric8.kubernetes.examples;
 
+import io.fabric8.kubernetes.DefaultKubernetesClient;
+import io.fabric8.kubernetes.KubernetesClient;
+import io.fabric8.kubernetes.KubernetesClientException;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class OpenShiftExamples {
+public class CreateExamples {
 
-  private static final Logger logger = LoggerFactory.getLogger(OpenShiftExamples.class);
+  private static final Logger logger = LoggerFactory.getLogger(CreateExamples.class);
 
   public static void main(String[] args) {
-    OpenShiftClient client = null;
+    KubernetesClient client = null;
 
     String master = "https://localhost:8443/";
     if (args.length == 1) {
@@ -18,16 +21,12 @@ public class OpenShiftExamples {
     }
 
     try {
-      client = new DefaultKubernetesClient.OpenShiftBuilder().configFromSysPropsOrEnvVars().masterUrl(master).build();
+      client = new DefaultKubernetesClient.Builder().configFromSysPropsOrEnvVars().masterUrl(master).build();
 
       Namespace newNamespace = new NamespaceBuilder().withNewMetadata().withName("thisisnew").endMetadata().build();
 
       System.out.println(
         client.namespaces().create(newNamespace)
-      );
-
-      System.out.println(
-        client.buildConfigs().list()
       );
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);

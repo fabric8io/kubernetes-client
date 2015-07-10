@@ -1,5 +1,8 @@
-package io.fabric8.kubernetes;
+package io.fabric8.kubernetes.examples;
 
+import io.fabric8.kubernetes.DefaultKubernetesClient;
+import io.fabric8.kubernetes.KubernetesClient;
+import io.fabric8.kubernetes.KubernetesClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

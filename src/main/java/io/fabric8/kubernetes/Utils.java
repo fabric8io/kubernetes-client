@@ -34,7 +34,7 @@ public class Utils {
   }
 
   public static String convertSystemPropertyNameToEnvVar(String systemPropertyName) {
-    return systemPropertyName.toUpperCase().replace("[.-]", "_");
+    return systemPropertyName.toUpperCase().replaceAll("[.-]", "_");
   }
 
   public static String getSystemPropertyOrEnvVar(String systemPropertyName, String defaultValue) {
