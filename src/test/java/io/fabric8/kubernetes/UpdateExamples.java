@@ -12,7 +12,7 @@ public class UpdateExamples {
     public static void main(String[] args) {
         KubernetesClient client = null;
 
-        String master = "https://localhost:8443/api/v1/";
+        String master = "https://localhost:8443";
         if (args.length == 1) {
             master = args[0];
         }
@@ -37,8 +37,7 @@ public class UpdateExamples {
                             new Resource.BuilderUpdate<Pod, PodBuilder>() {
                                 @Override
                                 public Pod update(PodBuilder builder) {
-                                    PodBuilder podBuilder = (PodBuilder) builder;
-                                    return podBuilder.editMetadata().addToLabels("i", "rock").endMetadata().build();
+                                    return builder.editMetadata().addToLabels("i", "rock").endMetadata().build();
                                 }
                             }
                     )

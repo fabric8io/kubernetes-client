@@ -10,7 +10,7 @@ public class GetExamples {
     public static void main(String[] args) {
         KubernetesClient client = null;
 
-        String master = "https://localhost:8443/api/v1/";
+        String master = "https://localhost:8443";
         if (args.length == 1) {
             master = args[0];
         }
