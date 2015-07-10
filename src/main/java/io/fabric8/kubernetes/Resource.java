@@ -97,7 +97,7 @@ public class Resource<ResourceType extends HasMetadata, ResourceBuilder extends 
         }
     }
 
-    public ResourceType update(ResourceUpdate<ResourceType,ResourceBuilder> resourceUpdate) throws KubernetesClientException {
+    public ResourceType update(BuilderUpdate<ResourceType, ResourceBuilder> builder) throws KubernetesClientException {
         try {
             URL requestUrl = rootUrl;
             if (namespace != null) {
@@ -130,7 +130,7 @@ public class Resource<ResourceType extends HasMetadata, ResourceBuilder extends 
         }
     }
 
-    public ResourceType update(ResourceUpdate<ResourceType> resourceUpdate) throws KubernetesClientException {
+    public ResourceType update(Update<ResourceType> resourceUpdate) throws KubernetesClientException {
         try {
             URL requestUrl = rootUrl;
             if (namespace != null) {
@@ -161,14 +161,6 @@ public class Resource<ResourceType extends HasMetadata, ResourceBuilder extends 
         } catch (IOException e) {
             throw new KubernetesClientException("Unable to update resource", e);
         }
-    }
-
-    public interface BuilderUpdate<ResourceType extends HasMetadata, ResourceBuilder extends Builder<ResourceType>> {
-        ResourceType update(ResourceBuilder builder);
-    }
-
-    public interface ResourceUpdate<ResourceType extends HasMetadata> {
-        ResourceType update(ResourceType resource);
     }
 
 }

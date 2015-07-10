@@ -1,6 +1,5 @@
 package io.fabric8.kubernetes;
 
-import io.fabric8.common.Builder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import org.slf4j.Logger;
@@ -18,7 +17,7 @@ public class UpdateExamples {
 
             System.out.println(
                     client.pods("rabbitmq-pod").inNamespace("default").update(
-                            new Resource.ResourceUpdate<Pod>() {
+                            new Update<Pod>() {
                                 @Override
                                 public Pod update(Pod pod) {
                                     pod.getMetadata().getLabels().put("this", "works");
@@ -30,7 +29,7 @@ public class UpdateExamples {
 
             System.out.println(
                     client.pods("rabbitmq-pod").inNamespace("default").update(
-                            new Resource.ResourceUpdate<Pod, PodBuilder>() {
+                            new BuilderUpdate<Pod, PodBuilder>() {
                                 @Override
                                 public Pod update(PodBuilder builder) {
                                     PodBuilder podBuilder = (PodBuilder) builder;
