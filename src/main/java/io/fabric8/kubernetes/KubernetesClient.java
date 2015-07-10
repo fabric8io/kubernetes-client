@@ -9,6 +9,8 @@ public interface KubernetesClient {
 
   Resource<Namespace, NamespaceBuilder> namespaces(String name);
 
+  ResourceCreate<Namespace> newNamespace(Namespace namespace);
+
   ResourceList<PodList> pods();
 
   Resource<Pod, PodBuilder> pods(String name);

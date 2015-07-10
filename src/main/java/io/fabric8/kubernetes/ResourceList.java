@@ -1,6 +1,5 @@
 package io.fabric8.kubernetes;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.Response;
@@ -35,7 +34,7 @@ public class ResourceList<ResourceType extends KubernetesResource> {
     this.clazz = clazz;
   }
 
-  public ResourceList<ResourceType> withNamespace(String namespace) {
+  public ResourceList<ResourceType> inNamespace(String namespace) {
     this.namespace = namespace;
     return this;
   }
@@ -43,7 +42,7 @@ public class ResourceList<ResourceType extends KubernetesResource> {
   public ResourceList<ResourceType> withLabels(Map<String, String> labels) {
     if (this.labels == null) {
       // Use treemap so labels are sorted by key - bit easier to read when debugging
-      this.labels = new TreeMap<String, String>();
+      this.labels = new TreeMap<>();
     }
     this.labels.putAll(labels);
     return this;
@@ -52,7 +51,7 @@ public class ResourceList<ResourceType extends KubernetesResource> {
   public ResourceList<ResourceType> withLabel(String key, String value) {
     if (this.labels == null) {
       // Use treemap so labels are sorted by key - bit easier to read when debugging
-      this.labels = new TreeMap<String, String>();
+      this.labels = new TreeMap<>();
     }
     this.labels.put(key, value);
     return this;
@@ -61,7 +60,7 @@ public class ResourceList<ResourceType extends KubernetesResource> {
   public ResourceList<ResourceType> withFields(Map<String, String> fields) {
     if (this.fields == null) {
       // Use treemap so labels are sorted by key - bit easier to read when debugging
-      this.labels = new TreeMap<String, String>();
+      this.labels = new TreeMap<>();
     }
     this.fields.putAll(fields);
     return this;
@@ -70,7 +69,7 @@ public class ResourceList<ResourceType extends KubernetesResource> {
   public ResourceList<ResourceType> withField(String key, String value) {
     if (this.fields == null) {
       // Use treemap so labels are sorted by key - bit easier to read when debugging
-      this.fields = new TreeMap<String, String>();
+      this.fields = new TreeMap<>();
     }
     this.fields.put(key, value);
     return this;
@@ -115,13 +114,7 @@ public class ResourceList<ResourceType extends KubernetesResource> {
       return mapper.reader(clazz).readValue(r.getResponseBodyAsStream());
     } catch (MalformedURLException e) {
       throw new KubernetesClientException("Malformed resource URL", e);
-    } catch (InterruptedException e) {
-      throw new KubernetesClientException("Unable to delete resource", e);
-    } catch (ExecutionException e) {
-      throw new KubernetesClientException("Unable to delete resource", e);
-    } catch (JsonProcessingException e) {
-      throw new KubernetesClientException("Unable to delete resource", e);
-    } catch (IOException e) {
+    } catch (InterruptedException | ExecutionException | IOException e) {
       throw new KubernetesClientException("Unable to delete resource", e);
     }
   }

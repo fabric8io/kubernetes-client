@@ -138,29 +138,6 @@ public class Resource<ResourceType extends HasMetadata, ResourceBuilder extends 
     }
   }
 
-  public ResourceType create(ResourceType resource) throws KubernetesClientException {
-    try {
-      URL requestUrl = rootUrl;
-      if (namespace != null) {
-        requestUrl = new URL(requestUrl, "namespaces/" + namespace + "/");
-      }
-
-      AsyncHttpClient.BoundRequestBuilder requestBuilder = httpClient.preparePut(requestUrl.toString());
-      requestBuilder.setBody(mapper.writer().writeValueAsString(resource));
-      Future<Response> f = requestBuilder.execute();
-      Response r = f.get();
-      if (r.getStatusCode() != 200) {
-        Status status = mapper.reader(Status.class).readValue(r.getResponseBodyAsStream());
-        throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
-      }
-      return mapper.reader(clazz).readValue(r.getResponseBodyAsStream());
-    } catch (MalformedURLException e) {
-      throw new KubernetesClientException("Malformed resource URL", e);
-    } catch (InterruptedException | ExecutionException | IOException e) {
-      throw new KubernetesClientException("Unable to create resource", e);
-    }
-  }
-
   public interface Update<ResourceType extends HasMetadata> {
     ResourceType update(ResourceType resource);
   }

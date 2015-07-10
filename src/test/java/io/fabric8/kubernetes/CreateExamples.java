@@ -1,11 +1,13 @@
 package io.fabric8.kubernetes;
 
+import io.fabric8.kubernetes.api.model.Namespace;
+import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ListExamples {
+public class CreateExamples {
 
-  private static final Logger logger = LoggerFactory.getLogger(ListExamples.class);
+  private static final Logger logger = LoggerFactory.getLogger(CreateExamples.class);
 
   public static void main(String[] args) {
     KubernetesClient client = null;
@@ -18,24 +20,9 @@ public class ListExamples {
     try {
       client = new DefaultKubernetesClient.Builder().configFromSysPropsOrEnvVars().masterUrl(master).build();
 
+      Namespace newNamespace = new NamespaceBuilder().withNewMetadata().withName("thisisnew").endMetadata().build();
       System.out.println(
-        client.namespaces()
-          .withLabel("test", "something")
-          .get().getItems().size()
-      );
-
-      System.out.println(
-        client.pods()
-          .withField("metadata.name", "rabbitmq-pod")
-          .inNamespace("default")
-          .get().getItems().size()
-      );
-
-      System.out.println(
-        client.replicationControllers()
-          .withField("metadata.name", "rabbitmq-rc")
-          .inNamespace("default")
-          .get().getItems().size()
+        client.newNamespace(newNamespace).create()
       );
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);
