@@ -1,6 +1,5 @@
 package io.fabric8.kubernetes;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.Response;
@@ -58,13 +57,7 @@ public class Resource<ResourceType extends HasMetadata, ResourceBuilder extends 
             return mapper.reader(clazz).readValue(r.getResponseBodyAsStream());
         } catch (MalformedURLException e) {
             throw new KubernetesClientException("Malformed resource URL", e);
-        } catch (InterruptedException e) {
-            throw new KubernetesClientException("Unable to get resource", e);
-        } catch (ExecutionException e) {
-            throw new KubernetesClientException("Unable to get resource", e);
-        } catch (JsonProcessingException e) {
-            throw new KubernetesClientException("Unable to get resource", e);
-        } catch (IOException e) {
+        } catch (InterruptedException | ExecutionException | IOException e) {
             throw new KubernetesClientException("Unable to get resource", e);
         }
     }
@@ -86,13 +79,7 @@ public class Resource<ResourceType extends HasMetadata, ResourceBuilder extends 
             return mapper.reader(clazz).readValue(r.getResponseBodyAsStream());
         } catch (MalformedURLException e) {
             throw new KubernetesClientException("Malformed resource URL", e);
-        } catch (InterruptedException e) {
-            throw new KubernetesClientException("Unable to delete resource", e);
-        } catch (ExecutionException e) {
-            throw new KubernetesClientException("Unable to delete resource", e);
-        } catch (JsonProcessingException e) {
-            throw new KubernetesClientException("Unable to delete resource", e);
-        } catch (IOException e) {
+        } catch (InterruptedException | ExecutionException | IOException e) {
             throw new KubernetesClientException("Unable to delete resource", e);
         }
     }
@@ -119,13 +106,7 @@ public class Resource<ResourceType extends HasMetadata, ResourceBuilder extends 
             return mapper.reader(clazz).readValue(r.getResponseBodyAsStream());
         } catch (MalformedURLException e) {
             throw new KubernetesClientException("Malformed resource URL", e);
-        } catch (InterruptedException e) {
-            throw new KubernetesClientException("Unable to update resource", e);
-        } catch (ExecutionException e) {
-            throw new KubernetesClientException("Unable to update resource", e);
-        } catch (JsonProcessingException e) {
-            throw new KubernetesClientException("Unable to update resource", e);
-        } catch (IOException e) {
+        } catch (InterruptedException | ExecutionException | IOException e) {
             throw new KubernetesClientException("Unable to update resource", e);
         }
     }
@@ -152,13 +133,7 @@ public class Resource<ResourceType extends HasMetadata, ResourceBuilder extends 
             return mapper.reader(clazz).readValue(r.getResponseBodyAsStream());
         } catch (MalformedURLException e) {
             throw new KubernetesClientException("Malformed resource URL", e);
-        } catch (InterruptedException e) {
-            throw new KubernetesClientException("Unable to update resource", e);
-        } catch (ExecutionException e) {
-            throw new KubernetesClientException("Unable to update resource", e);
-        } catch (JsonProcessingException e) {
-            throw new KubernetesClientException("Unable to update resource", e);
-        } catch (IOException e) {
+        } catch (InterruptedException | ExecutionException | IOException e) {
             throw new KubernetesClientException("Unable to update resource", e);
         }
     }

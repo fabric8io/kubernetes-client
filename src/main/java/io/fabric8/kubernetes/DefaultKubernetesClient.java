@@ -2,12 +2,18 @@ package io.fabric8.kubernetes;
 
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
+import com.ning.http.client.Realm;
+import com.ning.http.client.filter.FilterContext;
+import com.ning.http.client.filter.FilterException;
+import com.ning.http.client.filter.RequestFilter;
 import io.fabric8.kubernetes.api.model.*;
 import org.jboss.netty.handler.ssl.util.InsecureTrustManagerFactory;
 
 import javax.net.ssl.*;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
@@ -28,6 +34,14 @@ public class DefaultKubernetesClient implements KubernetesClient {
     public static final String KUBERNETES_CLIENT_KEY_PASSPHRASE_SYSTEM_PROPERTY = "kubernetes.certs.client.key.passphrase";
 
     public static final String KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY = "kubernetes.trust.certificates";
+
+    public static final String KUBERNETES_USERNAME = "kubernetes.auth.basic.username";
+    public static final String KUBERNETES_PASSWORD = "kubernetes.auth.basic.password";
+
+    public static final String KUBERNETES_TRY_SERVICE_TOKEN = "kubernetes.auth.tryServiceToken";
+    public static final String KUBERNETES_OAUTH_TOKEN = "kubernetes.auth.token";
+
+    public static final String KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH = "/var/run/secrets/kubernetes.io/serviceaccount/token";
 
     private AsyncHttpClient httpClient;
     private URL masterUrl;
@@ -59,42 +73,42 @@ public class DefaultKubernetesClient implements KubernetesClient {
 
     @Override
     public ResourceList<NamespaceList> namespaces() {
-        return new ResourceList<NamespaceList>(httpClient, masterUrl, "namespaces", NamespaceList.class);
+        return new ResourceList<>(httpClient, masterUrl, "namespaces", NamespaceList.class);
     }
 
     @Override
     public Resource<Namespace, NamespaceBuilder> namespaces(String name) {
-        return new Resource<Namespace, NamespaceBuilder>(httpClient, masterUrl, "namespaces", name, Namespace.class, NamespaceBuilder.class);
+        return new Resource<>(httpClient, masterUrl, "namespaces", name, Namespace.class, NamespaceBuilder.class);
     }
 
     @Override
     public ResourceList<PodList> pods() {
-        return new ResourceList<PodList>(httpClient, masterUrl, "pods", PodList.class);
+        return new ResourceList<>(httpClient, masterUrl, "pods", PodList.class);
     }
 
     @Override
     public Resource<Pod, PodBuilder> pods(String name) {
-        return new Resource<Pod, PodBuilder>(httpClient, masterUrl, "pods", name, Pod.class, PodBuilder.class);
+        return new Resource<>(httpClient, masterUrl, "pods", name, Pod.class, PodBuilder.class);
     }
 
     @Override
     public ResourceList<ReplicationControllerList> replicationControllers() {
-        return new ResourceList<ReplicationControllerList>(httpClient, masterUrl, "replicationcontrollers", ReplicationControllerList.class);
+        return new ResourceList<>(httpClient, masterUrl, "replicationcontrollers", ReplicationControllerList.class);
     }
 
     @Override
     public Resource<ReplicationController, ReplicationControllerBuilder> replicationControllers(String name) {
-        return new Resource<ReplicationController, ReplicationControllerBuilder>(httpClient, masterUrl, "replicationcontrollers", name, ReplicationController.class, ReplicationControllerBuilder.class);
+        return new Resource<>(httpClient, masterUrl, "replicationcontrollers", name, ReplicationController.class, ReplicationControllerBuilder.class);
     }
 
     @Override
     public ResourceList<ServiceList> services() {
-        return new ResourceList<ServiceList>(httpClient, masterUrl, "services", ServiceList.class);
+        return new ResourceList<>(httpClient, masterUrl, "services", ServiceList.class);
     }
 
     @Override
     public Resource<Service, ServiceBuilder> services(String name) {
-        return new Resource<Service, ServiceBuilder>(httpClient, masterUrl, "services", name, Service.class, ServiceBuilder.class);
+        return new Resource<>(httpClient, masterUrl, "services", name, Service.class, ServiceBuilder.class);
     }
 
     public static class Builder {
@@ -110,6 +124,9 @@ public class DefaultKubernetesClient implements KubernetesClient {
         private String clientKeyData;
         private String clientKeyAlgo = "RSA";
         private char[] clientKeyPassphrase = "changeit".toCharArray();
+        private String username;
+        private String password;
+        private String oauthToken;
 
         public Builder() {
         }
@@ -157,23 +174,28 @@ public class DefaultKubernetesClient implements KubernetesClient {
                     clientConfigBuilder.setSSLContext(sslContext);
                 }
 
-                AsyncHttpClient httpClient = new AsyncHttpClient(clientConfigBuilder.build());
-                DefaultKubernetesClient client = new DefaultKubernetesClient(masterUrl, httpClient);
+                if (username != null && password != null) {
+                    Realm realm = new Realm.RealmBuilder()
+                            .setPrincipal(username)
+                            .setPassword(password)
+                            .setUsePreemptiveAuth(true)
+                            .setScheme(Realm.AuthScheme.BASIC)
+                            .build();
+                    clientConfigBuilder.setRealm(realm);
+                } else if (oauthToken != null) {
+                    clientConfigBuilder.addRequestFilter(new RequestFilter() {
+                        @Override
+                        public <T> FilterContext<T> filter(FilterContext<T> ctx) throws FilterException {
+                            ctx.getRequest().getHeaders().add("Authorization", "Bearer " + oauthToken);
+                            return ctx;
+                        }
+                    });
+                }
 
-                return client;
-            } catch (UnrecoverableKeyException e) {
-                throw new KubernetesClientException("Could not create HTTP client", e);
-            } catch (NoSuchAlgorithmException e) {
-                throw new KubernetesClientException("Could not create HTTP client", e);
-            } catch (KeyStoreException e) {
-                throw new KubernetesClientException("Could not create HTTP client", e);
-            } catch (KeyManagementException e) {
-                throw new KubernetesClientException("Could not create HTTP client", e);
-            } catch (CertificateException e) {
-                throw new KubernetesClientException("Could not create HTTP client", e);
-            } catch (InvalidKeySpecException e) {
-                throw new KubernetesClientException("Could not create HTTP client", e);
-            } catch (IOException e) {
+                AsyncHttpClient httpClient = new AsyncHttpClient(clientConfigBuilder.build());
+
+                return new DefaultKubernetesClient(masterUrl, httpClient);
+            } catch (UnrecoverableKeyException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException | InvalidKeySpecException | IOException | CertificateException e) {
                 throw new KubernetesClientException("Could not create HTTP client", e);
             }
         }
@@ -190,11 +212,31 @@ public class DefaultKubernetesClient implements KubernetesClient {
             clientKeyData = Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_DATA_SYSTEM_PROPERTY, clientKeyData);
             clientKeyAlgo = Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_ALGO_SYSTEM_PROPERTY, clientKeyAlgo);
             clientKeyPassphrase = Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_PASSPHRASE_SYSTEM_PROPERTY, new String(clientKeyPassphrase)).toCharArray();
+
+            oauthToken = Utils.getSystemPropertyOrEnvVar(KUBERNETES_OAUTH_TOKEN, oauthToken);
+            username = Utils.getSystemPropertyOrEnvVar(KUBERNETES_USERNAME, username);
+            password = Utils.getSystemPropertyOrEnvVar(KUBERNETES_PASSWORD, password);
             String configuredProtocols = Utils.getSystemPropertyOrEnvVar(KUBERNETES_TLS_PROTOCOLS_SYSTEM_PROPERTY);
             if (configuredProtocols != null) {
                 enabledProtocols = configuredProtocols.split(",");
             }
+            boolean tryServiceToken = Utils.getSystemPropertyOrEnvVar(KUBERNETES_TRY_SERVICE_TOKEN, true);
+            if (tryServiceToken) {
+                tryServiceToken();
+            }
+
             return this;
+        }
+
+        private void tryServiceToken() {
+            try {
+                String serviceTokenCandidate = new String(Files.readAllBytes(Paths.get(KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH)));
+                if (serviceTokenCandidate != null) {
+                    oauthToken = serviceTokenCandidate;
+                }
+            } catch(IOException e) {
+                // No service account token available...
+            }
         }
 
         public Builder enabledProtocols(String[] enabledProtocols) {
@@ -254,6 +296,22 @@ public class DefaultKubernetesClient implements KubernetesClient {
 
         public Builder apiVersion(String apiVersion) {
             this.apiVersion = apiVersion;
+            return this;
+        }
+
+        public Builder basicAuth(String username, String password) {
+            this.username = username;
+            this.password = password;
+            return this;
+        }
+
+        public Builder token(String token) {
+            this.oauthToken = token;
+            return this;
+        }
+
+        public Builder tryServiceAccountToken() {
+            tryServiceToken();
             return this;
         }
     }

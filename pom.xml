@@ -61,12 +61,6 @@
         <configuration>
           <mainClass>io.fabric8.kubernetes.UpdateExamples</mainClass>
           <classpathScope>test</classpathScope>
-          <systemProperties>
-            <systemProperty>
-              <key>kubernetes.trust.certificates</key>
-              <value>true</value>
-            </systemProperty>
-          </systemProperties>
           <arguments>
             <argument>${exec.master}</argument>
           </arguments>
