@@ -19,11 +19,11 @@ public class GetExamples {
       client = new DefaultKubernetesClient.Builder().configFromSysPropsOrEnvVars().masterUrl(master).build();
 
       System.out.println(
-        client.namespaces("fabric8").get()
+        client.namespaces().get("fabric8")
       );
 
       System.out.println(
-        client.pods("rabbitmq-pod").inNamespace("default").get()
+        client.pods().inNamespace("default").get("rabbitmq-pod")
       );
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);

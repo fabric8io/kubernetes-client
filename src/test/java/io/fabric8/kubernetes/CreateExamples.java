@@ -21,8 +21,9 @@ public class CreateExamples {
       client = new DefaultKubernetesClient.Builder().configFromSysPropsOrEnvVars().masterUrl(master).build();
 
       Namespace newNamespace = new NamespaceBuilder().withNewMetadata().withName("thisisnew").endMetadata().build();
+
       System.out.println(
-        client.newNamespace(newNamespace).create()
+        client.namespaces().create(newNamespace)
       );
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);

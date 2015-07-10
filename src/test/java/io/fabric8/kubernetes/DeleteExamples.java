@@ -19,7 +19,7 @@ public class DeleteExamples {
       client = new DefaultKubernetesClient.Builder().configFromSysPropsOrEnvVars().masterUrl(master).build();
 
       System.out.println(
-        client.namespaces("fabric8").delete()
+        client.namespaces().delete("fabric8")
       );
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);

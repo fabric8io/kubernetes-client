@@ -72,48 +72,23 @@ public class DefaultKubernetesClient implements KubernetesClient {
   }
 
   @Override
-  public ResourceList<NamespaceList> namespaces() {
-    return new ResourceList<>(httpClient, masterUrl, "namespaces", NamespaceList.class);
+  public Resource<NamespaceList, Namespace, NamespaceBuilder> namespaces() {
+    return new Resource<>(httpClient, masterUrl, "namespaces", NamespaceList.class, Namespace.class, NamespaceBuilder.class);
   }
 
   @Override
-  public Resource<Namespace, NamespaceBuilder> namespaces(String name) {
-    return new Resource<>(httpClient, masterUrl, "namespaces", name, Namespace.class, NamespaceBuilder.class);
+  public Resource<PodList, Pod, PodBuilder> pods() {
+    return new Resource<>(httpClient, masterUrl, "pods", PodList.class, Pod.class, PodBuilder.class);
   }
 
   @Override
-  public ResourceCreate<Namespace> newNamespace(Namespace namespace) {
-    return new ResourceCreate<>(httpClient, masterUrl, "namespaces", namespace);
+  public Resource<ReplicationControllerList, ReplicationController, ReplicationControllerBuilder> replicationControllers() {
+    return new Resource<>(httpClient, masterUrl, "replicationcontrollers", ReplicationControllerList.class, ReplicationController.class, ReplicationControllerBuilder.class);
   }
 
   @Override
-  public ResourceList<PodList> pods() {
-    return new ResourceList<>(httpClient, masterUrl, "pods", PodList.class);
-  }
-
-  @Override
-  public Resource<Pod, PodBuilder> pods(String name) {
-    return new Resource<>(httpClient, masterUrl, "pods", name, Pod.class, PodBuilder.class);
-  }
-
-  @Override
-  public ResourceList<ReplicationControllerList> replicationControllers() {
-    return new ResourceList<>(httpClient, masterUrl, "replicationcontrollers", ReplicationControllerList.class);
-  }
-
-  @Override
-  public Resource<ReplicationController, ReplicationControllerBuilder> replicationControllers(String name) {
-    return new Resource<>(httpClient, masterUrl, "replicationcontrollers", name, ReplicationController.class, ReplicationControllerBuilder.class);
-  }
-
-  @Override
-  public ResourceList<ServiceList> services() {
-    return new ResourceList<>(httpClient, masterUrl, "services", ServiceList.class);
-  }
-
-  @Override
-  public Resource<Service, ServiceBuilder> services(String name) {
-    return new Resource<>(httpClient, masterUrl, "services", name, Service.class, ServiceBuilder.class);
+  public Resource<ServiceList, Service, ServiceBuilder> services() {
+    return new Resource<>(httpClient, masterUrl, "services", ServiceList.class, Service.class, ServiceBuilder.class);
   }
 
   public static class Builder {

@@ -21,21 +21,21 @@ public class ListExamples {
       System.out.println(
         client.namespaces()
           .withLabel("test", "something")
-          .get().getItems().size()
+          .list().getItems().size()
       );
 
       System.out.println(
         client.pods()
           .withField("metadata.name", "rabbitmq-pod")
           .inNamespace("default")
-          .get().getItems().size()
+          .list().getItems().size()
       );
 
       System.out.println(
         client.replicationControllers()
           .withField("metadata.name", "rabbitmq-rc")
           .inNamespace("default")
-          .get().getItems().size()
+          .list().getItems().size()
       );
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);

@@ -21,7 +21,7 @@ public class UpdateExamples {
       client = new DefaultKubernetesClient.Builder().configFromSysPropsOrEnvVars().masterUrl(master).build();
 
       System.out.println(
-        client.pods("rabbitmq-pod").inNamespace("default").update(
+        client.pods().inNamespace("default").update("rabbitmq-pod",
           new Resource.Update<Pod>() {
             @Override
             public Pod update(Pod pod) {
@@ -33,7 +33,7 @@ public class UpdateExamples {
       );
 
       System.out.println(
-        client.pods("rabbitmq-pod").inNamespace("default").update(
+        client.pods().inNamespace("default").update("rabbitmq-pod",
           new Resource.BuilderUpdate<Pod, PodBuilder>() {
             @Override
             public Pod update(PodBuilder builder) {

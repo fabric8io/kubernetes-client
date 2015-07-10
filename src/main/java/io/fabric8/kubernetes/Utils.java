@@ -45,11 +45,6 @@ public class Utils {
     return getSystemPropertyOrEnvVar(systemPropertyName, (String) null);
   }
 
-  public static Number getSystemPropertyOrEnvVar(String systemPropertyName, Number defaultValue) {
-    String result = getSystemPropertyOrEnvVar(systemPropertyName, defaultValue.toString());
-    return Integer.parseInt(result);
-  }
-
   public static Boolean getSystemPropertyOrEnvVar(String systemPropertyName, Boolean defaultValue) {
     String result = getSystemPropertyOrEnvVar(systemPropertyName, defaultValue.toString());
     return Boolean.parseBoolean(result);
