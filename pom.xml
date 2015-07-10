@@ -13,7 +13,7 @@
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
 
-    <exec.master>https://localhost:8443/api/v1/</exec.master>
+    <exec.master>https://localhost:8443</exec.master>
   </properties>
 
   <dependencies>

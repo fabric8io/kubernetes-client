@@ -3,12 +3,6 @@ package io.fabric8.kubernetes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
-
 public class ListExamples {
 
     private static final Logger logger = LoggerFactory.getLogger(ListExamples.class);
@@ -16,8 +10,13 @@ public class ListExamples {
     public static void main(String[] args) {
         KubernetesClient client = null;
 
+        String master = "https://localhost:8443/api/v1/";
+        if (args.length == 1) {
+            master = args[0];
+        }
+
         try {
-            client = new KubernetesClient("https://localhost:8443/api/v1/");
+            client = new DefaultKubernetesClient.Builder().configFromSysPropsOrEnvVars().masterUrl(master).build();
 
             System.out.println(
                     client.namespaces()

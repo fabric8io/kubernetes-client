@@ -163,4 +163,12 @@ public class Resource<ResourceType extends HasMetadata, ResourceBuilder extends 
         }
     }
 
+    public interface Update<ResourceType extends HasMetadata> {
+        ResourceType update(ResourceType resource);
+    }
+
+    public interface BuilderUpdate<ResourceType extends HasMetadata, ResourceBuilder extends Builder<ResourceType>> {
+        ResourceType update(ResourceBuilder builder);
+    }
+
 }
