@@ -15,7 +15,7 @@ import java.net.URL;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-public class Resource<ResourceType extends HasMetadata> {
+public class Resource<ResourceType extends HasMetadata, ResourceBuilder extends Builder<ResourceType>> {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
@@ -24,10 +24,10 @@ public class Resource<ResourceType extends HasMetadata> {
     private String resourceType;
     private String resourceName;
     private Class<ResourceType> clazz;
-    private Class<? extends Builder<ResourceType>> clazzBuilder;
+    private Class<ResourceBuilder> clazzBuilder;
     private String namespace;
 
-    public Resource(AsyncHttpClient httpClient, URL rootUrl, String resourceType, String resourceName, Class<ResourceType> clazz, Class<? extends Builder<ResourceType>> clazzBuilder) {
+    public Resource(AsyncHttpClient httpClient, URL rootUrl, String resourceType, String resourceName, Class<ResourceType> clazz, Class<ResourceBuilder> clazzBuilder) {
         this.httpClient = httpClient;
         this.rootUrl = rootUrl;
         this.resourceType = resourceType;
@@ -36,7 +36,7 @@ public class Resource<ResourceType extends HasMetadata> {
         this.clazzBuilder = clazzBuilder;
     }
 
-    public Resource<ResourceType> inNamespace(String namespace) {
+    public Resource<ResourceType,ResourceBuilder> inNamespace(String namespace) {
         this.namespace = namespace;
         return this;
     }
@@ -97,7 +97,7 @@ public class Resource<ResourceType extends HasMetadata> {
         }
     }
 
-    public ResourceType update(BuilderUpdate<ResourceType, Builder<ResourceType>> builder) throws KubernetesClientException {
+    public ResourceType update(ResourceUpdate<ResourceType,ResourceBuilder> resourceUpdate) throws KubernetesClientException {
         try {
             URL requestUrl = rootUrl;
             if (namespace != null) {

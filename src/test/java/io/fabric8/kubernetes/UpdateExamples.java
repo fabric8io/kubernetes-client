@@ -30,10 +30,10 @@ public class UpdateExamples {
 
             System.out.println(
                     client.pods("rabbitmq-pod").inNamespace("default").update(
-                            new Resource.BuilderUpdate<Pod, Builder<Pod>>() {
+                            new Resource.ResourceUpdate<Pod, PodBuilder>() {
                                 @Override
-                                public Pod update(Builder<Pod> builder) {
-                                    PodBuilder podBuilder = (PodBuilder) builder;;
+                                public Pod update(PodBuilder builder) {
+                                    PodBuilder podBuilder = (PodBuilder) builder;
                                     return podBuilder.editMetadata().addToLabels("i", "rock").endMetadata().build();
                                 }
                             }

@@ -120,31 +120,31 @@ public class KubernetesClient {
         return new ResourceList<NamespaceList>(httpClient, masterUrl, "namespaces", NamespaceList.class);
     }
 
-    public Resource<Namespace> namespaces(String name) {
-        return new Resource<Namespace>(httpClient, masterUrl, "namespaces", name, Namespace.class, NamespaceBuilder.class);
+    public Resource<Namespace, NamespaceBuilder> namespaces(String name) {
+        return new Resource<Namespace, NamespaceBuilder>(httpClient, masterUrl, "namespaces", name, Namespace.class, NamespaceBuilder.class);
     }
 
     public ResourceList<PodList> pods() {
         return new ResourceList<PodList>(httpClient, masterUrl, "pods", PodList.class);
     }
 
-    public Resource<Pod> pods(String name) {
-        return new Resource<Pod>(httpClient, masterUrl, "pods", name, Pod.class, PodBuilder.class);
+    public Resource<Pod, PodBuilder> pods(String name) {
+        return new Resource<Pod, PodBuilder>(httpClient, masterUrl, "pods", name, Pod.class, PodBuilder.class);
     }
 
     public ResourceList<ReplicationControllerList> replicationControllers() {
         return new ResourceList<ReplicationControllerList>(httpClient, masterUrl, "replicationcontrollers", ReplicationControllerList.class);
     }
 
-    public Resource<ReplicationController> replicationControllers(String name) {
-        return new Resource<ReplicationController>(httpClient, masterUrl, "replicationcontrollers", name, ReplicationController.class, ReplicationControllerBuilder.class);
+    public Resource<ReplicationController, ReplicationControllerBuilder> replicationControllers(String name) {
+        return new Resource<ReplicationController, ReplicationControllerBuilder>(httpClient, masterUrl, "replicationcontrollers", name, ReplicationController.class, ReplicationControllerBuilder.class);
     }
 
     public ResourceList<ServiceList> services() {
         return new ResourceList<ServiceList>(httpClient, masterUrl, "services", ServiceList.class);
     }
 
-    public Resource<Service> services(String name) {
-        return new Resource<Service>(httpClient, masterUrl, "services", name, Service.class, ServiceBuilder.class);
+    public Resource<Service, ServiceBuilder> services(String name) {
+        return new Resource<Service, ServiceBuilder>(httpClient, masterUrl, "services", name, Service.class, ServiceBuilder.class);
     }
 }
