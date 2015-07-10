@@ -18,7 +18,19 @@ public class UpdateExamples {
 
             System.out.println(
                     client.pods("rabbitmq-pod").inNamespace("default").update(
-                            new Resource.ResourceUpdate<Pod, Builder<Pod>>() {
+                            new Resource.ResourceUpdate<Pod>() {
+                                @Override
+                                public Pod update(Pod pod) {
+                                    pod.getMetadata().getLabels().put("this", "works");
+                                    return pod;
+                                }
+                            }
+                    )
+            );
+
+            System.out.println(
+                    client.pods("rabbitmq-pod").inNamespace("default").update(
+                            new Resource.BuilderUpdate<Pod, Builder<Pod>>() {
                                 @Override
                                 public Pod update(Builder<Pod> builder) {
                                     PodBuilder podBuilder = (PodBuilder) builder;;
