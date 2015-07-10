@@ -7,6 +7,7 @@ import com.ning.http.client.filter.FilterContext;
 import com.ning.http.client.filter.FilterException;
 import com.ning.http.client.filter.RequestFilter;
 import io.fabric8.kubernetes.api.model.*;
+import io.fabric8.openshift.api.model.*;
 import org.jboss.netty.handler.ssl.util.InsecureTrustManagerFactory;
 
 import javax.net.ssl.*;
@@ -18,10 +19,11 @@ import java.security.*;
 import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
 
-public class DefaultKubernetesClient implements KubernetesClient {
+public class DefaultKubernetesClient implements OpenShiftClient {
 
   public static final String KUBERNETES_MASTER_SYSTEM_PROPERTY = "kubernetes.master";
   public static final String KUBERNETES_API_VERSION_SYSTEM_PROPERTY = "kubernetes.api.version";
+  public static final String KUBERNETES_OAPI_VERSION_SYSTEM_PROPERTY = "kubernetes.oapi.version";
   public static final String KUBERNETES_TLS_PROTOCOLS_SYSTEM_PROPERTY = "kubernetes.tls.protocols";
 
   public static final String KUBERNETES_CA_CERTIFICATE_FILE_SYSTEM_PROPERTY = "kubernetes.certs.ca.file";
@@ -45,8 +47,9 @@ public class DefaultKubernetesClient implements KubernetesClient {
 
   private AsyncHttpClient httpClient;
   private URL masterUrl;
+  private URL openShiftUrl;
 
-  private DefaultKubernetesClient(String masterUrl, AsyncHttpClient httpClient) throws KubernetesClientException {
+  private DefaultKubernetesClient(String masterUrl, String openShiftUrl, AsyncHttpClient httpClient) throws KubernetesClientException {
 
     if (masterUrl == null) {
       throw new KubernetesClientException("Unknown Kubernetes master URL - " +
@@ -59,6 +62,11 @@ public class DefaultKubernetesClient implements KubernetesClient {
         masterUrl += "/";
       }
       this.masterUrl = new URL(masterUrl);
+
+      if (!openShiftUrl.endsWith("/")) {
+        openShiftUrl += "/";
+      }
+      this.openShiftUrl = new URL(openShiftUrl);
 
       this.httpClient = httpClient;
     } catch (Exception e) {
@@ -111,31 +119,65 @@ public class DefaultKubernetesClient implements KubernetesClient {
     return new Resource<>(httpClient, masterUrl, "serviceaccounts", ServiceAccountList.class, ServiceAccount.class, ServiceAccountBuilder.class);
   }
 
-  public static class Builder {
-    private boolean trustCerts = false;
-    private String masterUrl;
-    private String apiVersion = "v1";
-    private String[] enabledProtocols = new String[]{"TLSv1.2"};
-    private String caCertFile;
-    private String caCertData;
-    private String clientCertFile;
-    private String clientCertData;
-    private String clientKeyFile;
-    private String clientKeyData;
-    private String clientKeyAlgo = "RSA";
-    private char[] clientKeyPassphrase = "changeit".toCharArray();
-    private String username;
-    private String password;
-    private String oauthToken;
+  @Override
+  public Resource<BuildConfigList, BuildConfig, BuildConfigBuilder> buildConfigs() {
+    return new Resource<>(httpClient, openShiftUrl, "buildconfigs", BuildConfigList.class, BuildConfig.class, BuildConfigBuilder.class);
+  }
 
-    public Builder() {
-    }
+  @Override
+  public Resource<DeploymentConfigList, DeploymentConfig, DeploymentConfigBuilder> deploymentConfigs() {
+    return new Resource<>(httpClient, openShiftUrl, "deploymentconfigs", DeploymentConfigList.class, DeploymentConfig.class, DeploymentConfigBuilder.class);
+  }
+
+  @Override
+  public Resource<ImageStreamList, ImageStream, ImageStreamBuilder> imageStreams() {
+    return new Resource<>(httpClient, openShiftUrl, "imagestreams", ImageStreamList.class, ImageStream.class, ImageStreamBuilder.class);
+  }
+
+  @Override
+  public Resource<OAuthAccessTokenList, OAuthAccessToken, OAuthAccessTokenBuilder> oAuthAccessTokens() {
+    return new Resource<>(httpClient, openShiftUrl, "oauthaccesstokens", OAuthAccessTokenList.class, OAuthAccessToken.class, OAuthAccessTokenBuilder.class);
+  }
+
+  @Override
+  public Resource<OAuthAuthorizeTokenList, OAuthAuthorizeToken, OAuthAuthorizeTokenBuilder> oAuthAuthorizeTokens() {
+    return new Resource<>(httpClient, openShiftUrl, "oauthauthorizetokens", OAuthAuthorizeTokenList.class, OAuthAuthorizeToken.class, OAuthAuthorizeTokenBuilder.class);
+  }
+
+  @Override
+  public Resource<OAuthClientList, OAuthClient, OAuthClientBuilder> oAuthClients() {
+    return new Resource<>(httpClient, openShiftUrl, "oauthclients", OAuthClientList.class, OAuthClient.class, OAuthClientBuilder.class);
+  }
+
+  @Override
+  public Resource<RouteList, Route, RouteBuilder> routes() {
+    return new Resource<>(httpClient, openShiftUrl, "routes", RouteList.class, Route.class, RouteBuilder.class);
+  }
+
+  private static abstract class AbstractBuilder<T extends AbstractBuilder> {
+    protected boolean trustCerts = false;
+    protected String masterUrl;
+    protected String apiVersion = "v1";
+    protected String oapiVersion = "v1";
+    protected String[] enabledProtocols = new String[]{"TLSv1.2"};
+    protected String caCertFile;
+    protected String caCertData;
+    protected String clientCertFile;
+    protected String clientCertData;
+    protected String clientKeyFile;
+    protected String clientKeyData;
+    protected String clientKeyAlgo = "RSA";
+    protected char[] clientKeyPassphrase = "changeit".toCharArray();
+    protected String username;
+    protected String password;
+    protected String oauthToken;
 
     public KubernetesClient build() throws KubernetesClientException {
       try {
         if (!masterUrl.endsWith("/")) {
           masterUrl += "/";
         }
+        String openShiftUrl = masterUrl + "oapi/" + oapiVersion;
         masterUrl += "api/" + apiVersion;
 
         AsyncHttpClientConfig.Builder clientConfigBuilder = new AsyncHttpClientConfig.Builder();
@@ -194,16 +236,17 @@ public class DefaultKubernetesClient implements KubernetesClient {
 
         AsyncHttpClient httpClient = new AsyncHttpClient(clientConfigBuilder.build());
 
-        return new DefaultKubernetesClient(masterUrl, httpClient);
+        return new DefaultKubernetesClient(masterUrl, openShiftUrl, httpClient);
       } catch (UnrecoverableKeyException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException | InvalidKeySpecException | IOException | CertificateException e) {
         throw new KubernetesClientException("Could not create HTTP client", e);
       }
     }
 
-    public Builder configFromSysPropsOrEnvVars() {
+    public T configFromSysPropsOrEnvVars() {
       trustCerts = Utils.getSystemPropertyOrEnvVar(KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY, trustCerts);
       masterUrl = Utils.getSystemPropertyOrEnvVar(KUBERNETES_MASTER_SYSTEM_PROPERTY, masterUrl);
       apiVersion = Utils.getSystemPropertyOrEnvVar(KUBERNETES_API_VERSION_SYSTEM_PROPERTY, apiVersion);
+      oapiVersion = Utils.getSystemPropertyOrEnvVar(KUBERNETES_OAPI_VERSION_SYSTEM_PROPERTY, oapiVersion);
       caCertFile = Utils.getSystemPropertyOrEnvVar(KUBERNETES_CA_CERTIFICATE_FILE_SYSTEM_PROPERTY, caCertFile);
       caCertData = Utils.getSystemPropertyOrEnvVar(KUBERNETES_CA_CERTIFICATE_DATA_SYSTEM_PROPERTY, caCertData);
       clientCertFile = Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_CERTIFICATE_FILE_SYSTEM_PROPERTY, clientCertFile);
@@ -225,7 +268,7 @@ public class DefaultKubernetesClient implements KubernetesClient {
         tryServiceToken();
       }
 
-      return this;
+      return (T) this;
     }
 
     private void tryServiceToken() {
@@ -239,79 +282,102 @@ public class DefaultKubernetesClient implements KubernetesClient {
       }
     }
 
-    public Builder enabledProtocols(String[] enabledProtocols) {
+    public T enabledProtocols(String[] enabledProtocols) {
       this.enabledProtocols = enabledProtocols;
-      return this;
+      return (T) this;
     }
 
-    public Builder trustCerts(boolean trustCerts) {
+    public T trustCerts(boolean trustCerts) {
       this.trustCerts = trustCerts;
-      return this;
+      return (T) this;
     }
 
-    public Builder caCertFile(String caCertFile) {
+    public T caCertFile(String caCertFile) {
       this.caCertFile = caCertFile;
-      return this;
+      return (T) this;
     }
 
-    public Builder caCertData(String caCertData) {
+    public T caCertData(String caCertData) {
       this.caCertData = caCertData;
-      return this;
+      return (T) this;
     }
 
-    public Builder clientCertFile(String clientCertFile) {
+    public T clientCertFile(String clientCertFile) {
       this.clientCertFile = clientCertFile;
-      return this;
+      return (T) this;
     }
 
-    public Builder clientCertData(String clientCertData) {
+    public T clientCertData(String clientCertData) {
       this.clientCertData = clientCertData;
-      return this;
+      return (T) this;
     }
 
-    public Builder clientKeyFile(String clientKeyFile) {
+    public T clientKeyFile(String clientKeyFile) {
       this.clientKeyFile = clientKeyFile;
-      return this;
+      return (T) this;
     }
 
-    public Builder clientKeyData(String clientKeyData) {
+    public T clientKeyData(String clientKeyData) {
       this.clientKeyData = clientKeyData;
-      return this;
+      return (T) this;
     }
 
-    public Builder clientKeyAlgo(String clientKeyAlgo) {
+    public T clientKeyAlgo(String clientKeyAlgo) {
       this.clientKeyAlgo = clientKeyAlgo;
-      return this;
+      return (T) this;
     }
 
-    public Builder clientKeyPassphrase(char[] clientKeyPassphrase) {
+    public T clientKeyPassphrase(char[] clientKeyPassphrase) {
       this.clientKeyPassphrase = clientKeyPassphrase;
-      return this;
+      return (T) this;
     }
 
-    public Builder masterUrl(String masterUrl) {
+    public T masterUrl(String masterUrl) {
       this.masterUrl = masterUrl;
-      return this;
+      return (T) this;
     }
 
-    public Builder apiVersion(String apiVersion) {
+    public T apiVersion(String apiVersion) {
       this.apiVersion = apiVersion;
-      return this;
+      return (T) this;
     }
 
-    public Builder basicAuth(String username, String password) {
+    public T basicAuth(String username, String password) {
       this.username = username;
       this.password = password;
-      return this;
+      return (T) this;
     }
 
-    public Builder token(String token) {
+    public T token(String token) {
       this.oauthToken = token;
-      return this;
+      return (T) this;
     }
 
-    public Builder tryServiceAccountToken() {
+    public T tryServiceAccountToken() {
       tryServiceToken();
+      return (T) this;
+    }
+  }
+
+  public static class Builder extends AbstractBuilder<Builder> {
+    public Builder() {
+    }
+
+    public KubernetesClient build() throws KubernetesClientException {
+      return (KubernetesClient) super.build();
+    }
+  }
+
+  public static class OpenShiftBuilder extends AbstractBuilder<OpenShiftBuilder> {
+    public OpenShiftBuilder() {
+    }
+
+    public OpenShiftClient build() throws KubernetesClientException {
+      return (OpenShiftClient) super.build();
+    }
+
+    public OpenShiftBuilder oapiVersion(String oapiVersion) {
+      this.oapiVersion = oapiVersion;
       return this;
     }
   }
