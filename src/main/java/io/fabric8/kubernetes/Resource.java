@@ -4,11 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.Response;
 import io.fabric8.common.Builder;
-import io.fabric8.common.Editable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.base.Status;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
@@ -93,7 +93,7 @@ public class Resource<ResourceType extends HasMetadata, ResourceBuilder extends 
             requestUrl = new URL(requestUrl, resourceType + "/" + resourceName);
 
             ResourceType current = this.get();
-            ResourceType updated = builder.update(clazzBuilder.cast(((Editable<ResourceType>) current).edit()));
+            ResourceType updated = builder.update(clazzBuilder.getDeclaredConstructor(clazz).newInstance(current));
 
             AsyncHttpClient.BoundRequestBuilder requestBuilder = httpClient.preparePut(requestUrl.toString());
             requestBuilder.setBody(mapper.writer().writeValueAsString(updated));
@@ -106,7 +106,7 @@ public class Resource<ResourceType extends HasMetadata, ResourceBuilder extends 
             return mapper.reader(clazz).readValue(r.getResponseBodyAsStream());
         } catch (MalformedURLException e) {
             throw new KubernetesClientException("Malformed resource URL", e);
-        } catch (InterruptedException | ExecutionException | IOException e) {
+        } catch (InterruptedException | ExecutionException | IOException | InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException e) {
             throw new KubernetesClientException("Unable to update resource", e);
         }
     }
