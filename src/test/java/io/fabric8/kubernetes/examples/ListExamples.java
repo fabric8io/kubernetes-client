@@ -29,8 +29,8 @@ public class ListExamples {
 
       System.out.println(
         client.pods()
-          .withField("metadata.name", "rabbitmq-pod")
           .inNamespace("default")
+          .withField("metadata.name", "rabbitmq-pod")
           .list().getItems().size()
       );
 
@@ -40,8 +40,8 @@ public class ListExamples {
 
       System.out.println(
         client.replicationControllers()
-          .withField("metadata.name", "rabbitmq-rc")
           .inNamespace("default")
+          .withField("metadata.name", "rabbitmq-rc")
           .list().getItems().size()
       );
 
