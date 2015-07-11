@@ -13,7 +13,7 @@ public interface KubernetesClient {
 
   Resource<PodList, Pod, PodBuilder> pods();
 
-  Resource<ReplicationControllerList, ReplicationController, ReplicationControllerBuilder> replicationControllers();
+  ReplicationControllerResource replicationControllers();
 
   Resource<SecretList, Secret, SecretBuilder> secrets();
 

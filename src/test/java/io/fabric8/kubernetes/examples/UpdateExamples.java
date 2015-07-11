@@ -3,9 +3,6 @@ package io.fabric8.kubernetes.examples;
 import io.fabric8.kubernetes.DefaultKubernetesClient;
 import io.fabric8.kubernetes.KubernetesClient;
 import io.fabric8.kubernetes.KubernetesClientException;
-import io.fabric8.kubernetes.Resource;
-import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.PodBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,6 +43,11 @@ public class UpdateExamples {
           }
         )
       );
+
+      System.out.println(
+        client.replicationControllers().inNamespace("default").scale("nginx-controller", 0)
+      );
+
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);
     } finally {

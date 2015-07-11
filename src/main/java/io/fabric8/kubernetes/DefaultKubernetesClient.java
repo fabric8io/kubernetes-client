@@ -100,8 +100,8 @@ public class DefaultKubernetesClient implements OpenShiftClient {
   }
 
   @Override
-  public Resource<ReplicationControllerList, ReplicationController, ReplicationControllerBuilder> replicationControllers() {
-    return new Resource<>(httpClient, masterUrl, "replicationcontrollers", ReplicationControllerList.class, ReplicationController.class, ReplicationControllerBuilder.class);
+  public ReplicationControllerResource replicationControllers() {
+    return new ReplicationControllerResource(httpClient, masterUrl, "replicationcontrollers", ReplicationControllerList.class, ReplicationController.class, ReplicationControllerBuilder.class);
   }
 
   @Override
