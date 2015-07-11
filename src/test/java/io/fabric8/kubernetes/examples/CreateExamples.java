@@ -31,7 +31,14 @@ public class CreateExamples {
         client.namespaces().create(newNamespace)
       );
 
-      Pod newPod = new PodBuilder().withNewMetadata().withName("newpod").endMetadata()
+      Pod newPod = new PodBuilder().withNewMetadata().withName("newpod").addToLabels("test", "this").endMetadata()
+        .withNewSpec().addNewContainer().withName("newcontainer").withImage("tutum/rabbitmq").endContainer().endSpec().build();
+
+      System.out.println(
+        client.pods().inNamespace("thisisnew").create(newPod)
+      );
+
+      newPod = new PodBuilder().withNewMetadata().withName("newpod2").endMetadata()
         .withNewSpec().addNewContainer().withName("newcontainer").withImage("tutum/rabbitmq").endContainer().endSpec().build();
 
       System.out.println(

@@ -4,7 +4,7 @@ import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.Response;
 import io.fabric8.common.Builder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.base.Status;
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.net.URL;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-public class Resource<ResourceListType extends KubernetesResource, ResourceType extends HasMetadata, ResourceBuilder extends Builder<ResourceType>>
+public class Resource<ResourceListType extends KubernetesResourceList, ResourceType extends HasMetadata, ResourceBuilder extends Builder<ResourceType>>
   extends ResourceList<ResourceListType> {
 
   private Class<ResourceType> clazz;
@@ -41,11 +41,11 @@ public class Resource<ResourceListType extends KubernetesResource, ResourceType 
         requestUrl = new URL(requestUrl, "namespaces/" + namespace + "/");
       }
       requestUrl = new URL(requestUrl, resourceType);
-      AsyncHttpClient.BoundRequestBuilder requestBuilder = httpClient.prepareGet(requestUrl.toString());
+      AsyncHttpClient.BoundRequestBuilder requestBuilder = httpClient.preparePost(requestUrl.toString());
       requestBuilder.setBody(mapper.writer().writeValueAsString(resource));
       Future<Response> f = requestBuilder.execute();
       Response r = f.get();
-      if (r.getStatusCode() != 200) {
+      if (r.getStatusCode() != 201) {
         Status status = mapper.reader(Status.class).readValue(r.getResponseBodyAsStream());
         throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
       }

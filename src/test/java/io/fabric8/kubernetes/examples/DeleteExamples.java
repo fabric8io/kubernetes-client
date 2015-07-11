@@ -22,7 +22,15 @@ public class DeleteExamples {
       client = new DefaultKubernetesClient.Builder().configFromSysPropsOrEnvVars().masterUrl(master).build();
 
       System.out.println(
-        client.namespaces().delete("fabric8")
+        client.pods().inNamespace("thisisnew").withLabel("test", "this").delete()
+      );
+
+      System.out.println(
+        client.pods().inNamespace("thisisnew").withField("metadata.name", "newpod2").delete()
+      );
+
+      System.out.println(
+        client.namespaces().delete("thisisnew")
       );
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);
