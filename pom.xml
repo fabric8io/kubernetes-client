@@ -25,7 +25,7 @@
     <dependency>
       <groupId>io.fabric8.schemagenerator</groupId>
       <artifactId>kubernetes-model</artifactId>
-      <version>0.0.52-SNAPSHOT</version>
+      <version>0.0.53</version>
     </dependency>
     <dependency>
       <groupId>net.oauth.core</groupId>
