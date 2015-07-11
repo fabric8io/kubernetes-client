@@ -3,7 +3,7 @@ package io.fabric8.kubernetes.examples;
 import io.fabric8.kubernetes.DefaultKubernetesClient;
 import io.fabric8.kubernetes.KubernetesClient;
 import io.fabric8.kubernetes.KubernetesClientException;
-import io.fabric8.kubernetes.Resource;
+import io.fabric8.kubernetes.NamedResource;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import org.slf4j.Logger;
@@ -25,8 +25,8 @@ public class UpdateExamples {
       client = new DefaultKubernetesClient.Builder().configFromSysPropsOrEnvVars().masterUrl(master).build();
 
       System.out.println(
-        client.pods().inNamespace("default").update("rabbitmq-pod",
-          new Resource.Update<Pod>() {
+        client.pods().inNamespace("default").withName("rabbitmq-pod").update(
+          new NamedResource.Update<Pod>() {
             @Override
             public Pod update(Pod pod) {
               pod.getMetadata().getLabels().put("this", "works");
@@ -37,8 +37,8 @@ public class UpdateExamples {
       );
 
       System.out.println(
-        client.pods().inNamespace("default").update("rabbitmq-pod",
-          new Resource.BuilderUpdate<Pod, PodBuilder>() {
+        client.pods().inNamespace("default").withName("rabbitmq-pod").update(
+          new NamedResource.BuilderUpdate<Pod, PodBuilder>() {
             @Override
             public Pod update(PodBuilder builder) {
               return builder.editMetadata().addToLabels("i", "rock").endMetadata().build();
@@ -48,7 +48,7 @@ public class UpdateExamples {
       );
 
       System.out.println(
-        client.replicationControllers().inNamespace("default").scale("nginx-controller", 0)
+        client.replicationControllers().inNamespace("default").withName("nginx-controller").scale(0)
       );
 
     } catch (KubernetesClientException e) {

@@ -6,6 +6,7 @@ import com.ning.http.client.Response;
 import com.ning.http.client.ws.DefaultWebSocketListener;
 import com.ning.http.client.ws.WebSocket;
 import com.ning.http.client.ws.WebSocketUpgradeHandler;
+import io.fabric8.common.Builder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.base.Status;
@@ -22,19 +23,69 @@ import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-public class ResourceList<ResourceListType extends KubernetesResourceList, ResourceType extends HasMetadata> {
+public abstract class ResourceList<ResourceListType extends KubernetesResourceList, ResourceType extends HasMetadata, ResourceBuilder extends Builder<ResourceType>> {
 
   protected static final ObjectMapper mapper = new ObjectMapper();
 
-  protected URL rootUrl;
-  protected Class<ResourceListType> listClazz;
-  protected String namespace;
-  protected String resourceType;
+  private URL rootUrl;
+  private Class<ResourceListType> listClazz;
 
-  protected AsyncHttpClient httpClient;
+  private Class<ResourceType> clazz;
+  private Class<ResourceBuilder> builderClazz;
+  private String namespace;
+  private String resourceType;
+
+  private AsyncHttpClient httpClient;
 
   private Map<String, String> labels;
   private Map<String, String> fields;
+
+  protected ResourceList(URL rootUrl, Class<ResourceListType> listClazz, Class<ResourceType> clazz, Class<ResourceBuilder> clazzBuilder, String resourceType, AsyncHttpClient httpClient) {
+    this.rootUrl = rootUrl;
+    this.builderClazz = builderClazz;
+    this.clazz = clazz;
+    this.listClazz = listClazz;
+    this.resourceType = resourceType;
+    this.httpClient = httpClient;
+  }
+
+  protected ResourceList(String namespace, ResourceList<ResourceListType, ResourceType, ResourceBuilder> resource) {
+    this.namespace = namespace;
+    this.rootUrl = resource.getRootUrl();
+    this.clazz = resource.getClazz();
+    this.builderClazz = resource.getBuilderClazz();
+    this.listClazz = resource.getListClazz();
+    this.resourceType = resource.getResourceType();
+    this.httpClient = resource.getHttpClient();
+  }
+
+  protected URL getRootUrl() {
+    return rootUrl;
+  }
+
+  protected Class<ResourceListType> getListClazz() {
+    return listClazz;
+  }
+
+  protected Class<ResourceType> getClazz() {
+    return clazz;
+  }
+
+  protected Class<ResourceBuilder> getBuilderClazz() {
+    return builderClazz;
+  }
+
+  protected String getNamespace() {
+    return namespace;
+  }
+
+  protected String getResourceType() {
+    return resourceType;
+  }
+
+  protected AsyncHttpClient getHttpClient() {
+    return httpClient;
+  }
 
   public ResourceListType list() throws KubernetesClientException {
     try {
@@ -89,8 +140,8 @@ public class ResourceList<ResourceListType extends KubernetesResourceList, Resou
           HasMetadata metadataResource = (HasMetadata) resource;
 
           URL requestUrl = rootUrl;
-          if (namespace != null) {
-            requestUrl = new URL(requestUrl, "namespaces/" + namespace + "/");
+          if (metadataResource.getMetadata().getNamespace() != null) {
+            requestUrl = new URL(requestUrl, "namespaces/" + metadataResource.getMetadata().getNamespace() + "/");
           }
           requestUrl = new URL(requestUrl, resourceType + "/" + metadataResource.getMetadata().getName());
           AsyncHttpClient.BoundRequestBuilder requestBuilder = httpClient.prepareDelete(requestUrl.toString());
@@ -142,26 +193,26 @@ public class ResourceList<ResourceListType extends KubernetesResourceList, Resou
     }
     requestBuilder.addQueryParam("watch", "true");
     Future<WebSocket> f = requestBuilder.execute(new WebSocketUpgradeHandler.Builder().addWebSocketListener(
-      new DefaultWebSocketListener() {
+        new DefaultWebSocketListener() {
 
-        private final Logger logger = LoggerFactory.getLogger(this.getClass());
+          private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-        @Override
-        public void onMessage(String message) {
-          try {
-            WatchEvent event = mapper.reader(WatchEvent.class).readValue(message);
-            ResourceType obj = (ResourceType) event.getObject();
-            Watcher.Action action = Watcher.Action.valueOf(event.getType());
-            watcher.eventReceived(action, obj);
-          } catch (IOException e) {
-            logger.error("Could not deserialize watch event: {}", message, e);
-          } catch (ClassCastException e) {
-            logger.error("Received wrong type of object for watch", e);
-          } catch (IllegalArgumentException e) {
-            logger.error("Invalid event type", e);
+          @Override
+          public void onMessage(String message) {
+            try {
+              WatchEvent event = mapper.reader(WatchEvent.class).readValue(message);
+              ResourceType obj = (ResourceType) event.getObject();
+              Watcher.Action action = Watcher.Action.valueOf(event.getType());
+              watcher.eventReceived(action, obj);
+            } catch (IOException e) {
+              logger.error("Could not deserialize watch event: {}", message, e);
+            } catch (ClassCastException e) {
+              logger.error("Received wrong type of object for watch", e);
+            } catch (IllegalArgumentException e) {
+              logger.error("Invalid event type", e);
+            }
           }
-        }
-      }).build()
+        }).build()
     );
       return f.get();
     } catch (MalformedURLException e) {
@@ -171,7 +222,30 @@ public class ResourceList<ResourceListType extends KubernetesResourceList, Resou
     }
   }
 
-  public ResourceList<ResourceListType, ResourceType> withLabels(Map<String, String> labels) {
+  public ResourceType create(ResourceType resource) throws KubernetesClientException {
+    try {
+      URL requestUrl = getRootUrl();
+      if (getNamespace() != null) {
+        requestUrl = new URL(requestUrl, "namespaces/" + getNamespace() + "/");
+      }
+      requestUrl = new URL(requestUrl, getResourceType());
+      AsyncHttpClient.BoundRequestBuilder requestBuilder = getHttpClient().preparePost(requestUrl.toString());
+      requestBuilder.setBody(mapper.writer().writeValueAsString(resource));
+      Future<Response> f = requestBuilder.execute();
+      Response r = f.get();
+      if (r.getStatusCode() != 201) {
+        Status status = mapper.reader(Status.class).readValue(r.getResponseBodyAsStream());
+        throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
+      }
+      return mapper.reader(getClazz()).readValue(r.getResponseBodyAsStream());
+    } catch (MalformedURLException e) {
+      throw new KubernetesClientException("Malformed resource URL", e);
+    } catch (InterruptedException | ExecutionException | IOException e) {
+      throw new KubernetesClientException("Unable to create resource", e);
+    }
+  }
+
+  public ResourceList<ResourceListType, ResourceType, ResourceBuilder> withLabels(Map<String, String> labels) {
     if (this.labels == null) {
       // Use treemap so labels are sorted by key - bit easier to read when debugging
       this.labels = new TreeMap<>();
@@ -180,7 +254,7 @@ public class ResourceList<ResourceListType extends KubernetesResourceList, Resou
     return this;
   }
 
-  public ResourceList<ResourceListType, ResourceType> withLabel(String key, String value) {
+  public ResourceList<ResourceListType, ResourceType, ResourceBuilder> withLabel(String key, String value) {
     if (this.labels == null) {
       // Use treemap so labels are sorted by key - bit easier to read when debugging
       this.labels = new TreeMap<>();
@@ -189,7 +263,7 @@ public class ResourceList<ResourceListType extends KubernetesResourceList, Resou
     return this;
   }
 
-  public ResourceList<ResourceListType, ResourceType> withFields(Map<String, String> fields) {
+  public ResourceList<ResourceListType, ResourceType, ResourceBuilder> withFields(Map<String, String> fields) {
     if (this.fields == null) {
       // Use treemap so labels are sorted by key - bit easier to read when debugging
       this.labels = new TreeMap<>();
@@ -198,7 +272,7 @@ public class ResourceList<ResourceListType extends KubernetesResourceList, Resou
     return this;
   }
 
-  public ResourceList<ResourceListType, ResourceType> withField(String key, String value) {
+  public ResourceList<ResourceListType, ResourceType, ResourceBuilder> withField(String key, String value) {
     if (this.fields == null) {
       // Use treemap so labels are sorted by key - bit easier to read when debugging
       this.fields = new TreeMap<>();

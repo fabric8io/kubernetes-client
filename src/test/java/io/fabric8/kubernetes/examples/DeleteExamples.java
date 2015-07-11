@@ -30,8 +30,13 @@ public class DeleteExamples {
       );
 
       System.out.println(
-        client.namespaces().delete("thisisnew")
+        client.namespaces().withName("thisisnew").delete()
       );
+
+      System.out.println(
+        client.services().delete()
+      );
+
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);
     } finally {

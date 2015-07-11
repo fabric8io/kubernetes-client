@@ -9,21 +9,37 @@ import java.net.URL;
 
 public class ReplicationControllerResource extends Resource<ReplicationControllerList, ReplicationController, ReplicationControllerBuilder> {
 
-  public ReplicationControllerResource(AsyncHttpClient httpClient, URL rootUrl, String resourceType, Class listClazz, Class clazz, Class clazzBuilder) {
+  public ReplicationControllerResource(AsyncHttpClient httpClient, URL rootUrl, String resourceType, Class<ReplicationControllerList> listClazz, Class<ReplicationController> clazz, Class<ReplicationControllerBuilder> clazzBuilder) {
     super(httpClient, rootUrl, resourceType, listClazz, clazz, clazzBuilder);
   }
 
-  public ReplicationController scale(String name, final int replicas) throws KubernetesClientException {
-    return update(name, new BuilderUpdate<ReplicationController, ReplicationControllerBuilder>() {
-      @Override
-      public ReplicationController update(ReplicationControllerBuilder builder) {
-        return builder.editSpec().withReplicas(replicas).endSpec().build();
-      }
-    });
+  public ReplicationControllerNamespacedResource inNamespace(String namespace) {
+    return new ReplicationControllerNamespacedResource(namespace, this);
   }
 
-  public ReplicationControllerResource inNamespace(String namespace) {
-    this.namespace = namespace;
-    return this;
+  public class ReplicationControllerNamespacedResource extends NamespacedResource<ReplicationControllerList, ReplicationController, ReplicationControllerBuilder> {
+    public ReplicationControllerNamespacedResource(String namespace, ResourceList<ReplicationControllerList, ReplicationController, ReplicationControllerBuilder> resource) {
+      super(namespace, resource);
+    }
+
+    @Override
+    public ReplicationControllerNamedResource withName(String resourceName) {
+      return new ReplicationControllerNamedResource(resourceName, this);
+    }
+  }
+
+  public class ReplicationControllerNamedResource extends NamedResource<ReplicationControllerList, ReplicationController, ReplicationControllerBuilder> {
+    public ReplicationControllerNamedResource(String namespace, ResourceList<ReplicationControllerList, ReplicationController, ReplicationControllerBuilder> resource) {
+      super(namespace, resource);
+    }
+
+    public ReplicationController scale(final int replicas) throws KubernetesClientException {
+      return update(new NamedResource.BuilderUpdate<ReplicationController, ReplicationControllerBuilder>() {
+        @Override
+        public ReplicationController update(ReplicationControllerBuilder builder) {
+          return builder.editSpec().withReplicas(replicas).endSpec().build();
+        }
+      });
+    }
   }
 }
