@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 public class Resource<ResourceListType extends KubernetesResourceList, ResourceType extends HasMetadata, ResourceBuilder extends Builder<ResourceType>>
-  extends ResourceList<ResourceListType> {
+  extends ResourceList<ResourceListType, ResourceType> {
 
   private Class<ResourceType> clazz;
   private Class<ResourceBuilder> clazzBuilder;
