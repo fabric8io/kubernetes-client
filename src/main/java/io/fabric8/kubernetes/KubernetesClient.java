@@ -1,9 +1,8 @@
 package io.fabric8.kubernetes;
 
-import com.sun.xml.internal.ws.Closeable;
 import io.fabric8.kubernetes.api.model.*;
 
-public interface KubernetesClient extends Closeable {
+public interface KubernetesClient extends AutoCloseable {
 
   void close();
 
