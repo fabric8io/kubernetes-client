@@ -13,7 +13,7 @@ public class DeleteExamples {
   public static void main(String[] args) {
     KubernetesClient client = null;
 
-    String master = "https://localhost:8443";
+    String master = "https://localhost:8443/";
     if (args.length == 1) {
       master = args[0];
     }
@@ -21,21 +21,7 @@ public class DeleteExamples {
     try {
       client = new DefaultKubernetesClient.Builder().configFromSysPropsOrEnvVars().masterUrl(master).build();
 
-      System.out.println(
-        client.pods().inNamespace("thisisnew").withLabel("test", "this").delete()
-      );
-
-      System.out.println(
-        client.pods().inNamespace("thisisnew").withField("metadata.name", "newpod2").delete()
-      );
-
-      System.out.println(
-        client.namespaces().withName("thisisnew").delete()
-      );
-
-      System.out.println(
-        client.services().delete()
-      );
+      client.namespaces().withName("test").delete();
 
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);

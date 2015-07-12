@@ -22,31 +22,23 @@ public class ListExamples {
       client = new DefaultKubernetesClient.Builder().configFromSysPropsOrEnvVars().masterUrl(master).build();
 
       System.out.println(
-        client.namespaces()
-          .withLabel("test", "something")
-          .list().getItems().size()
+        client.namespaces().list()
       );
 
       System.out.println(
-        client.pods()
-          .inNamespace("default")
-          .withField("metadata.name", "rabbitmq-pod")
-          .list().getItems().size()
+        client.namespaces().withLabel("this", "works").list()
       );
 
       System.out.println(
-        client.pods().list().getItems().size()
+        client.pods().withLabel("this", "works").list()
       );
 
       System.out.println(
-        client.replicationControllers()
-          .inNamespace("default")
-          .withField("metadata.name", "rabbitmq-rc")
-          .list().getItems().size()
+        client.pods().inNamespace("test").withLabel("this", "works").list()
       );
 
       System.out.println(
-        client.endpoints().list()
+        client.pods().inNamespace("test").withName("testing").get()
       );
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);

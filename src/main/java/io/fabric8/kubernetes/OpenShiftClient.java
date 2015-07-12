@@ -4,18 +4,18 @@ import io.fabric8.openshift.api.model.*;
 
 public interface OpenShiftClient extends KubernetesClient {
 
-  Resource<BuildConfigList, BuildConfig, BuildConfigBuilder> buildConfigs();
+  NamespaceAwareResourceList<BuildConfig, BuildConfigList, BuildConfigBuilder> buildConfigs();
 
-  Resource<DeploymentConfigList, DeploymentConfig, DeploymentConfigBuilder> deploymentConfigs();
+  NamespaceAwareResourceList<DeploymentConfig, DeploymentConfigList, DeploymentConfigBuilder> deploymentConfigs();
 
-  Resource<ImageStreamList, ImageStream, ImageStreamBuilder> imageStreams();
+  NamespaceAwareResourceList<ImageStream, ImageStreamList, ImageStreamBuilder> imageStreams();
 
-  Resource<OAuthAccessTokenList, OAuthAccessToken, OAuthAccessTokenBuilder> oAuthAccessTokens();
+  ResourceList<OAuthAccessToken, OAuthAccessTokenList, OAuthAccessTokenBuilder> oAuthAccessTokens();
 
-  Resource<OAuthAuthorizeTokenList, OAuthAuthorizeToken, OAuthAuthorizeTokenBuilder> oAuthAuthorizeTokens();
+  ResourceList<OAuthAuthorizeToken, OAuthAuthorizeTokenList, OAuthAuthorizeTokenBuilder> oAuthAuthorizeTokens();
 
-  Resource<OAuthClientList, OAuthClient, OAuthClientBuilder> oAuthClients();
+  ResourceList<OAuthClient, OAuthClientList, OAuthClientBuilder> oAuthClients();
 
-  Resource<RouteList, Route, RouteBuilder> routes();
+  NamespaceAwareResourceList<Route, RouteList, RouteBuilder> routes();
 
 }

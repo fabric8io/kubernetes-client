@@ -1,4 +1,4 @@
-package io.fabric8.kubernetes;
+package io.fabric8.kubernetes.internal;
 
 import org.junit.Test;
 

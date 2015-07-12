@@ -1,4 +1,4 @@
-package io.fabric8.kubernetes;
+package io.fabric8.kubernetes.internal;
 
 import com.ning.http.util.Base64;
 import net.oauth.signature.pem.PEMReader;

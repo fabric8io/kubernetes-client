@@ -3,21 +3,23 @@ package io.fabric8.kubernetes;
 import io.fabric8.kubernetes.api.model.*;
 
 public interface KubernetesClient {
+
   void close();
 
-  Resource<EndpointsList, Endpoints, EndpointsBuilder> endpoints();
+  NamespaceAwareResourceList<Endpoints, EndpointsList, EndpointsBuilder> endpoints();
 
-  Resource<NamespaceList, Namespace, NamespaceBuilder> namespaces();
+  NonNamespacedResourceList<Namespace, NamespaceList, NamespaceBuilder> namespaces();
 
-  Resource<NodeList, Node, NodeBuilder> nodes();
+  NonNamespacedResourceList<Node, NodeList, NodeBuilder> nodes();
 
-  Resource<PodList, Pod, PodBuilder> pods();
+  NamespaceAwareResourceList<Pod, PodList, PodBuilder> pods();
 
-  ReplicationControllerResource replicationControllers();
+  NamespaceAwareResourceList<ReplicationController, ReplicationControllerList, ReplicationControllerBuilder> replicationControllers();
 
-  Resource<SecretList, Secret, SecretBuilder> secrets();
+  NamespaceAwareResourceList<Secret, SecretList, SecretBuilder> secrets();
 
-  Resource<ServiceList, Service, ServiceBuilder> services();
+  NamespaceAwareResourceList<Service, ServiceList, ServiceBuilder> services();
 
-  Resource<ServiceAccountList, ServiceAccount, ServiceAccountBuilder> serviceAccounts();
+  NamespaceAwareResourceList<ServiceAccount, ServiceAccountList, ServiceAccountBuilder> serviceAccounts();
+
 }
