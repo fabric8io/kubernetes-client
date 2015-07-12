@@ -7,7 +7,6 @@ import com.ning.http.client.filter.FilterContext;
 import com.ning.http.client.filter.FilterException;
 import com.ning.http.client.filter.RequestFilter;
 import io.fabric8.kubernetes.api.model.*;
-import io.fabric8.kubernetes.internal.DefaultResourceList;
 import io.fabric8.kubernetes.internal.Utils;
 import io.fabric8.openshift.api.model.*;
 import org.jboss.netty.handler.ssl.util.InsecureTrustManagerFactory;
@@ -137,18 +136,18 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
   }
 
   @Override
-  public ResourceList<OAuthAccessToken, OAuthAccessTokenList, OAuthAccessTokenBuilder> oAuthAccessTokens() {
-    return new DefaultResourceList<>(httpClient, openShiftUrl, "oauthaccesstokens", OAuthAccessToken.class, OAuthAccessTokenList.class, OAuthAccessTokenBuilder.class);
+  public NonNamespacedResourceList<OAuthAccessToken, OAuthAccessTokenList, OAuthAccessTokenBuilder> oAuthAccessTokens() {
+    return new io.fabric8.kubernetes.internal.NonNamespacedResourceList<>(httpClient, openShiftUrl, "oauthaccesstokens", OAuthAccessToken.class, OAuthAccessTokenList.class, OAuthAccessTokenBuilder.class);
   }
 
   @Override
-  public ResourceList<OAuthAuthorizeToken, OAuthAuthorizeTokenList, OAuthAuthorizeTokenBuilder> oAuthAuthorizeTokens() {
-    return new DefaultResourceList<>(httpClient, openShiftUrl, "oauthauthorizetokens", OAuthAuthorizeToken.class, OAuthAuthorizeTokenList.class, OAuthAuthorizeTokenBuilder.class);
+  public NonNamespacedResourceList<OAuthAuthorizeToken, OAuthAuthorizeTokenList, OAuthAuthorizeTokenBuilder> oAuthAuthorizeTokens() {
+    return new io.fabric8.kubernetes.internal.NonNamespacedResourceList<>(httpClient, openShiftUrl, "oauthauthorizetokens", OAuthAuthorizeToken.class, OAuthAuthorizeTokenList.class, OAuthAuthorizeTokenBuilder.class);
   }
 
   @Override
-  public ResourceList<OAuthClient, OAuthClientList, OAuthClientBuilder> oAuthClients() {
-    return new DefaultResourceList<>(httpClient, openShiftUrl, "oauthclients", OAuthClient.class, OAuthClientList.class, OAuthClientBuilder.class);
+  public NonNamespacedResourceList<OAuthClient, OAuthClientList, OAuthClientBuilder> oAuthClients() {
+    return new io.fabric8.kubernetes.internal.NonNamespacedResourceList<>(httpClient, openShiftUrl, "oauthclients", OAuthClient.class, OAuthClientList.class, OAuthClientBuilder.class);
   }
 
   @Override

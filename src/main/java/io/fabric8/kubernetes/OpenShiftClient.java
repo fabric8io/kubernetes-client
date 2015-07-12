@@ -10,11 +10,11 @@ public interface OpenShiftClient extends KubernetesClient {
 
   NamespaceAwareResourceList<ImageStream, ImageStreamList, ImageStreamBuilder> imageStreams();
 
-  ResourceList<OAuthAccessToken, OAuthAccessTokenList, OAuthAccessTokenBuilder> oAuthAccessTokens();
+  NonNamespacedResourceList<OAuthAccessToken, OAuthAccessTokenList, OAuthAccessTokenBuilder> oAuthAccessTokens();
 
-  ResourceList<OAuthAuthorizeToken, OAuthAuthorizeTokenList, OAuthAuthorizeTokenBuilder> oAuthAuthorizeTokens();
+  NonNamespacedResourceList<OAuthAuthorizeToken, OAuthAuthorizeTokenList, OAuthAuthorizeTokenBuilder> oAuthAuthorizeTokens();
 
-  ResourceList<OAuthClient, OAuthClientList, OAuthClientBuilder> oAuthClients();
+  NonNamespacedResourceList<OAuthClient, OAuthClientList, OAuthClientBuilder> oAuthClients();
 
   NamespaceAwareResourceList<Route, RouteList, RouteBuilder> routes();
 

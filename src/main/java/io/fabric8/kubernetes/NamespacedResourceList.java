@@ -1,5 +1,6 @@
 package io.fabric8.kubernetes;
 
+import com.ning.http.client.ws.WebSocket;
 import io.fabric8.common.Builder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
@@ -13,6 +14,8 @@ public interface NamespacedResourceList<Type extends HasMetadata, TypeList exten
   void delete() throws KubernetesClientException;
 
   Type create(Type resource) throws KubernetesClientException;
+
+  WebSocket watch(Watcher<Type> watcher) throws KubernetesClientException;
 
   FilteredNamespacedResourceList<Type, TypeList> withLabels(Map<String, String> labels) throws KubernetesClientException;
 
