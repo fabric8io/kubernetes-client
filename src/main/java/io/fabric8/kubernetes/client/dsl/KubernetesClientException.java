@@ -1,6 +1,6 @@
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.model.base.Status;
+import io.fabric8.kubernetes.api.model.Status;
 
 public class KubernetesClientException extends Exception {
 

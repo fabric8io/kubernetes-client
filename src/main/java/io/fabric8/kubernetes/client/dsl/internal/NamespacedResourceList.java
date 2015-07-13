@@ -2,10 +2,10 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.Response;
-import io.fabric8.common.Builder;
+import io.fabric8.kubernetes.api.builder.Builder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.api.model.base.Status;
+import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.dsl.FilteredNamespacedResourceList;
 import io.fabric8.kubernetes.client.dsl.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.NamedNamespacedResource;

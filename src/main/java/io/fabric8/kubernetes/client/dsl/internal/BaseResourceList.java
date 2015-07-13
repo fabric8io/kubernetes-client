@@ -5,13 +5,13 @@ import com.ning.http.client.Response;
 import com.ning.http.client.ws.DefaultWebSocketListener;
 import com.ning.http.client.ws.WebSocket;
 import com.ning.http.client.ws.WebSocketUpgradeHandler;
-import io.fabric8.kubernetes.client.dsl.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.Watcher;
-import io.fabric8.common.Builder;
+import io.fabric8.kubernetes.api.builder.Builder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.api.model.base.Status;
-import io.fabric8.kubernetes.api.watch.WatchEvent;
+import io.fabric8.kubernetes.api.model.Status;
+import io.fabric8.kubernetes.api.model.WatchEvent;
+import io.fabric8.kubernetes.client.dsl.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.Watcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

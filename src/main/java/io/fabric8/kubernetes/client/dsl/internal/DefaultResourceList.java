@@ -2,7 +2,7 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.client.dsl.ResourceList;
-import io.fabric8.common.Builder;
+import io.fabric8.kubernetes.api.builder.Builder;
 import io.fabric8.kubernetes.client.dsl.FilteredResourceList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;

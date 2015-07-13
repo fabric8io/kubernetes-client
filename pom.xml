@@ -23,9 +23,9 @@
       <version>1.9.29</version>
     </dependency>
     <dependency>
-      <groupId>io.fabric8.schemagenerator</groupId>
+      <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model</artifactId>
-      <version>0.0.54-SNAPSHOT</version>
+      <version>0.1.1</version>
     </dependency>
     <dependency>
       <groupId>net.oauth.core</groupId>

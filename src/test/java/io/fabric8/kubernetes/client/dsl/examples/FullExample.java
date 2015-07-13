@@ -1,7 +1,7 @@
 package io.fabric8.kubernetes.client.dsl.examples;
 
 import com.ning.http.client.ws.WebSocket;
-import io.fabric8.kubernetes.api.model.resource.Quantity;
+import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.client.dsl.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.dsl.KubernetesClient;
