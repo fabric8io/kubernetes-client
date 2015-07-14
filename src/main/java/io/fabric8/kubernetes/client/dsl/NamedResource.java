@@ -3,13 +3,13 @@ package io.fabric8.kubernetes.client.dsl;
 import io.fabric8.kubernetes.api.builder.Builder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 
-public interface NamedResource<Type extends HasMetadata, TypeBuilder extends Builder<Type>> {
+public interface NamedResource<T extends HasMetadata, B extends Builder<T>> {
 
-  Type get() throws KubernetesClientException;
+  T get() throws KubernetesClientException;
 
-  Type update(BuilderUpdate<Type, TypeBuilder> update) throws KubernetesClientException;
+  T update(BuilderUpdate<T, B> update) throws KubernetesClientException;
 
-  Type update(Update<Type> update) throws KubernetesClientException;
+  T update(Update<T> update) throws KubernetesClientException;
 
   void delete() throws KubernetesClientException;
 

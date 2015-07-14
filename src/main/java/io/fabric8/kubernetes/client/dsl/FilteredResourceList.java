@@ -5,18 +5,18 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 
 import java.util.Map;
 
-public interface FilteredResourceList<Type extends HasMetadata, TypeList extends KubernetesResourceList> {
+public interface FilteredResourceList<T extends HasMetadata, L extends KubernetesResourceList> {
 
-  TypeList list() throws KubernetesClientException;
+  L list() throws KubernetesClientException;
 
   void delete() throws KubernetesClientException;
 
-  FilteredResourceList<Type, TypeList> withLabels(Map<String, String> labels) throws KubernetesClientException;
+  FilteredResourceList<T, L> withLabels(Map<String, String> labels) throws KubernetesClientException;
 
-  FilteredResourceList<Type, TypeList> withLabel(String key, String value) throws KubernetesClientException;
+  FilteredResourceList<T, L> withLabel(String key, String value) throws KubernetesClientException;
 
-  FilteredResourceList<Type, TypeList> withFields(Map<String, String> labels) throws KubernetesClientException;
+  FilteredResourceList<T, L> withFields(Map<String, String> labels) throws KubernetesClientException;
 
-  FilteredResourceList<Type, TypeList> withField(String key, String value) throws KubernetesClientException;
+  FilteredResourceList<T, L> withField(String key, String value) throws KubernetesClientException;
 
 }

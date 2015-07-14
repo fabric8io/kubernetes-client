@@ -13,28 +13,28 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
-public class NamedResource<Type extends HasMetadata, TypeBuilder extends Builder<Type>>
-  extends BaseResource<Type, TypeBuilder>
-  implements io.fabric8.kubernetes.client.dsl.NamedResource<Type, TypeBuilder>,
-  NamedNamespacedResource<Type, TypeBuilder> {
+public class NamedResource<T extends HasMetadata, B extends Builder<T>>
+  extends BaseResource<T, B>
+  implements io.fabric8.kubernetes.client.dsl.NamedResource<T, B>,
+  NamedNamespacedResource<T, B> {
 
   private URL resourceUrl;
 
-  NamedResource(String name, DefaultResourceList<Type, ?, TypeBuilder> resourceList) throws MalformedURLException {
-    super(resourceList.getHttpClient(), resourceList.getRootUrl(), resourceList.getResourceType(), resourceList.getClazz(), resourceList.getBuilderClazz());
+  NamedResource(String name, DefaultResourceList<T, ?, B> resourceList) throws MalformedURLException {
+    super(resourceList.getHttpClient(), resourceList.getRootUrl(), resourceList.getResourceT(), resourceList.getClazz(), resourceList.getBuilderClazz());
     URL requestUrl = getNamespacedUrl();
     this.resourceUrl = new URL(requestUrl, name);
   }
 
-  NamedResource(String name, NamespacedResourceList<Type, ?, TypeBuilder> resourceList) throws MalformedURLException {
-    super(resourceList.getHttpClient(), resourceList.getRootUrl(), resourceList.getResourceType(), resourceList.getClazz(), resourceList.getBuilderClazz());
+  NamedResource(String name, NamespacedResourceList<T, ?, B> resourceList) throws MalformedURLException {
+    super(resourceList.getHttpClient(), resourceList.getRootUrl(), resourceList.getResourceT(), resourceList.getClazz(), resourceList.getBuilderClazz());
     setNamespace(resourceList.getNamespace());
     URL requestUrl = getNamespacedUrl();
     this.resourceUrl = new URL(requestUrl, name);
   }
 
   @Override
-  public Type get() throws KubernetesClientException {
+  public T get() throws KubernetesClientException {
     try {
       return handleGet(resourceUrl);
     } catch (InterruptedException | ExecutionException | IOException e) {
@@ -43,10 +43,10 @@ public class NamedResource<Type extends HasMetadata, TypeBuilder extends Builder
   }
 
   @Override
-  public Type update(BuilderUpdate<Type, TypeBuilder> update) throws KubernetesClientException {
+  public T update(BuilderUpdate<T, B> update) throws KubernetesClientException {
     try {
-      Type current = this.get();
-      Type updated = update.apply(getBuilderClazz().getDeclaredConstructor(getClazz()).newInstance(current));
+      T current = this.get();
+      T updated = update.apply(getBuilderClazz().getDeclaredConstructor(getClazz()).newInstance(current));
       return handleUpdate(resourceUrl, updated);
     } catch (InterruptedException | ExecutionException | IOException | InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException e) {
       throw new KubernetesClientException("Unable to update resource", e);
@@ -54,10 +54,10 @@ public class NamedResource<Type extends HasMetadata, TypeBuilder extends Builder
   }
 
   @Override
-  public Type update(Update<Type> update) throws KubernetesClientException {
+  public T update(Update<T> update) throws KubernetesClientException {
     try {
-      Type current = this.get();
-      Type updated = update.apply(current);
+      T current = this.get();
+      T updated = update.apply(current);
       return handleUpdate(resourceUrl, updated);
     } catch (InterruptedException | ExecutionException | IOException e) {
       throw new KubernetesClientException("Unable to update resource", e);

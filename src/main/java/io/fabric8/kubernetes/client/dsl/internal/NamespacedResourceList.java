@@ -12,18 +12,18 @@ import java.net.MalformedURLException;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-public class NamespacedResourceList<Type extends HasMetadata, TypeList extends KubernetesResourceList, TypeBuilder extends Builder<Type>>
-  extends BaseResourceList<Type, TypeList, TypeBuilder>
-  implements io.fabric8.kubernetes.client.dsl.NamespacedResourceList<Type, TypeList, TypeBuilder>,
-  FilteredNamespacedResourceList<Type, TypeList> {
+public class NamespacedResourceList<T extends HasMetadata, L extends KubernetesResourceList, B extends Builder<T>>
+  extends BaseResourceList<T, L, B>
+  implements io.fabric8.kubernetes.client.dsl.NamespacedResourceList<T, L, B>,
+  FilteredNamespacedResourceList<T, L> {
 
   NamespacedResourceList(String namespace, DefaultResourceList resourceList) {
-    super(resourceList.getHttpClient(), resourceList.getRootUrl(), resourceList.getResourceType(), resourceList.getClazz(), resourceList.getListClazz(), resourceList.getBuilderClazz());
+    super(resourceList.getHttpClient(), resourceList.getRootUrl(), resourceList.getResourceT(), resourceList.getClazz(), resourceList.getListClazz(), resourceList.getBuilderClazz());
     setNamespace(namespace);
   }
 
   @Override
-  public Type create(Type resource) throws KubernetesClientException {
+  public T create(T resource) throws KubernetesClientException {
     try {
       return handleCreate(resource);
     } catch (InterruptedException | ExecutionException | IOException e) {
@@ -32,31 +32,31 @@ public class NamespacedResourceList<Type extends HasMetadata, TypeList extends K
   }
 
   @Override
-  public FilteredNamespacedResourceList<Type, TypeList> withLabels(Map<String, String> labels) {
+  public FilteredNamespacedResourceList<T, L> withLabels(Map<String, String> labels) {
     getLabels().putAll(labels);
     return this;
   }
 
   @Override
-  public FilteredNamespacedResourceList<Type, TypeList> withLabel(String key, String value) {
+  public FilteredNamespacedResourceList<T, L> withLabel(String key, String value) {
     getLabels().put(key, value);
     return this;
   }
 
   @Override
-  public FilteredNamespacedResourceList<Type, TypeList> withFields(Map<String, String> labels) {
+  public FilteredNamespacedResourceList<T, L> withFields(Map<String, String> labels) {
     getFields().putAll(labels);
     return this;
   }
 
   @Override
-  public FilteredNamespacedResourceList<Type, TypeList> withField(String key, String value) {
+  public FilteredNamespacedResourceList<T, L> withField(String key, String value) {
     getFields().put(key, value);
     return this;
   }
 
   @Override
-  public NamedNamespacedResource<Type, TypeBuilder> withName(String name) throws KubernetesClientException {
+  public NamedNamespacedResource<T, B> withName(String name) throws KubernetesClientException {
     try {
       return new NamedResource<>(name, this);
     } catch (MalformedURLException e) {

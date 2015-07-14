@@ -7,20 +7,20 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 
 import java.util.Map;
 
-public interface ResourceList<Type extends HasMetadata, TypeList extends KubernetesResourceList, TypeBuilder extends Builder<Type>> {
+public interface ResourceList<T extends HasMetadata, L extends KubernetesResourceList, B extends Builder<T>> {
 
-  TypeList list() throws KubernetesClientException;
+  L list() throws KubernetesClientException;
 
   void delete() throws KubernetesClientException;
 
-  WebSocket watch(Watcher<Type> watcher) throws KubernetesClientException;
+  WebSocket watch(Watcher<T> watcher) throws KubernetesClientException;
 
-  FilteredResourceList<Type, TypeList> withLabels(Map<String, String> labels);
+  FilteredResourceList<T, L> withLabels(Map<String, String> labels);
 
-  FilteredResourceList<Type, TypeList> withLabel(String key, String value);
+  FilteredResourceList<T, L> withLabel(String key, String value);
 
-  FilteredResourceList<Type, TypeList> withFields(Map<String, String> labels);
+  FilteredResourceList<T, L> withFields(Map<String, String> labels);
 
-  FilteredResourceList<Type, TypeList> withField(String key, String value);
+  FilteredResourceList<T, L> withField(String key, String value);
 
 }

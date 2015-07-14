@@ -24,16 +24,16 @@ import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-public abstract class BaseResourceList<Type extends HasMetadata, TypeList extends KubernetesResourceList, TypeBuilder extends Builder<Type>>
-  extends BaseResource<Type, TypeBuilder> {
+public abstract class BaseResourceList<T extends HasMetadata, L extends KubernetesResourceList, B extends Builder<T>>
+  extends BaseResource<T, B> {
 
-  private Class<TypeList> listClazz;
+  private Class<L> listClazz;
 
   private Map<String, String> labels = new TreeMap<>();
   private Map<String, String> fields = new TreeMap<>();
 
-  protected BaseResourceList(AsyncHttpClient httpClient, URL rootUrl, String resourceType, Class<Type> clazz, Class<TypeList> listClazz, Class<TypeBuilder> builderClazz) {
-    super(httpClient, rootUrl, resourceType, clazz, builderClazz);
+  protected BaseResourceList(AsyncHttpClient httpClient, URL rootUrl, String resourceT, Class<T> clazz, Class<L> listClazz, Class<B> builderClazz) {
+    super(httpClient, rootUrl, resourceT, clazz, builderClazz);
     this.listClazz = listClazz;
   }
 
@@ -45,11 +45,11 @@ public abstract class BaseResourceList<Type extends HasMetadata, TypeList extend
     return labels;
   }
 
-  protected Class<TypeList> getListClazz() {
+  protected Class<L> getListClazz() {
     return listClazz;
   }
 
-  public TypeList list() throws KubernetesClientException {
+  public L list() throws KubernetesClientException {
     try {
       URL requestUrl = getNamespacedUrl();
       AsyncHttpClient.BoundRequestBuilder requestBuilder = getHttpClient().prepareGet(requestUrl.toString());
@@ -89,7 +89,7 @@ public abstract class BaseResourceList<Type extends HasMetadata, TypeList extend
 
   public void delete() throws KubernetesClientException {
     try {
-      TypeList discoveredResources = list();
+      L discoveredResources = list();
 
       for (Object resource : discoveredResources.getItems()) {
         // Dirty cast but should always be valid...
@@ -99,7 +99,7 @@ public abstract class BaseResourceList<Type extends HasMetadata, TypeList extend
         if (metadataResource.getMetadata().getNamespace() != null) {
           requestUrl = new URL(requestUrl, "namespaces/" + metadataResource.getMetadata().getNamespace() + "/");
         }
-        requestUrl = new URL(requestUrl, getResourceType() + "/" + metadataResource.getMetadata().getName());
+        requestUrl = new URL(requestUrl, getResourceT() + "/" + metadataResource.getMetadata().getName());
         AsyncHttpClient.BoundRequestBuilder requestBuilder = getHttpClient().prepareDelete(requestUrl.toString());
         Future<Response> f = requestBuilder.execute();
         Response r = f.get();
@@ -115,7 +115,7 @@ public abstract class BaseResourceList<Type extends HasMetadata, TypeList extend
     }
   }
 
-    public WebSocket watch(final Watcher<Type> watcher) throws KubernetesClientException {
+    public WebSocket watch(final Watcher<T> watcher) throws KubernetesClientException {
       try {
         URL requestUrl = getNamespacedUrl();
         AsyncHttpClient.BoundRequestBuilder requestBuilder = getHttpClient().prepareGet(requestUrl.toString().replaceFirst("^http", "ws"));
@@ -151,7 +151,7 @@ public abstract class BaseResourceList<Type extends HasMetadata, TypeList extend
               public void onMessage(String message) {
                 try {
                   WatchEvent event = mapper.reader(WatchEvent.class).readValue(message);
-                  Type obj = (Type) event.getObject();
+                  T obj = (T) event.getObject();
                   Watcher.Action action = Watcher.Action.valueOf(event.getType());
                   watcher.eventReceived(action, obj);
                 } catch (IOException e) {

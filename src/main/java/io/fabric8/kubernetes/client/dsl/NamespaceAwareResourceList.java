@@ -4,9 +4,9 @@ import io.fabric8.kubernetes.api.builder.Builder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 
-public interface NamespaceAwareResourceList<Type extends HasMetadata, TypeList extends KubernetesResourceList, TypeBuilder extends Builder<Type>>
-  extends ResourceList<Type, TypeList, TypeBuilder> {
+public interface NamespaceAwareResourceList<T extends HasMetadata, L extends KubernetesResourceList, B extends Builder<T>>
+  extends ResourceList<T, L, B> {
 
-  NamespacedResourceList<Type, TypeList, TypeBuilder> inNamespace(String namespace);
+  NamespacedResourceList<T, L, B> inNamespace(String namespace);
 
 }

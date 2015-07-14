@@ -14,7 +14,7 @@ import java.net.URL;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-public class BaseResource<Type extends HasMetadata, TypeBuilder extends Builder<Type>> {
+public class BaseResource<T extends HasMetadata, B extends Builder<T>> {
 
   protected static final ObjectMapper mapper = new ObjectMapper();
 
@@ -23,29 +23,29 @@ public class BaseResource<Type extends HasMetadata, TypeBuilder extends Builder<
   private AsyncHttpClient httpClient;
 
   private String namespace;
-  private String resourceType;
+  private String resourceT;
 
-  private Class<Type> clazz;
-  private Class<TypeBuilder> builderClazz;
+  private Class<T> clazz;
+  private Class<B> builderClazz;
 
-  protected BaseResource(AsyncHttpClient httpClient, URL rootUrl, String resourceType, Class<Type> clazz, Class<TypeBuilder> builderClazz) {
+  protected BaseResource(AsyncHttpClient httpClient, URL rootUrl, String resourceT, Class<T> clazz, Class<B> builderClazz) {
     this.httpClient = httpClient;
     this.rootUrl = rootUrl;
     this.clazz = clazz;
     this.builderClazz = builderClazz;
-    this.resourceType = resourceType;
+    this.resourceT = resourceT;
   }
 
-  protected Class<TypeBuilder> getBuilderClazz() {
+  protected Class<B> getBuilderClazz() {
     return builderClazz;
   }
 
-  protected Class<Type> getClazz() {
+  protected Class<T> getClazz() {
     return clazz;
   }
 
-  protected String getResourceType() {
-    return resourceType;
+  protected String getResourceT() {
+    return resourceT;
   }
 
   protected String getNamespace() {
@@ -69,11 +69,11 @@ public class BaseResource<Type extends HasMetadata, TypeBuilder extends Builder<
     if (getNamespace() != null) {
       requestUrl = new URL(requestUrl, "namespaces/" + getNamespace() + "/");
     }
-    requestUrl = new URL(requestUrl, resourceType + "/");
+    requestUrl = new URL(requestUrl, resourceT + "/");
     return requestUrl;
   }
 
-  private Type handleResponse(AsyncHttpClient.BoundRequestBuilder requestBuilder, int successStatusCode) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+  private T handleResponse(AsyncHttpClient.BoundRequestBuilder requestBuilder, int successStatusCode) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     Future<Response> f = requestBuilder.execute();
     Response r = f.get();
     if (r.getStatusCode() != successStatusCode) {
@@ -93,19 +93,19 @@ public class BaseResource<Type extends HasMetadata, TypeBuilder extends Builder<
     }
   }
 
-  protected Type handleCreate(Type resource) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+  protected T handleCreate(T resource) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     AsyncHttpClient.BoundRequestBuilder requestBuilder = getHttpClient().preparePost(getNamespacedUrl().toString());
     requestBuilder.setBody(mapper.writer().writeValueAsString(resource));
     return handleResponse(requestBuilder, 201);
   }
 
-  protected Type handleUpdate(URL resourceUrl, Type updated) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+  protected T handleUpdate(URL resourceUrl, T updated) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     AsyncHttpClient.BoundRequestBuilder requestBuilder = getHttpClient().preparePut(resourceUrl.toString());
     requestBuilder.setBody(mapper.writer().writeValueAsString(updated));
     return handleResponse(requestBuilder, 200);
   }
 
-  protected Type handleGet(URL resourceUrl) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+  protected T handleGet(URL resourceUrl) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     AsyncHttpClient.BoundRequestBuilder requestBuilder = getHttpClient().prepareGet(resourceUrl.toString());
     return handleResponse(requestBuilder, 200);
   }
