@@ -51,11 +51,7 @@ public abstract class BaseResourceList<Type extends HasMetadata, TypeList extend
 
   public TypeList list() throws KubernetesClientException {
     try {
-      URL requestUrl = getRootUrl();
-      if (getNamespace() != null) {
-        requestUrl = new URL(requestUrl, "namespaces/" + getNamespace() + "/");
-      }
-      requestUrl = new URL(requestUrl, getResourceType());
+      URL requestUrl = getNamespacedUrl();
       AsyncHttpClient.BoundRequestBuilder requestBuilder = getHttpClient().prepareGet(requestUrl.toString());
       if (labels != null && !labels.isEmpty()) {
         StringBuilder sb = new StringBuilder();
@@ -86,8 +82,6 @@ public abstract class BaseResourceList<Type extends HasMetadata, TypeList extend
         throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
       }
       return mapper.reader(listClazz).readValue(r.getResponseBodyAsStream());
-    } catch (MalformedURLException e) {
-      throw new KubernetesClientException("Malformed resource URL", e);
     } catch (InterruptedException | ExecutionException | IOException e) {
       throw new KubernetesClientException("Unable to delete resource", e);
     }
@@ -123,11 +117,7 @@ public abstract class BaseResourceList<Type extends HasMetadata, TypeList extend
 
     public WebSocket watch(final Watcher<Type> watcher) throws KubernetesClientException {
       try {
-        URL requestUrl = getRootUrl();
-        if (getNamespace() != null) {
-          requestUrl = new URL(requestUrl, "namespaces/" + getNamespace() + "/");
-        }
-        requestUrl = new URL(requestUrl, getResourceType());
+        URL requestUrl = getNamespacedUrl();
         AsyncHttpClient.BoundRequestBuilder requestBuilder = getHttpClient().prepareGet(requestUrl.toString().replaceFirst("^http", "ws"));
         if (labels != null && !labels.isEmpty()) {
           StringBuilder sb = new StringBuilder();

@@ -2,10 +2,7 @@ package io.fabric8.kubernetes.client.dsl.examples;
 
 import com.ning.http.client.ws.WebSocket;
 import io.fabric8.kubernetes.api.model.Quantity;
-import io.fabric8.kubernetes.client.dsl.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.DefaultKubernetesClient;
-import io.fabric8.kubernetes.client.dsl.KubernetesClient;
-import io.fabric8.kubernetes.client.dsl.Watcher;
+import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.api.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +32,7 @@ public class FullExample {
         log("Create resource quota", client.resourceQuotas().inNamespace("thisisatest").create(quota));
 
         //Watch the RCs in the namespace in a separate thread
-        new Thread(new Runnable() {
+        Thread watcherThread = new Thread(new Runnable() {
           @Override
           public void run() {
             try (WebSocket ws = client.replicationControllers().inNamespace("thisisatest").watch(new Watcher<ReplicationController>() {
@@ -51,7 +48,9 @@ public class FullExample {
               //
             }
           }
-        }).start();
+        });
+        watcherThread.setDaemon(true);
+        watcherThread.start();
 
         // Create an RC
         ReplicationController rc = new ReplicationControllerBuilder()
@@ -74,6 +73,14 @@ public class FullExample {
         log("Get RC by label", client.replicationControllers().withLabel("server", "nginx").list());
         // Get the RC by label in namespace
         log("Get RC by label in namespace", client.replicationControllers().inNamespace("thisisatest").withLabel("server", "nginx").list());
+        // Update the RC
+        client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").update(new BuilderUpdate<ReplicationController, ReplicationControllerBuilder>() {
+          @Override
+          public ReplicationController apply(ReplicationControllerBuilder builder) {
+            return builder.editMetadata().addToLabels("new", "label").endMetadata().build();
+          }
+        });
+        log("Updated RC");
         // Clean up the RC
         client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").delete();
         log("Deleted RC");

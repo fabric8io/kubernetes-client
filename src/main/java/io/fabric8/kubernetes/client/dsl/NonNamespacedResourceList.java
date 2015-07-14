@@ -9,6 +9,6 @@ public interface NonNamespacedResourceList<Type extends HasMetadata, TypeList ex
 
   Type create(Type resource) throws KubernetesClientException;
 
-  NamedResource<Type, TypeBuilder> withName(String name);
+  NamedResource<Type, TypeBuilder> withName(String name) throws KubernetesClientException;
 
 }
