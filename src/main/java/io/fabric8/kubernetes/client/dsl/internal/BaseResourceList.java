@@ -11,6 +11,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.dsl.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.Updateable;
 import io.fabric8.kubernetes.client.dsl.Watcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,16 +25,16 @@ import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-public abstract class BaseResourceList<T extends HasMetadata, L extends KubernetesResourceList, B extends Builder<T>>
-  extends BaseResource<T, B> {
+public abstract class BaseResourceList<T extends HasMetadata, L extends KubernetesResourceList, B extends Builder<T>, U extends Updateable<T>>
+  extends BaseResource<T, B, U> {
 
   private Class<L> listClazz;
 
   private Map<String, String> labels = new TreeMap<>();
   private Map<String, String> fields = new TreeMap<>();
 
-  protected BaseResourceList(AsyncHttpClient httpClient, URL rootUrl, String resourceT, Class<T> clazz, Class<L> listClazz, Class<B> builderClazz) {
-    super(httpClient, rootUrl, resourceT, clazz, builderClazz);
+  protected BaseResourceList(AsyncHttpClient httpClient, URL rootUrl, String resourceT, Class<T> clazz, Class<L> listClazz, Class<B> builderClazz, Class<U> updateableClazz) {
+    super(httpClient, rootUrl, resourceT, clazz, builderClazz, updateableClazz);
     this.listClazz = listClazz;
   }
 

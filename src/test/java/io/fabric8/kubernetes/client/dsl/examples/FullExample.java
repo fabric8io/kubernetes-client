@@ -80,6 +80,14 @@ public class FullExample {
             return builder.editMetadata().addToLabels("new", "label").endMetadata().build();
           }
         });
+
+        //Update the RC inline
+        client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").edit()
+          .editMetadata()
+            .addToLabels("another", "label")
+          .endMetadata()
+          .update();
+
         log("Updated RC");
         // Clean up the RC
         client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").delete();

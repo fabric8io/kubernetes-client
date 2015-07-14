@@ -7,6 +7,7 @@ import io.fabric8.kubernetes.api.builder.Builder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.dsl.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.Updateable;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -14,7 +15,7 @@ import java.net.URL;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-public class BaseResource<T extends HasMetadata, B extends Builder<T>> {
+public class BaseResource<T extends HasMetadata, B extends Builder<T>, U extends Updateable<T>> {
 
   protected static final ObjectMapper mapper = new ObjectMapper();
 
@@ -27,17 +28,23 @@ public class BaseResource<T extends HasMetadata, B extends Builder<T>> {
 
   private Class<T> clazz;
   private Class<B> builderClazz;
+  private Class<U> updateableClazz;
 
-  protected BaseResource(AsyncHttpClient httpClient, URL rootUrl, String resourceT, Class<T> clazz, Class<B> builderClazz) {
+  protected BaseResource(AsyncHttpClient httpClient, URL rootUrl, String resourceT, Class<T> clazz, Class<B> builderClazz, Class<U> updateableClazz) {
     this.httpClient = httpClient;
     this.rootUrl = rootUrl;
     this.clazz = clazz;
     this.builderClazz = builderClazz;
+    this.updateableClazz = updateableClazz;
     this.resourceT = resourceT;
   }
 
   protected Class<B> getBuilderClazz() {
     return builderClazz;
+  }
+
+  public Class<U> getUpdateableClazz() {
+    return updateableClazz;
   }
 
   protected Class<T> getClazz() {

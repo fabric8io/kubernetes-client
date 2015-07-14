@@ -6,19 +6,20 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.dsl.FilteredNamespacedResourceList;
 import io.fabric8.kubernetes.client.dsl.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.NamedNamespacedResource;
+import io.fabric8.kubernetes.client.dsl.Updateable;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-public class NamespacedResourceList<T extends HasMetadata, L extends KubernetesResourceList, B extends Builder<T>>
-  extends BaseResourceList<T, L, B>
-  implements io.fabric8.kubernetes.client.dsl.NamespacedResourceList<T, L, B>,
+public class NamespacedResourceList<T extends HasMetadata, L extends KubernetesResourceList, B extends Builder<T>, U extends Updateable<T>>
+  extends BaseResourceList<T, L, B, U>
+  implements io.fabric8.kubernetes.client.dsl.NamespacedResourceList<T, L, B, U>,
   FilteredNamespacedResourceList<T, L> {
 
   NamespacedResourceList(String namespace, DefaultResourceList resourceList) {
-    super(resourceList.getHttpClient(), resourceList.getRootUrl(), resourceList.getResourceT(), resourceList.getClazz(), resourceList.getListClazz(), resourceList.getBuilderClazz());
+    super(resourceList.getHttpClient(), resourceList.getRootUrl(), resourceList.getResourceT(), resourceList.getClazz(), resourceList.getListClazz(), resourceList.getBuilderClazz(), resourceList.getUpdateableClazz());
     setNamespace(namespace);
   }
 
@@ -56,7 +57,7 @@ public class NamespacedResourceList<T extends HasMetadata, L extends KubernetesR
   }
 
   @Override
-  public NamedNamespacedResource<T, B> withName(String name) throws KubernetesClientException {
+  public NamedNamespacedResource<T, B, U> withName(String name) throws KubernetesClientException {
     try {
       return new NamedResource<>(name, this);
     } catch (MalformedURLException e) {
