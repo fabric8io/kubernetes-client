@@ -7,7 +7,7 @@ public interface NamedNamespacedResource<T extends HasMetadata, B extends Builde
 
   T get() throws KubernetesClientException;
 
-  T edit();
+  U edit() throws KubernetesClientException;
 
   T update(BuilderUpdate<T, B> update) throws KubernetesClientException;
 

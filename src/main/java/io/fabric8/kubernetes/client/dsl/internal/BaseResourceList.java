@@ -33,8 +33,8 @@ public abstract class BaseResourceList<T extends HasMetadata, L extends Kubernet
   private Map<String, String> labels = new TreeMap<>();
   private Map<String, String> fields = new TreeMap<>();
 
-  protected BaseResourceList(AsyncHttpClient httpClient, URL rootUrl, String resourceT, Class<T> clazz, Class<L> listClazz, Class<B> builderClazz) {
-    super(httpClient, rootUrl, resourceT, clazz, builderClazz);
+  protected BaseResourceList(AsyncHttpClient httpClient, URL rootUrl, String resourceT, Class<T> clazz, Class<L> listClazz, Class<B> builderClazz, Class<U> updateableClazz) {
+    super(httpClient, rootUrl, resourceT, clazz, builderClazz, updateableClazz);
     this.listClazz = listClazz;
   }
 

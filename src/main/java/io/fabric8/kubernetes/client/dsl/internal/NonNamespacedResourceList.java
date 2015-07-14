@@ -17,8 +17,8 @@ public class NonNamespacedResourceList<T extends HasMetadata, L extends Kubernet
   extends DefaultResourceList<T, L, B, U>
   implements io.fabric8.kubernetes.client.dsl.NonNamespacedResourceList<T, L, B, U> {
 
-  public NonNamespacedResourceList(AsyncHttpClient httpClient, URL rootUrl, String resourceT, Class<T> clazz, Class<L> listClazz, Class<B> builderClazz) {
-    super(httpClient, rootUrl, resourceT, clazz, listClazz, builderClazz);
+  public NonNamespacedResourceList(AsyncHttpClient httpClient, URL rootUrl, String resourceT, Class<T> clazz, Class<L> listClazz, Class<B> builderClazz, Class<U> updateableClazz) {
+    super(httpClient, rootUrl, resourceT, clazz, listClazz, builderClazz, updateableClazz);
   }
 
   @Override

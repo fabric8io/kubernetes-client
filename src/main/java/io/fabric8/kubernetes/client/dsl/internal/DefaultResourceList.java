@@ -16,8 +16,8 @@ public class DefaultResourceList<T extends HasMetadata, L extends KubernetesReso
   implements ResourceList<T, L, B>,
              FilteredResourceList<T, L> {
 
-  public DefaultResourceList(AsyncHttpClient httpClient, URL rootUrl, String resourceT, Class<T> clazz, Class<L> listClazz, Class<B> builderClazz) {
-    super(httpClient, rootUrl, resourceT, clazz, listClazz, builderClazz);
+  public DefaultResourceList(AsyncHttpClient httpClient, URL rootUrl, String resourceT, Class<T> clazz, Class<L> listClazz, Class<B> builderClazz, Class<U> updateableClazz) {
+    super(httpClient, rootUrl, resourceT, clazz, listClazz, builderClazz, updateableClazz);
   }
 
   @Override

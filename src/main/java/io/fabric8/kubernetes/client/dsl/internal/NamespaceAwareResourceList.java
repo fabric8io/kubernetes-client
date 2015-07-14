@@ -13,8 +13,8 @@ public class NamespaceAwareResourceList<T extends HasMetadata, L extends Kuberne
   extends DefaultResourceList<T, L, B, U>
   implements io.fabric8.kubernetes.client.dsl.NamespaceAwareResourceList<T, L, B, U> {
 
-  public NamespaceAwareResourceList(AsyncHttpClient httpClient, URL rootUrl, String resourceT, Class<T> clazz, Class<L> listClazz, Class<B> builderClazz) {
-    super(httpClient, rootUrl, resourceT, clazz, listClazz, builderClazz);
+  public NamespaceAwareResourceList(AsyncHttpClient httpClient, URL rootUrl, String resourceT, Class<T> clazz, Class<L> listClazz, Class<B> builderClazz, Class<U> updateableClazz) {
+    super(httpClient, rootUrl, resourceT, clazz, listClazz, builderClazz, updateableClazz);
   }
 
   @Override

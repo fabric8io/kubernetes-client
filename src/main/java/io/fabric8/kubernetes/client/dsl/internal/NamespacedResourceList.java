@@ -19,7 +19,7 @@ public class NamespacedResourceList<T extends HasMetadata, L extends KubernetesR
   FilteredNamespacedResourceList<T, L> {
 
   NamespacedResourceList(String namespace, DefaultResourceList resourceList) {
-    super(resourceList.getHttpClient(), resourceList.getRootUrl(), resourceList.getResourceT(), resourceList.getClazz(), resourceList.getListClazz(), resourceList.getBuilderClazz());
+    super(resourceList.getHttpClient(), resourceList.getRootUrl(), resourceList.getResourceT(), resourceList.getClazz(), resourceList.getListClazz(), resourceList.getBuilderClazz(), resourceList.getUpdateableClazz());
     setNamespace(namespace);
   }
 

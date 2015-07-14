@@ -22,13 +22,13 @@ public class NamedResource<T extends HasMetadata, B extends Builder<T>, U extend
   private URL resourceUrl;
 
   NamedResource(String name, DefaultResourceList<T, ?, B, U> resourceList) throws MalformedURLException {
-    super(resourceList.getHttpClient(), resourceList.getRootUrl(), resourceList.getResourceT(), resourceList.getClazz(), resourceList.getBuilderClazz());
+    super(resourceList.getHttpClient(), resourceList.getRootUrl(), resourceList.getResourceT(), resourceList.getClazz(), resourceList.getBuilderClazz(), resourceList.getUpdateableClazz());
     URL requestUrl = getNamespacedUrl();
     this.resourceUrl = new URL(requestUrl, name);
   }
 
   NamedResource(String name, NamespacedResourceList<T, ?, B, U> resourceList) throws MalformedURLException {
-    super(resourceList.getHttpClient(), resourceList.getRootUrl(), resourceList.getResourceT(), resourceList.getClazz(), resourceList.getBuilderClazz());
+    super(resourceList.getHttpClient(), resourceList.getRootUrl(), resourceList.getResourceT(), resourceList.getClazz(), resourceList.getBuilderClazz(), resourceList.getUpdateableClazz());
     setNamespace(resourceList.getNamespace());
     URL requestUrl = getNamespacedUrl();
     this.resourceUrl = new URL(requestUrl, name);
@@ -44,8 +44,23 @@ public class NamedResource<T extends HasMetadata, B extends Builder<T>, U extend
   }
 
   @Override
-  public T edit() {
-    return null;
+  public U edit() throws KubernetesClientException {
+    final Update<T> nestedUpdate = new Update<T>() {
+      @Override
+      public T apply(T resource) {
+        try {
+          return handleUpdate(resourceUrl, resource);
+        } catch (Exception e) {
+          throw new RuntimeException(e);
+        }
+      }
+    };
+
+    try {
+      return getUpdateableClazz().getDeclaredConstructor(getClazz(), Update.class).newInstance(get(), nestedUpdate);
+    } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException e) {
+      throw new KubernetesClientException("Unable create updatable", e);
+    }
   }
 
   @Override

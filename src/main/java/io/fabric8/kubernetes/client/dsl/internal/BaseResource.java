@@ -28,17 +28,23 @@ public class BaseResource<T extends HasMetadata, B extends Builder<T>, U extends
 
   private Class<T> clazz;
   private Class<B> builderClazz;
+  private Class<U> updateableClazz;
 
-  protected BaseResource(AsyncHttpClient httpClient, URL rootUrl, String resourceT, Class<T> clazz, Class<B> builderClazz) {
+  protected BaseResource(AsyncHttpClient httpClient, URL rootUrl, String resourceT, Class<T> clazz, Class<B> builderClazz, Class<U> updateableClazz) {
     this.httpClient = httpClient;
     this.rootUrl = rootUrl;
     this.clazz = clazz;
     this.builderClazz = builderClazz;
+    this.updateableClazz = updateableClazz;
     this.resourceT = resourceT;
   }
 
   protected Class<B> getBuilderClazz() {
     return builderClazz;
+  }
+
+  public Class<U> getUpdateableClazz() {
+    return updateableClazz;
   }
 
   protected Class<T> getClazz() {

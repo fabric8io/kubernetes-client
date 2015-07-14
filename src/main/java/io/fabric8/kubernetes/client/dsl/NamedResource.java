@@ -7,7 +7,7 @@ public interface NamedResource<T extends HasMetadata, B extends Builder<T>, U ex
 
   T get() throws KubernetesClientException;
 
-  T edit();
+  U edit() throws KubernetesClientException;
 
   T update(BuilderUpdate<T, B> update) throws KubernetesClientException;
 
