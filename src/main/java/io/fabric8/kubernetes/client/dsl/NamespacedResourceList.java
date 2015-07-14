@@ -7,7 +7,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 
 import java.util.Map;
 
-public interface NamespacedResourceList<T extends HasMetadata, L extends KubernetesResourceList, B extends Builder<T>> {
+public interface NamespacedResourceList<T extends HasMetadata, L extends KubernetesResourceList, B extends Builder<T>, U extends Updateable<T>> {
 
   L list() throws KubernetesClientException;
 
@@ -25,6 +25,6 @@ public interface NamespacedResourceList<T extends HasMetadata, L extends Kuberne
 
   FilteredNamespacedResourceList<T, L> withField(String key, String value) throws KubernetesClientException;
 
-  NamedNamespacedResource<T, B> withName(String name) throws KubernetesClientException;
+  NamedNamespacedResource<T, B, U> withName(String name) throws KubernetesClientException;
 
 }

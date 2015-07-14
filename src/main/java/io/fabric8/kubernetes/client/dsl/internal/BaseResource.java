@@ -7,6 +7,7 @@ import io.fabric8.kubernetes.api.builder.Builder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.dsl.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.Updateable;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -14,7 +15,7 @@ import java.net.URL;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-public class BaseResource<T extends HasMetadata, B extends Builder<T>> {
+public class BaseResource<T extends HasMetadata, B extends Builder<T>, U extends Updateable<T>> {
 
   protected static final ObjectMapper mapper = new ObjectMapper();
 

@@ -8,6 +8,25 @@ import com.ning.http.client.filter.FilterException;
 import com.ning.http.client.filter.RequestFilter;
 import io.fabric8.kubernetes.client.dsl.internal.Utils;
 import io.fabric8.kubernetes.api.model.*;
+import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableBuildConfig;
+import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableDeploymentConfig;
+import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableEndpoints;
+import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableEvent;
+import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableImageStream;
+import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableNamespace;
+import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableNode;
+import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableOAuthAccessToken;
+import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableOAuthAuthorizeToken;
+import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableOAuthClient;
+import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateablePersistentVolume;
+import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateablePersistentVolumeClaim;
+import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateablePod;
+import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableReplicationController;
+import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableResourceQuota;
+import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableRoute;
+import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableSecret;
+import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableService;
+import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableServiceAccount;
 import io.fabric8.openshift.api.model.*;
 import org.jboss.netty.handler.ssl.util.InsecureTrustManagerFactory;
 
@@ -81,97 +100,97 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
   }
 
   @Override
-  public NamespaceAwareResourceList<Endpoints, EndpointsList, EndpointsBuilder> endpoints() {
+  public NamespaceAwareResourceList<Endpoints, EndpointsList, EndpointsBuilder, UpdateableEndpoints> endpoints() {
     return new io.fabric8.kubernetes.client.dsl.internal.NamespaceAwareResourceList<>(httpClient, masterUrl, "endpoints", Endpoints.class, EndpointsList.class, EndpointsBuilder.class);
   }
 
   @Override
-  public NamespaceAwareResourceList<Event, EventList, EventBuilder> events() {
+  public NamespaceAwareResourceList<Event, EventList, EventBuilder, UpdateableEvent> events() {
     return new io.fabric8.kubernetes.client.dsl.internal.NamespaceAwareResourceList<>(httpClient, masterUrl, "events", Event.class, EventList.class, EventBuilder.class);
   }
 
   @Override
-  public NonNamespacedResourceList<Namespace, NamespaceList, NamespaceBuilder> namespaces() {
+  public NonNamespacedResourceList<Namespace, NamespaceList, NamespaceBuilder, UpdateableNamespace> namespaces() {
     return new io.fabric8.kubernetes.client.dsl.internal.NonNamespacedResourceList<>(httpClient, masterUrl, "namespaces", Namespace.class, NamespaceList.class, NamespaceBuilder.class);
   }
 
   @Override
-  public NonNamespacedResourceList<Node, NodeList, NodeBuilder> nodes() {
+  public NonNamespacedResourceList<Node, NodeList, NodeBuilder, UpdateableNode> nodes() {
     return new io.fabric8.kubernetes.client.dsl.internal.NonNamespacedResourceList<>(httpClient, masterUrl, "nodes", Node.class, NodeList.class, NodeBuilder.class);
   }
 
   @Override
-  public NamespaceAwareResourceList<PersistentVolume, PersistentVolumeList, PersistentVolumeBuilder> persistentVolumes() {
+  public NamespaceAwareResourceList<PersistentVolume, PersistentVolumeList, PersistentVolumeBuilder, UpdateablePersistentVolume> persistentVolumes() {
     return new io.fabric8.kubernetes.client.dsl.internal.NamespaceAwareResourceList<>(httpClient, masterUrl, "persistentvolumes", PersistentVolume.class, PersistentVolumeList.class, PersistentVolumeBuilder.class);
   }
 
   @Override
-  public NamespaceAwareResourceList<PersistentVolumeClaim, PersistentVolumeClaimList, PersistentVolumeClaimBuilder> persistentVolumeClaims() {
+  public NamespaceAwareResourceList<PersistentVolumeClaim, PersistentVolumeClaimList, PersistentVolumeClaimBuilder, UpdateablePersistentVolumeClaim> persistentVolumeClaims() {
     return new io.fabric8.kubernetes.client.dsl.internal.NamespaceAwareResourceList<>(httpClient, masterUrl, "persistentvolumeclaims", PersistentVolumeClaim.class, PersistentVolumeClaimList.class, PersistentVolumeClaimBuilder.class);
   }
 
   @Override
-  public NamespaceAwareResourceList<Pod, PodList, PodBuilder> pods() {
+  public NamespaceAwareResourceList<Pod, PodList, PodBuilder, UpdateablePod> pods() {
     return new io.fabric8.kubernetes.client.dsl.internal.NamespaceAwareResourceList<>(httpClient, masterUrl, "pods", Pod.class, PodList.class, PodBuilder.class);
   }
 
   @Override
-  public NamespaceAwareResourceList<ReplicationController, ReplicationControllerList, ReplicationControllerBuilder> replicationControllers() {
+  public NamespaceAwareResourceList<ReplicationController, ReplicationControllerList, ReplicationControllerBuilder, UpdateableReplicationController> replicationControllers() {
     return new io.fabric8.kubernetes.client.dsl.internal.NamespaceAwareResourceList<>(httpClient, masterUrl, "replicationcontrollers", ReplicationController.class, ReplicationControllerList.class, ReplicationControllerBuilder.class);
   }
 
   @Override
-  public NamespaceAwareResourceList<ResourceQuota, ResourceQuotaList, ResourceQuotaBuilder> resourceQuotas() {
+  public NamespaceAwareResourceList<ResourceQuota, ResourceQuotaList, ResourceQuotaBuilder, UpdateableResourceQuota> resourceQuotas() {
     return new io.fabric8.kubernetes.client.dsl.internal.NamespaceAwareResourceList<>(httpClient, masterUrl, "resourcequotas", ResourceQuota.class, ResourceQuotaList.class, ResourceQuotaBuilder.class);
   }
 
   @Override
-  public NamespaceAwareResourceList<Secret, SecretList, SecretBuilder> secrets() {
+  public NamespaceAwareResourceList<Secret, SecretList, SecretBuilder, UpdateableSecret> secrets() {
     return new io.fabric8.kubernetes.client.dsl.internal.NamespaceAwareResourceList<>(httpClient, masterUrl, "secrets", Secret.class, SecretList.class, SecretBuilder.class);
   }
 
   @Override
-  public NamespaceAwareResourceList<Service, ServiceList, ServiceBuilder> services() {
+  public NamespaceAwareResourceList<Service, ServiceList, ServiceBuilder, UpdateableService> services() {
     return new io.fabric8.kubernetes.client.dsl.internal.NamespaceAwareResourceList<>(httpClient, masterUrl, "services", Service.class, ServiceList.class, ServiceBuilder.class);
   }
 
   @Override
-  public NamespaceAwareResourceList<ServiceAccount, ServiceAccountList, ServiceAccountBuilder> serviceAccounts() {
+  public NamespaceAwareResourceList<ServiceAccount, ServiceAccountList, ServiceAccountBuilder, UpdateableServiceAccount> serviceAccounts() {
     return new io.fabric8.kubernetes.client.dsl.internal.NamespaceAwareResourceList<>(httpClient, masterUrl, "serviceaccounts", ServiceAccount.class, ServiceAccountList.class, ServiceAccountBuilder.class);
   }
 
   @Override
-  public NamespaceAwareResourceList<BuildConfig, BuildConfigList, BuildConfigBuilder> buildConfigs() {
+  public NamespaceAwareResourceList<BuildConfig, BuildConfigList, BuildConfigBuilder, UpdateableBuildConfig> buildConfigs() {
     return new io.fabric8.kubernetes.client.dsl.internal.NamespaceAwareResourceList<>(httpClient, openShiftUrl, "buildconfigs", BuildConfig.class, BuildConfigList.class, BuildConfigBuilder.class);
   }
 
   @Override
-  public NamespaceAwareResourceList<DeploymentConfig, DeploymentConfigList, DeploymentConfigBuilder> deploymentConfigs() {
+  public NamespaceAwareResourceList<DeploymentConfig, DeploymentConfigList, DeploymentConfigBuilder, UpdateableDeploymentConfig> deploymentConfigs() {
     return new io.fabric8.kubernetes.client.dsl.internal.NamespaceAwareResourceList<>(httpClient, openShiftUrl, "deploymentconfigs", DeploymentConfig.class, DeploymentConfigList.class, DeploymentConfigBuilder.class);
   }
 
   @Override
-  public NamespaceAwareResourceList<ImageStream, ImageStreamList, ImageStreamBuilder> imageStreams() {
+  public NamespaceAwareResourceList<ImageStream, ImageStreamList, ImageStreamBuilder, UpdateableImageStream> imageStreams() {
     return new io.fabric8.kubernetes.client.dsl.internal.NamespaceAwareResourceList<>(httpClient, openShiftUrl, "imagestreams", ImageStream.class, ImageStreamList.class, ImageStreamBuilder.class);
   }
 
   @Override
-  public NonNamespacedResourceList<OAuthAccessToken, OAuthAccessTokenList, OAuthAccessTokenBuilder> oAuthAccessTokens() {
+  public NonNamespacedResourceList<OAuthAccessToken, OAuthAccessTokenList, OAuthAccessTokenBuilder, UpdateableOAuthAccessToken> oAuthAccessTokens() {
     return new io.fabric8.kubernetes.client.dsl.internal.NonNamespacedResourceList<>(httpClient, openShiftUrl, "oauthaccesstokens", OAuthAccessToken.class, OAuthAccessTokenList.class, OAuthAccessTokenBuilder.class);
   }
 
   @Override
-  public NonNamespacedResourceList<OAuthAuthorizeToken, OAuthAuthorizeTokenList, OAuthAuthorizeTokenBuilder> oAuthAuthorizeTokens() {
+  public NonNamespacedResourceList<OAuthAuthorizeToken, OAuthAuthorizeTokenList, OAuthAuthorizeTokenBuilder, UpdateableOAuthAuthorizeToken> oAuthAuthorizeTokens() {
     return new io.fabric8.kubernetes.client.dsl.internal.NonNamespacedResourceList<>(httpClient, openShiftUrl, "oauthauthorizetokens", OAuthAuthorizeToken.class, OAuthAuthorizeTokenList.class, OAuthAuthorizeTokenBuilder.class);
   }
 
   @Override
-  public NonNamespacedResourceList<OAuthClient, OAuthClientList, OAuthClientBuilder> oAuthClients() {
+  public NonNamespacedResourceList<OAuthClient, OAuthClientList, OAuthClientBuilder, UpdateableOAuthClient> oAuthClients() {
     return new io.fabric8.kubernetes.client.dsl.internal.NonNamespacedResourceList<>(httpClient, openShiftUrl, "oauthclients", OAuthClient.class, OAuthClientList.class, OAuthClientBuilder.class);
   }
 
   @Override
-  public NamespaceAwareResourceList<Route, RouteList, RouteBuilder> routes() {
+  public NamespaceAwareResourceList<Route, RouteList, RouteBuilder, UpdateableRoute> routes() {
     return new io.fabric8.kubernetes.client.dsl.internal.NamespaceAwareResourceList<>(httpClient, openShiftUrl, "routes", Route.class, RouteList.class, RouteBuilder.class);
   }
 

@@ -6,12 +6,13 @@ import io.fabric8.kubernetes.api.builder.Builder;
 import io.fabric8.kubernetes.client.dsl.FilteredResourceList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.client.dsl.Updateable;
 
 import java.net.URL;
 import java.util.Map;
 
-public class DefaultResourceList<T extends HasMetadata, L extends KubernetesResourceList, B extends Builder<T>>
-  extends BaseResourceList<T, L, B>
+public class DefaultResourceList<T extends HasMetadata, L extends KubernetesResourceList, B extends Builder<T>, U extends Updateable<T>>
+  extends BaseResourceList<T, L, B, U>
   implements ResourceList<T, L, B>,
              FilteredResourceList<T, L> {
 
