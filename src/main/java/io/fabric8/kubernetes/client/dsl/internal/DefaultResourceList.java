@@ -10,35 +10,35 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import java.net.URL;
 import java.util.Map;
 
-public class DefaultResourceList<Type extends HasMetadata, TypeList extends KubernetesResourceList, TypeBuilder extends Builder<Type>>
-  extends BaseResourceList<Type, TypeList, TypeBuilder>
-  implements ResourceList<Type, TypeList, TypeBuilder>,
-             FilteredResourceList<Type, TypeList> {
+public class DefaultResourceList<T extends HasMetadata, L extends KubernetesResourceList, B extends Builder<T>>
+  extends BaseResourceList<T, L, B>
+  implements ResourceList<T, L, B>,
+             FilteredResourceList<T, L> {
 
-  public DefaultResourceList(AsyncHttpClient httpClient, URL rootUrl, String resourceType, Class<Type> clazz, Class<TypeList> listClazz, Class<TypeBuilder> builderClazz) {
-    super(httpClient, rootUrl, resourceType, clazz, listClazz, builderClazz);
+  public DefaultResourceList(AsyncHttpClient httpClient, URL rootUrl, String resourceT, Class<T> clazz, Class<L> listClazz, Class<B> builderClazz) {
+    super(httpClient, rootUrl, resourceT, clazz, listClazz, builderClazz);
   }
 
   @Override
-  public FilteredResourceList<Type, TypeList> withLabels(Map<String, String> labels) {
+  public FilteredResourceList<T, L> withLabels(Map<String, String> labels) {
     getLabels().putAll(labels);
     return this;
   }
 
   @Override
-  public FilteredResourceList<Type, TypeList> withLabel(String key, String value) {
+  public FilteredResourceList<T, L> withLabel(String key, String value) {
     getLabels().put(key, value);
     return this;
   }
 
   @Override
-  public FilteredResourceList<Type, TypeList> withFields(Map<String, String> labels) {
+  public FilteredResourceList<T, L> withFields(Map<String, String> labels) {
     getFields().putAll(labels);
     return this;
   }
 
   @Override
-  public FilteredResourceList<Type, TypeList> withField(String key, String value) {
+  public FilteredResourceList<T, L> withField(String key, String value) {
     getFields().put(key, value);
     return this;
   }

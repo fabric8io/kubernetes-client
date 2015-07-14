@@ -7,24 +7,24 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 
 import java.util.Map;
 
-public interface NamespacedResourceList<Type extends HasMetadata, TypeList extends KubernetesResourceList, TypeBuilder extends Builder<Type>> {
+public interface NamespacedResourceList<T extends HasMetadata, L extends KubernetesResourceList, B extends Builder<T>> {
 
-  TypeList list() throws KubernetesClientException;
+  L list() throws KubernetesClientException;
 
   void delete() throws KubernetesClientException;
 
-  Type create(Type resource) throws KubernetesClientException;
+  T create(T resource) throws KubernetesClientException;
 
-  WebSocket watch(Watcher<Type> watcher) throws KubernetesClientException;
+  WebSocket watch(Watcher<T> watcher) throws KubernetesClientException;
 
-  FilteredNamespacedResourceList<Type, TypeList> withLabels(Map<String, String> labels) throws KubernetesClientException;
+  FilteredNamespacedResourceList<T, L> withLabels(Map<String, String> labels) throws KubernetesClientException;
 
-  FilteredNamespacedResourceList<Type, TypeList> withLabel(String key, String value) throws KubernetesClientException;
+  FilteredNamespacedResourceList<T, L> withLabel(String key, String value) throws KubernetesClientException;
 
-  FilteredNamespacedResourceList<Type, TypeList> withFields(Map<String, String> labels) throws KubernetesClientException;
+  FilteredNamespacedResourceList<T, L> withFields(Map<String, String> labels) throws KubernetesClientException;
 
-  FilteredNamespacedResourceList<Type, TypeList> withField(String key, String value) throws KubernetesClientException;
+  FilteredNamespacedResourceList<T, L> withField(String key, String value) throws KubernetesClientException;
 
-  NamedNamespacedResource<Type, TypeBuilder> withName(String name) throws KubernetesClientException;
+  NamedNamespacedResource<T, B> withName(String name) throws KubernetesClientException;
 
 }

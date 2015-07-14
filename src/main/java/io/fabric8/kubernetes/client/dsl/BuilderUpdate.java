@@ -3,8 +3,8 @@ package io.fabric8.kubernetes.client.dsl;
 import io.fabric8.kubernetes.api.builder.Builder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 
-public interface BuilderUpdate<Type extends HasMetadata, TypeBuilder extends Builder<Type>> {
+public interface BuilderUpdate<T extends HasMetadata, B extends Builder<T>> {
 
-  Type apply(TypeBuilder builder);
+  T apply(B builder);
 
 }

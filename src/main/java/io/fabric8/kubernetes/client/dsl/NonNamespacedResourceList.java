@@ -4,11 +4,11 @@ import io.fabric8.kubernetes.api.builder.Builder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 
-public interface NonNamespacedResourceList<Type extends HasMetadata, TypeList extends KubernetesResourceList, TypeBuilder extends Builder<Type>>
-  extends ResourceList<Type, TypeList, TypeBuilder> {
+public interface NonNamespacedResourceList<T extends HasMetadata, L extends KubernetesResourceList, B extends Builder<T>>
+  extends ResourceList<T, L, B> {
 
-  Type create(Type resource) throws KubernetesClientException;
+  T create(T resource) throws KubernetesClientException;
 
-  NamedResource<Type, TypeBuilder> withName(String name) throws KubernetesClientException;
+  NamedResource<T, B> withName(String name) throws KubernetesClientException;
 
 }

@@ -12,16 +12,16 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
-public class NonNamespacedResourceList<Type extends HasMetadata, TypeList extends KubernetesResourceList, TypeBuilder extends Builder<Type>>
-  extends DefaultResourceList<Type, TypeList, TypeBuilder>
-  implements io.fabric8.kubernetes.client.dsl.NonNamespacedResourceList<Type, TypeList, TypeBuilder> {
+public class NonNamespacedResourceList<T extends HasMetadata, L extends KubernetesResourceList, B extends Builder<T>>
+  extends DefaultResourceList<T, L, B>
+  implements io.fabric8.kubernetes.client.dsl.NonNamespacedResourceList<T, L, B> {
 
-  public NonNamespacedResourceList(AsyncHttpClient httpClient, URL rootUrl, String resourceType, Class<Type> clazz, Class<TypeList> listClazz, Class<TypeBuilder> builderClazz) {
-    super(httpClient, rootUrl, resourceType, clazz, listClazz, builderClazz);
+  public NonNamespacedResourceList(AsyncHttpClient httpClient, URL rootUrl, String resourceT, Class<T> clazz, Class<L> listClazz, Class<B> builderClazz) {
+    super(httpClient, rootUrl, resourceT, clazz, listClazz, builderClazz);
   }
 
   @Override
-  public NamedResource<Type, TypeBuilder> withName(String name) throws KubernetesClientException {
+  public NamedResource<T, B> withName(String name) throws KubernetesClientException {
     try {
       return new io.fabric8.kubernetes.client.dsl.internal.NamedResource<>(name, this);
     } catch (MalformedURLException e) {
@@ -30,7 +30,7 @@ public class NonNamespacedResourceList<Type extends HasMetadata, TypeList extend
   }
 
   @Override
-  public Type create(Type resource) throws KubernetesClientException {
+  public T create(T resource) throws KubernetesClientException {
     try {
       return handleCreate(resource);
     } catch (InterruptedException | ExecutionException | IOException e) {
