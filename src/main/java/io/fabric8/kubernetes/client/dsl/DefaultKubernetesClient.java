@@ -49,8 +49,6 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
   public static final String KUBERNETES_API_VERSION_SYSTEM_PROPERTY = "kubernetes.api.version";
   public static final String KUBERNETES_OAPI_VERSION_SYSTEM_PROPERTY = "kubernetes.oapi.version";
 
-  public static final String KUBERNETES_KUBECONFIG_FILE = "kubeconfig";
-
   public static final String KUBERNETES_TLS_PROTOCOLS_SYSTEM_PROPERTY = "kubernetes.tls.protocols";
   public static final String KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY = "kubernetes.trust.certificates";
   public static final String KUBERNETES_CA_CERTIFICATE_FILE_SYSTEM_PROPERTY = "kubernetes.certs.ca.file";
@@ -62,13 +60,14 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
   public static final String KUBERNETES_CLIENT_KEY_ALGO_SYSTEM_PROPERTY = "kubernetes.certs.client.key.algo";
   public static final String KUBERNETES_CLIENT_KEY_PASSPHRASE_SYSTEM_PROPERTY = "kubernetes.certs.client.key.passphrase";
 
-  public static final String KUBERNETES_USERNAME = "kubernetes.auth.basic.username";
-  public static final String KUBERNETES_PASSWORD = "kubernetes.auth.basic.password";
+  public static final String KUBERNETES_AUTH_BASIC_USERNAME_SYSTEM_PROPERTY = "kubernetes.auth.basic.username";
+  public static final String KUBERNETES_AUTH_BASIC_PASSWORD_SYSTEM_PROPERTY = "kubernetes.auth.basic.password";
 
-  public static final String KUBERNETES_AUTH_TRY_KUBECONFIG = "kubernetes.auth.tryKubeConfig";
-  public static final String KUBERNETES_AUTH_TRY_SERVICE_ACCOUNT = "kubernetes.auth.tryServiceAccount";
-  public static final String KUBERNETES_OAUTH_TOKEN = "kubernetes.auth.token";
+  public static final String KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY = "kubernetes.auth.tryKubeConfig";
+  public static final String KUBERNETES_AUTH_TRYSERVICEACCOUNT_SYSTEM_PROPERTY = "kubernetes.auth.tryServiceAccount";
+  public static final String KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY = "kubernetes.auth.token";
 
+  public static final String KUBERNETES_KUBECONFIG_FILE = "kubeconfig";
   public static final String KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH = "/var/run/secrets/kubernetes.io/serviceaccount/token";
   public static final String KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt";
 
@@ -221,12 +220,13 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
     protected String oauthToken;
 
     public AbstractBuilder() {
-      if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRY_SERVICE_ACCOUNT, true)) {
+      if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYSERVICEACCOUNT_SYSTEM_PROPERTY, true)) {
         tryServiceAccount();
       }
-      if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRY_KUBECONFIG, true)) {
+      if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, true)) {
         tryKubeConfig();
       }
+      configFromSysPropsOrEnvVars();
     }
 
     public KubernetesClient build() throws KubernetesClientException {
@@ -299,7 +299,7 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
       }
     }
 
-    public T configFromSysPropsOrEnvVars() {
+    private T configFromSysPropsOrEnvVars() {
       trustCerts = Utils.getSystemPropertyOrEnvVar(KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY, trustCerts);
       masterUrl = Utils.getSystemPropertyOrEnvVar(KUBERNETES_MASTER_SYSTEM_PROPERTY, masterUrl);
       apiVersion = Utils.getSystemPropertyOrEnvVar(KUBERNETES_API_VERSION_SYSTEM_PROPERTY, apiVersion);
@@ -313,9 +313,9 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
       clientKeyAlgo = Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_ALGO_SYSTEM_PROPERTY, clientKeyAlgo);
       clientKeyPassphrase = Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_PASSPHRASE_SYSTEM_PROPERTY, new String(clientKeyPassphrase)).toCharArray();
 
-      oauthToken = Utils.getSystemPropertyOrEnvVar(KUBERNETES_OAUTH_TOKEN, oauthToken);
-      username = Utils.getSystemPropertyOrEnvVar(KUBERNETES_USERNAME, username);
-      password = Utils.getSystemPropertyOrEnvVar(KUBERNETES_PASSWORD, password);
+      oauthToken = Utils.getSystemPropertyOrEnvVar(KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY, oauthToken);
+      username = Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_BASIC_USERNAME_SYSTEM_PROPERTY, username);
+      password = Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_BASIC_PASSWORD_SYSTEM_PROPERTY, password);
       String configuredProtocols = Utils.getSystemPropertyOrEnvVar(KUBERNETES_TLS_PROTOCOLS_SYSTEM_PROPERTY);
       if (configuredProtocols != null) {
         enabledProtocols = configuredProtocols.split(",");

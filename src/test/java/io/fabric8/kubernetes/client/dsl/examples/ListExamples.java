@@ -19,7 +19,7 @@ public class ListExamples {
     }
 
     try {
-      client = new DefaultKubernetesClient.Builder().configFromSysPropsOrEnvVars().masterUrl(master).build();
+      client = new DefaultKubernetesClient.Builder().masterUrl(master).build();
 
       System.out.println(
         client.namespaces().list()
