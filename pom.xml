@@ -25,12 +25,17 @@
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model</artifactId>
-      <version>0.1.1</version>
+      <version>0.1.4</version>
     </dependency>
     <dependency>
       <groupId>net.oauth.core</groupId>
       <artifactId>oauth</artifactId>
       <version>20100527</version>
+    </dependency>
+    <dependency>
+      <groupId>org.yaml</groupId>
+      <artifactId>snakeyaml</artifactId>
+      <version>1.15</version>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>

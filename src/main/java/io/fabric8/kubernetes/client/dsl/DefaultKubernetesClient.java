@@ -6,6 +6,7 @@ import com.ning.http.client.Realm;
 import com.ning.http.client.filter.FilterContext;
 import com.ning.http.client.filter.FilterException;
 import com.ning.http.client.filter.RequestFilter;
+import io.fabric8.kubernetes.client.dsl.internal.KubeConfigUtils;
 import io.fabric8.kubernetes.client.dsl.internal.Utils;
 import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableBuildConfig;
@@ -29,8 +30,11 @@ import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableService;
 import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableServiceAccount;
 import io.fabric8.openshift.api.model.*;
 import org.jboss.netty.handler.ssl.util.InsecureTrustManagerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -44,8 +48,11 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
   public static final String KUBERNETES_MASTER_SYSTEM_PROPERTY = "kubernetes.master";
   public static final String KUBERNETES_API_VERSION_SYSTEM_PROPERTY = "kubernetes.api.version";
   public static final String KUBERNETES_OAPI_VERSION_SYSTEM_PROPERTY = "kubernetes.oapi.version";
-  public static final String KUBERNETES_TLS_PROTOCOLS_SYSTEM_PROPERTY = "kubernetes.tls.protocols";
 
+  public static final String KUBERNETES_KUBECONFIG_FILE = "kubeconfig";
+
+  public static final String KUBERNETES_TLS_PROTOCOLS_SYSTEM_PROPERTY = "kubernetes.tls.protocols";
+  public static final String KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY = "kubernetes.trust.certificates";
   public static final String KUBERNETES_CA_CERTIFICATE_FILE_SYSTEM_PROPERTY = "kubernetes.certs.ca.file";
   public static final String KUBERNETES_CA_CERTIFICATE_DATA_SYSTEM_PROPERTY = "kubernetes.certs.ca.data";
   public static final String KUBERNETES_CLIENT_CERTIFICATE_FILE_SYSTEM_PROPERTY = "kubernetes.certs.client.file";
@@ -55,22 +62,21 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
   public static final String KUBERNETES_CLIENT_KEY_ALGO_SYSTEM_PROPERTY = "kubernetes.certs.client.key.algo";
   public static final String KUBERNETES_CLIENT_KEY_PASSPHRASE_SYSTEM_PROPERTY = "kubernetes.certs.client.key.passphrase";
 
-  public static final String KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY = "kubernetes.trust.certificates";
-
   public static final String KUBERNETES_USERNAME = "kubernetes.auth.basic.username";
   public static final String KUBERNETES_PASSWORD = "kubernetes.auth.basic.password";
 
-  public static final String KUBERNETES_TRY_SERVICE_TOKEN = "kubernetes.auth.tryServiceToken";
+  public static final String KUBERNETES_AUTH_TRY_KUBECONFIG = "kubernetes.auth.tryKubeConfig";
+  public static final String KUBERNETES_AUTH_TRY_SERVICE_ACCOUNT = "kubernetes.auth.tryServiceAccount";
   public static final String KUBERNETES_OAUTH_TOKEN = "kubernetes.auth.token";
 
   public static final String KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH = "/var/run/secrets/kubernetes.io/serviceaccount/token";
+  public static final String KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt";
 
   private AsyncHttpClient httpClient;
   private URL masterUrl;
   private URL openShiftUrl;
 
   private DefaultKubernetesClient(String masterUrl, String openShiftUrl, AsyncHttpClient httpClient) throws KubernetesClientException {
-
     if (masterUrl == null) {
       throw new KubernetesClientException("Unknown Kubernetes master URL - " +
         "please set with the builder, or set with either system property \"" + KUBERNETES_MASTER_SYSTEM_PROPERTY + "\"" +
@@ -195,6 +201,8 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
   }
 
   private static abstract class AbstractBuilder<T extends AbstractBuilder> {
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     protected boolean trustCerts = false;
     protected String masterUrl;
     protected String apiVersion = "v1";
@@ -211,6 +219,15 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
     protected String username;
     protected String password;
     protected String oauthToken;
+
+    public AbstractBuilder() {
+      if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRY_SERVICE_ACCOUNT, true)) {
+        tryServiceAccount();
+      }
+      if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRY_KUBECONFIG, true)) {
+        tryKubeConfig();
+      }
+    }
 
     public KubernetesClient build() throws KubernetesClientException {
       try {
@@ -303,15 +320,15 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
       if (configuredProtocols != null) {
         enabledProtocols = configuredProtocols.split(",");
       }
-      boolean tryServiceToken = Utils.getSystemPropertyOrEnvVar(KUBERNETES_TRY_SERVICE_TOKEN, true);
-      if (tryServiceToken) {
-        tryServiceToken();
-      }
 
       return (T) this;
     }
 
-    private void tryServiceToken() {
+    private void tryServiceAccount() {
+      boolean serviceAccountCaCertExists = Files.isRegularFile(Paths.get(KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH));
+      if (serviceAccountCaCertExists) {
+        caCertFile = KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH;
+      }
       try {
         String serviceTokenCandidate = new String(Files.readAllBytes(Paths.get(KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH)));
         if (serviceTokenCandidate != null) {
@@ -319,6 +336,36 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
         }
       } catch (IOException e) {
         // No service account token available...
+      }
+    }
+
+    private void tryKubeConfig() {
+      String kubeConfigFile = Utils.getSystemPropertyOrEnvVar(KUBERNETES_KUBECONFIG_FILE, new File(System.getProperty("user.home", "."), ".kube/config").toString());
+      boolean kubeConfigFileExists = Files.isRegularFile(Paths.get(kubeConfigFile));
+      if (kubeConfigFileExists) {
+        try {
+          Config kubeConfig = KubeConfigUtils.parseConfig(new File(kubeConfigFile));
+          Context currentContext = KubeConfigUtils.getCurrentContext(kubeConfig);
+          Cluster currentCluster = KubeConfigUtils.getCluster(kubeConfig, currentContext);
+          if (currentCluster != null) {
+            masterUrl = currentCluster.getServer();
+            trustCerts = currentCluster.getInsecureSkipTlsVerify() != null && currentCluster.getInsecureSkipTlsVerify();
+            caCertFile = currentCluster.getCertificateAuthority();
+            caCertData = currentCluster.getCertificateAuthorityData();
+            AuthInfo currentAuthInfo = KubeConfigUtils.getUserAuthInfo(kubeConfig, currentContext);
+            if (currentAuthInfo != null) {
+              clientCertFile = currentAuthInfo.getClientCertificate();
+              clientCertData = currentAuthInfo.getClientCertificateData();
+              clientKeyFile = currentAuthInfo.getClientKey();
+              clientKeyData = currentAuthInfo.getClientKeyData();
+              oauthToken = currentAuthInfo.getToken();
+              username = currentAuthInfo.getUsername();
+              password = currentAuthInfo.getPassword();
+            }
+          }
+        } catch (IOException e) {
+          logger.error("Could not load kube config file from {}", kubeConfigFile, e);
+        }
       }
     }
 
@@ -393,14 +440,15 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
       return (T) this;
     }
 
-    public T tryServiceAccountToken() {
-      tryServiceToken();
+    public T useServiceAccount() {
+      tryServiceAccount();
       return (T) this;
     }
   }
 
   public static class Builder extends AbstractBuilder<Builder> {
     public Builder() {
+      super();
     }
 
     public KubernetesClient build() throws KubernetesClientException {
@@ -410,6 +458,7 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
 
   public static class OpenShiftBuilder extends AbstractBuilder<OpenShiftBuilder> {
     public OpenShiftBuilder() {
+      super();
     }
 
     public OpenShiftClient build() throws KubernetesClientException {
