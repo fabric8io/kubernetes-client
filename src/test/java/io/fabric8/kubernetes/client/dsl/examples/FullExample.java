@@ -17,7 +17,7 @@ public class FullExample {
       master = args[0];
     }
 
-    try (final KubernetesClient client = new DefaultKubernetesClient.Builder().configFromSysPropsOrEnvVars().masterUrl(master).build()) {
+    try (final KubernetesClient client = new DefaultKubernetesClient.Builder().masterUrl(master).build()) {
       try {
         // Create a namespace for all our stuff
         Namespace ns = new NamespaceBuilder().withNewMetadata().withName("thisisatest").addToLabels("this", "rocks").endMetadata().build();

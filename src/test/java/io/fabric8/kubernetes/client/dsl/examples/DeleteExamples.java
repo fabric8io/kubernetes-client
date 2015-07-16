@@ -19,7 +19,7 @@ public class DeleteExamples {
     }
 
     try {
-      client = new DefaultKubernetesClient.Builder().configFromSysPropsOrEnvVars().masterUrl(master).build();
+      client = new DefaultKubernetesClient.Builder().masterUrl(master).build();
 
       client.namespaces().withName("test").delete();
 
