@@ -45,7 +45,7 @@ public class NamespacedResourceList<T extends HasMetadata, L extends KubernetesR
     try {
       return handleCreate(resource);
     } catch (InterruptedException | ExecutionException | IOException e) {
-      throw new KubernetesClientException("Unable to create resource", e);
+      throw KubernetesClientException.launderThrowable(e);
     }
   }
 
@@ -57,7 +57,7 @@ public class NamespacedResourceList<T extends HasMetadata, L extends KubernetesR
         try {
           create(resource);
         } catch (Exception e) {
-          throw new RuntimeException(e);
+          throw KubernetesClientException.launderThrowable(e);
         }
       }
     };
@@ -65,7 +65,7 @@ public class NamespacedResourceList<T extends HasMetadata, L extends KubernetesR
     try {
       return getDoneableClazz().getDeclaredConstructor(Visitor.class).newInstance(visitor);
     } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException e) {
-      throw new KubernetesClientException("Unable create doneable.", e);
+      throw KubernetesClientException.launderThrowable(e);
     }
   }
 
@@ -98,7 +98,7 @@ public class NamespacedResourceList<T extends HasMetadata, L extends KubernetesR
     try {
       return new NamedResource<>(name, this);
     } catch (MalformedURLException e) {
-      throw new KubernetesClientException("Malformed resource URL", e);
+      throw KubernetesClientException.launderThrowable(e);
     }
   }
 

@@ -99,7 +99,7 @@ public abstract class BaseResourceList<T extends HasMetadata, L extends Kubernet
       }
       return mapper.reader(listClazz).readValue(r.getResponseBodyAsStream());
     } catch (InterruptedException | ExecutionException | IOException e) {
-      throw new KubernetesClientException("Unable to delete resource", e);
+      throw KubernetesClientException.launderThrowable(e);
     }
   }
 
@@ -124,10 +124,8 @@ public abstract class BaseResourceList<T extends HasMetadata, L extends Kubernet
           throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
         }
       }
-    } catch (MalformedURLException e) {
-      throw new KubernetesClientException("Malformed resource URL", e);
     } catch (InterruptedException | ExecutionException | IOException e) {
-      throw new KubernetesClientException("Unable to delete resources", e);
+      throw KubernetesClientException.launderThrowable(e);
     }
   }
 
@@ -181,10 +179,8 @@ public abstract class BaseResourceList<T extends HasMetadata, L extends Kubernet
             }).build()
         );
         return f.get();
-      } catch (MalformedURLException e) {
-        throw new KubernetesClientException("Malformed resource URL", e);
-      } catch (InterruptedException | ExecutionException e) {
-        throw new KubernetesClientException("Unable to watch resources", e);
+      } catch (MalformedURLException | InterruptedException | ExecutionException e) {
+        throw KubernetesClientException.launderThrowable(e);
       }
     }
 

@@ -17,7 +17,7 @@ package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.api.model.Status;
 
-public class KubernetesClientException extends Exception {
+public class KubernetesClientException extends RuntimeException {
 
   private int code;
   private Status status;
@@ -42,5 +42,15 @@ public class KubernetesClientException extends Exception {
 
   public int getCode() {
     return code;
+  }
+
+  public static RuntimeException launderThrowable(Throwable cause) {
+    if (cause instanceof RuntimeException) {
+      return ((RuntimeException) cause);
+    } else if (cause instanceof Error) {
+      throw ((Error) cause);
+    } else {
+      throw new KubernetesClientException("An error has occurred.", cause);
+    }
   }
 }

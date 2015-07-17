@@ -55,7 +55,7 @@ public class NamedResource<T extends HasMetadata, B extends Builder<T>, D extend
     try {
       return handleGet(resourceUrl);
     } catch (InterruptedException | ExecutionException | IOException e) {
-      throw new KubernetesClientException("Unable to get resource", e);
+      throw KubernetesClientException.launderThrowable(e);
     }
   }
 
@@ -68,7 +68,7 @@ public class NamedResource<T extends HasMetadata, B extends Builder<T>, D extend
         try {
           handleUpdate(resourceUrl, resource);
         } catch (Exception e) {
-          throw new RuntimeException(e);
+          throw KubernetesClientException.launderThrowable(e);
         }
       }
     };
@@ -77,7 +77,7 @@ public class NamedResource<T extends HasMetadata, B extends Builder<T>, D extend
 
       return getDoneableClazz().getDeclaredConstructor(getClazz(), Visitor.class).newInstance(get(), visitor);
     } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException e) {
-      throw new KubernetesClientException("Unable create doneable.", e);
+      throw KubernetesClientException.launderThrowable(e);
     }
   }
 
@@ -88,7 +88,7 @@ public class NamedResource<T extends HasMetadata, B extends Builder<T>, D extend
       T updated = update.apply(getBuilderClazz().getDeclaredConstructor(getClazz()).newInstance(current));
       return handleUpdate(resourceUrl, updated);
     } catch (InterruptedException | ExecutionException | IOException | InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException e) {
-      throw new KubernetesClientException("Unable to update resource", e);
+      throw KubernetesClientException.launderThrowable(e);
     }
   }
 
@@ -99,7 +99,7 @@ public class NamedResource<T extends HasMetadata, B extends Builder<T>, D extend
       T updated = update.apply(current);
       return handleUpdate(resourceUrl, updated);
     } catch (InterruptedException | ExecutionException | IOException e) {
-      throw new KubernetesClientException("Unable to update resource", e);
+      throw KubernetesClientException.launderThrowable(e);
     }
   }
 
@@ -108,7 +108,7 @@ public class NamedResource<T extends HasMetadata, B extends Builder<T>, D extend
     try {
       handleDelete(resourceUrl);
     } catch (InterruptedException | ExecutionException | IOException e) {
-      throw new KubernetesClientException("Unable to delete resource", e);
+      throw KubernetesClientException.launderThrowable(e);
     }
   }
 }

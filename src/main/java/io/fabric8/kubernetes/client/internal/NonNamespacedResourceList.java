@@ -43,7 +43,7 @@ public class NonNamespacedResourceList<T extends HasMetadata, L extends Kubernet
     try {
       return new io.fabric8.kubernetes.client.internal.NamedResource<T, B, D>(name, this);
     } catch (MalformedURLException e) {
-      throw new KubernetesClientException("Malformed resource URL", e);
+      throw KubernetesClientException.launderThrowable(e);
     }
   }
 
@@ -52,7 +52,7 @@ public class NonNamespacedResourceList<T extends HasMetadata, L extends Kubernet
     try {
       return handleCreate(resource);
     } catch (InterruptedException | ExecutionException | IOException e) {
-      throw new KubernetesClientException("Unable to create resource", e);
+      throw KubernetesClientException.launderThrowable(e);
     }
   }
 
@@ -64,7 +64,7 @@ public class NonNamespacedResourceList<T extends HasMetadata, L extends Kubernet
         try {
           create(resource);
         } catch (Exception e) {
-          throw new RuntimeException(e);
+          throw KubernetesClientException.launderThrowable(e);
         }
       }
     };
@@ -72,7 +72,7 @@ public class NonNamespacedResourceList<T extends HasMetadata, L extends Kubernet
     try {
       return getDoneableClazz().getDeclaredConstructor(Visitor.class).newInstance(visitor);
     } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException e) {
-      throw new KubernetesClientException("Unable create doneable.", e);
+      throw KubernetesClientException.launderThrowable(e);
     }
   }
 
