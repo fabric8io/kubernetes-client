@@ -100,14 +100,14 @@ Service myservice = client.services().inNamespace("default").withName("myservice
 In the same spirit you can inline builders to create:
 
 ```java
-Namespace myns = client.namespaces().create()
+Namespace myns = client.namespaces().createNew()
                    .editMetadata()
                      .withName("myns")
                      .addToLabels("a", "label")
                    .endMetadata()
                    .done();
 
-Service myservice = client.services().inNamespace("default").create()A
+Service myservice = client.services().inNamespace("default").createNew()
                      .editMetadata()
                        .withName("myservice")
                        .addToLabels("another", "label")
