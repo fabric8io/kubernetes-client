@@ -31,20 +31,20 @@ System properties are preferred over environment variables. The following system
 * `kubernetes.api.version` / `KUBERNETES_API_VERSION`
 * `kubernetes.oapi.version` / `KUBERNETES_OAPI_VERSION`
 * `kubernetes.tls.protocols` / `KUBERNETES_TLS_PROTOCOLS`
-* `kubernetes.trust.certificates` / `KUBERNETES_TRUST_CERT`
-* `kubernetes.certs.ca.file` / `KUBERNETES_CA_CERTIFICATE_FILE`
-* `kubernetes.certs.ca.data` / `KUBERNETES_CA_CERTIFICATE_DATA`
-* `kubernetes.certs.client.file` / `KUBERNETES_CLIENT_CERTIFICATE_FILE`
-* `kubernetes.certs.client.data` / `KUBERNETES_CLIENT_CERTIFICATE_DATA`
-* `kubernetes.certs.client.key.file` / `KUBERNETES_CLIENT_KEY_FILE`
-* `kubernetes.certs.client.key.data` / `KUBERNETES_CLIENT_KEY_DATA`
-* `kubernetes.certs.client.key.algo` / `KUBERNETES_CLIENT_KEY_ALGO`
-* `kubernetes.certs.client.key.passphrase` / `KUBERNETES_CLIENT_KEY_PASSPHRASE`
+* `kubernetes.trust.certificates` / `KUBERNETES_TRUST_CERTIFICATES`
+* `kubernetes.certs.ca.file` / `KUBERNETES_CERTS_CA_FILE`
+* `kubernetes.certs.ca.data` / `KUBERNETES_CERTS_CA_DATA`
+* `kubernetes.certs.client.file` / `KUBERNETES_CERTS_CLIENT_FILE`
+* `kubernetes.certs.client.data` / `KUBERNETES_CERTS_CLIENT_DATA`
+* `kubernetes.certs.client.key.file` / `KUBERNETES_CERTS_CLIENT_KEY_FILE`
+* `kubernetes.certs.client.key.data` / `KUBERNETES_CERTS_CLIENT_KEY_DATA`
+* `kubernetes.certs.client.key.algo` / `KUBERNETES_CERTS_CLIENT_KEY_ALGO`
+* `kubernetes.certs.client.key.passphrase` / `KUBERNETES_CERTS_CLIENT_KEY_PASSPHRASE`
 * `kubernetes.auth.basic.username` / `KUBERNETES_AUTH_BASIC_USERNAME`
 * `kubernetes.auth.basic.password` / `KUBERNETES_AUTH_BASIC_PASSWORD`
 * `kubernetes.auth.tryKubeConfig` / `KUBERNETES_AUTH_TRYKUBECONFIG`
 * `kubernetes.auth.tryServiceAccount` / `KUBERNETES_AUTH_TRYSERVICEACCOUNT`
-* `kubernetes.auth.token` / `KUBERNETES_OAUTH_TOKEN`
+* `kubernetes.auth.token` / `KUBERNETES_AUTH_TOKEN`
 
 Alternatively you can use the `ConfigBuilder` to create a config object for the Kubernetes client:
 
