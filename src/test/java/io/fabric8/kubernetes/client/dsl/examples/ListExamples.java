@@ -11,15 +11,13 @@ public class ListExamples {
   private static final Logger logger = LoggerFactory.getLogger(ListExamples.class);
 
   public static void main(String[] args) {
-    KubernetesClient client = null;
-
     String master = "https://localhost:8443/";
     if (args.length == 1) {
       master = args[0];
     }
 
-    try {
-      client = new DefaultKubernetesClient.Builder().masterUrl(master).build();
+    DefaultKubernetesClient.Config config = new DefaultKubernetesClient.ConfigBuilder().masterUrl(master).build();
+    try (final KubernetesClient client = new DefaultKubernetesClient(config)) {
 
       System.out.println(
         client.namespaces().list()
@@ -42,10 +40,6 @@ public class ListExamples {
       );
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);
-    } finally {
-      if (client != null) {
-        client.close();
-      }
     }
   }
 

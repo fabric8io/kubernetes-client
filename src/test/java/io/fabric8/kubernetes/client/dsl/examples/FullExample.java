@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 public class FullExample {
 
-  private static final Logger logger = LoggerFactory.getLogger(DeleteExamples.class);
+  private static final Logger logger = LoggerFactory.getLogger(FullExample.class);
 
   public static void main(String[] args) throws InterruptedException {
     String master = "https://localhost:8443/";
@@ -17,7 +17,8 @@ public class FullExample {
       master = args[0];
     }
 
-    try (final KubernetesClient client = new DefaultKubernetesClient.Builder().masterUrl(master).build()) {
+    DefaultKubernetesClient.Config config = new DefaultKubernetesClient.ConfigBuilder().masterUrl(master).build();
+    try (final KubernetesClient client = new DefaultKubernetesClient(config)) {
       try {
         // Create a namespace for all our stuff
         Namespace ns = new NamespaceBuilder().withNewMetadata().withName("thisisatest").addToLabels("this", "rocks").endMetadata().build();
@@ -41,7 +42,7 @@ public class FullExample {
                   logger.info("{}: {}", action, resource);
                 }
               })) {
-              Thread.sleep(10000);
+              Thread.sleep(60000);
             } catch (KubernetesClientException e) {
               logger.error("Could not watch resources", e);
             } catch (InterruptedException e) {
@@ -68,6 +69,20 @@ public class FullExample {
 
         log("Created RC", client.replicationControllers().inNamespace("thisisatest").create(rc));
 
+        log("Created RC with inline DSL",
+          client.replicationControllers().inNamespace("thisisatest").create()
+            .withNewMetadata().withName("nginx2-controller").addToLabels("server", "nginx").endMetadata()
+            .withNewSpec().withReplicas(0)
+            .withNewTemplate()
+            .withNewMetadata().addToLabels("server", "nginx2").endMetadata()
+            .withNewSpec()
+            .addNewContainer().withName("nginx").withImage("nginx")
+            .addNewPort().withContainerPort(80).endPort()
+            .endContainer()
+            .endSpec()
+            .endTemplate()
+            .endSpec().done());
+
         // Get the RC by name in namespace
         log("Get RC by name in namespace", client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").get());
         // Get the RC by label
@@ -82,6 +97,8 @@ public class FullExample {
           }
         });
 
+        Thread.sleep(1000);
+
         //Update the RC inline
         client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").edit()
           .editMetadata()
@@ -92,7 +109,8 @@ public class FullExample {
         log("Updated RC");
         // Clean up the RC
         client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").delete();
-        log("Deleted RC");
+        client.replicationControllers().inNamespace("thisisatest").withName("nginx2-controller").delete();
+        log("Deleted RCs");
 
         //Create an ohter RC inline
         client.replicationControllers().inNamespace("thisisatest").create().withNewMetadata().withName("nginx-controller").addToLabels("server", "nginx").endMetadata()
@@ -126,6 +144,13 @@ public class FullExample {
       }
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);
+
+      Throwable[] suppressed = e.getSuppressed();
+      if (suppressed != null) {
+        for (Throwable t : suppressed) {
+          logger.error(t.getMessage(), t);
+        }
+      }
     }
   }
 

@@ -5,18 +5,20 @@ This client provides access to the full [Kubernetes](http://kubernetes.io/) &
 ## Usage
 
 ### Creating a client
-Due to the amount of options (mainly to do with authentication) available when creating a client, a builder API is
-provided to create the client.
-
 The easiest way to create a client is:
 
 ```java
-KubernetesClient client = new DefaultKubernetesClient.Builder().build();
+KubernetesClient client = new DefaultKubernetesClient();
+
+`DefaultKubernetesClient` implements both the `KubernetesClient` & `OpenShiftClient` interface so if you need the
+OpenShift extensions, such as `Build`s, etc then simply do:
+
+```java
+OpenShiftClient osClient = new DefaultKubernetesClient();
 ```
 
 This will use settings from different sources in the following order of priority:
 
-* Anything specified through the builder DSL methods
 * System properties
 * Environment variables
 * Kube config file
@@ -42,6 +44,13 @@ System properties are preferred over environment variables. The following system
 * `kubernetes.auth.tryKubeConfig` / `KUBERNETES_AUTH_TRYKUBECONFIG`
 * `kubernetes.auth.tryServiceAccount` / `KUBERNETES_AUTH_TRYSERVICEACCOUNT`
 * `kubernetes.auth.token` / `KUBERNETES_OAUTH_TOKEN`
+
+Alternatively you can use the `ConfigBuilder` to create a config object for the Kubernetes client:
+
+```java
+Config config = new DefaultKubernetesClient.ConfigBuilder().masterUrl("https://mymaster.com").build;
+KubernetesClient client = new DefaultKubernetesClient(config);
+```
 
 ###
 Using the DSL is the same for all resources.
@@ -72,18 +81,18 @@ Namespace myns = client.namespaces().withName("myns").delete();
 Service myservice = client.services().inNamespace("default").withName("myservice").delete();
 ```
 
-Update uses the inline builders from the Kubernetes Model:
+Editing resources uses the inline builders from the Kubernetes Model:
 
 ```java
 Namespace myns = client.namespaces().withName("myns").edit()
                    .editMetadata()
                      .addToLabels("a", "label")
                    .endMetadata()
-                   .update();
+                   .done();
 
 Service myservice = client.services().inNamespace("default").withName("myservice").edit()
                      .editMetadata()
                        .addToLabels("another", "label")
                      .endMetadata()
-                     .update();
+                     .done();
 ```
