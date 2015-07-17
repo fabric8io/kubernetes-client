@@ -1,12 +1,13 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.builder.Builder;
+import io.fabric8.kubernetes.api.builder.Visitor;
+import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.dsl.BuilderUpdate;
 import io.fabric8.kubernetes.client.dsl.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.NamedNamespacedResource;
 import io.fabric8.kubernetes.client.dsl.Update;
-import io.fabric8.kubernetes.client.dsl.Updateable;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -14,21 +15,21 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
-public class NamedResource<T extends HasMetadata, B extends Builder<T>, U extends Updateable<T>>
-  extends BaseResource<T, B, U>
-  implements io.fabric8.kubernetes.client.dsl.NamedResource<T, B, U>,
-  NamedNamespacedResource<T, B, U> {
+public class NamedResource<T extends HasMetadata, B extends Builder<T>, D extends Doneable<T>>
+  extends BaseResource<T, B, D>
+  implements io.fabric8.kubernetes.client.dsl.NamedResource<T, B, D>,
+  NamedNamespacedResource<T, B, D> {
 
   private URL resourceUrl;
 
-  NamedResource(String name, DefaultResourceList<T, ?, B, U> resourceList) throws MalformedURLException {
-    super(resourceList.getHttpClient(), resourceList.getRootUrl(), resourceList.getResourceT(), resourceList.getClazz(), resourceList.getBuilderClazz(), resourceList.getUpdateableClazz());
+  NamedResource(String name, DefaultResourceList<T, ?, B, D> resourceList) throws MalformedURLException {
+    super(resourceList.getHttpClient(), resourceList.getRootUrl(), resourceList.getResourceT(), resourceList.getClazz(), resourceList.getBuilderClazz(), resourceList.getDoneableClazz());
     URL requestUrl = getNamespacedUrl();
     this.resourceUrl = new URL(requestUrl, name);
   }
 
-  NamedResource(String name, NamespacedResourceList<T, ?, B, U> resourceList) throws MalformedURLException {
-    super(resourceList.getHttpClient(), resourceList.getRootUrl(), resourceList.getResourceT(), resourceList.getClazz(), resourceList.getBuilderClazz(), resourceList.getUpdateableClazz());
+  NamedResource(String name, NamespacedResourceList<T, ?, B, D> resourceList) throws MalformedURLException {
+    super(resourceList.getHttpClient(), resourceList.getRootUrl(), resourceList.getResourceT(), resourceList.getClazz(), resourceList.getBuilderClazz(), resourceList.getDoneableClazz());
     setNamespace(resourceList.getNamespace());
     URL requestUrl = getNamespacedUrl();
     this.resourceUrl = new URL(requestUrl, name);
@@ -44,12 +45,13 @@ public class NamedResource<T extends HasMetadata, B extends Builder<T>, U extend
   }
 
   @Override
-  public U edit() throws KubernetesClientException {
-    final Update<T> nestedUpdate = new Update<T>() {
+  public D edit() throws KubernetesClientException {
+
+    final Visitor<T> visitor = new Visitor<T>() {
       @Override
-      public T apply(T resource) {
+      public void visit(T resource) {
         try {
-          return handleUpdate(resourceUrl, resource);
+          handleUpdate(resourceUrl, resource);
         } catch (Exception e) {
           throw new RuntimeException(e);
         }
@@ -57,9 +59,10 @@ public class NamedResource<T extends HasMetadata, B extends Builder<T>, U extend
     };
 
     try {
-      return getUpdateableClazz().getDeclaredConstructor(getClazz(), Update.class).newInstance(get(), nestedUpdate);
+
+      return getDoneableClazz().getDeclaredConstructor(getClazz(), Visitor.class).newInstance(get(), visitor);
     } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException e) {
-      throw new KubernetesClientException("Unable create updatable", e);
+      throw new KubernetesClientException("Unable create doneable.", e);
     }
   }
 

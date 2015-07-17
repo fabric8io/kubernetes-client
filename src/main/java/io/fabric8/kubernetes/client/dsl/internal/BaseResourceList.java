@@ -6,12 +6,12 @@ import com.ning.http.client.ws.DefaultWebSocketListener;
 import com.ning.http.client.ws.WebSocket;
 import com.ning.http.client.ws.WebSocketUpgradeHandler;
 import io.fabric8.kubernetes.api.builder.Builder;
+import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.dsl.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.Updateable;
 import io.fabric8.kubernetes.client.dsl.Watcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,15 +25,15 @@ import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-public abstract class BaseResourceList<T extends HasMetadata, L extends KubernetesResourceList, B extends Builder<T>, U extends Updateable<T>>
-  extends BaseResource<T, B, U> {
+public abstract class BaseResourceList<T extends HasMetadata, L extends KubernetesResourceList, B extends Builder<T>, D extends Doneable<T>>
+  extends BaseResource<T, B, D> {
 
   private Class<L> listClazz;
 
   private Map<String, String> labels = new TreeMap<>();
   private Map<String, String> fields = new TreeMap<>();
 
-  protected BaseResourceList(AsyncHttpClient httpClient, URL rootUrl, String resourceT, Class<T> clazz, Class<L> listClazz, Class<B> builderClazz, Class<U> updateableClazz) {
+  protected BaseResourceList(AsyncHttpClient httpClient, URL rootUrl, String resourceT, Class<T> clazz, Class<L> listClazz, Class<B> builderClazz, Class<D> updateableClazz) {
     super(httpClient, rootUrl, resourceT, clazz, builderClazz, updateableClazz);
     this.listClazz = listClazz;
   }

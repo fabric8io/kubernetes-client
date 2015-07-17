@@ -2,18 +2,21 @@ package io.fabric8.kubernetes.client.dsl;
 
 import com.ning.http.client.ws.WebSocket;
 import io.fabric8.kubernetes.api.builder.Builder;
+import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 
 import java.util.Map;
 
-public interface NamespacedResourceList<T extends HasMetadata, L extends KubernetesResourceList, B extends Builder<T>, U extends Updateable<T>> {
+public interface NamespacedResourceList<T extends HasMetadata, L extends KubernetesResourceList, B extends Builder<T>, D extends Doneable<T>> {
 
   L list() throws KubernetesClientException;
 
   void delete() throws KubernetesClientException;
 
   T create(T resource) throws KubernetesClientException;
+
+  D create() throws KubernetesClientException;
 
   WebSocket watch(Watcher<T> watcher) throws KubernetesClientException;
 
@@ -25,6 +28,6 @@ public interface NamespacedResourceList<T extends HasMetadata, L extends Kuberne
 
   FilteredNamespacedResourceList<T, L> withField(String key, String value) throws KubernetesClientException;
 
-  NamedNamespacedResource<T, B, U> withName(String name) throws KubernetesClientException;
+  NamedNamespacedResource<T, B, D> withName(String name) throws KubernetesClientException;
 
 }

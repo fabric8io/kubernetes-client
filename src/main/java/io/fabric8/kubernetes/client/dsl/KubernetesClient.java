@@ -1,5 +1,17 @@
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.api.model.DoneableEndpoints;
+import io.fabric8.kubernetes.api.model.DoneableEvent;
+import io.fabric8.kubernetes.api.model.DoneableNamespace;
+import io.fabric8.kubernetes.api.model.DoneableNode;
+import io.fabric8.kubernetes.api.model.DoneablePersistentVolume;
+import io.fabric8.kubernetes.api.model.DoneablePersistentVolumeClaim;
+import io.fabric8.kubernetes.api.model.DoneablePod;
+import io.fabric8.kubernetes.api.model.DoneableReplicationController;
+import io.fabric8.kubernetes.api.model.DoneableResourceQuota;
+import io.fabric8.kubernetes.api.model.DoneableSecret;
+import io.fabric8.kubernetes.api.model.DoneableService;
+import io.fabric8.kubernetes.api.model.DoneableServiceAccount;
 import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsBuilder;
 import io.fabric8.kubernetes.api.model.EndpointsList;
@@ -36,45 +48,34 @@ import io.fabric8.kubernetes.api.model.ServiceAccountBuilder;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.ServiceList;
-import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableEndpoints;
-import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableEvent;
-import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableNamespace;
-import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableNode;
-import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateablePersistentVolume;
-import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateablePersistentVolumeClaim;
-import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateablePod;
-import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableReplicationController;
-import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableResourceQuota;
-import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableSecret;
-import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableService;
-import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableServiceAccount;
+
 
 public interface KubernetesClient extends AutoCloseable {
 
   void close();
 
-  NamespaceAwareResourceList<Endpoints, EndpointsList, EndpointsBuilder, UpdateableEndpoints> endpoints();
+  NamespaceAwareResourceList<Endpoints, EndpointsList, EndpointsBuilder, DoneableEndpoints> endpoints();
 
-  NamespaceAwareResourceList<Event, EventList, EventBuilder, UpdateableEvent> events();
+  NamespaceAwareResourceList<Event, EventList, EventBuilder, DoneableEvent> events();
 
-  NonNamespacedResourceList<Namespace, NamespaceList, NamespaceBuilder, UpdateableNamespace> namespaces();
+  NonNamespacedResourceList<Namespace, NamespaceList, NamespaceBuilder, DoneableNamespace> namespaces();
 
-  NonNamespacedResourceList<Node, NodeList, NodeBuilder, UpdateableNode> nodes();
+  NonNamespacedResourceList<Node, NodeList, NodeBuilder, DoneableNode> nodes();
 
-  NamespaceAwareResourceList<PersistentVolume, PersistentVolumeList, PersistentVolumeBuilder, UpdateablePersistentVolume> persistentVolumes();
+  NamespaceAwareResourceList<PersistentVolume, PersistentVolumeList, PersistentVolumeBuilder, DoneablePersistentVolume> persistentVolumes();
 
-  NamespaceAwareResourceList<PersistentVolumeClaim, PersistentVolumeClaimList, PersistentVolumeClaimBuilder, UpdateablePersistentVolumeClaim> persistentVolumeClaims();
+  NamespaceAwareResourceList<PersistentVolumeClaim, PersistentVolumeClaimList, PersistentVolumeClaimBuilder, DoneablePersistentVolumeClaim> persistentVolumeClaims();
 
-  NamespaceAwareResourceList<Pod, PodList, PodBuilder, UpdateablePod> pods();
+  NamespaceAwareResourceList<Pod, PodList, PodBuilder, DoneablePod> pods();
 
-  NamespaceAwareResourceList<ReplicationController, ReplicationControllerList, ReplicationControllerBuilder, UpdateableReplicationController> replicationControllers();
+  NamespaceAwareResourceList<ReplicationController, ReplicationControllerList, ReplicationControllerBuilder, DoneableReplicationController> replicationControllers();
 
-  NamespaceAwareResourceList<ResourceQuota, ResourceQuotaList, ResourceQuotaBuilder, UpdateableResourceQuota> resourceQuotas();
+  NamespaceAwareResourceList<ResourceQuota, ResourceQuotaList, ResourceQuotaBuilder, DoneableResourceQuota> resourceQuotas();
 
-  NamespaceAwareResourceList<Secret, SecretList, SecretBuilder, UpdateableSecret> secrets();
+  NamespaceAwareResourceList<Secret, SecretList, SecretBuilder, DoneableSecret> secrets();
 
-  NamespaceAwareResourceList<Service, ServiceList, ServiceBuilder, UpdateableService> services();
+  NamespaceAwareResourceList<Service, ServiceList, ServiceBuilder, DoneableService> services();
 
-  NamespaceAwareResourceList<ServiceAccount, ServiceAccountList, ServiceAccountBuilder, UpdateableServiceAccount> serviceAccounts();
+  NamespaceAwareResourceList<ServiceAccount, ServiceAccountList, ServiceAccountBuilder, DoneableServiceAccount> serviceAccounts();
 
 }

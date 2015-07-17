@@ -65,6 +65,7 @@ public class FullExample {
           .endSpec()
           .endTemplate()
           .endSpec().build();
+
         log("Created RC", client.replicationControllers().inNamespace("thisisatest").create(rc));
 
         // Get the RC by name in namespace
@@ -86,10 +87,27 @@ public class FullExample {
           .editMetadata()
             .addToLabels("another", "label")
           .endMetadata()
-          .update();
+          .done();
 
         log("Updated RC");
         // Clean up the RC
+        client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").delete();
+        log("Deleted RC");
+
+        //Create an ohter RC inline
+        client.replicationControllers().inNamespace("thisisatest").create().withNewMetadata().withName("nginx-controller").addToLabels("server", "nginx").endMetadata()
+          .withNewSpec().withReplicas(0)
+          .withNewTemplate()
+          .withNewMetadata().addToLabels("server", "nginx").endMetadata()
+          .withNewSpec()
+          .addNewContainer().withName("nginx").withImage("nginx")
+          .addNewPort().withContainerPort(80).endPort()
+          .endContainer()
+          .endSpec()
+          .endTemplate()
+          .endSpec().done();
+         log("Created inline RC");
+
         client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").delete();
         log("Deleted RC");
 

@@ -1,28 +1,21 @@
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableBuildConfig;
-import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableDeploymentConfig;
-import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableImageStream;
-import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableOAuthAccessToken;
-import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableOAuthAuthorizeToken;
-import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableOAuthClient;
-import io.fabric8.kubernetes.client.dsl.internal.updateables.UpdateableRoute;
 import io.fabric8.openshift.api.model.*;
 
 public interface OpenShiftClient extends KubernetesClient {
 
-  NamespaceAwareResourceList<BuildConfig, BuildConfigList, BuildConfigBuilder, UpdateableBuildConfig> buildConfigs();
+  NamespaceAwareResourceList<BuildConfig, BuildConfigList, BuildConfigBuilder, DoneableBuildConfig> buildConfigs();
 
-  NamespaceAwareResourceList<DeploymentConfig, DeploymentConfigList, DeploymentConfigBuilder, UpdateableDeploymentConfig> deploymentConfigs();
+  NamespaceAwareResourceList<DeploymentConfig, DeploymentConfigList, DeploymentConfigBuilder, DoneableDeploymentConfig> deploymentConfigs();
 
-  NamespaceAwareResourceList<ImageStream, ImageStreamList, ImageStreamBuilder, UpdateableImageStream> imageStreams();
+  NamespaceAwareResourceList<ImageStream, ImageStreamList, ImageStreamBuilder, DoneableImageStream> imageStreams();
 
-  NonNamespacedResourceList<OAuthAccessToken, OAuthAccessTokenList, OAuthAccessTokenBuilder, UpdateableOAuthAccessToken> oAuthAccessTokens();
+  NonNamespacedResourceList<OAuthAccessToken, OAuthAccessTokenList, OAuthAccessTokenBuilder, DoneableOAuthAccessToken> oAuthAccessTokens();
 
-  NonNamespacedResourceList<OAuthAuthorizeToken, OAuthAuthorizeTokenList, OAuthAuthorizeTokenBuilder, UpdateableOAuthAuthorizeToken> oAuthAuthorizeTokens();
+  NonNamespacedResourceList<OAuthAuthorizeToken, OAuthAuthorizeTokenList, OAuthAuthorizeTokenBuilder, DoneableOAuthAuthorizeToken> oAuthAuthorizeTokens();
 
-  NonNamespacedResourceList<OAuthClient, OAuthClientList, OAuthClientBuilder, UpdateableOAuthClient> oAuthClients();
+  NonNamespacedResourceList<OAuthClient, OAuthClientList, OAuthClientBuilder, DoneableOAuthClient> oAuthClients();
 
-  NamespaceAwareResourceList<Route, RouteList, RouteBuilder, UpdateableRoute> routes();
+  NamespaceAwareResourceList<Route, RouteList, RouteBuilder, DoneableRoute> routes();
 
 }

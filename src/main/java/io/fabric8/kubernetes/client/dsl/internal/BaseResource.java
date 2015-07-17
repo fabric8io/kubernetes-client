@@ -4,10 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.Response;
 import io.fabric8.kubernetes.api.builder.Builder;
+import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.dsl.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.Updateable;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -15,7 +15,7 @@ import java.net.URL;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-public class BaseResource<T extends HasMetadata, B extends Builder<T>, U extends Updateable<T>> {
+public class BaseResource<T extends HasMetadata, B extends Builder<T>, D extends Doneable<T>> {
 
   protected static final ObjectMapper mapper = new ObjectMapper();
 
@@ -28,9 +28,9 @@ public class BaseResource<T extends HasMetadata, B extends Builder<T>, U extends
 
   private Class<T> clazz;
   private Class<B> builderClazz;
-  private Class<U> updateableClazz;
+  private Class<D> updateableClazz;
 
-  protected BaseResource(AsyncHttpClient httpClient, URL rootUrl, String resourceT, Class<T> clazz, Class<B> builderClazz, Class<U> updateableClazz) {
+  protected BaseResource(AsyncHttpClient httpClient, URL rootUrl, String resourceT, Class<T> clazz, Class<B> builderClazz, Class<D> updateableClazz) {
     this.httpClient = httpClient;
     this.rootUrl = rootUrl;
     this.clazz = clazz;
@@ -43,7 +43,7 @@ public class BaseResource<T extends HasMetadata, B extends Builder<T>, U extends
     return builderClazz;
   }
 
-  public Class<U> getUpdateableClazz() {
+  public Class<D> getDoneableClazz() {
     return updateableClazz;
   }
 
