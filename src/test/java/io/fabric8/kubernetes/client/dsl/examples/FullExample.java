@@ -70,7 +70,7 @@ public class FullExample {
         log("Created RC", client.replicationControllers().inNamespace("thisisatest").create(rc));
 
         log("Created RC with inline DSL",
-          client.replicationControllers().inNamespace("thisisatest").create()
+          client.replicationControllers().inNamespace("thisisatest").createNew()
             .withNewMetadata().withName("nginx2-controller").addToLabels("server", "nginx").endMetadata()
             .withNewSpec().withReplicas(0)
             .withNewTemplate()
@@ -113,7 +113,7 @@ public class FullExample {
         log("Deleted RCs");
 
         //Create an ohter RC inline
-        client.replicationControllers().inNamespace("thisisatest").create().withNewMetadata().withName("nginx-controller").addToLabels("server", "nginx").endMetadata()
+        client.replicationControllers().inNamespace("thisisatest").createNew().withNewMetadata().withName("nginx-controller").addToLabels("server", "nginx").endMetadata()
           .withNewSpec().withReplicas(0)
           .withNewTemplate()
           .withNewMetadata().addToLabels("server", "nginx").endMetadata()

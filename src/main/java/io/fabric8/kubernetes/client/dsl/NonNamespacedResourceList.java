@@ -10,7 +10,7 @@ public interface NonNamespacedResourceList<T extends HasMetadata, L extends Kube
 
   T create(T resource) throws KubernetesClientException;
 
-  D create() throws KubernetesClientException;
+  D createNew() throws KubernetesClientException;
 
   NamedResource<T, B, D> withName(String name) throws KubernetesClientException;
 

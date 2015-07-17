@@ -16,7 +16,7 @@ public interface NamespacedResourceList<T extends HasMetadata, L extends Kuberne
 
   T create(T resource) throws KubernetesClientException;
 
-  D create() throws KubernetesClientException;
+  D createNew() throws KubernetesClientException;
 
   WebSocket watch(Watcher<T> watcher) throws KubernetesClientException;
 

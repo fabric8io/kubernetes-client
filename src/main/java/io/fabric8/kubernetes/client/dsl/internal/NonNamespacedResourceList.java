@@ -42,7 +42,7 @@ public class NonNamespacedResourceList<T extends HasMetadata, L extends Kubernet
   }
 
   @Override
-  public D create() throws KubernetesClientException {
+  public D createNew() throws KubernetesClientException {
     final Visitor<T> visitor = new Visitor<T>() {
       @Override
       public void visit(T resource) {
