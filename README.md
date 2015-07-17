@@ -9,6 +9,7 @@ The easiest way to create a client is:
 
 ```java
 KubernetesClient client = new DefaultKubernetesClient();
+```
 
 `DefaultKubernetesClient` implements both the `KubernetesClient` & `OpenShiftClient` interface so if you need the
 OpenShift extensions, such as `Build`s, etc then simply do:
