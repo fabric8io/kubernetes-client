@@ -96,3 +96,21 @@ Service myservice = client.services().inNamespace("default").withName("myservice
                      .endMetadata()
                      .done();
 ```
+
+In the same spirit you can inline builders to create:
+
+```java
+Namespace myns = client.namespaces().create()
+                   .editMetadata()
+                     .withName("myns")
+                     .addToLabels("a", "label")
+                   .endMetadata()
+                   .done();
+
+Service myservice = client.services().inNamespace("default").create()A
+                     .editMetadata()
+                       .withName("myservice")
+                       .addToLabels("another", "label")
+                     .endMetadata()
+                     .done();
+```
