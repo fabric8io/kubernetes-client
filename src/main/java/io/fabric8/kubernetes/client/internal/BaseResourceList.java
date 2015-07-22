@@ -40,12 +40,17 @@ import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import static org.apache.commons.lang.StringUtils.join;
+
 public abstract class BaseResourceList<T extends HasMetadata, L extends KubernetesResourceList, B extends Builder<T>, D extends Doneable<T>>
   extends BaseResource<T, B, D> {
 
   private Class<L> listClazz;
 
   private Map<String, String> labels = new TreeMap<>();
+  private Map<String, String> labelsNot = new TreeMap<>();
+  private Map<String, String[]> labelsIn = new TreeMap<>();
+  private Map<String, String[]> labelsNotIn = new TreeMap<>();
   private Map<String, String> fields = new TreeMap<>();
 
   protected BaseResourceList(AsyncHttpClient httpClient, URL rootUrl, String resourceT, Class<T> clazz, Class<L> listClazz, Class<B> builderClazz, Class<D> updateableClazz) {
@@ -61,6 +66,18 @@ public abstract class BaseResourceList<T extends HasMetadata, L extends Kubernet
     return labels;
   }
 
+  public Map<String, String[]> getLabelsNotIn() {
+    return labelsNotIn;
+  }
+
+  public Map<String, String[]> getLabelsIn() {
+    return labelsIn;
+  }
+
+  public Map<String, String> getLabelsNot() {
+    return labelsNot;
+  }
+
   protected Class<L> getListClazz() {
     return listClazz;
   }
@@ -69,26 +86,57 @@ public abstract class BaseResourceList<T extends HasMetadata, L extends Kubernet
     try {
       URL requestUrl = getNamespacedUrl();
       AsyncHttpClient.BoundRequestBuilder requestBuilder = getHttpClient().prepareGet(requestUrl.toString());
+      StringBuilder sb = new StringBuilder();
       if (labels != null && !labels.isEmpty()) {
-        StringBuilder sb = new StringBuilder();
+        if (sb.length() > 0) {
+          sb.append(",");
+        }
         for (Iterator<Map.Entry<String, String>> iter = labels.entrySet().iterator(); iter.hasNext(); ) {
           Map.Entry<String, String> entry = iter.next();
           sb.append(entry.getKey()).append("=").append(entry.getValue());
-          if (iter.hasNext()) {
+        }
+      }
+      if (labelsNot != null && !labelsNot.isEmpty()) {
+        for (Iterator<Map.Entry<String, String>> iter = labelsNot.entrySet().iterator(); iter.hasNext(); ) {
+          if (sb.length() > 0) {
             sb.append(",");
           }
+          Map.Entry<String, String> entry = iter.next();
+          sb.append(entry.getKey()).append("!=").append(entry.getValue());
         }
+      }
+      if (labelsIn != null && !labelsIn.isEmpty()) {
+        for (Iterator<Map.Entry<String, String[]>> iter = labelsIn.entrySet().iterator(); iter.hasNext(); ) {
+          if (sb.length() > 0) {
+            sb.append(",");
+          }
+          Map.Entry<String, String[]> entry = iter.next();
+          sb.append(entry.getKey()).append(" in ").append("(").append(join(entry.getValue(), ",")).append(")");
+        }
+      }
+      if (labelsNotIn != null && !labelsNotIn.isEmpty()) {
+        for (Iterator<Map.Entry<String, String[]>> iter = labelsNotIn.entrySet().iterator(); iter.hasNext(); ) {
+          if (sb.length() > 0) {
+            sb.append(",");
+          }
+          Map.Entry<String, String[]> entry = iter.next();
+          sb.append(entry.getKey()).append(" notin ").append("(").append(join(entry.getValue(), ",")).append(")");
+        }
+      }
+      if (sb.length() > 0) {
         requestBuilder.addQueryParam("labelSelector", sb.toString());
       }
+
+      sb = new StringBuilder();
       if (fields != null && !fields.isEmpty()) {
-        StringBuilder sb = new StringBuilder();
+        if (sb.length() > 0) {
+          sb.append(",");
+        }
         for (Iterator<Map.Entry<String, String>> iter = fields.entrySet().iterator(); iter.hasNext(); ) {
           Map.Entry<String, String> entry = iter.next();
           sb.append(entry.getKey()).append("=").append(entry.getValue());
-          if (iter.hasNext()) {
-            sb.append(",");
-          }
         }
+      }if (sb.length() > 0) {
         requestBuilder.addQueryParam("fieldSelector", sb.toString());
       }
       Future<Response> f = requestBuilder.execute();

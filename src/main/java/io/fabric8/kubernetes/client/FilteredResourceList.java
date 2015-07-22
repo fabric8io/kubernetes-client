@@ -28,7 +28,15 @@ public interface FilteredResourceList<T extends HasMetadata, L extends Kubernete
 
   FilteredResourceList<T, L> withLabels(Map<String, String> labels) throws KubernetesClientException;
 
+  FilteredResourceList<T, L> withoutLabels(Map<String, String> labels) throws KubernetesClientException;
+
+  FilteredResourceList<T, L> withLabelIn(String key, String ... values) throws KubernetesClientException;
+
+  FilteredResourceList<T, L> withLabelNotIn(String key, String ... values) throws KubernetesClientException;
+
   FilteredResourceList<T, L> withLabel(String key, String value) throws KubernetesClientException;
+
+  FilteredResourceList<T, L> withoutLabel(String key, String value) throws KubernetesClientException;
 
   FilteredResourceList<T, L> withFields(Map<String, String> labels) throws KubernetesClientException;
 

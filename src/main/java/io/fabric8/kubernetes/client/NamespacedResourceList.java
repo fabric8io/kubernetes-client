@@ -37,7 +37,15 @@ public interface NamespacedResourceList<T extends HasMetadata, L extends Kuberne
 
   FilteredNamespacedResourceList<T, L> withLabels(Map<String, String> labels) throws KubernetesClientException;
 
+  FilteredNamespacedResourceList<T, L> withoutLabels(Map<String, String> labels) throws KubernetesClientException;
+
+  FilteredNamespacedResourceList<T, L> withLabelIn(String key, String ... values) throws KubernetesClientException;
+
+  FilteredNamespacedResourceList<T, L> withLabelNotIn(String key, String ... values) throws KubernetesClientException;
+
   FilteredNamespacedResourceList<T, L> withLabel(String key, String value) throws KubernetesClientException;
+
+  FilteredNamespacedResourceList<T, L> withoutLabel(String key, String value) throws KubernetesClientException;
 
   FilteredNamespacedResourceList<T, L> withFields(Map<String, String> labels) throws KubernetesClientException;
 

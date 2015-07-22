@@ -16,12 +16,13 @@
 package io.fabric8.kubernetes.client.internal;
 
 import com.ning.http.client.AsyncHttpClient;
-import io.fabric8.kubernetes.api.model.Doneable;
-import io.fabric8.kubernetes.client.FilteredResourceList;
-import io.fabric8.kubernetes.client.ResourceList;
 import io.fabric8.kubernetes.api.builder.Builder;
+import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.client.FilteredResourceList;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.ResourceList;
 
 import java.net.URL;
 import java.util.Map;
@@ -42,8 +43,32 @@ public class DefaultResourceList<T extends HasMetadata, L extends KubernetesReso
   }
 
   @Override
+  public FilteredResourceList<T, L> withoutLabels(Map<String, String> labels) throws KubernetesClientException {
+    getLabelsNot().putAll(labels);
+    return this;
+  }
+
+  @Override
+  public FilteredResourceList<T, L> withLabelIn(String key, String... values) throws KubernetesClientException {
+    getLabelsIn().put(key, values);
+    return this;
+  }
+
+  @Override
+  public FilteredResourceList<T, L> withLabelNotIn(String key, String... values) throws KubernetesClientException {
+    getLabelsNotIn().put(key, values);
+    return this;
+  }
+
+  @Override
   public FilteredResourceList<T, L> withLabel(String key, String value) {
     getLabels().put(key, value);
+    return this;
+  }
+
+  @Override
+  public FilteredResourceList<T, L> withoutLabel(String key, String value) throws KubernetesClientException {
+    getLabelsNot().put(key, value);
     return this;
   }
 

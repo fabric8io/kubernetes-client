@@ -76,8 +76,32 @@ public class NamespacedResourceList<T extends HasMetadata, L extends KubernetesR
   }
 
   @Override
+  public FilteredNamespacedResourceList<T, L> withoutLabels(Map<String, String> labels) throws KubernetesClientException {
+    getLabelsNot().putAll(labels);
+    return this;
+  }
+
+  @Override
+  public FilteredNamespacedResourceList<T, L> withLabelIn(String key, String... values) throws KubernetesClientException {
+    getLabelsIn().put(key, values);
+    return this;
+  }
+
+  @Override
+  public FilteredNamespacedResourceList<T, L> withLabelNotIn(String key, String... values) throws KubernetesClientException {
+    getLabelsNotIn().put(key, values);
+    return this;
+  }
+
+  @Override
   public FilteredNamespacedResourceList<T, L> withLabel(String key, String value) {
     getLabels().put(key, value);
+    return this;
+  }
+
+  @Override
+  public FilteredNamespacedResourceList<T, L> withoutLabel(String key, String value) throws KubernetesClientException {
+    getLabelsNot().put(key, value);
     return this;
   }
 

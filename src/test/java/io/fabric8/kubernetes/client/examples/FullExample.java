@@ -101,6 +101,12 @@ public class FullExample {
         log("Get RC by name in namespace", client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").get());
         // Get the RC by label
         log("Get RC by label", client.replicationControllers().withLabel("server", "nginx").list());
+        // Get the RC without label
+        log("Get RC without label", client.replicationControllers().withoutLabel("server", "apache").list());
+        // Get the RC with label in
+        log("Get RC with label in", client.replicationControllers().withLabelIn("server", "nginx").list());
+        // Get the RC with label in
+        log("Get RC with label not in", client.replicationControllers().withLabelNotIn("server", "apache").list());
         // Get the RC by label in namespace
         log("Get RC by label in namespace", client.replicationControllers().inNamespace("thisisatest").withLabel("server", "nginx").list());
         // Update the RC
