@@ -28,40 +28,28 @@ import io.fabric8.kubernetes.api.model.DoneableSecret;
 import io.fabric8.kubernetes.api.model.DoneableService;
 import io.fabric8.kubernetes.api.model.DoneableServiceAccount;
 import io.fabric8.kubernetes.api.model.Endpoints;
-import io.fabric8.kubernetes.api.model.EndpointsBuilder;
 import io.fabric8.kubernetes.api.model.EndpointsList;
 import io.fabric8.kubernetes.api.model.Event;
-import io.fabric8.kubernetes.api.model.EventBuilder;
 import io.fabric8.kubernetes.api.model.EventList;
 import io.fabric8.kubernetes.api.model.Namespace;
-import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.api.model.NamespaceList;
 import io.fabric8.kubernetes.api.model.Node;
-import io.fabric8.kubernetes.api.model.NodeBuilder;
 import io.fabric8.kubernetes.api.model.NodeList;
 import io.fabric8.kubernetes.api.model.PersistentVolume;
-import io.fabric8.kubernetes.api.model.PersistentVolumeBuilder;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaimBuilder;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaimList;
 import io.fabric8.kubernetes.api.model.PersistentVolumeList;
 import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.ReplicationController;
-import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.api.model.ResourceQuota;
-import io.fabric8.kubernetes.api.model.ResourceQuotaBuilder;
 import io.fabric8.kubernetes.api.model.ResourceQuotaList;
 import io.fabric8.kubernetes.api.model.Secret;
-import io.fabric8.kubernetes.api.model.SecretBuilder;
 import io.fabric8.kubernetes.api.model.SecretList;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
-import io.fabric8.kubernetes.api.model.ServiceAccountBuilder;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
-import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.ServiceList;
 
 
@@ -69,28 +57,28 @@ public interface KubernetesClient extends AutoCloseable {
 
   void close();
 
-  NamespaceAwareResourceList<Endpoints, EndpointsList, EndpointsBuilder, DoneableEndpoints> endpoints();
+  Operation<Endpoints, EndpointsList, DoneableEndpoints> endpoints();
 
-  NamespaceAwareResourceList<Event, EventList, EventBuilder, DoneableEvent> events();
+  Operation<Event, EventList, DoneableEvent> events();
 
-  NonNamespacedResourceList<Namespace, NamespaceList, NamespaceBuilder, DoneableNamespace> namespaces();
+  NonNamespaceOperation<Namespace, NamespaceList, DoneableNamespace> namespaces();
 
-  NonNamespacedResourceList<Node, NodeList, NodeBuilder, DoneableNode> nodes();
+  NonNamespaceOperation<Node, NodeList, DoneableNode> nodes();
 
-  NamespaceAwareResourceList<PersistentVolume, PersistentVolumeList, PersistentVolumeBuilder, DoneablePersistentVolume> persistentVolumes();
+  Operation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume> persistentVolumes();
 
-  NamespaceAwareResourceList<PersistentVolumeClaim, PersistentVolumeClaimList, PersistentVolumeClaimBuilder, DoneablePersistentVolumeClaim> persistentVolumeClaims();
+  Operation<PersistentVolumeClaim, PersistentVolumeClaimList,  DoneablePersistentVolumeClaim> persistentVolumeClaims();
 
-  NamespaceAwareResourceList<Pod, PodList, PodBuilder, DoneablePod> pods();
+  Operation<Pod, PodList, DoneablePod> pods();
 
-  NamespaceAwareResourceList<ReplicationController, ReplicationControllerList, ReplicationControllerBuilder, DoneableReplicationController> replicationControllers();
+  Operation<ReplicationController, ReplicationControllerList, DoneableReplicationController> replicationControllers();
 
-  NamespaceAwareResourceList<ResourceQuota, ResourceQuotaList, ResourceQuotaBuilder, DoneableResourceQuota> resourceQuotas();
+  Operation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota> resourceQuotas();
 
-  NamespaceAwareResourceList<Secret, SecretList, SecretBuilder, DoneableSecret> secrets();
+  Operation<Secret, SecretList,  DoneableSecret> secrets();
 
-  NamespaceAwareResourceList<Service, ServiceList, ServiceBuilder, DoneableService> services();
+  Operation<Service, ServiceList,  DoneableService> services();
 
-  NamespaceAwareResourceList<ServiceAccount, ServiceAccountList, ServiceAccountBuilder, DoneableServiceAccount> serviceAccounts();
+  Operation<ServiceAccount, ServiceAccountList,  DoneableServiceAccount> serviceAccounts();
 
 }

@@ -15,11 +15,9 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.builder.Builder;
-import io.fabric8.kubernetes.api.model.HasMetadata;
+public interface Createable<T, D> {
 
-public interface BuilderUpdate<T extends HasMetadata, B extends Builder<T>> {
+  T create(T item);
 
-  T apply(B builder);
-
+  D createNew();
 }

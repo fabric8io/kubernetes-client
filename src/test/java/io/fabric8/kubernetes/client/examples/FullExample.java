@@ -110,12 +110,7 @@ public class FullExample {
         // Get the RC by label in namespace
         log("Get RC by label in namespace", client.replicationControllers().inNamespace("thisisatest").withLabel("server", "nginx").list());
         // Update the RC
-        client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").update(new BuilderUpdate<ReplicationController, ReplicationControllerBuilder>() {
-          @Override
-          public ReplicationController apply(ReplicationControllerBuilder builder) {
-            return builder.editMetadata().addToLabels("new", "label").endMetadata().build();
-          }
-        });
+        client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").edit().editMetadata().addToLabels("new", "label").endMetadata().done();
 
         Thread.sleep(1000);
 
