@@ -40,7 +40,7 @@ import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import static org.apache.commons.lang.StringUtils.join;
+import static io.fabric8.kubernetes.client.internal.Utils.join;
 
 public abstract class BaseResourceList<T extends HasMetadata, L extends KubernetesResourceList, B extends Builder<T>, D extends Doneable<T>>
   extends BaseResource<T, B, D> {
@@ -111,7 +111,7 @@ public abstract class BaseResourceList<T extends HasMetadata, L extends Kubernet
             sb.append(",");
           }
           Map.Entry<String, String[]> entry = iter.next();
-          sb.append(entry.getKey()).append(" in ").append("(").append(join(entry.getValue(), ",")).append(")");
+          sb.append(entry.getKey()).append(" in ").append("(").append(join(entry.getValue())).append(")");
         }
       }
       if (labelsNotIn != null && !labelsNotIn.isEmpty()) {
@@ -120,7 +120,7 @@ public abstract class BaseResourceList<T extends HasMetadata, L extends Kubernet
             sb.append(",");
           }
           Map.Entry<String, String[]> entry = iter.next();
-          sb.append(entry.getKey()).append(" notin ").append("(").append(join(entry.getValue(), ",")).append(")");
+          sb.append(entry.getKey()).append(" notin ").append("(").append(join(entry.getValue())).append(")");
         }
       }
       if (sb.length() > 0) {

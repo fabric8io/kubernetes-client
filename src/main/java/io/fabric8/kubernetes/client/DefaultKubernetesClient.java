@@ -39,6 +39,9 @@ import java.security.*;
 import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
 
+import static io.fabric8.kubernetes.client.internal.CertUtils.createKeyStore;
+import static io.fabric8.kubernetes.client.internal.CertUtils.createTrustStore;
+
 public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClient {
 
   public static final String KUBERNETES_MASTER_SYSTEM_PROPERTY = "kubernetes.master";
@@ -98,7 +101,7 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
 
       TrustManager[] trustManagers = null;
       if (config.getCaCertFile() != null || config.getCaCertData() != null) {
-        KeyStore trustStore = Utils.createTrustStore(config.getCaCertData(), config.getCaCertFile());
+        KeyStore trustStore = createTrustStore(config.getCaCertData(), config.getCaCertFile());
         TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
         tmf.init(trustStore);
         trustManagers = tmf.getTrustManagers();
@@ -106,7 +109,7 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
 
       KeyManager[] keyManagers = null;
       if ((config.getClientCertFile() != null || config.getClientCertData() != null) && (config.getClientKeyFile() != null || config.getClientKeyData() != null)) {
-        KeyStore keyStore = Utils.createKeyStore(config.getClientCertData(), config.getClientCertFile(), config.getClientKeyData(), config.getClientKeyFile(), config.getClientKeyAlgo(), config.getClientKeyPassphrase());
+        KeyStore keyStore = createKeyStore(config.getClientCertData(), config.getClientCertFile(), config.getClientKeyData(), config.getClientKeyFile(), config.getClientKeyAlgo(), config.getClientKeyPassphrase());
         KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
         kmf.init(keyStore, config.getClientKeyPassphrase());
         keyManagers = kmf.getKeyManagers();
