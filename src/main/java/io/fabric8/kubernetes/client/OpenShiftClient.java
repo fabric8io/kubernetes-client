@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.Operation;
 import io.fabric8.openshift.api.model.*;
 
 public interface OpenShiftClient extends KubernetesClient {
