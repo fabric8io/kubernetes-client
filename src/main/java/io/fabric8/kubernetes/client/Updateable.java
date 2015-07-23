@@ -17,5 +17,5 @@ package io.fabric8.kubernetes.client;
 
 public interface Updateable<T> {
 
-  void update(T item);
+  T update(T item);
 }

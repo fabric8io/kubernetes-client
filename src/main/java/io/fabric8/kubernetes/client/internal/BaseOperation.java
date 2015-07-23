@@ -383,9 +383,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public void update(T item) {
+  public T update(T item) {
     try {
-      handleUpdate(getResourceUrl(), item);
+      return handleUpdate(getResourceUrl(), item);
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
