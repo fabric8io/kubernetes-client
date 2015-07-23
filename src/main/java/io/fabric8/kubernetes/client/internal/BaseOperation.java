@@ -31,7 +31,7 @@ import io.fabric8.kubernetes.client.CreateWatchListDeleteable;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.FilterWatchListDeleteable;
-import io.fabric8.kubernetes.client.GetEditDeleteWatchable;
+import io.fabric8.kubernetes.client.GetEditUpdateDeleteWatchable;
 import io.fabric8.kubernetes.client.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.Operation;
 import org.slf4j.Logger;
@@ -54,7 +54,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   implements Operation<T, L, D>,
   NonNamespaceOperation<T,L,D>,
   CreateWatchListDeleteable<T,L,D>,
-  GetEditDeleteWatchable<T, D> {
+  GetEditUpdateDeleteWatchable<T, D> {
 
   protected static final ObjectMapper mapper = new ObjectMapper();
 
@@ -132,7 +132,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public GetEditDeleteWatchable<T, D> withName(String name) {
+  public GetEditUpdateDeleteWatchable<T, D> withName(String name) {
     try {
       return getClass()
         .getConstructor(AsyncHttpClient.class, URL.class, String.class, String.class)
@@ -378,6 +378,15 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       );
       return f.get();
     } catch (MalformedURLException | InterruptedException | ExecutionException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+
+  @Override
+  public void update(T item) {
+    try {
+      handleUpdate(getResourceUrl(), item);
+    } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
   }

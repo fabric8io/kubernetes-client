@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2015 Red Hat, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,5 +15,7 @@
  */
 package io.fabric8.kubernetes.client;
 
-public interface GetEditDeleteWatchable<T, D> extends Gettable<T>, Editable<D>, Deleteable<T>, Watchable<T> {
+public interface Updateable<T> {
+
+  void update(T item);
 }
