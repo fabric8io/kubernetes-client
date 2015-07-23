@@ -16,13 +16,15 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.ning.http.client.AsyncHttpClient;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.openshift.api.model.DoneableOAuthAccessToken;
 import io.fabric8.openshift.api.model.OAuthAccessToken;
 import io.fabric8.openshift.api.model.OAuthAccessTokenList;
 
 import java.net.URL;
 
-public class OAuthAccessTokenOperationsImpl extends BaseOperation<OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken> {
+public class OAuthAccessTokenOperationsImpl extends BaseOperation<OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken,
+  Resource<OAuthAccessToken, DoneableOAuthAccessToken>> {
 
   public OAuthAccessTokenOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "oauthaccesstokens", null, null, OAuthAccessToken.class, OAuthAccessTokenList.class, DoneableOAuthAccessToken.class);

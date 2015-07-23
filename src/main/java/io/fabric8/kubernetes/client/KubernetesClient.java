@@ -53,6 +53,9 @@ import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Operation;
+import io.fabric8.kubernetes.client.dsl.ProcessableResource;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.ScaleableResource;
 import io.fabric8.openshift.api.model.DoneableTemplate;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateList;
@@ -62,30 +65,30 @@ public interface KubernetesClient extends AutoCloseable {
 
   void close();
 
-  Operation<Endpoints, EndpointsList, DoneableEndpoints> endpoints();
+  Operation<Endpoints, EndpointsList, DoneableEndpoints, Resource<Endpoints, DoneableEndpoints>> endpoints();
 
-  Operation<Event, EventList, DoneableEvent> events();
+  Operation<Event, EventList, DoneableEvent, Resource<Event, DoneableEvent>> events();
 
-  NonNamespaceOperation<Namespace, NamespaceList, DoneableNamespace> namespaces();
+  NonNamespaceOperation<Namespace, NamespaceList, DoneableNamespace, Resource<Namespace, DoneableNamespace>> namespaces();
 
-  NonNamespaceOperation<Node, NodeList, DoneableNode> nodes();
+  NonNamespaceOperation<Node, NodeList, DoneableNode, Resource<Node, DoneableNode>> nodes();
 
-  Operation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume> persistentVolumes();
+  Operation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, Resource<PersistentVolume, DoneablePersistentVolume>> persistentVolumes();
 
-  Operation<PersistentVolumeClaim, PersistentVolumeClaimList,  DoneablePersistentVolumeClaim> persistentVolumeClaims();
+  Operation<PersistentVolumeClaim, PersistentVolumeClaimList,  DoneablePersistentVolumeClaim, Resource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> persistentVolumeClaims();
 
-  Operation<Pod, PodList, DoneablePod> pods();
+  Operation<Pod, PodList, DoneablePod, Resource<Pod, DoneablePod>> pods();
 
-  Operation<ReplicationController, ReplicationControllerList, DoneableReplicationController> replicationControllers();
+  Operation<ReplicationController, ReplicationControllerList, DoneableReplicationController, ScaleableResource<ReplicationController, DoneableReplicationController>> replicationControllers();
 
-  Operation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota> resourceQuotas();
+  Operation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota, Resource<ResourceQuota, DoneableResourceQuota>> resourceQuotas();
 
-  Operation<Secret, SecretList,  DoneableSecret> secrets();
+  Operation<Secret, SecretList,  DoneableSecret,Resource<Secret, DoneableSecret>> secrets();
 
-  Operation<Service, ServiceList,  DoneableService> services();
+  Operation<Service, ServiceList,  DoneableService, Resource<Service, DoneableService>> services();
 
-  Operation<ServiceAccount, ServiceAccountList,  DoneableServiceAccount> serviceAccounts();
+  Operation<ServiceAccount, ServiceAccountList,  DoneableServiceAccount, Resource<ServiceAccount, DoneableServiceAccount>> serviceAccounts();
 
-  Operation<Template, TemplateList, DoneableTemplate> templates();
+  Operation<Template, TemplateList, DoneableTemplate, ProcessableResource<Template, DoneableTemplate>> templates();
 
 }

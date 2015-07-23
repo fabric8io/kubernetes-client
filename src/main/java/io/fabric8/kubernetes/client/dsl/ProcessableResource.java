@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Operation<T, L, D, R extends Resource<T, D>> extends
-  Namespaceable<NonNamespaceOperation<T, L, D, R>>,
-  FilterWatchListDeleteable<T, L> {
+public interface ProcessableResource<T, D> extends Resource<T,D>,
+  Processable<T> {
 }

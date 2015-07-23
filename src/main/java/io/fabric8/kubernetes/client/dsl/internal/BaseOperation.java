@@ -27,13 +27,15 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.WatchEvent;
-import io.fabric8.kubernetes.client.dsl.CreateWatchListDeleteable;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.dsl.CreateWatchListDeleteable;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeleteable;
-import io.fabric8.kubernetes.client.dsl.GetEditUpdateDeleteWatchable;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Operation;
+import io.fabric8.kubernetes.client.dsl.Processable;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.Scaleable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,11 +52,13 @@ import java.util.concurrent.Future;
 
 import static io.fabric8.kubernetes.client.internal.Utils.join;
 
-public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>>
-  implements Operation<T, L, D>,
-  NonNamespaceOperation<T,L,D>,
-  CreateWatchListDeleteable<T,L,D>,
-  GetEditUpdateDeleteWatchable<T, D> {
+public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
+  implements Operation<T, L, D, R>,
+  NonNamespaceOperation<T, L, D, R>,
+  CreateWatchListDeleteable<T, L, D>,
+  Resource<T,D>,
+  Processable<T>,
+  Scaleable {
 
   protected static final ObjectMapper mapper = new ObjectMapper();
 
@@ -132,9 +136,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public GetEditUpdateDeleteWatchable<T, D> withName(String name) {
+  public R withName(String name) {
     try {
-      return getClass()
+      return (R) getClass()
         .getConstructor(AsyncHttpClient.class, URL.class, String.class, String.class)
         .newInstance(httpClient, rootUrl, namespace, name);
     } catch (Throwable t) {
@@ -143,7 +147,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public NonNamespaceOperation<T, L, D> inNamespace(String namespace) {
+  public NonNamespaceOperation<T, L, D, R> inNamespace(String namespace) {
     try {
       return getClass()
         .getConstructor(AsyncHttpClient.class, URL.class, String.class, String.class)
@@ -152,7 +156,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       throw KubernetesClientException.launderThrowable(t);
     }
   }
-
 
 
   @Override
@@ -203,7 +206,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public FilterWatchListDeleteable<T, L>withLabelNotIn(String key, String... values) throws KubernetesClientException {
+  public FilterWatchListDeleteable<T, L> withLabelNotIn(String key, String... values) throws KubernetesClientException {
     labelsNotIn.put(key, values);
     return this;
   }
@@ -221,7 +224,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public FilterWatchListDeleteable<T, L>withFields(Map<String, String> labels) {
+  public FilterWatchListDeleteable<T, L> withFields(Map<String, String> labels) {
     fields.putAll(labels);
     return this;
   }
@@ -286,7 +289,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
           Map.Entry<String, String> entry = iter.next();
           sb.append(entry.getKey()).append("=").append(entry.getValue());
         }
-      }if (sb.length() > 0) {
+      }
+      if (sb.length() > 0) {
         requestBuilder.addQueryParam("fieldSelector", sb.toString());
       }
       Future<Response> f = requestBuilder.execute();
@@ -468,5 +472,15 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   public Class<D> getDoneableType() {
     return doneableType;
+  }
+
+  @Override
+  public void process(T item) {
+    throw new UnsupportedOperationException("Not implemented yet.");
+  }
+
+  @Override
+  public void scale(int count) {
+    throw new UnsupportedOperationException("Not implemented yet.");
   }
 }

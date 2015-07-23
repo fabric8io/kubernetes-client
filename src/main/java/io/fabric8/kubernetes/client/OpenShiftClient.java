@@ -17,22 +17,23 @@ package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Operation;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.openshift.api.model.*;
 
 public interface OpenShiftClient extends KubernetesClient {
 
-  Operation<BuildConfig, BuildConfigList, DoneableBuildConfig> buildConfigs();
+  Operation<BuildConfig, BuildConfigList, DoneableBuildConfig, Resource<BuildConfig, DoneableBuildConfig>> buildConfigs();
 
-  Operation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig> deploymentConfigs();
+  Operation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, Resource<DeploymentConfig, DoneableDeploymentConfig>> deploymentConfigs();
 
-  Operation<ImageStream, ImageStreamList, DoneableImageStream> imageStreams();
+  Operation<ImageStream, ImageStreamList, DoneableImageStream, Resource<ImageStream, DoneableImageStream>> imageStreams();
 
-  NonNamespaceOperation<OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken> oAuthAccessTokens();
+  NonNamespaceOperation<OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken, Resource<OAuthAccessToken, DoneableOAuthAccessToken>> oAuthAccessTokens();
 
-  NonNamespaceOperation<OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken> oAuthAuthorizeTokens();
+  NonNamespaceOperation<OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken, Resource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken>> oAuthAuthorizeTokens();
 
-  NonNamespaceOperation<OAuthClient, OAuthClientList, DoneableOAuthClient> oAuthClients();
+  NonNamespaceOperation<OAuthClient, OAuthClientList, DoneableOAuthClient, Resource<OAuthClient, DoneableOAuthClient>> oAuthClients();
 
-  Operation<Route, RouteList, DoneableRoute> routes();
+  Operation<Route, RouteList, DoneableRoute, Resource<Route, DoneableRoute>> routes();
 
 }

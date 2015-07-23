@@ -16,13 +16,15 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.ning.http.client.AsyncHttpClient;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigList;
 import io.fabric8.openshift.api.model.DoneableBuildConfig;
 
 import java.net.URL;
 
-public class BuildConfigOperationsImpl extends BaseOperation<BuildConfig, BuildConfigList, DoneableBuildConfig> {
+public class BuildConfigOperationsImpl extends BaseOperation<BuildConfig, BuildConfigList, DoneableBuildConfig,
+  Resource<BuildConfig, DoneableBuildConfig>> {
 
   public BuildConfigOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "buildconfigs", null, null, BuildConfig.class, BuildConfigList.class, DoneableBuildConfig.class);

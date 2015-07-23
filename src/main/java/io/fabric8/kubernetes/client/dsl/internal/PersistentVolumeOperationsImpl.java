@@ -19,10 +19,11 @@ import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.DoneablePersistentVolume;
 import io.fabric8.kubernetes.api.model.PersistentVolume;
 import io.fabric8.kubernetes.api.model.PersistentVolumeList;
+import io.fabric8.kubernetes.client.dsl.Resource;
 
 import java.net.URL;
 
-public class PersistentVolumeOperationsImpl extends BaseOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume> {
+public class PersistentVolumeOperationsImpl extends BaseOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, Resource<PersistentVolume, DoneablePersistentVolume>> {
 
   public PersistentVolumeOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "persistentvolumes", null, null, PersistentVolume.class, PersistentVolumeList.class, DoneablePersistentVolume.class);

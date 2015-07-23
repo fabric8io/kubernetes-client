@@ -16,13 +16,15 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.ning.http.client.AsyncHttpClient;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.api.model.DoneableDeploymentConfig;
 
 import java.net.URL;
 
-public class DeploymentConfigOperationsImpl extends BaseOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig> {
+public class DeploymentConfigOperationsImpl extends BaseOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig,
+  Resource<DeploymentConfig, DoneableDeploymentConfig>> {
 
   public DeploymentConfigOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "deploymentconfigs", null, null, DeploymentConfig.class, DeploymentConfigList.class, DoneableDeploymentConfig.class);

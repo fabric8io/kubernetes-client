@@ -19,10 +19,12 @@ import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableEndpoints;
 import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsList;
+import io.fabric8.kubernetes.client.dsl.Resource;
 
 import java.net.URL;
 
-public class EndpointsOperationsImpl extends BaseOperation<Endpoints, EndpointsList, DoneableEndpoints> {
+public class EndpointsOperationsImpl extends BaseOperation<Endpoints, EndpointsList, DoneableEndpoints,
+  Resource<Endpoints, DoneableEndpoints>> {
 
   public EndpointsOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "endpoints", null, null, Endpoints.class, EndpointsList.class, DoneableEndpoints.class);

@@ -24,6 +24,9 @@ import com.ning.http.client.filter.RequestFilter;
 import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Operation;
+import io.fabric8.kubernetes.client.dsl.ProcessableResource;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.ScaleableResource;
 import io.fabric8.kubernetes.client.dsl.internal.BuildConfigOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.DeploymentConfigOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.EndpointsOperationsImpl;
@@ -181,102 +184,102 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
   }
 
   @Override
-  public Operation<Endpoints, EndpointsList, DoneableEndpoints> endpoints() {
+  public Operation<Endpoints, EndpointsList, DoneableEndpoints, Resource<Endpoints, DoneableEndpoints>> endpoints() {
     return new EndpointsOperationsImpl( httpClient, masterUrl);
   }
 
   @Override
-  public Operation<Event, EventList, DoneableEvent> events() {
+  public Operation<Event, EventList, DoneableEvent, Resource<Event, DoneableEvent>> events() {
     return new EventOperationsImpl(httpClient, masterUrl);
   }
 
   @Override
-  public NonNamespaceOperation<Namespace, NamespaceList, DoneableNamespace> namespaces() {
+  public NonNamespaceOperation<Namespace, NamespaceList, DoneableNamespace, Resource<Namespace, DoneableNamespace>> namespaces() {
     return new NamespaceOperationsImpl(httpClient, masterUrl);
   }
 
   @Override
-  public NonNamespaceOperation<Node, NodeList, DoneableNode> nodes() {
+  public NonNamespaceOperation<Node, NodeList, DoneableNode, Resource<Node, DoneableNode>> nodes() {
     return new NodeOperationsImpl(httpClient, masterUrl);
   }
 
   @Override
-  public Operation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume> persistentVolumes() {
+  public Operation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, Resource<PersistentVolume, DoneablePersistentVolume>> persistentVolumes() {
     return new PersistentVolumeOperationsImpl(httpClient, masterUrl);
   }
 
   @Override
-  public Operation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim> persistentVolumeClaims() {
+  public Operation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, Resource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> persistentVolumeClaims() {
     return new PersistentVolumeClaimOperationsImpl(httpClient, masterUrl);
   }
 
   @Override
-  public Operation<Pod, PodList, DoneablePod> pods() {
+  public Operation<Pod, PodList, DoneablePod, Resource<Pod, DoneablePod>> pods() {
     return new PodOperationsImpl(httpClient, masterUrl);
   }
 
   @Override
-  public Operation<ReplicationController, ReplicationControllerList, DoneableReplicationController> replicationControllers() {
+  public Operation<ReplicationController, ReplicationControllerList, DoneableReplicationController, ScaleableResource<ReplicationController, DoneableReplicationController>> replicationControllers() {
     return new ReplicationControllerOperationsImpl(httpClient, masterUrl);
   }
 
   @Override
-  public Operation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota> resourceQuotas() {
+  public Operation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota, Resource<ResourceQuota, DoneableResourceQuota>> resourceQuotas() {
     return new ResourceQuotaOperationsImpl(httpClient, masterUrl);
   }
 
   @Override
-  public Operation<Secret, SecretList, DoneableSecret> secrets() {
+  public Operation<Secret, SecretList, DoneableSecret, Resource<Secret, DoneableSecret>> secrets() {
     return new SecretOperationsImpl(httpClient, masterUrl);
   }
 
   @Override
-  public Operation<Service, ServiceList, DoneableService> services() {
+  public Operation<Service, ServiceList, DoneableService, Resource<Service, DoneableService>> services() {
     return new ServiceOperationsImpl(httpClient, masterUrl);
   }
 
   @Override
-  public Operation<ServiceAccount, ServiceAccountList, DoneableServiceAccount> serviceAccounts() {
+  public Operation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, Resource<ServiceAccount, DoneableServiceAccount>> serviceAccounts() {
     return new ServiceAccountOperationsImpl(httpClient, masterUrl);
   }
 
   @Override
-  public Operation<Template, TemplateList, DoneableTemplate> templates() {
+  public Operation<Template, TemplateList, DoneableTemplate, ProcessableResource<Template, DoneableTemplate>> templates() {
     return new TemplateOperationsImpl(httpClient, openShiftUrl);
   }
 
   @Override
-  public Operation<BuildConfig, BuildConfigList, DoneableBuildConfig> buildConfigs() {
+  public Operation buildConfigs() {
     return new BuildConfigOperationsImpl(httpClient, openShiftUrl);
   }
 
   @Override
-  public Operation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig> deploymentConfigs() {
+  public Operation deploymentConfigs() {
     return new DeploymentConfigOperationsImpl(httpClient, openShiftUrl);
   }
 
   @Override
-  public Operation<ImageStream, ImageStreamList, DoneableImageStream> imageStreams() {
+  public Operation imageStreams() {
     return new ImageStreamOperationsImpl(httpClient, openShiftUrl);
   }
 
   @Override
-  public NonNamespaceOperation<OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken> oAuthAccessTokens() {
+  public NonNamespaceOperation<OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken,Resource<OAuthAccessToken, DoneableOAuthAccessToken>> oAuthAccessTokens() {
     return new OAuthAccessTokenOperationsImpl(httpClient, openShiftUrl);
   }
 
   @Override
-  public NonNamespaceOperation<OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken> oAuthAuthorizeTokens() {
+  public NonNamespaceOperation<OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken, Resource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken>> oAuthAuthorizeTokens() {
     return new OAuthAuthorizeTokenOperationsImpl(httpClient, openShiftUrl);
   }
 
   @Override
-  public NonNamespaceOperation<OAuthClient, OAuthClientList, DoneableOAuthClient> oAuthClients() {
+  public NonNamespaceOperation<OAuthClient, OAuthClientList, DoneableOAuthClient,Resource<OAuthClient, DoneableOAuthClient>> oAuthClients() {
     return new OAuthClientOperationsImpl(httpClient, openShiftUrl);
   }
 
   @Override
-  public Operation<Route, RouteList, DoneableRoute> routes() {
+  public Operation routes() {
     return new RouteOperationsImpl(httpClient, openShiftUrl);
   }
 

@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.fabric8.kubernetes.client.dsl;
 
-public interface GetEditUpdateDeleteWatchable<T, D> extends Gettable<T>, Updateable<T>, Editable<D>, Deleteable<T>, Watchable<T> {
+public interface Resource<T,D> extends Gettable<T>, Updateable<T>, Editable<D>, Deleteable<T>, Watchable<T> {
 }

@@ -19,11 +19,11 @@ import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableSecret;
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.SecretList;
+import io.fabric8.kubernetes.client.dsl.Resource;
 
 import java.net.URL;
 
-public class SecretOperationsImpl extends BaseOperation<Secret, SecretList, DoneableSecret> {
-
+public class SecretOperationsImpl extends BaseOperation<Secret, SecretList, DoneableSecret, Resource<Secret, DoneableSecret>> {
   public SecretOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "secrets", null, null, Secret.class, SecretList.class, DoneableSecret.class);
   }

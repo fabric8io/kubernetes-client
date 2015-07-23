@@ -19,10 +19,12 @@ import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableEvent;
 import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventList;
+import io.fabric8.kubernetes.client.dsl.Resource;
 
 import java.net.URL;
 
-public class EventOperationsImpl extends BaseOperation<Event, EventList, DoneableEvent> {
+public class EventOperationsImpl extends BaseOperation<Event, EventList, DoneableEvent,
+  Resource<Event, DoneableEvent>> {
 
   public EventOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "events", null, null, Event.class, EventList.class, DoneableEvent.class);

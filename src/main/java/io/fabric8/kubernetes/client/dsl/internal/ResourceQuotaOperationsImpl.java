@@ -19,10 +19,12 @@ import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableResourceQuota;
 import io.fabric8.kubernetes.api.model.ResourceQuota;
 import io.fabric8.kubernetes.api.model.ResourceQuotaList;
+import io.fabric8.kubernetes.client.dsl.Resource;
 
 import java.net.URL;
 
-public class ResourceQuotaOperationsImpl extends BaseOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota> {
+public class ResourceQuotaOperationsImpl extends BaseOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota,
+  Resource<ResourceQuota, DoneableResourceQuota>> {
 
   public ResourceQuotaOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "resourcequotas", null, null, ResourceQuota.class, ResourceQuotaList.class, DoneableResourceQuota.class);

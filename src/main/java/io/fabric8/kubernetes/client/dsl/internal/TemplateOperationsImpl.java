@@ -16,13 +16,14 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.ning.http.client.AsyncHttpClient;
+import io.fabric8.kubernetes.client.dsl.ProcessableResource;
 import io.fabric8.openshift.api.model.DoneableTemplate;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateList;
 
 import java.net.URL;
 
-public class TemplateOperationsImpl extends BaseOperation<Template, TemplateList, DoneableTemplate> {
+public class TemplateOperationsImpl extends BaseOperation<Template, TemplateList, DoneableTemplate, ProcessableResource<Template, DoneableTemplate>> {
 
   public TemplateOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "templates", null, null, Template.class, TemplateList.class, DoneableTemplate.class);

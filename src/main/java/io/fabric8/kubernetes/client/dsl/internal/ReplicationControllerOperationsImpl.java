@@ -19,10 +19,11 @@ import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
+import io.fabric8.kubernetes.client.dsl.ScaleableResource;
 
 import java.net.URL;
 
-  public class ReplicationControllerOperationsImpl extends BaseOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController> {
+public class ReplicationControllerOperationsImpl extends BaseOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, ScaleableResource<ReplicationController, DoneableReplicationController>> {
 
   public ReplicationControllerOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "replicationcontrollers", null, null, ReplicationController.class, ReplicationControllerList.class, DoneableReplicationController.class);

@@ -19,10 +19,11 @@ import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableService;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceList;
+import io.fabric8.kubernetes.client.dsl.Resource;
 
 import java.net.URL;
 
-public class ServiceOperationsImpl extends BaseOperation<Service, ServiceList, DoneableService> {
+public class ServiceOperationsImpl extends BaseOperation<Service, ServiceList, DoneableService, Resource<Service, DoneableService>> {
 
   public ServiceOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "services", null, null, Service.class, ServiceList.class, DoneableService.class);
