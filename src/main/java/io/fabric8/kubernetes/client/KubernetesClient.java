@@ -51,6 +51,9 @@ import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
+import io.fabric8.openshift.api.model.DoneableTemplate;
+import io.fabric8.openshift.api.model.Template;
+import io.fabric8.openshift.api.model.TemplateList;
 
 
 public interface KubernetesClient extends AutoCloseable {
@@ -80,5 +83,7 @@ public interface KubernetesClient extends AutoCloseable {
   Operation<Service, ServiceList,  DoneableService> services();
 
   Operation<ServiceAccount, ServiceAccountList,  DoneableServiceAccount> serviceAccounts();
+
+  Operation<Template, TemplateList, DoneableTemplate> templates();
 
 }

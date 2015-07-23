@@ -42,6 +42,7 @@ import io.fabric8.kubernetes.client.internal.SecretOperationsImpl;
 import io.fabric8.kubernetes.client.internal.ServiceAccountOperationsImpl;
 import io.fabric8.kubernetes.client.internal.ServiceOperationsImpl;
 import io.fabric8.kubernetes.client.internal.KubeConfigUtils;
+import io.fabric8.kubernetes.client.internal.TemplateOperationsImpl;
 import io.fabric8.kubernetes.client.internal.Utils;
 import io.fabric8.openshift.api.model.*;
 import org.jboss.netty.handler.ssl.util.InsecureTrustManagerFactory;
@@ -235,6 +236,11 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
   @Override
   public Operation<ServiceAccount, ServiceAccountList, DoneableServiceAccount> serviceAccounts() {
     return new ServiceAccountOperationsImpl(httpClient, masterUrl);
+  }
+
+  @Override
+  public Operation<Template, TemplateList, DoneableTemplate> templates() {
+    return new TemplateOperationsImpl(httpClient, openShiftUrl);
   }
 
   @Override
