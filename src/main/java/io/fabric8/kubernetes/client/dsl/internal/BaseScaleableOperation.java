@@ -26,7 +26,7 @@ import io.fabric8.kubernetes.client.dsl.Scaleable;
 
 import java.net.URL;
 
-public class BaseScaleableOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
+public abstract class BaseScaleableOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
   extends BaseOperation<T, L, D, R> implements Scaleable {
 
   protected BaseScaleableOperation(AsyncHttpClient httpClient, URL rootUrl, String resourceT, String namespace, String name) {
@@ -37,8 +37,4 @@ public class BaseScaleableOperation<T extends HasMetadata, L extends KubernetesR
     super(httpClient, rootUrl, resourceT, namespace, name, type, listType, doneableType);
   }
 
-  @Override
-  public void scale(int count) {
-    throw new UnsupportedOperationException("Not implemented yet.");
-  }
 }

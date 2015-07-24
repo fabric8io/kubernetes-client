@@ -32,4 +32,9 @@ public class ReplicationControllerOperationsImpl extends BaseScaleableOperation<
     public ReplicationControllerOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {
       super(httpClient, rootUrl, "replicationcontrollers", namespace, name);
     }
+
+  @Override
+  public void scale(int count) {
+    edit().withNewSpec().withReplicas(count).endSpec().done();
   }
+}

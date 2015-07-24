@@ -405,7 +405,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return new URL(getNamespacedUrl(), name);
   }
 
-  private T handleResponse(AsyncHttpClient.BoundRequestBuilder requestBuilder, int successStatusCode) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+  protected T handleResponse(AsyncHttpClient.BoundRequestBuilder requestBuilder, int successStatusCode) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     Future<Response> f = requestBuilder.execute();
     Response r = f.get();
     if (r.getStatusCode() != successStatusCode) {

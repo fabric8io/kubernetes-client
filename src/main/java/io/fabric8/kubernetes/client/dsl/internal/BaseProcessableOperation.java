@@ -25,7 +25,7 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 
 import java.net.URL;
 
-public class BaseProcessableOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
+public abstract class BaseProcessableOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
   extends BaseOperation<T, L, D, R> implements Processable<T> {
 
   protected BaseProcessableOperation(AsyncHttpClient httpClient, URL rootUrl, String resourceT, String namespace, String name) {
@@ -34,10 +34,5 @@ public class BaseProcessableOperation<T extends HasMetadata, L extends Kubernete
 
   protected BaseProcessableOperation(AsyncHttpClient httpClient, URL rootUrl, String resourceT, String namespace, String name, Class<T> type, Class<L> listType, Class<D> doneableType) {
     super(httpClient, rootUrl, resourceT, namespace, name, type, listType, doneableType);
-  }
-
-  @Override
-  public void process(T item) {
-    throw new UnsupportedOperationException("Not implemented yet.");
   }
 }
