@@ -23,7 +23,7 @@ import io.fabric8.openshift.api.model.TemplateList;
 
 import java.net.URL;
 
-public class TemplateOperationsImpl extends BaseOperation<Template, TemplateList, DoneableTemplate, ProcessableResource<Template, DoneableTemplate>> {
+public class TemplateOperationsImpl extends BaseProcessableOperation<Template, TemplateList, DoneableTemplate, ProcessableResource<Template, DoneableTemplate>> {
 
   public TemplateOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "templates", null, null, Template.class, TemplateList.class, DoneableTemplate.class);

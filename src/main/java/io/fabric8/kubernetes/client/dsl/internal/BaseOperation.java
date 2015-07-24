@@ -33,9 +33,7 @@ import io.fabric8.kubernetes.client.dsl.CreateWatchListDeleteable;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeleteable;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Operation;
-import io.fabric8.kubernetes.client.dsl.Processable;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.Scaleable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,9 +54,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   implements Operation<T, L, D, R>,
   NonNamespaceOperation<T, L, D, R>,
   CreateWatchListDeleteable<T, L, D>,
-  Resource<T,D>,
-  Processable<T>,
-  Scaleable {
+  Resource<T,D> {
 
   protected static final ObjectMapper mapper = new ObjectMapper();
 
@@ -474,13 +470,4 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return doneableType;
   }
 
-  @Override
-  public void process(T item) {
-    throw new UnsupportedOperationException("Not implemented yet.");
-  }
-
-  @Override
-  public void scale(int count) {
-    throw new UnsupportedOperationException("Not implemented yet.");
-  }
 }
