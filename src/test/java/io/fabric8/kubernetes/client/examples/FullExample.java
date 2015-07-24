@@ -152,12 +152,15 @@ public class FullExample {
         client.replicationControllers().inNamespace("thisisatest").withField("metadata.name", "nginx-controller").delete();
         log("Deleted RC by field");
 
+        log("Root paths:", client.rootPaths());
+
       } finally {
         // And finally clean up the namespace
         client.namespaces().withName("thisisatest").delete();
         log("Deleted namespace");
       }
-    } catch (KubernetesClientException e) {
+    } catch (Exception e) {
+      e.printStackTrace();
       logger.error(e.getMessage(), e);
 
       Throwable[] suppressed = e.getSuppressed();

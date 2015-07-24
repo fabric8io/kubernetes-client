@@ -22,11 +22,13 @@ import com.ning.http.client.filter.FilterContext;
 import com.ning.http.client.filter.FilterException;
 import com.ning.http.client.filter.RequestFilter;
 import io.fabric8.kubernetes.api.model.*;
+import io.fabric8.kubernetes.api.root.RootPaths;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Operation;
 import io.fabric8.kubernetes.client.dsl.ProcessableResource;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.ScaleableResource;
+import io.fabric8.kubernetes.client.dsl.internal.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.internal.BuildConfigOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.BuildOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.DeploymentConfigOperationsImpl;
@@ -247,6 +249,11 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
   @Override
   public Operation<Template, TemplateList, DoneableTemplate, ProcessableResource<Template, DoneableTemplate>> templates() {
     return new TemplateOperationsImpl(httpClient, openShiftUrl);
+  }
+
+  @Override
+  public RootPaths rootPaths() {
+   return (RootPaths) new BaseOperation(httpClient, masterUrl, "", null, null,RootPaths.class,null,null){}.get();
   }
 
   @Override

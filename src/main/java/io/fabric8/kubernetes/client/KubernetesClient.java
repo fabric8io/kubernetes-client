@@ -51,6 +51,7 @@ import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
+import io.fabric8.kubernetes.api.root.RootPaths;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Operation;
 import io.fabric8.kubernetes.client.dsl.ProcessableResource;
@@ -90,5 +91,7 @@ public interface KubernetesClient extends AutoCloseable {
   Operation<ServiceAccount, ServiceAccountList,  DoneableServiceAccount, Resource<ServiceAccount, DoneableServiceAccount>> serviceAccounts();
 
   Operation<Template, TemplateList, DoneableTemplate, ProcessableResource<Template, DoneableTemplate>> templates();
+
+  RootPaths rootPaths();
 
 }
