@@ -20,13 +20,13 @@ import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.client.dsl.Processable;
+import io.fabric8.kubernetes.client.dsl.ProcessableResource;
 import io.fabric8.kubernetes.client.dsl.Resource;
 
 import java.net.URL;
 
 public abstract class BaseProcessableOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
-  extends BaseOperation<T, L, D, R> implements Processable<T> {
+  extends BaseOperation<T, L, D, R> implements ProcessableResource<T,D> {
 
   protected BaseProcessableOperation(AsyncHttpClient httpClient, URL rootUrl, String resourceT, String namespace, String name) {
     super(httpClient, rootUrl, resourceT, namespace, name);

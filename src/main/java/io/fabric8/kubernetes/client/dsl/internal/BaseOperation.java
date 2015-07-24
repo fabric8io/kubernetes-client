@@ -50,7 +50,7 @@ import java.util.concurrent.Future;
 
 import static io.fabric8.kubernetes.client.internal.Utils.join;
 
-public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
+public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
   implements Operation<T, L, D, R>,
   NonNamespaceOperation<T, L, D, R>,
   CreateWatchListDeleteable<T, L, D>,
@@ -102,8 +102,10 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   public T get() throws KubernetesClientException {
     try {
       URL requestUrl = getNamespacedUrl();
-      URL resourceUrl = new URL(requestUrl, name);
-      return handleGet(resourceUrl);
+      if (name != null) {
+        requestUrl = new URL(requestUrl, name);
+      }
+      return handleGet(requestUrl);
     } catch (InterruptedException | ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
