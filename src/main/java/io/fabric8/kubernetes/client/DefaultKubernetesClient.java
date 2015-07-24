@@ -22,7 +22,6 @@ import com.ning.http.client.filter.FilterContext;
 import com.ning.http.client.filter.FilterException;
 import com.ning.http.client.filter.RequestFilter;
 import io.fabric8.kubernetes.api.model.*;
-import io.fabric8.kubernetes.api.root.RootPaths;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Operation;
 import io.fabric8.kubernetes.client.dsl.ProcessableResource;
