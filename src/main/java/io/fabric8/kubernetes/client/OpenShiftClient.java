@@ -22,6 +22,8 @@ import io.fabric8.openshift.api.model.*;
 
 public interface OpenShiftClient extends KubernetesClient {
 
+  Operation<Build, BuildList, DoneableBuild, Resource<Build, DoneableBuild>> builds();
+
   Operation<BuildConfig, BuildConfigList, DoneableBuildConfig, Resource<BuildConfig, DoneableBuildConfig>> buildConfigs();
 
   Operation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, Resource<DeploymentConfig, DoneableDeploymentConfig>> deploymentConfigs();

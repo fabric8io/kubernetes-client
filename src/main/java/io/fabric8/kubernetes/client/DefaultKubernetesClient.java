@@ -28,6 +28,7 @@ import io.fabric8.kubernetes.client.dsl.ProcessableResource;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.ScaleableResource;
 import io.fabric8.kubernetes.client.dsl.internal.BuildConfigOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.BuildOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.DeploymentConfigOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.EndpointsOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.EventOperationsImpl;
@@ -246,6 +247,11 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
   @Override
   public Operation<Template, TemplateList, DoneableTemplate, ProcessableResource<Template, DoneableTemplate>> templates() {
     return new TemplateOperationsImpl(httpClient, openShiftUrl);
+  }
+
+  @Override
+  public Operation<Build, BuildList, DoneableBuild, Resource<Build, DoneableBuild>> builds() {
+    return new BuildOperationsImpl(httpClient, openShiftUrl);
   }
 
   @Override
