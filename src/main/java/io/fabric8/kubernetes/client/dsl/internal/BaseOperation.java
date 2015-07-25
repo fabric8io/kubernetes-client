@@ -452,6 +452,10 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     return httpClient;
   }
 
+  public String getName() {
+    return name;
+  }
+
   public String getNamespace() {
     return namespace;
   }
