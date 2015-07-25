@@ -304,6 +304,22 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   public void delete() throws KubernetesClientException {
+    if (name != null && !name.isEmpty()) {
+      deleteThis();
+    } else {
+      deleteList();
+    }
+  }
+
+  public void deleteThis() throws KubernetesClientException {
+    try {
+      handleDelete(getResourceUrl());
+    } catch (Exception e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+
+  public void deleteList() throws KubernetesClientException {
     try {
       L discoveredResources = list();
 
