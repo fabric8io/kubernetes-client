@@ -61,10 +61,14 @@ import io.fabric8.openshift.api.model.DoneableTemplate;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateList;
 
+import java.net.URL;
+
 
 public interface KubernetesClient extends AutoCloseable {
 
-  void close();
+  URL getMasterUrl();
+
+  RootPaths rootPaths();
 
   Operation<Endpoints, EndpointsList, DoneableEndpoints, Resource<Endpoints, DoneableEndpoints>> endpoints();
 
@@ -92,6 +96,6 @@ public interface KubernetesClient extends AutoCloseable {
 
   Operation<Template, TemplateList, DoneableTemplate, ProcessableResource<Template, DoneableTemplate>> templates();
 
-  RootPaths rootPaths();
+  void close();
 
 }

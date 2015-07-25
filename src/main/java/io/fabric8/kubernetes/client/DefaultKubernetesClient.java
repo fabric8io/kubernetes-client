@@ -251,6 +251,11 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
   }
 
   @Override
+  public URL getMasterUrl() {
+    return masterUrl;
+  }
+
+  @Override
   public RootPaths rootPaths() {
    return (RootPaths) new BaseOperation(httpClient, masterUrl, "", null, null,RootPaths.class,null,null){}.get();
   }
