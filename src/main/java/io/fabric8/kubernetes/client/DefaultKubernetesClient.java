@@ -22,6 +22,7 @@ import com.ning.http.client.filter.FilterContext;
 import com.ning.http.client.filter.FilterException;
 import com.ning.http.client.filter.RequestFilter;
 import io.fabric8.kubernetes.api.model.*;
+import io.fabric8.kubernetes.client.dsl.BuildConfigResource;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Operation;
 import io.fabric8.kubernetes.client.dsl.ProcessableResource;
@@ -266,8 +267,8 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
   }
 
   @Override
-  public Operation buildConfigs() {
-    return new BuildConfigOperationsImpl(httpClient, openShiftUrl);
+  public Operation<BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigResource<BuildConfig, DoneableBuildConfig>> buildConfigs() {
+    return new BuildConfigOperationsImpl(httpClient, openShiftUrl, null, null);
   }
 
   @Override

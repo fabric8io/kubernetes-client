@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.client.dsl.BuildConfigResource;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Operation;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -24,7 +25,7 @@ public interface OpenShiftClient extends KubernetesClient {
 
   Operation<Build, BuildList, DoneableBuild, Resource<Build, DoneableBuild>> builds();
 
-  Operation<BuildConfig, BuildConfigList, DoneableBuildConfig, Resource<BuildConfig, DoneableBuildConfig>> buildConfigs();
+  Operation<BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigResource<BuildConfig, DoneableBuildConfig>> buildConfigs();
 
   Operation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, Resource<DeploymentConfig, DoneableDeploymentConfig>> deploymentConfigs();
 
