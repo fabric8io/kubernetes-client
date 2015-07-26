@@ -27,7 +27,7 @@
 
   <groupId>io.fabric8</groupId>
   <artifactId>kubernetes-client</artifactId>
-  <version>1.2.2</version>
+  <version>1.2.3-SNAPSHOT</version>
 
   <url>http://fabric8.io/</url>
   <inceptionYear>2015</inceptionYear>
