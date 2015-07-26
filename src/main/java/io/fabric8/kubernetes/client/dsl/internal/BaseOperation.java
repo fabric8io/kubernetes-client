@@ -323,7 +323,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     }
   }
 
-  public void deleteThis() throws KubernetesClientException {
+  void deleteThis() throws KubernetesClientException {
     try {
       handleDelete(getResourceUrl());
     } catch (Exception e) {
@@ -331,7 +331,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     }
   }
 
-  public void deleteList() throws KubernetesClientException {
+  void deleteList() throws KubernetesClientException {
     try {
       L discoveredResources = list();
 
