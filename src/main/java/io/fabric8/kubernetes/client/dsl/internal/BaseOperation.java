@@ -112,6 +112,18 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   @Override
+  public T getIfExists() {
+    try {
+      return get();
+    } catch (KubernetesClientException e) {
+      if (e.getCode() != 404) {
+        throw e;
+      }
+      return null;
+    }
+  }
+
+  @Override
   public D edit() throws KubernetesClientException {
 
     final Visitor<T> visitor = new Visitor<T>() {
