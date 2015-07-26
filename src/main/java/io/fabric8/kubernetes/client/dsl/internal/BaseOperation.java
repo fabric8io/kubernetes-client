@@ -323,6 +323,33 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     }
   }
 
+  @Override
+  public boolean deleteIfExists() {
+    if (name != null && !name.isEmpty()) {
+      try {
+        deleteThis();
+        return true;
+      } catch (KubernetesClientException e) {
+        if (e.getCode() == 404) {
+          return false;
+        } else {
+          throw e;
+        }
+      }
+    } else {
+      try {
+        deleteList();
+        return true;
+      } catch (KubernetesClientException e) {
+        if (e.getCode() == 404) {
+          return false;
+        } else {
+          throw e;
+        }
+      }
+    }
+  }
+
   void deleteThis() throws KubernetesClientException {
     try {
       handleDelete(getResourceUrl());
