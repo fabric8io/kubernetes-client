@@ -29,7 +29,6 @@ import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.client.dsl.CreateWatchListDeleteable;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeleteable;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Operation;
@@ -53,7 +52,6 @@ import static io.fabric8.kubernetes.client.internal.Utils.join;
 public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
   implements Operation<T, L, D, R>,
   NonNamespaceOperation<T, L, D, R>,
-  CreateWatchListDeleteable<T, L, D>,
   Resource<T,D> {
 
   protected static final ObjectMapper mapper = new ObjectMapper();
