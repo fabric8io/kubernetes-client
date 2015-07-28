@@ -16,7 +16,44 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.DoneableEndpoints;
+import io.fabric8.kubernetes.api.model.DoneableEvent;
+import io.fabric8.kubernetes.api.model.DoneableNamespace;
+import io.fabric8.kubernetes.api.model.DoneableNode;
+import io.fabric8.kubernetes.api.model.DoneablePersistentVolume;
+import io.fabric8.kubernetes.api.model.DoneablePersistentVolumeClaim;
+import io.fabric8.kubernetes.api.model.DoneablePod;
+import io.fabric8.kubernetes.api.model.DoneableReplicationController;
+import io.fabric8.kubernetes.api.model.DoneableResourceQuota;
+import io.fabric8.kubernetes.api.model.DoneableSecret;
+import io.fabric8.kubernetes.api.model.DoneableService;
+import io.fabric8.kubernetes.api.model.DoneableServiceAccount;
+import io.fabric8.kubernetes.api.model.Endpoints;
+import io.fabric8.kubernetes.api.model.EndpointsList;
+import io.fabric8.kubernetes.api.model.Event;
+import io.fabric8.kubernetes.api.model.EventList;
+import io.fabric8.kubernetes.api.model.Namespace;
+import io.fabric8.kubernetes.api.model.NamespaceList;
+import io.fabric8.kubernetes.api.model.Node;
+import io.fabric8.kubernetes.api.model.NodeList;
+import io.fabric8.kubernetes.api.model.PersistentVolume;
+import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
+import io.fabric8.kubernetes.api.model.PersistentVolumeClaimList;
+import io.fabric8.kubernetes.api.model.PersistentVolumeList;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.api.model.ReplicationController;
+import io.fabric8.kubernetes.api.model.ReplicationControllerList;
+import io.fabric8.kubernetes.api.model.ResourceQuota;
+import io.fabric8.kubernetes.api.model.ResourceQuotaList;
+import io.fabric8.kubernetes.api.model.Secret;
+import io.fabric8.kubernetes.api.model.SecretList;
+import io.fabric8.kubernetes.api.model.Service;
+import io.fabric8.kubernetes.api.model.ServiceAccount;
+import io.fabric8.kubernetes.api.model.ServiceAccountList;
+import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.mock.impl.MockEndpoints;
 import io.fabric8.kubernetes.client.mock.impl.MockEvent;
 import io.fabric8.kubernetes.client.mock.impl.MockNamespace;
@@ -30,6 +67,9 @@ import io.fabric8.kubernetes.client.mock.impl.MockSecret;
 import io.fabric8.kubernetes.client.mock.impl.MockService;
 import io.fabric8.kubernetes.client.mock.impl.MockServiceAccount;
 import io.fabric8.kubernetes.client.mock.impl.MockTemplate;
+import io.fabric8.openshift.api.model.DoneableTemplate;
+import io.fabric8.openshift.api.model.Template;
+import io.fabric8.openshift.api.model.TemplateList;
 import org.easymock.EasyMock;
 import static org.easymock.EasyMock.*;
 
@@ -58,7 +98,7 @@ public class MockClient {
     expect(client.namespaces()).andReturn(namespaces.getDelegate()).anyTimes();
     expect(client.persistentVolumes()).andReturn(persistentVolumes.getDelegate()).anyTimes();
     expect(client.persistentVolumeClaims()).andReturn(persistentVolumeClaims.getDelegate()).anyTimes();
-    expect(client.pods()).andReturn(pods().getDelegate()).anyTimes();
+    expect(client.pods()).andReturn(pods.getDelegate()).anyTimes();
     expect(client.services()).andReturn(services.getDelegate()).anyTimes();
     expect(client.replicationControllers()).andReturn(replicationControllers.getDelegate()).anyTimes();
     expect(client.resourceQuotas()).andReturn(resourceQuotas.getDelegate()).anyTimes();
@@ -85,55 +125,55 @@ public class MockClient {
     return client;
   }
 
-  MockEndpoints endpoints() {
+  MockOperation<Endpoints, EndpointsList, DoneableEndpoints, MockResource<Endpoints, DoneableEndpoints, Void, Boolean>> endpoints() {
     return endpoints;
   }
 
-  MockEvent events() {
+  MockOperation<Event, EventList, DoneableEvent, MockResource<Event, DoneableEvent, Void, Boolean>> events() {
     return events;
   }
 
-  MockNamespace namespaces() {
+  MockOperation<Namespace, NamespaceList, DoneableNamespace, MockResource<Namespace, DoneableNamespace, Void, Boolean>> namespaces() {
     return namespaces;
   }
 
-  MockNode nodes() {
+  MockOperation<Node, NodeList, DoneableNode, MockResource<Node, DoneableNode, Void, Boolean>> nodes() {
     return nodes;
   }
 
-  MockPersistentVolume persistentVolumes() {
+  MockOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, MockResource<PersistentVolume, DoneablePersistentVolume, Void, Boolean>> persistentVolumes() {
     return persistentVolumes;
   }
 
-  MockPersistentVolumeClaim persistentVolumeClaims() {
+  MockOperation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, MockResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim, Void, Boolean>> persistentVolumeClaims() {
     return persistentVolumeClaims;
   }
 
-  MockPod pods() {
+  MockOperation<Pod, PodList, DoneablePod, MockResource<Pod, DoneablePod, Void, Boolean>> pods() {
     return pods;
   }
 
-  MockReplicationController replicationControllers() {
+  MockOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, MockScaleableResource<ReplicationController, DoneableReplicationController, Void, Boolean>> replicationControllers() {
     return replicationControllers;
   }
 
-  MockResourceQuota resourceQuotas() {
+  MockOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota, MockResource<ResourceQuota, DoneableResourceQuota, Void, Boolean>> resourceQuotas() {
     return resourceQuotas;
   }
 
-  MockSecret secrets() {
+  MockOperation<Secret, SecretList, DoneableSecret, MockResource<Secret, DoneableSecret, Void, Boolean>> secrets() {
     return secrets;
   }
 
-  MockService services() {
+  MockOperation<Service, ServiceList, DoneableService, MockResource<Service, DoneableService, Void, Boolean>> services() {
     return services;
   }
 
-  MockServiceAccount serviceAccounts() {
+  MockOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, MockResource<ServiceAccount, DoneableServiceAccount, Void, Boolean>> serviceAccounts() {
     return serviceAccounts;
   }
 
-  MockTemplate templates() {
+  MockOperation<Template, TemplateList, DoneableTemplate, MockProcessableResource<Template, DoneableTemplate, Void, Boolean>> templates() {
     return templates;
   }
 }
