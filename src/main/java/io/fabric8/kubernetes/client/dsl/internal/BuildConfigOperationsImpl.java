@@ -20,6 +20,7 @@ import com.ning.http.client.Response;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.BuildConfigResource;
+import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Triggerable;
 import io.fabric8.kubernetes.client.dsl.Typeable;
@@ -66,7 +67,7 @@ public class BuildConfigOperationsImpl extends BaseOperation<BuildConfig, BuildC
   }
 
   @Override
-  public NonNamespaceOperation<BuildConfig, BuildConfig, BuildConfigList, DoneableBuildConfig, Void, Boolean, BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean>> inNamespace(String namespace) {
+  public ClientNonNamespaceOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean>> inNamespace(String namespace) {
     try {
       return getClass()
         .getConstructor(AsyncHttpClient.class, URL.class, String.class, String.class, String.class, String.class)

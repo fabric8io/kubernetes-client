@@ -62,6 +62,8 @@ import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.dsl.BuildConfigResource;
+import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.ClientOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Operation;
 import io.fabric8.kubernetes.client.dsl.ProcessableResource;
@@ -252,67 +254,67 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
   }
 
   @Override
-  public Operation<Endpoints, Endpoints, EndpointsList, DoneableEndpoints, Void, Boolean, Resource<Endpoints, DoneableEndpoints, Void, Boolean>> endpoints() {
+  public ClientOperation<Endpoints, EndpointsList, DoneableEndpoints, Resource<Endpoints, DoneableEndpoints, Void, Boolean>> endpoints() {
     return new EndpointsOperationsImpl(httpClient, masterUrl);
   }
 
   @Override
-  public Operation<Event, Event, EventList, DoneableEvent, Void, Boolean, Resource<Event, DoneableEvent, Void, Boolean>> events() {
+  public ClientOperation<Event, EventList, DoneableEvent, Resource<Event, DoneableEvent, Void, Boolean>> events() {
     return new EventOperationsImpl(httpClient, masterUrl);
   }
 
   @Override
-  public NonNamespaceOperation<Namespace, Namespace, NamespaceList, DoneableNamespace, Void, Boolean, Resource<Namespace, DoneableNamespace, Void, Boolean>> namespaces() {
+  public ClientNonNamespaceOperation<Namespace, NamespaceList, DoneableNamespace, Resource<Namespace, DoneableNamespace, Void, Boolean>> namespaces() {
     return new NamespaceOperationsImpl(httpClient, masterUrl);
   }
 
   @Override
-  public NonNamespaceOperation<Node, Node, NodeList, DoneableNode, Void, Boolean, Resource<Node, DoneableNode, Void, Boolean>> nodes() {
+  public ClientNonNamespaceOperation<Node, NodeList, DoneableNode, Resource<Node, DoneableNode, Void, Boolean>> nodes() {
     return new NodeOperationsImpl(httpClient, masterUrl);
   }
 
   @Override
-  public Operation<PersistentVolume, PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, Void, Boolean, Resource<PersistentVolume, DoneablePersistentVolume, Void, Boolean>> persistentVolumes() {
+  public ClientOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, Resource<PersistentVolume, DoneablePersistentVolume, Void, Boolean>> persistentVolumes() {
     return new PersistentVolumeOperationsImpl(httpClient, masterUrl);
   }
 
   @Override
-  public Operation<PersistentVolumeClaim, PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, Void, Boolean, Resource<PersistentVolumeClaim, DoneablePersistentVolumeClaim, Void, Boolean>> persistentVolumeClaims() {
+  public ClientOperation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, Resource<PersistentVolumeClaim, DoneablePersistentVolumeClaim, Void, Boolean>> persistentVolumeClaims() {
     return new PersistentVolumeClaimOperationsImpl(httpClient, masterUrl);
   }
 
   @Override
-  public Operation<Pod, Pod, PodList, DoneablePod, Void, Boolean, Resource<Pod, DoneablePod, Void, Boolean>> pods() {
+  public ClientOperation<Pod, PodList, DoneablePod, Resource<Pod, DoneablePod, Void, Boolean>> pods() {
     return new PodOperationsImpl(httpClient, masterUrl);
   }
 
   @Override
-  public Operation<ReplicationController, ReplicationController, ReplicationControllerList, DoneableReplicationController, Void, Boolean, ScaleableResource<ReplicationController, DoneableReplicationController, Void, Boolean>> replicationControllers() {
+  public ClientOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, ScaleableResource<ReplicationController, DoneableReplicationController, Void, Boolean>> replicationControllers() {
     return new ReplicationControllerOperationsImpl(httpClient, masterUrl);
   }
 
   @Override
-  public Operation<ResourceQuota, ResourceQuota, ResourceQuotaList, DoneableResourceQuota, Void, Boolean, Resource<ResourceQuota, DoneableResourceQuota, Void, Boolean>> resourceQuotas() {
+  public ClientOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota, Resource<ResourceQuota, DoneableResourceQuota, Void, Boolean>> resourceQuotas() {
     return new ResourceQuotaOperationsImpl(httpClient, masterUrl);
   }
 
   @Override
-  public Operation<Secret, Secret, SecretList, DoneableSecret, Void, Boolean, Resource<Secret, DoneableSecret, Void, Boolean>> secrets() {
+  public ClientOperation<Secret, SecretList, DoneableSecret, Resource<Secret, DoneableSecret, Void, Boolean>> secrets() {
     return new SecretOperationsImpl(httpClient, masterUrl);
   }
 
   @Override
-  public Operation<Service, Service, ServiceList, DoneableService, Void, Boolean, Resource<Service, DoneableService, Void, Boolean>> services() {
+  public ClientOperation<Service, ServiceList, DoneableService, Resource<Service, DoneableService, Void, Boolean>> services() {
     return new ServiceOperationsImpl(httpClient, masterUrl);
   }
 
   @Override
-  public Operation<ServiceAccount, ServiceAccount, ServiceAccountList, DoneableServiceAccount, Void, Boolean, Resource<ServiceAccount, DoneableServiceAccount, Void, Boolean>> serviceAccounts() {
+  public ClientOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, Resource<ServiceAccount, DoneableServiceAccount, Void, Boolean>> serviceAccounts() {
     return new ServiceAccountOperationsImpl(httpClient, masterUrl);
   }
 
   @Override
-  public Operation<Template, Template, TemplateList, DoneableTemplate, Void, Boolean, ProcessableResource<Template, DoneableTemplate, Void, Boolean>> templates() {
+  public ClientOperation<Template, TemplateList, DoneableTemplate, ProcessableResource<Template, DoneableTemplate, Void, Boolean>> templates() {
     return new TemplateOperationsImpl(httpClient, openShiftUrl);
   }
 
@@ -328,42 +330,42 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
   }
 
   @Override
-  public Operation<Build, Build, BuildList, DoneableBuild, Void, Boolean, Resource<Build, DoneableBuild, Void, Boolean>> builds() {
+  public ClientOperation<Build, BuildList, DoneableBuild, Resource<Build, DoneableBuild, Void, Boolean>> builds() {
     return new BuildOperationsImpl(httpClient, openShiftUrl);
   }
 
   @Override
-  public Operation<BuildConfig, BuildConfig, BuildConfigList, DoneableBuildConfig, Void, Boolean, BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean>> buildConfigs() {
+  public ClientOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean>> buildConfigs() {
     return new BuildConfigOperationsImpl(httpClient, openShiftUrl, null, null);
   }
 
   @Override
-  public Operation deploymentConfigs() {
+  public ClientOperation deploymentConfigs() {
     return new DeploymentConfigOperationsImpl(httpClient, openShiftUrl);
   }
 
   @Override
-  public Operation imageStreams() {
+  public ClientOperation imageStreams() {
     return new ImageStreamOperationsImpl(httpClient, openShiftUrl);
   }
 
   @Override
-  public NonNamespaceOperation<OAuthAccessToken, OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken, Void, Boolean, Resource<OAuthAccessToken, DoneableOAuthAccessToken, Void, Boolean>> oAuthAccessTokens() {
+  public ClientNonNamespaceOperation<OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken, Resource<OAuthAccessToken, DoneableOAuthAccessToken, Void, Boolean>> oAuthAccessTokens() {
     return new OAuthAccessTokenOperationsImpl(httpClient, openShiftUrl);
   }
 
   @Override
-  public NonNamespaceOperation<OAuthAuthorizeToken, OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken, Void, Boolean, Resource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken, Void, Boolean>> oAuthAuthorizeTokens() {
+  public ClientNonNamespaceOperation<OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken, Resource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken, Void, Boolean>> oAuthAuthorizeTokens() {
     return new OAuthAuthorizeTokenOperationsImpl(httpClient, openShiftUrl);
   }
 
   @Override
-  public NonNamespaceOperation<OAuthClient, OAuthClient, OAuthClientList, DoneableOAuthClient, Void, Boolean, Resource<OAuthClient, DoneableOAuthClient, Void, Boolean>> oAuthClients() {
+  public ClientNonNamespaceOperation<OAuthClient, OAuthClientList, DoneableOAuthClient, Resource<OAuthClient, DoneableOAuthClient, Void, Boolean>> oAuthClients() {
     return new OAuthClientOperationsImpl(httpClient, openShiftUrl);
   }
 
   @Override
-  public Operation routes() {
+  public ClientOperation routes() {
     return new RouteOperationsImpl(httpClient, openShiftUrl);
   }
 

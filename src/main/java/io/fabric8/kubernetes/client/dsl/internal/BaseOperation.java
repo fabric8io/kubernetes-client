@@ -29,6 +29,8 @@ import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.ClientOperation;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeleteable;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Operation;
@@ -50,8 +52,8 @@ import java.util.concurrent.Future;
 import static io.fabric8.kubernetes.client.internal.Utils.join;
 
 public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D, Void, Boolean>>
-  implements Operation<T, T, L, D, Void, Boolean, R>,
-  NonNamespaceOperation<T, T, L, D, Void, Boolean, R>,
+  implements ClientOperation<T, L, D, R>,
+  ClientNonNamespaceOperation<T, L, D, R>,
   Resource<T, D, Void, Boolean> {
 
   protected static final ObjectMapper mapper = new ObjectMapper();
@@ -155,7 +157,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   @Override
-  public NonNamespaceOperation<T, T, L, D, Void, Boolean, R> inNamespace(String namespace) {
+  public ClientNonNamespaceOperation<T, L, D, R> inNamespace(String namespace) {
     try {
       return getClass()
         .getConstructor(AsyncHttpClient.class, URL.class, String.class, String.class)
