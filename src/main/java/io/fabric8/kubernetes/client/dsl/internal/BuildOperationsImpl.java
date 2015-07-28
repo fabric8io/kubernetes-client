@@ -24,7 +24,7 @@ import io.fabric8.openshift.api.model.DoneableBuild;
 import java.net.URL;
 
 public class BuildOperationsImpl extends BaseOperation<Build, BuildList, DoneableBuild,
-  Resource<Build, DoneableBuild>> {
+  Resource<Build, DoneableBuild, Void, Boolean>> {
 
   public BuildOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "builds", null, null, Build.class, BuildList.class, DoneableBuild.class);

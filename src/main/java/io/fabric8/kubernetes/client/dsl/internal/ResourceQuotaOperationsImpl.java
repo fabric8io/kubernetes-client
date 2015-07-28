@@ -24,7 +24,7 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import java.net.URL;
 
 public class ResourceQuotaOperationsImpl extends BaseOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota,
-  Resource<ResourceQuota, DoneableResourceQuota>> {
+  Resource<ResourceQuota, DoneableResourceQuota, Void, Boolean>> {
 
   public ResourceQuotaOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "resourcequotas", null, null, ResourceQuota.class, ResourceQuotaList.class, DoneableResourceQuota.class);

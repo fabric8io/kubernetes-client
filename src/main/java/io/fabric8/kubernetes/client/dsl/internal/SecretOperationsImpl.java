@@ -23,7 +23,7 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 
 import java.net.URL;
 
-public class SecretOperationsImpl extends BaseOperation<Secret, SecretList, DoneableSecret, Resource<Secret, DoneableSecret>> {
+public class SecretOperationsImpl extends BaseOperation<Secret, SecretList, DoneableSecret, Resource<Secret, DoneableSecret, Void, Boolean>> {
   public SecretOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "secrets", null, null, Secret.class, SecretList.class, DoneableSecret.class);
   }

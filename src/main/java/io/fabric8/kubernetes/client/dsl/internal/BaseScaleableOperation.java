@@ -27,8 +27,8 @@ import io.fabric8.kubernetes.client.dsl.ScaleableResource;
 
 import java.net.URL;
 
-public abstract class BaseScaleableOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
-  extends BaseOperation<T, L, D, R> implements ScaleableResource<T,D> {
+public abstract class BaseScaleableOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D, Void, Boolean>>
+  extends BaseOperation<T, L, D, R> implements ScaleableResource<T,D, Void, Boolean> {
 
   protected BaseScaleableOperation(AsyncHttpClient httpClient, URL rootUrl, String resourceT, String namespace, String name) {
     super(httpClient, rootUrl, resourceT, namespace, name);

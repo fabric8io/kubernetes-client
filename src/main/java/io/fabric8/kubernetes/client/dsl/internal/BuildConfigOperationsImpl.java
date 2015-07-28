@@ -33,8 +33,8 @@ import java.net.URL;
 import java.util.concurrent.Future;
 
 public class BuildConfigOperationsImpl extends BaseOperation<BuildConfig, BuildConfigList, DoneableBuildConfig,
-  BuildConfigResource<BuildConfig, DoneableBuildConfig>>
-  implements BuildConfigResource<BuildConfig, DoneableBuildConfig>,
+  BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean>>
+  implements BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean>,
   Typeable<Triggerable<WebHookTrigger>>,
   Triggerable<WebHookTrigger>
  {
@@ -55,7 +55,7 @@ public class BuildConfigOperationsImpl extends BaseOperation<BuildConfig, BuildC
   }
 
   @Override
-  public BuildConfigResource<BuildConfig, DoneableBuildConfig> withName(String name) {
+  public BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean> withName(String name) {
     try {
       return  getClass()
         .getConstructor(AsyncHttpClient.class, URL.class, String.class, String.class, String.class, String.class)
@@ -66,7 +66,7 @@ public class BuildConfigOperationsImpl extends BaseOperation<BuildConfig, BuildC
   }
 
   @Override
-  public NonNamespaceOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigResource<BuildConfig, DoneableBuildConfig>> inNamespace(String namespace) {
+  public NonNamespaceOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, Void, Boolean, BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean>> inNamespace(String namespace) {
     try {
       return getClass()
         .getConstructor(AsyncHttpClient.class, URL.class, String.class, String.class, String.class, String.class)

@@ -24,7 +24,7 @@ import io.fabric8.openshift.api.model.OAuthAccessTokenList;
 import java.net.URL;
 
 public class OAuthAccessTokenOperationsImpl extends BaseOperation<OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken,
-  Resource<OAuthAccessToken, DoneableOAuthAccessToken>> {
+  Resource<OAuthAccessToken, DoneableOAuthAccessToken, Void, Boolean>> {
 
   public OAuthAccessTokenOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "oauthaccesstokens", null, null, OAuthAccessToken.class, OAuthAccessTokenList.class, DoneableOAuthAccessToken.class);

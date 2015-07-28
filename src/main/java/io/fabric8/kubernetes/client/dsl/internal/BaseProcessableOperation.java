@@ -25,8 +25,8 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 
 import java.net.URL;
 
-public abstract class BaseProcessableOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
-  extends BaseOperation<T, L, D, R> implements ProcessableResource<T,D> {
+public abstract class BaseProcessableOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D, Void, Boolean>>
+  extends BaseOperation<T, L, D, R> implements ProcessableResource<T,D, Void, Boolean> {
 
   protected BaseProcessableOperation(AsyncHttpClient httpClient, URL rootUrl, String resourceT, String namespace, String name) {
     super(httpClient, rootUrl, resourceT, namespace, name);

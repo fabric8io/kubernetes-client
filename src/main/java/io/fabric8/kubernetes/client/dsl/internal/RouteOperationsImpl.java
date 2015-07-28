@@ -23,7 +23,7 @@ import io.fabric8.openshift.api.model.RouteList;
 
 import java.net.URL;
 
-public class RouteOperationsImpl extends BaseOperation<Route, RouteList, DoneableRoute, Resource<Route, DoneableRoute>> {
+public class RouteOperationsImpl extends BaseOperation<Route, RouteList, DoneableRoute, Resource<Route, DoneableRoute, Void, Boolean>> {
 
   public RouteOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "routes", null, null, Route.class, RouteList.class, DoneableRoute.class);

@@ -23,7 +23,7 @@ import io.fabric8.kubernetes.client.dsl.ScaleableResource;
 
 import java.net.URL;
 
-public class ReplicationControllerOperationsImpl extends BaseScaleableOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, ScaleableResource<ReplicationController, DoneableReplicationController>> {
+public class ReplicationControllerOperationsImpl extends BaseScaleableOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, ScaleableResource<ReplicationController, DoneableReplicationController, Void, Boolean>> {
 
   public ReplicationControllerOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "replicationcontrollers", null, null, ReplicationController.class, ReplicationControllerList.class, DoneableReplicationController.class);

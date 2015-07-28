@@ -24,7 +24,7 @@ import io.fabric8.openshift.api.model.ImageStreamList;
 import java.net.URL;
 
 public class ImageStreamOperationsImpl extends BaseOperation<ImageStream, ImageStreamList, DoneableImageStream,
-  Resource<ImageStream, DoneableImageStream>> {
+  Resource<ImageStream, DoneableImageStream, Void, Boolean>> {
 
   public ImageStreamOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "imagestreams", null, null, ImageStream.class, ImageStreamList.class, DoneableImageStream.class);

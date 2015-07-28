@@ -70,31 +70,31 @@ public interface KubernetesClient extends AutoCloseable {
 
   RootPaths rootPaths();
 
-  Operation<Endpoints, EndpointsList, DoneableEndpoints, Resource<Endpoints, DoneableEndpoints>> endpoints();
+  Operation<Endpoints, EndpointsList, DoneableEndpoints, Void, Boolean, Resource<Endpoints, DoneableEndpoints, Void, Boolean>> endpoints();
 
-  Operation<Event, EventList, DoneableEvent, Resource<Event, DoneableEvent>> events();
+  Operation<Event, EventList, DoneableEvent, Void, Boolean, Resource<Event, DoneableEvent, Void, Boolean>> events();
 
-  NonNamespaceOperation<Namespace, NamespaceList, DoneableNamespace, Resource<Namespace, DoneableNamespace>> namespaces();
+  NonNamespaceOperation<Namespace, NamespaceList, DoneableNamespace, Void, Boolean, Resource<Namespace, DoneableNamespace, Void, Boolean>> namespaces();
 
-  NonNamespaceOperation<Node, NodeList, DoneableNode, Resource<Node, DoneableNode>> nodes();
+  NonNamespaceOperation<Node, NodeList, DoneableNode, Void, Boolean, Resource<Node, DoneableNode, Void, Boolean>> nodes();
 
-  Operation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, Resource<PersistentVolume, DoneablePersistentVolume>> persistentVolumes();
+  Operation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, Void, Boolean, Resource<PersistentVolume, DoneablePersistentVolume, Void, Boolean>> persistentVolumes();
 
-  Operation<PersistentVolumeClaim, PersistentVolumeClaimList,  DoneablePersistentVolumeClaim, Resource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> persistentVolumeClaims();
+  Operation<PersistentVolumeClaim, PersistentVolumeClaimList,  DoneablePersistentVolumeClaim, Void, Boolean, Resource<PersistentVolumeClaim, DoneablePersistentVolumeClaim, Void, Boolean>> persistentVolumeClaims();
 
-  Operation<Pod, PodList, DoneablePod, Resource<Pod, DoneablePod>> pods();
+  Operation<Pod, PodList, DoneablePod, Void, Boolean, Resource<Pod, DoneablePod, Void, Boolean>> pods();
 
-  Operation<ReplicationController, ReplicationControllerList, DoneableReplicationController, ScaleableResource<ReplicationController, DoneableReplicationController>> replicationControllers();
+  Operation<ReplicationController, ReplicationControllerList, DoneableReplicationController, Void, Boolean, ScaleableResource<ReplicationController, DoneableReplicationController, Void, Boolean>> replicationControllers();
 
-  Operation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota, Resource<ResourceQuota, DoneableResourceQuota>> resourceQuotas();
+  Operation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota, Void, Boolean, Resource<ResourceQuota, DoneableResourceQuota, Void, Boolean>> resourceQuotas();
 
-  Operation<Secret, SecretList,  DoneableSecret,Resource<Secret, DoneableSecret>> secrets();
+  Operation<Secret, SecretList,  DoneableSecret, Void, Boolean,Resource<Secret, DoneableSecret, Void, Boolean>> secrets();
 
-  Operation<Service, ServiceList,  DoneableService, Resource<Service, DoneableService>> services();
+  Operation<Service, ServiceList,  DoneableService, Void, Boolean, Resource<Service, DoneableService, Void, Boolean>> services();
 
-  Operation<ServiceAccount, ServiceAccountList,  DoneableServiceAccount, Resource<ServiceAccount, DoneableServiceAccount>> serviceAccounts();
+  Operation<ServiceAccount, ServiceAccountList,  DoneableServiceAccount, Void, Boolean, Resource<ServiceAccount, DoneableServiceAccount, Void, Boolean>> serviceAccounts();
 
-  Operation<Template, TemplateList, DoneableTemplate, ProcessableResource<Template, DoneableTemplate>> templates();
+  Operation<Template, TemplateList, DoneableTemplate, Void, Boolean, ProcessableResource<Template, DoneableTemplate, Void, Boolean>> templates();
 
   void close();
 

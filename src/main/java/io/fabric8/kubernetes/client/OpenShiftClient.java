@@ -23,20 +23,20 @@ import io.fabric8.openshift.api.model.*;
 
 public interface OpenShiftClient extends KubernetesClient {
 
-  Operation<Build, BuildList, DoneableBuild, Resource<Build, DoneableBuild>> builds();
+  Operation<Build, BuildList, DoneableBuild, Void, Boolean, Resource<Build, DoneableBuild, Void, Boolean>> builds();
 
-  Operation<BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigResource<BuildConfig, DoneableBuildConfig>> buildConfigs();
+  Operation<BuildConfig, BuildConfigList, DoneableBuildConfig, Void, Boolean, BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean>> buildConfigs();
 
-  Operation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, Resource<DeploymentConfig, DoneableDeploymentConfig>> deploymentConfigs();
+  Operation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, Void, Boolean, Resource<DeploymentConfig, DoneableDeploymentConfig, Void, Boolean>> deploymentConfigs();
 
-  Operation<ImageStream, ImageStreamList, DoneableImageStream, Resource<ImageStream, DoneableImageStream>> imageStreams();
+  Operation<ImageStream, ImageStreamList, DoneableImageStream, Void, Boolean, Resource<ImageStream, DoneableImageStream, Void, Boolean>> imageStreams();
 
-  NonNamespaceOperation<OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken, Resource<OAuthAccessToken, DoneableOAuthAccessToken>> oAuthAccessTokens();
+  NonNamespaceOperation<OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken, Void, Boolean, Resource<OAuthAccessToken, DoneableOAuthAccessToken, Void, Boolean>> oAuthAccessTokens();
 
-  NonNamespaceOperation<OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken, Resource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken>> oAuthAuthorizeTokens();
+  NonNamespaceOperation<OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken, Void, Boolean, Resource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken, Void, Boolean>> oAuthAuthorizeTokens();
 
-  NonNamespaceOperation<OAuthClient, OAuthClientList, DoneableOAuthClient, Resource<OAuthClient, DoneableOAuthClient>> oAuthClients();
+  NonNamespaceOperation<OAuthClient, OAuthClientList, DoneableOAuthClient, Void, Boolean, Resource<OAuthClient, DoneableOAuthClient, Void, Boolean>> oAuthClients();
 
-  Operation<Route, RouteList, DoneableRoute, Resource<Route, DoneableRoute>> routes();
+  Operation<Route, RouteList, DoneableRoute, Void, Boolean, Resource<Route, DoneableRoute, Void, Boolean>> routes();
 
 }
