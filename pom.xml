@@ -18,7 +18,6 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
   <parent>
     <groupId>org.sonatype.oss</groupId>
     <artifactId>oss-parent</artifactId>
@@ -26,8 +25,10 @@
   </parent>
 
   <groupId>io.fabric8</groupId>
-  <artifactId>kubernetes-client</artifactId>
+  <artifactId>kubernetes-pom</artifactId>
   <version>1.2.3-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>Fabric8 :: Kubernetes :: Project</name>
 
   <url>http://fabric8.io/</url>
   <inceptionYear>2015</inceptionYear>
@@ -73,64 +74,27 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <async.http.version>1.9.29</async.http.version>
+    <easymock.version>3.2</easymock.version>
+    <jackson.version>2.5.0</jackson.version>
+    <junit.version>4.12</junit.version>
+    <kubernetes.model.version>1.0.3</kubernetes.model.version>
+    <log4j.version>2.3</log4j.version>
+    <oauth.version>20100527</oauth.version>
+    <snakeyaml.version>1.15</snakeyaml.version>
+
+
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
-
     <exec.master>https://localhost:8443</exec.master>
   </properties>
 
-  <dependencies>
-    <dependency>
-      <groupId>com.ning</groupId>
-      <artifactId>async-http-client</artifactId>
-      <version>1.9.29</version>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-model</artifactId>
-      <version>1.0.3</version>
-    </dependency>
-    <dependency>
-      <groupId>net.oauth.core</groupId>
-      <artifactId>oauth</artifactId>
-      <version>20100527</version>
-    </dependency>
-    <dependency>
-      <groupId>org.yaml</groupId>
-      <artifactId>snakeyaml</artifactId>
-      <version>1.15</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
-      <version>2.3</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
-      <version>2.3</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.easymock</groupId>
-      <artifactId>easymock</artifactId>
-      <version>3.2</version>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.dataformat</groupId>
-      <artifactId>jackson-dataformat-yaml</artifactId>
-      <version>2.5.0</version>
-      <scope>provided</scope>
-    </dependency>
 
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.12</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+  <modules>
+    <module>kubernetes-client</module>
+    <module>kubernetes-mock</module>
+  </modules>
 
   <build>
     <plugins>
@@ -156,24 +120,13 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
+        <inherited>true</inherited>
         <version>2.18.1</version>
         <configuration>
           <environmentVariables>
             <ENV_VAR_EXISTS>value</ENV_VAR_EXISTS>
             <ENV_VAR_EXISTS_BOOLEAN>true</ENV_VAR_EXISTS_BOOLEAN>
           </environmentVariables>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.4.0</version>
-        <configuration>
-          <mainClass>io.fabric8.kubernetes.UpdateExamples</mainClass>
-          <classpathScope>test</classpathScope>
-          <arguments>
-            <argument>${exec.master}</argument>
-          </arguments>
         </configuration>
       </plugin>
       <plugin>

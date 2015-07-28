@@ -75,7 +75,7 @@ import static org.easymock.EasyMock.*;
 
 public class MockClient {
 
-  private final KubernetesClient client = EasyMock.createMock(KubernetesClient.class);
+  private final KubernetesClient client = createMock(KubernetesClient.class);
 
   private final MockEndpoints endpoints = new MockEndpoints();
   private final MockEvent events = new MockEvent();

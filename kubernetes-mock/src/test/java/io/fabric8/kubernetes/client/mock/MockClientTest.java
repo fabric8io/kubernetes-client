@@ -23,7 +23,9 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class MockTest {
+import static org.junit.Assert.*;
+
+public class MockClientTest {
 
   @Test
   public void testGetPod() {
@@ -51,10 +53,10 @@ public class MockTest {
     MockClient mock = new MockClient();
     mock.pods().inNamespace("ns1").withLabel("component", "f1").list().andReturn(new PodListBuilder()
         .addNewItem()
-          .withNewMetadata().withName("pod1").endMetadata()
+        .withNewMetadata().withName("pod1").endMetadata()
         .endItem()
         .addNewItem()
-          .withNewMetadata().withName("pod2").endMetadata()
+        .withNewMetadata().withName("pod2").endMetadata()
         .endItem()
         .build()
     ).once();
