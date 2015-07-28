@@ -66,7 +66,7 @@ public class BuildConfigOperationsImpl extends BaseOperation<BuildConfig, BuildC
   }
 
   @Override
-  public NonNamespaceOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, Void, Boolean, BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean>> inNamespace(String namespace) {
+  public NonNamespaceOperation<BuildConfig, BuildConfig, BuildConfigList, DoneableBuildConfig, Void, Boolean, BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean>> inNamespace(String namespace) {
     try {
       return getClass()
         .getConstructor(AsyncHttpClient.class, URL.class, String.class, String.class, String.class, String.class)

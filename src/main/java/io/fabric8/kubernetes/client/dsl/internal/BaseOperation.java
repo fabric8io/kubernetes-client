@@ -50,9 +50,9 @@ import java.util.concurrent.Future;
 import static io.fabric8.kubernetes.client.internal.Utils.join;
 
 public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D, Void, Boolean>>
-  implements Operation<T, L, D, Void, Boolean, R>,
-  NonNamespaceOperation<T, L, D, Void, Boolean, R>,
-  Resource<T,D, Void, Boolean> {
+  implements Operation<T, T, L, D, Void, Boolean, R>,
+  NonNamespaceOperation<T, T, L, D, Void, Boolean, R>,
+  Resource<T, D, Void, Boolean> {
 
   protected static final ObjectMapper mapper = new ObjectMapper();
 
@@ -155,7 +155,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   @Override
-  public NonNamespaceOperation<T, L, D, Void, Boolean, R> inNamespace(String namespace) {
+  public NonNamespaceOperation<T, T, L, D, Void, Boolean, R> inNamespace(String namespace) {
     try {
       return getClass()
         .getConstructor(AsyncHttpClient.class, URL.class, String.class, String.class)
