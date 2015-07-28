@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl;
 
-public interface ClientOperation<T, L, D, R extends Resource<T, D, Void, Boolean>> extends
-  Namespaceable<ClientNonNamespaceOperation<T, L, D, R>>,
-  FilterWatchListDeleteable<T, L, Void, Boolean>,
-  ClientNonNamespaceOperation<T, L, D, R>,
-  Resource<T, D, Void, Boolean>{
+package io.fabric8.kubernetes.client.mock;
+
+public interface Replayable {
+  void replay();
 }

@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl;
 
-public interface ClientOperation<T, L, D, R extends Resource<T, D, Void, Boolean>> extends
-  Namespaceable<ClientNonNamespaceOperation<T, L, D, R>>,
-  FilterWatchListDeleteable<T, L, Void, Boolean>,
-  ClientNonNamespaceOperation<T, L, D, R>,
-  Resource<T, D, Void, Boolean>{
+package io.fabric8.kubernetes.client.mock;
+
+import io.fabric8.kubernetes.client.dsl.ProcessableResource;
+import org.easymock.IExpectationSetters;
+
+public interface MockProcessableResource<T, D, V, B> extends ProcessableResource<IExpectationSetters<T>, D, IExpectationSetters<V>, IExpectationSetters<B>> {
 }

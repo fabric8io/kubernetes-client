@@ -52,9 +52,7 @@ import java.util.concurrent.Future;
 import static io.fabric8.kubernetes.client.internal.Utils.join;
 
 public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D, Void, Boolean>>
-  implements ClientOperation<T, L, D, R>,
-  ClientNonNamespaceOperation<T, L, D, R>,
-  Resource<T, D, Void, Boolean> {
+  implements ClientOperation<T, L, D, R> {
 
   protected static final ObjectMapper mapper = new ObjectMapper();
 
