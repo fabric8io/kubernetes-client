@@ -16,7 +16,7 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Triggerable<T> {
+public interface Triggerable<T, V> {
 
-  void trigger(T trigger);
+  V trigger(T trigger);
 }

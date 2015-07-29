@@ -225,4 +225,36 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   public IExpectationSetters<L> list() {
     return expect(delegate.list());
   }
+
+  public String getName() {
+    return name;
+  }
+
+  public String getNamespace() {
+    return namespace;
+  }
+
+  public Map<String, String> getLabels() {
+    return labels;
+  }
+
+  public Map<String, String> getLabelsNot() {
+    return labelsNot;
+  }
+
+  public Map<String, String[]> getLabelsIn() {
+    return labelsIn;
+  }
+
+  public Map<String, String[]> getLabelsNotIn() {
+    return labelsNotIn;
+  }
+
+  public Map<String, String> getFields() {
+    return fields;
+  }
+
+  public Set<Mockable> getNested() {
+    return nested;
+  }
 }

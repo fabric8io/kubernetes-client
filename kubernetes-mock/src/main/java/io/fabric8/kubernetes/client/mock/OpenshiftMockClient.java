@@ -53,29 +53,67 @@ import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.OpenShiftClient;
+import io.fabric8.kubernetes.client.dsl.BuildConfigResource;
+import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.ClientOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.mock.impl.MockBuild;
+import io.fabric8.kubernetes.client.mock.impl.MockBuildConfig;
+import io.fabric8.kubernetes.client.mock.impl.MockDeploymentConfig;
 import io.fabric8.kubernetes.client.mock.impl.MockEndpoints;
 import io.fabric8.kubernetes.client.mock.impl.MockEvent;
+import io.fabric8.kubernetes.client.mock.impl.MockImageStream;
 import io.fabric8.kubernetes.client.mock.impl.MockNamespace;
 import io.fabric8.kubernetes.client.mock.impl.MockNode;
+import io.fabric8.kubernetes.client.mock.impl.MockOAuthAccessToken;
+import io.fabric8.kubernetes.client.mock.impl.MockOAuthAuthorizeToken;
+import io.fabric8.kubernetes.client.mock.impl.MockOAuthClient;
 import io.fabric8.kubernetes.client.mock.impl.MockPersistentVolume;
 import io.fabric8.kubernetes.client.mock.impl.MockPersistentVolumeClaim;
 import io.fabric8.kubernetes.client.mock.impl.MockPod;
 import io.fabric8.kubernetes.client.mock.impl.MockReplicationController;
 import io.fabric8.kubernetes.client.mock.impl.MockResourceQuota;
+import io.fabric8.kubernetes.client.mock.impl.MockRoute;
 import io.fabric8.kubernetes.client.mock.impl.MockSecret;
 import io.fabric8.kubernetes.client.mock.impl.MockService;
 import io.fabric8.kubernetes.client.mock.impl.MockServiceAccount;
 import io.fabric8.kubernetes.client.mock.impl.MockTemplate;
+import io.fabric8.openshift.api.model.Build;
+import io.fabric8.openshift.api.model.BuildConfig;
+import io.fabric8.openshift.api.model.BuildConfigList;
+import io.fabric8.openshift.api.model.BuildList;
+import io.fabric8.openshift.api.model.DeploymentConfig;
+import io.fabric8.openshift.api.model.DeploymentConfigList;
+import io.fabric8.openshift.api.model.DoneableBuild;
+import io.fabric8.openshift.api.model.DoneableBuildConfig;
+import io.fabric8.openshift.api.model.DoneableDeploymentConfig;
+import io.fabric8.openshift.api.model.DoneableImageStream;
+import io.fabric8.openshift.api.model.DoneableOAuthAccessToken;
+import io.fabric8.openshift.api.model.DoneableOAuthAuthorizeToken;
+import io.fabric8.openshift.api.model.DoneableOAuthClient;
+import io.fabric8.openshift.api.model.DoneableRoute;
 import io.fabric8.openshift.api.model.DoneableTemplate;
+import io.fabric8.openshift.api.model.ImageStream;
+import io.fabric8.openshift.api.model.ImageStreamList;
+import io.fabric8.openshift.api.model.OAuthAccessToken;
+import io.fabric8.openshift.api.model.OAuthAccessTokenList;
+import io.fabric8.openshift.api.model.OAuthAuthorizeToken;
+import io.fabric8.openshift.api.model.OAuthAuthorizeTokenList;
+import io.fabric8.openshift.api.model.OAuthClient;
+import io.fabric8.openshift.api.model.OAuthClientList;
+import io.fabric8.openshift.api.model.Route;
+import io.fabric8.openshift.api.model.RouteList;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateList;
 import org.easymock.EasyMock;
-import static org.easymock.EasyMock.*;
 
-public class MockClient {
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
 
-  private final KubernetesClient client = createMock(KubernetesClient.class);
+public class OpenshiftMockClient  {
+
+  private final OpenShiftClient client = createMock(OpenShiftClient.class);
 
   private final MockEndpoints endpoints = new MockEndpoints();
   private final MockEvent events = new MockEvent();
@@ -91,7 +129,16 @@ public class MockClient {
   private final MockServiceAccount serviceAccounts = new MockServiceAccount();
   private final MockTemplate templates = new MockTemplate();
 
-  public MockClient() {
+  private final MockBuild builds = new MockBuild();
+  private final MockBuildConfig buildConfigs = new MockBuildConfig();
+  private final MockDeploymentConfig deploymentConfigs = new MockDeploymentConfig();
+  private final MockImageStream imageStreams = new MockImageStream();
+  private final MockOAuthAccessToken oAuthAccessTokens = new MockOAuthAccessToken();
+  private final MockOAuthAuthorizeToken oAuthAuthorizeTokens = new MockOAuthAuthorizeToken();
+  private final MockOAuthClient oAuthClients = new MockOAuthClient();
+  private final MockRoute routes = new MockRoute();
+
+  public OpenshiftMockClient() {
     expect(client.endpoints()).andReturn(endpoints.getDelegate()).anyTimes();
     expect(client.events()).andReturn(events.getDelegate()).anyTimes();
     expect(client.nodes()).andReturn(nodes.getDelegate()).anyTimes();
@@ -105,9 +152,18 @@ public class MockClient {
     expect(client.secrets()).andReturn(secrets.getDelegate()).anyTimes();
     expect(client.serviceAccounts()).andReturn(serviceAccounts.getDelegate()).anyTimes();
     expect(client.templates()).andReturn(templates.getDelegate()).anyTimes();
+
+    expect(client.builds()).andReturn(builds.getDelegate()).anyTimes();
+    expect(client.buildConfigs()).andReturn(buildConfigs.getDelegate()).anyTimes();
+    expect(client.deploymentConfigs()).andReturn(deploymentConfigs.getDelegate()).anyTimes();
+    expect(client.imageStreams()).andReturn(imageStreams.getDelegate()).anyTimes();
+    expect(client.oAuthAccessTokens()).andReturn(oAuthAccessTokens.getDelegate()).anyTimes();
+    expect(client.oAuthAuthorizeTokens()).andReturn(oAuthAuthorizeTokens.getDelegate()).anyTimes();
+    expect(client.oAuthClients()).andReturn(oAuthClients.getDelegate()).anyTimes();
+    expect(client.routes()).andReturn(routes.getDelegate()).anyTimes();
   }
 
-  public KubernetesClient replay() {
+  public OpenShiftClient replay() {
     endpoints.replay();
     events.replay();
     nodes.replay();
@@ -133,11 +189,11 @@ public class MockClient {
     return events;
   }
 
-  MockOperation<Namespace, NamespaceList, DoneableNamespace, MockResource<Namespace, DoneableNamespace, Void, Boolean>> namespaces() {
+  MockNonNamespaceOperation<Namespace, NamespaceList, DoneableNamespace, MockResource<Namespace, DoneableNamespace, Void, Boolean>> namespaces() {
     return namespaces;
   }
 
-  MockOperation<Node, NodeList, DoneableNode, MockResource<Node, DoneableNode, Void, Boolean>> nodes() {
+  MockNonNamespaceOperation<Node, NodeList, DoneableNode, MockResource<Node, DoneableNode, Void, Boolean>> nodes() {
     return nodes;
   }
 
@@ -175,5 +231,37 @@ public class MockClient {
 
   MockOperation<Template, TemplateList, DoneableTemplate, MockProcessableResource<Template, DoneableTemplate, Void, Boolean>> templates() {
     return templates;
+  }
+
+  MockOperation<Build, BuildList, DoneableBuild, MockResource<Build, DoneableBuild, Void, Boolean>> builds() {
+    return builds;
+  }
+
+  MockOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, MockBuildConfigResource> buildConfigs() {
+    return buildConfigs;
+  }
+
+  MockOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, MockResource<DeploymentConfig, DoneableDeploymentConfig, Void, Boolean>> deploymentConfigs() {
+    return deploymentConfigs;
+  }
+
+  MockOperation<ImageStream, ImageStreamList, DoneableImageStream, MockResource<ImageStream, DoneableImageStream, Void, Boolean>> imageStreams() {
+    return imageStreams;
+  }
+
+  MockNonNamespaceOperation<OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken, MockResource<OAuthAccessToken, DoneableOAuthAccessToken, Void, Boolean>> oAuthAccessTokens() {
+    return oAuthAccessTokens;
+  }
+
+  MockNonNamespaceOperation<OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken, MockResource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken, Void, Boolean>> oAuthAuthorizeTokens() {
+    return oAuthAuthorizeTokens;
+  }
+
+  MockNonNamespaceOperation<OAuthClient, OAuthClientList, DoneableOAuthClient, MockResource<OAuthClient, DoneableOAuthClient, Void, Boolean>> oAuthClients() {
+    return oAuthClients;
+  }
+
+  MockOperation<Route, RouteList, DoneableRoute, MockResource<Route, DoneableRoute, Void, Boolean>> routes() {
+    return routes;
   }
 }

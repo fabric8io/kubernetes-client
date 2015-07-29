@@ -16,7 +16,7 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Instantiateable<T> {
+public interface Instantiateable<T, I> {
 
-  void instantiate(T request);
+  I instantiate(T request);
 }

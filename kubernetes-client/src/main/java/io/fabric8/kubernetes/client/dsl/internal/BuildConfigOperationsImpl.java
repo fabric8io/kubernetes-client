@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.BuildConfigResource;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
-import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.Secretable;
 import io.fabric8.kubernetes.client.dsl.Triggerable;
 import io.fabric8.kubernetes.client.dsl.Typeable;
 import io.fabric8.openshift.api.model.BuildConfig;
@@ -34,10 +34,11 @@ import java.net.URL;
 import java.util.concurrent.Future;
 
 public class BuildConfigOperationsImpl extends BaseOperation<BuildConfig, BuildConfigList, DoneableBuildConfig,
-  BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean>>
-  implements BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean>,
-  Typeable<Triggerable<WebHookTrigger>>,
-  Triggerable<WebHookTrigger>
+  BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean, Void, Void>>
+  implements BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean, Void, Void>,
+  Typeable<Triggerable<WebHookTrigger, Void>>,
+  Triggerable<WebHookTrigger, Void>,
+  Secretable<Typeable<Triggerable<WebHookTrigger, Void>>>
  {
 
   private final String secret;
@@ -56,7 +57,7 @@ public class BuildConfigOperationsImpl extends BaseOperation<BuildConfig, BuildC
   }
 
   @Override
-  public BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean> withName(String name) {
+  public BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean, Void, Void> withName(String name) {
     try {
       return  getClass()
         .getConstructor(AsyncHttpClient.class, URL.class, String.class, String.class, String.class, String.class)
@@ -67,7 +68,7 @@ public class BuildConfigOperationsImpl extends BaseOperation<BuildConfig, BuildC
   }
 
   @Override
-  public ClientNonNamespaceOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean>> inNamespace(String namespace) {
+  public ClientNonNamespaceOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean, Void, Void>> inNamespace(String namespace) {
     try {
       return getClass()
         .getConstructor(AsyncHttpClient.class, URL.class, String.class, String.class, String.class, String.class)
@@ -80,12 +81,12 @@ public class BuildConfigOperationsImpl extends BaseOperation<BuildConfig, BuildC
 
 
   @Override
-  public Typeable<Triggerable<WebHookTrigger>> withSecret(String secret) {
+  public Typeable<Triggerable<WebHookTrigger, Void>> withSecret(String secret) {
     return new BuildConfigOperationsImpl(getHttpClient(), getRootUrl(), getNamespace(), getName(), secret, triggerType);
   }
 
   @Override
-  public void instantiate(BuildRequest request) {
+  public Void instantiate(BuildRequest request) {
     try {
       URL instantiationUrl = new URL(getResourceUrl().toString() + "/instantiate");
       AsyncHttpClient.BoundRequestBuilder requestBuilder = getHttpClient().preparePost(instantiationUrl.toString());
@@ -94,10 +95,11 @@ public class BuildConfigOperationsImpl extends BaseOperation<BuildConfig, BuildC
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
+    return null;
   }
 
    @Override
-   public void trigger(WebHookTrigger trigger) {
+   public Void trigger(WebHookTrigger trigger) {
      try {
        //TODO: This needs some attention.
        URL webhooksUrl = new URL(getResourceUrl().toString() + "/webhooks/");
@@ -115,10 +117,11 @@ public class BuildConfigOperationsImpl extends BaseOperation<BuildConfig, BuildC
      } catch (Exception e) {
        throw KubernetesClientException.launderThrowable(e);
      }
+     return null;
    }
 
    @Override
-   public Triggerable<WebHookTrigger> withType(String type) {
+   public Triggerable<WebHookTrigger, Void> withType(String type) {
      return new BuildConfigOperationsImpl(getHttpClient(), getRootUrl(), getNamespace(), getName(), secret, type);
    }
  }

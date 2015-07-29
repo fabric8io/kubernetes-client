@@ -69,6 +69,8 @@ import io.fabric8.kubernetes.client.dsl.Operation;
 import io.fabric8.kubernetes.client.dsl.ProcessableResource;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.ScaleableResource;
+import io.fabric8.kubernetes.client.dsl.Triggerable;
+import io.fabric8.kubernetes.client.dsl.Typeable;
 import io.fabric8.kubernetes.client.dsl.internal.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.internal.BuildConfigOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.BuildOperationsImpl;
@@ -120,6 +122,7 @@ import io.fabric8.openshift.api.model.Route;
 import io.fabric8.openshift.api.model.RouteList;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateList;
+import io.fabric8.openshift.api.model.WebHookTrigger;
 import org.jboss.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -344,7 +347,7 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
   }
 
   @Override
-  public ClientOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean>> buildConfigs() {
+  public ClientOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean, Void, Void>> buildConfigs() {
     return new BuildConfigOperationsImpl(httpClient, openShiftUrl, null, null);
   }
 
