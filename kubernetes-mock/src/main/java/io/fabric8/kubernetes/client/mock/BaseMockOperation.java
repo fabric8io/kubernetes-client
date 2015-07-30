@@ -115,7 +115,7 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   @Override
   public E withName(String name) {
     BaseMockOperation<T, L, D, R, E> op = new BaseMockOperation<>(name, namespace, labels, labelsNot, labelsIn, labelsNotIn, fields);
-    expect(delegate.withName(eq(name))).andReturn((R) op.getDelegate()).once();
+    expect(delegate.withName(name)).andReturn((R) op.getDelegate()).once();
     nested.add(op);
     return (E) op;
   }
@@ -123,7 +123,7 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   @Override
   public MockNonNamespaceOperation<T, L, D, E> inNamespace(String namespace) {
     BaseMockOperation<T, L, D, R, E> op = new BaseMockOperation<>(name, namespace, labels, labelsNot, labelsIn, labelsNotIn, fields);
-    expect(delegate.inNamespace(eq(namespace))).andReturn(op.getDelegate()).once();
+    expect(delegate.inNamespace(namespace)).andReturn(op.getDelegate()).once();
     nested.add(op);
     return op;
   }
@@ -153,7 +153,7 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Void>, IExpectationSetters<Boolean>> withLabels(Map<String, String> l) {
     labels.putAll(l);
     BaseMockOperation<T, L, D, R, E> op = new BaseMockOperation<>(name, namespace, labels, labelsNot, labelsIn, labelsNotIn, fields);
-    expect(delegate.withLabels(eq(labels))).andReturn(op.getDelegate()).once();
+    expect(delegate.withLabels(labels)).andReturn(op.getDelegate()).once();
     nested.add(op);
     return op;
   }
@@ -162,7 +162,7 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Void>, IExpectationSetters<Boolean>> withoutLabels(Map<String, String> l) {
     labelsNot.putAll(l);
     BaseMockOperation<T, L, D, R, E> op = new BaseMockOperation<>(name, namespace, labels, labelsNot, labelsIn, labelsNotIn, fields);
-    expect(delegate.withoutLabels(eq(labels))).andReturn(op.getDelegate()).once();
+    expect(delegate.withoutLabels(labels)).andReturn(op.getDelegate()).once();
     nested.add(op);
     return op;
   }
@@ -171,7 +171,7 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Void>, IExpectationSetters<Boolean>> withLabelIn(String key, String... values) {
     labelsIn.put(key, values);
     BaseMockOperation<T, L, D, R, E> op = new BaseMockOperation<>(name, namespace, labels, labelsNot, labelsIn, labelsNotIn, fields);
-    expect(delegate.withLabelIn(eq(key), eq(values))).andReturn(op.getDelegate()).once();
+    expect(delegate.withLabelIn(key, values)).andReturn(op.getDelegate()).once();
     nested.add(op);
     return op;
   }
@@ -180,7 +180,7 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Void>, IExpectationSetters<Boolean>> withLabelNotIn(String key, String... values) {
     labelsNotIn.put(key, values);
     BaseMockOperation<T, L, D, R, E> op = new BaseMockOperation<>(name, namespace, labels, labelsNot, labelsIn, labelsNotIn, fields);
-    expect(delegate.withLabelNotIn(eq(key), eq(values))).andReturn(op.getDelegate()).once();
+    expect(delegate.withLabelNotIn(key, values)).andReturn(op.getDelegate()).once();
     nested.add(op);
     return op;
   }
@@ -189,7 +189,7 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Void>, IExpectationSetters<Boolean>> withLabel(String key, String value) {
     labels.put(key, value);
     BaseMockOperation<T, L, D, R, E> op = new BaseMockOperation<>(name, namespace, labels, labelsNot, labelsIn, labelsNotIn, fields);
-    expect(delegate.withLabel(eq(key), eq(value))).andReturn(op.getDelegate()).once();
+    expect(delegate.withLabel(key, value)).andReturn(op.getDelegate()).once();
     nested.add(op);
     return op;
   }
@@ -198,7 +198,7 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Void>, IExpectationSetters<Boolean>> withoutLabel(String key, String value) {
     labelsNot.put(key, value);
     BaseMockOperation<T, L, D, R, E> op = new BaseMockOperation<>(name, namespace, labels, labelsNot, labelsIn, labelsNotIn, fields);
-    expect(delegate.withoutLabel(eq(key), eq(value))).andReturn(op.getDelegate()).once();
+    expect(delegate.withoutLabel(key, value)).andReturn(op.getDelegate()).once();
     nested.add(op);
     return op;
   }
@@ -207,7 +207,7 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Void>, IExpectationSetters<Boolean>> withFields(Map<String, String> f) {
     fields.putAll(f);
     BaseMockOperation<T, L, D, R, E> op = new BaseMockOperation<>(name, namespace, labels, labelsNot, labelsIn, labelsNotIn, fields);
-    expect(delegate.withFields(eq(f))).andReturn(op.getDelegate()).once();
+    expect(delegate.withFields(f)).andReturn(op.getDelegate()).once();
     nested.add(op);
     return op;
   }
@@ -216,7 +216,7 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Void>, IExpectationSetters<Boolean>> withField(String key, String value) {
     fields.put(key, value);
     BaseMockOperation<T, L, D, R, E> op = new BaseMockOperation<>(name, namespace, labels, labelsNot, labelsIn, labelsNotIn, fields);
-    expect(delegate.withField(eq(key), eq(value))).andReturn(op.getDelegate()).once();
+    expect(delegate.withField(key, value)).andReturn(op.getDelegate()).once();
     nested.add(op);
     return op;
   }
