@@ -23,7 +23,7 @@ import io.fabric8.openshift.api.model.ImageStreamList;
 
 import java.net.URL;
 
-public class ImageStreamOperationsImpl extends BaseOperation<ImageStream, ImageStreamList, DoneableImageStream,
+public class ImageStreamOperationsImpl extends HasMetadataOperation<ImageStream, ImageStreamList, DoneableImageStream,
   Resource<ImageStream, DoneableImageStream, Void, Boolean>> {
 
   public ImageStreamOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {

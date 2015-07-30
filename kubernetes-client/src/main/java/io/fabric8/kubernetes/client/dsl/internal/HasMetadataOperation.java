@@ -20,19 +20,30 @@ import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.client.dsl.ProcessableResource;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
 
 import java.net.URL;
 
-public abstract class BaseProcessableOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D, Void, Boolean>>
-  extends HasMetadataOperation<T, L, D, R> implements ProcessableResource<T,D, Void, Boolean> {
+public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D, Void, Boolean>> extends BaseOperation<T,L,D,R> {
 
-  protected BaseProcessableOperation(AsyncHttpClient httpClient, URL rootUrl, String resourceT, String namespace, String name) {
+  protected HasMetadataOperation(AsyncHttpClient httpClient, URL rootUrl, String resourceT, String namespace, String name) {
     super(httpClient, rootUrl, resourceT, namespace, name);
   }
 
-  protected BaseProcessableOperation(AsyncHttpClient httpClient, URL rootUrl, String resourceT, String namespace, String name, Class<T> type, Class<L> listType, Class<D> doneableType) {
+  protected HasMetadataOperation(AsyncHttpClient httpClient, URL rootUrl, String resourceT, String namespace, String name, Class<T> type, Class<L> listType, Class<D> doneableType) {
     super(httpClient, rootUrl, resourceT, namespace, name, type, listType, doneableType);
+  }
+
+  @Override
+  public T update(T item) {
+    try {
+      T old = get();
+      String resourceVersion = old.getMetadata().getResourceVersion();
+      item.getMetadata().setResourceVersion(resourceVersion);
+      return handleUpdate(getResourceUrl(), item);
+    } catch (Exception e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
   }
 }

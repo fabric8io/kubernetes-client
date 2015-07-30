@@ -23,7 +23,7 @@ import io.fabric8.openshift.api.model.DoneableBuild;
 
 import java.net.URL;
 
-public class BuildOperationsImpl extends BaseOperation<Build, BuildList, DoneableBuild,
+public class BuildOperationsImpl extends HasMetadataOperation<Build, BuildList, DoneableBuild,
   Resource<Build, DoneableBuild, Void, Boolean>> {
 
   public BuildOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {

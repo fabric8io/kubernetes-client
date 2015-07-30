@@ -18,7 +18,9 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableService;
 import io.fabric8.kubernetes.api.model.Service;
+import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.ServiceList;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
 
 import java.net.URL;
@@ -31,5 +33,23 @@ public class ServiceOperationsImpl extends BaseOperation<Service, ServiceList, D
 
   public ServiceOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {
     super(httpClient, rootUrl, "services", namespace, name);
+  }
+
+  @Override
+  public Service update(Service item) {
+      try {
+        Service old = get();
+        String resourceVersion = old.getMetadata().getResourceVersion();
+        return handleUpdate(getResourceUrl(), new ServiceBuilder(item)
+          .editMetadata()
+          .withResourceVersion(resourceVersion)
+          .endMetadata()
+          .editSpec()
+          .withClusterIP(old.getSpec().getClusterIP())
+          .endSpec()
+          .build());
+      } catch (Exception e) {
+        throw KubernetesClientException.launderThrowable(e);
+      }
   }
 }

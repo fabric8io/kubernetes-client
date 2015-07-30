@@ -23,7 +23,7 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 
 import java.net.URL;
 
-public class NamespaceOperationsImpl extends BaseOperation<Namespace, NamespaceList, DoneableNamespace, Resource<Namespace,DoneableNamespace, Void, Boolean>> {
+public class NamespaceOperationsImpl extends HasMetadataOperation<Namespace, NamespaceList, DoneableNamespace, Resource<Namespace,DoneableNamespace, Void, Boolean>> {
 
   public NamespaceOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "namespaces", null, null, Namespace.class, NamespaceList.class, DoneableNamespace.class);

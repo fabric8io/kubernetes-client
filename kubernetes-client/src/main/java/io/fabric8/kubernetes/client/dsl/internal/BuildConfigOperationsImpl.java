@@ -33,7 +33,7 @@ import io.fabric8.openshift.api.model.WebHookTrigger;
 import java.net.URL;
 import java.util.concurrent.Future;
 
-public class BuildConfigOperationsImpl extends BaseOperation<BuildConfig, BuildConfigList, DoneableBuildConfig,
+public class BuildConfigOperationsImpl extends HasMetadataOperation<BuildConfig, BuildConfigList, DoneableBuildConfig,
   BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean, Void, Void>>
   implements BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean, Void, Void>,
   Typeable<Triggerable<WebHookTrigger, Void>>,

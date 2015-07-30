@@ -23,7 +23,7 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 
 import java.net.URL;
 
-public class EventOperationsImpl extends BaseOperation<Event, EventList, DoneableEvent,
+public class EventOperationsImpl extends HasMetadataOperation<Event, EventList, DoneableEvent,
   Resource<Event, DoneableEvent, Void, Boolean>> {
 
   public EventOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {

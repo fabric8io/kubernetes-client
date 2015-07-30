@@ -23,7 +23,7 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 
 import java.net.URL;
 
-public class EndpointsOperationsImpl extends BaseOperation<Endpoints, EndpointsList, DoneableEndpoints,
+public class EndpointsOperationsImpl extends HasMetadataOperation<Endpoints, EndpointsList, DoneableEndpoints,
   Resource<Endpoints, DoneableEndpoints, Void, Boolean>> {
 
   public EndpointsOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {

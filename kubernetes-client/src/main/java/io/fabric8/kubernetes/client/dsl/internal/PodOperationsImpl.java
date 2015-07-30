@@ -23,7 +23,7 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 
 import java.net.URL;
 
-public class PodOperationsImpl extends BaseOperation<Pod, PodList, DoneablePod, Resource<Pod, DoneablePod, Void, Boolean>> {
+public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, DoneablePod, Resource<Pod, DoneablePod, Void, Boolean>> {
 
   public PodOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "pods", null, null, Pod.class, PodList.class, DoneablePod.class);
