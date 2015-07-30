@@ -24,17 +24,24 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ClientOperation;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeleteable;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.mock.util.WrappedMatcher;
 import org.easymock.EasyMock;
+import org.easymock.IArgumentMatcher;
 import org.easymock.IExpectationSetters;
+import org.easymock.internal.LastControl;
+import org.easymock.internal.matchers.And;
+import org.easymock.internal.matchers.Equals;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
 
 public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Doneable<T>,
   R extends Resource<T, D, Void, Boolean>,
@@ -51,7 +58,7 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   private final Map<String, String> fields;
 
   private final ClientOperation<T, L, D, R> delegate = EasyMock.createMock(ClientOperation.class);
-  
+
   private final Set<Mockable> nested = new LinkedHashSet<>();
 
   public BaseMockOperation() {
@@ -72,11 +79,27 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
     this.fields = fields;
   }
 
+  private Map<IArgumentMatcher, BaseMockOperation> nameMap = new HashMap<>();
+  private Map<IArgumentMatcher, BaseMockOperation> namespaceMap = new HashMap<>();
+
+  private Map<IArgumentMatcher, BaseMockOperation> labelMap = new HashMap<>();
+  private Map<IArgumentMatcher, BaseMockOperation> labelsMap = new HashMap<>();
+  private Map<IArgumentMatcher, BaseMockOperation> labelesNotMap = new HashMap<>();
+  private Map<IArgumentMatcher, BaseMockOperation> labelsInsMap = new HashMap<>();
+  private Map<IArgumentMatcher, BaseMockOperation> labelsNotInMap = new HashMap<>();
+  private Map<IArgumentMatcher, BaseMockOperation> filedsMps = new HashMap<>();
+
+
+
   public void replay() {
     for (Mockable mockable : nested) {
       mockable.replay();
     }
-    EasyMock.replay(delegate);
+    try {
+      EasyMock.replay(delegate);
+    } catch (IllegalStateException e) {
+      //ignore
+    }
   }
 
   public void verify() {
@@ -114,17 +137,27 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
 
   @Override
   public E withName(String name) {
-    BaseMockOperation<T, L, D, R, E> op = new BaseMockOperation<>(name, namespace, labels, labelsNot, labelsIn, labelsNotIn, fields);
-    expect(delegate.withName(name)).andReturn((R) op.getDelegate()).once();
-    nested.add(op);
-    return (E) op;
+    IArgumentMatcher matcher = getArgument(name);
+    BaseMockOperation<T, L, D, R, E> op = nameMap.get(matcher);
+    if (op == null) {
+      op = new BaseMockOperation<>(name, namespace, labels, labelsNot, labelsIn, labelsNotIn, fields);
+      expect(delegate.withName(name)).andReturn((R) op.getDelegate()).anyTimes();
+      nested.add(op);
+      nameMap.put(matcher, op);
+    }
+    return (E)op;
   }
 
   @Override
   public MockNonNamespaceOperation<T, L, D, E> inNamespace(String namespace) {
-    BaseMockOperation<T, L, D, R, E> op = new BaseMockOperation<>(name, namespace, labels, labelsNot, labelsIn, labelsNotIn, fields);
-    expect(delegate.inNamespace(namespace)).andReturn(op.getDelegate()).once();
-    nested.add(op);
+    IArgumentMatcher matcher = getArgument(namespace);
+    BaseMockOperation<T, L, D, R, E> op = namespaceMap.get(matcher);
+    if (op == null) {
+      op = new BaseMockOperation<>(name, namespace, labels, labelsNot, labelsIn, labelsNotIn, fields);
+      expect(delegate.inNamespace(namespace)).andReturn(op.getDelegate()).anyTimes();
+      nested.add(op);
+      namespaceMap.put(matcher, op);
+    }
     return op;
   }
 
@@ -151,10 +184,14 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
 
   @Override
   public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Void>, IExpectationSetters<Boolean>> withLabels(Map<String, String> l) {
-    labels.putAll(l);
-    BaseMockOperation<T, L, D, R, E> op = new BaseMockOperation<>(name, namespace, labels, labelsNot, labelsIn, labelsNotIn, fields);
-    expect(delegate.withLabels(labels)).andReturn(op.getDelegate()).once();
-    nested.add(op);
+    IArgumentMatcher matcher = getArgument(l);
+    BaseMockOperation<T, L, D, R, E> op = namespaceMap.get(matcher);
+    if (op == null) {
+      op = new BaseMockOperation<>(name, namespace, labels, labelsNot, labelsIn, labelsNotIn, fields);
+      expect(delegate.withLabels(l)).andReturn(op.getDelegate()).anyTimes();
+      nested.add(op);
+      namespaceMap.put(matcher, op);
+    }
     return op;
   }
 
@@ -187,10 +224,17 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
 
   @Override
   public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Void>, IExpectationSetters<Boolean>> withLabel(String key, String value) {
-    labels.put(key, value);
-    BaseMockOperation<T, L, D, R, E> op = new BaseMockOperation<>(name, namespace, labels, labelsNot, labelsIn, labelsNotIn, fields);
-    expect(delegate.withLabel(key, value)).andReturn(op.getDelegate()).once();
-    nested.add(op);
+    IArgumentMatcher keyMatcher = getArgument(key);
+    IArgumentMatcher valueMatcher = getArgument(value);
+    IArgumentMatcher matcher = new And(Arrays.asList(keyMatcher, valueMatcher));
+
+    BaseMockOperation<T, L, D, R, E> op = labelMap.get(matcher);
+    if (op == null) {
+      op = new BaseMockOperation<>(name, namespace, labels, labelsNot, labelsIn, labelsNotIn, fields);
+      expect(delegate.withLabel(key, value)).andReturn(op.getDelegate()).anyTimes();
+      nested.add(op);
+      labelMap.put(matcher, op);
+    }
     return op;
   }
 
@@ -256,5 +300,24 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
 
   public Set<Mockable> getNested() {
     return nested;
+  }
+
+  private IArgumentMatcher getArgument(Object argument) {
+    if (argument == null) {
+      List<IArgumentMatcher> matchers = LastControl.pullMatchers();
+      if (matchers == null || matchers.isEmpty()) {
+        return null;
+      } else {
+        //We need to put matchers back to the stack
+        for (IArgumentMatcher m : matchers) {
+          LastControl.reportMatcher(m);
+        }
+        return WrappedMatcher.wrap(matchers.get(0));
+      }
+    } else if (argument instanceof IArgumentMatcher) {
+      return WrappedMatcher.wrap((IArgumentMatcher) argument);
+    } else {
+      return new WrappedMatcher(new Equals(argument));
+    }
   }
 }

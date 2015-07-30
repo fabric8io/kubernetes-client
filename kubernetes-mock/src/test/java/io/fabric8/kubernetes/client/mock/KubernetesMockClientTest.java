@@ -23,15 +23,17 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import org.junit.Assert;
 import org.junit.Test;
 
+import static org.easymock.EasyMock.eq;
+
 public class KubernetesMockClientTest {
 
   @Test
   public void testGetPod() {
     KubernetesMockClient mock = new KubernetesMockClient();
-    mock.pods().inNamespace("ns1").withName("pod1").getIfExists().andReturn(new PodBuilder()
+    mock.pods().inNamespace(eq("ns1")).withName(eq("pod1")).getIfExists().andReturn(new PodBuilder()
         .withNewMetadata().withName("pod1").endMetadata()
         .build()
-    ).once();
+    ).anyTimes();
 
     mock.pods().inNamespace("ns1").withName("pod2").getIfExists().andReturn(new PodBuilder()
         .withNewMetadata().withName("pod2").endMetadata()
@@ -41,7 +43,11 @@ public class KubernetesMockClientTest {
     mock.pods().inNamespace("ns1").withName("pod2").getIfExists().andReturn(null).once();
 
     KubernetesClient client = mock.replay();
-    Assert.assertNotNull(client.pods().inNamespace("ns1").withName("pod1").getIfExists());
+
+    //We are testing the internal anyTimes() on namespace and name.
+    for (int i = 0; i < 5; i++) {
+      Assert.assertNotNull(client.pods().inNamespace("ns1").withName("pod1").getIfExists());
+    }
     Assert.assertNotNull(client.pods().inNamespace("ns1").withName("pod2").getIfExists());
     Assert.assertNull(client.pods().inNamespace("ns1").withName("pod2").getIfExists());
   }
@@ -57,12 +63,28 @@ public class KubernetesMockClientTest {
         .withNewMetadata().withName("pod2").endMetadata()
         .endItem()
         .build()
-    ).once();
+    ).anyTimes();
+
+    mock.pods().inNamespace("ns1").withLabel("component", "f2").list().andReturn(new PodListBuilder()
+        .addNewItem()
+        .withNewMetadata().withName("pod1").endMetadata()
+        .endItem()
+        .build()
+    ).anyTimes();
 
     KubernetesClient client = mock.replay();
-    PodList result  = client.pods().inNamespace("ns1").withLabel("component", "f1").list();
-    Assert.assertNotNull(result);
-    Assert.assertEquals(2, result.getItems().size());
+
+    for (int i=0;i<5;i++) {
+      PodList result = client.pods().inNamespace("ns1").withLabel("component", "f1").list();
+      Assert.assertNotNull(result);
+      Assert.assertEquals(2, result.getItems().size());
+    }
+
+    for (int i=0;i<5;i++) {
+      PodList result = client.pods().inNamespace("ns1").withLabel("component", "f2").list();
+      Assert.assertNotNull(result);
+      Assert.assertEquals(1, result.getItems().size());
+    }
   }
 
 }
