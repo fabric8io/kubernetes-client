@@ -73,7 +73,7 @@ import io.fabric8.openshift.api.model.TemplateList;
 import org.easymock.EasyMock;
 import static org.easymock.EasyMock.*;
 
-public class KubernetesMockClient {
+public class KubernetesMockClient implements Replayable<KubernetesClient>, Verifiable {
 
   private final KubernetesClient client = createMock(KubernetesClient.class);
 
@@ -123,6 +123,24 @@ public class KubernetesMockClient {
     templates.replay();
     EasyMock.replay(client);
     return client;
+  }
+
+  @Override
+  public void verify() {
+    endpoints.verify();
+    events.verify();
+    nodes.verify();
+    namespaces.verify();
+    persistentVolumes.verify();
+    persistentVolumeClaims.verify();
+    pods.verify();
+    services.verify();
+    replicationControllers.verify();
+    resourceQuotas.verify();
+    secrets.verify();
+    serviceAccounts.verify();
+    templates.verify();
+    EasyMock.verify(client);
   }
 
   MockOperation<Endpoints, EndpointsList, DoneableEndpoints, MockResource<Endpoints, DoneableEndpoints, Void, Boolean>> endpoints() {

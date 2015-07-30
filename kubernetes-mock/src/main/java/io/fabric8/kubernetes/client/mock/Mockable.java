@@ -16,6 +16,6 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-public interface Mockable extends Replayable, Verifiable{
+public interface Mockable extends Replayable<Void>, Verifiable {
 
 }

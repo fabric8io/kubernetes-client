@@ -16,9 +16,7 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.openshift.api.model.WebHookTrigger;
-
 public interface Secretable<T> {
 
-  Typeable<Triggerable<WebHookTrigger, Void>> withSecret(String secret);
+  T withSecret(String secret);
 }

@@ -16,6 +16,6 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-public interface Replayable {
-  void replay();
+public interface Replayable<T> {
+  T replay();
 }

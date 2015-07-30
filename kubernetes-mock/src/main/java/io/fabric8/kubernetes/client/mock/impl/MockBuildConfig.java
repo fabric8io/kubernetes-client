@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.client.dsl.Instantiateable;
 import io.fabric8.kubernetes.client.dsl.Secretable;
 import io.fabric8.kubernetes.client.dsl.Triggerable;
 import io.fabric8.kubernetes.client.dsl.Typeable;
+import io.fabric8.kubernetes.client.dsl.internal.BuildConfigOperationsImpl;
 import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockBuildConfigResource;
 import io.fabric8.openshift.api.model.BuildConfig;
@@ -28,34 +29,33 @@ import io.fabric8.openshift.api.model.BuildConfigList;
 import io.fabric8.openshift.api.model.BuildRequest;
 import io.fabric8.openshift.api.model.DoneableBuildConfig;
 import io.fabric8.openshift.api.model.WebHookTrigger;
+import org.easymock.EasyMock;
+import org.easymock.IArgumentMatcher;
 import org.easymock.IExpectationSetters;
 
+import java.util.HashMap;
 import java.util.Map;
 
-import static org.easymock.EasyMock.*;
+import static io.fabric8.kubernetes.client.mock.util.MockUtils.getArgument;
+import static org.easymock.EasyMock.expect;
+
 
 public class MockBuildConfig extends BaseMockOperation<BuildConfig, BuildConfigList, DoneableBuildConfig,
   BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean, Void, Void>,
   MockBuildConfigResource>
   implements MockBuildConfigResource {
 
-  private final String secret;
-  private final String type;
+  private Map<IArgumentMatcher, MockBuildConfig> secretMap = new HashMap<>();
+  private Map<IArgumentMatcher, MockBuildConfig> typeMap = new HashMap<>();
+
 
   public MockBuildConfig() {
-    this(null, null, null, null);
+    super(EasyMock.createMock(BuildConfigOperationsImpl.class));
   }
 
-  public MockBuildConfig(String name, String namespace, String secret, String type) {
-    super(name, namespace);
-    this.secret = secret;
-    this.type = type;
-  }
-
-  public MockBuildConfig(String name, String namespace, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, String secret, String type) {
-    super(name, namespace, labels, labelsNot, labelsIn, labelsNotIn, fields);
-    this.secret = secret;
-    this.type = type;
+  @Override
+  public BaseMockOperation newInstance() {
+    return new MockBuildConfig();
   }
 
   @Override
@@ -64,23 +64,33 @@ public class MockBuildConfig extends BaseMockOperation<BuildConfig, BuildConfigL
   }
 
   @Override
-  public Typeable<Triggerable<WebHookTrigger, Void>> withSecret(String secret) {
-    MockBuildConfig op = new MockBuildConfig(getName(), getNamespace(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, type);
-    expect(((Secretable)getDelegate()).withSecret(secret)).andReturn((Typeable) op.getDelegate()).once();
-    getNested().add(op);
+  public Typeable<Triggerable<WebHookTrigger, IExpectationSetters<Void>>> withSecret(String secret) {
+    IArgumentMatcher matcher = getArgument(secret);
+    MockBuildConfig op = secretMap.get(matcher);
+    if (op == null) {
+      op = new MockBuildConfig();
+      expect(((Secretable) getDelegate()).withSecret(secret)).andReturn((Typeable)op.getDelegate()).anyTimes();
+      getNested().add(op);
+      secretMap.put(matcher, op);
+    }
     return op;
   }
 
   @Override
-  public Void trigger(WebHookTrigger trigger) {
-    return null;
+  public IExpectationSetters<Void> trigger(WebHookTrigger trigger) {
+    return expect(((Triggerable<WebHookTrigger, Void>)getDelegate()).trigger(trigger));
   }
 
   @Override
-  public Triggerable<WebHookTrigger, Void> withType(String type) {
-    MockBuildConfig op = new MockBuildConfig(getName(), getNamespace(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, type);
-    expect(((Typeable)getDelegate()).withType(type)).andReturn((Typeable) op.getDelegate()).once();
-    getNested().add(op);
+  public Triggerable<WebHookTrigger, IExpectationSetters<Void>> withType(String type) {
+    IArgumentMatcher matcher = getArgument(type);
+    MockBuildConfig op = typeMap.get(matcher);
+    if (op == null) {
+      op = new MockBuildConfig();
+      expect(((Typeable)getDelegate()).withType(type)).andReturn(op.getDelegate()).anyTimes();
+      getNested().add(op);
+      typeMap.put(matcher, op);
+    }
     return op;
   }
 }

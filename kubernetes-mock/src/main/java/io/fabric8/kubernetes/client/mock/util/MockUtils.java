@@ -18,17 +18,49 @@ package io.fabric8.kubernetes.client.mock.util;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import org.easymock.EasyMock;
+import org.easymock.IArgumentMatcher;
+import org.easymock.internal.LastControl;
 import org.easymock.internal.MocksBehavior;
 import org.easymock.internal.MocksControl;
 import org.easymock.internal.RecordState;
 import org.easymock.internal.UnorderedBehavior;
+import org.easymock.internal.matchers.And;
+import org.easymock.internal.matchers.Equals;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MockUtils {
 
+
+  public static IArgumentMatcher getArgument(Object argument) {
+    if (argument == null) {
+      List<IArgumentMatcher> matchers = LastControl.pullMatchers();
+      if (matchers == null || matchers.isEmpty()) {
+        return null;
+      } else {
+        //We need to put matchers back to the stack
+        for (IArgumentMatcher m : matchers) {
+          LastControl.reportMatcher(m);
+        }
+        return WrappedMatcher.wrap(matchers.get(0));
+      }
+    } else if (argument instanceof IArgumentMatcher) {
+      return WrappedMatcher.wrap((IArgumentMatcher) argument);
+    } else {
+      return new WrappedMatcher(new Equals(argument));
+    }
+  }
+
+  public static IArgumentMatcher getArgument(Object... args) {
+    List<IArgumentMatcher> matchers = new ArrayList<>();
+    for (Object o : args) {
+      matchers.add(getArgument(o));
+    }
+    return new And(matchers);
+  }
 
   public static MocksControl getControl(Object mock) {
     try {

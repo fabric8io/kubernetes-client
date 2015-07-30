@@ -24,22 +24,18 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ClientOperation;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeleteable;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.mock.util.WrappedMatcher;
 import org.easymock.EasyMock;
 import org.easymock.IArgumentMatcher;
 import org.easymock.IExpectationSetters;
-import org.easymock.internal.LastControl;
 import org.easymock.internal.matchers.And;
-import org.easymock.internal.matchers.Equals;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
+import static io.fabric8.kubernetes.client.mock.util.MockUtils.getArgument;
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 
@@ -48,62 +44,48 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   E extends Resource<IExpectationSetters<T>, D, IExpectationSetters<Void>, IExpectationSetters<Boolean>>>
   implements MockOperation<T, L, D, E>, Mockable {
 
-  private final String name;
-  private final String namespace;
-
-  private final Map<String, String> labels;
-  private final Map<String, String> labelsNot;
-  private final Map<String, String[]> labelsIn;
-  private final Map<String, String[]> labelsNotIn;
-  private final Map<String, String> fields;
-
-  private final ClientOperation<T, L, D, R> delegate = EasyMock.createMock(ClientOperation.class);
-
+  private final ClientOperation<T, L, D, R> delegate;
   private final Set<Mockable> nested = new LinkedHashSet<>();
 
   public BaseMockOperation() {
-    this(null, null, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+    this(EasyMock.createMock(ClientOperation.class));
   }
 
-  public BaseMockOperation(String name, String namespace) {
-    this(name, namespace, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+  public BaseMockOperation(ClientOperation delegate) {
+    this.delegate = delegate;
   }
 
-  public BaseMockOperation(String name, String namespace, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    this.name = name;
-    this.namespace = namespace;
-    this.labels = labels;
-    this.labelsNot = labelsNot;
-    this.labelsIn = labelsIn;
-    this.labelsNotIn = labelsNotIn;
-    this.fields = fields;
-  }
 
   private Map<IArgumentMatcher, BaseMockOperation> nameMap = new HashMap<>();
   private Map<IArgumentMatcher, BaseMockOperation> namespaceMap = new HashMap<>();
 
   private Map<IArgumentMatcher, BaseMockOperation> labelMap = new HashMap<>();
+  private Map<IArgumentMatcher, BaseMockOperation> labelNotMap = new HashMap<>();
   private Map<IArgumentMatcher, BaseMockOperation> labelsMap = new HashMap<>();
-  private Map<IArgumentMatcher, BaseMockOperation> labelesNotMap = new HashMap<>();
-  private Map<IArgumentMatcher, BaseMockOperation> labelsInsMap = new HashMap<>();
-  private Map<IArgumentMatcher, BaseMockOperation> labelsNotInMap = new HashMap<>();
-  private Map<IArgumentMatcher, BaseMockOperation> filedsMps = new HashMap<>();
+  private Map<IArgumentMatcher, BaseMockOperation> labelsNotMap = new HashMap<>();
+  private Map<IArgumentMatcher, BaseMockOperation> labelInsMap = new HashMap<>();
+  private Map<IArgumentMatcher, BaseMockOperation> labelNotInMap = new HashMap<>();
+  private Map<IArgumentMatcher, BaseMockOperation> fieldMap = new HashMap<>();
+  private Map<IArgumentMatcher, BaseMockOperation> filedsMap = new HashMap<>();
 
-
-
-  public void replay() {
+  public Void replay() {
     for (Mockable mockable : nested) {
       mockable.replay();
     }
-    try {
-      EasyMock.replay(delegate);
-    } catch (IllegalStateException e) {
-      //ignore
-    }
+    EasyMock.replay(delegate);
+    return null;
   }
 
   public void verify() {
+    for (Mockable mockable : nested) {
+      mockable.verify();
+    }
+
     EasyMock.verify(delegate);
+  }
+
+  public BaseMockOperation newInstance() {
+    return new BaseMockOperation();
   }
 
   public ClientOperation<T, L, D, R> getDelegate() {
@@ -140,12 +122,12 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
     IArgumentMatcher matcher = getArgument(name);
     BaseMockOperation<T, L, D, R, E> op = nameMap.get(matcher);
     if (op == null) {
-      op = new BaseMockOperation<>(name, namespace, labels, labelsNot, labelsIn, labelsNotIn, fields);
+      op = newInstance();
       expect(delegate.withName(name)).andReturn((R) op.getDelegate()).anyTimes();
       nested.add(op);
       nameMap.put(matcher, op);
     }
-    return (E)op;
+    return (E) op;
   }
 
   @Override
@@ -153,7 +135,7 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
     IArgumentMatcher matcher = getArgument(namespace);
     BaseMockOperation<T, L, D, R, E> op = namespaceMap.get(matcher);
     if (op == null) {
-      op = new BaseMockOperation<>(name, namespace, labels, labelsNot, labelsIn, labelsNotIn, fields);
+      op = newInstance();
       expect(delegate.inNamespace(namespace)).andReturn(op.getDelegate()).anyTimes();
       nested.add(op);
       namespaceMap.put(matcher, op);
@@ -185,40 +167,58 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   @Override
   public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Void>, IExpectationSetters<Boolean>> withLabels(Map<String, String> l) {
     IArgumentMatcher matcher = getArgument(l);
-    BaseMockOperation<T, L, D, R, E> op = namespaceMap.get(matcher);
+    BaseMockOperation<T, L, D, R, E> op = labelsMap.get(matcher);
     if (op == null) {
-      op = new BaseMockOperation<>(name, namespace, labels, labelsNot, labelsIn, labelsNotIn, fields);
+      op = newInstance();
       expect(delegate.withLabels(l)).andReturn(op.getDelegate()).anyTimes();
       nested.add(op);
-      namespaceMap.put(matcher, op);
+      labelsMap.put(matcher, op);
     }
     return op;
   }
 
   @Override
   public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Void>, IExpectationSetters<Boolean>> withoutLabels(Map<String, String> l) {
-    labelsNot.putAll(l);
-    BaseMockOperation<T, L, D, R, E> op = new BaseMockOperation<>(name, namespace, labels, labelsNot, labelsIn, labelsNotIn, fields);
-    expect(delegate.withoutLabels(labels)).andReturn(op.getDelegate()).once();
-    nested.add(op);
+    IArgumentMatcher matcher = getArgument(l);
+    BaseMockOperation<T, L, D, R, E> op = labelsNotMap.get(matcher);
+    if (op == null) {
+      op = newInstance();
+      expect(delegate.withoutLabels(l)).andReturn(op.getDelegate()).anyTimes();
+      nested.add(op);
+      labelsNotMap.put(matcher, op);
+    }
     return op;
   }
 
   @Override
   public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Void>, IExpectationSetters<Boolean>> withLabelIn(String key, String... values) {
-    labelsIn.put(key, values);
-    BaseMockOperation<T, L, D, R, E> op = new BaseMockOperation<>(name, namespace, labels, labelsNot, labelsIn, labelsNotIn, fields);
-    expect(delegate.withLabelIn(key, values)).andReturn(op.getDelegate()).once();
-    nested.add(op);
+    IArgumentMatcher keyMatcher = getArgument(key);
+    IArgumentMatcher valueMatcher = getArgument(values);
+    IArgumentMatcher matcher = new And(Arrays.asList(keyMatcher, valueMatcher));
+
+    BaseMockOperation<T, L, D, R, E> op = labelInsMap.get(matcher);
+    if (op == null) {
+      op = newInstance();
+      expect(delegate.withLabelIn(key, values)).andReturn(op.getDelegate()).anyTimes();
+      nested.add(op);
+      labelInsMap.put(matcher, op);
+    }
     return op;
   }
 
   @Override
   public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Void>, IExpectationSetters<Boolean>> withLabelNotIn(String key, String... values) {
-    labelsNotIn.put(key, values);
-    BaseMockOperation<T, L, D, R, E> op = new BaseMockOperation<>(name, namespace, labels, labelsNot, labelsIn, labelsNotIn, fields);
-    expect(delegate.withLabelNotIn(key, values)).andReturn(op.getDelegate()).once();
-    nested.add(op);
+    IArgumentMatcher keyMatcher = getArgument(key);
+    IArgumentMatcher valueMatcher = getArgument(values);
+    IArgumentMatcher matcher = new And(Arrays.asList(keyMatcher, valueMatcher));
+
+    BaseMockOperation<T, L, D, R, E> op = labelNotInMap.get(matcher);
+    if (op == null) {
+      op = newInstance();
+      expect(delegate.withLabelNotIn(key, values)).andReturn(op.getDelegate()).anyTimes();
+      nested.add(op);
+      labelNotInMap.put(matcher, op);
+    }
     return op;
   }
 
@@ -230,7 +230,7 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
 
     BaseMockOperation<T, L, D, R, E> op = labelMap.get(matcher);
     if (op == null) {
-      op = new BaseMockOperation<>(name, namespace, labels, labelsNot, labelsIn, labelsNotIn, fields);
+      op = newInstance();
       expect(delegate.withLabel(key, value)).andReturn(op.getDelegate()).anyTimes();
       nested.add(op);
       labelMap.put(matcher, op);
@@ -240,28 +240,46 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
 
   @Override
   public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Void>, IExpectationSetters<Boolean>> withoutLabel(String key, String value) {
-    labelsNot.put(key, value);
-    BaseMockOperation<T, L, D, R, E> op = new BaseMockOperation<>(name, namespace, labels, labelsNot, labelsIn, labelsNotIn, fields);
-    expect(delegate.withoutLabel(key, value)).andReturn(op.getDelegate()).once();
-    nested.add(op);
+    IArgumentMatcher keyMatcher = getArgument(key);
+    IArgumentMatcher valueMatcher = getArgument(value);
+    IArgumentMatcher matcher = new And(Arrays.asList(keyMatcher, valueMatcher));
+
+    BaseMockOperation<T, L, D, R, E> op = labelNotMap.get(matcher);
+    if (op == null) {
+      op = newInstance();
+      expect(delegate.withoutLabel(key, value)).andReturn(op.getDelegate()).anyTimes();
+      nested.add(op);
+      labelNotMap.put(matcher, op);
+    }
     return op;
   }
 
   @Override
   public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Void>, IExpectationSetters<Boolean>> withFields(Map<String, String> f) {
-    fields.putAll(f);
-    BaseMockOperation<T, L, D, R, E> op = new BaseMockOperation<>(name, namespace, labels, labelsNot, labelsIn, labelsNotIn, fields);
-    expect(delegate.withFields(f)).andReturn(op.getDelegate()).once();
-    nested.add(op);
+    IArgumentMatcher matcher = getArgument(f);
+    BaseMockOperation<T, L, D, R, E> op = filedsMap.get(matcher);
+    if (op == null) {
+      op = newInstance();
+      expect(delegate.withFields(f)).andReturn(op.getDelegate()).anyTimes();
+      nested.add(op);
+      filedsMap.put(matcher, op);
+    }
     return op;
   }
 
   @Override
   public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Void>, IExpectationSetters<Boolean>> withField(String key, String value) {
-    fields.put(key, value);
-    BaseMockOperation<T, L, D, R, E> op = new BaseMockOperation<>(name, namespace, labels, labelsNot, labelsIn, labelsNotIn, fields);
-    expect(delegate.withField(key, value)).andReturn(op.getDelegate()).once();
-    nested.add(op);
+    IArgumentMatcher keyMatcher = getArgument(key);
+    IArgumentMatcher valueMatcher = getArgument(value);
+    IArgumentMatcher matcher = new And(Arrays.asList(keyMatcher, valueMatcher));
+
+    BaseMockOperation<T, L, D, R, E> op = fieldMap.get(matcher);
+    if (op == null) {
+      op = new BaseMockOperation<>();
+      expect(delegate.withField(key, value)).andReturn(op.getDelegate()).anyTimes();
+      nested.add(op);
+      fieldMap.put(matcher, op);
+    }
     return op;
   }
 
@@ -270,54 +288,8 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
     return expect(delegate.list());
   }
 
-  public String getName() {
-    return name;
-  }
-
-  public String getNamespace() {
-    return namespace;
-  }
-
-  public Map<String, String> getLabels() {
-    return labels;
-  }
-
-  public Map<String, String> getLabelsNot() {
-    return labelsNot;
-  }
-
-  public Map<String, String[]> getLabelsIn() {
-    return labelsIn;
-  }
-
-  public Map<String, String[]> getLabelsNotIn() {
-    return labelsNotIn;
-  }
-
-  public Map<String, String> getFields() {
-    return fields;
-  }
 
   public Set<Mockable> getNested() {
     return nested;
-  }
-
-  private IArgumentMatcher getArgument(Object argument) {
-    if (argument == null) {
-      List<IArgumentMatcher> matchers = LastControl.pullMatchers();
-      if (matchers == null || matchers.isEmpty()) {
-        return null;
-      } else {
-        //We need to put matchers back to the stack
-        for (IArgumentMatcher m : matchers) {
-          LastControl.reportMatcher(m);
-        }
-        return WrappedMatcher.wrap(matchers.get(0));
-      }
-    } else if (argument instanceof IArgumentMatcher) {
-      return WrappedMatcher.wrap((IArgumentMatcher) argument);
-    } else {
-      return new WrappedMatcher(new Equals(argument));
-    }
   }
 }

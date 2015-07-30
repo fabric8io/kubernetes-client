@@ -111,7 +111,7 @@ import org.easymock.EasyMock;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 
-public class OpenshiftMockClient  {
+public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifiable {
 
   private final OpenShiftClient client = createMock(OpenShiftClient.class);
 
@@ -177,8 +177,45 @@ public class OpenshiftMockClient  {
     secrets.replay();
     serviceAccounts.replay();
     templates.replay();
+
+    builds.replay();
+    buildConfigs.replay();
+    deploymentConfigs.replay();
+    imageStreams.replay();
+    oAuthAccessTokens.replay();
+    oAuthAuthorizeTokens.replay();
+    oAuthClients.replay();
+    routes.replay();
     EasyMock.replay(client);
     return client;
+  }
+
+
+  @Override
+  public void verify() {
+    endpoints.verify();
+    events.verify();
+    nodes.verify();
+    namespaces.verify();
+    persistentVolumes.verify();
+    persistentVolumeClaims.verify();
+    pods.verify();
+    services.verify();
+    replicationControllers.verify();
+    resourceQuotas.verify();
+    secrets.verify();
+    serviceAccounts.verify();
+    templates.verify();
+
+    builds.verify();
+    buildConfigs.verify();
+    deploymentConfigs.verify();
+    imageStreams.verify();
+    oAuthAccessTokens.verify();
+    oAuthAuthorizeTokens.verify();
+    oAuthClients.verify();
+    routes.verify();
+    EasyMock.verify(client);
   }
 
   MockOperation<Endpoints, EndpointsList, DoneableEndpoints, MockResource<Endpoints, DoneableEndpoints, Void, Boolean>> endpoints() {
