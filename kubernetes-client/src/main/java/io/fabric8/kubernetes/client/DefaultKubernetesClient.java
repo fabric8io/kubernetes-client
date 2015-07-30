@@ -257,7 +257,7 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
   }
 
   public DefaultKubernetesClient(String masterUrl) throws KubernetesClientException {
-    Config config = new ConfigBuilder().masterUrl(masterUrl).build();
+   this(new ConfigBuilder().masterUrl(masterUrl).build());
   }
 
   @Override
