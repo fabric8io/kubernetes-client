@@ -25,7 +25,7 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 
 import java.net.URL;
 
-public class ServiceOperationsImpl extends BaseOperation<Service, ServiceList, DoneableService, Resource<Service, DoneableService, Void, Boolean>> {
+public class ServiceOperationsImpl extends BaseOperation<Service, ServiceList, DoneableService, Resource<Service, DoneableService, Boolean>> {
 
   public ServiceOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "services", null, null, Service.class, ServiceList.class, DoneableService.class);

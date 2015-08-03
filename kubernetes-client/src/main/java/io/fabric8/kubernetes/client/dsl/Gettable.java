@@ -18,16 +18,9 @@ package io.fabric8.kubernetes.client.dsl;
 public interface Gettable<T> {
 
   /**
-   * @return the item if exists.
-   * @throws io.fabric8.kubernetes.client.KubernetesClientException if not exists
+   * @return the item or null if the item doesn't exist.
+   * @throws io.fabric8.kubernetes.client.KubernetesClientException if an error occurs
    */
   T get();
-
-
-  /**
-   * @return the item if exists.
-   * @throws io.fabric8.kubernetes.client.KubernetesClientException if not exists
-   */
-  T getIfExists();
 
 }

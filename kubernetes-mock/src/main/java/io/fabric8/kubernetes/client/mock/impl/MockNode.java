@@ -24,6 +24,6 @@ import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockResource;
 
 public class MockNode extends BaseMockOperation<Node, NodeList, DoneableNode,
-  Resource<Node, DoneableNode, Void, Boolean>,
-  MockResource<Node, DoneableNode, Void, Boolean>> {
+  Resource<Node, DoneableNode, Boolean>,
+  MockResource<Node, DoneableNode, Boolean>> {
 }

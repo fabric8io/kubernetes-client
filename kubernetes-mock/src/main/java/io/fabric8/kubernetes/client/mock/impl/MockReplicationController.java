@@ -29,7 +29,7 @@ import io.fabric8.kubernetes.client.mock.MockResource;
 import io.fabric8.kubernetes.client.mock.MockScaleableResource;
 
 public class MockReplicationController extends BaseMockOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController,
-  ScaleableResource<ReplicationController, DoneableReplicationController, Void, Boolean>,
-  MockScaleableResource<ReplicationController, DoneableReplicationController, Void, Boolean>>  {
+  ScaleableResource<ReplicationController, DoneableReplicationController, Boolean>,
+  MockScaleableResource<ReplicationController, DoneableReplicationController, Boolean>>  {
 }
 

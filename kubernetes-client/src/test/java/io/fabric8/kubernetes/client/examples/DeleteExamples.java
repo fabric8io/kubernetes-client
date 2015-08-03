@@ -36,8 +36,8 @@ public class DeleteExamples {
     OpenShiftClient client = new DefaultKubernetesClient(config);
     try {
       log("Create namespace:", client.namespaces().create(new NamespaceBuilder().withNewMetadata().withName("thisisatest").endMetadata().build()));
-      log("Deleted namespace:", client.namespaces().withName("test").deleteIfExists());
-      log("Deleted testPod:", client.pods().inNamespace("thisisatest").withName("testpod").deleteIfExists());
+      log("Deleted namespace:", client.namespaces().withName("test").delete());
+      log("Deleted testPod:", client.pods().inNamespace("thisisatest").withName("testpod").delete());
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);
     } finally {

@@ -24,6 +24,6 @@ import io.fabric8.openshift.api.model.OAuthAuthorizeTokenList;
 import io.fabric8.openshift.api.model.DoneableOAuthAuthorizeToken;
 
 public class MockOAuthAuthorizeToken extends BaseMockOperation<OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken,
-  Resource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken, Void, Boolean>,
-  MockResource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken, Void, Boolean>> {
+  Resource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken, Boolean>,
+  MockResource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken, Boolean>> {
 }

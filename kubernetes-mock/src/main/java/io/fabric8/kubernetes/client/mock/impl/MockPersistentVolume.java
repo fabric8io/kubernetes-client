@@ -24,6 +24,6 @@ import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockResource;
 
 public class MockPersistentVolume extends BaseMockOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume,
-  Resource<PersistentVolume, DoneablePersistentVolume, Void, Boolean>,
-  MockResource<PersistentVolume, DoneablePersistentVolume, Void, Boolean>> {
+  Resource<PersistentVolume, DoneablePersistentVolume, Boolean>,
+  MockResource<PersistentVolume, DoneablePersistentVolume, Boolean>> {
 }

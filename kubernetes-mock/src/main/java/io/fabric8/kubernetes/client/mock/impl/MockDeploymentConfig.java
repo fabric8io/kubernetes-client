@@ -24,6 +24,6 @@ import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.api.model.DoneableDeploymentConfig;
 
 public class MockDeploymentConfig extends BaseMockOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig,
-  Resource<DeploymentConfig, DoneableDeploymentConfig, Void, Boolean>,
-  MockResource<DeploymentConfig, DoneableDeploymentConfig, Void, Boolean>> {
+  Resource<DeploymentConfig, DoneableDeploymentConfig, Boolean>,
+  MockResource<DeploymentConfig, DoneableDeploymentConfig, Boolean>> {
 }

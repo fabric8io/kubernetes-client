@@ -25,7 +25,7 @@ import io.fabric8.openshift.api.model.TemplateList;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class TemplateOperationsImpl extends BaseProcessableOperation<Template, TemplateList, DoneableTemplate, ProcessableResource<Template, DoneableTemplate, Void, Boolean>> {
+public class TemplateOperationsImpl extends BaseProcessableOperation<Template, TemplateList, DoneableTemplate, ProcessableResource<Template, DoneableTemplate, Boolean>> {
 
   public TemplateOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "templates", null, null, Template.class, TemplateList.class, DoneableTemplate.class);

@@ -24,6 +24,6 @@ import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockResource;
 
 public class MockSecret extends BaseMockOperation<Secret, SecretList, DoneableSecret,
-  Resource<Secret, DoneableSecret, Void, Boolean>,
-  MockResource<Secret, DoneableSecret, Void, Boolean>> {
+  Resource<Secret, DoneableSecret, Boolean>,
+  MockResource<Secret, DoneableSecret, Boolean>> {
 }

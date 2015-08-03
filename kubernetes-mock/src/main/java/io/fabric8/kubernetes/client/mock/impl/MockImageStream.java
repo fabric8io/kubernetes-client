@@ -24,6 +24,6 @@ import io.fabric8.openshift.api.model.ImageStreamList;
 import io.fabric8.openshift.api.model.DoneableImageStream;
 
 public class MockImageStream extends BaseMockOperation<ImageStream, ImageStreamList, DoneableImageStream,
-  Resource<ImageStream, DoneableImageStream, Void, Boolean>,
-  MockResource<ImageStream, DoneableImageStream, Void, Boolean>> {
+  Resource<ImageStream, DoneableImageStream, Boolean>,
+  MockResource<ImageStream, DoneableImageStream, Boolean>> {
 }

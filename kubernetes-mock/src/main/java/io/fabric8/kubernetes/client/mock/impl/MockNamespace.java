@@ -24,6 +24,6 @@ import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockResource;
 
 public class MockNamespace extends BaseMockOperation<Namespace, NamespaceList, DoneableNamespace,
-  Resource<Namespace, DoneableNamespace, Void, Boolean>,
-  MockResource<Namespace, DoneableNamespace, Void, Boolean>> {
+  Resource<Namespace, DoneableNamespace, Boolean>,
+  MockResource<Namespace, DoneableNamespace, Boolean>> {
 }

@@ -22,9 +22,8 @@ import io.fabric8.kubernetes.api.model.EndpointsList;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockResource;
-import org.easymock.IExpectationSetters;
 
 public class MockEndpoints extends BaseMockOperation<Endpoints, EndpointsList, DoneableEndpoints,
-  Resource<Endpoints, DoneableEndpoints, Void, Boolean>,
-  MockResource<Endpoints, DoneableEndpoints, Void, Boolean>> {
+  Resource<Endpoints, DoneableEndpoints, Boolean>,
+  MockResource<Endpoints, DoneableEndpoints, Boolean>> {
 }

@@ -24,6 +24,6 @@ import io.fabric8.openshift.api.model.OAuthAccessTokenList;
 import io.fabric8.openshift.api.model.DoneableOAuthAccessToken;
 
 public class MockOAuthAccessToken extends BaseMockOperation<OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken,
-  Resource<OAuthAccessToken, DoneableOAuthAccessToken, Void, Boolean>,
-  MockResource<OAuthAccessToken, DoneableOAuthAccessToken, Void, Boolean>> {
+  Resource<OAuthAccessToken, DoneableOAuthAccessToken, Boolean>,
+  MockResource<OAuthAccessToken, DoneableOAuthAccessToken, Boolean>> {
 }

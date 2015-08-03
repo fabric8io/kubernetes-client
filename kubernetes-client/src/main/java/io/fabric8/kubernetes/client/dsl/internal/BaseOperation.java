@@ -45,7 +45,7 @@ import java.util.concurrent.Future;
 
 import static io.fabric8.kubernetes.client.internal.Utils.join;
 
-public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D, Void, Boolean>>
+public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D, Boolean>>
   implements ClientOperation<T, L, D, R> {
 
   protected static final ObjectMapper mapper = new ObjectMapper();
@@ -91,27 +91,20 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   @Override
-  public T get() throws KubernetesClientException {
+  public T get() {
     try {
       URL requestUrl = getNamespacedUrl();
       if (name != null) {
         requestUrl = new URL(requestUrl, name);
       }
       return handleGet(requestUrl);
-    } catch (InterruptedException | ExecutionException | IOException e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
-  }
-
-  @Override
-  public T getIfExists() {
-    try {
-      return get();
     } catch (KubernetesClientException e) {
       if (e.getCode() != 404) {
         throw e;
       }
       return null;
+    } catch (InterruptedException | ExecutionException | IOException e) {
+      throw KubernetesClientException.launderThrowable(e);
     }
   }
 
@@ -178,49 +171,53 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   @Override
-  public FilterWatchListDeleteable<T, L, Void, Boolean> withLabels(Map<String, String> labels) {
+  public FilterWatchListDeleteable<T, L, Boolean> withLabels(Map<String, String> labels) {
     labels.putAll(labels);
     return this;
   }
 
   @Override
-  public FilterWatchListDeleteable<T, L, Void, Boolean> withoutLabels(Map<String, String> labels) throws KubernetesClientException {
+  public FilterWatchListDeleteable<T, L, Boolean> withoutLabels(Map<String, String> labels) throws
+    KubernetesClientException {
     labelsNot.putAll(labels);
     return this;
   }
 
   @Override
-  public FilterWatchListDeleteable<T, L, Void, Boolean> withLabelIn(String key, String... values) throws KubernetesClientException {
+  public FilterWatchListDeleteable<T, L, Boolean> withLabelIn(String key, String... values) throws
+    KubernetesClientException {
     labelsIn.put(key, values);
     return this;
   }
 
   @Override
-  public FilterWatchListDeleteable<T, L, Void, Boolean> withLabelNotIn(String key, String... values) throws KubernetesClientException {
+  public FilterWatchListDeleteable<T, L, Boolean> withLabelNotIn(String key, String... values) throws
+    KubernetesClientException {
     labelsNotIn.put(key, values);
     return this;
   }
 
   @Override
-  public FilterWatchListDeleteable<T, L, Void, Boolean> withLabel(String key, String value) {
+  public FilterWatchListDeleteable<T, L, Boolean> withLabel(String key, String value) {
     labels.put(key, value);
     return this;
   }
 
   @Override
-  public FilterWatchListDeleteable<T, L, Void, Boolean> withoutLabel(String key, String value) throws KubernetesClientException {
+  public FilterWatchListDeleteable<T, L, Boolean> withoutLabel(String key, String value) throws
+    KubernetesClientException {
     labelsNot.put(key, value);
     return this;
   }
 
   @Override
-  public FilterWatchListDeleteable<T, L, Void, Boolean> withFields(Map<String, String> labels) {
+  public FilterWatchListDeleteable<T, L, Boolean> withFields(Map<String, String> labels) {
     fields.putAll(labels);
     return this;
   }
 
   @Override
-  public FilterWatchListDeleteable<T, L, Void, Boolean> withField(String key, String value) {
+  public FilterWatchListDeleteable<T, L, Boolean> withField(String key, String value) {
     fields.put(key, value);
     return this;
   }
@@ -296,33 +293,12 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   @Override
-  public Void delete() throws KubernetesClientException {
+  public Boolean delete() {
     return delete(true);
   }
 
   @Override
-  public Void delete(boolean cascade) throws KubernetesClientException {
-    if (name != null && !name.isEmpty()) {
-      if (cascade) {
-        Reaper reaper = ReaperFactory.getReaper(this);
-        if (reaper != null) {
-          reaper.reap();
-        }
-      }
-      deleteThis();
-    } else {
-      deleteList();
-    }
-    return null;
-  }
-
-  @Override
-  public Boolean deleteIfExists() {
-    return deleteIfExists(true);
-  }
-
-  @Override
-  public Boolean deleteIfExists(boolean cascade) {
+  public Boolean delete(boolean cascade) {
     if (name != null && !name.isEmpty()) {
       try {
         if (cascade) {
@@ -334,22 +310,20 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
         deleteThis();
         return true;
       } catch (KubernetesClientException e) {
-        if (e.getCode() == 404) {
-          return false;
-        } else {
+        if (e.getCode() != 404) {
           throw e;
         }
+        return false;
       }
     } else {
       try {
         deleteList();
         return true;
       } catch (KubernetesClientException e) {
-        if (e.getCode() == 404) {
-          return false;
-        } else {
+        if (e.getCode() != 404) {
           throw e;
         }
+        return false;
       }
     }
   }

@@ -24,7 +24,7 @@ import io.fabric8.openshift.api.model.OAuthClientList;
 import java.net.URL;
 
 public class OAuthClientOperationsImpl extends HasMetadataOperation<OAuthClient, OAuthClientList, DoneableOAuthClient,
-  Resource<OAuthClient, DoneableOAuthClient, Void, Boolean>> {
+  Resource<OAuthClient, DoneableOAuthClient, Boolean>> {
 
   public OAuthClientOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "oauthclients", null, null, OAuthClient.class, OAuthClientList.class, DoneableOAuthClient.class);

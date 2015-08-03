@@ -24,6 +24,6 @@ import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateList;
 
 public class MockTemplate extends BaseMockOperation<Template, TemplateList, DoneableTemplate,
-  ProcessableResource<Template, DoneableTemplate, Void, Boolean>,
-  MockProcessableResource<Template, DoneableTemplate, Void, Boolean>> {
+  ProcessableResource<Template, DoneableTemplate, Boolean>,
+  MockProcessableResource<Template, DoneableTemplate, Boolean>> {
 }

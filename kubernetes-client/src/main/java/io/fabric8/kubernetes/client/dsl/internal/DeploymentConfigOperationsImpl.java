@@ -24,7 +24,7 @@ import io.fabric8.openshift.api.model.DoneableDeploymentConfig;
 import java.net.URL;
 
 public class DeploymentConfigOperationsImpl extends HasMetadataOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig,
-  Resource<DeploymentConfig, DoneableDeploymentConfig, Void, Boolean>> {
+  Resource<DeploymentConfig, DoneableDeploymentConfig, Boolean>> {
 
   public DeploymentConfigOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "deploymentconfigs", null, null, DeploymentConfig.class, DeploymentConfigList.class, DoneableDeploymentConfig.class);

@@ -40,8 +40,8 @@ import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 
 public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Doneable<T>,
-  R extends Resource<T, D, Void, Boolean>,
-  E extends Resource<IExpectationSetters<T>, D, IExpectationSetters<Void>, IExpectationSetters<Boolean>>>
+  R extends Resource<T, D, Boolean>,
+  E extends Resource<IExpectationSetters<T>, D, IExpectationSetters<Boolean>>>
   implements MockOperation<T, L, D, E>, Mockable {
 
   private final ClientOperation<T, L, D, R> delegate;
@@ -103,23 +103,13 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   }
 
   @Override
-  public IExpectationSetters<Void> delete() {
+  public IExpectationSetters<Boolean> delete() {
     return expect(delegate.delete(true));
   }
 
   @Override
-  public IExpectationSetters<Void> delete(boolean cascade) {
+  public IExpectationSetters<Boolean> delete(boolean cascade) {
     return expect(delegate.delete(cascade));
-  }
-
-  @Override
-  public IExpectationSetters<Boolean> deleteIfExists() {
-    return expect(delegate.deleteIfExists(true));
-  }
-
-  @Override
-  public IExpectationSetters<Boolean> deleteIfExists(boolean cascade) {
-    return expect(delegate.deleteIfExists(cascade));
   }
 
   @Override
@@ -184,18 +174,12 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   }
 
   @Override
-  public IExpectationSetters<T> getIfExists() {
-    return expect(delegate.getIfExists());
-  }
-
-
-  @Override
   public WebSocket watch(Watcher<IExpectationSetters<T>> watcher) throws KubernetesClientException {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Void>, IExpectationSetters<Boolean>> withLabels(Map<String, String> l) {
+  public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>> withLabels(Map<String, String> l) {
     IArgumentMatcher matcher = getArgument(l);
     BaseMockOperation<T, L, D, R, E> op = labelsMap.get(matcher);
     if (op == null) {
@@ -208,7 +192,7 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   }
 
   @Override
-  public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Void>, IExpectationSetters<Boolean>> withoutLabels(Map<String, String> l) {
+  public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>> withoutLabels(Map<String, String> l) {
     IArgumentMatcher matcher = getArgument(l);
     BaseMockOperation<T, L, D, R, E> op = labelsNotMap.get(matcher);
     if (op == null) {
@@ -221,7 +205,7 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   }
 
   @Override
-  public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Void>, IExpectationSetters<Boolean>> withLabelIn(String key, String... values) {
+  public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>> withLabelIn(String key, String... values) {
     IArgumentMatcher keyMatcher = getArgument(key);
     IArgumentMatcher valueMatcher = getArgument(values);
     IArgumentMatcher matcher = new And(Arrays.asList(keyMatcher, valueMatcher));
@@ -237,7 +221,7 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   }
 
   @Override
-  public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Void>, IExpectationSetters<Boolean>> withLabelNotIn(String key, String... values) {
+  public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>> withLabelNotIn(String key, String... values) {
     IArgumentMatcher keyMatcher = getArgument(key);
     IArgumentMatcher valueMatcher = getArgument(values);
     IArgumentMatcher matcher = new And(Arrays.asList(keyMatcher, valueMatcher));
@@ -253,7 +237,7 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   }
 
   @Override
-  public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Void>, IExpectationSetters<Boolean>> withLabel(String key, String value) {
+  public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>> withLabel(String key, String value) {
     IArgumentMatcher keyMatcher = getArgument(key);
     IArgumentMatcher valueMatcher = getArgument(value);
     IArgumentMatcher matcher = new And(Arrays.asList(keyMatcher, valueMatcher));
@@ -269,7 +253,7 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   }
 
   @Override
-  public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Void>, IExpectationSetters<Boolean>> withoutLabel(String key, String value) {
+  public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>> withoutLabel(String key, String value) {
     IArgumentMatcher keyMatcher = getArgument(key);
     IArgumentMatcher valueMatcher = getArgument(value);
     IArgumentMatcher matcher = new And(Arrays.asList(keyMatcher, valueMatcher));
@@ -285,7 +269,7 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   }
 
   @Override
-  public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Void>, IExpectationSetters<Boolean>> withFields(Map<String, String> f) {
+  public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>> withFields(Map<String, String> f) {
     IArgumentMatcher matcher = getArgument(f);
     BaseMockOperation<T, L, D, R, E> op = filedsMap.get(matcher);
     if (op == null) {
@@ -298,7 +282,7 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   }
 
   @Override
-  public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Void>, IExpectationSetters<Boolean>> withField(String key, String value) {
+  public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>> withField(String key, String value) {
     IArgumentMatcher keyMatcher = getArgument(key);
     IArgumentMatcher valueMatcher = getArgument(value);
     IArgumentMatcher matcher = new And(Arrays.asList(keyMatcher, valueMatcher));

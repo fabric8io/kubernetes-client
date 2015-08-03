@@ -24,6 +24,6 @@ import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockResource;
 
 public class MockResourceQuota extends BaseMockOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota,
-  Resource<ResourceQuota, DoneableResourceQuota, Void, Boolean>,
-  MockResource<ResourceQuota, DoneableResourceQuota, Void, Boolean>> {
+  Resource<ResourceQuota, DoneableResourceQuota, Boolean>,
+  MockResource<ResourceQuota, DoneableResourceQuota, Boolean>> {
 }

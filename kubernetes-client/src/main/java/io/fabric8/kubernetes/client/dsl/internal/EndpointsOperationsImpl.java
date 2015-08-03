@@ -24,7 +24,7 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import java.net.URL;
 
 public class EndpointsOperationsImpl extends HasMetadataOperation<Endpoints, EndpointsList, DoneableEndpoints,
-  Resource<Endpoints, DoneableEndpoints, Void, Boolean>> {
+  Resource<Endpoints, DoneableEndpoints, Boolean>> {
 
   public EndpointsOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "endpoints", null, null, Endpoints.class, EndpointsList.class, DoneableEndpoints.class);

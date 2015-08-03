@@ -34,26 +34,26 @@ public class OpenshiftMockClientTest {
   public void testGetBuild() {
     OpenshiftMockClient mock = new OpenshiftMockClient();
 
-    mock.builds().inNamespace(eq("ns1")).withName("build1").getIfExists().andReturn(new BuildBuilder()
+    mock.builds().inNamespace(eq("ns1")).withName("build1").get().andReturn(new BuildBuilder()
         .withNewMetadata().withName("build1").endMetadata()
         .build()
     ).anyTimes();
 
-    mock.builds().inNamespace("ns1").withName("build2").getIfExists().andReturn(new BuildBuilder()
+    mock.builds().inNamespace("ns1").withName("build2").get().andReturn(new BuildBuilder()
         .withNewMetadata().withName("build2").endMetadata()
         .build()
     ).once();
 
-    mock.builds().inNamespace("ns1").withName("build2").getIfExists().andReturn(null).once();
+    mock.builds().inNamespace("ns1").withName("build2").get().andReturn(null).once();
 
     OpenShiftClient client = mock.replay();
 
     //We are testing the internal anyTimes() on namespace and name.
     for (int i = 0; i < 5; i++) {
-      Assert.assertNotNull(client.builds().inNamespace("ns1").withName("build1").getIfExists());
+      Assert.assertNotNull(client.builds().inNamespace("ns1").withName("build1").get());
     }
-    Assert.assertNotNull(client.builds().inNamespace("ns1").withName("build2").getIfExists());
-    Assert.assertNull(client.builds().inNamespace("ns1").withName("build2").getIfExists());
+    Assert.assertNotNull(client.builds().inNamespace("ns1").withName("build2").get());
+    Assert.assertNull(client.builds().inNamespace("ns1").withName("build2").get());
   }
 
   @Test

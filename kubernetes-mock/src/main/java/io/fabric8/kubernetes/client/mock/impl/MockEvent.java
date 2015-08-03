@@ -24,6 +24,6 @@ import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockResource;
 
 public class MockEvent extends BaseMockOperation<Event, EventList, DoneableEvent,
-  Resource<Event, DoneableEvent, Void, Boolean>,
-  MockResource<Event, DoneableEvent, Void, Boolean>> {
+  Resource<Event, DoneableEvent, Boolean>,
+  MockResource<Event, DoneableEvent, Boolean>> {
 }

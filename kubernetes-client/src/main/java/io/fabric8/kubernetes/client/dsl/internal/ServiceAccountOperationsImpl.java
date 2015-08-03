@@ -23,7 +23,7 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 
 import java.net.URL;
 
-public class ServiceAccountOperationsImpl extends HasMetadataOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, Resource<ServiceAccount, DoneableServiceAccount, Void, Boolean>> {
+public class ServiceAccountOperationsImpl extends HasMetadataOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, Resource<ServiceAccount, DoneableServiceAccount, Boolean>> {
 
   public ServiceAccountOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "serviceaccounts", null, null, ServiceAccount.class, ServiceAccountList.class, DoneableServiceAccount.class);

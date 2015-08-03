@@ -34,8 +34,8 @@ import java.net.URL;
 import java.util.concurrent.Future;
 
 public class BuildConfigOperationsImpl extends HasMetadataOperation<BuildConfig, BuildConfigList, DoneableBuildConfig,
-  BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean, Void, Void>>
-  implements BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean, Void, Void>,
+  BuildConfigResource<BuildConfig, DoneableBuildConfig, Boolean, Void, Void>>
+  implements BuildConfigResource<BuildConfig, DoneableBuildConfig, Boolean, Void, Void>,
   Typeable<Triggerable<WebHookTrigger, Void>>,
   Triggerable<WebHookTrigger, Void>,
   Secretable<Typeable<Triggerable<WebHookTrigger, Void>>>
@@ -57,7 +57,7 @@ public class BuildConfigOperationsImpl extends HasMetadataOperation<BuildConfig,
   }
 
   @Override
-  public BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean, Void, Void> withName(String name) {
+  public BuildConfigResource<BuildConfig, DoneableBuildConfig, Boolean, Void, Void> withName(String name) {
     try {
       return  getClass()
         .getConstructor(AsyncHttpClient.class, URL.class, String.class, String.class, String.class, String.class)
@@ -68,7 +68,7 @@ public class BuildConfigOperationsImpl extends HasMetadataOperation<BuildConfig,
   }
 
   @Override
-  public ClientNonNamespaceOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean, Void, Void>> inNamespace(String namespace) {
+  public ClientNonNamespaceOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigResource<BuildConfig, DoneableBuildConfig, Boolean, Void, Void>> inNamespace(String namespace) {
     try {
       return getClass()
         .getConstructor(AsyncHttpClient.class, URL.class, String.class, String.class, String.class, String.class)

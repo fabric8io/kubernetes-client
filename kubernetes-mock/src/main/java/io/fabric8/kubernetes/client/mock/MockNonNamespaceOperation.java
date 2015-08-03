@@ -21,9 +21,9 @@ import io.fabric8.kubernetes.client.dsl.Nameable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import org.easymock.IExpectationSetters;
 
-public interface MockNonNamespaceOperation<T, L, D, R extends Resource<IExpectationSetters<T>, D, IExpectationSetters<Void>, IExpectationSetters<Boolean>>> extends
+public interface MockNonNamespaceOperation<T, L, D, R extends Resource<IExpectationSetters<T>, D, IExpectationSetters<Boolean>>> extends
   Nameable<R>,
-  FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Void>, IExpectationSetters<Boolean>>,
+  FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>>,
   Createable<T, IExpectationSetters<T>, D> {
 
 }

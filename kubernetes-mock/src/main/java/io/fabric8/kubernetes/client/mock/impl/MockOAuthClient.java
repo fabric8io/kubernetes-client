@@ -24,6 +24,6 @@ import io.fabric8.openshift.api.model.OAuthClientList;
 import io.fabric8.openshift.api.model.DoneableOAuthClient;
 
 public class MockOAuthClient extends BaseMockOperation<OAuthClient, OAuthClientList, DoneableOAuthClient,
-  Resource<OAuthClient, DoneableOAuthClient, Void, Boolean>,
-  MockResource<OAuthClient, DoneableOAuthClient, Void, Boolean>> {
+  Resource<OAuthClient, DoneableOAuthClient, Boolean>,
+  MockResource<OAuthClient, DoneableOAuthClient, Boolean>> {
 }

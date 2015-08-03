@@ -23,7 +23,7 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 
 import java.net.URL;
 
-public class NodeOperationsImpl extends HasMetadataOperation<Node, NodeList, DoneableNode, Resource<Node, DoneableNode, Void, Boolean>> {
+public class NodeOperationsImpl extends HasMetadataOperation<Node, NodeList, DoneableNode, Resource<Node, DoneableNode, Boolean>> {
 
   public NodeOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "nodes", null, null, Node.class, NodeList.class, DoneableNode.class);

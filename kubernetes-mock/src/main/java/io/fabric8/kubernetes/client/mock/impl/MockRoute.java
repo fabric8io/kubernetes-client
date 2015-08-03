@@ -24,6 +24,6 @@ import io.fabric8.openshift.api.model.RouteList;
 import io.fabric8.openshift.api.model.DoneableRoute;
 
 public class MockRoute extends BaseMockOperation<Route, RouteList, DoneableRoute,
-  Resource<Route, DoneableRoute, Void, Boolean>,
-  MockResource<Route, DoneableRoute, Void, Boolean>> {
+  Resource<Route, DoneableRoute, Boolean>,
+  MockResource<Route, DoneableRoute, Boolean>> {
 }

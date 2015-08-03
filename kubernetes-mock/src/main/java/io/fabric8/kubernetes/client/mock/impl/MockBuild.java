@@ -24,6 +24,6 @@ import io.fabric8.openshift.api.model.BuildList;
 import io.fabric8.openshift.api.model.DoneableBuild;
 
 public class MockBuild extends BaseMockOperation<Build, BuildList, DoneableBuild,
-  Resource<Build, DoneableBuild, Void, Boolean>,
-  MockResource<Build, DoneableBuild, Void, Boolean>> {
+  Resource<Build, DoneableBuild, Boolean>,
+  MockResource<Build, DoneableBuild, Boolean>> {
 }

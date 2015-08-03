@@ -19,7 +19,7 @@ package io.fabric8.kubernetes.client.dsl;
 import io.fabric8.openshift.api.model.BuildRequest;
 import io.fabric8.openshift.api.model.WebHookTrigger;
 
-public interface BuildConfigResource<T, D, V, B, S, I> extends Resource<T, D, V, B>,
+public interface BuildConfigResource<T, D, B, S, I> extends Resource<T, D, B>,
   Instantiateable<BuildRequest, I>,
   Typeable<Triggerable<WebHookTrigger, S>>,
   Triggerable<WebHookTrigger, S>,

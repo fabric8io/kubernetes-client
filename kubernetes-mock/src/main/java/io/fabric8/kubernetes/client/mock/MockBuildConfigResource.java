@@ -17,12 +17,9 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.client.dsl.BuildConfigResource;
-import io.fabric8.kubernetes.client.dsl.Triggerable;
-import io.fabric8.kubernetes.client.dsl.Typeable;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.DoneableBuildConfig;
-import io.fabric8.openshift.api.model.WebHookTrigger;
 import org.easymock.IExpectationSetters;
 
-public interface MockBuildConfigResource extends BuildConfigResource<IExpectationSetters<BuildConfig>, DoneableBuildConfig, IExpectationSetters<Void>, IExpectationSetters<Boolean>,  IExpectationSetters<Void>, IExpectationSetters<Void>> {
+public interface MockBuildConfigResource extends BuildConfigResource<IExpectationSetters<BuildConfig>, DoneableBuildConfig, IExpectationSetters<Boolean>,  IExpectationSetters<Void>, IExpectationSetters<Void>> {
 }

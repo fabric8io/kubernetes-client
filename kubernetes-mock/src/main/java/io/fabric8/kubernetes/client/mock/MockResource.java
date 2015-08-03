@@ -19,5 +19,5 @@ package io.fabric8.kubernetes.client.mock;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import org.easymock.IExpectationSetters;
 
-public interface MockResource<T, D, V, B> extends Resource<IExpectationSetters<T>, D, IExpectationSetters<V>, IExpectationSetters<B>>{
+public interface MockResource<T, D, B> extends Resource<IExpectationSetters<T>, D, IExpectationSetters<B>>{
 }

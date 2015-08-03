@@ -23,7 +23,7 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 
 import java.net.URL;
 
-public class PersistentVolumeClaimOperationsImpl extends HasMetadataOperation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, Resource<PersistentVolumeClaim, DoneablePersistentVolumeClaim, Void, Boolean>> {
+public class PersistentVolumeClaimOperationsImpl extends HasMetadataOperation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, Resource<PersistentVolumeClaim, DoneablePersistentVolumeClaim, Boolean>> {
 
   public PersistentVolumeClaimOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "persistentvolumeclains", null, null, PersistentVolumeClaim.class, PersistentVolumeClaimList.class, DoneablePersistentVolumeClaim.class);

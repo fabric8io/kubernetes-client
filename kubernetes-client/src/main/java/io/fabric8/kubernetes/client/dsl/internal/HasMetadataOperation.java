@@ -27,7 +27,7 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 
-public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D, Void, Boolean>> extends BaseOperation<T,L,D,R> {
+public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D, Boolean>> extends BaseOperation<T,L,D,R> {
 
   protected HasMetadataOperation(AsyncHttpClient httpClient, URL rootUrl, String resourceT, String namespace, String name) {
     super(httpClient, rootUrl, resourceT, namespace, name);

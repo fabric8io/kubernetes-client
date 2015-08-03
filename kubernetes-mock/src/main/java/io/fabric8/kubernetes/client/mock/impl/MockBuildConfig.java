@@ -41,7 +41,7 @@ import static org.easymock.EasyMock.expect;
 
 
 public class MockBuildConfig extends BaseMockOperation<BuildConfig, BuildConfigList, DoneableBuildConfig,
-  BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean, Void, Void>,
+  BuildConfigResource<BuildConfig, DoneableBuildConfig, Boolean, Void, Void>,
   MockBuildConfigResource>
   implements MockBuildConfigResource {
 

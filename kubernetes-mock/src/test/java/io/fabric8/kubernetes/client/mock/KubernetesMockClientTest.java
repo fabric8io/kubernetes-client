@@ -30,26 +30,26 @@ public class KubernetesMockClientTest {
   @Test
   public void testGetPod() {
     KubernetesMockClient mock = new KubernetesMockClient();
-    mock.pods().inNamespace(eq("ns1")).withName(eq("pod1")).getIfExists().andReturn(new PodBuilder()
+    mock.pods().inNamespace(eq("ns1")).withName(eq("pod1")).get().andReturn(new PodBuilder()
         .withNewMetadata().withName("pod1").endMetadata()
         .build()
     ).anyTimes();
 
-    mock.pods().inNamespace("ns1").withName("pod2").getIfExists().andReturn(new PodBuilder()
+    mock.pods().inNamespace("ns1").withName("pod2").get().andReturn(new PodBuilder()
         .withNewMetadata().withName("pod2").endMetadata()
         .build()
     ).once();
 
-    mock.pods().inNamespace("ns1").withName("pod2").getIfExists().andReturn(null).once();
+    mock.pods().inNamespace("ns1").withName("pod2").get().andReturn(null).once();
 
     KubernetesClient client = mock.replay();
 
     //We are testing the internal anyTimes() on namespace and name.
     for (int i = 0; i < 5; i++) {
-      Assert.assertNotNull(client.pods().inNamespace("ns1").withName("pod1").getIfExists());
+      Assert.assertNotNull(client.pods().inNamespace("ns1").withName("pod1").get());
     }
-    Assert.assertNotNull(client.pods().inNamespace("ns1").withName("pod2").getIfExists());
-    Assert.assertNull(client.pods().inNamespace("ns1").withName("pod2").getIfExists());
+    Assert.assertNotNull(client.pods().inNamespace("ns1").withName("pod2").get());
+    Assert.assertNull(client.pods().inNamespace("ns1").withName("pod2").get());
   }
 
   @Test

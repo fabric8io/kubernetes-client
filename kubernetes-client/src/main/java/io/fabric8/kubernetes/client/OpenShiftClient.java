@@ -18,29 +18,25 @@ package io.fabric8.kubernetes.client;
 import io.fabric8.kubernetes.client.dsl.BuildConfigResource;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientOperation;
-import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
-import io.fabric8.kubernetes.client.dsl.Operation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.Triggerable;
-import io.fabric8.kubernetes.client.dsl.Typeable;
 import io.fabric8.openshift.api.model.*;
 
 public interface OpenShiftClient extends KubernetesClient {
 
-  ClientOperation<Build, BuildList, DoneableBuild, Resource<Build, DoneableBuild, Void, Boolean>> builds();
+  ClientOperation<Build, BuildList, DoneableBuild, Resource<Build, DoneableBuild, Boolean>> builds();
 
-  ClientOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Boolean, Void, Void>> buildConfigs();
+  ClientOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigResource<BuildConfig, DoneableBuildConfig, Boolean, Void, Void>> buildConfigs();
 
-  ClientOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, Resource<DeploymentConfig, DoneableDeploymentConfig, Void, Boolean>> deploymentConfigs();
+  ClientOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, Resource<DeploymentConfig, DoneableDeploymentConfig, Boolean>> deploymentConfigs();
 
-  ClientOperation<ImageStream, ImageStreamList, DoneableImageStream, Resource<ImageStream, DoneableImageStream, Void, Boolean>> imageStreams();
+  ClientOperation<ImageStream, ImageStreamList, DoneableImageStream, Resource<ImageStream, DoneableImageStream, Boolean>> imageStreams();
 
-  ClientNonNamespaceOperation<OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken, Resource<OAuthAccessToken, DoneableOAuthAccessToken, Void, Boolean>> oAuthAccessTokens();
+  ClientNonNamespaceOperation<OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken, Resource<OAuthAccessToken, DoneableOAuthAccessToken, Boolean>> oAuthAccessTokens();
 
-  ClientNonNamespaceOperation<OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken, Resource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken, Void, Boolean>> oAuthAuthorizeTokens();
+  ClientNonNamespaceOperation<OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken, Resource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken, Boolean>> oAuthAuthorizeTokens();
 
-  ClientNonNamespaceOperation<OAuthClient, OAuthClientList, DoneableOAuthClient, Resource<OAuthClient, DoneableOAuthClient, Void, Boolean>> oAuthClients();
+  ClientNonNamespaceOperation<OAuthClient, OAuthClientList, DoneableOAuthClient, Resource<OAuthClient, DoneableOAuthClient, Boolean>> oAuthClients();
 
-  ClientOperation<Route, RouteList, DoneableRoute, Resource<Route, DoneableRoute, Void, Boolean>> routes();
+  ClientOperation<Route, RouteList, DoneableRoute, Resource<Route, DoneableRoute, Boolean>> routes();
 
 }

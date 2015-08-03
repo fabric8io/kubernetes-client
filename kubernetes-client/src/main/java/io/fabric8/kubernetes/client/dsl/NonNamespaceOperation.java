@@ -15,9 +15,9 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface NonNamespaceOperation<I, T, L, D, V, B, R extends Resource<T, D, V, B>> extends
+public interface NonNamespaceOperation<I, T, L, D, B, R extends Resource<T, D, B>> extends
   Nameable<R>,
-  FilterWatchListDeleteable<T, L, V, B>,
+  FilterWatchListDeleteable<T, L, B>,
   Createable<I, T, D> {
 
 }

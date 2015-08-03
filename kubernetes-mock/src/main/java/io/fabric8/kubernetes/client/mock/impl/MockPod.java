@@ -24,6 +24,6 @@ import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockResource;
 
 public class MockPod extends BaseMockOperation<Pod, PodList, DoneablePod,
-  Resource<Pod, DoneablePod, Void, Boolean>,
-  MockResource<Pod, DoneablePod, Void, Boolean>> {
+  Resource<Pod, DoneablePod, Boolean>,
+  MockResource<Pod, DoneablePod, Boolean>> {
 }
