@@ -17,12 +17,14 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.ning.http.client.AsyncHttpClient;
+import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
 
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 
 public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D, Void, Boolean>> extends BaseOperation<T,L,D,R> {
@@ -36,12 +38,50 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   }
 
   @Override
-  public T update(T item) {
+  public D edit(final boolean cascade) throws KubernetesClientException {
+    final BaseOperation oper = this;
+
+    final Visitor<T> visitor = new Visitor<T>() {
+      @Override
+      public void visit(T resource) {
+        try {
+          if (cascade) {
+            Reaper reaper = ReaperFactory.getReaper(oper);
+            if (reaper != null) {
+              reaper.reap();
+            }
+          }
+          T old = get();
+          String resourceVersion = old.getMetadata().getResourceVersion();
+          resource.getMetadata().setResourceVersion(resourceVersion);
+          handleReplace(getResourceUrl(), resource);
+        } catch (Exception e) {
+          throw KubernetesClientException.launderThrowable(e);
+        }
+      }
+    };
+
     try {
+
+      return getDoneableType().getDeclaredConstructor(getType(), Visitor.class).newInstance(get(), visitor);
+    } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+
+  @Override
+  public T replace(T item, boolean cascade) {
+    try {
+      if (cascade) {
+        Reaper reaper = ReaperFactory.getReaper(this);
+        if (reaper != null) {
+          reaper.reap();
+        }
+      }
       T old = get();
       String resourceVersion = old.getMetadata().getResourceVersion();
       item.getMetadata().setResourceVersion(resourceVersion);
-      return handleUpdate(getResourceUrl(), item);
+      return handleReplace(getResourceUrl(), item);
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }

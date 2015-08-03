@@ -18,4 +18,6 @@ package io.fabric8.kubernetes.client.dsl;
 public interface Editable<T> {
 
   T edit();
+
+  T edit(boolean cascade);
 }

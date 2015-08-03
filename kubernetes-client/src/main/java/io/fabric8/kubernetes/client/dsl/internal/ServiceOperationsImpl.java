@@ -40,7 +40,7 @@ public class ServiceOperationsImpl extends BaseOperation<Service, ServiceList, D
       try {
         Service old = get();
         String resourceVersion = old.getMetadata().getResourceVersion();
-        return handleUpdate(getResourceUrl(), new ServiceBuilder(item)
+        return handleReplace(getResourceUrl(), new ServiceBuilder(item)
           .editMetadata()
           .withResourceVersion(resourceVersion)
           .endMetadata()

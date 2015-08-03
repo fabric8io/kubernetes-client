@@ -104,17 +104,32 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
 
   @Override
   public IExpectationSetters<Void> delete() {
-    return expect(delegate.delete());
+    return expect(delegate.delete(true));
+  }
+
+  @Override
+  public IExpectationSetters<Void> delete(boolean cascade) {
+    return expect(delegate.delete(cascade));
   }
 
   @Override
   public IExpectationSetters<Boolean> deleteIfExists() {
-    return expect(delegate.deleteIfExists());
+    return expect(delegate.deleteIfExists(true));
+  }
+
+  @Override
+  public IExpectationSetters<Boolean> deleteIfExists(boolean cascade) {
+    return expect(delegate.deleteIfExists(cascade));
   }
 
   @Override
   public D edit() {
-    throw new UnsupportedOperationException("Mock client doesn't support inline edit. Please use update(T item) instead.");
+    return edit(true);
+  }
+
+  @Override
+  public D edit(boolean cascade) {
+    throw new UnsupportedOperationException("Mock client doesn't support inline edit. Please use replace(T item) instead.");
   }
 
   @Override
@@ -145,6 +160,21 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
 
   @Override
   public IExpectationSetters<T> update(IExpectationSetters<T> item) {
+    return replace(item);
+  }
+
+  @Override
+  public IExpectationSetters<T> update(IExpectationSetters<T> item, boolean cascade) {
+    return replace(item, cascade);
+  }
+
+  @Override
+  public IExpectationSetters<T> replace(IExpectationSetters<T> item) {
+    return replace(item, true);
+  }
+
+  @Override
+  public IExpectationSetters<T> replace(IExpectationSetters<T> item, boolean cascade) {
     return null;
   }
 

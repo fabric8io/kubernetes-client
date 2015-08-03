@@ -70,7 +70,7 @@ public class FullExample {
         // Create an RC
         ReplicationController rc = new ReplicationControllerBuilder()
           .withNewMetadata().withName("nginx-controller").addToLabels("server", "nginx").endMetadata()
-          .withNewSpec().withReplicas(0)
+          .withNewSpec().withReplicas(3)
           .withNewTemplate()
           .withNewMetadata().addToLabels("server", "nginx").endMetadata()
           .withNewSpec()
@@ -111,6 +111,14 @@ public class FullExample {
         log("Get RC by label in namespace", client.replicationControllers().inNamespace("thisisatest").withLabel("server", "nginx").list());
         // Update the RC
         client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").edit().editMetadata().addToLabels("new", "label").endMetadata().done();
+        // Update the RC - change the image to apache
+        client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").edit().editSpec().editTemplate().withNewSpec()
+          .addNewContainer().withName("nginx").withImage("httpd")
+          .addNewPort().withContainerPort(80).endPort()
+          .endContainer()
+          .endSpec()
+          .endTemplate()
+          .endSpec().done();
 
         Thread.sleep(1000);
 
@@ -129,7 +137,7 @@ public class FullExample {
 
         //Create an ohter RC inline
         client.replicationControllers().inNamespace("thisisatest").createNew().withNewMetadata().withName("nginx-controller").addToLabels("server", "nginx").endMetadata()
-          .withNewSpec().withReplicas(0)
+          .withNewSpec().withReplicas(3)
           .withNewTemplate()
           .withNewMetadata().addToLabels("server", "nginx").endMetadata()
           .withNewSpec()

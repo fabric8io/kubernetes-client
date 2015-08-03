@@ -22,18 +22,12 @@ import com.ning.http.client.ws.DefaultWebSocketListener;
 import com.ning.http.client.ws.WebSocket;
 import com.ning.http.client.ws.WebSocketUpgradeHandler;
 import io.fabric8.kubernetes.api.builder.Visitor;
-import io.fabric8.kubernetes.api.model.Doneable;
-import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.api.model.Status;
-import io.fabric8.kubernetes.api.model.WatchEvent;
+import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientOperation;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeleteable;
-import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
-import io.fabric8.kubernetes.client.dsl.Operation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -123,24 +117,12 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   @Override
   public D edit() throws KubernetesClientException {
+    return edit(true);
+  }
 
-    final Visitor<T> visitor = new Visitor<T>() {
-      @Override
-      public void visit(T resource) {
-        try {
-          handleUpdate(getResourceUrl(), resource);
-        } catch (Exception e) {
-          throw KubernetesClientException.launderThrowable(e);
-        }
-      }
-    };
-
-    try {
-
-      return getDoneableType().getDeclaredConstructor(getType(), Visitor.class).newInstance(get(), visitor);
-    } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
+  @Override
+  public D edit(final boolean cascade) throws KubernetesClientException {
+    throw new KubernetesClientException("Cannot edit read-only resources");
   }
 
   @Override
@@ -313,8 +295,20 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     }
   }
 
+  @Override
   public Void delete() throws KubernetesClientException {
+    return delete(true);
+  }
+
+  @Override
+  public Void delete(boolean cascade) throws KubernetesClientException {
     if (name != null && !name.isEmpty()) {
+      if (cascade) {
+        Reaper reaper = ReaperFactory.getReaper(this);
+        if (reaper != null) {
+          reaper.reap();
+        }
+      }
       deleteThis();
     } else {
       deleteList();
@@ -324,8 +318,19 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   @Override
   public Boolean deleteIfExists() {
+    return deleteIfExists(true);
+  }
+
+  @Override
+  public Boolean deleteIfExists(boolean cascade) {
     if (name != null && !name.isEmpty()) {
       try {
+        if (cascade) {
+          Reaper reaper = ReaperFactory.getReaper(this);
+          if (reaper != null) {
+            reaper.reap();
+          }
+        }
         deleteThis();
         return true;
       } catch (KubernetesClientException e) {
@@ -440,11 +445,22 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   @Override
   public T update(T item) {
-    try {
-      return handleUpdate(getResourceUrl(), item);
-    } catch (Exception e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
+    return replace(item);
+  }
+
+  @Override
+  public T update(T item, boolean cascade) {
+    return replace(item, cascade);
+  }
+
+  @Override
+  public T replace(T item) {
+    return replace(item, true);
+  }
+
+  @Override
+  public T replace(T item, boolean cascade) {
+    throw new KubernetesClientException("Cannot update read-only resources");
   }
 
   protected URL getNamespacedUrl() throws MalformedURLException {
@@ -487,7 +503,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     return handleResponse(requestBuilder, 201);
   }
 
-  protected T handleUpdate(URL resourceUrl, T updated) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+  protected T handleReplace(URL resourceUrl, T updated) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     AsyncHttpClient.BoundRequestBuilder requestBuilder = getHttpClient().preparePut(resourceUrl.toString());
     requestBuilder.setBody(mapper.writer().writeValueAsString(updated));
     return handleResponse(requestBuilder, 200);

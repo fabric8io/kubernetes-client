@@ -15,7 +15,12 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+@Deprecated
 public interface Updateable<T> {
 
+  @Deprecated
   T update(T item);
+
+  @Deprecated
+  T update(T item, boolean cascade);
 }

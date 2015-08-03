@@ -18,14 +18,25 @@ package io.fabric8.kubernetes.client.dsl;
 public interface Deleteable<V, B> {
 
   /**
-   * Deletes resource
+   * Deletes resource & all managed resources.
    * @throws io.fabric8.kubernetes.client.KubernetesClientException if resource is not found.
    */
   V delete();
 
   /**
-   * Deletes resource if exists.
+   * Deletes resource & all managed resources if cascade is true.
+   * @throws io.fabric8.kubernetes.client.KubernetesClientException if resource is not found.
+   */
+  V delete(boolean cascade);
+
+  /**
+   * Deletes resource if exists & all managed resources.
    * @throws io.fabric8.kubernetes.client.KubernetesClientException if an error occurs (including errors due to namespace not exists).
    */
   B deleteIfExists();
+  /**
+   * Deletes resource if exists & all managed resources if cascade is true.
+   * @throws io.fabric8.kubernetes.client.KubernetesClientException if an error occurs (including errors due to namespace not exists).
+   */
+  B deleteIfExists(boolean cascade);
 }

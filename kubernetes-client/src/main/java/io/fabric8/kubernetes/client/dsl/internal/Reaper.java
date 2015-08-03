@@ -13,14 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.fabric8.kubernetes.client.dsl.internal;
 
-package io.fabric8.kubernetes.client.dsl;
+public interface Reaper {
 
-public interface Scaleable {
+  void reap();
 
-  int POLL_INTERVAL_MS = 100;
-
-  void scale(int count);
-
-  void scale(int count, boolean wait);
 }

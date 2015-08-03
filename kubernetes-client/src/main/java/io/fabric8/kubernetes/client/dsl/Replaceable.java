@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Scaleable {
+public interface Replaceable<T> {
 
-  int POLL_INTERVAL_MS = 100;
+  T replace(T item);
 
-  void scale(int count);
+  T replace(T item, boolean cascade);
 
-  void scale(int count, boolean wait);
 }

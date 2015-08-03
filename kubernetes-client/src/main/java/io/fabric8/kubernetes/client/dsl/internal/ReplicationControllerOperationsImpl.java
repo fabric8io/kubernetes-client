@@ -19,6 +19,8 @@ import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.Scaleable;
 import io.fabric8.kubernetes.client.dsl.ScaleableResource;
 
 import java.net.URL;
@@ -29,12 +31,26 @@ public class ReplicationControllerOperationsImpl extends BaseScaleableOperation<
     super(httpClient, rootUrl, "replicationcontrollers", null, null, ReplicationController.class, ReplicationControllerList.class, DoneableReplicationController.class);
   }
 
-    public ReplicationControllerOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {
-      super(httpClient, rootUrl, "replicationcontrollers", namespace, name);
-    }
+  public ReplicationControllerOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {
+    super(httpClient, rootUrl, "replicationcontrollers", namespace, name);
+  }
 
   @Override
   public void scale(int count) {
-    edit().withNewSpec().withReplicas(count).endSpec().done();
+    scale(count, false);
+  }
+
+  @Override
+  public void scale(int count, boolean wait) {
+    edit(false).editSpec().withReplicas(count).endSpec().done();
+    if (wait) {
+      while(get().getStatus().getReplicas() != count) {
+        try {
+          Thread.sleep(Scaleable.POLL_INTERVAL_MS);
+        } catch (InterruptedException e) {
+          throw new KubernetesClientException("Interrupted sleep", e);
+        }
+      }
+    }
   }
 }
