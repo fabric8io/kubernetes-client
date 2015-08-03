@@ -17,7 +17,11 @@ package io.fabric8.kubernetes.client.examples;
 
 import com.ning.http.client.ws.WebSocket;
 import io.fabric8.kubernetes.api.model.*;
-import io.fabric8.kubernetes.client.*;
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.internal.SerializationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +47,7 @@ public class FullExample {
         // Get the namespace by label
         log("Get namespace by label", client.namespaces().withLabel("this", "rocks").list());
 
-        ResourceQuota quota = new ResourceQuotaBuilder().withNewMetadata().withName("pod-quota").endMetadata().withNewSpec().addToHard("pods", new Quantity("4")).endSpec().build();
+        ResourceQuota quota = new ResourceQuotaBuilder().withNewMetadata().withName("pod-quota").endMetadata().withNewSpec().addToHard("pods", new Quantity("10")).endSpec().build();
         log("Create resource quota", client.resourceQuotas().inNamespace("thisisatest").create(quota));
 
         //Watch the RCs in the namespace in a separate thread
@@ -98,7 +102,12 @@ public class FullExample {
             .endSpec().done());
 
         // Get the RC by name in namespace
-        log("Get RC by name in namespace", client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").get());
+        ReplicationController gotRc = client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").get();
+        log("Get RC by name in namespace", gotRc);
+        // Dump the RC as YAML
+        log("Dump RC as YAML", SerializationUtils.dumpAsYaml(gotRc));
+        log("Dump RC as YAML without state", SerializationUtils.dumpWithoutRuntimeStateAsYaml(gotRc));
+
         // Get the RC by label
         log("Get RC by label", client.replicationControllers().withLabel("server", "nginx").list());
         // Get the RC without label
@@ -111,6 +120,9 @@ public class FullExample {
         log("Get RC by label in namespace", client.replicationControllers().inNamespace("thisisatest").withLabel("server", "nginx").list());
         // Update the RC
         client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").edit().editMetadata().addToLabels("new", "label").endMetadata().done();
+
+        Thread.sleep(1000);
+
         // Update the RC - change the image to apache
         client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").edit().editSpec().editTemplate().withNewSpec()
           .addNewContainer().withName("nginx").withImage("httpd")
@@ -119,6 +131,11 @@ public class FullExample {
           .endSpec()
           .endTemplate()
           .endSpec().done();
+
+        Thread.sleep(1000);
+
+        // Update the RC - change the image back to nginx using a rolling update
+        client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").rollImageUpdate("nginx");
 
         Thread.sleep(1000);
 
@@ -135,7 +152,7 @@ public class FullExample {
         client.replicationControllers().inNamespace("thisisatest").withName("nginx2-controller").delete();
         log("Deleted RCs");
 
-        //Create an ohter RC inline
+        //Create another RC inline
         client.replicationControllers().inNamespace("thisisatest").createNew().withNewMetadata().withName("nginx-controller").addToLabels("server", "nginx").endMetadata()
           .withNewSpec().withReplicas(3)
           .withNewTemplate()
@@ -148,6 +165,8 @@ public class FullExample {
           .endTemplate()
           .endSpec().done();
          log("Created inline RC");
+
+        Thread.sleep(1000);
 
         client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").delete();
         log("Deleted RC");

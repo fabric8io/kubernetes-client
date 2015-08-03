@@ -47,9 +47,7 @@ public class HasMetadataOperation<C extends KubernetesClient, T extends HasMetad
               reaper.reap();
             }
           }
-          T old = get();
-          String resourceVersion = old.getMetadata().getResourceVersion();
-          resource.getMetadata().setResourceVersion(resourceVersion);
+          resource.getMetadata().setResourceVersion(null);
           handleReplace(getResourceUrl(), resource);
         } catch (Exception e) {
           throw KubernetesClientException.launderThrowable(e);
@@ -74,9 +72,7 @@ public class HasMetadataOperation<C extends KubernetesClient, T extends HasMetad
           reaper.reap();
         }
       }
-      T old = get();
-      String resourceVersion = old.getMetadata().getResourceVersion();
-      item.getMetadata().setResourceVersion(resourceVersion);
+      item.getMetadata().setResourceVersion(null);
       return handleReplace(getResourceUrl(), item);
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);

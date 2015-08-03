@@ -196,7 +196,7 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
   }
 
   @Override
-  public ClientOperation<KubernetesClient, ReplicationController, ReplicationControllerList, DoneableReplicationController, ScaleableClientResource<ReplicationController, DoneableReplicationController>> replicationControllers() {
+  public ClientOperation<KubernetesClient, ReplicationController, ReplicationControllerList, DoneableReplicationController, ReplicationControllerClientResource<ReplicationController, DoneableReplicationController>> replicationControllers() {
     return new ReplicationControllerOperationsImpl(this);
   }
 

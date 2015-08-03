@@ -17,10 +17,10 @@ package io.fabric8.kubernetes.client;
 
 import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.*;
-import io.fabric8.kubernetes.client.dsl.*;
-import io.fabric8.openshift.api.model.DoneableTemplate;
-import io.fabric8.openshift.api.model.Template;
-import io.fabric8.openshift.api.model.TemplateList;
+import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.ClientOperation;
+import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.ReplicationControllerClientResource;
 
 import java.net.URL;
 
@@ -47,7 +47,7 @@ public interface KubernetesClient extends AutoCloseable {
 
   ClientOperation<KubernetesClient, Pod, PodList, DoneablePod, ClientResource<Pod, DoneablePod>> pods();
 
-  ClientOperation<KubernetesClient, ReplicationController, ReplicationControllerList, DoneableReplicationController, ScaleableClientResource<ReplicationController, DoneableReplicationController>> replicationControllers();
+  ClientOperation<KubernetesClient, ReplicationController, ReplicationControllerList, DoneableReplicationController, ReplicationControllerClientResource<ReplicationController, DoneableReplicationController>> replicationControllers();
 
   ClientOperation<KubernetesClient, ResourceQuota, ResourceQuotaList, DoneableResourceQuota, ClientResource<ResourceQuota, DoneableResourceQuota>> resourceQuotas();
 
@@ -56,7 +56,6 @@ public interface KubernetesClient extends AutoCloseable {
   ClientOperation<KubernetesClient, Service, ServiceList, DoneableService, ClientResource<Service, DoneableService>> services();
 
   ClientOperation<KubernetesClient, ServiceAccount, ServiceAccountList, DoneableServiceAccount, ClientResource<ServiceAccount, DoneableServiceAccount>> serviceAccounts();
-
 
   void close();
 
