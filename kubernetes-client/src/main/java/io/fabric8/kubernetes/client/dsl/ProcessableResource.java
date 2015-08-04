@@ -15,6 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface ProcessableResource<T, D, B> extends Resource<T, D, B>,
+public interface ProcessableResource<I, T, D, B> extends Resource<I, T, D, B>,
   Processable<T> {
 }

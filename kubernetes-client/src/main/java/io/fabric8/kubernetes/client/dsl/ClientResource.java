@@ -16,5 +16,5 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface ClientResource<T, D> extends Resource<T, D, Boolean> {
+public interface ClientResource<T, D> extends Resource<T, T, D, Boolean> {
 }

@@ -21,5 +21,5 @@ import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.DoneableBuildConfig;
 import org.easymock.IExpectationSetters;
 
-public interface MockBuildConfigResource extends BuildConfigResource<IExpectationSetters<BuildConfig>, DoneableBuildConfig, IExpectationSetters<Boolean>,  IExpectationSetters<Void>, IExpectationSetters<Void>> {
+public interface MockBuildConfigResource extends BuildConfigResource<BuildConfig, IExpectationSetters<BuildConfig>, DoneableBuildConfig, IExpectationSetters<Boolean>,  IExpectationSetters<Void>, IExpectationSetters<Void>> {
 }

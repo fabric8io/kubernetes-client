@@ -15,10 +15,10 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Replaceable<T> {
+public interface Replaceable<I, T> {
 
-  T replace(T item);
+  T replace(I item);
 
-  T replace(T item, boolean cascade);
+  T replace(I item, boolean cascade);
 
 }

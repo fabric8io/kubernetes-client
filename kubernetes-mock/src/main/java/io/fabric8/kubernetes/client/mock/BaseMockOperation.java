@@ -42,7 +42,7 @@ import static org.easymock.EasyMock.expect;
 
 public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Doneable<T>,
   R extends ClientResource<T, D>,
-  E extends Resource<IExpectationSetters<T>, D, IExpectationSetters<Boolean>>>
+  E extends Resource<T, IExpectationSetters<T>, D, IExpectationSetters<Boolean>>>
   implements MockOperation<T, L, D, E>, Mockable {
 
   private final ClientOperation<T, L, D, R> delegate;
@@ -150,22 +150,22 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   }
 
   @Override
-  public IExpectationSetters<T> update(IExpectationSetters<T> item) {
+  public IExpectationSetters<T> update(T item) {
     return replace(item);
   }
 
   @Override
-  public IExpectationSetters<T> update(IExpectationSetters<T> item, boolean cascade) {
+  public IExpectationSetters<T> update(T item, boolean cascade) {
     return replace(item, cascade);
   }
 
   @Override
-  public IExpectationSetters<T> replace(IExpectationSetters<T> item) {
+  public IExpectationSetters<T> replace(T item) {
     return replace(item, true);
   }
 
   @Override
-  public IExpectationSetters<T> replace(IExpectationSetters<T> item, boolean cascade) {
+  public IExpectationSetters<T> replace(T item, boolean cascade) {
     return null;
   }
 
