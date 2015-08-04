@@ -19,12 +19,12 @@ import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableEvent;
 import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventList;
-import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.ClientResource;
 
 import java.net.URL;
 
 public class EventOperationsImpl extends HasMetadataOperation<Event, EventList, DoneableEvent,
-  Resource<Event, DoneableEvent, Boolean>> {
+  ClientResource<Event, DoneableEvent>> {
 
   public EventOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "events", null, null);

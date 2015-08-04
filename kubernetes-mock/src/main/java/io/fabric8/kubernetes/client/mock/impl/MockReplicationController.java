@@ -19,17 +19,12 @@ package io.fabric8.kubernetes.client.mock.impl;
 import io.fabric8.kubernetes.api.model.DoneableReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
-import io.fabric8.kubernetes.client.dsl.ClientOperation;
-import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.Scaleable;
-import io.fabric8.kubernetes.client.dsl.ScaleableResource;
-import io.fabric8.kubernetes.client.dsl.internal.BaseScaleableOperation;
+import io.fabric8.kubernetes.client.dsl.ScaleableClientResource;
 import io.fabric8.kubernetes.client.mock.BaseMockOperation;
-import io.fabric8.kubernetes.client.mock.MockResource;
 import io.fabric8.kubernetes.client.mock.MockScaleableResource;
 
 public class MockReplicationController extends BaseMockOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController,
-  ScaleableResource<ReplicationController, DoneableReplicationController, Boolean>,
+  ScaleableClientResource<ReplicationController, DoneableReplicationController>,
   MockScaleableResource<ReplicationController, DoneableReplicationController, Boolean>>  {
 }
 

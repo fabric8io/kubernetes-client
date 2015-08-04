@@ -19,7 +19,7 @@ import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.Response;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.BuildConfigResource;
+import io.fabric8.kubernetes.client.dsl.BuildConfigClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Secretable;
 import io.fabric8.kubernetes.client.dsl.Triggerable;
@@ -34,8 +34,8 @@ import java.net.URL;
 import java.util.concurrent.Future;
 
 public class BuildConfigOperationsImpl extends HasMetadataOperation<BuildConfig, BuildConfigList, DoneableBuildConfig,
-  BuildConfigResource<BuildConfig, DoneableBuildConfig, Boolean, Void, Void>>
-  implements BuildConfigResource<BuildConfig, DoneableBuildConfig, Boolean, Void, Void>,
+  BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void>>
+  implements BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void>,
   Typeable<Triggerable<WebHookTrigger, Void>>,
   Triggerable<WebHookTrigger, Void>,
   Secretable<Typeable<Triggerable<WebHookTrigger, Void>>>
@@ -57,7 +57,7 @@ public class BuildConfigOperationsImpl extends HasMetadataOperation<BuildConfig,
   }
 
   @Override
-  public BuildConfigResource<BuildConfig, DoneableBuildConfig, Boolean, Void, Void> withName(String name) {
+  public BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void> withName(String name) {
     try {
       return  getClass()
         .getConstructor(AsyncHttpClient.class, URL.class, String.class, String.class, String.class, String.class)
@@ -68,7 +68,7 @@ public class BuildConfigOperationsImpl extends HasMetadataOperation<BuildConfig,
   }
 
   @Override
-  public ClientNonNamespaceOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigResource<BuildConfig, DoneableBuildConfig, Boolean, Void, Void>> inNamespace(String namespace) {
+  public ClientNonNamespaceOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void>> inNamespace(String namespace) {
     try {
       return getClass()
         .getConstructor(AsyncHttpClient.class, URL.class, String.class, String.class, String.class, String.class)

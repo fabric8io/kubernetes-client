@@ -16,7 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.ning.http.client.AsyncHttpClient;
-import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildList;
 import io.fabric8.openshift.api.model.DoneableBuild;
@@ -24,7 +24,7 @@ import io.fabric8.openshift.api.model.DoneableBuild;
 import java.net.URL;
 
 public class BuildOperationsImpl extends HasMetadataOperation<Build, BuildList, DoneableBuild,
-  Resource<Build, DoneableBuild, Boolean>> {
+  ClientResource<Build, DoneableBuild>> {
 
   public BuildOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "builds", null, null);

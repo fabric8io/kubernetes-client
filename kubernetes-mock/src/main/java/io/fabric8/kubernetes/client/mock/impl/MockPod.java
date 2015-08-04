@@ -19,11 +19,11 @@ package io.fabric8.kubernetes.client.mock.impl;
 import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
-import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockResource;
 
 public class MockPod extends BaseMockOperation<Pod, PodList, DoneablePod,
-  Resource<Pod, DoneablePod, Boolean>,
+  ClientResource<Pod, DoneablePod>,
   MockResource<Pod, DoneablePod, Boolean>> {
 }

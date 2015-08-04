@@ -25,5 +25,5 @@ public interface BuildConfigOperation extends BuildConfigResource<BuildConfig, D
   Typeable<Triggerable<WebHookTrigger, Void>>,
   Triggerable<WebHookTrigger, Void>,
   Secretable<Typeable<Triggerable<WebHookTrigger, Void>>>,
-  ClientOperation<BuildConfig, BuildConfigList,DoneableBuildConfig, BuildConfigResource<BuildConfig, DoneableBuildConfig, Boolean, Void, Void>> {
+  ClientOperation<BuildConfig, BuildConfigList,DoneableBuildConfig, BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void>> {
 }

@@ -16,7 +16,7 @@
 
 package io.fabric8.kubernetes.client.mock.impl;
 
-import io.fabric8.kubernetes.client.dsl.BuildConfigResource;
+import io.fabric8.kubernetes.client.dsl.BuildConfigClientResource;
 import io.fabric8.kubernetes.client.dsl.Instantiateable;
 import io.fabric8.kubernetes.client.dsl.Secretable;
 import io.fabric8.kubernetes.client.dsl.Triggerable;
@@ -41,7 +41,7 @@ import static org.easymock.EasyMock.expect;
 
 
 public class MockBuildConfig extends BaseMockOperation<BuildConfig, BuildConfigList, DoneableBuildConfig,
-  BuildConfigResource<BuildConfig, DoneableBuildConfig, Boolean, Void, Void>,
+  BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void>,
   MockBuildConfigResource>
   implements MockBuildConfigResource {
 
@@ -60,7 +60,7 @@ public class MockBuildConfig extends BaseMockOperation<BuildConfig, BuildConfigL
 
   @Override
   public IExpectationSetters<Void> instantiate(BuildRequest request) {
-    return expect(((Instantiateable<BuildRequest, Void>)getDelegate()).instantiate(request));
+    return expect(((Instantiateable<BuildRequest, Void>) getDelegate()).instantiate(request));
   }
 
   @Override
@@ -69,7 +69,7 @@ public class MockBuildConfig extends BaseMockOperation<BuildConfig, BuildConfigL
     MockBuildConfig op = secretMap.get(matcher);
     if (op == null) {
       op = new MockBuildConfig();
-      expect(((Secretable) getDelegate()).withSecret(secret)).andReturn((Typeable)op.getDelegate()).anyTimes();
+      expect(((Secretable) getDelegate()).withSecret(secret)).andReturn((Typeable) op.getDelegate()).anyTimes();
       getNested().add(op);
       secretMap.put(matcher, op);
     }
@@ -78,7 +78,7 @@ public class MockBuildConfig extends BaseMockOperation<BuildConfig, BuildConfigL
 
   @Override
   public IExpectationSetters<Void> trigger(WebHookTrigger trigger) {
-    return expect(((Triggerable<WebHookTrigger, Void>)getDelegate()).trigger(trigger));
+    return expect(((Triggerable<WebHookTrigger, Void>) getDelegate()).trigger(trigger));
   }
 
   @Override
@@ -87,7 +87,7 @@ public class MockBuildConfig extends BaseMockOperation<BuildConfig, BuildConfigL
     MockBuildConfig op = typeMap.get(matcher);
     if (op == null) {
       op = new MockBuildConfig();
-      expect(((Typeable)getDelegate()).withType(type)).andReturn(op.getDelegate()).anyTimes();
+      expect(((Typeable) getDelegate()).withType(type)).andReturn(op.getDelegate()).anyTimes();
       getNested().add(op);
       typeMap.put(matcher, op);
     }

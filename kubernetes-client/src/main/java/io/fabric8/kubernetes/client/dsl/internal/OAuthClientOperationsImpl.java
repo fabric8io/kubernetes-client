@@ -16,7 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.ning.http.client.AsyncHttpClient;
-import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.DoneableOAuthClient;
 import io.fabric8.openshift.api.model.OAuthClient;
 import io.fabric8.openshift.api.model.OAuthClientList;
@@ -24,7 +24,7 @@ import io.fabric8.openshift.api.model.OAuthClientList;
 import java.net.URL;
 
 public class OAuthClientOperationsImpl extends HasMetadataOperation<OAuthClient, OAuthClientList, DoneableOAuthClient,
-  Resource<OAuthClient, DoneableOAuthClient, Boolean>> {
+  ClientResource<OAuthClient, DoneableOAuthClient>> {
 
   public OAuthClientOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "oauthclients", null, null);

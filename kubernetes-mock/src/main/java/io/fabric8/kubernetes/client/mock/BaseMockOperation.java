@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ClientOperation;
+import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeleteable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import org.easymock.EasyMock;
@@ -40,7 +41,7 @@ import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 
 public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Doneable<T>,
-  R extends Resource<T, D, Boolean>,
+  R extends ClientResource<T, D>,
   E extends Resource<IExpectationSetters<T>, D, IExpectationSetters<Boolean>>>
   implements MockOperation<T, L, D, E>, Mockable {
 

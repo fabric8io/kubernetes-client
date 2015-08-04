@@ -30,31 +30,31 @@ public interface KubernetesClient extends AutoCloseable {
 
   RootPaths rootPaths();
 
-  ClientOperation<Endpoints, EndpointsList, DoneableEndpoints, Resource<Endpoints, DoneableEndpoints, Boolean>> endpoints();
+  ClientOperation<Endpoints, EndpointsList, DoneableEndpoints, ClientResource<Endpoints, DoneableEndpoints>> endpoints();
 
-  ClientOperation<Event, EventList, DoneableEvent, Resource<Event, DoneableEvent, Boolean>> events();
+  ClientOperation<Event, EventList, DoneableEvent, ClientResource<Event, DoneableEvent>> events();
 
-  ClientNonNamespaceOperation<Namespace, NamespaceList, DoneableNamespace, Resource<Namespace, DoneableNamespace, Boolean>> namespaces();
+  ClientNonNamespaceOperation<Namespace, NamespaceList, DoneableNamespace, ClientResource<Namespace, DoneableNamespace>> namespaces();
 
-  ClientNonNamespaceOperation<Node, NodeList, DoneableNode, Resource<Node, DoneableNode, Boolean>> nodes();
+  ClientNonNamespaceOperation<Node, NodeList, DoneableNode, ClientResource<Node, DoneableNode>> nodes();
 
-  ClientOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, Resource<PersistentVolume, DoneablePersistentVolume, Boolean>> persistentVolumes();
+  ClientOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, ClientResource<PersistentVolume, DoneablePersistentVolume>> persistentVolumes();
 
-  ClientOperation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, Resource<PersistentVolumeClaim, DoneablePersistentVolumeClaim, Boolean>> persistentVolumeClaims();
+  ClientOperation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, ClientResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> persistentVolumeClaims();
 
-  ClientOperation<Pod, PodList, DoneablePod, Resource<Pod, DoneablePod, Boolean>> pods();
+  ClientOperation<Pod, PodList, DoneablePod, ClientResource<Pod, DoneablePod>> pods();
 
-  ClientOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, ScaleableResource<ReplicationController, DoneableReplicationController, Boolean>> replicationControllers();
+  ClientOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, ScaleableClientResource<ReplicationController, DoneableReplicationController>> replicationControllers();
 
-  ClientOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota, Resource<ResourceQuota, DoneableResourceQuota, Boolean>> resourceQuotas();
+  ClientOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota, ClientResource<ResourceQuota, DoneableResourceQuota>> resourceQuotas();
 
-  ClientOperation<Secret, SecretList, DoneableSecret, Resource<Secret, DoneableSecret, Boolean>> secrets();
+  ClientOperation<Secret, SecretList, DoneableSecret, ClientResource<Secret, DoneableSecret>> secrets();
 
-  ClientOperation<Service, ServiceList, DoneableService, Resource<Service, DoneableService, Boolean>> services();
+  ClientOperation<Service, ServiceList, DoneableService, ClientResource<Service, DoneableService>> services();
 
-  ClientOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, Resource<ServiceAccount, DoneableServiceAccount, Boolean>> serviceAccounts();
+  ClientOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, ClientResource<ServiceAccount, DoneableServiceAccount>> serviceAccounts();
 
-  ClientOperation<Template, TemplateList, DoneableTemplate, ProcessableResource<Template, DoneableTemplate, Boolean>> templates();
+  ClientOperation<Template, TemplateList, DoneableTemplate, ProcessableClientResource<Template, DoneableTemplate>> templates();
 
   void close();
 

@@ -46,6 +46,7 @@ public class KubernetesMockClientTest {
 
     //We are testing the internal anyTimes() on namespace and name.
     for (int i = 0; i < 5; i++) {
+      Object o = client.pods().inNamespace("ns1").withName("pod1");
       Assert.assertNotNull(client.pods().inNamespace("ns1").withName("pod1").get());
     }
     Assert.assertNotNull(client.pods().inNamespace("ns1").withName("pod2").get());

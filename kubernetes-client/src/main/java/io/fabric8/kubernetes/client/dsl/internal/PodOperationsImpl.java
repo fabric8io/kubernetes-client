@@ -19,11 +19,11 @@ import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
-import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.ClientResource;
 
 import java.net.URL;
 
-public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, DoneablePod, Resource<Pod, DoneablePod, Boolean>> {
+public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, DoneablePod, ClientResource<Pod, DoneablePod>> {
 
   public PodOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "pods", null, null);

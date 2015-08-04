@@ -19,11 +19,11 @@ import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableNamespace;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceList;
-import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.ClientResource;
 
 import java.net.URL;
 
-public class NamespaceOperationsImpl extends HasMetadataOperation<Namespace, NamespaceList, DoneableNamespace, Resource<Namespace,DoneableNamespace, Boolean>> {
+public class NamespaceOperationsImpl extends HasMetadataOperation<Namespace, NamespaceList, DoneableNamespace, ClientResource<Namespace,DoneableNamespace>> {
 
   public NamespaceOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "namespaces", null, null);

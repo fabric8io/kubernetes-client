@@ -16,14 +16,14 @@
 
 package io.fabric8.kubernetes.client.mock.impl;
 
-import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockResource;
+import io.fabric8.openshift.api.model.DoneableOAuthClient;
 import io.fabric8.openshift.api.model.OAuthClient;
 import io.fabric8.openshift.api.model.OAuthClientList;
-import io.fabric8.openshift.api.model.DoneableOAuthClient;
 
 public class MockOAuthClient extends BaseMockOperation<OAuthClient, OAuthClientList, DoneableOAuthClient,
-  Resource<OAuthClient, DoneableOAuthClient, Boolean>,
+  ClientResource<OAuthClient, DoneableOAuthClient>,
   MockResource<OAuthClient, DoneableOAuthClient, Boolean>> {
 }

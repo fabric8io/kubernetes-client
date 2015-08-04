@@ -16,7 +16,7 @@
 
 package io.fabric8.kubernetes.client.mock.impl;
 
-import io.fabric8.kubernetes.client.dsl.ProcessableResource;
+import io.fabric8.kubernetes.client.dsl.ProcessableClientResource;
 import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockProcessableResource;
 import io.fabric8.openshift.api.model.DoneableTemplate;
@@ -24,6 +24,6 @@ import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateList;
 
 public class MockTemplate extends BaseMockOperation<Template, TemplateList, DoneableTemplate,
-  ProcessableResource<Template, DoneableTemplate, Boolean>,
+  ProcessableClientResource<Template, DoneableTemplate>,
   MockProcessableResource<Template, DoneableTemplate, Boolean>> {
 }

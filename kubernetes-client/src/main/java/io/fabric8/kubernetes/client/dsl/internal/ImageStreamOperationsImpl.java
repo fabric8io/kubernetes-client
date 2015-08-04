@@ -16,7 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.ning.http.client.AsyncHttpClient;
-import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.DoneableImageStream;
 import io.fabric8.openshift.api.model.ImageStream;
 import io.fabric8.openshift.api.model.ImageStreamList;
@@ -24,7 +24,7 @@ import io.fabric8.openshift.api.model.ImageStreamList;
 import java.net.URL;
 
 public class ImageStreamOperationsImpl extends HasMetadataOperation<ImageStream, ImageStreamList, DoneableImageStream,
-  Resource<ImageStream, DoneableImageStream, Boolean>> {
+  ClientResource<ImageStream, DoneableImageStream>> {
 
   public ImageStreamOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "imagestreams", null, null);

@@ -17,7 +17,7 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.ProcessableResource;
+import io.fabric8.kubernetes.client.dsl.ProcessableClientResource;
 import io.fabric8.openshift.api.model.DoneableTemplate;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateList;
@@ -25,7 +25,7 @@ import io.fabric8.openshift.api.model.TemplateList;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class TemplateOperationsImpl extends BaseProcessableOperation<Template, TemplateList, DoneableTemplate, ProcessableResource<Template, DoneableTemplate, Boolean>> {
+public class TemplateOperationsImpl extends BaseProcessableOperation<Template, TemplateList, DoneableTemplate, ProcessableClientResource<Template, DoneableTemplate>> {
 
   public TemplateOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
     super(httpClient, rootUrl, "templates", null, null);

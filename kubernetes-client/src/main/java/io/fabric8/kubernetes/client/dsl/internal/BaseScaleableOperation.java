@@ -20,13 +20,13 @@ import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.ScaleableResource;
+import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.ScaleableClientResource;
 
 import java.net.URL;
 
-public abstract class BaseScaleableOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D, Boolean>>
-  extends HasMetadataOperation<T, L, D, R> implements ScaleableResource<T,D, Boolean> {
+public abstract class BaseScaleableOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
+  extends HasMetadataOperation<T, L, D, R> implements ScaleableClientResource<T,D> {
 
   protected BaseScaleableOperation(AsyncHttpClient httpClient, URL rootUrl, String resourceT, String namespace, String name) {
     super(httpClient, rootUrl, resourceT, namespace, name);

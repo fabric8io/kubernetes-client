@@ -19,11 +19,11 @@ package io.fabric8.kubernetes.client.mock.impl;
 import io.fabric8.kubernetes.api.model.DoneableNamespace;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceList;
-import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockResource;
 
 public class MockNamespace extends BaseMockOperation<Namespace, NamespaceList, DoneableNamespace,
-  Resource<Namespace, DoneableNamespace, Boolean>,
+  ClientResource<Namespace, DoneableNamespace>,
   MockResource<Namespace, DoneableNamespace, Boolean>> {
 }

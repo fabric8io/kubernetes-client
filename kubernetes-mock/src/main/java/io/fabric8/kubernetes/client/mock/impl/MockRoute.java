@@ -16,14 +16,14 @@
 
 package io.fabric8.kubernetes.client.mock.impl;
 
-import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockResource;
+import io.fabric8.openshift.api.model.DoneableRoute;
 import io.fabric8.openshift.api.model.Route;
 import io.fabric8.openshift.api.model.RouteList;
-import io.fabric8.openshift.api.model.DoneableRoute;
 
 public class MockRoute extends BaseMockOperation<Route, RouteList, DoneableRoute,
-  Resource<Route, DoneableRoute, Boolean>,
+  ClientResource<Route, DoneableRoute>,
   MockResource<Route, DoneableRoute, Boolean>> {
 }

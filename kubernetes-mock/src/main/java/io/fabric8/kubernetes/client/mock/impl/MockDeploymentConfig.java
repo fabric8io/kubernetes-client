@@ -16,7 +16,7 @@
 
 package io.fabric8.kubernetes.client.mock.impl;
 
-import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockResource;
 import io.fabric8.openshift.api.model.DeploymentConfig;
@@ -24,6 +24,6 @@ import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.api.model.DoneableDeploymentConfig;
 
 public class MockDeploymentConfig extends BaseMockOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig,
-  Resource<DeploymentConfig, DoneableDeploymentConfig, Boolean>,
+  ClientResource<DeploymentConfig, DoneableDeploymentConfig>,
   MockResource<DeploymentConfig, DoneableDeploymentConfig, Boolean>> {
 }

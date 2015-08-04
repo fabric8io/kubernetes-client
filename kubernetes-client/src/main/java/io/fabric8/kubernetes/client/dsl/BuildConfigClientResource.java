@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client.mock.impl;
+package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.model.DoneableEndpoints;
-import io.fabric8.kubernetes.api.model.Endpoints;
-import io.fabric8.kubernetes.api.model.EndpointsList;
-import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.kubernetes.client.mock.BaseMockOperation;
-import io.fabric8.kubernetes.client.mock.MockResource;
+import io.fabric8.openshift.api.model.BuildRequest;
+import io.fabric8.openshift.api.model.WebHookTrigger;
 
-public class MockEndpoints extends BaseMockOperation<Endpoints, EndpointsList, DoneableEndpoints,
-  ClientResource<Endpoints, DoneableEndpoints>,
-  MockResource<Endpoints, DoneableEndpoints, Boolean>> {
+public interface BuildConfigClientResource<T, D, S, I> extends ClientResource<T, D>,
+  Instantiateable<BuildRequest, I>,
+  Typeable<Triggerable<WebHookTrigger, S>>,
+  Triggerable<WebHookTrigger, S>,
+  Secretable<Typeable<Triggerable<WebHookTrigger, S>>>{
 }

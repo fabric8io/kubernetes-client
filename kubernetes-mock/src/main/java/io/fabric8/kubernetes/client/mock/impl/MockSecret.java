@@ -19,11 +19,11 @@ package io.fabric8.kubernetes.client.mock.impl;
 import io.fabric8.kubernetes.api.model.DoneableSecret;
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.SecretList;
-import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockResource;
 
 public class MockSecret extends BaseMockOperation<Secret, SecretList, DoneableSecret,
-  Resource<Secret, DoneableSecret, Boolean>,
+  ClientResource<Secret, DoneableSecret>,
   MockResource<Secret, DoneableSecret, Boolean>> {
 }
