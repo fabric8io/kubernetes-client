@@ -25,7 +25,7 @@ import java.net.URL;
 
 public class SecretOperationsImpl extends HasMetadataOperation<Secret, SecretList, DoneableSecret, Resource<Secret, DoneableSecret, Boolean>> {
   public SecretOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
-    super(httpClient, rootUrl, "secrets", null, null, Secret.class, SecretList.class, DoneableSecret.class);
+    super(httpClient, rootUrl, "secrets", null, null);
   }
 
   public SecretOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {

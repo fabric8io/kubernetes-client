@@ -26,7 +26,7 @@ import java.net.URL;
 public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, DoneablePod, Resource<Pod, DoneablePod, Boolean>> {
 
   public PodOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
-    super(httpClient, rootUrl, "pods", null, null, Pod.class, PodList.class, DoneablePod.class);
+    super(httpClient, rootUrl, "pods", null, null);
   }
 
   public PodOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {

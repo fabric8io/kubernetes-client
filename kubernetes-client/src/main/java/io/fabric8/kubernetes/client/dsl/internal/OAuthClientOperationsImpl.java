@@ -27,7 +27,7 @@ public class OAuthClientOperationsImpl extends HasMetadataOperation<OAuthClient,
   Resource<OAuthClient, DoneableOAuthClient, Boolean>> {
 
   public OAuthClientOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
-    super(httpClient, rootUrl, "oauthclients", null, null, OAuthClient.class, OAuthClientList.class, DoneableOAuthClient.class);
+    super(httpClient, rootUrl, "oauthclients", null, null);
   }
 
   public OAuthClientOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {

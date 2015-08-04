@@ -27,7 +27,7 @@ public class EventOperationsImpl extends HasMetadataOperation<Event, EventList, 
   Resource<Event, DoneableEvent, Boolean>> {
 
   public EventOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
-    super(httpClient, rootUrl, "events", null, null, Event.class, EventList.class, DoneableEvent.class);
+    super(httpClient, rootUrl, "events", null, null);
   }
 
   public EventOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {

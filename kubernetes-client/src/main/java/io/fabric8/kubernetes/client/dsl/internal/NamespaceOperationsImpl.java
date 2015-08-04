@@ -26,7 +26,7 @@ import java.net.URL;
 public class NamespaceOperationsImpl extends HasMetadataOperation<Namespace, NamespaceList, DoneableNamespace, Resource<Namespace,DoneableNamespace, Boolean>> {
 
   public NamespaceOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
-    super(httpClient, rootUrl, "namespaces", null, null, Namespace.class, NamespaceList.class, DoneableNamespace.class);
+    super(httpClient, rootUrl, "namespaces", null, null);
   }
 
   public NamespaceOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {

@@ -28,7 +28,7 @@ import java.net.URL;
 public class TemplateOperationsImpl extends BaseProcessableOperation<Template, TemplateList, DoneableTemplate, ProcessableResource<Template, DoneableTemplate, Boolean>> {
 
   public TemplateOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
-    super(httpClient, rootUrl, "templates", null, null, Template.class, TemplateList.class, DoneableTemplate.class);
+    super(httpClient, rootUrl, "templates", null, null);
   }
 
   public TemplateOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {

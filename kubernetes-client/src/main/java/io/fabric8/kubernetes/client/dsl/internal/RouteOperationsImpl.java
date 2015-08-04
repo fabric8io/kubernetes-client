@@ -26,7 +26,7 @@ import java.net.URL;
 public class RouteOperationsImpl extends HasMetadataOperation<Route, RouteList, DoneableRoute, Resource<Route, DoneableRoute, Boolean>> {
 
   public RouteOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
-    super(httpClient, rootUrl, "routes", null, null, Route.class, RouteList.class, DoneableRoute.class);
+    super(httpClient, rootUrl, "routes", null, null);
   }
 
   public RouteOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {

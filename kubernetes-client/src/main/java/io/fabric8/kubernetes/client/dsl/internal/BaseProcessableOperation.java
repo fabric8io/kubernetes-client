@@ -31,8 +31,4 @@ public abstract class BaseProcessableOperation<T extends HasMetadata, L extends 
   protected BaseProcessableOperation(AsyncHttpClient httpClient, URL rootUrl, String resourceT, String namespace, String name) {
     super(httpClient, rootUrl, resourceT, namespace, name);
   }
-
-  protected BaseProcessableOperation(AsyncHttpClient httpClient, URL rootUrl, String resourceT, String namespace, String name, Class<T> type, Class<L> listType, Class<D> doneableType) {
-    super(httpClient, rootUrl, resourceT, namespace, name, type, listType, doneableType);
-  }
 }

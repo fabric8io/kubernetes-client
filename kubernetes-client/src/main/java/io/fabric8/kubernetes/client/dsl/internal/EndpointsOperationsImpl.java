@@ -27,7 +27,7 @@ public class EndpointsOperationsImpl extends HasMetadataOperation<Endpoints, End
   Resource<Endpoints, DoneableEndpoints, Boolean>> {
 
   public EndpointsOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
-    super(httpClient, rootUrl, "endpoints", null, null, Endpoints.class, EndpointsList.class, DoneableEndpoints.class);
+    super(httpClient, rootUrl, "endpoints", null, null);
   }
 
   public EndpointsOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {

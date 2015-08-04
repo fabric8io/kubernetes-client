@@ -27,7 +27,7 @@ public class BuildOperationsImpl extends HasMetadataOperation<Build, BuildList, 
   Resource<Build, DoneableBuild, Boolean>> {
 
   public BuildOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
-    super(httpClient, rootUrl, "builds", null, null, Build.class, BuildList.class, DoneableBuild.class);
+    super(httpClient, rootUrl, "builds", null, null);
   }
 
   public BuildOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {

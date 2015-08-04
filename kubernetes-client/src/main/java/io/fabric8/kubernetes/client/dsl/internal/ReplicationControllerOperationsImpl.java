@@ -28,7 +28,7 @@ import java.net.URL;
 public class ReplicationControllerOperationsImpl extends BaseScaleableOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, ScaleableResource<ReplicationController, DoneableReplicationController, Boolean>> {
 
   public ReplicationControllerOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
-    super(httpClient, rootUrl, "replicationcontrollers", null, null, ReplicationController.class, ReplicationControllerList.class, DoneableReplicationController.class);
+    super(httpClient, rootUrl, "replicationcontrollers", null, null);
   }
 
   public ReplicationControllerOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {

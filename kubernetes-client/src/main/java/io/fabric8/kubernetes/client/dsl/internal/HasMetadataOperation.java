@@ -33,10 +33,6 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     super(httpClient, rootUrl, resourceT, namespace, name);
   }
 
-  protected HasMetadataOperation(AsyncHttpClient httpClient, URL rootUrl, String resourceT, String namespace, String name, Class<T> type, Class<L> listType, Class<D> doneableType) {
-    super(httpClient, rootUrl, resourceT, namespace, name, type, listType, doneableType);
-  }
-
   @Override
   public D edit(final boolean cascade) throws KubernetesClientException {
     final BaseOperation oper = this;

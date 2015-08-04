@@ -27,7 +27,7 @@ public class OAuthAuthorizeTokenOperationsImpl extends HasMetadataOperation<OAut
   Resource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken, Boolean>> {
 
   public OAuthAuthorizeTokenOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
-    super(httpClient, rootUrl, "oauthauthorizetokens", null, null, OAuthAuthorizeToken.class, OAuthAuthorizeTokenList.class, DoneableOAuthAuthorizeToken.class);
+    super(httpClient, rootUrl, "oauthauthorizetokens", null, null);
   }
 
   public OAuthAuthorizeTokenOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {

@@ -27,7 +27,7 @@ public class DeploymentConfigOperationsImpl extends HasMetadataOperation<Deploym
   Resource<DeploymentConfig, DoneableDeploymentConfig, Boolean>> {
 
   public DeploymentConfigOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
-    super(httpClient, rootUrl, "deploymentconfigs", null, null, DeploymentConfig.class, DeploymentConfigList.class, DoneableDeploymentConfig.class);
+    super(httpClient, rootUrl, "deploymentconfigs", null, null);
   }
 
   public DeploymentConfigOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {

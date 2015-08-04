@@ -26,7 +26,7 @@ import java.net.URL;
 public class ServiceAccountOperationsImpl extends HasMetadataOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, Resource<ServiceAccount, DoneableServiceAccount, Boolean>> {
 
   public ServiceAccountOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
-    super(httpClient, rootUrl, "serviceaccounts", null, null, ServiceAccount.class, ServiceAccountList.class, DoneableServiceAccount.class);
+    super(httpClient, rootUrl, "serviceaccounts", null, null);
   }
 
   public ServiceAccountOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {

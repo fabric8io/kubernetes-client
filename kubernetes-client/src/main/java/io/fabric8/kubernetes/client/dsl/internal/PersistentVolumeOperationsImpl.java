@@ -26,7 +26,7 @@ import java.net.URL;
 public class PersistentVolumeOperationsImpl extends HasMetadataOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, Resource<PersistentVolume, DoneablePersistentVolume, Boolean>> {
 
   public PersistentVolumeOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
-    super(httpClient, rootUrl, "persistentvolumes", null, null, PersistentVolume.class, PersistentVolumeList.class, DoneablePersistentVolume.class);
+    super(httpClient, rootUrl, "persistentvolumes", null, null);
   }
 
   public PersistentVolumeOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {

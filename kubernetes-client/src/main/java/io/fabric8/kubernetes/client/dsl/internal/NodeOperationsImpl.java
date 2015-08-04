@@ -26,7 +26,7 @@ import java.net.URL;
 public class NodeOperationsImpl extends HasMetadataOperation<Node, NodeList, DoneableNode, Resource<Node, DoneableNode, Boolean>> {
 
   public NodeOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
-    super(httpClient, rootUrl, "nodes", null, null, Node.class, NodeList.class, DoneableNode.class);
+    super(httpClient, rootUrl, "nodes", null, null);
   }
 
   public NodeOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {

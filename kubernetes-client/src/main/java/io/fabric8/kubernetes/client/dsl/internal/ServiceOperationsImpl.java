@@ -28,7 +28,7 @@ import java.net.URL;
 public class ServiceOperationsImpl extends BaseOperation<Service, ServiceList, DoneableService, Resource<Service, DoneableService, Boolean>> {
 
   public ServiceOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
-    super(httpClient, rootUrl, "services", null, null, Service.class, ServiceList.class, DoneableService.class);
+    super(httpClient, rootUrl, "services", null, null);
   }
 
   public ServiceOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {

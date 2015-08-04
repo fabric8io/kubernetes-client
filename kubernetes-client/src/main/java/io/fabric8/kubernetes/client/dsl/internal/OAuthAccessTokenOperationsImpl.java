@@ -27,7 +27,7 @@ public class OAuthAccessTokenOperationsImpl extends HasMetadataOperation<OAuthAc
   Resource<OAuthAccessToken, DoneableOAuthAccessToken, Boolean>> {
 
   public OAuthAccessTokenOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
-    super(httpClient, rootUrl, "oauthaccesstokens", null, null, OAuthAccessToken.class, OAuthAccessTokenList.class, DoneableOAuthAccessToken.class);
+    super(httpClient, rootUrl, "oauthaccesstokens", null, null);
   }
 
   public OAuthAccessTokenOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {

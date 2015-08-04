@@ -31,9 +31,4 @@ public abstract class BaseScaleableOperation<T extends HasMetadata, L extends Ku
   protected BaseScaleableOperation(AsyncHttpClient httpClient, URL rootUrl, String resourceT, String namespace, String name) {
     super(httpClient, rootUrl, resourceT, namespace, name);
   }
-
-  protected BaseScaleableOperation(AsyncHttpClient httpClient, URL rootUrl, String resourceT, String namespace, String name, Class<T> type, Class<L> listType, Class<D> doneableType) {
-    super(httpClient, rootUrl, resourceT, namespace, name, type, listType, doneableType);
-  }
-
 }

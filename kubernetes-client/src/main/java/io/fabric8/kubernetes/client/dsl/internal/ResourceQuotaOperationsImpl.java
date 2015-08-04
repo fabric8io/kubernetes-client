@@ -27,7 +27,7 @@ public class ResourceQuotaOperationsImpl extends HasMetadataOperation<ResourceQu
   Resource<ResourceQuota, DoneableResourceQuota, Boolean>> {
 
   public ResourceQuotaOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
-    super(httpClient, rootUrl, "resourcequotas", null, null, ResourceQuota.class, ResourceQuotaList.class, DoneableResourceQuota.class);
+    super(httpClient, rootUrl, "resourcequotas", null, null);
   }
 
   public ResourceQuotaOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {

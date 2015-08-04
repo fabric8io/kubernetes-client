@@ -27,7 +27,7 @@ public class ImageStreamOperationsImpl extends HasMetadataOperation<ImageStream,
   Resource<ImageStream, DoneableImageStream, Boolean>> {
 
   public ImageStreamOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
-    super(httpClient, rootUrl, "imagestreams", null, null, ImageStream.class, ImageStreamList.class, DoneableImageStream.class);
+    super(httpClient, rootUrl, "imagestreams", null, null);
   }
 
   public ImageStreamOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {

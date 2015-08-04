@@ -45,7 +45,7 @@ public class BuildConfigOperationsImpl extends HasMetadataOperation<BuildConfig,
    private final String triggerType;
 
    public BuildConfigOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String secret, String triggerType) {
-    super(httpClient, rootUrl, "buildconfigs", null, null, BuildConfig.class, BuildConfigList.class, DoneableBuildConfig.class);
+    super(httpClient, rootUrl, "buildconfigs", null, null);
     this.triggerType = triggerType;
     this.secret = secret;
   }
