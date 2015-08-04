@@ -15,22 +15,20 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableResourceQuota;
 import io.fabric8.kubernetes.api.model.ResourceQuota;
 import io.fabric8.kubernetes.api.model.ResourceQuotaList;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 
-import java.net.URL;
-
-public class ResourceQuotaOperationsImpl extends HasMetadataOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota,
+public class ResourceQuotaOperationsImpl extends HasMetadataOperation<KubernetesClient, ResourceQuota, ResourceQuotaList, DoneableResourceQuota,
   ClientResource<ResourceQuota, DoneableResourceQuota>> {
 
-  public ResourceQuotaOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
-    super(httpClient, rootUrl, "resourcequotas", null, null);
+  public ResourceQuotaOperationsImpl(KubernetesClient client) {
+    super(client,"resourcequotas", null, null);
   }
 
-  public ResourceQuotaOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {
-    super(httpClient, rootUrl, "resourcequotas", namespace, name);
+  public ResourceQuotaOperationsImpl(KubernetesClient client, String namespace, String name) {
+    super(client,"resourcequotas", namespace, name);
   }
 }

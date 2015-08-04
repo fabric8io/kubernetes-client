@@ -38,9 +38,9 @@ public class BuildConfigExamples {
       master = args[0];
     }
 
-    DefaultKubernetesClient.Config config = new DefaultKubernetesClient.ConfigBuilder().masterUrl(master).build();
-    OpenShiftClient client = new DefaultKubernetesClient(config);
-
+   // DefaultKubernetesClient.Config config = new DefaultKubernetesClient.ConfigBuilder().masterUrl(master).build();
+    //OpenShiftClient client = new DefaultKubernetesClient(config);
+    OpenShiftClient client = new DefaultKubernetesClient();
     try {
       // Create a namespace for all our stuff
       Namespace ns = new NamespaceBuilder().withNewMetadata().withName("thisisatest").addToLabels("this", "rocks").endMetadata().build();

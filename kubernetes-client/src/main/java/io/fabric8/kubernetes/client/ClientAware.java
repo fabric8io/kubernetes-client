@@ -13,15 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.client.ClientAware;
-import io.fabric8.kubernetes.client.KubernetesClient;
+package io.fabric8.kubernetes.client;
 
-public interface ClientNonNamespaceOperation<C extends KubernetesClient, T, L, D, R extends ClientResource<T, D>> extends
-  ClientAware<C>,
-  Nameable<R>,
-  FilterWatchListDeleteable<T, L, Boolean>,
-  Createable<T, T, D> {
+public interface ClientAware<T extends KubernetesClient> {
 
+  T getClient();
 }

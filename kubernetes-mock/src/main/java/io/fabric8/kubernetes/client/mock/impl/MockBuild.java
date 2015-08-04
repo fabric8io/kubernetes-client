@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.client.mock.impl;
 
+import io.fabric8.kubernetes.client.OpenShiftClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockResource;
@@ -23,7 +24,7 @@ import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildList;
 import io.fabric8.openshift.api.model.DoneableBuild;
 
-public class MockBuild extends BaseMockOperation<Build, BuildList, DoneableBuild,
+public class MockBuild extends BaseMockOperation<OpenShiftClient, Build, BuildList, DoneableBuild,
   ClientResource<Build, DoneableBuild>,
   MockResource<Build, DoneableBuild, Boolean>> {
 }

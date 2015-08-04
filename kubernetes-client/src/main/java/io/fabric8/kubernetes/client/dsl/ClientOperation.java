@@ -15,9 +15,13 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface ClientOperation<T, L, D, R extends ClientResource<T, D>> extends
-  Namespaceable<ClientNonNamespaceOperation<T, L, D, R>>,
+import io.fabric8.kubernetes.client.ClientAware;
+import io.fabric8.kubernetes.client.KubernetesClient;
+
+public interface ClientOperation<C extends KubernetesClient, T, L, D, R extends ClientResource<T, D>> extends
+  ClientAware<C>,
+  Namespaceable<ClientNonNamespaceOperation<C, T, L, D, R>>,
   FilterWatchListDeleteable<T, L, Boolean>,
-  ClientNonNamespaceOperation<T, L, D, R>,
-  ClientResource<T, D>{
+  ClientNonNamespaceOperation<C, T, L, D, R>,
+  ClientResource<T, D> {
 }

@@ -15,22 +15,20 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
+import io.fabric8.kubernetes.client.OpenShiftClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.DoneableOAuthAuthorizeToken;
 import io.fabric8.openshift.api.model.OAuthAuthorizeToken;
 import io.fabric8.openshift.api.model.OAuthAuthorizeTokenList;
 
-import java.net.URL;
-
-public class OAuthAuthorizeTokenOperationsImpl extends HasMetadataOperation<OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken,
+public class OAuthAuthorizeTokenOperationsImpl extends OpenshiftOperation<OpenShiftClient, OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken,
   ClientResource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken>> {
 
-  public OAuthAuthorizeTokenOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
-    super(httpClient, rootUrl, "oauthauthorizetokens", null, null);
+  public OAuthAuthorizeTokenOperationsImpl(OpenShiftClient client) {
+    super(client, "oauthauthorizetokens", null, null);
   }
 
-  public OAuthAuthorizeTokenOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {
-    super(httpClient, rootUrl, "oauthauthorizetokens", namespace, name);
+  public OAuthAuthorizeTokenOperationsImpl(OpenShiftClient client, String namespace, String name) {
+    super(client, "oauthauthorizetokens", namespace, name);
   }
 }

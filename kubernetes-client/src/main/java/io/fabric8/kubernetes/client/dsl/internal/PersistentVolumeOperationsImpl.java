@@ -15,21 +15,19 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.DoneablePersistentVolume;
 import io.fabric8.kubernetes.api.model.PersistentVolume;
 import io.fabric8.kubernetes.api.model.PersistentVolumeList;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 
-import java.net.URL;
+public class PersistentVolumeOperationsImpl extends HasMetadataOperation<KubernetesClient, PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, ClientResource<PersistentVolume, DoneablePersistentVolume>> {
 
-public class PersistentVolumeOperationsImpl extends HasMetadataOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, ClientResource<PersistentVolume, DoneablePersistentVolume>> {
-
-  public PersistentVolumeOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
-    super(httpClient, rootUrl, "persistentvolumes", null, null);
+  public PersistentVolumeOperationsImpl(KubernetesClient client) {
+    super(client,"persistentvolumes", null, null);
   }
 
-  public PersistentVolumeOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {
-    super(httpClient, rootUrl, "persistentvolumes", namespace, name);
+  public PersistentVolumeOperationsImpl(KubernetesClient client, String namespace, String name) {
+    super(client,"persistentvolumes", namespace, name);
   }
 }

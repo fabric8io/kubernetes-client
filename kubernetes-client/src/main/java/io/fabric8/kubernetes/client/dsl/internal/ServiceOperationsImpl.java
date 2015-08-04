@@ -15,25 +15,22 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableService;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.ServiceList;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.kubernetes.client.dsl.Resource;
 
-import java.net.URL;
+public class ServiceOperationsImpl extends BaseOperation<KubernetesClient, Service, ServiceList, DoneableService, ClientResource<Service, DoneableService>> {
 
-public class ServiceOperationsImpl extends BaseOperation<Service, ServiceList, DoneableService, ClientResource<Service, DoneableService>> {
-
-  public ServiceOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
-    super(httpClient, rootUrl, "services", null, null);
+  public ServiceOperationsImpl(KubernetesClient client) {
+    super(client,"services", null, null);
   }
 
-  public ServiceOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {
-    super(httpClient, rootUrl, "services", namespace, name);
+  public ServiceOperationsImpl(KubernetesClient client, String namespace, String name) {
+    super(client,"services", namespace, name);
   }
 
   @Override

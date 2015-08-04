@@ -16,22 +16,22 @@
 
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
 
-public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>> extends BaseOperation<T,L,D,R> {
+public class HasMetadataOperation<C extends KubernetesClient, T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>> extends BaseOperation<C, T, L, D, R> {
 
-  protected HasMetadataOperation(AsyncHttpClient httpClient, URL rootUrl, String resourceT, String namespace, String name) {
-    super(httpClient, rootUrl, resourceT, namespace, name);
+  protected HasMetadataOperation(C client, String resourceT, String namespace, String name) {
+    super(client, resourceT, namespace, name);
   }
+
 
   @Override
   public D edit(final boolean cascade) throws KubernetesClientException {

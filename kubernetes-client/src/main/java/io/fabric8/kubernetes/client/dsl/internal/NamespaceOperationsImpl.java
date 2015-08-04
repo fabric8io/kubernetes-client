@@ -15,21 +15,19 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableNamespace;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceList;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 
-import java.net.URL;
+public class NamespaceOperationsImpl extends HasMetadataOperation<KubernetesClient, Namespace, NamespaceList, DoneableNamespace, ClientResource<Namespace,DoneableNamespace>> {
 
-public class NamespaceOperationsImpl extends HasMetadataOperation<Namespace, NamespaceList, DoneableNamespace, ClientResource<Namespace,DoneableNamespace>> {
-
-  public NamespaceOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
-    super(httpClient, rootUrl, "namespaces", null, null);
+  public NamespaceOperationsImpl(KubernetesClient client) {
+    super(client,"namespaces", null, null);
   }
 
-  public NamespaceOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {
-    super(httpClient, rootUrl, "namespaces", namespace, name);
+  public NamespaceOperationsImpl(KubernetesClient client, String namespace, String name) {
+    super(client,"namespaces", namespace, name);
   }
 }

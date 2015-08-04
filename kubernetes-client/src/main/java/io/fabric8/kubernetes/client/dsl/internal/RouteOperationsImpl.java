@@ -15,22 +15,20 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
+import io.fabric8.kubernetes.client.OpenShiftClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.DoneableRoute;
 import io.fabric8.openshift.api.model.Route;
 import io.fabric8.openshift.api.model.RouteList;
 
-import java.net.URL;
+public class RouteOperationsImpl extends OpenshiftOperation<OpenShiftClient, Route, RouteList, DoneableRoute, ClientResource<Route, DoneableRoute>> {
 
-public class RouteOperationsImpl extends HasMetadataOperation<Route, RouteList, DoneableRoute, ClientResource<Route, DoneableRoute>> {
-
-  public RouteOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
-    super(httpClient, rootUrl, "routes", null, null);
+  public RouteOperationsImpl(OpenShiftClient client) {
+    super(client, "routes", null, null);
   }
 
-  public RouteOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {
-    super(httpClient, rootUrl, "routes", namespace, name);
+  public RouteOperationsImpl(OpenShiftClient client, String namespace, String name) {
+    super(client, "routes", namespace, name);
   }
 
 }

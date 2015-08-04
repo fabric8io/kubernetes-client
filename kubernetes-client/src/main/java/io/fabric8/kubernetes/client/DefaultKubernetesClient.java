@@ -161,68 +161,73 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
   }
 
   @Override
-  public ClientOperation<Endpoints, EndpointsList, DoneableEndpoints, ClientResource<Endpoints, DoneableEndpoints>> endpoints() {
-    return new EndpointsOperationsImpl(httpClient, masterUrl);
+  public ClientOperation<KubernetesClient, Endpoints, EndpointsList, DoneableEndpoints, ClientResource<Endpoints, DoneableEndpoints>> endpoints() {
+    return new EndpointsOperationsImpl(this);
   }
 
   @Override
-  public ClientOperation<Event, EventList, DoneableEvent, ClientResource<Event, DoneableEvent>> events() {
-    return new EventOperationsImpl(httpClient, masterUrl);
+  public ClientOperation<KubernetesClient, Event, EventList, DoneableEvent, ClientResource<Event, DoneableEvent>> events() {
+    return new EventOperationsImpl(this);
   }
 
   @Override
-  public ClientNonNamespaceOperation<Namespace, NamespaceList, DoneableNamespace, ClientResource<Namespace, DoneableNamespace>> namespaces() {
-    return new NamespaceOperationsImpl(httpClient, masterUrl);
+  public ClientNonNamespaceOperation<KubernetesClient, Namespace, NamespaceList, DoneableNamespace, ClientResource<Namespace, DoneableNamespace>> namespaces() {
+    return new NamespaceOperationsImpl(this);
   }
 
   @Override
-  public ClientNonNamespaceOperation<Node, NodeList, DoneableNode, ClientResource<Node, DoneableNode>> nodes() {
-    return new NodeOperationsImpl(httpClient, masterUrl);
+  public ClientNonNamespaceOperation<KubernetesClient, Node, NodeList, DoneableNode, ClientResource<Node, DoneableNode>> nodes() {
+    return new NodeOperationsImpl(this);
   }
 
   @Override
-  public ClientOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, ClientResource<PersistentVolume, DoneablePersistentVolume>> persistentVolumes() {
-    return new PersistentVolumeOperationsImpl(httpClient, masterUrl);
+  public ClientOperation<KubernetesClient, PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, ClientResource<PersistentVolume, DoneablePersistentVolume>> persistentVolumes() {
+    return new PersistentVolumeOperationsImpl(this);
   }
 
   @Override
-  public ClientOperation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, ClientResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> persistentVolumeClaims() {
-    return new PersistentVolumeClaimOperationsImpl(httpClient, masterUrl);
+  public ClientOperation<KubernetesClient, PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, ClientResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> persistentVolumeClaims() {
+    return new PersistentVolumeClaimOperationsImpl(this);
   }
 
   @Override
-  public ClientOperation<Pod, PodList, DoneablePod, ClientResource<Pod, DoneablePod>> pods() {
-    return new PodOperationsImpl(httpClient, masterUrl);
+  public ClientOperation<KubernetesClient, Pod, PodList, DoneablePod, ClientResource<Pod, DoneablePod>> pods() {
+    return new PodOperationsImpl(this);
   }
 
   @Override
-  public ClientOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, ScaleableClientResource<ReplicationController, DoneableReplicationController>> replicationControllers() {
-    return new ReplicationControllerOperationsImpl(httpClient, masterUrl);
+  public ClientOperation<KubernetesClient, ReplicationController, ReplicationControllerList, DoneableReplicationController, ScaleableClientResource<ReplicationController, DoneableReplicationController>> replicationControllers() {
+    return new ReplicationControllerOperationsImpl(this);
   }
 
   @Override
-  public ClientOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota, ClientResource<ResourceQuota, DoneableResourceQuota>> resourceQuotas() {
-    return new ResourceQuotaOperationsImpl(httpClient, masterUrl);
+  public ClientOperation<KubernetesClient, ResourceQuota, ResourceQuotaList, DoneableResourceQuota, ClientResource<ResourceQuota, DoneableResourceQuota>> resourceQuotas() {
+    return new ResourceQuotaOperationsImpl(this);
   }
 
   @Override
-  public ClientOperation<Secret, SecretList, DoneableSecret, ClientResource<Secret, DoneableSecret>> secrets() {
-    return new SecretOperationsImpl(httpClient, masterUrl);
+  public ClientOperation<KubernetesClient, Secret, SecretList, DoneableSecret, ClientResource<Secret, DoneableSecret>> secrets() {
+    return new SecretOperationsImpl(this);
   }
 
   @Override
-  public ClientOperation<Service, ServiceList, DoneableService, ClientResource<Service, DoneableService>> services() {
-    return new ServiceOperationsImpl(httpClient, masterUrl);
+  public ClientOperation<KubernetesClient, Service, ServiceList, DoneableService, ClientResource<Service, DoneableService>> services() {
+    return new ServiceOperationsImpl(this);
   }
 
   @Override
-  public ClientOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, ClientResource<ServiceAccount, DoneableServiceAccount>> serviceAccounts() {
-    return new ServiceAccountOperationsImpl(httpClient, masterUrl);
+  public ClientOperation<KubernetesClient, ServiceAccount, ServiceAccountList, DoneableServiceAccount, ClientResource<ServiceAccount, DoneableServiceAccount>> serviceAccounts() {
+    return new ServiceAccountOperationsImpl(this);
   }
 
   @Override
-  public ClientOperation<Template, TemplateList, DoneableTemplate, ProcessableClientResource<Template, DoneableTemplate>> templates() {
-    return new TemplateOperationsImpl(httpClient, openShiftUrl);
+  public ClientOperation<OpenShiftClient, Template, TemplateList, DoneableTemplate, ProcessableClientResource<Template, DoneableTemplate>> templates() {
+    return new TemplateOperationsImpl(this);
+  }
+
+  @Override
+  public AsyncHttpClient getHttpClient() {
+    return httpClient;
   }
 
   @Override
@@ -231,49 +236,55 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
   }
 
   @Override
+  public URL getOpenshiftUrl() {
+    return openShiftUrl;
+  }
+
+  @Override
   public RootPaths rootPaths() {
-    return (RootPaths) new BaseOperation(httpClient, masterUrl, "", null, null, RootPaths.class, null, null) {
+    return (RootPaths) new BaseOperation(this, "", null, null, KubernetesClient.class, RootPaths.class, null, null) {
     }.get();
   }
 
+
   @Override
-  public ClientOperation<Build, BuildList, DoneableBuild, ClientResource<Build, DoneableBuild>> builds() {
-    return new BuildOperationsImpl(httpClient, openShiftUrl);
+  public ClientOperation<OpenShiftClient, Build, BuildList, DoneableBuild, ClientResource<Build, DoneableBuild>> builds() {
+    return new BuildOperationsImpl(this);
   }
 
   @Override
-  public ClientOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void>> buildConfigs() {
-    return new BuildConfigOperationsImpl(httpClient, openShiftUrl, null, null);
+  public ClientOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void>> buildConfigs() {
+    return new BuildConfigOperationsImpl(this, null, null);
   }
 
   @Override
-  public ClientOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, ClientResource<DeploymentConfig, DoneableDeploymentConfig>> deploymentConfigs() {
-    return new DeploymentConfigOperationsImpl(httpClient, openShiftUrl);
+  public ClientOperation<OpenShiftClient, DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, ClientResource<DeploymentConfig, DoneableDeploymentConfig>> deploymentConfigs() {
+    return new DeploymentConfigOperationsImpl(this);
   }
 
   @Override
-  public ClientOperation<ImageStream, ImageStreamList, DoneableImageStream, ClientResource<ImageStream, DoneableImageStream>> imageStreams() {
-    return new ImageStreamOperationsImpl(httpClient, openShiftUrl);
+  public ClientOperation<OpenShiftClient, ImageStream, ImageStreamList, DoneableImageStream, ClientResource<ImageStream, DoneableImageStream>> imageStreams() {
+    return new ImageStreamOperationsImpl(this);
   }
 
   @Override
-  public ClientNonNamespaceOperation<OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken, ClientResource<OAuthAccessToken, DoneableOAuthAccessToken>> oAuthAccessTokens() {
-    return new OAuthAccessTokenOperationsImpl(httpClient, openShiftUrl);
+  public ClientNonNamespaceOperation<OpenShiftClient, OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken, ClientResource<OAuthAccessToken, DoneableOAuthAccessToken>> oAuthAccessTokens() {
+    return new OAuthAccessTokenOperationsImpl(this);
   }
 
   @Override
-  public ClientNonNamespaceOperation<OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken, ClientResource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken>> oAuthAuthorizeTokens() {
-    return new OAuthAuthorizeTokenOperationsImpl(httpClient, openShiftUrl);
+  public ClientNonNamespaceOperation<OpenShiftClient, OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken, ClientResource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken>> oAuthAuthorizeTokens() {
+    return new OAuthAuthorizeTokenOperationsImpl(this);
   }
 
   @Override
-  public ClientNonNamespaceOperation<OAuthClient, OAuthClientList, DoneableOAuthClient, ClientResource<OAuthClient, DoneableOAuthClient>> oAuthClients() {
-    return new OAuthClientOperationsImpl(httpClient, openShiftUrl);
+  public ClientNonNamespaceOperation<OpenShiftClient, OAuthClient, OAuthClientList, DoneableOAuthClient, ClientResource<OAuthClient, DoneableOAuthClient>> oAuthClients() {
+    return new OAuthClientOperationsImpl(this);
   }
 
   @Override
-  public ClientOperation<Route, RouteList, DoneableRoute, ClientResource<Route, DoneableRoute>> routes() {
-    return new RouteOperationsImpl(httpClient, openShiftUrl);
+  public ClientOperation<OpenShiftClient, Route, RouteList, DoneableRoute, ClientResource<Route, DoneableRoute>> routes() {
+    return new RouteOperationsImpl(this);
   }
 
   public static class Config {

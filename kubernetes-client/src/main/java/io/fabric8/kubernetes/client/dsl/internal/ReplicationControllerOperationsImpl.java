@@ -15,24 +15,23 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Scaleable;
 import io.fabric8.kubernetes.client.dsl.ScaleableClientResource;
 
-import java.net.URL;
+public class ReplicationControllerOperationsImpl extends HasMetadataOperation<KubernetesClient, ReplicationController, ReplicationControllerList, DoneableReplicationController, ScaleableClientResource<ReplicationController, DoneableReplicationController>>
+  implements ScaleableClientResource<ReplicationController, DoneableReplicationController> {
 
-public class ReplicationControllerOperationsImpl extends BaseScaleableOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, ScaleableClientResource<ReplicationController, DoneableReplicationController>> {
-
-  public ReplicationControllerOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
-    super(httpClient, rootUrl, "replicationcontrollers", null, null);
+  public ReplicationControllerOperationsImpl(KubernetesClient client) {
+    super(client, "replicationcontrollers", null, null);
   }
 
-  public ReplicationControllerOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {
-    super(httpClient, rootUrl, "replicationcontrollers", namespace, name);
+  public ReplicationControllerOperationsImpl(KubernetesClient client, String namespace, String name) {
+    super(client, "replicationcontrollers", namespace, name);
   }
 
   @Override
@@ -44,7 +43,7 @@ public class ReplicationControllerOperationsImpl extends BaseScaleableOperation<
   public void scale(int count, boolean wait) {
     edit(false).editSpec().withReplicas(count).endSpec().done();
     if (wait) {
-      while(get().getStatus().getReplicas() != count) {
+      while (get().getStatus().getReplicas() != count) {
         try {
           Thread.sleep(Scaleable.POLL_INTERVAL_MS);
         } catch (InterruptedException e) {

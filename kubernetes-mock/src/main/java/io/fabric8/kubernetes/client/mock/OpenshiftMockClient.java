@@ -65,7 +65,6 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
     expect(client.resourceQuotas()).andReturn(resourceQuotas.getDelegate()).anyTimes();
     expect(client.secrets()).andReturn(secrets.getDelegate()).anyTimes();
     expect(client.serviceAccounts()).andReturn(serviceAccounts.getDelegate()).anyTimes();
-    expect(client.templates()).andReturn(templates.getDelegate()).anyTimes();
 
     expect(client.builds()).andReturn(builds.getDelegate()).anyTimes();
     expect(client.buildConfigs()).andReturn(buildConfigs.getDelegate()).anyTimes();
@@ -75,6 +74,7 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
     expect(client.oAuthAuthorizeTokens()).andReturn(oAuthAuthorizeTokens.getDelegate()).anyTimes();
     expect(client.oAuthClients()).andReturn(oAuthClients.getDelegate()).anyTimes();
     expect(client.routes()).andReturn(routes.getDelegate()).anyTimes();
+    expect(client.templates()).andReturn(templates.getDelegate()).anyTimes();
   }
 
   public OpenShiftClient replay() {
@@ -180,10 +180,6 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
     return serviceAccounts;
   }
 
-  MockOperation<Template, TemplateList, DoneableTemplate, MockProcessableResource<Template, DoneableTemplate, Boolean>> templates() {
-    return templates;
-  }
-
   MockOperation<Build, BuildList, DoneableBuild, MockResource<Build, DoneableBuild, Boolean>> builds() {
     return builds;
   }
@@ -214,5 +210,9 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
 
   MockOperation<Route, RouteList, DoneableRoute, MockResource<Route, DoneableRoute, Boolean>> routes() {
     return routes;
+  }
+
+  MockOperation<Template, TemplateList, DoneableTemplate, MockProcessableResource<Template, DoneableTemplate, Boolean>> templates() {
+    return templates;
   }
 }

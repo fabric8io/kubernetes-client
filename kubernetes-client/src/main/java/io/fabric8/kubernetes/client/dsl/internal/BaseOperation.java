@@ -27,6 +27,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.WatchEvent;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
@@ -49,14 +50,12 @@ import java.util.concurrent.Future;
 
 import static io.fabric8.kubernetes.client.internal.Utils.join;
 
-public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
-  implements ClientOperation<T, L, D, R> {
+public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
+  implements ClientOperation<C, T, L, D, R> {
 
   protected static final ObjectMapper mapper = new ObjectMapper();
 
-  private final URL rootUrl;
-
-  private final AsyncHttpClient httpClient;
+  private final C client;
 
   private final String name;
   private final String namespace;
@@ -68,27 +67,29 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   private final Map<String, String[]> labelsNotIn = new TreeMap<>();
   private final Map<String, String> fields = new TreeMap<>();
 
+  private final Class<T> clientType;
   private final Class<T> type;
   private final Class<L> listType;
   private final Class<D> doneableType;
 
-  protected BaseOperation(AsyncHttpClient httpClient, URL rootUrl, String resourceT, String namespace, String name) {
-    this.rootUrl = rootUrl;
-    this.httpClient = httpClient;
+
+  protected BaseOperation(C client, String resourceT, String namespace, String name) {
+    this.client = client;
     this.namespace = namespace;
     this.name = name;
     this.resourceT = resourceT;
-    this.type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-    this.listType = (Class<L>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-    this.doneableType = (Class<D>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[2];
+    this.clientType = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    this.type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+    this.listType = (Class<L>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[2];
+    this.doneableType = (Class<D>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[3];
   }
 
-  protected BaseOperation(AsyncHttpClient httpClient, URL rootUrl, String resourceT, String namespace, String name, Class<T> type, Class<L> listType, Class<D> doneableType) {
-    this.rootUrl = rootUrl;
-    this.httpClient = httpClient;
+  protected BaseOperation(C client, String resourceT, String namespace, String name, Class<T> clientType, Class<T> type, Class<L> listType, Class<D> doneableType) {
+    this.client = client;
     this.namespace = namespace;
     this.name = name;
     this.resourceT = resourceT;
+    this.clientType = clientType;
     this.type = type;
     this.listType = listType;
     this.doneableType = doneableType;
@@ -126,19 +127,19 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   public R withName(String name) {
     try {
       return (R) getClass()
-        .getConstructor(AsyncHttpClient.class, URL.class, String.class, String.class)
-        .newInstance(httpClient, rootUrl, namespace, name);
+        .getConstructor(clientType, String.class, String.class)
+        .newInstance(client, namespace, name);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
   }
 
   @Override
-  public ClientNonNamespaceOperation<T, L, D, R> inNamespace(String namespace) {
+  public ClientNonNamespaceOperation<C, T, L, D, R> inNamespace(String namespace) {
     try {
       return getClass()
-        .getConstructor(AsyncHttpClient.class, URL.class, String.class, String.class)
-        .newInstance(httpClient, rootUrl, namespace, name);
+        .getConstructor(clientType, String.class, String.class)
+        .newInstance(client, namespace, name);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -229,7 +230,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   public L list() throws KubernetesClientException {
     try {
       URL requestUrl = getNamespacedUrl();
-      AsyncHttpClient.BoundRequestBuilder requestBuilder = getHttpClient().prepareGet(requestUrl.toString());
+      AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().prepareGet(requestUrl.toString());
       StringBuilder sb = new StringBuilder();
       if (labels != null && !labels.isEmpty()) {
         if (sb.length() > 0) {
@@ -353,7 +354,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
           requestUrl = new URL(requestUrl, "namespaces/" + metadataResource.getMetadata().getNamespace() + "/");
         }
         requestUrl = new URL(requestUrl, getResourceT() + "/" + metadataResource.getMetadata().getName());
-        AsyncHttpClient.BoundRequestBuilder requestBuilder = getHttpClient().prepareDelete(requestUrl.toString());
+        AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().prepareDelete(requestUrl.toString());
         Future<Response> f = requestBuilder.execute();
         Response r = f.get();
         if (r.getStatusCode() != 200) {
@@ -369,7 +370,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   public WebSocket watch(final Watcher<T> watcher) throws KubernetesClientException {
     try {
       URL requestUrl = getNamespacedUrl();
-      AsyncHttpClient.BoundRequestBuilder requestBuilder = getHttpClient().prepareGet(requestUrl.toString().replaceFirst("^http", "ws"));
+      AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().prepareGet(requestUrl.toString().replaceFirst("^http", "ws"));
       if (labels != null && !labels.isEmpty()) {
         StringBuilder sb = new StringBuilder();
         for (Iterator<Map.Entry<String, String>> iter = labels.entrySet().iterator(); iter.hasNext(); ) {
@@ -466,7 +467,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   protected void handleDelete(URL requestUrl) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    AsyncHttpClient.BoundRequestBuilder requestBuilder = getHttpClient().prepareDelete(requestUrl.toString());
+    AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().prepareDelete(requestUrl.toString());
     Future<Response> f = requestBuilder.execute();
     Response r = f.get();
     if (r.getStatusCode() != 200) {
@@ -476,28 +477,24 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   protected T handleCreate(T resource) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    AsyncHttpClient.BoundRequestBuilder requestBuilder = getHttpClient().preparePost(getNamespacedUrl().toString());
+    AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().preparePost(getNamespacedUrl().toString());
     requestBuilder.setBody(mapper.writer().writeValueAsString(resource));
     return handleResponse(requestBuilder, 201);
   }
 
   protected T handleReplace(URL resourceUrl, T updated) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    AsyncHttpClient.BoundRequestBuilder requestBuilder = getHttpClient().preparePut(resourceUrl.toString());
+    AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().preparePut(resourceUrl.toString());
     requestBuilder.setBody(mapper.writer().writeValueAsString(updated));
     return handleResponse(requestBuilder, 200);
   }
 
   protected T handleGet(URL resourceUrl) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    AsyncHttpClient.BoundRequestBuilder requestBuilder = getHttpClient().prepareGet(resourceUrl.toString());
+    AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().prepareGet(resourceUrl.toString());
     return handleResponse(requestBuilder, 200);
   }
 
   public URL getRootUrl() {
-    return rootUrl;
-  }
-
-  public AsyncHttpClient getHttpClient() {
-    return httpClient;
+    return client.getMasterUrl();
   }
 
   public String getName() {
@@ -524,4 +521,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     return doneableType;
   }
 
+  @Override
+  public C getClient() {
+    return client;
+  }
 }

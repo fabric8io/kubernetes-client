@@ -15,22 +15,20 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
+import io.fabric8.kubernetes.client.OpenShiftClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.api.model.DoneableDeploymentConfig;
 
-import java.net.URL;
-
-public class DeploymentConfigOperationsImpl extends HasMetadataOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig,
+public class DeploymentConfigOperationsImpl extends OpenshiftOperation<OpenShiftClient, DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig,
   ClientResource<DeploymentConfig, DoneableDeploymentConfig>> {
 
-  public DeploymentConfigOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
-    super(httpClient, rootUrl, "deploymentconfigs", null, null);
+  public DeploymentConfigOperationsImpl(OpenShiftClient client) {
+    super(client, "deploymentconfigs", null, null);
   }
 
-  public DeploymentConfigOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {
-    super(httpClient, rootUrl, "deploymentconfigs", namespace, name);
+  public DeploymentConfigOperationsImpl(OpenShiftClient client, String namespace, String name) {
+    super(client, "deploymentconfigs", namespace, name);
   }
 }

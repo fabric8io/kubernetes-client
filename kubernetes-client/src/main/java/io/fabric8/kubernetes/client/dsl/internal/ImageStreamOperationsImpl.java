@@ -15,22 +15,20 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
+import io.fabric8.kubernetes.client.OpenShiftClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.DoneableImageStream;
 import io.fabric8.openshift.api.model.ImageStream;
 import io.fabric8.openshift.api.model.ImageStreamList;
 
-import java.net.URL;
-
-public class ImageStreamOperationsImpl extends HasMetadataOperation<ImageStream, ImageStreamList, DoneableImageStream,
+public class ImageStreamOperationsImpl extends OpenshiftOperation<OpenShiftClient, ImageStream, ImageStreamList, DoneableImageStream,
   ClientResource<ImageStream, DoneableImageStream>> {
 
-  public ImageStreamOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
-    super(httpClient, rootUrl, "imagestreams", null, null);
+  public ImageStreamOperationsImpl(OpenShiftClient client) {
+    super(client, "imagestreams", null, null);
   }
 
-  public ImageStreamOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {
-    super(httpClient, rootUrl, "imagestreams", namespace, name);
+  public ImageStreamOperationsImpl(OpenShiftClient client, String namespace, String name) {
+    super(client, "imagestreams", namespace, name);
   }
 }

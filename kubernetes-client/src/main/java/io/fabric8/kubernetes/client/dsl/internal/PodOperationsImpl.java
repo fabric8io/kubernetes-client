@@ -15,21 +15,19 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 
-import java.net.URL;
+public class PodOperationsImpl extends HasMetadataOperation<KubernetesClient, Pod, PodList, DoneablePod, ClientResource<Pod, DoneablePod>> {
 
-public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, DoneablePod, ClientResource<Pod, DoneablePod>> {
-
-  public PodOperationsImpl(AsyncHttpClient httpClient, URL rootUrl) {
-    super(httpClient, rootUrl, "pods", null, null);
+  public PodOperationsImpl(KubernetesClient client) {
+    super(client,"pods", null, null);
   }
 
-  public PodOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name) {
-    super(httpClient, rootUrl, "pods", namespace, name);
+  public PodOperationsImpl(KubernetesClient client, String namespace, String name) {
+    super(client,"pods", namespace, name);
   }
 }

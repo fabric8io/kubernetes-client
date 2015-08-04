@@ -58,7 +58,6 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
     expect(client.resourceQuotas()).andReturn(resourceQuotas.getDelegate()).anyTimes();
     expect(client.secrets()).andReturn(secrets.getDelegate()).anyTimes();
     expect(client.serviceAccounts()).andReturn(serviceAccounts.getDelegate()).anyTimes();
-    expect(client.templates()).andReturn(templates.getDelegate()).anyTimes();
   }
 
   public KubernetesClient replay() {
@@ -143,9 +142,5 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
 
   MockOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, MockResource<ServiceAccount, DoneableServiceAccount, Boolean>> serviceAccounts() {
     return serviceAccounts;
-  }
-
-  MockOperation<Template, TemplateList, DoneableTemplate, MockProcessableResource<Template, DoneableTemplate, Boolean>> templates() {
-    return templates;
   }
 }

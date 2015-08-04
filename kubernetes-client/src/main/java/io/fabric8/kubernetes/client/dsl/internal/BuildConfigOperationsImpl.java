@@ -19,6 +19,7 @@ import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.Response;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.OpenShiftClient;
 import io.fabric8.kubernetes.client.dsl.BuildConfigClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Secretable;
@@ -33,7 +34,7 @@ import io.fabric8.openshift.api.model.WebHookTrigger;
 import java.net.URL;
 import java.util.concurrent.Future;
 
-public class BuildConfigOperationsImpl extends HasMetadataOperation<BuildConfig, BuildConfigList, DoneableBuildConfig,
+public class BuildConfigOperationsImpl extends OpenshiftOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig,
   BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void>>
   implements BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void>,
   Typeable<Triggerable<WebHookTrigger, Void>>,
@@ -44,14 +45,14 @@ public class BuildConfigOperationsImpl extends HasMetadataOperation<BuildConfig,
   private final String secret;
    private final String triggerType;
 
-   public BuildConfigOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String secret, String triggerType) {
-    super(httpClient, rootUrl, "buildconfigs", null, null);
+   public BuildConfigOperationsImpl(OpenShiftClient client, String secret, String triggerType) {
+    super(client, "buildconfigs", null, null);
     this.triggerType = triggerType;
     this.secret = secret;
   }
 
-  public BuildConfigOperationsImpl(AsyncHttpClient httpClient, URL rootUrl, String namespace, String name, String secret, String triggerType) {
-    super(httpClient, rootUrl, "buildconfigs", namespace, name);
+  public BuildConfigOperationsImpl(OpenShiftClient client, String namespace, String name, String secret, String triggerType) {
+    super(client, "buildconfigs", namespace, name);
     this.triggerType = triggerType;
     this.secret = secret;
   }
@@ -60,19 +61,19 @@ public class BuildConfigOperationsImpl extends HasMetadataOperation<BuildConfig,
   public BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void> withName(String name) {
     try {
       return  getClass()
-        .getConstructor(AsyncHttpClient.class, URL.class, String.class, String.class, String.class, String.class)
-        .newInstance(getHttpClient(), getRootUrl(), getNamespace(), name, secret, triggerType);
+        .getConstructor(OpenShiftClient.class, String.class, String.class, String.class, String.class)
+        .newInstance(getClient(), getNamespace(), name, secret, triggerType);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
   }
 
   @Override
-  public ClientNonNamespaceOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void>> inNamespace(String namespace) {
+  public ClientNonNamespaceOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void>> inNamespace(String namespace) {
     try {
       return getClass()
-        .getConstructor(AsyncHttpClient.class, URL.class, String.class, String.class, String.class, String.class)
-        .newInstance(getHttpClient(), getRootUrl(), namespace, getName(), secret, triggerType);
+        .getConstructor(OpenShiftClient.class, String.class, String.class, String.class, String.class)
+        .newInstance(getClient(), namespace, getName(), secret, triggerType);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -82,14 +83,14 @@ public class BuildConfigOperationsImpl extends HasMetadataOperation<BuildConfig,
 
   @Override
   public Typeable<Triggerable<WebHookTrigger, Void>> withSecret(String secret) {
-    return new BuildConfigOperationsImpl(getHttpClient(), getRootUrl(), getNamespace(), getName(), secret, triggerType);
+    return new BuildConfigOperationsImpl(getClient(), getNamespace(), getName(), secret, triggerType);
   }
 
   @Override
   public Void instantiate(BuildRequest request) {
     try {
       URL instantiationUrl = new URL(getResourceUrl().toString() + "/instantiate");
-      AsyncHttpClient.BoundRequestBuilder requestBuilder = getHttpClient().preparePost(instantiationUrl.toString());
+      AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().preparePost(instantiationUrl.toString());
       requestBuilder.setBody(mapper.writer().writeValueAsString(request));
       handleResponse(requestBuilder, 201);
     } catch (Exception e) {
@@ -104,7 +105,7 @@ public class BuildConfigOperationsImpl extends HasMetadataOperation<BuildConfig,
        //TODO: This needs some attention.
        URL webhooksUrl = new URL(getResourceUrl().toString() + "/webhooks/");
        URL triggerUrl = new URL(webhooksUrl, secret+"/"+triggerType);
-       AsyncHttpClient.BoundRequestBuilder requestBuilder = getHttpClient().preparePost(triggerUrl.toString());
+       AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().preparePost(triggerUrl.toString());
        requestBuilder.addHeader("Content-Type", "application/json");
        requestBuilder.addHeader("X-Github-Event", "push");
        requestBuilder.setBody(mapper.writer().writeValueAsString(trigger));
@@ -122,6 +123,6 @@ public class BuildConfigOperationsImpl extends HasMetadataOperation<BuildConfig,
 
    @Override
    public Triggerable<WebHookTrigger, Void> withType(String type) {
-     return new BuildConfigOperationsImpl(getHttpClient(), getRootUrl(), getNamespace(), getName(), secret, type);
+     return new BuildConfigOperationsImpl(getClient(), getNamespace(), getName(), secret, type);
    }
  }
