@@ -30,6 +30,7 @@ import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
@@ -51,7 +52,7 @@ import java.util.concurrent.Future;
 import static io.fabric8.kubernetes.client.internal.Utils.join;
 
 public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
-  implements ClientOperation<C, T, L, D, R> {
+  implements ClientMixedOperation<C, T, L, D, R> {
 
   protected static final ObjectMapper mapper = new ObjectMapper();
 

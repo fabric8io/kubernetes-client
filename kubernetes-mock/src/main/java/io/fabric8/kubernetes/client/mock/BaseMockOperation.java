@@ -22,6 +22,8 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
+import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeleteable;
@@ -46,14 +48,14 @@ public class BaseMockOperation<C extends KubernetesClient, T, L extends Kubernet
   E extends Resource<T, IExpectationSetters<T>, D, IExpectationSetters<Boolean>>>
   implements MockOperation<T, L, D, E>, Mockable {
 
-  private final ClientOperation<C, T, L, D, R> delegate;
+  private final ClientMixedOperation<C, T, L, D, R> delegate;
   private final Set<Mockable> nested = new LinkedHashSet<>();
 
   public BaseMockOperation() {
-    this(EasyMock.createMock(ClientOperation.class));
+    this(EasyMock.createMock(ClientMixedOperation.class));
   }
 
-  public BaseMockOperation(ClientOperation delegate) {
+  public BaseMockOperation(ClientMixedOperation delegate) {
     this.delegate = delegate;
   }
 
@@ -90,7 +92,7 @@ public class BaseMockOperation<C extends KubernetesClient, T, L extends Kubernet
     return new BaseMockOperation();
   }
 
-  public ClientOperation<C, T, L, D, R> getDelegate() {
+  public ClientMixedOperation<C, T, L, D, R> getDelegate() {
     return delegate;
   }
 
@@ -143,7 +145,7 @@ public class BaseMockOperation<C extends KubernetesClient, T, L extends Kubernet
     BaseMockOperation<C, T, L, D, R, E> op = namespaceMap.get(matcher);
     if (op == null) {
       op = newInstance();
-      expect(delegate.inNamespace(namespace)).andReturn(op.getDelegate()).anyTimes();
+      expect(delegate.inNamespace(namespace)).andReturn((ClientNonNamespaceOperation<C, T, L, D, R>) op.getDelegate()).anyTimes();
       nested.add(op);
       namespaceMap.put(matcher, op);
     }
