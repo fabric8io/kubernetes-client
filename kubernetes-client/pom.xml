@@ -70,6 +70,14 @@
     </dependency>
 
     <dependency>
+      <groupId>io.sundr</groupId>
+      <artifactId>sundr-annotations</artifactId>
+      <version>${sundrio.version}</version>
+      <scope>compile</scope>
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>${junit.version}</version>

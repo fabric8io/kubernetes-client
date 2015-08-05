@@ -24,19 +24,13 @@ import com.ning.http.client.filter.RequestFilter;
 import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.dsl.internal.*;
-import io.fabric8.kubernetes.client.internal.KubeConfigUtils;
 import io.fabric8.kubernetes.client.internal.Utils;
 import io.fabric8.openshift.api.model.*;
 import org.jboss.netty.handler.ssl.util.InsecureTrustManagerFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.*;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
@@ -46,45 +40,23 @@ import static io.fabric8.kubernetes.client.internal.CertUtils.createTrustStore;
 
 public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClient {
 
-  public static final String KUBERNETES_MASTER_SYSTEM_PROPERTY = "kubernetes.master";
-  public static final String KUBERNETES_API_VERSION_SYSTEM_PROPERTY = "kubernetes.api.version";
-  public static final String KUBERNETES_OAPI_VERSION_SYSTEM_PROPERTY = "kubernetes.oapi.version";
-
-  public static final String KUBERNETES_TLS_PROTOCOLS_SYSTEM_PROPERTY = "kubernetes.tls.protocols";
-  public static final String KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY = "kubernetes.trust.certificates";
-  public static final String KUBERNETES_CA_CERTIFICATE_FILE_SYSTEM_PROPERTY = "kubernetes.certs.ca.file";
-  public static final String KUBERNETES_CA_CERTIFICATE_DATA_SYSTEM_PROPERTY = "kubernetes.certs.ca.data";
-  public static final String KUBERNETES_CLIENT_CERTIFICATE_FILE_SYSTEM_PROPERTY = "kubernetes.certs.client.file";
-  public static final String KUBERNETES_CLIENT_CERTIFICATE_DATA_SYSTEM_PROPERTY = "kubernetes.certs.client.data";
-  public static final String KUBERNETES_CLIENT_KEY_FILE_SYSTEM_PROPERTY = "kubernetes.certs.client.key.file";
-  public static final String KUBERNETES_CLIENT_KEY_DATA_SYSTEM_PROPERTY = "kubernetes.certs.client.key.data";
-  public static final String KUBERNETES_CLIENT_KEY_ALGO_SYSTEM_PROPERTY = "kubernetes.certs.client.key.algo";
-  public static final String KUBERNETES_CLIENT_KEY_PASSPHRASE_SYSTEM_PROPERTY = "kubernetes.certs.client.key.passphrase";
-
-  public static final String KUBERNETES_AUTH_BASIC_USERNAME_SYSTEM_PROPERTY = "kubernetes.auth.basic.username";
-  public static final String KUBERNETES_AUTH_BASIC_PASSWORD_SYSTEM_PROPERTY = "kubernetes.auth.basic.password";
-
-  public static final String KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY = "kubernetes.auth.tryKubeConfig";
-  public static final String KUBERNETES_AUTH_TRYSERVICEACCOUNT_SYSTEM_PROPERTY = "kubernetes.auth.tryServiceAccount";
-  public static final String KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY = "kubernetes.auth.token";
-
-  public static final String KUBERNETES_KUBECONFIG_FILE = "kubeconfig";
-  public static final String KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH = "/var/run/secrets/kubernetes.io/serviceaccount/token";
-  public static final String KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt";
-
   private AsyncHttpClient httpClient;
   private URL masterUrl;
   private URL openShiftUrl;
 
   public DefaultKubernetesClient() throws KubernetesClientException {
-    this(new ConfigBuilder().build());
+    this(new OpenshiftConfigBuilder().build());
   }
 
   public DefaultKubernetesClient(final Config config) throws KubernetesClientException {
+    this(new OpenshiftConfig(config));
+  }
+
+  public DefaultKubernetesClient(final OpenshiftConfig config) throws KubernetesClientException {
     if (config.getMasterUrl() == null) {
       throw new KubernetesClientException("Unknown Kubernetes master URL - " +
-        "please set with the builder, or set with either system property \"" + KUBERNETES_MASTER_SYSTEM_PROPERTY + "\"" +
-        " or environment variable \"" + Utils.convertSystemPropertyNameToEnvVar(KUBERNETES_MASTER_SYSTEM_PROPERTY) + "\"");
+        "please set with the builder, or set with either system property \"" + Config.KUBERNETES_MASTER_SYSTEM_PROPERTY + "\"" +
+        " or environment variable \"" + Utils.convertSystemPropertyNameToEnvVar(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY) + "\"");
     }
 
     try {
@@ -111,9 +83,9 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
 
       KeyManager[] keyManagers = null;
       if ((config.getClientCertFile() != null || config.getClientCertData() != null) && (config.getClientKeyFile() != null || config.getClientKeyData() != null)) {
-        KeyStore keyStore = createKeyStore(config.getClientCertData(), config.getClientCertFile(), config.getClientKeyData(), config.getClientKeyFile(), config.getClientKeyAlgo(), config.getClientKeyPassphrase());
+        KeyStore keyStore = createKeyStore(config.getClientCertData(), config.getClientCertFile(), config.getClientKeyData(), config.getClientKeyFile(), config.getClientKeyAlgo(), config.getClientKeyPassphrase().toCharArray());
         KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-        kmf.init(keyStore, config.getClientKeyPassphrase());
+        kmf.init(keyStore, config.getClientKeyPassphrase().toCharArray());
         keyManagers = kmf.getKeyManagers();
       }
 
@@ -152,7 +124,7 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
   }
 
   public DefaultKubernetesClient(String masterUrl) throws KubernetesClientException {
-   this(new ConfigBuilder().masterUrl(masterUrl).build());
+   this(new OpenshiftConfigBuilder().withMasterUrl(masterUrl).build());
   }
 
   @Override
@@ -292,326 +264,4 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
     return new SecurityContextConstraintsOperationsImpl(this);
   }
 
-  public static class Config {
-    private boolean trustCerts = false;
-    private String masterUrl = "https://kubernetes.default.svc";
-    private String apiVersion = "v1";
-    private String oapiVersion = "v1";
-    private String[] enabledProtocols = new String[]{"TLSv1.2"};
-    private String caCertFile;
-    private String caCertData;
-    private String clientCertFile;
-    private String clientCertData;
-    private String clientKeyFile;
-    private String clientKeyData;
-    private String clientKeyAlgo = "RSA";
-    private char[] clientKeyPassphrase = "changeit".toCharArray();
-    private String username;
-    private String password;
-    private String oauthToken;
-    private String openShiftUrl;
-
-    public String getOauthToken() {
-      return oauthToken;
-    }
-
-    public void setOauthToken(String oauthToken) {
-      this.oauthToken = oauthToken;
-    }
-
-    public String getPassword() {
-      return password;
-    }
-
-    public void setPassword(String password) {
-      this.password = password;
-    }
-
-    public String getUsername() {
-      return username;
-    }
-
-    public void setUsername(String username) {
-      this.username = username;
-    }
-
-    public char[] getClientKeyPassphrase() {
-      return clientKeyPassphrase;
-    }
-
-    public void setClientKeyPassphrase(char[] clientKeyPassphrase) {
-      this.clientKeyPassphrase = clientKeyPassphrase;
-    }
-
-    public String getClientKeyAlgo() {
-      return clientKeyAlgo;
-    }
-
-    public void setClientKeyAlgo(String clientKeyAlgo) {
-      this.clientKeyAlgo = clientKeyAlgo;
-    }
-
-    public String getClientKeyData() {
-      return clientKeyData;
-    }
-
-    public void setClientKeyData(String clientKeyData) {
-      this.clientKeyData = clientKeyData;
-    }
-
-    public String getClientKeyFile() {
-      return clientKeyFile;
-    }
-
-    public void setClientKeyFile(String clientKeyFile) {
-      this.clientKeyFile = clientKeyFile;
-    }
-
-    public String getClientCertData() {
-      return clientCertData;
-    }
-
-    public void setClientCertData(String clientCertData) {
-      this.clientCertData = clientCertData;
-    }
-
-    public String getClientCertFile() {
-      return clientCertFile;
-    }
-
-    public void setClientCertFile(String clientCertFile) {
-      this.clientCertFile = clientCertFile;
-    }
-
-    public String getCaCertData() {
-      return caCertData;
-    }
-
-    public void setCaCertData(String caCertData) {
-      this.caCertData = caCertData;
-    }
-
-    public String getCaCertFile() {
-      return caCertFile;
-    }
-
-    public void setCaCertFile(String caCertFile) {
-      this.caCertFile = caCertFile;
-    }
-
-    public String[] getEnabledProtocols() {
-      return enabledProtocols;
-    }
-
-    public void setEnabledProtocols(String[] enabledProtocols) {
-      this.enabledProtocols = enabledProtocols;
-    }
-
-    public String getOapiVersion() {
-      return oapiVersion;
-    }
-
-    public void setOapiVersion(String oapiVersion) {
-      this.oapiVersion = oapiVersion;
-    }
-
-    public String getApiVersion() {
-      return apiVersion;
-    }
-
-    public void setApiVersion(String apiVersion) {
-      this.apiVersion = apiVersion;
-    }
-
-    public String getMasterUrl() {
-      return masterUrl;
-    }
-
-    public void setMasterUrl(String masterUrl) {
-      this.masterUrl = masterUrl;
-    }
-
-    public boolean isTrustCerts() {
-      return trustCerts;
-    }
-
-    public void setTrustCerts(boolean trustCerts) {
-      this.trustCerts = trustCerts;
-    }
-
-    public String getOpenShiftUrl() {
-      return openShiftUrl;
-    }
-
-    public void setOpenShiftUrl(String openShiftUrl) {
-      this.openShiftUrl = openShiftUrl;
-    }
-  }
-
-  public static class ConfigBuilder {
-    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    private Config config = new Config();
-
-    public ConfigBuilder() {
-      if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYSERVICEACCOUNT_SYSTEM_PROPERTY, true)) {
-        tryServiceAccount(config);
-      }
-      if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, true)) {
-        tryKubeConfig(config);
-      }
-      configFromSysPropsOrEnvVars(config);
-    }
-
-    public Config build() {
-      if (!config.getMasterUrl().endsWith("/")) {
-        config.setMasterUrl(config.getMasterUrl() + "/");
-      }
-      if (config.getOpenShiftUrl() == null) {
-        config.setOpenShiftUrl(config.getMasterUrl() + "oapi/" + config.getOapiVersion() + "/");
-      }
-      config.setMasterUrl(config.getMasterUrl() + "api/" + config.getApiVersion() + "/");
-
-      return config;
-    }
-
-    private void configFromSysPropsOrEnvVars(Config config) {
-      config.setTrustCerts(Utils.getSystemPropertyOrEnvVar(KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY, config.isTrustCerts()));
-      config.setMasterUrl(Utils.getSystemPropertyOrEnvVar(KUBERNETES_MASTER_SYSTEM_PROPERTY, config.getMasterUrl()));
-      config.setApiVersion(Utils.getSystemPropertyOrEnvVar(KUBERNETES_API_VERSION_SYSTEM_PROPERTY, config.getApiVersion()));
-      config.setOapiVersion(Utils.getSystemPropertyOrEnvVar(KUBERNETES_OAPI_VERSION_SYSTEM_PROPERTY, config.getOapiVersion()));
-      config.setCaCertFile(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CA_CERTIFICATE_FILE_SYSTEM_PROPERTY, config.getCaCertFile()));
-      config.setCaCertData(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CA_CERTIFICATE_DATA_SYSTEM_PROPERTY, config.getCaCertData()));
-      config.setClientCertFile(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_CERTIFICATE_FILE_SYSTEM_PROPERTY, config.getClientCertFile()));
-      config.setClientCertData(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_CERTIFICATE_DATA_SYSTEM_PROPERTY, config.getClientCertData()));
-      config.setClientKeyFile(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_FILE_SYSTEM_PROPERTY, config.getClientKeyFile()));
-      config.setClientKeyData(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_DATA_SYSTEM_PROPERTY, config.getClientKeyData()));
-      config.setClientKeyAlgo(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_ALGO_SYSTEM_PROPERTY, config.getClientKeyAlgo()));
-      config.setClientKeyPassphrase(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_PASSPHRASE_SYSTEM_PROPERTY, new String(config.getClientKeyPassphrase())).toCharArray());
-
-      config.setOauthToken(Utils.getSystemPropertyOrEnvVar(KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY, config.getOauthToken()));
-      config.setUsername(Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_BASIC_USERNAME_SYSTEM_PROPERTY, config.getUsername()));
-      config.setPassword(Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_BASIC_PASSWORD_SYSTEM_PROPERTY, config.getPassword()));
-      String configuredProtocols = Utils.getSystemPropertyOrEnvVar(KUBERNETES_TLS_PROTOCOLS_SYSTEM_PROPERTY);
-      if (configuredProtocols != null) {
-        config.setEnabledProtocols(configuredProtocols.split(","));
-      }
-    }
-
-    private void tryServiceAccount(Config config) {
-      boolean serviceAccountCaCertExists = Files.isRegularFile(Paths.get(KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH));
-      if (serviceAccountCaCertExists) {
-        config.setCaCertFile(KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH);
-      }
-      try {
-        String serviceTokenCandidate = new String(Files.readAllBytes(Paths.get(KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH)));
-        if (serviceTokenCandidate != null) {
-          config.setOauthToken(serviceTokenCandidate);
-        }
-      } catch (IOException e) {
-        // No service account token available...
-      }
-    }
-
-    private void tryKubeConfig(Config config) {
-      String kubeConfigFile = Utils.getSystemPropertyOrEnvVar(KUBERNETES_KUBECONFIG_FILE, new File(System.getProperty("user.home", "."), ".kube/config").toString());
-      boolean kubeConfigFileExists = Files.isRegularFile(Paths.get(kubeConfigFile));
-      if (kubeConfigFileExists) {
-        try {
-          io.fabric8.kubernetes.api.model.Config kubeConfig = KubeConfigUtils.parseConfig(new File(kubeConfigFile));
-          Context currentContext = KubeConfigUtils.getCurrentContext(kubeConfig);
-          Cluster currentCluster = KubeConfigUtils.getCluster(kubeConfig, currentContext);
-          if (currentCluster != null) {
-            config.setMasterUrl(currentCluster.getServer());
-            config.setTrustCerts(currentCluster.getInsecureSkipTlsVerify() != null && currentCluster.getInsecureSkipTlsVerify());
-            config.setCaCertFile(currentCluster.getCertificateAuthority());
-            config.setCaCertData(currentCluster.getCertificateAuthorityData());
-            AuthInfo currentAuthInfo = KubeConfigUtils.getUserAuthInfo(kubeConfig, currentContext);
-            if (currentAuthInfo != null) {
-              config.setClientCertFile(currentAuthInfo.getClientCertificate());
-              config.setClientCertData(currentAuthInfo.getClientCertificateData());
-              config.setClientKeyFile(currentAuthInfo.getClientKey());
-              config.setClientKeyData(currentAuthInfo.getClientKeyData());
-              config.setOauthToken(currentAuthInfo.getToken());
-              config.setUsername(currentAuthInfo.getUsername());
-              config.setPassword(currentAuthInfo.getPassword());
-            }
-          }
-        } catch (IOException e) {
-          logger.error("Could not load kube config file from {}", kubeConfigFile, e);
-        }
-      }
-    }
-
-    public ConfigBuilder enabledProtocols(String[] enabledProtocols) {
-      config.setEnabledProtocols(enabledProtocols);
-      return this;
-    }
-
-    public ConfigBuilder trustCerts(boolean trustCerts) {
-      config.setTrustCerts(trustCerts);
-      return this;
-    }
-
-    public ConfigBuilder caCertFile(String caCertFile) {
-      config.setCaCertFile(caCertFile);
-      return this;
-    }
-
-    public ConfigBuilder caCertData(String caCertData) {
-      config.setCaCertData(caCertData);
-      return this;
-    }
-
-    public ConfigBuilder clientCertFile(String clientCertFile) {
-      config.setClientCertFile(clientCertFile);
-      return this;
-    }
-
-    public ConfigBuilder clientCertData(String clientCertData) {
-      config.setClientCertData(clientCertData);
-      return this;
-    }
-
-    public ConfigBuilder clientKeyFile(String clientKeyFile) {
-      config.setClientKeyFile(clientKeyFile);
-      return this;
-    }
-
-    public ConfigBuilder clientKeyData(String clientKeyData) {
-      config.setClientKeyData(clientKeyData);
-      return this;
-    }
-
-    public ConfigBuilder clientKeyAlgo(String clientKeyAlgo) {
-      config.setClientKeyAlgo(clientKeyAlgo);
-      return this;
-    }
-
-    public ConfigBuilder clientKeyPassphrase(char[] clientKeyPassphrase) {
-      config.setClientKeyPassphrase(clientKeyPassphrase);
-      return this;
-    }
-
-    public ConfigBuilder masterUrl(String masterUrl) {
-      config.setMasterUrl(masterUrl);
-      return this;
-    }
-
-    public ConfigBuilder apiVersion(String apiVersion) {
-      config.setApiVersion(apiVersion);
-      return this;
-    }
-
-    public ConfigBuilder basicAuth(String username, String password) {
-      config.setUsername(username);
-      config.setPassword(password);
-      return this;
-    }
-
-    public ConfigBuilder token(String token) {
-      config.setOauthToken(token);
-      return this;
-    }
-  }
 }

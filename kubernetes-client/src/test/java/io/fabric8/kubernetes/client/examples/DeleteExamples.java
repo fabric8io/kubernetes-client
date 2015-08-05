@@ -16,9 +16,13 @@
 package io.fabric8.kubernetes.client.examples;
 
 import io.fabric8.kubernetes.api.model.NamespaceBuilder;
+import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.OpenShiftClient;
+import io.fabric8.kubernetes.client.OpenshiftConfig;
+import io.fabric8.kubernetes.client.OpenshiftConfigBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +36,7 @@ public class DeleteExamples {
       master = args[0];
     }
 
-    DefaultKubernetesClient.Config config = new DefaultKubernetesClient.ConfigBuilder().masterUrl(master).build();
+    Config config = new ConfigBuilder().withMasterUrl(master).build();
     OpenShiftClient client = new DefaultKubernetesClient(config);
     try {
       log("Create namespace:", client.namespaces().create(new NamespaceBuilder().withNewMetadata().withName("thisisatest").endMetadata().build()));
