@@ -21,38 +21,95 @@ import com.ning.http.client.Realm;
 import com.ning.http.client.filter.FilterContext;
 import com.ning.http.client.filter.FilterException;
 import com.ning.http.client.filter.RequestFilter;
-import io.fabric8.kubernetes.api.model.*;
-import io.fabric8.kubernetes.client.dsl.*;
-import io.fabric8.kubernetes.client.dsl.internal.*;
+import io.fabric8.kubernetes.api.model.DoneableEndpoints;
+import io.fabric8.kubernetes.api.model.DoneableEvent;
+import io.fabric8.kubernetes.api.model.DoneableNamespace;
+import io.fabric8.kubernetes.api.model.DoneableNode;
+import io.fabric8.kubernetes.api.model.DoneablePersistentVolume;
+import io.fabric8.kubernetes.api.model.DoneablePersistentVolumeClaim;
+import io.fabric8.kubernetes.api.model.DoneablePod;
+import io.fabric8.kubernetes.api.model.DoneableReplicationController;
+import io.fabric8.kubernetes.api.model.DoneableResourceQuota;
+import io.fabric8.kubernetes.api.model.DoneableSecret;
+import io.fabric8.kubernetes.api.model.DoneableService;
+import io.fabric8.kubernetes.api.model.DoneableServiceAccount;
+import io.fabric8.kubernetes.api.model.Endpoints;
+import io.fabric8.kubernetes.api.model.EndpointsList;
+import io.fabric8.kubernetes.api.model.Event;
+import io.fabric8.kubernetes.api.model.EventList;
+import io.fabric8.kubernetes.api.model.Namespace;
+import io.fabric8.kubernetes.api.model.NamespaceList;
+import io.fabric8.kubernetes.api.model.Node;
+import io.fabric8.kubernetes.api.model.NodeList;
+import io.fabric8.kubernetes.api.model.PersistentVolume;
+import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
+import io.fabric8.kubernetes.api.model.PersistentVolumeClaimList;
+import io.fabric8.kubernetes.api.model.PersistentVolumeList;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.api.model.ReplicationController;
+import io.fabric8.kubernetes.api.model.ReplicationControllerList;
+import io.fabric8.kubernetes.api.model.ResourceQuota;
+import io.fabric8.kubernetes.api.model.ResourceQuotaList;
+import io.fabric8.kubernetes.api.model.RootPaths;
+import io.fabric8.kubernetes.api.model.Secret;
+import io.fabric8.kubernetes.api.model.SecretList;
+import io.fabric8.kubernetes.api.model.Service;
+import io.fabric8.kubernetes.api.model.ServiceAccount;
+import io.fabric8.kubernetes.api.model.ServiceAccountList;
+import io.fabric8.kubernetes.api.model.ServiceList;
+import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.ClientOperation;
+import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.ReplicationControllerClientResource;
+import io.fabric8.kubernetes.client.dsl.internal.BaseOperation;
+import io.fabric8.kubernetes.client.dsl.internal.EndpointsOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.EventOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.NamespaceOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.NodeOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.PersistentVolumeClaimOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.PersistentVolumeOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.PodOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.ReplicationControllerOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.ResourceQuotaOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.SecretOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.ServiceAccountOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.ServiceOperationsImpl;
 import io.fabric8.kubernetes.client.internal.Utils;
-import io.fabric8.openshift.api.model.*;
 import org.jboss.netty.handler.ssl.util.InsecureTrustManagerFactory;
 
-import javax.net.ssl.*;
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
 import java.io.IOException;
 import java.net.URL;
-import java.security.*;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.ServiceLoader;
 
 import static io.fabric8.kubernetes.client.internal.CertUtils.createKeyStore;
 import static io.fabric8.kubernetes.client.internal.CertUtils.createTrustStore;
 
-public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClient {
+public class DefaultKubernetesClient implements KubernetesClient {
 
   private AsyncHttpClient httpClient;
   private URL masterUrl;
-  private URL openShiftUrl;
+  private Config configuration;
 
   public DefaultKubernetesClient() throws KubernetesClientException {
-    this(new OpenshiftConfigBuilder().build());
+    this(new ConfigBuilder().build());
   }
 
   public DefaultKubernetesClient(final Config config) throws KubernetesClientException {
-    this(new OpenshiftConfig(config));
-  }
-
-  public DefaultKubernetesClient(final OpenshiftConfig config) throws KubernetesClientException {
+    this.configuration = config;
     if (config.getMasterUrl() == null) {
       throw new KubernetesClientException("Unknown Kubernetes master URL - " +
         "please set with the builder, or set with either system property \"" + Config.KUBERNETES_MASTER_SYSTEM_PROPERTY + "\"" +
@@ -61,10 +118,7 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
 
     try {
       this.masterUrl = new URL(config.getMasterUrl());
-      this.openShiftUrl = new URL(config.getOpenShiftUrl());
-
       AsyncHttpClientConfig.Builder clientConfigBuilder = new AsyncHttpClientConfig.Builder();
-
       clientConfigBuilder.setEnabledProtocols(config.getEnabledProtocols());
 
       // Follow any redirects
@@ -124,7 +178,7 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
   }
 
   public DefaultKubernetesClient(String masterUrl) throws KubernetesClientException {
-   this(new OpenshiftConfigBuilder().withMasterUrl(masterUrl).build());
+    this(new OpenshiftConfigBuilder().withMasterUrl(masterUrl).build());
   }
 
   @Override
@@ -193,8 +247,9 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
   }
 
   @Override
-  public ClientOperation<OpenShiftClient, Template, TemplateList, DoneableTemplate, ProcessableClientResource<Template, DoneableTemplate>> templates() {
-    return new TemplateOperationsImpl(this);
+  public RootPaths rootPaths() {
+    return (RootPaths) new BaseOperation(this, "", null, null, KubernetesClient.class, RootPaths.class, null, null) {
+    }.get();
   }
 
   @Override
@@ -208,60 +263,17 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
   }
 
   @Override
-  public URL getOpenshiftUrl() {
-    return openShiftUrl;
+  public Config getConfiguration() {
+    return configuration;
   }
 
   @Override
-  public RootPaths rootPaths() {
-    return (RootPaths) new BaseOperation(this, "", null, null, KubernetesClient.class, RootPaths.class, null, null) {
-    }.get();
+  public <T extends Extension> T adapt(Class<T> type) {
+    for (ExtensionAdapter<T> adapter : ServiceLoader.load(ExtensionAdapter.class)) {
+      if (adapter.getExtensionType().isAssignableFrom(type)) {
+        return adapter.adapt(this);
+      }
+    }
+    throw new IllegalStateException("Could not find adapter");
   }
-
-
-  @Override
-  public ClientOperation<OpenShiftClient, Build, BuildList, DoneableBuild, ClientResource<Build, DoneableBuild>> builds() {
-    return new BuildOperationsImpl(this);
-  }
-
-  @Override
-  public ClientOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void>> buildConfigs() {
-    return new BuildConfigOperationsImpl(this, null, null);
-  }
-
-  @Override
-  public ClientOperation<OpenShiftClient, DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, ClientResource<DeploymentConfig, DoneableDeploymentConfig>> deploymentConfigs() {
-    return new DeploymentConfigOperationsImpl(this);
-  }
-
-  @Override
-  public ClientOperation<OpenShiftClient, ImageStream, ImageStreamList, DoneableImageStream, ClientResource<ImageStream, DoneableImageStream>> imageStreams() {
-    return new ImageStreamOperationsImpl(this);
-  }
-
-  @Override
-  public ClientNonNamespaceOperation<OpenShiftClient, OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken, ClientResource<OAuthAccessToken, DoneableOAuthAccessToken>> oAuthAccessTokens() {
-    return new OAuthAccessTokenOperationsImpl(this);
-  }
-
-  @Override
-  public ClientNonNamespaceOperation<OpenShiftClient, OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken, ClientResource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken>> oAuthAuthorizeTokens() {
-    return new OAuthAuthorizeTokenOperationsImpl(this);
-  }
-
-  @Override
-  public ClientNonNamespaceOperation<OpenShiftClient, OAuthClient, OAuthClientList, DoneableOAuthClient, ClientResource<OAuthClient, DoneableOAuthClient>> oAuthClients() {
-    return new OAuthClientOperationsImpl(this);
-  }
-
-  @Override
-  public ClientOperation<OpenShiftClient, Route, RouteList, DoneableRoute, ClientResource<Route, DoneableRoute>> routes() {
-    return new RouteOperationsImpl(this);
-  }
-
-  @Override
-  public ClientNonNamespaceOperation<OpenShiftClient, SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints() {
-    return new SecurityContextConstraintsOperationsImpl(this);
-  }
-
 }

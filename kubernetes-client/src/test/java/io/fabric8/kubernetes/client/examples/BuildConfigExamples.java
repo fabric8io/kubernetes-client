@@ -21,7 +21,11 @@ import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountBuilder;
+import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.DefaultOpenshiftClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.OpenShiftClient;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildRequestBuilder;
@@ -38,9 +42,10 @@ public class BuildConfigExamples {
       master = args[0];
     }
 
-   // DefaultKubernetesClient.Config config = new DefaultKubernetesClient.ConfigBuilder().masterUrl(master).build();
-    //OpenShiftClient client = new DefaultKubernetesClient(config);
-    OpenShiftClient client = new DefaultKubernetesClient();
+    Config config = new ConfigBuilder().build();
+    KubernetesClient kubernetesClient = new DefaultKubernetesClient(config);
+    OpenShiftClient client = kubernetesClient.adapt(OpenShiftClient.class);
+
     try {
       // Create a namespace for all our stuff
       Namespace ns = new NamespaceBuilder().withNewMetadata().withName("thisisatest").addToLabels("this", "rocks").endMetadata().build();

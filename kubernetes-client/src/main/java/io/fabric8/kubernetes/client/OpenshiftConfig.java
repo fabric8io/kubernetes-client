@@ -21,6 +21,8 @@ import io.sundr.builder.annotations.Buildable;
 
 public class OpenshiftConfig extends Config {
 
+  public static final String KUBERNETES_OAPI_VERSION_SYSTEM_PROPERTY = "kubernetes.oapi.version";
+
   private String oapiVersion = "v1";
   private String openShiftUrl;
   private Config kubernetesConfig;

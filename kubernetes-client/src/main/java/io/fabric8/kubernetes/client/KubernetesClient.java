@@ -25,7 +25,9 @@ import io.fabric8.kubernetes.client.dsl.ReplicationControllerClientResource;
 import java.net.URL;
 
 
-public interface KubernetesClient extends AutoCloseable {
+public interface KubernetesClient extends ConfigAware<Config>, AutoCloseable{
+
+  <T extends Extension> T adapt(Class<T> type);
 
   AsyncHttpClient getHttpClient();
 

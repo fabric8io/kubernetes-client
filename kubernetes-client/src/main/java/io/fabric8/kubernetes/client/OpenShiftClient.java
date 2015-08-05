@@ -53,7 +53,7 @@ import io.fabric8.openshift.api.model.TemplateList;
 
 import java.net.URL;
 
-public interface OpenShiftClient extends KubernetesClient {
+public interface OpenShiftClient extends Extension {
 
   URL getOpenshiftUrl();
 
