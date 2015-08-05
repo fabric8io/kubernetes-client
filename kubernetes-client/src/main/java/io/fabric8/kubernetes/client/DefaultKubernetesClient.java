@@ -287,6 +287,11 @@ public class DefaultKubernetesClient implements KubernetesClient, OpenShiftClien
     return new RouteOperationsImpl(this);
   }
 
+  @Override
+  public ClientNonNamespaceOperation<OpenShiftClient, SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints() {
+    return new SecurityContextConstraintsOperationsImpl(this);
+  }
+
   public static class Config {
     private boolean trustCerts = false;
     private String masterUrl = "https://kubernetes.default.svc";
