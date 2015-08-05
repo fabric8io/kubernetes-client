@@ -15,12 +15,14 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ReplicationControllerClientResource;
 import io.fabric8.kubernetes.client.dsl.Scaleable;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 
 public class ReplicationControllerOperationsImpl extends HasMetadataOperation<KubernetesClient, ReplicationController, ReplicationControllerList, DoneableReplicationController, ReplicationControllerClientResource<ReplicationController, DoneableReplicationController>>
@@ -84,5 +86,25 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Ku
   @Override
   public ReplicationController rollImageUpdate(String image) {
     return rollImageUpdate(null, image);
+  }
+
+  @Override
+  public DoneableReplicationController editForRollingUpdate() {
+    final Visitor<ReplicationController> visitor = new Visitor<ReplicationController>() {
+      @Override
+      public void visit(ReplicationController resource) {
+        try {
+          new RollingUpdater(getClient()).rollUpdate(get(), resource);
+        } catch (Exception e) {
+          throw KubernetesClientException.launderThrowable(e);
+        }
+      }
+    };
+
+    try {
+      return getDoneableType().getDeclaredConstructor(getType(), Visitor.class).newInstance(get(), visitor);
+    } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
   }
 }

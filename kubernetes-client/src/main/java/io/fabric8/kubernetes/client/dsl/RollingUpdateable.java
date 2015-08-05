@@ -15,10 +15,15 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface RollingUpdateable<T> {
+import io.fabric8.kubernetes.api.model.Doneable;
+import io.fabric8.kubernetes.api.model.HasMetadata;
+
+public interface RollingUpdateable<D extends Doneable<T>, T extends HasMetadata> {
 
   T rollImageUpdate(String newRCName, String image);
 
   T rollImageUpdate(String image);
+
+  D editForRollingUpdate();
 
 }

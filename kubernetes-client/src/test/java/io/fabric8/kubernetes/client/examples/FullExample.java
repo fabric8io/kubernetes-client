@@ -128,6 +128,12 @@ public class FullExample {
 
         Thread.sleep(1000);
 
+        // Update the RC via rolling update with inline builder
+        client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller")
+          .editForRollingUpdate().editMetadata().addToLabels("testing", "rolling-update").endMetadata().done();
+
+        Thread.sleep(1000);
+
         //Update the RC inline
         client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").edit()
           .editMetadata()
