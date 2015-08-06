@@ -18,9 +18,13 @@ package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.internal.Utils;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class OpenshiftConfig extends Config {
 
@@ -54,7 +58,11 @@ public class OpenshiftConfig extends Config {
     this.openShiftUrl = openShiftUrl;
 
     if (this.openShiftUrl == null) {
-      this.openShiftUrl = getMasterUrl() + "oapi/" + this.oapiVersion + "/";
+      try {
+        this.openShiftUrl = new URL(new URL(getMasterUrl()), "/oapi/" + this.oapiVersion + "/").toString();
+      } catch (MalformedURLException e) {
+        throw KubernetesClientException.launderThrowable(e);
+      }
     }
   }
 
