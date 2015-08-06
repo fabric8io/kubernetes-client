@@ -19,5 +19,4 @@ public interface Editable<T> {
 
   T edit();
 
-  T edit(boolean cascade);
 }

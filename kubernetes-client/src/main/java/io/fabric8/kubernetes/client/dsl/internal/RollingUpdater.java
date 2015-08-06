@@ -87,12 +87,13 @@ class RollingUpdater {
       // Now do the scale up/scale down dance
       int oldReplicas = oldRC.getSpec().getReplicas();
       while(createdRC.getSpec().getReplicas() < requestedNewReplicas) {
-        if (oldReplicas > 0) {
-          client.replicationControllers().inNamespace(namespace).withName(oldRCName).scale(--oldReplicas);
-        }
         int newReplicas = createdRC.getSpec().getReplicas() + 1;
         client.replicationControllers().inNamespace(namespace).withName(createdRC.getMetadata().getName()).scale(newReplicas);
         createdRC.getSpec().setReplicas(newReplicas);
+
+        if (oldReplicas > 0) {
+          client.replicationControllers().inNamespace(namespace).withName(oldRCName).scale(--oldReplicas);
+        }
       }
 
       // Now delete all existing remaining resources, ensure to cascade

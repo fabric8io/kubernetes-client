@@ -15,9 +15,12 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.model.DoneableReplicationController;
-import io.fabric8.kubernetes.api.model.ReplicationController;
+public interface DeleteCascadeable<B> extends Deleteable<B> {
 
-public interface ReplicationControllerClientResource<T, D> extends ScaleableClientResource<T, D>,
-  Rollable<ReplicationController, ReplicationController, DoneableReplicationController> {
+  /**
+   * Deletes resource & all managed resources if cascade is true, returns null if not found.
+   * @throws io.fabric8.kubernetes.client.KubernetesClientException if an error occurs.
+   */
+  B delete(boolean cascade);
+
 }

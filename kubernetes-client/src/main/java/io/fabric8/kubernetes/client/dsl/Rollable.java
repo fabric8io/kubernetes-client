@@ -15,9 +15,8 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.model.DoneableReplicationController;
-import io.fabric8.kubernetes.api.model.ReplicationController;
+public interface Rollable<I, T, D> {
 
-public interface ReplicationControllerClientResource<T, D> extends ScaleableClientResource<T, D>,
-  Rollable<ReplicationController, ReplicationController, DoneableReplicationController> {
+  ImageEditReplaceable<I, T, D> rolling();
+
 }

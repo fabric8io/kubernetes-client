@@ -19,6 +19,4 @@ public interface Replaceable<I, T> {
 
   T replace(I item);
 
-  T replace(I item, boolean cascade);
-
 }

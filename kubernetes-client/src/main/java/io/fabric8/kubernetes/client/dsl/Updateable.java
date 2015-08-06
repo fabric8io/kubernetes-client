@@ -21,6 +21,4 @@ public interface Updateable<I, T> {
   @Deprecated
   T update(I item);
 
-  @Deprecated
-  T update(I item, boolean cascade);
 }

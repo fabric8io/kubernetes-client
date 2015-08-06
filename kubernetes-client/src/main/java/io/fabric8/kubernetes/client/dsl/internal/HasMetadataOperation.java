@@ -32,7 +32,6 @@ public class HasMetadataOperation<C extends KubernetesClient, T extends HasMetad
     super(client, resourceT, namespace, name);
   }
 
-
   @Override
   public D edit(final boolean cascade) throws KubernetesClientException {
     final BaseOperation oper = this;
@@ -56,7 +55,6 @@ public class HasMetadataOperation<C extends KubernetesClient, T extends HasMetad
     };
 
     try {
-
       return getDoneableType().getDeclaredConstructor(getType(), Visitor.class).newInstance(get(), visitor);
     } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException e) {
       throw KubernetesClientException.launderThrowable(e);

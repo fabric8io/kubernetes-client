@@ -15,9 +15,5 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.model.DoneableReplicationController;
-import io.fabric8.kubernetes.api.model.ReplicationController;
-
-public interface ReplicationControllerClientResource<T, D> extends ScaleableClientResource<T, D>,
-  Rollable<ReplicationController, ReplicationController, DoneableReplicationController> {
+public interface EditReplaceable<I, T, D> extends Editable<D>, Replaceable<I, T>, Updateable<I, T> {
 }

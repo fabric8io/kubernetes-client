@@ -15,9 +15,10 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.model.DoneableReplicationController;
-import io.fabric8.kubernetes.api.model.ReplicationController;
+@Deprecated
+public interface UpdateCascadeable<I, T> extends Updateable<I, T> {
 
-public interface ReplicationControllerClientResource<T, D> extends ScaleableClientResource<T, D>,
-  Rollable<ReplicationController, ReplicationController, DoneableReplicationController> {
+  @Deprecated
+  T update(I item, boolean cascade);
+
 }
