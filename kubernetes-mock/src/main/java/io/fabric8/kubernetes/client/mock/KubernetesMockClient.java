@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.mock.impl.*;
 import org.easymock.EasyMock;
+import org.easymock.IExpectationSetters;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
@@ -89,6 +90,10 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
     secrets.verify();
     serviceAccounts.verify();
     EasyMock.verify(client);
+  }
+
+  public IExpectationSetters<RootPaths> rootPaths() {
+    return expect(client.rootPaths());
   }
 
   public MockOperation<Endpoints, EndpointsList, DoneableEndpoints, MockResource<Endpoints, DoneableEndpoints, Boolean>> endpoints() {

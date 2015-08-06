@@ -46,6 +46,7 @@ import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.api.model.ResourceQuota;
 import io.fabric8.kubernetes.api.model.ResourceQuotaList;
+import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.SecretList;
 import io.fabric8.kubernetes.api.model.Service;
@@ -110,6 +111,7 @@ import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.easymock.EasyMock;
+import org.easymock.IExpectationSetters;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
@@ -220,6 +222,10 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
     oAuthClients.verify();
     routes.verify();
     EasyMock.verify(client);
+  }
+
+  public IExpectationSetters<RootPaths> rootPaths() {
+    return expect(client.rootPaths());
   }
 
   public MockOperation<Endpoints, EndpointsList, DoneableEndpoints, MockResource<Endpoints, DoneableEndpoints, Boolean>> endpoints() {
