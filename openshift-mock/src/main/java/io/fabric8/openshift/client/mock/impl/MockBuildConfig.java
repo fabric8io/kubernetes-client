@@ -29,6 +29,7 @@ import io.fabric8.openshift.api.model.BuildConfigList;
 import io.fabric8.openshift.api.model.BuildRequest;
 import io.fabric8.openshift.api.model.DoneableBuildConfig;
 import io.fabric8.openshift.api.model.WebHookTrigger;
+import io.fabric8.openshift.client.dsl.BuildConfigOperation;
 import io.fabric8.openshift.client.dsl.BuildConfigOperationsImpl;
 import org.easymock.EasyMock;
 import org.easymock.IArgumentMatcher;
@@ -51,7 +52,7 @@ public class MockBuildConfig extends BaseMockOperation<OpenShiftClient, BuildCon
 
 
   public MockBuildConfig() {
-    super(EasyMock.createMock(BuildConfigOperationsImpl.class));
+    super(EasyMock.createMock(BuildConfigOperation.class));
   }
 
   @Override

@@ -21,7 +21,6 @@ import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.BuildConfigClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
-import io.fabric8.kubernetes.client.dsl.Secretable;
 import io.fabric8.kubernetes.client.dsl.Triggerable;
 import io.fabric8.kubernetes.client.dsl.Typeable;
 import io.fabric8.kubernetes.client.dsl.internal.BaseOperation;
@@ -37,10 +36,7 @@ import java.util.concurrent.Future;
 
 public class BuildConfigOperationsImpl extends OpenshiftOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig,
   BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void>>
-  implements BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void>,
-  Typeable<Triggerable<WebHookTrigger, Void>>,
-  Triggerable<WebHookTrigger, Void>,
-  Secretable<Typeable<Triggerable<WebHookTrigger, Void>>>
+  implements BuildConfigOperation
  {
 
   private final String secret;
