@@ -222,87 +222,87 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
     EasyMock.verify(client);
   }
 
-  MockOperation<Endpoints, EndpointsList, DoneableEndpoints, MockResource<Endpoints, DoneableEndpoints, Boolean>> endpoints() {
+  public MockOperation<Endpoints, EndpointsList, DoneableEndpoints, MockResource<Endpoints, DoneableEndpoints, Boolean>> endpoints() {
     return endpoints;
   }
 
-  MockOperation<Event, EventList, DoneableEvent, MockResource<Event, DoneableEvent, Boolean>> events() {
+  public MockOperation<Event, EventList, DoneableEvent, MockResource<Event, DoneableEvent, Boolean>> events() {
     return events;
   }
 
-  MockNonNamespaceOperation<Namespace, NamespaceList, DoneableNamespace, MockResource<Namespace, DoneableNamespace, Boolean>> namespaces() {
+  public MockNonNamespaceOperation<Namespace, NamespaceList, DoneableNamespace, MockResource<Namespace, DoneableNamespace, Boolean>> namespaces() {
     return namespaces;
   }
 
-  MockNonNamespaceOperation<Node, NodeList, DoneableNode, MockResource<Node, DoneableNode, Boolean>> nodes() {
+  public MockNonNamespaceOperation<Node, NodeList, DoneableNode, MockResource<Node, DoneableNode, Boolean>> nodes() {
     return nodes;
   }
 
-  MockOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, MockResource<PersistentVolume, DoneablePersistentVolume, Boolean>> persistentVolumes() {
+  public MockOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, MockResource<PersistentVolume, DoneablePersistentVolume, Boolean>> persistentVolumes() {
     return persistentVolumes;
   }
 
-  MockOperation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, MockResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim, Boolean>> persistentVolumeClaims() {
+  public MockOperation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, MockResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim, Boolean>> persistentVolumeClaims() {
     return persistentVolumeClaims;
   }
 
-  MockOperation<Pod, PodList, DoneablePod, MockResource<Pod, DoneablePod, Boolean>> pods() {
+  public MockOperation<Pod, PodList, DoneablePod, MockResource<Pod, DoneablePod, Boolean>> pods() {
     return pods;
   }
 
-  MockOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, MockScaleableResource<ReplicationController, DoneableReplicationController, Boolean>> replicationControllers() {
+  public MockOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, MockScaleableResource<ReplicationController, DoneableReplicationController, Boolean>> replicationControllers() {
     return replicationControllers;
   }
 
-  MockOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota, MockResource<ResourceQuota, DoneableResourceQuota, Boolean>> resourceQuotas() {
+  public MockOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota, MockResource<ResourceQuota, DoneableResourceQuota, Boolean>> resourceQuotas() {
     return resourceQuotas;
   }
 
-  MockOperation<Secret, SecretList, DoneableSecret, MockResource<Secret, DoneableSecret, Boolean>> secrets() {
+  public MockOperation<Secret, SecretList, DoneableSecret, MockResource<Secret, DoneableSecret, Boolean>> secrets() {
     return secrets;
   }
 
-  MockOperation<Service, ServiceList, DoneableService, MockResource<Service, DoneableService, Boolean>> services() {
+  public MockOperation<Service, ServiceList, DoneableService, MockResource<Service, DoneableService, Boolean>> services() {
     return services;
   }
 
-  MockOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, MockResource<ServiceAccount, DoneableServiceAccount, Boolean>> serviceAccounts() {
+  public MockOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, MockResource<ServiceAccount, DoneableServiceAccount, Boolean>> serviceAccounts() {
     return serviceAccounts;
   }
 
-  MockOperation<Build, BuildList, DoneableBuild, MockResource<Build, DoneableBuild, Boolean>> builds() {
+  public MockOperation<Build, BuildList, DoneableBuild, MockResource<Build, DoneableBuild, Boolean>> builds() {
     return builds;
   }
 
-  MockOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, MockBuildConfigResource> buildConfigs() {
+  public MockOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, MockBuildConfigResource> buildConfigs() {
     return buildConfigs;
   }
 
-  MockOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, MockResource<DeploymentConfig, DoneableDeploymentConfig, Boolean>> deploymentConfigs() {
+  public MockOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, MockResource<DeploymentConfig, DoneableDeploymentConfig, Boolean>> deploymentConfigs() {
     return deploymentConfigs;
   }
 
-  MockOperation<ImageStream, ImageStreamList, DoneableImageStream, MockResource<ImageStream, DoneableImageStream, Boolean>> imageStreams() {
+  public MockOperation<ImageStream, ImageStreamList, DoneableImageStream, MockResource<ImageStream, DoneableImageStream, Boolean>> imageStreams() {
     return imageStreams;
   }
 
-  MockNonNamespaceOperation<OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken, MockResource<OAuthAccessToken, DoneableOAuthAccessToken, Boolean>> oAuthAccessTokens() {
+  public MockNonNamespaceOperation<OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken, MockResource<OAuthAccessToken, DoneableOAuthAccessToken, Boolean>> oAuthAccessTokens() {
     return oAuthAccessTokens;
   }
 
-  MockNonNamespaceOperation<OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken, MockResource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken, Boolean>> oAuthAuthorizeTokens() {
+  public MockNonNamespaceOperation<OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken, MockResource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken, Boolean>> oAuthAuthorizeTokens() {
     return oAuthAuthorizeTokens;
   }
 
-  MockNonNamespaceOperation<OAuthClient, OAuthClientList, DoneableOAuthClient, MockResource<OAuthClient, DoneableOAuthClient, Boolean>> oAuthClients() {
+  public MockNonNamespaceOperation<OAuthClient, OAuthClientList, DoneableOAuthClient, MockResource<OAuthClient, DoneableOAuthClient, Boolean>> oAuthClients() {
     return oAuthClients;
   }
 
-  MockOperation<Route, RouteList, DoneableRoute, MockResource<Route, DoneableRoute, Boolean>> routes() {
+  public MockOperation<Route, RouteList, DoneableRoute, MockResource<Route, DoneableRoute, Boolean>> routes() {
     return routes;
   }
 
-  MockOperation<Template, TemplateList, DoneableTemplate, MockProcessableResource<Template, DoneableTemplate, Boolean>> templates() {
+  public  MockOperation<Template, TemplateList, DoneableTemplate, MockProcessableResource<Template, DoneableTemplate, Boolean>> templates() {
     return templates;
   }
 }
