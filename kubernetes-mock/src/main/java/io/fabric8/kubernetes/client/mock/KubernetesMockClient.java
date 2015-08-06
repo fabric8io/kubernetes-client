@@ -16,11 +16,61 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.*;
+import io.fabric8.kubernetes.api.model.DoneableEndpoints;
+import io.fabric8.kubernetes.api.model.DoneableEvent;
+import io.fabric8.kubernetes.api.model.DoneableNamespace;
+import io.fabric8.kubernetes.api.model.DoneableNode;
+import io.fabric8.kubernetes.api.model.DoneablePersistentVolume;
+import io.fabric8.kubernetes.api.model.DoneablePersistentVolumeClaim;
+import io.fabric8.kubernetes.api.model.DoneablePod;
+import io.fabric8.kubernetes.api.model.DoneableReplicationController;
+import io.fabric8.kubernetes.api.model.DoneableResourceQuota;
+import io.fabric8.kubernetes.api.model.DoneableSecret;
+import io.fabric8.kubernetes.api.model.DoneableService;
+import io.fabric8.kubernetes.api.model.DoneableServiceAccount;
+import io.fabric8.kubernetes.api.model.Endpoints;
+import io.fabric8.kubernetes.api.model.EndpointsList;
+import io.fabric8.kubernetes.api.model.Event;
+import io.fabric8.kubernetes.api.model.EventList;
+import io.fabric8.kubernetes.api.model.Namespace;
+import io.fabric8.kubernetes.api.model.NamespaceList;
+import io.fabric8.kubernetes.api.model.Node;
+import io.fabric8.kubernetes.api.model.NodeList;
+import io.fabric8.kubernetes.api.model.PersistentVolume;
+import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
+import io.fabric8.kubernetes.api.model.PersistentVolumeClaimList;
+import io.fabric8.kubernetes.api.model.PersistentVolumeList;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.api.model.ReplicationController;
+import io.fabric8.kubernetes.api.model.ReplicationControllerList;
+import io.fabric8.kubernetes.api.model.ResourceQuota;
+import io.fabric8.kubernetes.api.model.ResourceQuotaList;
+import io.fabric8.kubernetes.api.model.RootPaths;
+import io.fabric8.kubernetes.api.model.Secret;
+import io.fabric8.kubernetes.api.model.SecretList;
+import io.fabric8.kubernetes.api.model.Service;
+import io.fabric8.kubernetes.api.model.ServiceAccount;
+import io.fabric8.kubernetes.api.model.ServiceAccountList;
+import io.fabric8.kubernetes.api.model.ServiceList;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.mock.impl.*;
+import io.fabric8.kubernetes.client.mock.impl.MockEndpoints;
+import io.fabric8.kubernetes.client.mock.impl.MockEvent;
+import io.fabric8.kubernetes.client.mock.impl.MockNamespace;
+import io.fabric8.kubernetes.client.mock.impl.MockNode;
+import io.fabric8.kubernetes.client.mock.impl.MockPersistentVolume;
+import io.fabric8.kubernetes.client.mock.impl.MockPersistentVolumeClaim;
+import io.fabric8.kubernetes.client.mock.impl.MockPod;
+import io.fabric8.kubernetes.client.mock.impl.MockReplicationController;
+import io.fabric8.kubernetes.client.mock.impl.MockResourceQuota;
+import io.fabric8.kubernetes.client.mock.impl.MockSecret;
+import io.fabric8.kubernetes.client.mock.impl.MockService;
+import io.fabric8.kubernetes.client.mock.impl.MockServiceAccount;
 import org.easymock.EasyMock;
 import org.easymock.IExpectationSetters;
+
+import java.net.URL;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
@@ -56,6 +106,8 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
     expect(client.resourceQuotas()).andReturn(resourceQuotas.getDelegate()).anyTimes();
     expect(client.secrets()).andReturn(secrets.getDelegate()).anyTimes();
     expect(client.serviceAccounts()).andReturn(serviceAccounts.getDelegate()).anyTimes();
+    client.close();
+    EasyMock.expectLastCall().anyTimes();
   }
 
   public KubernetesClient replay() {
@@ -90,6 +142,14 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
     secrets.verify();
     serviceAccounts.verify();
     EasyMock.verify(client);
+  }
+
+  public IExpectationSetters<URL> getMasterUrl() {
+    return expect(client.getMasterUrl());
+  }
+
+  public IExpectationSetters<Config> getConfiguration() {
+    return expect(client.getConfiguration());
   }
 
   public IExpectationSetters<RootPaths> rootPaths() {

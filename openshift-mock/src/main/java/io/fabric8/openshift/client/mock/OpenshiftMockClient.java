@@ -53,6 +53,7 @@ import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.mock.MockBuildConfigResource;
 import io.fabric8.kubernetes.client.mock.MockNonNamespaceOperation;
 import io.fabric8.kubernetes.client.mock.MockOperation;
@@ -113,6 +114,8 @@ import io.fabric8.openshift.client.OpenShiftClient;
 import org.easymock.EasyMock;
 import org.easymock.IExpectationSetters;
 
+import java.net.URL;
+
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 
@@ -167,6 +170,8 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
     expect(client.oAuthClients()).andReturn(oAuthClients.getDelegate()).anyTimes();
     expect(client.routes()).andReturn(routes.getDelegate()).anyTimes();
     expect(client.templates()).andReturn(templates.getDelegate()).anyTimes();
+    client.close();
+    EasyMock.expectLastCall().anyTimes();
   }
 
   public OpenShiftClient replay() {
@@ -223,6 +228,15 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
     routes.verify();
     EasyMock.verify(client);
   }
+
+  public IExpectationSetters<URL> getMasterUrl() {
+    return expect(client.getMasterUrl());
+  }
+
+  public IExpectationSetters<Config> getConfiguration() {
+    return expect(client.getConfiguration());
+  }
+
 
   public IExpectationSetters<RootPaths> rootPaths() {
     return expect(client.rootPaths());
