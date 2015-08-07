@@ -13,13 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl;
+package io.fabric8.kubernetes.client.dsl.internal;
 
-import io.fabric8.kubernetes.client.KubernetesClientException;
+import com.ning.http.client.ws.WebSocket;
 import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
 
-public interface Watchable<T> {
+public class WatchImpl implements Watch {
+  private final WebSocket webSocket;
 
-  Watch watch(Watcher<T> watcher) throws KubernetesClientException;
+  public WatchImpl(WebSocket webSocket) {
+    this.webSocket = webSocket;
+  }
+
+  @Override
+  public boolean isOpen() {
+    return webSocket.isOpen();
+  }
+
+  @Override
+  public void close() {
+    webSocket.close();
+  }
 }

@@ -29,10 +29,10 @@ import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
-import io.fabric8.kubernetes.client.dsl.ClientOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeleteable;
 import org.slf4j.Logger;
@@ -368,7 +368,7 @@ public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesRe
     }
   }
 
-  public WebSocket watch(final Watcher<T> watcher) throws KubernetesClientException {
+  public Watch watch(final Watcher<T> watcher) throws KubernetesClientException {
     try {
       URL requestUrl = getNamespacedUrl();
       AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().prepareGet(requestUrl.toString().replaceFirst("^http", "ws"));
@@ -403,7 +403,7 @@ public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesRe
             @Override
             public void onMessage(String message) {
               try {
-                WatchEvent event = mapper.reader(WatchEvent.class).readValue(message);
+                WatchEvent event = mapper.readerFor(WatchEvent.class).readValue(message);
                 T obj = (T) event.getObject();
                 Watcher.Action action = Watcher.Action.valueOf(event.getType());
                 watcher.eventReceived(action, obj);
@@ -417,7 +417,7 @@ public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesRe
             }
           }).build()
       );
-      return f.get();
+      return new WatchImpl(f.get());
     } catch (MalformedURLException | InterruptedException | ExecutionException e) {
       throw KubernetesClientException.launderThrowable(e);
     }

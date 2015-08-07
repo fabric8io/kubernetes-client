@@ -13,13 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl;
+package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
+import java.io.Closeable;
 
-public interface Watchable<T> {
+public interface Watch extends Closeable {
 
-  Watch watch(Watcher<T> watcher) throws KubernetesClientException;
+  /**
+   * Returns <code>true</code> if the Watch is open/connected.
+   *
+   * @return <code>true</code> if the Watch is open/connected.
+   */
+  boolean isOpen();
+
+  /**
+   * Close the Watch.
+   */
+  void close();
+
 }

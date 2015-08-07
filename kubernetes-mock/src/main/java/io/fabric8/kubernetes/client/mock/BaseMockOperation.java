@@ -16,15 +16,14 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.client.internal.com.ning.http.client.ws.WebSocket;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
-import io.fabric8.kubernetes.client.dsl.ClientOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeleteable;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -178,7 +177,7 @@ public class BaseMockOperation<C extends KubernetesClient, T, L extends Kubernet
   }
 
   @Override
-  public WebSocket watch(Watcher<IExpectationSetters<T>> watcher) throws KubernetesClientException {
+  public Watch watch(Watcher<IExpectationSetters<T>> watcher) throws KubernetesClientException {
     throw new UnsupportedOperationException();
   }
 
