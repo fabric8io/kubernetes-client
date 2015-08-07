@@ -15,8 +15,8 @@
  */
 package io.fabric8.openshift.client.dsl;
 
-import com.ning.http.client.AsyncHttpClient;
-import com.ning.http.client.Response;
+import io.fabric8.kubernetes.client.internal.com.ning.http.client.AsyncHttpClient;
+import io.fabric8.kubernetes.client.internal.com.ning.http.client.Response;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.BuildConfigClientResource;

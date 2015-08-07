@@ -16,7 +16,7 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import com.ning.http.client.ws.WebSocket;
+import io.fabric8.kubernetes.client.internal.com.ning.http.client.ws.WebSocket;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
