@@ -77,7 +77,7 @@
 
     <async.http.version>1.9.30</async.http.version>
     <easymock.version>3.2</easymock.version>
-    <jackson.version>2.6.0</jackson.version>
+    <jackson.version>2.6.1</jackson.version>
     <junit.version>4.12</junit.version>
     <kubernetes.model.version>1.0.7</kubernetes.model.version>
     <log4j.version>2.3</log4j.version>
