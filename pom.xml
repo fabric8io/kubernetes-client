@@ -79,7 +79,7 @@
     <easymock.version>3.2</easymock.version>
     <jackson.version>2.6.1</jackson.version>
     <junit.version>4.12</junit.version>
-    <kubernetes.model.version>1.0.9</kubernetes.model.version>
+    <kubernetes.model.version>1.0.10</kubernetes.model.version>
     <log4j.version>2.3</log4j.version>
     <oauth.version>20100527</oauth.version>
     <slf4j.version>1.7.12</slf4j.version>
