@@ -369,9 +369,22 @@ public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesRe
   }
 
   public Watch watch(final Watcher<T> watcher) throws KubernetesClientException {
+    return watch(null, watcher);
+  }
+
+  public Watch watch(String resourceVersion, final Watcher<T> watcher) throws KubernetesClientException {
     try {
+      if (resourceVersion == null) {
+        L currentList = list();
+        resourceVersion = currentList.getMetadata().getResourceVersion();
+      }
+
       URL requestUrl = getNamespacedUrl();
       AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().prepareGet(requestUrl.toString().replaceFirst("^http", "ws"));
+
+      requestBuilder.addQueryParam("resourceVersion", resourceVersion);
+      requestBuilder.addQueryParam("watch", "true");
+
       if (labels != null && !labels.isEmpty()) {
         StringBuilder sb = new StringBuilder();
         for (Iterator<Map.Entry<String, String>> iter = labels.entrySet().iterator(); iter.hasNext(); ) {
@@ -394,7 +407,6 @@ public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesRe
         }
         requestBuilder.addQueryParam("fieldSelector", sb.toString());
       }
-      requestBuilder.addQueryParam("watch", "true");
       Future<WebSocket> f = requestBuilder.execute(new WebSocketUpgradeHandler.Builder().addWebSocketListener(
           new DefaultWebSocketListener() {
 

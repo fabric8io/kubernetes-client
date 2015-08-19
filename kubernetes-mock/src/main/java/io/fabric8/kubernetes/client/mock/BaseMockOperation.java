@@ -178,6 +178,11 @@ public class BaseMockOperation<C extends KubernetesClient, T, L extends Kubernet
 
   @Override
   public Watch watch(Watcher<IExpectationSetters<T>> watcher) throws KubernetesClientException {
+    return watch(null, watcher);
+  }
+
+  @Override
+  public Watch watch(String resourceVersion, Watcher<IExpectationSetters<T>> watcher) throws KubernetesClientException {
     throw new UnsupportedOperationException();
   }
 

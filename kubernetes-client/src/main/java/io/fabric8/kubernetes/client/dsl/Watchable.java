@@ -22,4 +22,6 @@ import io.fabric8.kubernetes.client.Watcher;
 public interface Watchable<T> {
 
   Watch watch(Watcher<T> watcher) throws KubernetesClientException;
+
+  Watch watch(String resourceVersion, Watcher<T> watcher) throws KubernetesClientException;
 }
