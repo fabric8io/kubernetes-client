@@ -51,11 +51,13 @@ public class Config {
   public static final String KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY = "kubernetes.auth.tryKubeConfig";
   public static final String KUBERNETES_AUTH_TRYSERVICEACCOUNT_SYSTEM_PROPERTY = "kubernetes.auth.tryServiceAccount";
   public static final String KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY = "kubernetes.auth.token";
+  public static final String KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY = "kubernetes.watch.reconnectInterval";
+  public static final String KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY = "kubernetes.watch.reconnectLimit";
   public static final String KUBERNETES_KUBECONFIG_FILE = "kubeconfig";
   public static final String KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH = "/var/run/secrets/kubernetes.io/serviceaccount/token";
   public static final String KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt";
-
   private boolean trustCerts = false;
+
   private String masterUrl = "https://kubernetes.default.svc";
   private String apiVersion = "v1";
   private String[] enabledProtocols = new String[]{"TLSv1.2"};
@@ -70,12 +72,14 @@ public class Config {
   private String username;
   private String password;
   private String oauthToken;
+  private int watchReconnectInterval = 1000;
+  private int watchReconnectLimit = -1;
 
   public Config() {
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder")
-  public Config(boolean trustCerts, String masterUrl, String apiVersion, String[] enabledProtocols, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken) {
+  public Config(boolean trustCerts, String masterUrl, String apiVersion, String[] enabledProtocols, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit) {
     this.trustCerts = trustCerts;
     this.masterUrl = masterUrl;
     this.apiVersion = apiVersion;
@@ -91,6 +95,8 @@ public class Config {
     this.username = username;
     this.password = password;
     this.oauthToken = oauthToken;
+    this.watchReconnectInterval = watchReconnectInterval;
+    this.watchReconnectLimit = watchReconnectLimit;
 
     if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYSERVICEACCOUNT_SYSTEM_PROPERTY, true)) {
       tryServiceAccount(this);
@@ -124,6 +130,14 @@ public class Config {
     String configuredProtocols = Utils.getSystemPropertyOrEnvVar(KUBERNETES_TLS_PROTOCOLS_SYSTEM_PROPERTY);
     if (configuredProtocols != null) {
       config.setEnabledProtocols(configuredProtocols.split(","));
+    }
+    String configuredWatchReconnectInterval = Utils.getSystemPropertyOrEnvVar(KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY);
+    if (configuredWatchReconnectInterval != null) {
+      config.setWatchReconnectInterval(Integer.parseInt(configuredWatchReconnectInterval));
+    }
+    String configuredWatchReconnectLimit = Utils.getSystemPropertyOrEnvVar(KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY);
+    if (configuredWatchReconnectLimit != null) {
+      config.setWatchReconnectLimit(Integer.parseInt(configuredWatchReconnectLimit));
     }
   }
 
@@ -292,8 +306,23 @@ public class Config {
     this.trustCerts = trustCerts;
   }
 
-
   public static ConfigBuilder builder() {
     return new ConfigBuilder();
+  }
+
+  public int getWatchReconnectInterval() {
+    return watchReconnectInterval;
+  }
+
+  public void setWatchReconnectInterval(int watchReconnectInterval) {
+    this.watchReconnectInterval = watchReconnectInterval;
+  }
+
+  public int getWatchReconnectLimit() {
+    return watchReconnectLimit;
+  }
+
+  public void setWatchReconnectLimit(int watchReconnectLimit) {
+    this.watchReconnectLimit = watchReconnectLimit;
   }
 }

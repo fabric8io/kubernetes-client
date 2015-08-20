@@ -35,7 +35,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class WatchConnectionManager<T, L extends KubernetesResourceList> implements Watch {
@@ -45,9 +47,12 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
   private final AtomicReference<String> resourceVersion;
   private final BaseOperation<?, T, L, ?, ?> baseOperation;
   private final Watcher<T> watcher;
+  private final int reconnectLimit;
+  private final int reconnectInterval;
+  private final AtomicInteger currentReconnectAttempt = new AtomicInteger(0);
   private WebSocket webSocket;
 
-  WatchConnectionManager(final BaseOperation<?, T, L, ?, ?> baseOperation, final String version, final Watcher<T> watcher) throws InterruptedException, ExecutionException, MalformedURLException {
+  WatchConnectionManager(final BaseOperation<?, T, L, ?, ?> baseOperation, final String version, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit) throws InterruptedException, ExecutionException, MalformedURLException {
     if (version == null) {
       KubernetesResourceList currentList = baseOperation.list();
       this.resourceVersion = new AtomicReference<>(currentList.getMetadata().getResourceVersion());
@@ -56,6 +61,8 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
     }
     this.baseOperation = baseOperation;
     this.watcher = watcher;
+    this.reconnectInterval = reconnectInterval;
+    this.reconnectLimit = reconnectLimit;
 
     runWatch();
   }
@@ -106,12 +113,27 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
           }
 
           @Override
+          public void onOpen(WebSocket websocket) {
+            currentReconnectAttempt.set(0);
+            this.webSocket = websocket;
+            super.onOpen(websocket);
+          }
+
+          @Override
           public void onClose(WebSocket websocket) {
             if (!forceClosed.get()) {
               try {
                 runWatch();
               } catch (ExecutionException e) {
                 if (e.getCause() != null && e.getCause().getCause() != null && e.getCause().getCause() instanceof ConnectException) {
+                  if (reconnectLimit >= 0 && currentReconnectAttempt.incrementAndGet() >= reconnectLimit) {
+                    throw KubernetesClientException.launderThrowable(e);
+                  }
+                  try {
+                    TimeUnit.MILLISECONDS.sleep(reconnectInterval);
+                  } catch (InterruptedException e1) {
+                    throw KubernetesClientException.launderThrowable(e);
+                  }
                   onClose(websocket);
                 }
               } catch (MalformedURLException | InterruptedException e) {

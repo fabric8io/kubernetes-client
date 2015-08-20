@@ -383,7 +383,7 @@ public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesRe
 
   public Watch watch(String resourceVersion, final Watcher<T> watcher) throws KubernetesClientException {
     try {
-      return new WatchConnectionManager<>(this, resourceVersion, watcher);
+      return new WatchConnectionManager<>(this, resourceVersion, watcher, client.getConfiguration().getWatchReconnectInterval(), client.getConfiguration().getWatchReconnectLimit());
     } catch (MalformedURLException | InterruptedException | ExecutionException e) {
       throw KubernetesClientException.launderThrowable(e);
     }

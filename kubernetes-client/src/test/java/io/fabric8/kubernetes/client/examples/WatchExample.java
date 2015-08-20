@@ -38,7 +38,7 @@ public class WatchExample {
       master = args[0];
     }
 
-    Config config = new ConfigBuilder().withMasterUrl(master).build();
+    Config config = new ConfigBuilder().withMasterUrl(master).withWatchReconnectLimit(2).build();
     try (final KubernetesClient client = new DefaultKubernetesClient(config)) {
       final CountDownLatch latch = new CountDownLatch(10);
       try (Watch watch = client.replicationControllers().inNamespace("default").watch(new Watcher<ReplicationController>() {
