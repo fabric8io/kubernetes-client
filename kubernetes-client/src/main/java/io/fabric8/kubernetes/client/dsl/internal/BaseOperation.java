@@ -18,15 +18,11 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.Response;
-import com.ning.http.client.ws.DefaultWebSocketListener;
-import com.ning.http.client.ws.WebSocket;
-import com.ning.http.client.ws.WebSocketUpgradeHandler;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.Status;
-import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
@@ -35,8 +31,6 @@ import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeleteable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -228,71 +222,86 @@ public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesRe
     return this;
   }
 
+  String getLabelQueryParam() {
+    StringBuilder sb = new StringBuilder();
+    if (labels != null && !labels.isEmpty()) {
+      if (sb.length() > 0) {
+        sb.append(",");
+      }
+      for (Iterator<Map.Entry<String, String>> iter = labels.entrySet().iterator(); iter.hasNext(); ) {
+        Map.Entry<String, String> entry = iter.next();
+        sb.append(entry.getKey()).append("=").append(entry.getValue());
+      }
+    }
+
+    if (labelsNot != null && !labelsNot.isEmpty()) {
+      for (Iterator<Map.Entry<String, String>> iter = labelsNot.entrySet().iterator(); iter.hasNext(); ) {
+        if (sb.length() > 0) {
+          sb.append(",");
+        }
+        Map.Entry<String, String> entry = iter.next();
+        sb.append(entry.getKey()).append("!=").append(entry.getValue());
+      }
+    }
+
+    if (labelsIn != null && !labelsIn.isEmpty()) {
+      for (Iterator<Map.Entry<String, String[]>> iter = labelsIn.entrySet().iterator(); iter.hasNext(); ) {
+        if (sb.length() > 0) {
+          sb.append(",");
+        }
+        Map.Entry<String, String[]> entry = iter.next();
+        sb.append(entry.getKey()).append(" in ").append("(").append(join(entry.getValue())).append(")");
+      }
+    }
+
+    if (labelsNotIn != null && !labelsNotIn.isEmpty()) {
+      for (Iterator<Map.Entry<String, String[]>> iter = labelsNotIn.entrySet().iterator(); iter.hasNext(); ) {
+        if (sb.length() > 0) {
+          sb.append(",");
+        }
+        Map.Entry<String, String[]> entry = iter.next();
+        sb.append(entry.getKey()).append(" notin ").append("(").append(join(entry.getValue())).append(")");
+      }
+    }
+    return sb.toString();
+  }
+
+  String getFieldQueryParam() {
+    StringBuilder sb = new StringBuilder();
+    if (fields != null && !fields.isEmpty()) {
+      if (sb.length() > 0) {
+        sb.append(",");
+      }
+      for (Iterator<Map.Entry<String, String>> iter = fields.entrySet().iterator(); iter.hasNext(); ) {
+        Map.Entry<String, String> entry = iter.next();
+        sb.append(entry.getKey()).append("=").append(entry.getValue());
+      }
+    }
+    return sb.toString();
+  }
+
   public L list() throws KubernetesClientException {
     try {
       URL requestUrl = getNamespacedUrl();
       AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().prepareGet(requestUrl.toString());
-      StringBuilder sb = new StringBuilder();
-      if (labels != null && !labels.isEmpty()) {
-        if (sb.length() > 0) {
-          sb.append(",");
-        }
-        for (Iterator<Map.Entry<String, String>> iter = labels.entrySet().iterator(); iter.hasNext(); ) {
-          Map.Entry<String, String> entry = iter.next();
-          sb.append(entry.getKey()).append("=").append(entry.getValue());
-        }
-      }
-      if (labelsNot != null && !labelsNot.isEmpty()) {
-        for (Iterator<Map.Entry<String, String>> iter = labelsNot.entrySet().iterator(); iter.hasNext(); ) {
-          if (sb.length() > 0) {
-            sb.append(",");
-          }
-          Map.Entry<String, String> entry = iter.next();
-          sb.append(entry.getKey()).append("!=").append(entry.getValue());
-        }
-      }
-      if (labelsIn != null && !labelsIn.isEmpty()) {
-        for (Iterator<Map.Entry<String, String[]>> iter = labelsIn.entrySet().iterator(); iter.hasNext(); ) {
-          if (sb.length() > 0) {
-            sb.append(",");
-          }
-          Map.Entry<String, String[]> entry = iter.next();
-          sb.append(entry.getKey()).append(" in ").append("(").append(join(entry.getValue())).append(")");
-        }
-      }
-      if (labelsNotIn != null && !labelsNotIn.isEmpty()) {
-        for (Iterator<Map.Entry<String, String[]>> iter = labelsNotIn.entrySet().iterator(); iter.hasNext(); ) {
-          if (sb.length() > 0) {
-            sb.append(",");
-          }
-          Map.Entry<String, String[]> entry = iter.next();
-          sb.append(entry.getKey()).append(" notin ").append("(").append(join(entry.getValue())).append(")");
-        }
-      }
-      if (sb.length() > 0) {
-        requestBuilder.addQueryParam("labelSelector", sb.toString());
+
+      String labelQueryParam = getLabelQueryParam();
+      if (labelQueryParam.length() > 0) {
+        requestBuilder.addQueryParam("labelSelector", labelQueryParam);
       }
 
-      sb = new StringBuilder();
-      if (fields != null && !fields.isEmpty()) {
-        if (sb.length() > 0) {
-          sb.append(",");
-        }
-        for (Iterator<Map.Entry<String, String>> iter = fields.entrySet().iterator(); iter.hasNext(); ) {
-          Map.Entry<String, String> entry = iter.next();
-          sb.append(entry.getKey()).append("=").append(entry.getValue());
-        }
+      String fieldQueryString = getFieldQueryParam();
+      if (fieldQueryString.length() > 0) {
+        requestBuilder.addQueryParam("fieldSelector", fieldQueryString);
       }
-      if (sb.length() > 0) {
-        requestBuilder.addQueryParam("fieldSelector", sb.toString());
-      }
+
       Future<Response> f = requestBuilder.execute();
       Response r = f.get();
       if (r.getStatusCode() != 200) {
-        Status status = mapper.reader(Status.class).readValue(r.getResponseBodyAsStream());
+        Status status = mapper.readerFor(Status.class).readValue(r.getResponseBodyAsStream());
         throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
       }
-      return mapper.reader(listType).readValue(r.getResponseBodyAsStream());
+      return mapper.readerFor(listType).readValue(r.getResponseBodyAsStream());
     } catch (InterruptedException | ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
@@ -359,7 +368,7 @@ public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesRe
         Future<Response> f = requestBuilder.execute();
         Response r = f.get();
         if (r.getStatusCode() != 200) {
-          Status status = mapper.reader(Status.class).readValue(r.getResponseBodyAsStream());
+          Status status = mapper.readerFor(Status.class).readValue(r.getResponseBodyAsStream());
           throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
         }
       }
@@ -374,62 +383,7 @@ public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesRe
 
   public Watch watch(String resourceVersion, final Watcher<T> watcher) throws KubernetesClientException {
     try {
-      if (resourceVersion == null) {
-        L currentList = list();
-        resourceVersion = currentList.getMetadata().getResourceVersion();
-      }
-
-      URL requestUrl = getNamespacedUrl();
-      AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().prepareGet(requestUrl.toString().replaceFirst("^http", "ws"));
-
-      requestBuilder.addQueryParam("resourceVersion", resourceVersion);
-      requestBuilder.addQueryParam("watch", "true");
-
-      if (labels != null && !labels.isEmpty()) {
-        StringBuilder sb = new StringBuilder();
-        for (Iterator<Map.Entry<String, String>> iter = labels.entrySet().iterator(); iter.hasNext(); ) {
-          Map.Entry<String, String> entry = iter.next();
-          sb.append(entry.getKey()).append("=").append(entry.getValue());
-          if (iter.hasNext()) {
-            sb.append(",");
-          }
-        }
-        requestBuilder.addQueryParam("labelSelector", sb.toString());
-      }
-      if (fields != null && !fields.isEmpty()) {
-        StringBuilder sb = new StringBuilder();
-        for (Iterator<Map.Entry<String, String>> iter = fields.entrySet().iterator(); iter.hasNext(); ) {
-          Map.Entry<String, String> entry = iter.next();
-          sb.append(entry.getKey()).append("=").append(entry.getValue());
-          if (iter.hasNext()) {
-            sb.append(",");
-          }
-        }
-        requestBuilder.addQueryParam("fieldSelector", sb.toString());
-      }
-      Future<WebSocket> f = requestBuilder.execute(new WebSocketUpgradeHandler.Builder().addWebSocketListener(
-          new DefaultWebSocketListener() {
-
-            private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-            @Override
-            public void onMessage(String message) {
-              try {
-                WatchEvent event = mapper.readerFor(WatchEvent.class).readValue(message);
-                T obj = (T) event.getObject();
-                Watcher.Action action = Watcher.Action.valueOf(event.getType());
-                watcher.eventReceived(action, obj);
-              } catch (IOException e) {
-                logger.error("Could not deserialize watch event: {}", message, e);
-              } catch (ClassCastException e) {
-                logger.error("Received wrong type of object for watch", e);
-              } catch (IllegalArgumentException e) {
-                logger.error("Invalid event type", e);
-              }
-            }
-          }).build()
-      );
-      return new WatchImpl(f.get());
+      return new WatchConnectionManager<>(this, resourceVersion, watcher);
     } catch (MalformedURLException | InterruptedException | ExecutionException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
@@ -466,6 +420,9 @@ public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesRe
 
 
   protected URL getResourceUrl() throws MalformedURLException {
+    if (name == null) {
+      return getNamespacedUrl();
+    }
     return new URL(getNamespacedUrl(), name);
   }
 
@@ -473,10 +430,10 @@ public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesRe
     Future<Response> f = requestBuilder.execute();
     Response r = f.get();
     if (r.getStatusCode() != successStatusCode) {
-      Status status = mapper.reader(Status.class).readValue(r.getResponseBodyAsStream());
+      Status status = mapper.readerFor(Status.class).readValue(r.getResponseBodyAsStream());
       throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
     }
-    return mapper.reader(getType()).readValue(r.getResponseBodyAsStream());
+    return mapper.readerFor(getType()).readValue(r.getResponseBodyAsStream());
   }
 
   protected void handleDelete(URL requestUrl) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
@@ -484,7 +441,7 @@ public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesRe
     Future<Response> f = requestBuilder.execute();
     Response r = f.get();
     if (r.getStatusCode() != 200) {
-      Status status = mapper.reader(Status.class).readValue(r.getResponseBodyAsStream());
+      Status status = mapper.readerFor(Status.class).readValue(r.getResponseBodyAsStream());
       throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
     }
   }

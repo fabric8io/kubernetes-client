@@ -21,6 +21,7 @@ import com.ning.http.client.Realm;
 import com.ning.http.client.filter.FilterContext;
 import com.ning.http.client.filter.FilterException;
 import com.ning.http.client.filter.RequestFilter;
+import com.ning.http.client.providers.netty.NettyAsyncHttpProviderConfig;
 import io.fabric8.kubernetes.api.model.DoneableEndpoints;
 import io.fabric8.kubernetes.api.model.DoneableEvent;
 import io.fabric8.kubernetes.api.model.DoneableNamespace;
@@ -170,6 +171,10 @@ public class DefaultKubernetesClient implements KubernetesClient {
           }
         });
       }
+
+      NettyAsyncHttpProviderConfig nettyConfig = new NettyAsyncHttpProviderConfig();
+      nettyConfig.setWebSocketMaxFrameSize(65536);
+      clientConfigBuilder.setAsyncHttpClientProviderConfig(nettyConfig);
 
       this.httpClient = new AsyncHttpClient(clientConfigBuilder.build());
     } catch (UnrecoverableKeyException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException | InvalidKeySpecException | IOException | CertificateException e) {

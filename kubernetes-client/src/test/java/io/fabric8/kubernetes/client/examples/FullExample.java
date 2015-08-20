@@ -64,7 +64,7 @@ public class FullExample {
         Thread watcherThread = new Thread(new Runnable() {
           @Override
           public void run() {
-            try (Watch watch = client.replicationControllers().inNamespace("thisisatest").watch(new Watcher<ReplicationController>() {
+            try (Watch watch = client.replicationControllers().inNamespace("thisisatest").watch("0", new Watcher<ReplicationController>() {
                 @Override
                 public void eventReceived(Action action, ReplicationController resource) {
                   logger.info("{}: {}", action, resource);
