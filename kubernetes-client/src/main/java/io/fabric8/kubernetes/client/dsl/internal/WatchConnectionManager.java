@@ -127,13 +127,13 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
               } catch (ExecutionException e) {
                 if (e.getCause() != null && e.getCause().getCause() != null && e.getCause().getCause() instanceof ConnectException) {
                   if (reconnectLimit >= 0 && currentReconnectAttempt.getAndIncrement() >= reconnectLimit) {
-                    watcher.onClose(new KubernetesClientException("Connection closed.", e));
+                    watcher.onClose(new KubernetesClientException("Connection unexpectedly closed", e));
                     return;
                   }
                   try {
                     TimeUnit.MILLISECONDS.sleep(reconnectInterval);
                   } catch (InterruptedException e1) {
-                    watcher.onClose(new KubernetesClientException("Connection closed.", e1));
+                    watcher.onClose(new KubernetesClientException("Connection unexpectedly closed", e1));
                     return;
                   }
                   onClose(websocket);
