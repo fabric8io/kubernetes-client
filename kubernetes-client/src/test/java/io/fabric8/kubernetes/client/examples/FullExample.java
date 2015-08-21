@@ -47,7 +47,20 @@ public class FullExample {
 
     Config config = new ConfigBuilder().withMasterUrl(master).build();
     try (final KubernetesClient client = new DefaultKubernetesClient(config)) {
-      try {
+      try (Watch watch = client.replicationControllers().inNamespace("thisisatest").watch("0", new Watcher<ReplicationController>() {
+        @Override
+        public void eventReceived(Action action, ReplicationController resource) {
+          logger.info("{}: {}", action, resource);
+        }
+
+        @Override
+        public void onClose(KubernetesClientException e) {
+          if (e != null) {
+            e.printStackTrace();
+            logger.error(e.getMessage(), e);
+          }
+        }
+      })) {
         // Create a namespace for all our stuff
         Namespace ns = new NamespaceBuilder().withNewMetadata().withName("thisisatest").addToLabels("this", "rocks").endMetadata().build();
         log("Created namespace", client.namespaces().create(ns));
@@ -59,27 +72,6 @@ public class FullExample {
 
         ResourceQuota quota = new ResourceQuotaBuilder().withNewMetadata().withName("pod-quota").endMetadata().withNewSpec().addToHard("pods", new Quantity("10")).endSpec().build();
         log("Create resource quota", client.resourceQuotas().inNamespace("thisisatest").create(quota));
-
-        //Watch the RCs in the namespace in a separate thread
-        Thread watcherThread = new Thread(new Runnable() {
-          @Override
-          public void run() {
-            try (Watch watch = client.replicationControllers().inNamespace("thisisatest").watch("0", new Watcher<ReplicationController>() {
-                @Override
-                public void eventReceived(Action action, ReplicationController resource) {
-                  logger.info("{}: {}", action, resource);
-                }
-              })) {
-              Thread.sleep(60000);
-            } catch (KubernetesClientException e) {
-              logger.error("Could not watch resources", e);
-            } catch (InterruptedException e) {
-              //
-            }
-          }
-        });
-        watcherThread.setDaemon(true);
-        watcherThread.start();
 
         // Create an RC
         ReplicationController rc = new ReplicationControllerBuilder()

@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 public class WatchExample {
 
@@ -38,17 +39,24 @@ public class WatchExample {
       master = args[0];
     }
 
+    final CountDownLatch closeLatch = new CountDownLatch(1);
     Config config = new ConfigBuilder().withMasterUrl(master).withWatchReconnectLimit(2).build();
     try (final KubernetesClient client = new DefaultKubernetesClient(config)) {
-      final CountDownLatch latch = new CountDownLatch(10);
       try (Watch watch = client.replicationControllers().inNamespace("default").watch(new Watcher<ReplicationController>() {
         @Override
         public void eventReceived(Action action, ReplicationController resource) {
           logger.info("{}: {}", action, resource.getMetadata().getResourceVersion());
-          latch.countDown();
+        }
+
+        @Override
+        public void onClose(KubernetesClientException e) {
+          if (e != null) {
+            logger.error(e.getMessage(), e);
+            closeLatch.countDown();
+          }
         }
       })) {
-        latch.await();
+        closeLatch.await(1, TimeUnit.MINUTES);
       } catch (KubernetesClientException | InterruptedException e) {
         logger.error("Could not watch resources", e);
       }
