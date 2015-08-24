@@ -17,6 +17,14 @@
 package io.fabric8.openshift.client.mock;
 
 
+import io.fabric8.openshift.api.model.Group;
+import io.fabric8.openshift.api.model.GroupBuilder;
+import io.fabric8.openshift.api.model.GroupList;
+import io.fabric8.openshift.api.model.GroupListBuilder;
+import io.fabric8.openshift.api.model.User;
+import io.fabric8.openshift.api.model.UserBuilder;
+import io.fabric8.openshift.api.model.UserList;
+import io.fabric8.openshift.api.model.UserListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.api.model.BuildBuilder;
 import io.fabric8.openshift.api.model.BuildList;
@@ -99,6 +107,63 @@ public class OpenshiftMockClientTest {
     mock.buildConfigs().inNamespace("ns1").withName("build1").withSecret("secret101").withType("github").trigger(EasyMock.<WebHookTrigger>anyObject()).andReturn(null).once();
     OpenShiftClient client = mock.replay();
     client.buildConfigs().inNamespace("ns1").withName("build1").withSecret("secret101").withType("github").trigger(new WebHookTrigger());
+    mock.verify();
+  }
+
+
+
+  @Test
+  public void testUsers() {
+    OpenshiftMockClient mock = new OpenshiftMockClient();
+
+    User myuser = new UserBuilder()
+      .withNewMetadata()
+        .withName("myuser")
+        .endMetadata()
+        .withFullName("My User")
+      .addToIdentities("myuser")
+      .build();
+
+    mock.users().list().andReturn(new UserListBuilder().addToItems(myuser).build()).anyTimes();
+
+    mock.users().withLabel("key1", "value1").list().andReturn(new UserListBuilder().addToItems(myuser).build()).anyTimes();
+
+
+    OpenShiftClient client = mock.replay();
+    UserList userList = client.users().list();
+    Assert.assertFalse(userList.getItems().isEmpty());
+
+    userList = client.users().withLabel("key1","value1").list();
+    Assert.assertFalse(userList.getItems().isEmpty());
+    Assert.assertTrue(userList.getItems().get(0).getIdentities().contains("myuser"));
+    mock.verify();
+  }
+
+
+  @Test
+  public void testGroups() {
+    OpenshiftMockClient mock = new OpenshiftMockClient();
+
+    Group mygroup = new GroupBuilder()
+      .withNewMetadata()
+      .withName("mygroup")
+      .endMetadata()
+      .addToUsers("myuser", "myotheruser")
+      .build();
+
+    mock.groups().list().andReturn(new GroupListBuilder().addToItems(mygroup).build()).anyTimes();
+
+    mock.groups().withLabel("key1", "value1").list().andReturn(new GroupListBuilder().addToItems(mygroup).build()).anyTimes();
+
+
+    OpenShiftClient client = mock.replay();
+    GroupList groupList = client.groups().list();
+    Assert.assertFalse(groupList.getItems().isEmpty());
+
+    groupList = client.groups().withLabel("key1","value1").list();
+    Assert.assertFalse(groupList.getItems().isEmpty());
+    Assert.assertTrue(groupList.getItems().get(0).getUsers().contains("myuser"));
+    Assert.assertTrue(groupList.getItems().get(0).getUsers().contains("myotheruser"));
     mock.verify();
   }
 

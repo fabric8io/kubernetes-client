@@ -62,11 +62,24 @@ import io.fabric8.kubernetes.client.mock.MockResource;
 import io.fabric8.kubernetes.client.mock.MockScaleableResource;
 import io.fabric8.kubernetes.client.mock.Replayable;
 import io.fabric8.kubernetes.client.mock.Verifiable;
+import io.fabric8.openshift.api.model.DoneableGroup;
+import io.fabric8.openshift.api.model.DoneablePolicy;
+import io.fabric8.openshift.api.model.DoneablePolicyBinding;
+import io.fabric8.openshift.api.model.DoneableUser;
+import io.fabric8.openshift.api.model.Group;
+import io.fabric8.openshift.api.model.GroupList;
+import io.fabric8.openshift.api.model.Policy;
+import io.fabric8.openshift.api.model.PolicyBinding;
+import io.fabric8.openshift.api.model.PolicyBindingList;
+import io.fabric8.openshift.api.model.PolicyList;
+import io.fabric8.openshift.api.model.User;
+import io.fabric8.openshift.api.model.UserList;
 import io.fabric8.openshift.client.mock.impl.MockBuild;
 import io.fabric8.openshift.client.mock.impl.MockBuildConfig;
 import io.fabric8.openshift.client.mock.impl.MockDeploymentConfig;
 import io.fabric8.kubernetes.client.mock.impl.MockEndpoints;
 import io.fabric8.kubernetes.client.mock.impl.MockEvent;
+import io.fabric8.openshift.client.mock.impl.MockGroup;
 import io.fabric8.openshift.client.mock.impl.MockImageStream;
 import io.fabric8.kubernetes.client.mock.impl.MockNamespace;
 import io.fabric8.kubernetes.client.mock.impl.MockNode;
@@ -78,6 +91,8 @@ import io.fabric8.kubernetes.client.mock.impl.MockPersistentVolumeClaim;
 import io.fabric8.kubernetes.client.mock.impl.MockPod;
 import io.fabric8.kubernetes.client.mock.impl.MockReplicationController;
 import io.fabric8.kubernetes.client.mock.impl.MockResourceQuota;
+import io.fabric8.openshift.client.mock.impl.MockPolicy;
+import io.fabric8.openshift.client.mock.impl.MockPolicyBinding;
 import io.fabric8.openshift.client.mock.impl.MockRoute;
 import io.fabric8.kubernetes.client.mock.impl.MockSecret;
 import io.fabric8.kubernetes.client.mock.impl.MockService;
@@ -111,6 +126,7 @@ import io.fabric8.openshift.api.model.RouteList;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.mock.impl.MockUser;
 import org.easymock.EasyMock;
 import org.easymock.IExpectationSetters;
 
@@ -145,6 +161,10 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
   private final MockOAuthAuthorizeToken oAuthAuthorizeTokens = new MockOAuthAuthorizeToken();
   private final MockOAuthClient oAuthClients = new MockOAuthClient();
   private final MockRoute routes = new MockRoute();
+  private final MockUser users = new MockUser();
+  private final MockGroup groups = new MockGroup();
+  private final MockPolicy policies = new MockPolicy();
+  private final MockPolicyBinding policyBindings = new MockPolicyBinding();
 
   public OpenshiftMockClient() {
     expect(client.adapt(OpenShiftClient.class)).andReturn(client).anyTimes();
@@ -170,6 +190,11 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
     expect(client.oAuthClients()).andReturn(oAuthClients.getDelegate()).anyTimes();
     expect(client.routes()).andReturn(routes.getDelegate()).anyTimes();
     expect(client.templates()).andReturn(templates.getDelegate()).anyTimes();
+    expect(client.users()).andReturn(users.getDelegate()).anyTimes();
+    expect(client.groups()).andReturn(groups.getDelegate()).anyTimes();
+    expect(client.policies()).andReturn(policies.getDelegate()).anyTimes();
+    expect(client.policyBindings()).andReturn(policyBindings.getDelegate()).anyTimes();
+
     client.close();
     EasyMock.expectLastCall().anyTimes();
   }
@@ -187,7 +212,6 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
     resourceQuotas.replay();
     secrets.replay();
     serviceAccounts.replay();
-    templates.replay();
 
     builds.replay();
     buildConfigs.replay();
@@ -197,6 +221,13 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
     oAuthAuthorizeTokens.replay();
     oAuthClients.replay();
     routes.replay();
+    templates.replay();
+
+    users.replay();
+    groups.replay();
+    policies.replay();
+    policyBindings.replay();
+
     EasyMock.replay(client);
     return client;
   }
@@ -216,7 +247,6 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
     resourceQuotas.verify();
     secrets.verify();
     serviceAccounts.verify();
-    templates.verify();
 
     builds.verify();
     buildConfigs.verify();
@@ -226,6 +256,11 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
     oAuthAuthorizeTokens.verify();
     oAuthClients.verify();
     routes.verify();
+    templates.verify();
+    users.verify();
+    groups.verify();
+    policies.verify();
+    policyBindings.verify();
     EasyMock.verify(client);
   }
 
@@ -324,5 +359,21 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
 
   public  MockOperation<Template, TemplateList, DoneableTemplate, MockProcessableResource<Template, DoneableTemplate, Boolean>> templates() {
     return templates;
+  }
+
+  public  MockOperation<Group, GroupList, DoneableGroup, MockResource<Group, DoneableGroup, Boolean>> groups() {
+    return groups;
+  }
+
+  public  MockOperation<User, UserList, DoneableUser, MockResource<User, DoneableUser, Boolean>> users() {
+    return users;
+  }
+
+  public  MockOperation<Policy, PolicyList, DoneablePolicy, MockResource<Policy, DoneablePolicy, Boolean>> policies() {
+    return policies;
+  }
+
+  public  MockOperation<PolicyBinding, PolicyBindingList, DoneablePolicyBinding, MockResource<PolicyBinding, DoneablePolicyBinding, Boolean>> policyBindings() {
+    return policyBindings;
   }
 }
