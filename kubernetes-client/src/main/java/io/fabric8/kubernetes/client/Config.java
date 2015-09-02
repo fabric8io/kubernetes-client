@@ -157,7 +157,7 @@ public class Config {
   }
 
   private void tryKubeConfig(Config config) {
-    String kubeConfigFile = Utils.getSystemPropertyOrEnvVar(KUBERNETES_KUBECONFIG_FILE, new File(System.getProperty("user.home", "."), ".kube/config").toString());
+    String kubeConfigFile = Utils.getSystemPropertyOrEnvVar(KUBERNETES_KUBECONFIG_FILE, new File(System.getProperty("user.home", "."), ".kube" + File.separator + "config").toString());
     boolean kubeConfigFileExists = Files.isRegularFile(Paths.get(kubeConfigFile));
     if (kubeConfigFileExists) {
       try {
