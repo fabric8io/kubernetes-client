@@ -92,8 +92,6 @@ public interface OpenShiftClient extends Extension {
 
   ClientOperation<OpenShiftClient, Route, RouteList, DoneableRoute, ClientResource<Route, DoneableRoute>> routes();
 
-  ClientNonNamespaceOperation<OpenShiftClient, SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints();
-
   ClientOperation<OpenShiftClient, Template, TemplateList, DoneableTemplate, ProcessableClientResource<Template, DoneableTemplate>> templates();
 
   ClientOperation<OpenShiftClient, User, UserList, DoneableUser, ClientResource<User, DoneableUser>> users();

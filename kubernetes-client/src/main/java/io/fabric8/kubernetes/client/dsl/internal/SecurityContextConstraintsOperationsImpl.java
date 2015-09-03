@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openshift.client.dsl;
+package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.DoneableSecurityContextConstraints;
 import io.fabric8.kubernetes.api.model.SecurityContextConstraints;
 import io.fabric8.kubernetes.api.model.SecurityContextConstraintsList;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.openshift.client.OpenShiftClient;
 
-public class SecurityContextConstraintsOperationsImpl extends OpenshiftOperation<OpenShiftClient, SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> {
-  public SecurityContextConstraintsOperationsImpl(OpenShiftClient client) {
+public class SecurityContextConstraintsOperationsImpl extends BaseOperation<KubernetesClient, SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> {
+  public SecurityContextConstraintsOperationsImpl(KubernetesClient client) {
     super(client, "securitycontextconstraints", null, null);
   }
 
-  public SecurityContextConstraintsOperationsImpl(OpenShiftClient client, String namespace, String name) {
+  public SecurityContextConstraintsOperationsImpl(KubernetesClient client, String namespace, String name) {
     super(client, "securitycontextconstraints", namespace, name);
   }
 }

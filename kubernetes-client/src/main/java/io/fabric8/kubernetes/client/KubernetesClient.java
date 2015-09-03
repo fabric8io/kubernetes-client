@@ -59,6 +59,8 @@ public interface KubernetesClient extends ConfigAware<Config>, AutoCloseable{
 
   ClientOperation<KubernetesClient, ServiceAccount, ServiceAccountList, DoneableServiceAccount, ClientResource<ServiceAccount, DoneableServiceAccount>> serviceAccounts();
 
+  ClientNonNamespaceOperation<KubernetesClient, SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints();
+
   void close();
 
 }

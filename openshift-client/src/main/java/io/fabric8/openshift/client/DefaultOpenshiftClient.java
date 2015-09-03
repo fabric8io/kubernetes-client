@@ -76,7 +76,7 @@ import io.fabric8.openshift.client.dsl.OAuthClientOperationsImpl;
 import io.fabric8.openshift.client.dsl.PolicyBindingOperationsImpl;
 import io.fabric8.openshift.client.dsl.PolicyOperationsImpl;
 import io.fabric8.openshift.client.dsl.RouteOperationsImpl;
-import io.fabric8.openshift.client.dsl.SecurityContextConstraintsOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.SecurityContextConstraintsOperationsImpl;
 import io.fabric8.openshift.client.dsl.TemplateOperationsImpl;
 import io.fabric8.openshift.client.dsl.UserOperationsImpl;
 
@@ -167,11 +167,6 @@ public class DefaultOpenshiftClient extends DefaultKubernetesClient implements O
   @Override
   public ClientOperation<OpenShiftClient, Route, RouteList, DoneableRoute, ClientResource<Route, DoneableRoute>> routes() {
     return new RouteOperationsImpl(this);
-  }
-
-  @Override
-  public ClientNonNamespaceOperation<OpenShiftClient, SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints() {
-    return new SecurityContextConstraintsOperationsImpl(this);
   }
 
   @Override

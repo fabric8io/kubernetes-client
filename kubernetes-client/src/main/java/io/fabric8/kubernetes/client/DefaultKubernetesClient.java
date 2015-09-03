@@ -32,6 +32,7 @@ import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.DoneableReplicationController;
 import io.fabric8.kubernetes.api.model.DoneableResourceQuota;
 import io.fabric8.kubernetes.api.model.DoneableSecret;
+import io.fabric8.kubernetes.api.model.DoneableSecurityContextConstraints;
 import io.fabric8.kubernetes.api.model.DoneableService;
 import io.fabric8.kubernetes.api.model.DoneableServiceAccount;
 import io.fabric8.kubernetes.api.model.Endpoints;
@@ -55,6 +56,8 @@ import io.fabric8.kubernetes.api.model.ResourceQuotaList;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.SecretList;
+import io.fabric8.kubernetes.api.model.SecurityContextConstraints;
+import io.fabric8.kubernetes.api.model.SecurityContextConstraintsList;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
@@ -74,6 +77,7 @@ import io.fabric8.kubernetes.client.dsl.internal.PodOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ReplicationControllerOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ResourceQuotaOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.SecretOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.SecurityContextConstraintsOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ServiceAccountOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ServiceOperationsImpl;
 import io.fabric8.kubernetes.client.internal.Utils;
@@ -250,6 +254,13 @@ public class DefaultKubernetesClient implements KubernetesClient {
   public ClientOperation<KubernetesClient, ServiceAccount, ServiceAccountList, DoneableServiceAccount, ClientResource<ServiceAccount, DoneableServiceAccount>> serviceAccounts() {
     return new ServiceAccountOperationsImpl(this);
   }
+
+
+  @Override
+  public ClientNonNamespaceOperation<KubernetesClient, SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints() {
+    return new SecurityContextConstraintsOperationsImpl(this);
+  }
+
 
   @Override
   public RootPaths rootPaths() {
