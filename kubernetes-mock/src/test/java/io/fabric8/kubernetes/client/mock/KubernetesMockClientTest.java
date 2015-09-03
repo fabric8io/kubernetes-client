@@ -19,6 +19,8 @@ package io.fabric8.kubernetes.client.mock;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
+import io.fabric8.kubernetes.api.model.SecurityContextConstraintsList;
+import io.fabric8.kubernetes.api.model.SecurityContextConstraintsListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.junit.Assert;
 import org.junit.Test;
@@ -75,17 +77,39 @@ public class KubernetesMockClientTest {
 
     KubernetesClient client = mock.replay();
 
-    for (int i=0;i<5;i++) {
+    for (int i = 0; i < 5; i++) {
       PodList result = client.pods().inNamespace("ns1").withLabel("component", "f1").list();
       Assert.assertNotNull(result);
       Assert.assertEquals(2, result.getItems().size());
     }
 
-    for (int i=0;i<5;i++) {
+    for (int i = 0; i < 5; i++) {
       PodList result = client.pods().inNamespace("ns1").withLabel("component", "f2").list();
       Assert.assertNotNull(result);
       Assert.assertEquals(1, result.getItems().size());
     }
   }
 
+
+  @Test
+  public void testListSecurityContextConstraints() {
+    KubernetesMockClient mock = new KubernetesMockClient();
+    mock.securityContextConstraints().list().andReturn(new SecurityContextConstraintsListBuilder()
+      .addNewItem()
+      .withNewMetadata()
+      .withName("scc1")
+      .endMetadata()
+      .withAllowHostPorts(true)
+      .withAllowPrivilegedContainer(true)
+      .endItem()
+      .build()).anyTimes();
+
+    KubernetesClient client = mock.replay();
+
+    for (int i = 0; i < 5; i++) {
+      SecurityContextConstraintsList result = client.securityContextConstraints().list();
+      Assert.assertNotNull(result);
+      Assert.assertEquals(1, result.getItems().size());
+    }
+  }
 }

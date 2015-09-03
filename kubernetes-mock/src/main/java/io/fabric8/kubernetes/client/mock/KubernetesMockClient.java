@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.DoneableReplicationController;
 import io.fabric8.kubernetes.api.model.DoneableResourceQuota;
 import io.fabric8.kubernetes.api.model.DoneableSecret;
+import io.fabric8.kubernetes.api.model.DoneableSecurityContextConstraints;
 import io.fabric8.kubernetes.api.model.DoneableService;
 import io.fabric8.kubernetes.api.model.DoneableServiceAccount;
 import io.fabric8.kubernetes.api.model.Endpoints;
@@ -49,6 +50,8 @@ import io.fabric8.kubernetes.api.model.ResourceQuotaList;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.SecretList;
+import io.fabric8.kubernetes.api.model.SecurityContextConstraints;
+import io.fabric8.kubernetes.api.model.SecurityContextConstraintsList;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
@@ -65,6 +68,7 @@ import io.fabric8.kubernetes.client.mock.impl.MockPod;
 import io.fabric8.kubernetes.client.mock.impl.MockReplicationController;
 import io.fabric8.kubernetes.client.mock.impl.MockResourceQuota;
 import io.fabric8.kubernetes.client.mock.impl.MockSecret;
+import io.fabric8.kubernetes.client.mock.impl.MockSecurityContextConstraints;
 import io.fabric8.kubernetes.client.mock.impl.MockService;
 import io.fabric8.kubernetes.client.mock.impl.MockServiceAccount;
 import org.easymock.EasyMock;
@@ -91,6 +95,7 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
   private final MockResourceQuota resourceQuotas = new MockResourceQuota();
   private final MockSecret secrets = new MockSecret();
   private final MockServiceAccount serviceAccounts = new MockServiceAccount();
+  private final MockSecurityContextConstraints securityContextConstraints = new MockSecurityContextConstraints();
 
 
   public KubernetesMockClient() {
@@ -106,6 +111,7 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
     expect(client.resourceQuotas()).andReturn(resourceQuotas.getDelegate()).anyTimes();
     expect(client.secrets()).andReturn(secrets.getDelegate()).anyTimes();
     expect(client.serviceAccounts()).andReturn(serviceAccounts.getDelegate()).anyTimes();
+    expect(client.securityContextConstraints()).andReturn(securityContextConstraints.getDelegate()).anyTimes();
     client.close();
     EasyMock.expectLastCall().anyTimes();
   }
@@ -123,6 +129,7 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
     resourceQuotas.replay();
     secrets.replay();
     serviceAccounts.replay();
+    securityContextConstraints.replay();
     EasyMock.replay(client);
     return client;
   }
@@ -141,6 +148,7 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
     resourceQuotas.verify();
     secrets.verify();
     serviceAccounts.verify();
+    securityContextConstraints.verify();
     EasyMock.verify(client);
   }
 
@@ -202,5 +210,9 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
 
   public MockOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, MockResource<ServiceAccount, DoneableServiceAccount, Boolean>> serviceAccounts() {
     return serviceAccounts;
+  }
+
+  public MockOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, MockResource<SecurityContextConstraints, DoneableSecurityContextConstraints, Boolean>> securityContextConstraints() {
+    return securityContextConstraints;
   }
 }
