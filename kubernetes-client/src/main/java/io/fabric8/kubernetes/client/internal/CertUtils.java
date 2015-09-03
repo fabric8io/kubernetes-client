@@ -19,17 +19,22 @@ import com.ning.http.util.Base64;
 import net.oauth.signature.pem.PEMReader;
 import net.oauth.signature.pem.PKCS1EncodedKeySpec;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.KeyFactory;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.security.interfaces.RSAPrivateKey;
 import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.RSAPrivateCrtKeySpec;
 
 public class CertUtils {
@@ -66,15 +71,24 @@ public class CertUtils {
 
       InputStream keyInputStream = getInputStreamFromDataOrFile(clientKeyData, clientKeyFile);
       PEMReader reader = new PEMReader(keyInputStream);
-      RSAPrivateCrtKeySpec keySpec = new PKCS1EncodedKeySpec(reader.getDerBytes()).getKeySpec();
-      KeyFactory kf = KeyFactory.getInstance(clientKeyAlgo);
-      RSAPrivateKey privKey = (RSAPrivateKey) kf.generatePrivate(keySpec);
+
+      PrivateKey privateKey;
+
+      KeyFactory keyFactory = KeyFactory.getInstance(clientKeyAlgo);
+      try {
+        // First let's try PKCS8
+        privateKey = keyFactory.generatePrivate(new PKCS8EncodedKeySpec(reader.getDerBytes()));
+      } catch (InvalidKeySpecException e) {
+        // Otherwise try PKCS8
+        RSAPrivateCrtKeySpec keySpec = new PKCS1EncodedKeySpec(reader.getDerBytes()).getKeySpec();
+        privateKey = keyFactory.generatePrivate(keySpec);
+      }
 
       KeyStore keyStore = KeyStore.getInstance("JKS");
       keyStore.load(null, clientKeyPassphrase);
 
       String alias = cert.getSubjectX500Principal().getName();
-      keyStore.setKeyEntry(alias, privKey, clientKeyPassphrase, new Certificate[]{cert});
+      keyStore.setKeyEntry(alias, privateKey, clientKeyPassphrase, new Certificate[]{cert});
 
       return keyStore;
     }
