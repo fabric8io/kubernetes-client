@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.examples;
+package io.fabric8.kubernetes.examples;
 
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceBuilder;
@@ -29,11 +29,9 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.internal.SerializationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static io.fabric8.kubernetes.client.internal.SerializationUtils.dumpAsYaml;
-import static io.fabric8.kubernetes.client.internal.SerializationUtils.dumpWithoutRuntimeStateAsYaml;
 
 public class FullExample {
 
@@ -107,8 +105,8 @@ public class FullExample {
         ReplicationController gotRc = client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").get();
         log("Get RC by name in namespace", gotRc);
         // Dump the RC as YAML
-        log("Dump RC as YAML", dumpAsYaml(gotRc));
-        log("Dump RC as YAML without state", dumpWithoutRuntimeStateAsYaml(gotRc));
+        log("Dump RC as YAML", SerializationUtils.dumpAsYaml(gotRc));
+        log("Dump RC as YAML without state", SerializationUtils.dumpWithoutRuntimeStateAsYaml(gotRc));
 
         // Get the RC by label
         log("Get RC by label", client.replicationControllers().withLabel("server", "nginx").list());

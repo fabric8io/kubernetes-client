@@ -96,6 +96,7 @@
     <module>kubernetes-mock</module>
     <module>openshift-client</module>
     <module>openshift-mock</module>
+    <module>kubernetes-examples</module>
   </modules>
 
   <build>

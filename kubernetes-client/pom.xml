@@ -59,18 +59,6 @@
       <artifactId>jackson-databind</artifactId>
       <version>${jackson.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
-      <version>${log4j.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
-      <version>${log4j.version}</version>
-      <scope>provided</scope>
-    </dependency>
 
     <dependency>
       <groupId>io.sundr</groupId>
@@ -95,7 +83,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.4.0</version>
         <configuration>
-          <mainClass>io.fabric8.kubernetes.client.examples.FullExample</mainClass>
+          <mainClass>io.fabric8.kubernetes.examples.FullExample</mainClass>
           <classpathScope>test</classpathScope>
           <arguments>
             <argument>${exec.master}</argument>

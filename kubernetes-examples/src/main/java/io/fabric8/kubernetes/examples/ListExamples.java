@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.examples;
+package io.fabric8.kubernetes.examples;
 
-import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
@@ -24,9 +23,9 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DeleteExamples {
+public class ListExamples {
 
-  private static final Logger logger = LoggerFactory.getLogger(DeleteExamples.class);
+  private static final Logger logger = LoggerFactory.getLogger(ListExamples.class);
 
   public static void main(String[] args) {
     String master = "https://localhost:8443/";
@@ -35,25 +34,30 @@ public class DeleteExamples {
     }
 
     Config config = new ConfigBuilder().withMasterUrl(master).build();
-    KubernetesClient client = new DefaultKubernetesClient(config);
-    try {
-      log("Create namespace:", client.namespaces().create(new NamespaceBuilder().withNewMetadata().withName("thisisatest").endMetadata().build()));
-      log("Deleted namespace:", client.namespaces().withName("test").delete());
-      log("Deleted testPod:", client.pods().inNamespace("thisisatest").withName("testpod").delete());
+    try (final KubernetesClient client = new DefaultKubernetesClient(config)) {
+
+      System.out.println(
+        client.namespaces().list()
+      );
+
+      System.out.println(
+        client.namespaces().withLabel("this", "works").list()
+      );
+
+      System.out.println(
+        client.pods().withLabel("this", "works").list()
+      );
+
+      System.out.println(
+        client.pods().inNamespace("test").withLabel("this", "works").list()
+      );
+
+      System.out.println(
+        client.pods().inNamespace("test").withName("testing").get()
+      );
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);
-    } finally {
-      client.namespaces().withName("thisisatest").delete();
-      client.close();
     }
-  }
-
-  private static void log(String action, Object obj) {
-    logger.info("{}: {}", action, obj);
-  }
-
-  private static void log(String action) {
-    logger.info(action);
   }
 
 }

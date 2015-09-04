@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.fabric8.openshift.client.examples;
+package io.fabric8.openshift.examples;
 
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceBuilder;
