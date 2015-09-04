@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.Realm;
@@ -88,7 +90,9 @@ import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
@@ -105,6 +109,8 @@ import static io.fabric8.kubernetes.client.internal.CertUtils.createTrustStore;
 
 public class DefaultKubernetesClient implements KubernetesClient {
 
+  private static final ObjectMapper jsonMapper = new ObjectMapper();
+  private static final ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
   private AsyncHttpClient httpClient;
   private URL masterUrl;
   private Config configuration;
@@ -193,6 +199,26 @@ public class DefaultKubernetesClient implements KubernetesClient {
   @Override
   public void close() {
     httpClient.close();
+  }
+
+  @Override
+  public <T> T unmarshal(InputStream is, Class<T> type) throws KubernetesClientException {
+    try (BufferedInputStream bis = new BufferedInputStream(is)) {
+      bis.mark(-1);
+      int intch;
+      do {
+        intch = bis.read();
+      } while (intch > -1 && Character.isWhitespace(intch));
+      bis.reset();
+
+      ObjectMapper mapper = jsonMapper;
+      if (intch != '{') {
+        mapper = yamlMapper;
+      }
+      return mapper.readerFor(type).readValue(bis);
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
   }
 
   @Override

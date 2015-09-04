@@ -16,7 +16,8 @@
 package io.fabric8.kubernetes.client.internal;
 
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -32,8 +33,9 @@ public class CertUtilsTest {
   @Ignore
   @Test
   public void testLoadingDodgyKubeConfig() throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException, InvalidKeySpecException {
-    System.setProperty("kubeconfig", "/var/lib/openshift/openshift.local.config/master/admin.kubeconfig");
-    Config config = new ConfigBuilder().build();
+    System.setProperty("kubeconfig", "/tmp/ceposta.kubeconfig");
+    KubernetesClient client = new DefaultKubernetesClient();
+    Config config = client.getConfiguration();
     KeyStore ts = CertUtils.createTrustStore(config.getCaCertData(), null);
     KeyStore ks = CertUtils.createKeyStore(config.getClientCertData(), null, config.getClientKeyData(), null, "RSA", "changeit".toCharArray());
   }
