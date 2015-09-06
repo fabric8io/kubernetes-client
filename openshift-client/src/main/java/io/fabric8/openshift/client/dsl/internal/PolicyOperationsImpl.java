@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openshift.client.dsl;
+package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 import io.fabric8.openshift.api.model.DoneablePolicy;
 import io.fabric8.openshift.api.model.Policy;
 import io.fabric8.openshift.api.model.PolicyList;
 import io.fabric8.openshift.client.OpenShiftClient;
 
-public class PolicyOperationsImpl extends OpenshiftOperation<OpenShiftClient, Policy, PolicyList, DoneablePolicy, ClientResource<Policy, DoneablePolicy>> {
+public class PolicyOperationsImpl extends OpenshiftOperation<OpenShiftClient, Policy, PolicyList, DoneablePolicy, ClientResource<Policy, DoneablePolicy>, CreateFromLoadable<Policy, DoneablePolicy>> {
   public PolicyOperationsImpl(OpenShiftClient client) {
     super(client, "policies", null, null, true);
   }

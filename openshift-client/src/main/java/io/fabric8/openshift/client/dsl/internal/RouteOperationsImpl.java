@@ -13,22 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openshift.client.dsl;
+package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.openshift.api.model.DoneableOAuthClient;
-import io.fabric8.openshift.api.model.OAuthClient;
-import io.fabric8.openshift.api.model.OAuthClientList;
+import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
+import io.fabric8.openshift.api.model.DoneableRoute;
+import io.fabric8.openshift.api.model.Route;
+import io.fabric8.openshift.api.model.RouteList;
 import io.fabric8.openshift.client.OpenShiftClient;
 
-public class OAuthClientOperationsImpl extends OpenshiftOperation<OpenShiftClient, OAuthClient, OAuthClientList, DoneableOAuthClient,
-  ClientResource<OAuthClient, DoneableOAuthClient>> {
+public class RouteOperationsImpl extends OpenshiftOperation<OpenShiftClient, Route, RouteList, DoneableRoute, ClientResource<Route, DoneableRoute>, CreateFromLoadable<Route, DoneableRoute>> {
 
-  public OAuthClientOperationsImpl(OpenShiftClient client) {
-    super(client, "oauthclients", null, null, true);
+  public RouteOperationsImpl(OpenShiftClient client) {
+    super(client, "routes", null, null, true);
   }
 
-  public OAuthClientOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading) {
-    super(client, "oauthclients", namespace, name, cascading);
+  public RouteOperationsImpl(OpenShiftClient client, String namespace, String name) {
+    super(client, "routes", namespace, name);
   }
+
 }

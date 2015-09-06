@@ -13,22 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openshift.client.dsl;
+package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.openshift.api.model.DoneableImageStream;
-import io.fabric8.openshift.api.model.ImageStream;
-import io.fabric8.openshift.api.model.ImageStreamList;
+import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
+import io.fabric8.openshift.api.model.Build;
+import io.fabric8.openshift.api.model.BuildList;
+import io.fabric8.openshift.api.model.DoneableBuild;
 import io.fabric8.openshift.client.OpenShiftClient;
 
-public class ImageStreamOperationsImpl extends OpenshiftOperation<OpenShiftClient, ImageStream, ImageStreamList, DoneableImageStream,
-  ClientResource<ImageStream, DoneableImageStream>> {
+public class BuildOperationsImpl extends OpenshiftOperation<OpenShiftClient, Build, BuildList, DoneableBuild,
+  ClientResource<Build, DoneableBuild>, CreateFromLoadable<Build, DoneableBuild>> {
 
-  public ImageStreamOperationsImpl(OpenShiftClient client) {
-    super(client, "imagestreams", null, null, true);
+  public BuildOperationsImpl(OpenShiftClient client) {
+    super(client, "builds", null, null, true);
   }
 
-  public ImageStreamOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading) {
-    super(client, "imagestreams", namespace, name, cascading);
+  public BuildOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading) {
+    super(client, "builds", namespace, name, cascading);
   }
 }

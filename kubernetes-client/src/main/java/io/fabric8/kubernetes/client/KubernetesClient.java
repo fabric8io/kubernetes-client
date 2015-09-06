@@ -61,12 +61,11 @@ import io.fabric8.kubernetes.client.dsl.ClientOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.RollableScallableClientResource;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
 
-public interface KubernetesClient extends ConfigAware<Config>, AutoCloseable{
+public interface KubernetesClient extends ConfigAware<Config>, AutoCloseable {
 
   <T extends Extension> T adapt(Class<T> type);
 
@@ -104,6 +103,6 @@ public interface KubernetesClient extends ConfigAware<Config>, AutoCloseable{
 
   void close();
 
-  <T> T unmarshal(InputStream is, Class<T> type) throws IOException;
+  <T> T unmarshal(InputStream is, Class<T> type);
 
 }

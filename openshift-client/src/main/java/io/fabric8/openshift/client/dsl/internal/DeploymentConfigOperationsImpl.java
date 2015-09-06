@@ -13,16 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openshift.client.dsl;
+package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.api.model.DoneableDeploymentConfig;
 import io.fabric8.openshift.client.OpenShiftClient;
 
 public class DeploymentConfigOperationsImpl extends OpenshiftOperation<OpenShiftClient, DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig,
-  ClientResource<DeploymentConfig, DoneableDeploymentConfig>> {
+  ClientResource<DeploymentConfig, DoneableDeploymentConfig>, CreateFromLoadable<DeploymentConfig, DoneableDeploymentConfig>> {
 
   public DeploymentConfigOperationsImpl(OpenShiftClient client) {
     super(client, "deploymentconfigs", null, null, true);

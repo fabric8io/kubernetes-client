@@ -20,8 +20,9 @@ import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.SecretList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 
-public class SecretOperationsImpl extends HasMetadataOperation<KubernetesClient, Secret, SecretList, DoneableSecret, ClientResource<Secret, DoneableSecret>> {
+public class SecretOperationsImpl extends HasMetadataOperation<KubernetesClient, Secret, SecretList, DoneableSecret, ClientResource<Secret, DoneableSecret>, CreateFromLoadable<Secret, DoneableSecret>> {
   public SecretOperationsImpl(KubernetesClient client) {
     super(client, "secrets", null, null, true);
   }

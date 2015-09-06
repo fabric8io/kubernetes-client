@@ -13,8 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl;
 
-public interface ProcessableResource<I, T, D, B> extends Resource<I, T, D, B>,
-  Processable<T> {
+package io.fabric8.openshift.client.mock;
+
+import io.fabric8.openshift.api.model.BuildConfig;
+import io.fabric8.openshift.api.model.DoneableBuildConfig;
+import io.fabric8.openshift.client.dsl.BuildConfigResource;
+import org.easymock.IExpectationSetters;
+
+public interface MockBuildConfigResource extends BuildConfigResource<BuildConfig, IExpectationSetters<BuildConfig>, DoneableBuildConfig, IExpectationSetters<Boolean>,  IExpectationSetters<Void>, IExpectationSetters<Void>> {
 }

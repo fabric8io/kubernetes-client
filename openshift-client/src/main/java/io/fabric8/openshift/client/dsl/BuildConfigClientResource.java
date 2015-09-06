@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.fabric8.openshift.client.dsl;
 
 import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.openshift.api.model.DoneableGroup;
-import io.fabric8.openshift.api.model.Group;
-import io.fabric8.openshift.api.model.GroupList;
-import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.kubernetes.client.dsl.Instantiateable;
+import io.fabric8.kubernetes.client.dsl.Secretable;
+import io.fabric8.kubernetes.client.dsl.Triggerable;
+import io.fabric8.kubernetes.client.dsl.Typeable;
+import io.fabric8.openshift.api.model.BuildRequest;
+import io.fabric8.openshift.api.model.WebHookTrigger;
 
-public class GroupOperationsImpl extends OpenshiftOperation<OpenShiftClient, Group, GroupList, DoneableGroup, ClientResource<Group, DoneableGroup>> {
-  public GroupOperationsImpl(OpenShiftClient client) {
-    super(client, "groups", null, null, true);
-  }
-
-  public GroupOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading) {
-    super(client, "groups", namespace, name, cascading);
-  }
+public interface BuildConfigClientResource<T, D, S, I> extends ClientResource<T, D>,
+  Instantiateable<BuildRequest, I>,
+  Typeable<Triggerable<WebHookTrigger, S>>,
+  Triggerable<WebHookTrigger, S>,
+  Secretable<Typeable<Triggerable<WebHookTrigger, S>>> {
 }

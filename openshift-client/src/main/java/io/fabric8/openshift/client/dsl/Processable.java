@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client.dsl;
+package io.fabric8.openshift.client.dsl;
 
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.openshift.client.ParameterValue;
 
-public interface ClientMixedOperation<C extends KubernetesClient, T, L, D, R extends ClientResource<T, D>>
-  extends ClientResource<T,D>,
-  ClientOperation<C, T, L, D, R>,
-  ClientNonNamespaceOperation<C, T, L, D, R> {
+public interface Processable<T> {
+
+  T process(ParameterValue... values);
+
 }

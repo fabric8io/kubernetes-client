@@ -13,20 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openshift.client.dsl;
+package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.openshift.api.model.DoneablePolicyBinding;
-import io.fabric8.openshift.api.model.PolicyBinding;
-import io.fabric8.openshift.api.model.PolicyBindingList;
+import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
+import io.fabric8.openshift.api.model.DoneableUser;
+import io.fabric8.openshift.api.model.User;
+import io.fabric8.openshift.api.model.UserList;
 import io.fabric8.openshift.client.OpenShiftClient;
 
-public class PolicyBindingOperationsImpl extends OpenshiftOperation<OpenShiftClient, PolicyBinding, PolicyBindingList, DoneablePolicyBinding, ClientResource<PolicyBinding, DoneablePolicyBinding>> {
-  public PolicyBindingOperationsImpl(OpenShiftClient client) {
-    super(client, "policybindings", null, null, true);
+public class UserOperationsImpl extends OpenshiftOperation<OpenShiftClient, User, UserList, DoneableUser, ClientResource<User, DoneableUser>, CreateFromLoadable<User, DoneableUser>> {
+  public UserOperationsImpl(OpenShiftClient client) {
+    super(client, "users", null, null, true);
   }
 
-  public PolicyBindingOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading) {
-    super(client, "policybindings", namespace, name, cascading);
+  public UserOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading) {
+    super(client, "users", namespace, name, cascading);
   }
 }

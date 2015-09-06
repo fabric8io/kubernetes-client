@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Processable<T> {
+import java.io.InputStream;
 
-  T process(T item);
+public interface Loadable<T> {
+
+  T load(InputStream is);
+
 }

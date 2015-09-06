@@ -16,15 +16,16 @@
 
 package io.fabric8.openshift.client.mock.impl;
 
-import io.fabric8.openshift.client.OpenShiftClient;
-import io.fabric8.kubernetes.client.dsl.ProcessableClientResource;
+import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.mock.BaseMockOperation;
-import io.fabric8.kubernetes.client.mock.MockProcessableResource;
 import io.fabric8.openshift.api.model.DoneableTemplate;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateList;
+import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.dsl.TemplateClientResource;
+import io.fabric8.openshift.client.mock.MockProcessableResource;
 
 public class MockTemplate extends BaseMockOperation<OpenShiftClient, Template, TemplateList, DoneableTemplate,
-  ProcessableClientResource<Template, DoneableTemplate>,
+  TemplateClientResource<Template, KubernetesList, DoneableTemplate>,
   MockProcessableResource<Template, DoneableTemplate, Boolean>> {
 }

@@ -22,8 +22,9 @@ import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 
-public class ServiceOperationsImpl extends BaseOperation<KubernetesClient, Service, ServiceList, DoneableService, ClientResource<Service, DoneableService>> {
+public class ServiceOperationsImpl extends BaseOperation<KubernetesClient, Service, ServiceList, DoneableService, ClientResource<Service, DoneableService>, CreateFromLoadable<Service, DoneableService>> {
 
   public ServiceOperationsImpl(KubernetesClient client) {
     super(client,"services", null, null, false);
@@ -33,8 +34,12 @@ public class ServiceOperationsImpl extends BaseOperation<KubernetesClient, Servi
     super(client,"services", namespace, name, false);
   }
 
+  public ServiceOperationsImpl(KubernetesClient client, String namespace, Service o) {
+    super(client, "services", namespace, o);
+  }
+
   @Override
-  public Service update(Service item) {
+  public Service replace(Service item) {
       try {
         Service old = get();
         String resourceVersion = old.getMetadata().getResourceVersion();
@@ -49,5 +54,10 @@ public class ServiceOperationsImpl extends BaseOperation<KubernetesClient, Servi
       } catch (Exception e) {
         throw KubernetesClientException.launderThrowable(e);
       }
+  }
+
+  @Override
+  public Service update(Service item) {
+      return replace(item);
   }
 }

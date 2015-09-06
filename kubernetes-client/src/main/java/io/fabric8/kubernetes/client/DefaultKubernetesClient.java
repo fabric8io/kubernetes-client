@@ -281,12 +281,10 @@ public class DefaultKubernetesClient implements KubernetesClient {
     return new ServiceAccountOperationsImpl(this);
   }
 
-
   @Override
   public ClientNonNamespaceOperation<KubernetesClient, SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints() {
     return new SecurityContextConstraintsOperationsImpl(this);
   }
-
 
   @Override
   public RootPaths rootPaths() {

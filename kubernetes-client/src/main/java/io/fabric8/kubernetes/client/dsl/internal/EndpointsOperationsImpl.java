@@ -20,9 +20,11 @@ import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 
 public class EndpointsOperationsImpl extends HasMetadataOperation<KubernetesClient, Endpoints, EndpointsList, DoneableEndpoints,
-  ClientResource<Endpoints, DoneableEndpoints>> {
+  ClientResource<Endpoints, DoneableEndpoints>>,
+  CreateFromLoadable<Endpoints, DoneableEndpoints>> {
 
   public EndpointsOperationsImpl(KubernetesClient client) {
     super(client, "endpoints", null, null, true);
@@ -30,5 +32,9 @@ public class EndpointsOperationsImpl extends HasMetadataOperation<KubernetesClie
 
   public EndpointsOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading) {
     super(client, "endpoints", namespace, name, cascading);
+  }
+
+public EndpointsOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading, Endpoints item) {
+  super(client, "endpoints", namespace, name, cascading, item);
   }
 }

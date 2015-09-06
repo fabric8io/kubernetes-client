@@ -23,13 +23,19 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 
 import java.lang.reflect.InvocationTargetException;
 
-public class HasMetadataOperation<C extends KubernetesClient, T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>> extends BaseOperation<C, T, L, D, R> {
+public class HasMetadataOperation<K extends KubernetesClient, T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>, C extends CreateFromLoadable<T, D>>
+  extends BaseOperation<K, T, L, D, R, C> {
 
   protected HasMetadataOperation(C client, String resourceT, String namespace, String name, Boolean cascading) {
     super(client, resourceT, namespace, name, cascading);
+  }
+
+  protected HasMetadataOperation(K client, String resourceT, String namespace, T item) {
+    super(client, resourceT, namespace, item);
   }
 
   @Override
@@ -55,7 +61,7 @@ public class HasMetadataOperation<C extends KubernetesClient, T extends HasMetad
     };
 
     try {
-      return getDoneableType().getDeclaredConstructor(getType(), Visitor.class).newInstance(get(), visitor);
+      return (D) getDoneableType().getDeclaredConstructor(getType(), Visitor.class).newInstance(get(), visitor);
     } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException e) {
       throw KubernetesClientException.launderThrowable(e);
     }

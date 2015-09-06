@@ -13,15 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.fabric8.openshift.client.dsl;
 
-package io.fabric8.kubernetes.client.dsl;
+import io.fabric8.kubernetes.client.dsl.ClientResource;
 
-import io.fabric8.openshift.api.model.BuildRequest;
-import io.fabric8.openshift.api.model.WebHookTrigger;
-
-public interface BuildConfigClientResource<T, D, S, I> extends ClientResource<T, D>,
-  Instantiateable<BuildRequest, I>,
-  Typeable<Triggerable<WebHookTrigger, S>>,
-  Triggerable<WebHookTrigger, S>,
-  Secretable<Typeable<Triggerable<WebHookTrigger, S>>>{
+public interface ProcessableClientResource<T, L, D> extends ClientResource<T, D>,
+  Processable<L> {
 }

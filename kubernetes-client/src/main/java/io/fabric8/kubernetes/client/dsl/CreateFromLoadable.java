@@ -13,13 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.fabric8.kubernetes.client.dsl;
 
-package io.fabric8.kubernetes.client.mock;
+public interface CreateFromLoadable<T, D> extends ClientResource<T, D> {
 
-import io.fabric8.kubernetes.client.dsl.BuildConfigResource;
-import io.fabric8.openshift.api.model.BuildConfig;
-import io.fabric8.openshift.api.model.DoneableBuildConfig;
-import org.easymock.IExpectationSetters;
-
-public interface MockBuildConfigResource extends BuildConfigResource<BuildConfig, IExpectationSetters<BuildConfig>, DoneableBuildConfig, IExpectationSetters<Boolean>,  IExpectationSetters<Void>, IExpectationSetters<Void>> {
+  T create();
 }
