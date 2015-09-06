@@ -13,11 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.fabric8.openshift.client.dsl;
 
-package io.fabric8.kubernetes.client.mock;
-
-import io.fabric8.kubernetes.client.dsl.ProcessableResource;
-import org.easymock.IExpectationSetters;
-
-public interface MockProcessableResource<T, D, B> extends ProcessableResource<T, IExpectationSetters<T>, D, IExpectationSetters<B>> {
+public interface TemplateClientResource<T, L, D> extends ProcessableClientResource<T, L, D> {
 }

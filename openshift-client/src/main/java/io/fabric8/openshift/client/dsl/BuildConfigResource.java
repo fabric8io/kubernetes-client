@@ -14,8 +14,13 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client.dsl;
+package io.fabric8.openshift.client.dsl;
 
+import io.fabric8.kubernetes.client.dsl.Instantiateable;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.Secretable;
+import io.fabric8.kubernetes.client.dsl.Triggerable;
+import io.fabric8.kubernetes.client.dsl.Typeable;
 import io.fabric8.openshift.api.model.BuildRequest;
 import io.fabric8.openshift.api.model.WebHookTrigger;
 
@@ -23,5 +28,5 @@ public interface BuildConfigResource<I, T, D, B, S, N> extends Resource<I, T, D,
   Instantiateable<BuildRequest, N>,
   Typeable<Triggerable<WebHookTrigger, S>>,
   Triggerable<WebHookTrigger, S>,
-  Secretable<Typeable<Triggerable<WebHookTrigger, S>>>{
+  Secretable<Typeable<Triggerable<WebHookTrigger, S>>> {
 }

@@ -13,22 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openshift.client.dsl;
+package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 import io.fabric8.openshift.api.model.DoneableOAuthClient;
 import io.fabric8.openshift.api.model.OAuthClient;
 import io.fabric8.openshift.api.model.OAuthClientList;
 import io.fabric8.openshift.client.OpenShiftClient;
 
 public class OAuthClientOperationsImpl extends OpenshiftOperation<OpenShiftClient, OAuthClient, OAuthClientList, DoneableOAuthClient,
-  ClientResource<OAuthClient, DoneableOAuthClient>> {
+  ClientResource<OAuthClient, DoneableOAuthClient>, CreateFromLoadable<OAuthClient, DoneableOAuthClient>> {
 
   public OAuthClientOperationsImpl(OpenShiftClient client) {
-    super(client, "oauthclients", null, null);
+    super(client, "oauthclients", null, (String) null);
   }
 
   public OAuthClientOperationsImpl(OpenShiftClient client, String namespace, String name) {
     super(client, "oauthclients", namespace, name);
+  }
+
+  public OAuthClientOperationsImpl(OpenShiftClient client, String namespace, OAuthClient o) {
+    super(client, "oauthclients", namespace, o);
   }
 }

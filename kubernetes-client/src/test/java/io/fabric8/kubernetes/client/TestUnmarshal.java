@@ -32,7 +32,7 @@ public class TestUnmarshal {
 
   @Test
   public void testUnmarshalYAMLTemplate() throws IOException {
-    Template t = new DefaultKubernetesClient().unmarshal(getClass().getResourceAsStream("/test-template.yml"), Template.class);
+   Template t = new DefaultKubernetesClient().unmarshal(getClass().getResourceAsStream("/test-template.yml"), Template.class);
     assertEquals("eap6-basic-sti", t.getMetadata().getName());
   }
 

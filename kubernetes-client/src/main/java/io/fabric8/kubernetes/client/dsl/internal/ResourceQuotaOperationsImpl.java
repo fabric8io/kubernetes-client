@@ -20,15 +20,20 @@ import io.fabric8.kubernetes.api.model.ResourceQuota;
 import io.fabric8.kubernetes.api.model.ResourceQuotaList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 
 public class ResourceQuotaOperationsImpl extends HasMetadataOperation<KubernetesClient, ResourceQuota, ResourceQuotaList, DoneableResourceQuota,
-  ClientResource<ResourceQuota, DoneableResourceQuota>> {
+  ClientResource<ResourceQuota, DoneableResourceQuota>, CreateFromLoadable<ResourceQuota, DoneableResourceQuota>> {
 
   public ResourceQuotaOperationsImpl(KubernetesClient client) {
-    super(client,"resourcequotas", null, null);
+    super(client,"resourcequotas", null, (String) null);
   }
 
   public ResourceQuotaOperationsImpl(KubernetesClient client, String namespace, String name) {
     super(client,"resourcequotas", namespace, name);
+  }
+
+  public ResourceQuotaOperationsImpl(KubernetesClient client, String namespace, ResourceQuota o) {
+    super(client, "resourcequotas", namespace, o);
   }
 }

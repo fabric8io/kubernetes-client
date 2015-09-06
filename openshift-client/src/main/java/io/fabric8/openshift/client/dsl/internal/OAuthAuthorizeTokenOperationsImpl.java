@@ -13,22 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openshift.client.dsl;
+package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 import io.fabric8.openshift.api.model.DoneableOAuthAuthorizeToken;
 import io.fabric8.openshift.api.model.OAuthAuthorizeToken;
 import io.fabric8.openshift.api.model.OAuthAuthorizeTokenList;
 import io.fabric8.openshift.client.OpenShiftClient;
 
 public class OAuthAuthorizeTokenOperationsImpl extends OpenshiftOperation<OpenShiftClient, OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken,
-  ClientResource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken>> {
+  ClientResource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken>, CreateFromLoadable<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken>> {
 
   public OAuthAuthorizeTokenOperationsImpl(OpenShiftClient client) {
-    super(client, "oauthauthorizetokens", null, null);
+    super(client, "oauthauthorizetokens", null, (String) null);
   }
 
   public OAuthAuthorizeTokenOperationsImpl(OpenShiftClient client, String namespace, String name) {
     super(client, "oauthauthorizetokens", namespace, name);
+  }
+
+  public OAuthAuthorizeTokenOperationsImpl(OpenShiftClient client, String namespace, OAuthAuthorizeToken o) {
+    super(client, "oauthauthorizetokens", namespace, o);
   }
 }

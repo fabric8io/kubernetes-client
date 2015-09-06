@@ -20,14 +20,20 @@ import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaimList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 
-public class PersistentVolumeClaimOperationsImpl extends HasMetadataOperation<KubernetesClient, PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, ClientResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> {
+public class PersistentVolumeClaimOperationsImpl
+  extends HasMetadataOperation<KubernetesClient, PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, ClientResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>, CreateFromLoadable<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> {
 
   public PersistentVolumeClaimOperationsImpl(KubernetesClient client) {
-    super(client,"persistentvolumeclaims", null, null);
+    super(client,"persistentvolumeclaims", null, (String) null);
   }
 
   public PersistentVolumeClaimOperationsImpl(KubernetesClient client, String namespace, String name) {
     super(client,"persistentvolumeclaims", namespace, name);
+  }
+
+  public PersistentVolumeClaimOperationsImpl(KubernetesClient client, String namespace, PersistentVolumeClaim o) {
+    super(client, "persistentvolumeclaims", namespace, o);
   }
 }

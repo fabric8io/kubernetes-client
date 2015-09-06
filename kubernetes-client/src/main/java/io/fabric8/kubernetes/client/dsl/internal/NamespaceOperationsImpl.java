@@ -20,14 +20,19 @@ import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 
-public class NamespaceOperationsImpl extends HasMetadataOperation<KubernetesClient, Namespace, NamespaceList, DoneableNamespace, ClientResource<Namespace,DoneableNamespace>> {
+public class NamespaceOperationsImpl extends HasMetadataOperation<KubernetesClient, Namespace, NamespaceList, DoneableNamespace, ClientResource<Namespace,DoneableNamespace>, CreateFromLoadable<Namespace, DoneableNamespace>> {
 
   public NamespaceOperationsImpl(KubernetesClient client) {
-    super(client,"namespaces", null, null);
+    super(client,"namespaces", null, (String) null);
   }
 
   public NamespaceOperationsImpl(KubernetesClient client, String namespace, String name) {
     super(client,"namespaces", namespace, name);
+  }
+
+  public NamespaceOperationsImpl(KubernetesClient client, String namespace, Namespace o) {
+    super(client, "namespaces", namespace, o);
   }
 }

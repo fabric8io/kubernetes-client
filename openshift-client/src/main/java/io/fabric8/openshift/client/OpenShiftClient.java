@@ -15,15 +15,12 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.api.model.DoneableSecurityContextConstraints;
-import io.fabric8.kubernetes.api.model.SecurityContextConstraints;
-import io.fabric8.kubernetes.api.model.SecurityContextConstraintsList;
+import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.Extension;
-import io.fabric8.kubernetes.client.dsl.BuildConfigClientResource;
+import io.fabric8.openshift.client.dsl.BuildConfigClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.kubernetes.client.dsl.ProcessableClientResource;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigList;
@@ -63,6 +60,7 @@ import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.api.model.UserList;
+import io.fabric8.openshift.client.dsl.TemplateClientResource;
 
 import java.net.URL;
 
@@ -92,7 +90,7 @@ public interface OpenShiftClient extends Extension {
 
   ClientOperation<OpenShiftClient, Route, RouteList, DoneableRoute, ClientResource<Route, DoneableRoute>> routes();
 
-  ClientOperation<OpenShiftClient, Template, TemplateList, DoneableTemplate, ProcessableClientResource<Template, DoneableTemplate>> templates();
+  ClientOperation<OpenShiftClient, Template, TemplateList, DoneableTemplate, TemplateClientResource<Template, KubernetesList, DoneableTemplate>> templates();
 
   ClientOperation<OpenShiftClient, User, UserList, DoneableUser, ClientResource<User, DoneableUser>> users();
 

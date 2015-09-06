@@ -20,14 +20,19 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 
-public class PodOperationsImpl extends HasMetadataOperation<KubernetesClient, Pod, PodList, DoneablePod, ClientResource<Pod, DoneablePod>> {
+public class PodOperationsImpl extends HasMetadataOperation<KubernetesClient, Pod, PodList, DoneablePod, ClientResource<Pod, DoneablePod>, CreateFromLoadable<Pod, DoneablePod>> {
 
   public PodOperationsImpl(KubernetesClient client) {
-    super(client,"pods", null, null);
+    super(client,"pods", null, (String) null);
   }
 
   public PodOperationsImpl(KubernetesClient client, String namespace, String name) {
     super(client,"pods", namespace, name);
+  }
+
+  public PodOperationsImpl(KubernetesClient client, String namespace, Pod o) {
+    super(client, "pods", namespace, o);
   }
 }

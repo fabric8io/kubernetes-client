@@ -13,8 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl;
+package io.fabric8.openshift.client;
 
-public interface ProcessableClientResource<T, D> extends ClientResource<T, D>,
-  Processable<T> {
+public class ParameterValue {
+  private final String name;
+
+  private final String value;
+
+  public ParameterValue(String name, String value) {
+    this.name = name;
+    this.value = value;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public String getValue() {
+    return value;
+  }
 }

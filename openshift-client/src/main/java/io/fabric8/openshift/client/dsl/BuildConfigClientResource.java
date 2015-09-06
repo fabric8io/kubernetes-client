@@ -16,19 +16,17 @@
 
 package io.fabric8.openshift.client.dsl;
 
-import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
+import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.Instantiateable;
 import io.fabric8.kubernetes.client.dsl.Secretable;
 import io.fabric8.kubernetes.client.dsl.Triggerable;
 import io.fabric8.kubernetes.client.dsl.Typeable;
-import io.fabric8.openshift.api.model.BuildConfig;
-import io.fabric8.openshift.api.model.BuildConfigList;
-import io.fabric8.openshift.api.model.DoneableBuildConfig;
+import io.fabric8.openshift.api.model.BuildRequest;
 import io.fabric8.openshift.api.model.WebHookTrigger;
-import io.fabric8.openshift.client.OpenShiftClient;
 
-public interface BuildConfigOperation extends BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void>,
-  ClientMixedOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig,BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void>>,
-  Typeable<Triggerable<WebHookTrigger, Void>>,
-  Triggerable<WebHookTrigger, Void>,
-  Secretable<Typeable<Triggerable<WebHookTrigger, Void>>> {
+public interface BuildConfigClientResource<T, D, S, I> extends ClientResource<T, D>,
+  Instantiateable<BuildRequest, I>,
+  Typeable<Triggerable<WebHookTrigger, S>>,
+  Triggerable<WebHookTrigger, S>,
+  Secretable<Typeable<Triggerable<WebHookTrigger, S>>> {
 }

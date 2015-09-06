@@ -13,22 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openshift.client.dsl;
+package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 import io.fabric8.openshift.api.model.DoneableRoute;
 import io.fabric8.openshift.api.model.Route;
 import io.fabric8.openshift.api.model.RouteList;
 import io.fabric8.openshift.client.OpenShiftClient;
 
-public class RouteOperationsImpl extends OpenshiftOperation<OpenShiftClient, Route, RouteList, DoneableRoute, ClientResource<Route, DoneableRoute>> {
+public class RouteOperationsImpl extends OpenshiftOperation<OpenShiftClient, Route, RouteList, DoneableRoute, ClientResource<Route, DoneableRoute>, CreateFromLoadable<Route, DoneableRoute>> {
 
   public RouteOperationsImpl(OpenShiftClient client) {
-    super(client, "routes", null, null);
+    super(client, "routes", null, (String) null);
   }
 
   public RouteOperationsImpl(OpenShiftClient client, String namespace, String name) {
     super(client, "routes", namespace, name);
+  }
+
+  public RouteOperationsImpl(OpenShiftClient client, String namespace, Route o) {
+    super(client, "routes", namespace, o);
   }
 
 }

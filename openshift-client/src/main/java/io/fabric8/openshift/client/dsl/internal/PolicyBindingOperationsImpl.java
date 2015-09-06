@@ -13,20 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openshift.client.dsl;
+package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 import io.fabric8.openshift.api.model.DoneablePolicyBinding;
 import io.fabric8.openshift.api.model.PolicyBinding;
 import io.fabric8.openshift.api.model.PolicyBindingList;
 import io.fabric8.openshift.client.OpenShiftClient;
 
-public class PolicyBindingOperationsImpl extends OpenshiftOperation<OpenShiftClient, PolicyBinding, PolicyBindingList, DoneablePolicyBinding, ClientResource<PolicyBinding, DoneablePolicyBinding>> {
+public class PolicyBindingOperationsImpl extends OpenshiftOperation<OpenShiftClient, PolicyBinding, PolicyBindingList, DoneablePolicyBinding, ClientResource<PolicyBinding, DoneablePolicyBinding>, CreateFromLoadable<PolicyBinding, DoneablePolicyBinding>> {
   public PolicyBindingOperationsImpl(OpenShiftClient client) {
-    super(client, "policybindings", null, null);
+    super(client, "policybindings", null, (String) null);
   }
 
   public PolicyBindingOperationsImpl(OpenShiftClient client, String namespace, String name) {
     super(client, "policybindings", namespace, name);
+  }
+
+  public PolicyBindingOperationsImpl(OpenShiftClient client, String namespace, PolicyBinding o) {
+    super(client, "policybindings", namespace, o);
   }
 }

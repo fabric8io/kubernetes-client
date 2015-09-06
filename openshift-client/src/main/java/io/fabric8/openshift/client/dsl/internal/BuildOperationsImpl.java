@@ -13,22 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openshift.client.dsl;
+package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildList;
 import io.fabric8.openshift.api.model.DoneableBuild;
 import io.fabric8.openshift.client.OpenShiftClient;
 
 public class BuildOperationsImpl extends OpenshiftOperation<OpenShiftClient, Build, BuildList, DoneableBuild,
-  ClientResource<Build, DoneableBuild>> {
+  ClientResource<Build, DoneableBuild>, CreateFromLoadable<Build, DoneableBuild>> {
 
   public BuildOperationsImpl(OpenShiftClient client) {
-    super(client, "builds", null, null);
+    super(client, "builds", null, (String) null);
   }
 
   public BuildOperationsImpl(OpenShiftClient client, String namespace, String name) {
     super(client, "builds", namespace, name);
+  }
+
+  public BuildOperationsImpl(OpenShiftClient client, String namespace, Build o) {
+    super(client, "builds", namespace, o);
   }
 }
