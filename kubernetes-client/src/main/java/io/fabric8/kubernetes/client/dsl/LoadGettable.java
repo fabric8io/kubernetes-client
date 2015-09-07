@@ -17,8 +17,7 @@ package io.fabric8.kubernetes.client.dsl;
 
 import java.io.InputStream;
 
-public interface Loadable<T> {
+public interface LoadGettable<T> {
 
-  T load(InputStream is);
-
+  Gettable<T> load(InputStream is);
 }
