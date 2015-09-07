@@ -25,7 +25,7 @@
   </parent>
 
   <groupId>io.fabric8</groupId>
-  <artifactId>kubernetes-pom</artifactId>
+  <artifactId>kubernetes-client-project</artifactId>
   <version>1.3.15-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Fabric8 :: Kubernetes :: Project</name>
@@ -156,6 +156,18 @@
             <exclude>license.txt</exclude>
           </excludes>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>io.sundr</groupId>
+        <artifactId>sundr-maven-plugin</artifactId>
+        <version>${sundrio.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate-bom</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
