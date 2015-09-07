@@ -41,6 +41,7 @@ import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsList;
 import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventList;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceList;
 import io.fabric8.kubernetes.api.model.Node;
@@ -104,6 +105,7 @@ import java.security.SecureRandom;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Map;
 import java.util.ServiceLoader;
 
 import static io.fabric8.kubernetes.client.internal.CertUtils.createKeyStore;
@@ -113,6 +115,7 @@ public class DefaultKubernetesClient implements KubernetesClient {
 
   private static final ObjectMapper jsonMapper = new ObjectMapper();
   private static final ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
+  private static Map<String, ResourceCreator> resourceCreatorMap;
   private AsyncHttpClient httpClient;
   private URL masterUrl;
   private Config configuration;

@@ -1,0 +1,13 @@
+io.fabric8.kubernetes.client.creators.EndpointsCreator
+io.fabric8.kubernetes.client.creators.EventCreator
+io.fabric8.kubernetes.client.creators.NamespaceCreator
+io.fabric8.kubernetes.client.creators.NodeCreator
+io.fabric8.kubernetes.client.creators.PersistentVolumeClaimCreator
+io.fabric8.kubernetes.client.creators.PersistentVolumeCreator
+io.fabric8.kubernetes.client.creators.PodCreator
+io.fabric8.kubernetes.client.creators.ReplicationControllerCreator
+io.fabric8.kubernetes.client.creators.ResourceQuotaCreator
+io.fabric8.kubernetes.client.creators.SecretCreator
+io.fabric8.kubernetes.client.creators.SecurityContextConstraintsCreator
+io.fabric8.kubernetes.client.creators.ServiceAccountCreator
+io.fabric8.kubernetes.client.creators.ServiceCreator

@@ -1,0 +1,13 @@
+io.fabric8.openshift.client.creators.BuildCreator
+io.fabric8.openshift.client.creators.BuildConfigCreator
+io.fabric8.openshift.client.creators.DeploymentConfigCreator
+io.fabric8.openshift.client.creators.GroupCreator
+io.fabric8.openshift.client.creators.ImageStreamCreator
+io.fabric8.openshift.client.creators.OAuthAccessTokenCreator
+io.fabric8.openshift.client.creators.OAuthAuthorizeTokenCreator
+io.fabric8.openshift.client.creators.OAuthClientCreator
+io.fabric8.openshift.client.creators.PolicyBindingCreator
+io.fabric8.openshift.client.creators.PolicyCreator
+io.fabric8.openshift.client.creators.RouteCreator
+io.fabric8.openshift.client.creators.TemplateCreator
+io.fabric8.openshift.client.creators.UserCreator

@@ -38,33 +38,34 @@ import java.util.concurrent.Future;
 
 public class BuildConfigOperationsImpl extends OpenshiftOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig,
   BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void>, CreateFromLoadable<BuildConfig, DoneableBuildConfig>>
-  implements BuildConfigOperation
- {
-  BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void>>
   implements BuildConfigOperation {
 
   private final String secret;
   private final String triggerType;
 
   public BuildConfigOperationsImpl(OpenShiftClient client, String secret, String triggerType) {
-    super(client, "buildconfigs", null, null, true);
-   public BuildConfigOperationsImpl(OpenShiftClient client, String secret, String triggerType) {
     super(client, "buildconfigs", null, (String) null);
     this.triggerType = triggerType;
     this.secret = secret;
   }
 
-  public BuildConfigOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading, String secret, String triggerType) {
-    super(client, "buildconfigs", namespace, name, cascading);
+  public BuildConfigOperationsImpl(OpenShiftClient client, String namespace, BuildConfig buildConfig) {
+    super(client, "buildconfigs", namespace, buildConfig);
+    this.triggerType = null;
+    this.secret = null;
+  }
+
+  public BuildConfigOperationsImpl(OpenShiftClient client, String namespace, String name, String secret, String triggerType) {
+    super(client, "buildconfigs", namespace, name);
     this.triggerType = triggerType;
     this.secret = secret;
   }
 
-   public BuildConfigOperationsImpl(OpenShiftClient client, String namespace, BuildConfig o, String secret, String triggerType) {
-     super(client, "buildconfigs", namespace, o);
-     this.triggerType = triggerType;
-     this.secret = secret;
-   }
+  public BuildConfigOperationsImpl(OpenShiftClient client, String namespace, BuildConfig o, String secret, String triggerType) {
+    super(client, "buildconfigs", namespace, o);
+    this.triggerType = triggerType;
+    this.secret = secret;
+  }
 
   @Override
   public BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void> withName(String name) {
@@ -131,6 +132,6 @@ public class BuildConfigOperationsImpl extends OpenshiftOperation<OpenShiftClien
 
   @Override
   public Triggerable<WebHookTrigger, Void> withType(String type) {
-    return new BuildConfigOperationsImpl(getClient(), getNamespace(), getName(), isCascading(), secret, type);
+    return new BuildConfigOperationsImpl(getClient(), getNamespace(), getName(), secret, type);
   }
 }
