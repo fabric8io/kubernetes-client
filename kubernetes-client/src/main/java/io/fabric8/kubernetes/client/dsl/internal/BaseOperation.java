@@ -30,8 +30,8 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeleteable;
+import io.fabric8.kubernetes.client.dsl.LoadCreateGettable;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,8 +47,9 @@ import java.util.concurrent.Future;
 
 import static io.fabric8.kubernetes.client.internal.Utils.join;
 
-public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>, C extends CreateFromLoadable<T, D>>
-  implements ClientMixedOperation<K, T, L, D, R>, CreateFromLoadable<T, D> {
+public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
+  implements ClientMixedOperation<K, T, L, D, R>,
+            LoadCreateGettable<T> {
 
   protected static final ObjectMapper mapper = new ObjectMapper();
 
@@ -528,9 +529,9 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   }
 
   @Override
-  public C load(InputStream is) {
+  public LoadCreateGettable<T> load(InputStream is) {
     try {
-      return (C) getClass()
+      return (LoadCreateGettable<T>) getClass()
         .getConstructor(clientType, String.class, type)
         .newInstance(client, namespace, client.unmarshal(is, type));
     } catch (Throwable t) {

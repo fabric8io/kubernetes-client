@@ -20,9 +20,8 @@ import io.fabric8.kubernetes.api.model.Node;
 import io.fabric8.kubernetes.api.model.NodeList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 
-public class NodeOperationsImpl extends HasMetadataOperation<KubernetesClient, Node, NodeList, DoneableNode, ClientResource<Node, DoneableNode>, CreateFromLoadable<Node, DoneableNode>> {
+public class NodeOperationsImpl extends HasMetadataOperation<KubernetesClient, Node, NodeList, DoneableNode, ClientResource<Node, DoneableNode>> {
 
   public NodeOperationsImpl(KubernetesClient client) {
     super(client,"nodes", null, (String) null);

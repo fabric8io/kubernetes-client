@@ -13,9 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl;
+package io.fabric8.kubernetes.client.creators;
 
-public interface CreateFromLoadable<T, D> extends ClientResource<T, D> {
+import io.fabric8.kubernetes.api.model.Endpoints;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.ResourceCreator;
+import io.fabric8.kubernetes.client.dsl.internal.EndpointsOperationsImpl;
 
-  T create();
+public class EndpointsCreator implements ResourceCreator<Endpoints> {
+  @Override
+  public Class<Endpoints> getKind() {
+    return Endpoints.class;
+  }
+
+  @Override
+  public Endpoints create(KubernetesClient client, String namespace, Endpoints item) {
+    return new EndpointsOperationsImpl(client, namespace, item).create();
+  }
 }

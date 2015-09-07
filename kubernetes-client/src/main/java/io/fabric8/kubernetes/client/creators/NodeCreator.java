@@ -13,11 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl;
+package io.fabric8.kubernetes.client.creators;
 
-import java.io.InputStream;
+import io.fabric8.kubernetes.api.model.Node;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.ResourceCreator;
+import io.fabric8.kubernetes.client.dsl.internal.NodeOperationsImpl;
 
-public interface LoadGettable<T> {
+public class NodeCreator implements ResourceCreator<Node> {
+  @Override
+  public Class<Node> getKind() {
+    return Node.class;
+  }
 
-  Gettable<T> load(InputStream is);
+  @Override
+  public Node create(KubernetesClient client, String namespace, Node item) {
+    return new NodeOperationsImpl(client, namespace, item).create();
+  }
 }

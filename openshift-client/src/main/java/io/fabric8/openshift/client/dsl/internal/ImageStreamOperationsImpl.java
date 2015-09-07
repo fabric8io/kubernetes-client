@@ -16,14 +16,13 @@
 package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 import io.fabric8.openshift.api.model.DoneableImageStream;
 import io.fabric8.openshift.api.model.ImageStream;
 import io.fabric8.openshift.api.model.ImageStreamList;
 import io.fabric8.openshift.client.OpenShiftClient;
 
 public class ImageStreamOperationsImpl extends OpenshiftOperation<OpenShiftClient, ImageStream, ImageStreamList, DoneableImageStream,
-  ClientResource<ImageStream, DoneableImageStream>, CreateFromLoadable<ImageStream, DoneableImageStream>> {
+  ClientResource<ImageStream, DoneableImageStream>> {
 
   public ImageStreamOperationsImpl(OpenShiftClient client) {
     super(client, "imagestreams", null, (String) null);

@@ -25,14 +25,13 @@ import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 import io.fabric8.kubernetes.client.dsl.ImageEditReplaceable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 
 public class RollingOperation
-  extends BaseOperation<KubernetesClient, ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientResource<ReplicationController, DoneableReplicationController>, CreateFromLoadable<ReplicationController, DoneableReplicationController>>
+  extends BaseOperation<KubernetesClient, ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientResource<ReplicationController, DoneableReplicationController>>
   implements ImageEditReplaceable<ReplicationController, ReplicationController, DoneableReplicationController> {
 
   public RollingOperation(KubernetesClient client, String namespace, String name) {

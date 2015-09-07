@@ -23,5 +23,5 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 public interface ClientNonNamespaceListOperation<C extends KubernetesClient> extends
   ClientAware<C>,
   Createable<KubernetesList, KubernetesList, DoneableKubernetesList>,
-  LoadListCreateable {
+  Loadable<LoadCreateGettable<KubernetesList>>{
 }

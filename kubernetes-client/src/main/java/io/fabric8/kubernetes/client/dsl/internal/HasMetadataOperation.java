@@ -23,12 +23,12 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
+import io.fabric8.kubernetes.client.dsl.Gettable;
 
 import java.lang.reflect.InvocationTargetException;
 
-public class HasMetadataOperation<K extends KubernetesClient, T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>, C extends CreateFromLoadable<T, D>>
-  extends BaseOperation<K, T, L, D, R, C> {
+public class HasMetadataOperation<K extends KubernetesClient, T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
+  extends BaseOperation<K, T, L, D, R> {
 
   protected HasMetadataOperation(K client, String resourceT, String namespace, String name) {
     super(client, resourceT, namespace, name);

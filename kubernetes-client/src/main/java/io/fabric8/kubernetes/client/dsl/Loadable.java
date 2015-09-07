@@ -15,9 +15,10 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.model.KubernetesList;
+import java.io.InputStream;
 
-public interface CreateListFromLoadable extends GetListFromLoadable {
+public interface Loadable<T> {
 
-  KubernetesList create();
+  T load(InputStream is);
+
 }

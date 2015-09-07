@@ -15,11 +15,12 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.ClientAware;
 import io.fabric8.kubernetes.client.KubernetesClient;
 
 public interface ClientListOperation<C extends KubernetesClient> extends
   ClientAware<C>,
   Namespaceable<ClientNonNamespaceListOperation<C>>,
-  LoadListGettable {
+  Loadable<LoadCreateGettable<KubernetesList>> {
 }

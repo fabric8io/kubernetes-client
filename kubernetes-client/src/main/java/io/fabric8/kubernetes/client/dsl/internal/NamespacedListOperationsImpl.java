@@ -15,13 +15,29 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceListOperation;
+import io.fabric8.kubernetes.client.dsl.LoadCreateGettable;
+
+import java.io.InputStream;
 
 public class NamespacedListOperationsImpl extends ListOperationsImpl
-  implements ClientNonNamespaceListOperation<KubernetesClient> {
+  implements ClientNonNamespaceListOperation<KubernetesClient>,
+             LoadCreateGettable<KubernetesList> {
 
   public NamespacedListOperationsImpl(KubernetesClient client, String namespace) {
     super(client, namespace);
+  }
+
+  @Override
+  public LoadCreateGettable<KubernetesList> load(InputStream is) {
+    item = client.unmarshal(is, KubernetesList.class);
+    return this;
+  }
+
+  @Override
+  public KubernetesList create() {
+    return create(item);
   }
 }

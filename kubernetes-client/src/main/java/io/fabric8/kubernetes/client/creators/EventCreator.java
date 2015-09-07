@@ -13,12 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl;
+package io.fabric8.kubernetes.client.creators;
 
-import java.io.InputStream;
+import io.fabric8.kubernetes.api.model.Event;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.ResourceCreator;
+import io.fabric8.kubernetes.client.dsl.internal.EventOperationsImpl;
 
-public interface LoadListCreateable {
+public class EventCreator implements ResourceCreator<Event> {
+  @Override
+  public Class<Event> getKind() {
+    return Event.class;
+  }
 
-  CreateListFromLoadable load(InputStream is);
-
+  @Override
+  public Event create(KubernetesClient client, String namespace, Event item) {
+    return new EventOperationsImpl(client, namespace, item).create();
+  }
 }

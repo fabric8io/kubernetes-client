@@ -20,11 +20,10 @@ import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 import io.fabric8.kubernetes.client.dsl.ReplicationControllerClientResource;
 import io.fabric8.kubernetes.client.dsl.Scaleable;
 
-public class ReplicationControllerOperationsImpl extends HasMetadataOperation<KubernetesClient, ReplicationController, ReplicationControllerList, DoneableReplicationController, ReplicationControllerClientResource<ReplicationController, DoneableReplicationController>, CreateFromLoadable<ReplicationController, DoneableReplicationController>>
+public class ReplicationControllerOperationsImpl extends HasMetadataOperation<KubernetesClient, ReplicationController, ReplicationControllerList, DoneableReplicationController, ReplicationControllerClientResource<ReplicationController, DoneableReplicationController>>
   implements ReplicationControllerClientResource<ReplicationController, DoneableReplicationController> {
 
   public ReplicationControllerOperationsImpl(KubernetesClient client) {

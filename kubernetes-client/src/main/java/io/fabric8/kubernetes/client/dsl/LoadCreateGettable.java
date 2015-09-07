@@ -15,9 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.model.KubernetesList;
+public interface LoadCreateGettable<T> extends LoadCreateable<T>, Gettable<T> {
 
-public interface GetListFromLoadable {
-
-  KubernetesList get();
 }

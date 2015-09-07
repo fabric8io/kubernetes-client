@@ -15,10 +15,9 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
-import io.fabric8.kubernetes.client.internal.com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
+import io.fabric8.kubernetes.client.internal.com.ning.http.client.AsyncHttpClient;
 import io.fabric8.openshift.api.model.DoneableTemplate;
 import io.fabric8.openshift.api.model.Parameter;
 import io.fabric8.openshift.api.model.Template;
@@ -34,7 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TemplateOperationsImpl
-  extends OpenshiftOperation<OpenShiftClient, Template, TemplateList, DoneableTemplate, TemplateClientResource<Template, KubernetesList, DoneableTemplate>, CreateFromLoadable<Template, DoneableTemplate>>
+  extends OpenshiftOperation<OpenShiftClient, Template, TemplateList, DoneableTemplate, TemplateClientResource<Template, KubernetesList, DoneableTemplate>>
   implements TemplateOperation {
 
   public TemplateOperationsImpl(OpenShiftClient client) {

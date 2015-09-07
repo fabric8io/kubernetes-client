@@ -15,10 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import java.io.InputStream;
+public interface LoadCreateable<T> {
 
-public interface LoadCreateable<T, D> {
-
-  CreateFromLoadable<T, D> load(InputStream is);
-
+  T create();
 }
