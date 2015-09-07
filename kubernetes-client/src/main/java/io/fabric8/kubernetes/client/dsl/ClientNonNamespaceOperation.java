@@ -23,6 +23,6 @@ public interface ClientNonNamespaceOperation<C extends KubernetesClient, T, L, D
   Nameable<R>,
   FilterWatchListDeleteable<T, L, Boolean>,
   Createable<T, T, D>,
-  Loadable<CreateFromLoadable<T, D>> {
+  LoadCreateable<T, D> {
 
 }

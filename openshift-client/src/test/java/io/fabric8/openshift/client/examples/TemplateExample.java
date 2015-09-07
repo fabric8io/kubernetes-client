@@ -40,6 +40,7 @@ public class TemplateExample {
           System.out.println(p.getName());
         }
 
+        t = client.templates().load(TemplateExample.class.getResourceAsStream("/test-template.yml")).get();
         t = client.templates().inNamespace("thisisatest").load(TemplateExample.class.getResourceAsStream("/test-template.yml")).create();
         t = client.templates().inNamespace("thisisatest").withName("eap6-basic-sti").get();
         System.out.println(t.getMetadata().getName());
