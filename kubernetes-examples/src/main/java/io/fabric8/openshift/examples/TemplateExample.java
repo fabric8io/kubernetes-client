@@ -1,4 +1,4 @@
-package io.fabric8.openshift.client.examples;
+package io.fabric8.openshift.examples;
 
 /**
  * Copyright (C) 2015 Red Hat, Inc.
@@ -50,6 +50,8 @@ public class TemplateExample {
 
         l = client.lists().load(TemplateExample.class.getResourceAsStream("/test-list.yml")).get();
         System.out.println(l.getItems().size());
+
+        l = client.lists().inNamespace("thisisatest").load(TemplateExample.class.getResourceAsStream("/test-list.yml")).create();
       } finally {
         // And finally clean up the namespace
         client.namespaces().withName("thisisatest").delete();
