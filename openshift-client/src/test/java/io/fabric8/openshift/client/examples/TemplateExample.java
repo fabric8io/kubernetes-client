@@ -47,6 +47,9 @@ public class TemplateExample {
 
         KubernetesList l = client.templates().inNamespace("thisisatest").withName("eap6-basic-sti").process();
         System.out.println(l.getItems().size());
+
+        l = client.lists().load(TemplateExample.class.getResourceAsStream("/test-list.yml")).get();
+        System.out.println(l.getItems().size());
       } finally {
         // And finally clean up the namespace
         client.namespaces().withName("thisisatest").delete();

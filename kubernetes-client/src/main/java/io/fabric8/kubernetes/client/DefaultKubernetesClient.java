@@ -64,6 +64,7 @@ import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
+import io.fabric8.kubernetes.client.dsl.ClientListOperation;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
@@ -71,6 +72,7 @@ import io.fabric8.kubernetes.client.dsl.ReplicationControllerClientResource;
 import io.fabric8.kubernetes.client.dsl.internal.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.internal.EndpointsOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.EventOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.ListOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.NodeOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.PersistentVolumeClaimOperationsImpl;
@@ -279,6 +281,11 @@ public class DefaultKubernetesClient implements KubernetesClient {
   @Override
   public ClientOperation<KubernetesClient, ServiceAccount, ServiceAccountList, DoneableServiceAccount, ClientResource<ServiceAccount, DoneableServiceAccount>> serviceAccounts() {
     return new ServiceAccountOperationsImpl(this);
+  }
+
+  @Override
+  public ClientListOperation<KubernetesClient> lists() {
+    return new ListOperationsImpl(this);
   }
 
   @Override
