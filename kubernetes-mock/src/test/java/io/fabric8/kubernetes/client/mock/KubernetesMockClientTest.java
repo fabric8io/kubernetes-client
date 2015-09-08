@@ -19,9 +19,12 @@ package io.fabric8.kubernetes.client.mock;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
+import io.fabric8.kubernetes.api.model.ReplicationController;
+import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.SecurityContextConstraintsList;
 import io.fabric8.kubernetes.api.model.SecurityContextConstraintsListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -110,6 +113,30 @@ public class KubernetesMockClientTest {
       assertionError = true;
     }
     Assert.assertTrue(assertionError);
+  }
+
+  @Test
+  public void testScaling() {
+    KubernetesMockClient mock = new KubernetesMockClient();
+
+    ReplicationController repl1 = new ReplicationControllerBuilder()
+      .withNewMetadata()
+        .withName("repl1")
+      .endMetadata()
+      .build();
+
+    mock.replicationControllers().inNamespace("ns1").withName("repl1").scale(1).andReturn(repl1).once();
+    mock.replicationControllers().inNamespace("ns1").withName("repl1").scale(2).andReturn(repl1).once();
+    mock.replicationControllers().inNamespace("ns1").withName("repl1").scale(3).andReturn(repl1).once();
+
+
+    KubernetesClient client = mock.replay();
+
+    client.replicationControllers().inNamespace("ns1").withName("repl1").scale(1);
+    client.replicationControllers().inNamespace("ns1").withName("repl1").scale(2);
+    client.replicationControllers().inNamespace("ns1").withName("repl1").scale(3);
+
+    EasyMock.verify(client);
   }
 
 
