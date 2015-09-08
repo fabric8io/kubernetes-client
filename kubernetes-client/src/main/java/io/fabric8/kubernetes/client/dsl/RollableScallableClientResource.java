@@ -15,8 +15,9 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface ImageEditReplaceable<I, T, D> extends EditReplaceable<I, T, D> {
+import io.fabric8.kubernetes.api.model.DoneableReplicationController;
+import io.fabric8.kubernetes.api.model.ReplicationController;
 
-  T updateImage(String image);
-
+public interface RollableScallableClientResource<T, D> extends ScaleableClientResource<T, D>,
+  Rollable<ReplicationController, ReplicationController, DoneableReplicationController> {
 }

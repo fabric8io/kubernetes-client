@@ -192,7 +192,7 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
     return pods;
   }
 
-  public MockOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, MockScaleableResource<ReplicationController, DoneableReplicationController, Boolean>> replicationControllers() {
+  public MockOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, MockRollableScaleableResource<ReplicationController, DoneableReplicationController, Boolean>> replicationControllers() {
     return replicationControllers;
   }
 

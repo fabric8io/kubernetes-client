@@ -141,6 +141,30 @@ public class KubernetesMockClientTest {
 
 
   @Test
+  public void testRolling() {
+    KubernetesMockClient mock = new KubernetesMockClient();
+
+    ReplicationController repl1 = new ReplicationControllerBuilder()
+      .withNewMetadata()
+      .withName("repl1")
+      .endMetadata()
+      .build();
+
+    mock.replicationControllers().inNamespace("ns1").withName("repl1").rolling().updateImage("myimage").andReturn(repl1).once();
+    mock.replicationControllers().inNamespace("ns1").withName("repl1").rolling().updateImage("myimage2").andReturn(repl1).once();
+
+
+    KubernetesClient client = mock.replay();
+
+    client.replicationControllers().inNamespace("ns1").withName("repl1").rolling().updateImage("myimage");
+    client.replicationControllers().inNamespace("ns1").withName("repl1").rolling().updateImage("myimage2");
+
+    EasyMock.verify(client);
+  }
+
+
+
+  @Test
   public void testListSecurityContextConstraints() {
     KubernetesMockClient mock = new KubernetesMockClient();
     mock.securityContextConstraints().list().andReturn(new SecurityContextConstraintsListBuilder()

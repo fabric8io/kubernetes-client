@@ -67,7 +67,7 @@ import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.kubernetes.client.dsl.ReplicationControllerClientResource;
+import io.fabric8.kubernetes.client.dsl.RollableScallableClientResource;
 import io.fabric8.kubernetes.client.dsl.internal.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.internal.EndpointsOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.EventOperationsImpl;
@@ -257,7 +257,7 @@ public class DefaultKubernetesClient implements KubernetesClient {
   }
 
   @Override
-  public ClientOperation<KubernetesClient, ReplicationController, ReplicationControllerList, DoneableReplicationController, ReplicationControllerClientResource<ReplicationController, DoneableReplicationController>> replicationControllers() {
+  public ClientOperation<KubernetesClient, ReplicationController, ReplicationControllerList, DoneableReplicationController, RollableScallableClientResource<ReplicationController, DoneableReplicationController>> replicationControllers() {
     return new ReplicationControllerOperationsImpl(this);
   }
 

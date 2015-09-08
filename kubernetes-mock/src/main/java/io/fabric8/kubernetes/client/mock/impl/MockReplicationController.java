@@ -20,21 +20,26 @@ import io.fabric8.kubernetes.api.model.DoneableReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.dsl.ReplicationControllerClientResource;
+import io.fabric8.kubernetes.client.dsl.ImageEditReplaceable;
+import io.fabric8.kubernetes.client.dsl.Rollable;
+import io.fabric8.kubernetes.client.dsl.RollableScallableClientResource;
 import io.fabric8.kubernetes.client.dsl.Scaleable;
 import io.fabric8.kubernetes.client.dsl.internal.ReplicationControllerOperationsImpl;
 import io.fabric8.kubernetes.client.mock.BaseMockOperation;
-import io.fabric8.kubernetes.client.mock.MockScaleableResource;
+import io.fabric8.kubernetes.client.mock.MockRollableScaleableResource;
 import org.easymock.EasyMock;
 import org.easymock.IExpectationSetters;
 
 import static org.easymock.EasyMock.expect;
 
 public class MockReplicationController extends BaseMockOperation<KubernetesClient, ReplicationController, ReplicationControllerList, DoneableReplicationController,
-  ReplicationControllerClientResource<ReplicationController, DoneableReplicationController>,
-  MockScaleableResource<ReplicationController, DoneableReplicationController, Boolean>>
-  implements MockScaleableResource<ReplicationController, DoneableReplicationController, Boolean> {
+  RollableScallableClientResource<ReplicationController, DoneableReplicationController>,
+  MockRollableScaleableResource<ReplicationController, DoneableReplicationController, Boolean>>
+  implements MockRollableScaleableResource<ReplicationController, DoneableReplicationController, Boolean>,
+  ImageEditReplaceable<ReplicationController, IExpectationSetters<ReplicationController>, DoneableReplicationController> {
 
+
+  private MockReplicationController rolling;
 
   public MockReplicationController() {
     super(EasyMock.createMock(ReplicationControllerOperationsImpl.class));
@@ -55,5 +60,21 @@ public class MockReplicationController extends BaseMockOperation<KubernetesClien
     return new MockReplicationController();
   }
 
+  @Override
+  public IExpectationSetters<ReplicationController> updateImage(String image) {
+    return expect(((ImageEditReplaceable<ReplicationController, ReplicationController, DoneableReplicationController>) getDelegate()).updateImage(image));
+  }
+
+  @Override
+  public ImageEditReplaceable<ReplicationController, IExpectationSetters<ReplicationController>, DoneableReplicationController> rolling() {
+    if (rolling == null) {
+      rolling = (MockReplicationController) newInstance();
+      expect(((Rollable<ReplicationController, ReplicationController, DoneableReplicationController>) getDelegate()).rolling())
+        .andReturn((ImageEditReplaceable<ReplicationController, ReplicationController, DoneableReplicationController>) rolling.getDelegate())
+        .anyTimes();
+      getNested().add(rolling);
+    }
+    return rolling;
+  }
 }
 

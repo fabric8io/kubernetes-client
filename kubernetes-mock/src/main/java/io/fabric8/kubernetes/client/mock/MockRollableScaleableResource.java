@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.model.DoneableReplicationController;
-import io.fabric8.kubernetes.api.model.ReplicationController;
+package io.fabric8.kubernetes.client.mock;
 
-public interface ReplicationControllerClientResource<T, D> extends ScaleableClientResource<T, D>,
-  Rollable<ReplicationController, ReplicationController, DoneableReplicationController> {
+import io.fabric8.kubernetes.client.dsl.Rollable;
+import io.fabric8.kubernetes.client.dsl.ScaleableResource;
+import org.easymock.IExpectationSetters;
+
+public interface MockRollableScaleableResource<T, D, B> extends ScaleableResource<T, IExpectationSetters<T>, D, IExpectationSetters<B>>,
+  Rollable<T, IExpectationSetters<T>, D> {
 }

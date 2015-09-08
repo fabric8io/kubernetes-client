@@ -135,7 +135,7 @@ public class FullExample {
         Thread.sleep(1000);
 
         // Update the RC - change the image back to nginx using a rolling update
-        client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").rolling().image("nginx");
+        client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").rolling().updateImage("nginx");
 
         Thread.sleep(1000);
 
