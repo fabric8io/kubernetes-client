@@ -59,6 +59,7 @@ import io.fabric8.kubernetes.client.mock.MockNonNamespaceOperation;
 import io.fabric8.kubernetes.client.mock.MockOperation;
 import io.fabric8.kubernetes.client.mock.MockProcessableResource;
 import io.fabric8.kubernetes.client.mock.MockResource;
+import io.fabric8.kubernetes.client.mock.MockRollableScaleableResource;
 import io.fabric8.kubernetes.client.mock.MockScaleableResource;
 import io.fabric8.kubernetes.client.mock.Replayable;
 import io.fabric8.kubernetes.client.mock.Verifiable;
@@ -305,7 +306,7 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
     return pods;
   }
 
-  public MockOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, MockScaleableResource<ReplicationController, DoneableReplicationController, Boolean>> replicationControllers() {
+  public MockOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, MockRollableScaleableResource<ReplicationController, DoneableReplicationController, Boolean>> replicationControllers() {
     return replicationControllers;
   }
 
