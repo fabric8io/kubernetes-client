@@ -29,65 +29,65 @@
       description: "EAP Release version, e.g. 6.4, etc."
       name: "EAP_RELEASE"
       value: "6.4"
-      required: "Yes"
+      required: true
     - 
       description: "The name for the application."
       name: "APPLICATION_NAME"
       value: "eap-app"
-      required: "Yes"
+      required: true
     - 
       description: "Custom hostname for service routes. Leave blank for default hostname, e.g.: <application-name>.<project>.<default-domain-suffix>"
       name: "APPLICATION_HOSTNAME"
       value: ""
-      required: "No"
+      required: false
     - 
       description: "Git source URI for application"
       name: "GIT_URI"
       value: "https://github.com/jboss-developer/jboss-eap-quickstarts"
-      required: "Yes"
+      required: false
     - 
       description: "Git branch/tag reference"
       name: "GIT_REF"
       value: "6.4.x"
-      required: "No"
+      required: false
     - 
       description: "Path within Git project to build; empty for root project directory."
       name: "GIT_CONTEXT_DIR"
       value: "kitchensink"
-      required: "No"
+      required: false
     - 
       description: "Queue names"
       name: "HORNETQ_QUEUES"
       value: ""
-      required: "No"
+      required: false
     - 
       description: "Topic names"
       name: "HORNETQ_TOPICS"
       value: ""
-      required: "No"
+      required: false
     - 
       description: "HornetQ cluster admin password"
       name: "HORNETQ_CLUSTER_PASSWORD"
       from: "[a-zA-Z0-9]{8}"
       generate: "expression"
-      required: "Yes"
+      required: true
     - 
       description: "GitHub trigger secret"
       name: "GITHUB_TRIGGER_SECRET"
       from: "[a-zA-Z0-9]{8}"
       generate: "expression"
-      required: "Yes"
+      required: true
     - 
       description: "Generic build trigger secret"
       name: "GENERIC_TRIGGER_SECRET"
       from: "[a-zA-Z0-9]{8}"
       generate: "expression"
-      required: "Yes"
+      required: true
     - 
       description: "Namespace in which the ImageStreams for Red Hat Middleware images are installed. These ImageStreams are normally installed in the openshift namespace. You should only need to modify this if you've installed the ImageStreams in a different namespace/project."
       name: "IMAGE_STREAM_NAMESPACE"
       value: "openshift"
-      required: "Yes"
+      required: true
   objects: 
     - 
       kind: "Service"
