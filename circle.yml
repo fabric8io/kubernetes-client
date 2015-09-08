@@ -16,7 +16,7 @@
 
 dependencies:
   override:
-    - mvn install -DskipTests
+    - mvn install -DskipTests -U
 test:
   post:
    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
