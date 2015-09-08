@@ -56,17 +56,17 @@ import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
+import io.fabric8.kubernetes.client.dsl.ClientListOperation;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.ReplicationControllerClientResource;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
 
-public interface KubernetesClient extends ConfigAware<Config>, AutoCloseable{
+public interface KubernetesClient extends ConfigAware<Config>, AutoCloseable {
 
   <T extends Extension> T adapt(Class<T> type);
 
@@ -100,10 +100,12 @@ public interface KubernetesClient extends ConfigAware<Config>, AutoCloseable{
 
   ClientOperation<KubernetesClient, ServiceAccount, ServiceAccountList, DoneableServiceAccount, ClientResource<ServiceAccount, DoneableServiceAccount>> serviceAccounts();
 
+  ClientListOperation<KubernetesClient> lists();
+
   ClientNonNamespaceOperation<KubernetesClient, SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints();
 
   void close();
 
-  <T> T unmarshal(InputStream is, Class<T> type) throws IOException;
+  <T> T unmarshal(InputStream is, Class<T> type);
 
 }

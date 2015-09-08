@@ -17,20 +17,19 @@
 package io.fabric8.openshift.client.mock.impl;
 
 import io.fabric8.openshift.client.OpenShiftClient;
-import io.fabric8.kubernetes.client.dsl.BuildConfigClientResource;
+import io.fabric8.openshift.client.dsl.BuildConfigClientResource;
 import io.fabric8.kubernetes.client.dsl.Instantiateable;
 import io.fabric8.kubernetes.client.dsl.Secretable;
 import io.fabric8.kubernetes.client.dsl.Triggerable;
 import io.fabric8.kubernetes.client.dsl.Typeable;
 import io.fabric8.kubernetes.client.mock.BaseMockOperation;
-import io.fabric8.kubernetes.client.mock.MockBuildConfigResource;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigList;
 import io.fabric8.openshift.api.model.BuildRequest;
 import io.fabric8.openshift.api.model.DoneableBuildConfig;
 import io.fabric8.openshift.api.model.WebHookTrigger;
 import io.fabric8.openshift.client.dsl.BuildConfigOperation;
-import io.fabric8.openshift.client.dsl.BuildConfigOperationsImpl;
+import io.fabric8.openshift.client.mock.MockBuildConfigResource;
 import org.easymock.EasyMock;
 import org.easymock.IArgumentMatcher;
 import org.easymock.IExpectationSetters;

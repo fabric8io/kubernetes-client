@@ -21,5 +21,6 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 public interface ClientOperation<C extends KubernetesClient, T, L, D, R extends ClientResource<T, D>> extends
   ClientAware<C>,
   Namespaceable<ClientNonNamespaceOperation<C, T, L, D, R>>,
-  FilterWatchListDeleteable<T, L, Boolean> {
+  FilterWatchListDeleteable<T, L, Boolean>,
+  LoadGettable<T> {
 }

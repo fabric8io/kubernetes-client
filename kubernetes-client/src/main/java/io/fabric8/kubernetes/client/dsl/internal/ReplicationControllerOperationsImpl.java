@@ -20,18 +20,23 @@ import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 import io.fabric8.kubernetes.client.dsl.ReplicationControllerClientResource;
 import io.fabric8.kubernetes.client.dsl.Scaleable;
 
-public class ReplicationControllerOperationsImpl extends HasMetadataOperation<KubernetesClient, ReplicationController, ReplicationControllerList, DoneableReplicationController, ReplicationControllerClientResource<ReplicationController, DoneableReplicationController>>
+public class ReplicationControllerOperationsImpl extends HasMetadataOperation<KubernetesClient, ReplicationController, ReplicationControllerList, DoneableReplicationController, ReplicationControllerClientResource<ReplicationController, DoneableReplicationController>, CreateFromLoadable<ReplicationController, DoneableReplicationController>>
   implements ReplicationControllerClientResource<ReplicationController, DoneableReplicationController> {
 
   public ReplicationControllerOperationsImpl(KubernetesClient client) {
-    super(client, "replicationcontrollers", null, null);
+    super(client, "replicationcontrollers", null, (String) null);
   }
 
   public ReplicationControllerOperationsImpl(KubernetesClient client, String namespace, String name) {
     super(client, "replicationcontrollers", namespace, name);
+  }
+
+  public ReplicationControllerOperationsImpl(KubernetesClient client, String namespace, ReplicationController o) {
+    super(client, "replicationcontrollers", namespace, o);
   }
 
   @Override

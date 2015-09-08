@@ -20,14 +20,19 @@ import io.fabric8.kubernetes.api.model.Node;
 import io.fabric8.kubernetes.api.model.NodeList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 
-public class NodeOperationsImpl extends HasMetadataOperation<KubernetesClient, Node, NodeList, DoneableNode, ClientResource<Node, DoneableNode>> {
+public class NodeOperationsImpl extends HasMetadataOperation<KubernetesClient, Node, NodeList, DoneableNode, ClientResource<Node, DoneableNode>, CreateFromLoadable<Node, DoneableNode>> {
 
   public NodeOperationsImpl(KubernetesClient client) {
-    super(client,"nodes", null, null);
+    super(client,"nodes", null, (String) null);
   }
 
   public NodeOperationsImpl(KubernetesClient client, String namespace, String name) {
     super(client,"nodes", namespace, name);
+  }
+
+  public NodeOperationsImpl(KubernetesClient client, String namespace, Node o) {
+    super(client, "nodes", namespace, o);
   }
 }

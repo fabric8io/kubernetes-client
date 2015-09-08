@@ -15,17 +15,14 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.api.model.DoneableSecurityContextConstraints;
-import io.fabric8.kubernetes.api.model.SecurityContextConstraints;
-import io.fabric8.kubernetes.api.model.SecurityContextConstraintsList;
+import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.BuildConfigClientResource;
+import io.fabric8.openshift.client.dsl.BuildConfigClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.kubernetes.client.dsl.ProcessableClientResource;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigList;
@@ -65,20 +62,20 @@ import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.api.model.UserList;
-import io.fabric8.openshift.client.dsl.BuildConfigOperationsImpl;
-import io.fabric8.openshift.client.dsl.BuildOperationsImpl;
-import io.fabric8.openshift.client.dsl.DeploymentConfigOperationsImpl;
-import io.fabric8.openshift.client.dsl.GroupOperationsImpl;
-import io.fabric8.openshift.client.dsl.ImageStreamOperationsImpl;
-import io.fabric8.openshift.client.dsl.OAuthAccessTokenOperationsImpl;
-import io.fabric8.openshift.client.dsl.OAuthAuthorizeTokenOperationsImpl;
-import io.fabric8.openshift.client.dsl.OAuthClientOperationsImpl;
-import io.fabric8.openshift.client.dsl.PolicyBindingOperationsImpl;
-import io.fabric8.openshift.client.dsl.PolicyOperationsImpl;
-import io.fabric8.openshift.client.dsl.RouteOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.SecurityContextConstraintsOperationsImpl;
-import io.fabric8.openshift.client.dsl.TemplateOperationsImpl;
-import io.fabric8.openshift.client.dsl.UserOperationsImpl;
+import io.fabric8.openshift.client.dsl.TemplateClientResource;
+import io.fabric8.openshift.client.dsl.internal.BuildConfigOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.BuildOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.DeploymentConfigOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.GroupOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.ImageStreamOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.OAuthAccessTokenOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.OAuthAuthorizeTokenOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.OAuthClientOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.PolicyBindingOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.PolicyOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.RouteOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.TemplateOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.UserOperationsImpl;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -121,7 +118,7 @@ public class DefaultOpenshiftClient extends DefaultKubernetesClient implements O
 
   @Override
   public ClientOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void>> buildConfigs() {
-    return new BuildConfigOperationsImpl(this, null, null);
+    return new BuildConfigOperationsImpl(this, null, (String) null);
   }
 
   @Override
@@ -170,7 +167,7 @@ public class DefaultOpenshiftClient extends DefaultKubernetesClient implements O
   }
 
   @Override
-  public ClientOperation<OpenShiftClient, Template, TemplateList, DoneableTemplate, ProcessableClientResource<Template, DoneableTemplate>> templates() {
+  public ClientOperation<OpenShiftClient, Template, TemplateList, DoneableTemplate, TemplateClientResource<Template, KubernetesList, DoneableTemplate>> templates() {
     return new TemplateOperationsImpl(this);
   }
 

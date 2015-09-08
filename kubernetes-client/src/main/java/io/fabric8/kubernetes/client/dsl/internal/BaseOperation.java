@@ -30,9 +30,11 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeleteable;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.net.MalformedURLException;
@@ -45,14 +47,15 @@ import java.util.concurrent.Future;
 
 import static io.fabric8.kubernetes.client.internal.Utils.join;
 
-public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
-  implements ClientMixedOperation<C, T, L, D, R> {
+public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>, C extends CreateFromLoadable<T, D>>
+  implements ClientMixedOperation<K, T, L, D, R>, CreateFromLoadable<T, D> {
 
   protected static final ObjectMapper mapper = new ObjectMapper();
 
-  private final C client;
+  private final K client;
 
   private final String name;
+  private final T item;
   private final String namespace;
   private final String resourceT;
 
@@ -67,10 +70,10 @@ public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesRe
   private final Class<L> listType;
   private final Class<D> doneableType;
 
-
-  protected BaseOperation(C client, String resourceT, String namespace, String name) {
+  protected BaseOperation(K client, String resourceT, String namespace, String name) {
     this.client = client;
     this.namespace = namespace;
+    this.item = null;
     this.name = name;
     this.resourceT = resourceT;
     this.clientType = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
@@ -79,9 +82,26 @@ public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesRe
     this.doneableType = (Class<D>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[3];
   }
 
-  protected BaseOperation(C client, String resourceT, String namespace, String name, Class<T> clientType, Class<T> type, Class<L> listType, Class<D> doneableType) {
+  protected BaseOperation(K client, String resourceT, String namespace, T item) {
     this.client = client;
     this.namespace = namespace;
+    this.item = item;
+    if (item instanceof HasMetadata) {
+      this.name = ((HasMetadata) item).getMetadata().getName();
+    } else {
+      this.name = null;
+    }
+    this.resourceT = resourceT;
+    this.clientType = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    this.type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+    this.listType = (Class<L>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[2];
+    this.doneableType = (Class<D>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[3];
+  }
+
+  protected BaseOperation(K client, String resourceT, String namespace, String name, Class<T> clientType, Class<T> type, Class<L> listType, Class<D> doneableType) {
+    this.client = client;
+    this.namespace = namespace;
+    this.item = null;
     this.name = name;
     this.resourceT = resourceT;
     this.clientType = clientType;
@@ -92,6 +112,9 @@ public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesRe
 
   @Override
   public T get() {
+    if (item != null) {
+      return item;
+    }
     try {
       URL requestUrl = getNamespacedUrl();
       if (name != null) {
@@ -130,7 +153,7 @@ public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesRe
   }
 
   @Override
-  public ClientNonNamespaceOperation<C, T, L, D, R> inNamespace(String namespace) {
+  public ClientNonNamespaceOperation<K, T, L, D, R> inNamespace(String namespace) {
     try {
       return getClass()
         .getConstructor(clientType, String.class, String.class)
@@ -145,6 +168,15 @@ public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesRe
   public T create(T resource) throws KubernetesClientException {
     try {
       return handleCreate(resource);
+    } catch (InterruptedException | ExecutionException | IOException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+
+  @Override
+  public T create() throws KubernetesClientException {
+    try {
+      return handleCreate(item);
     } catch (InterruptedException | ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
@@ -418,7 +450,6 @@ public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesRe
     return requestUrl;
   }
 
-
   protected URL getResourceUrl() throws MalformedURLException {
     if (name == null) {
       return getNamespacedUrl();
@@ -492,7 +523,18 @@ public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesRe
   }
 
   @Override
-  public C getClient() {
+  public K getClient() {
     return client;
+  }
+
+  @Override
+  public C load(InputStream is) {
+    try {
+      return (C) getClass()
+        .getConstructor(clientType, String.class, type)
+        .newInstance(client, namespace, client.unmarshal(is, type));
+    } catch (Throwable t) {
+      throw KubernetesClientException.launderThrowable(t);
+    }
   }
 }

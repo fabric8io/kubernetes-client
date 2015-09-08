@@ -19,7 +19,7 @@ package io.fabric8.kubernetes.client.dsl;
 import io.fabric8.kubernetes.client.KubernetesClient;
 
 public interface ClientMixedOperation<C extends KubernetesClient, T, L, D, R extends ClientResource<T, D>>
-  extends  ClientResource<T,D>,
+  extends ClientResource<T,D>,
   ClientOperation<C, T, L, D, R>,
   ClientNonNamespaceOperation<C, T, L, D, R> {
 }
