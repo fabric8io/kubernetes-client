@@ -25,10 +25,10 @@ public class DeploymentConfigOperationsImpl extends OpenshiftOperation<OpenShift
   ClientResource<DeploymentConfig, DoneableDeploymentConfig>> {
 
   public DeploymentConfigOperationsImpl(OpenShiftClient client) {
-    super(client, "deploymentconfigs", null, null);
+    super(client, "deploymentconfigs", null, null, true);
   }
 
-  public DeploymentConfigOperationsImpl(OpenShiftClient client, String namespace, String name) {
-    super(client, "deploymentconfigs", namespace, name);
+  public DeploymentConfigOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading) {
+    super(client, "deploymentconfigs", namespace, name, cascading);
   }
 }

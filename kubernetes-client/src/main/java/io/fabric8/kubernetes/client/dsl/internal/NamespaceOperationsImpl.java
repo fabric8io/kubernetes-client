@@ -24,10 +24,10 @@ import io.fabric8.kubernetes.client.dsl.ClientResource;
 public class NamespaceOperationsImpl extends HasMetadataOperation<KubernetesClient, Namespace, NamespaceList, DoneableNamespace, ClientResource<Namespace,DoneableNamespace>> {
 
   public NamespaceOperationsImpl(KubernetesClient client) {
-    super(client,"namespaces", null, null);
+    super(client,"namespaces", null, null, true);
   }
 
-  public NamespaceOperationsImpl(KubernetesClient client, String namespace, String name) {
-    super(client,"namespaces", namespace, name);
+  public NamespaceOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading) {
+    super(client,"namespaces", namespace, name, cascading);
   }
 }

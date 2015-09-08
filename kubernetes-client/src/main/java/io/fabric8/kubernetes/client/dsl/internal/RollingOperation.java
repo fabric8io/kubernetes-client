@@ -34,7 +34,7 @@ public class RollingOperation extends BaseOperation<KubernetesClient, Replicatio
   implements ImageEditReplaceable<ReplicationController, ReplicationController, DoneableReplicationController> {
 
   public RollingOperation(KubernetesClient client, String namespace, String name) {
-    super(client, "replicationcontrollers", namespace, name);
+    super(client, "replicationcontrollers", namespace, name, false);
   }
 
   @Override

@@ -15,9 +15,9 @@
  */
 package io.fabric8.openshift.client.dsl;
 
-import io.fabric8.kubernetes.client.internal.com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ProcessableClientResource;
+import io.fabric8.kubernetes.client.internal.com.ning.http.client.AsyncHttpClient;
 import io.fabric8.openshift.api.model.DoneableTemplate;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateList;
@@ -30,11 +30,11 @@ public class TemplateOperationsImpl extends OpenshiftOperation<OpenShiftClient, 
   implements ProcessableClientResource<Template, DoneableTemplate> {
 
   public TemplateOperationsImpl(OpenShiftClient client) {
-    super(client, "templates", null, null);
+    super(client, "templates", null, null, true);
   }
 
-  public TemplateOperationsImpl(OpenShiftClient client, String namespace, String name) {
-    super(client, "templates", namespace, name);
+  public TemplateOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading) {
+    super(client, "templates", namespace, name, cascading);
   }
 
   @Override

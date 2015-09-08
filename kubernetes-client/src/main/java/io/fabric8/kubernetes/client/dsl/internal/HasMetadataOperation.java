@@ -28,19 +28,19 @@ import java.lang.reflect.InvocationTargetException;
 
 public class HasMetadataOperation<C extends KubernetesClient, T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>> extends BaseOperation<C, T, L, D, R> {
 
-  protected HasMetadataOperation(C client, String resourceT, String namespace, String name) {
-    super(client, resourceT, namespace, name);
+  protected HasMetadataOperation(C client, String resourceT, String namespace, String name, Boolean cascading) {
+    super(client, resourceT, namespace, name, cascading);
   }
 
   @Override
-  public D edit(final boolean cascade) throws KubernetesClientException {
+  public D edit() throws KubernetesClientException {
     final BaseOperation oper = this;
 
     final Visitor<T> visitor = new Visitor<T>() {
       @Override
       public void visit(T resource) {
         try {
-          if (cascade) {
+          if (isCascading()) {
             Reaper reaper = ReaperFactory.getReaper(oper);
             if (reaper != null) {
               reaper.reap();
@@ -62,9 +62,9 @@ public class HasMetadataOperation<C extends KubernetesClient, T extends HasMetad
   }
 
   @Override
-  public T replace(T item, boolean cascade) {
+  public T replace(T item) {
     try {
-      if (cascade) {
+      if (isCascading()) {
         Reaper reaper = ReaperFactory.getReaper(this);
         if (reaper != null) {
           reaper.reap();

@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeleteable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import org.easymock.EasyMock;
@@ -59,8 +60,10 @@ public class BaseMockOperation<C extends KubernetesClient, T, L extends Kubernet
   }
 
 
+
   private Map<IArgumentMatcher, BaseMockOperation> nameMap = new HashMap<>();
   private Map<IArgumentMatcher, BaseMockOperation> namespaceMap = new HashMap<>();
+  private Map<IArgumentMatcher, BaseMockOperation> cascadingMap = new HashMap<>();
 
   private Map<IArgumentMatcher, BaseMockOperation> labelMap = new HashMap<>();
   private Map<IArgumentMatcher, BaseMockOperation> labelNotMap = new HashMap<>();
@@ -107,23 +110,14 @@ public class BaseMockOperation<C extends KubernetesClient, T, L extends Kubernet
 
   @Override
   public IExpectationSetters<Boolean> delete() {
-    return expect(delegate.delete(true));
-  }
-
-  @Override
-  public IExpectationSetters<Boolean> delete(boolean cascade) {
-    return expect(delegate.delete(cascade));
+    return expect(delegate.delete());
   }
 
   @Override
   public D edit() {
-    return edit(true);
-  }
-
-  @Override
-  public D edit(boolean cascade) {
     throw new UnsupportedOperationException("Mock client doesn't support inline edit. Please use replace(T item) instead.");
   }
+
 
   @Override
   public E withName(String name) {
@@ -152,22 +146,25 @@ public class BaseMockOperation<C extends KubernetesClient, T, L extends Kubernet
   }
 
   @Override
+  public EditReplaceDeletable<T, IExpectationSetters<T>, D, IExpectationSetters<Boolean>> cascading(boolean enabled) {
+    IArgumentMatcher matcher = getArgument(enabled);
+    BaseMockOperation<C, T, L, D, R, E> op = cascadingMap.get(matcher);
+    if (op == null) {
+      op = newInstance();
+      expect(delegate.cascading(enabled)).andReturn(op.getDelegate()).anyTimes();
+      nested.add(op);
+      namespaceMap.put(matcher, op);
+    }
+    return op;
+  }
+
+  @Override
   public IExpectationSetters<T> update(T item) {
     return replace(item);
   }
 
   @Override
-  public IExpectationSetters<T> update(T item, boolean cascade) {
-    return replace(item, cascade);
-  }
-
-  @Override
   public IExpectationSetters<T> replace(T item) {
-    return replace(item, true);
-  }
-
-  @Override
-  public IExpectationSetters<T> replace(T item, boolean cascade) {
     return null;
   }
 

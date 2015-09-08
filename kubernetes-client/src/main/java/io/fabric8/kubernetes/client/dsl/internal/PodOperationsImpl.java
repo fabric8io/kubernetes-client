@@ -24,10 +24,10 @@ import io.fabric8.kubernetes.client.dsl.ClientResource;
 public class PodOperationsImpl extends HasMetadataOperation<KubernetesClient, Pod, PodList, DoneablePod, ClientResource<Pod, DoneablePod>> {
 
   public PodOperationsImpl(KubernetesClient client) {
-    super(client,"pods", null, null);
+    super(client, "pods", null, null, true);
   }
 
-  public PodOperationsImpl(KubernetesClient client, String namespace, String name) {
-    super(client,"pods", namespace, name);
+  public PodOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading) {
+    super(client, "pods", namespace, name, cascading);
   }
 }

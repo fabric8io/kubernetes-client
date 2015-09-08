@@ -16,5 +16,5 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Resource<I, T, D, B> extends Gettable<T>, UpdateCascadeable<I, T>, ReplaceCascadeable<I, T>, EditCascadeable<D>, DeleteCascadeable<B>, Watchable<T> {
+public interface Resource<I, T, D, B> extends Gettable<T>, Updateable<I, T>, CascadingEditReplaceDeletable<I, T, D, B>, Watchable<T> {
 }

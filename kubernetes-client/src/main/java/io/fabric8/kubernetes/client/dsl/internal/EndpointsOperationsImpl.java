@@ -25,10 +25,10 @@ public class EndpointsOperationsImpl extends HasMetadataOperation<KubernetesClie
   ClientResource<Endpoints, DoneableEndpoints>> {
 
   public EndpointsOperationsImpl(KubernetesClient client) {
-    super(client, "endpoints", null, null);
+    super(client, "endpoints", null, null, true);
   }
 
-  public EndpointsOperationsImpl(KubernetesClient client, String namespace, String name) {
-    super(client, "endpoints", namespace, name);
+  public EndpointsOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading) {
+    super(client, "endpoints", namespace, name, cascading);
   }
 }

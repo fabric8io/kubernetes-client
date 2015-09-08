@@ -27,11 +27,11 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Ku
   implements ReplicationControllerClientResource<ReplicationController, DoneableReplicationController> {
 
   public ReplicationControllerOperationsImpl(KubernetesClient client) {
-    super(client, "replicationcontrollers", null, null);
+    super(client, "replicationcontrollers", null, null, true);
   }
 
-  public ReplicationControllerOperationsImpl(KubernetesClient client, String namespace, String name) {
-    super(client, "replicationcontrollers", namespace, name);
+  public ReplicationControllerOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading) {
+    super(client, "replicationcontrollers", namespace, name, cascading);
   }
 
   @Override
@@ -41,7 +41,7 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Ku
 
   @Override
   public ReplicationController scale(int count, boolean wait) {
-    ReplicationController res = edit(false).editSpec().withReplicas(count).endSpec().done();
+    ReplicationController res = edit().editSpec().withReplicas(count).endSpec().done();
     if (wait) {
       res = get();
       while (res.getStatus().getReplicas() != count) {

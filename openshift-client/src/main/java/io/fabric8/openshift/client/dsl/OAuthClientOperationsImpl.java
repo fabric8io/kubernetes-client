@@ -25,10 +25,10 @@ public class OAuthClientOperationsImpl extends OpenshiftOperation<OpenShiftClien
   ClientResource<OAuthClient, DoneableOAuthClient>> {
 
   public OAuthClientOperationsImpl(OpenShiftClient client) {
-    super(client, "oauthclients", null, null);
+    super(client, "oauthclients", null, null, true);
   }
 
-  public OAuthClientOperationsImpl(OpenShiftClient client, String namespace, String name) {
-    super(client, "oauthclients", namespace, name);
+  public OAuthClientOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading) {
+    super(client, "oauthclients", namespace, name, cascading);
   }
 }

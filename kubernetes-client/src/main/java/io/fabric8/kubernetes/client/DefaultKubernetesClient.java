@@ -290,7 +290,7 @@ public class DefaultKubernetesClient implements KubernetesClient {
 
   @Override
   public RootPaths rootPaths() {
-    return (RootPaths) new BaseOperation(this, "", null, null, KubernetesClient.class, RootPaths.class, null, null) {
+    return (RootPaths) new BaseOperation(this, "", null, null, false, KubernetesClient.class, RootPaths.class, null, null) {
     }.get();
   }
 

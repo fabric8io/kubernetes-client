@@ -61,7 +61,7 @@ class RollingUpdater {
       // Now we can update the old RC with the new selector
       oldRC.getSpec().getSelector().put(DEPLOYMENT_KEY, oldDeploymentHash);
       oldRC.getSpec().getTemplate().getMetadata().getLabels().put(DEPLOYMENT_KEY, oldDeploymentHash);
-      client.replicationControllers().inNamespace(namespace).withName(oldRCName).replace(oldRC, false);
+      client.replicationControllers().inNamespace(namespace).withName(oldRCName).cascading(false).replace(oldRC);
 
       // Ensure it looks like a new RC
       newRC.getMetadata().setResourceVersion(null);
@@ -106,12 +106,12 @@ class RollingUpdater {
 
         createdRC = client.replicationControllers().inNamespace(namespace).create(createdRC);
 
-        client.replicationControllers().inNamespace(namespace).withName(oldRCName + "-" + newDeploymentHash).delete(false);
+        client.replicationControllers().inNamespace(namespace).withName(oldRCName + "-" + newDeploymentHash).cascading(false).delete();
 
         Map<String, String> createdRCSelector = createdRC.getSpec().getSelector();
         createdRCSelector.remove(DEPLOYMENT_KEY);
         createdRC.getSpec().getTemplate().getMetadata().getLabels().remove(DEPLOYMENT_KEY);
-        createdRC = client.replicationControllers().inNamespace(namespace).withName(createdRC.getMetadata().getName()).replace(createdRC, false);
+        createdRC = client.replicationControllers().inNamespace(namespace).withName(createdRC.getMetadata().getName()).cascading(false).replace(createdRC);
       }
 
       return createdRC;

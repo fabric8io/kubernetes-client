@@ -25,10 +25,10 @@ public class EventOperationsImpl extends HasMetadataOperation<KubernetesClient, 
   ClientResource<Event, DoneableEvent>> {
 
   public EventOperationsImpl(KubernetesClient client) {
-    super(client,"events", null, null);
+    super(client, "events", null, null, true);
   }
 
-  public EventOperationsImpl(KubernetesClient client, String namespace, String name) {
-    super(client,"events", namespace, name);
+  public EventOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading) {
+    super(client, "events", namespace, name, cascading);
   }
 }

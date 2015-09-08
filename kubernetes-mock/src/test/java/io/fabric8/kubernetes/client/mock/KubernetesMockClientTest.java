@@ -92,6 +92,28 @@ public class KubernetesMockClientTest {
 
 
   @Test
+  public void testCascading() {
+    KubernetesMockClient mock = new KubernetesMockClient();
+    mock.pods().inNamespace("ns1").withName("name").cascading(false).delete().andReturn(true).anyTimes();
+
+    KubernetesClient client = mock.replay();
+
+    for (int i = 0; i < 5; i++) {
+      client.pods().inNamespace("ns1").withName("name").cascading(false).delete();
+    }
+
+    Boolean assertionError = false;
+    try {
+      mock.pods().inNamespace("ns1").withName("name").delete().andReturn(true).anyTimes();
+    } catch (AssertionError e) {
+      //unexpected call without cascading
+      assertionError = true;
+    }
+    Assert.assertTrue(assertionError);
+  }
+
+
+  @Test
   public void testListSecurityContextConstraints() {
     KubernetesMockClient mock = new KubernetesMockClient();
     mock.securityContextConstraints().list().andReturn(new SecurityContextConstraintsListBuilder()

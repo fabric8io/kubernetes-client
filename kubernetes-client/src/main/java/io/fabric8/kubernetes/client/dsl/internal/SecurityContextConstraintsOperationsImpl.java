@@ -23,10 +23,10 @@ import io.fabric8.kubernetes.client.dsl.ClientResource;
 
 public class SecurityContextConstraintsOperationsImpl extends BaseOperation<KubernetesClient, SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> {
   public SecurityContextConstraintsOperationsImpl(KubernetesClient client) {
-    super(client, "securitycontextconstraints", null, null);
+    super(client, "securitycontextconstraints", null, null, false);
   }
 
   public SecurityContextConstraintsOperationsImpl(KubernetesClient client, String namespace, String name) {
-    super(client, "securitycontextconstraints", namespace, name);
+    super(client, "securitycontextconstraints", namespace, name, false);
   }
 }

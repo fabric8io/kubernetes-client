@@ -23,10 +23,10 @@ import io.fabric8.openshift.client.OpenShiftClient;
 
 public class UserOperationsImpl extends OpenshiftOperation<OpenShiftClient, User, UserList, DoneableUser, ClientResource<User, DoneableUser>> {
   public UserOperationsImpl(OpenShiftClient client) {
-    super(client, "users", null, null);
+    super(client, "users", null, null, true);
   }
 
-  public UserOperationsImpl(OpenShiftClient client, String namespace, String name) {
-    super(client, "users", namespace, name);
+  public UserOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading) {
+    super(client, "users", namespace, name, cascading);
   }
 }

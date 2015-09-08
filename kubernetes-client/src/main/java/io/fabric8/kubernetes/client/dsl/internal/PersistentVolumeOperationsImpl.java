@@ -24,10 +24,10 @@ import io.fabric8.kubernetes.client.dsl.ClientResource;
 public class PersistentVolumeOperationsImpl extends HasMetadataOperation<KubernetesClient, PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, ClientResource<PersistentVolume, DoneablePersistentVolume>> {
 
   public PersistentVolumeOperationsImpl(KubernetesClient client) {
-    super(client,"persistentvolumes", null, null);
+    super(client, "persistentvolumes", null, null, true);
   }
 
-  public PersistentVolumeOperationsImpl(KubernetesClient client, String namespace, String name) {
-    super(client,"persistentvolumes", namespace, name);
+  public PersistentVolumeOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading) {
+    super(client, "persistentvolumes", namespace, name, cascading);
   }
 }

@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.fabric8.kubernetes.client.dsl;
 
-public interface EditCascadeable<T> extends Editable<T> {
-
-  T edit(boolean cascade);
-
+public interface EditReplaceDeletable<I, T, D, B> extends Replaceable<I, T>, Editable<D>, Deleteable<B> {
 }

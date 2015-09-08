@@ -23,10 +23,10 @@ import io.fabric8.kubernetes.client.dsl.ClientResource;
 
 public class SecretOperationsImpl extends HasMetadataOperation<KubernetesClient, Secret, SecretList, DoneableSecret, ClientResource<Secret, DoneableSecret>> {
   public SecretOperationsImpl(KubernetesClient client) {
-    super(client,"secrets", null, null);
+    super(client, "secrets", null, null, true);
   }
 
-  public SecretOperationsImpl(KubernetesClient client, String namespace, String name) {
-    super(client,"secrets", namespace, name);
+  public SecretOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading) {
+    super(client, "secrets", namespace, name, cascading);
   }
 }

@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.fabric8.kubernetes.client.dsl;
 
-@Deprecated
-public interface UpdateCascadeable<I, T> extends Updateable<I, T> {
-
-  @Deprecated
-  T update(I item, boolean cascade);
-
+public interface CascadingEditReplaceDeletable<I,D,T,B> extends
+  EditReplaceDeletable<I,D,T,B>,
+  Cascading<EditReplaceDeletable<I,D,T,B>> {
 }

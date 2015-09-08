@@ -25,10 +25,10 @@ public class BuildOperationsImpl extends OpenshiftOperation<OpenShiftClient, Bui
   ClientResource<Build, DoneableBuild>> {
 
   public BuildOperationsImpl(OpenShiftClient client) {
-    super(client, "builds", null, null);
+    super(client, "builds", null, null, true);
   }
 
-  public BuildOperationsImpl(OpenShiftClient client, String namespace, String name) {
-    super(client, "builds", namespace, name);
+  public BuildOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading) {
+    super(client, "builds", namespace, name, cascading);
   }
 }

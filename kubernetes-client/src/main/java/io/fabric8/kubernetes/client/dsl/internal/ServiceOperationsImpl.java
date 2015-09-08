@@ -26,11 +26,11 @@ import io.fabric8.kubernetes.client.dsl.ClientResource;
 public class ServiceOperationsImpl extends BaseOperation<KubernetesClient, Service, ServiceList, DoneableService, ClientResource<Service, DoneableService>> {
 
   public ServiceOperationsImpl(KubernetesClient client) {
-    super(client,"services", null, null);
+    super(client,"services", null, null, false);
   }
 
   public ServiceOperationsImpl(KubernetesClient client, String namespace, String name) {
-    super(client,"services", namespace, name);
+    super(client,"services", namespace, name, false);
   }
 
   @Override

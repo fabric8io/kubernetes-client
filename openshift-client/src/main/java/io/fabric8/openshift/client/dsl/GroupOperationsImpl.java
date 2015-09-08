@@ -23,10 +23,10 @@ import io.fabric8.openshift.client.OpenShiftClient;
 
 public class GroupOperationsImpl extends OpenshiftOperation<OpenShiftClient, Group, GroupList, DoneableGroup, ClientResource<Group, DoneableGroup>> {
   public GroupOperationsImpl(OpenShiftClient client) {
-    super(client, "groups", null, null);
+    super(client, "groups", null, null, true);
   }
 
-  public GroupOperationsImpl(OpenShiftClient client, String namespace, String name) {
-    super(client, "groups", namespace, name);
+  public GroupOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading) {
+    super(client, "groups", namespace, name, cascading);
   }
 }

@@ -30,6 +30,7 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeleteable;
 
 import java.io.IOException;
@@ -55,6 +56,7 @@ public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesRe
   private final String name;
   private final String namespace;
   private final String resourceT;
+  private final Boolean cascading;
 
   private final Map<String, String> labels = new TreeMap<>();
   private final Map<String, String> labelsNot = new TreeMap<>();
@@ -68,22 +70,24 @@ public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesRe
   private final Class<D> doneableType;
 
 
-  protected BaseOperation(C client, String resourceT, String namespace, String name) {
+  protected BaseOperation(C client, String resourceT, String namespace, String name, Boolean cascading) {
     this.client = client;
     this.namespace = namespace;
     this.name = name;
     this.resourceT = resourceT;
+    this.cascading = cascading;
     this.clientType = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     this.type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
     this.listType = (Class<L>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[2];
     this.doneableType = (Class<D>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[3];
   }
 
-  protected BaseOperation(C client, String resourceT, String namespace, String name, Class<T> clientType, Class<T> type, Class<L> listType, Class<D> doneableType) {
+  protected BaseOperation(C client, String resourceT, String namespace, String name, Boolean cascading, Class<T> clientType, Class<T> type, Class<L> listType, Class<D> doneableType) {
     this.client = client;
     this.namespace = namespace;
     this.name = name;
     this.resourceT = resourceT;
+    this.cascading = cascading;
     this.clientType = clientType;
     this.type = type;
     this.listType = listType;
@@ -110,11 +114,6 @@ public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesRe
 
   @Override
   public D edit() throws KubernetesClientException {
-    return edit(true);
-  }
-
-  @Override
-  public D edit(final boolean cascade) throws KubernetesClientException {
     throw new KubernetesClientException("Cannot edit read-only resources");
   }
 
@@ -122,8 +121,8 @@ public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesRe
   public R withName(String name) {
     try {
       return (R) getClass()
-        .getConstructor(clientType, String.class, String.class)
-        .newInstance(client, namespace, name);
+        .getConstructor(clientType, String.class, String.class, Boolean.class)
+        .newInstance(client, namespace, name, cascading);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -133,13 +132,24 @@ public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesRe
   public ClientNonNamespaceOperation<C, T, L, D, R> inNamespace(String namespace) {
     try {
       return getClass()
-        .getConstructor(clientType, String.class, String.class)
-        .newInstance(client, namespace, name);
+        .getConstructor(clientType, String.class, String.class, Boolean.class)
+        .newInstance(client, namespace, name, cascading);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
   }
 
+
+  @Override
+  public EditReplaceDeletable<T, T, D, Boolean> cascading(boolean enabled) {
+    try {
+      return getClass()
+        .getConstructor(clientType, String.class, String.class, Boolean.class)
+        .newInstance(client, namespace, name, enabled);
+    } catch (Throwable t) {
+      throw KubernetesClientException.launderThrowable(t);
+    }
+  }
 
   @Override
   public T create(T resource) throws KubernetesClientException {
@@ -309,14 +319,9 @@ public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesRe
 
   @Override
   public Boolean delete() {
-    return delete(true);
-  }
-
-  @Override
-  public Boolean delete(boolean cascade) {
     if (name != null && !name.isEmpty()) {
       try {
-        if (cascade) {
+        if (cascading) {
           Reaper reaper = ReaperFactory.getReaper(this);
           if (reaper != null) {
             reaper.reap();
@@ -394,18 +399,9 @@ public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesRe
     return replace(item);
   }
 
-  @Override
-  public T update(T item, boolean cascade) {
-    return replace(item, cascade);
-  }
 
   @Override
   public T replace(T item) {
-    return replace(item, true);
-  }
-
-  @Override
-  public T replace(T item, boolean cascade) {
     throw new KubernetesClientException("Cannot update read-only resources");
   }
 
@@ -473,6 +469,10 @@ public class BaseOperation<C extends KubernetesClient, T, L extends KubernetesRe
 
   public String getNamespace() {
     return namespace;
+  }
+
+  public Boolean isCascading() {
+    return cascading;
   }
 
   public String getResourceT() {
