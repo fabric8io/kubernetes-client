@@ -20,9 +20,8 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 
-public class PodOperationsImpl extends HasMetadataOperation<KubernetesClient, Pod, PodList, DoneablePod, ClientResource<Pod, DoneablePod>, CreateFromLoadable<Pod, DoneablePod>> {
+public class PodOperationsImpl extends HasMetadataOperation<KubernetesClient, Pod, PodList, DoneablePod, ClientResource<Pod, DoneablePod>> {
 
   public PodOperationsImpl(KubernetesClient client) {
     this(client, null, null, true, null);

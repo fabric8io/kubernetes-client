@@ -187,6 +187,8 @@ public class FullExample {
 
         log("Root paths:", client.rootPaths());
 
+        client.services().load(null);
+
       } finally {
         // And finally clean up the namespace
         client.namespaces().withName("thisisatest").delete();
@@ -195,6 +197,7 @@ public class FullExample {
     } catch (Exception e) {
       e.printStackTrace();
       logger.error(e.getMessage(), e);
+
 
       Throwable[] suppressed = e.getSuppressed();
       if (suppressed != null) {

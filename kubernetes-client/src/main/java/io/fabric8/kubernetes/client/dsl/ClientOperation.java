@@ -18,9 +18,13 @@ package io.fabric8.kubernetes.client.dsl;
 import io.fabric8.kubernetes.client.ClientAware;
 import io.fabric8.kubernetes.client.KubernetesClient;
 
-public interface ClientOperation<C extends KubernetesClient, T, L, D, R extends ClientResource<T, D>> extends
-  ClientAware<C>,
-  Namespaceable<ClientNonNamespaceOperation<C, T, L, D, R>>,
+import java.io.InputStream;
+
+public interface ClientOperation<K extends KubernetesClient, T, L, D,
+  R extends ClientResource<T, D>>
+  extends
+  ClientAware<K>,
+  Namespaceable<ClientNonNamespaceOperation<K, T, L, D, R>>,
   FilterWatchListDeleteable<T, L, Boolean>,
-  LoadGettable<T> {
+  Loadable<InputStream, R> {
 }

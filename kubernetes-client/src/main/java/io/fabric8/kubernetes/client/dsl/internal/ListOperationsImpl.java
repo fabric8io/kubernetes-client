@@ -61,12 +61,13 @@ public class ListOperationsImpl
   }
 
   @Override
-  public KubernetesList create(KubernetesList item) {
-    List<HasMetadata> createdItems = new ArrayList<>(item.getItems().size());
-
-    for (HasMetadata r : item.getItems()) {
-      HasMetadata created = create(r);
-      createdItems.add(created);
+  public KubernetesList create(KubernetesList... items) {
+    List<HasMetadata> createdItems = new ArrayList<>();
+    for (KubernetesList i : items) {
+      for (HasMetadata r : i.getItems()) {
+        HasMetadata created = create(r);
+        createdItems.add(created);
+      }
     }
 
     KubernetesList createdList = new KubernetesList();

@@ -18,7 +18,6 @@ package io.fabric8.openshift.client.dsl.internal;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
-import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 import io.fabric8.kubernetes.client.dsl.Triggerable;
 import io.fabric8.kubernetes.client.dsl.Typeable;
 import io.fabric8.kubernetes.client.dsl.internal.BaseOperation;
@@ -38,7 +37,7 @@ import java.net.URL;
 import java.util.concurrent.Future;
 
 public class BuildConfigOperationsImpl extends OpenshiftOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig,
-  BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void>, CreateFromLoadable<BuildConfig, DoneableBuildConfig>>
+  BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void>>
   implements BuildConfigOperation {
 
   private final String secret;
@@ -71,7 +70,7 @@ public class BuildConfigOperationsImpl extends OpenshiftOperation<OpenShiftClien
   }
 
   @Override
-  public CreateFromLoadable<BuildConfig, DoneableBuildConfig> load(InputStream is) {
+  public BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void> load(InputStream is) {
     return new BuildConfigOperationsImpl(getClient(), getNamespace(), getName(), isCascading(), getClient().unmarshal(is, getType()), secret, triggerType);
   }
 

@@ -99,7 +99,7 @@ public class BaseMockOperation<C extends KubernetesClient, T, L extends Kubernet
   }
 
   @Override
-  public IExpectationSetters<T> create(T item) {
+  public IExpectationSetters<T> create(T... item) {
     return expect(delegate.create(eq(item)));
   }
 

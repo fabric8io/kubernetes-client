@@ -20,6 +20,8 @@ import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.ClientAware;
 import io.fabric8.kubernetes.client.KubernetesClient;
 
+import java.io.InputStream;
+
 public interface ClientNonNamespaceListOperation<C extends KubernetesClient> extends
   ClientAware<C>,
   Createable<KubernetesList, KubernetesList, DoneableKubernetesList>,

@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.fabric8.kubernetes.client.dsl;
 
-public interface CreateFromLoadable<T, D> extends ClientResource<T, D> {
+public interface Loadable<I, T> {
 
-  T create();
+  T load(I input);
 }

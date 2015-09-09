@@ -19,14 +19,13 @@ import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.openshift.client.OpenShiftClient;
 
 import java.net.URL;
 
-public class OpenshiftOperation<K extends OpenShiftClient, T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>, C extends CreateFromLoadable<T, D>>
-  extends HasMetadataOperation<K, T, L, D, R, C> {
+public class OpenshiftOperation<K extends OpenShiftClient, T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
+  extends HasMetadataOperation<K, T, L, D, R> {
 
   protected OpenshiftOperation(K client, String resourceT, String namespace, String name, Boolean cascading, T item) {
     super(client, resourceT, namespace, name, cascading, item);

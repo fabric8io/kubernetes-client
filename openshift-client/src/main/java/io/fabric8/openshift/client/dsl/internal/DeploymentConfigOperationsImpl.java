@@ -16,14 +16,13 @@
 package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.api.model.DoneableDeploymentConfig;
 import io.fabric8.openshift.client.OpenShiftClient;
 
 public class DeploymentConfigOperationsImpl extends OpenshiftOperation<OpenShiftClient, DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig,
-  ClientResource<DeploymentConfig, DoneableDeploymentConfig>, CreateFromLoadable<DeploymentConfig, DoneableDeploymentConfig>> {
+  ClientResource<DeploymentConfig, DoneableDeploymentConfig>> {
 
   public DeploymentConfigOperationsImpl(OpenShiftClient client) {
     this(client, null, null, true, null);

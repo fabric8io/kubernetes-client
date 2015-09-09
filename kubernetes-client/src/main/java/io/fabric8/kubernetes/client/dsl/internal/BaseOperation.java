@@ -31,7 +31,6 @@ import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
-import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeleteable;
 
 import java.io.IOException;
@@ -48,8 +47,8 @@ import java.util.concurrent.Future;
 
 import static io.fabric8.kubernetes.client.internal.Utils.join;
 
-public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>, C extends CreateFromLoadable<T, D>>
-  implements ClientMixedOperation<K, T, L, D, R>, CreateFromLoadable<T, D> {
+public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
+  implements ClientMixedOperation<K, T, L, D, R> {
 
   protected static final ObjectMapper mapper = new ObjectMapper();
 
@@ -86,18 +85,18 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
     this.doneableType = (Class<D>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[3];
   }
 
-    protected BaseOperation(K client, String resourceT, String namespace, String name, Boolean cascading, T item, Class<K> clientType, Class<T> type, Class<L> listType, Class<D> doneableType) {
-      this.client = client;
-      this.resourceT = resourceT;
-      this.namespace = namespace;
-      this.name = name;
-      this.cascading = cascading;
-      this.item = item;
-      this.clientType = clientType;
-      this.type = type;
-      this.listType = listType;
-      this.doneableType = doneableType;
-    }
+  protected BaseOperation(K client, String resourceT, String namespace, String name, Boolean cascading, T item, Class<K> clientType, Class<T> type, Class<L> listType, Class<D> doneableType) {
+    this.client = client;
+    this.resourceT = resourceT;
+    this.namespace = namespace;
+    this.name = name;
+    this.cascading = cascading;
+    this.item = item;
+    this.clientType = clientType;
+    this.type = type;
+    this.listType = listType;
+    this.doneableType = doneableType;
+  }
 
   @Override
   public T get() {
@@ -160,9 +159,9 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   }
 
   @Override
-  public C load(InputStream is) {
+  public R load(InputStream is) {
     try {
-      return (C) getClass()
+      return (R) getClass()
         .getConstructor(clientType, String.class, String.class, Boolean.class, type)
         .newInstance(client, namespace, name, cascading, client.unmarshal(is, type));
     } catch (Throwable t) {
@@ -171,18 +170,17 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   }
 
   @Override
-  public T create(T resource) throws KubernetesClientException {
+  public T create(T... resources) throws KubernetesClientException {
     try {
-      return handleCreate(resource);
-    } catch (InterruptedException | ExecutionException | IOException e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
-  }
-
-  @Override
-  public T create() throws KubernetesClientException {
-    try {
-      return handleCreate(item);
+      if (resources.length > 1) {
+        throw new IllegalArgumentException("Too many items to create.");
+      } else if (resources.length == 1) {
+        return handleCreate(resources[0]);
+      } else if (getItem() == null) {
+        throw new IllegalArgumentException("Nothing to create.");
+      } else {
+        return handleCreate(getItem());
+      }
     } catch (InterruptedException | ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }

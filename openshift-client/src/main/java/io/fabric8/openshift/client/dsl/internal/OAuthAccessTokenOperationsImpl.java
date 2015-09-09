@@ -16,14 +16,13 @@
 package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 import io.fabric8.openshift.api.model.DoneableOAuthAccessToken;
 import io.fabric8.openshift.api.model.OAuthAccessToken;
 import io.fabric8.openshift.api.model.OAuthAccessTokenList;
 import io.fabric8.openshift.client.OpenShiftClient;
 
 public class OAuthAccessTokenOperationsImpl extends OpenshiftOperation<OpenShiftClient, OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken,
-  ClientResource<OAuthAccessToken, DoneableOAuthAccessToken>, CreateFromLoadable<OAuthAccessToken, DoneableOAuthAccessToken>> {
+  ClientResource<OAuthAccessToken, DoneableOAuthAccessToken>> {
 
   public OAuthAccessTokenOperationsImpl(OpenShiftClient client) {
     this(client, null, null, true, null);

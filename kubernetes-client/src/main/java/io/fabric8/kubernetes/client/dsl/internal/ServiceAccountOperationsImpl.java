@@ -20,9 +20,8 @@ import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 
-public class ServiceAccountOperationsImpl extends HasMetadataOperation<KubernetesClient, ServiceAccount, ServiceAccountList, DoneableServiceAccount, ClientResource<ServiceAccount, DoneableServiceAccount>, CreateFromLoadable<ServiceAccount, DoneableServiceAccount>> {
+public class ServiceAccountOperationsImpl extends HasMetadataOperation<KubernetesClient, ServiceAccount, ServiceAccountList, DoneableServiceAccount, ClientResource<ServiceAccount, DoneableServiceAccount>> {
 
   public ServiceAccountOperationsImpl(KubernetesClient client) {
     this(client, null, null, true, null);

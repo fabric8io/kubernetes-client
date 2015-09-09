@@ -16,14 +16,13 @@
 package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildList;
 import io.fabric8.openshift.api.model.DoneableBuild;
 import io.fabric8.openshift.client.OpenShiftClient;
 
 public class BuildOperationsImpl extends OpenshiftOperation<OpenShiftClient, Build, BuildList, DoneableBuild,
-  ClientResource<Build, DoneableBuild>, CreateFromLoadable<Build, DoneableBuild>> {
+  ClientResource<Build, DoneableBuild>> {
 
   public BuildOperationsImpl(OpenShiftClient client) {
     this(client, null, null, true, null);

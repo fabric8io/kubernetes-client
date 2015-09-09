@@ -20,10 +20,9 @@ import io.fabric8.kubernetes.api.model.ResourceQuota;
 import io.fabric8.kubernetes.api.model.ResourceQuotaList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 
 public class ResourceQuotaOperationsImpl extends HasMetadataOperation<KubernetesClient, ResourceQuota, ResourceQuotaList, DoneableResourceQuota,
-  ClientResource<ResourceQuota, DoneableResourceQuota>, CreateFromLoadable<ResourceQuota, DoneableResourceQuota>> {
+  ClientResource<ResourceQuota, DoneableResourceQuota>> {
 
   public ResourceQuotaOperationsImpl(KubernetesClient client) {
     this(client, null, null, true, null);

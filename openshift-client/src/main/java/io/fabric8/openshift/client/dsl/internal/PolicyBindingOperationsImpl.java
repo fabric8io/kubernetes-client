@@ -16,13 +16,12 @@
 package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 import io.fabric8.openshift.api.model.DoneablePolicyBinding;
 import io.fabric8.openshift.api.model.PolicyBinding;
 import io.fabric8.openshift.api.model.PolicyBindingList;
 import io.fabric8.openshift.client.OpenShiftClient;
 
-public class PolicyBindingOperationsImpl extends OpenshiftOperation<OpenShiftClient, PolicyBinding, PolicyBindingList, DoneablePolicyBinding, ClientResource<PolicyBinding, DoneablePolicyBinding>, CreateFromLoadable<PolicyBinding, DoneablePolicyBinding>> {
+public class PolicyBindingOperationsImpl extends OpenshiftOperation<OpenShiftClient, PolicyBinding, PolicyBindingList, DoneablePolicyBinding, ClientResource<PolicyBinding, DoneablePolicyBinding>> {
   public PolicyBindingOperationsImpl(OpenShiftClient client) {
     this(client, null, null, true, null);
   }
