@@ -19,7 +19,7 @@ import io.fabric8.kubernetes.client.internal.com.ning.http.client.AsyncHttpClien
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
-import io.fabric8.kubernetes.client.dsl.ProcessableClientResource;
+import io.fabric8.openshift.client.dsl.ProcessableClientResource;
 import io.fabric8.kubernetes.client.internal.com.ning.http.client.AsyncHttpClient;
 import io.fabric8.openshift.api.model.DoneableTemplate;
 import io.fabric8.openshift.api.model.Parameter;
@@ -40,15 +40,11 @@ public class TemplateOperationsImpl
   implements TemplateOperation {
 
   public TemplateOperationsImpl(OpenShiftClient client) {
-    super(client, "templates", null, null, true);
+    this(client, null, null, true, null);
   }
 
-  public TemplateOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading) {
-    super(client, "templates", namespace, name, cascading);
-  }
-
-  public TemplateOperationsImpl(OpenShiftClient client, String namespace, Template o) {
-    super(client, "templates", namespace, o);
+  public TemplateOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading, Template item) {
+    super(client, "templates", namespace, name, cascading, item);
   }
 
   @Override

@@ -28,6 +28,6 @@ public class ReplicationControllerCreator implements ResourceCreator<Replication
 
   @Override
   public ReplicationController create(KubernetesClient client, String namespace, ReplicationController item) {
-    return new ReplicationControllerOperationsImpl(client, namespace, item).create();
+    return new ReplicationControllerOperationsImpl(client, namespace, null, true, item, false).create();
   }
 }

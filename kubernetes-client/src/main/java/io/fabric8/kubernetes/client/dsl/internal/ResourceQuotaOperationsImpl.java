@@ -26,17 +26,11 @@ public class ResourceQuotaOperationsImpl extends HasMetadataOperation<Kubernetes
   ClientResource<ResourceQuota, DoneableResourceQuota>, CreateFromLoadable<ResourceQuota, DoneableResourceQuota>> {
 
   public ResourceQuotaOperationsImpl(KubernetesClient client) {
-    super(client, "resourcequotas", null, null, true);
-    super(client,"resourcequotas", null, (String) null);
+    this(client, null, null, true, null);
+
   }
 
-  public ResourceQuotaOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading) {
-    super(client, "resourcequotas", namespace, name, cascading);
-  public ResourceQuotaOperationsImpl(KubernetesClient client, String namespace, String name) {
-    super(client,"resourcequotas", namespace, name);
-  }
-
-  public ResourceQuotaOperationsImpl(KubernetesClient client, String namespace, ResourceQuota o) {
-    super(client, "resourcequotas", namespace, o);
+  public ResourceQuotaOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading, ResourceQuota item) {
+    super(client, "resourcequotas", namespace, name, cascading, item);
   }
 }

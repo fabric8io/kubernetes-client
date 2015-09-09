@@ -25,10 +25,10 @@ import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 public class NodeOperationsImpl extends HasMetadataOperation<KubernetesClient, Node, NodeList, DoneableNode, ClientResource<Node, DoneableNode>, CreateFromLoadable<Node, DoneableNode>> {
 
   public NodeOperationsImpl(KubernetesClient client) {
-    super(client, "nodes", null, null, true);
+    this(client, null, null, true, null);
   }
 
-  public NodeOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading) {
-    super(client, "nodes", namespace, name, cascading);
+  public NodeOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading, Node item) {
+    super(client, "nodes", namespace, name, cascading, item);
   }
 }

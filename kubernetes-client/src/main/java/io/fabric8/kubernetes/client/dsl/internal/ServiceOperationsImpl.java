@@ -27,15 +27,11 @@ import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 public class ServiceOperationsImpl extends BaseOperation<KubernetesClient, Service, ServiceList, DoneableService, ClientResource<Service, DoneableService>, CreateFromLoadable<Service, DoneableService>> {
 
   public ServiceOperationsImpl(KubernetesClient client) {
-    super(client,"services", null, null, false);
+    this(client, null, null, true, null);
   }
 
-  public ServiceOperationsImpl(KubernetesClient client, String namespace, String name) {
-    super(client,"services", namespace, name, false);
-  }
-
-  public ServiceOperationsImpl(KubernetesClient client, String namespace, Service o) {
-    super(client, "services", namespace, o);
+  public ServiceOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading, Service item) {
+    super(client,"services", namespace, name, cascading, item);
   }
 
   @Override

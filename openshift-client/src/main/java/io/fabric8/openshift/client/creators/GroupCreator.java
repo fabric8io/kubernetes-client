@@ -30,7 +30,7 @@ public class GroupCreator implements ResourceCreator<Group> {
   @Override
   public Group create(KubernetesClient client, String namespace, Group item) {
     try (OpenShiftClient osClient = client.adapt(OpenShiftClient.class)) {
-      return new GroupOperationsImpl(osClient, namespace, item).create();
+      return new GroupOperationsImpl(osClient, namespace, null, true, item).create();
     }
   }
 }

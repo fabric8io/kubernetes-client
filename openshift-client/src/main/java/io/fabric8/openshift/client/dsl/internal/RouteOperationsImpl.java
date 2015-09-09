@@ -25,11 +25,11 @@ import io.fabric8.openshift.client.OpenShiftClient;
 public class RouteOperationsImpl extends OpenshiftOperation<OpenShiftClient, Route, RouteList, DoneableRoute, ClientResource<Route, DoneableRoute>, CreateFromLoadable<Route, DoneableRoute>> {
 
   public RouteOperationsImpl(OpenShiftClient client) {
-    super(client, "routes", null, null, true);
+    this(client, null, null, true, null);
   }
 
-  public RouteOperationsImpl(OpenShiftClient client, String namespace, String name) {
-    super(client, "routes", namespace, name);
+  public RouteOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascasing, Route item) {
+    super(client, "routes", namespace, name, cascasing, item);
   }
 
 }

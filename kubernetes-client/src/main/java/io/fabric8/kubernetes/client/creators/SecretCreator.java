@@ -28,6 +28,6 @@ public class SecretCreator implements ResourceCreator<Secret> {
 
   @Override
   public Secret create(KubernetesClient client, String namespace, Secret item) {
-    return new SecretOperationsImpl(client, namespace, item).create();
+    return new SecretOperationsImpl(client, namespace, null, true, item).create();
   }
 }

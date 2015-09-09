@@ -56,10 +56,10 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   private final K client;
 
   private final String name;
-  private final T item;
   private final String namespace;
   private final String resourceT;
   private final Boolean cascading;
+  private final T item;
 
   private final Map<String, String> labels = new TreeMap<>();
   private final Map<String, String> labelsNot = new TreeMap<>();
@@ -72,43 +72,27 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   private final Class<L> listType;
   private final Class<D> doneableType;
 
-  protected BaseOperation(K client, String resourceT, String namespace, String name) {
 
-  protected BaseOperation(C client, String resourceT, String namespace, String name, Boolean cascading) {
+  protected BaseOperation(K client, String resourceT, String namespace, String name, Boolean cascading, T item) {
     this.client = client;
-    this.namespace = namespace;
-    this.item = null;
-    this.name = name;
     this.resourceT = resourceT;
+    this.namespace = namespace;
+    this.name = name;
     this.cascading = cascading;
+    this.item = item;
     this.clientType = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     this.type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
     this.listType = (Class<L>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[2];
     this.doneableType = (Class<D>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[3];
   }
 
-    protected BaseOperation(K client, String resourceT, String namespace, T item) {
+    protected BaseOperation(K client, String resourceT, String namespace, String name, Boolean cascading, T item, Class<T> clientType, Class<T> type, Class<L> listType, Class<D> doneableType) {
       this.client = client;
-      this.namespace = namespace;
-      this.item = item;
-      if (item instanceof HasMetadata) {
-        this.name = ((HasMetadata) item).getMetadata().getName();
-      } else {
-        this.name = null;
-      }
       this.resourceT = resourceT;
-      this.clientType = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-      this.type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-      this.listType = (Class<L>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[2];
-      this.doneableType = (Class<D>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[3];
-    }
-
-    protected BaseOperation(K client, String resourceT, String namespace, String name, Class<T> clientType, Class<T> type, Class<L> listType, Class<D> doneableType) {
-      this.client = client;
       this.namespace = namespace;
-      this.item = null;
       this.name = name;
-      this.resourceT = resourceT;
+      this.cascading = cascading;
+      this.item = item;
       this.clientType = clientType;
       this.type = type;
       this.listType = listType;
@@ -505,6 +489,10 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
 
   public Boolean isCascading() {
     return cascading;
+  }
+
+  public T getItem() {
+    return item;
   }
 
   public String getResourceT() {

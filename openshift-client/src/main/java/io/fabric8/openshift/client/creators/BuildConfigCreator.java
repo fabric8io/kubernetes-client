@@ -30,7 +30,7 @@ public class BuildConfigCreator implements ResourceCreator<BuildConfig> {
   @Override
   public BuildConfig create(KubernetesClient client, String namespace, BuildConfig item) {
     try (OpenShiftClient osClient = client.adapt(OpenShiftClient.class)) {
-      return new BuildConfigOperationsImpl(osClient, namespace, item).create();
+      return new BuildConfigOperationsImpl(osClient, namespace, null, true, item, null, null).create();
     }
   }
 }

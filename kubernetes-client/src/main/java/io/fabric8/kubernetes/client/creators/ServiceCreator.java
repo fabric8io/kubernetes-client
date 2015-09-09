@@ -28,6 +28,6 @@ public class ServiceCreator implements ResourceCreator<Service> {
 
   @Override
   public Service create(KubernetesClient client, String namespace, Service item) {
-    return new ServiceOperationsImpl(client, namespace, item).create();
+    return new ServiceOperationsImpl(client, namespace, null, true, item).create();
   }
 }

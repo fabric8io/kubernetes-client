@@ -26,10 +26,10 @@ public class OAuthAccessTokenOperationsImpl extends OpenshiftOperation<OpenShift
   ClientResource<OAuthAccessToken, DoneableOAuthAccessToken>, CreateFromLoadable<OAuthAccessToken, DoneableOAuthAccessToken>> {
 
   public OAuthAccessTokenOperationsImpl(OpenShiftClient client) {
-    super(client, "oauthaccesstokens", null, null, true);
+    this(client, null, null, true, null);
   }
 
-  public OAuthAccessTokenOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading) {
-    super(client, "oauthaccesstokens", namespace, name, cascading);
+  public OAuthAccessTokenOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading, OAuthAccessToken item) {
+    super(client, "oauthaccesstokens", namespace, name, cascading, item);
   }
 }

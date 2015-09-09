@@ -20,15 +20,17 @@ import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 
 public class EventOperationsImpl extends HasMetadataOperation<KubernetesClient, Event, EventList, DoneableEvent,
-  ClientResource<Event, DoneableEvent>> {
+  ClientResource<Event, DoneableEvent>,
+  CreateFromLoadable<Event, DoneableEvent>> {
 
   public EventOperationsImpl(KubernetesClient client) {
-    super(client, "events", null, null, true);
+    this(client, null, null, true, null);
   }
 
-  public EventOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading) {
-    super(client, "events", namespace, name, cascading);
+  public EventOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading, Event item) {
+    super(client, "events", namespace, name, cascading, item);
   }
 }

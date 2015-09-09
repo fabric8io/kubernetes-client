@@ -30,7 +30,7 @@ public class UserCreator implements ResourceCreator<User> {
   @Override
   public User create(KubernetesClient client, String namespace, User item) {
     try (OpenShiftClient osClient = client.adapt(OpenShiftClient.class)) {
-      return new UserOperationsImpl(osClient, namespace, item).create();
+      return new UserOperationsImpl(osClient, namespace, null, true, item).create();
     }
   }
 }

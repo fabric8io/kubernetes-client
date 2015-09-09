@@ -30,7 +30,7 @@ public class TemplateCreator implements ResourceCreator<Template> {
   @Override
   public Template create(KubernetesClient client, String namespace, Template item) {
     try (OpenShiftClient osClient = client.adapt(OpenShiftClient.class)) {
-      return new TemplateOperationsImpl(osClient, namespace, item).create();
+      return new TemplateOperationsImpl(osClient, namespace, null, true, item).create();
     }
   }
 }

@@ -22,17 +22,13 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 
-public class NamespaceOperationsImpl extends HasMetadataOperation<KubernetesClient, Namespace, NamespaceList, DoneableNamespace, ClientResource<Namespace,DoneableNamespace>, CreateFromLoadable<Namespace, DoneableNamespace>> {
+public class NamespaceOperationsImpl extends HasMetadataOperation<KubernetesClient, Namespace, NamespaceList, DoneableNamespace, ClientResource<Namespace, DoneableNamespace>, CreateFromLoadable<Namespace, DoneableNamespace>> {
 
   public NamespaceOperationsImpl(KubernetesClient client) {
-    super(client,"namespaces", null, null, true);
-  }
-
-  public NamespaceOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading) {
-    super(client,"namespaces", namespace, name, cascading);
+    this(client, null, null, true, null);
   }
 
   public NamespaceOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading, Namespace item) {
-    super(client,"namespaces", namespace, name, cascading, item);
+    super(client, "namespaces", namespace, name, cascading, item);
   }
 }

@@ -30,7 +30,7 @@ public class RouteCreator implements ResourceCreator<Route> {
   @Override
   public Route create(KubernetesClient client, String namespace, Route item) {
     try (OpenShiftClient osClient = client.adapt(OpenShiftClient.class)) {
-      return new RouteOperationsImpl(osClient, namespace, item).create();
+      return new RouteOperationsImpl(osClient, namespace, null, true, item).create();
     }
   }
 }

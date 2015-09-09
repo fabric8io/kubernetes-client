@@ -30,7 +30,7 @@ public class OAuthAccessTokenCreator implements ResourceCreator<OAuthAccessToken
   @Override
   public OAuthAccessToken create(KubernetesClient client, String namespace, OAuthAccessToken item) {
     try (OpenShiftClient osClient = client.adapt(OpenShiftClient.class)) {
-      return new OAuthAccessTokenOperationsImpl(osClient, namespace, item).create();
+      return new OAuthAccessTokenOperationsImpl(osClient, namespace, null, true, item).create();
     }
   }
 }

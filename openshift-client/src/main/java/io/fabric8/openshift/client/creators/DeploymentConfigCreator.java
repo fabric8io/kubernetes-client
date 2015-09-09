@@ -30,7 +30,7 @@ public class DeploymentConfigCreator implements ResourceCreator<DeploymentConfig
   @Override
   public DeploymentConfig create(KubernetesClient client, String namespace, DeploymentConfig item) {
     try (OpenShiftClient osClient = client.adapt(OpenShiftClient.class)) {
-      return new DeploymentConfigOperationsImpl(osClient, namespace, item).create();
+      return new DeploymentConfigOperationsImpl(osClient, namespace, null, true, item).create();
     }
   }
 }

@@ -28,6 +28,6 @@ public class NamespaceCreator implements ResourceCreator<Namespace> {
 
   @Override
   public Namespace create(KubernetesClient client, String namespace, Namespace item) {
-    return new NamespaceOperationsImpl(client, namespace, item).create();
+    return new NamespaceOperationsImpl(client, namespace, null, true, item).create();
   }
 }

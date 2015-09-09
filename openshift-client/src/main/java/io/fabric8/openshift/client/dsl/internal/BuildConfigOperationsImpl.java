@@ -43,26 +43,12 @@ public class BuildConfigOperationsImpl extends OpenshiftOperation<OpenShiftClien
   private final String secret;
   private final String triggerType;
 
-  public BuildConfigOperationsImpl(OpenShiftClient client, String secret, String triggerType) {
-    super(client, "buildconfigs", null, (String) null);
-    this.triggerType = triggerType;
-    this.secret = secret;
+  public BuildConfigOperationsImpl(OpenShiftClient client) {
+    this(client, null, null, true, null, null, null);
   }
 
-  public BuildConfigOperationsImpl(OpenShiftClient client, String namespace, BuildConfig buildConfig) {
-    super(client, "buildconfigs", namespace, buildConfig);
-    this.triggerType = null;
-    this.secret = null;
-  }
-
-  public BuildConfigOperationsImpl(OpenShiftClient client, String namespace, String name, String secret, String triggerType) {
-    super(client, "buildconfigs", namespace, name);
-    this.triggerType = triggerType;
-    this.secret = secret;
-  }
-
-  public BuildConfigOperationsImpl(OpenShiftClient client, String namespace, BuildConfig o, String secret, String triggerType) {
-    super(client, "buildconfigs", namespace, o);
+  public BuildConfigOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading, BuildConfig item, String secret, String triggerType) {
+    super(client, "buildconfigs", namespace, name, cascading, item);
     this.triggerType = triggerType;
     this.secret = secret;
   }
@@ -92,7 +78,7 @@ public class BuildConfigOperationsImpl extends OpenshiftOperation<OpenShiftClien
 
   @Override
   public Typeable<Triggerable<WebHookTrigger, Void>> withSecret(String secret) {
-    return new BuildConfigOperationsImpl(getClient(), getNamespace(), getName(), isCascading(), secret, triggerType);
+    return new BuildConfigOperationsImpl(getClient(), getNamespace(), getName(), isCascading(), getItem(), secret, triggerType);
   }
 
   @Override
@@ -132,6 +118,6 @@ public class BuildConfigOperationsImpl extends OpenshiftOperation<OpenShiftClien
 
   @Override
   public Triggerable<WebHookTrigger, Void> withType(String type) {
-    return new BuildConfigOperationsImpl(getClient(), getNamespace(), getName(), secret, type);
+    return new BuildConfigOperationsImpl(getClient(), getNamespace(), getName(), isCascading(), getItem(), secret, type);
   }
 }

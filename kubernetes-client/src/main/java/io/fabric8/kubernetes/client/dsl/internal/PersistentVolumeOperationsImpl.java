@@ -26,10 +26,10 @@ public class PersistentVolumeOperationsImpl
   extends HasMetadataOperation<KubernetesClient, PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, ClientResource<PersistentVolume, DoneablePersistentVolume>, CreateFromLoadable<PersistentVolume, DoneablePersistentVolume>> {
 
   public PersistentVolumeOperationsImpl(KubernetesClient client) {
-    super(client, "persistentvolumes", null, null, true);
+    this(client, null, null, true, null);
   }
 
-  public PersistentVolumeOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading) {
-    super(client, "persistentvolumes", namespace, name, cascading);
+  public PersistentVolumeOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading, PersistentVolume item) {
+    super(client, "persistentvolumes", namespace, name, cascading, item);
   }
 }

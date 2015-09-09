@@ -30,7 +30,7 @@ public class OAuthClientCreator implements ResourceCreator<OAuthClient> {
   @Override
   public OAuthClient create(KubernetesClient client, String namespace, OAuthClient item) {
     try (OpenShiftClient osClient = client.adapt(OpenShiftClient.class)) {
-      return new OAuthClientOperationsImpl(osClient, namespace, item).create();
+      return new OAuthClientOperationsImpl(osClient, namespace, null, true, item).create();
     }
   }
 }

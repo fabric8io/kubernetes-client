@@ -28,6 +28,6 @@ public class EventCreator implements ResourceCreator<Event> {
 
   @Override
   public Event create(KubernetesClient client, String namespace, Event item) {
-    return new EventOperationsImpl(client, namespace, item).create();
+    return new EventOperationsImpl(client, namespace, null, true, item).create();
   }
 }

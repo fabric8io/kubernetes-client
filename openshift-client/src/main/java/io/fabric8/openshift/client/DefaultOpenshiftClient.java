@@ -118,7 +118,7 @@ public class DefaultOpenshiftClient extends DefaultKubernetesClient implements O
 
   @Override
   public ClientOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void>> buildConfigs() {
-    return new BuildConfigOperationsImpl(this, null, (String) null);
+    return new BuildConfigOperationsImpl(this, null, null, true, null, null, null);
   }
 
   @Override

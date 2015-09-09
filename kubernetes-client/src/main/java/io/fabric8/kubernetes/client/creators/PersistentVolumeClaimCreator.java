@@ -28,6 +28,6 @@ public class PersistentVolumeClaimCreator implements ResourceCreator<PersistentV
 
   @Override
   public PersistentVolumeClaim create(KubernetesClient client, String namespace, PersistentVolumeClaim item) {
-    return new PersistentVolumeClaimOperationsImpl(client, namespace, item).create();
+    return new PersistentVolumeClaimOperationsImpl(client, namespace, null, true, item).create();
   }
 }

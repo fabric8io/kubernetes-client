@@ -30,7 +30,7 @@ public class BuildCreator implements ResourceCreator<Build> {
   @Override
   public Build create(KubernetesClient client, String namespace, Build item) {
     try (OpenShiftClient osClient = client.adapt(OpenShiftClient.class)) {
-      return new BuildOperationsImpl(osClient, namespace, item).create();
+      return new BuildOperationsImpl(osClient, namespace, null, true, item).create();
     }
   }
 }

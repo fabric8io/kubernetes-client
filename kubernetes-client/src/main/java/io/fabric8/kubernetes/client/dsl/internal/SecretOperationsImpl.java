@@ -24,10 +24,10 @@ import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 
 public class SecretOperationsImpl extends HasMetadataOperation<KubernetesClient, Secret, SecretList, DoneableSecret, ClientResource<Secret, DoneableSecret>, CreateFromLoadable<Secret, DoneableSecret>> {
   public SecretOperationsImpl(KubernetesClient client) {
-    super(client, "secrets", null, null, true);
+    this(client, null, null, true, null);
   }
 
-  public SecretOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading) {
-    super(client, "secrets", namespace, name, cascading);
+  public SecretOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading, Secret item) {
+    super(client, "secrets", namespace, name, cascading, item);
   }
 }

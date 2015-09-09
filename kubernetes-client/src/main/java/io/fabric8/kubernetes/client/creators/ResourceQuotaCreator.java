@@ -28,6 +28,6 @@ public class ResourceQuotaCreator implements ResourceCreator<ResourceQuota> {
 
   @Override
   public ResourceQuota create(KubernetesClient client, String namespace, ResourceQuota item) {
-    return new ResourceQuotaOperationsImpl(client, namespace, item).create();
+    return new ResourceQuotaOperationsImpl(client, namespace, null, true, item).create();
   }
 }

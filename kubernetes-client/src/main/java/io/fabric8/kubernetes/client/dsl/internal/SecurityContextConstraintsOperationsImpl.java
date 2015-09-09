@@ -24,16 +24,10 @@ import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 
 public class SecurityContextConstraintsOperationsImpl extends BaseOperation<KubernetesClient, SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>, CreateFromLoadable<SecurityContextConstraints, DoneableSecurityContextConstraints>> {
   public SecurityContextConstraintsOperationsImpl(KubernetesClient client) {
-    super(client, "securitycontextconstraints", null, null, false);
-    super(client, "securitycontextconstraints", null, (String) null);
+    this(client, null, null, true, null);
   }
 
-  public SecurityContextConstraintsOperationsImpl(KubernetesClient client, String namespace, String name) {
-    super(client, "securitycontextconstraints", namespace, name, false);
-    super(client, "securitycontextconstraints", namespace, name);
-  }
-
-  public SecurityContextConstraintsOperationsImpl(KubernetesClient client, String namespace, SecurityContextConstraints o) {
-    super(client, "securitycontextconstraints", namespace, o);
+  public SecurityContextConstraintsOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading, SecurityContextConstraints item) {
+    super(client, "securitycontextconstraints", namespace, name, cascading, item);
   }
 }

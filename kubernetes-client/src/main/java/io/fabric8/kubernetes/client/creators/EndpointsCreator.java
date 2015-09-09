@@ -28,6 +28,6 @@ public class EndpointsCreator implements ResourceCreator<Endpoints> {
 
   @Override
   public Endpoints create(KubernetesClient client, String namespace, Endpoints item) {
-    return new EndpointsOperationsImpl(client, namespace, item).create();
+    return new EndpointsOperationsImpl(client, namespace, null, true, item).create();
   }
 }

@@ -28,14 +28,8 @@ import java.net.URL;
 public class OpenshiftOperation<K extends OpenShiftClient, T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>, C extends CreateFromLoadable<T, D>>
   extends HasMetadataOperation<K, T, L, D, R, C> {
 
-  protected OpenshiftOperation(K client, String resourceT, String namespace, String name) {
-    super(client, resourceT, namespace, name);
-  }
-
-  protected OpenshiftOperation(K client, String resourceT, String namespace, T o) {
-    super(client, resourceT, namespace, o);
-  protected OpenshiftOperation(C client, String resourceT, String namespace, String name, Boolean cascading) {
-    super(client, resourceT, namespace, name, cascading);
+  protected OpenshiftOperation(K client, String resourceT, String namespace, String name, Boolean cascading, T item) {
+    super(client, resourceT, namespace, name, cascading, item);
   }
 
   @Override

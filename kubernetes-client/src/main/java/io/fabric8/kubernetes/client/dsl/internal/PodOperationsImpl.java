@@ -25,10 +25,10 @@ import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 public class PodOperationsImpl extends HasMetadataOperation<KubernetesClient, Pod, PodList, DoneablePod, ClientResource<Pod, DoneablePod>, CreateFromLoadable<Pod, DoneablePod>> {
 
   public PodOperationsImpl(KubernetesClient client) {
-    super(client, "pods", null, null, true);
+    this(client, null, null, true, null);
   }
 
-  public PodOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading) {
-    super(client, "pods", namespace, name, cascading);
+  public PodOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading, Pod item) {
+    super(client, "pods", namespace, name, cascading, item);
   }
 }

@@ -28,6 +28,6 @@ public class SecurityContextConstraintsCreator implements ResourceCreator<Securi
 
   @Override
   public SecurityContextConstraints create(KubernetesClient client, String namespace, SecurityContextConstraints item) {
-    return new SecurityContextConstraintsOperationsImpl(client, namespace, item).create();
+    return new SecurityContextConstraintsOperationsImpl(client, namespace, null, true, item).create();
   }
 }

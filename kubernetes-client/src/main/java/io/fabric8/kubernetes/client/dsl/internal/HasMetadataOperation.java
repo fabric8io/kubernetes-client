@@ -30,12 +30,13 @@ import java.lang.reflect.InvocationTargetException;
 public class HasMetadataOperation<K extends KubernetesClient, T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>, C extends CreateFromLoadable<T, D>>
   extends BaseOperation<K, T, L, D, R, C> {
 
-  protected HasMetadataOperation(C client, String resourceT, String namespace, String name, Boolean cascading) {
-    super(client, resourceT, namespace, name, cascading);
+
+  protected HasMetadataOperation(K client, String resourceT, String namespace, String name, Boolean cascading, T item) {
+    super(client, resourceT, namespace, name, cascading, item);
   }
 
-  protected HasMetadataOperation(K client, String resourceT, String namespace, T item) {
-    super(client, resourceT, namespace, item);
+  protected HasMetadataOperation(K client, String resourceT, String namespace, String name, Boolean cascading, T item, Class<T> clientType, Class<T> type, Class<L> listType, Class<D> doneableType) {
+    super(client, resourceT, namespace, name, cascading, item, clientType, type, listType, doneableType);
   }
 
   @Override

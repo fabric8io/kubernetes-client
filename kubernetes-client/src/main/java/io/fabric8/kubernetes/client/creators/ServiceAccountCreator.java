@@ -28,6 +28,6 @@ public class ServiceAccountCreator implements ResourceCreator<ServiceAccount> {
 
   @Override
   public ServiceAccount create(KubernetesClient client, String namespace, ServiceAccount item) {
-    return new ServiceAccountOperationsImpl(client, namespace, item).create();
+    return new ServiceAccountOperationsImpl(client, namespace, null, true, item).create();
   }
 }

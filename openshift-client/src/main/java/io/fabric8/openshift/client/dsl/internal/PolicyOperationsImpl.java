@@ -24,10 +24,10 @@ import io.fabric8.openshift.client.OpenShiftClient;
 
 public class PolicyOperationsImpl extends OpenshiftOperation<OpenShiftClient, Policy, PolicyList, DoneablePolicy, ClientResource<Policy, DoneablePolicy>, CreateFromLoadable<Policy, DoneablePolicy>> {
   public PolicyOperationsImpl(OpenShiftClient client) {
-    super(client, "policies", null, null, true);
+    this(client, null, null, true, null);
   }
 
-  public PolicyOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading) {
-    super(client, "policies", namespace, name, cascading);
+  public PolicyOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading, Policy item) {
+    super(client, "policies", namespace, name, cascading, item);
   }
 }

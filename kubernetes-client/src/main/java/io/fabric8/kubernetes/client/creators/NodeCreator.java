@@ -28,6 +28,6 @@ public class NodeCreator implements ResourceCreator<Node> {
 
   @Override
   public Node create(KubernetesClient client, String namespace, Node item) {
-    return new NodeOperationsImpl(client, namespace, item).create();
+    return new NodeOperationsImpl(client, namespace, null, true, item).create();
   }
 }

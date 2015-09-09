@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.CreateFromLoadable;
 import io.fabric8.kubernetes.client.dsl.ImageEditReplaceable;
 import io.fabric8.kubernetes.client.dsl.RollableScallableClientResource;
 import io.fabric8.kubernetes.client.dsl.Scaleable;
@@ -31,22 +32,19 @@ import io.fabric8.kubernetes.client.dsl.Scaleable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 
-public class ReplicationControllerOperationsImpl extends HasMetadataOperation<KubernetesClient, ReplicationController, ReplicationControllerList, DoneableReplicationController, RollableScallableClientResource<ReplicationController, DoneableReplicationController>>
+public class ReplicationControllerOperationsImpl extends HasMetadataOperation<KubernetesClient, ReplicationController, ReplicationControllerList, DoneableReplicationController, RollableScallableClientResource<ReplicationController, DoneableReplicationController>, CreateFromLoadable<ReplicationController, DoneableReplicationController>>
   implements RollableScallableClientResource<ReplicationController, DoneableReplicationController>,
   ImageEditReplaceable<ReplicationController, ReplicationController, DoneableReplicationController> {
 
   private final Boolean rolling;
 
   public ReplicationControllerOperationsImpl(KubernetesClient client) {
-    this(client, null, null, true, false);
+    this(client, null, null, true, null, false);
   }
 
-  public ReplicationControllerOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading) {
-    this(client, namespace, name, cascading, false);
-  }
 
-  public ReplicationControllerOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading, Boolean rolling) {
-    super(client, "replicationcontrollers", namespace, name, cascading);
+  public ReplicationControllerOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading, ReplicationController item, Boolean rolling) {
+    super(client, "replicationcontrollers", namespace, name, cascading, item);
     this.rolling = rolling;
   }
 
@@ -74,7 +72,7 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Ku
 
   @Override
   public ReplicationControllerOperationsImpl rolling() {
-    return new ReplicationControllerOperationsImpl(getClient(), getNamespace(), getName(), isCascading(), true);
+    return new ReplicationControllerOperationsImpl(getClient(), getNamespace(), getName(), isCascading(), getItem(), true);
   }
 
 

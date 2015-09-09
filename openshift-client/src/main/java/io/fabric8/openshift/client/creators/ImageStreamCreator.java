@@ -30,7 +30,7 @@ public class ImageStreamCreator implements ResourceCreator<ImageStream> {
   @Override
   public ImageStream create(KubernetesClient client, String namespace, ImageStream item) {
     try (OpenShiftClient osClient = client.adapt(OpenShiftClient.class)) {
-      return new ImageStreamOperationsImpl(osClient, namespace, item).create();
+      return new ImageStreamOperationsImpl(osClient, namespace, null, true, item).create();
     }
   }
 }

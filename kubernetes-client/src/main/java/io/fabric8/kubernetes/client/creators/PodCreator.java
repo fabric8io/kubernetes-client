@@ -28,6 +28,6 @@ public class PodCreator implements ResourceCreator<Pod> {
 
   @Override
   public Pod create(KubernetesClient client, String namespace, Pod item) {
-    return new PodOperationsImpl(client, namespace, item).create();
+    return new PodOperationsImpl(client, namespace, null, true, item).create();
   }
 }

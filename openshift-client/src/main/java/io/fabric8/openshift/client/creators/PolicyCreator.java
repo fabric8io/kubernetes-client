@@ -30,7 +30,7 @@ public class PolicyCreator implements ResourceCreator<Policy> {
   @Override
   public Policy create(KubernetesClient client, String namespace, Policy item) {
     try (OpenShiftClient osClient = client.adapt(OpenShiftClient.class)) {
-      return new PolicyOperationsImpl(osClient, namespace, item).create();
+      return new PolicyOperationsImpl(osClient, namespace, null, true, item).create();
     }
   }
 }
