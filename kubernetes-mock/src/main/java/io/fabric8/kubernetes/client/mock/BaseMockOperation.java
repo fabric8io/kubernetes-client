@@ -41,13 +41,14 @@ import java.util.Map;
 import java.util.Set;
 
 import static io.fabric8.kubernetes.client.mock.util.MockUtils.getArgument;
-import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 
 public class BaseMockOperation<C extends KubernetesClient, T, L extends KubernetesResourceList, D extends Doneable<T>,
   R extends ClientResource<T, D>,
   E extends Resource<T, IExpectationSetters<T>, D, IExpectationSetters<Boolean>>>
-  implements MockOperation<T, L, D, E>, Mockable {
+  implements MockOperation<T, L, D, E>,
+  MockResource<T, D, Boolean>,
+  Mockable {
 
   private final ClientMixedOperation<C, T, L, D, R> delegate;
   private final Set<Mockable> nested = new LinkedHashSet<>();
@@ -102,7 +103,7 @@ public class BaseMockOperation<C extends KubernetesClient, T, L extends Kubernet
 
   @Override
   public IExpectationSetters<T> create(T... item) {
-    return expect(delegate.create(eq(item)));
+    return expect(delegate.create(item));
   }
 
   @Override

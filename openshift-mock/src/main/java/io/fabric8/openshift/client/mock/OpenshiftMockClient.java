@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.DoneableReplicationController;
 import io.fabric8.kubernetes.api.model.DoneableResourceQuota;
 import io.fabric8.kubernetes.api.model.DoneableSecret;
+import io.fabric8.kubernetes.api.model.DoneableSecurityContextConstraints;
 import io.fabric8.kubernetes.api.model.DoneableService;
 import io.fabric8.kubernetes.api.model.DoneableServiceAccount;
 import io.fabric8.kubernetes.api.model.Endpoints;
@@ -49,11 +50,14 @@ import io.fabric8.kubernetes.api.model.ResourceQuotaList;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.SecretList;
+import io.fabric8.kubernetes.api.model.SecurityContextConstraints;
+import io.fabric8.kubernetes.api.model.SecurityContextConstraintsList;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.mock.MockKubernetesListOperation;
 import io.fabric8.kubernetes.client.mock.MockNonNamespaceOperation;
 import io.fabric8.kubernetes.client.mock.MockOperation;
 import io.fabric8.kubernetes.client.mock.MockResource;
@@ -61,6 +65,8 @@ import io.fabric8.kubernetes.client.mock.MockRollableScaleableResource;
 import io.fabric8.kubernetes.client.mock.MockScaleableResource;
 import io.fabric8.kubernetes.client.mock.Replayable;
 import io.fabric8.kubernetes.client.mock.Verifiable;
+import io.fabric8.kubernetes.client.mock.impl.MockKubernetesListOperationImpl;
+import io.fabric8.kubernetes.client.mock.impl.MockSecurityContextConstraints;
 import io.fabric8.openshift.api.model.DoneableGroup;
 import io.fabric8.openshift.api.model.DoneablePolicy;
 import io.fabric8.openshift.api.model.DoneablePolicyBinding;
@@ -150,8 +156,10 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
   private final MockResourceQuota resourceQuotas = new MockResourceQuota();
   private final MockSecret secrets = new MockSecret();
   private final MockServiceAccount serviceAccounts = new MockServiceAccount();
-  private final MockTemplate templates = new MockTemplate();
+  private final MockSecurityContextConstraints securityContextConstraints = new MockSecurityContextConstraints();
+  private final MockKubernetesListOperationImpl kubernetesLists = new MockKubernetesListOperationImpl();
 
+  private final MockTemplate templates = new MockTemplate();
   private final MockBuild builds = new MockBuild();
   private final MockBuildConfig buildConfigs = new MockBuildConfig();
   private final MockDeploymentConfig deploymentConfigs = new MockDeploymentConfig();
@@ -179,6 +187,8 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
     expect(client.resourceQuotas()).andReturn(resourceQuotas.getDelegate()).anyTimes();
     expect(client.secrets()).andReturn(secrets.getDelegate()).anyTimes();
     expect(client.serviceAccounts()).andReturn(serviceAccounts.getDelegate()).anyTimes();
+    expect(client.securityContextConstraints()).andReturn(securityContextConstraints.getDelegate()).anyTimes();
+    expect(client.lists()).andReturn(kubernetesLists.getDelegate()).anyTimes();
 
     expect(client.builds()).andReturn(builds.getDelegate()).anyTimes();
     expect(client.buildConfigs()).andReturn(buildConfigs.getDelegate()).anyTimes();
@@ -211,6 +221,8 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
     resourceQuotas.replay();
     secrets.replay();
     serviceAccounts.replay();
+    securityContextConstraints.replay();
+    kubernetesLists.replay();
 
     builds.replay();
     buildConfigs.replay();
@@ -246,6 +258,8 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
     resourceQuotas.verify();
     secrets.verify();
     serviceAccounts.verify();
+    securityContextConstraints.verify();
+    kubernetesLists.verify();
 
     builds.verify();
     buildConfigs.verify();
@@ -322,6 +336,13 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
 
   public MockOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, MockResource<ServiceAccount, DoneableServiceAccount, Boolean>> serviceAccounts() {
     return serviceAccounts;
+  }
+  public MockOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, MockResource<SecurityContextConstraints, DoneableSecurityContextConstraints, Boolean>> securityContextConstraints() {
+    return securityContextConstraints;
+  }
+
+  public MockKubernetesListOperation lists() {
+    return kubernetesLists;
   }
 
   public MockOperation<Build, BuildList, DoneableBuild, MockResource<Build, DoneableBuild, Boolean>> builds() {

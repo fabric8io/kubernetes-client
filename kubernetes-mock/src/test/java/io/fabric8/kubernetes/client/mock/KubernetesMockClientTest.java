@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.KubernetesList;
+import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
@@ -28,7 +30,6 @@ import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.FileInputStream;
 import java.io.InputStream;
 
 import static org.easymock.EasyMock.eq;
@@ -124,7 +125,7 @@ public class KubernetesMockClientTest {
 
     ReplicationController repl1 = new ReplicationControllerBuilder()
       .withNewMetadata()
-        .withName("repl1")
+      .withName("repl1")
       .endMetadata()
       .build();
 
@@ -166,7 +167,6 @@ public class KubernetesMockClientTest {
   }
 
 
-
   @Test
   public void testLoad() {
     KubernetesMockClient mock = new KubernetesMockClient();
@@ -181,11 +181,36 @@ public class KubernetesMockClientTest {
     KubernetesClient client = mock.replay();
 
     InputStream is = EasyMock.createMock(InputStream.class);
-    Assert.assertEquals(repl1,client.replicationControllers().inNamespace("ns1").load(is).get());
+    Assert.assertEquals(repl1, client.replicationControllers().inNamespace("ns1").load(is).get());
 
     EasyMock.verify(client);
   }
 
+  @Test
+  public void testKubernetesList() {
+    KubernetesMockClient mock = new KubernetesMockClient();
+
+    KubernetesList list1 = new KubernetesListBuilder()
+      .addNewReplicationControllerItem()
+      .withNewMetadata()
+      .withName("repl1")
+      .endMetadata()
+      .endReplicationControllerItem()
+      .addNewServiceItem()
+      .withNewMetadata()
+      .withName("srv1")
+      .endMetadata()
+      .endServiceItem()
+      .build();
+
+    mock.lists().inNamespace("ns1").load(EasyMock.<InputStream>anyObject()).get().andReturn(list1);
+    KubernetesClient client = mock.replay();
+
+    InputStream is = EasyMock.createMock(InputStream.class);
+    Assert.assertEquals(list1, client.lists().inNamespace("ns1").load(is).get());
+
+    EasyMock.verify(client);
+  }
 
 
   @Test

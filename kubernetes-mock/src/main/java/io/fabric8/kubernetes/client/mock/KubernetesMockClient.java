@@ -60,6 +60,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.mock.impl.MockEndpoints;
 import io.fabric8.kubernetes.client.mock.impl.MockEvent;
+import io.fabric8.kubernetes.client.mock.impl.MockKubernetesListOperationImpl;
 import io.fabric8.kubernetes.client.mock.impl.MockNamespace;
 import io.fabric8.kubernetes.client.mock.impl.MockNode;
 import io.fabric8.kubernetes.client.mock.impl.MockPersistentVolume;
@@ -96,6 +97,7 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
   private final MockSecret secrets = new MockSecret();
   private final MockServiceAccount serviceAccounts = new MockServiceAccount();
   private final MockSecurityContextConstraints securityContextConstraints = new MockSecurityContextConstraints();
+  private final MockKubernetesListOperationImpl kubernetesLists = new MockKubernetesListOperationImpl();
 
 
   public KubernetesMockClient() {
@@ -112,6 +114,7 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
     expect(client.secrets()).andReturn(secrets.getDelegate()).anyTimes();
     expect(client.serviceAccounts()).andReturn(serviceAccounts.getDelegate()).anyTimes();
     expect(client.securityContextConstraints()).andReturn(securityContextConstraints.getDelegate()).anyTimes();
+    expect(client.lists()).andReturn(kubernetesLists.getDelegate()).anyTimes();
     client.close();
     EasyMock.expectLastCall().anyTimes();
   }
@@ -130,6 +133,7 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
     secrets.replay();
     serviceAccounts.replay();
     securityContextConstraints.replay();
+    kubernetesLists.replay();
     EasyMock.replay(client);
     return client;
   }
@@ -149,6 +153,7 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
     secrets.verify();
     serviceAccounts.verify();
     securityContextConstraints.verify();
+    kubernetesLists.verify();
     EasyMock.verify(client);
   }
 
@@ -214,5 +219,9 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
 
   public MockOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, MockResource<SecurityContextConstraints, DoneableSecurityContextConstraints, Boolean>> securityContextConstraints() {
     return securityContextConstraints;
+  }
+
+  public MockKubernetesListOperation lists() {
+    return kubernetesLists;
   }
 }
