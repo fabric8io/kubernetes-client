@@ -55,6 +55,7 @@ public class Config {
   public static final String KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY = "kubernetes.auth.token";
   public static final String KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY = "kubernetes.watch.reconnectInterval";
   public static final String KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY = "kubernetes.watch.reconnectLimit";
+  public static final String KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY = "kubernetes.request.timeout";
   public static final String KUBERNETES_KUBECONFIG_FILE = "kubeconfig";
   public static final String KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH = "/var/run/secrets/kubernetes.io/serviceaccount/token";
   public static final String KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt";
@@ -76,6 +77,7 @@ public class Config {
   private String oauthToken;
   private int watchReconnectInterval = 1000;
   private int watchReconnectLimit = -1;
+  private int requestTimeout = 10 * 1000;
   
   private Map<Integer, String> errorMessages = new HashMap<>();
 
@@ -83,7 +85,7 @@ public class Config {
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder")
-  public Config(boolean trustCerts, String masterUrl, String apiVersion, String[] enabledProtocols, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit) {
+  public Config(boolean trustCerts, String masterUrl, String apiVersion, String[] enabledProtocols, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int requestTimeout) {
     this.trustCerts = trustCerts;
     this.masterUrl = masterUrl;
     this.apiVersion = apiVersion;
@@ -101,6 +103,7 @@ public class Config {
     this.oauthToken = oauthToken;
     this.watchReconnectInterval = watchReconnectInterval;
     this.watchReconnectLimit = watchReconnectLimit;
+    this.requestTimeout = requestTimeout;
 
     if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYSERVICEACCOUNT_SYSTEM_PROPERTY, true)) {
       tryServiceAccount(this);
@@ -143,6 +146,8 @@ public class Config {
     if (configuredWatchReconnectLimit != null) {
       config.setWatchReconnectLimit(Integer.parseInt(configuredWatchReconnectLimit));
     }
+
+    config.setRequestTimeout(Utils.getSystemPropertyOrEnvVar(KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY, config.getRequestTimeout()));
   }
 
   private void tryServiceAccount(Config config) {
@@ -345,4 +350,11 @@ public class Config {
     return new ConfigBuilder();
   }
 
+  public int getRequestTimeout() {
+    return requestTimeout;
+  }
+
+  public void setRequestTimeout(int requestTimeout) {
+    this.requestTimeout = requestTimeout;
+  }
 }

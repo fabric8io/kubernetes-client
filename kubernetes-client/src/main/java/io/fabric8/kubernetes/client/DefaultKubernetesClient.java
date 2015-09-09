@@ -186,6 +186,10 @@ public class DefaultKubernetesClient implements KubernetesClient {
         });
       }
 
+      if (config.getRequestTimeout() > 0) {
+        clientConfigBuilder.setRequestTimeout(config.getRequestTimeout());
+      }
+
       NettyAsyncHttpProviderConfig nettyConfig = new NettyAsyncHttpProviderConfig();
       nettyConfig.setWebSocketMaxFrameSize(65536);
       clientConfigBuilder.setAsyncHttpClientProviderConfig(nettyConfig);

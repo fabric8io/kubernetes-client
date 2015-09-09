@@ -48,6 +48,11 @@ public class Utils {
     return Boolean.parseBoolean(result);
   }
 
+  public static int getSystemPropertyOrEnvVar(String systemPropertyName, int defaultValue) {
+    String result = getSystemPropertyOrEnvVar(systemPropertyName, new Integer(defaultValue).toString());
+    return Integer.parseInt(result);
+  }
+
   public static String join(final Object[] array) {
     return join(array, ',');
   }
