@@ -29,9 +29,7 @@ import java.net.URL;
 public class OpenshiftConfig extends Config {
 
   public static final String KUBERNETES_OAPI_VERSION_SYSTEM_PROPERTY = "kubernetes.oapi.version";
-
-  public static final String OPENSHIFT_URL_SYTEM_PROPERTY_NAME = "openshift.url";
-  public static final String OPENSHIFT_URL_ENV_VARIABLE_NAME = "OPENSHIFT_URL";
+  public static final String OPENSHIFT_URL_SYTEM_PROPERTY = "openshift.url";
 
   private String oapiVersion = "v1";
   private String openShiftUrl;
@@ -74,7 +72,7 @@ public class OpenshiftConfig extends Config {
   }
 
   public static String getCustomOpenshiftUrl() {
-    return Utils.getSystemPropertyOrEnvVar(OPENSHIFT_URL_SYTEM_PROPERTY_NAME, OPENSHIFT_URL_ENV_VARIABLE_NAME, null);
+    return Utils.getSystemPropertyOrEnvVar(OPENSHIFT_URL_SYTEM_PROPERTY);
   }
 
   public Config getKubernetesConfig() {
