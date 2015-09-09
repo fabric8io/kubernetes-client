@@ -17,7 +17,6 @@
 package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.api.model.RootPaths;
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
 import io.fabric8.kubernetes.client.KubernetesClient;
 
@@ -37,10 +36,11 @@ public class OpenshiftExtensionAdapter implements ExtensionAdapter<OpenShiftClie
 
   @Override
   public OpenShiftClient adapt(KubernetesClient client) {
-    if (!isOpenShift(client)) {
+    String customOpenshiftUrl = OpenshiftConfig.getCustomOpenshiftUrl();
+    if ((customOpenshiftUrl == null || customOpenshiftUrl.isEmpty()) && !isOpenShift(client)) {
       throw new IllegalArgumentException("Client is not pointing to an OpenShift installation");
     }
-    return new DefaultOpenshiftClient((Config) client.getConfiguration());
+    return new DefaultOpenshiftClient(client.getConfiguration());
   }
 
   public static boolean isOpenShift(KubernetesClient client) {

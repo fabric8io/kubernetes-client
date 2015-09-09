@@ -316,6 +316,7 @@ public class DefaultKubernetesClient implements KubernetesClient {
     return configuration;
   }
 
+
   @Override
   public <T extends Extension> T adapt(Class<T> type) {
     for (ExtensionAdapter<T> adapter : ServiceLoader.load(ExtensionAdapter.class)) {

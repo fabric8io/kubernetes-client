@@ -18,6 +18,7 @@ package io.fabric8.openshift.client;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.Extension;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.openshift.client.dsl.BuildConfigClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;

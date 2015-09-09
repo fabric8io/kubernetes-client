@@ -30,6 +30,9 @@ public class OpenshiftConfig extends Config {
 
   public static final String KUBERNETES_OAPI_VERSION_SYSTEM_PROPERTY = "kubernetes.oapi.version";
 
+  public static final String OPENSHIFT_URL_SYTEM_PROPERTY_NAME = "openshift.url";
+  public static final String OPENSHIFT_URL_ENV_VARIABLE_NAME = "OPENSHIFT_URL";
+
   private String oapiVersion = "v1";
   private String openShiftUrl;
   private Config kubernetesConfig;
@@ -58,13 +61,20 @@ public class OpenshiftConfig extends Config {
     this.oapiVersion = Utils.getSystemPropertyOrEnvVar(KUBERNETES_OAPI_VERSION_SYSTEM_PROPERTY, oapiVersion);
     this.openShiftUrl = openShiftUrl;
 
-    if (this.openShiftUrl == null) {
-      try {
-        this.openShiftUrl = new URL(new URL(getMasterUrl()), "/oapi/" + this.oapiVersion + "/").toString();
-      } catch (MalformedURLException e) {
-        throw KubernetesClientException.launderThrowable(e);
+    if (this.openShiftUrl == null || this.openShiftUrl.isEmpty()) {
+      this.openShiftUrl = getCustomOpenshiftUrl();
+      if (this.openShiftUrl == null || this.openShiftUrl.isEmpty()) {
+        try {
+          this.openShiftUrl = new URL(new URL(getMasterUrl()), "/oapi/" + this.oapiVersion + "/").toString();
+        } catch (MalformedURLException e) {
+          throw KubernetesClientException.launderThrowable(e);
+        }
       }
     }
+  }
+
+  public static String getCustomOpenshiftUrl() {
+    return Utils.getSystemPropertyOrEnvVar(OPENSHIFT_URL_SYTEM_PROPERTY_NAME, OPENSHIFT_URL_ENV_VARIABLE_NAME, null);
   }
 
   public Config getKubernetesConfig() {
