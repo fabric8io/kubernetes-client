@@ -29,6 +29,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Config {
 
@@ -74,6 +76,8 @@ public class Config {
   private String oauthToken;
   private int watchReconnectInterval = 1000;
   private int watchReconnectLimit = -1;
+  
+  private Map<Integer, String> errorMessages = new HashMap<>();
 
   public Config() {
   }
@@ -150,6 +154,9 @@ public class Config {
       String serviceTokenCandidate = new String(Files.readAllBytes(Paths.get(KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH)));
       if (serviceTokenCandidate != null) {
         config.setOauthToken(serviceTokenCandidate);
+        String txt  ="Configured service account doesn't have access. Service account may have been revoked.";
+        config.getErrorMessages().put(401, "Unauthorized! " + txt);
+        config.getErrorMessages().put(403, "Forbidden!" + txt);
       }
     } catch (IOException e) {
       // No service account token available...
@@ -178,6 +185,10 @@ public class Config {
             config.setOauthToken(currentAuthInfo.getToken());
             config.setUsername(currentAuthInfo.getUsername());
             config.setPassword(currentAuthInfo.getPassword());
+
+            String txt  ="Token may have expired! Please use kubectl login / oc login to log-in again.";
+            config.getErrorMessages().put(401, "Unauthorized! " + txt);
+            config.getErrorMessages().put(403, "Forbidden!" + txt);
           }
         }
       } catch (IOException e) {
@@ -306,10 +317,6 @@ public class Config {
     this.trustCerts = trustCerts;
   }
 
-  public static ConfigBuilder builder() {
-    return new ConfigBuilder();
-  }
-
   public int getWatchReconnectInterval() {
     return watchReconnectInterval;
   }
@@ -325,4 +332,17 @@ public class Config {
   public void setWatchReconnectLimit(int watchReconnectLimit) {
     this.watchReconnectLimit = watchReconnectLimit;
   }
+
+  public Map<Integer, String> getErrorMessages() {
+    return errorMessages;
+  }
+
+  public void setErrorMessages(Map<Integer, String> errorMessages) {
+    this.errorMessages = errorMessages;
+  }
+
+  public static ConfigBuilder builder() {
+    return new ConfigBuilder();
+  }
+
 }

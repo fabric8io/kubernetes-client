@@ -333,10 +333,7 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
 
       Future<Response> f = requestBuilder.execute();
       Response r = f.get();
-      if (r.getStatusCode() != 200) {
-        Status status = mapper.readerFor(Status.class).readValue(r.getResponseBodyAsStream());
-        throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
-      }
+      assertResponseCode(r, 200);
       return mapper.readerFor(listType).readValue(r.getResponseBodyAsStream());
     } catch (InterruptedException | ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
@@ -398,10 +395,7 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
         AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().prepareDelete(requestUrl.toString());
         Future<Response> f = requestBuilder.execute();
         Response r = f.get();
-        if (r.getStatusCode() != 200) {
-          Status status = mapper.readerFor(Status.class).readValue(r.getResponseBodyAsStream());
-          throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
-        }
+        assertResponseCode(r, 200);
       }
     } catch (InterruptedException | ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
@@ -447,13 +441,34 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
     return new URL(getNamespacedUrl(), name);
   }
 
+  /**
+   * Checks if the response status code is the expected and throws the appropriate KubernetesClientException if not.
+   * @param r                           The {@link com.ning.http.client.Response} object.
+   * @param expectedStatusCode          The expected status code.
+   * @throws KubernetesClientException  When the response code is not the expected.
+   */
+  protected void assertResponseCode(Response r, int expectedStatusCode) {
+    int statusCode = r.getStatusCode();
+    String customMessage = getClient().getConfiguration().getErrorMessages().get(statusCode);
+
+    if (statusCode == expectedStatusCode) {
+      return;
+    } else if (customMessage != null) {
+      throw new KubernetesClientException("Error accessing: " + r.getUri().toRelativeUrl() + ",due to:" + customMessage);
+    } else {
+      try {
+        Status status = mapper.readerFor(Status.class).readValue(r.getResponseBodyAsStream());
+        throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
+      } catch (IOException e) {
+        throw KubernetesClientException.launderThrowable(e);
+      }
+    }
+  }
+
   protected T handleResponse(AsyncHttpClient.BoundRequestBuilder requestBuilder, int successStatusCode) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     Future<Response> f = requestBuilder.execute();
     Response r = f.get();
-    if (r.getStatusCode() != successStatusCode) {
-      Status status = mapper.readerFor(Status.class).readValue(r.getResponseBodyAsStream());
-      throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
-    }
+    assertResponseCode(r, successStatusCode);
     return mapper.readerFor(getType()).readValue(r.getResponseBodyAsStream());
   }
 
@@ -461,10 +476,7 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
     AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().prepareDelete(requestUrl.toString());
     Future<Response> f = requestBuilder.execute();
     Response r = f.get();
-    if (r.getStatusCode() != 200) {
-      Status status = mapper.readerFor(Status.class).readValue(r.getResponseBodyAsStream());
-      throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
-    }
+    assertResponseCode(r, 200);
   }
 
   protected T handleCreate(T resource) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {

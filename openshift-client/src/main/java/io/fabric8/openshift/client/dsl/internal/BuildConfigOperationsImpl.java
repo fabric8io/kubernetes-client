@@ -99,10 +99,7 @@ public class BuildConfigOperationsImpl extends OpenshiftOperation<OpenShiftClien
       requestBuilder.setBody(BaseOperation.mapper.writer().writeValueAsString(trigger));
       Future<Response> f = requestBuilder.execute();
       Response r = f.get();
-      if (r.getStatusCode() != 200) {
-        Status status = BaseOperation.mapper.reader(Status.class).readValue(r.getResponseBodyAsStream());
-        throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
-      }
+      assertResponseCode(r, 200);
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
