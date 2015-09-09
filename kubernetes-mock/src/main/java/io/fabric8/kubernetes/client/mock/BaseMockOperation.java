@@ -33,6 +33,7 @@ import org.easymock.IArgumentMatcher;
 import org.easymock.IExpectationSetters;
 import org.easymock.internal.matchers.And;
 
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -61,6 +62,7 @@ public class BaseMockOperation<C extends KubernetesClient, T, L extends Kubernet
 
 
 
+  private BaseMockOperation loadedMockOp;
   private Map<IArgumentMatcher, BaseMockOperation> nameMap = new HashMap<>();
   private Map<IArgumentMatcher, BaseMockOperation> namespaceMap = new HashMap<>();
   private Map<IArgumentMatcher, BaseMockOperation> cascadingMap = new HashMap<>();
@@ -310,5 +312,15 @@ public class BaseMockOperation<C extends KubernetesClient, T, L extends Kubernet
 
   public Set<Mockable> getNested() {
     return nested;
+  }
+
+  @Override
+  public MockResource<T, D, Boolean> load(InputStream input) {
+    if (loadedMockOp == null) {
+      loadedMockOp = newInstance();
+    }
+    expect(delegate.load(input)).andReturn((R) loadedMockOp.getDelegate()).anyTimes();
+    nested.add(loadedMockOp);
+    return loadedMockOp;
   }
 }

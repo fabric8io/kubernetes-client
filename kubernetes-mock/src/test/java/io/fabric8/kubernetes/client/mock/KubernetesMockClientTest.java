@@ -28,6 +28,9 @@ import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
+
 import static org.easymock.EasyMock.eq;
 
 public class KubernetesMockClientTest {
@@ -158,6 +161,27 @@ public class KubernetesMockClientTest {
 
     client.replicationControllers().inNamespace("ns1").withName("repl1").rolling().updateImage("myimage");
     client.replicationControllers().inNamespace("ns1").withName("repl1").rolling().updateImage("myimage2");
+
+    EasyMock.verify(client);
+  }
+
+
+
+  @Test
+  public void testLoad() {
+    KubernetesMockClient mock = new KubernetesMockClient();
+
+    ReplicationController repl1 = new ReplicationControllerBuilder()
+      .withNewMetadata()
+      .withName("repl1")
+      .endMetadata()
+      .build();
+
+    mock.replicationControllers().inNamespace("ns1").load(EasyMock.<InputStream>anyObject()).get().andReturn(repl1);
+    KubernetesClient client = mock.replay();
+
+    InputStream is = EasyMock.createMock(InputStream.class);
+    Assert.assertEquals(repl1,client.replicationControllers().inNamespace("ns1").load(is).get());
 
     EasyMock.verify(client);
   }

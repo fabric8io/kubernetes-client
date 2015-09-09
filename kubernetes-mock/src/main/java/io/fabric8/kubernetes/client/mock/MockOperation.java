@@ -16,13 +16,17 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeleteable;
+import io.fabric8.kubernetes.client.dsl.Loadable;
 import io.fabric8.kubernetes.client.dsl.Namespaceable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import org.easymock.IExpectationSetters;
+
+import java.io.InputStream;
 
 public interface MockOperation<T, L, D, R extends Resource<T, IExpectationSetters<T>, D, IExpectationSetters<Boolean>>> extends
   Namespaceable<MockNonNamespaceOperation<T, L, D, R>>,
   FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>>,
   MockNonNamespaceOperation<T, L, D, R>,
+  Loadable<InputStream, MockResource<T, D, Boolean>>,
   MockResource<T, D, Boolean> {
 }
