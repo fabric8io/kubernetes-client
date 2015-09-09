@@ -22,30 +22,31 @@ import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.ResourceCreator;
-import io.fabric8.kubernetes.client.dsl.ClientListOperation;
-import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceListOperation;
-import io.fabric8.kubernetes.client.dsl.CreateListFromLoadable;
-import io.fabric8.kubernetes.client.dsl.LoadListCreateable;
+import io.fabric8.kubernetes.client.dsl.ClientKubernetesListNonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.ClientKubernetesListOperation;
+import io.fabric8.kubernetes.client.dsl.CreateGettable;
+import io.fabric8.kubernetes.client.dsl.Loadable;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ServiceLoader;
 
-public class ListOperationsImpl
-  implements ClientListOperation<KubernetesClient>,
-             ClientNonNamespaceListOperation<KubernetesClient>,
-             LoadListCreateable, CreateListFromLoadable {
+public class KubernetesListOperationsImpl
+  implements ClientKubernetesListOperation<KubernetesClient>,
+  ClientKubernetesListNonNamespaceOperation<KubernetesClient>,
+  Loadable<InputStream, CreateGettable<KubernetesList, KubernetesList, DoneableKubernetesList>>,
+  CreateGettable<KubernetesList, KubernetesList, DoneableKubernetesList> {
 
   private final KubernetesClient client;
   private KubernetesList item;
   private String namespace;
 
-  public ListOperationsImpl(KubernetesClient client) {
+  public KubernetesListOperationsImpl(KubernetesClient client) {
     this.client = client;
   }
 
-  public ListOperationsImpl(KubernetesClient client, String namespace) {
+  public KubernetesListOperationsImpl(KubernetesClient client, String namespace) {
     this.client = client;
     this.namespace = namespace;
   }
@@ -56,8 +57,8 @@ public class ListOperationsImpl
   }
 
   @Override
-  public ClientNonNamespaceListOperation<KubernetesClient> inNamespace(String namespace) {
-    return new NamespacedListOperationsImpl(client, namespace);
+  public ClientKubernetesListNonNamespaceOperation<KubernetesClient> inNamespace(String namespace) {
+    return new KubernetesListOperationsImpl(client, namespace);
   }
 
   @Override
@@ -90,14 +91,9 @@ public class ListOperationsImpl
   }
 
   @Override
-  public CreateListFromLoadable load(InputStream is) {
+  public CreateGettable<KubernetesList, KubernetesList, DoneableKubernetesList> load(InputStream is) {
     item = client.unmarshal(is, KubernetesList.class);
     return this;
-  }
-
-  @Override
-  public KubernetesList create() {
-    return create(item);
   }
 
   @Override
@@ -113,6 +109,4 @@ public class ListOperationsImpl
     }
     throw new IllegalStateException("Could not find creator");
   }
-
-
 }

@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.fabric8.kubernetes.client.dsl;
 
-import java.io.InputStream;
-
-public interface LoadListCreateable {
-
-  CreateListFromLoadable load(InputStream is);
-
+public interface CreateGettable<I, T, D> extends Createable<I, T, D>, Gettable<T> {
 }

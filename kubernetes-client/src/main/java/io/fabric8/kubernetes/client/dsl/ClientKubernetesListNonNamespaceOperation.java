@@ -15,9 +15,15 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.api.model.DoneableKubernetesList;
+import io.fabric8.kubernetes.api.model.KubernetesList;
+import io.fabric8.kubernetes.client.ClientAware;
+import io.fabric8.kubernetes.client.KubernetesClient;
+
 import java.io.InputStream;
 
-public interface LoadListGettable {
-
-  GetListFromLoadable load(InputStream is);
+public interface ClientKubernetesListNonNamespaceOperation<C extends KubernetesClient> extends
+  ClientAware<C>,
+  Createable<KubernetesList, KubernetesList, DoneableKubernetesList>,
+  Loadable<InputStream, CreateGettable<KubernetesList, KubernetesList, DoneableKubernetesList>> {
 }

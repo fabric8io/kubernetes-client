@@ -20,7 +20,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 
 import java.io.InputStream;
 
-public interface ClientNonNamespaceOperation<C extends KubernetesClient, T, L, D, R extends ClientResource<T, D>> extends
+public interface ClientNonNamespaceOperation<C extends KubernetesClient, T, L, D, R> extends
   ClientAware<C>,
   Nameable<R>,
   FilterWatchListDeleteable<T, L, Boolean>,

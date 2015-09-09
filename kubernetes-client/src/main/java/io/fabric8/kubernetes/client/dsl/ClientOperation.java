@@ -20,8 +20,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 
 import java.io.InputStream;
 
-public interface ClientOperation<K extends KubernetesClient, T, L, D,
-  R extends ClientResource<T, D>>
+public interface ClientOperation<K extends KubernetesClient, T, L, D, R>
   extends
   ClientAware<K>,
   Namespaceable<ClientNonNamespaceOperation<K, T, L, D, R>>,
