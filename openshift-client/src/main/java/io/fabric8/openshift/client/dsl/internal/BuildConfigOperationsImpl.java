@@ -33,6 +33,7 @@ import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.dsl.BuildConfigClientResource;
 import io.fabric8.openshift.client.dsl.BuildConfigOperation;
 
+import java.io.InputStream;
 import java.net.URL;
 import java.util.concurrent.Future;
 
@@ -55,30 +56,23 @@ public class BuildConfigOperationsImpl extends OpenshiftOperation<OpenShiftClien
 
   @Override
   public BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void> withName(String name) {
-    try {
-      return getClass()
-        .getConstructor(OpenShiftClient.class, String.class, String.class, String.class, String.class)
-        .newInstance(getClient(), getNamespace(), name, secret, triggerType);
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(t);
-    }
+    return new BuildConfigOperationsImpl(getClient(), getNamespace(), name, isCascading(), getItem(), secret, triggerType);
   }
 
   @Override
   public ClientNonNamespaceOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void>> inNamespace(String namespace) {
-    try {
-      return getClass()
-        .getConstructor(OpenShiftClient.class, String.class, String.class, String.class, String.class)
-        .newInstance(getClient(), namespace, getName(), secret, triggerType);
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(t);
-    }
+    return new BuildConfigOperationsImpl(getClient(), namespace, getName(), isCascading(), getItem(), secret, triggerType);
   }
 
 
   @Override
   public Typeable<Triggerable<WebHookTrigger, Void>> withSecret(String secret) {
     return new BuildConfigOperationsImpl(getClient(), getNamespace(), getName(), isCascading(), getItem(), secret, triggerType);
+  }
+
+  @Override
+  public CreateFromLoadable<BuildConfig, DoneableBuildConfig> load(InputStream is) {
+    return new BuildConfigOperationsImpl(getClient(), getNamespace(), getName(), isCascading(), getClient().unmarshal(is, getType()), secret, triggerType);
   }
 
   @Override

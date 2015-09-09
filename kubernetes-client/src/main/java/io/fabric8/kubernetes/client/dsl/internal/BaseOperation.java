@@ -67,7 +67,7 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   private final Map<String, String[]> labelsNotIn = new TreeMap<>();
   private final Map<String, String> fields = new TreeMap<>();
 
-  private final Class<T> clientType;
+  private final Class<K> clientType;
   private final Class<T> type;
   private final Class<L> listType;
   private final Class<D> doneableType;
@@ -80,13 +80,13 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
     this.name = name;
     this.cascading = cascading;
     this.item = item;
-    this.clientType = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    this.clientType = (Class<K>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     this.type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
     this.listType = (Class<L>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[2];
     this.doneableType = (Class<D>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[3];
   }
 
-    protected BaseOperation(K client, String resourceT, String namespace, String name, Boolean cascading, T item, Class<T> clientType, Class<T> type, Class<L> listType, Class<D> doneableType) {
+    protected BaseOperation(K client, String resourceT, String namespace, String name, Boolean cascading, T item, Class<K> clientType, Class<T> type, Class<L> listType, Class<D> doneableType) {
       this.client = client;
       this.resourceT = resourceT;
       this.namespace = namespace;
@@ -129,8 +129,8 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   public R withName(String name) {
     try {
       return (R) getClass()
-        .getConstructor(clientType, String.class, String.class, Boolean.class)
-        .newInstance(client, namespace, name, cascading);
+        .getConstructor(clientType, String.class, String.class, Boolean.class, type)
+        .newInstance(client, namespace, name, cascading, item);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -140,8 +140,8 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   public ClientNonNamespaceOperation<K, T, L, D, R> inNamespace(String namespace) {
     try {
       return getClass()
-        .getConstructor(clientType, String.class, String.class, Boolean.class)
-        .newInstance(client, namespace, name, cascading);
+        .getConstructor(clientType, String.class, String.class, Boolean.class, type)
+        .newInstance(client, namespace, name, cascading, item);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -152,8 +152,19 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   public EditReplaceDeletable<T, T, D, Boolean> cascading(boolean enabled) {
     try {
       return getClass()
-        .getConstructor(clientType, String.class, String.class, Boolean.class)
-        .newInstance(client, namespace, name, enabled);
+        .getConstructor(clientType, String.class, String.class, Boolean.class, type)
+        .newInstance(client, namespace, name, enabled, item);
+    } catch (Throwable t) {
+      throw KubernetesClientException.launderThrowable(t);
+    }
+  }
+
+  @Override
+  public C load(InputStream is) {
+    try {
+      return (C) getClass()
+        .getConstructor(clientType, String.class, String.class, Boolean.class, type)
+        .newInstance(client, namespace, name, cascading, client.unmarshal(is, type));
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -514,16 +525,5 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   @Override
   public K getClient() {
     return client;
-  }
-
-  @Override
-  public C load(InputStream is) {
-    try {
-      return (C) getClass()
-        .getConstructor(clientType, String.class, type)
-        .newInstance(client, namespace, client.unmarshal(is, type));
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(t);
-    }
   }
 }

@@ -35,7 +35,7 @@ public class HasMetadataOperation<K extends KubernetesClient, T extends HasMetad
     super(client, resourceT, namespace, name, cascading, item);
   }
 
-  protected HasMetadataOperation(K client, String resourceT, String namespace, String name, Boolean cascading, T item, Class<T> clientType, Class<T> type, Class<L> listType, Class<D> doneableType) {
+  protected HasMetadataOperation(K client, String resourceT, String namespace, String name, Boolean cascading, T item, Class<K> clientType, Class<T> type, Class<L> listType, Class<D> doneableType) {
     super(client, resourceT, namespace, name, cascading, item, clientType, type, listType, doneableType);
   }
 
