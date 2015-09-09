@@ -22,11 +22,11 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
+import io.fabric8.kubernetes.client.dsl.internal.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
-import io.fabric8.kubernetes.client.dsl.FilterWatchListDeleteable;
+import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import org.easymock.EasyMock;
 import org.easymock.IArgumentMatcher;
@@ -187,7 +187,7 @@ public class BaseMockOperation<C extends KubernetesClient, T, L extends Kubernet
   }
 
   @Override
-  public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>> withLabels(Map<String, String> l) {
+  public FilterWatchListDeletable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>> withLabels(Map<String, String> l) {
     IArgumentMatcher matcher = getArgument(l);
     BaseMockOperation<C, T, L, D, R, E> op = labelsMap.get(matcher);
     if (op == null) {
@@ -200,7 +200,7 @@ public class BaseMockOperation<C extends KubernetesClient, T, L extends Kubernet
   }
 
   @Override
-  public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>> withoutLabels(Map<String, String> l) {
+  public FilterWatchListDeletable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>> withoutLabels(Map<String, String> l) {
     IArgumentMatcher matcher = getArgument(l);
     BaseMockOperation<C, T, L, D, R, E> op = labelsNotMap.get(matcher);
     if (op == null) {
@@ -213,7 +213,7 @@ public class BaseMockOperation<C extends KubernetesClient, T, L extends Kubernet
   }
 
   @Override
-  public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>> withLabelIn(String key, String... values) {
+  public FilterWatchListDeletable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>> withLabelIn(String key, String... values) {
     IArgumentMatcher keyMatcher = getArgument(key);
     IArgumentMatcher valueMatcher = getArgument(values);
     IArgumentMatcher matcher = new And(Arrays.asList(keyMatcher, valueMatcher));
@@ -229,7 +229,7 @@ public class BaseMockOperation<C extends KubernetesClient, T, L extends Kubernet
   }
 
   @Override
-  public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>> withLabelNotIn(String key, String... values) {
+  public FilterWatchListDeletable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>> withLabelNotIn(String key, String... values) {
     IArgumentMatcher keyMatcher = getArgument(key);
     IArgumentMatcher valueMatcher = getArgument(values);
     IArgumentMatcher matcher = new And(Arrays.asList(keyMatcher, valueMatcher));
@@ -245,7 +245,7 @@ public class BaseMockOperation<C extends KubernetesClient, T, L extends Kubernet
   }
 
   @Override
-  public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>> withLabel(String key, String value) {
+  public FilterWatchListDeletable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>> withLabel(String key, String value) {
     IArgumentMatcher keyMatcher = getArgument(key);
     IArgumentMatcher valueMatcher = getArgument(value);
     IArgumentMatcher matcher = new And(Arrays.asList(keyMatcher, valueMatcher));
@@ -261,7 +261,7 @@ public class BaseMockOperation<C extends KubernetesClient, T, L extends Kubernet
   }
 
   @Override
-  public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>> withoutLabel(String key, String value) {
+  public FilterWatchListDeletable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>> withoutLabel(String key, String value) {
     IArgumentMatcher keyMatcher = getArgument(key);
     IArgumentMatcher valueMatcher = getArgument(value);
     IArgumentMatcher matcher = new And(Arrays.asList(keyMatcher, valueMatcher));
@@ -277,7 +277,7 @@ public class BaseMockOperation<C extends KubernetesClient, T, L extends Kubernet
   }
 
   @Override
-  public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>> withFields(Map<String, String> f) {
+  public FilterWatchListDeletable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>> withFields(Map<String, String> f) {
     IArgumentMatcher matcher = getArgument(f);
     BaseMockOperation<C, T, L, D, R, E> op = filedsMap.get(matcher);
     if (op == null) {
@@ -290,7 +290,7 @@ public class BaseMockOperation<C extends KubernetesClient, T, L extends Kubernet
   }
 
   @Override
-  public FilterWatchListDeleteable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>> withField(String key, String value) {
+  public FilterWatchListDeletable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>> withField(String key, String value) {
     IArgumentMatcher keyMatcher = getArgument(key);
     IArgumentMatcher valueMatcher = getArgument(value);
     IArgumentMatcher matcher = new And(Arrays.asList(keyMatcher, valueMatcher));

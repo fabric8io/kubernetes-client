@@ -20,10 +20,19 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 
 import java.io.InputStream;
 
-public interface ClientNonNamespaceOperation<C extends KubernetesClient, T, L, D, R> extends
-  ClientAware<C>,
+/**
+ * The entry point to client operations that are either "cross namespace resources", or are available in the invocation chain
+ * after a namespace has already been specified.
+ * @param <K>   The type of KubernetesClient.
+ * @param <T>   The Kubernetes resource type.
+ * @param <L>   The list variant of the Kubernetes resource type.
+ * @param <D>   The doneable variant of the Kubernetes resource type.
+ * @param <R>   The resource operations.
+ */
+public interface ClientNonNamespaceOperation<K extends KubernetesClient, T, L, D, R> extends
+  ClientAware<K>,
   Nameable<R>,
-  FilterWatchListDeleteable<T, L, Boolean>,
+  FilterWatchListDeletable<T, L, Boolean>,
   Createable<T, T, D>,
   Loadable<InputStream, R> {
 

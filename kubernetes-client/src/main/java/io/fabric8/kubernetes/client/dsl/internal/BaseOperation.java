@@ -27,11 +27,10 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
-import io.fabric8.kubernetes.client.dsl.FilterWatchListDeleteable;
+import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -207,53 +206,53 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   }
 
   @Override
-  public FilterWatchListDeleteable<T, L, Boolean> withLabels(Map<String, String> labels) {
+  public FilterWatchListDeletable<T, L, Boolean> withLabels(Map<String, String> labels) {
     labels.putAll(labels);
     return this;
   }
 
   @Override
-  public FilterWatchListDeleteable<T, L, Boolean> withoutLabels(Map<String, String> labels) throws
+  public FilterWatchListDeletable<T, L, Boolean> withoutLabels(Map<String, String> labels) throws
     KubernetesClientException {
     labelsNot.putAll(labels);
     return this;
   }
 
   @Override
-  public FilterWatchListDeleteable<T, L, Boolean> withLabelIn(String key, String... values) throws
+  public FilterWatchListDeletable<T, L, Boolean> withLabelIn(String key, String... values) throws
     KubernetesClientException {
     labelsIn.put(key, values);
     return this;
   }
 
   @Override
-  public FilterWatchListDeleteable<T, L, Boolean> withLabelNotIn(String key, String... values) throws
+  public FilterWatchListDeletable<T, L, Boolean> withLabelNotIn(String key, String... values) throws
     KubernetesClientException {
     labelsNotIn.put(key, values);
     return this;
   }
 
   @Override
-  public FilterWatchListDeleteable<T, L, Boolean> withLabel(String key, String value) {
+  public FilterWatchListDeletable<T, L, Boolean> withLabel(String key, String value) {
     labels.put(key, value);
     return this;
   }
 
   @Override
-  public FilterWatchListDeleteable<T, L, Boolean> withoutLabel(String key, String value) throws
+  public FilterWatchListDeletable<T, L, Boolean> withoutLabel(String key, String value) throws
     KubernetesClientException {
     labelsNot.put(key, value);
     return this;
   }
 
   @Override
-  public FilterWatchListDeleteable<T, L, Boolean> withFields(Map<String, String> labels) {
+  public FilterWatchListDeletable<T, L, Boolean> withFields(Map<String, String> labels) {
     fields.putAll(labels);
     return this;
   }
 
   @Override
-  public FilterWatchListDeleteable<T, L, Boolean> withField(String key, String value) {
+  public FilterWatchListDeletable<T, L, Boolean> withField(String key, String value) {
     fields.put(key, value);
     return this;
   }

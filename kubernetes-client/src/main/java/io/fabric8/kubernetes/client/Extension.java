@@ -16,5 +16,10 @@
 
 package io.fabric8.kubernetes.client;
 
+/**
+ * An Extension to the KubernetesClient.
+ * The {@link io.fabric8.kubernetes.client.KubernetesClient} can be "adapted" to any Extension as long as there is an {@link io.fabric8.kubernetes.client.ExtensionAdapter}
+ * available via {@link java.util.ServiceLoader}.
+ */
 public interface Extension extends KubernetesClient {
 }

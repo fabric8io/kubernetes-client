@@ -20,10 +20,18 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 
 import java.io.InputStream;
 
+/**
+ * The entry point to client operations.
+ * @param <K>   The type of KubernetesClient.
+ * @param <T>   The Kubernetes resource type.
+ * @param <L>   The list variant of the Kubernetes resource type.
+ * @param <D>   The doneable variant of the Kubernetes resource type.
+ * @param <R>   The resource operations.
+ */
 public interface ClientOperation<K extends KubernetesClient, T, L, D, R>
   extends
   ClientAware<K>,
   Namespaceable<ClientNonNamespaceOperation<K, T, L, D, R>>,
-  FilterWatchListDeleteable<T, L, Boolean>,
+  FilterWatchListDeletable<T, L, Boolean>,
   Loadable<InputStream, R> {
 }
