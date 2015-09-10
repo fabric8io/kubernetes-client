@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Deleteable<B> {
+public interface Deletable<B> {
 
   /**
    * Deletes resource & all managed resources, returns null if not found.

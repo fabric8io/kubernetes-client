@@ -16,5 +16,5 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface EditReplaceDeletable<I, T, D, B> extends EditReplaceable<I, T, D>, Deleteable<B> {
+public interface EditReplaceDeletable<I, T, D, B> extends EditReplaceable<I, T, D>, Deletable<B> {
 }
