@@ -59,6 +59,9 @@ public class Config {
   public static final String KUBERNETES_KUBECONFIG_FILE = "kubeconfig";
   public static final String KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH = "/var/run/secrets/kubernetes.io/serviceaccount/token";
   public static final String KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt";
+  public static final String KUBERNETES_HTTP_PROXY = "http.proxy";
+  public static final String KUBERNETES_HTTPS_PROXY = "https.proxy";
+  public static final String KUBERNETES_ALL_PROXY = "all.proxy";
   private boolean trustCerts = false;
 
   private String masterUrl = "https://kubernetes.default.svc";
@@ -78,14 +81,15 @@ public class Config {
   private int watchReconnectInterval = 1000;
   private int watchReconnectLimit = -1;
   private int requestTimeout = 10 * 1000;
-  
+  private String proxy;
+
   private Map<Integer, String> errorMessages = new HashMap<>();
 
   public Config() {
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder")
-  public Config(boolean trustCerts, String masterUrl, String apiVersion, String[] enabledProtocols, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int requestTimeout) {
+  public Config(boolean trustCerts, String masterUrl, String apiVersion, String[] enabledProtocols, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int requestTimeout, String proxy) {
     this.trustCerts = trustCerts;
     this.masterUrl = masterUrl;
     this.apiVersion = apiVersion;
@@ -104,6 +108,7 @@ public class Config {
     this.watchReconnectInterval = watchReconnectInterval;
     this.watchReconnectLimit = watchReconnectLimit;
     this.requestTimeout = requestTimeout;
+    this.proxy = proxy;
 
     if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYSERVICEACCOUNT_SYSTEM_PROPERTY, true)) {
       tryServiceAccount(this);
@@ -148,6 +153,10 @@ public class Config {
     }
 
     config.setRequestTimeout(Utils.getSystemPropertyOrEnvVar(KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY, config.getRequestTimeout()));
+
+    config.setProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_ALL_PROXY, config.getProxy()));
+    config.setProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_HTTPS_PROXY, config.getProxy()));
+    config.setProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_HTTP_PROXY, config.getProxy()));
   }
 
   private void tryServiceAccount(Config config) {
@@ -356,5 +365,13 @@ public class Config {
 
   public void setRequestTimeout(int requestTimeout) {
     this.requestTimeout = requestTimeout;
+  }
+
+  public void setProxy(String proxy) {
+    this.proxy = proxy;
+  }
+
+  public String getProxy() {
+    return proxy;
   }
 }

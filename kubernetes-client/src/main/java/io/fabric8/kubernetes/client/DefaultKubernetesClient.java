@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
+import com.ning.http.client.ProxyServer;
 import com.ning.http.client.Realm;
 import com.ning.http.client.filter.FilterContext;
 import com.ning.http.client.filter.FilterException;
@@ -95,6 +96,7 @@ import javax.net.ssl.TrustManagerFactory;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
@@ -188,6 +190,15 @@ public class DefaultKubernetesClient implements KubernetesClient {
 
       if (config.getRequestTimeout() > 0) {
         clientConfigBuilder.setRequestTimeout(config.getRequestTimeout());
+      }
+
+      if (config.getProxy() != null) {
+        try {
+          URL u = new URL(config.getProxy());
+          clientConfigBuilder.setProxyServer(new ProxyServer(ProxyServer.Protocol.valueOf(u.getProtocol()), u.getHost(), u.getPort()));
+        } catch (MalformedURLException e) {
+          throw new KubernetesClientException("Invalid proxy server configuration", e);
+        }
       }
 
       NettyAsyncHttpProviderConfig nettyConfig = new NettyAsyncHttpProviderConfig();

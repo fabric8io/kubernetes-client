@@ -54,7 +54,7 @@ public class OpenshiftConfig extends Config {
       kubernetesConfig.getClientKeyFile(), kubernetesConfig.getClientKeyData(),
       kubernetesConfig.getClientKeyAlgo(), kubernetesConfig.getClientKeyPassphrase(),
       kubernetesConfig.getUsername(), kubernetesConfig.getPassword(), kubernetesConfig.getOauthToken(),
-      kubernetesConfig.getWatchReconnectInterval(), kubernetesConfig.getWatchReconnectLimit(), kubernetesConfig.getRequestTimeout());
+      kubernetesConfig.getWatchReconnectInterval(), kubernetesConfig.getWatchReconnectLimit(), kubernetesConfig.getRequestTimeout(), kubernetesConfig.getProxy());
     this.kubernetesConfig=kubernetesConfig;
     this.oapiVersion = Utils.getSystemPropertyOrEnvVar(KUBERNETES_OAPI_VERSION_SYSTEM_PROPERTY, oapiVersion);
     this.openShiftUrl = openShiftUrl;
