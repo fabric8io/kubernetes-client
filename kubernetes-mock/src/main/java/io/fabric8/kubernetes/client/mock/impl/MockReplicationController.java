@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.client.dsl.ImageEditReplaceable;
 import io.fabric8.kubernetes.client.dsl.Rollable;
 import io.fabric8.kubernetes.client.dsl.RollableScallableClientResource;
 import io.fabric8.kubernetes.client.dsl.Scaleable;
+import io.fabric8.kubernetes.client.dsl.internal.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.internal.ReplicationControllerOperationsImpl;
 import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockRollableScaleableResource;
@@ -39,10 +40,17 @@ public class MockReplicationController extends BaseMockOperation<KubernetesClien
   ImageEditReplaceable<ReplicationController, IExpectationSetters<ReplicationController>, DoneableReplicationController> {
 
 
-  private MockReplicationController rolling;
+  //Dummy interface to use for mocking.
+  private interface ReplicationControllerDelegate
+    extends ClientMixedOperation<KubernetesClient, ReplicationController, ReplicationController, DoneableReplicationController, RollableScallableClientResource<ReplicationController, DoneableReplicationController>>,
+    RollableScallableClientResource<ReplicationController, DoneableReplicationController>,
+    ImageEditReplaceable<ReplicationController, ReplicationController, DoneableReplicationController> {
 
+  }
+
+  private MockReplicationController rolling;
   public MockReplicationController() {
-    super(EasyMock.createMock(ReplicationControllerOperationsImpl.class));
+    super(EasyMock.createMock(ReplicationControllerDelegate.class));
   }
 
   @Override

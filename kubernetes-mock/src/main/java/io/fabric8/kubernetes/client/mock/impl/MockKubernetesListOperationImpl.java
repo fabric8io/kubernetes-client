@@ -18,6 +18,10 @@ package io.fabric8.kubernetes.client.mock.impl;
 
 import io.fabric8.kubernetes.api.model.DoneableKubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesList;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.ClientKubernetesListNonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.ClientKubernetesListOperation;
+import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.CreateGettable;
 import io.fabric8.kubernetes.client.dsl.internal.KubernetesListOperationsImpl;
 import io.fabric8.kubernetes.client.mock.MockKubernetesListNonNamesapceOperation;
@@ -42,17 +46,23 @@ public class MockKubernetesListOperationImpl implements
   CreateGettable<KubernetesList, IExpectationSetters<KubernetesList>, DoneableKubernetesList>,
   Mockable {
 
-  private final KubernetesListOperationsImpl delegate;
+  //Dummy interface to use for mocking.
+  private interface KubernetesListDelegate extends ClientKubernetesListOperation<KubernetesClient>,
+    ClientKubernetesListNonNamespaceOperation<KubernetesClient>,
+    CreateGettable<KubernetesList,KubernetesList,DoneableKubernetesList> {
+  }
+
+  private final KubernetesListDelegate delegate;
   private final Set<Mockable> nested = new LinkedHashSet<>();
 
   private MockKubernetesListOperationImpl loadedMockOp;
   private Map<IArgumentMatcher, MockKubernetesListOperationImpl> namespaceMap = new HashMap<>();
 
   public MockKubernetesListOperationImpl() {
-    this(EasyMock.createMock(KubernetesListOperationsImpl.class));
+    this(EasyMock.createMock(KubernetesListDelegate.class));
   }
 
-  public MockKubernetesListOperationImpl(KubernetesListOperationsImpl delegate) {
+  public MockKubernetesListOperationImpl(KubernetesListDelegate delegate) {
     this.delegate = delegate;
   }
 
@@ -77,7 +87,7 @@ public class MockKubernetesListOperationImpl implements
     return new MockKubernetesListOperationImpl();
   }
 
-  public KubernetesListOperationsImpl getDelegate() {
+  public KubernetesListDelegate getDelegate() {
     return delegate;
   }
 
