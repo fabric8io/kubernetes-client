@@ -130,9 +130,4 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Ku
     }
     return new RollingUpdater(getClient()).rollUpdate(get(), rc);
   }
-
-  @Override
-  public ReplicationController update(ReplicationController item) {
-    return replace(item);
-  }
 }

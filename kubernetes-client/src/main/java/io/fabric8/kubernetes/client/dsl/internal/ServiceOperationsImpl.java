@@ -23,7 +23,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 
-public class ServiceOperationsImpl extends BaseOperation<KubernetesClient, Service, ServiceList, DoneableService, ClientResource<Service, DoneableService>> {
+public class ServiceOperationsImpl extends HasMetadataOperation<KubernetesClient, Service, ServiceList, DoneableService, ClientResource<Service, DoneableService>> {
 
   public ServiceOperationsImpl(KubernetesClient client) {
     this(client, null, null, true, null);
@@ -37,11 +37,7 @@ public class ServiceOperationsImpl extends BaseOperation<KubernetesClient, Servi
   public Service replace(Service item) {
       try {
         Service old = get();
-        String resourceVersion = old.getMetadata().getResourceVersion();
-        return handleReplace(getResourceUrl(), new ServiceBuilder(item)
-          .editMetadata()
-          .withResourceVersion(resourceVersion)
-          .endMetadata()
+        return super.replace(new ServiceBuilder(item)
           .editSpec()
           .withClusterIP(old.getSpec().getClusterIP())
           .endSpec()
@@ -49,10 +45,5 @@ public class ServiceOperationsImpl extends BaseOperation<KubernetesClient, Servi
       } catch (Exception e) {
         throw KubernetesClientException.launderThrowable(e);
       }
-  }
-
-  @Override
-  public Service update(Service item) {
-      return replace(item);
   }
 }
