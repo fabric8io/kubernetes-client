@@ -454,7 +454,7 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
     if (statusCode == expectedStatusCode) {
       return;
     } else if (customMessage != null) {
-      throw new KubernetesClientException("Error accessing: " + r.getUri().toRelativeUrl() + ",due to:" + customMessage);
+      throw new KubernetesClientException("Error accessing: " + r.getUri().toString() + ",due to:" + customMessage);
     } else {
       try {
         Status status = mapper.readerFor(Status.class).readValue(r.getResponseBodyAsStream());
