@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ImageEditReplaceable;
 import io.fabric8.kubernetes.client.dsl.RollableScallableClientResource;
 import io.fabric8.kubernetes.client.dsl.Scaleable;
@@ -45,6 +46,11 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Ku
   public ReplicationControllerOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading, ReplicationController item, Boolean rolling) {
     super(client, "replicationcontrollers", namespace, name, cascading, item);
     this.rolling = rolling;
+  }
+
+  @Override
+  public ClientNonNamespaceOperation<KubernetesClient, ReplicationController, ReplicationControllerList, DoneableReplicationController, RollableScallableClientResource<ReplicationController, DoneableReplicationController>> inNamespace(String namespace) {
+    return new ReplicationControllerOperationsImpl(getClient(), getNamespace(), getName(), isCascading(), getItem(), rolling);
   }
 
   @Override
