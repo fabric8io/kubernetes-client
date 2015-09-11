@@ -25,10 +25,12 @@ import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.ImageEditReplaceable;
 import io.fabric8.kubernetes.client.dsl.RollableScallableClientResource;
 import io.fabric8.kubernetes.client.dsl.Scaleable;
 
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 
@@ -49,13 +51,33 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Ku
   }
 
   @Override
+  public RollableScallableClientResource<ReplicationController, DoneableReplicationController> load(InputStream is) {
+    try {
+      ReplicationController item = getClient().unmarshal(is, ReplicationController.class);
+      return new ReplicationControllerOperationsImpl(getClient(), getNamespace(), getName(), isCascading(), item, rolling);
+    } catch (Throwable t) {
+      throw KubernetesClientException.launderThrowable(t);
+    }
+  }
+
+  @Override
   public ClientNonNamespaceOperation<KubernetesClient, ReplicationController, ReplicationControllerList, DoneableReplicationController, RollableScallableClientResource<ReplicationController, DoneableReplicationController>> inNamespace(String namespace) {
-    return new ReplicationControllerOperationsImpl(getClient(), getNamespace(), getName(), isCascading(), getItem(), rolling);
+    return new ReplicationControllerOperationsImpl(getClient(), namespace, getName(), isCascading(), getItem(), rolling);
   }
 
   @Override
   public ReplicationController scale(int count) {
     return scale(count, false);
+  }
+
+  @Override
+  public RollableScallableClientResource<ReplicationController, DoneableReplicationController> withName(String name) {
+    return new ReplicationControllerOperationsImpl(getClient(), getNamespace(), name, isCascading(), getItem(), rolling);
+  }
+
+  @Override
+  public EditReplaceDeletable<ReplicationController, ReplicationController, DoneableReplicationController, Boolean> cascading(boolean enabled) {
+    return new ReplicationControllerOperationsImpl(getClient(), getNamespace(), getName(), enabled, getItem(), rolling);
   }
 
   @Override
