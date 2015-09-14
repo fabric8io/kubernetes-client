@@ -97,6 +97,8 @@
     <module>openshift-client</module>
     <module>openshift-mock</module>
     <module>kubernetes-examples</module>
+    <module>kubernetes-client-with-deps</module>
+    <module>openshift-client-with-deps</module>
   </modules>
 
   <build>

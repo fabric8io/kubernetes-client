@@ -17,7 +17,7 @@ package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.internal.com.ning.http.client.AsyncHttpClient;
+import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.openshift.api.model.DoneableTemplate;
 import io.fabric8.openshift.api.model.Parameter;
 import io.fabric8.openshift.api.model.Template;

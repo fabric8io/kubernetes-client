@@ -90,40 +90,6 @@
           </arguments>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>2.4.1</version>
-        <configuration>
-          <!-- put your configurations here -->
-        </configuration>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <artifactSet>
-                <includes>
-                  <include>com.ning:async-http-client</include>
-                  <include>io.netty:netty</include>
-                </includes>
-              </artifactSet>
-              <relocations>
-                <relocation>
-                  <pattern>com.ning</pattern>
-                  <shadedPattern>io.fabric8.kubernetes.client.internal.com.ning</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>org.jboss.netty</pattern>
-                  <shadedPattern>io.fabric8.kubernetes.client.internal.org.jboss.netty</shadedPattern>
-                </relocation>
-              </relocations>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
 
