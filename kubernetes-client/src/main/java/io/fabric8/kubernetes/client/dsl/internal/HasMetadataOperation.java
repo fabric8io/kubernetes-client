@@ -76,8 +76,8 @@ public class HasMetadataOperation<K extends KubernetesClient, T extends HasMetad
           reaper.reap();
         }
       }
-      item.getMetadata().setResourceVersion(null);
-      mapper.writeValue(System.out, item);
+      T replacedItem = get();
+      item.getMetadata().setResourceVersion(replacedItem.getMetadata().getResourceVersion());
       return handleReplace(getResourceUrl(), item);
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
