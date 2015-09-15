@@ -23,11 +23,16 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.concurrent.TimeUnit;
 
 public class HasMetadataOperation<K extends KubernetesClient, T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
   extends BaseOperation<K, T, L, D, R> {
+
+  private static final Logger logger = LoggerFactory.getLogger(HasMetadataOperation.class);
 
   protected HasMetadataOperation(K client, String resourceT, String namespace, String name, Boolean cascading, T item) {
     super(client, resourceT, namespace, name, cascading, item);
@@ -68,18 +73,30 @@ public class HasMetadataOperation<K extends KubernetesClient, T extends HasMetad
 
   @Override
   public T replace(T item) {
-    try {
-      if (isCascading()) {
-        Reaper reaper = ReaperFactory.getReaper(this);
-        if (reaper != null && !isReaping()) {
-          setReaping(true);
-          reaper.reap();
+    Exception caught = null;
+    int maxTries = 5;
+    for (int i = 0; i < maxTries; i++) {
+      try {
+        if (isCascading()) {
+          Reaper reaper = ReaperFactory.getReaper(this);
+          if (reaper != null && !isReaping()) {
+            setReaping(true);
+            reaper.reap();
+          }
+        }
+        item.getMetadata().setResourceVersion(null);
+        return handleReplace(getResourceUrl(), item);
+      } catch (Exception e) {
+        caught = e;
+        if (i < maxTries - 1) {
+          try {
+            TimeUnit.SECONDS.sleep(1);
+          } catch (InterruptedException e1) {
+            // Ignore this... would only hide the proper exception
+          }
         }
       }
-      item.getMetadata().setResourceVersion(null);
-      return handleReplace(getResourceUrl(), item);
-    } catch (Exception e) {
-      throw KubernetesClientException.launderThrowable(e);
     }
+    throw KubernetesClientException.launderThrowable(caught);
   }
 }
