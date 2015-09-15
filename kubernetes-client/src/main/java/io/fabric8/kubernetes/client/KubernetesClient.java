@@ -106,6 +106,8 @@ public interface KubernetesClient extends ConfigAware<Config>, AutoCloseable {
 
   void close();
 
+  String getPodLog(String namespace, String podName, String containerName, boolean pretty);
+
   <T> T unmarshal(InputStream is, Class<T> type);
 
 }

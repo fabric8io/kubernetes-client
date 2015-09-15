@@ -29,6 +29,11 @@
   <packaging>jar</packaging>
   <name>Fabric8 :: Kubernetes :: Client Examples</name>
 
+  <properties>
+    <podName>mypod</podName>
+    <masterUrl>https://localhost:8443/</masterUrl>
+    <namespace>default</namespace>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>io.fabric8</groupId>
@@ -48,5 +53,30 @@
     </dependency>
 
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.4.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>java</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <mainClass>io.fabric8.kubernetes.examples.PodLogExample</mainClass>
+          <arguments>
+            <argument>${podName}</argument>
+            <argument>${masterUrl}</argument>
+            <argument>${namespace}</argument>
+          </arguments>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

@@ -21,50 +21,12 @@ import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.ProxyServer;
 import com.ning.http.client.Realm;
+import com.ning.http.client.Response;
 import com.ning.http.client.filter.FilterContext;
 import com.ning.http.client.filter.FilterException;
 import com.ning.http.client.filter.RequestFilter;
 import com.ning.http.client.providers.netty.NettyAsyncHttpProviderConfig;
-import io.fabric8.kubernetes.api.model.DoneableEndpoints;
-import io.fabric8.kubernetes.api.model.DoneableEvent;
-import io.fabric8.kubernetes.api.model.DoneableNamespace;
-import io.fabric8.kubernetes.api.model.DoneableNode;
-import io.fabric8.kubernetes.api.model.DoneablePersistentVolume;
-import io.fabric8.kubernetes.api.model.DoneablePersistentVolumeClaim;
-import io.fabric8.kubernetes.api.model.DoneablePod;
-import io.fabric8.kubernetes.api.model.DoneableReplicationController;
-import io.fabric8.kubernetes.api.model.DoneableResourceQuota;
-import io.fabric8.kubernetes.api.model.DoneableSecret;
-import io.fabric8.kubernetes.api.model.DoneableSecurityContextConstraints;
-import io.fabric8.kubernetes.api.model.DoneableService;
-import io.fabric8.kubernetes.api.model.DoneableServiceAccount;
-import io.fabric8.kubernetes.api.model.Endpoints;
-import io.fabric8.kubernetes.api.model.EndpointsList;
-import io.fabric8.kubernetes.api.model.Event;
-import io.fabric8.kubernetes.api.model.EventList;
-import io.fabric8.kubernetes.api.model.Namespace;
-import io.fabric8.kubernetes.api.model.NamespaceList;
-import io.fabric8.kubernetes.api.model.Node;
-import io.fabric8.kubernetes.api.model.NodeList;
-import io.fabric8.kubernetes.api.model.PersistentVolume;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaimList;
-import io.fabric8.kubernetes.api.model.PersistentVolumeList;
-import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.PodList;
-import io.fabric8.kubernetes.api.model.ReplicationController;
-import io.fabric8.kubernetes.api.model.ReplicationControllerList;
-import io.fabric8.kubernetes.api.model.ResourceQuota;
-import io.fabric8.kubernetes.api.model.ResourceQuotaList;
-import io.fabric8.kubernetes.api.model.RootPaths;
-import io.fabric8.kubernetes.api.model.Secret;
-import io.fabric8.kubernetes.api.model.SecretList;
-import io.fabric8.kubernetes.api.model.SecurityContextConstraints;
-import io.fabric8.kubernetes.api.model.SecurityContextConstraintsList;
-import io.fabric8.kubernetes.api.model.Service;
-import io.fabric8.kubernetes.api.model.ServiceAccount;
-import io.fabric8.kubernetes.api.model.ServiceAccountList;
-import io.fabric8.kubernetes.api.model.ServiceList;
+import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListOperation;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientOperation;
@@ -85,6 +47,7 @@ import io.fabric8.kubernetes.client.dsl.internal.SecretOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.SecurityContextConstraintsOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ServiceAccountOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ServiceOperationsImpl;
+import io.fabric8.kubernetes.client.internal.HttpUtils;
 import io.fabric8.kubernetes.client.internal.Utils;
 import org.jboss.netty.handler.ssl.util.InsecureTrustManagerFactory;
 
@@ -108,6 +71,7 @@ import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.concurrent.Future;
 
 import static io.fabric8.kubernetes.client.internal.CertUtils.createKeyStore;
 import static io.fabric8.kubernetes.client.internal.CertUtils.createTrustStore;
@@ -314,6 +278,23 @@ public class DefaultKubernetesClient implements KubernetesClient {
   public RootPaths rootPaths() {
     return (RootPaths) new BaseOperation(this, "", null, null, false, null, KubernetesClient.class, RootPaths.class, null, null) {
     }.get();
+  }
+
+  @Override
+  public String getPodLog(String namespace, String podName, String containerName, boolean pretty) {
+    String url = getMasterUrl() + "namespaces/" + namespace + "/pods/" + podName + "/log?pretty=" + pretty;
+    if (containerName != null) {
+      url += "&container=" + containerName;
+    }
+    try {
+      AsyncHttpClient.BoundRequestBuilder requestBuilder = getHttpClient().prepareGet(url);
+      Future<Response> f = requestBuilder.execute();
+      Response r = f.get();
+      HttpUtils.assertResponseCode(r, 200, this, new ObjectMapper());
+      return r.getResponseBody();
+    } catch (Throwable t) {
+      throw KubernetesClientException.launderThrowable(t);
+    }
   }
 
   @Override
