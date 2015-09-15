@@ -22,10 +22,10 @@ import io.fabric8.openshift.api.model.DoneableTemplate;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.client.OpenShiftClient;
-import io.fabric8.openshift.client.dsl.TemplateClientResource;
+import io.fabric8.openshift.client.dsl.ClientTemplateResource;
 import io.fabric8.openshift.client.mock.MockProcessableResource;
 
 public class MockTemplate extends BaseMockOperation<OpenShiftClient, Template, TemplateList, DoneableTemplate,
-  TemplateClientResource<Template, KubernetesList, DoneableTemplate>,
+  ClientTemplateResource<Template, KubernetesList, DoneableTemplate>,
   MockProcessableResource<Template, DoneableTemplate, Boolean>> {
 }

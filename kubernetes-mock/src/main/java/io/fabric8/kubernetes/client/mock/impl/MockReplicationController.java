@@ -22,10 +22,9 @@ import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ImageEditReplaceable;
 import io.fabric8.kubernetes.client.dsl.Rollable;
-import io.fabric8.kubernetes.client.dsl.RollableScallableClientResource;
+import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
 import io.fabric8.kubernetes.client.dsl.Scaleable;
 import io.fabric8.kubernetes.client.dsl.internal.ClientMixedOperation;
-import io.fabric8.kubernetes.client.dsl.internal.ReplicationControllerOperationsImpl;
 import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockRollableScaleableResource;
 import org.easymock.EasyMock;
@@ -34,7 +33,7 @@ import org.easymock.IExpectationSetters;
 import static org.easymock.EasyMock.expect;
 
 public class MockReplicationController extends BaseMockOperation<KubernetesClient, ReplicationController, ReplicationControllerList, DoneableReplicationController,
-  RollableScallableClientResource<ReplicationController, DoneableReplicationController>,
+  ClientRollableScallableResource<ReplicationController, DoneableReplicationController>,
   MockRollableScaleableResource<ReplicationController, DoneableReplicationController, Boolean>>
   implements MockRollableScaleableResource<ReplicationController, DoneableReplicationController, Boolean>,
   ImageEditReplaceable<ReplicationController, IExpectationSetters<ReplicationController>, DoneableReplicationController> {
@@ -42,8 +41,8 @@ public class MockReplicationController extends BaseMockOperation<KubernetesClien
 
   //Dummy interface to use for mocking.
   private interface ReplicationControllerDelegate
-    extends ClientMixedOperation<KubernetesClient, ReplicationController, ReplicationController, DoneableReplicationController, RollableScallableClientResource<ReplicationController, DoneableReplicationController>>,
-    RollableScallableClientResource<ReplicationController, DoneableReplicationController>,
+    extends ClientMixedOperation<KubernetesClient, ReplicationController, ReplicationController, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>>,
+    ClientRollableScallableResource<ReplicationController, DoneableReplicationController>,
     ImageEditReplaceable<ReplicationController, ReplicationController, DoneableReplicationController> {
 
   }

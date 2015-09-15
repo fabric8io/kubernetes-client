@@ -17,15 +17,12 @@
 package io.fabric8.kubernetes.client.mock.impl;
 
 import io.fabric8.kubernetes.api.model.DoneablePod;
-import io.fabric8.kubernetes.api.model.DoneableReplicationController;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
-import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.dsl.ImageEditReplaceable;
-import io.fabric8.kubernetes.client.dsl.RollableScallableClientResource;
+import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
 import io.fabric8.kubernetes.client.dsl.internal.ClientMixedOperation;
-import io.fabric8.kubernetes.client.dsl.internal.LoggableClientResource;
+import io.fabric8.kubernetes.client.dsl.ClientLoggableResource;
 import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockLoggableResource;
 import org.easymock.EasyMock;
@@ -34,14 +31,14 @@ import org.easymock.IExpectationSetters;
 import static org.easymock.EasyMock.expect;
 
 public class MockPod extends BaseMockOperation<KubernetesClient, Pod, PodList, DoneablePod,
-  LoggableClientResource<Pod, DoneablePod>,
+  ClientLoggableResource<Pod, DoneablePod>,
   MockLoggableResource<Pod, DoneablePod, Boolean>>
   implements MockLoggableResource<Pod, DoneablePod, Boolean> {
 
   //Dummy interface to use for mocking.
   private interface PodDelegate
-    extends ClientMixedOperation<KubernetesClient, Pod, PodList, DoneablePod, RollableScallableClientResource<Pod, DoneablePod>>,
-    LoggableClientResource<Pod, DoneablePod> {
+    extends ClientMixedOperation<KubernetesClient, Pod, PodList, DoneablePod, ClientRollableScallableResource<Pod, DoneablePod>>,
+    ClientLoggableResource<Pod, DoneablePod> {
 
   }
 
@@ -56,21 +53,21 @@ public class MockPod extends BaseMockOperation<KubernetesClient, Pod, PodList, D
 
   @Override
   public IExpectationSetters<String> getLog() {
-    return expect(((LoggableClientResource<Pod, DoneablePod>) getDelegate()).getLog());
+    return expect(((ClientLoggableResource<Pod, DoneablePod>) getDelegate()).getLog());
   }
 
   @Override
   public IExpectationSetters<String> getLog(String id) {
-    return expect(((LoggableClientResource<Pod, DoneablePod>) getDelegate()).getLog(id));
+    return expect(((ClientLoggableResource<Pod, DoneablePod>) getDelegate()).getLog(id));
   }
 
   @Override
   public IExpectationSetters<String> getLog(Boolean isPretty) {
-    return expect(((LoggableClientResource<Pod, DoneablePod>) getDelegate()).getLog(isPretty));
+    return expect(((ClientLoggableResource<Pod, DoneablePod>) getDelegate()).getLog(isPretty));
   }
 
   @Override
   public IExpectationSetters<String> getLog(String id, Boolean isPretty) {
-    return expect(((LoggableClientResource<Pod, DoneablePod>) getDelegate()).getLog(id, isPretty));
+    return expect(((ClientLoggableResource<Pod, DoneablePod>) getDelegate()).getLog(id, isPretty));
   }
 }

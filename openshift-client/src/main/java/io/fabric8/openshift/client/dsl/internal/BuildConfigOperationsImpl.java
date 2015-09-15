@@ -15,7 +15,6 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
-import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Triggerable;
@@ -29,7 +28,7 @@ import io.fabric8.openshift.api.model.BuildRequest;
 import io.fabric8.openshift.api.model.DoneableBuildConfig;
 import io.fabric8.openshift.api.model.WebHookTrigger;
 import io.fabric8.openshift.client.OpenShiftClient;
-import io.fabric8.openshift.client.dsl.BuildConfigClientResource;
+import io.fabric8.openshift.client.dsl.ClientBuildConfigResource;
 import io.fabric8.openshift.client.dsl.BuildConfigOperation;
 
 import java.io.InputStream;
@@ -37,7 +36,7 @@ import java.net.URL;
 import java.util.concurrent.Future;
 
 public class BuildConfigOperationsImpl extends OpenshiftOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig,
-  BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void>>
+  ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void>>
   implements BuildConfigOperation {
 
   private final String secret;
@@ -54,12 +53,12 @@ public class BuildConfigOperationsImpl extends OpenshiftOperation<OpenShiftClien
   }
 
   @Override
-  public BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void> withName(String name) {
+  public ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void> withName(String name) {
     return new BuildConfigOperationsImpl(getClient(), getNamespace(), name, isCascading(), getItem(), secret, triggerType);
   }
 
   @Override
-  public ClientNonNamespaceOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void>> inNamespace(String namespace) {
+  public ClientNonNamespaceOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig, ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void>> inNamespace(String namespace) {
     return new BuildConfigOperationsImpl(getClient(), namespace, getName(), isCascading(), getItem(), secret, triggerType);
   }
 
@@ -70,7 +69,7 @@ public class BuildConfigOperationsImpl extends OpenshiftOperation<OpenShiftClien
   }
 
   @Override
-  public BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void> load(InputStream is) {
+  public ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void> load(InputStream is) {
     return new BuildConfigOperationsImpl(getClient(), getNamespace(), getName(), isCascading(), getClient().unmarshal(is, getType()), secret, triggerType);
   }
 

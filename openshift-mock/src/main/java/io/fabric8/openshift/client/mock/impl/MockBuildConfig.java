@@ -17,7 +17,7 @@
 package io.fabric8.openshift.client.mock.impl;
 
 import io.fabric8.openshift.client.OpenShiftClient;
-import io.fabric8.openshift.client.dsl.BuildConfigClientResource;
+import io.fabric8.openshift.client.dsl.ClientBuildConfigResource;
 import io.fabric8.kubernetes.client.dsl.Instantiateable;
 import io.fabric8.kubernetes.client.dsl.Secretable;
 import io.fabric8.kubernetes.client.dsl.Triggerable;
@@ -42,7 +42,7 @@ import static org.easymock.EasyMock.expect;
 
 
 public class MockBuildConfig extends BaseMockOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig,
-  BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void>,
+  ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void>,
   MockBuildConfigResource>
   implements MockBuildConfigResource {
 

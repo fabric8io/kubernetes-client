@@ -26,8 +26,8 @@ import io.fabric8.openshift.api.model.DoneableBuildConfig;
 import io.fabric8.openshift.api.model.WebHookTrigger;
 import io.fabric8.openshift.client.OpenShiftClient;
 
-public interface BuildConfigOperation extends BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void>,
-  ClientMixedOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig,BuildConfigClientResource<BuildConfig, DoneableBuildConfig, Void, Void>>,
+public interface BuildConfigOperation extends ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void>,
+  ClientMixedOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig,ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void>>,
   Typeable<Triggerable<WebHookTrigger, Void>>,
   Triggerable<WebHookTrigger, Void>,
   Secretable<Typeable<Triggerable<WebHookTrigger, Void>>> {

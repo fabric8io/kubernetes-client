@@ -22,11 +22,12 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.ClientLoggableResource;
 
 import java.net.URL;
 import java.util.concurrent.Future;
 
-public class PodOperationsImpl extends HasMetadataOperation<KubernetesClient, Pod, PodList, DoneablePod, LoggableClientResource<Pod, DoneablePod>> implements LoggableClientResource<Pod,DoneablePod> {
+public class PodOperationsImpl extends HasMetadataOperation<KubernetesClient, Pod, PodList, DoneablePod, ClientLoggableResource<Pod, DoneablePod>> implements ClientLoggableResource<Pod,DoneablePod> {
 
   public PodOperationsImpl(KubernetesClient client) {
     this(client, null, null, true, null);

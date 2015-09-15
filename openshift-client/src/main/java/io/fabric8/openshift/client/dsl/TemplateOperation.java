@@ -22,6 +22,6 @@ import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.client.OpenShiftClient;
 
-public interface TemplateOperation extends TemplateClientResource<Template, KubernetesList, DoneableTemplate>,
-  ClientMixedOperation<OpenShiftClient, Template, TemplateList, DoneableTemplate, TemplateClientResource<Template, KubernetesList, DoneableTemplate>> {
+public interface TemplateOperation extends ClientTemplateResource<Template, KubernetesList, DoneableTemplate>,
+  ClientMixedOperation<OpenShiftClient, Template, TemplateList, DoneableTemplate, ClientTemplateResource<Template, KubernetesList, DoneableTemplate>> {
 }

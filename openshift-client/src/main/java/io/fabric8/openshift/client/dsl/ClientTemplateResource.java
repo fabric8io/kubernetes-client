@@ -13,10 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl.internal;
+package io.fabric8.openshift.client.dsl;
 
-import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.kubernetes.client.dsl.Loggable;
-
-public interface LoggableClientResource<T, D> extends ClientResource<T, D>, Loggable<String> {
+public interface ClientTemplateResource<T, L, D> extends ClientProcessableResource<T, L, D> {
 }
