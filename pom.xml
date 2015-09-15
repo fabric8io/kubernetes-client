@@ -84,7 +84,7 @@
     <oauth.version>20100527</oauth.version>
     <slf4j.version>1.7.12</slf4j.version>
     <snakeyaml.version>1.15</snakeyaml.version>
-    <sundrio.version>0.1.2</sundrio.version>
+    <sundrio.version>0.1.4</sundrio.version>
 
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
