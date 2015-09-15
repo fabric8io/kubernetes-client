@@ -29,8 +29,6 @@ import java.lang.reflect.InvocationTargetException;
 public class HasMetadataOperation<K extends KubernetesClient, T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
   extends BaseOperation<K, T, L, D, R> {
 
-  private boolean reaping;
-
   protected HasMetadataOperation(K client, String resourceT, String namespace, String name, Boolean cascading, T item) {
     super(client, resourceT, namespace, name, cascading, item);
   }
@@ -47,15 +45,14 @@ public class HasMetadataOperation<K extends KubernetesClient, T extends HasMetad
       @Override
       public void visit(T resource) {
         try {
-          if (isCascading() && !reaping) {
+          if (isCascading() && !isReaping()) {
             Reaper reaper = ReaperFactory.getReaper(oper);
             if (reaper != null) {
-              reaping = true;
+              setReaping(true);
               reaper.reap();
             }
           }
-          resource.getMetadata().setResourceVersion(null);
-          handleReplace(getResourceUrl(), resource);
+          replace(resource);
         } catch (Exception e) {
           throw KubernetesClientException.launderThrowable(e);
         }
@@ -74,12 +71,12 @@ public class HasMetadataOperation<K extends KubernetesClient, T extends HasMetad
     try {
       if (isCascading()) {
         Reaper reaper = ReaperFactory.getReaper(this);
-        if (reaper != null) {
+        if (reaper != null && !isReaping()) {
+          setReaping(true);
           reaper.reap();
         }
       }
-      T replacedItem = get();
-      item.getMetadata().setResourceVersion(replacedItem.getMetadata().getResourceVersion());
+      item.getMetadata().setResourceVersion(null);
       return handleReplace(getResourceUrl(), item);
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);

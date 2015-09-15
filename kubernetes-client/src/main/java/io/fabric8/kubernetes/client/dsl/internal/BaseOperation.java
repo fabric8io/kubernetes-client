@@ -70,6 +70,7 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   private final Class<L> listType;
   private final Class<D> doneableType;
 
+  private boolean reaping;
 
   protected BaseOperation(K client, String resourceT, String namespace, String name, Boolean cascading, T item) {
     this.client = client;
@@ -343,9 +344,10 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   public Boolean delete() {
     if (name != null && !name.isEmpty()) {
       try {
-        if (cascading) {
+        if (cascading && !isReaping()) {
           Reaper reaper = ReaperFactory.getReaper(this);
           if (reaper != null) {
+            setReaping(true);
             reaper.reap();
           }
         }
@@ -534,5 +536,13 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   @Override
   public K getClient() {
     return client;
+  }
+
+  protected boolean isReaping() {
+    return reaping;
+  }
+
+  protected void setReaping(boolean reaping) {
+    this.reaping = reaping;
   }
 }
