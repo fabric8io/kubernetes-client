@@ -58,6 +58,7 @@ import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.mock.MockKubernetesListOperation;
+import io.fabric8.kubernetes.client.mock.MockLoggableResource;
 import io.fabric8.kubernetes.client.mock.MockNonNamespaceOperation;
 import io.fabric8.kubernetes.client.mock.MockOperation;
 import io.fabric8.kubernetes.client.mock.MockResource;
@@ -314,7 +315,7 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
     return persistentVolumeClaims;
   }
 
-  public MockOperation<Pod, PodList, DoneablePod, MockResource<Pod, DoneablePod, Boolean>> pods() {
+  public MockOperation<Pod, PodList, DoneablePod, MockLoggableResource<Pod, DoneablePod, Boolean>> pods() {
     return pods;
   }
 

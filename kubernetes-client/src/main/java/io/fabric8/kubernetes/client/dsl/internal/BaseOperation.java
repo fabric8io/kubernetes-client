@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
@@ -30,7 +31,6 @@ import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
-import io.fabric8.kubernetes.client.internal.HttpUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -449,7 +449,21 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
    * @throws KubernetesClientException  When the response code is not the expected.
    */
   protected void assertResponseCode(Response r, int expectedStatusCode) {
-    HttpUtils.assertResponseCode(r, expectedStatusCode, getClient(), BaseOperation.mapper);
+    int statusCode = r.getStatusCode();
+    String customMessage = client.getConfiguration().getErrorMessages().get(statusCode);
+
+    if (statusCode == expectedStatusCode) {
+      return;
+    } else if (customMessage != null) {
+      throw new KubernetesClientException("Error accessing: " + r.getUri().toString() + ",due to:" + customMessage);
+    } else {
+      try {
+        Status status = mapper.readerFor(Status.class).readValue(r.getResponseBodyAsStream());
+        throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
+      } catch (IOException e) {
+        throw KubernetesClientException.launderThrowable(e);
+      }
+    }
   }
 
   protected T handleResponse(AsyncHttpClient.BoundRequestBuilder requestBuilder, int successStatusCode) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {

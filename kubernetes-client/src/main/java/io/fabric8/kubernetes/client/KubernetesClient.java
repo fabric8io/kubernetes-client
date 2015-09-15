@@ -61,6 +61,7 @@ import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.RollableScallableClientResource;
+import io.fabric8.kubernetes.client.dsl.internal.LoggableClientResource;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -88,7 +89,7 @@ public interface KubernetesClient extends ConfigAware<Config>, AutoCloseable {
 
   ClientOperation<KubernetesClient, PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, ClientResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> persistentVolumeClaims();
 
-  ClientOperation<KubernetesClient, Pod, PodList, DoneablePod, ClientResource<Pod, DoneablePod>> pods();
+  ClientOperation<KubernetesClient, Pod, PodList, DoneablePod, LoggableClientResource<Pod, DoneablePod>> pods();
 
   ClientOperation<KubernetesClient, ReplicationController, ReplicationControllerList, DoneableReplicationController, RollableScallableClientResource<ReplicationController, DoneableReplicationController>> replicationControllers();
 
@@ -105,8 +106,6 @@ public interface KubernetesClient extends ConfigAware<Config>, AutoCloseable {
   ClientNonNamespaceOperation<KubernetesClient, SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints();
 
   void close();
-
-  String getPodLog(String namespace, String podName, String containerName, boolean pretty);
 
   <T> T unmarshal(InputStream is, Class<T> type);
 

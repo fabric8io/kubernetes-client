@@ -47,7 +47,7 @@ public class PodLogExample {
     Config config = new ConfigBuilder().withMasterUrl(master).build();
     try (final KubernetesClient client = new DefaultKubernetesClient(config)) {
 
-      String log = client.getPodLog(namespace, podName, null, true);
+      String log = client.pods().inNamespace(namespace).withName(podName).getLog(true);
       System.out.println("Log of pod " + podName + " in " + namespace + " is:");
       System.out.println("----------------------------------------------------------------");
       System.out.println(log);

@@ -32,6 +32,8 @@ import org.junit.Test;
 
 import java.io.InputStream;
 
+import static org.easymock.EasyMock.anyBoolean;
+import static org.easymock.EasyMock.anyString;
 import static org.easymock.EasyMock.eq;
 
 public class KubernetesMockClientTest {
@@ -234,4 +236,20 @@ public class KubernetesMockClientTest {
       Assert.assertEquals(1, result.getItems().size());
     }
   }
+
+  @Test
+  public void testGetLog() {
+    KubernetesMockClient mock = new KubernetesMockClient();
+
+    mock.pods().inNamespace("ns1").withName("myPod").getLog("cnt1", true).andReturn("log1").anyTimes();
+    mock.pods().inNamespace("ns1").withName("myPod").getLog("cnt2", true).andReturn("log2").anyTimes();
+
+    KubernetesClient client = mock.replay();
+
+    Assert.assertEquals("log1", client.pods().inNamespace("ns1").withName("myPod").getLog("cnt1", true));
+    Assert.assertEquals("log2", client.pods().inNamespace("ns1").withName("myPod").getLog("cnt2", true));
+
+    EasyMock.verify(client);
+  }
+
 }

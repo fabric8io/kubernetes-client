@@ -74,6 +74,7 @@ import io.fabric8.kubernetes.client.mock.impl.MockService;
 import io.fabric8.kubernetes.client.mock.impl.MockServiceAccount;
 import org.easymock.EasyMock;
 import org.easymock.IExpectationSetters;
+import org.easymock.Mock;
 
 import java.net.URL;
 
@@ -193,7 +194,7 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
     return persistentVolumeClaims;
   }
 
-  public MockOperation<Pod, PodList, DoneablePod, MockResource<Pod, DoneablePod, Boolean>> pods() {
+  public MockOperation<Pod, PodList, DoneablePod, MockLoggableResource<Pod, DoneablePod, Boolean>> pods() {
     return pods;
   }
 

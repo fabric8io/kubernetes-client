@@ -21,7 +21,6 @@ import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.ProxyServer;
 import com.ning.http.client.Realm;
-import com.ning.http.client.Response;
 import com.ning.http.client.filter.FilterContext;
 import com.ning.http.client.filter.FilterException;
 import com.ning.http.client.filter.RequestFilter;
@@ -36,6 +35,7 @@ import io.fabric8.kubernetes.client.dsl.internal.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.internal.EndpointsOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.EventOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.KubernetesListOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.LoggableClientResource;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.NodeOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.PersistentVolumeClaimOperationsImpl;
@@ -47,7 +47,6 @@ import io.fabric8.kubernetes.client.dsl.internal.SecretOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.SecurityContextConstraintsOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ServiceAccountOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ServiceOperationsImpl;
-import io.fabric8.kubernetes.client.internal.HttpUtils;
 import io.fabric8.kubernetes.client.internal.Utils;
 import org.jboss.netty.handler.ssl.util.InsecureTrustManagerFactory;
 
@@ -235,7 +234,7 @@ public class DefaultKubernetesClient implements KubernetesClient {
   }
 
   @Override
-  public ClientOperation<KubernetesClient, Pod, PodList, DoneablePod, ClientResource<Pod, DoneablePod>> pods() {
+  public ClientOperation<KubernetesClient, Pod, PodList, DoneablePod, LoggableClientResource<Pod, DoneablePod>> pods() {
     return new PodOperationsImpl(this);
   }
 
@@ -278,23 +277,6 @@ public class DefaultKubernetesClient implements KubernetesClient {
   public RootPaths rootPaths() {
     return (RootPaths) new BaseOperation(this, "", null, null, false, null, KubernetesClient.class, RootPaths.class, null, null) {
     }.get();
-  }
-
-  @Override
-  public String getPodLog(String namespace, String podName, String containerName, boolean pretty) {
-    String url = getMasterUrl() + "namespaces/" + namespace + "/pods/" + podName + "/log?pretty=" + pretty;
-    if (containerName != null) {
-      url += "&container=" + containerName;
-    }
-    try {
-      AsyncHttpClient.BoundRequestBuilder requestBuilder = getHttpClient().prepareGet(url);
-      Future<Response> f = requestBuilder.execute();
-      Response r = f.get();
-      HttpUtils.assertResponseCode(r, 200, this, new ObjectMapper());
-      return r.getResponseBody();
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(t);
-    }
   }
 
   @Override
