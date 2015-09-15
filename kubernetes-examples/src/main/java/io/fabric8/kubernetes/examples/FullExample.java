@@ -119,7 +119,9 @@ public class FullExample {
         // Get the RC by label in namespace
         log("Get RC by label in namespace", client.replicationControllers().inNamespace("thisisatest").withLabel("server", "nginx").list());
         // Update the RC
-        client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").edit().editMetadata().addToLabels("new", "label").endMetadata().done();
+        client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").cascading(false).edit().editMetadata().addToLabels("new", "label").endMetadata().done();
+
+        client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").scale(8);
 
         Thread.sleep(1000);
 
@@ -127,10 +129,10 @@ public class FullExample {
         client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").edit().editSpec().editTemplate().withNewSpec()
           .addNewContainer().withName("nginx").withImage("httpd")
           .addNewPort().withContainerPort(80).endPort()
-          .endContainer()
-          .endSpec()
-          .endTemplate()
-          .endSpec().done();
+                .endContainer()
+                .endSpec()
+                .endTemplate()
+                .endSpec().done();
 
         Thread.sleep(1000);
 
@@ -141,14 +143,14 @@ public class FullExample {
 
         // Update the RC via rolling update with inline builder
         client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller")
-          .rolling().edit().editMetadata().addToLabels("testing", "rolling-update").endMetadata().done();
+                .rolling().edit().editMetadata().addToLabels("testing", "rolling-update").endMetadata().done();
 
         Thread.sleep(1000);
 
         //Update the RC inline
         client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller").edit()
           .editMetadata()
-            .addToLabels("another", "label")
+                .addToLabels("another", "label")
           .endMetadata()
           .done();
 
@@ -166,11 +168,11 @@ public class FullExample {
           .withNewSpec()
           .addNewContainer().withName("nginx").withImage("nginx")
           .addNewPort().withContainerPort(80).endPort()
-          .endContainer()
-          .endSpec()
+                .endContainer()
+                .endSpec()
           .endTemplate()
           .endSpec().done();
-         log("Created inline RC");
+        log("Created inline RC");
 
         Thread.sleep(1000);
 
@@ -186,8 +188,6 @@ public class FullExample {
         log("Deleted RC by field");
 
         log("Root paths:", client.rootPaths());
-
-        client.services().load(null);
 
       } finally {
         // And finally clean up the namespace

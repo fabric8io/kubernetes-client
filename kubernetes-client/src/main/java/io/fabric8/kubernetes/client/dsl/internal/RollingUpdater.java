@@ -88,11 +88,11 @@ class RollingUpdater {
       int oldReplicas = oldRC.getSpec().getReplicas();
       while(createdRC.getSpec().getReplicas() < requestedNewReplicas) {
         int newReplicas = createdRC.getSpec().getReplicas() + 1;
-        client.replicationControllers().inNamespace(namespace).withName(createdRC.getMetadata().getName()).scale(newReplicas);
+        client.replicationControllers().inNamespace(namespace).withName(createdRC.getMetadata().getName()).scale(newReplicas, true);
         createdRC.getSpec().setReplicas(newReplicas);
 
         if (oldReplicas > 0) {
-          client.replicationControllers().inNamespace(namespace).withName(oldRCName).scale(--oldReplicas);
+          client.replicationControllers().inNamespace(namespace).withName(oldRCName).scale(--oldReplicas, true);
         }
       }
 

@@ -82,7 +82,7 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Ku
 
   @Override
   public ReplicationController scale(int count, boolean wait) {
-    ReplicationController res = edit().editSpec().withReplicas(count).endSpec().done();
+    ReplicationController res = cascading(false).edit().editSpec().withReplicas(count).endSpec().done();
     if (wait) {
       res = get();
       while (res.getStatus().getReplicas() != count) {
