@@ -54,6 +54,7 @@
             <configuration>
               <artifactSet>
                 <includes>
+                  <include>io.fabric8:kubernetes-client</include>
                   <include>com.ning:async-http-client</include>
                   <include>io.netty:netty</include>
                 </includes>
