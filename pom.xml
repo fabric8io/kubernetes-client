@@ -84,7 +84,7 @@
     <oauth.version>20100527</oauth.version>
     <slf4j.version>1.7.12</slf4j.version>
     <snakeyaml.version>1.15</snakeyaml.version>
-    <sundrio.version>0.1.7</sundrio.version>
+    <sundrio.version>0.1.9</sundrio.version>
 
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
@@ -166,6 +166,9 @@
             <bom>
               <artifactId>kubernetes-client-bom</artifactId>
               <name>Fabric8 :: Kubernetes :: Bom</name>
+              <properties>
+                <skipStagingRepositoryClose>true</skipStagingRepositoryClose>
+              </properties>
             </bom>
             <bom>
               <artifactId>kubernetes-client-bom-with-deps</artifactId>
@@ -178,9 +181,12 @@
                   <include>net.oauth*:*</include>
                 </includes>
               </dependencies>
+              <properties>
+                <skipStagingRepositoryClose>true</skipStagingRepositoryClose>
+              </properties>
             </bom>
           </boms>
-     </configuration>
+        </configuration>
         <executions>
           <execution>
             <goals>
