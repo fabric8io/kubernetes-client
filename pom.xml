@@ -86,9 +86,19 @@
     <snakeyaml.version>1.15</snakeyaml.version>
     <sundrio.version>0.1.10</sundrio.version>
 
+    <bundle.plugin.version></bundle.plugin.version>
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
+
     <exec.master>https://localhost:8443</exec.master>
+
+    <osgi.import/>
+    <osgi.export/>
+    <osgi.private/>
+    <osgi.dynamic.import/>
+    <osgi.bundles/>
+    <osgi.activator/>
+    <osgi.export.service/>
   </properties>
 
   <modules>
@@ -158,6 +168,41 @@
             <exclude>license.txt</exclude>
           </excludes>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>2.5.4</version>
+        <extensions>true</extensions>
+        <inherited>true</inherited>
+        <configuration>
+          <instructions>
+            <Bundle-Name>${project.name}</Bundle-Name>
+            <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+            <Export-Package>${osgi.export}</Export-Package>
+            <Import-Package>${osgi.import}</Import-Package>
+            <DynamicImport-Package>${osgi.dynamic.import}</DynamicImport-Package>
+            <Private-Package>${osgi.private}</Private-Package>
+            <Require-Bundle>${osgi.bundles}</Require-Bundle>
+            <Bundle-Activator>${osgi.activator}</Bundle-Activator>
+            <Export-Service>${osgi.export.service}</Export-Service>
+          </instructions>
+          <supportedProjectTypes>
+            <supportedProjectType>jar</supportedProjectType>
+            <supportedProjectType>war</supportedProjectType>
+            <supportedProjectType>bundle</supportedProjectType>
+          </supportedProjectTypes>
+          <unpackBundle>true</unpackBundle>
+        </configuration>
+        <executions>
+          <execution>
+            <id>bundle-manifest</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>manifest</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>io.sundr</groupId>

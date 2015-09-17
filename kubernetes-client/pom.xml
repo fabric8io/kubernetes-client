@@ -27,6 +27,19 @@
   <groupId>io.fabric8</groupId>
   <artifactId>kubernetes-client</artifactId>
   <name>Fabric8 :: Kubernetes :: Java Client</name>
+  <packaging>bundle</packaging>
+
+  <properties>
+    <osgi.import>*</osgi.import>
+    <osgi.export>
+      io.fabric8.kubernetes.client*"
+    </osgi.export>
+    <osgi.private>
+      io.fabric8.kubernetes.client.internal,
+      io.fabric8.kubernetes.client.creators,
+      io.fabric8.kubernetes.client.dsl.internal
+    </osgi.private>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -75,22 +88,5 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.4.0</version>
-        <configuration>
-          <mainClass>io.fabric8.kubernetes.examples.FullExample</mainClass>
-          <classpathScope>test</classpathScope>
-          <arguments>
-            <argument>${exec.master}</argument>
-          </arguments>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 
 </project>
