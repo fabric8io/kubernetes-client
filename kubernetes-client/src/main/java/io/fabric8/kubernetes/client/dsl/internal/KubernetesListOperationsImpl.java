@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DoneableKubernetesList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
+import io.fabric8.kubernetes.client.Creators;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.ResourceCreator;
@@ -30,7 +31,6 @@ import io.fabric8.kubernetes.client.dsl.Loadable;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ServiceLoader;
 
 public class KubernetesListOperationsImpl
   implements ClientKubernetesListOperation<KubernetesClient>,
@@ -102,10 +102,9 @@ public class KubernetesListOperationsImpl
   }
 
   private <T extends HasMetadata> T create(T resource) {
-    for (ResourceCreator<T> creator : ServiceLoader.load(ResourceCreator.class)) {
-      if (creator.getKind().isAssignableFrom(resource.getClass())) {
-        return creator.create(client, namespace, resource);
-      }
+    ResourceCreator<T> creator = (ResourceCreator<T>) Creators.get(resource.getClass());
+    if (creator != null) {
+      return creator.create(client, namespace, resource);
     }
     throw new IllegalStateException("Could not find creator");
   }

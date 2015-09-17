@@ -100,7 +100,7 @@
     <module>kubernetes-client-with-deps</module>
     <module>openshift-client-with-deps</module>
   </modules>
-  
+
   <build>
     <plugins>
       <plugin>

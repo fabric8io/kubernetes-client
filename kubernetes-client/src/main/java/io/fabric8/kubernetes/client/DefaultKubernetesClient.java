@@ -27,6 +27,7 @@ import com.ning.http.client.filter.RequestFilter;
 import com.ning.http.client.providers.netty.NettyAsyncHttpProviderConfig;
 import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListOperation;
+import io.fabric8.kubernetes.client.dsl.ClientLoggableResource;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
@@ -35,7 +36,6 @@ import io.fabric8.kubernetes.client.dsl.internal.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.internal.EndpointsOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.EventOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.KubernetesListOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.ClientLoggableResource;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.NodeOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.PersistentVolumeClaimOperationsImpl;
@@ -68,8 +68,6 @@ import java.security.SecureRandom;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.Map;
-import java.util.ServiceLoader;
 
 import static io.fabric8.kubernetes.client.internal.CertUtils.createKeyStore;
 import static io.fabric8.kubernetes.client.internal.CertUtils.createTrustStore;
@@ -78,7 +76,7 @@ public class DefaultKubernetesClient implements KubernetesClient {
 
   private static final ObjectMapper jsonMapper = new ObjectMapper();
   private static final ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
-  private static Map<String, ResourceCreator> resourceCreatorMap;
+
   private AsyncHttpClient httpClient;
   private URL masterUrl;
   private Config configuration;
@@ -293,13 +291,11 @@ public class DefaultKubernetesClient implements KubernetesClient {
     return configuration;
   }
 
-
   @Override
   public <T extends Extension> T adapt(Class<T> type) {
-    for (ExtensionAdapter<T> adapter : ServiceLoader.load(ExtensionAdapter.class)) {
-      if (adapter.getExtensionType().isAssignableFrom(type)) {
-        return adapter.adapt(this);
-      }
+    ExtensionAdapter<T> adapter = Adapters.get(type);
+    if (adapter != null) {
+      return adapter.adapt(this);
     }
     throw new IllegalStateException("Could not find adapter");
   }
