@@ -55,13 +55,13 @@ public class PodOperationsImpl extends HasMetadataOperation<KubernetesClient, Po
   @Override
   public String getLog(String containerId, Boolean isPretty) {
     StringBuilder sb = new StringBuilder();
-    sb.append("/log?pretty=").append(isPretty);
+    sb.append("log?pretty=").append(isPretty);
     if (containerId != null && !containerId.isEmpty()) {
       sb.append("&container=").append(containerId);
     }
 
     try {
-      URL url = new URL(getResourceUrl().toString() + sb.toString());
+      URL url = new URL(getResourceUrl(), sb.toString());
       AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().prepareGet(url.toString());
       Future<Response> f = requestBuilder.execute();
       Response r = f.get();

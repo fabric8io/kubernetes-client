@@ -439,7 +439,7 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
     if (name == null) {
       return getNamespacedUrl();
     }
-    return new URL(getNamespacedUrl(), name);
+    return new URL(getNamespacedUrl(), name + "/");
   }
 
   /**

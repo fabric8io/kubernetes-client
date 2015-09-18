@@ -76,7 +76,7 @@ public class BuildConfigOperationsImpl extends OpenshiftOperation<OpenShiftClien
   @Override
   public Void instantiate(BuildRequest request) {
     try {
-      URL instantiationUrl = new URL(getResourceUrl().toString() + "/instantiate");
+      URL instantiationUrl = new URL(getResourceUrl(), "instantiate");
       AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().preparePost(instantiationUrl.toString());
       requestBuilder.setBody(BaseOperation.mapper.writer().writeValueAsString(request));
       handleResponse(requestBuilder, 201);
@@ -90,7 +90,7 @@ public class BuildConfigOperationsImpl extends OpenshiftOperation<OpenShiftClien
   public Void trigger(WebHookTrigger trigger) {
     try {
       //TODO: This needs some attention.
-      URL webhooksUrl = new URL(getResourceUrl().toString() + "/webhooks/");
+      URL webhooksUrl = new URL(getResourceUrl(), "webhooks/");
       URL triggerUrl = new URL(webhooksUrl, secret + "/" + triggerType);
       AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().preparePost(triggerUrl.toString());
       requestBuilder.addHeader("Content-Type", "application/json");
