@@ -93,6 +93,10 @@
 
     <exec.master>https://localhost:8443</exec.master>
 
+    <javadoc.include.deps>false</javadoc.include.deps>
+    <javadoc.source.includes></javadoc.source.includes>
+    <javadoc.package.excludes></javadoc.package.excludes>
+
     <osgi.import/>
     <osgi.export/>
     <osgi.private/>
@@ -274,7 +278,7 @@
                       <message>No Snapshots Allowed!</message>
                     </requireReleaseDeps>
                   </rules>
-                  <fail>true</fail>
+                  <fail>false</fail>
                 </configuration>
               </execution>
             </executions>
@@ -284,7 +288,11 @@
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>2.10.3</version>
             <configuration>
-              <additionalparam>${javadoc.opts}</additionalparam>
+              <includeDependencySources>${javadoc.include.deps}</includeDependencySources>
+              <dependencySourceIncludes>
+                <dependencySourceInclude>${javadoc.source.includes}</dependencySourceInclude>
+              </dependencySourceIncludes>
+              <excludePackageNames>${javadoc.package.excludes}</excludePackageNames>
             </configuration>
             <executions>
               <execution>

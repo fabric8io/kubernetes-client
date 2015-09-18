@@ -28,6 +28,11 @@
   <artifactId>kubernetes-client-with-deps</artifactId>
   <name>Fabric8 :: Kubernetes :: Java Client with Dependencies</name>
 
+  <properties>
+    <javadoc.include.deps>true</javadoc.include.deps>
+    <javadoc.source.includes>io.fabric8:kubernetes-client</javadoc.source.includes>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>io.fabric8</groupId>
@@ -52,6 +57,7 @@
               <goal>shade</goal>
             </goals>
             <configuration>
+              <createSourcesJar>true</createSourcesJar>
               <artifactSet>
                 <includes>
                   <include>io.fabric8:kubernetes-client</include>
