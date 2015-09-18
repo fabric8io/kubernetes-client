@@ -27,7 +27,7 @@
   <groupId>io.fabric8</groupId>
   <artifactId>kubernetes-client</artifactId>
   <name>Fabric8 :: Kubernetes :: Java Client</name>
-  <packaging>bundle</packaging>
+  <packaging>jar</packaging>
 
   <properties>
     <osgi.import>*</osgi.import>
@@ -40,6 +40,21 @@
       io.fabric8.kubernetes.client.dsl.internal
     </osgi.private>
   </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>${maven.jar.plugin.version}</version>
+        <configuration>
+          <archive>
+            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
   <dependencies>
     <dependency>

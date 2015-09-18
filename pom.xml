@@ -86,6 +86,7 @@
     <snakeyaml.version>1.15</snakeyaml.version>
     <sundrio.version>0.1.10</sundrio.version>
 
+    <maven.jar.plugin.version>2.6</maven.jar.plugin.version>
     <maven.bundle.plugin.version>2.5.4</maven.bundle.plugin.version>
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
@@ -187,17 +188,11 @@
             <Bundle-Activator>${osgi.activator}</Bundle-Activator>
             <Export-Service>${osgi.export.service}</Export-Service>
           </instructions>
-          <supportedProjectTypes>
-            <supportedProjectType>jar</supportedProjectType>
-            <supportedProjectType>war</supportedProjectType>
-            <supportedProjectType>bundle</supportedProjectType>
-          </supportedProjectTypes>
-          <unpackBundle>true</unpackBundle>
         </configuration>
         <executions>
           <execution>
             <id>bundle-manifest</id>
-            <phase>process-classes</phase>
+            <phase>prepare-package</phase>
             <goals>
               <goal>manifest</goal>
             </goals>
