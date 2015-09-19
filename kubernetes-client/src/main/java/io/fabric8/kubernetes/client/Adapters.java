@@ -35,15 +35,15 @@ public final class Adapters {
     }
   }
 
-  public static <T extends Extension> void register(ExtensionAdapter<T> adapter) {
+  public static <C extends Client> void register(ExtensionAdapter<C> adapter) {
     EXTENSION_ADAPTER_MAP.put(adapter.getExtensionType(), adapter);
   }
 
-  public static <T extends Extension> void unregister(ExtensionAdapter<T> adapter) {
+  public static <C extends Client> void unregister(ExtensionAdapter<C> adapter) {
     EXTENSION_ADAPTER_MAP.remove(adapter.getExtensionType());
   }
 
-  public static <T extends Extension> ExtensionAdapter<T> get(Class<T> type) {
+  public static <C extends Client> ExtensionAdapter<C> get(Class<C> type) {
     return EXTENSION_ADAPTER_MAP.get(type);
   }
 }

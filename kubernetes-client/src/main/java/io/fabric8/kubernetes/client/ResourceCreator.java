@@ -23,5 +23,5 @@ public interface ResourceCreator<T extends HasMetadata> {
 
   Class<T> getKind();
 
-  T create(KubernetesClient client, String namespace, T item);
+  T create(Client client, String namespace, T item);
 }

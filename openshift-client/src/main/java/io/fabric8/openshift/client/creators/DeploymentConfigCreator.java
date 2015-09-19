@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client.creators;
 
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ResourceCreator;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -28,7 +28,7 @@ public class DeploymentConfigCreator implements ResourceCreator<DeploymentConfig
   }
 
   @Override
-  public DeploymentConfig create(KubernetesClient client, String namespace, DeploymentConfig item) {
+  public DeploymentConfig create(Client client, String namespace, DeploymentConfig item) {
     try (OpenShiftClient osClient = client.adapt(OpenShiftClient.class)) {
       return new DeploymentConfigOperationsImpl(osClient, namespace, null, true, item).create();
     }

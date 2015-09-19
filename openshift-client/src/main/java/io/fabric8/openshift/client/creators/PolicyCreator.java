@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client.creators;
 
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ResourceCreator;
 import io.fabric8.openshift.api.model.Policy;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -28,7 +28,7 @@ public class PolicyCreator implements ResourceCreator<Policy> {
   }
 
   @Override
-  public Policy create(KubernetesClient client, String namespace, Policy item) {
+  public Policy create(Client client, String namespace, Policy item) {
     try (OpenShiftClient osClient = client.adapt(OpenShiftClient.class)) {
       return new PolicyOperationsImpl(osClient, namespace, null, true, item).create();
     }

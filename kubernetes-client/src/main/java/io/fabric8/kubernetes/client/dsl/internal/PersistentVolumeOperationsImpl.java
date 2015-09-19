@@ -18,17 +18,17 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.api.model.DoneablePersistentVolume;
 import io.fabric8.kubernetes.api.model.PersistentVolume;
 import io.fabric8.kubernetes.api.model.PersistentVolumeList;
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 
-public class PersistentVolumeOperationsImpl
-  extends HasMetadataOperation<KubernetesClient, PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, ClientResource<PersistentVolume, DoneablePersistentVolume>> {
+public class PersistentVolumeOperationsImpl<C extends Client>
+  extends HasMetadataOperation<C, PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, ClientResource<PersistentVolume, DoneablePersistentVolume>> {
 
-  public PersistentVolumeOperationsImpl(KubernetesClient client) {
+  public PersistentVolumeOperationsImpl(C client) {
     this(client, null, null, true, null);
   }
 
-  public PersistentVolumeOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading, PersistentVolume item) {
+  public PersistentVolumeOperationsImpl(C client, String namespace, String name, Boolean cascading, PersistentVolume item) {
     super(client, "persistentvolumes", namespace, name, cascading, item);
   }
 }

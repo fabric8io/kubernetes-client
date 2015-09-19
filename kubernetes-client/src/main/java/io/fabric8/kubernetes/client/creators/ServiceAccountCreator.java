@@ -16,7 +16,7 @@
 package io.fabric8.kubernetes.client.creators;
 
 import io.fabric8.kubernetes.api.model.ServiceAccount;
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ResourceCreator;
 import io.fabric8.kubernetes.client.dsl.internal.ServiceAccountOperationsImpl;
 
@@ -27,7 +27,7 @@ public class ServiceAccountCreator implements ResourceCreator<ServiceAccount> {
   }
 
   @Override
-  public ServiceAccount create(KubernetesClient client, String namespace, ServiceAccount item) {
-    return new ServiceAccountOperationsImpl(client, namespace, null, true, item).create();
+  public ServiceAccount create(Client client, String namespace, ServiceAccount item) {
+    return new ServiceAccountOperationsImpl<Client>(client, namespace, null, true, item).create();
   }
 }

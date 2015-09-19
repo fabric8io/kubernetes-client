@@ -19,19 +19,21 @@ package io.fabric8.kubernetes.client;
 
 /**
  * An Adapter that can be used to adapt an instance of the {@link io.fabric8.kubernetes.client.KubernetesClient} to an {@link io.fabric8.kubernetes.client.Extension}.
- * @param <E> The Extension.
+ *
+ * @param <C> The Client.
  */
-public interface ExtensionAdapter<E extends Extension> {
+public interface ExtensionAdapter<C extends Client> {
 
   /**
-   * @return The concrete class of the {@link io.fabric8.kubernetes.client.Extension}.
+   * @return The concrete class of the {@link io.fabric8.kubernetes.client.Client}.
    */
-  Class<E> getExtensionType();
+  Class<C> getExtensionType();
 
   /**
    * The adapt function.
-   * @param client  The instance of {@link io.fabric8.kubernetes.client.KubernetesClient} to adapt.
-   * @return        The instance of the {@link io.fabric8.kubernetes.client.Extension}.
+   *
+   * @param client The instance of {@link io.fabric8.kubernetes.client.KubernetesClient} to adapt.
+   * @return The instance of the {@link io.fabric8.kubernetes.client.Client}.
    */
-  E adapt(KubernetesClient client);
+  C adapt(Client client);
 }

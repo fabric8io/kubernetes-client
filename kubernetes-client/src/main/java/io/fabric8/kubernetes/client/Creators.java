@@ -37,15 +37,15 @@ public final class Creators {
     }
   }
 
-  public static <T extends HasMetadata> void register(ResourceCreator<T> adapter) {
-    RESOURCE_CREATOR_MAP.put(adapter.getKind(), adapter);
+  public static <T extends HasMetadata, C extends Client> void register(ResourceCreator<T> creator) {
+    RESOURCE_CREATOR_MAP.put(creator.getKind(), creator);
   }
 
-  public static <T extends HasMetadata> void unregister(ResourceCreator<T> adapter) {
-    RESOURCE_CREATOR_MAP.remove(adapter.getKind());
+  public static <T extends HasMetadata, C extends Client> void unregister(ResourceCreator<T> creator) {
+    RESOURCE_CREATOR_MAP.remove(creator.getKind());
   }
 
-  public static <T extends HasMetadata> ResourceCreator<T> get(Class<T> type) {
+  public static <T extends HasMetadata, C extends Client> ResourceCreator<T> get(Class<T> type) {
     return RESOURCE_CREATOR_MAP.get(type);
   }
 

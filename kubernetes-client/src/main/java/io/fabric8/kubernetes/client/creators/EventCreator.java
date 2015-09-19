@@ -16,6 +16,8 @@
 package io.fabric8.kubernetes.client.creators;
 
 import io.fabric8.kubernetes.api.model.Event;
+import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.GenericKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.ResourceCreator;
 import io.fabric8.kubernetes.client.dsl.internal.EventOperationsImpl;
@@ -27,7 +29,7 @@ public class EventCreator implements ResourceCreator<Event> {
   }
 
   @Override
-  public Event create(KubernetesClient client, String namespace, Event item) {
-    return new EventOperationsImpl(client, namespace, null, true, item).create();
+  public Event create(Client client, String namespace, Event item) {
+    return new EventOperationsImpl<Client>(client, namespace, null, true, item).create();
   }
 }

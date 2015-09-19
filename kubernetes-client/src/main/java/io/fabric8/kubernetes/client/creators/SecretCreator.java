@@ -16,6 +16,8 @@
 package io.fabric8.kubernetes.client.creators;
 
 import io.fabric8.kubernetes.api.model.Secret;
+import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.GenericKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.ResourceCreator;
 import io.fabric8.kubernetes.client.dsl.internal.SecretOperationsImpl;
@@ -27,7 +29,7 @@ public class SecretCreator implements ResourceCreator<Secret> {
   }
 
   @Override
-  public Secret create(KubernetesClient client, String namespace, Secret item) {
-    return new SecretOperationsImpl(client, namespace, null, true, item).create();
+  public Secret create(Client client, String namespace, Secret item) {
+    return new SecretOperationsImpl<Client>(client, namespace, null, true, item).create();
   }
 }

@@ -15,10 +15,68 @@
  */
 package io.fabric8.openshift.client;
 
+import io.fabric8.kubernetes.api.model.DoneableEndpoints;
+import io.fabric8.kubernetes.api.model.DoneableEvent;
+import io.fabric8.kubernetes.api.model.DoneableNamespace;
+import io.fabric8.kubernetes.api.model.DoneableNode;
+import io.fabric8.kubernetes.api.model.DoneablePersistentVolume;
+import io.fabric8.kubernetes.api.model.DoneablePersistentVolumeClaim;
+import io.fabric8.kubernetes.api.model.DoneablePod;
+import io.fabric8.kubernetes.api.model.DoneableReplicationController;
+import io.fabric8.kubernetes.api.model.DoneableResourceQuota;
+import io.fabric8.kubernetes.api.model.DoneableSecret;
+import io.fabric8.kubernetes.api.model.DoneableSecurityContextConstraints;
+import io.fabric8.kubernetes.api.model.DoneableService;
+import io.fabric8.kubernetes.api.model.DoneableServiceAccount;
+import io.fabric8.kubernetes.api.model.Endpoints;
+import io.fabric8.kubernetes.api.model.EndpointsList;
+import io.fabric8.kubernetes.api.model.Event;
+import io.fabric8.kubernetes.api.model.EventList;
 import io.fabric8.kubernetes.api.model.KubernetesList;
+import io.fabric8.kubernetes.api.model.Namespace;
+import io.fabric8.kubernetes.api.model.NamespaceList;
+import io.fabric8.kubernetes.api.model.Node;
+import io.fabric8.kubernetes.api.model.NodeList;
+import io.fabric8.kubernetes.api.model.PersistentVolume;
+import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
+import io.fabric8.kubernetes.api.model.PersistentVolumeClaimList;
+import io.fabric8.kubernetes.api.model.PersistentVolumeList;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.api.model.ReplicationController;
+import io.fabric8.kubernetes.api.model.ReplicationControllerList;
+import io.fabric8.kubernetes.api.model.ResourceQuota;
+import io.fabric8.kubernetes.api.model.ResourceQuotaList;
+import io.fabric8.kubernetes.api.model.Secret;
+import io.fabric8.kubernetes.api.model.SecretList;
+import io.fabric8.kubernetes.api.model.SecurityContextConstraints;
+import io.fabric8.kubernetes.api.model.SecurityContextConstraintsList;
+import io.fabric8.kubernetes.api.model.Service;
+import io.fabric8.kubernetes.api.model.ServiceAccount;
+import io.fabric8.kubernetes.api.model.ServiceAccountList;
+import io.fabric8.kubernetes.api.model.ServiceList;
+import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.ClientKubernetesListOperation;
+import io.fabric8.kubernetes.client.dsl.ClientLoggableResource;
+import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
+import io.fabric8.kubernetes.client.dsl.internal.EndpointsOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.EventOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.KubernetesListOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.NamespaceOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.NodeOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.PersistentVolumeClaimOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.PersistentVolumeOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.PodOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.ReplicationControllerOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.ResourceQuotaOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.SecretOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.SecurityContextConstraintsOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.ServiceAccountOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.ServiceOperationsImpl;
 import io.fabric8.openshift.client.dsl.ClientBuildConfigResource;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientOperation;
@@ -63,6 +121,7 @@ import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.api.model.UserList;
 import io.fabric8.openshift.client.dsl.ClientTemplateResource;
+import io.fabric8.openshift.client.dsl.OpenShiftNamespacedDSL;
 import io.fabric8.openshift.client.dsl.internal.BuildConfigOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.BuildOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.DeploymentConfigOperationsImpl;
@@ -80,7 +139,7 @@ import io.fabric8.openshift.client.dsl.internal.UserOperationsImpl;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class DefaultOpenshiftClient extends DefaultKubernetesClient implements OpenShiftClient {
+public class DefaultOpenshiftClient extends BaseClient implements OpenShiftClient {
 
   private URL openShiftUrl;
 
@@ -110,6 +169,75 @@ public class DefaultOpenshiftClient extends DefaultKubernetesClient implements O
     return openShiftUrl;
   }
 
+  @Override
+  public ClientOperation<OpenShiftClient, Endpoints, EndpointsList, DoneableEndpoints, ClientResource<Endpoints, DoneableEndpoints>> endpoints() {
+    return new EndpointsOperationsImpl(this);
+  }
+
+  @Override
+  public ClientOperation<OpenShiftClient, Event, EventList, DoneableEvent, ClientResource<Event, DoneableEvent>> events() {
+    return new EventOperationsImpl(this);
+  }
+
+  @Override
+  public ClientNonNamespaceOperation<OpenShiftClient, Namespace, NamespaceList, DoneableNamespace, ClientResource<Namespace, DoneableNamespace>> namespaces() {
+    return new NamespaceOperationsImpl(this);
+  }
+
+  @Override
+  public ClientNonNamespaceOperation<OpenShiftClient, Node, NodeList, DoneableNode, ClientResource<Node, DoneableNode>> nodes() {
+    return new NodeOperationsImpl(this);
+  }
+
+  @Override
+  public ClientOperation<OpenShiftClient, PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, ClientResource<PersistentVolume, DoneablePersistentVolume>> persistentVolumes() {
+    return new PersistentVolumeOperationsImpl(this);
+  }
+
+  @Override
+  public ClientOperation<OpenShiftClient, PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, ClientResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> persistentVolumeClaims() {
+    return new PersistentVolumeClaimOperationsImpl(this);
+  }
+
+  @Override
+  public ClientOperation<OpenShiftClient, Pod, PodList, DoneablePod, ClientLoggableResource<Pod, DoneablePod>> pods() {
+    return new PodOperationsImpl(this);
+  }
+
+  @Override
+  public ClientOperation<OpenShiftClient, ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>> replicationControllers() {
+    return new ReplicationControllerOperationsImpl(this);
+  }
+
+  @Override
+  public ClientOperation<OpenShiftClient, ResourceQuota, ResourceQuotaList, DoneableResourceQuota, ClientResource<ResourceQuota, DoneableResourceQuota>> resourceQuotas() {
+    return new ResourceQuotaOperationsImpl(this);
+  }
+
+  @Override
+  public ClientOperation<OpenShiftClient, Secret, SecretList, DoneableSecret, ClientResource<Secret, DoneableSecret>> secrets() {
+    return new SecretOperationsImpl(this);
+  }
+
+  @Override
+  public ClientOperation<OpenShiftClient, Service, ServiceList, DoneableService, ClientResource<Service, DoneableService>> services() {
+    return new ServiceOperationsImpl(this);
+  }
+
+  @Override
+  public ClientOperation<OpenShiftClient, ServiceAccount, ServiceAccountList, DoneableServiceAccount, ClientResource<ServiceAccount, DoneableServiceAccount>> serviceAccounts() {
+    return new ServiceAccountOperationsImpl(this);
+  }
+
+  @Override
+  public ClientKubernetesListOperation<OpenShiftClient> lists() {
+    return new KubernetesListOperationsImpl(this);
+  }
+
+  @Override
+  public ClientNonNamespaceOperation<OpenShiftClient, SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints() {
+    return new SecurityContextConstraintsOperationsImpl(this);
+  }
 
   @Override
   public ClientOperation<OpenShiftClient, Build, BuildList, DoneableBuild, ClientResource<Build, DoneableBuild>> builds() {
@@ -176,4 +304,8 @@ public class DefaultOpenshiftClient extends DefaultKubernetesClient implements O
     return new UserOperationsImpl(this);
   }
 
+  @Override
+  public OpenShiftNamespacedDSL<OpenShiftClient> inNamespace(String name) {
+    return null;
+  }
 }

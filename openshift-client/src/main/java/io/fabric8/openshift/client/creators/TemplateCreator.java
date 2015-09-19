@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client.creators;
 
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ResourceCreator;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -28,7 +28,7 @@ public class TemplateCreator implements ResourceCreator<Template> {
   }
 
   @Override
-  public Template create(KubernetesClient client, String namespace, Template item) {
+  public Template create(Client client, String namespace, Template item) {
     try (OpenShiftClient osClient = client.adapt(OpenShiftClient.class)) {
       return new TemplateOperationsImpl(osClient, namespace, null, true, item).create();
     }
