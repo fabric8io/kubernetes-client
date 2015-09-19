@@ -16,7 +16,7 @@
 
 package io.fabric8.kubernetes.client;
 
-public interface ClientAware<T extends KubernetesClient> {
+public interface ClientAware<C extends Client> {
 
-  T getClient();
+  C getClient();
 }

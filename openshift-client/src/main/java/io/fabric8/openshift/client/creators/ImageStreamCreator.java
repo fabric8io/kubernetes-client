@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client.creators;
 
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ResourceCreator;
 import io.fabric8.openshift.api.model.ImageStream;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -28,7 +28,7 @@ public class ImageStreamCreator implements ResourceCreator<ImageStream> {
   }
 
   @Override
-  public ImageStream create(KubernetesClient client, String namespace, ImageStream item) {
+  public ImageStream create(Client client, String namespace, ImageStream item) {
     try (OpenShiftClient osClient = client.adapt(OpenShiftClient.class)) {
       return new ImageStreamOperationsImpl(osClient, namespace, null, true, item).create();
     }

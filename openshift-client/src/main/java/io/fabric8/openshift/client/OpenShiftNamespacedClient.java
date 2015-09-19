@@ -13,21 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.creators;
 
-import io.fabric8.kubernetes.api.model.Namespace;
+package io.fabric8.openshift.client;
+
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.ResourceCreator;
-import io.fabric8.kubernetes.client.dsl.internal.NamespaceOperationsImpl;
+import io.fabric8.openshift.client.dsl.OpenShiftNamespacedDSL;
 
-public class NamespaceCreator implements ResourceCreator<Namespace> {
-  @Override
-  public Class<Namespace> getKind() {
-    return Namespace.class;
-  }
-
-  @Override
-  public Namespace create(Client client, String namespace, Namespace item) {
-    return new NamespaceOperationsImpl<Client>(client, namespace, null, true, item).create();
-  }
+public interface OpenShiftNamespacedClient extends
+  Client,
+  OpenShiftNamespacedDSL<OpenShiftClient> {
 }

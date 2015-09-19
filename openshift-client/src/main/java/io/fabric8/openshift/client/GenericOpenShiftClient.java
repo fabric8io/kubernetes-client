@@ -13,22 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.creators;
+package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.api.model.Node;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.GenericKubernetesClient;
-import io.fabric8.kubernetes.client.ResourceCreator;
-import io.fabric8.kubernetes.client.dsl.internal.NodeOperationsImpl;
+import io.fabric8.openshift.client.dsl.OpenShiftDSL;
+import io.fabric8.openshift.client.dsl.OpenShiftNamespacedDSL;
 
-public class NodeCreator implements ResourceCreator<Node> {
-  @Override
-  public Class<Node> getKind() {
-    return Node.class;
-  }
 
-  @Override
-  public Node create(Client client, String namespace, Node item) {
-    return new NodeOperationsImpl<Client>(client, namespace, null, true, item).create();
-  }
+public interface GenericOpenShiftClient<C extends Client>
+  extends
+  GenericKubernetesClient<C, OpenShiftNamespacedDSL<C>>,
+  OpenShiftDSL<C> {
+
+
 }

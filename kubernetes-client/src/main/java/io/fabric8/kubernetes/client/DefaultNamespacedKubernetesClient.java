@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.fabric8.kubernetes.client;
 
+import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableEndpoints;
 import io.fabric8.kubernetes.api.model.DoneableEvent;
 import io.fabric8.kubernetes.api.model.DoneableNamespace;
@@ -46,6 +48,7 @@ import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.api.model.ResourceQuota;
 import io.fabric8.kubernetes.api.model.ResourceQuotaList;
+import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.SecretList;
 import io.fabric8.kubernetes.api.model.SecurityContextConstraints;
@@ -54,17 +57,15 @@ import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
-import io.fabric8.kubernetes.client.dsl.ClientKubernetesListOperation;
+import io.fabric8.kubernetes.client.dsl.ClientKubernetesListNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientLoggableResource;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
-import io.fabric8.kubernetes.client.dsl.ClientOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
 import io.fabric8.kubernetes.client.dsl.KubernetesNamespacedDSL;
 import io.fabric8.kubernetes.client.dsl.internal.EndpointsOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.EventOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.KubernetesListOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.NamespaceOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.NodeOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.PersistentVolumeClaimOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.PersistentVolumeOperationsImpl;
@@ -76,91 +77,120 @@ import io.fabric8.kubernetes.client.dsl.internal.SecurityContextConstraintsOpera
 import io.fabric8.kubernetes.client.dsl.internal.ServiceAccountOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ServiceOperationsImpl;
 
-public class DefaultKubernetesClient extends BaseClient implements KubernetesClient {
+import java.io.InputStream;
+import java.net.URL;
 
-  public DefaultKubernetesClient() throws KubernetesClientException {
+class DefaultNamespacedKubernetesClient implements Client, KubernetesNamespacedClient {
+
+  private final KubernetesClient client;
+
+  DefaultNamespacedKubernetesClient(KubernetesClient client) {
+    this.client = client;
   }
 
-  public DefaultKubernetesClient(Config config) throws KubernetesClientException {
-    super(config);
-  }
 
-  public DefaultKubernetesClient(String masterUrl) throws KubernetesClientException {
-    super(masterUrl);
+  @Override
+  public ClientNonNamespaceOperation<KubernetesClient, Endpoints, EndpointsList, DoneableEndpoints, ClientResource<Endpoints, DoneableEndpoints>> endpoints() {
+    return new EndpointsOperationsImpl<KubernetesClient>(client);
   }
 
   @Override
-  public ClientOperation<KubernetesClient, Endpoints, EndpointsList, DoneableEndpoints, ClientResource<Endpoints, DoneableEndpoints>> endpoints() {
-    return new EndpointsOperationsImpl(this);
-  }
-
-  @Override
-  public ClientOperation<KubernetesClient, Event, EventList, DoneableEvent, ClientResource<Event, DoneableEvent>> events() {
-    return new EventOperationsImpl(this);
+  public ClientNonNamespaceOperation<KubernetesClient, Event, EventList, DoneableEvent, ClientResource<Event, DoneableEvent>> events() {
+    return new EventOperationsImpl<KubernetesClient>(client);
   }
 
   @Override
   public ClientNonNamespaceOperation<KubernetesClient, Namespace, NamespaceList, DoneableNamespace, ClientResource<Namespace, DoneableNamespace>> namespaces() {
-    return new NamespaceOperationsImpl(this);
+    return null;
   }
 
   @Override
   public ClientNonNamespaceOperation<KubernetesClient, Node, NodeList, DoneableNode, ClientResource<Node, DoneableNode>> nodes() {
-    return new NodeOperationsImpl(this);
+    return new NodeOperationsImpl<KubernetesClient>(client);
   }
 
   @Override
-  public ClientOperation<KubernetesClient, PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, ClientResource<PersistentVolume, DoneablePersistentVolume>> persistentVolumes() {
-    return new PersistentVolumeOperationsImpl(this);
+  public ClientNonNamespaceOperation<KubernetesClient, PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, ClientResource<PersistentVolume, DoneablePersistentVolume>> persistentVolumes() {
+    return new PersistentVolumeOperationsImpl<KubernetesClient>(client);
   }
 
   @Override
-  public ClientOperation<KubernetesClient, PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, ClientResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> persistentVolumeClaims() {
-    return new PersistentVolumeClaimOperationsImpl(this);
+  public ClientNonNamespaceOperation<KubernetesClient, PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, ClientResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> persistentVolumeClaims() {
+    return new PersistentVolumeClaimOperationsImpl<KubernetesClient>(client);
   }
 
   @Override
-  public ClientOperation<KubernetesClient, Pod, PodList, DoneablePod, ClientLoggableResource<Pod, DoneablePod>> pods() {
-    return new PodOperationsImpl(this);
+  public ClientNonNamespaceOperation<KubernetesClient, Pod, PodList, DoneablePod, ClientLoggableResource<Pod, DoneablePod>> pods() {
+    return new PodOperationsImpl<KubernetesClient>(client);
   }
 
   @Override
-  public ClientOperation<KubernetesClient, ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>> replicationControllers() {
-    return new ReplicationControllerOperationsImpl(this);
+  public ClientNonNamespaceOperation<KubernetesClient, ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>> replicationControllers() {
+    return new ReplicationControllerOperationsImpl<KubernetesClient>(client);
   }
 
   @Override
-  public ClientOperation<KubernetesClient, ResourceQuota, ResourceQuotaList, DoneableResourceQuota, ClientResource<ResourceQuota, DoneableResourceQuota>> resourceQuotas() {
-    return new ResourceQuotaOperationsImpl(this);
+  public ClientNonNamespaceOperation<KubernetesClient, ResourceQuota, ResourceQuotaList, DoneableResourceQuota, ClientResource<ResourceQuota, DoneableResourceQuota>> resourceQuotas() {
+    return new ResourceQuotaOperationsImpl<KubernetesClient>(client);
   }
 
   @Override
-  public ClientOperation<KubernetesClient, Secret, SecretList, DoneableSecret, ClientResource<Secret, DoneableSecret>> secrets() {
-    return new SecretOperationsImpl(this);
+  public ClientNonNamespaceOperation<KubernetesClient, Secret, SecretList, DoneableSecret, ClientResource<Secret, DoneableSecret>> secrets() {
+    return new SecretOperationsImpl<KubernetesClient>(client);
   }
 
   @Override
-  public ClientOperation<KubernetesClient, Service, ServiceList, DoneableService, ClientResource<Service, DoneableService>> services() {
-    return new ServiceOperationsImpl(this);
+  public ClientNonNamespaceOperation<KubernetesClient, Service, ServiceList, DoneableService, ClientResource<Service, DoneableService>> services() {
+    return new ServiceOperationsImpl<KubernetesClient>(client);
   }
 
   @Override
-  public ClientOperation<KubernetesClient, ServiceAccount, ServiceAccountList, DoneableServiceAccount, ClientResource<ServiceAccount, DoneableServiceAccount>> serviceAccounts() {
-    return new ServiceAccountOperationsImpl(this);
+  public ClientNonNamespaceOperation<KubernetesClient, ServiceAccount, ServiceAccountList, DoneableServiceAccount, ClientResource<ServiceAccount, DoneableServiceAccount>> serviceAccounts() {
+    return new ServiceAccountOperationsImpl<KubernetesClient>(client);
   }
 
   @Override
-  public ClientKubernetesListOperation<KubernetesClient> lists() {
-    return new KubernetesListOperationsImpl(this);
+  public ClientKubernetesListNonNamespaceOperation<KubernetesClient> lists() {
+    return new KubernetesListOperationsImpl<KubernetesClient>(client);
   }
 
   @Override
   public ClientNonNamespaceOperation<KubernetesClient, SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints() {
-    return new SecurityContextConstraintsOperationsImpl(this);
+    return new SecurityContextConstraintsOperationsImpl<KubernetesClient>(client);
   }
 
   @Override
-  public KubernetesNamespacedClient inNamespace(String name) {
-    return new DefaultNamespacedKubernetesClient(this);
+  public <C extends Client> C adapt(Class<C> type) {
+    return client.adapt(type);
+  }
+
+  @Override
+  public URL getMasterUrl() {
+    return client.getMasterUrl();
+  }
+
+  @Override
+  public AsyncHttpClient getHttpClient() {
+    return client.getHttpClient();
+  }
+
+  @Override
+  public RootPaths rootPaths() {
+    return client.rootPaths();
+  }
+
+  @Override
+  public <T> T unmarshal(InputStream is, Class<T> type) {
+    return client.unmarshal(is, type);
+  }
+
+  @Override
+  public void close() {
+    client.close();
+  }
+
+  @Override
+  public Config getConfiguration() {
+    return client.getConfiguration();
   }
 }

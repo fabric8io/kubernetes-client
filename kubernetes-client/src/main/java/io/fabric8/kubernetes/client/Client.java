@@ -13,21 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.creators;
 
-import io.fabric8.kubernetes.api.model.Service;
-import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.ResourceCreator;
-import io.fabric8.kubernetes.client.dsl.internal.ServiceOperationsImpl;
+package io.fabric8.kubernetes.client;
 
-public class ServiceCreator implements ResourceCreator<Service> {
-  @Override
-  public Class<Service> getKind() {
-    return Service.class;
-  }
+import com.ning.http.client.AsyncHttpClient;
+import io.fabric8.kubernetes.api.model.RootPaths;
 
-  @Override
-  public Service create(Client client, String namespace, Service item) {
-    return new ServiceOperationsImpl<Client>(client, namespace, null, true, item).create();
-  }
+import java.io.Closeable;
+import java.io.InputStream;
+import java.net.URL;
+
+public interface Client extends ConfigAware, Closeable {
+
+  <C extends Client> C adapt(Class<C> type);
+
+  URL getMasterUrl();
+
+  AsyncHttpClient getHttpClient();
+
+  RootPaths rootPaths();
+
+  <T> T unmarshal(InputStream is, Class<T> type);
+
+  void close();
 }

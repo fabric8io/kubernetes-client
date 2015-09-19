@@ -15,23 +15,23 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ClientAware;
-import io.fabric8.kubernetes.client.KubernetesClient;
 
 import java.io.InputStream;
 
 /**
  * The entry point to client operations.
- * @param <K>   The type of KubernetesClient.
+ * @param <C>   The type of {@link io.fabric8.kubernetes.client.Client}.
  * @param <T>   The Kubernetes resource type.
  * @param <L>   The list variant of the Kubernetes resource type.
  * @param <D>   The doneable variant of the Kubernetes resource type.
  * @param <R>   The resource operations.
  */
-public interface ClientOperation<K extends KubernetesClient, T, L, D, R>
+public interface ClientOperation<C extends Client, T, L, D, R>
   extends
-  ClientAware<K>,
-  Namespaceable<ClientNonNamespaceOperation<K, T, L, D, R>>,
+  ClientAware<C>,
+  Namespaceable<ClientNonNamespaceOperation<C, T, L, D, R>>,
   FilterWatchListDeletable<T, L, Boolean>,
   Loadable<InputStream, R> {
 }

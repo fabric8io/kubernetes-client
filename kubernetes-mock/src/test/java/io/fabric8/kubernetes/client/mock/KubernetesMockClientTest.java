@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.SecurityContextConstraintsList;
 import io.fabric8.kubernetes.api.model.SecurityContextConstraintsListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesNamespacedClient;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Test;
@@ -250,6 +251,21 @@ public class KubernetesMockClientTest {
     Assert.assertEquals("log2", client.pods().inNamespace("ns1").withName("myPod").getLog("cnt2", true));
 
     EasyMock.verify(client);
+  }
+
+  @Test
+  public void testNamespaced() {
+    KubernetesMockClient mock = new KubernetesMockClient();
+    KubernetesMockNamespacedClient ns1 = mock.inNamespace("ns1");
+    KubernetesMockNamespacedClient ns2 = mock.inNamespace("ns2");
+
+    ns1.replicationControllers().withName("repl1").get().andReturn(new ReplicationControllerBuilder().withNewMetadata().withName("repl1").endMetadata().build());
+    ns2.replicationControllers().withName("repl2").get().andReturn(new ReplicationControllerBuilder().withNewMetadata().withName("repl1").endMetadata().build());
+
+    KubernetesClient client = mock.replay();
+    KubernetesNamespacedClient namespacedClient = client.inNamespace("ns1");
+    Assert.assertNotNull(namespacedClient);
+    Assert.assertNotNull(namespacedClient.replicationControllers().withName("repl1").get());
   }
 
 }

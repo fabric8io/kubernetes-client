@@ -16,6 +16,8 @@
 package io.fabric8.kubernetes.client.creators;
 
 import io.fabric8.kubernetes.api.model.ReplicationController;
+import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.GenericKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.ResourceCreator;
 import io.fabric8.kubernetes.client.dsl.internal.ReplicationControllerOperationsImpl;
@@ -27,7 +29,7 @@ public class ReplicationControllerCreator implements ResourceCreator<Replication
   }
 
   @Override
-  public ReplicationController create(KubernetesClient client, String namespace, ReplicationController item) {
-    return new ReplicationControllerOperationsImpl(client, namespace, null, true, item, false).create();
+  public ReplicationController create(Client client, String namespace, ReplicationController item) {
+    return new ReplicationControllerOperationsImpl<Client>(client, namespace, null, true, item, false).create();
   }
 }

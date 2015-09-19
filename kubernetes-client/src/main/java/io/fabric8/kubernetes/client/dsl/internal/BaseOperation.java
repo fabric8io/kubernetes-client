@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.Status;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
@@ -46,12 +47,12 @@ import java.util.concurrent.Future;
 
 import static io.fabric8.kubernetes.client.internal.Utils.join;
 
-public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
-  implements ClientMixedOperation<K, T, L, D, R> {
+public class BaseOperation<C extends Client, T, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
+  implements ClientMixedOperation<C, T, L, D, R> {
 
   protected static final ObjectMapper mapper = new ObjectMapper();
 
-  private final K client;
+  private final C client;
 
   private final String name;
   private final String namespace;
@@ -65,27 +66,27 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   private final Map<String, String[]> labelsNotIn = new TreeMap<>();
   private final Map<String, String> fields = new TreeMap<>();
 
-  private final Class<K> clientType;
+  private final Class<C> clientType;
   private final Class<T> type;
   private final Class<L> listType;
   private final Class<D> doneableType;
 
   private boolean reaping;
 
-  protected BaseOperation(K client, String resourceT, String namespace, String name, Boolean cascading, T item) {
+  protected BaseOperation(C client, String resourceT, String namespace, String name, Boolean cascading, T item) {
     this.client = client;
     this.resourceT = resourceT;
     this.namespace = namespace;
     this.name = name;
     this.cascading = cascading;
     this.item = item;
-    this.clientType = (Class<K>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    this.clientType = (Class<C>) client.getClass();
     this.type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
     this.listType = (Class<L>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[2];
     this.doneableType = (Class<D>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[3];
   }
 
-  protected BaseOperation(K client, String resourceT, String namespace, String name, Boolean cascading, T item, Class<K> clientType, Class<T> type, Class<L> listType, Class<D> doneableType) {
+  protected BaseOperation(C client, String resourceT, String namespace, String name, Boolean cascading, T item, Class<C> clientType, Class<T> type, Class<L> listType, Class<D> doneableType) {
     this.client = client;
     this.resourceT = resourceT;
     this.namespace = namespace;
@@ -128,7 +129,7 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   public R withName(String name) {
     try {
       return (R) getClass()
-        .getConstructor(clientType, String.class, String.class, Boolean.class, type)
+        .getConstructor(Client.class, String.class, String.class, Boolean.class, type)
         .newInstance(client, namespace, name, cascading, item);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
@@ -136,10 +137,10 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   }
 
   @Override
-  public ClientNonNamespaceOperation<K, T, L, D, R> inNamespace(String namespace) {
+  public ClientNonNamespaceOperation<C, T, L, D, R> inNamespace(String namespace) {
     try {
       return getClass()
-        .getConstructor(clientType, String.class, String.class, Boolean.class, type)
+        .getConstructor(Client.class, String.class, String.class, Boolean.class, type)
         .newInstance(client, namespace, name, cascading, item);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
@@ -151,7 +152,7 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   public EditReplaceDeletable<T, T, D, Boolean> cascading(boolean enabled) {
     try {
       return getClass()
-        .getConstructor(clientType, String.class, String.class, Boolean.class, type)
+        .getConstructor(Client.class, String.class, String.class, Boolean.class, type)
         .newInstance(client, namespace, name, enabled, item);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
@@ -162,7 +163,7 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   public R load(InputStream is) {
     try {
       return (R) getClass()
-        .getConstructor(clientType, String.class, String.class, Boolean.class, type)
+        .getConstructor(Client.class, String.class, String.class, Boolean.class, type)
         .newInstance(client, namespace, name, cascading, client.unmarshal(is, type));
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
@@ -534,7 +535,7 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   }
 
   @Override
-  public K getClient() {
+  public C getClient() {
     return client;
   }
 

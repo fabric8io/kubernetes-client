@@ -16,7 +16,7 @@
 package io.fabric8.kubernetes.client.creators;
 
 import io.fabric8.kubernetes.api.model.SecurityContextConstraints;
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ResourceCreator;
 import io.fabric8.kubernetes.client.dsl.internal.SecurityContextConstraintsOperationsImpl;
 
@@ -27,7 +27,7 @@ public class SecurityContextConstraintsCreator implements ResourceCreator<Securi
   }
 
   @Override
-  public SecurityContextConstraints create(KubernetesClient client, String namespace, SecurityContextConstraints item) {
-    return new SecurityContextConstraintsOperationsImpl(client, namespace, null, true, item).create();
+  public SecurityContextConstraints create(Client client, String namespace, SecurityContextConstraints item) {
+    return new SecurityContextConstraintsOperationsImpl<Client>(client, namespace, null, true, item).create();
   }
 }

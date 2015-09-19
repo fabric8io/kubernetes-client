@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.fabric8.openshift.client;
 
+import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableEndpoints;
 import io.fabric8.kubernetes.api.model.DoneableEvent;
 import io.fabric8.kubernetes.api.model.DoneableNamespace;
@@ -47,6 +49,7 @@ import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.api.model.ResourceQuota;
 import io.fabric8.kubernetes.api.model.ResourceQuotaList;
+import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.SecretList;
 import io.fabric8.kubernetes.api.model.SecurityContextConstraints;
@@ -55,13 +58,12 @@ import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
-import io.fabric8.kubernetes.client.BaseClient;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.ClientKubernetesListOperation;
+import io.fabric8.kubernetes.client.dsl.ClientKubernetesListNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientLoggableResource;
+import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
 import io.fabric8.kubernetes.client.dsl.internal.EndpointsOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.EventOperationsImpl;
@@ -77,10 +79,6 @@ import io.fabric8.kubernetes.client.dsl.internal.SecretOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.SecurityContextConstraintsOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ServiceAccountOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ServiceOperationsImpl;
-import io.fabric8.openshift.client.dsl.ClientBuildConfigResource;
-import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
-import io.fabric8.kubernetes.client.dsl.ClientOperation;
-import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigList;
@@ -120,6 +118,7 @@ import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.api.model.UserList;
+import io.fabric8.openshift.client.dsl.ClientBuildConfigResource;
 import io.fabric8.openshift.client.dsl.ClientTemplateResource;
 import io.fabric8.openshift.client.dsl.OpenShiftNamespacedDSL;
 import io.fabric8.openshift.client.dsl.internal.BuildConfigOperationsImpl;
@@ -136,176 +135,185 @@ import io.fabric8.openshift.client.dsl.internal.RouteOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.TemplateOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.UserOperationsImpl;
 
-import java.net.MalformedURLException;
+import java.io.InputStream;
 import java.net.URL;
 
-public class DefaultOpenshiftClient extends BaseClient implements OpenShiftClient {
+public class DefaultOpenShiftNamespacedClient implements Client, OpenShiftNamespacedClient {
 
-  private URL openShiftUrl;
+  private final OpenShiftClient client;
 
-  public DefaultOpenshiftClient() throws KubernetesClientException {
-    this(new OpenshiftConfigBuilder().build());
-  }
-
-  public DefaultOpenshiftClient(final Config config) throws KubernetesClientException {
-    this(new OpenshiftConfig(config));
-  }
-
-  public DefaultOpenshiftClient(final OpenshiftConfig config) throws KubernetesClientException {
-    super(config);
-    try {
-      this.openShiftUrl = new URL(config.getOpenShiftUrl());
-    } catch (MalformedURLException e) {
-      throw new KubernetesClientException("Could not create client", e);
-    }
-  }
-
-  public DefaultOpenshiftClient(String masterUrl) throws KubernetesClientException {
-    this(new OpenshiftConfigBuilder().withNewKubernetesConfig().withMasterUrl(masterUrl).and().build());
+  public DefaultOpenShiftNamespacedClient(OpenShiftClient client) {
+    this.client = client;
   }
 
   @Override
-  public URL getOpenshiftUrl() {
-    return openShiftUrl;
+  public <C extends Client> C adapt(Class<C> type) {
+    return client.adapt(type);
   }
 
   @Override
-  public ClientOperation<OpenShiftClient, Endpoints, EndpointsList, DoneableEndpoints, ClientResource<Endpoints, DoneableEndpoints>> endpoints() {
-    return new EndpointsOperationsImpl(this);
+  public URL getMasterUrl() {
+    return client.getMasterUrl();
   }
 
   @Override
-  public ClientOperation<OpenShiftClient, Event, EventList, DoneableEvent, ClientResource<Event, DoneableEvent>> events() {
-    return new EventOperationsImpl(this);
+  public AsyncHttpClient getHttpClient() {
+    return client.getHttpClient();
   }
 
   @Override
-  public ClientNonNamespaceOperation<OpenShiftClient, Namespace, NamespaceList, DoneableNamespace, ClientResource<Namespace, DoneableNamespace>> namespaces() {
-    return new NamespaceOperationsImpl(this);
+  public RootPaths rootPaths() {
+    return client.rootPaths();
   }
 
   @Override
-  public ClientNonNamespaceOperation<OpenShiftClient, Node, NodeList, DoneableNode, ClientResource<Node, DoneableNode>> nodes() {
-    return new NodeOperationsImpl(this);
+  public <T> T unmarshal(InputStream is, Class<T> type) {
+    return client.unmarshal(is, type);
   }
 
   @Override
-  public ClientOperation<OpenShiftClient, PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, ClientResource<PersistentVolume, DoneablePersistentVolume>> persistentVolumes() {
-    return new PersistentVolumeOperationsImpl(this);
+  public void close() {
+    client.close();
   }
 
   @Override
-  public ClientOperation<OpenShiftClient, PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, ClientResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> persistentVolumeClaims() {
-    return new PersistentVolumeClaimOperationsImpl(this);
+  public Config getConfiguration() {
+    return client.getConfiguration();
+  }
+
+
+  @Override
+  public ClientNonNamespaceOperation<OpenShiftClient, Build, BuildList, DoneableBuild, ClientResource<Build, DoneableBuild>> builds() {
+    return new BuildOperationsImpl(client);
   }
 
   @Override
-  public ClientOperation<OpenShiftClient, Pod, PodList, DoneablePod, ClientLoggableResource<Pod, DoneablePod>> pods() {
-    return new PodOperationsImpl(this);
+  public ClientNonNamespaceOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig, ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void>> buildConfigs() {
+    return new BuildConfigOperationsImpl(client);
   }
 
   @Override
-  public ClientOperation<OpenShiftClient, ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>> replicationControllers() {
-    return new ReplicationControllerOperationsImpl(this);
+  public ClientNonNamespaceOperation<OpenShiftClient, DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, ClientResource<DeploymentConfig, DoneableDeploymentConfig>> deploymentConfigs() {
+    return new DeploymentConfigOperationsImpl(client);
   }
 
   @Override
-  public ClientOperation<OpenShiftClient, ResourceQuota, ResourceQuotaList, DoneableResourceQuota, ClientResource<ResourceQuota, DoneableResourceQuota>> resourceQuotas() {
-    return new ResourceQuotaOperationsImpl(this);
+  public ClientNonNamespaceOperation<OpenShiftClient, Group, GroupList, DoneableGroup, ClientResource<Group, DoneableGroup>> groups() {
+    return new GroupOperationsImpl(client);
   }
 
   @Override
-  public ClientOperation<OpenShiftClient, Secret, SecretList, DoneableSecret, ClientResource<Secret, DoneableSecret>> secrets() {
-    return new SecretOperationsImpl(this);
-  }
-
-  @Override
-  public ClientOperation<OpenShiftClient, Service, ServiceList, DoneableService, ClientResource<Service, DoneableService>> services() {
-    return new ServiceOperationsImpl(this);
-  }
-
-  @Override
-  public ClientOperation<OpenShiftClient, ServiceAccount, ServiceAccountList, DoneableServiceAccount, ClientResource<ServiceAccount, DoneableServiceAccount>> serviceAccounts() {
-    return new ServiceAccountOperationsImpl(this);
-  }
-
-  @Override
-  public ClientKubernetesListOperation<OpenShiftClient> lists() {
-    return new KubernetesListOperationsImpl(this);
-  }
-
-  @Override
-  public ClientNonNamespaceOperation<OpenShiftClient, SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints() {
-    return new SecurityContextConstraintsOperationsImpl(this);
-  }
-
-  @Override
-  public ClientOperation<OpenShiftClient, Build, BuildList, DoneableBuild, ClientResource<Build, DoneableBuild>> builds() {
-    return new BuildOperationsImpl(this);
-  }
-
-  @Override
-  public ClientOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig, ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void>> buildConfigs() {
-    return new BuildConfigOperationsImpl(this, null, null, true, null, null, null);
-  }
-
-  @Override
-  public ClientOperation<OpenShiftClient, DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, ClientResource<DeploymentConfig, DoneableDeploymentConfig>> deploymentConfigs() {
-    return new DeploymentConfigOperationsImpl(this);
-  }
-
-  @Override
-  public ClientOperation<OpenShiftClient, Group, GroupList, DoneableGroup, ClientResource<Group, DoneableGroup>> groups() {
-    return new GroupOperationsImpl(this);
-  }
-
-  @Override
-  public ClientOperation<OpenShiftClient, ImageStream, ImageStreamList, DoneableImageStream, ClientResource<ImageStream, DoneableImageStream>> imageStreams() {
-    return new ImageStreamOperationsImpl(this);
+  public ClientNonNamespaceOperation<OpenShiftClient, ImageStream, ImageStreamList, DoneableImageStream, ClientResource<ImageStream, DoneableImageStream>> imageStreams() {
+    return new ImageStreamOperationsImpl(client);
   }
 
   @Override
   public ClientNonNamespaceOperation<OpenShiftClient, OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken, ClientResource<OAuthAccessToken, DoneableOAuthAccessToken>> oAuthAccessTokens() {
-    return new OAuthAccessTokenOperationsImpl(this);
+    return new OAuthAccessTokenOperationsImpl(client);
   }
 
   @Override
   public ClientNonNamespaceOperation<OpenShiftClient, OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken, ClientResource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken>> oAuthAuthorizeTokens() {
-    return new OAuthAuthorizeTokenOperationsImpl(this);
+    return new OAuthAuthorizeTokenOperationsImpl(client);
   }
 
   @Override
   public ClientNonNamespaceOperation<OpenShiftClient, OAuthClient, OAuthClientList, DoneableOAuthClient, ClientResource<OAuthClient, DoneableOAuthClient>> oAuthClients() {
-    return new OAuthClientOperationsImpl(this);
+    return new OAuthClientOperationsImpl(client);
   }
 
   @Override
-  public ClientOperation<OpenShiftClient, Policy, PolicyList, DoneablePolicy, ClientResource<Policy, DoneablePolicy>> policies() {
-    return new PolicyOperationsImpl(this);
+  public ClientNonNamespaceOperation<OpenShiftClient, Policy, PolicyList, DoneablePolicy, ClientResource<Policy, DoneablePolicy>> policies() {
+    return new PolicyOperationsImpl(client);
   }
 
   @Override
-  public ClientOperation<OpenShiftClient, PolicyBinding, PolicyBindingList, DoneablePolicyBinding, ClientResource<PolicyBinding, DoneablePolicyBinding>> policyBindings() {
-    return new PolicyBindingOperationsImpl(this);
+  public ClientNonNamespaceOperation<OpenShiftClient, PolicyBinding, PolicyBindingList, DoneablePolicyBinding, ClientResource<PolicyBinding, DoneablePolicyBinding>> policyBindings() {
+    return new PolicyBindingOperationsImpl(client);
   }
 
   @Override
-  public ClientOperation<OpenShiftClient, Route, RouteList, DoneableRoute, ClientResource<Route, DoneableRoute>> routes() {
-    return new RouteOperationsImpl(this);
+  public ClientNonNamespaceOperation<OpenShiftClient, Route, RouteList, DoneableRoute, ClientResource<Route, DoneableRoute>> routes() {
+    return new RouteOperationsImpl(client);
   }
 
   @Override
-  public ClientOperation<OpenShiftClient, Template, TemplateList, DoneableTemplate, ClientTemplateResource<Template, KubernetesList, DoneableTemplate>> templates() {
-    return new TemplateOperationsImpl(this);
+  public ClientNonNamespaceOperation<OpenShiftClient, Template, TemplateList, DoneableTemplate, ClientTemplateResource<Template, KubernetesList, DoneableTemplate>> templates() {
+    return new TemplateOperationsImpl(client);
   }
 
   @Override
-  public ClientOperation<OpenShiftClient, User, UserList, DoneableUser, ClientResource<User, DoneableUser>> users() {
-    return new UserOperationsImpl(this);
+  public ClientNonNamespaceOperation<OpenShiftClient, User, UserList, DoneableUser, ClientResource<User, DoneableUser>> users() {
+    return new UserOperationsImpl(client);
   }
 
   @Override
-  public OpenShiftNamespacedClient inNamespace(String name) {
-    return new DefaultOpenShiftNamespacedClient(this);
+  public ClientNonNamespaceOperation<OpenShiftClient, Endpoints, EndpointsList, DoneableEndpoints, ClientResource<Endpoints, DoneableEndpoints>> endpoints() {
+    return new EndpointsOperationsImpl<OpenShiftClient>(client);
+  }
+
+  @Override
+  public ClientNonNamespaceOperation<OpenShiftClient, Event, EventList, DoneableEvent, ClientResource<Event, DoneableEvent>> events() {
+    return new EventOperationsImpl<OpenShiftClient>(client);
+  }
+
+  @Override
+  public ClientNonNamespaceOperation<OpenShiftClient, Namespace, NamespaceList, DoneableNamespace, ClientResource<Namespace, DoneableNamespace>> namespaces() {
+    return new NamespaceOperationsImpl<OpenShiftClient>(client);
+  }
+
+  @Override
+  public ClientNonNamespaceOperation<OpenShiftClient, Node, NodeList, DoneableNode, ClientResource<Node, DoneableNode>> nodes() {
+    return new NodeOperationsImpl<OpenShiftClient>(client);
+  }
+
+  @Override
+  public ClientNonNamespaceOperation<OpenShiftClient, PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, ClientResource<PersistentVolume, DoneablePersistentVolume>> persistentVolumes() {
+    return new PersistentVolumeOperationsImpl<OpenShiftClient>(client);
+  }
+
+  @Override
+  public ClientNonNamespaceOperation<OpenShiftClient, PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, ClientResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> persistentVolumeClaims() {
+    return new PersistentVolumeClaimOperationsImpl<OpenShiftClient>(client);
+  }
+
+  @Override
+  public ClientNonNamespaceOperation<OpenShiftClient, Pod, PodList, DoneablePod, ClientLoggableResource<Pod, DoneablePod>> pods() {
+    return new PodOperationsImpl<OpenShiftClient>(client);
+  }
+
+  @Override
+  public ClientNonNamespaceOperation<OpenShiftClient, ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>> replicationControllers() {
+    return new ReplicationControllerOperationsImpl<OpenShiftClient>(client);
+  }
+
+  @Override
+  public ClientNonNamespaceOperation<OpenShiftClient, ResourceQuota, ResourceQuotaList, DoneableResourceQuota, ClientResource<ResourceQuota, DoneableResourceQuota>> resourceQuotas() {
+    return new ResourceQuotaOperationsImpl<OpenShiftClient>(client);
+  }
+
+  @Override
+  public ClientNonNamespaceOperation<OpenShiftClient, Secret, SecretList, DoneableSecret, ClientResource<Secret, DoneableSecret>> secrets() {
+    return new SecretOperationsImpl<OpenShiftClient>(client);
+  }
+
+  @Override
+  public ClientNonNamespaceOperation<OpenShiftClient, Service, ServiceList, DoneableService, ClientResource<Service, DoneableService>> services() {
+    return new ServiceOperationsImpl<OpenShiftClient>(client);
+  }
+
+  @Override
+  public ClientNonNamespaceOperation<OpenShiftClient, ServiceAccount, ServiceAccountList, DoneableServiceAccount, ClientResource<ServiceAccount, DoneableServiceAccount>> serviceAccounts() {
+    return new ServiceAccountOperationsImpl<OpenShiftClient>(client);
+  }
+
+  @Override
+  public ClientKubernetesListNonNamespaceOperation<OpenShiftClient> lists() {
+    return new KubernetesListOperationsImpl<OpenShiftClient>(client);
+  }
+
+  @Override
+  public ClientNonNamespaceOperation<OpenShiftClient, SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints() {
+    return new SecurityContextConstraintsOperationsImpl<OpenShiftClient>(client);
   }
 }

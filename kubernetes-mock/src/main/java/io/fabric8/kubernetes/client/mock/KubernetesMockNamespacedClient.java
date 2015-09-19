@@ -74,23 +74,16 @@ import io.fabric8.kubernetes.client.mock.impl.MockSecurityContextConstraints;
 import io.fabric8.kubernetes.client.mock.impl.MockService;
 import io.fabric8.kubernetes.client.mock.impl.MockServiceAccount;
 import org.easymock.EasyMock;
-import org.easymock.IAnswer;
-import org.easymock.IArgumentMatcher;
 import org.easymock.IExpectationSetters;
 
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
-import static io.fabric8.kubernetes.client.mock.util.MockUtils.getArgument;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 
-public class KubernetesMockClient implements Replayable<KubernetesClient>, Verifiable {
+public class KubernetesMockNamespacedClient implements Replayable<KubernetesNamespacedClient>, Verifiable {
 
-  private final KubernetesClient client = createMock(KubernetesClient.class);
-
-  private Map<IArgumentMatcher, KubernetesMockNamespacedClient> namespaceMap = new HashMap<>();
+  private final KubernetesNamespacedClient client = createMock(KubernetesNamespacedClient.class);
 
   private final MockEndpoints endpoints = new MockEndpoints();
   private final MockEvent events = new MockEvent();
@@ -108,7 +101,7 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
   private final MockKubernetesListOperationImpl kubernetesLists = new MockKubernetesListOperationImpl();
 
 
-  public KubernetesMockClient() {
+  public KubernetesMockNamespacedClient() {
     expect(client.endpoints()).andReturn(endpoints.getDelegate()).anyTimes();
     expect(client.events()).andReturn(events.getDelegate()).anyTimes();
     expect(client.nodes()).andReturn(nodes.getDelegate()).anyTimes();
@@ -127,7 +120,7 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
     EasyMock.expectLastCall().anyTimes();
   }
 
-  public KubernetesClient replay() {
+  public KubernetesNamespacedClient replay() {
     endpoints.replay();
     events.replay();
     nodes.replay();
@@ -177,76 +170,59 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
     return expect(client.rootPaths());
   }
 
-  public MockOperation<Endpoints, EndpointsList, DoneableEndpoints, MockResource<Endpoints, DoneableEndpoints, Boolean>> endpoints() {
+  public MockNonNamespaceOperation<Endpoints, EndpointsList, DoneableEndpoints, MockResource<Endpoints, DoneableEndpoints, Boolean>> endpoints() {
     return endpoints;
   }
 
-  public MockOperation<Event, EventList, DoneableEvent, MockResource<Event, DoneableEvent, Boolean>> events() {
+  public MockNonNamespaceOperation<Event, EventList, DoneableEvent, MockResource<Event, DoneableEvent, Boolean>> events() {
     return events;
   }
 
-  public MockOperation<Namespace, NamespaceList, DoneableNamespace, MockResource<Namespace, DoneableNamespace, Boolean>> namespaces() {
+  public MockNonNamespaceOperation<Namespace, NamespaceList, DoneableNamespace, MockResource<Namespace, DoneableNamespace, Boolean>> namespaces() {
     return namespaces;
   }
 
-  public MockOperation<Node, NodeList, DoneableNode, MockResource<Node, DoneableNode, Boolean>> nodes() {
+  public MockNonNamespaceOperation<Node, NodeList, DoneableNode, MockResource<Node, DoneableNode, Boolean>> nodes() {
     return nodes;
   }
 
-  public MockOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, MockResource<PersistentVolume, DoneablePersistentVolume, Boolean>> persistentVolumes() {
+  public MockNonNamespaceOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, MockResource<PersistentVolume, DoneablePersistentVolume, Boolean>> persistentVolumes() {
     return persistentVolumes;
   }
 
-  public MockOperation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, MockResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim, Boolean>> persistentVolumeClaims() {
+  public MockNonNamespaceOperation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, MockResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim, Boolean>> persistentVolumeClaims() {
     return persistentVolumeClaims;
   }
 
-  public MockOperation<Pod, PodList, DoneablePod, MockLoggableResource<Pod, DoneablePod, Boolean>> pods() {
+  public MockNonNamespaceOperation<Pod, PodList, DoneablePod, MockLoggableResource<Pod, DoneablePod, Boolean>> pods() {
     return pods;
   }
 
-  public MockOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, MockRollableScaleableResource<ReplicationController, DoneableReplicationController, Boolean>> replicationControllers() {
+  public MockNonNamespaceOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, MockRollableScaleableResource<ReplicationController, DoneableReplicationController, Boolean>> replicationControllers() {
     return replicationControllers;
   }
 
-  public MockOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota, MockResource<ResourceQuota, DoneableResourceQuota, Boolean>> resourceQuotas() {
+  public MockNonNamespaceOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota, MockResource<ResourceQuota, DoneableResourceQuota, Boolean>> resourceQuotas() {
     return resourceQuotas;
   }
 
-  public MockOperation<Secret, SecretList, DoneableSecret, MockResource<Secret, DoneableSecret, Boolean>> secrets() {
+  public MockNonNamespaceOperation<Secret, SecretList, DoneableSecret, MockResource<Secret, DoneableSecret, Boolean>> secrets() {
     return secrets;
   }
 
-  public MockOperation<Service, ServiceList, DoneableService, MockResource<Service, DoneableService, Boolean>> services() {
+  public MockNonNamespaceOperation<Service, ServiceList, DoneableService, MockResource<Service, DoneableService, Boolean>> services() {
     return services;
   }
 
-  public MockOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, MockResource<ServiceAccount, DoneableServiceAccount, Boolean>> serviceAccounts() {
+  public MockNonNamespaceOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, MockResource<ServiceAccount, DoneableServiceAccount, Boolean>> serviceAccounts() {
     return serviceAccounts;
   }
 
-  public MockOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, MockResource<SecurityContextConstraints, DoneableSecurityContextConstraints, Boolean>> securityContextConstraints() {
+  public MockNonNamespaceOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, MockResource<SecurityContextConstraints, DoneableSecurityContextConstraints, Boolean>> securityContextConstraints() {
     return securityContextConstraints;
   }
 
-  public MockKubernetesListOperation lists() {
+  public MockKubernetesListNonNamesapceOperation lists() {
     return kubernetesLists;
-  }
-
-  public KubernetesMockNamespacedClient inNamespace(String namespace) {
-    IArgumentMatcher matcher = getArgument(namespace);
-    KubernetesMockNamespacedClient op = namespaceMap.get(matcher);
-    if (op == null) {
-      final KubernetesMockNamespacedClient namespacedClient = new KubernetesMockNamespacedClient();
-      op = namespacedClient;
-      expect(client.inNamespace(namespace)).andAnswer(new IAnswer<KubernetesNamespacedClient>() {
-        @Override
-        public KubernetesNamespacedClient answer() throws Throwable {
-          return namespacedClient.replay();
-        }
-      }).anyTimes();
-      namespaceMap.put(matcher, op);
-    }
-    return op;
   }
 }
