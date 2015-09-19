@@ -58,7 +58,7 @@ import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClient;
 
-public interface KubernetesNamespacedDSL<C extends Client> {
+public interface KubernetesNamespacedDSL<C extends Client>  {
 
   ClientNonNamespaceOperation<C, Endpoints, EndpointsList, DoneableEndpoints, ClientResource<Endpoints, DoneableEndpoints>> endpoints();
 

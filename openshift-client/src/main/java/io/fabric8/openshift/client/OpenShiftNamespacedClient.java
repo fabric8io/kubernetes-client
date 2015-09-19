@@ -13,9 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client;
 
-public interface KubernetesClient extends GenericKubernetesClient<KubernetesClient, KubernetesNamespacedClient> {
+package io.fabric8.openshift.client;
 
+import io.fabric8.kubernetes.client.Client;
+import io.fabric8.openshift.client.dsl.OpenShiftNamespacedDSL;
 
+public interface OpenShiftNamespacedClient extends
+  Client,
+  OpenShiftNamespacedDSL<OpenShiftClient> {
 }

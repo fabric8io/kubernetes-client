@@ -68,7 +68,7 @@ import java.net.URL;
 
 public interface OpenShiftClient extends
   OpenShiftDSL<OpenShiftClient>,
-  GenericKubernetesClient<OpenShiftClient, OpenShiftNamespacedDSL<OpenShiftClient>> {
+  GenericKubernetesClient<OpenShiftClient, OpenShiftNamespacedClient> {
 
   URL getOpenshiftUrl();
 

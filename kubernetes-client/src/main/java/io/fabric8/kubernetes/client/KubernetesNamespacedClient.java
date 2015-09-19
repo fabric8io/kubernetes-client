@@ -15,7 +15,9 @@
  */
 package io.fabric8.kubernetes.client;
 
-public interface KubernetesClient extends GenericKubernetesClient<KubernetesClient, KubernetesNamespacedClient> {
+import io.fabric8.kubernetes.client.dsl.KubernetesNamespacedDSL;
 
-
+public interface KubernetesNamespacedClient extends
+  Client,
+  KubernetesNamespacedDSL<KubernetesClient> {
 }
