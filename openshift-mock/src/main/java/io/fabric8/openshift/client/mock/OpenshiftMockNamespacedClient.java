@@ -57,56 +57,29 @@ import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.KubernetesNamespacedClient;
-import io.fabric8.kubernetes.client.mock.KubernetesMockNamespacedClient;
+import io.fabric8.kubernetes.client.mock.MockKubernetesListNonNamesapceOperation;
 import io.fabric8.kubernetes.client.mock.MockKubernetesListOperation;
 import io.fabric8.kubernetes.client.mock.MockLoggableResource;
 import io.fabric8.kubernetes.client.mock.MockNonNamespaceOperation;
 import io.fabric8.kubernetes.client.mock.MockOperation;
 import io.fabric8.kubernetes.client.mock.MockResource;
 import io.fabric8.kubernetes.client.mock.MockRollableScaleableResource;
-import io.fabric8.kubernetes.client.mock.MockScaleableResource;
 import io.fabric8.kubernetes.client.mock.Replayable;
 import io.fabric8.kubernetes.client.mock.Verifiable;
-import io.fabric8.kubernetes.client.mock.impl.MockKubernetesListOperationImpl;
-import io.fabric8.kubernetes.client.mock.impl.MockSecurityContextConstraints;
-import io.fabric8.openshift.api.model.DoneableGroup;
-import io.fabric8.openshift.api.model.DoneablePolicy;
-import io.fabric8.openshift.api.model.DoneablePolicyBinding;
-import io.fabric8.openshift.api.model.DoneableUser;
-import io.fabric8.openshift.api.model.Group;
-import io.fabric8.openshift.api.model.GroupList;
-import io.fabric8.openshift.api.model.Policy;
-import io.fabric8.openshift.api.model.PolicyBinding;
-import io.fabric8.openshift.api.model.PolicyBindingList;
-import io.fabric8.openshift.api.model.PolicyList;
-import io.fabric8.openshift.api.model.User;
-import io.fabric8.openshift.api.model.UserList;
-import io.fabric8.openshift.client.OpenShiftNamespacedClient;
-import io.fabric8.openshift.client.mock.impl.MockBuild;
-import io.fabric8.openshift.client.mock.impl.MockBuildConfig;
-import io.fabric8.openshift.client.mock.impl.MockDeploymentConfig;
 import io.fabric8.kubernetes.client.mock.impl.MockEndpoints;
 import io.fabric8.kubernetes.client.mock.impl.MockEvent;
-import io.fabric8.openshift.client.mock.impl.MockGroup;
-import io.fabric8.openshift.client.mock.impl.MockImageStream;
+import io.fabric8.kubernetes.client.mock.impl.MockKubernetesListOperationImpl;
 import io.fabric8.kubernetes.client.mock.impl.MockNamespace;
 import io.fabric8.kubernetes.client.mock.impl.MockNode;
-import io.fabric8.openshift.client.mock.impl.MockOAuthAccessToken;
-import io.fabric8.openshift.client.mock.impl.MockOAuthAuthorizeToken;
-import io.fabric8.openshift.client.mock.impl.MockOAuthClient;
 import io.fabric8.kubernetes.client.mock.impl.MockPersistentVolume;
 import io.fabric8.kubernetes.client.mock.impl.MockPersistentVolumeClaim;
 import io.fabric8.kubernetes.client.mock.impl.MockPod;
 import io.fabric8.kubernetes.client.mock.impl.MockReplicationController;
 import io.fabric8.kubernetes.client.mock.impl.MockResourceQuota;
-import io.fabric8.openshift.client.mock.impl.MockPolicy;
-import io.fabric8.openshift.client.mock.impl.MockPolicyBinding;
-import io.fabric8.openshift.client.mock.impl.MockRoute;
 import io.fabric8.kubernetes.client.mock.impl.MockSecret;
+import io.fabric8.kubernetes.client.mock.impl.MockSecurityContextConstraints;
 import io.fabric8.kubernetes.client.mock.impl.MockService;
 import io.fabric8.kubernetes.client.mock.impl.MockServiceAccount;
-import io.fabric8.openshift.client.mock.impl.MockTemplate;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigList;
@@ -116,12 +89,18 @@ import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.api.model.DoneableBuild;
 import io.fabric8.openshift.api.model.DoneableBuildConfig;
 import io.fabric8.openshift.api.model.DoneableDeploymentConfig;
+import io.fabric8.openshift.api.model.DoneableGroup;
 import io.fabric8.openshift.api.model.DoneableImageStream;
 import io.fabric8.openshift.api.model.DoneableOAuthAccessToken;
 import io.fabric8.openshift.api.model.DoneableOAuthAuthorizeToken;
 import io.fabric8.openshift.api.model.DoneableOAuthClient;
+import io.fabric8.openshift.api.model.DoneablePolicy;
+import io.fabric8.openshift.api.model.DoneablePolicyBinding;
 import io.fabric8.openshift.api.model.DoneableRoute;
 import io.fabric8.openshift.api.model.DoneableTemplate;
+import io.fabric8.openshift.api.model.DoneableUser;
+import io.fabric8.openshift.api.model.Group;
+import io.fabric8.openshift.api.model.GroupList;
 import io.fabric8.openshift.api.model.ImageStream;
 import io.fabric8.openshift.api.model.ImageStreamList;
 import io.fabric8.openshift.api.model.OAuthAccessToken;
@@ -130,14 +109,32 @@ import io.fabric8.openshift.api.model.OAuthAuthorizeToken;
 import io.fabric8.openshift.api.model.OAuthAuthorizeTokenList;
 import io.fabric8.openshift.api.model.OAuthClient;
 import io.fabric8.openshift.api.model.OAuthClientList;
+import io.fabric8.openshift.api.model.Policy;
+import io.fabric8.openshift.api.model.PolicyBinding;
+import io.fabric8.openshift.api.model.PolicyBindingList;
+import io.fabric8.openshift.api.model.PolicyList;
 import io.fabric8.openshift.api.model.Route;
 import io.fabric8.openshift.api.model.RouteList;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateList;
+import io.fabric8.openshift.api.model.User;
+import io.fabric8.openshift.api.model.UserList;
 import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.OpenShiftNamespacedClient;
+import io.fabric8.openshift.client.mock.impl.MockBuild;
+import io.fabric8.openshift.client.mock.impl.MockBuildConfig;
+import io.fabric8.openshift.client.mock.impl.MockDeploymentConfig;
+import io.fabric8.openshift.client.mock.impl.MockGroup;
+import io.fabric8.openshift.client.mock.impl.MockImageStream;
+import io.fabric8.openshift.client.mock.impl.MockOAuthAccessToken;
+import io.fabric8.openshift.client.mock.impl.MockOAuthAuthorizeToken;
+import io.fabric8.openshift.client.mock.impl.MockOAuthClient;
+import io.fabric8.openshift.client.mock.impl.MockPolicy;
+import io.fabric8.openshift.client.mock.impl.MockPolicyBinding;
+import io.fabric8.openshift.client.mock.impl.MockRoute;
+import io.fabric8.openshift.client.mock.impl.MockTemplate;
 import io.fabric8.openshift.client.mock.impl.MockUser;
 import org.easymock.EasyMock;
-import org.easymock.IAnswer;
 import org.easymock.IArgumentMatcher;
 import org.easymock.IExpectationSetters;
 
@@ -145,15 +142,12 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import static io.fabric8.kubernetes.client.mock.util.MockUtils.getArgument;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 
-public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifiable {
+public class OpenshiftMockNamespacedClient implements Replayable<OpenShiftNamespacedClient>, Verifiable {
 
-  private final OpenShiftClient client = createMock(OpenShiftClient.class);
-
-  private Map<IArgumentMatcher, OpenshiftMockNamespacedClient> namespaceMap = new HashMap<>();
+  private final OpenShiftNamespacedClient client = createMock(OpenShiftNamespacedClient.class);
 
   private final MockEndpoints endpoints = new MockEndpoints();
   private final MockEvent events = new MockEvent();
@@ -184,8 +178,7 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
   private final MockPolicy policies = new MockPolicy();
   private final MockPolicyBinding policyBindings = new MockPolicyBinding();
 
-  public OpenshiftMockClient() {
-    expect(client.adapt(OpenShiftClient.class)).andReturn(client).anyTimes();
+  public OpenshiftMockNamespacedClient() {
     expect(client.endpoints()).andReturn(endpoints.getDelegate()).anyTimes();
     expect(client.events()).andReturn(events.getDelegate()).anyTimes();
     expect(client.nodes()).andReturn(nodes.getDelegate()).anyTimes();
@@ -219,7 +212,7 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
     EasyMock.expectLastCall().anyTimes();
   }
 
-  public OpenShiftClient replay() {
+  public OpenShiftNamespacedClient replay() {
     endpoints.replay();
     events.replay();
     nodes.replay();
@@ -301,11 +294,11 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
     return expect(client.rootPaths());
   }
 
-  public MockOperation<Endpoints, EndpointsList, DoneableEndpoints, MockResource<Endpoints, DoneableEndpoints, Boolean>> endpoints() {
+  public MockNonNamespaceOperation<Endpoints, EndpointsList, DoneableEndpoints, MockResource<Endpoints, DoneableEndpoints, Boolean>> endpoints() {
     return endpoints;
   }
 
-  public MockOperation<Event, EventList, DoneableEvent, MockResource<Event, DoneableEvent, Boolean>> events() {
+  public MockNonNamespaceOperation<Event, EventList, DoneableEvent, MockResource<Event, DoneableEvent, Boolean>> events() {
     return events;
   }
 
@@ -317,58 +310,58 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
     return nodes;
   }
 
-  public MockOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, MockResource<PersistentVolume, DoneablePersistentVolume, Boolean>> persistentVolumes() {
+  public MockNonNamespaceOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, MockResource<PersistentVolume, DoneablePersistentVolume, Boolean>> persistentVolumes() {
     return persistentVolumes;
   }
 
-  public MockOperation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, MockResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim, Boolean>> persistentVolumeClaims() {
+  public MockNonNamespaceOperation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, MockResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim, Boolean>> persistentVolumeClaims() {
     return persistentVolumeClaims;
   }
 
-  public MockOperation<Pod, PodList, DoneablePod, MockLoggableResource<Pod, DoneablePod, Boolean>> pods() {
+  public MockNonNamespaceOperation<Pod, PodList, DoneablePod, MockLoggableResource<Pod, DoneablePod, Boolean>> pods() {
     return pods;
   }
 
-  public MockOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, MockRollableScaleableResource<ReplicationController, DoneableReplicationController, Boolean>> replicationControllers() {
+  public MockNonNamespaceOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, MockRollableScaleableResource<ReplicationController, DoneableReplicationController, Boolean>> replicationControllers() {
     return replicationControllers;
   }
 
-  public MockOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota, MockResource<ResourceQuota, DoneableResourceQuota, Boolean>> resourceQuotas() {
+  public MockNonNamespaceOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota, MockResource<ResourceQuota, DoneableResourceQuota, Boolean>> resourceQuotas() {
     return resourceQuotas;
   }
 
-  public MockOperation<Secret, SecretList, DoneableSecret, MockResource<Secret, DoneableSecret, Boolean>> secrets() {
+  public MockNonNamespaceOperation<Secret, SecretList, DoneableSecret, MockResource<Secret, DoneableSecret, Boolean>> secrets() {
     return secrets;
   }
 
-  public MockOperation<Service, ServiceList, DoneableService, MockResource<Service, DoneableService, Boolean>> services() {
+  public MockNonNamespaceOperation<Service, ServiceList, DoneableService, MockResource<Service, DoneableService, Boolean>> services() {
     return services;
   }
 
-  public MockOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, MockResource<ServiceAccount, DoneableServiceAccount, Boolean>> serviceAccounts() {
+  public MockNonNamespaceOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, MockResource<ServiceAccount, DoneableServiceAccount, Boolean>> serviceAccounts() {
     return serviceAccounts;
   }
-  public MockOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, MockResource<SecurityContextConstraints, DoneableSecurityContextConstraints, Boolean>> securityContextConstraints() {
+  public MockNonNamespaceOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, MockResource<SecurityContextConstraints, DoneableSecurityContextConstraints, Boolean>> securityContextConstraints() {
     return securityContextConstraints;
   }
 
-  public MockKubernetesListOperation lists() {
+  public MockKubernetesListNonNamesapceOperation lists() {
     return kubernetesLists;
   }
 
-  public MockOperation<Build, BuildList, DoneableBuild, MockResource<Build, DoneableBuild, Boolean>> builds() {
+  public MockNonNamespaceOperation<Build, BuildList, DoneableBuild, MockResource<Build, DoneableBuild, Boolean>> builds() {
     return builds;
   }
 
-  public MockOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, MockBuildConfigResource> buildConfigs() {
+  public MockNonNamespaceOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, MockBuildConfigResource> buildConfigs() {
     return buildConfigs;
   }
 
-  public MockOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, MockResource<DeploymentConfig, DoneableDeploymentConfig, Boolean>> deploymentConfigs() {
+  public MockNonNamespaceOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, MockResource<DeploymentConfig, DoneableDeploymentConfig, Boolean>> deploymentConfigs() {
     return deploymentConfigs;
   }
 
-  public MockOperation<ImageStream, ImageStreamList, DoneableImageStream, MockResource<ImageStream, DoneableImageStream, Boolean>> imageStreams() {
+  public MockNonNamespaceOperation<ImageStream, ImageStreamList, DoneableImageStream, MockResource<ImageStream, DoneableImageStream, Boolean>> imageStreams() {
     return imageStreams;
   }
 
@@ -384,44 +377,27 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
     return oAuthClients;
   }
 
-  public MockOperation<Route, RouteList, DoneableRoute, MockResource<Route, DoneableRoute, Boolean>> routes() {
+  public MockNonNamespaceOperation<Route, RouteList, DoneableRoute, MockResource<Route, DoneableRoute, Boolean>> routes() {
     return routes;
   }
 
-  public  MockOperation<Template, TemplateList, DoneableTemplate, MockProcessableResource<Template, DoneableTemplate, Boolean>> templates() {
+  public  MockNonNamespaceOperation<Template, TemplateList, DoneableTemplate, MockProcessableResource<Template, DoneableTemplate, Boolean>> templates() {
     return templates;
   }
 
-  public  MockOperation<Group, GroupList, DoneableGroup, MockResource<Group, DoneableGroup, Boolean>> groups() {
+  public  MockNonNamespaceOperation<Group, GroupList, DoneableGroup, MockResource<Group, DoneableGroup, Boolean>> groups() {
     return groups;
   }
 
-  public  MockOperation<User, UserList, DoneableUser, MockResource<User, DoneableUser, Boolean>> users() {
+  public  MockNonNamespaceOperation<User, UserList, DoneableUser, MockResource<User, DoneableUser, Boolean>> users() {
     return users;
   }
 
-  public  MockOperation<Policy, PolicyList, DoneablePolicy, MockResource<Policy, DoneablePolicy, Boolean>> policies() {
+  public  MockNonNamespaceOperation<Policy, PolicyList, DoneablePolicy, MockResource<Policy, DoneablePolicy, Boolean>> policies() {
     return policies;
   }
 
-  public  MockOperation<PolicyBinding, PolicyBindingList, DoneablePolicyBinding, MockResource<PolicyBinding, DoneablePolicyBinding, Boolean>> policyBindings() {
+  public  MockNonNamespaceOperation<PolicyBinding, PolicyBindingList, DoneablePolicyBinding, MockResource<PolicyBinding, DoneablePolicyBinding, Boolean>> policyBindings() {
     return policyBindings;
-  }
-
-  public OpenshiftMockNamespacedClient inNamespace(String namespace) {
-    IArgumentMatcher matcher = getArgument(namespace);
-    OpenshiftMockNamespacedClient op = namespaceMap.get(matcher);
-    if (op == null) {
-      final OpenshiftMockNamespacedClient namespacedClient = new OpenshiftMockNamespacedClient();
-      op = namespacedClient;
-      expect(client.inNamespace(namespace)).andAnswer(new IAnswer<OpenShiftNamespacedClient>() {
-        @Override
-        public OpenShiftNamespacedClient answer() throws Throwable {
-          return namespacedClient.replay();
-        }
-      }).anyTimes();
-      namespaceMap.put(matcher, op);
-    }
-    return op;
   }
 }
