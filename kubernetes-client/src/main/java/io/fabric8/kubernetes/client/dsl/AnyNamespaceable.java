@@ -13,16 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.client.dsl.AnyNamespaceable;
-import io.fabric8.kubernetes.client.dsl.KubernetesDSL;
-import io.fabric8.kubernetes.client.dsl.Namespaceable;
+package io.fabric8.kubernetes.client.dsl;
 
+public interface AnyNamespaceable<T> {
 
-public interface GenericKubernetesClient<C extends Client>
-  extends Client,
-  KubernetesDSL<C>,
-  Namespaceable<C>,
-  AnyNamespaceable<C> {
+  T inAnyNamespace();
 }

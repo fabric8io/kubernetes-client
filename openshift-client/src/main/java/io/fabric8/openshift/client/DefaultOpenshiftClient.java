@@ -319,4 +319,9 @@ public class DefaultOpenshiftClient extends BaseClient implements OpenShiftClien
       .build();
     return new DefaultOpenshiftClient(getHttpClient(), updated);
   }
+
+  @Override
+  public OpenShiftClient inAnyNamespace() {
+    return inNamespace(null);
+  }
 }
