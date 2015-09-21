@@ -465,16 +465,6 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
       return getNamespacedUrl();
     }
     return new URL(URLUtils.join(getNamespacedUrl().toString(), name));
-    //There is a reason why this doesn't have a trailing slash
-    return new URL(getNamespacedUrl(), name);
-  }
-
-  protected URL getResourceUrl(String context) throws MalformedURLException {
-    URL baseUrl = new URL(getNamespacedUrl(), name + "/");
-    if (context.startsWith("/")) {
-      return new URL(baseUrl, context.substring(1));
-    }
-    return new URL(baseUrl, context);
   }
 
   /**

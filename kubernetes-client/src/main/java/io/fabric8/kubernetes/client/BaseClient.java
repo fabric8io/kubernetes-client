@@ -54,8 +54,9 @@ public class BaseClient implements Client {
 
   private AsyncHttpClient httpClient;
   private URL masterUrl;
-  private Config configuration;
+  private String apiVersion;
   private String namespace;
+  private Config configuration;
 
   public BaseClient() throws KubernetesClientException {
     this(new ConfigBuilder().build());
@@ -68,8 +69,9 @@ public class BaseClient implements Client {
   public BaseClient(final AsyncHttpClient httpClient, Config config) throws KubernetesClientException {
     try {
       this.httpClient = httpClient;
-      this.configuration = config;
       this.namespace = config.getNamespace();
+      this.configuration = config;
+      this.apiVersion = config.getApiVersion();
       if (config.getMasterUrl() == null) {
         throw new KubernetesClientException("Unknown Kubernetes master URL - " +
           "please set with the builder, or set with either system property \"" + Config.KUBERNETES_MASTER_SYSTEM_PROPERTY + "\"" +
@@ -201,6 +203,11 @@ public class BaseClient implements Client {
   }
 
   @Override
+  public String getApiVersion() {
+    return apiVersion;
+  }
+
+  @Override
   public String getNamespace() {
     return namespace;
   }
@@ -223,8 +230,7 @@ public class BaseClient implements Client {
 
   @Override
   public RootPaths rootPaths() {
-    return (RootPaths) new BaseOperation(this, "", null, null, false, null, RootPaths.class, null, null) {
-    }.get();
+        return new BaseOperation(this, "", null, null, false, null, RootPaths.class, null, null) {}.getRootPaths();
   }
 
 }

@@ -29,6 +29,8 @@ public interface Client extends ConfigAware, Closeable {
 
   URL getMasterUrl();
 
+  String getApiVersion();
+
   String getNamespace();
 
   AsyncHttpClient getHttpClient();

@@ -33,7 +33,7 @@ public class NodeTest extends HttpServerMockBase {
 
   @Test
   public void testList() {
-    expectAndReturnAsJson("/api/v1/nodes/", 200, new NodeListBuilder()
+    expectAndReturnAsJson("/api/v1/nodes", 200, new NodeListBuilder()
       .addNewItem().and().build());
 
     KubernetesClient client = getClient();

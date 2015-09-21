@@ -96,12 +96,6 @@ public class Config {
       tryKubeConfig();
     }
 
-
-    if (!this.masterUrl.endsWith("/")) {
-      this.masterUrl = this.masterUrl + "/";
-    }
-
-    this.masterUrl = this.masterUrl + "api/" + this.apiVersion + "/";
     this.trustCerts = this.trustCerts != null ? this.trustCerts : Boolean.FALSE;
   }
 
@@ -134,12 +128,6 @@ public class Config {
     if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, true)) {
       tryKubeConfig();
     }
-
-    if (!this.masterUrl.endsWith("/")) {
-      this.masterUrl = this.masterUrl + "/";
-    }
-
-    this.masterUrl = this.masterUrl + "api/" + this.apiVersion + "/";
     this.trustCerts = this.trustCerts != null ? this.trustCerts : Boolean.FALSE;
   }
 

@@ -33,8 +33,8 @@ public class ReplicationControllerTest extends HttpServerMockBase {
 
   @Test
   public void testList() {
-    expectAndReturnAsJson("/api/v1/namespaces/test/replicationcontrollers/", 200, new ReplicationControllerListBuilder().build());
-    expectAndReturnAsJson("/api/v1/namespaces/ns1/replicationcontrollers/", 200, new ReplicationControllerListBuilder()
+    expectAndReturnAsJson("/api/v1/namespaces/test/replicationcontrollers", 200, new ReplicationControllerListBuilder().build());
+    expectAndReturnAsJson("/api/v1/namespaces/ns1/replicationcontrollers", 200, new ReplicationControllerListBuilder()
       .addNewItem().and()
       .addNewItem().and().build());
 

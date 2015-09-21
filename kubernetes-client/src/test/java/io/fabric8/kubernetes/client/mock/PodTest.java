@@ -34,8 +34,8 @@ public class PodTest extends HttpServerMockBase {
 
   @Test
   public void testList() {
-    expectAndReturnAsJson("/api/v1/namespaces/test/pods/", 200, new PodListBuilder().build());
-    expectAndReturnAsJson("/api/v1/namespaces/ns1/pods/", 200, new PodListBuilder()
+    expectAndReturnAsJson("/api/v1/namespaces/test/pods", 200, new PodListBuilder().build());
+    expectAndReturnAsJson("/api/v1/namespaces/ns1/pods", 200, new PodListBuilder()
       .addNewItem().and()
       .addNewItem().and().build());
 

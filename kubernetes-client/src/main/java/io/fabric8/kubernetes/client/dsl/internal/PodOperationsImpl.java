@@ -63,7 +63,7 @@ public class PodOperationsImpl<C extends Client>  extends HasMetadataOperation<C
     }
 
     try {
-      URL url = getResourceUrl(sb.toString());
+      URL url = new URL(URLUtils.join(getResourceUrl().toString(), sb.toString()));
       AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().prepareGet(url.toString());
       Future<Response> f = requestBuilder.execute();
       Response r = f.get();
