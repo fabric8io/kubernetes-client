@@ -392,7 +392,7 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
 
   void deleteThis() throws KubernetesClientException {
     try {
-      handleDelete(getResourceUrl());
+      handleDelete(new URL(getNamespacedUrl(), name));
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
