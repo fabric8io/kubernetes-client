@@ -97,6 +97,13 @@
     </dependency>
 
     <dependency>
+      <groupId>com.google.mockwebserver</groupId>
+      <artifactId>mockwebserver</artifactId>
+      <version>${mockwebserver.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>${junit.version}</version>
