@@ -25,7 +25,7 @@ import io.fabric8.kubernetes.client.dsl.ClientResource;
 public class NodeOperationsImpl<C extends Client>  extends HasMetadataOperation<C, Node, NodeList, DoneableNode, ClientResource<Node, DoneableNode>> {
 
   public NodeOperationsImpl(C client) {
-    this(client, client.getNamespace(), null, true, null);
+    this(client, null, null, true, null);
   }
 
   public NodeOperationsImpl(C client, String namespace, String name, Boolean cascading, Node item) {

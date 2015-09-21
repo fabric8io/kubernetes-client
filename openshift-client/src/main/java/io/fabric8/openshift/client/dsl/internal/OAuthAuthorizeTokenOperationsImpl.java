@@ -25,7 +25,7 @@ public class OAuthAuthorizeTokenOperationsImpl extends OpenshiftOperation<OpenSh
   ClientResource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken>> {
 
   public OAuthAuthorizeTokenOperationsImpl(OpenShiftClient client) {
-    this(client, client.getNamespace(), null, true, null);
+    this(client, null, null, true, null);
   }
 
   public OAuthAuthorizeTokenOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading, OAuthAuthorizeToken item) {

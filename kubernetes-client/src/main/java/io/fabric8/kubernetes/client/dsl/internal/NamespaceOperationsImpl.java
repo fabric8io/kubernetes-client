@@ -24,7 +24,7 @@ import io.fabric8.kubernetes.client.dsl.ClientResource;
 public class NamespaceOperationsImpl<C extends Client>  extends HasMetadataOperation<C, Namespace, NamespaceList, DoneableNamespace, ClientResource<Namespace, DoneableNamespace>> {
 
   public NamespaceOperationsImpl(C client) {
-    this(client, client.getNamespace(), null, true, null);
+    this(client, null, null, true, null);
   }
 
   public NamespaceOperationsImpl(C client, String namespace, String name, Boolean cascading, Namespace item) {

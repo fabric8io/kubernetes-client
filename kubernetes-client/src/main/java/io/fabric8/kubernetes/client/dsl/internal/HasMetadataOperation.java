@@ -32,14 +32,12 @@ import java.util.concurrent.TimeUnit;
 public class HasMetadataOperation<C extends Client, T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
   extends BaseOperation<C, T, L, D, R> {
 
-  private static final Logger logger = LoggerFactory.getLogger(HasMetadataOperation.class);
-
   protected HasMetadataOperation(C client, String resourceT, String namespace, String name, Boolean cascading, T item) {
     super(client, resourceT, namespace, name, cascading, item);
   }
 
-  protected HasMetadataOperation(C client, String resourceT, String namespace, String name, Boolean cascading, T item, Class<C> clientType, Class<T> type, Class<L> listType, Class<D> doneableType) {
-    super(client, resourceT, namespace, name, cascading, item, clientType, type, listType, doneableType);
+  protected HasMetadataOperation(C client, String resourceT, String namespace, String name, Boolean cascading, T item, Class<T> type, Class<L> listType, Class<D> doneableType) {
+    super(client, resourceT, namespace, name, cascading, item, type, listType, doneableType);
   }
 
   @Override

@@ -223,7 +223,7 @@ public class BaseClient implements Client {
 
   @Override
   public RootPaths rootPaths() {
-    return (RootPaths) new BaseOperation(this, "", null, null, false, null, KubernetesClient.class, RootPaths.class, null, null) {
+    return (RootPaths) new BaseOperation(this, "", null, null, false, null, RootPaths.class, null, null) {
     }.get();
   }
 
