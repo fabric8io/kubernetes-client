@@ -81,13 +81,15 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import static io.fabric8.kubernetes.client.mock.util.MockUtils.getArgument;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
-import static io.fabric8.kubernetes.client.mock.util.MockUtils.getArgument;
 
 public class KubernetesMockClient implements Replayable<KubernetesClient>, Verifiable {
 
   private final KubernetesClient client = createMock(KubernetesClient.class);
+
+  private KubernetesMockClient anyNamespaceOp;
   private Map<IArgumentMatcher, KubernetesMockClient> namespaceMap = new HashMap<>();
 
 
@@ -248,5 +250,19 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
       namespaceMap.put(matcher, op);
     }
     return op;
+  }
+
+  public KubernetesMockClient inAnyNamespace() {
+    if (anyNamespaceOp == null) {
+      final KubernetesMockClient namespacedClient = new KubernetesMockClient();
+      anyNamespaceOp = namespacedClient;
+      expect(client.inAnyNamespace()).andAnswer(new IAnswer<KubernetesClient>() {
+        @Override
+        public KubernetesClient answer() throws Throwable {
+          return namespacedClient.replay();
+        }
+      }).anyTimes();
+    }
+    return anyNamespaceOp;
   }
 }

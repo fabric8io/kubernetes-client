@@ -169,4 +169,9 @@ public class DefaultKubernetesClient extends BaseClient implements KubernetesCli
     Config updated = new ConfigBuilder(getConfiguration()).withNamespace(namespace).build();
     return new DefaultKubernetesClient(getHttpClient(), updated);
   }
+
+  @Override
+  public KubernetesClient inAnyNamespace() {
+    return inNamespace(null);
+  }
 }

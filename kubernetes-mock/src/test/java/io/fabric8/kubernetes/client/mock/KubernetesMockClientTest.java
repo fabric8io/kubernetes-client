@@ -254,7 +254,9 @@ public class KubernetesMockClientTest {
   public void testNamespaced() {
     KubernetesMockClient mock = new KubernetesMockClient();
     KubernetesMockClient ns1 = mock.inNamespace("ns1");
-    KubernetesMockClient ns2 = mock.inNamespace("ns2");
+    KubernetesMockClient ns2 = ns1.inNamespace("ns2");
+
+    KubernetesMockClient all = ns2.inAnyNamespace();
 
     ns1.replicationControllers().withName("repl1").get().andReturn(new ReplicationControllerBuilder().withNewMetadata().withName("repl1").endMetadata().build());
     ns2.replicationControllers().withName("repl2").get().andReturn(new ReplicationControllerBuilder().withNewMetadata().withName("repl1").endMetadata().build());
@@ -263,5 +265,8 @@ public class KubernetesMockClientTest {
     client = client.inNamespace("ns1");
     Assert.assertNotNull(client);
     Assert.assertNotNull(client.replicationControllers().withName("repl1").get());
+
+    client = client.inNamespace("ns2");
+    Assert.assertNotNull(client);
   }
 }

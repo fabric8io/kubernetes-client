@@ -57,14 +57,12 @@ import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.mock.MockKubernetesListOperation;
 import io.fabric8.kubernetes.client.mock.MockLoggableResource;
 import io.fabric8.kubernetes.client.mock.MockNonNamespaceOperation;
 import io.fabric8.kubernetes.client.mock.MockOperation;
 import io.fabric8.kubernetes.client.mock.MockResource;
 import io.fabric8.kubernetes.client.mock.MockRollableScaleableResource;
-import io.fabric8.kubernetes.client.mock.MockScaleableResource;
 import io.fabric8.kubernetes.client.mock.Replayable;
 import io.fabric8.kubernetes.client.mock.Verifiable;
 import io.fabric8.kubernetes.client.mock.impl.MockKubernetesListOperationImpl;
@@ -150,6 +148,7 @@ import static org.easymock.EasyMock.expect;
 public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifiable {
 
   private final OpenShiftClient client = createMock(OpenShiftClient.class);
+  private OpenshiftMockClient anyNamespaceOp;
   private Map<IArgumentMatcher, OpenshiftMockClient> namespaceMap = new HashMap<>();
 
   private final MockEndpoints endpoints = new MockEndpoints();
@@ -420,5 +419,19 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
       namespaceMap.put(matcher, op);
     }
     return op;
+  }
+
+  public OpenshiftMockClient inAnyNamepace() {
+    if (anyNamespaceOp == null) {
+      final OpenshiftMockClient namespacedClient = new OpenshiftMockClient();
+      anyNamespaceOp = namespacedClient;
+      expect(client.inAnyNamespace()).andAnswer(new IAnswer<OpenShiftClient>() {
+        @Override
+        public OpenShiftClient answer() throws Throwable {
+          return namespacedClient.replay();
+        }
+      }).anyTimes();
+    }
+    return anyNamespaceOp;
   }
 }
