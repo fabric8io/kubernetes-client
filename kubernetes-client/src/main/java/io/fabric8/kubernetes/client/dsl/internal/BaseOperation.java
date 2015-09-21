@@ -26,7 +26,6 @@ import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
@@ -392,7 +391,7 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
 
   void deleteThis() throws KubernetesClientException {
     try {
-      handleDelete(new URL(getNamespacedUrl(), name));
+      handleDelete(getResourceUrl());
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
@@ -458,13 +457,24 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
       return getNamespacedUrl();
     }
     return new URL(URLUtils.join(getNamespacedUrl().toString(), name));
+    //There is a reason why this doesn't have a trailing slash
+    return new URL(getNamespacedUrl(), name);
+  }
+
+  protected URL getResourceUrl(String context) throws MalformedURLException {
+    URL baseUrl = new URL(getNamespacedUrl(), name + "/");
+    if (context.startsWith("/")) {
+      return new URL(baseUrl, context.substring(1));
+    }
+    return new URL(baseUrl, context);
   }
 
   /**
    * Checks if the response status code is the expected and throws the appropriate KubernetesClientException if not.
-   * @param r                           The {@link com.ning.http.client.Response} object.
-   * @param expectedStatusCode          The expected status code.
-   * @throws KubernetesClientException  When the response code is not the expected.
+   *
+   * @param r                  The {@link com.ning.http.client.Response} object.
+   * @param expectedStatusCode The expected status code.
+   * @throws KubernetesClientException When the response code is not the expected.
    */
   protected void assertResponseCode(Response r, int expectedStatusCode) {
     int statusCode = r.getStatusCode();
