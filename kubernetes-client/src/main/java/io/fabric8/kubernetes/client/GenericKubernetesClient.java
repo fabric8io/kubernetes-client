@@ -13,21 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.creators;
+package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.model.Namespace;
-import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.ResourceCreator;
-import io.fabric8.kubernetes.client.dsl.internal.NamespaceOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.KubernetesDSL;
+import io.fabric8.kubernetes.client.dsl.Namespaceable;
 
-public class NamespaceCreator implements ResourceCreator<Namespace> {
-  @Override
-  public Class<Namespace> getKind() {
-    return Namespace.class;
-  }
 
-  @Override
-  public Namespace create(Client client, String namespace, Namespace item) {
-    return new NamespaceOperationsImpl<Client>(client, namespace, null, true, item).create();
-  }
+public interface GenericKubernetesClient<C extends Client>
+  extends Client,
+  KubernetesDSL<C>,
+  Namespaceable<C> {
 }

@@ -18,16 +18,17 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.api.model.DoneableNode;
 import io.fabric8.kubernetes.api.model.Node;
 import io.fabric8.kubernetes.api.model.NodeList;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 
-public class NodeOperationsImpl extends HasMetadataOperation<KubernetesClient, Node, NodeList, DoneableNode, ClientResource<Node, DoneableNode>> {
+public class NodeOperationsImpl<C extends Client>  extends HasMetadataOperation<C, Node, NodeList, DoneableNode, ClientResource<Node, DoneableNode>> {
 
-  public NodeOperationsImpl(KubernetesClient client) {
-    this(client, null, null, true, null);
+  public NodeOperationsImpl(C client) {
+    this(client, client.getNamespace(), null, true, null);
   }
 
-  public NodeOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading, Node item) {
+  public NodeOperationsImpl(C client, String namespace, String name, Boolean cascading, Node item) {
     super(client, "nodes", namespace, name, cascading, item);
   }
 }

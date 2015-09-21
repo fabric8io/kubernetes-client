@@ -18,17 +18,17 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.api.model.DoneableEvent;
 import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventList;
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 
-public class EventOperationsImpl extends HasMetadataOperation<KubernetesClient, Event, EventList, DoneableEvent,
+public class EventOperationsImpl<C extends Client>  extends HasMetadataOperation<Client, Event, EventList, DoneableEvent,
   ClientResource<Event, DoneableEvent>> {
 
-  public EventOperationsImpl(KubernetesClient client) {
-    this(client, null, null, true, null);
+  public EventOperationsImpl(C client) {
+    this(client, client.getNamespace(), null, true, null);
   }
 
-  public EventOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading, Event item) {
+  public EventOperationsImpl(C client, String namespace, String name, Boolean cascading, Event item) {
     super(client, "events", namespace, name, cascading, item);
   }
 }

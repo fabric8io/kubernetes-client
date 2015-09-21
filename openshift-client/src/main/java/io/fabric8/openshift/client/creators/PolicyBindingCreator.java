@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client.creators;
 
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ResourceCreator;
 import io.fabric8.openshift.api.model.PolicyBinding;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -28,7 +28,7 @@ public class PolicyBindingCreator implements ResourceCreator<PolicyBinding> {
   }
 
   @Override
-  public PolicyBinding create(KubernetesClient client, String namespace, PolicyBinding item) {
+  public PolicyBinding create(Client client, String namespace, PolicyBinding item) {
     try (OpenShiftClient osClient = client.adapt(OpenShiftClient.class)) {
       return new PolicyBindingOperationsImpl(osClient, namespace, null, true, item).create();
     }

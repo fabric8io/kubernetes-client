@@ -44,7 +44,7 @@ public class BuildConfigOperationsImpl extends OpenshiftOperation<OpenShiftClien
   private final String triggerType;
 
   public BuildConfigOperationsImpl(OpenShiftClient client) {
-    this(client, null, null, true, null, null, null);
+    this(client, client.getNamespace(), null, true, null, null, null);
   }
 
   public BuildConfigOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading, BuildConfig item, String secret, String triggerType) {

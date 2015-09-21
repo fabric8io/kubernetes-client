@@ -18,15 +18,15 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.api.model.DoneableSecret;
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.SecretList;
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 
-public class SecretOperationsImpl extends HasMetadataOperation<KubernetesClient, Secret, SecretList, DoneableSecret, ClientResource<Secret, DoneableSecret>> {
-  public SecretOperationsImpl(KubernetesClient client) {
-    this(client, null, null, true, null);
+public class SecretOperationsImpl<C extends Client>  extends HasMetadataOperation<C, Secret, SecretList, DoneableSecret, ClientResource<Secret, DoneableSecret>> {
+  public SecretOperationsImpl(C client) {
+    this(client, client.getNamespace(), null, true, null);
   }
 
-  public SecretOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading, Secret item) {
+  public SecretOperationsImpl(C client, String namespace, String name, Boolean cascading, Secret item) {
     super(client, "secrets", namespace, name, cascading, item);
   }
 }

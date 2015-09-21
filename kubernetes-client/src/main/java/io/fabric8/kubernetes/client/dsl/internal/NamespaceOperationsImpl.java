@@ -18,16 +18,16 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.api.model.DoneableNamespace;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceList;
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 
-public class NamespaceOperationsImpl extends HasMetadataOperation<KubernetesClient, Namespace, NamespaceList, DoneableNamespace, ClientResource<Namespace, DoneableNamespace>> {
+public class NamespaceOperationsImpl<C extends Client>  extends HasMetadataOperation<C, Namespace, NamespaceList, DoneableNamespace, ClientResource<Namespace, DoneableNamespace>> {
 
-  public NamespaceOperationsImpl(KubernetesClient client) {
-    this(client, null, null, true, null);
+  public NamespaceOperationsImpl(C client) {
+    this(client, client.getNamespace(), null, true, null);
   }
 
-  public NamespaceOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading, Namespace item) {
+  public NamespaceOperationsImpl(C client, String namespace, String name, Boolean cascading, Namespace item) {
     super(client, "namespaces", namespace, name, cascading, item);
   }
 }

@@ -18,18 +18,18 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.api.model.DoneableEndpoints;
 import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsList;
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 
-public class EndpointsOperationsImpl extends HasMetadataOperation<KubernetesClient, Endpoints, EndpointsList, DoneableEndpoints,
+public class EndpointsOperationsImpl<C extends Client> extends HasMetadataOperation<C, Endpoints, EndpointsList, DoneableEndpoints,
   ClientResource<Endpoints, DoneableEndpoints>> {
 
-  public EndpointsOperationsImpl(KubernetesClient client) {
-    this(client, null, null, true, null);
+  public EndpointsOperationsImpl(C client) {
+    this(client, client.getNamespace(), null, true, null);
   }
 
 
-  public EndpointsOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading, Endpoints item) {
+  public EndpointsOperationsImpl(C client, String namespace, String name, Boolean cascading, Endpoints item) {
     super(client, "endpoints", namespace, name, cascading, item);
   }
 }

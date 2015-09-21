@@ -57,6 +57,7 @@ import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.mock.MockKubernetesListOperation;
 import io.fabric8.kubernetes.client.mock.MockLoggableResource;
 import io.fabric8.kubernetes.client.mock.MockNonNamespaceOperation;
@@ -134,16 +135,22 @@ import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.mock.impl.MockUser;
 import org.easymock.EasyMock;
+import org.easymock.IAnswer;
+import org.easymock.IArgumentMatcher;
 import org.easymock.IExpectationSetters;
 
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
+import static io.fabric8.kubernetes.client.mock.util.MockUtils.getArgument;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 
 public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifiable {
 
   private final OpenShiftClient client = createMock(OpenShiftClient.class);
+  private Map<IArgumentMatcher, OpenshiftMockClient> namespaceMap = new HashMap<>();
 
   private final MockEndpoints endpoints = new MockEndpoints();
   private final MockEvent events = new MockEvent();
@@ -396,5 +403,22 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
 
   public  MockOperation<PolicyBinding, PolicyBindingList, DoneablePolicyBinding, MockResource<PolicyBinding, DoneablePolicyBinding, Boolean>> policyBindings() {
     return policyBindings;
+  }
+
+  public OpenshiftMockClient inNamespace(String namespace) {
+    IArgumentMatcher matcher = getArgument(namespace);
+    OpenshiftMockClient op = namespaceMap.get(matcher);
+    if (op == null) {
+      final OpenshiftMockClient namespacedClient = new OpenshiftMockClient();
+      op = namespacedClient;
+      expect(client.inNamespace(namespace)).andAnswer(new IAnswer<OpenShiftClient>() {
+        @Override
+        public OpenShiftClient answer() throws Throwable {
+          return namespacedClient.replay();
+        }
+      }).anyTimes();
+      namespaceMap.put(matcher, op);
+    }
+    return op;
   }
 }

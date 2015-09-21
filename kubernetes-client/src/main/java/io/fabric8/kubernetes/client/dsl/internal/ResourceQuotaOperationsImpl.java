@@ -18,18 +18,19 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.api.model.DoneableResourceQuota;
 import io.fabric8.kubernetes.api.model.ResourceQuota;
 import io.fabric8.kubernetes.api.model.ResourceQuotaList;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 
-public class ResourceQuotaOperationsImpl extends HasMetadataOperation<KubernetesClient, ResourceQuota, ResourceQuotaList, DoneableResourceQuota,
+public class ResourceQuotaOperationsImpl<C extends Client> extends HasMetadataOperation<C, ResourceQuota, ResourceQuotaList, DoneableResourceQuota,
   ClientResource<ResourceQuota, DoneableResourceQuota>> {
 
-  public ResourceQuotaOperationsImpl(KubernetesClient client) {
-    this(client, null, null, true, null);
+  public ResourceQuotaOperationsImpl(C client) {
+    this(client, client.getNamespace(), null, true, null);
 
   }
 
-  public ResourceQuotaOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading, ResourceQuota item) {
+  public ResourceQuotaOperationsImpl(C client, String namespace, String name, Boolean cascading, ResourceQuota item) {
     super(client, "resourcequotas", namespace, name, cascading, item);
   }
 }

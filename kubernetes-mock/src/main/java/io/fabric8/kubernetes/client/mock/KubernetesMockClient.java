@@ -73,17 +73,23 @@ import io.fabric8.kubernetes.client.mock.impl.MockSecurityContextConstraints;
 import io.fabric8.kubernetes.client.mock.impl.MockService;
 import io.fabric8.kubernetes.client.mock.impl.MockServiceAccount;
 import org.easymock.EasyMock;
+import org.easymock.IAnswer;
+import org.easymock.IArgumentMatcher;
 import org.easymock.IExpectationSetters;
-import org.easymock.Mock;
 
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
+import static io.fabric8.kubernetes.client.mock.util.MockUtils.getArgument;
 
 public class KubernetesMockClient implements Replayable<KubernetesClient>, Verifiable {
 
   private final KubernetesClient client = createMock(KubernetesClient.class);
+  private Map<IArgumentMatcher, KubernetesMockClient> namespaceMap = new HashMap<>();
+
 
   private final MockEndpoints endpoints = new MockEndpoints();
   private final MockEvent events = new MockEvent();
@@ -224,5 +230,23 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
 
   public MockKubernetesListOperation lists() {
     return kubernetesLists;
+  }
+
+
+  public KubernetesMockClient inNamespace(String namespace) {
+    IArgumentMatcher matcher = getArgument(namespace);
+    KubernetesMockClient op = namespaceMap.get(matcher);
+    if (op == null) {
+      final KubernetesMockClient namespacedClient = new KubernetesMockClient();
+      op = namespacedClient;
+      expect(client.inNamespace(namespace)).andAnswer(new IAnswer<KubernetesClient>() {
+        @Override
+        public KubernetesClient answer() throws Throwable {
+          return namespacedClient.replay();
+        }
+      }).anyTimes();
+      namespaceMap.put(matcher, op);
+    }
+    return op;
   }
 }

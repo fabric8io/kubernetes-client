@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openshift.client;
+
+package io.fabric8.openshift.client.dsl;
 
 import io.fabric8.kubernetes.api.model.KubernetesList;
-import io.fabric8.kubernetes.client.GenericKubernetesClient;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.kubernetes.client.dsl.internal.ClientMixedOperation;
+import io.fabric8.kubernetes.client.dsl.KubernetesDSL;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigList;
@@ -60,42 +61,32 @@ import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.api.model.UserList;
-import io.fabric8.openshift.client.dsl.ClientBuildConfigResource;
-import io.fabric8.openshift.client.dsl.ClientTemplateResource;
-import io.fabric8.openshift.client.dsl.OpenShiftDSL;
 
-import java.net.URL;
+public interface OpenShiftDSL<C extends Client> extends KubernetesDSL<C> {
 
-public interface OpenShiftClient extends
-  OpenShiftDSL<OpenShiftClient>,
-  GenericKubernetesClient<OpenShiftClient> {
+  ClientOperation<C, Build, BuildList, DoneableBuild, ClientResource<Build, DoneableBuild>> builds();
 
-  URL getOpenshiftUrl();
+  ClientOperation<C, BuildConfig, BuildConfigList, DoneableBuildConfig, ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void>> buildConfigs();
 
-  ClientMixedOperation<OpenShiftClient, Build, BuildList, DoneableBuild, ClientResource<Build, DoneableBuild>> builds();
+  ClientOperation<C, DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, ClientResource<DeploymentConfig, DoneableDeploymentConfig>> deploymentConfigs();
 
-  ClientMixedOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig, ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void>> buildConfigs();
+  ClientOperation<C, Group, GroupList, DoneableGroup, ClientResource<Group, DoneableGroup>> groups();
 
-  ClientMixedOperation<OpenShiftClient, DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, ClientResource<DeploymentConfig, DoneableDeploymentConfig>> deploymentConfigs();
+  ClientOperation<C, ImageStream, ImageStreamList, DoneableImageStream, ClientResource<ImageStream, DoneableImageStream>> imageStreams();
 
-  ClientMixedOperation<OpenShiftClient, Group, GroupList, DoneableGroup, ClientResource<Group, DoneableGroup>> groups();
+  ClientNonNamespaceOperation<C, OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken, ClientResource<OAuthAccessToken, DoneableOAuthAccessToken>> oAuthAccessTokens();
 
-  ClientMixedOperation<OpenShiftClient, ImageStream, ImageStreamList, DoneableImageStream, ClientResource<ImageStream, DoneableImageStream>> imageStreams();
+  ClientNonNamespaceOperation<C, OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken, ClientResource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken>> oAuthAuthorizeTokens();
 
-  ClientNonNamespaceOperation<OpenShiftClient, OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken, ClientResource<OAuthAccessToken, DoneableOAuthAccessToken>> oAuthAccessTokens();
+  ClientNonNamespaceOperation<C, OAuthClient, OAuthClientList, DoneableOAuthClient, ClientResource<OAuthClient, DoneableOAuthClient>> oAuthClients();
 
-  ClientNonNamespaceOperation<OpenShiftClient, OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken, ClientResource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken>> oAuthAuthorizeTokens();
+  ClientOperation<C, Policy, PolicyList, DoneablePolicy, ClientResource<Policy, DoneablePolicy>> policies();
 
-  ClientNonNamespaceOperation<OpenShiftClient, OAuthClient, OAuthClientList, DoneableOAuthClient, ClientResource<OAuthClient, DoneableOAuthClient>> oAuthClients();
+  ClientOperation<C, PolicyBinding, PolicyBindingList, DoneablePolicyBinding, ClientResource<PolicyBinding, DoneablePolicyBinding>> policyBindings();
 
-  ClientMixedOperation<OpenShiftClient, Policy, PolicyList, DoneablePolicy, ClientResource<Policy, DoneablePolicy>> policies();
+  ClientOperation<C, Route, RouteList, DoneableRoute, ClientResource<Route, DoneableRoute>> routes();
 
-  ClientMixedOperation<OpenShiftClient, PolicyBinding, PolicyBindingList, DoneablePolicyBinding, ClientResource<PolicyBinding, DoneablePolicyBinding>> policyBindings();
+  ClientOperation<C, Template, TemplateList, DoneableTemplate, ClientTemplateResource<Template, KubernetesList, DoneableTemplate>> templates();
 
-  ClientMixedOperation<OpenShiftClient, Route, RouteList, DoneableRoute, ClientResource<Route, DoneableRoute>> routes();
-
-  ClientMixedOperation<OpenShiftClient, Template, TemplateList, DoneableTemplate, ClientTemplateResource<Template, KubernetesList, DoneableTemplate>> templates();
-
-  ClientMixedOperation<OpenShiftClient, User, UserList, DoneableUser, ClientResource<User, DoneableUser>> users();
-
+  ClientOperation<C, User, UserList, DoneableUser, ClientResource<User, DoneableUser>> users();
 }

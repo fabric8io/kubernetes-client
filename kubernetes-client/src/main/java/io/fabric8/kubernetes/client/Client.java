@@ -13,9 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.fabric8.kubernetes.client;
 
-public interface KubernetesClient extends GenericKubernetesClient<KubernetesClient> {
+import com.ning.http.client.AsyncHttpClient;
+import io.fabric8.kubernetes.api.model.RootPaths;
 
+import java.io.Closeable;
+import java.io.InputStream;
+import java.net.URL;
 
+public interface Client extends ConfigAware, Closeable {
+
+  <C extends Client> C adapt(Class<C> type);
+
+  URL getMasterUrl();
+
+  String getNamespace();
+
+  AsyncHttpClient getHttpClient();
+
+  RootPaths rootPaths();
+
+  <T> T unmarshal(InputStream is, Class<T> type);
+
+  void close();
 }

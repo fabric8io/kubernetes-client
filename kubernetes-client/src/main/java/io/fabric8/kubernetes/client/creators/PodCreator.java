@@ -16,6 +16,8 @@
 package io.fabric8.kubernetes.client.creators;
 
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.GenericKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.ResourceCreator;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationsImpl;
@@ -27,7 +29,7 @@ public class PodCreator implements ResourceCreator<Pod> {
   }
 
   @Override
-  public Pod create(KubernetesClient client, String namespace, Pod item) {
-    return new PodOperationsImpl(client, namespace, null, true, item).create();
+  public Pod create(Client client, String namespace, Pod item) {
+    return new PodOperationsImpl<Client>(client, namespace, null, true, item).create();
   }
 }

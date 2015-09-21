@@ -56,6 +56,7 @@ public class Config {
   public static final String KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY = "kubernetes.watch.reconnectInterval";
   public static final String KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY = "kubernetes.watch.reconnectLimit";
   public static final String KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY = "kubernetes.request.timeout";
+  public static final String KUBERNETES_NAMESPACE_SYSTEM_PROPERTY = "kubernetes.namespace";
   public static final String KUBERNETES_KUBECONFIG_FILE = "kubeconfig";
   public static final String KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH = "/var/run/secrets/kubernetes.io/serviceaccount/token";
   public static final String KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt";
@@ -66,6 +67,7 @@ public class Config {
 
   private String masterUrl = "https://kubernetes.default.svc";
   private String apiVersion = "v1";
+  private String namespace;
   private String[] enabledProtocols = new String[]{"TLSv1.2"};
   private String caCertFile;
   private String caCertData;
@@ -96,13 +98,12 @@ public class Config {
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder")
-  public Config(boolean trustCerts, String masterUrl, String apiVersion, String[] enabledProtocols, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int requestTimeout, String proxy) {
-    this();
-
-    this.trustCerts = trustCerts;
+  public Config(String masterUrl, String apiVersion, String namespace, String[] enabledProtocols, boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int requestTimeout, String proxy) {
     this.masterUrl = masterUrl;
     this.apiVersion = apiVersion;
+    this.namespace = namespace;
     this.enabledProtocols = enabledProtocols;
+    this.trustCerts = trustCerts;
     this.caCertFile = caCertFile;
     this.caCertData = caCertData;
     this.clientCertFile = clientCertFile;
@@ -121,6 +122,9 @@ public class Config {
   }
 
   private void configFromSysPropsOrEnvVars(Config config) {
+    if (namespace == null || namespace.isEmpty()) {
+      config.setNamespace(Utils.getSystemPropertyOrEnvVar(KUBERNETES_NAMESPACE_SYSTEM_PROPERTY, "default"));
+    }
     config.setTrustCerts(Utils.getSystemPropertyOrEnvVar(KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY, config.isTrustCerts()));
     config.setMasterUrl(Utils.getSystemPropertyOrEnvVar(KUBERNETES_MASTER_SYSTEM_PROPERTY, config.getMasterUrl()));
     config.setApiVersion(Utils.getSystemPropertyOrEnvVar(KUBERNETES_API_VERSION_SYSTEM_PROPERTY, config.getApiVersion()));
@@ -183,6 +187,9 @@ public class Config {
         Context currentContext = KubeConfigUtils.getCurrentContext(kubeConfig);
         Cluster currentCluster = KubeConfigUtils.getCluster(kubeConfig, currentContext);
         if (currentCluster != null) {
+          if (namespace == null || namespace.isEmpty()) {
+            config.setNamespace(currentContext.getNamespace());
+          }
           config.setMasterUrl(currentCluster.getServer());
           config.setTrustCerts(currentCluster.getInsecureSkipTlsVerify() != null && currentCluster.getInsecureSkipTlsVerify());
           config.setCaCertFile(currentCluster.getCertificateAuthority());
@@ -370,5 +377,13 @@ public class Config {
 
   public String getProxy() {
     return proxy;
+  }
+
+  public String getNamespace() {
+    return namespace;
+  }
+
+  public void setNamespace(String namespace) {
+    this.namespace = namespace;
   }
 }

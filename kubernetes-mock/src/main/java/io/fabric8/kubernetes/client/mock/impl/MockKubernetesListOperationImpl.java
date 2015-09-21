@@ -18,7 +18,9 @@ package io.fabric8.kubernetes.client.mock.impl;
 
 import io.fabric8.kubernetes.api.model.DoneableKubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesList;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.ClientKubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListOperation;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
@@ -40,19 +42,18 @@ import java.util.Set;
 import static io.fabric8.kubernetes.client.mock.util.MockUtils.getArgument;
 import static org.easymock.EasyMock.expect;
 
-public class MockKubernetesListOperationImpl implements
+public class MockKubernetesListOperationImpl<C extends Client>  implements
   MockKubernetesListNonNamesapceOperation,
   MockKubernetesListOperation,
   CreateGettable<KubernetesList, IExpectationSetters<KubernetesList>, DoneableKubernetesList>,
   Mockable {
 
   //Dummy interface to use for mocking.
-  private interface KubernetesListDelegate extends ClientKubernetesListOperation<KubernetesClient>,
-    ClientKubernetesListNonNamespaceOperation<KubernetesClient>,
+  private interface KubernetesListDelegate<C extends Client>  extends ClientKubernetesListMixedOperation<C>,
     CreateGettable<KubernetesList,KubernetesList,DoneableKubernetesList> {
   }
 
-  private final KubernetesListDelegate delegate;
+  private final KubernetesListDelegate<C> delegate;
   private final Set<Mockable> nested = new LinkedHashSet<>();
 
   private MockKubernetesListOperationImpl loadedMockOp;

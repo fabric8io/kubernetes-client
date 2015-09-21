@@ -16,6 +16,8 @@
 package io.fabric8.kubernetes.client.creators;
 
 import io.fabric8.kubernetes.api.model.ResourceQuota;
+import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.GenericKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.ResourceCreator;
 import io.fabric8.kubernetes.client.dsl.internal.ResourceQuotaOperationsImpl;
@@ -27,7 +29,7 @@ public class ResourceQuotaCreator implements ResourceCreator<ResourceQuota> {
   }
 
   @Override
-  public ResourceQuota create(KubernetesClient client, String namespace, ResourceQuota item) {
-    return new ResourceQuotaOperationsImpl(client, namespace, null, true, item).create();
+  public ResourceQuota create(Client client, String namespace, ResourceQuota item) {
+    return new ResourceQuotaOperationsImpl<Client>(client, namespace, null, true, item).create();
   }
 }

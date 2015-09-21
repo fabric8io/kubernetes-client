@@ -38,7 +38,7 @@ public class TemplateOperationsImpl
   implements TemplateOperation {
 
   public TemplateOperationsImpl(OpenShiftClient client) {
-    this(client, null, null, true, null);
+    this(client, client.getNamespace(), null, true, null);
   }
 
   public TemplateOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading, Template item) {

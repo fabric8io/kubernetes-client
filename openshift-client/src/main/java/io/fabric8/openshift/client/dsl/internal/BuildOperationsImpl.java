@@ -25,7 +25,7 @@ public class BuildOperationsImpl extends OpenshiftOperation<OpenShiftClient, Bui
   ClientResource<Build, DoneableBuild>> {
 
   public BuildOperationsImpl(OpenShiftClient client) {
-    this(client, null, null, true, null);
+    this(client, client.getNamespace(), null, true, null);
   }
 
   public BuildOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading, Build item) {

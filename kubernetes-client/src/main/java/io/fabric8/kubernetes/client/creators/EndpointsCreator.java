@@ -16,7 +16,8 @@
 package io.fabric8.kubernetes.client.creators;
 
 import io.fabric8.kubernetes.api.model.Endpoints;
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.GenericKubernetesClient;
 import io.fabric8.kubernetes.client.ResourceCreator;
 import io.fabric8.kubernetes.client.dsl.internal.EndpointsOperationsImpl;
 
@@ -27,7 +28,7 @@ public class EndpointsCreator implements ResourceCreator<Endpoints> {
   }
 
   @Override
-  public Endpoints create(KubernetesClient client, String namespace, Endpoints item) {
-    return new EndpointsOperationsImpl(client, namespace, null, true, item).create();
+  public Endpoints create(Client client, String namespace, Endpoints item) {
+    return new EndpointsOperationsImpl<Client>(client, namespace, null, true, item).create();
   }
 }

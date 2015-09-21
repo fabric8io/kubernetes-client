@@ -16,7 +16,7 @@
 
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
@@ -25,14 +25,14 @@ import io.fabric8.kubernetes.client.dsl.ClientResource;
  * A Client Namespace or Non Namespace Operation. This acts as an umbrella for {@link io.fabric8.kubernetes.client.dsl.ClientOperation} and {@link io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation}.
  * Its not intended to be exposed directly into the client and is only usable as a convinient interface internally.
  *
- * @param <K> The type of KubernetesClient.
+ * @param <C> The type of {@link io.fabric8.kubernetes.client.Client}.
  * @param <T> The Kubernetes resource type.
  * @param <L> The list variant of the Kubernetes resource type.
  * @param <D> The doneable variant of the Kubernetes resource type.
  * @param <R> The resource operations.
  */
-public interface ClientMixedOperation<K extends KubernetesClient, T, L, D, R extends ClientResource<T, D>>
+public interface ClientMixedOperation<C extends Client, T, L, D, R extends ClientResource<T, D>>
   extends ClientResource<T, D>,
-  ClientOperation<K, T, L, D, R>,
-  ClientNonNamespaceOperation<K, T, L, D, R> {
+  ClientOperation<C, T, L, D, R>,
+  ClientNonNamespaceOperation<C, T, L, D, R> {
 }

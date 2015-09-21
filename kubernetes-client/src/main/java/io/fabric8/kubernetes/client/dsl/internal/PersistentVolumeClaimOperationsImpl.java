@@ -18,17 +18,18 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.api.model.DoneablePersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaimList;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 
-public class PersistentVolumeClaimOperationsImpl
-  extends HasMetadataOperation<KubernetesClient, PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, ClientResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> {
+public class PersistentVolumeClaimOperationsImpl<C extends Client>
+extends HasMetadataOperation<C, PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, ClientResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> {
 
-  public PersistentVolumeClaimOperationsImpl(KubernetesClient client) {
-    this(client, null, null, true, null);
+  public PersistentVolumeClaimOperationsImpl(C client) {
+    this(client, client.getNamespace(), null, true, null);
   }
 
-  public PersistentVolumeClaimOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading, PersistentVolumeClaim item) {
+  public PersistentVolumeClaimOperationsImpl(C client, String namespace, String name, Boolean cascading, PersistentVolumeClaim item) {
     super(client, "persistentvolumeclaims", namespace, name, cascading, item);
   }
 }

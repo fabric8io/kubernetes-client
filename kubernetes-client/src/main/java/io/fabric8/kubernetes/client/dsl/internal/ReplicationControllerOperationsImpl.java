@@ -22,30 +22,31 @@ import io.fabric8.kubernetes.api.model.DoneableReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.GenericKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
 import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.ImageEditReplaceable;
-import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
 import io.fabric8.kubernetes.client.dsl.Scaleable;
 
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 
-public class ReplicationControllerOperationsImpl extends HasMetadataOperation<KubernetesClient, ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>>
+public class ReplicationControllerOperationsImpl<C extends Client> extends HasMetadataOperation<C, ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>>
   implements ClientRollableScallableResource<ReplicationController, DoneableReplicationController>,
   ImageEditReplaceable<ReplicationController, ReplicationController, DoneableReplicationController> {
 
   private final Boolean rolling;
 
-  public ReplicationControllerOperationsImpl(KubernetesClient client) {
-    this(client, null, null, true, null, false);
+  public ReplicationControllerOperationsImpl(C client) {
+    this(client, client.getNamespace(), null, true, null, false);
   }
 
 
-  public ReplicationControllerOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading, ReplicationController item, Boolean rolling) {
+  public ReplicationControllerOperationsImpl(C client, String namespace, String name, Boolean cascading, ReplicationController item, Boolean rolling) {
     super(client, "replicationcontrollers", namespace, name, cascading, item);
     this.rolling = rolling;
   }
@@ -61,7 +62,7 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Ku
   }
 
   @Override
-  public ClientNonNamespaceOperation<KubernetesClient, ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>> inNamespace(String namespace) {
+  public ClientNonNamespaceOperation<C, ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>> inNamespace(String namespace) {
     return new ReplicationControllerOperationsImpl(getClient(), namespace, getName(), isCascading(), getItem(), rolling);
   }
 

@@ -19,6 +19,7 @@ package io.fabric8.kubernetes.client.mock.impl;
 import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
 import io.fabric8.kubernetes.client.dsl.internal.ClientMixedOperation;
@@ -30,7 +31,7 @@ import org.easymock.IExpectationSetters;
 
 import static org.easymock.EasyMock.expect;
 
-public class MockPod extends BaseMockOperation<KubernetesClient, Pod, PodList, DoneablePod,
+public class MockPod<C extends Client>  extends BaseMockOperation<C, Pod, PodList, DoneablePod,
   ClientLoggableResource<Pod, DoneablePod>,
   MockLoggableResource<Pod, DoneablePod, Boolean>>
   implements MockLoggableResource<Pod, DoneablePod, Boolean> {

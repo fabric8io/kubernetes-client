@@ -23,7 +23,7 @@ import io.fabric8.openshift.client.OpenShiftClient;
 
 public class PolicyOperationsImpl extends OpenshiftOperation<OpenShiftClient, Policy, PolicyList, DoneablePolicy, ClientResource<Policy, DoneablePolicy>> {
   public PolicyOperationsImpl(OpenShiftClient client) {
-    this(client, null, null, true, null);
+    this(client, client.getNamespace(), null, true, null);
   }
 
   public PolicyOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading, Policy item) {

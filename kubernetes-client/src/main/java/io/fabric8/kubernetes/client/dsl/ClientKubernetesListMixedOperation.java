@@ -13,13 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.fabric8.kubernetes.client.dsl;
 
-package io.fabric8.kubernetes.client;
+import io.fabric8.kubernetes.client.Client;
 
-/**
- * An Extension to the KubernetesClient.
- * The {@link io.fabric8.kubernetes.client.KubernetesClient} can be "adapted" to any Extension as long as there is an {@link io.fabric8.kubernetes.client.ExtensionAdapter}
- * available via {@link java.util.ServiceLoader}.
- */
-public interface Extension extends KubernetesClient {
+public interface ClientKubernetesListMixedOperation<C extends Client> extends
+  ClientKubernetesListOperation<C>,
+  ClientKubernetesListNonNamespaceOperation<C> {
 }

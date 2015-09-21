@@ -44,8 +44,7 @@ public class OpenshiftConfig extends Config {
   refs = {@BuildableReference(Config.class)}
   )
   public OpenshiftConfig(Config kubernetesConfig, String oapiVersion, String openShiftUrl) {
-    super(kubernetesConfig.isTrustCerts(),
-      kubernetesConfig.getMasterUrl(), kubernetesConfig.getApiVersion(), kubernetesConfig.getEnabledProtocols(),
+    super(kubernetesConfig.getMasterUrl(),kubernetesConfig.getApiVersion(),  kubernetesConfig.getNamespace(), kubernetesConfig.getEnabledProtocols(), kubernetesConfig.isTrustCerts(),
       kubernetesConfig.getCaCertFile(), kubernetesConfig.getCaCertData(),
       kubernetesConfig.getClientCertFile(), kubernetesConfig.getClientCertData(),
       kubernetesConfig.getClientKeyFile(), kubernetesConfig.getClientKeyData(),
