@@ -86,10 +86,19 @@ public class Config {
   private Map<Integer, String> errorMessages = new HashMap<>();
 
   public Config() {
+    if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYSERVICEACCOUNT_SYSTEM_PROPERTY, true)) {
+      tryServiceAccount(this);
+    }
+    if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, true)) {
+      tryKubeConfig(this);
+    }
+    configFromSysPropsOrEnvVars(this);
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder")
   public Config(boolean trustCerts, String masterUrl, String apiVersion, String[] enabledProtocols, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int requestTimeout, String proxy) {
+    this();
+
     this.trustCerts = trustCerts;
     this.masterUrl = masterUrl;
     this.apiVersion = apiVersion;
@@ -110,13 +119,6 @@ public class Config {
     this.requestTimeout = requestTimeout;
     this.proxy = proxy;
 
-    if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYSERVICEACCOUNT_SYSTEM_PROPERTY, true)) {
-      tryServiceAccount(this);
-    }
-    if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, true)) {
-      tryKubeConfig(this);
-    }
-    configFromSysPropsOrEnvVars(this);
     if (!this.masterUrl.endsWith("/")) {
       this.masterUrl = this.masterUrl + "/";
     }
