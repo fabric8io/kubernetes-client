@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.api.model.Status;
+import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -478,7 +479,10 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
         Status status = mapper.readerFor(Status.class).readValue(r.getResponseBodyAsStream());
         throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
       } catch (IOException e) {
-        throw KubernetesClientException.launderThrowable(e);
+        throw new KubernetesClientException(e.getMessage(), statusCode, new StatusBuilder()
+          .withCode(statusCode)
+          .withMessage(e.getMessage())
+          .build());
       }
     }
   }
