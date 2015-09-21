@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientLoggableResource;
+import io.fabric8.kubernetes.client.internal.URLUtils;
 
 import java.net.URL;
 import java.util.concurrent.Future;
@@ -61,7 +62,7 @@ public class PodOperationsImpl extends HasMetadataOperation<KubernetesClient, Po
     }
 
     try {
-      URL url = new URL(getResourceUrl(), sb.toString());
+      URL url = new URL(URLUtils.join(getResourceUrl().toString(), sb.toString()));
       AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().prepareGet(url.toString());
       Future<Response> f = requestBuilder.execute();
       Response r = f.get();

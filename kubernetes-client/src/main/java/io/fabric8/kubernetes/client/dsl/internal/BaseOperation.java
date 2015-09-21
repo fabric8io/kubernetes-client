@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -31,6 +32,7 @@ import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
+import io.fabric8.kubernetes.client.internal.URLUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -106,9 +108,26 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
     try {
       URL requestUrl = getNamespacedUrl();
       if (name != null) {
-        requestUrl = new URL(requestUrl, name);
+        requestUrl = new URL(URLUtils.join(requestUrl.toString(), name));
       }
       return handleGet(requestUrl);
+    } catch (KubernetesClientException e) {
+      if (e.getCode() != 404) {
+        throw e;
+      }
+      return null;
+    } catch (InterruptedException | ExecutionException | IOException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+
+  public RootPaths getRootPaths() {
+    try {
+      URL requestUrl = client.getMasterUrl();
+      Future<Response> f = getClient().getHttpClient().prepareGet(requestUrl.toString()).execute();
+      Response r = f.get();
+      assertResponseCode(r, 200);
+      return mapper.readerFor(RootPaths.class).readValue(r.getResponseBodyAsStream());
     } catch (KubernetesClientException e) {
       if (e.getCode() != 404) {
         throw e;
@@ -390,9 +409,9 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
 
         URL requestUrl = getRootUrl();
         if (metadataResource.getMetadata().getNamespace() != null) {
-          requestUrl = new URL(requestUrl, "namespaces/" + metadataResource.getMetadata().getNamespace() + "/");
+          requestUrl = new URL(URLUtils.join(requestUrl.toString(), "namespaces", metadataResource.getMetadata().getNamespace() + "/"));
         }
-        requestUrl = new URL(requestUrl, getResourceT() + "/" + metadataResource.getMetadata().getName());
+        requestUrl = new URL(URLUtils.join(requestUrl.toString(), getResourceT(), metadataResource.getMetadata().getName()));
         AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().prepareDelete(requestUrl.toString());
         Future<Response> f = requestBuilder.execute();
         Response r = f.get();
@@ -429,9 +448,9 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   protected URL getNamespacedUrl() throws MalformedURLException {
     URL requestUrl = getRootUrl();
     if (getNamespace() != null) {
-      requestUrl = new URL(requestUrl, "namespaces/" + getNamespace() + "/");
+      requestUrl = new URL(URLUtils.join(requestUrl.toString(), "namespaces", getNamespace()));
     }
-    requestUrl = new URL(requestUrl, resourceT + "/");
+    requestUrl = new URL(URLUtils.join(requestUrl.toString(), resourceT));
     return requestUrl;
   }
 
@@ -439,7 +458,7 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
     if (name == null) {
       return getNamespacedUrl();
     }
-    return new URL(getNamespacedUrl(), name + "/");
+    return new URL(URLUtils.join(getNamespacedUrl().toString(), name));
   }
 
   /**
@@ -498,8 +517,13 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   }
 
   public URL getRootUrl() {
-    return client.getMasterUrl();
+    try {
+      return new URL(URLUtils.join(client.getMasterUrl().toString(), "api", client.getApiVersion()));
+    } catch (MalformedURLException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
   }
+
 
   public String getName() {
     return name;

@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.client.dsl.Typeable;
 import io.fabric8.kubernetes.client.dsl.internal.BaseOperation;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.Response;
+import io.fabric8.kubernetes.client.internal.URLUtils;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigList;
 import io.fabric8.openshift.api.model.BuildRequest;
@@ -76,7 +77,7 @@ public class BuildConfigOperationsImpl extends OpenshiftOperation<OpenShiftClien
   @Override
   public Void instantiate(BuildRequest request) {
     try {
-      URL instantiationUrl = new URL(getResourceUrl(), "instantiate");
+      URL instantiationUrl = new URL(URLUtils.join(getResourceUrl().toString(), "instantiate"));
       AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().preparePost(instantiationUrl.toString());
       requestBuilder.setBody(BaseOperation.mapper.writer().writeValueAsString(request));
       handleResponse(requestBuilder, 201);
@@ -90,9 +91,8 @@ public class BuildConfigOperationsImpl extends OpenshiftOperation<OpenShiftClien
   public Void trigger(WebHookTrigger trigger) {
     try {
       //TODO: This needs some attention.
-      URL webhooksUrl = new URL(getResourceUrl(), "webhooks/");
-      URL triggerUrl = new URL(webhooksUrl, secret + "/" + triggerType);
-      AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().preparePost(triggerUrl.toString());
+      String triggerUrl = URLUtils.join(getResourceUrl().toString(), "webhooks", secret, triggerType);
+      AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().preparePost(triggerUrl);
       requestBuilder.addHeader("Content-Type", "application/json");
       requestBuilder.addHeader("X-Github-Event", "push");
       requestBuilder.setBody(BaseOperation.mapper.writer().writeValueAsString(trigger));

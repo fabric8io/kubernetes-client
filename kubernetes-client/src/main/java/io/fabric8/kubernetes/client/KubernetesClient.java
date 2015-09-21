@@ -75,6 +75,8 @@ public interface KubernetesClient extends ConfigAware<Config>, AutoCloseable {
 
   URL getMasterUrl();
 
+  String getApiVersion();
+
   RootPaths rootPaths();
 
   ClientOperation<KubernetesClient, Endpoints, EndpointsList, DoneableEndpoints, ClientResource<Endpoints, DoneableEndpoints>> endpoints();

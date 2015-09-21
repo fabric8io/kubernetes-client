@@ -118,11 +118,6 @@ public class Config {
     this.watchReconnectLimit = watchReconnectLimit;
     this.requestTimeout = requestTimeout;
     this.proxy = proxy;
-
-    if (!this.masterUrl.endsWith("/")) {
-      this.masterUrl = this.masterUrl + "/";
-    }
-    this.masterUrl = this.masterUrl + "api/" + this.apiVersion + "/";
   }
 
   private void configFromSysPropsOrEnvVars(Config config) {

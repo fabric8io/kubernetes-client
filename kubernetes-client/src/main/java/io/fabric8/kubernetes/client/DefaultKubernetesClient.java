@@ -79,6 +79,7 @@ public class DefaultKubernetesClient implements KubernetesClient {
 
   private AsyncHttpClient httpClient;
   private URL masterUrl;
+  private String apiVersion;
   private Config configuration;
 
   public DefaultKubernetesClient() throws KubernetesClientException {
@@ -95,6 +96,7 @@ public class DefaultKubernetesClient implements KubernetesClient {
 
     try {
       this.masterUrl = new URL(config.getMasterUrl());
+      this.apiVersion = config.getApiVersion();
       AsyncHttpClientConfig.Builder clientConfigBuilder = new AsyncHttpClientConfig.Builder();
       clientConfigBuilder.setEnabledProtocols(config.getEnabledProtocols());
 
@@ -272,8 +274,7 @@ public class DefaultKubernetesClient implements KubernetesClient {
 
   @Override
   public RootPaths rootPaths() {
-    return (RootPaths) new BaseOperation(this, "", null, null, false, null, KubernetesClient.class, RootPaths.class, null, null) {
-    }.get();
+    return new BaseOperation(this, "", null, null, false, null, KubernetesClient.class, RootPaths.class, null, null) {}.getRootPaths();
   }
 
   @Override
@@ -298,5 +299,9 @@ public class DefaultKubernetesClient implements KubernetesClient {
       return adapter.adapt(this);
     }
     throw new IllegalStateException("Could not find adapter");
+  }
+
+  public String getApiVersion() {
+    return apiVersion;
   }
 }
