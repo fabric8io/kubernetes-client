@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.DoneableReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
+import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.GenericKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -85,11 +86,11 @@ public class ReplicationControllerOperationsImpl<C extends Client> extends HasMe
   public ReplicationController scale(int count, boolean wait) {
     ReplicationController res = cascading(false).edit().editSpec().withReplicas(count).endSpec().done();
     if (wait) {
-      res = get();
+      res = getMandatory();
       while (res.getStatus().getReplicas() != count) {
         try {
           Thread.sleep(Scaleable.POLL_INTERVAL_MS);
-          res = get();
+          res = getMandatory();
         } catch (InterruptedException e) {
           throw new KubernetesClientException("Interrupted sleep", e);
         }
@@ -138,7 +139,7 @@ public class ReplicationControllerOperationsImpl<C extends Client> extends HasMe
       @Override
       public void visit(ReplicationController rc) {
         try {
-          new RollingUpdater(getClient()).rollUpdate(get(), rc);
+          new RollingUpdater(getClient()).rollUpdate(getMandatory(), rc);
         } catch (Exception e) {
           throw KubernetesClientException.launderThrowable(e);
         }
@@ -157,6 +158,6 @@ public class ReplicationControllerOperationsImpl<C extends Client> extends HasMe
     if (!rolling) {
       return super.replace(rc);
     }
-    return new RollingUpdater(getClient()).rollUpdate(get(), rc);
+    return new RollingUpdater(getClient()).rollUpdate(getMandatory(), rc);
   }
 }

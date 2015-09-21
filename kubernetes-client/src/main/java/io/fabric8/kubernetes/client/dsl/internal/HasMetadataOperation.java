@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
@@ -63,7 +64,8 @@ public class HasMetadataOperation<C extends Client, T extends HasMetadata, L ext
     };
 
     try {
-      return (D) getDoneableType().getDeclaredConstructor(getType(), Visitor.class).newInstance(get(), visitor);
+      T item = getMandatory();
+      return (D) getDoneableType().getDeclaredConstructor(getType(), Visitor.class).newInstance(item, visitor);
     } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException e) {
       throw KubernetesClientException.launderThrowable(e);
     }

@@ -136,6 +136,14 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
     }
   }
 
+  T getMandatory() {
+    T item = get();
+    if (item != null) {
+      return item;
+    }
+    throw new KubernetesClientException("Resource not found!", 404, new StatusBuilder().withCode(404).withMessage("Not found.").build());
+  }
+
   @Override
   public D edit() throws KubernetesClientException {
     throw new KubernetesClientException("Cannot edit read-only resources");
