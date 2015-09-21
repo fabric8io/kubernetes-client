@@ -77,9 +77,9 @@ public class Config {
   private String clientKeyData = Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_DATA_SYSTEM_PROPERTY);
   private String clientKeyAlgo = Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_ALGO_SYSTEM_PROPERTY, "RSA");
   private String clientKeyPassphrase = Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_PASSPHRASE_SYSTEM_PROPERTY, "changeit");
-  private String username;
-  private String password;
-  private String oauthToken;
+  private String username = Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_BASIC_USERNAME_SYSTEM_PROPERTY);
+  private String password = Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_BASIC_PASSWORD_SYSTEM_PROPERTY);
+  private String oauthToken = Utils.getSystemPropertyOrEnvVar(KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY);
   private int watchReconnectInterval = Integer.parseInt(Utils.getSystemPropertyOrEnvVar(KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY, "1000"));
   private int watchReconnectLimit = Integer.parseInt(Utils.getSystemPropertyOrEnvVar(KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY, "-1"));
   private int requestTimeout = Integer.parseInt(Utils.getSystemPropertyOrEnvVar(KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY, "10000"));
@@ -89,12 +89,20 @@ public class Config {
 
   public Config() {
     if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYSERVICEACCOUNT_SYSTEM_PROPERTY, true)) {
-      tryServiceAccount(this);
+      tryServiceAccount();
     }
+
     if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, true)) {
-      tryKubeConfig(this);
+      tryKubeConfig();
     }
-    configFromSysPropsOrEnvVars(this);
+
+
+    if (!this.masterUrl.endsWith("/")) {
+      this.masterUrl = this.masterUrl + "/";
+    }
+
+    this.masterUrl = this.masterUrl + "api/" + this.apiVersion + "/";
+    this.trustCerts = this.trustCerts != null ? this.trustCerts : Boolean.FALSE;
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder")
