@@ -70,8 +70,29 @@ public class ReplicationControllerTest extends HttpServerMockBase {
 
   @Test
   public void testDelete() {
-    expectAndReturnAsJson("/api/v1/namespaces/test/replicationcontrollers/repl1", 200, new ReplicationControllerBuilder().build());
-    expectAndReturnAsJson("/api/v1/namespaces/ns1/replicationcontrollers/repl2", 200, new ReplicationControllerBuilder().build());
+    expectAndReturnAsJson("/api/v1/namespaces/test/replicationcontrollers/repl1", 200, new ReplicationControllerBuilder() .withNewMetadata()
+      .withName("repl1")
+      .withResourceVersion("1")
+      .endMetadata()
+      .withNewSpec()
+      .withReplicas(1)
+      .endSpec()
+      .withNewStatus()
+      .withReplicas(0)
+      .endStatus()
+      .build());
+
+    expectAndReturnAsJson("/api/v1/namespaces/ns1/replicationcontrollers/repl2", 200, new ReplicationControllerBuilder() .withNewMetadata()
+      .withName("repl2")
+      .withResourceVersion("1")
+      .endMetadata()
+      .withNewSpec()
+      .withReplicas(1)
+      .endSpec()
+      .withNewStatus()
+      .withReplicas(0)
+      .endStatus()
+      .build());
 
     KubernetesClient client = getClient();
 
@@ -96,6 +117,9 @@ public class ReplicationControllerTest extends HttpServerMockBase {
       .withNewSpec()
       .withReplicas(1)
       .endSpec()
+      .withNewStatus()
+        .withReplicas(5)
+      .endStatus()
       .build());
 
     expectAndReturnAsJson("/api/v1/namespaces/ns1/replicationcontrollers/repl2", 200, new ReplicationControllerBuilder().build());
