@@ -56,6 +56,7 @@ import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.mock.impl.MockEndpoints;
@@ -264,5 +265,9 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
       }).anyTimes();
     }
     return anyNamespaceOp;
+  }
+
+  public <T extends Client> IExpectationSetters<T> adapt(Class<T> type) {
+    return expect(client.adapt(type));
   }
 }
