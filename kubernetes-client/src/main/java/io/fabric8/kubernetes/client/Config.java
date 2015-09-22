@@ -96,7 +96,7 @@ public class Config {
       tryKubeConfig();
     }
 
-    this.trustCerts = this.trustCerts != null ? this.trustCerts : Boolean.FALSE;
+    this.trustCerts = Utils.getSystemPropertyOrEnvVar(KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY, Boolean.FALSE);
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder")
@@ -128,13 +128,13 @@ public class Config {
     if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, true)) {
       tryKubeConfig();
     }
-    this.trustCerts = this.trustCerts != null ? this.trustCerts : Boolean.FALSE;
+    this.trustCerts = this.trustCerts != null ? this.trustCerts : Utils.getSystemPropertyOrEnvVar(KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY, Boolean.FALSE);
   }
 
   private void tryServiceAccount() {
     boolean serviceAccountCaCertExists = Files.isRegularFile(Paths.get(KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH));
     if (serviceAccountCaCertExists) {
-      caCertFile = clientCertFile != null ? caCertFile : KUBERNETES_KUBECONFIG_FILE;
+      caCertFile = caCertFile != null ? caCertFile : KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH;
     }
     try {
       String serviceTokenCandidate = new String(Files.readAllBytes(Paths.get(KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH)));
@@ -169,7 +169,7 @@ public class Config {
 
           AuthInfo currentAuthInfo = KubeConfigUtils.getUserAuthInfo(kubeConfig, currentContext);
           if (currentAuthInfo != null) {
-            clientCertFile = clientKeyFile != null ? clientCertFile : currentAuthInfo.getClientCertificate();
+            clientCertFile = clientCertFile != null ? clientCertFile : currentAuthInfo.getClientCertificate();
             clientCertData = clientCertData != null ? clientCertData : currentAuthInfo.getClientCertificateData();
             clientKeyFile = clientKeyFile != null ? clientKeyFile : currentAuthInfo.getClientKey();
             clientKeyData = clientKeyData != null ? clientKeyData : currentAuthInfo.getClientKeyData();
