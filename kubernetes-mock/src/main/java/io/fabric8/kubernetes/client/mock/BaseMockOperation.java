@@ -19,7 +19,6 @@ package io.fabric8.kubernetes.client.mock;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
@@ -65,6 +64,7 @@ public class BaseMockOperation<C extends Client, T, L extends KubernetesResource
 
 
   private BaseMockOperation loadedMockOp;
+  private BaseMockOperation allNamespacesOp;
   private Map<IArgumentMatcher, BaseMockOperation> nameMap = new HashMap<>();
   private Map<IArgumentMatcher, BaseMockOperation> namespaceMap = new HashMap<>();
   private Map<IArgumentMatcher, BaseMockOperation> cascadingMap = new HashMap<>();
@@ -147,6 +147,16 @@ public class BaseMockOperation<C extends Client, T, L extends KubernetesResource
       namespaceMap.put(matcher, op);
     }
     return op;
+  }
+
+  @Override
+  public MockNonNamespaceOperation<T, L, D, E> inAnyNamespace() {
+    if (allNamespacesOp == null) {
+      allNamespacesOp = newInstance();
+      expect(delegate.inAnyNamespace()).andReturn((ClientNonNamespaceOperation<C, T, L, D, R>) allNamespacesOp.getDelegate()).anyTimes();
+      nested.add(allNamespacesOp);
+    }
+    return allNamespacesOp;
   }
 
   @Override

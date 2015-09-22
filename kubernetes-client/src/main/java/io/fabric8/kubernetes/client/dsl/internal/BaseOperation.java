@@ -171,6 +171,11 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
     }
   }
 
+  @Override
+  public ClientNonNamespaceOperation<C, T, L, D, R> inAnyNamespace() {
+    return inNamespace(null);
+  }
+
 
   @Override
   public EditReplaceDeletable<T, T, D, Boolean> cascading(boolean enabled) {

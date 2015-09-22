@@ -39,6 +39,12 @@ public class PodTest extends HttpServerMockBase {
       .addNewItem().and()
       .addNewItem().and().build());
 
+    expectAndReturnAsJson("/api/v1/pods", 200, new PodListBuilder()
+      .addNewItem().and()
+      .addNewItem().and()
+      .addNewItem()
+      .and().build());
+
 
     KubernetesClient client = getClient();
     PodList podList = client.pods().list();
@@ -48,6 +54,10 @@ public class PodTest extends HttpServerMockBase {
     podList = client.pods().inNamespace("ns1").list();
     assertNotNull(podList);
     assertEquals(2, podList.getItems().size());
+
+    podList = client.pods().inAnyNamespace().list();
+    assertNotNull(podList);
+    assertEquals(3, podList.getItems().size());
   }
 
 

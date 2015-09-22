@@ -31,6 +31,7 @@ import java.io.InputStream;
 public interface ClientOperation<C extends Client, T, L, D, R>
   extends
   ClientAware<C>,
+  AnyNamespaceable<FilterWatchListDeletable<T, L, Boolean>>,
   Namespaceable<ClientNonNamespaceOperation<C, T, L, D, R>>,
   FilterWatchListDeletable<T, L, Boolean>,
   Loadable<InputStream, R> {
