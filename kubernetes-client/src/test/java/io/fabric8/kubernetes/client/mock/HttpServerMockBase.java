@@ -22,10 +22,12 @@ import com.google.mockwebserver.Dispatcher;
 import com.google.mockwebserver.MockResponse;
 import com.google.mockwebserver.MockWebServer;
 import com.google.mockwebserver.RecordedRequest;
+import io.fabric8.kubernetes.api.model.RootPathsBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import org.junit.After;
 import org.junit.Before;
 
 import java.io.IOException;
@@ -56,7 +58,13 @@ public class HttpServerMockBase {
         return new MockResponse().setResponseCode(404);
       }
     });
+    expectAndReturnAsJson("/", 200, new RootPathsBuilder().addToPaths("/api").build());
     server.play();
+  }
+
+  @After
+  public void tearDown() throws IOException {
+    server.shutdown();
   }
 
 

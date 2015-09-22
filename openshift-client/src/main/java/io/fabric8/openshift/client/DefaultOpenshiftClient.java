@@ -253,7 +253,7 @@ public class DefaultOpenshiftClient extends BaseClient implements OpenShiftClien
 
   @Override
   public ClientMixedOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig, ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void>> buildConfigs() {
-    return new BuildConfigOperationsImpl(this, null, null, true, null, null, null);
+    return new BuildConfigOperationsImpl(this);
   }
 
   @Override
