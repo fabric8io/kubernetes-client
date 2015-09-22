@@ -20,20 +20,22 @@ import com.ning.http.client.Response;
 import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientLoggableResource;
+import io.fabric8.kubernetes.client.internal.URLUtils;
 
 import java.net.URL;
 import java.util.concurrent.Future;
 
-public class PodOperationsImpl extends HasMetadataOperation<KubernetesClient, Pod, PodList, DoneablePod, ClientLoggableResource<Pod, DoneablePod>> implements ClientLoggableResource<Pod,DoneablePod> {
+public class PodOperationsImpl<C extends Client>  extends HasMetadataOperation<C, Pod, PodList, DoneablePod, ClientLoggableResource<Pod, DoneablePod>> implements ClientLoggableResource<Pod,DoneablePod> {
 
-  public PodOperationsImpl(KubernetesClient client) {
-    this(client, null, null, true, null);
+  public PodOperationsImpl(C client) {
+    this(client, client.getNamespace(), null, true, null);
   }
 
-  public PodOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading, Pod item) {
+  public PodOperationsImpl(C client, String namespace, String name, Boolean cascading, Pod item) {
     super(client, "pods", namespace, name, cascading, item);
   }
 
@@ -61,7 +63,7 @@ public class PodOperationsImpl extends HasMetadataOperation<KubernetesClient, Po
     }
 
     try {
-      URL url = new URL(getResourceUrl(), sb.toString());
+      URL url = new URL(URLUtils.join(getResourceUrl().toString(), sb.toString()));
       AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().prepareGet(url.toString());
       Future<Response> f = requestBuilder.execute();
       Response r = f.get();

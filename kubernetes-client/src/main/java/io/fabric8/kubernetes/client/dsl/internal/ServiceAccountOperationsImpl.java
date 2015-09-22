@@ -18,16 +18,16 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.api.model.DoneableServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 
-public class ServiceAccountOperationsImpl extends HasMetadataOperation<KubernetesClient, ServiceAccount, ServiceAccountList, DoneableServiceAccount, ClientResource<ServiceAccount, DoneableServiceAccount>> {
+public class ServiceAccountOperationsImpl<C extends Client> extends HasMetadataOperation<C, ServiceAccount, ServiceAccountList, DoneableServiceAccount, ClientResource<ServiceAccount, DoneableServiceAccount>> {
 
-  public ServiceAccountOperationsImpl(KubernetesClient client) {
-    this(client, null, null, true, null);
+  public ServiceAccountOperationsImpl(C client) {
+    this(client, client.getNamespace(), null, true, null);
   }
 
-  public ServiceAccountOperationsImpl(KubernetesClient client, String namespace, String name, Boolean cascading, ServiceAccount item) {
+  public ServiceAccountOperationsImpl(C client, String namespace, String name, Boolean cascading, ServiceAccount item) {
     super(client, "serviceaccounts", namespace, name, cascading, item);
   }
 }

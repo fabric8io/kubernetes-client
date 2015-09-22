@@ -14,12 +14,9 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client;
+package io.fabric8.kubernetes.client.dsl;
 
-/**
- * An Extension to the KubernetesClient.
- * The {@link io.fabric8.kubernetes.client.KubernetesClient} can be "adapted" to any Extension as long as there is an {@link io.fabric8.kubernetes.client.ExtensionAdapter}
- * available via {@link java.util.ServiceLoader}.
- */
-public interface Extension extends KubernetesClient {
+public interface AnyNamespaceable<T> {
+
+  T inAnyNamespace();
 }

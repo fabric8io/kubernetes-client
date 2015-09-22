@@ -19,12 +19,13 @@ package io.fabric8.kubernetes.client.mock.impl;
 import io.fabric8.kubernetes.api.model.DoneableNode;
 import io.fabric8.kubernetes.api.model.Node;
 import io.fabric8.kubernetes.api.model.NodeList;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockResource;
 
-public class MockNode extends BaseMockOperation<KubernetesClient, Node, NodeList, DoneableNode,
+public class MockNode<C extends Client>  extends BaseMockOperation<C, Node, NodeList, DoneableNode,
   ClientResource<Node, DoneableNode>,
   MockResource<Node, DoneableNode, Boolean>> {
 }

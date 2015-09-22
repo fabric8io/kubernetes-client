@@ -25,7 +25,7 @@ public class ImageStreamOperationsImpl extends OpenshiftOperation<OpenShiftClien
   ClientResource<ImageStream, DoneableImageStream>> {
 
   public ImageStreamOperationsImpl(OpenShiftClient client) {
-    this(client, null, null, true, null);
+    this(client, client.getNamespace(), null, true, null);
   }
 
   public ImageStreamOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading, ImageStream item) {

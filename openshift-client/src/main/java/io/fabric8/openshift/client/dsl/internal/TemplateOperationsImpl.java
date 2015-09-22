@@ -18,6 +18,7 @@ package io.fabric8.openshift.client.dsl.internal;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import com.ning.http.client.AsyncHttpClient;
+import io.fabric8.kubernetes.client.internal.URLUtils;
 import io.fabric8.openshift.api.model.DoneableTemplate;
 import io.fabric8.openshift.api.model.Parameter;
 import io.fabric8.openshift.api.model.Template;
@@ -37,7 +38,7 @@ public class TemplateOperationsImpl
   implements TemplateOperation {
 
   public TemplateOperationsImpl(OpenShiftClient client) {
-    this(client, null, null, true, null);
+    this(client, client.getNamespace(), null, true, null);
   }
 
   public TemplateOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading, Template item) {
@@ -76,9 +77,9 @@ public class TemplateOperationsImpl
   private URL getProcessUrl() throws MalformedURLException {
     URL requestUrl = getRootUrl();
     if (getNamespace() != null) {
-      requestUrl = new URL(requestUrl, "namespaces/" + getNamespace() + "/");
+      requestUrl = new URL(URLUtils.join(requestUrl.toString(), "namespaces" + getNamespace()));
     }
-    requestUrl = new URL(requestUrl, "processedtemplates/");
+    requestUrl = new URL(URLUtils.join(requestUrl.toString(), "processedtemplates"));
     return requestUrl;
   }
 }

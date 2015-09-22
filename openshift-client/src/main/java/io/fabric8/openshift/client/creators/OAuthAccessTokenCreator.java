@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client.creators;
 
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ResourceCreator;
 import io.fabric8.openshift.api.model.OAuthAccessToken;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -28,7 +28,7 @@ public class OAuthAccessTokenCreator implements ResourceCreator<OAuthAccessToken
   }
 
   @Override
-  public OAuthAccessToken create(KubernetesClient client, String namespace, OAuthAccessToken item) {
+  public OAuthAccessToken create(Client client, String namespace, OAuthAccessToken item) {
     try (OpenShiftClient osClient = client.adapt(OpenShiftClient.class)) {
       return new OAuthAccessTokenOperationsImpl(osClient, namespace, null, true, item).create();
     }

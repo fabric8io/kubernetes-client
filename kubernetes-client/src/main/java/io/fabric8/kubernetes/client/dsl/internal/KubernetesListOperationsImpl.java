@@ -20,9 +20,10 @@ import io.fabric8.kubernetes.api.model.DoneableKubernetesList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.Creators;
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.GenericKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.ResourceCreator;
+import io.fabric8.kubernetes.client.dsl.ClientKubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListOperation;
 import io.fabric8.kubernetes.client.dsl.CreateGettable;
@@ -32,32 +33,32 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KubernetesListOperationsImpl
-  implements ClientKubernetesListOperation<KubernetesClient>,
-  ClientKubernetesListNonNamespaceOperation<KubernetesClient>,
+public class KubernetesListOperationsImpl<C extends GenericKubernetesClient<C>>
+  implements ClientKubernetesListOperation<C>,
+  ClientKubernetesListMixedOperation<C>,
   Loadable<InputStream, CreateGettable<KubernetesList, KubernetesList, DoneableKubernetesList>>,
   CreateGettable<KubernetesList, KubernetesList, DoneableKubernetesList> {
 
-  private final KubernetesClient client;
+  private final C client;
   private KubernetesList item;
   private String namespace;
 
-  public KubernetesListOperationsImpl(KubernetesClient client) {
-    this.client = client;
+  public KubernetesListOperationsImpl(C client) {
+    this(client, client.getNamespace());
   }
 
-  public KubernetesListOperationsImpl(KubernetesClient client, String namespace) {
+  public KubernetesListOperationsImpl(C client, String namespace) {
     this.client = client;
     this.namespace = namespace;
   }
 
   @Override
-  public KubernetesClient getClient() {
+  public C getClient() {
     return client;
   }
 
   @Override
-  public ClientKubernetesListNonNamespaceOperation<KubernetesClient> inNamespace(String namespace) {
+  public ClientKubernetesListNonNamespaceOperation<C> inNamespace(String namespace) {
     return new KubernetesListOperationsImpl(client, namespace);
   }
 

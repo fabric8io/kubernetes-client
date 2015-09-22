@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client.creators;
 
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ResourceCreator;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -28,7 +28,7 @@ public class UserCreator implements ResourceCreator<User> {
   }
 
   @Override
-  public User create(KubernetesClient client, String namespace, User item) {
+  public User create(Client client, String namespace, User item) {
     try (OpenShiftClient osClient = client.adapt(OpenShiftClient.class)) {
       return new UserOperationsImpl(osClient, namespace, null, true, item).create();
     }

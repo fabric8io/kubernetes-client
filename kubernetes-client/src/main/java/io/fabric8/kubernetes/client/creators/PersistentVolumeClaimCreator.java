@@ -16,6 +16,8 @@
 package io.fabric8.kubernetes.client.creators;
 
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
+import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.GenericKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.ResourceCreator;
 import io.fabric8.kubernetes.client.dsl.internal.PersistentVolumeClaimOperationsImpl;
@@ -27,7 +29,7 @@ public class PersistentVolumeClaimCreator implements ResourceCreator<PersistentV
   }
 
   @Override
-  public PersistentVolumeClaim create(KubernetesClient client, String namespace, PersistentVolumeClaim item) {
-    return new PersistentVolumeClaimOperationsImpl(client, namespace, null, true, item).create();
+  public PersistentVolumeClaim create(Client client, String namespace, PersistentVolumeClaim item) {
+    return new PersistentVolumeClaimOperationsImpl<Client>(client, namespace, null, true, item).create();
   }
 }

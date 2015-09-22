@@ -22,8 +22,10 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.api.model.Status;
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.api.model.StatusBuilder;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
@@ -31,6 +33,7 @@ import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
+import io.fabric8.kubernetes.client.internal.URLUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,12 +49,12 @@ import java.util.concurrent.Future;
 
 import static io.fabric8.kubernetes.client.internal.Utils.join;
 
-public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
-  implements ClientMixedOperation<K, T, L, D, R> {
+public class BaseOperation<C extends Client, T, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
+  implements ClientMixedOperation<C, T, L, D, R> {
 
   protected static final ObjectMapper mapper = new ObjectMapper();
 
-  private final K client;
+  private final C client;
 
   private final String name;
   private final String namespace;
@@ -65,34 +68,31 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   private final Map<String, String[]> labelsNotIn = new TreeMap<>();
   private final Map<String, String> fields = new TreeMap<>();
 
-  private final Class<K> clientType;
   private final Class<T> type;
   private final Class<L> listType;
   private final Class<D> doneableType;
 
   private boolean reaping;
 
-  protected BaseOperation(K client, String resourceT, String namespace, String name, Boolean cascading, T item) {
+  protected BaseOperation(C client, String resourceT, String namespace, String name, Boolean cascading, T item) {
     this.client = client;
     this.resourceT = resourceT;
     this.namespace = namespace;
     this.name = name;
     this.cascading = cascading;
     this.item = item;
-    this.clientType = (Class<K>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     this.type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
     this.listType = (Class<L>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[2];
     this.doneableType = (Class<D>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[3];
   }
 
-  protected BaseOperation(K client, String resourceT, String namespace, String name, Boolean cascading, T item, Class<K> clientType, Class<T> type, Class<L> listType, Class<D> doneableType) {
+  protected BaseOperation(C client, String resourceT, String namespace, String name, Boolean cascading, T item, Class<T> type, Class<L> listType, Class<D> doneableType) {
     this.client = client;
     this.resourceT = resourceT;
     this.namespace = namespace;
     this.name = name;
     this.cascading = cascading;
     this.item = item;
-    this.clientType = clientType;
     this.type = type;
     this.listType = listType;
     this.doneableType = doneableType;
@@ -106,7 +106,7 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
     try {
       URL requestUrl = getNamespacedUrl();
       if (name != null) {
-        requestUrl = new URL(requestUrl, name);
+        requestUrl = new URL(URLUtils.join(requestUrl.toString(), name));
       }
       return handleGet(requestUrl);
     } catch (KubernetesClientException e) {
@@ -119,6 +119,31 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
     }
   }
 
+  public RootPaths getRootPaths() {
+    try {
+      URL requestUrl = client.getMasterUrl();
+      Future<Response> f = getClient().getHttpClient().prepareGet(requestUrl.toString()).execute();
+      Response r = f.get();
+      assertResponseCode(r, 200);
+      return mapper.readerFor(RootPaths.class).readValue(r.getResponseBodyAsStream());
+    } catch (KubernetesClientException e) {
+      if (e.getCode() != 404) {
+        throw e;
+      }
+      return null;
+    } catch (InterruptedException | ExecutionException | IOException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+
+  T getMandatory() {
+    T item = get();
+    if (item != null) {
+      return item;
+    }
+    throw new KubernetesClientException("Resource not found!", 404, new StatusBuilder().withCode(404).withMessage("Not found.").build());
+  }
+
   @Override
   public D edit() throws KubernetesClientException {
     throw new KubernetesClientException("Cannot edit read-only resources");
@@ -128,7 +153,7 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   public R withName(String name) {
     try {
       return (R) getClass()
-        .getConstructor(clientType, String.class, String.class, Boolean.class, type)
+        .getConstructor(Client.class, String.class, String.class, Boolean.class, type)
         .newInstance(client, namespace, name, cascading, item);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
@@ -136,14 +161,19 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   }
 
   @Override
-  public ClientNonNamespaceOperation<K, T, L, D, R> inNamespace(String namespace) {
+  public ClientNonNamespaceOperation<C, T, L, D, R> inNamespace(String namespace) {
     try {
       return getClass()
-        .getConstructor(clientType, String.class, String.class, Boolean.class, type)
+        .getConstructor(Client.class, String.class, String.class, Boolean.class, type)
         .newInstance(client, namespace, name, cascading, item);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
+  }
+
+  @Override
+  public ClientNonNamespaceOperation<C, T, L, D, R> inAnyNamespace() {
+    return inNamespace(null);
   }
 
 
@@ -151,7 +181,7 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   public EditReplaceDeletable<T, T, D, Boolean> cascading(boolean enabled) {
     try {
       return getClass()
-        .getConstructor(clientType, String.class, String.class, Boolean.class, type)
+        .getConstructor(Client.class, String.class, String.class, Boolean.class, type)
         .newInstance(client, namespace, name, enabled, item);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
@@ -162,7 +192,7 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   public R load(InputStream is) {
     try {
       return (R) getClass()
-        .getConstructor(clientType, String.class, String.class, Boolean.class, type)
+        .getConstructor(Client.class, String.class, String.class, Boolean.class, type)
         .newInstance(client, namespace, name, cascading, client.unmarshal(is, type));
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
@@ -390,9 +420,9 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
 
         URL requestUrl = getRootUrl();
         if (metadataResource.getMetadata().getNamespace() != null) {
-          requestUrl = new URL(requestUrl, "namespaces/" + metadataResource.getMetadata().getNamespace() + "/");
+          requestUrl = new URL(URLUtils.join(requestUrl.toString(), "namespaces", metadataResource.getMetadata().getNamespace() + "/"));
         }
-        requestUrl = new URL(requestUrl, getResourceT() + "/" + metadataResource.getMetadata().getName());
+        requestUrl = new URL(URLUtils.join(requestUrl.toString(), getResourceT(), metadataResource.getMetadata().getName()));
         AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().prepareDelete(requestUrl.toString());
         Future<Response> f = requestBuilder.execute();
         Response r = f.get();
@@ -429,9 +459,9 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   protected URL getNamespacedUrl() throws MalformedURLException {
     URL requestUrl = getRootUrl();
     if (getNamespace() != null) {
-      requestUrl = new URL(requestUrl, "namespaces/" + getNamespace() + "/");
+      requestUrl = new URL(URLUtils.join(requestUrl.toString(), "namespaces", getNamespace()));
     }
-    requestUrl = new URL(requestUrl, resourceT + "/");
+    requestUrl = new URL(URLUtils.join(requestUrl.toString(), resourceT));
     return requestUrl;
   }
 
@@ -439,14 +469,15 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
     if (name == null) {
       return getNamespacedUrl();
     }
-    return new URL(getNamespacedUrl(), name + "/");
+    return new URL(URLUtils.join(getNamespacedUrl().toString(), name));
   }
 
   /**
    * Checks if the response status code is the expected and throws the appropriate KubernetesClientException if not.
-   * @param r                           The {@link com.ning.http.client.Response} object.
-   * @param expectedStatusCode          The expected status code.
-   * @throws KubernetesClientException  When the response code is not the expected.
+   *
+   * @param r                  The {@link com.ning.http.client.Response} object.
+   * @param expectedStatusCode The expected status code.
+   * @throws KubernetesClientException When the response code is not the expected.
    */
   protected void assertResponseCode(Response r, int expectedStatusCode) {
     int statusCode = r.getStatusCode();
@@ -461,7 +492,10 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
         Status status = mapper.readerFor(Status.class).readValue(r.getResponseBodyAsStream());
         throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
       } catch (IOException e) {
-        throw KubernetesClientException.launderThrowable(e);
+        throw new KubernetesClientException(e.getMessage(), statusCode, new StatusBuilder()
+          .withCode(statusCode)
+          .withMessage(e.getMessage())
+          .build());
       }
     }
   }
@@ -498,8 +532,13 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   }
 
   public URL getRootUrl() {
-    return client.getMasterUrl();
+    try {
+      return new URL(URLUtils.join(client.getMasterUrl().toString(), "api", client.getApiVersion()));
+    } catch (MalformedURLException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
   }
+
 
   public String getName() {
     return name;
@@ -534,7 +573,7 @@ public class BaseOperation<K extends KubernetesClient, T, L extends KubernetesRe
   }
 
   @Override
-  public K getClient() {
+  public C getClient() {
     return client;
   }
 

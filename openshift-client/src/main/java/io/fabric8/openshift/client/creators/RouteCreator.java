@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client.creators;
 
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ResourceCreator;
 import io.fabric8.openshift.api.model.Route;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -28,7 +28,7 @@ public class RouteCreator implements ResourceCreator<Route> {
   }
 
   @Override
-  public Route create(KubernetesClient client, String namespace, Route item) {
+  public Route create(Client client, String namespace, Route item) {
     try (OpenShiftClient osClient = client.adapt(OpenShiftClient.class)) {
       return new RouteOperationsImpl(osClient, namespace, null, true, item).create();
     }

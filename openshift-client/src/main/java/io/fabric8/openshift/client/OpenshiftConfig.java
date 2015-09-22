@@ -18,13 +18,10 @@ package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.internal.URLUtils;
 import io.fabric8.kubernetes.client.internal.Utils;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class OpenshiftConfig extends Config {
 
@@ -47,8 +44,7 @@ public class OpenshiftConfig extends Config {
   refs = {@BuildableReference(Config.class)}
   )
   public OpenshiftConfig(Config kubernetesConfig, String oapiVersion, String openShiftUrl) {
-    super(kubernetesConfig.isTrustCerts(),
-      kubernetesConfig.getMasterUrl(), kubernetesConfig.getApiVersion(), kubernetesConfig.getEnabledProtocols(),
+    super(kubernetesConfig.getMasterUrl(),kubernetesConfig.getApiVersion(),  kubernetesConfig.getNamespace(), kubernetesConfig.getEnabledProtocols(), kubernetesConfig.isTrustCerts(),
       kubernetesConfig.getCaCertFile(), kubernetesConfig.getCaCertData(),
       kubernetesConfig.getClientCertFile(), kubernetesConfig.getClientCertData(),
       kubernetesConfig.getClientKeyFile(), kubernetesConfig.getClientKeyData(),
@@ -62,11 +58,7 @@ public class OpenshiftConfig extends Config {
     if (this.openShiftUrl == null || this.openShiftUrl.isEmpty()) {
       this.openShiftUrl = getCustomOpenshiftUrl();
       if (this.openShiftUrl == null || this.openShiftUrl.isEmpty()) {
-        try {
-          this.openShiftUrl = new URL(new URL(getMasterUrl()), "/oapi/" + this.oapiVersion + "/").toString();
-        } catch (MalformedURLException e) {
-          throw KubernetesClientException.launderThrowable(e);
-        }
+        this.openShiftUrl = URLUtils.join(getMasterUrl(), "oapi", this.oapiVersion);
       }
     }
   }

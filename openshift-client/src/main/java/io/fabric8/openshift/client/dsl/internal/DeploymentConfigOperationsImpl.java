@@ -25,7 +25,7 @@ public class DeploymentConfigOperationsImpl extends OpenshiftOperation<OpenShift
   ClientResource<DeploymentConfig, DoneableDeploymentConfig>> {
 
   public DeploymentConfigOperationsImpl(OpenShiftClient client) {
-    this(client, null, null, true, null);
+    this(client, client.getNamespace(), null, true, null);
   }
 
   public DeploymentConfigOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading, DeploymentConfig item) {

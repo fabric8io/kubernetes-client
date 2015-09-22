@@ -20,7 +20,8 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.api.model.StatusBuilder;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import org.slf4j.Logger;
@@ -29,17 +30,15 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.TimeUnit;
 
-public class HasMetadataOperation<K extends KubernetesClient, T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
-  extends BaseOperation<K, T, L, D, R> {
+public class HasMetadataOperation<C extends Client, T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
+  extends BaseOperation<C, T, L, D, R> {
 
-  private static final Logger logger = LoggerFactory.getLogger(HasMetadataOperation.class);
-
-  protected HasMetadataOperation(K client, String resourceT, String namespace, String name, Boolean cascading, T item) {
+  protected HasMetadataOperation(C client, String resourceT, String namespace, String name, Boolean cascading, T item) {
     super(client, resourceT, namespace, name, cascading, item);
   }
 
-  protected HasMetadataOperation(K client, String resourceT, String namespace, String name, Boolean cascading, T item, Class<K> clientType, Class<T> type, Class<L> listType, Class<D> doneableType) {
-    super(client, resourceT, namespace, name, cascading, item, clientType, type, listType, doneableType);
+  protected HasMetadataOperation(C client, String resourceT, String namespace, String name, Boolean cascading, T item, Class<T> type, Class<L> listType, Class<D> doneableType) {
+    super(client, resourceT, namespace, name, cascading, item, type, listType, doneableType);
   }
 
   @Override
@@ -65,7 +64,8 @@ public class HasMetadataOperation<K extends KubernetesClient, T extends HasMetad
     };
 
     try {
-      return (D) getDoneableType().getDeclaredConstructor(getType(), Visitor.class).newInstance(get(), visitor);
+      T item = getMandatory();
+      return (D) getDoneableType().getDeclaredConstructor(getType(), Visitor.class).newInstance(item, visitor);
     } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
@@ -84,17 +84,22 @@ public class HasMetadataOperation<K extends KubernetesClient, T extends HasMetad
             reaper.reap();
           }
         }
-        item.getMetadata().setResourceVersion(null);
+        item.getMetadata().setResourceVersion(get().getMetadata().getResourceVersion());
         return handleReplace(getResourceUrl(), item);
-      } catch (Exception e) {
+      } catch (KubernetesClientException e) {
         caught = e;
-        if (i < maxTries - 1) {
-          try {
-            TimeUnit.SECONDS.sleep(1);
-          } catch (InterruptedException e1) {
-            // Ignore this... would only hide the proper exception
+        // Only retry if there's a conflict - this is normally to do with resource version & server updates.
+        if (e.getCode() == 409) {
+          if (i < maxTries - 1) {
+            try {
+              TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e1) {
+              // Ignore this... would only hide the proper exception
+            }
           }
         }
+      } catch (Exception e) {
+        caught = e;
       }
     }
     throw KubernetesClientException.launderThrowable(caught);

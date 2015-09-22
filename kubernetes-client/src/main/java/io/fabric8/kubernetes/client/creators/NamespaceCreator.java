@@ -16,7 +16,7 @@
 package io.fabric8.kubernetes.client.creators;
 
 import io.fabric8.kubernetes.api.model.Namespace;
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ResourceCreator;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceOperationsImpl;
 
@@ -27,7 +27,7 @@ public class NamespaceCreator implements ResourceCreator<Namespace> {
   }
 
   @Override
-  public Namespace create(KubernetesClient client, String namespace, Namespace item) {
-    return new NamespaceOperationsImpl(client, namespace, null, true, item).create();
+  public Namespace create(Client client, String namespace, Namespace item) {
+    return new NamespaceOperationsImpl<Client>(client, namespace, null, true, item).create();
   }
 }
