@@ -77,6 +77,7 @@
 
     <async.http.version>1.9.30</async.http.version>
     <easymock.version>3.2</easymock.version>
+    <felix.scr.annotations.version>1.9.8</felix.scr.annotations.version>
     <jackson.version>2.6.1</jackson.version>
     <junit.version>4.12</junit.version>
     <kubernetes.model.version>1.0.27</kubernetes.model.version>
@@ -85,10 +86,17 @@
     <oauth.version>20100527</oauth.version>
     <slf4j.version>1.7.12</slf4j.version>
     <snakeyaml.version>1.15</snakeyaml.version>
+
+    <scr.annotations.version>1.9.2</scr.annotations.version>
     <sundrio.version>0.1.10</sundrio.version>
 
-    <maven.jar.plugin.version>2.6</maven.jar.plugin.version>
+
     <maven.bundle.plugin.version>2.5.4</maven.bundle.plugin.version>
+    <maven.buildhelper.plugin.version>1.9.1</maven.buildhelper.plugin.version>
+    <maven.jar.plugin.version>2.6</maven.jar.plugin.version>
+    <maven.resources.plugin.version>2.7</maven.resources.plugin.version>
+    <maven.scr.plugin.version>1.21.0</maven.scr.plugin.version>
+
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
 
@@ -115,6 +123,7 @@
     <module>kubernetes-examples</module>
     <module>kubernetes-client-with-deps</module>
     <module>openshift-client-with-deps</module>
+    <module>platforms</module>
   </modules>
 
   <build>

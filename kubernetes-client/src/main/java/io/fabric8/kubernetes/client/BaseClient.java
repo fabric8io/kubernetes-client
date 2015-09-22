@@ -85,7 +85,7 @@ public class BaseClient implements Client {
   }
 
 
-  private static AsyncHttpClient createHttpClient(final Config config) {
+  static AsyncHttpClient createHttpClient(final Config config) {
     try {
       AsyncHttpClientConfig.Builder clientConfigBuilder = new AsyncHttpClientConfig.Builder();
       clientConfigBuilder.setEnabledProtocols(config.getEnabledProtocols());

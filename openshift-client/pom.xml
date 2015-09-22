@@ -52,6 +52,22 @@
           </archive>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-scr-plugin</artifactId>
+        <version>${maven.scr.plugin.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>scr</goal>
+            </goals>
+            <configuration>
+              <specVersion>1.2</specVersion>
+              <strictMode>true</strictMode>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
@@ -62,6 +78,7 @@
       <version>${project.version}</version>
     </dependency>
 
+    <!-- Compile Only Dependencies -->
     <dependency>
       <groupId>io.sundr</groupId>
       <artifactId>builder-annotations</artifactId>
@@ -70,6 +87,15 @@
       <optional>true</optional>
     </dependency>
 
+    <dependency>
+      <groupId>org.apache.felix</groupId>
+      <artifactId>org.apache.felix.scr.annotations</artifactId>
+      <version>${scr.annotations.version}</version>
+      <scope>compile</scope>
+      <optional>true</optional>
+    </dependency>
+
+    <!-- Testing Dependencies -->
     <dependency>
       <groupId>com.google.mockwebserver</groupId>
       <artifactId>mockwebserver</artifactId>

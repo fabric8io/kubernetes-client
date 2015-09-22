@@ -19,7 +19,11 @@ import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ResourceCreator;
 import io.fabric8.kubernetes.client.dsl.internal.ServiceAccountOperationsImpl;
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Service;
 
+@Component
+@Service
 public class ServiceAccountCreator implements ResourceCreator<ServiceAccount> {
   @Override
   public Class<ServiceAccount> getKind() {

@@ -20,7 +20,11 @@ import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.GenericKubernetesClient;
 import io.fabric8.kubernetes.client.ResourceCreator;
 import io.fabric8.kubernetes.client.dsl.internal.NodeOperationsImpl;
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Service;
 
+@Component
+@Service
 public class NodeCreator implements ResourceCreator<Node> {
   @Override
   public Class<Node> getKind() {
