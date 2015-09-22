@@ -84,17 +84,22 @@ public class HasMetadataOperation<C extends Client, T extends HasMetadata, L ext
             reaper.reap();
           }
         }
-        item.getMetadata().setResourceVersion(null);
+        item.getMetadata().setResourceVersion(get().getMetadata().getResourceVersion());
         return handleReplace(getResourceUrl(), item);
-      } catch (Exception e) {
+      } catch (KubernetesClientException e) {
         caught = e;
-        if (i < maxTries - 1) {
-          try {
-            TimeUnit.SECONDS.sleep(1);
-          } catch (InterruptedException e1) {
-            // Ignore this... would only hide the proper exception
+        // Only retry if there's a conflict - this is normally to do with resource version & server updates.
+        if (e.getCode() == 409) {
+          if (i < maxTries - 1) {
+            try {
+              TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e1) {
+              // Ignore this... would only hide the proper exception
+            }
           }
         }
+      } catch (Exception e) {
+        caught = e;
       }
     }
     throw KubernetesClientException.launderThrowable(caught);

@@ -187,6 +187,17 @@ public class FullExample {
                 client.replicationControllers().inNamespace("thisisatest").withField("metadata.name", "nginx-controller").delete();
                 log("Deleted RC by field");
 
+                log("Created service",
+                        client.services().inNamespace("thisisatest").createNew()
+                                .withNewMetadata().withName("testservice").endMetadata()
+                                .withNewSpec()
+                                .addNewPort().withPort(80).withNewTargetPort().withIntVal(80).endTargetPort().endPort()
+                                .endSpec()
+                                .done());
+                log("Updated service", client.services().inNamespace("thisisatest").withName("testservice").edit().editMetadata().addToLabels("test", "label").endMetadata().done());
+                client.replicationControllers().inNamespace("thisisatest").withField("metadata.name", "testservice").delete();
+                log("Deleted service by field");
+
                 log("Root paths:", client.rootPaths());
 
             } finally {
