@@ -63,44 +63,49 @@ public class Config {
   public static final String KUBERNETES_HTTP_PROXY = "http.proxy";
   public static final String KUBERNETES_HTTPS_PROXY = "https.proxy";
   public static final String KUBERNETES_ALL_PROXY = "all.proxy";
-  private Boolean trustCerts;
+  private boolean trustCerts;
 
-  private String masterUrl = Utils.getSystemPropertyOrEnvVar(KUBERNETES_MASTER_SYSTEM_PROPERTY, "https://kubernetes.default.svc");
-  private String apiVersion = Utils.getSystemPropertyOrEnvVar(KUBERNETES_API_VERSION_SYSTEM_PROPERTY, "v1");
-  private String namespace = Utils.getSystemPropertyOrEnvVar(KUBERNETES_NAMESPACE_SYSTEM_PROPERTY, "default");
-  private String[] enabledProtocols = Utils.getSystemPropertyOrEnvVar(KUBERNETES_TLS_PROTOCOLS_SYSTEM_PROPERTY, "TLSv1.2").split(",");
-  private String caCertFile = Utils.getSystemPropertyOrEnvVar(KUBERNETES_CA_CERTIFICATE_FILE_SYSTEM_PROPERTY);
-  private String caCertData = Utils.getSystemPropertyOrEnvVar(KUBERNETES_CA_CERTIFICATE_DATA_SYSTEM_PROPERTY);
-  private String clientCertFile = Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_CERTIFICATE_FILE_SYSTEM_PROPERTY);
-  private String clientCertData = Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_CERTIFICATE_DATA_SYSTEM_PROPERTY);
-  private String clientKeyFile = Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_FILE_SYSTEM_PROPERTY);
-  private String clientKeyData = Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_DATA_SYSTEM_PROPERTY);
-  private String clientKeyAlgo = Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_ALGO_SYSTEM_PROPERTY, "RSA");
-  private String clientKeyPassphrase = Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_PASSPHRASE_SYSTEM_PROPERTY, "changeit");
-  private String username = Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_BASIC_USERNAME_SYSTEM_PROPERTY);
-  private String password = Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_BASIC_PASSWORD_SYSTEM_PROPERTY);
-  private String oauthToken = Utils.getSystemPropertyOrEnvVar(KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY);
-  private int watchReconnectInterval = Integer.parseInt(Utils.getSystemPropertyOrEnvVar(KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY, "1000"));
-  private int watchReconnectLimit = Integer.parseInt(Utils.getSystemPropertyOrEnvVar(KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY, "-1"));
-  private int requestTimeout = Integer.parseInt(Utils.getSystemPropertyOrEnvVar(KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY, "10000"));
-  private String proxy = Utils.getSystemPropertyOrEnvVar(KUBERNETES_HTTP_PROXY, Utils.getSystemPropertyOrEnvVar(KUBERNETES_HTTPS_PROXY, Utils.getSystemPropertyOrEnvVar(KUBERNETES_ALL_PROXY)));
+  private String masterUrl = "https://kubernetes.default.svc";
+  private String apiVersion = "v1";
+  private String namespace;
+  private String[] enabledProtocols = new String[]{"TLSv1.2"};
+  private String caCertFile;
+  private String caCertData;
+  private String clientCertFile;
+  private String clientCertData;
+  private String clientKeyFile;
+  private String clientKeyData;
+  private String clientKeyAlgo = "RSA";
+  private String clientKeyPassphrase = "changeit";
+  private String username;
+  private String password;
+  private String oauthToken;
+  private int watchReconnectInterval = 1000;
+  private int watchReconnectLimit = -1;
+  private int requestTimeout = 10 * 1000;
+  private String proxy;
 
   private Map<Integer, String> errorMessages = new HashMap<>();
 
   public Config() {
     if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYSERVICEACCOUNT_SYSTEM_PROPERTY, true)) {
-      tryServiceAccount();
+      tryServiceAccount(this);
     }
-
     if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, true)) {
-      tryKubeConfig();
+      tryKubeConfig(this);
     }
+    configFromSysPropsOrEnvVars(this);
 
-    this.trustCerts = Utils.getSystemPropertyOrEnvVar(KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY, Boolean.FALSE);
+    if (!this.masterUrl.endsWith("/")) {
+      this.masterUrl = this.masterUrl + "/";
+    }
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder")
   public Config(String masterUrl, String apiVersion, String namespace, String[] enabledProtocols, Boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int requestTimeout, String proxy) {
+    this();
+
+    this.trustCerts = trustCerts;
     this.masterUrl = masterUrl;
     this.apiVersion = apiVersion;
     this.namespace = namespace;
@@ -122,37 +127,67 @@ public class Config {
     this.requestTimeout = requestTimeout;
     this.proxy = proxy;
 
-    if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYSERVICEACCOUNT_SYSTEM_PROPERTY, true)) {
-      tryServiceAccount();
+    if (!this.masterUrl.endsWith("/")) {
+      this.masterUrl = this.masterUrl + "/";
     }
-    if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, true)) {
-      tryKubeConfig();
-    }
-    this.trustCerts = this.trustCerts != null ? this.trustCerts : Utils.getSystemPropertyOrEnvVar(KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY, Boolean.FALSE);
   }
 
-  private void tryServiceAccount() {
+  private void configFromSysPropsOrEnvVars(Config config) {
+    config.setTrustCerts(Utils.getSystemPropertyOrEnvVar(KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY, config.isTrustCerts()));
+    config.setMasterUrl(Utils.getSystemPropertyOrEnvVar(KUBERNETES_MASTER_SYSTEM_PROPERTY, config.getMasterUrl()));
+    config.setApiVersion(Utils.getSystemPropertyOrEnvVar(KUBERNETES_API_VERSION_SYSTEM_PROPERTY, config.getApiVersion()));
+    config.setNamespace(Utils.getSystemPropertyOrEnvVar(KUBERNETES_NAMESPACE_SYSTEM_PROPERTY, config.getNamespace()));
+    config.setCaCertFile(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CA_CERTIFICATE_FILE_SYSTEM_PROPERTY, config.getCaCertFile()));
+    config.setCaCertData(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CA_CERTIFICATE_DATA_SYSTEM_PROPERTY, config.getCaCertData()));
+    config.setClientCertFile(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_CERTIFICATE_FILE_SYSTEM_PROPERTY, config.getClientCertFile()));
+    config.setClientCertData(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_CERTIFICATE_DATA_SYSTEM_PROPERTY, config.getClientCertData()));
+    config.setClientKeyFile(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_FILE_SYSTEM_PROPERTY, config.getClientKeyFile()));
+    config.setClientKeyData(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_DATA_SYSTEM_PROPERTY, config.getClientKeyData()));
+    config.setClientKeyAlgo(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_ALGO_SYSTEM_PROPERTY, config.getClientKeyAlgo()));
+    config.setClientKeyPassphrase(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_PASSPHRASE_SYSTEM_PROPERTY, new String(config.getClientKeyPassphrase())));
+
+    config.setOauthToken(Utils.getSystemPropertyOrEnvVar(KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY, config.getOauthToken()));
+    config.setUsername(Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_BASIC_USERNAME_SYSTEM_PROPERTY, config.getUsername()));
+    config.setPassword(Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_BASIC_PASSWORD_SYSTEM_PROPERTY, config.getPassword()));
+    String configuredProtocols = Utils.getSystemPropertyOrEnvVar(KUBERNETES_TLS_PROTOCOLS_SYSTEM_PROPERTY);
+    if (configuredProtocols != null) {
+      config.setEnabledProtocols(configuredProtocols.split(","));
+    }
+    String configuredWatchReconnectInterval = Utils.getSystemPropertyOrEnvVar(KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY);
+    if (configuredWatchReconnectInterval != null) {
+      config.setWatchReconnectInterval(Integer.parseInt(configuredWatchReconnectInterval));
+    }
+    String configuredWatchReconnectLimit = Utils.getSystemPropertyOrEnvVar(KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY);
+    if (configuredWatchReconnectLimit != null) {
+      config.setWatchReconnectLimit(Integer.parseInt(configuredWatchReconnectLimit));
+    }
+
+    config.setRequestTimeout(Utils.getSystemPropertyOrEnvVar(KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY, config.getRequestTimeout()));
+
+    config.setProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_ALL_PROXY, config.getProxy()));
+    config.setProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_HTTPS_PROXY, config.getProxy()));
+    config.setProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_HTTP_PROXY, config.getProxy()));
+  }
+
+  private void tryServiceAccount(Config config) {
     boolean serviceAccountCaCertExists = Files.isRegularFile(Paths.get(KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH));
     if (serviceAccountCaCertExists) {
-      caCertFile = caCertFile != null ? caCertFile : KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH;
+      config.setCaCertFile(KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH);
     }
     try {
       String serviceTokenCandidate = new String(Files.readAllBytes(Paths.get(KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH)));
-
-
-      if ((oauthToken == null || oauthToken.isEmpty()) && serviceTokenCandidate != null) {
-        oauthToken = serviceTokenCandidate;
-
-        String txt = "Configured service account doesn't have access. Service account may have been revoked.";
-        errorMessages.put(401, "Unauthorized! " + txt);
-        errorMessages.put(403, "Forbidden!" + txt);
+      if (serviceTokenCandidate != null) {
+        config.setOauthToken(serviceTokenCandidate);
+        String txt  ="Configured service account doesn't have access. Service account may have been revoked.";
+        config.getErrorMessages().put(401, "Unauthorized! " + txt);
+        config.getErrorMessages().put(403, "Forbidden!" + txt);
       }
     } catch (IOException e) {
       // No service account token available...
     }
   }
 
-  private void tryKubeConfig() {
+  private void tryKubeConfig(Config config) {
     String kubeConfigFile = Utils.getSystemPropertyOrEnvVar(KUBERNETES_KUBECONFIG_FILE, new File(System.getProperty("user.home", "."), ".kube" + File.separator + "config").toString());
     boolean kubeConfigFileExists = Files.isRegularFile(Paths.get(kubeConfigFile));
     if (kubeConfigFileExists) {
@@ -161,25 +196,24 @@ public class Config {
         Context currentContext = KubeConfigUtils.getCurrentContext(kubeConfig);
         Cluster currentCluster = KubeConfigUtils.getCluster(kubeConfig, currentContext);
         if (currentCluster != null) {
-          masterUrl = masterUrl != null ? masterUrl : currentCluster.getServer();
-          namespace = namespace != null ? namespace : currentContext.getNamespace();
-          caCertFile = caCertFile != null ? caCertFile : currentCluster.getCertificateAuthority();
-          caCertData = caCertData != null ? caCertData : currentCluster.getCertificateAuthorityData();
-          trustCerts = trustCerts != null ? trustCerts : (currentCluster.getInsecureSkipTlsVerify() != null && currentCluster.getInsecureSkipTlsVerify());
-
+          config.setMasterUrl(currentCluster.getServer());
+          config.setNamespace(currentContext.getNamespace());
+          config.setTrustCerts(currentCluster.getInsecureSkipTlsVerify() != null && currentCluster.getInsecureSkipTlsVerify());
+          config.setCaCertFile(currentCluster.getCertificateAuthority());
+          config.setCaCertData(currentCluster.getCertificateAuthorityData());
           AuthInfo currentAuthInfo = KubeConfigUtils.getUserAuthInfo(kubeConfig, currentContext);
           if (currentAuthInfo != null) {
-            clientCertFile = clientCertFile != null ? clientCertFile : currentAuthInfo.getClientCertificate();
-            clientCertData = clientCertData != null ? clientCertData : currentAuthInfo.getClientCertificateData();
-            clientKeyFile = clientKeyFile != null ? clientKeyFile : currentAuthInfo.getClientKey();
-            clientKeyData = clientKeyData != null ? clientKeyData : currentAuthInfo.getClientKeyData();
-            oauthToken = oauthToken != null ? oauthToken : currentAuthInfo.getToken();
-            username = username != null ? username : currentAuthInfo.getUsername();
-            password = password != null ? password : currentAuthInfo.getPassword();
+            config.setClientCertFile(currentAuthInfo.getClientCertificate());
+            config.setClientCertData(currentAuthInfo.getClientCertificateData());
+            config.setClientKeyFile(currentAuthInfo.getClientKey());
+            config.setClientKeyData(currentAuthInfo.getClientKeyData());
+            config.setOauthToken(currentAuthInfo.getToken());
+            config.setUsername(currentAuthInfo.getUsername());
+            config.setPassword(currentAuthInfo.getPassword());
 
-            String txt = "Token may have expired! Please use kubectl login / oc login to log-in again.";
-            errorMessages.put(401, "Unauthorized! " + txt);
-            errorMessages.put(403, "Forbidden!" + txt);
+            String txt  ="Token may have expired! Please use kubectl login / oc login to log-in again.";
+            config.getErrorMessages().put(401, "Unauthorized! " + txt);
+            config.getErrorMessages().put(403, "Forbidden!" + txt);
           }
         }
       } catch (IOException e) {
@@ -301,7 +335,7 @@ public class Config {
   }
 
   public boolean isTrustCerts() {
-    return trustCerts != null ? trustCerts : false;
+    return trustCerts;
   }
 
   public void setTrustCerts(boolean trustCerts) {
