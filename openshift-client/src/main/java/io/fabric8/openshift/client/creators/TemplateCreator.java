@@ -20,7 +20,11 @@ import io.fabric8.kubernetes.client.ResourceCreator;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.dsl.internal.TemplateOperationsImpl;
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Service;
 
+@Component
+@Service
 public class TemplateCreator implements ResourceCreator<Template> {
   @Override
   public Class<Template> getKind() {

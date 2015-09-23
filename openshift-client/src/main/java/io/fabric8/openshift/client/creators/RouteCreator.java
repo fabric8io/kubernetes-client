@@ -20,7 +20,11 @@ import io.fabric8.kubernetes.client.ResourceCreator;
 import io.fabric8.openshift.api.model.Route;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.dsl.internal.RouteOperationsImpl;
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Service;
 
+@Component
+@Service
 public class RouteCreator implements ResourceCreator<Route> {
   @Override
   public Class<Route> getKind() {

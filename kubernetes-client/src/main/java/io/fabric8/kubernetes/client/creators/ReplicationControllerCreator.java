@@ -21,7 +21,11 @@ import io.fabric8.kubernetes.client.GenericKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.ResourceCreator;
 import io.fabric8.kubernetes.client.dsl.internal.ReplicationControllerOperationsImpl;
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Service;
 
+@Component
+@Service
 public class ReplicationControllerCreator implements ResourceCreator<ReplicationController> {
   @Override
   public Class<ReplicationController> getKind() {

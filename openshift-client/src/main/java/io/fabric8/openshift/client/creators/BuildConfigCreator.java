@@ -20,7 +20,11 @@ import io.fabric8.kubernetes.client.ResourceCreator;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.dsl.internal.BuildConfigOperationsImpl;
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Service;
 
+@Component
+@Service
 public class BuildConfigCreator implements ResourceCreator<BuildConfig> {
   @Override
   public Class<BuildConfig> getKind() {

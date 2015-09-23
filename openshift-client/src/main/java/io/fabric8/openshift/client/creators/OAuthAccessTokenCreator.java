@@ -20,7 +20,11 @@ import io.fabric8.kubernetes.client.ResourceCreator;
 import io.fabric8.openshift.api.model.OAuthAccessToken;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.dsl.internal.OAuthAccessTokenOperationsImpl;
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Service;
 
+@Component
+@Service
 public class OAuthAccessTokenCreator implements ResourceCreator<OAuthAccessToken> {
   @Override
   public Class<OAuthAccessToken> getKind() {

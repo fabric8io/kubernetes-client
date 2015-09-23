@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.client.dsl.Typeable;
 import io.fabric8.kubernetes.client.dsl.internal.BaseOperation;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.Response;
+import io.fabric8.kubernetes.client.dsl.internal.ClientMixedOperation;
 import io.fabric8.kubernetes.client.internal.URLUtils;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigList;
@@ -59,7 +60,7 @@ public class BuildConfigOperationsImpl extends OpenshiftOperation<OpenShiftClien
   }
 
   @Override
-  public ClientNonNamespaceOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig, ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void>> inNamespace(String namespace) {
+  public OpenshiftOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig, ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void>> inNamespace(String namespace) {
     return new BuildConfigOperationsImpl(getClient(), namespace, getName(), isCascading(), getItem(), secret, triggerType);
   }
 

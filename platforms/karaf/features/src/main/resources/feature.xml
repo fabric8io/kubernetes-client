@@ -1,0 +1,44 @@
+<!--
+
+    Copyright (C) 2015 Red Hat, Inc.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<features name="kuberntes-features-${project.version}">
+
+  <feature name="kubernetes-client" description="Fabric8 Kubernetes Client" version="${project.version}">
+    <bundle dependency='true'>mvn:javax.validation/validation-api/${validation.api.version}</bundle>
+    <bundle dependency='true'>mvn:javax.servlet/javax.servlet-api/${servlet.api.version}</bundle>
+    <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-core/${jackson.version}</bundle>
+    <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-annotations/${jackson.version}</bundle>
+    <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-databind/${jackson.version}</bundle>
+    <bundle dependency='true'>mvn:com.fasterxml.jackson.module/jackson-module-jaxb-annotations/${jackson.version}</bundle>
+    <bundle dependency='true'>mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-base/${jackson.version}</bundle>
+    <bundle dependency='true'>mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-json-provider/${jackson.version}</bundle>
+    <bundle dependency='true'>mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/${jackson.version}</bundle>
+    <bundle dependency='true'>mvn:io.netty/netty/${netty.version}</bundle>
+    <bundle dependency='true'>mvn:com.ning/async-http-client/${async.http.version}</bundle>
+    <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.oauth-provider/${oauth.bundle.version}</bundle>
+    <bundle dependency='true'>mvn:org.yaml/snakeyaml/${snakeyaml.version}</bundle>
+
+    <bundle>mvn:io.fabric8/kubernetes-model/${kubernetes.model.version}</bundle>
+    <bundle>mvn:io.fabric8/kubernetes-client/${project.version}</bundle>
+  </feature>
+
+  <feature name="openshift-client" description="Fabric8 Openshift Client" version="${project.version}">
+    <feature>kubernetes-client</feature>
+    <bundle>mvn:io.fabric8/openshift-client/${project.version}</bundle>
+  </feature>
+
+</features>
