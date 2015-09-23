@@ -96,6 +96,7 @@ import io.fabric8.openshift.api.model.DoneableOAuthAuthorizeToken;
 import io.fabric8.openshift.api.model.DoneableOAuthClient;
 import io.fabric8.openshift.api.model.DoneablePolicy;
 import io.fabric8.openshift.api.model.DoneablePolicyBinding;
+import io.fabric8.openshift.api.model.DoneableProject;
 import io.fabric8.openshift.api.model.DoneableRoute;
 import io.fabric8.openshift.api.model.DoneableTemplate;
 import io.fabric8.openshift.api.model.DoneableUser;
@@ -113,6 +114,8 @@ import io.fabric8.openshift.api.model.Policy;
 import io.fabric8.openshift.api.model.PolicyBinding;
 import io.fabric8.openshift.api.model.PolicyBindingList;
 import io.fabric8.openshift.api.model.PolicyList;
+import io.fabric8.openshift.api.model.Project;
+import io.fabric8.openshift.api.model.ProjectList;
 import io.fabric8.openshift.api.model.Route;
 import io.fabric8.openshift.api.model.RouteList;
 import io.fabric8.openshift.api.model.Template;
@@ -130,6 +133,7 @@ import io.fabric8.openshift.client.mock.impl.MockOAuthAuthorizeToken;
 import io.fabric8.openshift.client.mock.impl.MockOAuthClient;
 import io.fabric8.openshift.client.mock.impl.MockPolicy;
 import io.fabric8.openshift.client.mock.impl.MockPolicyBinding;
+import io.fabric8.openshift.client.mock.impl.MockProject;
 import io.fabric8.openshift.client.mock.impl.MockRoute;
 import io.fabric8.openshift.client.mock.impl.MockTemplate;
 import io.fabric8.openshift.client.mock.impl.MockUser;
@@ -176,6 +180,7 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
   private final MockOAuthAccessToken oAuthAccessTokens = new MockOAuthAccessToken();
   private final MockOAuthAuthorizeToken oAuthAuthorizeTokens = new MockOAuthAuthorizeToken();
   private final MockOAuthClient oAuthClients = new MockOAuthClient();
+  private final MockProject projects = new MockProject();
   private final MockRoute routes = new MockRoute();
   private final MockUser users = new MockUser();
   private final MockGroup groups = new MockGroup();
@@ -206,6 +211,7 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
     expect(client.oAuthAccessTokens()).andReturn(oAuthAccessTokens.getDelegate()).anyTimes();
     expect(client.oAuthAuthorizeTokens()).andReturn(oAuthAuthorizeTokens.getDelegate()).anyTimes();
     expect(client.oAuthClients()).andReturn(oAuthClients.getDelegate()).anyTimes();
+    expect(client.projects()).andReturn(projects.getDelegate()).anyTimes();
     expect(client.routes()).andReturn(routes.getDelegate()).anyTimes();
     expect(client.templates()).andReturn(templates.getDelegate()).anyTimes();
     expect(client.users()).andReturn(users.getDelegate()).anyTimes();
@@ -240,6 +246,7 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
     oAuthAccessTokens.replay();
     oAuthAuthorizeTokens.replay();
     oAuthClients.replay();
+    projects.replay();
     routes.replay();
     templates.replay();
 
@@ -277,6 +284,7 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
     oAuthAccessTokens.verify();
     oAuthAuthorizeTokens.verify();
     oAuthClients.verify();
+    projects.verify();
     routes.verify();
     templates.verify();
     users.verify();
@@ -380,6 +388,10 @@ public class OpenshiftMockClient implements Replayable<OpenShiftClient>, Verifia
 
   public MockNonNamespaceOperation<OAuthClient, OAuthClientList, DoneableOAuthClient, MockResource<OAuthClient, DoneableOAuthClient, Boolean>> oAuthClients() {
     return oAuthClients;
+  }
+
+  public MockNonNamespaceOperation<Project, ProjectList, DoneableProject, MockResource<Project, DoneableProject, Boolean>> projects() {
+    return projects;
   }
 
   public MockOperation<Route, RouteList, DoneableRoute, MockResource<Route, DoneableRoute, Boolean>> routes() {
