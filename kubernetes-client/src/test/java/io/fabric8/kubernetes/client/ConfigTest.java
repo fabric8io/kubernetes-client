@@ -20,6 +20,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static io.fabric8.kubernetes.client.Config.KUBERNETES_NAMESPACE_SYSTEM_PROPERTY;
+import static io.fabric8.kubernetes.client.internal.Utils.convertSystemPropertyNameToEnvVar;
+import static io.fabric8.kubernetes.client.internal.Utils.getEnvVar;
+import static io.fabric8.kubernetes.client.internal.Utils.getSystemPropertyOrEnvVar;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -161,10 +165,16 @@ public class ConfigTest {
     System.setProperty(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY, "http://somehost:80");
 
     Config config = new Config();
+
+    //If there are ENV vars defined for url, namespace etc, the have priority over kubeconfig
+    String expectedUrl = getEnvVar(convertSystemPropertyNameToEnvVar(KUBERNETES_NAMESPACE_SYSTEM_PROPERTY), "http://somehost:80/");
+    String expectedNamespace = getSystemPropertyOrEnvVar(convertSystemPropertyNameToEnvVar(KUBERNETES_NAMESPACE_SYSTEM_PROPERTY), "testns");
+    String expectedToken = getSystemPropertyOrEnvVar(convertSystemPropertyNameToEnvVar(KUBERNETES_NAMESPACE_SYSTEM_PROPERTY), "token");
+
     assertNotNull(config);
-    assertEquals("http://somehost:80/", config.getMasterUrl());
-    assertEquals("testns", config.getNamespace());
-    assertEquals("token", config.getOauthToken());
+    assertEquals(expectedUrl, config.getMasterUrl());
+    assertEquals(expectedNamespace, config.getNamespace());
+    assertEquals(expectedToken, config.getOauthToken());
   }
 
   @Test
@@ -176,10 +186,14 @@ public class ConfigTest {
       .withNamespace("testns2")
       .build();
 
+    //If there are ENV vars defined for url etc, the have priority over kubeconfig
+    String expectedUrl = getEnvVar(convertSystemPropertyNameToEnvVar(KUBERNETES_NAMESPACE_SYSTEM_PROPERTY), "http://somehost:80/");
+    String expectedToken = getSystemPropertyOrEnvVar(convertSystemPropertyNameToEnvVar(KUBERNETES_NAMESPACE_SYSTEM_PROPERTY), "token");
+
     assertNotNull(config);
-    assertEquals("http://somehost:80/", config.getMasterUrl());
+    assertEquals(expectedUrl, config.getMasterUrl());
+    assertEquals(expectedToken, config.getOauthToken());
     assertEquals("testns2", config.getNamespace());
-    assertEquals("token", config.getOauthToken());
   }
 
   private void assertConfig(Config config) {
