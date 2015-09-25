@@ -46,6 +46,8 @@ import java.security.SecureRandom;
 
 import static io.fabric8.kubernetes.client.internal.CertUtils.createKeyStore;
 import static io.fabric8.kubernetes.client.internal.CertUtils.createTrustStore;
+import static io.fabric8.kubernetes.client.internal.Utils.isNotNullOrEmpty;
+
 
 public class BaseClient implements Client {
 
@@ -97,7 +99,7 @@ public class BaseClient implements Client {
       clientConfigBuilder.setAcceptAnyCertificate(config.isTrustCerts());
 
       TrustManager[] trustManagers = null;
-      if (config.getCaCertFile() != null || config.getCaCertData() != null) {
+      if (isNotNullOrEmpty(config.getCaCertFile())|| isNotNullOrEmpty(config.getCaCertData())) {
         KeyStore trustStore = createTrustStore(config.getCaCertData(), config.getCaCertFile());
         TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
         tmf.init(trustStore);
@@ -105,7 +107,7 @@ public class BaseClient implements Client {
       }
 
       KeyManager[] keyManagers = null;
-      if ((config.getClientCertFile() != null || config.getClientCertData() != null) && (config.getClientKeyFile() != null || config.getClientKeyData() != null)) {
+      if ((isNotNullOrEmpty(config.getClientCertFile()) || isNotNullOrEmpty(config.getClientCertData())) && (isNotNullOrEmpty(config.getClientKeyFile()) || isNotNullOrEmpty(config.getClientKeyData()))) {
         KeyStore keyStore = createKeyStore(config.getClientCertData(), config.getClientCertFile(), config.getClientKeyData(), config.getClientKeyFile(), config.getClientKeyAlgo(), config.getClientKeyPassphrase().toCharArray());
         KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
         kmf.init(keyStore, config.getClientKeyPassphrase().toCharArray());
@@ -122,7 +124,7 @@ public class BaseClient implements Client {
         clientConfigBuilder.setSSLContext(sslContext);
       }
 
-      if (config.getUsername() != null && config.getPassword() != null) {
+      if (isNotNullOrEmpty(config.getUsername()) && isNotNullOrEmpty(config.getPassword())) {
         Realm realm = new Realm.RealmBuilder()
           .setPrincipal(config.getUsername())
           .setPassword(config.getPassword())

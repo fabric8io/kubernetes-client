@@ -94,6 +94,7 @@
     <maven.buildhelper.plugin.version>1.9.1</maven.buildhelper.plugin.version>
     <maven.jar.plugin.version>2.6</maven.jar.plugin.version>
     <maven.resources.plugin.version>2.7</maven.resources.plugin.version>
+    <maven.surefire.plugin.version>2.18.1</maven.surefire.plugin.version>
     <maven.scr.plugin.version>1.21.0</maven.scr.plugin.version>
 
     <maven.compiler.source>1.7</maven.compiler.source>

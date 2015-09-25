@@ -45,6 +45,38 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven.surefire.plugin.version}</version>
+        <configuration>
+          <forkCount>1</forkCount>
+          <reuseForks>false</reuseForks>
+          <!-- We cleanup system properties an env vars, so that we can test in a predictable env -->
+          <environmentVariables>
+            <KUBERNETES_API_VERSION></KUBERNETES_API_VERSION>
+            <KUBERNETES_TLS_PROTOCOLS></KUBERNETES_TLS_PROTOCOLS>
+            <KUBERNETES_TRUST_CERTIFICATES></KUBERNETES_TRUST_CERTIFICATES>
+            <KUBERNETES_CERTS_CA_FILE></KUBERNETES_CERTS_CA_FILE>
+            <KUBERNETES_CERTS_CA_DATA></KUBERNETES_CERTS_CA_DATA>
+            <KUBERNETES_CERTS_CLIENT_FILE></KUBERNETES_CERTS_CLIENT_FILE>
+            <KUBERNETES_CERTS_CLIENT_DATA></KUBERNETES_CERTS_CLIENT_DATA>
+            <KUBERNETES_CERTS_CLIENT_KEY_FILE></KUBERNETES_CERTS_CLIENT_KEY_FILE>
+            <KUBERNETES_CERTS_CLIENT_KEY_DATA></KUBERNETES_CERTS_CLIENT_KEY_DATA>
+            <KUBERNETES_CERTS_CLIENT_KEY_ALGO></KUBERNETES_CERTS_CLIENT_KEY_ALGO>
+            <KUBERNETES_CERTS_CLIENT_KEY_PASSPHRASE></KUBERNETES_CERTS_CLIENT_KEY_PASSPHRASE>
+            <KUBERNETES_AUTH_BASIC_USERNAME></KUBERNETES_AUTH_BASIC_USERNAME>
+            <KUBERNETES_AUTH_BASIC_PASSWORD></KUBERNETES_AUTH_BASIC_PASSWORD>
+            <KUBERNETES_AUTH_TRYKUBECONFIG></KUBERNETES_AUTH_TRYKUBECONFIG>
+            <KUBERNETES_AUTH_TRYSERVICEACCOUNT></KUBERNETES_AUTH_TRYSERVICEACCOUNT>
+            <KUBERNETES_AUTH_TOKEN></KUBERNETES_AUTH_TOKEN>
+            <KUBERNETES_WATCH_RECONNECTINTERVAL></KUBERNETES_WATCH_RECONNECTINTERVAL>
+            <KUBERNETES_WATCH_RECONNECTLIMIT></KUBERNETES_WATCH_RECONNECTLIMIT>
+            <KUBERNETES_REQUEST_TIMEOUT></KUBERNETES_REQUEST_TIMEOUT>
+            <KUBERNETES_NAMESPACE></KUBERNETES_NAMESPACE>
+          </environmentVariables>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <version>${maven.jar.plugin.version}</version>
         <configuration>

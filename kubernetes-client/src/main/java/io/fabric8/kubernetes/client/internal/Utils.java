@@ -17,14 +17,22 @@ package io.fabric8.kubernetes.client.internal;
 
 public class Utils {
 
+  public static boolean isNullOrEmpty(String str) {
+    return str == null || str.isEmpty();
+  }
+
+  public static boolean isNotNullOrEmpty(String str) {
+    return !isNullOrEmpty(str);
+  }
+
   public static String getSystemPropertyOrEnvVar(String systemPropertyName, String envVarName, String defaultValue) {
     String answer = System.getProperty(systemPropertyName);
-    if (answer != null) {
+    if (isNotNullOrEmpty(answer)) {
       return answer;
     }
 
     answer = System.getenv(envVarName);
-    if (answer != null) {
+    if (isNotNullOrEmpty(answer)) {
       return answer;
     }
 
@@ -36,7 +44,8 @@ public class Utils {
   }
 
   public static String getEnvVar(String envVarName, String defaultValue) {
-    return System.getenv().containsKey(envVarName) ? System.getenv().get(envVarName) : defaultValue;
+    String answer = System.getenv(envVarName);
+    return isNotNullOrEmpty(answer) ? answer : defaultValue;
   }
 
   public static String getSystemPropertyOrEnvVar(String systemPropertyName, String defaultValue) {
