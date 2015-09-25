@@ -29,7 +29,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-public class NodeTest extends HttpServerMockBase {
+public class NodeTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testList() {

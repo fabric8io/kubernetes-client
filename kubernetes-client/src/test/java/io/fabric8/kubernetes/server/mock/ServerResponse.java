@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client.mock;
+package io.fabric8.kubernetes.server.mock;
 
 class ServerResponse {
 

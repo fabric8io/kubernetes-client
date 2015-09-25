@@ -29,7 +29,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-public class TemplateTest extends OpenshiftHttpServerMockBase {
+public class TemplateTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testList() {

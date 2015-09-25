@@ -35,6 +35,10 @@ public class Utils {
     return systemPropertyName.toUpperCase().replaceAll("[.-]", "_");
   }
 
+  public static String getEnvVar(String envVarName, String defaultValue) {
+    return System.getenv().containsKey(envVarName) ? System.getenv().get(envVarName) : defaultValue;
+  }
+
   public static String getSystemPropertyOrEnvVar(String systemPropertyName, String defaultValue) {
     return getSystemPropertyOrEnvVar(systemPropertyName, convertSystemPropertyNameToEnvVar(systemPropertyName), defaultValue);
   }

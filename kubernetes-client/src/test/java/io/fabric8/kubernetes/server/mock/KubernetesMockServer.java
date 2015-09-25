@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client.mock;
+package io.fabric8.kubernetes.server.mock;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,23 +27,20 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.junit.After;
-import org.junit.Before;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HttpServerMockBase {
+public class KubernetesMockServer {
 
   private final ObjectMapper mapper = new ObjectMapper();
 
-  MockWebServer server = new MockWebServer();
-  Map<String, ServerResponse> responses = new HashMap<>();
+  private MockWebServer server = new MockWebServer();
+  private Map<String, ServerResponse> responses = new HashMap<>();
 
 
-  @Before
-  public void setUp() throws IOException {
+  public void init() throws IOException {
     server.setDispatcher(new Dispatcher() {
       @Override
       public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
@@ -62,13 +59,11 @@ public class HttpServerMockBase {
     server.play();
   }
 
-  @After
-  public void tearDown() throws IOException {
+  public void destroy() throws IOException {
     server.shutdown();
   }
 
-
-  public KubernetesClient getClient() {
+  public KubernetesClient createClient() {
     Config config = new ConfigBuilder()
       .withMasterUrl("http://localhost:" + server.getPort())
       .withNamespace("test")
@@ -76,6 +71,9 @@ public class HttpServerMockBase {
     return new DefaultKubernetesClient(config);
   }
 
+  public MockWebServer getServer() {
+    return server;
+  }
 
   public <T> void expectAndReturnAsJson(String path, int code, T body) {
     responses.put(path, new ServerResponse(code, toJson(body)));

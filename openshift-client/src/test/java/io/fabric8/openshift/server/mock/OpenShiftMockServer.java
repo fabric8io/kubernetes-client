@@ -14,25 +14,30 @@
  * limitations under the License.
  */
 
-package io.fabric8.openshift.client.mock;
+package io.fabric8.openshift.server.mock;
 
 import io.fabric8.kubernetes.api.model.RootPathsBuilder;
-import io.fabric8.kubernetes.client.mock.HttpServerMockBase;
+import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ConfigBuilder;
+import io.fabric8.kubernetes.server.mock.KubernetesMockServer;
+import io.fabric8.openshift.client.DefaultOpenshiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.Before;
 
 import java.io.IOException;
 
-public class OpenshiftHttpServerMockBase extends HttpServerMockBase {
+public class OpenShiftMockServer extends KubernetesMockServer {
 
-  @Before
-  public void setUp() throws IOException {
-    super.setUp();
+  @Override
+  public void init() throws IOException {
+    super.init();
     expectAndReturnAsJson("/", 200, new RootPathsBuilder().addToPaths("/api", "/oapi").build());
   }
 
-
-  public OpenShiftClient getOpenshiftClient() {
-    return getClient().adapt(OpenShiftClient.class);
+  public OpenShiftClient createOpenShiftClient() {
+    Config config = new ConfigBuilder()
+      .withMasterUrl("http://localhost:" + getServer().getPort())
+      .withNamespace("test")
+      .build();
+    return new DefaultOpenshiftClient(config);
   }
 }
