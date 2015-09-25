@@ -88,11 +88,8 @@ public class Config {
   private Map<Integer, String> errorMessages = new HashMap<>();
 
   public Config() {
-    if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYSERVICEACCOUNT_SYSTEM_PROPERTY, true)) {
+    if (!tryKubeConfig(this)) {
       tryServiceAccount(this);
-    }
-    if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, true)) {
-      tryKubeConfig(this);
     }
     configFromSysPropsOrEnvVars(this);
 
@@ -169,57 +166,65 @@ public class Config {
     config.setProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_HTTP_PROXY, config.getProxy()));
   }
 
-  private void tryServiceAccount(Config config) {
-    boolean serviceAccountCaCertExists = Files.isRegularFile(Paths.get(KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH));
-    if (serviceAccountCaCertExists) {
-      config.setCaCertFile(KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH);
-    }
-    try {
-      String serviceTokenCandidate = new String(Files.readAllBytes(Paths.get(KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH)));
-      if (serviceTokenCandidate != null) {
-        config.setOauthToken(serviceTokenCandidate);
-        String txt  ="Configured service account doesn't have access. Service account may have been revoked.";
-        config.getErrorMessages().put(401, "Unauthorized! " + txt);
-        config.getErrorMessages().put(403, "Forbidden!" + txt);
+  private boolean tryServiceAccount(Config config) {
+    if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYSERVICEACCOUNT_SYSTEM_PROPERTY, true)) {
+      boolean serviceAccountCaCertExists = Files.isRegularFile(Paths.get(KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH));
+      if (serviceAccountCaCertExists) {
+        config.setCaCertFile(KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH);
       }
-    } catch (IOException e) {
-      // No service account token available...
-    }
-  }
-
-  private void tryKubeConfig(Config config) {
-    String kubeConfigFile = Utils.getSystemPropertyOrEnvVar(KUBERNETES_KUBECONFIG_FILE, new File(System.getProperty("user.home", "."), ".kube" + File.separator + "config").toString());
-    boolean kubeConfigFileExists = Files.isRegularFile(Paths.get(kubeConfigFile));
-    if (kubeConfigFileExists) {
       try {
-        io.fabric8.kubernetes.api.model.Config kubeConfig = KubeConfigUtils.parseConfig(new File(kubeConfigFile));
-        Context currentContext = KubeConfigUtils.getCurrentContext(kubeConfig);
-        Cluster currentCluster = KubeConfigUtils.getCluster(kubeConfig, currentContext);
-        if (currentCluster != null) {
-          config.setMasterUrl(currentCluster.getServer());
-          config.setNamespace(currentContext.getNamespace());
-          config.setTrustCerts(currentCluster.getInsecureSkipTlsVerify() != null && currentCluster.getInsecureSkipTlsVerify());
-          config.setCaCertFile(currentCluster.getCertificateAuthority());
-          config.setCaCertData(currentCluster.getCertificateAuthorityData());
-          AuthInfo currentAuthInfo = KubeConfigUtils.getUserAuthInfo(kubeConfig, currentContext);
-          if (currentAuthInfo != null) {
-            config.setClientCertFile(currentAuthInfo.getClientCertificate());
-            config.setClientCertData(currentAuthInfo.getClientCertificateData());
-            config.setClientKeyFile(currentAuthInfo.getClientKey());
-            config.setClientKeyData(currentAuthInfo.getClientKeyData());
-            config.setOauthToken(currentAuthInfo.getToken());
-            config.setUsername(currentAuthInfo.getUsername());
-            config.setPassword(currentAuthInfo.getPassword());
-
-            String txt  ="Token may have expired! Please use kubectl login / oc login to log-in again.";
-            config.getErrorMessages().put(401, "Unauthorized! " + txt);
-            config.getErrorMessages().put(403, "Forbidden!" + txt);
-          }
+        String serviceTokenCandidate = new String(Files.readAllBytes(Paths.get(KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH)));
+        if (serviceTokenCandidate != null) {
+          config.setOauthToken(serviceTokenCandidate);
+          String txt = "Configured service account doesn't have access. Service account may have been revoked.";
+          config.getErrorMessages().put(401, "Unauthorized! " + txt);
+          config.getErrorMessages().put(403, "Forbidden!" + txt);
+          return true;
         }
       } catch (IOException e) {
-        LOGGER.error("Could not load kube config file from {}", kubeConfigFile, e);
+        // No service account token available...
       }
     }
+    return false;
+  }
+
+  private boolean tryKubeConfig(Config config) {
+    if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, true)) {
+      String kubeConfigFile = Utils.getSystemPropertyOrEnvVar(KUBERNETES_KUBECONFIG_FILE, new File(System.getProperty("user.home", "."), ".kube" + File.separator + "config").toString());
+      boolean kubeConfigFileExists = Files.isRegularFile(Paths.get(kubeConfigFile));
+      if (kubeConfigFileExists) {
+        try {
+          io.fabric8.kubernetes.api.model.Config kubeConfig = KubeConfigUtils.parseConfig(new File(kubeConfigFile));
+          Context currentContext = KubeConfigUtils.getCurrentContext(kubeConfig);
+          Cluster currentCluster = KubeConfigUtils.getCluster(kubeConfig, currentContext);
+          if (currentCluster != null) {
+            config.setMasterUrl(currentCluster.getServer());
+            config.setNamespace(currentContext.getNamespace());
+            config.setTrustCerts(currentCluster.getInsecureSkipTlsVerify() != null && currentCluster.getInsecureSkipTlsVerify());
+            config.setCaCertFile(currentCluster.getCertificateAuthority());
+            config.setCaCertData(currentCluster.getCertificateAuthorityData());
+            AuthInfo currentAuthInfo = KubeConfigUtils.getUserAuthInfo(kubeConfig, currentContext);
+            if (currentAuthInfo != null) {
+              config.setClientCertFile(currentAuthInfo.getClientCertificate());
+              config.setClientCertData(currentAuthInfo.getClientCertificateData());
+              config.setClientKeyFile(currentAuthInfo.getClientKey());
+              config.setClientKeyData(currentAuthInfo.getClientKeyData());
+              config.setOauthToken(currentAuthInfo.getToken());
+              config.setUsername(currentAuthInfo.getUsername());
+              config.setPassword(currentAuthInfo.getPassword());
+
+              String txt = "Token may have expired! Please use kubectl login / oc login to log-in again.";
+              config.getErrorMessages().put(401, "Unauthorized! " + txt);
+              config.getErrorMessages().put(403, "Forbidden!" + txt);
+            }
+            return true;
+          }
+        } catch (IOException e) {
+          LOGGER.error("Could not load kube config file from {}", kubeConfigFile, e);
+        }
+      }
+    }
+    return false;
   }
 
   public String getOauthToken() {
