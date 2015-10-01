@@ -238,7 +238,7 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
 
   @Override
   public FilterWatchListDeletable<T, L, Boolean> withLabels(Map<String, String> labels) {
-    labels.putAll(labels);
+    this.labels.putAll(labels);
     return this;
   }
 
