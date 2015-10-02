@@ -291,10 +291,10 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
   String getLabelQueryParam() {
     StringBuilder sb = new StringBuilder();
     if (labels != null && !labels.isEmpty()) {
-      if (sb.length() > 0) {
-        sb.append(",");
-      }
       for (Iterator<Map.Entry<String, String>> iter = labels.entrySet().iterator(); iter.hasNext(); ) {
+        if (sb.length() > 0) {
+          sb.append(",");
+        }
         Map.Entry<String, String> entry = iter.next();
         sb.append(entry.getKey()).append("=").append(entry.getValue());
       }

@@ -60,6 +60,35 @@ public class PodTest extends KubernetesMockServerTestBase {
     assertEquals(3, podList.getItems().size());
   }
 
+  @Test
+  public void testListWithLables() {
+    expectAndReturnAsJson("/api/v1/namespaces/test/pods?labelSelector=" + toUrlEncoded("key1=value1,key2=value2,key3=value3"), 200, new PodListBuilder().build());
+    expectAndReturnAsJson("/api/v1/namespaces/test/pods?labelSelector=" + toUrlEncoded("key1=value1,key2=value2"), 200, new PodListBuilder()
+      .addNewItem().and()
+      .addNewItem().and()
+      .addNewItem().and()
+      .build());
+
+    KubernetesClient client = getClient();
+    PodList podList = client.pods()
+      .withLabel("key1", "value1")
+      .withLabel("key2","value2")
+      .withLabel("key3","value3")
+      .list();
+
+
+    assertNotNull(podList);
+    assertEquals(0, podList.getItems().size());
+
+    podList = client.pods()
+      .withLabel("key1", "value1")
+      .withLabel("key2","value2")
+      .list();
+
+    assertNotNull(podList);
+    assertEquals(3, podList.getItems().size());
+  }
+
 
   @Test
   public void testGet() {
@@ -128,5 +157,15 @@ public class PodTest extends KubernetesMockServerTestBase {
   public void testGetLogNotFound() {
     KubernetesClient client = getClient();
     client.pods().withName("pod5").getLog(true);
+  }
+
+  /**
+   * Converts string to URL encoded string.
+   * It's not a fullblown converter, it serves just the purpose of this test.
+   * @param str
+   * @return
+   */
+  private static final String toUrlEncoded(String str) {
+    return str.replaceAll("=", "%3D").replaceAll(",","%2C");
   }
 }
