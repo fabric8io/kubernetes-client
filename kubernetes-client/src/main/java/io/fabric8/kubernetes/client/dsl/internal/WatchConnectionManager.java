@@ -93,7 +93,7 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
           @Override
           public void onMessage(String message) {
             try {
-              WatchEvent event = mapper.readerFor(WatchEvent.class).readValue(message);
+              WatchEvent event = mapper.readValue(message, WatchEvent.class);
               T obj = (T) event.getObject();
               //Dirty cast - should always be valid though
               String currentResourceVersion = resourceVersion.get();

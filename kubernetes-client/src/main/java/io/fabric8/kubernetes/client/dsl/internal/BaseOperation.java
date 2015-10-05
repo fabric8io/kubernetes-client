@@ -125,7 +125,7 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
       Future<Response> f = getClient().getHttpClient().prepareGet(requestUrl.toString()).execute();
       Response r = f.get();
       assertResponseCode(r, 200);
-      return mapper.readerFor(RootPaths.class).readValue(r.getResponseBodyAsStream());
+      return mapper.readValue(r.getResponseBodyAsStream(), RootPaths.class);
     } catch (KubernetesClientException e) {
       if (e.getCode() != 404) {
         throw e;
@@ -364,7 +364,7 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
       Future<Response> f = requestBuilder.execute();
       Response r = f.get();
       assertResponseCode(r, 200);
-      return mapper.readerFor(listType).readValue(r.getResponseBodyAsStream());
+      return mapper.readValue(r.getResponseBodyAsStream(), listType);
     } catch (InterruptedException | ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
@@ -489,7 +489,7 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
       throw new KubernetesClientException("Error accessing: " + r.getUri().toString() + ",due to:" + customMessage);
     } else {
       try {
-        Status status = mapper.readerFor(Status.class).readValue(r.getResponseBodyAsStream());
+        Status status = mapper.readValue(r.getResponseBodyAsStream(), Status.class);
         throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
       } catch (IOException e) {
         throw new KubernetesClientException(e.getMessage(), statusCode, new StatusBuilder()
@@ -504,7 +504,7 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
     Future<Response> f = requestBuilder.execute();
     Response r = f.get();
     assertResponseCode(r, successStatusCode);
-    return mapper.readerFor(getType()).readValue(r.getResponseBodyAsStream());
+    return mapper.readValue(r.getResponseBodyAsStream(), getType());
   }
 
   protected void handleDelete(URL requestUrl) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {

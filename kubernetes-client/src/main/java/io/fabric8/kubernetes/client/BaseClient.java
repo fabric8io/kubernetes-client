@@ -188,7 +188,7 @@ public class BaseClient implements Client {
       if (intch != '{') {
         mapper = yamlMapper;
       }
-      return mapper.readerFor(type).readValue(bis);
+      return mapper.readValue(bis, type);
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
