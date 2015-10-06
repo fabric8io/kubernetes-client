@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -66,6 +67,14 @@ public class KubernetesListTest extends KubernetesMockServerTestBase {
 
     KubernetesClient client = getClient();
     Boolean result = client.lists().delete(list);
+
+    assertTrue(result);
+  }
+
+  @Test(expected = KubernetesClientException.class)
+  public void testDeleteWithMismatch() {
+    KubernetesClient client = getClient();
+    Boolean result = client.lists().inNamespace("test1").delete(list);
 
     assertTrue(result);
   }

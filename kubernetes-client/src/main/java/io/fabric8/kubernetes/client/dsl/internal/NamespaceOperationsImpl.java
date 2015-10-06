@@ -30,4 +30,9 @@ public class NamespaceOperationsImpl<C extends Client>  extends HasMetadataOpera
   public NamespaceOperationsImpl(C client, String namespace, String name, Boolean cascading, Namespace item) {
     super(client, "namespaces", namespace, name, cascading, item);
   }
+
+  @Override
+  public boolean isNamespaceRequired() {
+    return false;
+  }
 }

@@ -31,4 +31,9 @@ public class OAuthClientOperationsImpl extends OpenshiftOperation<OpenShiftClien
   public OAuthClientOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading, OAuthClient item) {
     super(client, "oauthclients", namespace, name, cascading, item);
   }
+
+  @Override
+  public boolean isNamespaceRequired() {
+    return false;
+  }
 }

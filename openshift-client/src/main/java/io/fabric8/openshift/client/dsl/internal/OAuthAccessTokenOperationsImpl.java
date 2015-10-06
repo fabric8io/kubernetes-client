@@ -31,4 +31,9 @@ public class OAuthAccessTokenOperationsImpl extends OpenshiftOperation<OpenShift
   public OAuthAccessTokenOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading, OAuthAccessToken item) {
     super(client, "oauthaccesstokens", namespace, name, cascading, item);
   }
+
+  @Override
+  public boolean isNamespaceRequired() {
+    return false;
+  }
 }

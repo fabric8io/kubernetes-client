@@ -29,4 +29,9 @@ public class SecurityContextConstraintsOperationsImpl<C extends Client>  extends
   public SecurityContextConstraintsOperationsImpl(C client, String namespace, String name, Boolean cascading, SecurityContextConstraints item) {
     super(client, "securitycontextconstraints", namespace, name, cascading, item);
   }
+
+  @Override
+  public boolean isNamespaceRequired() {
+    return false;
+  }
 }

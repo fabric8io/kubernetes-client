@@ -34,6 +34,7 @@ import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.internal.URLUtils;
+import io.fabric8.kubernetes.client.internal.Utils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -414,20 +415,7 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
   public Boolean delete(List<T> items) {
     try {
       for (T item : items) {
-        // Dirty cast but should always be valid...
-        HasMetadata metadataResource = (HasMetadata) item;
-
-        URL requestUrl = getRootUrl();
-        if (metadataResource.getMetadata().getNamespace() != null) {
-          requestUrl = new URL(URLUtils.join(requestUrl.toString(), "namespaces", metadataResource.getMetadata().getNamespace() + "/"));
-        } else if (getNamespace() != null) {
-          requestUrl = new URL(URLUtils.join(requestUrl.toString(), "namespaces", getNamespace() + "/"));
-        }
-        requestUrl = new URL(URLUtils.join(requestUrl.toString(), getResourceT(), metadataResource.getMetadata().getName()));
-        AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().prepareDelete(requestUrl.toString());
-        Future<Response> f = requestBuilder.execute();
-        Response r = f.get();
-        assertResponseCode(r, 200);
+        handleDelete(item);
       }
     } catch (KubernetesClientException e) {
       if (e.getCode() != 404) {
@@ -442,7 +430,11 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
 
   void deleteThis() throws KubernetesClientException {
     try {
-      handleDelete(getResourceUrl());
+      if (item != null) {
+        handleDelete(item);
+      } else {
+        handleDelete(getResourceUrl());
+      }
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
@@ -475,13 +467,28 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
     throw new KubernetesClientException("Cannot update read-only resources");
   }
 
-  protected URL getNamespacedUrl() throws MalformedURLException {
+  public boolean isNamespaceRequired() {
+    return true;
+  }
+
+  protected URL getNamespacedUrl(String namespace) throws MalformedURLException {
     URL requestUrl = getRootUrl();
-    if (getNamespace() != null) {
-      requestUrl = new URL(URLUtils.join(requestUrl.toString(), "namespaces", getNamespace()));
+    if (namespace != null) {
+      requestUrl = new URL(URLUtils.join(requestUrl.toString(), "namespaces", namespace));
     }
     requestUrl = new URL(URLUtils.join(requestUrl.toString(), resourceT));
     return requestUrl;
+  }
+
+  protected URL getNamespacedUrl() throws MalformedURLException {
+    return getNamespacedUrl(getNamespace());
+  }
+
+  protected URL getResourceUrl(String namespace, String name) throws MalformedURLException {
+    if (name == null) {
+      return getNamespacedUrl(namespace);
+    }
+    return new URL(URLUtils.join(getNamespacedUrl(namespace).toString(), name));
   }
 
   protected URL getResourceUrl() throws MalformedURLException {
@@ -489,6 +496,40 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
       return getNamespacedUrl();
     }
     return new URL(URLUtils.join(getNamespacedUrl().toString(), name));
+  }
+
+  protected String checkNamespace(T item) {
+    String operationNs = getNamespace();
+    String itemNs = item instanceof HasMetadata ? ((HasMetadata) item).getMetadata().getNamespace() : null;
+    if (Utils.isNullOrEmpty(operationNs) && Utils.isNullOrEmpty(itemNs)) {
+      if (!isNamespaceRequired()) {
+        return null;
+      } else {
+        throw new KubernetesClientException("Namespace not specified. But operation requires namespace.");
+      }
+    } else if (Utils.isNullOrEmpty(itemNs)) {
+      return operationNs;
+    } else if (Utils.isNullOrEmpty(operationNs)) {
+      return itemNs;
+    } else if (itemNs.equals(operationNs)) {
+      return itemNs;
+    }
+    throw new KubernetesClientException("Namespace mismatch. Item namespace:" + itemNs + ". Operation namespace:" + operationNs + ".");
+  }
+
+  protected String checkName(T item) {
+    String operationName = getName();
+    String itemName = item instanceof HasMetadata ? ((HasMetadata) item).getMetadata().getName() : null;
+    if (Utils.isNullOrEmpty(operationName) && Utils.isNullOrEmpty(itemName)) {
+      return null;
+    } else if (Utils.isNullOrEmpty(itemName)) {
+      return operationName;
+    } else if (Utils.isNullOrEmpty(operationName)) {
+      return itemName;
+    } else if (itemName.equals(operationName)) {
+      return itemName;
+    }
+    throw new KubernetesClientException("Name mismatch. Item name:" + itemName + ". Operation name:" + operationName + ".");
   }
 
   /**
@@ -519,11 +560,16 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
     }
   }
 
+
   protected T handleResponse(AsyncHttpClient.BoundRequestBuilder requestBuilder, int successStatusCode) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     Future<Response> f = requestBuilder.execute();
     Response r = f.get();
     assertResponseCode(r, successStatusCode);
     return mapper.readValue(r.getResponseBodyAsStream(), getType());
+  }
+
+  protected void handleDelete(T resource) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+    handleDelete(getResourceUrl(checkNamespace(resource), checkName(resource)));
   }
 
   protected void handleDelete(URL requestUrl) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
@@ -534,13 +580,13 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
   }
 
   protected T handleCreate(T resource) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().preparePost(getNamespacedUrl().toString());
+    AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().preparePost(getNamespacedUrl(checkNamespace(resource)).toString());
     requestBuilder.setBody(mapper.writer().writeValueAsString(resource));
     return handleResponse(requestBuilder, 201);
   }
 
-  protected T handleReplace(URL resourceUrl, T updated) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().preparePut(resourceUrl.toString());
+  protected T handleReplace(T updated) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+    AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().preparePut(getResourceUrl(checkNamespace(updated), checkName(updated)).toString());
     requestBuilder.setBody(mapper.writer().writeValueAsString(updated));
     return handleResponse(requestBuilder, 200);
   }

@@ -16,11 +16,15 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.Namespace;
+import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.api.model.Node;
 import io.fabric8.kubernetes.api.model.NodeList;
 import io.fabric8.kubernetes.api.model.NodeListBuilder;
+import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -77,5 +81,13 @@ public class NodeTest extends KubernetesMockServerTestBase {
 
     deleted = client.nodes().withName("node3").delete();
     assertFalse(deleted);
+  }
+
+  @Test(expected = KubernetesClientException.class)
+  public void testCreateWithNameMismatch() {
+    Namespace ns1 = new NamespaceBuilder().withNewMetadata().withName("ns1").and().build();
+    KubernetesClient client = getClient();
+
+    client.namespaces().withName("myns1").create(ns1);
   }
 }

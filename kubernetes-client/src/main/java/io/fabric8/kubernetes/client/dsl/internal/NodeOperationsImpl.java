@@ -31,4 +31,9 @@ public class NodeOperationsImpl<C extends Client>  extends HasMetadataOperation<
   public NodeOperationsImpl(C client, String namespace, String name, Boolean cascading, Node item) {
     super(client, "nodes", namespace, name, cascading, item);
   }
+
+  @Override
+  public boolean isNamespaceRequired() {
+    return false;
+  }
 }

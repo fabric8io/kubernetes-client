@@ -137,13 +137,31 @@ public class PodTest extends KubernetesMockServerTestBase {
 
     KubernetesClient client = getClient();
 
-    Boolean deleted = client.pods().delete(pod1, pod2);
+    Boolean deleted = client.pods().inAnyNamespace().delete(pod1, pod2);
     assertNotNull(deleted);
 
-    deleted = client.pods().delete(pod3);
+    deleted = client.pods().inAnyNamespace().delete(pod3);
     assertFalse(deleted);
   }
 
+  @Test(expected = KubernetesClientException.class)
+  public void testDeleteWithNamespaceMismatch() {
+    Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
+    Pod pod2 = new PodBuilder().withNewMetadata().withName("pod2").withNamespace("ns1").and().build();
+    KubernetesClient client = getClient();
+
+    Boolean deleted = client.pods().inNamespace("test1").delete(pod1);
+    assertNotNull(deleted);
+  }
+
+  @Test(expected = KubernetesClientException.class)
+  public void testCreateWithNameMismatch() {
+    Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
+    Pod pod2 = new PodBuilder().withNewMetadata().withName("pod2").withNamespace("ns1").and().build();
+    KubernetesClient client = getClient();
+
+    client.pods().inNamespace("test1").withName("mypod1").create(pod1);
+  }
 
   @Test
   public void testGetLog() {

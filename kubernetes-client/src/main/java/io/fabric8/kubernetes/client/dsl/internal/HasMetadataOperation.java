@@ -85,7 +85,7 @@ public class HasMetadataOperation<C extends Client, T extends HasMetadata, L ext
           }
         }
         item.getMetadata().setResourceVersion(get().getMetadata().getResourceVersion());
-        return handleReplace(getResourceUrl(), item);
+        return handleReplace(item);
       } catch (KubernetesClientException e) {
         caught = e;
         // Only retry if there's a conflict - this is normally to do with resource version & server updates.

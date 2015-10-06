@@ -31,4 +31,9 @@ public class OAuthAuthorizeTokenOperationsImpl extends OpenshiftOperation<OpenSh
   public OAuthAuthorizeTokenOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading, OAuthAuthorizeToken item) {
     super(client, "oauthauthorizetokens", namespace, name, cascading, item);
   }
+
+  @Override
+  public boolean isNamespaceRequired() {
+    return false;
+  }
 }
