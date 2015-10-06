@@ -35,7 +35,7 @@
       io.fabric8.openshift.client*"
     </osgi.export>
     <osgi.private>
-      io.fabric8.openshift.client.creators,
+      io.fabric8.openshift.client.handlers,
       io.fabric8.openshift.client.dsl.internal
     </osgi.private>
   </properties>

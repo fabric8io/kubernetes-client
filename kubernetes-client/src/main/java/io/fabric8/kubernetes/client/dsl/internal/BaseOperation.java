@@ -420,6 +420,8 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
         URL requestUrl = getRootUrl();
         if (metadataResource.getMetadata().getNamespace() != null) {
           requestUrl = new URL(URLUtils.join(requestUrl.toString(), "namespaces", metadataResource.getMetadata().getNamespace() + "/"));
+        } else if (getNamespace() != null) {
+          requestUrl = new URL(URLUtils.join(requestUrl.toString(), "namespaces", getNamespace() + "/"));
         }
         requestUrl = new URL(URLUtils.join(requestUrl.toString(), getResourceT(), metadataResource.getMetadata().getName()));
         AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().prepareDelete(requestUrl.toString());

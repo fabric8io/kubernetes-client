@@ -36,7 +36,7 @@
     </osgi.export>
     <osgi.private>
       io.fabric8.kubernetes.client.internal,
-      io.fabric8.kubernetes.client.creators,
+      io.fabric8.kubernetes.client.handlers,
       io.fabric8.kubernetes.client.dsl.internal
     </osgi.private>
   </properties>

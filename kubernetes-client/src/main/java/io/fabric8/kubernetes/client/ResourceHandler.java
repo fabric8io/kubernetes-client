@@ -13,20 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.model.DoneableKubernetesList;
+package io.fabric8.kubernetes.client;
+
+
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.KubernetesList;
-import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.ClientAware;
-import io.fabric8.kubernetes.client.KubernetesClient;
 
-import java.io.InputStream;
+public interface ResourceHandler<T extends HasMetadata> {
 
-public interface ClientKubernetesListOperation<C extends Client> extends
-  ClientAware<C>,
-  Namespaceable<ClientKubernetesListNonNamespaceOperation<C>>,
-  MultiDeleteable<KubernetesList, Boolean>,
-  Loadable<InputStream, CreateGettable<KubernetesList,KubernetesList,DoneableKubernetesList>> {
+  String getKind();
+
+  T create(Client client, String namespace, T item);
+
+  Boolean delete(Client client, String namespace, T item);
 }

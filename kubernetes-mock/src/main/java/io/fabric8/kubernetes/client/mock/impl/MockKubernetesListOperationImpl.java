@@ -17,6 +17,7 @@
 package io.fabric8.kubernetes.client.mock.impl;
 
 import io.fabric8.kubernetes.api.model.DoneableKubernetesList;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListMixedOperation;
@@ -31,6 +32,7 @@ import org.easymock.IExpectationSetters;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -42,6 +44,16 @@ public class MockKubernetesListOperationImpl<C extends Client>  implements
   MockKubernetesListOperation,
   CreateGettable<KubernetesList, IExpectationSetters<KubernetesList>, DoneableKubernetesList>,
   Mockable {
+
+  @Override
+  public IExpectationSetters<Boolean> delete(KubernetesList... items) {
+    return expect(delegate.delete(items));
+  }
+
+  @Override
+  public IExpectationSetters<Boolean> delete(List<KubernetesList> items) {
+    return expect(delegate.delete(items));
+  }
 
   //Dummy interface to use for mocking.
   private interface KubernetesListDelegate<C extends Client>  extends ClientKubernetesListMixedOperation<C>,

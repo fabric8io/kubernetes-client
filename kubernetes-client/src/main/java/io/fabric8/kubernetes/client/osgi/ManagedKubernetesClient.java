@@ -61,11 +61,11 @@ import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.Creators;
+import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.ResourceCreator;
+import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientLoggableResource;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
@@ -114,7 +114,7 @@ import static io.fabric8.kubernetes.client.Config.KUBERNETES_WATCH_RECONNECT_LIM
 @Component(immediate = true, configurationPid = "io.fabric8.kubernetes.client", policy = ConfigurationPolicy.OPTIONAL)
 @Service(KubernetesClient.class)
 @References({
-  @Reference(referenceInterface = ResourceCreator.class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC, bind = "bindResourceCreator", unbind = "unbindResourceCreator"),
+  @Reference(referenceInterface = io.fabric8.kubernetes.client.ResourceHandler.class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC, bind = "bindResourceHandler", unbind = "unbindResourceHandler"),
   @Reference(referenceInterface = ExtensionAdapter.class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC, bind = "bindExtensionAdapter", unbind = "unbindExtensionAdapter")
 })
 public class ManagedKubernetesClient extends BaseClient implements KubernetesClient {
@@ -306,12 +306,12 @@ public class ManagedKubernetesClient extends BaseClient implements KubernetesCli
     return delegate.getConfiguration();
   }
 
-  public void bindResourceCreator(ResourceCreator resourceCreator) {
-    Creators.register(resourceCreator);
+  public void bindResourceHandler(ResourceHandler resourceHandler) {
+    Handlers.register(resourceHandler);
   }
 
-  public void unbindResourceCreator(ResourceCreator resourceCreator) {
-    Creators.unregister(resourceCreator);
+  public void unbindResourceHandler(ResourceHandler resourceHandler) {
+    Handlers.unregister(resourceHandler);
   }
 
   public void bindExtensionAdapter(ExtensionAdapter adapter) {

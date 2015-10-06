@@ -1,0 +1,13 @@
+io.fabric8.openshift.client.handlers.BuildHandler
+io.fabric8.openshift.client.handlers.BuildConfigHandler
+io.fabric8.openshift.client.handlers.DeploymentConfigHandler
+io.fabric8.openshift.client.handlers.GroupHandler
+io.fabric8.openshift.client.handlers.ImageStreamHandler
+io.fabric8.openshift.client.handlers.OAuthAccessTokenHandler
+io.fabric8.openshift.client.handlers.OAuthAuthorizeTokenHandler
+io.fabric8.openshift.client.handlers.OAuthClientHandler
+io.fabric8.openshift.client.handlers.PolicyBindingHandler
+io.fabric8.openshift.client.handlers.PolicyHandler
+io.fabric8.openshift.client.handlers.RouteHandler
+io.fabric8.openshift.client.handlers.TemplateHandler
+io.fabric8.openshift.client.handlers.UserHandler

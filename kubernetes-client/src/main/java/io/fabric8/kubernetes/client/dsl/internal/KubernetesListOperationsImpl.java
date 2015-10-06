@@ -19,10 +19,10 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DoneableKubernetesList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
-import io.fabric8.kubernetes.client.Creators;
 import io.fabric8.kubernetes.client.GenericKubernetesClient;
+import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.ResourceCreator;
+import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListOperation;
@@ -31,6 +31,7 @@ import io.fabric8.kubernetes.client.dsl.Loadable;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class KubernetesListOperationsImpl<C extends GenericKubernetesClient<C>>
@@ -103,10 +104,28 @@ public class KubernetesListOperationsImpl<C extends GenericKubernetesClient<C>>
   }
 
   private <T extends HasMetadata> T create(T resource) {
-    ResourceCreator<T> creator = (ResourceCreator<T>) Creators.get(resource.getClass());
-    if (creator != null) {
-      return creator.create(client, namespace, resource);
+    ResourceHandler<T> handler = (ResourceHandler<T>) Handlers.get(resource.getKind());
+    if (handler != null) {
+      return handler.create(client, namespace, resource);
     }
-    throw new IllegalStateException("Could not find creator");
+    throw new IllegalStateException("Could not find handler");
+  }
+
+  @Override
+  public Boolean delete(KubernetesList... lists) {
+    return delete(Arrays.asList(lists));
+  }
+
+  @Override
+  public Boolean delete(List<KubernetesList> lists) {
+    for (KubernetesList list : lists) {
+      for (HasMetadata item : list.getItems()) {
+        ResourceHandler handler = (ResourceHandler) Handlers.get(item.getKind());
+        if (!handler.delete(client, namespace, item)) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 }

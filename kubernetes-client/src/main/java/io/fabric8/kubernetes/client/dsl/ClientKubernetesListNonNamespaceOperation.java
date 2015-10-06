@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.dsl;
 
 import io.fabric8.kubernetes.api.model.DoneableKubernetesList;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ClientAware;
@@ -26,5 +27,6 @@ import java.io.InputStream;
 public interface ClientKubernetesListNonNamespaceOperation<C extends Client> extends
   ClientAware<C>,
   Createable<KubernetesList, KubernetesList, DoneableKubernetesList>,
+  MultiDeleteable<KubernetesList, Boolean>,
   Loadable<InputStream, CreateGettable<KubernetesList, KubernetesList, DoneableKubernetesList>> {
 }

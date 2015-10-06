@@ -33,6 +33,7 @@ public interface ClientNonNamespaceOperation<C extends Client, T, L, D, R> exten
   ClientAware<C>,
   Nameable<R>,
   FilterWatchListDeletable<T, L, Boolean>,
+  MultiDeleteable<T, Boolean>,
   Createable<T, T, D>,
   Loadable<InputStream, R> {
 
