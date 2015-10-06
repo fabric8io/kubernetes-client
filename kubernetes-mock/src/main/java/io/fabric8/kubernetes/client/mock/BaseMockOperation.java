@@ -37,6 +37,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -334,5 +335,15 @@ public class BaseMockOperation<C extends Client, T, L extends KubernetesResource
     expect(delegate.load(input)).andReturn((R) loadedMockOp.getDelegate()).anyTimes();
     nested.add(loadedMockOp);
     return loadedMockOp;
+  }
+
+  @Override
+  public IExpectationSetters<Boolean> delete(T... items) {
+    return expect(delegate.delete(items));
+  }
+
+  @Override
+  public IExpectationSetters<Boolean> delete(List<T> items) {
+    return expect(delegate.delete(items));
   }
 }

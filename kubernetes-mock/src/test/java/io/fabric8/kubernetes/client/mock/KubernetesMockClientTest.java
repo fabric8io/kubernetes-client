@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
+import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
@@ -60,6 +61,25 @@ public class KubernetesMockClientTest {
     }
     Assert.assertNotNull(client.pods().inNamespace("ns1").withName("pod2").get());
     Assert.assertNull(client.pods().inNamespace("ns1").withName("pod2").get());
+  }
+
+  @Test
+  public void testDelete() {
+    KubernetesMockClient mock = new KubernetesMockClient();
+    Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").and().build();
+    Pod pod2 = new PodBuilder().withNewMetadata().withName("pod2").and().build();
+    mock.pods().delete(pod1, pod2).andReturn(true).once();
+    mock.pods().delete(pod1, pod2).andReturn(false).times(4);
+
+    KubernetesClient client = mock.replay();
+
+    int counter=0;
+    for (int i = 0; i < 5; i++) {
+      if(client.pods().delete(pod1, pod2)) {
+        counter++;
+      }
+    }
+    Assert.assertEquals(1, counter);
   }
 
   @Test

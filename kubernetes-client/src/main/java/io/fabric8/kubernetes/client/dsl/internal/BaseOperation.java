@@ -41,7 +41,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
@@ -402,21 +404,18 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
     }
   }
 
-  void deleteThis() throws KubernetesClientException {
-    try {
-      handleDelete(getResourceUrl());
-    } catch (Exception e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
+
+  @Override
+  public Boolean delete(T... items) {
+    return delete(Arrays.asList(items));
   }
 
-  void deleteList() throws KubernetesClientException {
+  @Override
+  public Boolean delete(List<T> items) {
     try {
-      L discoveredResources = list();
-
-      for (Object resource : discoveredResources.getItems()) {
+      for (T item : items) {
         // Dirty cast but should always be valid...
-        HasMetadata metadataResource = (HasMetadata) resource;
+        HasMetadata metadataResource = (HasMetadata) item;
 
         URL requestUrl = getRootUrl();
         if (metadataResource.getMetadata().getNamespace() != null) {
@@ -428,9 +427,27 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
         Response r = f.get();
         assertResponseCode(r, 200);
       }
+    } catch (KubernetesClientException e) {
+      if (e.getCode() != 404) {
+        throw e;
+      }
+      return false;
     } catch (InterruptedException | ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
+    return true;
+  }
+
+  void deleteThis() throws KubernetesClientException {
+    try {
+      handleDelete(getResourceUrl());
+    } catch (Exception e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+
+  void deleteList() throws KubernetesClientException {
+    delete(list().getItems());
   }
 
   public Watch watch(final Watcher<T> watcher) throws KubernetesClientException {

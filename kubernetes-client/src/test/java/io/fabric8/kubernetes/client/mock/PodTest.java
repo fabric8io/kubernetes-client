@@ -127,6 +127,25 @@ public class PodTest extends KubernetesMockServerTestBase {
 
 
   @Test
+  public void testDeleteMulti() {
+    Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
+    Pod pod2 = new PodBuilder().withNewMetadata().withName("pod2").withNamespace("ns1").and().build();
+    Pod pod3 = new PodBuilder().withNewMetadata().withName("pod3").withNamespace("any").and().build();
+
+    expectAndReturnAsJson("/api/v1/namespaces/test/pods/pod1", 200, pod1);
+    expectAndReturnAsJson("/api/v1/namespaces/ns1/pods/pod2", 200, pod2);
+
+    KubernetesClient client = getClient();
+
+    Boolean deleted = client.pods().delete(pod1, pod2);
+    assertNotNull(deleted);
+
+    deleted = client.pods().delete(pod3);
+    assertFalse(deleted);
+  }
+
+
+  @Test
   public void testGetLog() {
     String pod1Log = "pod1Log";
     String pod2Log = "pod2Log";
