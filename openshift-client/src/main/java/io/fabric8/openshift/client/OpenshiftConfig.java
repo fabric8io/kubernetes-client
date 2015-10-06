@@ -61,6 +61,10 @@ public class OpenshiftConfig extends Config {
         this.openShiftUrl = URLUtils.join(getMasterUrl(), "oapi", this.oapiVersion);
       }
     }
+    if (!this.openShiftUrl.endsWith("/")) {
+      this.openShiftUrl = this.openShiftUrl + "/";
+    }
+
   }
 
   public static String getCustomOpenshiftUrl() {

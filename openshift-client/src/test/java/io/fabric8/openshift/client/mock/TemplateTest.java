@@ -16,11 +16,14 @@
 
 package io.fabric8.openshift.client.mock;
 
+import io.fabric8.kubernetes.api.model.KubernetesList;
+import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateBuilder;
 import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.api.model.TemplateListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.ParameterValue;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -102,4 +105,14 @@ public class TemplateTest extends OpenShiftMockServerTestBase {
     assertTrue(deleted);
   }
 
+
+  @Test
+  public void testProcess() {
+    expectAndReturnAsJson("/oapi/v1/namespaces/test/templates/tmpl1", 200, new TemplateBuilder().build());
+    expectAndReturnAsJson("/oapi/v1/namespaces/test/processedtemplates", 201, new KubernetesListBuilder().build());
+
+    OpenShiftClient client = getOpenshiftClient();
+    KubernetesList list = client.templates().withName("tmpl1").process(new ParameterValue("name1", "value1"));
+    assertNotNull(list);
+  }
 }
