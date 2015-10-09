@@ -21,7 +21,7 @@ import io.fabric8.openshift.api.model.PolicyBinding;
 import io.fabric8.openshift.api.model.PolicyBindingList;
 import io.fabric8.openshift.client.OpenShiftClient;
 
-public class PolicyBindingOperationsImpl extends OpenshiftOperation<OpenShiftClient, PolicyBinding, PolicyBindingList, DoneablePolicyBinding, ClientResource<PolicyBinding, DoneablePolicyBinding>> {
+public class PolicyBindingOperationsImpl extends OpenShiftOperation<OpenShiftClient, PolicyBinding, PolicyBindingList, DoneablePolicyBinding, ClientResource<PolicyBinding, DoneablePolicyBinding>> {
   public PolicyBindingOperationsImpl(OpenShiftClient client) {
     this(client, client.getNamespace(), null, true, null);
   }

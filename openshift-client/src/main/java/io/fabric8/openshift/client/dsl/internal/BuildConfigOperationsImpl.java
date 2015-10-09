@@ -37,7 +37,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.concurrent.Future;
 
-public class BuildConfigOperationsImpl extends OpenshiftOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig,
+public class BuildConfigOperationsImpl extends OpenShiftOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig,
   ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void>>
   implements BuildConfigOperation {
 
@@ -60,7 +60,7 @@ public class BuildConfigOperationsImpl extends OpenshiftOperation<OpenShiftClien
   }
 
   @Override
-  public OpenshiftOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig, ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void>> inNamespace(String namespace) {
+  public OpenShiftOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig, ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void>> inNamespace(String namespace) {
     return new BuildConfigOperationsImpl(getClient(), namespace, getName(), isCascading(), getItem(), secret, triggerType);
   }
 

@@ -20,7 +20,7 @@ import io.fabric8.kubernetes.api.model.RootPathsBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.server.mock.KubernetesMockServer;
-import io.fabric8.openshift.client.DefaultOpenshiftClient;
+import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 
 import java.io.IOException;
@@ -38,6 +38,6 @@ public class OpenShiftMockServer extends KubernetesMockServer {
       .withMasterUrl("http://localhost:" + getServer().getPort())
       .withNamespace("test")
       .build();
-    return new DefaultOpenshiftClient(config);
+    return new DefaultOpenShiftClient(config);
   }
 }

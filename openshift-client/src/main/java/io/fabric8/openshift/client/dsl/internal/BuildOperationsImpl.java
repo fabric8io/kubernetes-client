@@ -21,7 +21,7 @@ import io.fabric8.openshift.api.model.BuildList;
 import io.fabric8.openshift.api.model.DoneableBuild;
 import io.fabric8.openshift.client.OpenShiftClient;
 
-public class BuildOperationsImpl extends OpenshiftOperation<OpenShiftClient, Build, BuildList, DoneableBuild,
+public class BuildOperationsImpl extends OpenShiftOperation<OpenShiftClient, Build, BuildList, DoneableBuild,
   ClientResource<Build, DoneableBuild>> {
 
   public BuildOperationsImpl(OpenShiftClient client) {

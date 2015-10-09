@@ -31,7 +31,7 @@ import java.util.concurrent.ConcurrentMap;
 
 @Component
 @Service
-public class OpenshiftExtensionAdapter implements ExtensionAdapter<OpenShiftClient> {
+public class OpenShiftExtensionAdapter implements ExtensionAdapter<OpenShiftClient> {
 
   private static final ConcurrentMap<URL, Boolean> IS_OPENSHIFT = new ConcurrentHashMap<>();
 
@@ -42,7 +42,7 @@ public class OpenshiftExtensionAdapter implements ExtensionAdapter<OpenShiftClie
 
   @Override
   public Boolean isAdaptable(Client client) {
-    OpenshiftConfig config = new OpenshiftConfig(client.getConfiguration());
+    OpenShiftConfig config = new OpenShiftConfig(client.getConfiguration());
     if (!hasCustomOpenShiftUrl(config) && !isOpenShift(client)) {
       return false;
     }
@@ -54,7 +54,7 @@ public class OpenshiftExtensionAdapter implements ExtensionAdapter<OpenShiftClie
     if (!isAdaptable(client)) {
       throw new OpenShiftNotAvailableException("OpenShift is not available. Root paths at: " + client.getMasterUrl() + " do not include oapi.");
     }
-    return new DefaultOpenshiftClient(client.getConfiguration());
+    return new DefaultOpenShiftClient(client.getConfiguration());
   }
 
   /**
@@ -90,7 +90,7 @@ public class OpenshiftExtensionAdapter implements ExtensionAdapter<OpenShiftClie
    * @param config  The openshift configuration.
    * @return        True if both master and openshift url have the same root.
    */
-   static boolean hasCustomOpenShiftUrl(OpenshiftConfig config) {
+   static boolean hasCustomOpenShiftUrl(OpenShiftConfig config) {
     try {
       URI masterUri = new URI(config.getMasterUrl()).resolve("/");
       URI openshfitUri = new URI(config.getOpenShiftUrl()).resolve("/");

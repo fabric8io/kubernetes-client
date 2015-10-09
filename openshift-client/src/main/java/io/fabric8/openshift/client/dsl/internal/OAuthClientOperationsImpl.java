@@ -21,7 +21,7 @@ import io.fabric8.openshift.api.model.OAuthClient;
 import io.fabric8.openshift.api.model.OAuthClientList;
 import io.fabric8.openshift.client.OpenShiftClient;
 
-public class OAuthClientOperationsImpl extends OpenshiftOperation<OpenShiftClient, OAuthClient, OAuthClientList, DoneableOAuthClient,
+public class OAuthClientOperationsImpl extends OpenShiftOperation<OpenShiftClient, OAuthClient, OAuthClientList, DoneableOAuthClient,
   ClientResource<OAuthClient, DoneableOAuthClient>> {
 
   public OAuthClientOperationsImpl(OpenShiftClient client) {

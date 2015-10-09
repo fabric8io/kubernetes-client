@@ -21,7 +21,7 @@ import io.fabric8.openshift.api.model.Group;
 import io.fabric8.openshift.api.model.GroupList;
 import io.fabric8.openshift.client.OpenShiftClient;
 
-public class GroupOperationsImpl extends OpenshiftOperation<OpenShiftClient, Group, GroupList, DoneableGroup, ClientResource<Group, DoneableGroup>> {
+public class GroupOperationsImpl extends OpenShiftOperation<OpenShiftClient, Group, GroupList, DoneableGroup, ClientResource<Group, DoneableGroup>> {
   public GroupOperationsImpl(OpenShiftClient client) {
     this(client, client.getNamespace(), null, true, null);
   }

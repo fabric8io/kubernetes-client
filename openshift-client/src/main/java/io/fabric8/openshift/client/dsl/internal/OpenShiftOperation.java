@@ -23,15 +23,14 @@ import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.openshift.client.OpenShiftClient;
-import io.fabric8.openshift.client.OpenshiftConfig;
 
 import java.io.InputStream;
 import java.net.URL;
 
-public class OpenshiftOperation<K extends OpenShiftClient, T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
+public class OpenShiftOperation<K extends OpenShiftClient, T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
   extends HasMetadataOperation<K, T, L, D, R> {
 
-  protected OpenshiftOperation(K client, String resourceT, String namespace, String name, Boolean cascading, T item) {
+  protected OpenShiftOperation(K client, String resourceT, String namespace, String name, Boolean cascading, T item) {
     super(client, resourceT, namespace, name, cascading, item);
   }
 
@@ -53,7 +52,7 @@ public class OpenshiftOperation<K extends OpenShiftClient, T extends HasMetadata
   }
 
   @Override
-  public OpenshiftOperation<K, T, L, D, R> inNamespace(String namespace) {
+  public OpenShiftOperation<K, T, L, D, R> inNamespace(String namespace) {
     try {
       return getClass()
         .getConstructor(OpenShiftClient.class, String.class, String.class, Boolean.class, getType())

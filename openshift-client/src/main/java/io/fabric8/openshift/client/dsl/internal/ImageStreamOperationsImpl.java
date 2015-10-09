@@ -21,7 +21,7 @@ import io.fabric8.openshift.api.model.ImageStream;
 import io.fabric8.openshift.api.model.ImageStreamList;
 import io.fabric8.openshift.client.OpenShiftClient;
 
-public class ImageStreamOperationsImpl extends OpenshiftOperation<OpenShiftClient, ImageStream, ImageStreamList, DoneableImageStream,
+public class ImageStreamOperationsImpl extends OpenShiftOperation<OpenShiftClient, ImageStream, ImageStreamList, DoneableImageStream,
   ClientResource<ImageStream, DoneableImageStream>> {
 
   public ImageStreamOperationsImpl(OpenShiftClient client) {

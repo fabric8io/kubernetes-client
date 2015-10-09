@@ -34,7 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TemplateOperationsImpl
-  extends OpenshiftOperation<OpenShiftClient, Template, TemplateList, DoneableTemplate, ClientTemplateResource<Template, KubernetesList, DoneableTemplate>>
+  extends OpenShiftOperation<OpenShiftClient, Template, TemplateList, DoneableTemplate, ClientTemplateResource<Template, KubernetesList, DoneableTemplate>>
   implements TemplateOperation {
 
   public TemplateOperationsImpl(OpenShiftClient client) {

@@ -110,10 +110,10 @@ import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.api.model.UserList;
-import io.fabric8.openshift.client.DefaultOpenshiftClient;
+import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
-import io.fabric8.openshift.client.OpenshiftConfig;
-import io.fabric8.openshift.client.OpenshiftConfigBuilder;
+import io.fabric8.openshift.client.OpenShiftConfig;
+import io.fabric8.openshift.client.OpenShiftConfigBuilder;
 import io.fabric8.openshift.client.dsl.ClientBuildConfigResource;
 import io.fabric8.openshift.client.dsl.ClientTemplateResource;
 import org.apache.felix.scr.annotations.Activate;
@@ -149,12 +149,12 @@ import static io.fabric8.kubernetes.client.Config.KUBERNETES_TLS_PROTOCOLS_SYSTE
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY;
-import static io.fabric8.openshift.client.OpenshiftConfig.KUBERNETES_OAPI_VERSION_SYSTEM_PROPERTY;
-import static io.fabric8.openshift.client.OpenshiftConfig.OPENSHIFT_URL_SYTEM_PROPERTY;
+import static io.fabric8.openshift.client.OpenShiftConfig.KUBERNETES_OAPI_VERSION_SYSTEM_PROPERTY;
+import static io.fabric8.openshift.client.OpenShiftConfig.OPENSHIFT_URL_SYTEM_PROPERTY;
 
 @Component(immediate = true, configurationPid = "io.fabric8.openshift.client", policy = ConfigurationPolicy.OPTIONAL)
 @Service(OpenShiftClient.class)
-public class ManagedOpenshiftClient extends BaseClient implements OpenShiftClient {
+public class ManagedOpenShiftClient extends BaseClient implements OpenShiftClient {
 
   @Property(name = OPENSHIFT_URL_SYTEM_PROPERTY)
   private String openshiftUrl = Utils.getSystemPropertyOrEnvVar(OPENSHIFT_URL_SYTEM_PROPERTY);
@@ -216,7 +216,7 @@ public class ManagedOpenshiftClient extends BaseClient implements OpenShiftClien
     String openshiftUrl = (String) properties.get(OPENSHIFT_URL_SYTEM_PROPERTY);
     String oapiVersion = (String) properties.get(OPENSHIFT_URL_SYTEM_PROPERTY);
 
-    OpenshiftConfig config = new OpenshiftConfigBuilder()
+    OpenShiftConfig config = new OpenShiftConfigBuilder()
       .withMasterUrl(masterUrl)
       .withApiVersion((String) properties.get(KUBERNETES_API_VERSION_SYSTEM_PROPERTY))
       .withNamespace((String) properties.get(KUBERNETES_NAMESPACE_SYSTEM_PROPERTY))
@@ -238,7 +238,7 @@ public class ManagedOpenshiftClient extends BaseClient implements OpenShiftClien
       .withOpenShiftUrl((openshiftUrl != null && !openshiftUrl.isEmpty()) ? openshiftUrl : URLUtils.join(masterUrl, "oapi", oapiVersion))
       .build();
 
-    delegate = new DefaultOpenshiftClient(config);
+    delegate = new DefaultOpenShiftClient(config);
   }
 
   @Deactivate

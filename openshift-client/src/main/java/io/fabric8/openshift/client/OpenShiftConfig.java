@@ -17,13 +17,12 @@
 package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.internal.URLUtils;
 import io.fabric8.kubernetes.client.internal.Utils;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 
-public class OpenshiftConfig extends Config {
+public class OpenShiftConfig extends Config {
 
   public static final String KUBERNETES_OAPI_VERSION_SYSTEM_PROPERTY = "kubernetes.oapi.version";
   public static final String OPENSHIFT_URL_SYTEM_PROPERTY = "openshift.url";
@@ -32,10 +31,10 @@ public class OpenshiftConfig extends Config {
   private String openShiftUrl;
 
   //This is not meant to be used. This constructor is used only by the generated builder.
-  OpenshiftConfig() {
+  OpenShiftConfig() {
   }
 
-  public OpenshiftConfig(Config kubernetesConfig) {
+  public OpenShiftConfig(Config kubernetesConfig) {
     this(kubernetesConfig,
       getDefaultOpenShiftUrl(kubernetesConfig), getDefaultOapiVersion(kubernetesConfig)
     );
@@ -44,7 +43,7 @@ public class OpenshiftConfig extends Config {
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder",
     refs = {@BuildableReference(Config.class)}
   )
-  public OpenshiftConfig(String openShiftUrl, String oapiVersion, String masterUrl, String apiVersion, String namespace, String[] enabledProtocols, Boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int requestTimeout, String proxy) {
+  public OpenShiftConfig(String openShiftUrl, String oapiVersion, String masterUrl, String apiVersion, String namespace, String[] enabledProtocols, Boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int requestTimeout, String proxy) {
     super(masterUrl, apiVersion, namespace, enabledProtocols, trustCerts, caCertFile, caCertData, clientCertFile, clientCertData, clientKeyFile, clientKeyData, clientKeyAlgo, clientKeyPassphrase, username, password, oauthToken, watchReconnectInterval, watchReconnectLimit, requestTimeout, proxy);
     this.oapiVersion = oapiVersion;
     this.openShiftUrl = openShiftUrl;
@@ -57,7 +56,7 @@ public class OpenshiftConfig extends Config {
     }
   }
 
-  public OpenshiftConfig(Config kubernetesConfig, String openShiftUrl, String oapiVersion) {
+  public OpenShiftConfig(Config kubernetesConfig, String openShiftUrl, String oapiVersion) {
     this(openShiftUrl, oapiVersion, kubernetesConfig.getMasterUrl(), kubernetesConfig.getApiVersion(), kubernetesConfig.getNamespace(), kubernetesConfig.getEnabledProtocols(), kubernetesConfig.isTrustCerts(),
       kubernetesConfig.getCaCertFile(), kubernetesConfig.getCaCertData(),
       kubernetesConfig.getClientCertFile(), kubernetesConfig.getClientCertData(),

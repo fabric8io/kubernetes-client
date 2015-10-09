@@ -19,7 +19,7 @@ package io.fabric8.openshift.examples;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.openshift.api.model.Parameter;
 import io.fabric8.openshift.api.model.Template;
-import io.fabric8.openshift.client.DefaultOpenshiftClient;
+import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,7 @@ public class TemplateExample {
   private static final Logger logger = LoggerFactory.getLogger(TemplateExample.class);
 
   public static void main(String[] args) throws IOException {
-    try (OpenShiftClient client = new DefaultOpenshiftClient()) {
+    try (OpenShiftClient client = new DefaultOpenShiftClient()) {
       try {
         client.namespaces().createNew().withNewMetadata().withName("thisisatest").endMetadata().done();
 

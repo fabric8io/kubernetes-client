@@ -19,22 +19,22 @@ package io.fabric8.openshift.client;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class OpenshiftExtensionAdapterTest {
+public class OpenShiftExtensionAdapterTest {
 
   @Test
   public void testHasCustomConfig() {
-    OpenshiftConfig config = new OpenshiftConfigBuilder()
+    OpenShiftConfig config = new OpenShiftConfigBuilder()
       .withMasterUrl("http://host1:80")
       .build();
 
-    Assert.assertFalse(OpenshiftExtensionAdapter.hasCustomOpenShiftUrl(config));
+    Assert.assertFalse(OpenShiftExtensionAdapter.hasCustomOpenShiftUrl(config));
 
-    config = new OpenshiftConfigBuilder()
+    config = new OpenShiftConfigBuilder()
       .withMasterUrl("http://host1:80")
       .withOpenShiftUrl("http://host2:80/oapi/v1")
       .build();
 
-    Assert.assertTrue(OpenshiftExtensionAdapter.hasCustomOpenShiftUrl(config));
+    Assert.assertTrue(OpenShiftExtensionAdapter.hasCustomOpenShiftUrl(config));
   }
 
 }

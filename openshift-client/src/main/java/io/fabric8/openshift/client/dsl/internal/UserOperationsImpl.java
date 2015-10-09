@@ -21,7 +21,7 @@ import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.api.model.UserList;
 import io.fabric8.openshift.client.OpenShiftClient;
 
-public class UserOperationsImpl extends OpenshiftOperation<OpenShiftClient, User, UserList, DoneableUser, ClientResource<User, DoneableUser>> {
+public class UserOperationsImpl extends OpenShiftOperation<OpenShiftClient, User, UserList, DoneableUser, ClientResource<User, DoneableUser>> {
   public UserOperationsImpl(OpenShiftClient client) {
     this(client, client.getNamespace(), null, true, null);
   }

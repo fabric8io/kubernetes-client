@@ -141,19 +141,19 @@ import io.fabric8.openshift.client.dsl.internal.UserOperationsImpl;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class DefaultOpenshiftClient extends BaseClient implements OpenShiftClient {
+public class DefaultOpenShiftClient extends BaseClient implements OpenShiftClient {
 
   private URL openShiftUrl;
 
-  public DefaultOpenshiftClient() throws KubernetesClientException {
-    this(new OpenshiftConfigBuilder().build());
+  public DefaultOpenShiftClient() throws KubernetesClientException {
+    this(new OpenShiftConfigBuilder().build());
   }
 
-  public DefaultOpenshiftClient(final Config config) throws KubernetesClientException {
-    this(new OpenshiftConfig(config));
+  public DefaultOpenShiftClient(final Config config) throws KubernetesClientException {
+    this(new OpenShiftConfig(config));
   }
 
-  public DefaultOpenshiftClient(final OpenshiftConfig config) throws KubernetesClientException {
+  public DefaultOpenShiftClient(final OpenShiftConfig config) throws KubernetesClientException {
     super(config);
     try {
       this.openShiftUrl = new URL(config.getOpenShiftUrl());
@@ -162,11 +162,11 @@ public class DefaultOpenshiftClient extends BaseClient implements OpenShiftClien
     }
   }
 
-  public DefaultOpenshiftClient(String masterUrl) throws KubernetesClientException {
-    this(new OpenshiftConfigBuilder().withMasterUrl(masterUrl).build());
+  public DefaultOpenShiftClient(String masterUrl) throws KubernetesClientException {
+    this(new OpenShiftConfigBuilder().withMasterUrl(masterUrl).build());
   }
 
-  public DefaultOpenshiftClient(AsyncHttpClient httpClient, OpenshiftConfig config) throws KubernetesClientException {
+  public DefaultOpenShiftClient(AsyncHttpClient httpClient, OpenShiftConfig config) throws KubernetesClientException {
     super(httpClient, config);
     try {
       this.openShiftUrl = new URL(config.getOpenShiftUrl());
@@ -322,11 +322,11 @@ public class DefaultOpenshiftClient extends BaseClient implements OpenShiftClien
 
   @Override
   public OpenShiftClient inNamespace(String namespace) {
-    OpenshiftConfig updated = new OpenshiftConfigBuilder(new OpenshiftConfig(getConfiguration()))
+    OpenShiftConfig updated = new OpenShiftConfigBuilder(new OpenShiftConfig(getConfiguration()))
       .withOpenShiftUrl(openShiftUrl.toString())
       .withNamespace(namespace)
       .build();
-    return new DefaultOpenshiftClient(getHttpClient(), updated);
+    return new DefaultOpenShiftClient(getHttpClient(), updated);
   }
 
   @Override

@@ -21,7 +21,7 @@ import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.ProjectList;
 import io.fabric8.openshift.client.OpenShiftClient;
 
-public class ProjectOperationsImpl extends OpenshiftOperation<OpenShiftClient, Project, ProjectList, DoneableProject,
+public class ProjectOperationsImpl extends OpenShiftOperation<OpenShiftClient, Project, ProjectList, DoneableProject,
   ClientResource<Project, DoneableProject>> {
 
   public ProjectOperationsImpl(OpenShiftClient client) {
