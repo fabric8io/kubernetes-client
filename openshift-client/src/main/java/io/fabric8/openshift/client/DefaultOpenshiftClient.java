@@ -163,7 +163,7 @@ public class DefaultOpenshiftClient extends BaseClient implements OpenShiftClien
   }
 
   public DefaultOpenshiftClient(String masterUrl) throws KubernetesClientException {
-    this(new OpenshiftConfigBuilder().withNewKubernetesConfig().withMasterUrl(masterUrl).and().build());
+    this(new OpenshiftConfigBuilder().withMasterUrl(masterUrl).build());
   }
 
   public DefaultOpenshiftClient(AsyncHttpClient httpClient, OpenshiftConfig config) throws KubernetesClientException {
