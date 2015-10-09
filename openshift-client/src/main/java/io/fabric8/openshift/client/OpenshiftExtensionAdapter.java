@@ -19,10 +19,11 @@ package io.fabric8.openshift.client;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
+import java.net.URI;
 import java.net.URL;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -40,15 +41,28 @@ public class OpenshiftExtensionAdapter implements ExtensionAdapter<OpenShiftClie
   }
 
   @Override
+  public Boolean isAdaptable(Client client) {
+    OpenshiftConfig config = new OpenshiftConfig(client.getConfiguration());
+    if (!hasCustomOpenShiftUrl(config) && !isOpenShift(client)) {
+      return false;
+    }
+    return true;
+  }
+
+  @Override
   public OpenShiftClient adapt(Client client) {
-    String customOpenshiftUrl = OpenshiftConfig.getCustomOpenshiftUrl();
-    if ((customOpenshiftUrl == null || customOpenshiftUrl.isEmpty()) && !isOpenShift(client)) {
-      throw new IllegalArgumentException("Client is not pointing to an OpenShift installation");
+    if (!isAdaptable(client)) {
+      throw new OpenShiftNotAvailableException("OpenShift is not available. Root paths at: " + client.getMasterUrl() + " do not include oapi.");
     }
     return new DefaultOpenshiftClient(client.getConfiguration());
   }
 
-  public static boolean isOpenShift(Client client) {
+  /**
+   * Check if OpenShift is available.
+   * @param client   The client.
+   * @return         True if oapi is found in the root paths.
+   */
+   static boolean isOpenShift(Client client) {
     URL masterUrl = client.getMasterUrl();
     if (IS_OPENSHIFT.containsKey(masterUrl)) {
       return IS_OPENSHIFT.get(masterUrl);
@@ -69,4 +83,21 @@ public class OpenshiftExtensionAdapter implements ExtensionAdapter<OpenShiftClie
     IS_OPENSHIFT.putIfAbsent(masterUrl, false);
     return false;
   }
+
+
+  /**
+   * Checks if a custom URL for OpenShift has been used.
+   * @param config  The openshift configuration.
+   * @return        True if both master and openshift url have the same root.
+   */
+   static boolean hasCustomOpenShiftUrl(OpenshiftConfig config) {
+    try {
+      URI masterUri = new URI(config.getMasterUrl()).resolve("/");
+      URI openshfitUri = new URI(config.getOpenShiftUrl()).resolve("/");
+      return !masterUri.equals(openshfitUri);
+    } catch (Exception e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+
 }

@@ -30,6 +30,14 @@ public interface ExtensionAdapter<C extends Client> {
   Class<C> getExtensionType();
 
   /**
+   * Checks if it is possible to adapt.
+   * It checks that the requirements of the target client are meet. (e.g. checks that openshift is available).
+   * @param client The instance of {@link io.fabric8.kubernetes.client.KubernetesClient} to adapt.
+   * @return
+   */
+  Boolean isAdaptable(Client client);
+
+  /**
    * The adapt function.
    *
    * @param client The instance of {@link io.fabric8.kubernetes.client.KubernetesClient} to adapt.

@@ -25,6 +25,14 @@ import java.net.URL;
 
 public interface Client extends ConfigAware, Closeable {
 
+  /**
+   * Checks if the client can be adapted to an other client type.
+   * @param type  The target client class.
+   * @param <C>   The target client type.
+   * @return      Returns true if a working {@link io.fabric8.kubernetes.client.ExtensionAdapter} is found.
+   */
+  <C extends Client> Boolean  isAdaptable(Class<C> type);
+
   <C extends Client> C adapt(Class<C> type);
 
   URL getMasterUrl();

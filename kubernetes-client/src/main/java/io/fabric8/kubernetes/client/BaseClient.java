@@ -99,7 +99,7 @@ public class BaseClient implements Client {
       clientConfigBuilder.setAcceptAnyCertificate(config.isTrustCerts());
 
       TrustManager[] trustManagers = null;
-      if (isNotNullOrEmpty(config.getCaCertFile())|| isNotNullOrEmpty(config.getCaCertData())) {
+      if (isNotNullOrEmpty(config.getCaCertFile()) || isNotNullOrEmpty(config.getCaCertData())) {
         KeyStore trustStore = createTrustStore(config.getCaCertData(), config.getCaCertFile());
         TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
         tmf.init(trustStore);
@@ -221,18 +221,29 @@ public class BaseClient implements Client {
   }
 
   @Override
+  public <C extends Client> Boolean isAdaptable(Class<C> type) {
+    ExtensionAdapter<C> adapter = Adapters.get(type);
+    if (adapter != null) {
+      return adapter.isAdaptable(this);
+    } else {
+      return false;
+    }
+  }
+
+  @Override
   public <C extends Client> C adapt(Class<C> type) {
     ExtensionAdapter<C> adapter = Adapters.get(type);
     if (adapter != null) {
       return adapter.adapt(this);
     }
-    throw new IllegalStateException("Could not find adapter");
+    throw new IllegalStateException("No adapter available for type:" + type);
   }
 
 
   @Override
   public RootPaths rootPaths() {
-        return new BaseOperation(this, "", null, null, false, null, RootPaths.class, null, null) {}.getRootPaths();
+    return new BaseOperation(this, "", null, null, false, null, RootPaths.class, null, null) {
+    }.getRootPaths();
   }
 
 }

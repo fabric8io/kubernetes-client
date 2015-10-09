@@ -101,7 +101,6 @@ public class Config {
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder")
   public Config(String masterUrl, String apiVersion, String namespace, String[] enabledProtocols, Boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int requestTimeout, String proxy) {
     this();
-
     this.trustCerts = trustCerts;
     this.masterUrl = masterUrl;
     this.apiVersion = apiVersion;
@@ -129,7 +128,7 @@ public class Config {
     }
   }
 
-  private void configFromSysPropsOrEnvVars(Config config) {
+  public void configFromSysPropsOrEnvVars(Config config) {
     config.setTrustCerts(Utils.getSystemPropertyOrEnvVar(KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY, config.isTrustCerts()));
     config.setMasterUrl(Utils.getSystemPropertyOrEnvVar(KUBERNETES_MASTER_SYSTEM_PROPERTY, config.getMasterUrl()));
     config.setApiVersion(Utils.getSystemPropertyOrEnvVar(KUBERNETES_API_VERSION_SYSTEM_PROPERTY, config.getApiVersion()));
