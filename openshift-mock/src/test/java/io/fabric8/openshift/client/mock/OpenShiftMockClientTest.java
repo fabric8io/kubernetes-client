@@ -36,11 +36,11 @@ import org.junit.Test;
 
 import static org.easymock.EasyMock.eq;
 
-public class OpenshiftMockClientTest {
+public class OpenShiftMockClientTest {
 
   @Test
   public void testGetBuild() {
-    OpenshiftMockClient mock = new OpenshiftMockClient();
+    OpenShiftMockClient mock = new OpenShiftMockClient();
 
     mock.builds().inNamespace(eq("ns1")).withName("build1").get().andReturn(new BuildBuilder()
         .withNewMetadata().withName("build1").endMetadata()
@@ -66,7 +66,7 @@ public class OpenshiftMockClientTest {
 
   @Test
   public void testListBuilds() {
-    OpenshiftMockClient mock = new OpenshiftMockClient();
+    OpenShiftMockClient mock = new OpenShiftMockClient();
 
     mock.builds().inNamespace("ns1").withLabel("component", "f1").list().andReturn(new BuildListBuilder()
         .addNewItem()
@@ -103,7 +103,7 @@ public class OpenshiftMockClientTest {
 
   @Test
   public void testWebHookTrigger() {
-    OpenshiftMockClient mock = new OpenshiftMockClient();
+    OpenShiftMockClient mock = new OpenShiftMockClient();
     mock.buildConfigs().inNamespace("ns1").withName("build1").withSecret("secret101").withType("github").trigger(EasyMock.<WebHookTrigger>anyObject()).andReturn(null).once();
     OpenShiftClient client = mock.replay();
     client.buildConfigs().inNamespace("ns1").withName("build1").withSecret("secret101").withType("github").trigger(new WebHookTrigger());
@@ -114,7 +114,7 @@ public class OpenshiftMockClientTest {
 
   @Test
   public void testUsers() {
-    OpenshiftMockClient mock = new OpenshiftMockClient();
+    OpenShiftMockClient mock = new OpenShiftMockClient();
 
     User myuser = new UserBuilder()
       .withNewMetadata()
@@ -142,7 +142,7 @@ public class OpenshiftMockClientTest {
 
   @Test
   public void testGroups() {
-    OpenshiftMockClient mock = new OpenshiftMockClient();
+    OpenShiftMockClient mock = new OpenShiftMockClient();
 
     Group mygroup = new GroupBuilder()
       .withNewMetadata()
