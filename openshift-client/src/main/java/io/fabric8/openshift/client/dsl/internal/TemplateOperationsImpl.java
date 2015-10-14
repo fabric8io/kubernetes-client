@@ -64,7 +64,7 @@ public class TemplateOperationsImpl
 
       requestBuilder = getClient().getHttpClient().preparePost(getProcessUrl().toString());
 
-      requestBuilder.setBody(mapper.writer().writeValueAsString(t));
+      requestBuilder.setBody(OBJECT_MAPPER.writer().writeValueAsString(t));
       t = handleResponse(requestBuilder, 201);
       KubernetesList l = new KubernetesList();
       l.setItems(t.getObjects());

@@ -325,8 +325,8 @@ public class ManagedOpenShiftClient extends BaseClient implements OpenShiftClien
   }
 
   @Override
-  public ClientSubjectAccessReviewOperation<CreateableSubjectAccessReview, CreateableLocalSubjectAccessReview> serviceAccessReviews() {
-    return delegate.serviceAccessReviews();
+  public ClientSubjectAccessReviewOperation<CreateableSubjectAccessReview, CreateableLocalSubjectAccessReview> subjectAccessReviews() {
+    return delegate.subjectAccessReviews();
   }
 
   @Override

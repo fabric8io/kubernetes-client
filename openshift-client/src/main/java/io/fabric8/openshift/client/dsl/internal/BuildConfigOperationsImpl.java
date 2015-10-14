@@ -16,13 +16,11 @@
 package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Triggerable;
 import io.fabric8.kubernetes.client.dsl.Typeable;
 import io.fabric8.kubernetes.client.dsl.internal.BaseOperation;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.Response;
-import io.fabric8.kubernetes.client.dsl.internal.ClientMixedOperation;
 import io.fabric8.kubernetes.client.internal.URLUtils;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigList;
@@ -80,7 +78,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<OpenShiftClien
     try {
       URL instantiationUrl = new URL(URLUtils.join(getResourceUrl().toString(), "instantiate"));
       AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().preparePost(instantiationUrl.toString());
-      requestBuilder.setBody(BaseOperation.mapper.writer().writeValueAsString(request));
+      requestBuilder.setBody(BaseOperation.OBJECT_MAPPER.writer().writeValueAsString(request));
       handleResponse(requestBuilder, 201);
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
@@ -96,7 +94,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<OpenShiftClien
       AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().preparePost(triggerUrl);
       requestBuilder.addHeader("Content-Type", "application/json");
       requestBuilder.addHeader("X-Github-Event", "push");
-      requestBuilder.setBody(BaseOperation.mapper.writer().writeValueAsString(trigger));
+      requestBuilder.setBody(BaseOperation.OBJECT_MAPPER.writer().writeValueAsString(trigger));
       Future<Response> f = requestBuilder.execute();
       Response r = f.get();
       assertResponseCode(r, 200);

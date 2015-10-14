@@ -15,15 +15,12 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.Response;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.RootPaths;
-import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -34,7 +31,6 @@ import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.internal.URLUtils;
-import io.fabric8.kubernetes.client.internal.Utils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -53,15 +49,9 @@ import java.util.concurrent.Future;
 import static io.fabric8.kubernetes.client.internal.Utils.join;
 
 public class BaseOperation<C extends Client, T, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
+  extends OperationSupport<C>
   implements ClientMixedOperation<C, T, L, D, R> {
 
-  protected static final ObjectMapper mapper = new ObjectMapper();
-
-  private final C client;
-
-  private final String name;
-  private final String namespace;
-  private final String resourceT;
   private final Boolean cascading;
   private final T item;
 
@@ -78,10 +68,7 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
   private boolean reaping;
 
   protected BaseOperation(C client, String resourceT, String namespace, String name, Boolean cascading, T item) {
-    this.client = client;
-    this.resourceT = resourceT;
-    this.namespace = namespace;
-    this.name = name;
+    super(client,resourceT,namespace,name);
     this.cascading = cascading;
     this.item = item;
     this.type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
@@ -90,10 +77,7 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
   }
 
   protected BaseOperation(C client, String resourceT, String namespace, String name, Boolean cascading, T item, Class<T> type, Class<L> listType, Class<D> doneableType) {
-    this.client = client;
-    this.resourceT = resourceT;
-    this.namespace = namespace;
-    this.name = name;
+    super(client,resourceT,namespace,name);
     this.cascading = cascading;
     this.item = item;
     this.type = type;
@@ -128,7 +112,7 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
       Future<Response> f = getClient().getHttpClient().prepareGet(requestUrl.toString()).execute();
       Response r = f.get();
       assertResponseCode(r, 200);
-      return mapper.readValue(r.getResponseBodyAsStream(), RootPaths.class);
+      return OBJECT_MAPPER.readValue(r.getResponseBodyAsStream(), RootPaths.class);
     } catch (KubernetesClientException e) {
       if (e.getCode() != 404) {
         throw e;
@@ -367,7 +351,7 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
       Future<Response> f = requestBuilder.execute();
       Response r = f.get();
       assertResponseCode(r, 200);
-      return mapper.readValue(r.getResponseBodyAsStream(), listType);
+      return OBJECT_MAPPER.readValue(r.getResponseBodyAsStream(), listType);
     } catch (InterruptedException | ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
@@ -471,147 +455,22 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
     return true;
   }
 
-  protected URL getNamespacedUrl(String namespace) throws MalformedURLException {
-    URL requestUrl = getRootUrl();
-    if (namespace != null) {
-      requestUrl = new URL(URLUtils.join(requestUrl.toString(), "namespaces", namespace));
-    }
-    requestUrl = new URL(URLUtils.join(requestUrl.toString(), resourceT));
-    return requestUrl;
-  }
-
-  protected URL getNamespacedUrl() throws MalformedURLException {
-    return getNamespacedUrl(getNamespace());
-  }
-
-  protected URL getResourceUrl(String namespace, String name) throws MalformedURLException {
-    if (name == null) {
-      return getNamespacedUrl(namespace);
-    }
-    return new URL(URLUtils.join(getNamespacedUrl(namespace).toString(), name));
-  }
-
-  protected URL getResourceUrl() throws MalformedURLException {
-    if (name == null) {
-      return getNamespacedUrl();
-    }
-    return new URL(URLUtils.join(getNamespacedUrl().toString(), name));
-  }
-
-  protected String checkNamespace(T item) {
-    String operationNs = getNamespace();
-    String itemNs = item instanceof HasMetadata ? ((HasMetadata) item).getMetadata().getNamespace() : null;
-    if (Utils.isNullOrEmpty(operationNs) && Utils.isNullOrEmpty(itemNs)) {
-      if (!isNamespaceRequired()) {
-        return null;
-      } else {
-        throw new KubernetesClientException("Namespace not specified. But operation requires namespace.");
-      }
-    } else if (Utils.isNullOrEmpty(itemNs)) {
-      return operationNs;
-    } else if (Utils.isNullOrEmpty(operationNs)) {
-      return itemNs;
-    } else if (itemNs.equals(operationNs)) {
-      return itemNs;
-    }
-    throw new KubernetesClientException("Namespace mismatch. Item namespace:" + itemNs + ". Operation namespace:" + operationNs + ".");
-  }
-
-  protected String checkName(T item) {
-    String operationName = getName();
-    String itemName = item instanceof HasMetadata ? ((HasMetadata) item).getMetadata().getName() : null;
-    if (Utils.isNullOrEmpty(operationName) && Utils.isNullOrEmpty(itemName)) {
-      return null;
-    } else if (Utils.isNullOrEmpty(itemName)) {
-      return operationName;
-    } else if (Utils.isNullOrEmpty(operationName)) {
-      return itemName;
-    } else if (itemName.equals(operationName)) {
-      return itemName;
-    }
-    throw new KubernetesClientException("Name mismatch. Item name:" + itemName + ". Operation name:" + operationName + ".");
-  }
-
-  /**
-   * Checks if the response status code is the expected and throws the appropriate KubernetesClientException if not.
-   *
-   * @param r                  The {@link com.ning.http.client.Response} object.
-   * @param expectedStatusCode The expected status code.
-   * @throws KubernetesClientException When the response code is not the expected.
-   */
-  protected void assertResponseCode(Response r, int expectedStatusCode) {
-    int statusCode = r.getStatusCode();
-    String customMessage = client.getConfiguration().getErrorMessages().get(statusCode);
-
-    if (statusCode == expectedStatusCode) {
-      return;
-    } else if (customMessage != null) {
-      throw new KubernetesClientException("Error accessing: " + r.getUri().toString() + ",due to:" + customMessage);
-    } else {
-      try {
-        Status status = mapper.readValue(r.getResponseBodyAsStream(), Status.class);
-        throw new KubernetesClientException(status.getMessage(), status.getCode(), status);
-      } catch (IOException e) {
-        throw new KubernetesClientException(e.getMessage(), statusCode, new StatusBuilder()
-          .withCode(statusCode)
-          .withMessage(e.getMessage())
-          .build());
-      }
-    }
-  }
-
-
   protected T handleResponse(AsyncHttpClient.BoundRequestBuilder requestBuilder, int successStatusCode) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    Future<Response> f = requestBuilder.execute();
-    Response r = f.get();
-    assertResponseCode(r, successStatusCode);
-    return mapper.readValue(r.getResponseBodyAsStream(), getType());
-  }
-
-  protected void handleDelete(T resource) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    handleDelete(getResourceUrl(checkNamespace(resource), checkName(resource)));
-  }
-
-  protected void handleDelete(URL requestUrl) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().prepareDelete(requestUrl.toString());
-    Future<Response> f = requestBuilder.execute();
-    Response r = f.get();
-    assertResponseCode(r, 200);
+    return handleResponse(requestBuilder, successStatusCode, getType());
   }
 
   protected T handleCreate(T resource) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().preparePost(getNamespacedUrl(checkNamespace(resource)).toString());
-    requestBuilder.setBody(mapper.writer().writeValueAsString(resource));
-    return handleResponse(requestBuilder, 201);
+    return handleCreate(resource, getType());
   }
 
   protected T handleReplace(T updated) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().preparePut(getResourceUrl(checkNamespace(updated), checkName(updated)).toString());
-    requestBuilder.setBody(mapper.writer().writeValueAsString(updated));
-    return handleResponse(requestBuilder, 200);
+    return handleReplace(updated, getType());
   }
 
-  protected T handleGet(URL resourceUrl) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().prepareGet(resourceUrl.toString());
-    return handleResponse(requestBuilder, 200);
+  protected T handleGet(URL resourceUrl) throws InterruptedException, ExecutionException, IOException {
+    return handleGet(resourceUrl, getType());
   }
 
-  public URL getRootUrl() {
-    try {
-      return new URL(URLUtils.join(client.getMasterUrl().toString(), "api", client.getApiVersion()));
-    } catch (MalformedURLException e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
-  }
-
-
-  public String getName() {
-    return name;
-  }
-
-  public String getNamespace() {
-    return namespace;
-  }
 
   public Boolean isCascading() {
     return cascading;
@@ -635,11 +494,6 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
 
   public Class<D> getDoneableType() {
     return doneableType;
-  }
-
-  @Override
-  public C getClient() {
-    return client;
   }
 
   protected boolean isReaping() {
