@@ -89,4 +89,6 @@ public interface OpenShiftDSL<C extends Client> extends KubernetesDSL<C> {
   ClientOperation<C, Template, TemplateList, DoneableTemplate, ClientTemplateResource<Template, KubernetesList, DoneableTemplate>> templates();
 
   ClientOperation<C, User, UserList, DoneableUser, ClientResource<User, DoneableUser>> users();
+
+  ClientSubjectAccessReviewOperation<CreateableSubjectAccessReview, CreateableLocalSubjectAccessReview> serviceAccessReviews();
 }

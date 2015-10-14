@@ -115,7 +115,10 @@ import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
 import io.fabric8.openshift.client.dsl.ClientBuildConfigResource;
+import io.fabric8.openshift.client.dsl.ClientSubjectAccessReviewOperation;
 import io.fabric8.openshift.client.dsl.ClientTemplateResource;
+import io.fabric8.openshift.client.dsl.CreateableLocalSubjectAccessReview;
+import io.fabric8.openshift.client.dsl.CreateableSubjectAccessReview;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.ConfigurationPolicy;
@@ -319,6 +322,11 @@ public class ManagedOpenShiftClient extends BaseClient implements OpenShiftClien
   @Override
   public ClientMixedOperation<OpenShiftClient, User, UserList, DoneableUser, ClientResource<User, DoneableUser>> users() {
     return delegate.users();
+  }
+
+  @Override
+  public ClientSubjectAccessReviewOperation<CreateableSubjectAccessReview, CreateableLocalSubjectAccessReview> serviceAccessReviews() {
+    return delegate.serviceAccessReviews();
   }
 
   @Override

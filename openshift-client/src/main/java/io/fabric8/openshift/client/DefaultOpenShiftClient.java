@@ -122,9 +122,13 @@ import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.api.model.UserList;
 import io.fabric8.openshift.client.dsl.ClientBuildConfigResource;
+import io.fabric8.openshift.client.dsl.ClientSubjectAccessReviewOperation;
 import io.fabric8.openshift.client.dsl.ClientTemplateResource;
+import io.fabric8.openshift.client.dsl.CreateableLocalSubjectAccessReview;
+import io.fabric8.openshift.client.dsl.CreateableSubjectAccessReview;
 import io.fabric8.openshift.client.dsl.internal.BuildConfigOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.BuildOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.ClientSubjectAccessReviewOperationImpl;
 import io.fabric8.openshift.client.dsl.internal.DeploymentConfigOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.GroupOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.ImageStreamOperationsImpl;
@@ -318,6 +322,11 @@ public class DefaultOpenShiftClient extends BaseClient implements OpenShiftClien
   @Override
   public ClientMixedOperation<OpenShiftClient, User, UserList, DoneableUser, ClientResource<User, DoneableUser>> users() {
     return new UserOperationsImpl(this);
+  }
+
+  @Override
+  public ClientSubjectAccessReviewOperation<CreateableSubjectAccessReview, CreateableLocalSubjectAccessReview> serviceAccessReviews() {
+    return new ClientSubjectAccessReviewOperationImpl();
   }
 
   @Override
