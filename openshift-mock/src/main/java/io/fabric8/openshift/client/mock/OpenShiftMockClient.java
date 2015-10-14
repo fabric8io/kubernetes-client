@@ -135,6 +135,7 @@ import io.fabric8.openshift.client.mock.impl.MockPolicy;
 import io.fabric8.openshift.client.mock.impl.MockPolicyBinding;
 import io.fabric8.openshift.client.mock.impl.MockProject;
 import io.fabric8.openshift.client.mock.impl.MockRoute;
+import io.fabric8.openshift.client.mock.impl.MockSubjectAccessReview;
 import io.fabric8.openshift.client.mock.impl.MockTemplate;
 import io.fabric8.openshift.client.mock.impl.MockUser;
 import org.easymock.EasyMock;
@@ -186,6 +187,7 @@ public class OpenShiftMockClient implements Replayable<OpenShiftClient>, Verifia
   private final MockGroup groups = new MockGroup();
   private final MockPolicy policies = new MockPolicy();
   private final MockPolicyBinding policyBindings = new MockPolicyBinding();
+  private final MockSubjectAccessReview subjectAccessReviews = new MockSubjectAccessReview();
 
   public OpenShiftMockClient() {
     expect(client.adapt(OpenShiftClient.class)).andReturn(client).anyTimes();
@@ -218,6 +220,7 @@ public class OpenShiftMockClient implements Replayable<OpenShiftClient>, Verifia
     expect(client.groups()).andReturn(groups.getDelegate()).anyTimes();
     expect(client.policies()).andReturn(policies.getDelegate()).anyTimes();
     expect(client.policyBindings()).andReturn(policyBindings.getDelegate()).anyTimes();
+    expect(client.subjectAccessReviews()).andReturn(subjectAccessReviews.getDelegate()).anyTimes();
 
     client.close();
     EasyMock.expectLastCall().anyTimes();
@@ -254,6 +257,7 @@ public class OpenShiftMockClient implements Replayable<OpenShiftClient>, Verifia
     groups.replay();
     policies.replay();
     policyBindings.replay();
+    subjectAccessReviews.replay();
 
     EasyMock.replay(client);
     return client;
@@ -291,6 +295,7 @@ public class OpenShiftMockClient implements Replayable<OpenShiftClient>, Verifia
     groups.verify();
     policies.verify();
     policyBindings.verify();
+    subjectAccessReviews.verify();
     EasyMock.verify(client);
   }
 
@@ -416,6 +421,10 @@ public class OpenShiftMockClient implements Replayable<OpenShiftClient>, Verifia
 
   public  MockOperation<PolicyBinding, PolicyBindingList, DoneablePolicyBinding, MockResource<PolicyBinding, DoneablePolicyBinding, Boolean>> policyBindings() {
     return policyBindings;
+  }
+
+  public MockSubjectAccessReview getSubjectAccessReviews() {
+    return subjectAccessReviews;
   }
 
   public OpenShiftMockClient inNamespace(String namespace) {
