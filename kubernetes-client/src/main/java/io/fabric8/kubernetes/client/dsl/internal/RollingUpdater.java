@@ -31,6 +31,8 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientLoggableResource;
 import io.fabric8.kubernetes.client.dsl.ClientOperation;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -42,6 +44,7 @@ import java.util.Objects;
 import static io.fabric8.kubernetes.client.internal.SerializationUtils.dumpWithoutRuntimeStateAsYaml;
 
 class RollingUpdater<C extends Client> {
+  private static final transient Logger LOG = LoggerFactory.getLogger(RollingUpdater.class);
 
   static final String DEPLOYMENT_KEY = "deployment";
 
@@ -169,7 +172,7 @@ class RollingUpdater<C extends Client> {
       if (now > end) {
         String message = "Only " + count + " pod(s) running for ReplicationController: " + rc.getMetadata().getName()
                         + " in namespace: " + namespace + " when expecting " + requiredPodCount + " after waiting for " + (maxTimeWaitingForNewPods / 1000) + " seconds so giving up";
-        System.out.println("WARNING: " + message);
+        LOG.warn(message);
         throw new IllegalStateException(message);
       } else {
         if (count >= requiredPodCount) {
@@ -177,7 +180,7 @@ class RollingUpdater<C extends Client> {
         } else {
           if (now - lastMessageTime > timeBetweenMessages) {
             lastMessageTime = now;
-            System.out.println("Only " + count + " pod(s) running for ReplicationController: " + rc.getMetadata().getName()
+            LOG.info("Only " + count + " pod(s) running for ReplicationController: " + rc.getMetadata().getName()
                     + " in namespace: " + namespace + " when expecting " + requiredPodCount + " so waiting...");
           }
           try {
