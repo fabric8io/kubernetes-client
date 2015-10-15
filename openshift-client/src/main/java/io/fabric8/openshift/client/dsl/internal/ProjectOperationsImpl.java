@@ -31,4 +31,10 @@ public class ProjectOperationsImpl extends OpenShiftOperation<OpenShiftClient, P
   public ProjectOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading, Project item) {
     super(client, "projects", namespace, name, cascading, item);
   }
+
+
+  @Override
+  public boolean isNamespaceRequired() {
+    return false;
+  }
 }

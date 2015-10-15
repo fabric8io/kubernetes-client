@@ -29,4 +29,9 @@ public class UserOperationsImpl extends OpenShiftOperation<OpenShiftClient, User
   public UserOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading, User item) {
     super(client, "users", namespace, name, cascading, item);
   }
+
+  @Override
+  public boolean isNamespaceRequired() {
+    return false;
+  }
 }

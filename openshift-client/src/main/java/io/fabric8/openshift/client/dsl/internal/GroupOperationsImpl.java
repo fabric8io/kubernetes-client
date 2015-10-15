@@ -29,4 +29,9 @@ public class GroupOperationsImpl extends OpenShiftOperation<OpenShiftClient, Gro
   public GroupOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading, Group item) {
     super(client, "groups", namespace, name, cascading, item);
   }
+
+  @Override
+  public boolean isNamespaceRequired() {
+    return false;
+  }
 }
