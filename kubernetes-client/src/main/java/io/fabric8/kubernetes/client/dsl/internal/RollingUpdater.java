@@ -20,8 +20,8 @@ import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.DoneableReplicationController;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodCondition;
 import io.fabric8.kubernetes.api.model.PodList;
-import io.fabric8.kubernetes.api.model.PodStatus;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.client.Client;
@@ -39,23 +39,28 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static io.fabric8.kubernetes.client.internal.SerializationUtils.dumpWithoutRuntimeStateAsYaml;
 
 class RollingUpdater<C extends Client> {
-  private static final transient Logger LOG = LoggerFactory.getLogger(RollingUpdater.class);
-
   static final String DEPLOYMENT_KEY = "deployment";
-  static final Long DEFAULT_ROLLING_TIMEOUT = 15 * 60 * 1000L;// 15 mins
+
+  private static final Long DEFAULT_ROLLING_TIMEOUT = 15 * 60 * 1000L;// 15 mins
+
+  private static final transient Logger LOG = LoggerFactory.getLogger(RollingUpdater.class);
 
   private final C client;
   private final long rollingTimeoutMillis;
   private final long loggingIntervalMillis;
 
   RollingUpdater(C client) {
-    this.client = client;
-    this.rollingTimeoutMillis = DEFAULT_ROLLING_TIMEOUT;
-    this.loggingIntervalMillis = Config.DEFAULT_LOGGING_INTERVAL;
+    this(client, DEFAULT_ROLLING_TIMEOUT, Config.DEFAULT_LOGGING_INTERVAL);
   }
 
   RollingUpdater(C client, long rollingTimeoutMillis, long loggingIntervalMillis) {
@@ -113,12 +118,12 @@ class RollingUpdater<C extends Client> {
       while (createdRC.getSpec().getReplicas() < requestedNewReplicas) {
         int newReplicas = createdRC.getSpec().getReplicas() + 1;
         replicationControllers().inNamespace(namespace).withName(createdRC.getMetadata().getName()).scale(newReplicas, true);
+        waitUntilPodsAreReady(createdRC, namespace, newReplicas);
         createdRC.getSpec().setReplicas(newReplicas);
-
-        waitUntilPodsActive(createdRC, namespace, newReplicas);
 
         if (oldReplicas > 0) {
           replicationControllers().inNamespace(namespace).withName(oldRCName).scale(--oldReplicas, true);
+          waitUntilPodsAreReady(oldRC, namespace, oldReplicas);
         }
       }
 
@@ -147,56 +152,49 @@ class RollingUpdater<C extends Client> {
   }
 
   /**
-   * Lets wait until there are enough active pods of the given RC
+   * Lets wait until there are enough Ready pods of the given RC
    */
-  private void waitUntilPodsActive(ReplicationController rc, String namespace, int requiredPodCount) {
-    long start = System.currentTimeMillis();
-    long end = start + rollingTimeoutMillis;
-    long lastMessageTime = 0;
+  private void waitUntilPodsAreReady(final ReplicationController rc, final String namespace, final int requiredPodCount) {
+    final CountDownLatch countDownLatch = new CountDownLatch(1);
+    final AtomicInteger podCount = new AtomicInteger(0);
 
-    while (true) {
-      PodList podList = pods().inNamespace(namespace).withLabels(rc.getSpec().getSelector()).list();
-      int count = 0;
-      if (podList != null) {
+    final Runnable readyPodsPoller = new Runnable() {
+      public void run() {
+        PodList podList = pods().inNamespace(namespace).withLabels(rc.getSpec().getSelector()).list();
+        int count = 0;
         List<Pod> items = podList.getItems();
-        if (items != null) {
-          for (Pod item : items) {
-            boolean running = false;
-            PodStatus status = item.getStatus();
-            if (status != null) {
-              String phase = status.getPhase();
-              if (phase != null && phase.toLowerCase().startsWith("run")) {
-                running = true;
-              }
-            }
-            if (running) {
+        for (Pod item : items) {
+          for (PodCondition c : item.getStatus().getConditions()) {
+            if (c.getType().equals("Ready") && c.getStatus().equals("True")) {
               count++;
             }
           }
         }
-      }
-      long now = System.currentTimeMillis();
-      if (now > end) {
-        String message = "Only " + count + " pod(s) running for ReplicationController: " + rc.getMetadata().getName()
-                        + " in namespace: " + namespace + " when expecting " + requiredPodCount + " after waiting for " + (rollingTimeoutMillis / 1000) + " seconds so giving up";
-        LOG.warn(message);
-        throw new IllegalStateException(message);
-      } else {
-        if (count >= requiredPodCount) {
-          break;
-        } else {
-          if (now - lastMessageTime > loggingIntervalMillis) {
-            lastMessageTime = now;
-            LOG.info("Only " + count + " pod(s) running for ReplicationController: " + rc.getMetadata().getName()
-                    + " in namespace: " + namespace + " when expecting " + requiredPodCount + " so waiting...");
-          }
-          try {
-            Thread.sleep(500);
-          } catch (InterruptedException e) {
-            e.printStackTrace();
-          }
+        podCount.set(count);
+        if (count == requiredPodCount) {
+          countDownLatch.countDown();
         }
       }
+    };
+
+    ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+    ScheduledFuture poller = executor.scheduleWithFixedDelay(readyPodsPoller, 0, 1, TimeUnit.SECONDS);
+    ScheduledFuture logger = executor.scheduleWithFixedDelay(new Runnable() {
+      @Override
+      public void run() {
+        LOG.debug("Only {}/{} pod(s) ready for ReplicationController: {} in namespace: {} seconds so waiting...",
+            podCount.get(), requiredPodCount, rc.getMetadata().getName(), namespace);
+      }
+    }, 0, loggingIntervalMillis, TimeUnit.MILLISECONDS);
+    try {
+      countDownLatch.await(rollingTimeoutMillis, TimeUnit.MILLISECONDS);
+      executor.shutdown();
+    } catch (InterruptedException e) {
+      poller.cancel(true);
+      logger.cancel(true);
+      executor.shutdown();
+      LOG.warn("Only {}/{} pod(s) ready for ReplicationController: {} in namespace: {}  after waiting for {} seconds so giving up",
+          podCount.get(), requiredPodCount, rc.getMetadata().getName(), namespace, TimeUnit.MILLISECONDS.toSeconds(rollingTimeoutMillis));
     }
   }
 

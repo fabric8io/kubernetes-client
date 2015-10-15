@@ -80,7 +80,19 @@ public class ReplicationControllerTest extends KubernetesMockServerTestBase {
       .withResourceVersion("1")
       .endMetadata()
       .withNewSpec()
+      .withReplicas(0)
+      .endSpec()
+      .withNewStatus()
       .withReplicas(1)
+      .endStatus()
+      .build());
+
+    expectAndReturnAsJson("/api/v1/namespaces/test/replicationcontrollers/repl1", 200, new ReplicationControllerBuilder() .withNewMetadata()
+      .withName("repl1")
+      .withResourceVersion("1")
+      .endMetadata()
+      .withNewSpec()
+      .withReplicas(0)
       .endSpec()
       .withNewStatus()
       .withReplicas(0)
@@ -92,7 +104,19 @@ public class ReplicationControllerTest extends KubernetesMockServerTestBase {
       .withResourceVersion("1")
       .endMetadata()
       .withNewSpec()
+      .withReplicas(0)
+      .endSpec()
+      .withNewStatus()
       .withReplicas(1)
+      .endStatus()
+      .build());
+
+    expectAndReturnAsJson("/api/v1/namespaces/ns1/replicationcontrollers/repl2", 200, new ReplicationControllerBuilder() .withNewMetadata()
+      .withName("repl2")
+      .withResourceVersion("1")
+      .endMetadata()
+      .withNewSpec()
+      .withReplicas(0)
       .endSpec()
       .withNewStatus()
       .withReplicas(0)
@@ -111,7 +135,6 @@ public class ReplicationControllerTest extends KubernetesMockServerTestBase {
     assertTrue(deleted);
   }
 
-
   @Test
   public void testScale() {
     expectAndReturnAsJson("/api/v1/namespaces/test/replicationcontrollers/repl1", 200, new ReplicationControllerBuilder()
@@ -120,19 +143,54 @@ public class ReplicationControllerTest extends KubernetesMockServerTestBase {
       .withResourceVersion("1")
       .endMetadata()
       .withNewSpec()
-      .withReplicas(1)
+      .withReplicas(5)
       .endSpec()
       .withNewStatus()
-        .withReplicas(5)
+        .withReplicas(1)
       .endStatus()
       .build());
 
-    expectAndReturnAsJson("/api/v1/namespaces/ns1/replicationcontrollers/repl2", 200, new ReplicationControllerBuilder().build());
     KubernetesClient client = getClient();
     ReplicationController repl = client.replicationControllers().withName("repl1").scale(5);
     assertNotNull(repl);
     assertNotNull(repl.getSpec());
     assertEquals(5, repl.getSpec().getReplicas().intValue());
+    assertEquals(1, repl.getStatus().getReplicas().intValue());
+  }
+
+  @Test
+  public void testScaleAndWait() {
+    expectAndReturnAsJson("/api/v1/namespaces/test/replicationcontrollers/repl1", 200, new ReplicationControllerBuilder()
+      .withNewMetadata()
+      .withName("repl1")
+      .withResourceVersion("1")
+      .endMetadata()
+      .withNewSpec()
+      .withReplicas(5)
+      .endSpec()
+      .withNewStatus()
+        .withReplicas(1)
+      .endStatus()
+      .build());
+    expectAndReturnAsJson("/api/v1/namespaces/test/replicationcontrollers/repl1", 200, new ReplicationControllerBuilder()
+        .withNewMetadata()
+        .withName("repl1")
+        .withResourceVersion("1")
+        .endMetadata()
+        .withNewSpec()
+        .withReplicas(5)
+        .endSpec()
+        .withNewStatus()
+        .withReplicas(5)
+        .endStatus()
+        .build());
+
+    KubernetesClient client = getClient();
+    ReplicationController repl = client.replicationControllers().withName("repl1").scale(5, true);
+    assertNotNull(repl);
+    assertNotNull(repl.getSpec());
+    assertEquals(5, repl.getSpec().getReplicas().intValue());
+    assertEquals(5, repl.getStatus().getReplicas().intValue());
   }
 
 

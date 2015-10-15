@@ -28,17 +28,25 @@ import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
 import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.ImageEditReplaceable;
-import io.fabric8.kubernetes.client.dsl.Scaleable;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplaceable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ReplicationControllerOperationsImpl<C extends Client> extends HasMetadataOperation<C, ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>>
   implements ClientRollableScallableResource<ReplicationController, DoneableReplicationController>,
   TimeoutImageEditReplaceable<ReplicationController, ReplicationController, DoneableReplicationController> {
+
+  static final transient Logger LOG = LoggerFactory.getLogger(ReplicationControllerOperationsImpl.class);
 
   private final Boolean rolling;
   private final long rollingTimeout;
@@ -47,7 +55,6 @@ public class ReplicationControllerOperationsImpl<C extends Client> extends HasMe
   public ReplicationControllerOperationsImpl(C client) {
     this(client, client.getNamespace(), null, true, null, false, client.getConfiguration().getRollingTimeout(), TimeUnit.MINUTES);
   }
-
 
   public ReplicationControllerOperationsImpl(C client, String namespace, String name, Boolean cascading, ReplicationController item, Boolean rolling, long rollingTimeout, TimeUnit rollingTimeUnit) {
     super(client, "replicationcontrollers", namespace, name, cascading, item);
@@ -101,24 +108,50 @@ public class ReplicationControllerOperationsImpl<C extends Client> extends HasMe
   public ReplicationController scale(int count, boolean wait) {
     ReplicationController res = cascading(false).edit().editSpec().withReplicas(count).endSpec().done();
     if (wait) {
+      waitUntilRCIsScaled();
       res = getMandatory();
-      while (res.getStatus().getReplicas() != count) {
-        try {
-          Thread.sleep(Scaleable.POLL_INTERVAL_MS);
-          res = getMandatory();
-        } catch (InterruptedException e) {
-          throw new KubernetesClientException("Interrupted sleep", e);
-        }
-      }
     }
     return res;
+  }
+
+  /**
+   * Lets wait until there are enough Ready pods of the given RC
+   */
+  private void waitUntilRCIsScaled() {
+    final CountDownLatch countDownLatch = new CountDownLatch(1);
+
+    final AtomicReference<ReplicationController> atomicRC = new AtomicReference<>();
+
+    final Runnable rcPoller = new Runnable() {
+      public void run() {
+        ReplicationController rc = getMandatory();
+        atomicRC.set(rc);
+        if (rc.getSpec().getReplicas() == rc.getStatus().getReplicas()) {
+          countDownLatch.countDown();
+        } else {
+          LOG.debug("Only {}/{} replicas scheduled for ReplicationController: {} in namespace: {} seconds so waiting...",
+              rc.getStatus().getReplicas(), rc.getSpec().getReplicas(), rc.getMetadata().getName(), namespace);
+        }
+      }
+    };
+
+    ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+    ScheduledFuture poller = executor.scheduleWithFixedDelay(rcPoller, 0, 100, TimeUnit.MILLISECONDS);
+    try {
+      countDownLatch.await(rollingTimeout, rollingTimeUnit);
+      executor.shutdown();
+    } catch (InterruptedException e) {
+      poller.cancel(true);
+      executor.shutdown();
+      LOG.error("Only {}/{} pod(s) ready for ReplicationController: {} in namespace: {}  after waiting for {} seconds so giving up",
+          atomicRC.get().getStatus().getReplicas(), atomicRC.get().getSpec().getReplicas(), atomicRC.get().getMetadata().getName(), namespace, rollingTimeUnit.toSeconds(rollingTimeout));
+    }
   }
 
   @Override
   public ReplicationControllerOperationsImpl rolling() {
     return new ReplicationControllerOperationsImpl(getClient(), getNamespace(), getName(), isCascading(), getItem(), true, rollingTimeout, rollingTimeUnit);
   }
-
 
   @Override
   public ReplicationController updateImage(String image) {

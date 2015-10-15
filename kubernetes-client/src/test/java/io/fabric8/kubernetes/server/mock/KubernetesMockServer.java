@@ -29,16 +29,17 @@ import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 
 import java.io.IOException;
+import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Queue;
 
 public class KubernetesMockServer {
 
   private final ObjectMapper mapper = new ObjectMapper();
 
   private MockWebServer server = new MockWebServer();
-  private Map<ServerRequest, ServerResponse> responses = new HashMap<>();
-
+  private Map<ServerRequest, Queue<ServerResponse>> responses = new HashMap<>();
 
   public void init() throws IOException {
     server.setDispatcher(new Dispatcher() {
@@ -49,9 +50,17 @@ public class KubernetesMockServer {
         ServerRequest key = new ServerRequest(method, path);
         ServerRequest keyForAnyMethod = new ServerRequest(path);
         if (responses.containsKey(key)) {
-          return toMockResponse(responses.get(key));
+          ServerResponse response = responses.get(key).peek();
+          if (responses.get(key).size() > 1) {
+            responses.get(key).remove();
+          }
+          return toMockResponse(response);
         } else if(responses.containsKey(keyForAnyMethod)) {
-          return toMockResponse(responses.get(keyForAnyMethod));
+          ServerResponse response = responses.get(keyForAnyMethod).peek();
+          if (responses.get(keyForAnyMethod).size() > 1) {
+            responses.get(keyForAnyMethod).remove();
+          }
+          return toMockResponse(response);
         }
         return new MockResponse().setResponseCode(404);
       }
@@ -84,19 +93,29 @@ public class KubernetesMockServer {
   }
 
   public <T> void expectAndReturnAsJson(String path, int code, T body) {
-    responses.put(new ServerRequest(path), new ServerResponse(code, toJson(body)));
+    enqueue(new ServerRequest(path), new ServerResponse(code, toJson(body)));
   }
 
   public void expectAndReturnAsString(String path, int code, String body) {
-    responses.put(new ServerRequest(path), new ServerResponse(code, body));
+    enqueue(new ServerRequest(path), new ServerResponse(code, body));
   }
 
   public <T> void expectAndReturnAsJson(String method, String path, int code, T body) {
-    responses.put(new ServerRequest(method, path), new ServerResponse(code, toJson(body)));
+    enqueue(new ServerRequest(method, path), new ServerResponse(code, toJson(body)));
   }
 
   public void expectAndReturnAsString(String method, String path, int code, String body) {
-    responses.put(new ServerRequest(method, path), new ServerResponse(code, body));
+    enqueue(new ServerRequest(method, path), new ServerResponse(code, body));
+  }
+
+
+  private void enqueue(ServerRequest req, ServerResponse resp) {
+    Queue<ServerResponse> queuedResponses = responses.get(req);
+    if (queuedResponses == null) {
+      queuedResponses = new ArrayDeque<>();
+      responses.put(req, queuedResponses);
+    }
+    queuedResponses.add(resp);
   }
 
   private String toJson(Object obj) {
