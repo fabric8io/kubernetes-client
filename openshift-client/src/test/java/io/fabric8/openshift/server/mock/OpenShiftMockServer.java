@@ -30,7 +30,7 @@ public class OpenShiftMockServer extends KubernetesMockServer {
   @Override
   public void init() throws IOException {
     super.init();
-    expectAndReturnAsJson("/", 200, new RootPathsBuilder().addToPaths("/api", "/oapi").build());
+    expect().withPath("/").andReturn(200, new RootPathsBuilder().addToPaths("/api", "/oapi").build()).always();
   }
 
   public OpenShiftClient createOpenShiftClient() {

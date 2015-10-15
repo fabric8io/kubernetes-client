@@ -31,9 +31,9 @@ public class SubjectAccessReviewTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testCreate() {
-    expectAndReturnAsJson("/oapi/v1/subjectaccessreviews", 201, new SubjectAccessReviewResponseBuilder()
+    expect().withPath("/oapi/v1/subjectaccessreviews").andReturn(201, new SubjectAccessReviewResponseBuilder()
       .withReason("r1")
-      .build());
+      .build()).once();
 
     OpenShiftClient client = getOpenshiftClient();
 
@@ -45,9 +45,9 @@ public class SubjectAccessReviewTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testCreateInLine() {
-    expectAndReturnAsJson("/oapi/v1/subjectaccessreviews", 201, new SubjectAccessReviewResponseBuilder()
+    expect().withPath("/oapi/v1/subjectaccessreviews").andReturn(201, new SubjectAccessReviewResponseBuilder()
       .withReason("r2")
-      .build());
+      .build()).once();
 
     OpenShiftClient client = getOpenshiftClient();
 
@@ -59,9 +59,9 @@ public class SubjectAccessReviewTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testCreateLocal() {
-    expectAndReturnAsJson("/oapi/v1/namespaces/test/subjectaccessreviews", 201, new SubjectAccessReviewResponseBuilder()
+    expect().withPath("/oapi/v1/namespaces/test/subjectaccessreviews").andReturn(201, new SubjectAccessReviewResponseBuilder()
       .withReason("r1")
-      .build());
+      .build()).once();
 
     OpenShiftClient client = getOpenshiftClient();
 
@@ -73,9 +73,9 @@ public class SubjectAccessReviewTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testCreateLocalInLine() {
-    expectAndReturnAsJson("/oapi/v1/namespaces/test/subjectaccessreviews", 201, new SubjectAccessReviewResponseBuilder()
+    expect().withPath("/oapi/v1/namespaces/test/subjectaccessreviews").andReturn( 201, new SubjectAccessReviewResponseBuilder()
       .withReason("r2")
-      .build());
+      .build()).once();
 
     OpenShiftClient client = getOpenshiftClient();
 

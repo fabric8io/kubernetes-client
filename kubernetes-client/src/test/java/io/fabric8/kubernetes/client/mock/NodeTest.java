@@ -37,8 +37,7 @@ public class NodeTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testList() {
-    expectAndReturnAsJson("/api/v1/nodes", 200, new NodeListBuilder()
-      .addNewItem().and().build());
+    expect().withPath("/api/v1/nodes").andReturn(200, new NodeListBuilder().addNewItem().and().build()).once();
 
     KubernetesClient client = getClient();
     NodeList nodeList = client.nodes().list();
@@ -49,8 +48,8 @@ public class NodeTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testGet() {
-    expectAndReturnAsJson("/api/v1/nodes/node1", 200, new PodBuilder().build());
-    expectAndReturnAsJson("/api/v1/nodes/node2", 200, new PodBuilder().build());
+    expect().withPath("/api/v1/nodes/node1").andReturn(200, new PodBuilder().build()).once();
+    expect().withPath("/api/v1/nodes/node2").andReturn(200, new PodBuilder().build()).once();
 
     KubernetesClient client = getClient();
 
@@ -67,8 +66,8 @@ public class NodeTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testDelete() {
-    expectAndReturnAsJson("/api/v1/nodes/node1", 200, new PodBuilder().build());
-    expectAndReturnAsJson("/api/v1/nodes/node2", 200, new PodBuilder().build());
+    expect().withPath("/api/v1/nodes/node1").andReturn(200, new PodBuilder().build()).once();
+    expect().withPath("/api/v1/nodes/node2").andReturn(200, new PodBuilder().build()).once();
 
     KubernetesClient client = getClient();
 

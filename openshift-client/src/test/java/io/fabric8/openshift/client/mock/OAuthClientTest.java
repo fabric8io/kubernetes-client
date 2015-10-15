@@ -33,9 +33,9 @@ public class OAuthClientTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testList() {
-    expectAndReturnAsJson("/oapi/v1/oauthclients", 200, new OAuthClientListBuilder()
+    expect().withPath("/oapi/v1/oauthclients").andReturn(200, new OAuthClientListBuilder()
       .addNewItem().and()
-      .addNewItem().and().build());
+      .addNewItem().and().build()).once();
 
 
     OpenShiftClient client = getOpenshiftClient();
@@ -48,13 +48,13 @@ public class OAuthClientTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testGet() {
-    expectAndReturnAsJson("/oapi/v1/oauthclients/client1", 200, new OAuthClientBuilder()
+    expect().withPath("/oapi/v1/oauthclients/client1").andReturn(200, new OAuthClientBuilder()
       .withNewMetadata().withName("client1").endMetadata()
-      .build());
+      .build()).once();
 
-    expectAndReturnAsJson("/oapi/v1/oauthclients/client2", 200, new OAuthClientBuilder()
+    expect().withPath("/oapi/v1/oauthclients/client2").andReturn(200, new OAuthClientBuilder()
       .withNewMetadata().withName("client2").endMetadata()
-      .build());
+      .build()).once();
 
     OpenShiftClient client = getOpenshiftClient();
 
@@ -73,8 +73,8 @@ public class OAuthClientTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testDelete() {
-    expectAndReturnAsJson("/oapi/v1/oauthclients/client1", 200, new OAuthClientBuilder().build());
-    expectAndReturnAsJson("/oapi/v1/oauthclients/client2", 200, new OAuthClientBuilder().build());
+    expect().withPath("/oapi/v1/oauthclients/client1").andReturn(200, new OAuthClientBuilder().build()).once();
+    expect().withPath("/oapi/v1/oauthclients/client2").andReturn(200, new OAuthClientBuilder().build()).once();
 
     OpenShiftClient client = getOpenshiftClient();
 

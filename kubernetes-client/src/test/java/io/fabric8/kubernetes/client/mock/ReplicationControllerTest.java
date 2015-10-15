@@ -38,11 +38,11 @@ public class ReplicationControllerTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testList() {
-    expectAndReturnAsJson("/api/v1/namespaces/test/replicationcontrollers", 200, new ReplicationControllerListBuilder().build());
-    expectAndReturnAsJson("/api/v1/namespaces/ns1/replicationcontrollers", 200, new ReplicationControllerListBuilder()
+    expect().withPath("/api/v1/namespaces/test/replicationcontrollers").andReturn(200, new ReplicationControllerListBuilder().build()).once();
+    expect().withPath("/api/v1/namespaces/ns1/replicationcontrollers").andReturn(200,  new ReplicationControllerListBuilder()
       .addNewItem().and()
-      .addNewItem().and().build());
-
+      .addNewItem().and().build())
+      .once();
 
     KubernetesClient client = getClient();
     ReplicationControllerList replicationControllerList = client.replicationControllers().list();
@@ -57,8 +57,8 @@ public class ReplicationControllerTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testGet() {
-    expectAndReturnAsJson("/api/v1/namespaces/test/replicationcontrollers/repl1", 200, new ReplicationControllerBuilder().build());
-    expectAndReturnAsJson("/api/v1/namespaces/ns1/replicationcontrollers/repl2", 200, new ReplicationControllerBuilder().build());
+    expect().withPath("/api/v1/namespaces/test/replicationcontrollers/repl1").andReturn(200, new ReplicationControllerBuilder().build()).once();
+    expect().withPath("/api/v1/namespaces/ns1/replicationcontrollers/repl2").andReturn(200, new ReplicationControllerBuilder().build()).once();
 
     KubernetesClient client = getClient();
 
@@ -75,7 +75,7 @@ public class ReplicationControllerTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testDelete() {
-    expectAndReturnAsJson("/api/v1/namespaces/test/replicationcontrollers/repl1", 200, new ReplicationControllerBuilder() .withNewMetadata()
+    expect().withPath("/api/v1/namespaces/test/replicationcontrollers/repl1").andReturn(200, new ReplicationControllerBuilder() .withNewMetadata()
       .withName("repl1")
       .withResourceVersion("1")
       .endMetadata()
@@ -85,9 +85,9 @@ public class ReplicationControllerTest extends KubernetesMockServerTestBase {
       .withNewStatus()
       .withReplicas(1)
       .endStatus()
-      .build());
+      .build()).once();
 
-    expectAndReturnAsJson("/api/v1/namespaces/test/replicationcontrollers/repl1", 200, new ReplicationControllerBuilder() .withNewMetadata()
+    expect().withPath("/api/v1/namespaces/test/replicationcontrollers/repl1").andReturn(200, new ReplicationControllerBuilder() .withNewMetadata()
       .withName("repl1")
       .withResourceVersion("1")
       .endMetadata()
@@ -97,9 +97,9 @@ public class ReplicationControllerTest extends KubernetesMockServerTestBase {
       .withNewStatus()
       .withReplicas(0)
       .endStatus()
-      .build());
+      .build()).times(5);
 
-    expectAndReturnAsJson("/api/v1/namespaces/ns1/replicationcontrollers/repl2", 200, new ReplicationControllerBuilder() .withNewMetadata()
+    expect().withPath("/api/v1/namespaces/ns1/replicationcontrollers/repl2").andReturn(200, new ReplicationControllerBuilder() .withNewMetadata()
       .withName("repl2")
       .withResourceVersion("1")
       .endMetadata()
@@ -109,9 +109,9 @@ public class ReplicationControllerTest extends KubernetesMockServerTestBase {
       .withNewStatus()
       .withReplicas(1)
       .endStatus()
-      .build());
+      .build()).once();
 
-    expectAndReturnAsJson("/api/v1/namespaces/ns1/replicationcontrollers/repl2", 200, new ReplicationControllerBuilder() .withNewMetadata()
+    expect().withPath("/api/v1/namespaces/ns1/replicationcontrollers/repl2").andReturn(200, new ReplicationControllerBuilder() .withNewMetadata()
       .withName("repl2")
       .withResourceVersion("1")
       .endMetadata()
@@ -121,7 +121,7 @@ public class ReplicationControllerTest extends KubernetesMockServerTestBase {
       .withNewStatus()
       .withReplicas(0)
       .endStatus()
-      .build());
+      .build()).times(5);
 
     KubernetesClient client = getClient();
 
@@ -137,7 +137,7 @@ public class ReplicationControllerTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testScale() {
-    expectAndReturnAsJson("/api/v1/namespaces/test/replicationcontrollers/repl1", 200, new ReplicationControllerBuilder()
+    expect().withPath("/api/v1/namespaces/test/replicationcontrollers/repl1").andReturn(200, new ReplicationControllerBuilder()
       .withNewMetadata()
       .withName("repl1")
       .withResourceVersion("1")
@@ -148,7 +148,7 @@ public class ReplicationControllerTest extends KubernetesMockServerTestBase {
       .withNewStatus()
         .withReplicas(1)
       .endStatus()
-      .build());
+      .build()).always();
 
     KubernetesClient client = getClient();
     ReplicationController repl = client.replicationControllers().withName("repl1").scale(5);
@@ -160,7 +160,7 @@ public class ReplicationControllerTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testScaleAndWait() {
-    expectAndReturnAsJson("/api/v1/namespaces/test/replicationcontrollers/repl1", 200, new ReplicationControllerBuilder()
+    expect().withPath("/api/v1/namespaces/test/replicationcontrollers/repl1").andReturn(200, new ReplicationControllerBuilder()
       .withNewMetadata()
       .withName("repl1")
       .withResourceVersion("1")
@@ -171,8 +171,9 @@ public class ReplicationControllerTest extends KubernetesMockServerTestBase {
       .withNewStatus()
         .withReplicas(1)
       .endStatus()
-      .build());
-    expectAndReturnAsJson("/api/v1/namespaces/test/replicationcontrollers/repl1", 200, new ReplicationControllerBuilder()
+      .build()).once();
+
+     expect().withPath("/api/v1/namespaces/test/replicationcontrollers/repl1").andReturn(200, new ReplicationControllerBuilder()
         .withNewMetadata()
         .withName("repl1")
         .withResourceVersion("1")
@@ -183,7 +184,7 @@ public class ReplicationControllerTest extends KubernetesMockServerTestBase {
         .withNewStatus()
         .withReplicas(5)
         .endStatus()
-        .build());
+        .build()).always();
 
     KubernetesClient client = getClient();
     ReplicationController repl = client.replicationControllers().withName("repl1").scale(5, true);
@@ -217,11 +218,11 @@ public class ReplicationControllerTest extends KubernetesMockServerTestBase {
       .withNewStatus().withReplicas(1).endStatus()
       .build();
 
-    expectAndReturnAsJson("/api/v1/namespaces/test/replicationcontrollers/repl1", 200, repl1);
-    expectAndReturnAsJson("PUT", "/api/v1/namespaces/test/replicationcontrollers/repl1", 200, repl1);
-    expectAndReturnAsJson("GET","/api/v1/namespaces/test/replicationcontrollers", 200, new ReplicationControllerListBuilder().withItems(repl1).build());
-    expectAndReturnAsJson("POST","/api/v1/namespaces/test/replicationcontrollers", 201, repl1);
-    expectAndReturnAsJson("/api/v1/namespaces/test/pods", 200, new KubernetesListBuilder().build());
+    expect().withPath("/api/v1/namespaces/test/replicationcontrollers/repl1").andReturn(200, repl1).once();
+    expect().put().withPath("/api/v1/namespaces/test/replicationcontrollers/repl1").andReturn(200, repl1).once();
+    expect().get().withPath("/api/v1/namespaces/test/replicationcontrollers").andReturn(200, new ReplicationControllerListBuilder().withItems(repl1).build()).once();
+    expect().post().withPath("/api/v1/namespaces/test/replicationcontrollers").andReturn(201, repl1).once();
+    expect().withPath("/api/v1/namespaces/test/pods").andReturn(200, new KubernetesListBuilder().build()).once();
     KubernetesClient client = getClient();
 
     repl1 = client.replicationControllers().withName("repl1")

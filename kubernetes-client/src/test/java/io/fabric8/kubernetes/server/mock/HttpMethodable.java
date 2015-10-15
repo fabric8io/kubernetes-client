@@ -16,27 +16,16 @@
 
 package io.fabric8.kubernetes.server.mock;
 
-class ServerResponse {
+public interface HttpMethodable<T> {
 
-  private final int code;
-  private final String body;
-  private final boolean toBeRemoved;
+  T any();
 
-  public ServerResponse(int code, String body, boolean toBeRemoved) {
-    this.code = code;
-    this.body = body;
-    this.toBeRemoved = toBeRemoved;
-  }
+  T post();
 
-  public int getCode() {
-    return code;
-  }
+  T get();
 
-  public String getBody() {
-    return body;
-  }
+  T put();
 
-  public boolean isToBeRemoved() {
-    return toBeRemoved;
-  }
+  T delete();
+
 }

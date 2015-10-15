@@ -33,16 +33,16 @@ public class BuildConfigTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testList() {
-    expectAndReturnAsJson("/oapi/v1/namespaces/test/buildconfigs", 200, new BuildConfigListBuilder().build());
-    expectAndReturnAsJson("/oapi/v1/namespaces/ns1/buildconfigs", 200, new BuildConfigListBuilder()
+    expect().withPath("/oapi/v1/namespaces/test/buildconfigs").andReturn(200, new BuildConfigListBuilder().build()).once();
+    expect().withPath("/oapi/v1/namespaces/ns1/buildconfigs").andReturn(200, new BuildConfigListBuilder()
       .addNewItem().and()
-      .addNewItem().and().build());
+      .addNewItem().and().build()).once();
 
-    expectAndReturnAsJson("/oapi/v1/buildconfigs", 200, new BuildConfigListBuilder()
+    expect().withPath("/oapi/v1/buildconfigs").andReturn(200, new BuildConfigListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .addNewItem()
-      .and().build());
+      .and().build()).once();
 
     OpenShiftClient client = getOpenshiftClient();
 
@@ -62,13 +62,13 @@ public class BuildConfigTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testGet() {
-    expectAndReturnAsJson("/oapi/v1/namespaces/test/buildconfigs/bc1", 200, new BuildConfigBuilder()
+    expect().withPath("/oapi/v1/namespaces/test/buildconfigs/bc1").andReturn(200, new BuildConfigBuilder()
       .withNewMetadata().withName("bc1").endMetadata()
-      .build());
+      .build()).once();
 
-    expectAndReturnAsJson("/oapi/v1/namespaces/ns1/buildconfigs/bc2", 200, new BuildConfigBuilder()
+    expect().withPath("/oapi/v1/namespaces/ns1/buildconfigs/bc2").andReturn(200, new BuildConfigBuilder()
       .withNewMetadata().withName("bc2").endMetadata()
-      .build());
+      .build()).once();
 
     OpenShiftClient client = getOpenshiftClient();
 
@@ -87,8 +87,8 @@ public class BuildConfigTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testDelete() {
-    expectAndReturnAsJson("/oapi/v1/namespaces/test/buildconfigs/bc1", 200, new BuildConfigBuilder().build());
-    expectAndReturnAsJson("/oapi/v1/namespaces/ns1/buildconfigs/bc2", 200, new BuildConfigBuilder().build());
+    expect().withPath("/oapi/v1/namespaces/test/buildconfigs/bc1").andReturn(200, new BuildConfigBuilder().build()).once();
+    expect().withPath("/oapi/v1/namespaces/ns1/buildconfigs/bc2").andReturn( 200, new BuildConfigBuilder().build()).once();
 
     OpenShiftClient client = getOpenshiftClient();
 

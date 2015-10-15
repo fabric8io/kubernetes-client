@@ -34,16 +34,16 @@ public class PodTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testList() {
-    expectAndReturnAsJson("/api/v1/namespaces/test/pods", 200, new PodListBuilder().build());
-    expectAndReturnAsJson("/api/v1/namespaces/ns1/pods", 200, new PodListBuilder()
+    expect().withPath("/api/v1/namespaces/test/pods").andReturn(200, new PodListBuilder().build()).once();
+    expect().withPath("/api/v1/namespaces/ns1/pods").andReturn(200, new PodListBuilder()
       .addNewItem().and()
-      .addNewItem().and().build());
+      .addNewItem().and().build()).once();
 
-    expectAndReturnAsJson("/api/v1/pods", 200, new PodListBuilder()
+    expect().withPath("/api/v1/pods").andReturn(200, new PodListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .addNewItem()
-      .and().build());
+      .and().build()).once();
 
 
     KubernetesClient client = getClient();
@@ -62,12 +62,12 @@ public class PodTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testListWithLables() {
-    expectAndReturnAsJson("/api/v1/namespaces/test/pods?labelSelector=" + toUrlEncoded("key1=value1,key2=value2,key3=value3"), 200, new PodListBuilder().build());
-    expectAndReturnAsJson("/api/v1/namespaces/test/pods?labelSelector=" + toUrlEncoded("key1=value1,key2=value2"), 200, new PodListBuilder()
+    expect().withPath("/api/v1/namespaces/test/pods?labelSelector=" + toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new PodListBuilder().build()).always();
+    expect().withPath("/api/v1/namespaces/test/pods?labelSelector=" + toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new PodListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .addNewItem().and()
-      .build());
+      .build()).once();
 
     KubernetesClient client = getClient();
     PodList podList = client.pods()
@@ -92,8 +92,8 @@ public class PodTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testGet() {
-    expectAndReturnAsJson("/api/v1/namespaces/test/pods/pod1", 200, new PodBuilder().build());
-    expectAndReturnAsJson("/api/v1/namespaces/ns1/pods/pod2", 200, new PodBuilder().build());
+    expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, new PodBuilder().build()).once();
+    expect().withPath("/api/v1/namespaces/ns1/pods/pod2").andReturn(200, new PodBuilder().build()).once();
 
     KubernetesClient client = getClient();
 
@@ -110,8 +110,8 @@ public class PodTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testDelete() {
-    expectAndReturnAsJson("/api/v1/namespaces/test/pods/pod1", 200, new PodBuilder().build());
-    expectAndReturnAsJson("/api/v1/namespaces/ns1/pods/pod2", 200, new PodBuilder().build());
+    expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, new PodBuilder().build()).once();
+    expect().withPath("/api/v1/namespaces/ns1/pods/pod2").andReturn(200, new PodBuilder().build()).once();
 
     KubernetesClient client = getClient();
 
@@ -132,8 +132,8 @@ public class PodTest extends KubernetesMockServerTestBase {
     Pod pod2 = new PodBuilder().withNewMetadata().withName("pod2").withNamespace("ns1").and().build();
     Pod pod3 = new PodBuilder().withNewMetadata().withName("pod3").withNamespace("any").and().build();
 
-    expectAndReturnAsJson("/api/v1/namespaces/test/pods/pod1", 200, pod1);
-    expectAndReturnAsJson("/api/v1/namespaces/ns1/pods/pod2", 200, pod2);
+    expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, pod1).once();
+    expect().withPath("/api/v1/namespaces/ns1/pods/pod2").andReturn(200, pod2).once();
 
     KubernetesClient client = getClient();
 
@@ -170,10 +170,10 @@ public class PodTest extends KubernetesMockServerTestBase {
     String pod3Log = "pod3Log";
     String pod4Log = "pod4Log";
 
-    expectAndReturnAsString("/api/v1/namespaces/test/pods/pod1/log?pretty=true", 200, pod1Log);
-    expectAndReturnAsString("/api/v1/namespaces/test/pods/pod2/log?pretty=false", 200, pod2Log);
-    expectAndReturnAsString("/api/v1/namespaces/test/pods/pod3/log?pretty=false&container=cnt3", 200, pod3Log);
-    expectAndReturnAsString("/api/v1/namespaces/test4/pods/pod4/log?pretty=true&container=cnt4", 200, pod4Log);
+    expect().withPath("/api/v1/namespaces/test/pods/pod1/log?pretty=true").andReturn(200, pod1Log).once();
+    expect().withPath("/api/v1/namespaces/test/pods/pod2/log?pretty=false").andReturn(200, pod2Log).once();
+    expect().withPath("/api/v1/namespaces/test/pods/pod3/log?pretty=false&container=cnt3").andReturn(200, pod3Log).once();
+    expect().withPath("/api/v1/namespaces/test4/pods/pod4/log?pretty=true&container=cnt4").andReturn(200, pod4Log).once();
 
     KubernetesClient client = getClient();
 

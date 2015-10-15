@@ -16,27 +16,12 @@
 
 package io.fabric8.kubernetes.server.mock;
 
-class ServerResponse {
+public interface Timeable<T> {
 
-  private final int code;
-  private final String body;
-  private final boolean toBeRemoved;
+  void always();
 
-  public ServerResponse(int code, String body, boolean toBeRemoved) {
-    this.code = code;
-    this.body = body;
-    this.toBeRemoved = toBeRemoved;
-  }
+  void once();
 
-  public int getCode() {
-    return code;
-  }
+  void times(int times);
 
-  public String getBody() {
-    return body;
-  }
-
-  public boolean isToBeRemoved() {
-    return toBeRemoved;
-  }
 }

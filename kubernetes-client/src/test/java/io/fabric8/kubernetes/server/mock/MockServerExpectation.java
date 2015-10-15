@@ -16,27 +16,11 @@
 
 package io.fabric8.kubernetes.server.mock;
 
-class ServerResponse {
+public interface MockServerExpectation extends HttpMethodable<Pathable<Returnable<Timeable>>>,
+  Pathable<Returnable<Timeable>>,
+  Returnable<Timeable>,
+  Timeable {
 
-  private final int code;
-  private final String body;
-  private final boolean toBeRemoved;
 
-  public ServerResponse(int code, String body, boolean toBeRemoved) {
-    this.code = code;
-    this.body = body;
-    this.toBeRemoved = toBeRemoved;
-  }
 
-  public int getCode() {
-    return code;
-  }
-
-  public String getBody() {
-    return body;
-  }
-
-  public boolean isToBeRemoved() {
-    return toBeRemoved;
-  }
 }

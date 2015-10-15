@@ -33,9 +33,9 @@ public class ProjectTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testList() {
-    expectAndReturnAsJson("/oapi/v1/projects", 200, new ProjectListBuilder()
+    expect().withPath("/oapi/v1/projects").andReturn(200, new ProjectListBuilder()
       .addNewItem().and()
-      .addNewItem().and().build());
+      .addNewItem().and().build()).once();
 
 
     OpenShiftClient client = getOpenshiftClient();
@@ -48,13 +48,13 @@ public class ProjectTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testGet() {
-    expectAndReturnAsJson("/oapi/v1/projects/project1", 200, new ProjectBuilder()
+    expect().withPath("/oapi/v1/projects/project1").andReturn(200, new ProjectBuilder()
       .withNewMetadata().withName("project1").endMetadata()
-      .build());
+      .build()).once();
 
-    expectAndReturnAsJson("/oapi/v1/projects/project2", 200, new ProjectBuilder()
+    expect().withPath("/oapi/v1/projects/project2").andReturn(200, new ProjectBuilder()
       .withNewMetadata().withName("project2").endMetadata()
-      .build());
+      .build()).once();
 
     OpenShiftClient client = getOpenshiftClient();
 
@@ -73,8 +73,8 @@ public class ProjectTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testDelete() {
-    expectAndReturnAsJson("/oapi/v1/projects/project1", 200, new ProjectBuilder().build());
-    expectAndReturnAsJson("/oapi/v1/projects/project2", 200, new ProjectBuilder().build());
+    expect().withPath("/oapi/v1/projects/project1").andReturn(200, new ProjectBuilder().build()).once();
+    expect().withPath("/oapi/v1/projects/project2").andReturn( 200, new ProjectBuilder().build()).once();
 
     OpenShiftClient client = getOpenshiftClient();
 

@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.server.mock.KubernetesMockServer;
+import io.fabric8.kubernetes.server.mock.MockServerExpectation;
 import org.junit.After;
 import org.junit.Before;
 
@@ -45,19 +46,24 @@ public class KubernetesMockServerTestBase {
     return client;
   }
 
+  public MockServerExpectation expect() {
+    return mock.expect();
+  }
+
+  @Deprecated
   public <T> void expectAndReturnAsJson(String path, int code, T body) {
-    mock.expectAndReturnAsJson(path, code, body);
+    expect().withPath(path).andReturn(code, body).always();
   }
-
+  @Deprecated
   public void expectAndReturnAsString(String path, int code, String body) {
-    mock.expectAndReturnAsString(path, code, body);
+    expect().withPath(path).andReturn(code, body).always();
   }
-
+  @Deprecated
   public <T> void expectAndReturnAsJson(String method, String path, int code, T body) {
-    mock.expectAndReturnAsJson(method, path, code, body);
+    expect().withPath(path).andReturn(code, body).always();
   }
-
+  @Deprecated
   public void expectAndReturnAsString(String method, String path, int code, String body) {
-    mock.expectAndReturnAsString(method, path, code, body);
+    expect().withPath(path).andReturn(code, body).always();
   }
 }

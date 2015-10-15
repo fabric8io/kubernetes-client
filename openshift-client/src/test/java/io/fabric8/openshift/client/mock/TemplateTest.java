@@ -36,16 +36,16 @@ public class TemplateTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testList() {
-    expectAndReturnAsJson("/oapi/v1/namespaces/test/templates", 200, new TemplateListBuilder().build());
-    expectAndReturnAsJson("/oapi/v1/namespaces/ns1/templates", 200, new TemplateListBuilder()
+    expect().withPath("/oapi/v1/namespaces/test/templates").andReturn(200, new TemplateListBuilder().build()).once();
+    expect().withPath("/oapi/v1/namespaces/ns1/templates").andReturn(200, new TemplateListBuilder()
       .addNewItem().and()
-      .addNewItem().and().build());
+      .addNewItem().and().build()).once();
 
-    expectAndReturnAsJson("/oapi/v1/templates", 200, new TemplateListBuilder()
+    expect().withPath("/oapi/v1/templates").andReturn(200, new TemplateListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .addNewItem()
-      .and().build());
+      .and().build()).once();
 
     OpenShiftClient client = getOpenshiftClient();
 
@@ -65,13 +65,13 @@ public class TemplateTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testGet() {
-    expectAndReturnAsJson("/oapi/v1/namespaces/test/templates/tmpl1", 200, new TemplateBuilder()
+    expect().withPath("/oapi/v1/namespaces/test/templates/tmpl1").andReturn(200, new TemplateBuilder()
       .withNewMetadata().withName("tmpl1").endMetadata()
-      .build());
+      .build()).once();
 
-    expectAndReturnAsJson("/oapi/v1/namespaces/ns1/templates/tmpl2", 200, new TemplateBuilder()
+    expect().withPath("/oapi/v1/namespaces/ns1/templates/tmpl2").andReturn(200, new TemplateBuilder()
       .withNewMetadata().withName("tmpl2").endMetadata()
-      .build());
+      .build()).once();
 
     OpenShiftClient client = getOpenshiftClient();
 
@@ -90,8 +90,8 @@ public class TemplateTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testDelete() {
-    expectAndReturnAsJson("/oapi/v1/namespaces/test/templates/tmpl1", 200, new TemplateBuilder().build());
-    expectAndReturnAsJson("/oapi/v1/namespaces/ns1/templates/tmpl2", 200, new TemplateBuilder().build());
+    expect().withPath("/oapi/v1/namespaces/test/templates/tmpl1").andReturn(200, new TemplateBuilder().build()).once();
+    expect().withPath("/oapi/v1/namespaces/ns1/templates/tmpl2").andReturn(200, new TemplateBuilder().build()).once();
 
     OpenShiftClient client = getOpenshiftClient();
 
@@ -108,8 +108,8 @@ public class TemplateTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testProcess() {
-    expectAndReturnAsJson("/oapi/v1/namespaces/test/templates/tmpl1", 200, new TemplateBuilder().build());
-    expectAndReturnAsJson("/oapi/v1/namespaces/test/processedtemplates", 201, new KubernetesListBuilder().build());
+    expect().withPath("/oapi/v1/namespaces/test/templates/tmpl1").andReturn(200, new TemplateBuilder().build()).once();
+    expect().withPath("/oapi/v1/namespaces/test/processedtemplates").andReturn( 201, new KubernetesListBuilder().build()).once();
 
     OpenShiftClient client = getOpenshiftClient();
     KubernetesList list = client.templates().withName("tmpl1").process(new ParameterValue("name1", "value1"));

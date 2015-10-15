@@ -16,6 +16,7 @@
 
 package io.fabric8.openshift.client.mock;
 
+import io.fabric8.kubernetes.server.mock.MockServerExpectation;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.server.mock.OpenShiftMockServer;
 import org.junit.After;
@@ -45,11 +46,17 @@ public class OpenShiftMockServerTestBase {
     return client;
   }
 
-  public <T> void expectAndReturnAsJson(String path, int code, T body) {
-    mock.expectAndReturnAsJson(path, code, body);
+  public MockServerExpectation expect() {
+    return mock.expect();
   }
 
+  @Deprecated
+  public <T> void expectAndReturnAsJson(String path, int code, T body) {
+    expect().withPath(path).andReturn(code, body).always();
+  }
+
+  @Deprecated
   public void expectAndReturnAsString(String path, int code, String body) {
-    mock.expectAndReturnAsString(path, code, body);
+    expect().withPath(path).andReturn(code, body).always();
   }
 }

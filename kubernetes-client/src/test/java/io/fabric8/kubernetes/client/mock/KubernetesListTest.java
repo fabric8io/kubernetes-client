@@ -43,9 +43,9 @@ public class KubernetesListTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testCreate() {
-    expectAndReturnAsJson("/api/v1/namespaces/test/pods", 201, pod1);
-    expectAndReturnAsJson("/api/v1/namespaces/test/services", 201, service1);
-    expectAndReturnAsJson("/api/v1/namespaces/test/replicationcontrollers", 201, replicationController1);
+    expect().withPath("/api/v1/namespaces/test/pods").andReturn(201, pod1).once();
+    expect().withPath("/api/v1/namespaces/test/services").andReturn(201, service1).once();
+    expect().withPath("/api/v1/namespaces/test/replicationcontrollers").andReturn(201, replicationController1).once();
 
     KubernetesClient client = getClient();
     KubernetesList result = client.lists().inNamespace("test").create(list);
@@ -61,9 +61,9 @@ public class KubernetesListTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testDelete() {
-    expectAndReturnAsJson("/api/v1/namespaces/test/pods/pod1", 200, pod1);
-    expectAndReturnAsJson("/api/v1/namespaces/test/services/service1", 200, service1);
-    expectAndReturnAsJson("/api/v1/namespaces/test/replicationcontrollers/repl1", 200, replicationController1);
+    expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, pod1).always();
+    expect().withPath("/api/v1/namespaces/test/services/service1").andReturn(200, service1).always();
+    expect().withPath("/api/v1/namespaces/test/replicationcontrollers/repl1").andReturn(200, replicationController1).always();
 
     KubernetesClient client = getClient();
     Boolean result = client.lists().delete(list);

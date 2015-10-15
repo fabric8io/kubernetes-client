@@ -16,7 +16,6 @@
 
 package io.fabric8.kubernetes.server.mock;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.mockwebserver.Dispatcher;
 import com.google.mockwebserver.MockResponse;
@@ -29,7 +28,6 @@ import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 
 import java.io.IOException;
-import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
@@ -50,26 +48,25 @@ public class KubernetesMockServer {
         ServerRequest key = new ServerRequest(method, path);
         ServerRequest keyForAnyMethod = new ServerRequest(path);
         if (responses.containsKey(key)) {
-          ServerResponse response = responses.get(key).peek();
-          if (responses.get(key).size() > 1) {
-            responses.get(key).remove();
-          }
-          return toMockResponse(response);
-        } else if(responses.containsKey(keyForAnyMethod)) {
-          ServerResponse response = responses.get(keyForAnyMethod).peek();
-          if (responses.get(keyForAnyMethod).size() > 1) {
-            responses.get(keyForAnyMethod).remove();
-          }
-          return toMockResponse(response);
+          Queue<ServerResponse> queue = responses.get(key);
+          return handleResponse(queue.peek(), queue);
+        } else if (responses.containsKey(keyForAnyMethod)) {
+          Queue<ServerResponse> queue = responses.get(keyForAnyMethod);
+          return handleResponse(queue.peek(), queue);
         }
         return new MockResponse().setResponseCode(404);
       }
     });
-    expectAndReturnAsJson("/", 200, new RootPathsBuilder().addToPaths("/api").build());
+    expect().get().withPath("/").andReturn(200, new RootPathsBuilder().addToPaths("/api").build()).always();
     server.play();
   }
 
-  private MockResponse toMockResponse(ServerResponse response) {
+  private MockResponse handleResponse(ServerResponse response, Queue<ServerResponse> queue) {
+    if (response == null) {
+      return new MockResponse().setResponseCode(404);
+    } else if (response.isToBeRemoved()) {
+      queue.remove();
+    }
     MockResponse mockResponse = new MockResponse();
     mockResponse.setBody(response.getBody());
     mockResponse.setResponseCode(response.getCode());
@@ -92,37 +89,7 @@ public class KubernetesMockServer {
     return server;
   }
 
-  public <T> void expectAndReturnAsJson(String path, int code, T body) {
-    enqueue(new ServerRequest(path), new ServerResponse(code, toJson(body)));
-  }
-
-  public void expectAndReturnAsString(String path, int code, String body) {
-    enqueue(new ServerRequest(path), new ServerResponse(code, body));
-  }
-
-  public <T> void expectAndReturnAsJson(String method, String path, int code, T body) {
-    enqueue(new ServerRequest(method, path), new ServerResponse(code, toJson(body)));
-  }
-
-  public void expectAndReturnAsString(String method, String path, int code, String body) {
-    enqueue(new ServerRequest(method, path), new ServerResponse(code, body));
-  }
-
-
-  private void enqueue(ServerRequest req, ServerResponse resp) {
-    Queue<ServerResponse> queuedResponses = responses.get(req);
-    if (queuedResponses == null) {
-      queuedResponses = new ArrayDeque<>();
-      responses.put(req, queuedResponses);
-    }
-    queuedResponses.add(resp);
-  }
-
-  private String toJson(Object obj) {
-    try {
-      return mapper.writeValueAsString(obj);
-    } catch (JsonProcessingException e) {
-      throw new RuntimeException(e);
-    }
+  public MockServerExpectation expect() {
+    return new MockServerExpectationImpl(responses);
   }
 }
