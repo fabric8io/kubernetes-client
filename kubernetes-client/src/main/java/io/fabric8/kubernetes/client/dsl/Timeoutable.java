@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client.mock;
+package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.client.dsl.Rollable;
-import io.fabric8.kubernetes.client.dsl.ScaleableResource;
-import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplaceable;
-import org.easymock.IExpectationSetters;
+import java.util.concurrent.TimeUnit;
 
-public interface MockRollableScaleableResource<T, D, B> extends ScaleableResource<T, IExpectationSetters<T>, D, IExpectationSetters<B>>,
-  Rollable<TimeoutImageEditReplaceable<T, IExpectationSetters<T>, D>> {
+public interface Timeoutable<T> {
+
+  T withTimeout(long timeout, TimeUnit unit);
+
+
+  T withTimeoutInMillis(long timeoutInMillis);
 }

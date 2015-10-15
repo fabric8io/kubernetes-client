@@ -56,6 +56,9 @@ public class Config {
   public static final String KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY = "kubernetes.watch.reconnectInterval";
   public static final String KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY = "kubernetes.watch.reconnectLimit";
   public static final String KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY = "kubernetes.request.timeout";
+  public static final String KUBERNETES_ROLLING_TIMEOUT_SYSTEM_PROPERTY = "kubernetes.rolling.timeout";
+  public static final String KUBERNETES_LOGGING_INTERVAL_SYSTEM_PROPERTY = "kubernetes.logging.interval";
+
   public static final String KUBERNETES_NAMESPACE_SYSTEM_PROPERTY = "kubernetes.namespace";
   public static final String KUBERNETES_KUBECONFIG_FILE = "kubeconfig";
   public static final String KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH = "/var/run/secrets/kubernetes.io/serviceaccount/token";
@@ -63,6 +66,10 @@ public class Config {
   public static final String KUBERNETES_HTTP_PROXY = "http.proxy";
   public static final String KUBERNETES_HTTPS_PROXY = "https.proxy";
   public static final String KUBERNETES_ALL_PROXY = "all.proxy";
+
+  public static final Long DEFAULT_ROLLING_TIMEOUT = 15 * 60 * 1000L;
+  public static final int DEFAULT_LOGGING_INTERVAL = 20 * 1000;
+
   private boolean trustCerts;
 
   private String masterUrl = "https://kubernetes.default.svc";
@@ -83,6 +90,8 @@ public class Config {
   private int watchReconnectInterval = 1000;
   private int watchReconnectLimit = -1;
   private int requestTimeout = 10 * 1000;
+  private long rollingTimeout = DEFAULT_ROLLING_TIMEOUT;
+  private int loggingInterval = DEFAULT_LOGGING_INTERVAL;
   private String proxy;
 
   private Map<Integer, String> errorMessages = new HashMap<>();
@@ -99,7 +108,7 @@ public class Config {
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder")
-  public Config(String masterUrl, String apiVersion, String namespace, String[] enabledProtocols, Boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int requestTimeout, String proxy) {
+  public Config(String masterUrl, String apiVersion, String namespace, String[] enabledProtocols, Boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int requestTimeout, long rollingTimeout, int loggingInterval, String proxy) {
     this();
     this.trustCerts = trustCerts;
     this.masterUrl = masterUrl;
@@ -121,6 +130,8 @@ public class Config {
     this.watchReconnectInterval = watchReconnectInterval;
     this.watchReconnectLimit = watchReconnectLimit;
     this.requestTimeout = requestTimeout;
+    this.rollingTimeout = rollingTimeout;
+    this.loggingInterval = loggingInterval;
     this.proxy = proxy;
 
     if (!this.masterUrl.endsWith("/")) {
@@ -153,9 +164,21 @@ public class Config {
     if (configuredWatchReconnectInterval != null) {
       config.setWatchReconnectInterval(Integer.parseInt(configuredWatchReconnectInterval));
     }
+
     String configuredWatchReconnectLimit = Utils.getSystemPropertyOrEnvVar(KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY);
     if (configuredWatchReconnectLimit != null) {
       config.setWatchReconnectLimit(Integer.parseInt(configuredWatchReconnectLimit));
+    }
+
+    String configuredRollingTimeout = Utils.getSystemPropertyOrEnvVar(KUBERNETES_ROLLING_TIMEOUT_SYSTEM_PROPERTY, String.valueOf(DEFAULT_ROLLING_TIMEOUT));
+    if (configuredRollingTimeout != null) {
+      config.setRollingTimeout(Long.parseLong(configuredRollingTimeout));
+    }
+
+
+    String configuredLoggingInterval = Utils.getSystemPropertyOrEnvVar(KUBERNETES_LOGGING_INTERVAL_SYSTEM_PROPERTY, String.valueOf(DEFAULT_LOGGING_INTERVAL));
+    if (configuredLoggingInterval != null) {
+      config.setLoggingInterval(Integer.parseInt(configuredLoggingInterval));
     }
 
     config.setRequestTimeout(Utils.getSystemPropertyOrEnvVar(KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY, config.getRequestTimeout()));
@@ -380,6 +403,22 @@ public class Config {
 
   public void setRequestTimeout(int requestTimeout) {
     this.requestTimeout = requestTimeout;
+  }
+
+  public long getRollingTimeout() {
+    return rollingTimeout;
+  }
+
+  public void setRollingTimeout(long rollingTimeout) {
+    this.rollingTimeout = rollingTimeout;
+  }
+
+  public int getLoggingInterval() {
+    return loggingInterval;
+  }
+
+  public void setLoggingInterval(int loggingInterval) {
+    this.loggingInterval = loggingInterval;
   }
 
   public void setProxy(String proxy) {

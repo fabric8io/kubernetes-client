@@ -22,6 +22,8 @@ import io.fabric8.kubernetes.client.dsl.internal.ReplicationControllerOperations
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
+import java.util.concurrent.TimeUnit;
+
 @Component
 @Service
 public class ReplicationControllerHandler implements ResourceHandler<ReplicationController> {
@@ -31,11 +33,11 @@ public class ReplicationControllerHandler implements ResourceHandler<Replication
   }
   @Override
   public ReplicationController create(Client client, String namespace, ReplicationController item) {
-    return new ReplicationControllerOperationsImpl<Client>(client, namespace, null, true, item, false).create();
+    return new ReplicationControllerOperationsImpl<Client>(client, namespace, null, true, item, false, client.getConfiguration().getRollingTimeout(), TimeUnit.MILLISECONDS).create();
   }
 
   @Override
   public Boolean delete(Client client, String namespace, ReplicationController item) {
-    return new ReplicationControllerOperationsImpl<Client>(client, namespace, null, true, item, false).delete(item);
+    return new ReplicationControllerOperationsImpl<Client>(client, namespace, null, true, item, false, client.getConfiguration().getRollingTimeout(), TimeUnit.MILLISECONDS).delete(item);
   }
 }

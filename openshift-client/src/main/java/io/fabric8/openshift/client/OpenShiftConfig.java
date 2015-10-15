@@ -43,8 +43,8 @@ public class OpenShiftConfig extends Config {
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder",
     refs = {@BuildableReference(Config.class)}
   )
-  public OpenShiftConfig(String openShiftUrl, String oapiVersion, String masterUrl, String apiVersion, String namespace, String[] enabledProtocols, Boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int requestTimeout, String proxy) {
-    super(masterUrl, apiVersion, namespace, enabledProtocols, trustCerts, caCertFile, caCertData, clientCertFile, clientCertData, clientKeyFile, clientKeyData, clientKeyAlgo, clientKeyPassphrase, username, password, oauthToken, watchReconnectInterval, watchReconnectLimit, requestTimeout, proxy);
+  public OpenShiftConfig(String openShiftUrl, String oapiVersion, String masterUrl, String apiVersion, String namespace, String[] enabledProtocols, Boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int requestTimeout, long rollingTimeout, int loggingInterval, String proxy) {
+    super(masterUrl, apiVersion, namespace, enabledProtocols, trustCerts, caCertFile, caCertData, clientCertFile, clientCertData, clientKeyFile, clientKeyData, clientKeyAlgo, clientKeyPassphrase, username, password, oauthToken, watchReconnectInterval, watchReconnectLimit, requestTimeout, rollingTimeout, loggingInterval, proxy);
     this.oapiVersion = oapiVersion;
     this.openShiftUrl = openShiftUrl;
 
@@ -63,7 +63,9 @@ public class OpenShiftConfig extends Config {
       kubernetesConfig.getClientKeyFile(), kubernetesConfig.getClientKeyData(),
       kubernetesConfig.getClientKeyAlgo(), kubernetesConfig.getClientKeyPassphrase(),
       kubernetesConfig.getUsername(), kubernetesConfig.getPassword(), kubernetesConfig.getOauthToken(),
-      kubernetesConfig.getWatchReconnectInterval(), kubernetesConfig.getWatchReconnectLimit(), kubernetesConfig.getRequestTimeout(), kubernetesConfig.getProxy());
+      kubernetesConfig.getWatchReconnectInterval(), kubernetesConfig.getWatchReconnectLimit(), kubernetesConfig.getRequestTimeout(),
+      kubernetesConfig.getRollingTimeout(), kubernetesConfig.getLoggingInterval(),
+      kubernetesConfig.getProxy());
   }
 
   private static String getDefaultOapiVersion(Config config) {

@@ -25,8 +25,7 @@ import io.fabric8.kubernetes.api.model.PodStatus;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.GenericKubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientLoggableResource;
 import io.fabric8.kubernetes.client.dsl.ClientOperation;
@@ -47,13 +46,22 @@ class RollingUpdater<C extends Client> {
   private static final transient Logger LOG = LoggerFactory.getLogger(RollingUpdater.class);
 
   static final String DEPLOYMENT_KEY = "deployment";
+  static final Long DEFAULT_ROLLING_TIMEOUT = 15 * 60 * 1000L;// 15 mins
 
-  private C client;
-  private long maxTimeWaitingForNewPods = 15 * 60 * 1000; // 15 mins
-  private long timeBetweenMessages = 20 * 1000; // 20 seconds
+  private final C client;
+  private final long rollingTimeoutMillis;
+  private final long loggingIntervalMillis;
 
   RollingUpdater(C client) {
     this.client = client;
+    this.rollingTimeoutMillis = DEFAULT_ROLLING_TIMEOUT;
+    this.loggingIntervalMillis = Config.DEFAULT_LOGGING_INTERVAL;
+  }
+
+  RollingUpdater(C client, long rollingTimeoutMillis, long loggingIntervalMillis) {
+    this.client = client;
+    this.rollingTimeoutMillis = rollingTimeoutMillis;
+    this.loggingIntervalMillis = loggingIntervalMillis;
   }
 
   ReplicationController rollUpdate(ReplicationController oldRC, ReplicationController newRC) {
@@ -67,7 +75,6 @@ class RollingUpdater<C extends Client> {
       String oldDeploymentHash = md5sum(oldRC);
 
       //Before we update the RC though we need to add the labels to the existing managed pods
-
       PodList oldRCPods = pods().inNamespace(namespace).withLabels(oldRC.getSpec().getSelector()).list();
 
       for (Pod pod : oldRCPods.getItems()) {
@@ -144,7 +151,7 @@ class RollingUpdater<C extends Client> {
    */
   private void waitUntilPodsActive(ReplicationController rc, String namespace, int requiredPodCount) {
     long start = System.currentTimeMillis();
-    long end = start + maxTimeWaitingForNewPods;
+    long end = start + rollingTimeoutMillis;
     long lastMessageTime = 0;
 
     while (true) {
@@ -171,14 +178,14 @@ class RollingUpdater<C extends Client> {
       long now = System.currentTimeMillis();
       if (now > end) {
         String message = "Only " + count + " pod(s) running for ReplicationController: " + rc.getMetadata().getName()
-                        + " in namespace: " + namespace + " when expecting " + requiredPodCount + " after waiting for " + (maxTimeWaitingForNewPods / 1000) + " seconds so giving up";
+                        + " in namespace: " + namespace + " when expecting " + requiredPodCount + " after waiting for " + (rollingTimeoutMillis / 1000) + " seconds so giving up";
         LOG.warn(message);
         throw new IllegalStateException(message);
       } else {
         if (count >= requiredPodCount) {
           break;
         } else {
-          if (now - lastMessageTime > timeBetweenMessages) {
+          if (now - lastMessageTime > loggingIntervalMillis) {
             lastMessageTime = now;
             LOG.info("Only " + count + " pod(s) running for ReplicationController: " + rc.getMetadata().getName()
                     + " in namespace: " + namespace + " when expecting " + requiredPodCount + " so waiting...");

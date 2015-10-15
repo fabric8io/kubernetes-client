@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Rollable<I, T, D> {
+public interface Rollable<T> {
 
-  ImageEditReplaceable<I, T, D> rolling();
+  T rolling();
 
 }
