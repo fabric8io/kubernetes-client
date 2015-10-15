@@ -16,12 +16,17 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.api.model.ReplicationControllerListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import org.junit.Ignore;
 import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -129,4 +134,43 @@ public class ReplicationControllerTest extends KubernetesMockServerTestBase {
     assertNotNull(repl.getSpec());
     assertEquals(5, repl.getSpec().getReplicas().intValue());
   }
+
+
+
+  @Ignore
+  @Test
+  public void testUpdate() {
+    ReplicationController repl1 = new ReplicationControllerBuilder()
+      .withNewMetadata()
+      .withName("repl1")
+      .withNamespace("test")
+      .endMetadata()
+      .withNewSpec()
+        .withReplicas(1)
+        .withNewTemplate()
+          .withNewMetadata().withLabels(new HashMap<String, String>()).endMetadata()
+          .withNewSpec()
+            .addNewContainer()
+              .withImage("img1")
+            .endContainer()
+          .endSpec()
+        .endTemplate()
+      .endSpec()
+      .withNewStatus().withReplicas(1).endStatus()
+      .build();
+
+    expectAndReturnAsJson("/api/v1/namespaces/test/replicationcontrollers/repl1", 200, repl1);
+    expectAndReturnAsJson("PUT", "/api/v1/namespaces/test/replicationcontrollers/repl1", 200, repl1);
+    expectAndReturnAsJson("GET","/api/v1/namespaces/test/replicationcontrollers", 200, new ReplicationControllerListBuilder().withItems(repl1).build());
+    expectAndReturnAsJson("POST","/api/v1/namespaces/test/replicationcontrollers", 201, repl1);
+    expectAndReturnAsJson("/api/v1/namespaces/test/pods", 200, new KubernetesListBuilder().build());
+    KubernetesClient client = getClient();
+
+    repl1 = client.replicationControllers().withName("repl1")
+      .rolling()
+      .withTimeout(5, TimeUnit.MINUTES)
+      .updateImage("");
+    assertNotNull(repl1);
+  }
+
 }

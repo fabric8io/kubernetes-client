@@ -37,26 +37,34 @@ public class KubernetesMockServer {
   private final ObjectMapper mapper = new ObjectMapper();
 
   private MockWebServer server = new MockWebServer();
-  private Map<String, ServerResponse> responses = new HashMap<>();
+  private Map<ServerRequest, ServerResponse> responses = new HashMap<>();
 
 
   public void init() throws IOException {
     server.setDispatcher(new Dispatcher() {
       @Override
       public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
+        String method = request.getMethod();
         String path = request.getPath();
-        if (responses.containsKey(path)) {
-          ServerResponse response = responses.get(path);
-          MockResponse mockResponse = new MockResponse();
-          mockResponse.setBody(response.getBody());
-          mockResponse.setResponseCode(response.getCode());
-          return mockResponse;
+        ServerRequest key = new ServerRequest(method, path);
+        ServerRequest keyForAnyMethod = new ServerRequest(path);
+        if (responses.containsKey(key)) {
+          return toMockResponse(responses.get(key));
+        } else if(responses.containsKey(keyForAnyMethod)) {
+          return toMockResponse(responses.get(keyForAnyMethod));
         }
         return new MockResponse().setResponseCode(404);
       }
     });
     expectAndReturnAsJson("/", 200, new RootPathsBuilder().addToPaths("/api").build());
     server.play();
+  }
+
+  private MockResponse toMockResponse(ServerResponse response) {
+    MockResponse mockResponse = new MockResponse();
+    mockResponse.setBody(response.getBody());
+    mockResponse.setResponseCode(response.getCode());
+    return mockResponse;
   }
 
   public void destroy() throws IOException {
@@ -76,11 +84,19 @@ public class KubernetesMockServer {
   }
 
   public <T> void expectAndReturnAsJson(String path, int code, T body) {
-    responses.put(path, new ServerResponse(code, toJson(body)));
+    responses.put(new ServerRequest(path), new ServerResponse(code, toJson(body)));
   }
 
   public void expectAndReturnAsString(String path, int code, String body) {
-    responses.put(path, new ServerResponse(code, body));
+    responses.put(new ServerRequest(path), new ServerResponse(code, body));
+  }
+
+  public <T> void expectAndReturnAsJson(String method, String path, int code, T body) {
+    responses.put(new ServerRequest(method, path), new ServerResponse(code, toJson(body)));
+  }
+
+  public void expectAndReturnAsString(String method, String path, int code, String body) {
+    responses.put(new ServerRequest(method, path), new ServerResponse(code, body));
   }
 
   private String toJson(Object obj) {

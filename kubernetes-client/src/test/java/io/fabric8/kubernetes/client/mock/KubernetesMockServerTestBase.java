@@ -52,4 +52,12 @@ public class KubernetesMockServerTestBase {
   public void expectAndReturnAsString(String path, int code, String body) {
     mock.expectAndReturnAsString(path, code, body);
   }
+
+  public <T> void expectAndReturnAsJson(String method, String path, int code, T body) {
+    mock.expectAndReturnAsJson(method, path, code, body);
+  }
+
+  public void expectAndReturnAsString(String method, String path, int code, String body) {
+    mock.expectAndReturnAsString(method, path, code, body);
+  }
 }
