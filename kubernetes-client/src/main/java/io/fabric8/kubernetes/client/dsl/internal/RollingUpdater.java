@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.model.DoneableReplicationController;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.api.model.PodStatus;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.client.Client;
@@ -34,6 +35,7 @@ import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -44,6 +46,8 @@ class RollingUpdater<C extends Client> {
   static final String DEPLOYMENT_KEY = "deployment";
 
   private C client;
+  private long maxTimeWaitingForNewPods = 15 * 60 * 1000; // 15 mins
+  private long timeBetweenMessages = 20 * 1000; // 20 seconds
 
   RollingUpdater(C client) {
     this.client = client;
@@ -101,6 +105,8 @@ class RollingUpdater<C extends Client> {
         replicationControllers().inNamespace(namespace).withName(createdRC.getMetadata().getName()).scale(newReplicas, true);
         createdRC.getSpec().setReplicas(newReplicas);
 
+        waitUntilPodsActive(createdRC, namespace, newReplicas);
+
         if (oldReplicas > 0) {
           replicationControllers().inNamespace(namespace).withName(oldRCName).scale(--oldReplicas, true);
         }
@@ -127,6 +133,60 @@ class RollingUpdater<C extends Client> {
       return createdRC;
     } catch (NoSuchAlgorithmException | JsonProcessingException e) {
       throw new KubernetesClientException("Could not calculate MD5 of RC", e);
+    }
+  }
+
+  /**
+   * Lets wait until there are enough active pods of the given RC
+   */
+  private void waitUntilPodsActive(ReplicationController rc, String namespace, int requiredPodCount) {
+    long start = System.currentTimeMillis();
+    long end = start + maxTimeWaitingForNewPods;
+    long lastMessageTime = 0;
+
+    while (true) {
+      PodList podList = pods().inNamespace(namespace).withLabels(rc.getSpec().getSelector()).list();
+      int count = 0;
+      if (podList != null) {
+        List<Pod> items = podList.getItems();
+        if (items != null) {
+          for (Pod item : items) {
+            boolean running = false;
+            PodStatus status = item.getStatus();
+            if (status != null) {
+              String phase = status.getPhase();
+              if (phase != null && phase.toLowerCase().startsWith("run")) {
+                running = true;
+              }
+            }
+            if (running) {
+              count++;
+            }
+          }
+        }
+      }
+      long now = System.currentTimeMillis();
+      if (now > end) {
+        String message = "Only " + count + " pod(s) running for ReplicationController: " + rc.getMetadata().getName()
+                        + " in namespace: " + namespace + " when expecting " + requiredPodCount + " after waiting for " + (maxTimeWaitingForNewPods / 1000) + " seconds so giving up";
+        System.out.println("WARNING: " + message);
+        throw new IllegalStateException(message);
+      } else {
+        if (count >= requiredPodCount) {
+          break;
+        } else {
+          if (now - lastMessageTime > timeBetweenMessages) {
+            lastMessageTime = now;
+            System.out.println("Only " + count + " pod(s) running for ReplicationController: " + rc.getMetadata().getName()
+                    + " in namespace: " + namespace + " when expecting " + requiredPodCount + " so waiting...");
+          }
+          try {
+            Thread.sleep(500);
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+        }
+      }
     }
   }
 
