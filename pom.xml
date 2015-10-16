@@ -181,6 +181,7 @@
           <excludes>
             <exclude>.editorconfig</exclude>
             <exclude>license.txt</exclude>
+            <exclude>**/test-kubeconfig</exclude>
           </excludes>
         </configuration>
       </plugin>
