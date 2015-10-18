@@ -109,10 +109,7 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
   public RootPaths getRootPaths() {
     try {
       URL requestUrl = client.getMasterUrl();
-      Future<Response> f = getClient().getHttpClient().prepareGet(requestUrl.toString()).execute();
-      Response r = f.get();
-      assertResponseCode(r, 200);
-      return OBJECT_MAPPER.readValue(r.getResponseBodyAsStream(), RootPaths.class);
+      return handleResponse(getClient().getHttpClient().prepareGet(requestUrl.toString()), 200, RootPaths.class);
     } catch (KubernetesClientException e) {
       if (e.getCode() != 404) {
         throw e;
@@ -347,11 +344,7 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
       if (fieldQueryString.length() > 0) {
         requestBuilder.addQueryParam("fieldSelector", fieldQueryString);
       }
-
-      Future<Response> f = requestBuilder.execute();
-      Response r = f.get();
-      assertResponseCode(r, 200);
-      return OBJECT_MAPPER.readValue(r.getResponseBodyAsStream(), listType);
+      return handleResponse(requestBuilder, 200, listType);
     } catch (InterruptedException | ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }

@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.ning.http.client.AsyncHttpClient;
+import com.ning.http.client.Request;
 import com.ning.http.client.Response;
 import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.Pod;
@@ -65,10 +66,11 @@ public class PodOperationsImpl<C extends Client>  extends HasMetadataOperation<C
     try {
       URL url = new URL(URLUtils.join(getResourceUrl().toString(), sb.toString()));
       AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().prepareGet(url.toString());
-      Future<Response> f = requestBuilder.execute();
-      Response r = f.get();
-      assertResponseCode(r, 200);
-      return r.getResponseBody();
+      Request request = requestBuilder.build();
+      Future<Response> f = client.getHttpClient().executeRequest(request);
+      Response response = f.get();
+      assertResponseCode(request, response, 200);
+      return response.getResponseBody();
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
