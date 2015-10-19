@@ -23,8 +23,9 @@ import io.fabric8.openshift.api.model.DoneableProject;
 import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.ProjectList;
 import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableProject;
 
 public class MockProject extends BaseMockOperation<OpenShiftClient, Project, ProjectList, DoneableProject,
-  ClientResource<Project, DoneableProject>,
-  MockResource<Project, DoneableProject, Boolean>> {
+  MockDoneableProject, ClientResource<Project, DoneableProject>,
+  MockResource<Project, MockDoneableProject, Boolean>> {
 }

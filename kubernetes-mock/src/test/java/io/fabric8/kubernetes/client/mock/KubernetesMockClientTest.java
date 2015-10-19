@@ -38,6 +38,31 @@ import static org.easymock.EasyMock.eq;
 public class KubernetesMockClientTest {
 
   @Test
+  public void testCreate() {
+    KubernetesMockClient mock = new KubernetesMockClient();
+
+    Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").endMetadata().build();
+    mock.pods().inNamespace("ns1").create(pod1).andReturn(pod1).anyTimes();
+
+    KubernetesClient client = mock.replay();
+    Assert.assertNotNull(client.pods().inNamespace("ns1").create(pod1));
+  }
+
+  @Test
+  public void testCreateNew() {
+    KubernetesMockClient mock = new KubernetesMockClient();
+    Pod expectedPod = new PodBuilder().withNewMetadata().withName("pod1").endMetadata().build();
+
+    mock.pods().inNamespace("ns1").createNew().withNewMetadata().withName("pod1").endMetadata().done().andReturn(expectedPod).anyTimes();
+
+
+    KubernetesClient client = mock.replay();
+   Assert.assertEquals(expectedPod, client.pods().inNamespace("ns1").createNew().withNewMetadata().withName("pod1").endMetadata().done());
+  }
+
+
+
+  @Test
   public void testGetPod() {
     KubernetesMockClient mock = new KubernetesMockClient();
     mock.pods().inNamespace(eq("ns1")).withName(eq("pod1")).get().andReturn(new PodBuilder()
@@ -73,9 +98,9 @@ public class KubernetesMockClientTest {
 
     KubernetesClient client = mock.replay();
 
-    int counter=0;
+    int counter = 0;
     for (int i = 0; i < 5; i++) {
-      if(client.pods().delete(pod1, pod2)) {
+      if (client.pods().delete(pod1, pod2)) {
         counter++;
       }
     }

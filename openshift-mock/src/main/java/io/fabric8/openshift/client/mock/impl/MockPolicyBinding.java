@@ -23,8 +23,9 @@ import io.fabric8.openshift.api.model.DoneablePolicyBinding;
 import io.fabric8.openshift.api.model.PolicyBinding;
 import io.fabric8.openshift.api.model.PolicyBindingList;
 import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.mock.impl.doneables.MockDoneablePolicyBinding;
 
 public class MockPolicyBinding extends BaseMockOperation<OpenShiftClient, PolicyBinding, PolicyBindingList, DoneablePolicyBinding,
-  ClientResource<PolicyBinding, DoneablePolicyBinding>,
-  MockResource<PolicyBinding, DoneablePolicyBinding, Boolean>> {
+  MockDoneablePolicyBinding, ClientResource<PolicyBinding, DoneablePolicyBinding>,
+  MockResource<PolicyBinding, MockDoneablePolicyBinding, Boolean>> {
 }

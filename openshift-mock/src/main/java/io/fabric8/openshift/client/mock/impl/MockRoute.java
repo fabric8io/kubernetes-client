@@ -23,8 +23,9 @@ import io.fabric8.kubernetes.client.mock.MockResource;
 import io.fabric8.openshift.api.model.DoneableRoute;
 import io.fabric8.openshift.api.model.Route;
 import io.fabric8.openshift.api.model.RouteList;
+import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableRoute;
 
 public class MockRoute extends BaseMockOperation<OpenShiftClient, Route, RouteList, DoneableRoute,
-  ClientResource<Route, DoneableRoute>,
-  MockResource<Route, DoneableRoute, Boolean>> {
+  MockDoneableRoute, ClientResource<Route, DoneableRoute>,
+  MockResource<Route, MockDoneableRoute, Boolean>> {
 }

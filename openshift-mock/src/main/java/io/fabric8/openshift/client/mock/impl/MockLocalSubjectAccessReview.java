@@ -21,16 +21,20 @@ import io.fabric8.kubernetes.client.mock.Mockable;
 import io.fabric8.openshift.api.model.LocalSubjectAccessReview;
 import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
 import io.fabric8.openshift.client.dsl.CreateableLocalSubjectAccessReview;
+import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableSubjectAccessReviewResponse;
 import org.easymock.EasyMock;
 import org.easymock.IExpectationSetters;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.easymock.EasyMock.expect;
 
 public class MockLocalSubjectAccessReview implements
-  Createable<LocalSubjectAccessReview, IExpectationSetters<SubjectAccessReviewResponse>, CreateableLocalSubjectAccessReview>,
+  Createable<LocalSubjectAccessReview, IExpectationSetters<SubjectAccessReviewResponse>, MockDoneableSubjectAccessReviewResponse>,
   Mockable {
 
-
+  private final Set<Mockable> nested = new HashSet<Mockable>();
   private final MockSubjectAccessReview.LocalSubjectAccessReviewDelegate delegate;
 
   public MockLocalSubjectAccessReview() {
@@ -43,11 +47,17 @@ public class MockLocalSubjectAccessReview implements
 
 
   public Void replay() {
+    for (Mockable mockable : nested) {
+      mockable.replay();
+    }
     EasyMock.replay(delegate);
     return null;
   }
 
   public void verify() {
+    for (Mockable mockable : nested) {
+      mockable.verify();
+    }
     EasyMock.verify(delegate);
   }
 
@@ -61,7 +71,14 @@ public class MockLocalSubjectAccessReview implements
   }
 
   @Override
-  public CreateableLocalSubjectAccessReview createNew() {
-    throw new UnsupportedOperationException("Mock client doesn't support inline edit. Please use replace(T item) instead.");
+  public MockDoneableSubjectAccessReviewResponse createNew() {
+    MockDoneableSubjectAccessReviewResponse mock = new MockDoneableSubjectAccessReviewResponse();
+    try {
+      expect(delegate.createNew()).andReturn((CreateableLocalSubjectAccessReview) mock.getDelegate()).once();
+    } catch (Throwable t) {
+      throw new RuntimeException(t);
+    }
+    nested.add(mock);
+    return mock;
   }
 }

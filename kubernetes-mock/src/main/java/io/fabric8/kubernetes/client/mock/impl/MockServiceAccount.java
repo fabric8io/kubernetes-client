@@ -24,8 +24,9 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockResource;
+import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableServiceAccount;
 
 public class MockServiceAccount<C extends Client>  extends BaseMockOperation<C, ServiceAccount, ServiceAccountList, DoneableServiceAccount,
-  ClientResource<ServiceAccount, DoneableServiceAccount>,
-  MockResource<ServiceAccount, DoneableServiceAccount, Boolean>> {
+  MockDoneableServiceAccount, ClientResource<ServiceAccount, DoneableServiceAccount>,
+  MockResource<ServiceAccount, MockDoneableServiceAccount, Boolean>> {
 }

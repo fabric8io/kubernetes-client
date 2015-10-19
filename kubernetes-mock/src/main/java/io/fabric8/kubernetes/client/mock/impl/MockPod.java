@@ -26,15 +26,16 @@ import io.fabric8.kubernetes.client.dsl.internal.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientLoggableResource;
 import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockLoggableResource;
+import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneablePod;
 import org.easymock.EasyMock;
 import org.easymock.IExpectationSetters;
 
 import static org.easymock.EasyMock.expect;
 
-public class MockPod<C extends Client>  extends BaseMockOperation<C, Pod, PodList, DoneablePod,
+public class MockPod<C extends Client>  extends BaseMockOperation<C, Pod, PodList, DoneablePod, MockDoneablePod,
   ClientLoggableResource<Pod, DoneablePod>,
-  MockLoggableResource<Pod, DoneablePod, Boolean>>
-  implements MockLoggableResource<Pod, DoneablePod, Boolean> {
+  MockLoggableResource<Pod, MockDoneablePod, Boolean>>
+  implements MockLoggableResource<Pod, MockDoneablePod, Boolean> {
 
   //Dummy interface to use for mocking.
   private interface PodDelegate

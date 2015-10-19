@@ -24,8 +24,9 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockResource;
+import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableEndpoints;
 
 public class MockEndpoints<C extends Client> extends BaseMockOperation<C, Endpoints, EndpointsList, DoneableEndpoints,
-  ClientResource<Endpoints, DoneableEndpoints>,
-  MockResource<Endpoints, DoneableEndpoints, Boolean>> {
+  MockDoneableEndpoints, ClientResource<Endpoints, DoneableEndpoints>,
+  MockResource<Endpoints, MockDoneableEndpoints, Boolean>> {
 }

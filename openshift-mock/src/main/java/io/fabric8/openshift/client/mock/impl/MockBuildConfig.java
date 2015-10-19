@@ -30,6 +30,7 @@ import io.fabric8.openshift.api.model.DoneableBuildConfig;
 import io.fabric8.openshift.api.model.WebHookTrigger;
 import io.fabric8.openshift.client.dsl.BuildConfigOperation;
 import io.fabric8.openshift.client.mock.MockBuildConfigResource;
+import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableBuildConfig;
 import org.easymock.EasyMock;
 import org.easymock.IArgumentMatcher;
 import org.easymock.IExpectationSetters;
@@ -42,7 +43,7 @@ import static org.easymock.EasyMock.expect;
 
 
 public class MockBuildConfig extends BaseMockOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig,
-  ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void>,
+  MockDoneableBuildConfig, ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void>,
   MockBuildConfigResource>
   implements MockBuildConfigResource {
 

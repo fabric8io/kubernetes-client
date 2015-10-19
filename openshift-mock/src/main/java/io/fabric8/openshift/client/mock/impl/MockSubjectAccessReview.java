@@ -16,7 +16,6 @@
 
 package io.fabric8.openshift.client.mock.impl;
 
-import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.client.dsl.Createable;
 import io.fabric8.kubernetes.client.dsl.Namespaceable;
 import io.fabric8.kubernetes.client.mock.Mockable;
@@ -26,6 +25,7 @@ import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
 import io.fabric8.openshift.client.dsl.ClientSubjectAccessReviewOperation;
 import io.fabric8.openshift.client.dsl.CreateableLocalSubjectAccessReview;
 import io.fabric8.openshift.client.dsl.CreateableSubjectAccessReview;
+import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableSubjectAccessReviewResponse;
 import org.easymock.EasyMock;
 import org.easymock.IArgumentMatcher;
 import org.easymock.IExpectationSetters;
@@ -39,8 +39,8 @@ import static io.fabric8.kubernetes.client.mock.util.MockUtils.getArgument;
 import static org.easymock.EasyMock.expect;
 
 public class MockSubjectAccessReview implements
-  Createable<SubjectAccessReview, IExpectationSetters<SubjectAccessReviewResponse>, CreateableSubjectAccessReview>,
-  Namespaceable<Createable<LocalSubjectAccessReview, IExpectationSetters<SubjectAccessReviewResponse>, CreateableLocalSubjectAccessReview>>,
+  Createable<SubjectAccessReview, IExpectationSetters<SubjectAccessReviewResponse>, MockDoneableSubjectAccessReviewResponse>,
+  Namespaceable<Createable<LocalSubjectAccessReview, IExpectationSetters<SubjectAccessReviewResponse>, MockDoneableSubjectAccessReviewResponse>>,
   Mockable {
 
   interface SubjectAccessReviewDelegate extends ClientSubjectAccessReviewOperation<CreateableSubjectAccessReview, CreateableLocalSubjectAccessReview>{}
@@ -82,7 +82,7 @@ public class MockSubjectAccessReview implements
   }
 
   @Override
-  public Createable<LocalSubjectAccessReview, IExpectationSetters<SubjectAccessReviewResponse>, CreateableLocalSubjectAccessReview> inNamespace(String namespace) {
+  public Createable<LocalSubjectAccessReview, IExpectationSetters<SubjectAccessReviewResponse>, MockDoneableSubjectAccessReviewResponse> inNamespace(String namespace) {
     IArgumentMatcher matcher = getArgument(namespace);
     MockLocalSubjectAccessReview op = namespaceMap.get(matcher);
     if (op == null) {
@@ -100,9 +100,15 @@ public class MockSubjectAccessReview implements
   }
 
   @Override
-  public CreateableSubjectAccessReview createNew() {
-    return null;
+  public MockDoneableSubjectAccessReviewResponse createNew() {
+    MockDoneableSubjectAccessReviewResponse mock = new MockDoneableSubjectAccessReviewResponse();
+    try {
+      expect(delegate.createNew()).andReturn((CreateableSubjectAccessReview) mock.getDelegate()).once();
+    } catch (Throwable t) {
+      throw new RuntimeException(t);
+    }
+    nested.add(mock);
+    return mock;
   }
-
 
 }

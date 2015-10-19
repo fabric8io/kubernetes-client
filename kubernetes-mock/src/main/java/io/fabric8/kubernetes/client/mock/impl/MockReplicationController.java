@@ -29,6 +29,7 @@ import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplaceable;
 import io.fabric8.kubernetes.client.dsl.internal.ClientMixedOperation;
 import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockRollableScaleableResource;
+import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableReplicationController;
 import org.easymock.EasyMock;
 import org.easymock.IExpectationSetters;
 
@@ -37,19 +38,19 @@ import java.util.concurrent.TimeUnit;
 import static org.easymock.EasyMock.expect;
 
 public class MockReplicationController<C extends Client>  extends BaseMockOperation<C, ReplicationController, ReplicationControllerList, DoneableReplicationController,
-  ClientRollableScallableResource<ReplicationController, DoneableReplicationController>,
-  MockRollableScaleableResource<ReplicationController, DoneableReplicationController, Boolean>>
-  implements MockRollableScaleableResource<ReplicationController, DoneableReplicationController, Boolean>,
-  TimeoutImageEditReplaceable<ReplicationController, IExpectationSetters<ReplicationController>, DoneableReplicationController> {
+  MockDoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>,
+  MockRollableScaleableResource<ReplicationController, MockDoneableReplicationController, Boolean>>
+  implements MockRollableScaleableResource<ReplicationController, MockDoneableReplicationController, Boolean>,
+  TimeoutImageEditReplaceable<ReplicationController, IExpectationSetters<ReplicationController>, MockDoneableReplicationController> {
 
 
   @Override
-  public ImageEditReplaceable<ReplicationController, IExpectationSetters<ReplicationController>, DoneableReplicationController> withTimeout(long timeout, TimeUnit unit) {
+  public ImageEditReplaceable<ReplicationController, IExpectationSetters<ReplicationController>, MockDoneableReplicationController> withTimeout(long timeout, TimeUnit unit) {
     return null;
   }
 
   @Override
-  public ImageEditReplaceable<ReplicationController, IExpectationSetters<ReplicationController>, DoneableReplicationController> withTimeoutInMillis(long timeoutInMillis) {
+  public ImageEditReplaceable<ReplicationController, IExpectationSetters<ReplicationController>, MockDoneableReplicationController> withTimeoutInMillis(long timeoutInMillis) {
     return null;
   }
 
@@ -87,7 +88,7 @@ public class MockReplicationController<C extends Client>  extends BaseMockOperat
   }
 
   @Override
-  public TimeoutImageEditReplaceable<ReplicationController, IExpectationSetters<ReplicationController>, DoneableReplicationController> rolling() {
+  public TimeoutImageEditReplaceable<ReplicationController, IExpectationSetters<ReplicationController>, MockDoneableReplicationController> rolling() {
     if (rolling == null) {
       rolling = (MockReplicationController) newInstance();
       expect(((Rollable<?>)getDelegate()).rolling())

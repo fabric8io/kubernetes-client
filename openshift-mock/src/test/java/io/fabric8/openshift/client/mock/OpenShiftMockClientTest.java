@@ -30,6 +30,7 @@ import io.fabric8.openshift.api.model.BuildBuilder;
 import io.fabric8.openshift.api.model.BuildList;
 import io.fabric8.openshift.api.model.BuildListBuilder;
 import io.fabric8.openshift.api.model.WebHookTrigger;
+import io.fabric8.openshift.client.mock.impl.MockGroup;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Test;

@@ -22,18 +22,19 @@ import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.client.dsl.internal.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.internal.ClientMixedOperation;
 import org.easymock.EasyMock;
 import org.easymock.IArgumentMatcher;
 import org.easymock.IExpectationSetters;
 import org.easymock.internal.matchers.And;
 
 import java.io.InputStream;
+import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -44,15 +45,16 @@ import java.util.Set;
 import static io.fabric8.kubernetes.client.mock.util.MockUtils.getArgument;
 import static org.easymock.EasyMock.expect;
 
-public class BaseMockOperation<C extends Client, T, L extends KubernetesResourceList, D extends Doneable<T>,
+public class BaseMockOperation<C extends Client, T, L extends KubernetesResourceList, D extends Doneable<T>, B extends MockDoneable<T>,
   R extends ClientResource<T, D>,
-  E extends Resource<T, IExpectationSetters<T>, D, IExpectationSetters<Boolean>>>
-  implements MockOperation<T, L, D, E>,
-  MockResource<T, D, Boolean>,
+  E extends Resource<T, IExpectationSetters<T>, B, IExpectationSetters<Boolean>>>
+  implements MockOperation<T, L, B, E>,
+  MockResource<T, B, Boolean>,
   Mockable {
 
   private final ClientMixedOperation<C, T, L, D, R> delegate;
   private final Set<Mockable> nested = new LinkedHashSet<>();
+  private final Class mockDoneableType;
 
   public BaseMockOperation() {
     this(EasyMock.createMock(ClientMixedOperation.class));
@@ -60,8 +62,8 @@ public class BaseMockOperation<C extends Client, T, L extends KubernetesResource
 
   public BaseMockOperation(ClientMixedOperation delegate) {
     this.delegate = delegate;
+    this.mockDoneableType = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[4];
   }
-
 
 
   private BaseMockOperation loadedMockOp;
@@ -96,7 +98,11 @@ public class BaseMockOperation<C extends Client, T, L extends KubernetesResource
   }
 
   public BaseMockOperation newInstance() {
-    return new BaseMockOperation();
+    try {
+      return getClass().newInstance();
+    } catch (Throwable t) {
+      throw new RuntimeException();
+    }
   }
 
   public ClientMixedOperation<C, T, L, D, R> getDelegate() {
@@ -109,8 +115,18 @@ public class BaseMockOperation<C extends Client, T, L extends KubernetesResource
   }
 
   @Override
-  public D createNew() {
-    throw new UnsupportedOperationException("Mock client doesn't support inline create. Please use create(T item) instead");
+  public B createNew() {
+    B mock = null;
+    try {
+      mock = (B) mockDoneableType.newInstance();
+      expect(delegate.createNew()).andReturn((D) mock.getDelegate()).once();
+    } catch (Throwable t) {
+      throw new RuntimeException(t);
+    }
+    if (mock instanceof Mockable) {
+      nested.add((Mockable) mock);
+    }
+    return mock;
   }
 
   @Override
@@ -119,15 +135,24 @@ public class BaseMockOperation<C extends Client, T, L extends KubernetesResource
   }
 
   @Override
-  public D edit() {
-    throw new UnsupportedOperationException("Mock client doesn't support inline edit. Please use replace(T item) instead.");
+  public B edit() {
+    B mock = null;
+    try {
+      mock = (B) mockDoneableType.newInstance();
+      expect(delegate.edit()).andReturn((D) mock.getDelegate()).once();
+    } catch (Throwable t) {
+      throw new RuntimeException(t);
+    }
+    if (mock instanceof Mockable) {
+      nested.add((Mockable) mock);
+    }
+    return mock;
   }
-
 
   @Override
   public E withName(String name) {
     IArgumentMatcher matcher = getArgument(name);
-    BaseMockOperation<C, T, L, D, R, E> op = nameMap.get(matcher);
+    BaseMockOperation<C, T, L, D, B, R, E> op = nameMap.get(matcher);
     if (op == null) {
       op = newInstance();
       expect(delegate.withName(name)).andReturn((R) op.getDelegate()).anyTimes();
@@ -138,9 +163,9 @@ public class BaseMockOperation<C extends Client, T, L extends KubernetesResource
   }
 
   @Override
-  public MockNonNamespaceOperation<T, L, D, E> inNamespace(String namespace) {
+  public MockNonNamespaceOperation<T, L, B, E> inNamespace(String namespace) {
     IArgumentMatcher matcher = getArgument(namespace);
-    BaseMockOperation<C, T, L, D, R, E> op = namespaceMap.get(matcher);
+    BaseMockOperation<C, T, L, D, B, R, E> op = namespaceMap.get(matcher);
     if (op == null) {
       op = newInstance();
       expect(delegate.inNamespace(namespace)).andReturn((ClientNonNamespaceOperation<C, T, L, D, R>) op.getDelegate()).anyTimes();
@@ -151,7 +176,7 @@ public class BaseMockOperation<C extends Client, T, L extends KubernetesResource
   }
 
   @Override
-  public MockNonNamespaceOperation<T, L, D, E> inAnyNamespace() {
+  public MockNonNamespaceOperation<T, L, B, E> inAnyNamespace() {
     if (allNamespacesOp == null) {
       allNamespacesOp = newInstance();
       expect(delegate.inAnyNamespace()).andReturn((ClientNonNamespaceOperation<C, T, L, D, R>) allNamespacesOp.getDelegate()).anyTimes();
@@ -161,9 +186,9 @@ public class BaseMockOperation<C extends Client, T, L extends KubernetesResource
   }
 
   @Override
-  public EditReplaceDeletable<T, IExpectationSetters<T>, D, IExpectationSetters<Boolean>> cascading(boolean enabled) {
+  public EditReplaceDeletable<T, IExpectationSetters<T>, B, IExpectationSetters<Boolean>> cascading(boolean enabled) {
     IArgumentMatcher matcher = getArgument(enabled);
-    BaseMockOperation<C, T, L, D, R, E> op = cascadingMap.get(matcher);
+    BaseMockOperation<C, T, L, D, B, R, E> op = cascadingMap.get(matcher);
     if (op == null) {
       op = newInstance();
       expect(delegate.cascading(enabled)).andReturn(op.getDelegate()).anyTimes();
@@ -201,7 +226,7 @@ public class BaseMockOperation<C extends Client, T, L extends KubernetesResource
   @Override
   public FilterWatchListDeletable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>> withLabels(Map<String, String> l) {
     IArgumentMatcher matcher = getArgument(l);
-    BaseMockOperation<C, T, L, D, R, E> op = labelsMap.get(matcher);
+    BaseMockOperation<C, T, L, D, B, R, E> op = labelsMap.get(matcher);
     if (op == null) {
       op = newInstance();
       expect(delegate.withLabels(l)).andReturn(op.getDelegate()).anyTimes();
@@ -214,7 +239,7 @@ public class BaseMockOperation<C extends Client, T, L extends KubernetesResource
   @Override
   public FilterWatchListDeletable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>> withoutLabels(Map<String, String> l) {
     IArgumentMatcher matcher = getArgument(l);
-    BaseMockOperation<C, T, L, D, R, E> op = labelsNotMap.get(matcher);
+    BaseMockOperation<C, T, L, D, B, R, E> op = labelsNotMap.get(matcher);
     if (op == null) {
       op = newInstance();
       expect(delegate.withoutLabels(l)).andReturn(op.getDelegate()).anyTimes();
@@ -230,7 +255,7 @@ public class BaseMockOperation<C extends Client, T, L extends KubernetesResource
     IArgumentMatcher valueMatcher = getArgument(values);
     IArgumentMatcher matcher = new And(Arrays.asList(keyMatcher, valueMatcher));
 
-    BaseMockOperation<C, T, L, D, R, E> op = labelInsMap.get(matcher);
+    BaseMockOperation<C, T, L, D, B, R, E> op = labelInsMap.get(matcher);
     if (op == null) {
       op = newInstance();
       expect(delegate.withLabelIn(key, values)).andReturn(op.getDelegate()).anyTimes();
@@ -246,7 +271,7 @@ public class BaseMockOperation<C extends Client, T, L extends KubernetesResource
     IArgumentMatcher valueMatcher = getArgument(values);
     IArgumentMatcher matcher = new And(Arrays.asList(keyMatcher, valueMatcher));
 
-    BaseMockOperation<C, T, L, D, R, E> op = labelNotInMap.get(matcher);
+    BaseMockOperation<C, T, L, D, B, R, E> op = labelNotInMap.get(matcher);
     if (op == null) {
       op = newInstance();
       expect(delegate.withLabelNotIn(key, values)).andReturn(op.getDelegate()).anyTimes();
@@ -262,7 +287,7 @@ public class BaseMockOperation<C extends Client, T, L extends KubernetesResource
     IArgumentMatcher valueMatcher = getArgument(value);
     IArgumentMatcher matcher = new And(Arrays.asList(keyMatcher, valueMatcher));
 
-    BaseMockOperation<C, T, L, D, R, E> op = labelMap.get(matcher);
+    BaseMockOperation<C, T, L, D, B, R, E> op = labelMap.get(matcher);
     if (op == null) {
       op = newInstance();
       expect(delegate.withLabel(key, value)).andReturn(op.getDelegate()).anyTimes();
@@ -278,7 +303,7 @@ public class BaseMockOperation<C extends Client, T, L extends KubernetesResource
     IArgumentMatcher valueMatcher = getArgument(value);
     IArgumentMatcher matcher = new And(Arrays.asList(keyMatcher, valueMatcher));
 
-    BaseMockOperation<C, T, L, D, R, E> op = labelNotMap.get(matcher);
+    BaseMockOperation<C, T, L, D, B, R, E> op = labelNotMap.get(matcher);
     if (op == null) {
       op = newInstance();
       expect(delegate.withoutLabel(key, value)).andReturn(op.getDelegate()).anyTimes();
@@ -291,7 +316,7 @@ public class BaseMockOperation<C extends Client, T, L extends KubernetesResource
   @Override
   public FilterWatchListDeletable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>> withFields(Map<String, String> f) {
     IArgumentMatcher matcher = getArgument(f);
-    BaseMockOperation<C, T, L, D, R, E> op = filedsMap.get(matcher);
+    BaseMockOperation<C, T, L, D, B, R, E> op = filedsMap.get(matcher);
     if (op == null) {
       op = newInstance();
       expect(delegate.withFields(f)).andReturn(op.getDelegate()).anyTimes();
@@ -307,7 +332,7 @@ public class BaseMockOperation<C extends Client, T, L extends KubernetesResource
     IArgumentMatcher valueMatcher = getArgument(value);
     IArgumentMatcher matcher = new And(Arrays.asList(keyMatcher, valueMatcher));
 
-    BaseMockOperation<C, T, L, D, R, E> op = fieldMap.get(matcher);
+    BaseMockOperation<C, T, L, D, B, R, E> op = fieldMap.get(matcher);
     if (op == null) {
       op = new BaseMockOperation<>();
       expect(delegate.withField(key, value)).andReturn(op.getDelegate()).anyTimes();
@@ -328,7 +353,7 @@ public class BaseMockOperation<C extends Client, T, L extends KubernetesResource
   }
 
   @Override
-  public MockResource<T, D, Boolean> load(InputStream input) {
+  public MockResource load(InputStream input) {
     if (loadedMockOp == null) {
       loadedMockOp = newInstance();
     }

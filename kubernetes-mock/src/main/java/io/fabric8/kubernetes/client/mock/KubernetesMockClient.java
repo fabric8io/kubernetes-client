@@ -73,6 +73,19 @@ import io.fabric8.kubernetes.client.mock.impl.MockSecret;
 import io.fabric8.kubernetes.client.mock.impl.MockSecurityContextConstraints;
 import io.fabric8.kubernetes.client.mock.impl.MockService;
 import io.fabric8.kubernetes.client.mock.impl.MockServiceAccount;
+import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableEndpoints;
+import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableEvent;
+import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableNamespace;
+import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableNode;
+import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneablePersistentVolume;
+import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneablePersistentVolumeClaim;
+import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneablePod;
+import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableReplicationController;
+import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableResourceQuota;
+import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableSecret;
+import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableSecurityContextConstraints;
+import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableService;
+import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableServiceAccount;
 import org.easymock.EasyMock;
 import org.easymock.IAnswer;
 import org.easymock.IArgumentMatcher;
@@ -179,55 +192,55 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
     return expect(client.rootPaths());
   }
 
-  public MockOperation<Endpoints, EndpointsList, DoneableEndpoints, MockResource<Endpoints, DoneableEndpoints, Boolean>> endpoints() {
+  public MockOperation<Endpoints, EndpointsList, MockDoneableEndpoints, MockResource<Endpoints, MockDoneableEndpoints, Boolean>> endpoints() {
     return endpoints;
   }
 
-  public MockOperation<Event, EventList, DoneableEvent, MockResource<Event, DoneableEvent, Boolean>> events() {
+  public MockOperation<Event, EventList, MockDoneableEvent, MockResource<Event, MockDoneableEvent, Boolean>> events() {
     return events;
   }
 
-  public MockOperation<Namespace, NamespaceList, DoneableNamespace, MockResource<Namespace, DoneableNamespace, Boolean>> namespaces() {
+  public MockOperation<Namespace, NamespaceList, MockDoneableNamespace, MockResource<Namespace, MockDoneableNamespace, Boolean>> namespaces() {
     return namespaces;
   }
 
-  public MockOperation<Node, NodeList, DoneableNode, MockResource<Node, DoneableNode, Boolean>> nodes() {
+  public MockOperation<Node, NodeList, MockDoneableNode, MockResource<Node, MockDoneableNode, Boolean>> nodes() {
     return nodes;
   }
 
-  public MockOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, MockResource<PersistentVolume, DoneablePersistentVolume, Boolean>> persistentVolumes() {
+  public MockOperation<PersistentVolume, PersistentVolumeList, MockDoneablePersistentVolume, MockResource<PersistentVolume, MockDoneablePersistentVolume, Boolean>> persistentVolumes() {
     return persistentVolumes;
   }
 
-  public MockOperation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, MockResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim, Boolean>> persistentVolumeClaims() {
+  public MockOperation<PersistentVolumeClaim, PersistentVolumeClaimList, MockDoneablePersistentVolumeClaim, MockResource<PersistentVolumeClaim, MockDoneablePersistentVolumeClaim, Boolean>> persistentVolumeClaims() {
     return persistentVolumeClaims;
   }
 
-  public MockOperation<Pod, PodList, DoneablePod, MockLoggableResource<Pod, DoneablePod, Boolean>> pods() {
+  public MockOperation<Pod, PodList, MockDoneablePod, MockLoggableResource<Pod, MockDoneablePod, Boolean>> pods() {
     return pods;
   }
 
-  public MockOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, MockRollableScaleableResource<ReplicationController, DoneableReplicationController, Boolean>> replicationControllers() {
+  public MockOperation<ReplicationController, ReplicationControllerList, MockDoneableReplicationController, MockRollableScaleableResource<ReplicationController, MockDoneableReplicationController, Boolean>> replicationControllers() {
     return replicationControllers;
   }
 
-  public MockOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota, MockResource<ResourceQuota, DoneableResourceQuota, Boolean>> resourceQuotas() {
+  public MockOperation<ResourceQuota, ResourceQuotaList, MockDoneableResourceQuota, MockResource<ResourceQuota, MockDoneableResourceQuota, Boolean>> resourceQuotas() {
     return resourceQuotas;
   }
 
-  public MockOperation<Secret, SecretList, DoneableSecret, MockResource<Secret, DoneableSecret, Boolean>> secrets() {
+  public MockOperation<Secret, SecretList, MockDoneableSecret, MockResource<Secret, MockDoneableSecret, Boolean>> secrets() {
     return secrets;
   }
 
-  public MockOperation<Service, ServiceList, DoneableService, MockResource<Service, DoneableService, Boolean>> services() {
+  public MockOperation<Service, ServiceList, MockDoneableService, MockResource<Service, MockDoneableService, Boolean>> services() {
     return services;
   }
 
-  public MockOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, MockResource<ServiceAccount, DoneableServiceAccount, Boolean>> serviceAccounts() {
+  public MockOperation<ServiceAccount, ServiceAccountList, MockDoneableServiceAccount, MockResource<ServiceAccount, MockDoneableServiceAccount, Boolean>> serviceAccounts() {
     return serviceAccounts;
   }
 
-  public MockOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, MockResource<SecurityContextConstraints, DoneableSecurityContextConstraints, Boolean>> securityContextConstraints() {
+  public MockOperation<SecurityContextConstraints, SecurityContextConstraintsList, MockDoneableSecurityContextConstraints, MockResource<SecurityContextConstraints, MockDoneableSecurityContextConstraints, Boolean>> securityContextConstraints() {
     return securityContextConstraints;
   }
 

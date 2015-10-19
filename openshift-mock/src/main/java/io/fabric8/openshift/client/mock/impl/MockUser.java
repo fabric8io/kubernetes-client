@@ -23,8 +23,9 @@ import io.fabric8.openshift.api.model.DoneableUser;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.api.model.UserList;
 import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableUser;
 
 public class MockUser extends BaseMockOperation<OpenShiftClient, User, UserList, DoneableUser,
-  ClientResource<User, DoneableUser>,
-  MockResource<User, DoneableUser, Boolean>> {
+  MockDoneableUser, ClientResource<User, DoneableUser>,
+  MockResource<User, MockDoneableUser, Boolean>> {
 }
