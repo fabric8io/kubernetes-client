@@ -20,10 +20,11 @@ import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.client.dsl.Createable;
 import io.fabric8.openshift.api.model.LocalSubjectAccessReview;
 import io.fabric8.openshift.api.model.LocalSubjectAccessReviewFluent;
+import io.fabric8.openshift.api.model.LocalSubjectAccessReviewFluentImpl;
 import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
 
 public abstract class CreateableLocalSubjectAccessReview extends
-  LocalSubjectAccessReviewFluent<CreateableLocalSubjectAccessReview>
+  LocalSubjectAccessReviewFluentImpl<CreateableLocalSubjectAccessReview>
   implements
   Doneable<SubjectAccessReviewResponse>,
   Createable<LocalSubjectAccessReview, SubjectAccessReviewResponse, CreateableLocalSubjectAccessReview> {
