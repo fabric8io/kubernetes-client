@@ -116,6 +116,8 @@ import io.fabric8.openshift.api.model.PolicyBindingList;
 import io.fabric8.openshift.api.model.PolicyList;
 import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.ProjectList;
+import io.fabric8.openshift.api.model.RoleBinding;
+import io.fabric8.openshift.api.model.RoleBindingList;
 import io.fabric8.openshift.api.model.Route;
 import io.fabric8.openshift.api.model.RouteList;
 import io.fabric8.openshift.api.model.Template;
@@ -134,6 +136,7 @@ import io.fabric8.openshift.client.mock.impl.MockOAuthClient;
 import io.fabric8.openshift.client.mock.impl.MockPolicy;
 import io.fabric8.openshift.client.mock.impl.MockPolicyBinding;
 import io.fabric8.openshift.client.mock.impl.MockProject;
+import io.fabric8.openshift.client.mock.impl.MockRoleBinding;
 import io.fabric8.openshift.client.mock.impl.MockRoute;
 import io.fabric8.openshift.client.mock.impl.MockSubjectAccessReview;
 import io.fabric8.openshift.client.mock.impl.MockTemplate;
@@ -149,6 +152,7 @@ import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableOAuthClient;
 import io.fabric8.openshift.client.mock.impl.doneables.MockDoneablePolicy;
 import io.fabric8.openshift.client.mock.impl.doneables.MockDoneablePolicyBinding;
 import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableProject;
+import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableRoleBinding;
 import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableRoute;
 import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableTemplate;
 import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableUser;
@@ -201,6 +205,7 @@ public class OpenShiftMockClient implements Replayable<OpenShiftClient>, Verifia
   private final MockGroup groups = new MockGroup();
   private final MockPolicy policies = new MockPolicy();
   private final MockPolicyBinding policyBindings = new MockPolicyBinding();
+  private final MockRoleBinding roleBindings = new MockRoleBinding();
   private final MockSubjectAccessReview subjectAccessReviews = new MockSubjectAccessReview();
 
   public OpenShiftMockClient() {
@@ -234,6 +239,7 @@ public class OpenShiftMockClient implements Replayable<OpenShiftClient>, Verifia
     expect(client.groups()).andReturn(groups.getDelegate()).anyTimes();
     expect(client.policies()).andReturn(policies.getDelegate()).anyTimes();
     expect(client.policyBindings()).andReturn(policyBindings.getDelegate()).anyTimes();
+    expect(client.roleBindings()).andReturn(roleBindings.getDelegate()).anyTimes();
     expect(client.subjectAccessReviews()).andReturn(subjectAccessReviews.getDelegate()).anyTimes();
 
     client.close();
@@ -271,6 +277,7 @@ public class OpenShiftMockClient implements Replayable<OpenShiftClient>, Verifia
     groups.replay();
     policies.replay();
     policyBindings.replay();
+    roleBindings.replay();
     subjectAccessReviews.replay();
 
     EasyMock.replay(client);
@@ -309,6 +316,7 @@ public class OpenShiftMockClient implements Replayable<OpenShiftClient>, Verifia
     groups.verify();
     policies.verify();
     policyBindings.verify();
+    roleBindings.verify();
     subjectAccessReviews.verify();
     EasyMock.verify(client);
   }
@@ -435,6 +443,10 @@ public class OpenShiftMockClient implements Replayable<OpenShiftClient>, Verifia
 
   public  MockOperation<PolicyBinding, PolicyBindingList, MockDoneablePolicyBinding, MockResource<PolicyBinding, MockDoneablePolicyBinding, Boolean>> policyBindings() {
     return policyBindings;
+  }
+
+  public  MockOperation<RoleBinding, RoleBindingList, MockDoneableRoleBinding, MockResource<RoleBinding, MockDoneableRoleBinding, Boolean>> roleBindings() {
+    return roleBindings;
   }
 
   public MockSubjectAccessReview getSubjectAccessReviews() {

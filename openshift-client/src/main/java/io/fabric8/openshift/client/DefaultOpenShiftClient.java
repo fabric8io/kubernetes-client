@@ -96,6 +96,7 @@ import io.fabric8.openshift.api.model.DoneableOAuthClient;
 import io.fabric8.openshift.api.model.DoneablePolicy;
 import io.fabric8.openshift.api.model.DoneablePolicyBinding;
 import io.fabric8.openshift.api.model.DoneableProject;
+import io.fabric8.openshift.api.model.DoneableRoleBinding;
 import io.fabric8.openshift.api.model.DoneableRoute;
 import io.fabric8.openshift.api.model.DoneableTemplate;
 import io.fabric8.openshift.api.model.DoneableUser;
@@ -115,6 +116,8 @@ import io.fabric8.openshift.api.model.PolicyBindingList;
 import io.fabric8.openshift.api.model.PolicyList;
 import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.ProjectList;
+import io.fabric8.openshift.api.model.RoleBinding;
+import io.fabric8.openshift.api.model.RoleBindingList;
 import io.fabric8.openshift.api.model.Route;
 import io.fabric8.openshift.api.model.RouteList;
 import io.fabric8.openshift.api.model.Template;
@@ -138,6 +141,7 @@ import io.fabric8.openshift.client.dsl.internal.OAuthClientOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.PolicyBindingOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.PolicyOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.ProjectOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.RoleBindingOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.RouteOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.TemplateOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.UserOperationsImpl;
@@ -307,6 +311,11 @@ public class DefaultOpenShiftClient extends BaseClient implements OpenShiftClien
   @Override
   public ClientNonNamespaceOperation<OpenShiftClient, Project, ProjectList, DoneableProject, ClientResource<Project, DoneableProject>> projects() {
     return new ProjectOperationsImpl(this);
+  }
+
+  @Override
+  public ClientMixedOperation<OpenShiftClient, RoleBinding, RoleBindingList, DoneableRoleBinding, ClientResource<RoleBinding, DoneableRoleBinding>> roleBindings() {
+    return new RoleBindingOperationsImpl(this);
   }
 
   @Override

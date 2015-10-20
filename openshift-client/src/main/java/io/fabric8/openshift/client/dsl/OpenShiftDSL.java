@@ -40,6 +40,7 @@ import io.fabric8.openshift.api.model.DoneableOAuthClient;
 import io.fabric8.openshift.api.model.DoneablePolicy;
 import io.fabric8.openshift.api.model.DoneablePolicyBinding;
 import io.fabric8.openshift.api.model.DoneableProject;
+import io.fabric8.openshift.api.model.DoneableRoleBinding;
 import io.fabric8.openshift.api.model.DoneableRoute;
 import io.fabric8.openshift.api.model.DoneableTemplate;
 import io.fabric8.openshift.api.model.DoneableUser;
@@ -59,6 +60,8 @@ import io.fabric8.openshift.api.model.PolicyBindingList;
 import io.fabric8.openshift.api.model.PolicyList;
 import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.ProjectList;
+import io.fabric8.openshift.api.model.RoleBinding;
+import io.fabric8.openshift.api.model.RoleBindingList;
 import io.fabric8.openshift.api.model.Route;
 import io.fabric8.openshift.api.model.RouteList;
 import io.fabric8.openshift.api.model.Template;
@@ -88,6 +91,10 @@ public interface OpenShiftDSL<C extends Client> extends KubernetesDSL<C> {
 
   ClientMixedOperation<C, PolicyBinding, PolicyBindingList, DoneablePolicyBinding, ClientResource<PolicyBinding, DoneablePolicyBinding>> policyBindings();
 
+  ClientNonNamespaceOperation<C, Project, ProjectList, DoneableProject, ClientResource<Project, DoneableProject>> projects();
+
+  ClientMixedOperation<C, RoleBinding, RoleBindingList, DoneableRoleBinding, ClientResource<RoleBinding, DoneableRoleBinding>> roleBindings();
+
   ClientMixedOperation<C, Route, RouteList, DoneableRoute, ClientResource<Route, DoneableRoute>> routes();
 
   ClientMixedOperation<C, Template, TemplateList, DoneableTemplate, ClientTemplateResource<Template, KubernetesList, DoneableTemplate>> templates();
@@ -96,5 +103,5 @@ public interface OpenShiftDSL<C extends Client> extends KubernetesDSL<C> {
 
   ClientSubjectAccessReviewOperation<CreateableSubjectAccessReview, CreateableLocalSubjectAccessReview> subjectAccessReviews();
 
-  ClientNonNamespaceOperation<C, Project, ProjectList, DoneableProject, ClientResource<Project, DoneableProject>> projects();
+
 }
