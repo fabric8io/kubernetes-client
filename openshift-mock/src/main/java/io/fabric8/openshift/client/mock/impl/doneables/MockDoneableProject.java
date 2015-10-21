@@ -31,14 +31,14 @@ public class MockDoneableProject extends ProjectFluentImpl<MockDoneableProject> 
   private interface DelegateInterface extends Doneable<Project>, ProjectFluent<DoneableProject> {}
   private final Visitor<Project> visitor = new Visitor<Project>() {
     @Override
-    public void visit(Project pod) {
+    public void visit(Project item) {
     }
   };
 
-  private final DoneableProject delegate;
+  private final DelegateInterface delegate;
 
   public MockDoneableProject() {
-    this.delegate = EasyMock.createMock(DoneableProject.class);
+    this.delegate = EasyMock.createMock(DelegateInterface.class);
   }
 
   @Override

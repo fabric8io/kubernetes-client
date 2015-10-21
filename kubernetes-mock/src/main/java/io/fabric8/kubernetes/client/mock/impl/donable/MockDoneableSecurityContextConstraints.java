@@ -34,14 +34,13 @@ public class MockDoneableSecurityContextConstraints extends SecurityContextConst
   private interface DelegateInterface extends Doneable<SecurityContextConstraints>, SecurityContextConstraintsFluent<DoneableSecurityContextConstraints> {}
   private final Visitor<SecurityContextConstraints> visitor = new Visitor<SecurityContextConstraints>() {
     @Override
-    public void visit(SecurityContextConstraints pod) {
-    }
+    public void visit(SecurityContextConstraints item) {}
   };
 
-  private final DoneableSecurityContextConstraints delegate;
+  private final DelegateInterface delegate;
 
   public MockDoneableSecurityContextConstraints() {
-    this.delegate = EasyMock.createMock(DoneableSecurityContextConstraints .class);
+    this.delegate = EasyMock.createMock(DelegateInterface .class);
   }
 
   @Override

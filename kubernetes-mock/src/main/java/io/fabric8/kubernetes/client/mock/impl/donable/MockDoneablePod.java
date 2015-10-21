@@ -31,14 +31,13 @@ public class MockDoneablePod extends PodFluentImpl<MockDoneablePod> implements M
   private interface DelegateInterface extends Doneable<Pod>, PodFluent<DoneablePod>{}
   private final Visitor<Pod> visitor = new Visitor<Pod>() {
     @Override
-    public void visit(Pod pod) {
-    }
+    public void visit(Pod item) {}
   };
 
-  private final DoneablePod delegate;
+  private final DelegateInterface delegate;
 
   public MockDoneablePod() {
-    this.delegate = EasyMock.createMock(DoneablePod .class);
+    this.delegate = EasyMock.createMock(DelegateInterface .class);
   }
 
   @Override

@@ -31,14 +31,13 @@ public class MockDoneableBuildConfig extends BuildConfigFluentImpl<MockDoneableB
   private interface DelegateInterface extends Doneable<BuildConfig>, BuildConfigFluent<DoneableBuildConfig> {}
   private final Visitor<BuildConfig> visitor = new Visitor<BuildConfig>() {
     @Override
-    public void visit(BuildConfig pod) {
-    }
+    public void visit(BuildConfig item) {}
   };
 
-  private final DoneableBuildConfig delegate;
+  private final DelegateInterface delegate;
 
   public MockDoneableBuildConfig() {
-    this.delegate = EasyMock.createMock(DoneableBuildConfig.class);
+    this.delegate = EasyMock.createMock(DelegateInterface.class);
   }
 
   @Override

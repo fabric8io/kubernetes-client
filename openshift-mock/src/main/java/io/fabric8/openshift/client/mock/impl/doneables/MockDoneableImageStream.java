@@ -31,14 +31,13 @@ public class MockDoneableImageStream extends ImageStreamFluentImpl<MockDoneableI
   private interface DelegateInterface extends Doneable<ImageStream>, ImageStreamFluent<DoneableImageStream> {}
   private final Visitor<ImageStream> visitor = new Visitor<ImageStream>() {
     @Override
-    public void visit(ImageStream pod) {
-    }
+    public void visit(ImageStream item) {}
   };
 
-  private final DoneableImageStream delegate;
+  private final DelegateInterface delegate;
 
   public MockDoneableImageStream() {
-    this.delegate = EasyMock.createMock(DoneableImageStream.class);
+    this.delegate = EasyMock.createMock(DelegateInterface.class);
   }
 
   @Override

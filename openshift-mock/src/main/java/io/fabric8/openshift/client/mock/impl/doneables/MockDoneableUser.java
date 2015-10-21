@@ -19,10 +19,10 @@ package io.fabric8.openshift.client.mock.impl.doneables;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.client.mock.MockDoneable;
+import io.fabric8.openshift.api.model.DoneableUser;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.api.model.UserFluent;
 import io.fabric8.openshift.api.model.UserFluentImpl;
-import io.fabric8.openshift.api.model.DoneableUser;
 import org.easymock.EasyMock;
 import org.easymock.IExpectationSetters;
 
@@ -31,14 +31,14 @@ public class MockDoneableUser extends UserFluentImpl<MockDoneableUser> implement
   private interface DelegateInterface extends Doneable<User>, UserFluent<DoneableUser> {}
   private final Visitor<User> visitor = new Visitor<User>() {
     @Override
-    public void visit(User pod) {
+    public void visit(User item) {
     }
   };
 
-  private final DoneableUser delegate;
+  private final DelegateInterface delegate;
 
   public MockDoneableUser() {
-    this.delegate = EasyMock.createMock(DoneableUser.class);
+    this.delegate = EasyMock.createMock(DelegateInterface.class);
   }
 
   @Override

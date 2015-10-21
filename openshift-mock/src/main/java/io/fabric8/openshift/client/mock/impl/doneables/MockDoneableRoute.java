@@ -35,10 +35,10 @@ public class MockDoneableRoute extends RouteFluentImpl<MockDoneableRoute> implem
     }
   };
 
-  private final DoneableRoute delegate;
+  private final DelegateInterface delegate;
 
   public MockDoneableRoute() {
-    this.delegate = EasyMock.createMock(DoneableRoute.class);
+    this.delegate = EasyMock.createMock(DelegateInterface.class);
   }
 
   @Override

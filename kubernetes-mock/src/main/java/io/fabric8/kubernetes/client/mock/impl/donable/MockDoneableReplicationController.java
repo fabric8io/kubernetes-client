@@ -33,14 +33,13 @@ public class MockDoneableReplicationController extends ReplicationControllerFlue
   private interface DelegateInterface extends Doneable<ReplicationController>, ReplicationControllerFluent<DoneableReplicationController> {}
   private final Visitor<ReplicationController> visitor = new Visitor<ReplicationController>() {
     @Override
-    public void visit(ReplicationController pod) {
-    }
+    public void visit(ReplicationController item) {}
   };
 
-  private final DoneableReplicationController delegate;
+  private final DelegateInterface delegate;
 
   public MockDoneableReplicationController() {
-    this.delegate = EasyMock.createMock(DoneableReplicationController .class);
+    this.delegate = EasyMock.createMock(DelegateInterface .class);
   }
 
   @Override

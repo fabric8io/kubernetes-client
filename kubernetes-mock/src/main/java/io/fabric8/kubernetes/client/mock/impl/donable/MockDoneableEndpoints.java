@@ -32,14 +32,13 @@ public class MockDoneableEndpoints extends EndpointsFluentImpl<MockDoneableEndpo
   private interface DelegateInterface extends Doneable<Endpoints>, EndpointsFluent<DoneableEndpoints> {}
   private final Visitor<Endpoints> visitor = new Visitor<Endpoints>() {
     @Override
-    public void visit(Endpoints pod) {
-    }
+    public void visit(Endpoints item) {}
   };
 
-  private final DoneableEndpoints delegate;
+  private final DelegateInterface delegate;
 
   public MockDoneableEndpoints() {
-    this.delegate = EasyMock.createMock(DoneableEndpoints.class);
+    this.delegate = EasyMock.createMock(DelegateInterface.class);
   }
 
   @Override

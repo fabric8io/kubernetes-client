@@ -33,14 +33,13 @@ public class MockDoneableService extends ServiceFluentImpl<MockDoneableService> 
   private interface DelegateInterface extends Doneable<Service>, ServiceFluent<DoneableService> {}
   private final Visitor<Service> visitor = new Visitor<Service>() {
     @Override
-    public void visit(Service pod) {
-    }
+    public void visit(Service item) {}
   };
 
-  private final DoneableService delegate;
+  private final DelegateInterface delegate;
 
   public MockDoneableService() {
-    this.delegate = EasyMock.createMock(DoneableService .class);
+    this.delegate = EasyMock.createMock(DelegateInterface .class);
   }
 
   @Override

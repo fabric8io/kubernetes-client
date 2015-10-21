@@ -35,10 +35,10 @@ public class MockDoneableOAuthAccessToken extends OAuthAccessTokenFluentImpl<Moc
     }
   };
 
-  private final DoneableOAuthAccessToken delegate;
+  private final DelegateInterface delegate;
 
   public MockDoneableOAuthAccessToken() {
-    this.delegate = EasyMock.createMock(DoneableOAuthAccessToken.class);
+    this.delegate = EasyMock.createMock(DelegateInterface.class);
   }
 
   @Override

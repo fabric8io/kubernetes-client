@@ -33,14 +33,13 @@ public class MockDoneableSecret extends SecretFluentImpl<MockDoneableSecret> imp
   private interface DelegateInterface extends Doneable<Secret>, SecretFluent<DoneableSecret> {}
   private final Visitor<Secret> visitor = new Visitor<Secret>() {
     @Override
-    public void visit(Secret pod) {
-    }
+    public void visit(Secret item) {}
   };
 
-  private final DoneableSecret delegate;
+  private final DelegateInterface delegate;
 
   public MockDoneableSecret() {
-    this.delegate = EasyMock.createMock(DoneableSecret .class);
+    this.delegate = EasyMock.createMock(DelegateInterface .class);
   }
 
   @Override

@@ -31,14 +31,14 @@ public class MockDoneableGroup extends GroupFluentImpl<MockDoneableGroup> implem
   private interface DelegateInterface extends Doneable<Group>, GroupFluent<DoneableGroup> {}
   private final Visitor<Group> visitor = new Visitor<Group>() {
     @Override
-    public void visit(Group pod) {
+    public void visit(Group item) {
     }
   };
 
-  private final DoneableGroup delegate;
+  private final DelegateInterface delegate;
 
   public MockDoneableGroup() {
-    this.delegate = EasyMock.createMock(DoneableGroup.class);
+    this.delegate = EasyMock.createMock(DelegateInterface.class);
   }
 
   @Override

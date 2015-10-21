@@ -34,14 +34,13 @@ public class MockDoneableResourceQuota extends ResourceQuotaFluentImpl<MockDonea
   private interface DelegateInterface extends Doneable<ResourceQuota>, ResourceQuotaFluent<DoneableResourceQuota> {}
   private final Visitor<ResourceQuota> visitor = new Visitor<ResourceQuota>() {
     @Override
-    public void visit(ResourceQuota pod) {
-    }
+    public void visit(ResourceQuota item) {}
   };
 
-  private final DoneableResourceQuota delegate;
+  private final DelegateInterface delegate;
 
   public MockDoneableResourceQuota() {
-    this.delegate = EasyMock.createMock(DoneableResourceQuota .class);
+    this.delegate = EasyMock.createMock(DelegateInterface .class);
   }
 
   @Override

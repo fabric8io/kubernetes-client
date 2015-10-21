@@ -31,14 +31,13 @@ public class MockDoneableTemplate extends TemplateFluentImpl<MockDoneableTemplat
   private interface DelegateInterface extends Doneable<Template>, TemplateFluent<DoneableTemplate> {}
   private final Visitor<Template> visitor = new Visitor<Template>() {
     @Override
-    public void visit(Template pod) {
-    }
+    public void visit(Template item) {}
   };
 
-  private final DoneableTemplate delegate;
+  private final DelegateInterface delegate;
 
   public MockDoneableTemplate() {
-    this.delegate = EasyMock.createMock(DoneableTemplate.class);
+    this.delegate = EasyMock.createMock(DelegateInterface.class);
   }
 
   @Override

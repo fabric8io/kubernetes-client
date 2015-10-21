@@ -33,14 +33,13 @@ public class MockDoneableEvent extends EventFluentImpl<MockDoneableEvent> implem
   private interface DelegateInterface extends Doneable<Event>, EventFluent<DoneableEvent> {}
   private final Visitor<Event> visitor = new Visitor<Event>() {
     @Override
-    public void visit(Event pod) {
-    }
+    public void visit(Event item) {}
   };
 
-  private final DoneableEvent delegate;
+  private final DelegateInterface delegate;
 
   public MockDoneableEvent() {
-    this.delegate = EasyMock.createMock(DoneableEvent .class);
+    this.delegate = EasyMock.createMock(DelegateInterface .class);
   }
 
   @Override

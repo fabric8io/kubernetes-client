@@ -31,14 +31,13 @@ public class MockDoneablePolicyBinding extends PolicyBindingFluentImpl<MockDonea
   private interface DelegateInterface extends Doneable<PolicyBinding>, PolicyBindingFluent<DoneablePolicyBinding> {}
   private final Visitor<PolicyBinding> visitor = new Visitor<PolicyBinding>() {
     @Override
-    public void visit(PolicyBinding pod) {
-    }
+    public void visit(PolicyBinding item) {}
   };
 
-  private final DoneablePolicyBinding delegate;
+  private final DelegateInterface delegate;
 
   public MockDoneablePolicyBinding() {
-    this.delegate = EasyMock.createMock(DoneablePolicyBinding.class);
+    this.delegate = EasyMock.createMock(DelegateInterface.class);
   }
 
   @Override

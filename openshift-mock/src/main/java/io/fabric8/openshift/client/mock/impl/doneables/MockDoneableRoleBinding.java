@@ -35,10 +35,10 @@ public class MockDoneableRoleBinding extends RoleBindingFluentImpl<MockDoneableR
     }
   };
 
-  private final DoneableRoleBinding delegate;
+  private final DelegateInterface delegate;
 
   public MockDoneableRoleBinding() {
-    this.delegate = EasyMock.createMock(DoneableRoleBinding.class);
+    this.delegate = EasyMock.createMock(DelegateInterface.class);
   }
 
   @Override

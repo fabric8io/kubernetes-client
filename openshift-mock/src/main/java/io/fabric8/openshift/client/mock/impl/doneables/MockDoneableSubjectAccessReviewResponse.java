@@ -32,14 +32,13 @@ public class MockDoneableSubjectAccessReviewResponse extends SubjectAccessReview
 
   private final Visitor<SubjectAccessReviewResponse> visitor = new Visitor<SubjectAccessReviewResponse>() {
     @Override
-    public void visit(SubjectAccessReviewResponse pod) {
-    }
+    public void visit(SubjectAccessReviewResponse item) {}
   };
 
-  private final DoneableSubjectAccessReviewResponse delegate;
+  private final DelegateInterface delegate;
 
   public MockDoneableSubjectAccessReviewResponse() {
-    this.delegate = EasyMock.createMock(DoneableSubjectAccessReviewResponse.class);
+    this.delegate = EasyMock.createMock(DelegateInterface.class);
   }
 
   @Override

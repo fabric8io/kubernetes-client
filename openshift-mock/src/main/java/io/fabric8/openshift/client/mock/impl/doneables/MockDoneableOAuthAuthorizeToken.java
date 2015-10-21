@@ -31,14 +31,13 @@ public class MockDoneableOAuthAuthorizeToken extends OAuthAuthorizeTokenFluentIm
   private interface DelegateInterface extends Doneable<OAuthAuthorizeToken>, OAuthAuthorizeTokenFluent<DoneableOAuthAuthorizeToken> {}
   private final Visitor<OAuthAuthorizeToken> visitor = new Visitor<OAuthAuthorizeToken>() {
     @Override
-    public void visit(OAuthAuthorizeToken pod) {
-    }
+    public void visit(OAuthAuthorizeToken item) {}
   };
 
-  private final DoneableOAuthAuthorizeToken delegate;
+  private final DelegateInterface delegate;
 
   public MockDoneableOAuthAuthorizeToken() {
-    this.delegate = EasyMock.createMock(DoneableOAuthAuthorizeToken.class);
+    this.delegate = EasyMock.createMock(DelegateInterface.class);
   }
 
   @Override

@@ -35,14 +35,13 @@ public class MockDoneablePersistentVolume extends PersistentVolumeFluentImpl<Moc
   private interface DelegateInterface extends Doneable<PersistentVolume>, PersistentVolumeFluent<DoneablePersistentVolume> {}
   private final Visitor<PersistentVolume> visitor = new Visitor<PersistentVolume>() {
     @Override
-    public void visit(PersistentVolume pod) {
-    }
+    public void visit(PersistentVolume item) {}
   };
 
-  private final DoneablePersistentVolume delegate;
+  private final DelegateInterface delegate;
 
   public MockDoneablePersistentVolume() {
-    this.delegate = EasyMock.createMock(DoneablePersistentVolume .class);
+    this.delegate = EasyMock.createMock(DelegateInterface .class);
   }
 
   @Override

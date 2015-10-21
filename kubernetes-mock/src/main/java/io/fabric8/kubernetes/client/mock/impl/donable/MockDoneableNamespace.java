@@ -33,14 +33,13 @@ public class MockDoneableNamespace extends NamespaceFluentImpl<MockDoneableNames
   private interface DelegateInterface extends Doneable<Namespace>, NamespaceFluent<DoneableNamespace> {}
   private final Visitor<Namespace> visitor = new Visitor<Namespace>() {
     @Override
-    public void visit(Namespace pod) {
-    }
+    public void visit(Namespace item) {}
   };
 
-  private final DoneableNamespace delegate;
+  private final DelegateInterface delegate;
 
   public MockDoneableNamespace() {
-    this.delegate = EasyMock.createMock(DoneableNamespace .class);
+    this.delegate = EasyMock.createMock(DelegateInterface .class);
   }
 
   @Override

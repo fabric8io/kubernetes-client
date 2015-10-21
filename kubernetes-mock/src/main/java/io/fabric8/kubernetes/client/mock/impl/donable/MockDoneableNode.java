@@ -33,14 +33,13 @@ public class MockDoneableNode extends NodeFluentImpl<MockDoneableNode> implement
   private interface DelegateInterface extends Doneable<Node>, NodeFluent<DoneableNode> {}
   private final Visitor<Node> visitor = new Visitor<Node>() {
     @Override
-    public void visit(Node pod) {
-    }
+    public void visit(Node item) {}
   };
 
-  private final DoneableNode delegate;
+  private final DelegateInterface delegate;
 
   public MockDoneableNode() {
-    this.delegate = EasyMock.createMock(DoneableNode .class);
+    this.delegate = EasyMock.createMock(DelegateInterface .class);
   }
 
   @Override
