@@ -19,14 +19,11 @@ package io.fabric8.kubernetes.client.mock.impl.donable;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.DoneablePersistentVolume;
-import io.fabric8.kubernetes.api.model.DoneablePersistentVolume;
 import io.fabric8.kubernetes.api.model.PersistentVolume;
+import io.fabric8.kubernetes.api.model.PersistentVolumeBuilder;
 import io.fabric8.kubernetes.api.model.PersistentVolumeFluent;
 import io.fabric8.kubernetes.api.model.PersistentVolumeFluentImpl;
-import io.fabric8.kubernetes.api.model.PersistentVolume;
-import io.fabric8.kubernetes.api.model.PersistentVolumeFluent;
 import io.fabric8.kubernetes.client.mock.MockDoneable;
-import io.fabric8.kubernetes.client.mock.Mockable;
 import org.easymock.EasyMock;
 import org.easymock.IExpectationSetters;
 
@@ -41,6 +38,11 @@ public class MockDoneablePersistentVolume extends PersistentVolumeFluentImpl<Moc
   private final DelegateInterface delegate;
 
   public MockDoneablePersistentVolume() {
+    super(new PersistentVolumeBuilder()
+      .withNewMetadata().endMetadata()
+      .withNewSpec().endSpec()
+      .withNewStatus().endStatus()
+      .build());
     this.delegate = EasyMock.createMock(DelegateInterface .class);
   }
 
@@ -62,7 +64,7 @@ public class MockDoneablePersistentVolume extends PersistentVolumeFluentImpl<Moc
 
   @Override
   public Doneable<PersistentVolume> getDelegate() {
-    return new DoneablePersistentVolume(visitor) {
+    return new DoneablePersistentVolume(new PersistentVolumeBuilder(this).build(), visitor) {
       @Override
       public PersistentVolume done() {
         return delegate.done();

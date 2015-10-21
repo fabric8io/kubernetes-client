@@ -19,10 +19,12 @@ package io.fabric8.openshift.client.mock.impl.doneables;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.client.mock.MockDoneable;
+import io.fabric8.openshift.api.model.DoneableRoute;
 import io.fabric8.openshift.api.model.Route;
+import io.fabric8.openshift.api.model.RouteBuilder;
 import io.fabric8.openshift.api.model.RouteFluent;
 import io.fabric8.openshift.api.model.RouteFluentImpl;
-import io.fabric8.openshift.api.model.DoneableRoute;
+import io.fabric8.openshift.api.model.RouteStatus;
 import org.easymock.EasyMock;
 import org.easymock.IExpectationSetters;
 
@@ -38,6 +40,11 @@ public class MockDoneableRoute extends RouteFluentImpl<MockDoneableRoute> implem
   private final DelegateInterface delegate;
 
   public MockDoneableRoute() {
+    super(new RouteBuilder()
+      .withNewMetadata().endMetadata()
+      .withNewSpec().endSpec()
+      .withStatus(new RouteStatus())
+      .build());
     this.delegate = EasyMock.createMock(DelegateInterface.class);
   }
 
@@ -59,7 +66,7 @@ public class MockDoneableRoute extends RouteFluentImpl<MockDoneableRoute> implem
 
   @Override
   public Doneable<Route> getDelegate() {
-    return new DoneableRoute(visitor) {
+    return new DoneableRoute(new RouteBuilder(this).build(), visitor) {
       @Override
       public Route done() {
         return delegate.done();

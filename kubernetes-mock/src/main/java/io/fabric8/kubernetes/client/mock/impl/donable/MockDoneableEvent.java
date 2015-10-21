@@ -20,10 +20,9 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.DoneableEvent;
 import io.fabric8.kubernetes.api.model.Event;
+import io.fabric8.kubernetes.api.model.EventBuilder;
 import io.fabric8.kubernetes.api.model.EventFluent;
 import io.fabric8.kubernetes.api.model.EventFluentImpl;
-import io.fabric8.kubernetes.api.model.Event;
-import io.fabric8.kubernetes.api.model.EventFluent;
 import io.fabric8.kubernetes.client.mock.MockDoneable;
 import org.easymock.EasyMock;
 import org.easymock.IExpectationSetters;
@@ -39,6 +38,11 @@ public class MockDoneableEvent extends EventFluentImpl<MockDoneableEvent> implem
   private final DelegateInterface delegate;
 
   public MockDoneableEvent() {
+    super(new EventBuilder()
+      .withNewMetadata().endMetadata()
+      .withNewSource().endSource()
+      .withNewInvolvedObject().endInvolvedObject()
+      .build());
     this.delegate = EasyMock.createMock(DelegateInterface .class);
   }
 
@@ -60,7 +64,7 @@ public class MockDoneableEvent extends EventFluentImpl<MockDoneableEvent> implem
 
   @Override
   public Doneable<Event> getDelegate() {
-    return new DoneableEvent(visitor) {
+    return new DoneableEvent(new EventBuilder(this).build(), visitor) {
       @Override
       public Event done() {
         return delegate.done();

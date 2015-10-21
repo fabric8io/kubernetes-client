@@ -20,9 +20,9 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.DoneableEndpoints;
 import io.fabric8.kubernetes.api.model.Endpoints;
-import io.fabric8.kubernetes.api.model.EndpointsFluentImpl;
-import io.fabric8.kubernetes.api.model.Endpoints;
+import io.fabric8.kubernetes.api.model.EndpointsBuilder;
 import io.fabric8.kubernetes.api.model.EndpointsFluent;
+import io.fabric8.kubernetes.api.model.EndpointsFluentImpl;
 import io.fabric8.kubernetes.client.mock.MockDoneable;
 import org.easymock.EasyMock;
 import org.easymock.IExpectationSetters;
@@ -38,6 +38,7 @@ public class MockDoneableEndpoints extends EndpointsFluentImpl<MockDoneableEndpo
   private final DelegateInterface delegate;
 
   public MockDoneableEndpoints() {
+    super(new EndpointsBuilder().withNewMetadata().and().build());
     this.delegate = EasyMock.createMock(DelegateInterface.class);
   }
 
@@ -59,7 +60,7 @@ public class MockDoneableEndpoints extends EndpointsFluentImpl<MockDoneableEndpo
 
   @Override
   public Doneable<Endpoints> getDelegate() {
-    return new DoneableEndpoints(visitor) {
+    return new DoneableEndpoints(new EndpointsBuilder(this).build(), visitor) {
       @Override
       public Endpoints done() {
         return delegate.done();

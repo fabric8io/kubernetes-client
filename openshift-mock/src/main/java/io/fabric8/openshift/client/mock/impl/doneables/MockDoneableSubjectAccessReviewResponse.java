@@ -19,10 +19,10 @@ package io.fabric8.openshift.client.mock.impl.doneables;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.client.mock.MockDoneable;
+import io.fabric8.openshift.api.model.DoneableSubjectAccessReviewResponse;
 import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
 import io.fabric8.openshift.api.model.SubjectAccessReviewResponseFluent;
 import io.fabric8.openshift.api.model.SubjectAccessReviewResponseFluentImpl;
-import io.fabric8.openshift.api.model.DoneableSubjectAccessReviewResponse;
 import org.easymock.EasyMock;
 import org.easymock.IExpectationSetters;
 
@@ -37,7 +37,9 @@ public class MockDoneableSubjectAccessReviewResponse extends SubjectAccessReview
 
   private final DelegateInterface delegate;
 
-  public MockDoneableSubjectAccessReviewResponse() {
+  public MockDoneableSubjectAccessReviewResponse()
+  {
+    super(new SubjectAccessReviewResponse());
     this.delegate = EasyMock.createMock(DelegateInterface.class);
   }
 
@@ -59,7 +61,7 @@ public class MockDoneableSubjectAccessReviewResponse extends SubjectAccessReview
 
   @Override
   public Doneable<SubjectAccessReviewResponse> getDelegate() {
-    return new DoneableSubjectAccessReviewResponse(visitor) {
+    return new DoneableSubjectAccessReviewResponse(new SubjectAccessReviewResponse(), visitor) {
       @Override
       public SubjectAccessReviewResponse done() {
         return delegate.done();

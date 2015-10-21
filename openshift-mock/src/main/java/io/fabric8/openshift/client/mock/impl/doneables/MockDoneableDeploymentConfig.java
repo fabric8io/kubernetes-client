@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.client.mock.MockDoneable;
 import io.fabric8.openshift.api.model.DeploymentConfig;
+import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
 import io.fabric8.openshift.api.model.DeploymentConfigFluent;
 import io.fabric8.openshift.api.model.DeploymentConfigFluentImpl;
 import io.fabric8.openshift.api.model.DoneableDeploymentConfig;
@@ -37,6 +38,11 @@ public class MockDoneableDeploymentConfig extends DeploymentConfigFluentImpl<Moc
   private final DelegateInterface delegate;
 
   public MockDoneableDeploymentConfig() {
+    super(new DeploymentConfigBuilder()
+      .withNewMetadata().endMetadata()
+      .withNewSpec().endSpec()
+      .withNewStatus().endStatus()
+      .build());
     this.delegate = EasyMock.createMock(DelegateInterface.class);
   }
 
@@ -58,7 +64,7 @@ public class MockDoneableDeploymentConfig extends DeploymentConfigFluentImpl<Moc
 
   @Override
   public Doneable<DeploymentConfig> getDelegate() {
-    return new DoneableDeploymentConfig(visitor) {
+    return new DoneableDeploymentConfig(new DeploymentConfigBuilder(this).build(), visitor) {
       @Override
       public DeploymentConfig done() {
         return delegate.done();

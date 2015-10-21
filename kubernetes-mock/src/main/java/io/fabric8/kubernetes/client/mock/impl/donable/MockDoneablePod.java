@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodFluent;
 import io.fabric8.kubernetes.api.model.PodFluentImpl;
 import io.fabric8.kubernetes.client.mock.MockDoneable;
@@ -37,6 +38,11 @@ public class MockDoneablePod extends PodFluentImpl<MockDoneablePod> implements M
   private final DelegateInterface delegate;
 
   public MockDoneablePod() {
+    super(new PodBuilder()
+      .withNewMetadata().endMetadata()
+      .withNewSpec().endSpec()
+      .withNewStatus().endStatus()
+      .build());
     this.delegate = EasyMock.createMock(DelegateInterface .class);
   }
 
@@ -58,7 +64,7 @@ public class MockDoneablePod extends PodFluentImpl<MockDoneablePod> implements M
 
   @Override
   public Doneable<Pod> getDelegate() {
-    return new DoneablePod(visitor) {
+    return new DoneablePod(new PodBuilder(this).build(), visitor) {
       @Override
       public Pod done() {
         return delegate.done();

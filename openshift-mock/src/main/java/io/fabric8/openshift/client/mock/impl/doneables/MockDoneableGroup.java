@@ -19,10 +19,11 @@ package io.fabric8.openshift.client.mock.impl.doneables;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.client.mock.MockDoneable;
+import io.fabric8.openshift.api.model.DoneableGroup;
 import io.fabric8.openshift.api.model.Group;
+import io.fabric8.openshift.api.model.GroupBuilder;
 import io.fabric8.openshift.api.model.GroupFluent;
 import io.fabric8.openshift.api.model.GroupFluentImpl;
-import io.fabric8.openshift.api.model.DoneableGroup;
 import org.easymock.EasyMock;
 import org.easymock.IExpectationSetters;
 
@@ -38,6 +39,9 @@ public class MockDoneableGroup extends GroupFluentImpl<MockDoneableGroup> implem
   private final DelegateInterface delegate;
 
   public MockDoneableGroup() {
+    super(new GroupBuilder()
+      .withNewMetadata().endMetadata()
+      .build());
     this.delegate = EasyMock.createMock(DelegateInterface.class);
   }
 
@@ -59,7 +63,7 @@ public class MockDoneableGroup extends GroupFluentImpl<MockDoneableGroup> implem
 
   @Override
   public Doneable<Group> getDelegate() {
-    return new DoneableGroup(visitor) {
+    return new DoneableGroup(new GroupBuilder(this).build(), visitor) {
       @Override
       public Group done() {
         return delegate.done();

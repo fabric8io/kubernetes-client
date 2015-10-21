@@ -20,8 +20,7 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.DoneableService;
 import io.fabric8.kubernetes.api.model.Service;
-import io.fabric8.kubernetes.api.model.ServiceFluent;
-import io.fabric8.kubernetes.api.model.Service;
+import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.ServiceFluent;
 import io.fabric8.kubernetes.api.model.ServiceFluentImpl;
 import io.fabric8.kubernetes.client.mock.MockDoneable;
@@ -39,6 +38,11 @@ public class MockDoneableService extends ServiceFluentImpl<MockDoneableService> 
   private final DelegateInterface delegate;
 
   public MockDoneableService() {
+    super(new ServiceBuilder()
+      .withNewMetadata().endMetadata()
+      .withNewSpec().endSpec()
+      .withNewStatus().endStatus()
+      .build());
     this.delegate = EasyMock.createMock(DelegateInterface .class);
   }
 
@@ -60,7 +64,7 @@ public class MockDoneableService extends ServiceFluentImpl<MockDoneableService> 
 
   @Override
   public Doneable<Service> getDelegate() {
-    return new DoneableService(visitor) {
+    return new DoneableService(new ServiceBuilder(this).build(), visitor) {
       @Override
       public Service done() {
         return delegate.done();

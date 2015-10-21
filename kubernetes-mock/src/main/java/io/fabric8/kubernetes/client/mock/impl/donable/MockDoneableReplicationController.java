@@ -20,8 +20,7 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.DoneableReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationController;
-import io.fabric8.kubernetes.api.model.ReplicationControllerFluent;
-import io.fabric8.kubernetes.api.model.ReplicationController;
+import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationControllerFluent;
 import io.fabric8.kubernetes.api.model.ReplicationControllerFluentImpl;
 import io.fabric8.kubernetes.client.mock.MockDoneable;
@@ -39,6 +38,11 @@ public class MockDoneableReplicationController extends ReplicationControllerFlue
   private final DelegateInterface delegate;
 
   public MockDoneableReplicationController() {
+    super(new ReplicationControllerBuilder()
+      .withNewMetadata().endMetadata()
+      .withNewSpec().endSpec()
+      .withNewStatus().endStatus()
+      .build());
     this.delegate = EasyMock.createMock(DelegateInterface .class);
   }
 
@@ -60,7 +64,7 @@ public class MockDoneableReplicationController extends ReplicationControllerFlue
 
   @Override
   public Doneable<ReplicationController> getDelegate() {
-    return new DoneableReplicationController(visitor) {
+    return new DoneableReplicationController(new ReplicationControllerBuilder(this).build(), visitor) {
       @Override
       public ReplicationController done() {
         return delegate.done();

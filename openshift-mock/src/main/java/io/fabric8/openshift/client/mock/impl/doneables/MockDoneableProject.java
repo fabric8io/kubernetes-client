@@ -19,10 +19,11 @@ package io.fabric8.openshift.client.mock.impl.doneables;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.client.mock.MockDoneable;
+import io.fabric8.openshift.api.model.DoneableProject;
 import io.fabric8.openshift.api.model.Project;
+import io.fabric8.openshift.api.model.ProjectBuilder;
 import io.fabric8.openshift.api.model.ProjectFluent;
 import io.fabric8.openshift.api.model.ProjectFluentImpl;
-import io.fabric8.openshift.api.model.DoneableProject;
 import org.easymock.EasyMock;
 import org.easymock.IExpectationSetters;
 
@@ -38,6 +39,11 @@ public class MockDoneableProject extends ProjectFluentImpl<MockDoneableProject> 
   private final DelegateInterface delegate;
 
   public MockDoneableProject() {
+    super(new ProjectBuilder()
+      .withNewMetadata().endMetadata()
+      .withNewSpec().endSpec()
+      .withNewStatus().endStatus()
+      .build());
     this.delegate = EasyMock.createMock(DelegateInterface.class);
   }
 
@@ -59,7 +65,7 @@ public class MockDoneableProject extends ProjectFluentImpl<MockDoneableProject> 
 
   @Override
   public Doneable<Project> getDelegate() {
-    return new DoneableProject(visitor) {
+    return new DoneableProject(new ProjectBuilder(this).build(), visitor) {
       @Override
       public Project done() {
         return delegate.done();

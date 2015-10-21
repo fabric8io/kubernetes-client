@@ -19,10 +19,11 @@ package io.fabric8.openshift.client.mock.impl.doneables;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.client.mock.MockDoneable;
+import io.fabric8.openshift.api.model.DoneableTemplate;
 import io.fabric8.openshift.api.model.Template;
+import io.fabric8.openshift.api.model.TemplateBuilder;
 import io.fabric8.openshift.api.model.TemplateFluent;
 import io.fabric8.openshift.api.model.TemplateFluentImpl;
-import io.fabric8.openshift.api.model.DoneableTemplate;
 import org.easymock.EasyMock;
 import org.easymock.IExpectationSetters;
 
@@ -37,6 +38,9 @@ public class MockDoneableTemplate extends TemplateFluentImpl<MockDoneableTemplat
   private final DelegateInterface delegate;
 
   public MockDoneableTemplate() {
+    super(new TemplateBuilder()
+      .withNewMetadata().endMetadata()
+      .build());
     this.delegate = EasyMock.createMock(DelegateInterface.class);
   }
 
@@ -58,7 +62,7 @@ public class MockDoneableTemplate extends TemplateFluentImpl<MockDoneableTemplat
 
   @Override
   public Doneable<Template> getDelegate() {
-    return new DoneableTemplate(visitor) {
+    return new DoneableTemplate(new TemplateBuilder(this).build(), visitor) {
       @Override
       public Template done() {
         return delegate.done();

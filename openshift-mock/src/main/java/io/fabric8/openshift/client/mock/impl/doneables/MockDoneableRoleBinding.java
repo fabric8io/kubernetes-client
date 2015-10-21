@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.client.mock.MockDoneable;
 import io.fabric8.openshift.api.model.DoneableRoleBinding;
 import io.fabric8.openshift.api.model.RoleBinding;
+import io.fabric8.openshift.api.model.RoleBindingBuilder;
 import io.fabric8.openshift.api.model.RoleBindingFluent;
 import io.fabric8.openshift.api.model.RoleBindingFluentImpl;
 import org.easymock.EasyMock;
@@ -38,6 +39,9 @@ public class MockDoneableRoleBinding extends RoleBindingFluentImpl<MockDoneableR
   private final DelegateInterface delegate;
 
   public MockDoneableRoleBinding() {
+    super(new RoleBindingBuilder()
+      .withNewMetadata().endMetadata()
+      .build());
     this.delegate = EasyMock.createMock(DelegateInterface.class);
   }
 
@@ -59,7 +63,7 @@ public class MockDoneableRoleBinding extends RoleBindingFluentImpl<MockDoneableR
 
   @Override
   public Doneable<RoleBinding> getDelegate() {
-    return new DoneableRoleBinding(visitor) {
+    return new DoneableRoleBinding(new RoleBindingBuilder(this).build(), visitor) {
       @Override
       public RoleBinding done() {
         return delegate.done();

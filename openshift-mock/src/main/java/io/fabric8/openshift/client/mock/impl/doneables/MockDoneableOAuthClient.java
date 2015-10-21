@@ -19,10 +19,11 @@ package io.fabric8.openshift.client.mock.impl.doneables;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.client.mock.MockDoneable;
+import io.fabric8.openshift.api.model.DoneableOAuthClient;
 import io.fabric8.openshift.api.model.OAuthClient;
+import io.fabric8.openshift.api.model.OAuthClientBuilder;
 import io.fabric8.openshift.api.model.OAuthClientFluent;
 import io.fabric8.openshift.api.model.OAuthClientFluentImpl;
-import io.fabric8.openshift.api.model.DoneableOAuthClient;
 import org.easymock.EasyMock;
 import org.easymock.IExpectationSetters;
 
@@ -38,6 +39,9 @@ public class MockDoneableOAuthClient extends OAuthClientFluentImpl<MockDoneableO
   private final DelegateInterface delegate;
 
   public MockDoneableOAuthClient() {
+    super(new OAuthClientBuilder()
+      .withNewMetadata().endMetadata()
+      .build());
     this.delegate = EasyMock.createMock(DelegateInterface.class);
   }
 
@@ -59,7 +63,7 @@ public class MockDoneableOAuthClient extends OAuthClientFluentImpl<MockDoneableO
 
   @Override
   public Doneable<OAuthClient> getDelegate() {
-    return new DoneableOAuthClient(visitor) {
+    return new DoneableOAuthClient(new OAuthClientBuilder(this).build(), visitor) {
       @Override
       public OAuthClient done() {
         return delegate.done();

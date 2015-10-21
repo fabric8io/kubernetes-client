@@ -20,10 +20,9 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.DoneableNode;
 import io.fabric8.kubernetes.api.model.Node;
+import io.fabric8.kubernetes.api.model.NodeBuilder;
 import io.fabric8.kubernetes.api.model.NodeFluent;
 import io.fabric8.kubernetes.api.model.NodeFluentImpl;
-import io.fabric8.kubernetes.api.model.Node;
-import io.fabric8.kubernetes.api.model.NodeFluent;
 import io.fabric8.kubernetes.client.mock.MockDoneable;
 import org.easymock.EasyMock;
 import org.easymock.IExpectationSetters;
@@ -39,6 +38,11 @@ public class MockDoneableNode extends NodeFluentImpl<MockDoneableNode> implement
   private final DelegateInterface delegate;
 
   public MockDoneableNode() {
+    super(new NodeBuilder()
+      .withNewMetadata().endMetadata()
+      .withNewSpec().endSpec()
+      .withNewStatus().endStatus()
+      .build());
     this.delegate = EasyMock.createMock(DelegateInterface .class);
   }
 
@@ -60,7 +64,7 @@ public class MockDoneableNode extends NodeFluentImpl<MockDoneableNode> implement
 
   @Override
   public Doneable<Node> getDelegate() {
-    return new DoneableNode(visitor) {
+    return new DoneableNode(new NodeBuilder(this).build(), visitor) {
       @Override
       public Node done() {
         return delegate.done();

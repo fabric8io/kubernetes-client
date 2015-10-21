@@ -20,10 +20,9 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.DoneablePersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
+import io.fabric8.kubernetes.api.model.PersistentVolumeClaimBuilder;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaimFluent;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaimFluentImpl;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaimFluent;
 import io.fabric8.kubernetes.client.mock.MockDoneable;
 import org.easymock.EasyMock;
 import org.easymock.IExpectationSetters;
@@ -39,6 +38,11 @@ public class MockDoneablePersistentVolumeClaim extends PersistentVolumeClaimFlue
   private final DelegateInterface delegate;
 
   public MockDoneablePersistentVolumeClaim() {
+    super(new PersistentVolumeClaimBuilder()
+      .withNewMetadata().endMetadata()
+      .withNewSpec().endSpec()
+      .withNewStatus().endStatus()
+      .build());
     this.delegate = EasyMock.createMock(DelegateInterface .class);
   }
 
@@ -60,7 +64,7 @@ public class MockDoneablePersistentVolumeClaim extends PersistentVolumeClaimFlue
 
   @Override
   public Doneable<PersistentVolumeClaim> getDelegate() {
-    return new DoneablePersistentVolumeClaim(visitor) {
+    return new DoneablePersistentVolumeClaim(new PersistentVolumeClaimBuilder(this).build(), visitor) {
       @Override
       public PersistentVolumeClaim done() {
         return delegate.done();

@@ -20,10 +20,9 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.DoneableNamespace;
 import io.fabric8.kubernetes.api.model.Namespace;
+import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.api.model.NamespaceFluent;
 import io.fabric8.kubernetes.api.model.NamespaceFluentImpl;
-import io.fabric8.kubernetes.api.model.Namespace;
-import io.fabric8.kubernetes.api.model.NamespaceFluent;
 import io.fabric8.kubernetes.client.mock.MockDoneable;
 import org.easymock.EasyMock;
 import org.easymock.IExpectationSetters;
@@ -39,6 +38,11 @@ public class MockDoneableNamespace extends NamespaceFluentImpl<MockDoneableNames
   private final DelegateInterface delegate;
 
   public MockDoneableNamespace() {
+    super(new NamespaceBuilder()
+      .withNewMetadata().endMetadata()
+      .withNewSpec().endSpec()
+      .withNewStatus().endStatus()
+      .build());
     this.delegate = EasyMock.createMock(DelegateInterface .class);
   }
 
@@ -60,7 +64,7 @@ public class MockDoneableNamespace extends NamespaceFluentImpl<MockDoneableNames
 
   @Override
   public Doneable<Namespace> getDelegate() {
-    return new DoneableNamespace(visitor) {
+    return new DoneableNamespace(new NamespaceBuilder(this).build(), visitor) {
       @Override
       public Namespace done() {
         return delegate.done();

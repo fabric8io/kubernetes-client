@@ -19,10 +19,11 @@ package io.fabric8.openshift.client.mock.impl.doneables;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.client.mock.MockDoneable;
+import io.fabric8.openshift.api.model.DoneableImageStream;
 import io.fabric8.openshift.api.model.ImageStream;
+import io.fabric8.openshift.api.model.ImageStreamBuilder;
 import io.fabric8.openshift.api.model.ImageStreamFluent;
 import io.fabric8.openshift.api.model.ImageStreamFluentImpl;
-import io.fabric8.openshift.api.model.DoneableImageStream;
 import org.easymock.EasyMock;
 import org.easymock.IExpectationSetters;
 
@@ -37,6 +38,11 @@ public class MockDoneableImageStream extends ImageStreamFluentImpl<MockDoneableI
   private final DelegateInterface delegate;
 
   public MockDoneableImageStream() {
+    super(new ImageStreamBuilder()
+      .withNewMetadata().endMetadata()
+      .withNewSpec().endSpec()
+      .withNewStatus().endStatus()
+      .build());
     this.delegate = EasyMock.createMock(DelegateInterface.class);
   }
 
@@ -58,7 +64,7 @@ public class MockDoneableImageStream extends ImageStreamFluentImpl<MockDoneableI
 
   @Override
   public Doneable<ImageStream> getDelegate() {
-    return new DoneableImageStream(visitor) {
+    return new DoneableImageStream(new ImageStreamBuilder(this).build(), visitor) {
       @Override
       public ImageStream done() {
         return delegate.done();

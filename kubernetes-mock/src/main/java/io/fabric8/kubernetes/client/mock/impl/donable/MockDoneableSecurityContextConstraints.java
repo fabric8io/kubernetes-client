@@ -20,8 +20,7 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.DoneableSecurityContextConstraints;
 import io.fabric8.kubernetes.api.model.SecurityContextConstraints;
-import io.fabric8.kubernetes.api.model.SecurityContextConstraintsFluent;
-import io.fabric8.kubernetes.api.model.SecurityContextConstraints;
+import io.fabric8.kubernetes.api.model.SecurityContextConstraintsBuilder;
 import io.fabric8.kubernetes.api.model.SecurityContextConstraintsFluent;
 import io.fabric8.kubernetes.api.model.SecurityContextConstraintsFluentImpl;
 import io.fabric8.kubernetes.client.mock.MockDoneable;
@@ -40,6 +39,9 @@ public class MockDoneableSecurityContextConstraints extends SecurityContextConst
   private final DelegateInterface delegate;
 
   public MockDoneableSecurityContextConstraints() {
+    super(new SecurityContextConstraintsBuilder()
+      .withNewMetadata().endMetadata()
+      .build());
     this.delegate = EasyMock.createMock(DelegateInterface .class);
   }
 
@@ -61,7 +63,7 @@ public class MockDoneableSecurityContextConstraints extends SecurityContextConst
 
   @Override
   public Doneable<SecurityContextConstraints> getDelegate() {
-    return new DoneableSecurityContextConstraints(visitor) {
+    return new DoneableSecurityContextConstraints(new SecurityContextConstraintsBuilder(this).build(), visitor) {
       @Override
       public SecurityContextConstraints done() {
         return delegate.done();

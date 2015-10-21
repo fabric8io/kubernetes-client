@@ -19,10 +19,11 @@ package io.fabric8.openshift.client.mock.impl.doneables;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.client.mock.MockDoneable;
+import io.fabric8.openshift.api.model.DoneablePolicy;
 import io.fabric8.openshift.api.model.Policy;
+import io.fabric8.openshift.api.model.PolicyBuilder;
 import io.fabric8.openshift.api.model.PolicyFluent;
 import io.fabric8.openshift.api.model.PolicyFluentImpl;
-import io.fabric8.openshift.api.model.DoneablePolicy;
 import org.easymock.EasyMock;
 import org.easymock.IExpectationSetters;
 
@@ -38,6 +39,9 @@ public class MockDoneablePolicy extends PolicyFluentImpl<MockDoneablePolicy> imp
   private final DelegateInterface delegate;
 
   public MockDoneablePolicy() {
+    super(new PolicyBuilder()
+      .withNewMetadata().endMetadata()
+      .build());
     this.delegate = EasyMock.createMock(DelegateInterface.class);
   }
 
@@ -59,7 +63,7 @@ public class MockDoneablePolicy extends PolicyFluentImpl<MockDoneablePolicy> imp
 
   @Override
   public Doneable<Policy> getDelegate() {
-    return new DoneablePolicy(visitor) {
+    return new DoneablePolicy(new PolicyBuilder(this).build(), visitor) {
       @Override
       public Policy done() {
         return delegate.done();

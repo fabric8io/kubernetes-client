@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.client.mock.MockDoneable;
 import io.fabric8.openshift.api.model.Build;
+import io.fabric8.openshift.api.model.BuildBuilder;
 import io.fabric8.openshift.api.model.BuildFluent;
 import io.fabric8.openshift.api.model.BuildFluentImpl;
 import io.fabric8.openshift.api.model.DoneableBuild;
@@ -37,6 +38,11 @@ public class MockDoneableBuild extends BuildFluentImpl<MockDoneableBuild> implem
   private final DelegateInterface delegate;
 
   public MockDoneableBuild() {
+    super(new BuildBuilder()
+      .withNewMetadata().endMetadata()
+      .withNewSpec().endSpec()
+      .withNewStatus().endStatus()
+      .build());
     this.delegate = EasyMock.createMock(DelegateInterface.class);
   }
 
@@ -58,7 +64,7 @@ public class MockDoneableBuild extends BuildFluentImpl<MockDoneableBuild> implem
 
   @Override
   public Doneable<Build> getDelegate() {
-    return new DoneableBuild(visitor) {
+    return new DoneableBuild(new BuildBuilder(this).build(), visitor) {
       @Override
       public Build done() {
         return delegate.done();

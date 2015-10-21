@@ -20,8 +20,7 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.DoneableSecret;
 import io.fabric8.kubernetes.api.model.Secret;
-import io.fabric8.kubernetes.api.model.SecretFluent;
-import io.fabric8.kubernetes.api.model.Secret;
+import io.fabric8.kubernetes.api.model.SecretBuilder;
 import io.fabric8.kubernetes.api.model.SecretFluent;
 import io.fabric8.kubernetes.api.model.SecretFluentImpl;
 import io.fabric8.kubernetes.client.mock.MockDoneable;
@@ -39,6 +38,9 @@ public class MockDoneableSecret extends SecretFluentImpl<MockDoneableSecret> imp
   private final DelegateInterface delegate;
 
   public MockDoneableSecret() {
+    super(new SecretBuilder()
+      .withNewMetadata().endMetadata()
+      .build());
     this.delegate = EasyMock.createMock(DelegateInterface .class);
   }
 
@@ -60,7 +62,7 @@ public class MockDoneableSecret extends SecretFluentImpl<MockDoneableSecret> imp
 
   @Override
   public Doneable<Secret> getDelegate() {
-    return new DoneableSecret(visitor) {
+    return new DoneableSecret(new SecretBuilder(this).build(), visitor) {
       @Override
       public Secret done() {
         return delegate.done();

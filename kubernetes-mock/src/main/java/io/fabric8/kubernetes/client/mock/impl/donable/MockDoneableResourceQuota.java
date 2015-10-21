@@ -20,8 +20,7 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.DoneableResourceQuota;
 import io.fabric8.kubernetes.api.model.ResourceQuota;
-import io.fabric8.kubernetes.api.model.ResourceQuotaFluent;
-import io.fabric8.kubernetes.api.model.ResourceQuota;
+import io.fabric8.kubernetes.api.model.ResourceQuotaBuilder;
 import io.fabric8.kubernetes.api.model.ResourceQuotaFluent;
 import io.fabric8.kubernetes.api.model.ResourceQuotaFluentImpl;
 import io.fabric8.kubernetes.client.mock.MockDoneable;
@@ -40,6 +39,11 @@ public class MockDoneableResourceQuota extends ResourceQuotaFluentImpl<MockDonea
   private final DelegateInterface delegate;
 
   public MockDoneableResourceQuota() {
+    super(new ResourceQuotaBuilder()
+      .withNewMetadata().endMetadata()
+      .withNewSpec().endSpec()
+      .withNewStatus().endStatus()
+      .build());
     this.delegate = EasyMock.createMock(DelegateInterface .class);
   }
 
@@ -61,7 +65,7 @@ public class MockDoneableResourceQuota extends ResourceQuotaFluentImpl<MockDonea
 
   @Override
   public Doneable<ResourceQuota> getDelegate() {
-    return new DoneableResourceQuota(visitor) {
+    return new DoneableResourceQuota(new ResourceQuotaBuilder(this).build(), visitor) {
       @Override
       public ResourceQuota done() {
         return delegate.done();
