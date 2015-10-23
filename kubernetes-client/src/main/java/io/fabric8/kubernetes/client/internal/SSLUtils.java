@@ -25,6 +25,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -85,5 +86,12 @@ public final class SSLUtils {
       keyManagers = kmf.getKeyManagers();
     }
     return keyManagers;
+  }
+
+  public static KeyManager[] keyManagers(InputStream certInputStream, InputStream keyInputStream, String algo, String passphrase) throws NoSuchAlgorithmException, UnrecoverableKeyException, KeyStoreException, CertificateException, InvalidKeySpecException, IOException {
+    KeyStore keyStore = createKeyStore(certInputStream, keyInputStream, algo, passphrase.toCharArray());
+    KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+    kmf.init(keyStore, passphrase.toCharArray());
+    return kmf.getKeyManagers();
   }
 }

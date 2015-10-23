@@ -51,6 +51,11 @@ public class CertUtils {
 
   public static KeyStore createTrustStore(String caCertData, String caCertFile) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException {
     try (InputStream pemInputStream = getInputStreamFromDataOrFile(caCertData, caCertFile)) {
+      return createTrustStore(pemInputStream);
+    }
+  }
+
+  public static KeyStore createTrustStore(InputStream pemInputStream) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException {
       CertificateFactory certFactory = CertificateFactory.getInstance("X509");
       X509Certificate cert = (X509Certificate) certFactory.generateCertificate(pemInputStream);
 
@@ -59,19 +64,14 @@ public class CertUtils {
 
       String alias = cert.getSubjectX500Principal().getName();
       trustStore.setCertificateEntry(alias, cert);
-
       return trustStore;
-    }
   }
 
-  public static KeyStore createKeyStore(String clientCertData, String clientCertFile, String clientKeyData, String clientKeyFile, String clientKeyAlgo, char[] clientKeyPassphrase) throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeySpecException, KeyStoreException {
-    try (InputStream certInputStream = getInputStreamFromDataOrFile(clientCertData, clientCertFile)) {
+
+  public static KeyStore createKeyStore(InputStream certInputStream, InputStream keyInputStream, String clientKeyAlgo, char[] clientKeyPassphrase) throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeySpecException, KeyStoreException {
       CertificateFactory certFactory = CertificateFactory.getInstance("X509");
       X509Certificate cert = (X509Certificate) certFactory.generateCertificate(certInputStream);
-
-      InputStream keyInputStream = getInputStreamFromDataOrFile(clientKeyData, clientKeyFile);
       PEMReader reader = new PEMReader(keyInputStream);
-
       PrivateKey privateKey;
 
       KeyFactory keyFactory = KeyFactory.getInstance(clientKeyAlgo);
@@ -91,6 +91,11 @@ public class CertUtils {
       keyStore.setKeyEntry(alias, privateKey, clientKeyPassphrase, new Certificate[]{cert});
 
       return keyStore;
+  }
+
+  public static KeyStore createKeyStore(String clientCertData, String clientCertFile, String clientKeyData, String clientKeyFile, String clientKeyAlgo, char[] clientKeyPassphrase) throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeySpecException, KeyStoreException {
+    try (InputStream certInputStream = getInputStreamFromDataOrFile(clientCertData, clientCertFile); InputStream keyInputStream = getInputStreamFromDataOrFile(clientKeyData, clientKeyFile)) {
+      return createKeyStore(certInputStream, keyInputStream, clientKeyAlgo, clientKeyPassphrase);
     }
   }
 }
