@@ -28,6 +28,7 @@ import com.ning.http.client.filter.RequestFilter;
 import com.ning.http.client.providers.netty.NettyAsyncHttpProviderConfig;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.client.dsl.internal.BaseOperation;
+import io.fabric8.kubernetes.client.internal.SSLUtils;
 import io.fabric8.kubernetes.client.internal.Utils;
 import org.jboss.netty.handler.ssl.util.InsecureTrustManagerFactory;
 
@@ -98,30 +99,15 @@ public class BaseClient implements Client {
       // Should we disable all server certificate checks?
       clientConfigBuilder.setAcceptAnyCertificate(config.isTrustCerts());
 
-      TrustManager[] trustManagers = null;
-      if (isNotNullOrEmpty(config.getCaCertFile()) || isNotNullOrEmpty(config.getCaCertData())) {
-        KeyStore trustStore = createTrustStore(config.getCaCertData(), config.getCaCertFile());
-        TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-        tmf.init(trustStore);
-        trustManagers = tmf.getTrustManagers();
-      }
-
-      KeyManager[] keyManagers = null;
-      if ((isNotNullOrEmpty(config.getClientCertFile()) || isNotNullOrEmpty(config.getClientCertData())) && (isNotNullOrEmpty(config.getClientKeyFile()) || isNotNullOrEmpty(config.getClientKeyData()))) {
-        KeyStore keyStore = createKeyStore(config.getClientCertData(), config.getClientCertFile(), config.getClientKeyData(), config.getClientKeyFile(), config.getClientKeyAlgo(), config.getClientKeyPassphrase().toCharArray());
-        KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-        kmf.init(keyStore, config.getClientKeyPassphrase().toCharArray());
-        keyManagers = kmf.getKeyManagers();
-      }
+      TrustManager[] trustManagers = SSLUtils.trustManagers(config);
+      KeyManager[] keyManagers = SSLUtils.keyManagers(config);
 
       if (keyManagers != null || trustManagers != null) {
         if (trustManagers == null && config.isTrustCerts()) {
           trustManagers = InsecureTrustManagerFactory.INSTANCE.getTrustManagers();
           clientConfigBuilder.setHostnameVerifier(null);
         }
-        SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
-        sslContext.init(keyManagers, trustManagers, new SecureRandom());
-        clientConfigBuilder.setSSLContext(sslContext);
+        clientConfigBuilder.setSSLContext(SSLUtils.sslContext(keyManagers, trustManagers,config.isTrustCerts()));
       }
 
       if (isNotNullOrEmpty(config.getUsername()) && isNotNullOrEmpty(config.getPassword())) {

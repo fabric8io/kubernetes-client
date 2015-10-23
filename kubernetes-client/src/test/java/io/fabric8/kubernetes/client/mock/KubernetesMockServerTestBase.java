@@ -30,7 +30,7 @@ public class KubernetesMockServerTestBase {
   private KubernetesClient client;
 
   @Before
-  public void setUp() throws IOException {
+  public void setUp() throws Exception {
     mock.init();
     client = mock.createClient();
   }
@@ -40,7 +40,6 @@ public class KubernetesMockServerTestBase {
     mock.destroy();
     client.close();
   }
-
 
   public KubernetesClient getClient() {
     return client;

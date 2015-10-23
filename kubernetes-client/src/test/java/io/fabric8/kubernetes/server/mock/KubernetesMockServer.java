@@ -16,7 +16,6 @@
 
 package io.fabric8.kubernetes.server.mock;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.mockwebserver.Dispatcher;
 import com.google.mockwebserver.MockResponse;
 import com.google.mockwebserver.MockWebServer;
@@ -34,31 +33,34 @@ import java.util.Queue;
 
 public class KubernetesMockServer {
 
-  private final ObjectMapper mapper = new ObjectMapper();
-
   private MockWebServer server = new MockWebServer();
   private Map<ServerRequest, Queue<ServerResponse>> responses = new HashMap<>();
 
-  public void init() throws IOException {
-    server.setDispatcher(new Dispatcher() {
-      @Override
-      public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
-        String method = request.getMethod();
-        String path = request.getPath();
-        ServerRequest key = new ServerRequest(method, path);
-        ServerRequest keyForAnyMethod = new ServerRequest(path);
-        if (responses.containsKey(key)) {
-          Queue<ServerResponse> queue = responses.get(key);
-          return handleResponse(queue.peek(), queue);
-        } else if (responses.containsKey(keyForAnyMethod)) {
-          Queue<ServerResponse> queue = responses.get(keyForAnyMethod);
-          return handleResponse(queue.peek(), queue);
+  public void init()  {
+    try {
+      server.useHttps(MockSSLContextFactory.create().getSocketFactory(), false);
+      server.setDispatcher(new Dispatcher() {
+        @Override
+        public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
+          String method = request.getMethod();
+          String path = request.getPath();
+          ServerRequest key = new ServerRequest(method, path);
+          ServerRequest keyForAnyMethod = new ServerRequest(path);
+          if (responses.containsKey(key)) {
+            Queue<ServerResponse> queue = responses.get(key);
+            return handleResponse(queue.peek(), queue);
+          } else if (responses.containsKey(keyForAnyMethod)) {
+            Queue<ServerResponse> queue = responses.get(keyForAnyMethod);
+            return handleResponse(queue.peek(), queue);
+          }
+          return new MockResponse().setResponseCode(404);
         }
-        return new MockResponse().setResponseCode(404);
-      }
-    });
-    expect().get().withPath("/").andReturn(200, new RootPathsBuilder().addToPaths("/api").build()).always();
-    server.play();
+      });
+      expect().get().withPath("/").andReturn(200, new RootPathsBuilder().addToPaths("/api").build()).always();
+      server.play();
+    } catch (Throwable t) {
+      throw new RuntimeException(t);
+    }
   }
 
   private MockResponse handleResponse(ServerResponse response, Queue<ServerResponse> queue) {
@@ -79,7 +81,8 @@ public class KubernetesMockServer {
 
   public KubernetesClient createClient() {
     Config config = new ConfigBuilder()
-      .withMasterUrl("http://localhost:" + server.getPort())
+      .withMasterUrl("https://localhost:" + server.getPort())
+      .withTrustCerts(true)
       .withNamespace("test")
       .build();
     return new DefaultKubernetesClient(config);

@@ -28,15 +28,16 @@ import java.io.IOException;
 public class OpenShiftMockServer extends KubernetesMockServer {
 
   @Override
-  public void init() throws IOException {
+  public void init() {
     super.init();
     expect().withPath("/").andReturn(200, new RootPathsBuilder().addToPaths("/api", "/oapi").build()).always();
   }
 
   public OpenShiftClient createOpenShiftClient() {
     Config config = new ConfigBuilder()
-      .withMasterUrl("http://localhost:" + getServer().getPort())
+      .withMasterUrl("https://localhost:" + getServer().getPort())
       .withNamespace("test")
+      .withTrustCerts(true)
       .build();
     return new DefaultOpenShiftClient(config);
   }
