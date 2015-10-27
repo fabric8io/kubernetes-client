@@ -20,13 +20,6 @@ import java.io.Closeable;
 public interface Watch extends Closeable {
 
   /**
-   * Returns <code>true</code> if the Watch is open/connected.
-   *
-   * @return <code>true</code> if the Watch is open/connected.
-   */
-  boolean isOpen();
-
-  /**
    * Close the Watch.
    */
   void close();

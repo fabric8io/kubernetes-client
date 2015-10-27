@@ -180,7 +180,7 @@ public class FullExample {
                 log("Deleted RC");
 
                 log("Created RC", client.replicationControllers().inNamespace("thisisatest").create(rc));
-                client.replicationControllers().withLabel("server", "nginx").delete();
+                client.replicationControllers().inAnyNamespace().withLabel("server", "nginx").delete();
                 log("Deleted RC by label");
 
                 log("Created RC", client.replicationControllers().inNamespace("thisisatest").create(rc));

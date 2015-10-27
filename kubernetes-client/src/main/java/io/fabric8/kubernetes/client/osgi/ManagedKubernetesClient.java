@@ -16,7 +16,7 @@
 
 package io.fabric8.kubernetes.client.osgi;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableEndpoints;
 import io.fabric8.kubernetes.api.model.DoneableEvent;
 import io.fabric8.kubernetes.api.model.DoneableNamespace;
@@ -106,7 +106,6 @@ import static io.fabric8.kubernetes.client.Config.KUBERNETES_MASTER_SYSTEM_PROPE
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_NAMESPACE_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY;
-import static io.fabric8.kubernetes.client.Config.KUBERNETES_TLS_PROTOCOLS_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY;
@@ -125,8 +124,6 @@ public class ManagedKubernetesClient extends BaseClient implements KubernetesCli
   private String apiVersion = Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_API_VERSION_SYSTEM_PROPERTY, "v1");
   @Property(name = KUBERNETES_NAMESPACE_SYSTEM_PROPERTY, description = "Default namespace", value = "default")
   private String namespace = Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_NAMESPACE_SYSTEM_PROPERTY, "default");
-  @Property(name = KUBERNETES_TLS_PROTOCOLS_SYSTEM_PROPERTY, description = "Enabled Protocols", value = {"TLSv1.2"}, cardinality = 1)
-  private String[] enabledProtocols = Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_TLS_PROTOCOLS_SYSTEM_PROPERTY, "TLSv1.2").split(",");
   @Property(name = KUBERNETES_CA_CERTIFICATE_FILE_SYSTEM_PROPERTY, description = "CA Certificate (Path to file)")
   private String caCertFile = Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_CA_CERTIFICATE_FILE_SYSTEM_PROPERTY);
   @Property(name = KUBERNETES_CA_CERTIFICATE_DATA_SYSTEM_PROPERTY, description = "CA Certificate (Data)")
@@ -267,7 +264,7 @@ public class ManagedKubernetesClient extends BaseClient implements KubernetesCli
   }
 
   @Override
-  public AsyncHttpClient getHttpClient() {
+  public OkHttpClient getHttpClient() {
     return delegate.getHttpClient();
   }
 

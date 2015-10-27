@@ -15,12 +15,12 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Triggerable;
 import io.fabric8.kubernetes.client.dsl.Typeable;
 import io.fabric8.kubernetes.client.dsl.internal.BaseOperation;
-import com.ning.http.client.AsyncHttpClient;
-import com.ning.http.client.Response;
 import io.fabric8.kubernetes.client.internal.URLUtils;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigList;
@@ -28,12 +28,11 @@ import io.fabric8.openshift.api.model.BuildRequest;
 import io.fabric8.openshift.api.model.DoneableBuildConfig;
 import io.fabric8.openshift.api.model.WebHookTrigger;
 import io.fabric8.openshift.client.OpenShiftClient;
-import io.fabric8.openshift.client.dsl.ClientBuildConfigResource;
 import io.fabric8.openshift.client.dsl.BuildConfigOperation;
+import io.fabric8.openshift.client.dsl.ClientBuildConfigResource;
 
 import java.io.InputStream;
 import java.net.URL;
-import java.util.concurrent.Future;
 
 public class BuildConfigOperationsImpl extends OpenShiftOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig,
   ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void>>
@@ -77,8 +76,8 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<OpenShiftClien
   public Void instantiate(BuildRequest request) {
     try {
       URL instantiationUrl = new URL(URLUtils.join(getResourceUrl().toString(), "instantiate"));
-      AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().preparePost(instantiationUrl.toString());
-      requestBuilder.setBody(BaseOperation.OBJECT_MAPPER.writer().writeValueAsString(request));
+      RequestBody requestBody = RequestBody.create(JSON, BaseOperation.OBJECT_MAPPER.writer().writeValueAsString(request));
+      Request.Builder requestBuilder = new Request.Builder().post(requestBody).url(instantiationUrl);
       handleResponse(requestBuilder, 201, null);
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
@@ -91,10 +90,12 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<OpenShiftClien
     try {
       //TODO: This needs some attention.
       String triggerUrl = URLUtils.join(getResourceUrl().toString(), "webhooks", secret, triggerType);
-      AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().preparePost(triggerUrl);
-      requestBuilder.addHeader("Content-Type", "application/json");
-      requestBuilder.addHeader("X-Github-Event", "push");
-      requestBuilder.setBody(BaseOperation.OBJECT_MAPPER.writer().writeValueAsString(trigger));
+      RequestBody requestBody = RequestBody.create(JSON, BaseOperation.OBJECT_MAPPER.writer().writeValueAsString(trigger));
+      Request.Builder requestBuilder = new Request.Builder()
+        .post(requestBody)
+        .url(triggerUrl)
+        .addHeader("Content-Type", "application/json")
+        .addHeader("X-Github-Event", "push");
       handleResponse(requestBuilder, 200);
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);

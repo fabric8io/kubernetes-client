@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableEndpoints;
 import io.fabric8.kubernetes.api.model.DoneableEvent;
 import io.fabric8.kubernetes.api.model.DoneableNamespace;
@@ -176,7 +176,7 @@ public class DefaultOpenShiftClient extends BaseClient implements OpenShiftClien
     this(new OpenShiftConfigBuilder().withMasterUrl(masterUrl).build());
   }
 
-  public DefaultOpenShiftClient(AsyncHttpClient httpClient, OpenShiftConfig config) throws KubernetesClientException {
+  public DefaultOpenShiftClient(OkHttpClient httpClient, OpenShiftConfig config) throws KubernetesClientException {
     super(httpClient, config);
     try {
       this.openShiftUrl = new URL(config.getOpenShiftUrl());
