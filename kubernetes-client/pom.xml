@@ -118,9 +118,14 @@
       <version>${kubernetes.model.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.ning</groupId>
-      <artifactId>async-http-client</artifactId>
-      <version>${async.http.version}</version>
+      <groupId>com.squareup.okhttp</groupId>
+      <artifactId>okhttp</artifactId>
+      <version>${okhttp.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.squareup.okhttp</groupId>
+      <artifactId>okhttp-ws</artifactId>
+      <version>${okhttp.version}</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>

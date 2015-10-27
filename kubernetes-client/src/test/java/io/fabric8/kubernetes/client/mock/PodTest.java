@@ -203,6 +203,6 @@ public class PodTest extends KubernetesMockServerTestBase {
    * @return
    */
   private static final String toUrlEncoded(String str) {
-    return str.replaceAll("=", "%3D").replaceAll(",","%2C");
+    return str.replaceAll("=", "%3D");
   }
 }

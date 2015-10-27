@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableEndpoints;
 import io.fabric8.kubernetes.api.model.DoneableEvent;
 import io.fabric8.kubernetes.api.model.DoneableNamespace;
@@ -81,7 +81,7 @@ public class DefaultKubernetesClient extends BaseClient implements KubernetesCli
     super();
   }
 
-  public DefaultKubernetesClient(AsyncHttpClient httpClient, Config config) throws KubernetesClientException {
+  public DefaultKubernetesClient(OkHttpClient httpClient, Config config) throws KubernetesClientException {
     super(httpClient, config);
   }
 

@@ -15,9 +15,9 @@
  */
 package io.fabric8.kubernetes.client.internal;
 
-import com.ning.http.util.Base64;
 import net.oauth.signature.pem.PEMReader;
 import net.oauth.signature.pem.PKCS1EncodedKeySpec;
+import okio.ByteString;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
@@ -41,7 +41,7 @@ public class CertUtils {
 
   public static InputStream getInputStreamFromDataOrFile(String data, String file) throws FileNotFoundException {
     if (data != null) {
-      return new ByteArrayInputStream(Base64.decode(data));
+      return new ByteArrayInputStream(ByteString.decodeBase64(data).toByteArray());
     }
     if (file != null) {
       return new FileInputStream(file);

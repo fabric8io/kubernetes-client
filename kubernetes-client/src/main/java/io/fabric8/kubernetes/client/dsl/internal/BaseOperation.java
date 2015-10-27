@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
-import com.ning.http.client.Response;
+import com.squareup.okhttp.HttpUrl;
+import com.squareup.okhttp.Request;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
@@ -44,7 +44,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 import static io.fabric8.kubernetes.client.internal.Utils.join;
 
@@ -109,7 +108,8 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
   public RootPaths getRootPaths() {
     try {
       URL requestUrl = client.getMasterUrl();
-      return handleResponse(getClient().getHttpClient().prepareGet(requestUrl.toString()), 200, RootPaths.class);
+      Request.Builder req = new Request.Builder().get().url(requestUrl);
+      return handleResponse(req, 200, RootPaths.class);
     } catch (KubernetesClientException e) {
       if (e.getCode() != 404) {
         throw e;
@@ -332,18 +332,19 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
 
   public L list() throws KubernetesClientException {
     try {
-      URL requestUrl = getNamespacedUrl();
-      AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().prepareGet(requestUrl.toString());
+      HttpUrl.Builder requestUrlBuilder = HttpUrl.get(getNamespacedUrl()).newBuilder();
 
       String labelQueryParam = getLabelQueryParam();
       if (labelQueryParam.length() > 0) {
-        requestBuilder.addQueryParam("labelSelector", labelQueryParam);
+        requestUrlBuilder.addQueryParameter("labelSelector", labelQueryParam);
       }
 
       String fieldQueryString = getFieldQueryParam();
       if (fieldQueryString.length() > 0) {
-        requestBuilder.addQueryParam("fieldSelector", fieldQueryString);
+        requestUrlBuilder.addQueryParameter("fieldSelector", fieldQueryString);
       }
+
+      Request.Builder requestBuilder = new Request.Builder().get().url(requestUrlBuilder.build());
       return handleResponse(requestBuilder, 200, listType);
     } catch (InterruptedException | ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
@@ -448,7 +449,7 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
     return true;
   }
 
-  protected T handleResponse(AsyncHttpClient.BoundRequestBuilder requestBuilder, int successStatusCode) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+  protected T handleResponse(Request.Builder requestBuilder, int successStatusCode) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     return handleResponse(requestBuilder, successStatusCode, getType());
   }
 

@@ -18,27 +18,34 @@ package io.fabric8.kubernetes.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.ning.http.client.AsyncHttpClient;
-import com.ning.http.client.AsyncHttpClientConfig;
-import com.ning.http.client.ProxyServer;
-import com.ning.http.client.Realm;
-import com.ning.http.client.filter.FilterContext;
-import com.ning.http.client.filter.FilterException;
-import com.ning.http.client.filter.RequestFilter;
-import com.ning.http.client.providers.netty.NettyAsyncHttpProviderConfig;
+import com.squareup.okhttp.Authenticator;
+import com.squareup.okhttp.Challenge;
+import com.squareup.okhttp.Credentials;
+import com.squareup.okhttp.HttpUrl;
+import com.squareup.okhttp.Interceptor;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.client.dsl.internal.BaseOperation;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
 import io.fabric8.kubernetes.client.internal.Utils;
-import org.jboss.netty.handler.ssl.util.InsecureTrustManagerFactory;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.KeyManager;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
+import java.net.Proxy;
 import java.net.URL;
+import java.security.GeneralSecurityException;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static io.fabric8.kubernetes.client.internal.Utils.isNotNullOrEmpty;
 
@@ -48,7 +55,7 @@ public class BaseClient implements Client {
   private static final ObjectMapper jsonMapper = new ObjectMapper();
   private static final ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
 
-  private AsyncHttpClient httpClient;
+  private OkHttpClient httpClient;
   private URL masterUrl;
   private String apiVersion;
   private String namespace;
@@ -62,7 +69,7 @@ public class BaseClient implements Client {
     this(createHttpClient(config), config);
   }
 
-  public BaseClient(final AsyncHttpClient httpClient, Config config) throws KubernetesClientException {
+  public BaseClient(final OkHttpClient httpClient, Config config) throws KubernetesClientException {
     try {
       this.httpClient = httpClient;
       this.namespace = config.getNamespace();
@@ -81,64 +88,84 @@ public class BaseClient implements Client {
   }
 
 
-  static AsyncHttpClient createHttpClient(final Config config) {
+  static OkHttpClient createHttpClient(final Config config) {
     try {
-      AsyncHttpClientConfig.Builder clientConfigBuilder = new AsyncHttpClientConfig.Builder();
-      clientConfigBuilder.setEnabledProtocols(config.getEnabledProtocols());
+      OkHttpClient httpClient = new OkHttpClient();
 
       // Follow any redirects
-      clientConfigBuilder.setFollowRedirect(true);
+      httpClient.setFollowRedirects(true);
+      httpClient.setFollowSslRedirects(true);
 
-      // Should we disable all server certificate checks?
-      clientConfigBuilder.setAcceptAnyCertificate(config.isTrustCerts());
+      if (config.isTrustCerts()) {
+        httpClient.setHostnameVerifier(new HostnameVerifier() {
+          @Override
+          public boolean verify(String s, SSLSession sslSession) {
+            return true;
+          }
+        });
+      }
 
       TrustManager[] trustManagers = SSLUtils.trustManagers(config);
       KeyManager[] keyManagers = SSLUtils.keyManagers(config);
 
-      if (keyManagers != null || trustManagers != null) {
-        if (trustManagers == null && config.isTrustCerts()) {
-          trustManagers = InsecureTrustManagerFactory.INSTANCE.getTrustManagers();
-          clientConfigBuilder.setHostnameVerifier(null);
+      if (keyManagers != null || trustManagers != null || config.isTrustCerts()) {
+        try {
+          SSLContext sslContext = SSLUtils.sslContext(keyManagers, trustManagers, config.isTrustCerts());
+          httpClient.setSslSocketFactory(sslContext.getSocketFactory());
+        } catch (GeneralSecurityException e) {
+          throw new AssertionError(); // The system has no TLS. Just give up.
         }
-        clientConfigBuilder.setSSLContext(SSLUtils.sslContext(keyManagers, trustManagers,config.isTrustCerts()));
       }
 
       if (isNotNullOrEmpty(config.getUsername()) && isNotNullOrEmpty(config.getPassword())) {
-        Realm realm = new Realm.RealmBuilder()
-          .setPrincipal(config.getUsername())
-          .setPassword(config.getPassword())
-          .setUsePreemptiveAuth(true)
-          .setScheme(Realm.AuthScheme.BASIC)
-          .build();
-        clientConfigBuilder.setRealm(realm);
-      } else if (config.getOauthToken() != null) {
-        clientConfigBuilder.addRequestFilter(new RequestFilter() {
+        httpClient.setAuthenticator(new Authenticator(){
+
           @Override
-          public <T> FilterContext<T> filter(FilterContext<T> ctx) throws FilterException {
-            ctx.getRequest().getHeaders().add("Authorization", "Bearer " + config.getOauthToken());
-            return ctx;
+          public Request authenticate(Proxy proxy, Response response) throws IOException {
+            List<Challenge> challenges = response.challenges();
+            Request request = response.request();
+            HttpUrl url = request.httpUrl();
+            for (int i = 0, size = challenges.size(); i < size; i++) {
+              Challenge challenge = challenges.get(i);
+              if (!"Basic".equalsIgnoreCase(challenge.getScheme())) continue;
+
+              String credential = Credentials.basic(config.getUsername(), config.getPassword());
+              return request.newBuilder()
+                .header("Authorization", credential)
+                .build();
+            }
+            return null;
+          }
+
+          @Override
+          public Request authenticateProxy(Proxy proxy, Response response) throws IOException {
+            return null;
+          }
+        });
+      } else if (config.getOauthToken() != null) {
+        httpClient.interceptors().add(new Interceptor() {
+          @Override
+          public Response intercept(Chain chain) throws IOException {
+            Request authReq = chain.request().newBuilder().addHeader("Authorization", "Bearer " + config.getOauthToken()).build();
+            return chain.proceed(authReq);
           }
         });
       }
 
       if (config.getRequestTimeout() > 0) {
-        clientConfigBuilder.setRequestTimeout(config.getRequestTimeout());
+        httpClient.setReadTimeout(config.getRequestTimeout(), TimeUnit.MILLISECONDS);
       }
 
       if (config.getProxy() != null) {
         try {
           URL u = new URL(config.getProxy());
-          clientConfigBuilder.setProxyServer(new ProxyServer(ProxyServer.Protocol.valueOf(u.getProtocol()), u.getHost(), u.getPort()));
+          httpClient.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(u.getHost(), u.getPort())));
         } catch (MalformedURLException e) {
           throw new KubernetesClientException("Invalid proxy server configuration", e);
         }
       }
 
-      NettyAsyncHttpProviderConfig nettyConfig = new NettyAsyncHttpProviderConfig();
-      nettyConfig.setWebSocketMaxFrameSize(65536);
-      clientConfigBuilder.setAsyncHttpClientProviderConfig(nettyConfig);
-
-      return new AsyncHttpClient(clientConfigBuilder.build());
+      return httpClient;
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
@@ -150,7 +177,9 @@ public class BaseClient implements Client {
 
   @Override
   public void close() {
-    httpClient.close();
+    if (getHttpClient().getConnectionPool() != null) {
+      getHttpClient().getConnectionPool().evictAll();
+    }
   }
 
   @Override
@@ -174,7 +203,7 @@ public class BaseClient implements Client {
   }
 
   @Override
-  public AsyncHttpClient getHttpClient() {
+  public OkHttpClient getHttpClient() {
     return httpClient;
   }
 
@@ -218,11 +247,9 @@ public class BaseClient implements Client {
     throw new IllegalStateException("No adapter available for type:" + type);
   }
 
-
   @Override
   public RootPaths rootPaths() {
     return new BaseOperation(this, "", null, null, false, null, RootPaths.class, null, null) {
     }.getRootPaths();
   }
-
 }

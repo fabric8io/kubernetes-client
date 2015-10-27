@@ -38,7 +38,6 @@ public class Config {
 
   public static final String KUBERNETES_MASTER_SYSTEM_PROPERTY = "kubernetes.master";
   public static final String KUBERNETES_API_VERSION_SYSTEM_PROPERTY = "kubernetes.api.version";
-  public static final String KUBERNETES_TLS_PROTOCOLS_SYSTEM_PROPERTY = "kubernetes.tls.protocols";
   public static final String KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY = "kubernetes.trust.certificates";
   public static final String KUBERNETES_CA_CERTIFICATE_FILE_SYSTEM_PROPERTY = "kubernetes.certs.ca.file";
   public static final String KUBERNETES_CA_CERTIFICATE_DATA_SYSTEM_PROPERTY = "kubernetes.certs.ca.data";
@@ -75,7 +74,6 @@ public class Config {
   private String masterUrl = "https://kubernetes.default.svc";
   private String apiVersion = "v1";
   private String namespace;
-  private String[] enabledProtocols = new String[]{"TLSv1.2"};
   private String caCertFile;
   private String caCertData;
   private String clientCertFile;
@@ -108,13 +106,13 @@ public class Config {
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder")
-  public Config(String masterUrl, String apiVersion, String namespace, String[] enabledProtocols, Boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int requestTimeout, long rollingTimeout, int loggingInterval, String proxy) {
+  public Config(String masterUrl, String apiVersion, String namespace, Boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int requestTimeout, long rollingTimeout, int loggingInterval, String proxy) {
     this();
     this.trustCerts = trustCerts;
     this.masterUrl = masterUrl;
     this.apiVersion = apiVersion;
     this.namespace = namespace;
-    this.enabledProtocols = enabledProtocols;
+    this.trustCerts = trustCerts;
     this.caCertFile = caCertFile;
     this.caCertData = caCertData;
     this.clientCertFile = clientCertFile;
@@ -155,10 +153,6 @@ public class Config {
     config.setOauthToken(Utils.getSystemPropertyOrEnvVar(KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY, config.getOauthToken()));
     config.setUsername(Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_BASIC_USERNAME_SYSTEM_PROPERTY, config.getUsername()));
     config.setPassword(Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_BASIC_PASSWORD_SYSTEM_PROPERTY, config.getPassword()));
-    String configuredProtocols = Utils.getSystemPropertyOrEnvVar(KUBERNETES_TLS_PROTOCOLS_SYSTEM_PROPERTY);
-    if (configuredProtocols != null) {
-      config.setEnabledProtocols(configuredProtocols.split(","));
-    }
     String configuredWatchReconnectInterval = Utils.getSystemPropertyOrEnvVar(KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY);
     if (configuredWatchReconnectInterval != null) {
       config.setWatchReconnectInterval(Integer.parseInt(configuredWatchReconnectInterval));
@@ -334,14 +328,6 @@ public class Config {
 
   public void setCaCertFile(String caCertFile) {
     this.caCertFile = caCertFile;
-  }
-
-  public String[] getEnabledProtocols() {
-    return enabledProtocols;
-  }
-
-  public void setEnabledProtocols(String[] enabledProtocols) {
-    this.enabledProtocols = enabledProtocols;
   }
 
   public String getApiVersion() {

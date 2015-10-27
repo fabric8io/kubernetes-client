@@ -15,20 +15,17 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
-import com.ning.http.client.Request;
-import com.ning.http.client.Response;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientLoggableResource;
 import io.fabric8.kubernetes.client.internal.URLUtils;
 
 import java.net.URL;
-import java.util.concurrent.Future;
 
 public class PodOperationsImpl<C extends Client>  extends HasMetadataOperation<C, Pod, PodList, DoneablePod, ClientLoggableResource<Pod, DoneablePod>> implements ClientLoggableResource<Pod,DoneablePod> {
 
@@ -65,12 +62,11 @@ public class PodOperationsImpl<C extends Client>  extends HasMetadataOperation<C
 
     try {
       URL url = new URL(URLUtils.join(getResourceUrl().toString(), sb.toString()));
-      AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().prepareGet(url.toString());
+      Request.Builder requestBuilder = new Request.Builder().get().url(url);
       Request request = requestBuilder.build();
-      Future<Response> f = client.getHttpClient().executeRequest(request);
-      Response response = f.get();
+      Response response = client.getHttpClient().newCall(request).execute();
       assertResponseCode(request, response, 200);
-      return response.getResponseBody();
+      return response.body().string();
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }

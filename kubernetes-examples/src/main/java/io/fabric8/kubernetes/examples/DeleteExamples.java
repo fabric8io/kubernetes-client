@@ -40,6 +40,7 @@ public class DeleteExamples {
       log("Create namespace:", client.namespaces().create(new NamespaceBuilder().withNewMetadata().withName("thisisatest").endMetadata().build()));
       log("Deleted namespace:", client.namespaces().withName("test").delete());
       log("Deleted testPod:", client.pods().inNamespace("thisisatest").withName("testpod").delete());
+      log("Deleted pod by label:", client.pods().withLabel("this", "works").delete());
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);
     } finally {

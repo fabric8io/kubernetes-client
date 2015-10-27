@@ -16,7 +16,7 @@
 
 package io.fabric8.kubernetes.client;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.RootPaths;
 
 import java.io.Closeable;
@@ -41,7 +41,7 @@ public interface Client extends ConfigAware, Closeable {
 
   String getNamespace();
 
-  AsyncHttpClient getHttpClient();
+  OkHttpClient getHttpClient();
 
   RootPaths rootPaths();
 

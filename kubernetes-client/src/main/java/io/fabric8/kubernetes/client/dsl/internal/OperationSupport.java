@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ning.http.client.AsyncHttpClient;
-import com.ning.http.client.Request;
-import com.ning.http.client.Response;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
@@ -32,17 +32,17 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 public class OperationSupport<C extends Client> {
 
   public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
+  public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
   final C client;
   final String resourceT;
   final String namespace;
   final String name;
-
 
   public OperationSupport(C client, String resourceT, String namespace, String name) {
     this.client = client;
@@ -147,39 +147,38 @@ public class OperationSupport<C extends Client> {
   }
 
   protected void handleDelete(URL requestUrl) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().prepareDelete(requestUrl.toString());
+    Request.Builder requestBuilder = new Request.Builder().delete(null).url(requestUrl);
     handleResponse(requestBuilder, 200, null);
   }
 
   protected <T, I> T handleCreate(I resource, Class<T> outputType) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().preparePost(getNamespacedUrl(checkNamespace(resource)).toString());
-    requestBuilder.setBody(OBJECT_MAPPER.writer().writeValueAsString(resource));
+    RequestBody body = RequestBody.create(JSON, OBJECT_MAPPER.writeValueAsString(resource));
+    Request.Builder requestBuilder = new Request.Builder().post(body).url(getNamespacedUrl(checkNamespace(resource)));
     return handleResponse(requestBuilder, 201, outputType);
   }
 
   protected <T> T handleReplace(T updated, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().preparePut(getResourceUrl(checkNamespace(updated), checkName(updated)).toString());
-    requestBuilder.setBody(OBJECT_MAPPER.writer().writeValueAsString(updated));
+    RequestBody body = RequestBody.create(JSON, OBJECT_MAPPER.writeValueAsString(updated));
+    Request.Builder requestBuilder = new Request.Builder().put(body).url(getResourceUrl(checkNamespace(updated), checkName(updated)));
     return handleResponse(requestBuilder, 200, type);
   }
 
   protected <T> T handleGet(URL resourceUrl, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().prepareGet(resourceUrl.toString());
+    Request.Builder requestBuilder = new Request.Builder().get().url(resourceUrl);
     return handleResponse(requestBuilder, 200, type);
   }
 
-  protected <T> T handleResponse(AsyncHttpClient.BoundRequestBuilder requestBuilder, int successStatusCode, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+  protected <T> T handleResponse(Request.Builder requestBuilder, int successStatusCode, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     Request request = requestBuilder.build();
     Response response = null;
     try {
-      Future<Response> f = client.getHttpClient().executeRequest(request);
-      response = f.get();
+      response = client.getHttpClient().newCall(request).execute();
     } catch (Exception e) {
       throw requestException(request, e);
     }
     assertResponseCode(request, response, successStatusCode);
     if (type != null) {
-      return OBJECT_MAPPER.readValue(response.getResponseBodyAsStream(), type);
+      return OBJECT_MAPPER.readValue(response.body().byteStream(), type);
     } else {
       return null;
     }
@@ -188,13 +187,13 @@ public class OperationSupport<C extends Client> {
   /**
    * Checks if the response status code is the expected and throws the appropriate KubernetesClientException if not.
    *
-   * @param request            The {#link com.ning.http.client.Request} object.
-   * @param response           The {@link com.ning.http.client.Response} object.
+   * @param request            The {#link Request} object.
+   * @param response           The {@link Response} object.
    * @param expectedStatusCode The expected status code.
    * @throws KubernetesClientException When the response code is not the expected.
    */
   void assertResponseCode(Request request, Response response, int expectedStatusCode) {
-    int statusCode = response.getStatusCode();
+    int statusCode = response.code();
     String customMessage = client.getConfiguration().getErrorMessages().get(statusCode);
 
     if (statusCode == expectedStatusCode) {
@@ -203,7 +202,7 @@ public class OperationSupport<C extends Client> {
       throw requestFailure(request, createStatus(statusCode, customMessage));
     } else {
       try {
-        Status status = OBJECT_MAPPER.readValue(response.getResponseBodyAsStream(), Status.class);
+        Status status = OBJECT_MAPPER.readValue(response.body().byteStream(), Status.class);
         throw requestFailure(request, status);
       } catch (IOException e) {
         throw requestFailure(request, createStatus(statusCode, ""));
@@ -217,8 +216,8 @@ public class OperationSupport<C extends Client> {
 
   KubernetesClientException requestFailure(Request request, Status status) {
     StringBuilder sb = new StringBuilder();
-    sb.append("Failure executing: ").append(request.getMethod())
-      .append(" at: ").append(request.getUri())
+    sb.append("Failure executing: ").append(request.method())
+      .append(" at: ").append(request.urlString())
       .append(". Received status: ").append(status).append(".");
 
     if (status.getMessage() != null && !status.getMessage().isEmpty()) {
@@ -234,8 +233,8 @@ public class OperationSupport<C extends Client> {
 
   KubernetesClientException requestException(Request request, Exception e) {
     StringBuilder sb = new StringBuilder();
-    sb.append("Error executing: ").append(request.getMethod())
-      .append(" at: ").append(request.getUri())
+    sb.append("Error executing: ").append(request.method())
+      .append(" at: ").append(request.urlString())
       .append(". Cause: ").append(e.getMessage());
 
     return new KubernetesClientException(sb.toString(), e);
