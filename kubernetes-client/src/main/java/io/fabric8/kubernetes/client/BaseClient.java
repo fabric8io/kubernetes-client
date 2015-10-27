@@ -33,20 +33,13 @@ import io.fabric8.kubernetes.client.internal.Utils;
 import org.jboss.netty.handler.ssl.util.InsecureTrustManagerFactory;
 
 import javax.net.ssl.KeyManager;
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.KeyStore;
-import java.security.SecureRandom;
 
-import static io.fabric8.kubernetes.client.internal.CertUtils.createKeyStore;
-import static io.fabric8.kubernetes.client.internal.CertUtils.createTrustStore;
 import static io.fabric8.kubernetes.client.internal.Utils.isNotNullOrEmpty;
 
 
