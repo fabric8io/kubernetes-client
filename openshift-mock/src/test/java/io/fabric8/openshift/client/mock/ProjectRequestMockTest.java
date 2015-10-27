@@ -21,12 +21,7 @@ import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.openshift.api.model.ProjectRequest;
 import io.fabric8.openshift.api.model.ProjectRequestBuilder;
-import io.fabric8.openshift.api.model.RoleBinding;
-import io.fabric8.openshift.api.model.RoleBindingBuilder;
-import io.fabric8.openshift.api.model.RoleBindingList;
-import io.fabric8.openshift.api.model.RoleBindingListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-import javafx.scene.media.MediaPlayer;
 import org.junit.Assert;
 import org.junit.Test;
 
