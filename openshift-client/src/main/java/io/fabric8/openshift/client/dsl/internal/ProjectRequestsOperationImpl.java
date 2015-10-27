@@ -15,15 +15,15 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.Request;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.openshift.client.OpenShiftClient;
-import io.fabric8.openshift.client.dsl.ClientProjectRequestOperation;
 import io.fabric8.kubernetes.client.dsl.internal.OperationSupport;
 import io.fabric8.openshift.api.model.DoneableProjectRequest;
 import io.fabric8.openshift.api.model.ProjectRequest;
+import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.dsl.ClientProjectRequestOperation;
 
 import java.io.IOException;
 import java.net.URL;
@@ -89,7 +89,7 @@ public class ProjectRequestsOperationImpl extends OperationSupport<OpenShiftClie
     public Status list() {
         try {
             URL requestUrl = getNamespacedUrl();
-            AsyncHttpClient.BoundRequestBuilder requestBuilder = getClient().getHttpClient().prepareGet(requestUrl.toString());
+            Request.Builder requestBuilder = new Request.Builder().get().url(requestUrl);
             return handleResponse(requestBuilder, 200, Status.class);
         } catch (InterruptedException | ExecutionException | IOException e) {
             throw KubernetesClientException.launderThrowable(e);
