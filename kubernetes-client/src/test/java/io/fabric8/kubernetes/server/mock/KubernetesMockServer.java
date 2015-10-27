@@ -81,7 +81,7 @@ public class KubernetesMockServer {
 
   public KubernetesClient createClient() {
     Config config = new ConfigBuilder()
-      .withMasterUrl("https://localhost:" + server.getPort())
+      .withMasterUrl(server.getUrl("/").toString())
       .withTrustCerts(true)
       .withNamespace("test")
       .build();
