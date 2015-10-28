@@ -27,7 +27,7 @@
   <groupId>io.fabric8.kubernetes</groupId>
   <artifactId>platforms</artifactId>
   <packaging>pom</packaging>
-  <name>Fabric8 :: Kubernetes :: Platofrms</name>
+  <name>Fabric8 :: Kubernetes :: Platforms</name>
 
   <modules>
     <module>karaf</module>

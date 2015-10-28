@@ -30,12 +30,12 @@
     <bundle dependency='true'>mvn:org.yaml/snakeyaml/${snakeyaml.version}</bundle>
 
     <bundle>mvn:io.fabric8/kubernetes-model/${kubernetes.model.version}</bundle>
-    <bundle>mvn:io.fabric8/kubernetes-client-with-deps/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/kubernetes-client/${project.version}/jar/bundle</bundle>
   </feature>
 
   <feature name="openshift-client" description="Fabric8 Openshift Client" version="${project.version}">
     <feature>kubernetes-client</feature>
-    <bundle>mvn:io.fabric8/openshift-client-with-deps/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/openshift-client/${project.version}/jar/bundle</bundle>
   </feature>
 
 </features>
