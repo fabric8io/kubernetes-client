@@ -27,18 +27,15 @@
     <bundle dependency='true'>mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-base/${jackson.version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-json-provider/${jackson.version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/${jackson.version}</bundle>
-    <bundle dependency='true'>mvn:io.netty/netty/${netty.version}</bundle>
-    <bundle dependency='true'>mvn:com.ning/async-http-client/${async.http.version}</bundle>
-    <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.oauth-provider/${oauth.bundle.version}</bundle>
     <bundle dependency='true'>mvn:org.yaml/snakeyaml/${snakeyaml.version}</bundle>
 
     <bundle>mvn:io.fabric8/kubernetes-model/${kubernetes.model.version}</bundle>
-    <bundle>mvn:io.fabric8/kubernetes-client/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/kubernetes-client-with-deps/${project.version}</bundle>
   </feature>
 
   <feature name="openshift-client" description="Fabric8 Openshift Client" version="${project.version}">
     <feature>kubernetes-client</feature>
-    <bundle>mvn:io.fabric8/openshift-client/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/openshift-client-with-deps/${project.version}</bundle>
   </feature>
 
 </features>
