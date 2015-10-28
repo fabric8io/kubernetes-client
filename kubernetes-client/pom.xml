@@ -32,12 +32,14 @@
   <properties>
     <osgi.import>*</osgi.import>
     <osgi.export>
-      io.fabric8.kubernetes.client*"
+      io.fabric8.kubernetes.client*
     </osgi.export>
     <osgi.private>
       io.fabric8.kubernetes.client.internal,
       io.fabric8.kubernetes.client.handlers,
-      io.fabric8.kubernetes.client.dsl.internal
+      io.fabric8.kubernetes.client.dsl.internal,
+      com.squareup*,
+      okio*
     </osgi.private>
   </properties>
 
@@ -53,7 +55,6 @@
           <!-- We cleanup system properties an env vars, so that we can test in a predictable env -->
           <environmentVariables>
             <KUBERNETES_API_VERSION></KUBERNETES_API_VERSION>
-            <KUBERNETES_TLS_PROTOCOLS></KUBERNETES_TLS_PROTOCOLS>
             <KUBERNETES_TRUST_CERTIFICATES></KUBERNETES_TRUST_CERTIFICATES>
             <KUBERNETES_CERTS_CA_FILE></KUBERNETES_CERTS_CA_FILE>
             <KUBERNETES_CERTS_CA_DATA></KUBERNETES_CERTS_CA_DATA>
@@ -104,6 +105,33 @@
             <configuration>
               <specVersion>1.2</specVersion>
               <strictMode>true</strictMode>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>bundle</id>
+            <phase>package</phase>
+            <goals>
+              <goal>bundle</goal>
+            </goals>
+            <configuration>
+              <instructions>
+                <Bundle-Name>${project.name}</Bundle-Name>
+                <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+                <Export-Package>${osgi.export}</Export-Package>
+                <Import-Package>${osgi.import}</Import-Package>
+                <DynamicImport-Package>${osgi.dynamic.import}</DynamicImport-Package>
+                <Private-Package>${osgi.private}</Private-Package>
+                <Require-Bundle>${osgi.bundles}</Require-Bundle>
+                <Bundle-Activator>${osgi.activator}</Bundle-Activator>
+                <Export-Service>${osgi.export.service}</Export-Service>
+              </instructions>
+              <classifier>bundle</classifier>
             </configuration>
           </execution>
         </executions>
