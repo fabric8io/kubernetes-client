@@ -31,6 +31,7 @@ import java.io.File;
 
 import static org.ops4j.pax.exam.CoreOptions.maven;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.configureSecurity;
+import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.editConfigurationFileExtend;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.editConfigurationFilePut;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
@@ -64,6 +65,7 @@ public class FeatureInstallationTest extends TestBase {
                 configureSecurity().disableKarafMBeanServerBuilder(),
                 keepRuntimeFolder(),
                 editConfigurationFilePut("etc/system.properties", "features.xml", System.getProperty("features.xml")),
+                editConfigurationFileExtend("etc/org.ops4j.pax.url.mvn.cfg", "org.ops4j.pax.url.mvn.repositories", "file:"+System.getProperty("features.repo")+"@snapshots@releases"),
                 logLevel(LogLevelOption.LogLevel.INFO),
         };
     }

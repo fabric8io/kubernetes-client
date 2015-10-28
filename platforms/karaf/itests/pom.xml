@@ -130,11 +130,35 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.karaf.tooling</groupId>
+                <artifactId>karaf-maven-plugin</artifactId>
+                <version>${karaf.version}</version>
+                <executions>
+                    <execution>
+                        <id>add-features-to-repo</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>features-add-to-repository</goal>
+                        </goals>
+                        <configuration>
+                            <features>
+                                <feature>kubernetes-client</feature>
+                                <feature>openshift-client</feature>
+                            </features>
+                            <descriptors>
+                                <descriptor>file:${project.build.directory}/features.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <systemPropertyVariables>
                         <features.xml>${project.build.directory}/features.xml</features.xml>
+                        <features.repo>${project.build.directory}/features-repo</features.repo>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
