@@ -76,6 +76,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <okhttp.version>2.5.0</okhttp.version>
+    <okio.version>1.6.0</okio.version>
     <easymock.version>3.2</easymock.version>
     <felix.scr.annotations.version>1.9.8</felix.scr.annotations.version>
     <jackson.version>2.6.1</jackson.version>
@@ -120,8 +121,6 @@
     <module>openshift-client</module>
     <module>openshift-mock</module>
     <module>kubernetes-examples</module>
-    <module>kubernetes-client-with-deps</module>
-    <module>openshift-client-with-deps</module>
     <module>platforms</module>
   </modules>
 

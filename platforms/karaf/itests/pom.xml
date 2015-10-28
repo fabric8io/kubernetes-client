@@ -36,6 +36,13 @@
             <groupId>io.fabric8</groupId>
             <artifactId>openshift-client</artifactId>
             <version>${project.version}</version>
+            <classifier>bundle</classifier>
+        </dependency>
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-client</artifactId>
+            <version>${project.version}</version>
+            <classifier>bundle</classifier>
         </dependency>
 
         <dependency>

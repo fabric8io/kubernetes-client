@@ -27,10 +27,23 @@
   <groupId>io.fabric8</groupId>
   <artifactId>kubernetes-client-with-deps</artifactId>
   <name>Fabric8 :: Kubernetes :: Java Client with Dependencies</name>
+  <packaging>bundle</packaging>
 
   <properties>
     <javadoc.include.deps>true</javadoc.include.deps>
     <javadoc.source.includes>io.fabric8:kubernetes-client</javadoc.source.includes>
+
+    <osgi.import>*</osgi.import>
+    <osgi.export>
+      io.fabric8.kubernetes.client*"
+    </osgi.export>
+    <osgi.private>
+      io.fabric8.kubernetes.client.internal,
+      io.fabric8.kubernetes.client.handlers,
+      io.fabric8.kubernetes.client.dsl.internal,
+      com.squareup*,
+      okio*
+    </osgi.private>
   </properties>
 
   <dependencies>
@@ -43,13 +56,39 @@
 
   <build>
     <plugins>
+
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-scr-plugin</artifactId>
+        <version>${maven.scr.plugin.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>scr</goal>
+            </goals>
+            <configuration>
+              <specVersion>1.2</specVersion>
+              <strictMode>true</strictMode>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+  </plugins>
+  </build>
+      <!--<plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>${maven.jar.plugin.version}</version>
+        <configuration>
+          <archive>
+            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
         <version>2.4.1</version>
-        <configuration>
-          <!-- put your configurations here -->
-        </configuration>
         <executions>
           <execution>
             <phase>package</phase>
@@ -79,6 +118,6 @@
         </executions>
       </plugin>
     </plugins>
-  </build>
+  </build>-->
 
 </project>
