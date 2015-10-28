@@ -55,7 +55,7 @@
 
         <dependency>
             <groupId>org.apache.karaf</groupId>
-            <artifactId>apache-karaf</artifactId>
+            <artifactId>apache-karaf-minimal</artifactId>
             <version>${karaf.version}</version>
             <scope>test</scope>
             <type>tar.gz</type>

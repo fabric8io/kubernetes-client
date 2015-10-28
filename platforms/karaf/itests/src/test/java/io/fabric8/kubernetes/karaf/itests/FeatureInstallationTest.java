@@ -58,7 +58,7 @@ public class FeatureInstallationTest extends TestBase {
 
     @Configuration
     public Option[] config() {
-        MavenArtifactUrlReference karafUrl = maven().groupId("org.apache.karaf").artifactId("apache-karaf").versionAsInProject().type("tar.gz");
+        MavenArtifactUrlReference karafUrl = maven().groupId("org.apache.karaf").artifactId("apache-karaf-minimal").versionAsInProject().type("tar.gz");
         return new Option[]{
                 karafDistributionConfiguration().frameworkUrl(karafUrl).name("Apache Karaf").unpackDirectory(new File("target/exam")),
                 configureSecurity().disableKarafMBeanServerBuilder(),
