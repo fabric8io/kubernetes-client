@@ -125,6 +125,7 @@ import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.api.model.UserList;
 import io.fabric8.openshift.client.dsl.ClientBuildConfigResource;
+import io.fabric8.openshift.client.dsl.ClientProjectRequestOperation;
 import io.fabric8.openshift.client.dsl.ClientSubjectAccessReviewOperation;
 import io.fabric8.openshift.client.dsl.ClientTemplateResource;
 import io.fabric8.openshift.client.dsl.CreateableLocalSubjectAccessReview;
@@ -141,6 +142,7 @@ import io.fabric8.openshift.client.dsl.internal.OAuthClientOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.PolicyBindingOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.PolicyOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.ProjectOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.ProjectRequestsOperationImpl;
 import io.fabric8.openshift.client.dsl.internal.RoleBindingOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.RouteOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.TemplateOperationsImpl;
@@ -311,6 +313,11 @@ public class DefaultOpenShiftClient extends BaseClient implements OpenShiftClien
   @Override
   public ClientNonNamespaceOperation<OpenShiftClient, Project, ProjectList, DoneableProject, ClientResource<Project, DoneableProject>> projects() {
     return new ProjectOperationsImpl(this);
+  }
+
+  @Override
+  public ClientProjectRequestOperation projectrequests() {
+    return new ProjectRequestsOperationImpl(this);
   }
 
   @Override

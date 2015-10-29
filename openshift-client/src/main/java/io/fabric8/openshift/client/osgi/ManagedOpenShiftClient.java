@@ -118,6 +118,7 @@ import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
 import io.fabric8.openshift.client.dsl.ClientBuildConfigResource;
+import io.fabric8.openshift.client.dsl.ClientProjectRequestOperation;
 import io.fabric8.openshift.client.dsl.ClientSubjectAccessReviewOperation;
 import io.fabric8.openshift.client.dsl.ClientTemplateResource;
 import io.fabric8.openshift.client.dsl.CreateableLocalSubjectAccessReview;
@@ -310,6 +311,11 @@ public class ManagedOpenShiftClient extends BaseClient implements OpenShiftClien
   @Override
   public ClientNonNamespaceOperation<OpenShiftClient, Project, ProjectList, DoneableProject, ClientResource<Project, DoneableProject>> projects() {
     return delegate.projects();
+  }
+
+  @Override
+  public ClientProjectRequestOperation projectrequests() {
+    return delegate.projectrequests();
   }
 
   @Override

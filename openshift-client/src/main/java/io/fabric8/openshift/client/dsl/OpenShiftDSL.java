@@ -93,6 +93,8 @@ public interface OpenShiftDSL<C extends Client> extends KubernetesDSL<C> {
 
   ClientNonNamespaceOperation<C, Project, ProjectList, DoneableProject, ClientResource<Project, DoneableProject>> projects();
 
+  ClientProjectRequestOperation projectrequests();
+
   ClientMixedOperation<C, RoleBinding, RoleBindingList, DoneableRoleBinding, ClientResource<RoleBinding, DoneableRoleBinding>> roleBindings();
 
   ClientMixedOperation<C, Route, RouteList, DoneableRoute, ClientResource<Route, DoneableRoute>> routes();

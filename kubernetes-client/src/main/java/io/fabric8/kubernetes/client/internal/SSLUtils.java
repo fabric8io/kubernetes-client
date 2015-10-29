@@ -59,12 +59,12 @@ public final class SSLUtils {
   }
 
   public static TrustManager[] trustManagers(Config config) throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
-    return trustManagers(config.getCaCertData(), config.getCaCertFile());
+    return trustManagers(config.getCaCertData(), config.getCaCertFile(), config.isTrustCerts());
   }
 
-  public static TrustManager[] trustManagers(String certData, String certFile) throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+  public static TrustManager[] trustManagers(String certData, String certFile, boolean isTrustCerts) throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
     TrustManager[] trustManagers = null;
-    if (isNotNullOrEmpty(certData) || isNotNullOrEmpty(certFile)) {
+    if (!isTrustCerts && (isNotNullOrEmpty(certData) || isNotNullOrEmpty(certFile))) {
       KeyStore trustStore = createTrustStore(certData, certFile);
       TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
       tmf.init(trustStore);

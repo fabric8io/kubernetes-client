@@ -115,7 +115,6 @@ public class Config {
     this.apiVersion = apiVersion;
     this.namespace = namespace;
     this.enabledProtocols = enabledProtocols;
-    this.trustCerts = trustCerts;
     this.caCertFile = caCertFile;
     this.caCertData = caCertData;
     this.clientCertFile = clientCertFile;
