@@ -29,6 +29,7 @@ import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
 import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.ImageEditReplaceable;
+import io.fabric8.kubernetes.client.dsl.Reaper;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplaceable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,13 +63,14 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
     this.rolling = rolling;
     this.rollingTimeout = rollingTimeout;
     this.rollingTimeUnit = rollingTimeUnit;
+    reaper = new ReplicationControllerReaper(this);
   }
 
   @Override
   public ClientRollableScallableResource<ReplicationController, DoneableReplicationController> load(InputStream is) {
     try {
       ReplicationController item = unmarshal(is, ReplicationController.class);
-      return new ReplicationControllerOperationsImpl(getClient(), getConfig(), getNamespace(), getName(), isCascading(), item, rolling, rollingTimeout, rollingTimeUnit);
+      return new ReplicationControllerOperationsImpl(client, getConfig(), getNamespace(), getName(), isCascading(), item, rolling, rollingTimeout, rollingTimeUnit);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -76,18 +78,18 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
 
   @Override
   public ClientNonNamespaceOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>> inNamespace(String namespace) {
-    return new ReplicationControllerOperationsImpl(getClient(), getConfig(), namespace, getName(), isCascading(), getItem(), rolling, rollingTimeout, rollingTimeUnit);
+    return new ReplicationControllerOperationsImpl(client, getConfig(), namespace, getName(), isCascading(), getItem(), rolling, rollingTimeout, rollingTimeUnit);
   }
 
 
   @Override
   public ImageEditReplaceable<ReplicationController, ReplicationController, DoneableReplicationController> withTimeout(long timeout, TimeUnit unit) {
-    return new ReplicationControllerOperationsImpl(getClient(), getConfig(),namespace, getName(), isCascading(), getItem(), rolling, timeout, rollingTimeUnit);
+    return new ReplicationControllerOperationsImpl(client, getConfig(),namespace, getName(), isCascading(), getItem(), rolling, timeout, rollingTimeUnit);
   }
 
   @Override
   public ImageEditReplaceable<ReplicationController, ReplicationController, DoneableReplicationController> withTimeoutInMillis(long timeoutInMillis) {
-    return new ReplicationControllerOperationsImpl(getClient(), getConfig(), namespace, getName(), isCascading(), getItem(), rolling, timeoutInMillis, TimeUnit.MILLISECONDS);
+    return new ReplicationControllerOperationsImpl(client, getConfig(), namespace, getName(), isCascading(), getItem(), rolling, timeoutInMillis, TimeUnit.MILLISECONDS);
   }
 
   @Override
@@ -97,12 +99,12 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
 
   @Override
   public ClientRollableScallableResource<ReplicationController, DoneableReplicationController> withName(String name) {
-    return new ReplicationControllerOperationsImpl(getClient(), getConfig(), getNamespace(), name, isCascading(), getItem(), rolling, rollingTimeout, rollingTimeUnit);
+    return new ReplicationControllerOperationsImpl(client, getConfig(), getNamespace(), name, isCascading(), getItem(), rolling, rollingTimeout, rollingTimeUnit);
   }
 
   @Override
   public EditReplaceDeletable<ReplicationController, ReplicationController, DoneableReplicationController, Boolean> cascading(boolean enabled) {
-    return new ReplicationControllerOperationsImpl(getClient(), getConfig(), getNamespace(), getName(), enabled, getItem(), rolling, rollingTimeout, rollingTimeUnit);
+    return new ReplicationControllerOperationsImpl(client, getConfig(), getNamespace(), getName(), enabled, getItem(), rolling, rollingTimeout, rollingTimeUnit);
   }
 
   @Override
@@ -151,7 +153,7 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
 
   @Override
   public ReplicationControllerOperationsImpl rolling() {
-    return new ReplicationControllerOperationsImpl(getClient(), getConfig(), getNamespace(), getName(), isCascading(), getItem(), true, rollingTimeout, rollingTimeUnit);
+    return new ReplicationControllerOperationsImpl(client, getConfig(), getNamespace(), getName(), isCascading(), getItem(), true, rollingTimeout, rollingTimeUnit);
   }
 
   @Override
@@ -175,7 +177,7 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
       .editSpec().editTemplate().editSpec().withContainers(Collections.singletonList(updatedContainer))
       .endSpec().endTemplate().endSpec();
 
-    return new  RollingUpdater(getClient(), config, namespace).rollUpdate(oldRC, newRCBuilder.build());
+    return new  RollingUpdater(client, config, namespace).rollUpdate(oldRC, newRCBuilder.build());
   }
 
   @Override
@@ -188,7 +190,7 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
       @Override
       public void visit(ReplicationController rc) {
         try {
-          new RollingUpdater(getClient(), config, namespace).rollUpdate(getMandatory(), rc);
+          new RollingUpdater(client, config, namespace).rollUpdate(getMandatory(), rc);
         } catch (Exception e) {
           throw KubernetesClientException.launderThrowable(e);
         }
@@ -207,6 +209,19 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
     if (!rolling) {
       return super.replace(rc);
     }
-    return new RollingUpdater(getClient(), config, namespace, rollingTimeUnit.toMillis(rollingTimeout), getConfig().getLoggingInterval()).rollUpdate(getMandatory(), rc);
+    return new RollingUpdater(client, config, namespace, rollingTimeUnit.toMillis(rollingTimeout), getConfig().getLoggingInterval()).rollUpdate(getMandatory(), rc);
+  }
+
+  private static class ReplicationControllerReaper implements Reaper {
+    private ReplicationControllerOperationsImpl oper;
+
+    public ReplicationControllerReaper(ReplicationControllerOperationsImpl oper) {
+      this.oper = oper;
+    }
+
+    @Override
+    public void reap() {
+      oper.scale(0, true);
+    }
   }
 }

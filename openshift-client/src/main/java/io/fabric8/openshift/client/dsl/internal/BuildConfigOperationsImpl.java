@@ -22,7 +22,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Triggerable;
 import io.fabric8.kubernetes.client.dsl.Typeable;
 import io.fabric8.kubernetes.client.dsl.internal.BaseOperation;
-import io.fabric8.kubernetes.client.internal.URLUtils;
+import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigList;
 import io.fabric8.openshift.api.model.BuildRequest;

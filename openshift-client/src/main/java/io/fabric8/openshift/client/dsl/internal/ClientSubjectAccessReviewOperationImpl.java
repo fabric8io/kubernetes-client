@@ -18,7 +18,7 @@ package io.fabric8.openshift.client.dsl.internal;
 
 import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.internal.OperationSupport;
+import io.fabric8.kubernetes.client.dsl.OperationSupport;
 import io.fabric8.openshift.api.model.LocalSubjectAccessReview;
 import io.fabric8.openshift.api.model.LocalSubjectAccessReviewBuilder;
 import io.fabric8.openshift.api.model.SubjectAccessReview;

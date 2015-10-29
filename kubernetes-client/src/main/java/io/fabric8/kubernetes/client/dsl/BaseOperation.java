@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl.internal;
+package io.fabric8.kubernetes.client.dsl;
 
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
@@ -28,12 +28,8 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
-import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
-import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
-import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
-import io.fabric8.kubernetes.client.internal.URLUtils;
+import io.fabric8.kubernetes.client.dsl.internal.WatchConnectionManager;
+import io.fabric8.kubernetes.client.utils.URLUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,7 +44,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 
-import static io.fabric8.kubernetes.client.internal.Utils.join;
+import static io.fabric8.kubernetes.client.utils.Utils.join;
 
 public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
   extends OperationSupport
@@ -68,6 +64,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   private final Class<D> doneableType;
 
   private boolean reaping;
+  protected Reaper reaper;
 
   protected BaseOperation(OkHttpClient client, Config config, String resourceT, String namespace, String name, Boolean cascading, T item) {
     super(client, config, resourceT,namespace,name);
@@ -76,6 +73,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     this.type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     this.listType = (Class<L>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
     this.doneableType = (Class<D>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[2];
+    this.reaper = null;
   }
 
   protected BaseOperation(OkHttpClient client, Config config, String resourceT, String namespace, String name, Boolean cascading, T item, Class<T> type, Class<L> listType, Class<D> doneableType) {
@@ -85,6 +83,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     this.type = type;
     this.listType = listType;
     this.doneableType = doneableType;
+    this.reaper = null;
   }
 
   @Override
@@ -123,7 +122,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     }
   }
 
-  T getMandatory() {
+  public T getMandatory() {
     T item = get();
     if (item != null) {
       return item;
@@ -275,7 +274,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     return this;
   }
 
-  String getLabelQueryParam() {
+  public String getLabelQueryParam() {
     StringBuilder sb = new StringBuilder();
     if (labels != null && !labels.isEmpty()) {
       for (Iterator<Map.Entry<String, String>> iter = labels.entrySet().iterator(); iter.hasNext(); ) {
@@ -319,7 +318,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     return sb.toString();
   }
 
-  String getFieldQueryParam() {
+  public String getFieldQueryParam() {
     StringBuilder sb = new StringBuilder();
     if (fields != null && !fields.isEmpty()) {
       if (sb.length() > 0) {
@@ -359,7 +358,6 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     if (name != null && !name.isEmpty()) {
       try {
         if (cascading && !isReaping()) {
-          Reaper reaper = ReaperFactory.getReaper(this);
           if (reaper != null) {
             setReaping(true);
             reaper.reap();

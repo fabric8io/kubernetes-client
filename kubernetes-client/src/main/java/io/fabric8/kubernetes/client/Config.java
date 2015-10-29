@@ -20,7 +20,7 @@ import io.fabric8.kubernetes.api.model.AuthInfo;
 import io.fabric8.kubernetes.api.model.Cluster;
 import io.fabric8.kubernetes.api.model.Context;
 import io.fabric8.kubernetes.client.internal.KubeConfigUtils;
-import io.fabric8.kubernetes.client.internal.Utils;
+import io.fabric8.kubernetes.client.utils.Utils;
 import io.sundr.builder.annotations.Buildable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
