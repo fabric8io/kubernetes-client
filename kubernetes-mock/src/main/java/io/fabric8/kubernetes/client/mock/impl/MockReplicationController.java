@@ -26,7 +26,7 @@ import io.fabric8.kubernetes.client.dsl.Rollable;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
 import io.fabric8.kubernetes.client.dsl.Scaleable;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplaceable;
-import io.fabric8.kubernetes.client.dsl.internal.ClientMixedOperation;
+import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockRollableScaleableResource;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableReplicationController;
