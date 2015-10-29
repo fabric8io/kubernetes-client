@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.handlers;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
@@ -32,12 +32,12 @@ public class SecretHandler implements ResourceHandler<Secret> {
   }
 
   @Override
-  public Secret create(AsyncHttpClient client, Config config, String namespace, Secret item) {
+  public Secret create(OkHttpClient client, Config config, String namespace, Secret item) {
     return new SecretOperationsImpl(client, config, namespace, null, true, item).create();
   }
 
   @Override
-  public Boolean delete(AsyncHttpClient client, Config config, String namespace, Secret item) {
+  public Boolean delete(OkHttpClient client, Config config, String namespace, Secret item) {
     return new SecretOperationsImpl(client, config, namespace, null, true, item).delete(item);
   }
 }

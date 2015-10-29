@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.DoneableImageStream;
 import io.fabric8.openshift.api.model.ImageStream;
@@ -25,11 +25,11 @@ import io.fabric8.openshift.client.OpenShiftConfig;
 public class ImageStreamOperationsImpl extends OpenShiftOperation<ImageStream, ImageStreamList, DoneableImageStream,
   ClientResource<ImageStream, DoneableImageStream>> {
 
-  public ImageStreamOperationsImpl(AsyncHttpClient client, OpenShiftConfig config, String namespace) {
+  public ImageStreamOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
     this(client, config, namespace, null, true, null);
   }
 
-  public ImageStreamOperationsImpl(AsyncHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, ImageStream item) {
+  public ImageStreamOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, ImageStream item) {
     super(client, config, "imagestreams", namespace, name, cascading, item);
   }
 }

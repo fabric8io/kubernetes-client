@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.handlers;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
@@ -31,12 +31,12 @@ public class ServiceHandler implements ResourceHandler<Service> {
   }
 
   @Override
-  public Service create(AsyncHttpClient client, Config config, String namespace, Service item) {
+  public Service create(OkHttpClient client, Config config, String namespace, Service item) {
     return new ServiceOperationsImpl(client, config, namespace, null, true, item).create();
   }
 
   @Override
-  public Boolean delete(AsyncHttpClient client, Config config, String namespace, Service item) {
+  public Boolean delete(OkHttpClient client, Config config, String namespace, Service item) {
     return new ServiceOperationsImpl(client, config, namespace, null, true, item).delete(item);
   }
 }

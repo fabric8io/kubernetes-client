@@ -15,20 +15,21 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableNode;
 import io.fabric8.kubernetes.api.model.Node;
 import io.fabric8.kubernetes.api.model.NodeList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.HasMetadataOperation;
 
 public class NodeOperationsImpl extends HasMetadataOperation<Node, NodeList, DoneableNode, ClientResource<Node, DoneableNode>> {
 
-  public NodeOperationsImpl(AsyncHttpClient client, Config config) {
+  public NodeOperationsImpl(OkHttpClient client, Config config) {
     this(client, config, null, null, true, null);
   }
 
-  public NodeOperationsImpl(AsyncHttpClient client, Config config, String namespace, String name, Boolean cascading, Node item) {
+  public NodeOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, Node item) {
     super(client, config, "nodes", namespace, name, cascading, item);
   }
 

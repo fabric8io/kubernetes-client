@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.DoneablePolicy;
 import io.fabric8.openshift.api.model.Policy;
@@ -23,11 +23,11 @@ import io.fabric8.openshift.api.model.PolicyList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
 public class PolicyOperationsImpl extends OpenShiftOperation<Policy, PolicyList, DoneablePolicy, ClientResource<Policy, DoneablePolicy>> {
-  public PolicyOperationsImpl(AsyncHttpClient client, OpenShiftConfig config, String namespace) {
+  public PolicyOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
     this(client, config, namespace, null, true, null);
   }
 
-  public PolicyOperationsImpl(AsyncHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, Policy item) {
+  public PolicyOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, Policy item) {
     super(client, config, "policies", namespace, name, cascading, item);
   }
 }

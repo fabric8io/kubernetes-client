@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client.handlers;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.openshift.api.model.BuildConfig;
@@ -34,12 +34,12 @@ public class BuildConfigHandler implements ResourceHandler<BuildConfig> {
   }
 
   @Override
-  public BuildConfig create(AsyncHttpClient client, Config config, String namespace, BuildConfig item) {
+  public BuildConfig create(OkHttpClient client, Config config, String namespace, BuildConfig item) {
       return new BuildConfigOperationsImpl(client, OpenShiftConfig.wrap(config), namespace, null, true, item, null, null).create();
   }
 
   @Override
-  public Boolean delete(AsyncHttpClient client, Config config, String namespace, BuildConfig item) {
+  public Boolean delete(OkHttpClient client, Config config, String namespace, BuildConfig item) {
       return new BuildConfigOperationsImpl(client, OpenShiftConfig.wrap(config), namespace, null, true, item, null, null).delete(item);
   }
 }

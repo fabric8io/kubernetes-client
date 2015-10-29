@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.handlers;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
@@ -33,12 +33,12 @@ public class NamespaceHandler implements ResourceHandler<Namespace> {
   }
 
   @Override
-  public Namespace create(AsyncHttpClient client, Config config, String namespace, Namespace item) {
+  public Namespace create(OkHttpClient client, Config config, String namespace, Namespace item) {
     return new NamespaceOperationsImpl(client, config, namespace, null, true, item).create();
   }
 
   @Override
-  public Boolean delete(AsyncHttpClient client, Config config, String namespace, Namespace item) {
+  public Boolean delete(OkHttpClient client, Config config, String namespace, Namespace item) {
     return new NamespaceOperationsImpl(client, config, namespace, null, true, item).delete(item);
   }
 }

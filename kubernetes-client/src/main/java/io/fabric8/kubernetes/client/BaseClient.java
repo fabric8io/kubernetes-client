@@ -27,9 +27,7 @@ import com.squareup.okhttp.Response;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.client.dsl.BaseOperation;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
-import io.fabric8.kubernetes.client.internal.Utils;
 import io.fabric8.kubernetes.client.utils.Utils;
-import org.jboss.netty.handler.ssl.util.InsecureTrustManagerFactory;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.KeyManager;
@@ -50,7 +48,7 @@ import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
 
 public class BaseClient implements Client {
   
-  private OkHttpClient httpClient;
+  protected OkHttpClient httpClient;
   private URL masterUrl;
   private String apiVersion;
   private String namespace;

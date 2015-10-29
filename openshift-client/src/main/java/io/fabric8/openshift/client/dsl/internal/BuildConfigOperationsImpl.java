@@ -21,7 +21,7 @@ import com.squareup.okhttp.RequestBody;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Triggerable;
 import io.fabric8.kubernetes.client.dsl.Typeable;
-import io.fabric8.kubernetes.client.dsl.internal.BaseOperation;
+import io.fabric8.kubernetes.client.dsl.BaseOperation;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigList;
@@ -30,12 +30,13 @@ import io.fabric8.openshift.api.model.DoneableBuildConfig;
 import io.fabric8.openshift.api.model.WebHookTrigger;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.BuildConfigOperation;
+import io.fabric8.openshift.client.dsl.ClientBuildConfigResource;
 
 import java.io.InputStream;
 import java.net.URL;
 
 public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, BuildConfigList, DoneableBuildConfig,
-  ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void>>
+        ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void>>
   implements BuildConfigOperation {
 
   private final String secret;

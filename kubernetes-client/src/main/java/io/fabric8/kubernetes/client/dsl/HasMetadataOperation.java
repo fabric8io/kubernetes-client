@@ -14,18 +14,15 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client.dsl.internal;
+package io.fabric8.kubernetes.client.dsl;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.BaseOperation;
-import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.kubernetes.client.dsl.Reaper;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.TimeUnit;
@@ -33,11 +30,11 @@ import java.util.concurrent.TimeUnit;
 public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
   extends BaseOperation< T, L, D, R> {
 
-  protected HasMetadataOperation(AsyncHttpClient client, Config config, String resourceT, String namespace, String name, Boolean cascading, T item) {
+  protected HasMetadataOperation(OkHttpClient client, Config config, String resourceT, String namespace, String name, Boolean cascading, T item) {
     super(client, config, resourceT, namespace, name, cascading, item);
   }
 
-  protected HasMetadataOperation(AsyncHttpClient client, Config config, String resourceT, String namespace, String name, Boolean cascading, T item, Class<T> type, Class<L> listType, Class<D> doneableType) {
+  protected HasMetadataOperation(OkHttpClient client, Config config, String resourceT, String namespace, String name, Boolean cascading, T item, Class<T> type, Class<L> listType, Class<D> doneableType) {
     super(client, config, resourceT, namespace, name, cascading, item, type, listType, doneableType);
   }
 

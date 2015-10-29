@@ -16,7 +16,7 @@
 
 package io.fabric8.openshift.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.OperationSupport;
 import io.fabric8.openshift.api.model.LocalSubjectAccessReview;
@@ -37,11 +37,11 @@ import java.util.concurrent.ExecutionException;
 public class ClientSubjectAccessReviewOperationImpl extends OperationSupport implements ClientSubjectAccessReviewOperation<CreateableSubjectAccessReview, CreateableLocalSubjectAccessReview> {
 
 
-  public ClientSubjectAccessReviewOperationImpl(AsyncHttpClient client, OpenShiftConfig config) {
+  public ClientSubjectAccessReviewOperationImpl(OkHttpClient client, OpenShiftConfig config) {
     this(client, config, null);
   }
 
-  public ClientSubjectAccessReviewOperationImpl(AsyncHttpClient client, OpenShiftConfig config, String namespace) {
+  public ClientSubjectAccessReviewOperationImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
     super(client, config, "subjectaccessreviews", namespace, null);
   }
 
@@ -71,15 +71,15 @@ public class ClientSubjectAccessReviewOperationImpl extends OperationSupport imp
 
 
   private class CreateableLocalSubjectAccessReviewImpl extends CreateableLocalSubjectAccessReview {
-    private final AsyncHttpClient client;
+    private final OkHttpClient client;
     private final LocalSubjectAccessReviewBuilder builder;
 
-    private CreateableLocalSubjectAccessReviewImpl(AsyncHttpClient client) {
+    private CreateableLocalSubjectAccessReviewImpl(OkHttpClient client) {
       this.client = client;
       this.builder = new LocalSubjectAccessReviewBuilder(CreateableLocalSubjectAccessReviewImpl.this);
     }
 
-    private CreateableLocalSubjectAccessReviewImpl(AsyncHttpClient client, LocalSubjectAccessReviewBuilder builder) {
+    private CreateableLocalSubjectAccessReviewImpl(OkHttpClient client, LocalSubjectAccessReviewBuilder builder) {
       this.client = client;
       this.builder = builder;
     }
@@ -115,15 +115,15 @@ public class ClientSubjectAccessReviewOperationImpl extends OperationSupport imp
   }
 
   private class CreateableSubjectAccessReviewImpl extends CreateableSubjectAccessReview {
-    private final AsyncHttpClient client;
+    private final OkHttpClient client;
     private final SubjectAccessReviewBuilder builder;
 
-    private CreateableSubjectAccessReviewImpl(AsyncHttpClient client) {
+    private CreateableSubjectAccessReviewImpl(OkHttpClient client) {
       this.client = client;
       this.builder = new SubjectAccessReviewBuilder(CreateableSubjectAccessReviewImpl.this);
     }
 
-    private CreateableSubjectAccessReviewImpl(AsyncHttpClient client, SubjectAccessReviewBuilder builder) {
+    private CreateableSubjectAccessReviewImpl(OkHttpClient client, SubjectAccessReviewBuilder builder) {
       this.client = client;
       this.builder = builder;
     }

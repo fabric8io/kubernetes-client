@@ -15,14 +15,14 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
-import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
+import io.fabric8.kubernetes.client.dsl.HasMetadataOperation;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
 import java.io.InputStream;
@@ -32,7 +32,7 @@ import java.net.URL;
 public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
   extends HasMetadataOperation<T, L, D, R> {
 
-  protected OpenShiftOperation(AsyncHttpClient client, OpenShiftConfig config, String resourceT, String namespace, String name, Boolean cascading, T item) {
+  protected OpenShiftOperation(OkHttpClient client, OpenShiftConfig config, String resourceT, String namespace, String name, Boolean cascading, T item) {
     super(client, config, resourceT, namespace, name, cascading, item);
   }
 
@@ -49,7 +49,7 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
   public R withName(String name) {
     try {
       return (R) getClass()
-        .getConstructor(AsyncHttpClient.class, OpenShiftConfig.class, String.class, String.class, Boolean.class, getType())
+        .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, Boolean.class, getType())
         .newInstance(getClient(), getConfig(), getNamespace(), name, isCascading(), getItem());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
@@ -60,7 +60,7 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
   public OpenShiftOperation<T, L, D, R> inNamespace(String namespace) {
     try {
       return getClass()
-        .getConstructor(AsyncHttpClient.class, OpenShiftConfig.class, String.class, String.class, Boolean.class, getType())
+        .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, Boolean.class, getType())
         .newInstance(getClient(), getConfig(), namespace, getName(), isCascading(), getItem());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
@@ -72,7 +72,7 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
   public EditReplaceDeletable<T, T, D, Boolean> cascading(boolean enabled) {
     try {
       return (R) getClass()
-        .getConstructor(AsyncHttpClient.class, OpenShiftConfig.class, String.class, String.class, Boolean.class, getType())
+        .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, Boolean.class, getType())
         .newInstance(getClient(), getConfig(), getNamespace(), getName(), enabled, getItem());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
@@ -83,7 +83,7 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
   public R load(InputStream is) {
     try {
       return (R) getClass()
-        .getConstructor(AsyncHttpClient.class, OpenShiftConfig.class, String.class, String.class, Boolean.class, getType())
+        .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, Boolean.class, getType())
         .newInstance(getClient(), getConfig(), getNamespace(), getName(), isCascading(), unmarshal(is, getType()));
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);

@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client.handlers;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.openshift.api.model.ImageStream;
@@ -34,12 +34,12 @@ public class ImageStreamHandler implements ResourceHandler<ImageStream> {
   }
 
   @Override
-  public ImageStream create(AsyncHttpClient client, Config config, String namespace, ImageStream item) {
+  public ImageStream create(OkHttpClient client, Config config, String namespace, ImageStream item) {
       return new ImageStreamOperationsImpl(client, OpenShiftConfig.wrap(config), namespace, null, true, item).create();
   }
 
   @Override
-  public Boolean delete(AsyncHttpClient client, Config config, String namespace, ImageStream item) {
+  public Boolean delete(OkHttpClient client, Config config, String namespace, ImageStream item) {
       return new ImageStreamOperationsImpl(client, OpenShiftConfig.wrap(config), namespace, null, true, item).delete(item);
     }
 }

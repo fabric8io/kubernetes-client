@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DoneableKubernetesList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -45,7 +45,7 @@ public class KubernetesListOperationsImpl
 
   private KubernetesList item;
 
-  public KubernetesListOperationsImpl(AsyncHttpClient client, Config config, String namespace) {
+  public KubernetesListOperationsImpl(OkHttpClient client, Config config, String namespace) {
     super(client, config, null, namespace, null);
   }
 

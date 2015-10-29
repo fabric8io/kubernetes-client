@@ -21,10 +21,10 @@ import com.squareup.okhttp.Response;
 import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
-import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientLoggableResource;
+import io.fabric8.kubernetes.client.dsl.HasMetadataOperation;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 
 import java.net.URL;

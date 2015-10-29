@@ -38,8 +38,6 @@
       io.fabric8.kubernetes.client.internal,
       io.fabric8.kubernetes.client.handlers,
       io.fabric8.kubernetes.client.dsl.internal,
-      com.squareup*,
-      okio*
     </osgi.private>
   </properties>
 

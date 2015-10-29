@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client.handlers;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.openshift.api.model.Template;
@@ -34,13 +34,13 @@ public class TemplateHandler implements ResourceHandler<Template> {
   }
 
   @Override
-  public Template create(AsyncHttpClient client, Config config, String namespace, Template item) {
+  public Template create(OkHttpClient client, Config config, String namespace, Template item) {
       return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), namespace, null, true, item).create();
   }
 
 
   @Override
-  public Boolean delete(AsyncHttpClient client, Config config, String namespace, Template item) {
+  public Boolean delete(OkHttpClient client, Config config, String namespace, Template item) {
       return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), namespace, null, true, item).delete(item);
   }
 }

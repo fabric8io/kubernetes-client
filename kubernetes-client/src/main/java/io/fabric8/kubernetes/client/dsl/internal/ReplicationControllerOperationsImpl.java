@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerBuilder;
@@ -28,6 +28,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
 import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
+import io.fabric8.kubernetes.client.dsl.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.ImageEditReplaceable;
 import io.fabric8.kubernetes.client.dsl.Reaper;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplaceable;
@@ -54,11 +55,11 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
   private final long rollingTimeout;
   private final TimeUnit rollingTimeUnit;
 
-  public ReplicationControllerOperationsImpl(AsyncHttpClient client, Config config, String namespace) {
+  public ReplicationControllerOperationsImpl(OkHttpClient client, Config config, String namespace) {
     this(client, config, namespace, null, true, null, false, config.getRollingTimeout(), TimeUnit.MINUTES);
   }
 
-  public ReplicationControllerOperationsImpl(AsyncHttpClient client, Config config, String namespace, String name, Boolean cascading, ReplicationController item, Boolean rolling, long rollingTimeout, TimeUnit rollingTimeUnit) {
+  public ReplicationControllerOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, ReplicationController item, Boolean rolling, long rollingTimeout, TimeUnit rollingTimeUnit) {
     super(client, config, "replicationcontrollers", namespace, name, cascading, item);
     this.rolling = rolling;
     this.rollingTimeout = rollingTimeout;

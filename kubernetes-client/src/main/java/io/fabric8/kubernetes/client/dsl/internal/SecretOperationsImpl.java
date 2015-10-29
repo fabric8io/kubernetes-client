@@ -15,19 +15,20 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableSecret;
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.SecretList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.HasMetadataOperation;
 
 public class SecretOperationsImpl  extends HasMetadataOperation<Secret, SecretList, DoneableSecret, ClientResource<Secret, DoneableSecret>> {
-  public SecretOperationsImpl(AsyncHttpClient client, Config config, String namespace) {
+  public SecretOperationsImpl(OkHttpClient client, Config config, String namespace) {
     this(client, config, namespace, null, true, null);
   }
 
-  public SecretOperationsImpl(AsyncHttpClient client, Config config, String namespace, String name, Boolean cascading, Secret item) {
+  public SecretOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, Secret item) {
     super(client, config, "secrets", namespace, name, cascading, item);
   }
 }

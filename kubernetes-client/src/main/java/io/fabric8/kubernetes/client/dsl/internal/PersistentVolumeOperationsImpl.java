@@ -15,21 +15,22 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.DoneablePersistentVolume;
 import io.fabric8.kubernetes.api.model.PersistentVolume;
 import io.fabric8.kubernetes.api.model.PersistentVolumeList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.HasMetadataOperation;
 
 public class PersistentVolumeOperationsImpl
   extends HasMetadataOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, ClientResource<PersistentVolume, DoneablePersistentVolume>> {
 
-  public PersistentVolumeOperationsImpl(AsyncHttpClient client, Config config, String namespace) {
+  public PersistentVolumeOperationsImpl(OkHttpClient client, Config config, String namespace) {
     this(client, config, namespace, null, true, null);
   }
 
-  public PersistentVolumeOperationsImpl(AsyncHttpClient client, Config config, String namespace, String name, Boolean cascading, PersistentVolume item) {
+  public PersistentVolumeOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, PersistentVolume item) {
     super(client, config, "persistentvolumes", namespace, name, cascading, item);
   }
 }
