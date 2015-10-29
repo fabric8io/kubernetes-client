@@ -62,7 +62,7 @@ public class TemplateOperationsImpl
         }
       }
 
-      RequestBody body = RequestBody.create(JSON, OBJECT_MAPPER.writeValueAsString(t));
+      RequestBody body = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(t));
       Request.Builder requestBuilder = new Request.Builder().post(body).url(getProcessUrl());
       t = handleResponse(requestBuilder, 201);
       KubernetesList l = new KubernetesList();

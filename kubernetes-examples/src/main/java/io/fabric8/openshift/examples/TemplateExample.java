@@ -17,6 +17,7 @@ package io.fabric8.openshift.examples;
  */
 
 import io.fabric8.kubernetes.api.model.KubernetesList;
+import io.fabric8.kubernetes.client.dsl.internal.OperationSupport;
 import io.fabric8.openshift.api.model.Parameter;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
@@ -34,8 +35,7 @@ public class TemplateExample {
       try {
         client.namespaces().createNew().withNewMetadata().withName("thisisatest").endMetadata().done();
 
-        Template t = client.unmarshal(TemplateExample.class.getResourceAsStream("/test-template.yml"), Template.class);
-
+        Template t = client.templates().load(TemplateExample.class.getResourceAsStream("/test-template.yml")).get();
         for (Parameter p : t.getParameters()) {
           System.out.println(p.getName());
         }

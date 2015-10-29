@@ -35,22 +35,20 @@ import java.util.Arrays;
 import java.util.List;
 
 public class KubernetesListOperationsImpl<C extends GenericKubernetesClient<C>>
+  extends OperationSupport<C>
   implements ClientKubernetesListOperation<C>,
   ClientKubernetesListMixedOperation<C>,
   Loadable<InputStream, CreateGettable<KubernetesList, KubernetesList, DoneableKubernetesList>>,
   CreateGettable<KubernetesList, KubernetesList, DoneableKubernetesList> {
 
-  private final C client;
   private KubernetesList item;
-  private String namespace;
 
   public KubernetesListOperationsImpl(C client) {
     this(client, client.getNamespace());
   }
 
   public KubernetesListOperationsImpl(C client, String namespace) {
-    this.client = client;
-    this.namespace = namespace;
+    super(client, null, namespace, null);
   }
 
   @Override
@@ -94,7 +92,7 @@ public class KubernetesListOperationsImpl<C extends GenericKubernetesClient<C>>
 
   @Override
   public CreateGettable<KubernetesList, KubernetesList, DoneableKubernetesList> load(InputStream is) {
-    item = client.unmarshal(is, KubernetesList.class);
+    item = unmarshal(is, KubernetesList.class);
     return this;
   }
 

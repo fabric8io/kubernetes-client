@@ -66,7 +66,7 @@ public class ReplicationControllerOperationsImpl<C extends Client> extends HasMe
   @Override
   public ClientRollableScallableResource<ReplicationController, DoneableReplicationController> load(InputStream is) {
     try {
-      ReplicationController item = getClient().unmarshal(is, ReplicationController.class);
+      ReplicationController item = unmarshal(is, ReplicationController.class);
       return new ReplicationControllerOperationsImpl(getClient(), getNamespace(), getName(), isCascading(), item, rolling, rollingTimeout, rollingTimeUnit);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);

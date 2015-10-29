@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client;
+package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.openshift.api.model.Template;
 import org.junit.Test;
@@ -26,13 +26,13 @@ public class TestUnmarshal {
 
   @Test
   public void testUnmarshalJSONTemplate() throws IOException {
-    Template t = new DefaultKubernetesClient().unmarshal(getClass().getResourceAsStream("/test-template.json"), Template.class);
+    Template t = new OperationSupport<>().unmarshal(getClass().getResourceAsStream("/test-template.json"), Template.class);
     assertEquals("eap6-basic-sti", t.getMetadata().getName());
   }
 
   @Test
   public void testUnmarshalYAMLTemplate() throws IOException {
-   Template t = new DefaultKubernetesClient().unmarshal(getClass().getResourceAsStream("/test-template.yml"), Template.class);
+   Template t = new OperationSupport<>().unmarshal(getClass().getResourceAsStream("/test-template.yml"), Template.class);
     assertEquals("eap6-basic-sti", t.getMetadata().getName());
   }
 
