@@ -17,5 +17,4 @@ package io.fabric8.kubernetes.client;
 
 public interface KubernetesClient extends GenericKubernetesClient<KubernetesClient> {
 
-
 }

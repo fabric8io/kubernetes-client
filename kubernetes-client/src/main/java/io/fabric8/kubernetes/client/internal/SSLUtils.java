@@ -13,17 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.kubernetes.client.internal;
 
 import io.fabric8.kubernetes.client.Config;
-import org.jboss.netty.handler.ssl.util.InsecureTrustManagerFactory;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyManagementException;
@@ -33,6 +32,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.security.spec.InvalidKeySpecException;
 
 import static io.fabric8.kubernetes.client.internal.CertUtils.createKeyStore;
@@ -49,11 +49,21 @@ public final class SSLUtils {
     return sslContext(keyManagers(config), trustManagers(config), config.isTrustCerts());
   }
 
-  public static SSLContext sslContext(KeyManager[] keyManagers,  TrustManager[] trustManagers, boolean trustCerts) throws CertificateException, UnrecoverableKeyException, NoSuchAlgorithmException, KeyStoreException, IOException, InvalidKeySpecException, KeyManagementException {
+  public static SSLContext sslContext(KeyManager[] keyManagers, TrustManager[] trustManagers, boolean trustCerts) throws CertificateException, UnrecoverableKeyException, NoSuchAlgorithmException, KeyStoreException, IOException, InvalidKeySpecException, KeyManagementException {
     if (trustManagers == null && trustCerts) {
-      trustManagers = InsecureTrustManagerFactory.INSTANCE.getTrustManagers();
+      trustManagers = new TrustManager[]{new X509TrustManager() {
+        public void checkClientTrusted(X509Certificate[] chain, String s) {
+        }
+
+        public void checkServerTrusted(X509Certificate[] chain, String s) {
+        }
+
+        public X509Certificate[] getAcceptedIssuers() {
+          return new X509Certificate[0];
+        }
+      }};
     }
-    SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
+    SSLContext sslContext = SSLContext.getInstance("TLS");
     sslContext.init(keyManagers, trustManagers, new SecureRandom());
     return sslContext;
   }
@@ -80,7 +90,7 @@ public final class SSLUtils {
   public static KeyManager[] keyManagers(String certData, String certFile, String keyData, String keyFile, String algo, String passphrase) throws NoSuchAlgorithmException, UnrecoverableKeyException, KeyStoreException, CertificateException, InvalidKeySpecException, IOException {
     KeyManager[] keyManagers = null;
     if ((isNotNullOrEmpty(certData) || isNotNullOrEmpty(certFile)) && (isNotNullOrEmpty(keyData) || isNotNullOrEmpty(keyFile))) {
-      KeyStore keyStore = createKeyStore(certData,certFile, keyData, keyFile, algo, passphrase.toCharArray());
+      KeyStore keyStore = createKeyStore(certData, certFile, keyData, keyFile, algo, passphrase.toCharArray());
       KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
       kmf.init(keyStore, passphrase.toCharArray());
       keyManagers = kmf.getKeyManagers();

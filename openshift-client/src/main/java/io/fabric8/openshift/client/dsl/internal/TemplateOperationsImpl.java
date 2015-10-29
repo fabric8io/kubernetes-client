@@ -15,9 +15,10 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.client.internal.URLUtils;
 import io.fabric8.openshift.api.model.DoneableTemplate;
 import io.fabric8.openshift.api.model.Parameter;
@@ -48,7 +49,6 @@ public class TemplateOperationsImpl
   @Override
   public KubernetesList process(ParameterValue... values) {
     Template t = get();
-    AsyncHttpClient.BoundRequestBuilder requestBuilder = null;
     Map<String, String> valuesMap = new HashMap<>(values.length);
     for (ParameterValue pv : values) {
       valuesMap.put(pv.getName(), pv.getValue());
@@ -62,9 +62,8 @@ public class TemplateOperationsImpl
         }
       }
 
-      requestBuilder = getClient().getHttpClient().preparePost(getProcessUrl().toString());
-
-      requestBuilder.setBody(OBJECT_MAPPER.writer().writeValueAsString(t));
+      RequestBody body = RequestBody.create(JSON, OBJECT_MAPPER.writeValueAsString(t));
+      Request.Builder requestBuilder = new Request.Builder().post(body).url(getProcessUrl());
       t = handleResponse(requestBuilder, 201);
       KubernetesList l = new KubernetesList();
       l.setItems(t.getObjects());

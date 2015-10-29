@@ -15,15 +15,15 @@
  */
 package io.fabric8.kubernetes.client.internal;
 
-import com.ning.http.util.Base64;
-import net.oauth.signature.pem.PEMReader;
-import net.oauth.signature.pem.PKCS1EncodedKeySpec;
+import okio.ByteString;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.security.KeyFactory;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -41,7 +41,7 @@ public class CertUtils {
 
   public static InputStream getInputStreamFromDataOrFile(String data, String file) throws FileNotFoundException {
     if (data != null) {
-      return new ByteArrayInputStream(Base64.decode(data));
+      return new ByteArrayInputStream(ByteString.decodeBase64(data).toByteArray());
     }
     if (file != null) {
       return new FileInputStream(file);
@@ -71,16 +71,18 @@ public class CertUtils {
   public static KeyStore createKeyStore(InputStream certInputStream, InputStream keyInputStream, String clientKeyAlgo, char[] clientKeyPassphrase) throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeySpecException, KeyStoreException {
       CertificateFactory certFactory = CertificateFactory.getInstance("X509");
       X509Certificate cert = (X509Certificate) certFactory.generateCertificate(certInputStream);
-      PEMReader reader = new PEMReader(keyInputStream);
+
+      byte[] keyBytes = decodePem(keyInputStream);
+
       PrivateKey privateKey;
 
       KeyFactory keyFactory = KeyFactory.getInstance(clientKeyAlgo);
       try {
         // First let's try PKCS8
-        privateKey = keyFactory.generatePrivate(new PKCS8EncodedKeySpec(reader.getDerBytes()));
+        privateKey = keyFactory.generatePrivate(new PKCS8EncodedKeySpec(keyBytes));
       } catch (InvalidKeySpecException e) {
         // Otherwise try PKCS8
-        RSAPrivateCrtKeySpec keySpec = new PKCS1EncodedKeySpec(reader.getDerBytes()).getKeySpec();
+        RSAPrivateCrtKeySpec keySpec = PKCS1Util.decodePKCS1(keyBytes);
         privateKey = keyFactory.generatePrivate(keySpec);
       }
 
@@ -97,5 +99,36 @@ public class CertUtils {
     try (InputStream certInputStream = getInputStreamFromDataOrFile(clientCertData, clientCertFile); InputStream keyInputStream = getInputStreamFromDataOrFile(clientKeyData, clientKeyFile)) {
       return createKeyStore(certInputStream, keyInputStream, clientKeyAlgo, clientKeyPassphrase);
     }
+  }
+
+  // This method is inspired and partly taken over from
+  // http://oauth.googlecode.com/svn/code/java/
+  // All credits to belong to them.
+  private static byte[] decodePem(InputStream keyInputStream) throws IOException {
+    BufferedReader reader = new BufferedReader(new InputStreamReader(keyInputStream));
+    try {
+      String line;
+      while ((line = reader.readLine()) != null) {
+        if (line.contains("-----BEGIN ")) {
+          return readBytes(reader, line.trim().replace("BEGIN", "END"));
+        }
+      }
+      throw new IOException("PEM is invalid: no begin marker");
+    } finally {
+      reader.close();
+    }
+  }
+
+  private static byte[] readBytes(BufferedReader reader, String endMarker) throws IOException {
+    String line;
+    StringBuffer buf = new StringBuffer();
+
+    while ((line = reader.readLine()) != null) {
+      if (line.indexOf(endMarker) != -1) {
+        return ByteString.decodeBase64(buf.toString()).toByteArray();
+      }
+      buf.append(line.trim());
+    }
+    throw new IOException("PEM is invalid : No end marker");
   }
 }

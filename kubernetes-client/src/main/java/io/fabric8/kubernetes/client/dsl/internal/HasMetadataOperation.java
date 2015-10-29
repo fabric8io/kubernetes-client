@@ -20,12 +20,9 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.TimeUnit;
@@ -74,7 +71,7 @@ public class HasMetadataOperation<C extends Client, T extends HasMetadata, L ext
   @Override
   public T replace(T item) {
     Exception caught = null;
-    int maxTries = 5;
+    int maxTries = 10;
     for (int i = 0; i < maxTries; i++) {
       try {
         if (isCascading()) {
@@ -84,7 +81,11 @@ public class HasMetadataOperation<C extends Client, T extends HasMetadata, L ext
             reaper.reap();
           }
         }
-        item.getMetadata().setResourceVersion(get().getMetadata().getResourceVersion());
+        T got = get();
+        if (got == null) {
+          return null;
+        }
+        item.getMetadata().setResourceVersion(got.getMetadata().getResourceVersion());
         return handleReplace(item);
       } catch (KubernetesClientException e) {
         caught = e;

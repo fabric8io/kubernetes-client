@@ -75,7 +75,8 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <async.http.version>1.9.30</async.http.version>
+    <okhttp.version>2.5.0</okhttp.version>
+    <okio.version>1.6.0</okio.version>
     <easymock.version>3.2</easymock.version>
     <felix.scr.annotations.version>1.9.8</felix.scr.annotations.version>
     <jackson.version>2.6.1</jackson.version>
@@ -83,7 +84,6 @@
     <kubernetes.model.version>1.0.33</kubernetes.model.version>
     <log4j.version>2.3</log4j.version>
     <mockwebserver.version>20130706</mockwebserver.version>
-    <oauth.version>20100527</oauth.version>
     <slf4j.version>1.7.12</slf4j.version>
     <snakeyaml.version>1.15</snakeyaml.version>
 
@@ -121,8 +121,6 @@
     <module>openshift-client</module>
     <module>openshift-mock</module>
     <module>kubernetes-examples</module>
-    <module>kubernetes-client-with-deps</module>
-    <module>openshift-client-with-deps</module>
     <module>platforms</module>
   </modules>
 
@@ -204,15 +202,6 @@
             <Export-Service>${osgi.export.service}</Export-Service>
           </instructions>
         </configuration>
-        <executions>
-          <execution>
-            <id>bundle-manifest</id>
-            <phase>prepare-package</phase>
-            <goals>
-              <goal>manifest</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
       <plugin>
         <groupId>io.sundr</groupId>
@@ -232,10 +221,8 @@
               <name>Fabric8 :: Kubernetes :: Bom with Dependencies</name>
               <dependencies>
                 <includes>
-                  <include>com.ning:*</include>
-                  <include>io.netty:*</include>
+                  <include>com.squareup*:*</include>
                   <include>com.fasterxml.jackson*:*</include>
-                  <include>net.oauth*:*</include>
                 </includes>
               </dependencies>
               <properties>

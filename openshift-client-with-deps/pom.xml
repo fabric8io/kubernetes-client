@@ -27,10 +27,21 @@
   <groupId>io.fabric8</groupId>
   <artifactId>openshift-client-with-deps</artifactId>
   <name>Fabric8 :: Openshift :: Java Client with Dependencies</name>
+  <packaging>bundle</packaging>
 
   <properties>
     <javadoc.include.deps>true</javadoc.include.deps>
     <javadoc.source.includes>io.fabric8:openshift-client</javadoc.source.includes>
+    <osgi.import>*</osgi.import>
+    <osgi.export>
+      io.fabric8.openshift.client*"
+    </osgi.export>
+    <osgi.private>
+      io.fabric8.openshift.client.handlers,
+      io.fabric8.openshift.client.dsl.internal,
+      com.squareup*,
+      okio*
+    </osgi.private>
   </properties>
 
   <dependencies>
@@ -41,14 +52,24 @@
     </dependency>
   </dependencies>
 
-  <build>
+  <!--<build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>${maven.jar.plugin.version}</version>
+        <configuration>
+          <archive>
+            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
         <version>2.4.1</version>
         <configuration>
-          <!-- put your configurations here -->
+          &lt;!&ndash; put your configurations here &ndash;&gt;
         </configuration>
         <executions>
           <execution>
@@ -62,18 +83,17 @@
                 <includes>
                   <include>io.fabric8:kubernetes-client</include>
                   <include>io.fabric8:openshift-client</include>
-                  <include>com.ning:async-http-client</include>
-                  <include>io.netty:netty</include>
+                  <include>com.squareup*:*</include>
                 </includes>
               </artifactSet>
               <relocations>
                 <relocation>
-                  <pattern>com.ning</pattern>
-                  <shadedPattern>io.fabric8.kubernetes.client.internal.com.ning</shadedPattern>
+                  <pattern>com.squareup</pattern>
+                  <shadedPattern>io.fabric8.kubernetes.client.internal.com.squareup</shadedPattern>
                 </relocation>
                 <relocation>
-                  <pattern>org.jboss.netty</pattern>
-                  <shadedPattern>io.fabric8.kubernetes.client.internal.org.jboss.netty</shadedPattern>
+                  <pattern>okio</pattern>
+                  <shadedPattern>io.fabric8.kubernetes.client.internal.okio</shadedPattern>
                 </relocation>
               </relocations>
               <transformers>
@@ -84,6 +104,6 @@
         </executions>
       </plugin>
     </plugins>
-  </build>
+  </build>-->
 
 </project>
