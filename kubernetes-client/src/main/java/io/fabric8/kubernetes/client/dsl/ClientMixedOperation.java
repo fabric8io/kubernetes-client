@@ -16,11 +16,6 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
-import io.fabric8.kubernetes.client.dsl.ClientOperation;
-import io.fabric8.kubernetes.client.dsl.ClientResource;
-
 /**
  * A Client Namespace or Non Namespace Operation. This acts as an umbrella for {@link io.fabric8.kubernetes.client.dsl.ClientOperation} and {@link io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation}.
  * Its not intended to be exposed directly into the client and is only usable as a convinient interface internally.

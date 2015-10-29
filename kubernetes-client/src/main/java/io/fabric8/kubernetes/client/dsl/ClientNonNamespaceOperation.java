@@ -15,9 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.ClientAware;
-
 import java.io.InputStream;
 
 /**

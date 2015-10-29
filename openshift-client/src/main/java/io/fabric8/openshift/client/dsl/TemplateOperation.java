@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.openshift.api.model.DoneableTemplate;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateList;
-import io.fabric8.openshift.client.OpenShiftClient;
 
 public interface TemplateOperation extends ClientTemplateResource<Template, KubernetesList, DoneableTemplate>,
   ClientMixedOperation<Template, TemplateList, DoneableTemplate, ClientTemplateResource<Template, KubernetesList, DoneableTemplate>> {

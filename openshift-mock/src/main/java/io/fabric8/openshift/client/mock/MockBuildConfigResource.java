@@ -17,7 +17,6 @@
 package io.fabric8.openshift.client.mock;
 
 import io.fabric8.openshift.api.model.BuildConfig;
-import io.fabric8.openshift.api.model.DoneableBuildConfig;
 import io.fabric8.openshift.client.dsl.BuildConfigResource;
 import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableBuildConfig;
 import org.easymock.IExpectationSetters;

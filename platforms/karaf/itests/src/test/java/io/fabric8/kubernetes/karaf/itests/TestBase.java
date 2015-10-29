@@ -16,9 +16,6 @@
 package io.fabric8.kubernetes.karaf.itests;
 
 import org.junit.Assert;
-import org.ops4j.pax.exam.ProbeBuilder;
-import org.ops4j.pax.exam.TestProbeBuilder;
-import org.osgi.framework.Constants;
 
 import java.io.File;
 import java.net.URISyntaxException;

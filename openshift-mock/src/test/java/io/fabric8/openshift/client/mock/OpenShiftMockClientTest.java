@@ -17,6 +17,9 @@
 package io.fabric8.openshift.client.mock;
 
 
+import io.fabric8.openshift.api.model.BuildBuilder;
+import io.fabric8.openshift.api.model.BuildList;
+import io.fabric8.openshift.api.model.BuildListBuilder;
 import io.fabric8.openshift.api.model.Group;
 import io.fabric8.openshift.api.model.GroupBuilder;
 import io.fabric8.openshift.api.model.GroupList;
@@ -25,12 +28,8 @@ import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.api.model.UserBuilder;
 import io.fabric8.openshift.api.model.UserList;
 import io.fabric8.openshift.api.model.UserListBuilder;
-import io.fabric8.openshift.client.OpenShiftClient;
-import io.fabric8.openshift.api.model.BuildBuilder;
-import io.fabric8.openshift.api.model.BuildList;
-import io.fabric8.openshift.api.model.BuildListBuilder;
 import io.fabric8.openshift.api.model.WebHookTrigger;
-import io.fabric8.openshift.client.mock.impl.MockGroup;
+import io.fabric8.openshift.client.OpenShiftClient;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Test;
