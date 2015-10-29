@@ -39,7 +39,7 @@ import java.util.Set;
 import static io.fabric8.kubernetes.client.mock.util.MockUtils.getArgument;
 import static org.easymock.EasyMock.expect;
 
-public class MockKubernetesListOperationImpl<C extends Client>  implements
+public class MockKubernetesListOperationImpl  implements
   MockKubernetesListNonNamesapceOperation,
   MockKubernetesListOperation,
   CreateGettable<KubernetesList, IExpectationSetters<KubernetesList>, DoneableKubernetesList>,
@@ -56,11 +56,11 @@ public class MockKubernetesListOperationImpl<C extends Client>  implements
   }
 
   //Dummy interface to use for mocking.
-  private interface KubernetesListDelegate<C extends Client>  extends ClientKubernetesListMixedOperation<C>,
-    CreateGettable<KubernetesList,KubernetesList,DoneableKubernetesList> {
+  private interface KubernetesListDelegate extends ClientKubernetesListMixedOperation,
+    CreateGettable<KubernetesList, KubernetesList,DoneableKubernetesList> {
   }
 
-  private final KubernetesListDelegate<C> delegate;
+  private final KubernetesListDelegate delegate;
   private final Set<Mockable> nested = new LinkedHashSet<>();
 
   private MockKubernetesListOperationImpl loadedMockOp;

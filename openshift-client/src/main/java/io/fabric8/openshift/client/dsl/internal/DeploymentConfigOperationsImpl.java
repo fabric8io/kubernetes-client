@@ -15,20 +15,22 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.api.model.DoneableDeploymentConfig;
 import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.OpenShiftConfig;
 
-public class DeploymentConfigOperationsImpl extends OpenShiftOperation<OpenShiftClient, DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig,
+public class DeploymentConfigOperationsImpl extends OpenShiftOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig,
   ClientResource<DeploymentConfig, DoneableDeploymentConfig>> {
 
-  public DeploymentConfigOperationsImpl(OpenShiftClient client) {
-    this(client, client.getNamespace(), null, true, null);
+  public DeploymentConfigOperationsImpl(AsyncHttpClient client, OpenShiftConfig config, String namespace) {
+    this(client, config, namespace, null, true, null);
   }
 
-  public DeploymentConfigOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading, DeploymentConfig item) {
-    super(client, "deploymentconfigs", namespace, name, cascading, item);
+  public DeploymentConfigOperationsImpl(AsyncHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, DeploymentConfig item) {
+    super(client, config, "deploymentconfigs", namespace, name, cascading, item);
   }
 }

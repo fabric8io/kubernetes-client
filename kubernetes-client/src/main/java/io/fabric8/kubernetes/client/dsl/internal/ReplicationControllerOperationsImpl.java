@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerBuilder;
@@ -22,7 +23,7 @@ import io.fabric8.kubernetes.api.model.DoneableReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
-import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
@@ -42,7 +43,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ReplicationControllerOperationsImpl<C extends Client> extends HasMetadataOperation<C, ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>>
+public class ReplicationControllerOperationsImpl extends HasMetadataOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>>
   implements ClientRollableScallableResource<ReplicationController, DoneableReplicationController>,
   TimeoutImageEditReplaceable<ReplicationController, ReplicationController, DoneableReplicationController> {
 
@@ -52,12 +53,12 @@ public class ReplicationControllerOperationsImpl<C extends Client> extends HasMe
   private final long rollingTimeout;
   private final TimeUnit rollingTimeUnit;
 
-  public ReplicationControllerOperationsImpl(C client) {
-    this(client, client.getNamespace(), null, true, null, false, client.getConfiguration().getRollingTimeout(), TimeUnit.MINUTES);
+  public ReplicationControllerOperationsImpl(AsyncHttpClient client, Config config, String namespace) {
+    this(client, config, namespace, null, true, null, false, config.getRollingTimeout(), TimeUnit.MINUTES);
   }
 
-  public ReplicationControllerOperationsImpl(C client, String namespace, String name, Boolean cascading, ReplicationController item, Boolean rolling, long rollingTimeout, TimeUnit rollingTimeUnit) {
-    super(client, "replicationcontrollers", namespace, name, cascading, item);
+  public ReplicationControllerOperationsImpl(AsyncHttpClient client, Config config, String namespace, String name, Boolean cascading, ReplicationController item, Boolean rolling, long rollingTimeout, TimeUnit rollingTimeUnit) {
+    super(client, config, "replicationcontrollers", namespace, name, cascading, item);
     this.rolling = rolling;
     this.rollingTimeout = rollingTimeout;
     this.rollingTimeUnit = rollingTimeUnit;
@@ -67,26 +68,26 @@ public class ReplicationControllerOperationsImpl<C extends Client> extends HasMe
   public ClientRollableScallableResource<ReplicationController, DoneableReplicationController> load(InputStream is) {
     try {
       ReplicationController item = unmarshal(is, ReplicationController.class);
-      return new ReplicationControllerOperationsImpl(getClient(), getNamespace(), getName(), isCascading(), item, rolling, rollingTimeout, rollingTimeUnit);
+      return new ReplicationControllerOperationsImpl(getClient(), getConfig(), getNamespace(), getName(), isCascading(), item, rolling, rollingTimeout, rollingTimeUnit);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
   }
 
   @Override
-  public ClientNonNamespaceOperation<C, ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>> inNamespace(String namespace) {
-    return new ReplicationControllerOperationsImpl(getClient(), namespace, getName(), isCascading(), getItem(), rolling, rollingTimeout, rollingTimeUnit);
+  public ClientNonNamespaceOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>> inNamespace(String namespace) {
+    return new ReplicationControllerOperationsImpl(getClient(), getConfig(), namespace, getName(), isCascading(), getItem(), rolling, rollingTimeout, rollingTimeUnit);
   }
 
 
   @Override
   public ImageEditReplaceable<ReplicationController, ReplicationController, DoneableReplicationController> withTimeout(long timeout, TimeUnit unit) {
-    return new ReplicationControllerOperationsImpl(getClient(), namespace, getName(), isCascading(), getItem(), rolling, timeout, rollingTimeUnit);
+    return new ReplicationControllerOperationsImpl(getClient(), getConfig(),namespace, getName(), isCascading(), getItem(), rolling, timeout, rollingTimeUnit);
   }
 
   @Override
   public ImageEditReplaceable<ReplicationController, ReplicationController, DoneableReplicationController> withTimeoutInMillis(long timeoutInMillis) {
-    return new ReplicationControllerOperationsImpl(getClient(), namespace, getName(), isCascading(), getItem(), rolling, timeoutInMillis, TimeUnit.MILLISECONDS);
+    return new ReplicationControllerOperationsImpl(getClient(), getConfig(), namespace, getName(), isCascading(), getItem(), rolling, timeoutInMillis, TimeUnit.MILLISECONDS);
   }
 
   @Override
@@ -96,12 +97,12 @@ public class ReplicationControllerOperationsImpl<C extends Client> extends HasMe
 
   @Override
   public ClientRollableScallableResource<ReplicationController, DoneableReplicationController> withName(String name) {
-    return new ReplicationControllerOperationsImpl(getClient(), getNamespace(), name, isCascading(), getItem(), rolling, rollingTimeout, rollingTimeUnit);
+    return new ReplicationControllerOperationsImpl(getClient(), getConfig(), getNamespace(), name, isCascading(), getItem(), rolling, rollingTimeout, rollingTimeUnit);
   }
 
   @Override
   public EditReplaceDeletable<ReplicationController, ReplicationController, DoneableReplicationController, Boolean> cascading(boolean enabled) {
-    return new ReplicationControllerOperationsImpl(getClient(), getNamespace(), getName(), enabled, getItem(), rolling, rollingTimeout, rollingTimeUnit);
+    return new ReplicationControllerOperationsImpl(getClient(), getConfig(), getNamespace(), getName(), enabled, getItem(), rolling, rollingTimeout, rollingTimeUnit);
   }
 
   @Override
@@ -150,7 +151,7 @@ public class ReplicationControllerOperationsImpl<C extends Client> extends HasMe
 
   @Override
   public ReplicationControllerOperationsImpl rolling() {
-    return new ReplicationControllerOperationsImpl(getClient(), getNamespace(), getName(), isCascading(), getItem(), true, rollingTimeout, rollingTimeUnit);
+    return new ReplicationControllerOperationsImpl(getClient(), getConfig(), getNamespace(), getName(), isCascading(), getItem(), true, rollingTimeout, rollingTimeUnit);
   }
 
   @Override
@@ -174,7 +175,7 @@ public class ReplicationControllerOperationsImpl<C extends Client> extends HasMe
       .editSpec().editTemplate().editSpec().withContainers(Collections.singletonList(updatedContainer))
       .endSpec().endTemplate().endSpec();
 
-    return new  RollingUpdater(getClient()).rollUpdate(oldRC, newRCBuilder.build());
+    return new  RollingUpdater(getClient(), config, namespace).rollUpdate(oldRC, newRCBuilder.build());
   }
 
   @Override
@@ -187,7 +188,7 @@ public class ReplicationControllerOperationsImpl<C extends Client> extends HasMe
       @Override
       public void visit(ReplicationController rc) {
         try {
-          new RollingUpdater(getClient()).rollUpdate(getMandatory(), rc);
+          new RollingUpdater(getClient(), config, namespace).rollUpdate(getMandatory(), rc);
         } catch (Exception e) {
           throw KubernetesClientException.launderThrowable(e);
         }
@@ -206,6 +207,6 @@ public class ReplicationControllerOperationsImpl<C extends Client> extends HasMe
     if (!rolling) {
       return super.replace(rc);
     }
-    return new RollingUpdater(getClient(), rollingTimeUnit.toMillis(rollingTimeout), client.getConfiguration().getLoggingInterval()).rollUpdate(getMandatory(), rc);
+    return new RollingUpdater(getClient(), config, namespace, rollingTimeUnit.toMillis(rollingTimeout), getConfig().getLoggingInterval()).rollUpdate(getMandatory(), rc);
   }
 }

@@ -68,6 +68,10 @@ public class OpenShiftConfig extends Config {
       kubernetesConfig.getProxy());
   }
 
+  public static OpenShiftConfig wrap(Config config) {
+    return config instanceof OpenShiftConfig ? (OpenShiftConfig) config : new OpenShiftConfig(config);
+  }
+
   private static String getDefaultOapiVersion(Config config) {
     return Utils.getSystemPropertyOrEnvVar(KUBERNETES_OAPI_VERSION_SYSTEM_PROPERTY, config.getApiVersion());
   }

@@ -15,10 +15,12 @@
  */
 package io.fabric8.openshift.client.handlers;
 
-import io.fabric8.kubernetes.client.Client;
+import com.ning.http.client.AsyncHttpClient;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.internal.DeploymentConfigOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
@@ -32,16 +34,12 @@ public class DeploymentConfigHandler implements ResourceHandler<DeploymentConfig
   }
 
   @Override
-  public DeploymentConfig create(Client client, String namespace, DeploymentConfig item) {
-    try (OpenShiftClient osClient = client.adapt(OpenShiftClient.class)) {
-      return new DeploymentConfigOperationsImpl(osClient, namespace, null, true, item).create();
-    }
+  public DeploymentConfig create(AsyncHttpClient client, Config config, String namespace, DeploymentConfig item) {
+      return new DeploymentConfigOperationsImpl(client, OpenShiftConfig.wrap(config), namespace, null, true, item).create();
   }
 
   @Override
-  public Boolean delete(Client client, String namespace, DeploymentConfig item) {
-    try (OpenShiftClient osClient = client.adapt(OpenShiftClient.class)) {
-      return new DeploymentConfigOperationsImpl(osClient, namespace, null, true, item).delete(item);
+  public Boolean delete(AsyncHttpClient client, Config config, String namespace, DeploymentConfig item) {
+      return new DeploymentConfigOperationsImpl(client, OpenShiftConfig.wrap(config), namespace, null, true, item).delete(item);
     }
-  }
 }

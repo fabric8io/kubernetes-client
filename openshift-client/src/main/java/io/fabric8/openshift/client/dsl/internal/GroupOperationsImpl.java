@@ -15,19 +15,21 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.DoneableGroup;
 import io.fabric8.openshift.api.model.Group;
 import io.fabric8.openshift.api.model.GroupList;
 import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.OpenShiftConfig;
 
-public class GroupOperationsImpl extends OpenShiftOperation<OpenShiftClient, Group, GroupList, DoneableGroup, ClientResource<Group, DoneableGroup>> {
-  public GroupOperationsImpl(OpenShiftClient client) {
-    this(client, client.getNamespace(), null, true, null);
+public class GroupOperationsImpl extends OpenShiftOperation<Group, GroupList, DoneableGroup, ClientResource<Group, DoneableGroup>> {
+  public GroupOperationsImpl(AsyncHttpClient client, OpenShiftConfig config, String namespace) {
+    this(client, config, namespace, null, true, null);
   }
 
-  public GroupOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading, Group item) {
-    super(client, "groups", namespace, name, cascading, item);
+  public GroupOperationsImpl(AsyncHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, Group item) {
+    super(client, config, "groups", namespace, name, cascading, item);
   }
 
   @Override

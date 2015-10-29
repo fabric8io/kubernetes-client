@@ -17,13 +17,14 @@
 package io.fabric8.kubernetes.client;
 
 
+import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 
 public interface ResourceHandler<T extends HasMetadata> {
 
   String getKind();
 
-  T create(Client client, String namespace, T item);
+  T create(AsyncHttpClient client, Config config, String namespace, T item);
 
-  Boolean delete(Client client, String namespace, T item);
+  Boolean delete(AsyncHttpClient client, Config config, String namespace, T item);
 }

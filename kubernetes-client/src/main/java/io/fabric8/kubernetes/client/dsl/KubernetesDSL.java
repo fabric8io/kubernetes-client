@@ -57,33 +57,33 @@ import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.Client;
 
-public interface KubernetesDSL<C extends Client> {
+public interface KubernetesDSL {
 
-  ClientMixedOperation<C, Endpoints, EndpointsList, DoneableEndpoints, ClientResource<Endpoints, DoneableEndpoints>> endpoints();
+  ClientMixedOperation<Endpoints, EndpointsList, DoneableEndpoints, ClientResource<Endpoints, DoneableEndpoints>> endpoints();
 
-  ClientMixedOperation<C, Event, EventList, DoneableEvent, ClientResource<Event, DoneableEvent>> events();
+  ClientMixedOperation<Event, EventList, DoneableEvent, ClientResource<Event, DoneableEvent>> events();
 
-  ClientNonNamespaceOperation<C, Namespace, NamespaceList, DoneableNamespace, ClientResource<Namespace, DoneableNamespace>> namespaces();
+  ClientNonNamespaceOperation< Namespace, NamespaceList, DoneableNamespace, ClientResource<Namespace, DoneableNamespace>> namespaces();
 
-  ClientNonNamespaceOperation<C, Node, NodeList, DoneableNode, ClientResource<Node, DoneableNode>> nodes();
+  ClientNonNamespaceOperation<Node, NodeList, DoneableNode, ClientResource<Node, DoneableNode>> nodes();
 
-  ClientMixedOperation<C, PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, ClientResource<PersistentVolume, DoneablePersistentVolume>> persistentVolumes();
+  ClientMixedOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, ClientResource<PersistentVolume, DoneablePersistentVolume>> persistentVolumes();
 
-  ClientMixedOperation<C, PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, ClientResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> persistentVolumeClaims();
+  ClientMixedOperation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, ClientResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> persistentVolumeClaims();
 
-  ClientMixedOperation<C, Pod, PodList, DoneablePod, ClientLoggableResource<Pod, DoneablePod>> pods();
+  ClientMixedOperation<Pod, PodList, DoneablePod, ClientLoggableResource<Pod, DoneablePod>> pods();
 
-  ClientMixedOperation<C, ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>> replicationControllers();
+  ClientMixedOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>> replicationControllers();
 
-  ClientMixedOperation<C, ResourceQuota, ResourceQuotaList, DoneableResourceQuota, ClientResource<ResourceQuota, DoneableResourceQuota>> resourceQuotas();
+  ClientMixedOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota, ClientResource<ResourceQuota, DoneableResourceQuota>> resourceQuotas();
 
-  ClientMixedOperation<C, Secret, SecretList, DoneableSecret, ClientResource<Secret, DoneableSecret>> secrets();
+  ClientMixedOperation<Secret, SecretList, DoneableSecret, ClientResource<Secret, DoneableSecret>> secrets();
 
-  ClientMixedOperation<C, Service, ServiceList, DoneableService, ClientResource<Service, DoneableService>> services();
+  ClientMixedOperation<Service, ServiceList, DoneableService, ClientResource<Service, DoneableService>> services();
 
-  ClientMixedOperation<C, ServiceAccount, ServiceAccountList, DoneableServiceAccount, ClientResource<ServiceAccount, DoneableServiceAccount>> serviceAccounts();
+  ClientMixedOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, ClientResource<ServiceAccount, DoneableServiceAccount>> serviceAccounts();
 
-  ClientKubernetesListMixedOperation<C> lists();
+  ClientKubernetesListMixedOperation lists();
 
-  ClientNonNamespaceOperation<C, SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints();
+  ClientNonNamespaceOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints();
 }

@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.easymock.EasyMock.expect;
 
-public class MockReplicationController<C extends Client>  extends BaseMockOperation<C, ReplicationController, ReplicationControllerList, DoneableReplicationController,
+public class MockReplicationController  extends BaseMockOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController,
   MockDoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>,
   MockRollableScaleableResource<ReplicationController, MockDoneableReplicationController, Boolean>>
   implements MockRollableScaleableResource<ReplicationController, MockDoneableReplicationController, Boolean>,
@@ -56,7 +56,7 @@ public class MockReplicationController<C extends Client>  extends BaseMockOperat
 
   //Dummy interface to use for mocking.
   private interface ReplicationControllerDelegate
-    extends ClientMixedOperation<KubernetesClient, ReplicationController, ReplicationController, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>>,
+    extends ClientMixedOperation<ReplicationController, ReplicationController, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>>,
     ClientRollableScallableResource<ReplicationController, DoneableReplicationController>,
     TimeoutImageEditReplaceable<ReplicationController, ReplicationController, DoneableReplicationController> {
 

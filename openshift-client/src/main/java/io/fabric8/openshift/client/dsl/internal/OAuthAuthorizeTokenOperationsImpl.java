@@ -15,21 +15,23 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.DoneableOAuthAuthorizeToken;
 import io.fabric8.openshift.api.model.OAuthAuthorizeToken;
 import io.fabric8.openshift.api.model.OAuthAuthorizeTokenList;
 import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.OpenShiftConfig;
 
-public class OAuthAuthorizeTokenOperationsImpl extends OpenShiftOperation<OpenShiftClient, OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken,
+public class OAuthAuthorizeTokenOperationsImpl extends OpenShiftOperation<OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken,
   ClientResource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken>> {
 
-  public OAuthAuthorizeTokenOperationsImpl(OpenShiftClient client) {
-    this(client, null, null, true, null);
+  public OAuthAuthorizeTokenOperationsImpl(AsyncHttpClient client, OpenShiftConfig config) {
+    this(client, config, null, null, true, null);
   }
 
-  public OAuthAuthorizeTokenOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading, OAuthAuthorizeToken item) {
-    super(client, "oauthauthorizetokens", namespace, name, cascading, item);
+  public OAuthAuthorizeTokenOperationsImpl(AsyncHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, OAuthAuthorizeToken item) {
+    super(client, config,"oauthauthorizetokens", namespace, name, cascading, item);
   }
 
   @Override

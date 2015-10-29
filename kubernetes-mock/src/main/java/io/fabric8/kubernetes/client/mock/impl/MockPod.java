@@ -32,14 +32,14 @@ import org.easymock.IExpectationSetters;
 
 import static org.easymock.EasyMock.expect;
 
-public class MockPod<C extends Client>  extends BaseMockOperation<C, Pod, PodList, DoneablePod, MockDoneablePod,
+public class MockPod<C extends Client>  extends BaseMockOperation<Pod, PodList, DoneablePod, MockDoneablePod,
   ClientLoggableResource<Pod, DoneablePod>,
   MockLoggableResource<Pod, MockDoneablePod, Boolean>>
   implements MockLoggableResource<Pod, MockDoneablePod, Boolean> {
 
   //Dummy interface to use for mocking.
   private interface PodDelegate
-    extends ClientMixedOperation<KubernetesClient, Pod, PodList, DoneablePod, ClientRollableScallableResource<Pod, DoneablePod>>,
+    extends ClientMixedOperation<Pod, PodList, DoneablePod, ClientRollableScallableResource<Pod, DoneablePod>>,
     ClientLoggableResource<Pod, DoneablePod> {
 
   }

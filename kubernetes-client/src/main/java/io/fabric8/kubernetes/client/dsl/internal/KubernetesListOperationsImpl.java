@@ -15,11 +15,12 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DoneableKubernetesList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
-import io.fabric8.kubernetes.client.GenericKubernetesClient;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.ResourceHandler;
@@ -34,31 +35,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class KubernetesListOperationsImpl<C extends GenericKubernetesClient<C>>
-  extends OperationSupport<C>
-  implements ClientKubernetesListOperation<C>,
-  ClientKubernetesListMixedOperation<C>,
+public class KubernetesListOperationsImpl
+  extends OperationSupport
+  implements ClientKubernetesListOperation,
+  ClientKubernetesListMixedOperation,
   Loadable<InputStream, CreateGettable<KubernetesList, KubernetesList, DoneableKubernetesList>>,
   CreateGettable<KubernetesList, KubernetesList, DoneableKubernetesList> {
 
   private KubernetesList item;
 
-  public KubernetesListOperationsImpl(C client) {
-    this(client, client.getNamespace());
-  }
-
-  public KubernetesListOperationsImpl(C client, String namespace) {
-    super(client, null, namespace, null);
+  public KubernetesListOperationsImpl(AsyncHttpClient client, Config config, String namespace) {
+    super(client, config, null, namespace, null);
   }
 
   @Override
-  public C getClient() {
-    return client;
-  }
-
-  @Override
-  public ClientKubernetesListNonNamespaceOperation<C> inNamespace(String namespace) {
-    return new KubernetesListOperationsImpl(client, namespace);
+  public ClientKubernetesListNonNamespaceOperation inNamespace(String namespace) {
+    return new KubernetesListOperationsImpl(client, config, namespace);
   }
 
   @Override
@@ -104,7 +96,7 @@ public class KubernetesListOperationsImpl<C extends GenericKubernetesClient<C>>
   private <T extends HasMetadata> T create(T resource) {
     ResourceHandler<T> handler = (ResourceHandler<T>) Handlers.get(resource.getKind());
     if (handler != null) {
-      return handler.create(client, namespace, resource);
+      return handler.create(client, config, namespace, resource);
     }
     throw new IllegalStateException("Could not find handler");
   }
@@ -119,7 +111,7 @@ public class KubernetesListOperationsImpl<C extends GenericKubernetesClient<C>>
     for (KubernetesList list : lists) {
       for (HasMetadata item : list.getItems()) {
         ResourceHandler handler = (ResourceHandler) Handlers.get(item.getKind());
-        if (!handler.delete(client, namespace, item)) {
+        if (!handler.delete(client, config, namespace, item)) {
           return false;
         }
       }

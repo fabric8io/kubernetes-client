@@ -15,18 +15,20 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.DoneablePolicyBinding;
 import io.fabric8.openshift.api.model.PolicyBinding;
 import io.fabric8.openshift.api.model.PolicyBindingList;
 import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.OpenShiftConfig;
 
-public class PolicyBindingOperationsImpl extends OpenShiftOperation<OpenShiftClient, PolicyBinding, PolicyBindingList, DoneablePolicyBinding, ClientResource<PolicyBinding, DoneablePolicyBinding>> {
-  public PolicyBindingOperationsImpl(OpenShiftClient client) {
-    this(client, client.getNamespace(), null, true, null);
+public class PolicyBindingOperationsImpl extends OpenShiftOperation<PolicyBinding, PolicyBindingList, DoneablePolicyBinding, ClientResource<PolicyBinding, DoneablePolicyBinding>> {
+  public PolicyBindingOperationsImpl(AsyncHttpClient client, OpenShiftConfig config, String namespace) {
+    this(client, config, namespace, null, true, null);
   }
 
-  public PolicyBindingOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading, PolicyBinding item) {
-    super(client, "policybindings", namespace, name, cascading, item);
+  public PolicyBindingOperationsImpl(AsyncHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, PolicyBinding item) {
+    super(client, config, "policybindings", namespace, name, cascading, item);
   }
 }

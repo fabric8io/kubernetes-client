@@ -15,8 +15,10 @@
  */
 package io.fabric8.kubernetes.client.handlers;
 
+import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.internal.ReplicationControllerOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
@@ -32,12 +34,12 @@ public class ReplicationControllerHandler implements ResourceHandler<Replication
     return ReplicationController.class.getSimpleName();
   }
   @Override
-  public ReplicationController create(Client client, String namespace, ReplicationController item) {
-    return new ReplicationControllerOperationsImpl<Client>(client, namespace, null, true, item, false, client.getConfiguration().getRollingTimeout(), TimeUnit.MILLISECONDS).create();
+  public ReplicationController create(AsyncHttpClient client, Config config, String namespace, ReplicationController item) {
+    return new ReplicationControllerOperationsImpl(client, config, namespace, null, true, item, false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).create();
   }
 
   @Override
-  public Boolean delete(Client client, String namespace, ReplicationController item) {
-    return new ReplicationControllerOperationsImpl<Client>(client, namespace, null, true, item, false, client.getConfiguration().getRollingTimeout(), TimeUnit.MILLISECONDS).delete(item);
+  public Boolean delete(AsyncHttpClient client, Config config, String namespace, ReplicationController item) {
+    return new ReplicationControllerOperationsImpl(client, config, namespace, null, true, item, false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).delete(item);
   }
 }

@@ -25,7 +25,7 @@ import io.fabric8.openshift.api.model.GroupList;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableGroup;
 
-public class MockGroup extends BaseMockOperation<OpenShiftClient, Group, GroupList, DoneableGroup,
+public class MockGroup extends BaseMockOperation<Group, GroupList, DoneableGroup,
   MockDoneableGroup, ClientResource<Group, DoneableGroup>,
   MockResource<Group, MockDoneableGroup, Boolean>> {
 }

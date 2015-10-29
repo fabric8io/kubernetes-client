@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.DoneableReplicationController;
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -55,16 +56,20 @@ class RollingUpdater<C extends Client> {
 
   private static final transient Logger LOG = LoggerFactory.getLogger(RollingUpdater.class);
 
-  private final C client;
+  private final AsyncHttpClient client;
+  private final Config config;
+  private final String namespace;
   private final long rollingTimeoutMillis;
   private final long loggingIntervalMillis;
 
-  RollingUpdater(C client) {
-    this(client, DEFAULT_ROLLING_TIMEOUT, Config.DEFAULT_LOGGING_INTERVAL);
+  RollingUpdater(AsyncHttpClient client, Config config, String namespace) {
+    this(client, config, namespace, DEFAULT_ROLLING_TIMEOUT, Config.DEFAULT_LOGGING_INTERVAL);
   }
 
-  RollingUpdater(C client, long rollingTimeoutMillis, long loggingIntervalMillis) {
+  RollingUpdater(AsyncHttpClient client, Config config, String namespace, long rollingTimeoutMillis, long loggingIntervalMillis) {
     this.client = client;
+    this.config = config;
+    this.namespace = namespace;
     this.rollingTimeoutMillis = rollingTimeoutMillis;
     this.loggingIntervalMillis = loggingIntervalMillis;
   }
@@ -204,12 +209,12 @@ class RollingUpdater<C extends Client> {
     return String.format("%1$032x", i);
   }
 
-  private ClientOperation<C, ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>> replicationControllers() {
-    return new ReplicationControllerOperationsImpl<C>(client);
+  private ClientOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>> replicationControllers() {
+    return new ReplicationControllerOperationsImpl(client, config, namespace);
   }
 
-  private ClientOperation<C, Pod, PodList, DoneablePod, ClientLoggableResource<Pod, DoneablePod>> pods() {
-    return new PodOperationsImpl<C>(client);
+  private ClientOperation<Pod, PodList, DoneablePod, ClientLoggableResource<Pod, DoneablePod>> pods() {
+    return new PodOperationsImpl(client, config, namespace);
   }
 
 }

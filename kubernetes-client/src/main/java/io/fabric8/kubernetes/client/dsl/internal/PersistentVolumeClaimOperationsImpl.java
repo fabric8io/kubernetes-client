@@ -15,21 +15,23 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.DoneablePersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaimList;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 
-public class PersistentVolumeClaimOperationsImpl<C extends Client>
-extends HasMetadataOperation<C, PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, ClientResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> {
+public class PersistentVolumeClaimOperationsImpl
+extends HasMetadataOperation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, ClientResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> {
 
-  public PersistentVolumeClaimOperationsImpl(C client) {
-    this(client, client.getNamespace(), null, true, null);
+  public PersistentVolumeClaimOperationsImpl(AsyncHttpClient client, Config config, String namespace) {
+    this(client, config, namespace, null, true, null);
   }
 
-  public PersistentVolumeClaimOperationsImpl(C client, String namespace, String name, Boolean cascading, PersistentVolumeClaim item) {
-    super(client, "persistentvolumeclaims", namespace, name, cascading, item);
+  public PersistentVolumeClaimOperationsImpl(AsyncHttpClient client, Config config, String namespace, String name, Boolean cascading, PersistentVolumeClaim item) {
+    super(client, config, "persistentvolumeclaims", namespace, name, cascading, item);
   }
 }

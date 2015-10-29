@@ -15,9 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.client.Client;
-
-public interface ClientKubernetesListMixedOperation<C extends Client> extends
-  ClientKubernetesListOperation<C>,
-  ClientKubernetesListNonNamespaceOperation<C> {
+public interface ClientKubernetesListMixedOperation extends
+  ClientKubernetesListOperation,
+  ClientKubernetesListNonNamespaceOperation {
 }

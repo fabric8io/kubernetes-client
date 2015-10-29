@@ -15,10 +15,12 @@
  */
 package io.fabric8.openshift.client.handlers;
 
-import io.fabric8.kubernetes.client.Client;
+import com.ning.http.client.AsyncHttpClient;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.internal.UserOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
@@ -33,17 +35,12 @@ public class UserHandler implements ResourceHandler<User> {
   }
 
   @Override
-  public User create(Client client, String namespace, User item) {
-    try (OpenShiftClient osClient = client.adapt(OpenShiftClient.class)) {
-      return new UserOperationsImpl(osClient, namespace, null, true, item).create();
-    }
+  public User create(AsyncHttpClient client, Config config, String namespace, User item) {
+      return new UserOperationsImpl(client, OpenShiftConfig.wrap(config), namespace, null, true, item).create();
   }
-
 
   @Override
-  public Boolean delete(Client client, String namespace, User item) {
-    try (OpenShiftClient osClient = client.adapt(OpenShiftClient.class)) {
-      return new UserOperationsImpl(osClient, namespace, null, true, item).delete(item);
+  public Boolean delete(AsyncHttpClient client, Config config, String namespace, User item) {
+      return new UserOperationsImpl(client, OpenShiftConfig.wrap(config), namespace, null, true, item).delete(item);
     }
-  }
 }

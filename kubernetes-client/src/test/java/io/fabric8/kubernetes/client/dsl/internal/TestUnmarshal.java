@@ -26,13 +26,13 @@ public class TestUnmarshal {
 
   @Test
   public void testUnmarshalJSONTemplate() throws IOException {
-    Template t = new OperationSupport<>().unmarshal(getClass().getResourceAsStream("/test-template.json"), Template.class);
+    Template t = new OperationSupport().unmarshal(getClass().getResourceAsStream("/test-template.json"), Template.class);
     assertEquals("eap6-basic-sti", t.getMetadata().getName());
   }
 
   @Test
   public void testUnmarshalYAMLTemplate() throws IOException {
-   Template t = new OperationSupport<>().unmarshal(getClass().getResourceAsStream("/test-template.yml"), Template.class);
+   Template t = new OperationSupport().unmarshal(getClass().getResourceAsStream("/test-template.yml"), Template.class);
     assertEquals("eap6-basic-sti", t.getMetadata().getName());
   }
 

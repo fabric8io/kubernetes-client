@@ -15,6 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import io.fabric8.kubernetes.api.model.KubernetesList;
@@ -25,6 +26,7 @@ import io.fabric8.openshift.api.model.Parameter;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.ParameterValue;
 import io.fabric8.openshift.client.dsl.ClientTemplateResource;
 import io.fabric8.openshift.client.dsl.TemplateOperation;
@@ -35,15 +37,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TemplateOperationsImpl
-  extends OpenShiftOperation<OpenShiftClient, Template, TemplateList, DoneableTemplate, ClientTemplateResource<Template, KubernetesList, DoneableTemplate>>
+  extends OpenShiftOperation<Template, TemplateList, DoneableTemplate, ClientTemplateResource<Template, KubernetesList, DoneableTemplate>>
   implements TemplateOperation {
 
-  public TemplateOperationsImpl(OpenShiftClient client) {
-    this(client, client.getNamespace(), null, true, null);
+  public TemplateOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
+    this(client, config, namespace, null, true, null);
   }
 
-  public TemplateOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading, Template item) {
-    super(client, "templates", namespace, name, cascading, item);
+  public TemplateOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, Template item) {
+    super(client, config, "templates", namespace, name, cascading, item);
   }
 
   @Override

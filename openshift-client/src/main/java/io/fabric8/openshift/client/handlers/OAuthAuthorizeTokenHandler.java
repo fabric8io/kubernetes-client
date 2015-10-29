@@ -15,10 +15,12 @@
  */
 package io.fabric8.openshift.client.handlers;
 
-import io.fabric8.kubernetes.client.Client;
+import com.ning.http.client.AsyncHttpClient;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.openshift.api.model.OAuthAuthorizeToken;
 import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.internal.OAuthAuthorizeTokenOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
@@ -32,16 +34,12 @@ public class OAuthAuthorizeTokenHandler implements ResourceHandler<OAuthAuthoriz
     return OAuthAuthorizeToken.class.getSimpleName();
   }
   @Override
-  public OAuthAuthorizeToken create(Client client, String namespace, OAuthAuthorizeToken item) {
-    try (OpenShiftClient osClient = client.adapt(OpenShiftClient.class)) {
-      return new OAuthAuthorizeTokenOperationsImpl(osClient, namespace, null, true, item).create();
-    }
+  public OAuthAuthorizeToken create(AsyncHttpClient client, Config config, String namespace, OAuthAuthorizeToken item) {
+      return new OAuthAuthorizeTokenOperationsImpl(client, OpenShiftConfig.wrap(config), namespace, null, true, item).create();
   }
 
   @Override
-  public Boolean delete(Client client, String namespace, OAuthAuthorizeToken item) {
-    try (OpenShiftClient osClient = client.adapt(OpenShiftClient.class)) {
-      return new OAuthAuthorizeTokenOperationsImpl(osClient, namespace, null, true, item).delete(item);
-    }
+  public Boolean delete(AsyncHttpClient client, Config config, String namespace, OAuthAuthorizeToken item) {
+      return new OAuthAuthorizeTokenOperationsImpl(client, OpenShiftConfig.wrap(config), namespace, null, true, item).delete(item);
   }
 }

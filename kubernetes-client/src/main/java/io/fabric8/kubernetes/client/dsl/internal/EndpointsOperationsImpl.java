@@ -15,21 +15,23 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableEndpoints;
 import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsList;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 
-public class EndpointsOperationsImpl<C extends Client> extends HasMetadataOperation<C, Endpoints, EndpointsList, DoneableEndpoints,
+public class EndpointsOperationsImpl extends HasMetadataOperation<Endpoints, EndpointsList, DoneableEndpoints,
   ClientResource<Endpoints, DoneableEndpoints>> {
 
-  public EndpointsOperationsImpl(C client) {
-    this(client, client.getNamespace(), null, true, null);
+  public EndpointsOperationsImpl(AsyncHttpClient client, Config config, String namespace) {
+    this(client, config, namespace, null, true, null);
   }
 
 
-  public EndpointsOperationsImpl(C client, String namespace, String name, Boolean cascading, Endpoints item) {
-    super(client, "endpoints", namespace, name, cascading, item);
+  public EndpointsOperationsImpl(AsyncHttpClient client, Config config, String namespace, String name, Boolean cascading, Endpoints item) {
+    super(client, config, "endpoints", namespace, name, cascading, item);
   }
 }

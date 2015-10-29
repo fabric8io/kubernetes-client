@@ -16,7 +16,6 @@
 
 package io.fabric8.openshift.client.mock.impl;
 
-import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockResource;
@@ -25,7 +24,7 @@ import io.fabric8.openshift.api.model.ImageStream;
 import io.fabric8.openshift.api.model.ImageStreamList;
 import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableImageStream;
 
-public class MockImageStream extends BaseMockOperation<OpenShiftClient, ImageStream, ImageStreamList, DoneableImageStream,
+public class MockImageStream extends BaseMockOperation<ImageStream, ImageStreamList, DoneableImageStream,
   MockDoneableImageStream, ClientResource<ImageStream, DoneableImageStream>,
   MockResource<ImageStream, MockDoneableImageStream, Boolean>> {
 }

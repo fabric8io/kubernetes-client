@@ -15,18 +15,20 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.DoneableRoleBinding;
 import io.fabric8.openshift.api.model.RoleBinding;
 import io.fabric8.openshift.api.model.RoleBindingList;
 import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.OpenShiftConfig;
 
-public class RoleBindingOperationsImpl extends OpenShiftOperation<OpenShiftClient, RoleBinding, RoleBindingList, DoneableRoleBinding, ClientResource<RoleBinding, DoneableRoleBinding>> {
-  public RoleBindingOperationsImpl(OpenShiftClient client) {
-    this(client, client.getNamespace(), null, true, null);
+public class RoleBindingOperationsImpl extends OpenShiftOperation<RoleBinding, RoleBindingList, DoneableRoleBinding, ClientResource<RoleBinding, DoneableRoleBinding>> {
+  public RoleBindingOperationsImpl(AsyncHttpClient client, OpenShiftConfig config, String namespace) {
+    this(client, config, namespace, null, true, null);
   }
 
-  public RoleBindingOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading, RoleBinding item) {
-    super(client, "rolebindings", namespace, name, cascading, item);
+  public RoleBindingOperationsImpl(AsyncHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, RoleBinding item) {
+    super(client, config, "rolebindings", namespace, name, cascading, item);
   }
 }
