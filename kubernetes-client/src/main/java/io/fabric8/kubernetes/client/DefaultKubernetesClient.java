@@ -77,6 +77,7 @@ import io.fabric8.kubernetes.client.dsl.internal.ServiceAccountOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ServiceOperationsImpl;
 
 public class DefaultKubernetesClient extends BaseClient implements KubernetesClient {
+
   public DefaultKubernetesClient() throws KubernetesClientException {
     super();
   }
@@ -95,79 +96,79 @@ public class DefaultKubernetesClient extends BaseClient implements KubernetesCli
 
   @Override
   public ClientMixedOperation<Endpoints, EndpointsList, DoneableEndpoints, ClientResource<Endpoints, DoneableEndpoints>> endpoints() {
-    return new EndpointsOperationsImpl(getHttpClient(), getConfiguration(), getNamespace());
+    return new EndpointsOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
   @Override
   public ClientMixedOperation<Event, EventList, DoneableEvent, ClientResource<Event, DoneableEvent>> events() {
-    return new EventOperationsImpl(getHttpClient(), getConfiguration(), getNamespace());
+    return new EventOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
   @Override
   public ClientNonNamespaceOperation<Namespace, NamespaceList, DoneableNamespace, ClientResource<Namespace, DoneableNamespace>> namespaces() {
-    return new NamespaceOperationsImpl(getHttpClient(), getConfiguration());
+    return new NamespaceOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
   public ClientNonNamespaceOperation<Node, NodeList, DoneableNode, ClientResource<Node, DoneableNode>> nodes() {
-    return new NodeOperationsImpl(getHttpClient(), getConfiguration());
+    return new NodeOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
   public ClientMixedOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, ClientResource<PersistentVolume, DoneablePersistentVolume>> persistentVolumes() {
-    return new PersistentVolumeOperationsImpl(getHttpClient(), getConfiguration(), getNamespace());
+    return new PersistentVolumeOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
   @Override
   public ClientMixedOperation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, ClientResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> persistentVolumeClaims() {
-    return new PersistentVolumeClaimOperationsImpl(getHttpClient(), getConfiguration(), getNamespace());
+    return new PersistentVolumeClaimOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
   @Override
   public ClientMixedOperation<Pod, PodList, DoneablePod, ClientLoggableResource<Pod, DoneablePod>> pods() {
-    return new PodOperationsImpl(getHttpClient(), getConfiguration(), getNamespace());
+    return new PodOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
   @Override
   public ClientMixedOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>> replicationControllers() {
-    return new ReplicationControllerOperationsImpl(getHttpClient(), getConfiguration(), getNamespace());
+    return new ReplicationControllerOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
   @Override
   public ClientMixedOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota, ClientResource<ResourceQuota, DoneableResourceQuota>> resourceQuotas() {
-    return new ResourceQuotaOperationsImpl(getHttpClient(), getConfiguration(), getNamespace());
+    return new ResourceQuotaOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
   @Override
   public ClientMixedOperation<Secret, SecretList, DoneableSecret, ClientResource<Secret, DoneableSecret>> secrets() {
-    return new SecretOperationsImpl(getHttpClient(), getConfiguration(), getNamespace());
+    return new SecretOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
   @Override
   public ClientMixedOperation<Service, ServiceList, DoneableService, ClientResource<Service, DoneableService>> services() {
-    return new ServiceOperationsImpl(getHttpClient(), getConfiguration(), getNamespace());
+    return new ServiceOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
   @Override
   public ClientMixedOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, ClientResource<ServiceAccount, DoneableServiceAccount>> serviceAccounts() {
-    return new ServiceAccountOperationsImpl(getHttpClient(), getConfiguration(), getNamespace());
+    return new ServiceAccountOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
   @Override
   public ClientKubernetesListMixedOperation lists() {
-    return new KubernetesListOperationsImpl(getHttpClient(), getConfiguration(), getNamespace());
+    return new KubernetesListOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
   @Override
   public ClientNonNamespaceOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints() {
-    return new SecurityContextConstraintsOperationsImpl(getHttpClient(), getConfiguration());
+    return new SecurityContextConstraintsOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
   public KubernetesClient inNamespace(String namespace)
   {
     Config updated = new ConfigBuilder(getConfiguration()).withNamespace(namespace).build();
-    return new DefaultKubernetesClient(getHttpClient(), updated);
+    return new DefaultKubernetesClient(httpClient, updated);
   }
 
   @Override

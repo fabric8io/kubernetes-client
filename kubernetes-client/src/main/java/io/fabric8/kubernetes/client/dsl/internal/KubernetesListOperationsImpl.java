@@ -29,6 +29,7 @@ import io.fabric8.kubernetes.client.dsl.ClientKubernetesListNonNamespaceOperatio
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListOperation;
 import io.fabric8.kubernetes.client.dsl.CreateGettable;
 import io.fabric8.kubernetes.client.dsl.Loadable;
+import io.fabric8.kubernetes.client.dsl.OperationSupport;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -94,7 +95,7 @@ public class KubernetesListOperationsImpl
   }
 
   private <T extends HasMetadata> T create(T resource) {
-    ResourceHandler<T> handler = (ResourceHandler<T>) Handlers.get(resource.getKind());
+    ResourceHandler<T> handler = Handlers.get(resource.getKind());
     if (handler != null) {
       return handler.create(client, config, namespace, resource);
     }

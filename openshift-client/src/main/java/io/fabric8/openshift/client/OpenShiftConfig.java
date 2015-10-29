@@ -17,8 +17,8 @@
 package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.internal.URLUtils;
-import io.fabric8.kubernetes.client.internal.Utils;
+import io.fabric8.kubernetes.client.utils.URLUtils;
+import io.fabric8.kubernetes.client.utils.Utils;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 

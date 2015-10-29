@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.internal;
 
+import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

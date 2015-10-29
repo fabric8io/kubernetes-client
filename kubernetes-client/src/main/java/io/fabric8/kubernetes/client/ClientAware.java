@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.client;
 
+@Deprecated
 public interface ClientAware<C extends Client> {
 
   C getClient();

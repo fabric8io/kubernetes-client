@@ -23,7 +23,9 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.Reaper;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.TimeUnit;
@@ -48,7 +50,6 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
       public void visit(T resource) {
         try {
           if (isCascading() && !isReaping()) {
-            Reaper reaper = ReaperFactory.getReaper(oper);
             if (reaper != null) {
               setReaping(true);
               reaper.reap();
@@ -76,7 +77,6 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     for (int i = 0; i < maxTries; i++) {
       try {
         if (isCascading()) {
-          Reaper reaper = ReaperFactory.getReaper(this);
           if (reaper != null && !isReaping()) {
             setReaping(true);
             reaper.reap();

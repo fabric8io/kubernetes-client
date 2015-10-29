@@ -26,8 +26,8 @@ import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.internal.URLUtils;
-import io.fabric8.kubernetes.client.internal.Utils;
+import io.fabric8.kubernetes.client.utils.URLUtils;
+import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -61,7 +61,6 @@ public class OperationSupport {
     this.name = name;
   }
 
-
   public String getResourceT() {
     return resourceT;
   }
@@ -86,7 +85,7 @@ public class OperationSupport {
     }
   }
 
-  protected URL getNamespacedUrl(String namespace) throws MalformedURLException {
+  public URL getNamespacedUrl(String namespace) throws MalformedURLException {
     URL requestUrl = getRootUrl();
     if (namespace != null) {
       requestUrl = new URL(URLUtils.join(requestUrl.toString(), "namespaces", namespace));
@@ -95,18 +94,18 @@ public class OperationSupport {
     return requestUrl;
   }
 
-  protected URL getNamespacedUrl() throws MalformedURLException {
+  public URL getNamespacedUrl() throws MalformedURLException {
     return getNamespacedUrl(getNamespace());
   }
 
-  protected URL getResourceUrl(String namespace, String name) throws MalformedURLException {
+  public URL getResourceUrl(String namespace, String name) throws MalformedURLException {
     if (name == null) {
       return getNamespacedUrl(namespace);
     }
     return new URL(URLUtils.join(getNamespacedUrl(namespace).toString(), name));
   }
 
-  protected URL getResourceUrl() throws MalformedURLException {
+  public URL getResourceUrl() throws MalformedURLException {
     if (name == null) {
       return getNamespacedUrl();
     }
@@ -198,7 +197,7 @@ public class OperationSupport {
    * @param expectedStatusCode The expected status code.
    * @throws KubernetesClientException When the response code is not the expected.
    */
-  void assertResponseCode(Request request, Response response, int expectedStatusCode) {
+  protected void assertResponseCode(Request request, Response response, int expectedStatusCode) {
     int statusCode = response.code();
     String customMessage = config.getErrorMessages().get(statusCode);
 
@@ -246,7 +245,7 @@ public class OperationSupport {
     return new KubernetesClientException(sb.toString(), e);
   }
 
-   protected  <T> T unmarshal(InputStream is, Class<T> type) throws KubernetesClientException {
+   protected <T> T unmarshal(InputStream is, Class<T> type) throws KubernetesClientException {
     try (BufferedInputStream bis = new BufferedInputStream(is)) {
       bis.mark(-1);
       int intch;

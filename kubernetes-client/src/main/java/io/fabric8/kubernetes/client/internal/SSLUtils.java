@@ -37,7 +37,7 @@ import java.security.spec.InvalidKeySpecException;
 
 import static io.fabric8.kubernetes.client.internal.CertUtils.createKeyStore;
 import static io.fabric8.kubernetes.client.internal.CertUtils.createTrustStore;
-import static io.fabric8.kubernetes.client.internal.Utils.isNotNullOrEmpty;
+import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
 
 public final class SSLUtils {
 
