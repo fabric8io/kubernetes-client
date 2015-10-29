@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.DoneableGroup;
 import io.fabric8.openshift.api.model.Group;
 import io.fabric8.openshift.api.model.GroupList;
-import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
 public class GroupOperationsImpl extends OpenShiftOperation<Group, GroupList, DoneableGroup, ClientResource<Group, DoneableGroup>> {

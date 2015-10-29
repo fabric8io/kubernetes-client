@@ -15,8 +15,5 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.kubernetes.client.dsl.Loggable;
-
 public interface ClientLoggableResource<T, D> extends ClientResource<T, D>, Loggable<String> {
 }

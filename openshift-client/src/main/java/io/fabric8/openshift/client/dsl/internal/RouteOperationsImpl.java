@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.DoneableRoute;
 import io.fabric8.openshift.api.model.Route;
 import io.fabric8.openshift.api.model.RouteList;
-import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
 public class RouteOperationsImpl extends OpenShiftOperation<Route, RouteList, DoneableRoute, ClientResource<Route, DoneableRoute>> {

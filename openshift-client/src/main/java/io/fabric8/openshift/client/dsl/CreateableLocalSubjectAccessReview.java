@@ -19,7 +19,6 @@ package io.fabric8.openshift.client.dsl;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.client.dsl.Createable;
 import io.fabric8.openshift.api.model.LocalSubjectAccessReview;
-import io.fabric8.openshift.api.model.LocalSubjectAccessReviewFluent;
 import io.fabric8.openshift.api.model.LocalSubjectAccessReviewFluentImpl;
 import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
 

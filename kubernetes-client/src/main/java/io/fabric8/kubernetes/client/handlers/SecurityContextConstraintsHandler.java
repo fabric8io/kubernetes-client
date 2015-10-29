@@ -17,7 +17,6 @@ package io.fabric8.kubernetes.client.handlers;
 
 import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.SecurityContextConstraints;
-import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.internal.SecurityContextConstraintsOperationsImpl;

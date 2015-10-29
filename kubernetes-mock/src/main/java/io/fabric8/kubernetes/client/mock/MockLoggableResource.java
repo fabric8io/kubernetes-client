@@ -17,7 +17,6 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.client.dsl.LoggableResource;
-import io.fabric8.kubernetes.client.dsl.ScaleableResource;
 import org.easymock.IExpectationSetters;
 
 public interface MockLoggableResource<T, D, B> extends LoggableResource<T, IExpectationSetters<T>, D, IExpectationSetters<B>, IExpectationSetters<String>> {

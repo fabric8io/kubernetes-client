@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.client.mock.MockResource;
 import io.fabric8.openshift.api.model.DoneableGroup;
 import io.fabric8.openshift.api.model.Group;
 import io.fabric8.openshift.api.model.GroupList;
-import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableGroup;
 
 public class MockGroup extends BaseMockOperation<Group, GroupList, DoneableGroup,

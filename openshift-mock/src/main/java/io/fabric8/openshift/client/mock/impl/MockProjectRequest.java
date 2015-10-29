@@ -23,9 +23,7 @@ import io.fabric8.kubernetes.client.mock.Mockable;
 import io.fabric8.openshift.api.model.DoneableProjectRequest;
 import io.fabric8.openshift.api.model.ProjectRequest;
 import io.fabric8.openshift.client.dsl.ClientProjectRequestOperation;
-import io.fabric8.openshift.client.dsl.CreateableSubjectAccessReview;
 import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableProjectRequest;
-import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableSubjectAccessReviewResponse;
 import org.easymock.EasyMock;
 import org.easymock.IExpectationSetters;
 

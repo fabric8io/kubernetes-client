@@ -20,7 +20,6 @@ import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.RootPaths;
 
 import java.io.Closeable;
-import java.io.InputStream;
 import java.net.URL;
 
 public interface Client extends ConfigAware, Closeable {

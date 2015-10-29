@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.client.mock.MockResource;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildList;
 import io.fabric8.openshift.api.model.DoneableBuild;
-import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableBuild;
 
 public class MockBuild extends BaseMockOperation<Build, BuildList, DoneableBuild,

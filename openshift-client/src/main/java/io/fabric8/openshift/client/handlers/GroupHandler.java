@@ -19,7 +19,6 @@ import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.openshift.api.model.Group;
-import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.internal.GroupOperationsImpl;
 import org.apache.felix.scr.annotations.Component;

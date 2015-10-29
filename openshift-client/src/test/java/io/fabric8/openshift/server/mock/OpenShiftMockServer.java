@@ -23,8 +23,6 @@ import io.fabric8.kubernetes.server.mock.KubernetesMockServer;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 
-import java.io.IOException;
-
 public class OpenShiftMockServer extends KubernetesMockServer {
 
   @Override
