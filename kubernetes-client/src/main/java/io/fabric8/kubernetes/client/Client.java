@@ -45,7 +45,5 @@ public interface Client extends ConfigAware, Closeable {
 
   RootPaths rootPaths();
 
-  <T> T unmarshal(InputStream is, Class<T> type);
-
   void close();
 }

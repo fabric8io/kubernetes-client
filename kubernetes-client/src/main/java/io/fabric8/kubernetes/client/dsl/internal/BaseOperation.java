@@ -178,7 +178,7 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
     try {
       return (R) getClass()
         .getConstructor(Client.class, String.class, String.class, Boolean.class, type)
-        .newInstance(client, namespace, name, cascading, client.unmarshal(is, type));
+        .newInstance(client, namespace, name, cascading, unmarshal(is, type));
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }

@@ -28,14 +28,17 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.internal.URLUtils;
 import io.fabric8.kubernetes.client.internal.Utils;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
 public class OperationSupport<C extends Client> {
 
-  public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+  protected static final ObjectMapper JSON_MAPPER = new ObjectMapper();
+  protected static final ObjectMapper YAML_MAPPER = new ObjectMapper(new YAMLFactory());
 
   public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
@@ -43,6 +46,11 @@ public class OperationSupport<C extends Client> {
   final String resourceT;
   final String namespace;
   final String name;
+
+
+  public OperationSupport() {
+    this(null, null, null, null);
+  }
 
   public OperationSupport(C client, String resourceT, String namespace, String name) {
     this.client = client;
@@ -152,13 +160,13 @@ public class OperationSupport<C extends Client> {
   }
 
   protected <T, I> T handleCreate(I resource, Class<T> outputType) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    RequestBody body = RequestBody.create(JSON, OBJECT_MAPPER.writeValueAsString(resource));
+    RequestBody body = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(resource));
     Request.Builder requestBuilder = new Request.Builder().post(body).url(getNamespacedUrl(checkNamespace(resource)));
     return handleResponse(requestBuilder, 201, outputType);
   }
 
   protected <T> T handleReplace(T updated, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    RequestBody body = RequestBody.create(JSON, OBJECT_MAPPER.writeValueAsString(updated));
+    RequestBody body = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(updated));
     Request.Builder requestBuilder = new Request.Builder().put(body).url(getResourceUrl(checkNamespace(updated), checkName(updated)));
     return handleResponse(requestBuilder, 200, type);
   }
@@ -178,7 +186,7 @@ public class OperationSupport<C extends Client> {
     }
     assertResponseCode(request, response, successStatusCode);
     if (type != null) {
-      return OBJECT_MAPPER.readValue(response.body().byteStream(), type);
+      return JSON_MAPPER.readValue(response.body().byteStream(), type);
     } else {
       return null;
     }
@@ -202,7 +210,7 @@ public class OperationSupport<C extends Client> {
       throw requestFailure(request, createStatus(statusCode, customMessage));
     } else {
       try {
-        Status status = OBJECT_MAPPER.readValue(response.body().byteStream(), Status.class);
+        Status status = JSON_MAPPER.readValue(response.body().byteStream(), Status.class);
         throw requestFailure(request, status);
       } catch (IOException e) {
         throw requestFailure(request, createStatus(statusCode, ""));
@@ -238,5 +246,24 @@ public class OperationSupport<C extends Client> {
       .append(". Cause: ").append(e.getMessage());
 
     return new KubernetesClientException(sb.toString(), e);
+  }
+
+   protected  <T> T unmarshal(InputStream is, Class<T> type) throws KubernetesClientException {
+    try (BufferedInputStream bis = new BufferedInputStream(is)) {
+      bis.mark(-1);
+      int intch;
+      do {
+        intch = bis.read();
+      } while (intch > -1 && Character.isWhitespace(intch));
+      bis.reset();
+
+      ObjectMapper mapper = JSON_MAPPER;
+      if (intch != '{') {
+        mapper = YAML_MAPPER;
+      }
+      return mapper.readValue(bis, type);
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
   }
 }

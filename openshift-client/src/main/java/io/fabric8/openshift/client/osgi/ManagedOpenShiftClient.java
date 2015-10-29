@@ -441,11 +441,6 @@ public class ManagedOpenShiftClient extends BaseClient implements OpenShiftClien
   }
 
   @Override
-  public <T> T unmarshal(InputStream is, Class<T> type) {
-    return delegate.unmarshal(is, type);
-  }
-
-  @Override
   public void close() {
     delegate.close();
   }

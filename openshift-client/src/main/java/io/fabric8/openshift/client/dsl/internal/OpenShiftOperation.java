@@ -79,7 +79,7 @@ public class OpenShiftOperation<K extends OpenShiftClient, T extends HasMetadata
     try {
       return (R) getClass()
         .getConstructor(OpenShiftClient.class, String.class, String.class, Boolean.class, getType())
-        .newInstance(getClient(), getNamespace(), getName(), isCascading(), getClient().unmarshal(is, getType()));
+        .newInstance(getClient(), getNamespace(), getName(), isCascading(), unmarshal(is, getType()));
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }

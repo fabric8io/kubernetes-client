@@ -69,14 +69,14 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<OpenShiftClien
 
   @Override
   public ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void> load(InputStream is) {
-    return new BuildConfigOperationsImpl(getClient(), getNamespace(), getName(), isCascading(), getClient().unmarshal(is, getType()), secret, triggerType);
+    return new BuildConfigOperationsImpl(getClient(), getNamespace(), getName(), isCascading(), unmarshal(is, getType()), secret, triggerType);
   }
 
   @Override
   public Void instantiate(BuildRequest request) {
     try {
       URL instantiationUrl = new URL(URLUtils.join(getResourceUrl().toString(), "instantiate"));
-      RequestBody requestBody = RequestBody.create(JSON, BaseOperation.OBJECT_MAPPER.writer().writeValueAsString(request));
+      RequestBody requestBody = RequestBody.create(JSON, BaseOperation.JSON_MAPPER.writer().writeValueAsString(request));
       Request.Builder requestBuilder = new Request.Builder().post(requestBody).url(instantiationUrl);
       handleResponse(requestBuilder, 201, null);
     } catch (Exception e) {
@@ -90,7 +90,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<OpenShiftClien
     try {
       //TODO: This needs some attention.
       String triggerUrl = URLUtils.join(getResourceUrl().toString(), "webhooks", secret, triggerType);
-      RequestBody requestBody = RequestBody.create(JSON, BaseOperation.OBJECT_MAPPER.writer().writeValueAsString(trigger));
+      RequestBody requestBody = RequestBody.create(JSON, BaseOperation.JSON_MAPPER.writer().writeValueAsString(trigger));
       Request.Builder requestBuilder = new Request.Builder()
         .post(requestBody)
         .url(triggerUrl)
