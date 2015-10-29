@@ -15,20 +15,21 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.HasMetadataOperation;
 
 public class ServiceAccountOperationsImpl extends HasMetadataOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, ClientResource<ServiceAccount, DoneableServiceAccount>> {
 
-  public ServiceAccountOperationsImpl(AsyncHttpClient client, Config config, String namespace) {
+  public ServiceAccountOperationsImpl(OkHttpClient client, Config config, String namespace) {
     this(client, config, namespace, null, true, null);
   }
 
-  public ServiceAccountOperationsImpl(AsyncHttpClient client, Config config, String namespace, String name, Boolean cascading, ServiceAccount item) {
+  public ServiceAccountOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, ServiceAccount item) {
     super(client, config, "serviceaccounts", namespace, name, cascading, item);
   }
 }

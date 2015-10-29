@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableSecurityContextConstraints;
 import io.fabric8.kubernetes.api.model.SecurityContextConstraints;
 import io.fabric8.kubernetes.api.model.SecurityContextConstraintsList;
@@ -24,11 +24,11 @@ import io.fabric8.kubernetes.client.dsl.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 
 public class SecurityContextConstraintsOperationsImpl  extends BaseOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> {
-  public SecurityContextConstraintsOperationsImpl(AsyncHttpClient client, Config config) {
+  public SecurityContextConstraintsOperationsImpl(OkHttpClient client, Config config) {
     this(client, config, null, null, true, null);
   }
 
-  public SecurityContextConstraintsOperationsImpl(AsyncHttpClient client, Config config, String namespace, String name, Boolean cascading, SecurityContextConstraints item) {
+  public SecurityContextConstraintsOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, SecurityContextConstraints item) {
     super(client, config, "securitycontextconstraints", namespace, name, cascading, item);
   }
 

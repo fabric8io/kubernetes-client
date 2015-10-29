@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.DoneableGroup;
 import io.fabric8.openshift.api.model.Group;
@@ -23,11 +23,11 @@ import io.fabric8.openshift.api.model.GroupList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
 public class GroupOperationsImpl extends OpenShiftOperation<Group, GroupList, DoneableGroup, ClientResource<Group, DoneableGroup>> {
-  public GroupOperationsImpl(AsyncHttpClient client, OpenShiftConfig config, String namespace) {
+  public GroupOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
     this(client, config, namespace, null, true, null);
   }
 
-  public GroupOperationsImpl(AsyncHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, Group item) {
+  public GroupOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, Group item) {
     super(client, config, "groups", namespace, name, cascading, item);
   }
 

@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.handlers;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
@@ -33,12 +33,12 @@ public class PodHandler implements ResourceHandler<Pod> {
   }
 
   @Override
-  public Pod create(AsyncHttpClient client, Config config, String namespace, Pod item) {
+  public Pod create(OkHttpClient client, Config config, String namespace, Pod item) {
     return new PodOperationsImpl(client, config, namespace, null, true, item).create();
   }
 
   @Override
-  public Boolean delete(AsyncHttpClient client, Config config, String namespace, Pod item) {
+  public Boolean delete(OkHttpClient client, Config config, String namespace, Pod item) {
     return new PodOperationsImpl(client, config, namespace, null, true, item).delete(item);
   }
 }

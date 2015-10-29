@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client.handlers;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.openshift.api.model.Policy;
@@ -33,12 +33,12 @@ public class PolicyHandler implements ResourceHandler<Policy> {
   }
 
   @Override
-  public Policy create(AsyncHttpClient client, Config config, String namespace, Policy item) {
+  public Policy create(OkHttpClient client, Config config, String namespace, Policy item) {
       return new PolicyOperationsImpl(client, OpenShiftConfig.wrap(config), namespace, null, true, item).create();
     }
 
   @Override
-  public Boolean delete(AsyncHttpClient client, Config config, String namespace, Policy item) {
+  public Boolean delete(OkHttpClient client, Config config, String namespace, Policy item) {
       return new PolicyOperationsImpl(client, OpenShiftConfig.wrap(config), namespace, null, true, item).delete(item);
     }
 }

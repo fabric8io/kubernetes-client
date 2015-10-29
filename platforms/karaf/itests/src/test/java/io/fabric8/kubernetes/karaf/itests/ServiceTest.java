@@ -46,8 +46,6 @@ import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.karafDist
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.logLevel;
 
-
-
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)
 public class ServiceTest extends TestBase {
@@ -83,7 +81,7 @@ public class ServiceTest extends TestBase {
                 features(getFeaturesFile().toURL().toString(), "scr", "openshift-client"),
                 editConfigurationFileExtend("etc/org.ops4j.pax.url.mvn.cfg", "org.ops4j.pax.url.mvn.repositories", "file:"+System.getProperty("features.repo")+"@snapshots@releases"),
                 keepRuntimeFolder(),
-                logLevel(LogLevelOption.LogLevel.INFO),
+                logLevel(LogLevelOption.LogLevel.DEBUG),
         };
     }
 }

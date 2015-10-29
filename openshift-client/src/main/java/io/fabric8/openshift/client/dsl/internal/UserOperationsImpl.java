@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.DoneableUser;
 import io.fabric8.openshift.api.model.User;
@@ -23,11 +23,11 @@ import io.fabric8.openshift.api.model.UserList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
 public class UserOperationsImpl extends OpenShiftOperation<User, UserList, DoneableUser, ClientResource<User, DoneableUser>> {
-  public UserOperationsImpl(AsyncHttpClient client, OpenShiftConfig config, String namespace) {
+  public UserOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
     this(client, config, namespace, null, true, null);
   }
 
-  public UserOperationsImpl(AsyncHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, User item) {
+  public UserOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, User item) {
     super(client, config, "users", namespace, name, cascading, item);
   }
 

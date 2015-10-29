@@ -16,7 +16,7 @@
 
 package io.fabric8.openshift.client.handlers;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.openshift.api.model.Project;
@@ -35,12 +35,12 @@ public class ProjectRequestHandler implements ResourceHandler<ProjectRequest> {
   }
 
   @Override
-  public ProjectRequest create(AsyncHttpClient client, Config config, String namespace, ProjectRequest item) {
+  public ProjectRequest create(OkHttpClient client, Config config, String namespace, ProjectRequest item) {
       return new ProjectRequestsOperationImpl(client, OpenShiftConfig.wrap(config), item).create();
   }
 
   @Override
-  public Boolean delete(AsyncHttpClient client, Config config, String namespace, ProjectRequest item) {
+  public Boolean delete(OkHttpClient client, Config config, String namespace, ProjectRequest item) {
     throw new UnsupportedOperationException();
   }
 }

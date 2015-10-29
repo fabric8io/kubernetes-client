@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl.internal;
+package io.fabric8.kubernetes.client.dsl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -42,12 +43,11 @@ public class OperationSupport {
   protected static final ObjectMapper YAML_MAPPER = new ObjectMapper(new YAMLFactory());
   public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
   
-  final OkHttpClient client;
-  final Config config;
-  final String resourceT;
-  final String namespace;
-  final String name;
-
+  protected final OkHttpClient client;
+  protected final Config config;
+  protected final String resourceT;
+  protected final String namespace;
+  protected final String name;
 
   public OperationSupport() {
     this(null, null, null, null, null);
@@ -266,5 +266,9 @@ public class OperationSupport {
 
   public Config getConfig() {
     return config;
+  }
+
+  public OkHttpClient getClient() {
+    return client;
   }
 }

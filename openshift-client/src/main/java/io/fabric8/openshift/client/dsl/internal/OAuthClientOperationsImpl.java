@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.DoneableOAuthClient;
 import io.fabric8.openshift.api.model.OAuthClient;
@@ -25,11 +25,11 @@ import io.fabric8.openshift.client.OpenShiftConfig;
 public class OAuthClientOperationsImpl extends OpenShiftOperation<OAuthClient, OAuthClientList, DoneableOAuthClient,
   ClientResource<OAuthClient, DoneableOAuthClient>> {
 
-  public OAuthClientOperationsImpl(AsyncHttpClient client, OpenShiftConfig config) {
+  public OAuthClientOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
     this(client, config, null, null, true, null);
   }
 
-  public OAuthClientOperationsImpl(AsyncHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, OAuthClient item) {
+  public OAuthClientOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, OAuthClient item) {
     super(client, config, "oauthclients", namespace, name, cascading, item);
   }
 

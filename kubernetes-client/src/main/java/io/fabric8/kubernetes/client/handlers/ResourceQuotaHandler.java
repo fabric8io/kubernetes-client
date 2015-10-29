@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.handlers;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.ResourceQuota;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
@@ -32,12 +32,12 @@ public class ResourceQuotaHandler implements ResourceHandler<ResourceQuota> {
   }
 
   @Override
-  public ResourceQuota create(AsyncHttpClient client, Config config, String namespace, ResourceQuota item) {
+  public ResourceQuota create(OkHttpClient client, Config config, String namespace, ResourceQuota item) {
     return new ResourceQuotaOperationsImpl(client, config, namespace, null, true, item).create();
   }
 
   @Override
-  public Boolean delete(AsyncHttpClient client, Config config, String namespace, ResourceQuota item) {
+  public Boolean delete(OkHttpClient client, Config config, String namespace, ResourceQuota item) {
     return new ResourceQuotaOperationsImpl(client, config, namespace, null, true, item).delete(item);
   }
 }

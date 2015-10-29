@@ -17,14 +17,14 @@
 package io.fabric8.kubernetes.client;
 
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 
 public interface ResourceHandler<T extends HasMetadata> {
 
   String getKind();
 
-  T create(AsyncHttpClient client, Config config, String namespace, T item);
+  T create(OkHttpClient client, Config config, String namespace, T item);
 
-  Boolean delete(AsyncHttpClient client, Config config, String namespace, T item);
+  Boolean delete(OkHttpClient client, Config config, String namespace, T item);
 }

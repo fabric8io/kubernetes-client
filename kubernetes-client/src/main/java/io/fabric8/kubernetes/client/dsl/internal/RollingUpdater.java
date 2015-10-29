@@ -16,7 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.DoneableReplicationController;
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -56,17 +56,17 @@ class RollingUpdater<C extends Client> {
 
   private static final transient Logger LOG = LoggerFactory.getLogger(RollingUpdater.class);
 
-  private final AsyncHttpClient client;
+  private final OkHttpClient client;
   private final Config config;
   private final String namespace;
   private final long rollingTimeoutMillis;
   private final long loggingIntervalMillis;
 
-  RollingUpdater(AsyncHttpClient client, Config config, String namespace) {
+  RollingUpdater(OkHttpClient client, Config config, String namespace) {
     this(client, config, namespace, DEFAULT_ROLLING_TIMEOUT, Config.DEFAULT_LOGGING_INTERVAL);
   }
 
-  RollingUpdater(AsyncHttpClient client, Config config, String namespace, long rollingTimeoutMillis, long loggingIntervalMillis) {
+  RollingUpdater(OkHttpClient client, Config config, String namespace, long rollingTimeoutMillis, long loggingIntervalMillis) {
     this.client = client;
     this.config = config;
     this.namespace = namespace;

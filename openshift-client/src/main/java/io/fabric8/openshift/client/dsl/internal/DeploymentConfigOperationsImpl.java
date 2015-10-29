@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
@@ -25,11 +25,11 @@ import io.fabric8.openshift.client.OpenShiftConfig;
 public class DeploymentConfigOperationsImpl extends OpenShiftOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig,
   ClientResource<DeploymentConfig, DoneableDeploymentConfig>> {
 
-  public DeploymentConfigOperationsImpl(AsyncHttpClient client, OpenShiftConfig config, String namespace) {
+  public DeploymentConfigOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
     this(client, config, namespace, null, true, null);
   }
 
-  public DeploymentConfigOperationsImpl(AsyncHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, DeploymentConfig item) {
+  public DeploymentConfigOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, DeploymentConfig item) {
     super(client, config, "deploymentconfigs", namespace, name, cascading, item);
   }
 }

@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
-import com.ning.http.client.AsyncHttpClient;
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.DoneableProject;
 import io.fabric8.openshift.api.model.Project;
@@ -25,11 +25,11 @@ import io.fabric8.openshift.client.OpenShiftConfig;
 public class ProjectOperationsImpl extends OpenShiftOperation<Project, ProjectList, DoneableProject,
   ClientResource<Project, DoneableProject>> {
 
-  public ProjectOperationsImpl(AsyncHttpClient client, OpenShiftConfig config) {
+  public ProjectOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
     this(client, config, null, null, true, null);
   }
 
-  public ProjectOperationsImpl(AsyncHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, Project item) {
+  public ProjectOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, Project item) {
     super(client, config, "projects", namespace, name, cascading, item);
   }
 
