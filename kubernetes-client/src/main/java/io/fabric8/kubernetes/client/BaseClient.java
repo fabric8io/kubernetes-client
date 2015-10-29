@@ -16,8 +16,6 @@
 
 package io.fabric8.kubernetes.client;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.squareup.okhttp.Authenticator;
 import com.squareup.okhttp.Challenge;
 import com.squareup.okhttp.Credentials;
@@ -36,9 +34,7 @@ import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
-import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.Proxy;
@@ -51,10 +47,7 @@ import static io.fabric8.kubernetes.client.internal.Utils.isNotNullOrEmpty;
 
 
 public class BaseClient implements Client {
-
-  private static final ObjectMapper jsonMapper = new ObjectMapper();
-  private static final ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
-
+  
   private OkHttpClient httpClient;
   private URL masterUrl;
   private String apiVersion;
@@ -118,7 +111,7 @@ public class BaseClient implements Client {
       }
 
       if (isNotNullOrEmpty(config.getUsername()) && isNotNullOrEmpty(config.getPassword())) {
-        httpClient.setAuthenticator(new Authenticator(){
+        httpClient.setAuthenticator(new Authenticator() {
 
           @Override
           public Request authenticate(Proxy proxy, Response response) throws IOException {
@@ -131,8 +124,8 @@ public class BaseClient implements Client {
 
               String credential = Credentials.basic(config.getUsername(), config.getPassword());
               return request.newBuilder()
-                .header("Authorization", credential)
-                .build();
+                      .header("Authorization", credential)
+                      .build();
             }
             return null;
           }
@@ -183,26 +176,6 @@ public class BaseClient implements Client {
   }
 
   @Override
-  public <T> T unmarshal(InputStream is, Class<T> type) throws KubernetesClientException {
-    try (BufferedInputStream bis = new BufferedInputStream(is)) {
-      bis.mark(-1);
-      int intch;
-      do {
-        intch = bis.read();
-      } while (intch > -1 && Character.isWhitespace(intch));
-      bis.reset();
-
-      ObjectMapper mapper = jsonMapper;
-      if (intch != '{') {
-        mapper = yamlMapper;
-      }
-      return mapper.readValue(bis, type);
-    } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
-  }
-
-  @Override
   public OkHttpClient getHttpClient() {
     return httpClient;
   }
@@ -249,7 +222,7 @@ public class BaseClient implements Client {
 
   @Override
   public RootPaths rootPaths() {
-    return new BaseOperation(this, "", null, null, false, null, RootPaths.class, null, null) {
+    return new BaseOperation(httpClient, configuration, "", null, null, false, null, RootPaths.class, null, null) {
     }.getRootPaths();
   }
 }

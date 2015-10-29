@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
@@ -24,6 +25,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.internal.URLUtils;
 import io.fabric8.kubernetes.client.internal.Utils;
@@ -35,34 +37,31 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
-public class OperationSupport<C extends Client> {
+public class OperationSupport {
 
   protected static final ObjectMapper JSON_MAPPER = new ObjectMapper();
   protected static final ObjectMapper YAML_MAPPER = new ObjectMapper(new YAMLFactory());
-
   public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-
-  final C client;
+  
+  final OkHttpClient client;
+  final Config config;
   final String resourceT;
   final String namespace;
   final String name;
 
 
   public OperationSupport() {
-    this(null, null, null, null);
+    this(null, null, null, null, null);
   }
 
-  public OperationSupport(C client, String resourceT, String namespace, String name) {
+  public OperationSupport(OkHttpClient client, Config config, String resourceT, String namespace, String name) {
     this.client = client;
+    this.config = config;
     this.resourceT = resourceT;
     this.namespace = namespace;
     this.name = name;
   }
 
-
-  public C getClient() {
-    return client;
-  }
 
   public String getResourceT() {
     return resourceT;
@@ -82,7 +81,7 @@ public class OperationSupport<C extends Client> {
 
   public URL getRootUrl() {
     try {
-      return new URL(URLUtils.join(client.getMasterUrl().toString(), "api", client.getApiVersion()));
+      return new URL(URLUtils.join(config.getMasterUrl().toString(), "api", config.getApiVersion()));
     } catch (MalformedURLException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
@@ -180,7 +179,7 @@ public class OperationSupport<C extends Client> {
     Request request = requestBuilder.build();
     Response response = null;
     try {
-      response = client.getHttpClient().newCall(request).execute();
+      response = client.newCall(request).execute();
     } catch (Exception e) {
       throw requestException(request, e);
     }
@@ -202,7 +201,7 @@ public class OperationSupport<C extends Client> {
    */
   void assertResponseCode(Request request, Response response, int expectedStatusCode) {
     int statusCode = response.code();
-    String customMessage = client.getConfiguration().getErrorMessages().get(statusCode);
+    String customMessage = config.getErrorMessages().get(statusCode);
 
     if (statusCode == expectedStatusCode) {
       return;
@@ -265,5 +264,9 @@ public class OperationSupport<C extends Client> {
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
+  }
+
+  public Config getConfig() {
+    return config;
   }
 }

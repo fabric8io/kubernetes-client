@@ -15,20 +15,22 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableEvent;
 import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventList;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 
-public class EventOperationsImpl<C extends Client>  extends HasMetadataOperation<Client, Event, EventList, DoneableEvent,
+public class EventOperationsImpl extends HasMetadataOperation<Event, EventList, DoneableEvent,
   ClientResource<Event, DoneableEvent>> {
 
-  public EventOperationsImpl(C client) {
-    this(client, client.getNamespace(), null, true, null);
+  public EventOperationsImpl(AsyncHttpClient client, Config config, String namespace) {
+    this(client, config, namespace, null, true, null);
   }
 
-  public EventOperationsImpl(C client, String namespace, String name, Boolean cascading, Event item) {
-    super(client, "events", namespace, name, cascading, item);
+  public EventOperationsImpl(AsyncHttpClient client, Config config, String namespace, String name, Boolean cascading, Event item) {
+    super(client, config, "events", namespace, name, cascading, item);
   }
 }

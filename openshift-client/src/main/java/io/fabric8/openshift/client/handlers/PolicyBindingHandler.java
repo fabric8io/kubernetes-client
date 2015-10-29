@@ -15,10 +15,12 @@
  */
 package io.fabric8.openshift.client.handlers;
 
-import io.fabric8.kubernetes.client.Client;
+import com.ning.http.client.AsyncHttpClient;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.openshift.api.model.PolicyBinding;
 import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.internal.PolicyBindingOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
@@ -33,16 +35,12 @@ public class PolicyBindingHandler implements ResourceHandler<PolicyBinding> {
   }
 
   @Override
-  public PolicyBinding create(Client client, String namespace, PolicyBinding item) {
-    try (OpenShiftClient osClient = client.adapt(OpenShiftClient.class)) {
-      return new PolicyBindingOperationsImpl(osClient, namespace, null, true, item).create();
-    }
+  public PolicyBinding create(AsyncHttpClient client, Config config, String namespace, PolicyBinding item) {
+      return new PolicyBindingOperationsImpl(client, OpenShiftConfig.wrap(config), namespace, null, true, item).create();
   }
 
   @Override
-  public Boolean delete(Client client, String namespace, PolicyBinding item) {
-    try (OpenShiftClient osClient = client.adapt(OpenShiftClient.class)) {
-      return new PolicyBindingOperationsImpl(osClient, namespace, null, true, item).delete(item);
+  public Boolean delete(AsyncHttpClient client, Config config, String namespace, PolicyBinding item) {
+      return new PolicyBindingOperationsImpl(client, OpenShiftConfig.wrap(config), namespace, null, true, item).delete(item);
     }
-  }
 }

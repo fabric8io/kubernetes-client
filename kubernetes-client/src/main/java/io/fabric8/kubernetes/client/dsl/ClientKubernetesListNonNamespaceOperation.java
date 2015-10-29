@@ -24,8 +24,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 
 import java.io.InputStream;
 
-public interface ClientKubernetesListNonNamespaceOperation<C extends Client> extends
-  ClientAware<C>,
+public interface ClientKubernetesListNonNamespaceOperation extends
   Createable<KubernetesList, KubernetesList, DoneableKubernetesList>,
   MultiDeleteable<KubernetesList, Boolean>,
   Loadable<InputStream, CreateGettable<KubernetesList, KubernetesList, DoneableKubernetesList>> {

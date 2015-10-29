@@ -15,10 +15,12 @@
  */
 package io.fabric8.openshift.client.handlers;
 
-import io.fabric8.kubernetes.client.Client;
+import com.ning.http.client.AsyncHttpClient;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.internal.BuildOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
@@ -33,16 +35,12 @@ public class BuildHandler implements ResourceHandler<Build> {
   }
 
   @Override
-  public Build create(Client client, String namespace, Build item) {
-    try (OpenShiftClient osClient = client.adapt(OpenShiftClient.class)) {
-      return new BuildOperationsImpl(osClient, namespace, null, true, item).create();
-    }
+  public Build create(AsyncHttpClient client, Config config, String namespace, Build item) {
+      return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), namespace, null, true, item).create();
   }
 
   @Override
-  public Boolean delete(Client client, String namespace, Build item) {
-    try (OpenShiftClient osClient = client.adapt(OpenShiftClient.class)) {
-      return new BuildOperationsImpl(osClient, namespace, null, true, item).delete(item);
-    }
+  public Boolean delete(AsyncHttpClient client, Config config, String namespace, Build item) {
+      return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), namespace, null, true, item).delete(item);
   }
 }

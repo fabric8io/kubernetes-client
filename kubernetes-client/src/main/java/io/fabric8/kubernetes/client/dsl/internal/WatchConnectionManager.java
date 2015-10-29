@@ -49,7 +49,7 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
   private static final ObjectMapper mapper = new ObjectMapper();
   private final AtomicBoolean forceClosed = new AtomicBoolean();
   private final AtomicReference<String> resourceVersion;
-  private final BaseOperation<?, T, L, ?, ?> baseOperation;
+  private final BaseOperation<T, L, ?, ?> baseOperation;
   private final Watcher<T> watcher;
   private final int reconnectLimit;
   private final int reconnectInterval;
@@ -58,7 +58,7 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
   private WebSocketCall webSocketCall;
   private OkHttpClient clonedClient;
 
-  WatchConnectionManager(final BaseOperation<?, T, L, ?, ?> baseOperation, final String version, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit) throws InterruptedException, ExecutionException, MalformedURLException {
+  WatchConnectionManager(final BaseOperation<T, L, ?, ?> baseOperation, final String version, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit) throws InterruptedException, ExecutionException, MalformedURLException {
     if (version == null) {
       KubernetesResourceList currentList = baseOperation.list();
       this.resourceVersion = new AtomicReference<>(currentList.getMetadata().getResourceVersion());
@@ -98,7 +98,7 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
       .addHeader("Origin", requestUrl.getProtocol() + "://" + requestUrl.getHost() + ":" + requestUrl.getPort())
       .build();
 
-    clonedClient = baseOperation.getClient().getHttpClient().clone(); // Clone to make a customized OkHttp for this request.
+    clonedClient = baseOperation.getClient().clone(); // Clone to make a customized OkHttp for this request.
     clonedClient.setReadTimeout(0, TimeUnit.MILLISECONDS);
 
     webSocketCall = WebSocketCall.create(clonedClient, request);

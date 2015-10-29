@@ -191,158 +191,158 @@ public class DefaultOpenShiftClient extends BaseClient implements OpenShiftClien
   }
 
   @Override
-  public ClientMixedOperation<OpenShiftClient, Endpoints, EndpointsList, DoneableEndpoints, ClientResource<Endpoints, DoneableEndpoints>> endpoints() {
-    return new EndpointsOperationsImpl(this);
+  public ClientMixedOperation<Endpoints, EndpointsList, DoneableEndpoints, ClientResource<Endpoints, DoneableEndpoints>> endpoints() {
+    return new EndpointsOperationsImpl(getHttpClient(), getConfiguration(), getNamespace());
   }
 
   @Override
-  public ClientMixedOperation<OpenShiftClient, Event, EventList, DoneableEvent, ClientResource<Event, DoneableEvent>> events() {
-    return new EventOperationsImpl(this);
+  public ClientMixedOperation<Event, EventList, DoneableEvent, ClientResource<Event, DoneableEvent>> events() {
+    return new EventOperationsImpl(getHttpClient(), getConfiguration(), getNamespace());
   }
 
   @Override
-  public ClientNonNamespaceOperation<OpenShiftClient, Namespace, NamespaceList, DoneableNamespace, ClientResource<Namespace, DoneableNamespace>> namespaces() {
-    return new NamespaceOperationsImpl(this);
+  public ClientNonNamespaceOperation<Namespace, NamespaceList, DoneableNamespace, ClientResource<Namespace, DoneableNamespace>> namespaces() {
+    return new NamespaceOperationsImpl(getHttpClient(), getConfiguration());
   }
 
   @Override
-  public ClientNonNamespaceOperation<OpenShiftClient, Node, NodeList, DoneableNode, ClientResource<Node, DoneableNode>> nodes() {
-    return new NodeOperationsImpl(this);
+  public ClientNonNamespaceOperation<Node, NodeList, DoneableNode, ClientResource<Node, DoneableNode>> nodes() {
+    return new NodeOperationsImpl(getHttpClient(), getConfiguration());
   }
 
   @Override
-  public ClientMixedOperation<OpenShiftClient, PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, ClientResource<PersistentVolume, DoneablePersistentVolume>> persistentVolumes() {
-    return new PersistentVolumeOperationsImpl(this);
+  public ClientMixedOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, ClientResource<PersistentVolume, DoneablePersistentVolume>> persistentVolumes() {
+    return new PersistentVolumeOperationsImpl(getHttpClient(), getConfiguration(), getNamespace());
   }
 
   @Override
-  public ClientMixedOperation<OpenShiftClient, PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, ClientResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> persistentVolumeClaims() {
-    return new PersistentVolumeClaimOperationsImpl(this);
+  public ClientMixedOperation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, ClientResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> persistentVolumeClaims() {
+    return new PersistentVolumeClaimOperationsImpl(getHttpClient(), getConfiguration(), getNamespace());
   }
 
   @Override
-  public ClientMixedOperation<OpenShiftClient, Pod, PodList, DoneablePod, ClientLoggableResource<Pod, DoneablePod>> pods() {
-    return new PodOperationsImpl(this);
+  public ClientMixedOperation<Pod, PodList, DoneablePod, ClientLoggableResource<Pod, DoneablePod>> pods() {
+    return new PodOperationsImpl(getHttpClient(), getConfiguration(), getNamespace());
   }
 
   @Override
-  public ClientMixedOperation<OpenShiftClient, ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>> replicationControllers() {
-    return new ReplicationControllerOperationsImpl(this);
+  public ClientMixedOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>> replicationControllers() {
+    return new ReplicationControllerOperationsImpl(getHttpClient(), getConfiguration(), getNamespace());
   }
 
   @Override
-  public ClientMixedOperation<OpenShiftClient, ResourceQuota, ResourceQuotaList, DoneableResourceQuota, ClientResource<ResourceQuota, DoneableResourceQuota>> resourceQuotas() {
-    return new ResourceQuotaOperationsImpl(this);
+  public ClientMixedOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota, ClientResource<ResourceQuota, DoneableResourceQuota>> resourceQuotas() {
+    return new ResourceQuotaOperationsImpl(getHttpClient(), getConfiguration(), getNamespace());
   }
 
   @Override
-  public ClientMixedOperation<OpenShiftClient, Secret, SecretList, DoneableSecret, ClientResource<Secret, DoneableSecret>> secrets() {
-    return new SecretOperationsImpl(this);
+  public ClientMixedOperation<Secret, SecretList, DoneableSecret, ClientResource<Secret, DoneableSecret>> secrets() {
+    return new SecretOperationsImpl(getHttpClient(), getConfiguration(), getNamespace());
   }
 
   @Override
-  public ClientMixedOperation<OpenShiftClient, Service, ServiceList, DoneableService, ClientResource<Service, DoneableService>> services() {
-    return new ServiceOperationsImpl(this);
+  public ClientMixedOperation<Service, ServiceList, DoneableService, ClientResource<Service, DoneableService>> services() {
+    return new ServiceOperationsImpl(getHttpClient(), getConfiguration(), getNamespace());
   }
 
   @Override
-  public ClientMixedOperation<OpenShiftClient, ServiceAccount, ServiceAccountList, DoneableServiceAccount, ClientResource<ServiceAccount, DoneableServiceAccount>> serviceAccounts() {
-    return new ServiceAccountOperationsImpl(this);
+  public ClientMixedOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, ClientResource<ServiceAccount, DoneableServiceAccount>> serviceAccounts() {
+    return new ServiceAccountOperationsImpl(getHttpClient(), getConfiguration(), getNamespace());
   }
 
   @Override
-  public ClientKubernetesListMixedOperation<OpenShiftClient> lists() {
-    return new KubernetesListOperationsImpl(this);
+  public ClientKubernetesListMixedOperation lists() {
+    return new KubernetesListOperationsImpl(getHttpClient(), getConfiguration(), getNamespace());
   }
 
   @Override
-  public ClientNonNamespaceOperation<OpenShiftClient, SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints() {
-    return new SecurityContextConstraintsOperationsImpl(this);
+  public ClientNonNamespaceOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints() {
+    return new SecurityContextConstraintsOperationsImpl(getHttpClient(), getConfiguration());
   }
 
   @Override
-  public ClientMixedOperation<OpenShiftClient, Build, BuildList, DoneableBuild, ClientResource<Build, DoneableBuild>> builds() {
-    return new BuildOperationsImpl(this);
+  public ClientMixedOperation<Build, BuildList, DoneableBuild, ClientResource<Build, DoneableBuild>> builds() {
+    return new BuildOperationsImpl(getHttpClient(), OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override
-  public ClientMixedOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig, ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void>> buildConfigs() {
-    return new BuildConfigOperationsImpl(this);
+  public ClientMixedOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void>> buildConfigs() {
+    return new BuildConfigOperationsImpl(getHttpClient(), OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override
-  public ClientMixedOperation<OpenShiftClient, DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, ClientResource<DeploymentConfig, DoneableDeploymentConfig>> deploymentConfigs() {
-    return new DeploymentConfigOperationsImpl(this);
+  public ClientMixedOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, ClientResource<DeploymentConfig, DoneableDeploymentConfig>> deploymentConfigs() {
+    return new DeploymentConfigOperationsImpl(getHttpClient(), OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override
-  public ClientMixedOperation<OpenShiftClient, Group, GroupList, DoneableGroup, ClientResource<Group, DoneableGroup>> groups() {
-    return new GroupOperationsImpl(this);
+  public ClientMixedOperation<Group, GroupList, DoneableGroup, ClientResource<Group, DoneableGroup>> groups() {
+    return new GroupOperationsImpl(getHttpClient(), OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override
-  public ClientMixedOperation<OpenShiftClient, ImageStream, ImageStreamList, DoneableImageStream, ClientResource<ImageStream, DoneableImageStream>> imageStreams() {
-    return new ImageStreamOperationsImpl(this);
+  public ClientMixedOperation<ImageStream, ImageStreamList, DoneableImageStream, ClientResource<ImageStream, DoneableImageStream>> imageStreams() {
+    return new ImageStreamOperationsImpl(getHttpClient(), OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override
-  public ClientNonNamespaceOperation<OpenShiftClient, OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken, ClientResource<OAuthAccessToken, DoneableOAuthAccessToken>> oAuthAccessTokens() {
-    return new OAuthAccessTokenOperationsImpl(this);
+  public ClientNonNamespaceOperation<OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken, ClientResource<OAuthAccessToken, DoneableOAuthAccessToken>> oAuthAccessTokens() {
+    return new OAuthAccessTokenOperationsImpl(getHttpClient(), OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public ClientNonNamespaceOperation<OpenShiftClient, OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken, ClientResource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken>> oAuthAuthorizeTokens() {
-    return new OAuthAuthorizeTokenOperationsImpl(this);
+  public ClientNonNamespaceOperation<OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken, ClientResource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken>> oAuthAuthorizeTokens() {
+    return new OAuthAuthorizeTokenOperationsImpl(getHttpClient(), OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public ClientNonNamespaceOperation<OpenShiftClient, OAuthClient, OAuthClientList, DoneableOAuthClient, ClientResource<OAuthClient, DoneableOAuthClient>> oAuthClients() {
-    return new OAuthClientOperationsImpl(this);
+  public ClientNonNamespaceOperation<OAuthClient, OAuthClientList, DoneableOAuthClient, ClientResource<OAuthClient, DoneableOAuthClient>> oAuthClients() {
+    return new OAuthClientOperationsImpl(getHttpClient(), OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public ClientMixedOperation<OpenShiftClient, Policy, PolicyList, DoneablePolicy, ClientResource<Policy, DoneablePolicy>> policies() {
-    return new PolicyOperationsImpl(this);
+  public ClientMixedOperation<Policy, PolicyList, DoneablePolicy, ClientResource<Policy, DoneablePolicy>> policies() {
+    return new PolicyOperationsImpl(getHttpClient(), OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override
-  public ClientMixedOperation<OpenShiftClient, PolicyBinding, PolicyBindingList, DoneablePolicyBinding, ClientResource<PolicyBinding, DoneablePolicyBinding>> policyBindings() {
-    return new PolicyBindingOperationsImpl(this);
+  public ClientMixedOperation<PolicyBinding, PolicyBindingList, DoneablePolicyBinding, ClientResource<PolicyBinding, DoneablePolicyBinding>> policyBindings() {
+    return new PolicyBindingOperationsImpl(getHttpClient(), OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override
-  public ClientNonNamespaceOperation<OpenShiftClient, Project, ProjectList, DoneableProject, ClientResource<Project, DoneableProject>> projects() {
-    return new ProjectOperationsImpl(this);
+  public ClientNonNamespaceOperation<Project, ProjectList, DoneableProject, ClientResource<Project, DoneableProject>> projects() {
+    return new ProjectOperationsImpl(getHttpClient(), OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public ClientProjectRequestOperation projectrequests() {
-    return new ProjectRequestsOperationImpl(this);
+    return new ProjectRequestsOperationImpl(getHttpClient(), OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public ClientMixedOperation<OpenShiftClient, RoleBinding, RoleBindingList, DoneableRoleBinding, ClientResource<RoleBinding, DoneableRoleBinding>> roleBindings() {
-    return new RoleBindingOperationsImpl(this);
+  public ClientMixedOperation<RoleBinding, RoleBindingList, DoneableRoleBinding, ClientResource<RoleBinding, DoneableRoleBinding>> roleBindings() {
+    return new RoleBindingOperationsImpl(getHttpClient(), OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override
-  public ClientMixedOperation<OpenShiftClient, Route, RouteList, DoneableRoute, ClientResource<Route, DoneableRoute>> routes() {
-    return new RouteOperationsImpl(this);
+  public ClientMixedOperation<Route, RouteList, DoneableRoute, ClientResource<Route, DoneableRoute>> routes() {
+    return new RouteOperationsImpl(getHttpClient(), OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override
-  public ClientMixedOperation<OpenShiftClient, Template, TemplateList, DoneableTemplate, ClientTemplateResource<Template, KubernetesList, DoneableTemplate>> templates() {
-    return new TemplateOperationsImpl(this);
+  public ClientMixedOperation<Template, TemplateList, DoneableTemplate, ClientTemplateResource<Template, KubernetesList, DoneableTemplate>> templates() {
+    return new TemplateOperationsImpl(getHttpClient(), OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override
-  public ClientMixedOperation<OpenShiftClient, User, UserList, DoneableUser, ClientResource<User, DoneableUser>> users() {
-    return new UserOperationsImpl(this);
+  public ClientMixedOperation<User, UserList, DoneableUser, ClientResource<User, DoneableUser>> users() {
+    return new UserOperationsImpl(getHttpClient(), OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override
   public ClientSubjectAccessReviewOperation<CreateableSubjectAccessReview, CreateableLocalSubjectAccessReview> subjectAccessReviews() {
-    return new ClientSubjectAccessReviewOperationImpl(this);
+    return new ClientSubjectAccessReviewOperationImpl(getHttpClient(), OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override

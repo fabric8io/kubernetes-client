@@ -15,20 +15,22 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildList;
 import io.fabric8.openshift.api.model.DoneableBuild;
 import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.OpenShiftConfig;
 
-public class BuildOperationsImpl extends OpenShiftOperation<OpenShiftClient, Build, BuildList, DoneableBuild,
+public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, DoneableBuild,
   ClientResource<Build, DoneableBuild>> {
 
-  public BuildOperationsImpl(OpenShiftClient client) {
-    this(client, client.getNamespace(), null, true, null);
+  public BuildOperationsImpl(AsyncHttpClient client, OpenShiftConfig config, String namespace) {
+    this(client, config, namespace, null, true, null);
   }
 
-  public BuildOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading, Build item) {
-    super(client, "builds", namespace, name, cascading, item);
+  public BuildOperationsImpl(AsyncHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, Build item) {
+    super(client, config, "builds", namespace, name, cascading, item);
   }
 }

@@ -15,10 +15,15 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Status;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.OpenShiftConfig;
+import io.fabric8.openshift.client.dsl.ClientProjectRequestOperation;
 import io.fabric8.kubernetes.client.dsl.internal.OperationSupport;
 import io.fabric8.openshift.api.model.DoneableProjectRequest;
 import io.fabric8.openshift.api.model.ProjectRequest;
@@ -26,19 +31,20 @@ import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.dsl.ClientProjectRequestOperation;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
-public class ProjectRequestsOperationImpl extends OperationSupport<OpenShiftClient> implements ClientProjectRequestOperation {
+public class ProjectRequestsOperationImpl extends OperationSupport implements ClientProjectRequestOperation {
 
     private final ProjectRequest item;
 
-    public ProjectRequestsOperationImpl(OpenShiftClient client) {
-        this(client, null);
+    public ProjectRequestsOperationImpl(OkHttpClient client, OpenShiftConfig config) {
+        this(client, config, null);
     }
 
-    public ProjectRequestsOperationImpl(OpenShiftClient client, ProjectRequest item) {
-        super(client, "projectrequests", null, null);
+    public ProjectRequestsOperationImpl(OkHttpClient client, OpenShiftConfig config, ProjectRequest item) {
+        super(client, config, "projectrequests", null, null);
         this.item = item;
     }
 
@@ -49,9 +55,12 @@ public class ProjectRequestsOperationImpl extends OperationSupport<OpenShiftClie
 
     @Override
     public URL getRootUrl() {
-        return getClient().getOpenshiftUrl();
+        try {
+            return new URL(OpenShiftConfig.wrap(getConfig()).getOpenShiftUrl());
+        } catch (MalformedURLException e) {
+            throw KubernetesClientException.launderThrowable(e);
+        }
     }
-
 
     @Override
     public ProjectRequest create(ProjectRequest... resources) {

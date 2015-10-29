@@ -15,48 +15,55 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.OpenShiftConfig;
 
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 
-public class OpenShiftOperation<K extends OpenShiftClient, T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
-  extends HasMetadataOperation<K, T, L, D, R> {
+public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
+  extends HasMetadataOperation<T, L, D, R> {
 
-  protected OpenShiftOperation(K client, String resourceT, String namespace, String name, Boolean cascading, T item) {
-    super(client, resourceT, namespace, name, cascading, item);
+  protected OpenShiftOperation(AsyncHttpClient client, OpenShiftConfig config, String resourceT, String namespace, String name, Boolean cascading, T item) {
+    super(client, config, resourceT, namespace, name, cascading, item);
   }
 
   @Override
   public URL getRootUrl() {
-    return getClient().getOpenshiftUrl();
+    try {
+      return new URL(OpenShiftConfig.wrap(getConfig()).getOpenShiftUrl());
+    } catch (MalformedURLException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
   }
-
 
   @Override
   public R withName(String name) {
     try {
       return (R) getClass()
-        .getConstructor(OpenShiftClient.class, String.class, String.class, Boolean.class, getType())
-        .newInstance(getClient(), getNamespace(), name, isCascading(), getItem());
+        .getConstructor(AsyncHttpClient.class, OpenShiftConfig.class, String.class, String.class, Boolean.class, getType())
+        .newInstance(getClient(), getConfig(), getNamespace(), name, isCascading(), getItem());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
   }
 
   @Override
-  public OpenShiftOperation<K, T, L, D, R> inNamespace(String namespace) {
+  public OpenShiftOperation<T, L, D, R> inNamespace(String namespace) {
     try {
       return getClass()
-        .getConstructor(OpenShiftClient.class, String.class, String.class, Boolean.class, getType())
-        .newInstance(getClient(), namespace, getName(), isCascading(), getItem());
+        .getConstructor(AsyncHttpClient.class, OpenShiftConfig.class, String.class, String.class, Boolean.class, getType())
+        .newInstance(getClient(), getConfig(), namespace, getName(), isCascading(), getItem());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -67,8 +74,8 @@ public class OpenShiftOperation<K extends OpenShiftClient, T extends HasMetadata
   public EditReplaceDeletable<T, T, D, Boolean> cascading(boolean enabled) {
     try {
       return (R) getClass()
-        .getConstructor(OpenShiftClient.class, String.class, String.class, Boolean.class, getType())
-        .newInstance(getClient(), getNamespace(), getName(), enabled, getItem());
+        .getConstructor(AsyncHttpClient.class, OpenShiftConfig.class, String.class, String.class, Boolean.class, getType())
+        .newInstance(getClient(), getConfig(), getNamespace(), getName(), enabled, getItem());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -78,11 +85,15 @@ public class OpenShiftOperation<K extends OpenShiftClient, T extends HasMetadata
   public R load(InputStream is) {
     try {
       return (R) getClass()
-        .getConstructor(OpenShiftClient.class, String.class, String.class, Boolean.class, getType())
-        .newInstance(getClient(), getNamespace(), getName(), isCascading(), unmarshal(is, getType()));
+        .getConstructor(AsyncHttpClient.class, OpenShiftConfig.class, String.class, String.class, Boolean.class, getType())
+        .newInstance(getClient(), getConfig(), getNamespace(), getName(), isCascading(), unmarshal(is, getType()));
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
   }
 
+  @Override
+  public OpenShiftConfig getConfig() {
+    return OpenShiftConfig.wrap(super.getConfig());
+  }
 }

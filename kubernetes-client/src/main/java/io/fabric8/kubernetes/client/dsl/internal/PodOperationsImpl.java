@@ -15,26 +15,28 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientLoggableResource;
 import io.fabric8.kubernetes.client.internal.URLUtils;
 
 import java.net.URL;
 
-public class PodOperationsImpl<C extends Client>  extends HasMetadataOperation<C, Pod, PodList, DoneablePod, ClientLoggableResource<Pod, DoneablePod>> implements ClientLoggableResource<Pod,DoneablePod> {
+public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, DoneablePod, ClientLoggableResource<Pod, DoneablePod>> implements ClientLoggableResource<Pod,DoneablePod> {
 
-  public PodOperationsImpl(C client) {
-    this(client, client.getNamespace(), null, true, null);
+  public PodOperationsImpl(OkHttpClient client, Config config, String namespace) {
+    this(client, config, namespace, null, true, null);
   }
 
-  public PodOperationsImpl(C client, String namespace, String name, Boolean cascading, Pod item) {
-    super(client, "pods", namespace, name, cascading, item);
+  public PodOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, Pod item) {
+    super(client, config, "pods", namespace, name, cascading, item);
   }
 
   @Override
@@ -64,7 +66,7 @@ public class PodOperationsImpl<C extends Client>  extends HasMetadataOperation<C
       URL url = new URL(URLUtils.join(getResourceUrl().toString(), sb.toString()));
       Request.Builder requestBuilder = new Request.Builder().get().url(url);
       Request request = requestBuilder.build();
-      Response response = client.getHttpClient().newCall(request).execute();
+      Response response = client.newCall(request).execute();
       assertResponseCode(request, response, 200);
       return response.body().string();
     } catch (Throwable t) {

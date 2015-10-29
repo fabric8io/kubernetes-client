@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.squareup.okhttp.HttpUrl;
+import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
@@ -23,6 +24,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
@@ -48,9 +50,9 @@ import java.util.concurrent.ExecutionException;
 
 import static io.fabric8.kubernetes.client.internal.Utils.join;
 
-public class BaseOperation<C extends Client, T, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
-  extends OperationSupport<C>
-  implements ClientMixedOperation<C, T, L, D, R> {
+public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
+  extends OperationSupport
+  implements ClientMixedOperation<T, L, D, R> {
 
   private final Boolean cascading;
   private final T item;
@@ -67,17 +69,17 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
 
   private boolean reaping;
 
-  protected BaseOperation(C client, String resourceT, String namespace, String name, Boolean cascading, T item) {
-    super(client,resourceT,namespace,name);
+  protected BaseOperation(OkHttpClient client, Config config, String resourceT, String namespace, String name, Boolean cascading, T item) {
+    super(client, config, resourceT,namespace,name);
     this.cascading = cascading;
     this.item = item;
-    this.type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-    this.listType = (Class<L>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[2];
-    this.doneableType = (Class<D>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[3];
+    this.type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    this.listType = (Class<L>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+    this.doneableType = (Class<D>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[2];
   }
 
-  protected BaseOperation(C client, String resourceT, String namespace, String name, Boolean cascading, T item, Class<T> type, Class<L> listType, Class<D> doneableType) {
-    super(client,resourceT,namespace,name);
+  protected BaseOperation(OkHttpClient client, Config config, String resourceT, String namespace, String name, Boolean cascading, T item, Class<T> type, Class<L> listType, Class<D> doneableType) {
+    super(client, config, resourceT,namespace,name);
     this.cascading = cascading;
     this.item = item;
     this.type = type;
@@ -108,7 +110,7 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
 
   public RootPaths getRootPaths() {
     try {
-      URL requestUrl = client.getMasterUrl();
+      URL requestUrl = new URL(config.getMasterUrl());
       Request.Builder req = new Request.Builder().get().url(requestUrl);
       return handleResponse(req, 200, RootPaths.class);
     } catch (KubernetesClientException e) {
@@ -138,26 +140,26 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
   public R withName(String name) {
     try {
       return (R) getClass()
-        .getConstructor(Client.class, String.class, String.class, Boolean.class, type)
-        .newInstance(client, namespace, name, cascading, item);
+        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, Boolean.class, type)
+        .newInstance(client, config, namespace, name, cascading, item);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
   }
 
   @Override
-  public ClientNonNamespaceOperation<C, T, L, D, R> inNamespace(String namespace) {
+  public ClientNonNamespaceOperation<T, L, D, R> inNamespace(String namespace) {
     try {
       return getClass()
-        .getConstructor(Client.class, String.class, String.class, Boolean.class, type)
-        .newInstance(client, namespace, name, cascading, item);
+        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, Boolean.class, type)
+        .newInstance(client, config, namespace, name, cascading, item);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
   }
 
   @Override
-  public ClientNonNamespaceOperation<C, T, L, D, R> inAnyNamespace() {
+  public ClientNonNamespaceOperation<T, L, D, R> inAnyNamespace() {
     return inNamespace(null);
   }
 
@@ -429,7 +431,7 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
 
   public Watch watch(String resourceVersion, final Watcher<T> watcher) throws KubernetesClientException {
     try {
-      return new WatchConnectionManager<>(this, resourceVersion, watcher, client.getConfiguration().getWatchReconnectInterval(), client.getConfiguration().getWatchReconnectLimit());
+      return new WatchConnectionManager(this, resourceVersion, watcher, config.getWatchReconnectInterval(), config.getWatchReconnectLimit());
     } catch (MalformedURLException | InterruptedException | ExecutionException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
@@ -465,7 +467,6 @@ public class BaseOperation<C extends Client, T, L extends KubernetesResourceList
   protected T handleGet(URL resourceUrl) throws InterruptedException, ExecutionException, IOException {
     return handleGet(resourceUrl, getType());
   }
-
 
   public Boolean isCascading() {
     return cascading;

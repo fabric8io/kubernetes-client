@@ -16,26 +16,28 @@
 
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.TimeUnit;
 
-public class HasMetadataOperation<C extends Client, T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
-  extends BaseOperation<C, T, L, D, R> {
+public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
+  extends BaseOperation< T, L, D, R> {
 
-  protected HasMetadataOperation(C client, String resourceT, String namespace, String name, Boolean cascading, T item) {
-    super(client, resourceT, namespace, name, cascading, item);
+  protected HasMetadataOperation(AsyncHttpClient client, Config config, String resourceT, String namespace, String name, Boolean cascading, T item) {
+    super(client, config, resourceT, namespace, name, cascading, item);
   }
 
-  protected HasMetadataOperation(C client, String resourceT, String namespace, String name, Boolean cascading, T item, Class<T> type, Class<L> listType, Class<D> doneableType) {
-    super(client, resourceT, namespace, name, cascading, item, type, listType, doneableType);
+  protected HasMetadataOperation(AsyncHttpClient client, Config config, String resourceT, String namespace, String name, Boolean cascading, T item, Class<T> type, Class<L> listType, Class<D> doneableType) {
+    super(client, config, resourceT, namespace, name, cascading, item, type, listType, doneableType);
   }
 
   @Override

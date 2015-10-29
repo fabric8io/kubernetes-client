@@ -21,7 +21,7 @@ import io.fabric8.openshift.client.dsl.OpenShiftDSL;
 import java.net.URL;
 
 public interface OpenShiftClient extends
-  OpenShiftDSL<OpenShiftClient>,
+  OpenShiftDSL,
   GenericKubernetesClient<OpenShiftClient> {
 
   URL getOpenshiftUrl();

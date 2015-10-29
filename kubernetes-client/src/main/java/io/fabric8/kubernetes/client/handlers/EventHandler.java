@@ -15,8 +15,10 @@
  */
 package io.fabric8.kubernetes.client.handlers;
 
+import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.internal.EventOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
@@ -32,12 +34,12 @@ public class EventHandler implements ResourceHandler<Event> {
   }
 
   @Override
-  public Event create(Client client, String namespace, Event item) {
-    return new EventOperationsImpl<Client>(client, namespace, null, true, item).create();
+  public Event create(AsyncHttpClient client, Config config, String namespace, Event item) {
+    return new EventOperationsImpl(client, config, namespace, null, true, item).create();
   }
 
   @Override
-  public Boolean delete(Client client, String namespace, Event item) {
-    return new EventOperationsImpl<Client>(client, namespace, null, true, item).delete(item);
+  public Boolean delete(AsyncHttpClient client, Config config, String namespace, Event item) {
+    return new EventOperationsImpl(client, config, namespace, null, true, item).delete(item);
   }
 }

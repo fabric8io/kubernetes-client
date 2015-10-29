@@ -15,24 +15,26 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableService;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.GenericKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 
-public class ServiceOperationsImpl<C extends Client> extends HasMetadataOperation<C, Service, ServiceList, DoneableService, ClientResource<Service, DoneableService>> {
+public class ServiceOperationsImpl extends HasMetadataOperation<Service, ServiceList, DoneableService, ClientResource<Service, DoneableService>> {
 
-  public ServiceOperationsImpl(C client) {
-    this(client, client.getNamespace(), null, true, null);
+  public ServiceOperationsImpl(AsyncHttpClient client, Config config, String namespace) {
+    this(client, config, namespace, null, true, null);
   }
 
-  public ServiceOperationsImpl(C client, String namespace, String name, Boolean cascading, Service item) {
-    super(client,"services", namespace, name, cascading, item);
+  public ServiceOperationsImpl(AsyncHttpClient client, Config config, String namespace, String name, Boolean cascading, Service item) {
+    super(client, config, "services", namespace, name, cascading, item);
   }
 
   @Override

@@ -15,19 +15,21 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 
-public class ServiceAccountOperationsImpl<C extends Client> extends HasMetadataOperation<C, ServiceAccount, ServiceAccountList, DoneableServiceAccount, ClientResource<ServiceAccount, DoneableServiceAccount>> {
+public class ServiceAccountOperationsImpl extends HasMetadataOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, ClientResource<ServiceAccount, DoneableServiceAccount>> {
 
-  public ServiceAccountOperationsImpl(C client) {
-    this(client, client.getNamespace(), null, true, null);
+  public ServiceAccountOperationsImpl(AsyncHttpClient client, Config config, String namespace) {
+    this(client, config, namespace, null, true, null);
   }
 
-  public ServiceAccountOperationsImpl(C client, String namespace, String name, Boolean cascading, ServiceAccount item) {
-    super(client, "serviceaccounts", namespace, name, cascading, item);
+  public ServiceAccountOperationsImpl(AsyncHttpClient client, Config config, String namespace, String name, Boolean cascading, ServiceAccount item) {
+    super(client, config, "serviceaccounts", namespace, name, cascading, item);
   }
 }

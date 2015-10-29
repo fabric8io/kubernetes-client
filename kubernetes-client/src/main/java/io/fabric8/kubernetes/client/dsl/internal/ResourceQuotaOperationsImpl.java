@@ -15,22 +15,24 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableResourceQuota;
 import io.fabric8.kubernetes.api.model.ResourceQuota;
 import io.fabric8.kubernetes.api.model.ResourceQuotaList;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 
-public class ResourceQuotaOperationsImpl<C extends Client> extends HasMetadataOperation<C, ResourceQuota, ResourceQuotaList, DoneableResourceQuota,
+public class ResourceQuotaOperationsImpl extends HasMetadataOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota,
   ClientResource<ResourceQuota, DoneableResourceQuota>> {
 
-  public ResourceQuotaOperationsImpl(C client) {
-    this(client, client.getNamespace(), null, true, null);
+  public ResourceQuotaOperationsImpl(AsyncHttpClient client, Config config, String namespace) {
+    this(client, config, namespace, null, true, null);
 
   }
 
-  public ResourceQuotaOperationsImpl(C client, String namespace, String name, Boolean cascading, ResourceQuota item) {
-    super(client, "resourcequotas", namespace, name, cascading, item);
+  public ResourceQuotaOperationsImpl(AsyncHttpClient client, Config config, String namespace, String name, Boolean cascading, ResourceQuota item) {
+    super(client, config, "resourcequotas", namespace, name, cascading, item);
   }
 }

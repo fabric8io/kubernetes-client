@@ -22,7 +22,7 @@ import io.fabric8.kubernetes.client.dsl.Namespaceable;
 
 public interface GenericKubernetesClient<C extends Client>
   extends Client,
-  KubernetesDSL<C>,
+  KubernetesDSL,
   Namespaceable<C>,
   AnyNamespaceable<C> {
 }

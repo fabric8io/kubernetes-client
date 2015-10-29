@@ -16,8 +16,6 @@
 
 package io.fabric8.openshift.client.mock.impl;
 
-import io.fabric8.openshift.client.OpenShiftClient;
-import io.fabric8.openshift.client.dsl.ClientBuildConfigResource;
 import io.fabric8.kubernetes.client.dsl.Instantiateable;
 import io.fabric8.kubernetes.client.dsl.Secretable;
 import io.fabric8.kubernetes.client.dsl.Triggerable;
@@ -29,6 +27,7 @@ import io.fabric8.openshift.api.model.BuildRequest;
 import io.fabric8.openshift.api.model.DoneableBuildConfig;
 import io.fabric8.openshift.api.model.WebHookTrigger;
 import io.fabric8.openshift.client.dsl.BuildConfigOperation;
+import io.fabric8.openshift.client.dsl.ClientBuildConfigResource;
 import io.fabric8.openshift.client.mock.MockBuildConfigResource;
 import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableBuildConfig;
 import org.easymock.EasyMock;
@@ -42,7 +41,7 @@ import static io.fabric8.kubernetes.client.mock.util.MockUtils.getArgument;
 import static org.easymock.EasyMock.expect;
 
 
-public class MockBuildConfig extends BaseMockOperation<OpenShiftClient, BuildConfig, BuildConfigList, DoneableBuildConfig,
+public class MockBuildConfig extends BaseMockOperation<BuildConfig, BuildConfigList, DoneableBuildConfig,
   MockDoneableBuildConfig, ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void>,
   MockBuildConfigResource>
   implements MockBuildConfigResource {

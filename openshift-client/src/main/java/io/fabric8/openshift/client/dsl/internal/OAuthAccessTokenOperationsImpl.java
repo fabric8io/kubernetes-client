@@ -15,21 +15,23 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.DoneableOAuthAccessToken;
 import io.fabric8.openshift.api.model.OAuthAccessToken;
 import io.fabric8.openshift.api.model.OAuthAccessTokenList;
 import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.OpenShiftConfig;
 
-public class OAuthAccessTokenOperationsImpl extends OpenShiftOperation<OpenShiftClient, OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken,
+public class OAuthAccessTokenOperationsImpl extends OpenShiftOperation<OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken,
   ClientResource<OAuthAccessToken, DoneableOAuthAccessToken>> {
 
-  public OAuthAccessTokenOperationsImpl(OpenShiftClient client) {
-    this(client, null, null, true, null);
+  public OAuthAccessTokenOperationsImpl(AsyncHttpClient client, OpenShiftConfig config) {
+    this(client, config, null, null, true, null);
   }
 
-  public OAuthAccessTokenOperationsImpl(OpenShiftClient client, String namespace, String name, Boolean cascading, OAuthAccessToken item) {
-    super(client, "oauthaccesstokens", namespace, name, cascading, item);
+  public OAuthAccessTokenOperationsImpl(AsyncHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, OAuthAccessToken item) {
+    super(client, config, "oauthaccesstokens", namespace, name, cascading, item);
   }
 
   @Override

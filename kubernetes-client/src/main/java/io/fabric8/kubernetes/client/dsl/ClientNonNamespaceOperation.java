@@ -23,14 +23,12 @@ import java.io.InputStream;
 /**
  * The entry point to client operations that are either "cross namespace resources", or are available in the invocation chain
  * after a namespace has already been specified.
- * @param <C>   The type of {@link io.fabric8.kubernetes.client.Client}.
  * @param <T>   The Kubernetes resource type.
  * @param <L>   The list variant of the Kubernetes resource type.
  * @param <D>   The doneable variant of the Kubernetes resource type.
  * @param <R>   The resource operations.
  */
-public interface ClientNonNamespaceOperation<C extends Client, T, L, D, R> extends
-  ClientAware<C>,
+public interface ClientNonNamespaceOperation<T, L, D, R> extends
   Nameable<R>,
   FilterWatchListMultiDeletable<T, L, Boolean>,
   Createable<T, T, D>,

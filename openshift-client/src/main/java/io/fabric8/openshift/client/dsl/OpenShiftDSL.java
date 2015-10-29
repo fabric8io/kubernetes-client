@@ -68,39 +68,39 @@ import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.api.model.UserList;
 
-public interface OpenShiftDSL<C extends Client> extends KubernetesDSL<C> {
+public interface OpenShiftDSL extends KubernetesDSL {
 
-  ClientMixedOperation<C, Build, BuildList, DoneableBuild, ClientResource<Build, DoneableBuild>> builds();
+  ClientMixedOperation<Build, BuildList, DoneableBuild, ClientResource<Build, DoneableBuild>> builds();
 
-  ClientMixedOperation<C, BuildConfig, BuildConfigList, DoneableBuildConfig, ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void>> buildConfigs();
+  ClientMixedOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void>> buildConfigs();
 
-  ClientMixedOperation<C, DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, ClientResource<DeploymentConfig, DoneableDeploymentConfig>> deploymentConfigs();
+  ClientMixedOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, ClientResource<DeploymentConfig, DoneableDeploymentConfig>> deploymentConfigs();
 
-  ClientNonNamespaceOperation<C, Group, GroupList, DoneableGroup, ClientResource<Group, DoneableGroup>> groups();
+  ClientNonNamespaceOperation<Group, GroupList, DoneableGroup, ClientResource<Group, DoneableGroup>> groups();
 
-  ClientMixedOperation<C, ImageStream, ImageStreamList, DoneableImageStream, ClientResource<ImageStream, DoneableImageStream>> imageStreams();
+  ClientMixedOperation<ImageStream, ImageStreamList, DoneableImageStream, ClientResource<ImageStream, DoneableImageStream>> imageStreams();
 
-  ClientNonNamespaceOperation<C, OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken, ClientResource<OAuthAccessToken, DoneableOAuthAccessToken>> oAuthAccessTokens();
+  ClientNonNamespaceOperation<OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken, ClientResource<OAuthAccessToken, DoneableOAuthAccessToken>> oAuthAccessTokens();
 
-  ClientNonNamespaceOperation<C, OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken, ClientResource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken>> oAuthAuthorizeTokens();
+  ClientNonNamespaceOperation<OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken, ClientResource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken>> oAuthAuthorizeTokens();
 
-  ClientNonNamespaceOperation<C, OAuthClient, OAuthClientList, DoneableOAuthClient, ClientResource<OAuthClient, DoneableOAuthClient>> oAuthClients();
+  ClientNonNamespaceOperation<OAuthClient, OAuthClientList, DoneableOAuthClient, ClientResource<OAuthClient, DoneableOAuthClient>> oAuthClients();
 
-  ClientMixedOperation<C, Policy, PolicyList, DoneablePolicy, ClientResource<Policy, DoneablePolicy>> policies();
+  ClientMixedOperation<Policy, PolicyList, DoneablePolicy, ClientResource<Policy, DoneablePolicy>> policies();
 
-  ClientMixedOperation<C, PolicyBinding, PolicyBindingList, DoneablePolicyBinding, ClientResource<PolicyBinding, DoneablePolicyBinding>> policyBindings();
+  ClientMixedOperation<PolicyBinding, PolicyBindingList, DoneablePolicyBinding, ClientResource<PolicyBinding, DoneablePolicyBinding>> policyBindings();
 
-  ClientNonNamespaceOperation<C, Project, ProjectList, DoneableProject, ClientResource<Project, DoneableProject>> projects();
+  ClientNonNamespaceOperation<Project, ProjectList, DoneableProject, ClientResource<Project, DoneableProject>> projects();
 
   ClientProjectRequestOperation projectrequests();
 
-  ClientMixedOperation<C, RoleBinding, RoleBindingList, DoneableRoleBinding, ClientResource<RoleBinding, DoneableRoleBinding>> roleBindings();
+  ClientMixedOperation<RoleBinding, RoleBindingList, DoneableRoleBinding, ClientResource<RoleBinding, DoneableRoleBinding>> roleBindings();
 
-  ClientMixedOperation<C, Route, RouteList, DoneableRoute, ClientResource<Route, DoneableRoute>> routes();
+  ClientMixedOperation<Route, RouteList, DoneableRoute, ClientResource<Route, DoneableRoute>> routes();
 
-  ClientMixedOperation<C, Template, TemplateList, DoneableTemplate, ClientTemplateResource<Template, KubernetesList, DoneableTemplate>> templates();
+  ClientMixedOperation<Template, TemplateList, DoneableTemplate, ClientTemplateResource<Template, KubernetesList, DoneableTemplate>> templates();
 
-  ClientNonNamespaceOperation<C, User, UserList, DoneableUser, ClientResource<User, DoneableUser>> users();
+  ClientNonNamespaceOperation<User, UserList, DoneableUser, ClientResource<User, DoneableUser>> users();
 
   ClientSubjectAccessReviewOperation<CreateableSubjectAccessReview, CreateableLocalSubjectAccessReview> subjectAccessReviews();
 

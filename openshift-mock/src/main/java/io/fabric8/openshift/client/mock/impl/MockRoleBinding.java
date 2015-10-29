@@ -22,10 +22,9 @@ import io.fabric8.kubernetes.client.mock.MockResource;
 import io.fabric8.openshift.api.model.DoneableRoleBinding;
 import io.fabric8.openshift.api.model.RoleBinding;
 import io.fabric8.openshift.api.model.RoleBindingList;
-import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableRoleBinding;
 
-public class MockRoleBinding extends BaseMockOperation<OpenShiftClient, RoleBinding, RoleBindingList, DoneableRoleBinding,
+public class MockRoleBinding extends BaseMockOperation<RoleBinding, RoleBindingList, DoneableRoleBinding,
   MockDoneableRoleBinding, ClientResource<RoleBinding, DoneableRoleBinding>,
   MockResource<RoleBinding, MockDoneableRoleBinding, Boolean>> {
 }

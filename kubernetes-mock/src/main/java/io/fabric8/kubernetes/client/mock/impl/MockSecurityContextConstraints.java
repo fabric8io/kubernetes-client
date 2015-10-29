@@ -26,7 +26,7 @@ import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockResource;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableSecurityContextConstraints;
 
-public class MockSecurityContextConstraints<C extends Client>  extends BaseMockOperation<C, SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints,
+public class MockSecurityContextConstraints extends BaseMockOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints,
   MockDoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>,
   MockResource<SecurityContextConstraints, MockDoneableSecurityContextConstraints, Boolean>> {
 }

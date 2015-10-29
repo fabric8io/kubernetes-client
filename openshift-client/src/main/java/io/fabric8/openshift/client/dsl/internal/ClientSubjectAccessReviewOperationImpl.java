@@ -16,6 +16,7 @@
 
 package io.fabric8.openshift.client.dsl.internal;
 
+import com.ning.http.client.AsyncHttpClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.internal.OperationSupport;
 import io.fabric8.openshift.api.model.LocalSubjectAccessReview;
@@ -24,28 +25,30 @@ import io.fabric8.openshift.api.model.SubjectAccessReview;
 import io.fabric8.openshift.api.model.SubjectAccessReviewBuilder;
 import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
 import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.ClientSubjectAccessReviewOperation;
 import io.fabric8.openshift.client.dsl.CreateableLocalSubjectAccessReview;
 import io.fabric8.openshift.client.dsl.CreateableSubjectAccessReview;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
-public class ClientSubjectAccessReviewOperationImpl extends OperationSupport<OpenShiftClient> implements ClientSubjectAccessReviewOperation<CreateableSubjectAccessReview, CreateableLocalSubjectAccessReview> {
+public class ClientSubjectAccessReviewOperationImpl extends OperationSupport implements ClientSubjectAccessReviewOperation<CreateableSubjectAccessReview, CreateableLocalSubjectAccessReview> {
 
 
-  public ClientSubjectAccessReviewOperationImpl(OpenShiftClient client) {
-    this(client, null);
+  public ClientSubjectAccessReviewOperationImpl(AsyncHttpClient client, OpenShiftConfig config) {
+    this(client, config, null);
   }
 
-  public ClientSubjectAccessReviewOperationImpl(OpenShiftClient client, String namespace) {
-    super(client, "subjectaccessreviews", namespace, null);
+  public ClientSubjectAccessReviewOperationImpl(AsyncHttpClient client, OpenShiftConfig config, String namespace) {
+    super(client, config, "subjectaccessreviews", namespace, null);
   }
 
   @Override
   public CreateableLocalSubjectAccessReview inNamespace(String namespace) {
-    return new ClientSubjectAccessReviewOperationImpl(getClient(), namespace).local();
+    return new ClientSubjectAccessReviewOperationImpl(getClient(), OpenShiftConfig.wrap(getConfig()), namespace).local();
   }
 
   @Override
@@ -60,20 +63,24 @@ public class ClientSubjectAccessReviewOperationImpl extends OperationSupport<Ope
 
   @Override
   public URL getRootUrl() {
-    return getClient().getOpenshiftUrl();
+    try {
+      return new URL(OpenShiftConfig.wrap(getConfig()).getOpenShiftUrl());
+    } catch (MalformedURLException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
   }
 
 
   private class CreateableLocalSubjectAccessReviewImpl extends CreateableLocalSubjectAccessReview {
-    private final OpenShiftClient client;
+    private final AsyncHttpClient client;
     private final LocalSubjectAccessReviewBuilder builder;
 
-    private CreateableLocalSubjectAccessReviewImpl(OpenShiftClient client) {
+    private CreateableLocalSubjectAccessReviewImpl(AsyncHttpClient client) {
       this.client = client;
       this.builder = new LocalSubjectAccessReviewBuilder(CreateableLocalSubjectAccessReviewImpl.this);
     }
 
-    private CreateableLocalSubjectAccessReviewImpl(OpenShiftClient client, LocalSubjectAccessReviewBuilder builder) {
+    private CreateableLocalSubjectAccessReviewImpl(AsyncHttpClient client, LocalSubjectAccessReviewBuilder builder) {
       this.client = client;
       this.builder = builder;
     }
@@ -109,15 +116,15 @@ public class ClientSubjectAccessReviewOperationImpl extends OperationSupport<Ope
   }
 
   private class CreateableSubjectAccessReviewImpl extends CreateableSubjectAccessReview {
-    private final OpenShiftClient client;
+    private final AsyncHttpClient client;
     private final SubjectAccessReviewBuilder builder;
 
-    private CreateableSubjectAccessReviewImpl(OpenShiftClient client) {
+    private CreateableSubjectAccessReviewImpl(AsyncHttpClient client) {
       this.client = client;
       this.builder = new SubjectAccessReviewBuilder(CreateableSubjectAccessReviewImpl.this);
     }
 
-    private CreateableSubjectAccessReviewImpl(OpenShiftClient client, SubjectAccessReviewBuilder builder) {
+    private CreateableSubjectAccessReviewImpl(AsyncHttpClient client, SubjectAccessReviewBuilder builder) {
       this.client = client;
       this.builder = builder;
     }
