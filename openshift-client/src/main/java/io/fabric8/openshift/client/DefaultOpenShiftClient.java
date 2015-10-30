@@ -166,7 +166,7 @@ public class DefaultOpenShiftClient extends BaseClient implements OpenShiftClien
     this(new OpenShiftConfigBuilder().withMasterUrl(masterUrl).build());
   }
 
-  public DefaultOpenShiftClient(OkHttpClient httpClient, OpenShiftConfig config) throws KubernetesClientException {
+  private DefaultOpenShiftClient(OkHttpClient httpClient, OpenShiftConfig config) throws KubernetesClientException {
     super(httpClient, config);
     try {
       this.delegate = new DefaultKubernetesClient(httpClient, config);
