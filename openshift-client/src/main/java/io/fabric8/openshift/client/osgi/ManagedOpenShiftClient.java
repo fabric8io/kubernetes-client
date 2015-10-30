@@ -16,7 +16,6 @@
 
 package io.fabric8.openshift.client.osgi;
 
-import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableEndpoints;
 import io.fabric8.kubernetes.api.model.DoneableEvent;
 import io.fabric8.kubernetes.api.model.DoneableNamespace;
@@ -427,11 +426,6 @@ public class ManagedOpenShiftClient extends BaseClient implements OpenShiftClien
   @Override
   public String getNamespace() {
     return delegate.getNamespace();
-  }
-
-  @Override
-  public OkHttpClient getHttpClient() {
-    return delegate.getHttpClient();
   }
 
   @Override

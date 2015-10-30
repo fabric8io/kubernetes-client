@@ -16,34 +16,13 @@
 
 package io.fabric8.kubernetes.client;
 
-import com.squareup.okhttp.Authenticator;
-import com.squareup.okhttp.Challenge;
-import com.squareup.okhttp.Credentials;
-import com.squareup.okhttp.HttpUrl;
-import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 import io.fabric8.kubernetes.api.model.RootPaths;
-import io.fabric8.kubernetes.client.dsl.BaseOperation;
-import io.fabric8.kubernetes.client.internal.SSLUtils;
+import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
+import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.MalformedURLException;
-import java.net.Proxy;
 import java.net.URL;
-import java.security.GeneralSecurityException;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
 
 
 public class BaseClient implements Client {
@@ -59,7 +38,7 @@ public class BaseClient implements Client {
   }
 
   public BaseClient(final Config config) throws KubernetesClientException {
-    this(createHttpClient(config), config);
+    this(HttpClientUtils.createHttpClient(config), config);
   }
 
   public BaseClient(final OkHttpClient httpClient, Config config) throws KubernetesClientException {
@@ -81,88 +60,6 @@ public class BaseClient implements Client {
   }
 
 
-  static OkHttpClient createHttpClient(final Config config) {
-    try {
-      OkHttpClient httpClient = new OkHttpClient();
-
-      // Follow any redirects
-      httpClient.setFollowRedirects(true);
-      httpClient.setFollowSslRedirects(true);
-
-      if (config.isTrustCerts()) {
-        httpClient.setHostnameVerifier(new HostnameVerifier() {
-          @Override
-          public boolean verify(String s, SSLSession sslSession) {
-            return true;
-          }
-        });
-      }
-
-      TrustManager[] trustManagers = SSLUtils.trustManagers(config);
-      KeyManager[] keyManagers = SSLUtils.keyManagers(config);
-
-      if (keyManagers != null || trustManagers != null || config.isTrustCerts()) {
-        try {
-          SSLContext sslContext = SSLUtils.sslContext(keyManagers, trustManagers, config.isTrustCerts());
-          httpClient.setSslSocketFactory(sslContext.getSocketFactory());
-        } catch (GeneralSecurityException e) {
-          throw new AssertionError(); // The system has no TLS. Just give up.
-        }
-      }
-
-      if (isNotNullOrEmpty(config.getUsername()) && isNotNullOrEmpty(config.getPassword())) {
-        httpClient.setAuthenticator(new Authenticator() {
-
-          @Override
-          public Request authenticate(Proxy proxy, Response response) throws IOException {
-            List<Challenge> challenges = response.challenges();
-            Request request = response.request();
-            HttpUrl url = request.httpUrl();
-            for (int i = 0, size = challenges.size(); i < size; i++) {
-              Challenge challenge = challenges.get(i);
-              if (!"Basic".equalsIgnoreCase(challenge.getScheme())) continue;
-
-              String credential = Credentials.basic(config.getUsername(), config.getPassword());
-              return request.newBuilder()
-                      .header("Authorization", credential)
-                      .build();
-            }
-            return null;
-          }
-
-          @Override
-          public Request authenticateProxy(Proxy proxy, Response response) throws IOException {
-            return null;
-          }
-        });
-      } else if (config.getOauthToken() != null) {
-        httpClient.interceptors().add(new Interceptor() {
-          @Override
-          public Response intercept(Chain chain) throws IOException {
-            Request authReq = chain.request().newBuilder().addHeader("Authorization", "Bearer " + config.getOauthToken()).build();
-            return chain.proceed(authReq);
-          }
-        });
-      }
-
-      if (config.getRequestTimeout() > 0) {
-        httpClient.setReadTimeout(config.getRequestTimeout(), TimeUnit.MILLISECONDS);
-      }
-
-      if (config.getProxy() != null) {
-        try {
-          URL u = new URL(config.getProxy());
-          httpClient.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(u.getHost(), u.getPort())));
-        } catch (MalformedURLException e) {
-          throw new KubernetesClientException("Invalid proxy server configuration", e);
-        }
-      }
-
-      return httpClient;
-    } catch (Exception e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
-  }
 
   public BaseClient(String masterUrl) throws KubernetesClientException {
     this(new ConfigBuilder().withMasterUrl(masterUrl).build());
@@ -170,14 +67,9 @@ public class BaseClient implements Client {
 
   @Override
   public void close() {
-    if (getHttpClient().getConnectionPool() != null) {
-      getHttpClient().getConnectionPool().evictAll();
+    if (httpClient.getConnectionPool() != null) {
+      httpClient.getConnectionPool().evictAll();
     }
-  }
-
-  @Override
-  public OkHttpClient getHttpClient() {
-    return httpClient;
   }
 
   @Override

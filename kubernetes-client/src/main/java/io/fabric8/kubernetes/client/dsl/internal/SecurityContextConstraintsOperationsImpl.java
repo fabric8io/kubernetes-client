@@ -20,7 +20,7 @@ import io.fabric8.kubernetes.api.model.DoneableSecurityContextConstraints;
 import io.fabric8.kubernetes.api.model.SecurityContextConstraints;
 import io.fabric8.kubernetes.api.model.SecurityContextConstraintsList;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.dsl.BaseOperation;
+import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 
 public class SecurityContextConstraintsOperationsImpl  extends BaseOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> {

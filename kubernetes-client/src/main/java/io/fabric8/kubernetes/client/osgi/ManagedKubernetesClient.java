@@ -16,7 +16,6 @@
 
 package io.fabric8.kubernetes.client.osgi;
 
-import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableEndpoints;
 import io.fabric8.kubernetes.api.model.DoneableEvent;
 import io.fabric8.kubernetes.api.model.DoneableNamespace;
@@ -260,11 +259,6 @@ public class ManagedKubernetesClient extends BaseClient implements KubernetesCli
   @Override
   public RootPaths rootPaths() {
     return delegate.rootPaths();
-  }
-
-  @Override
-  public OkHttpClient getHttpClient() {
-    return delegate.getHttpClient();
   }
 
   @Override

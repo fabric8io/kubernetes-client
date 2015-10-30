@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.kubernetes.client.dsl.HasMetadataOperation;
+import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 
 public class EventOperationsImpl extends HasMetadataOperation<Event, EventList, DoneableEvent,
   ClientResource<Event, DoneableEvent>> {

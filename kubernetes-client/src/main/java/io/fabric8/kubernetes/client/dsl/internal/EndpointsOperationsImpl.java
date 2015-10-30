@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.kubernetes.client.dsl.HasMetadataOperation;
+import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 
 public class EndpointsOperationsImpl extends HasMetadataOperation<Endpoints, EndpointsList, DoneableEndpoints,
   ClientResource<Endpoints, DoneableEndpoints>> {

@@ -31,7 +31,7 @@ import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import okio.Buffer;
 import okio.BufferedSource;
-import io.fabric8.kubernetes.client.dsl.BaseOperation;
+import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -22,7 +22,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
-import io.fabric8.kubernetes.client.dsl.HasMetadataOperation;
+import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
 import java.io.InputStream;
