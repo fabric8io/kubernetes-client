@@ -54,23 +54,23 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
 
   @Override
   public ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void> withName(String name) {
-    return new BuildConfigOperationsImpl(getClient(), getConfig(), getNamespace(), name, isCascading(), getItem(), secret, triggerType);
+    return new BuildConfigOperationsImpl(client, getConfig(), getNamespace(), name, isCascading(), getItem(), secret, triggerType);
   }
 
   @Override
   public OpenShiftOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void>> inNamespace(String namespace) {
-    return new BuildConfigOperationsImpl(getClient(), getConfig(), namespace, getName(), isCascading(), getItem(), secret, triggerType);
+    return new BuildConfigOperationsImpl(client, getConfig(), namespace, getName(), isCascading(), getItem(), secret, triggerType);
   }
 
 
   @Override
   public Typeable<Triggerable<WebHookTrigger, Void>> withSecret(String secret) {
-    return new BuildConfigOperationsImpl(getClient(),getConfig(), getNamespace(), getName(), isCascading(), getItem(), secret, triggerType);
+    return new BuildConfigOperationsImpl(client,getConfig(), getNamespace(), getName(), isCascading(), getItem(), secret, triggerType);
   }
 
   @Override
   public ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void> load(InputStream is) {
-    return new BuildConfigOperationsImpl(getClient(), getConfig(), getNamespace(), getName(), isCascading(), unmarshal(is, getType()), secret, triggerType);
+    return new BuildConfigOperationsImpl(client, getConfig(), getNamespace(), getName(), isCascading(), unmarshal(is, getType()), secret, triggerType);
   }
 
   @Override
@@ -106,6 +106,6 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
 
   @Override
   public Triggerable<WebHookTrigger, Void> withType(String type) {
-    return new BuildConfigOperationsImpl(getClient(),  getConfig(), getNamespace(), getName(), isCascading(), getItem(), secret, type);
+    return new BuildConfigOperationsImpl(client,  getConfig(), getNamespace(), getName(), isCascading(), getItem(), secret, type);
   }
 }

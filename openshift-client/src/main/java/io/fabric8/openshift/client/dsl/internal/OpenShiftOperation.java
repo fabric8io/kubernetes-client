@@ -50,7 +50,7 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
     try {
       return (R) getClass()
         .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, Boolean.class, getType())
-        .newInstance(getClient(), getConfig(), getNamespace(), name, isCascading(), getItem());
+        .newInstance(client, getConfig(), getNamespace(), name, isCascading(), getItem());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -61,7 +61,7 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
     try {
       return getClass()
         .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, Boolean.class, getType())
-        .newInstance(getClient(), getConfig(), namespace, getName(), isCascading(), getItem());
+        .newInstance(client, getConfig(), namespace, getName(), isCascading(), getItem());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -73,7 +73,7 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
     try {
       return (R) getClass()
         .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, Boolean.class, getType())
-        .newInstance(getClient(), getConfig(), getNamespace(), getName(), enabled, getItem());
+        .newInstance(client, getConfig(), getNamespace(), getName(), enabled, getItem());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -84,7 +84,7 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
     try {
       return (R) getClass()
         .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, Boolean.class, getType())
-        .newInstance(getClient(), getConfig(), getNamespace(), getName(), isCascading(), unmarshal(is, getType()));
+        .newInstance(client, getConfig(), getNamespace(), getName(), isCascading(), unmarshal(is, getType()));
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }

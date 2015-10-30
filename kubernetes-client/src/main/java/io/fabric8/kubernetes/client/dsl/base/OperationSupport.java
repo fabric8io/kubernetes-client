@@ -267,8 +267,4 @@ public class OperationSupport {
   public Config getConfig() {
     return config;
   }
-
-  public OkHttpClient getClient() {
-    return client;
-  }
 }

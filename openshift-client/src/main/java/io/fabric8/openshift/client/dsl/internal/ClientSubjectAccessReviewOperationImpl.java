@@ -47,17 +47,17 @@ public class ClientSubjectAccessReviewOperationImpl extends OperationSupport imp
 
   @Override
   public CreateableLocalSubjectAccessReview inNamespace(String namespace) {
-    return new ClientSubjectAccessReviewOperationImpl(getClient(), OpenShiftConfig.wrap(getConfig()), namespace).local();
+    return new ClientSubjectAccessReviewOperationImpl(client, OpenShiftConfig.wrap(getConfig()), namespace).local();
   }
 
   @Override
   public SubjectAccessReviewResponse create(SubjectAccessReview... item) {
-    return new CreateableSubjectAccessReviewImpl(getClient()).create(item);
+    return new CreateableSubjectAccessReviewImpl(client).create(item);
   }
 
   @Override
   public CreateableSubjectAccessReview createNew() {
-    return new CreateableSubjectAccessReviewImpl(getClient()).createNew();
+    return new CreateableSubjectAccessReviewImpl(client).createNew();
   }
 
   @Override
@@ -111,7 +111,7 @@ public class ClientSubjectAccessReviewOperationImpl extends OperationSupport imp
   }
 
   private CreateableLocalSubjectAccessReview local() {
-    return new CreateableLocalSubjectAccessReviewImpl(getClient());
+    return new CreateableLocalSubjectAccessReviewImpl(client);
   }
 
   private class CreateableSubjectAccessReviewImpl extends CreateableSubjectAccessReview {
