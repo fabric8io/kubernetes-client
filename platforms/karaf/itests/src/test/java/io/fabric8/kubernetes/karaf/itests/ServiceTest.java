@@ -40,6 +40,7 @@ import java.net.URISyntaxException;
 
 import static org.ops4j.pax.exam.CoreOptions.maven;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.configureSecurity;
+import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.debugConfiguration;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.editConfigurationFileExtend;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.features;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
@@ -63,6 +64,19 @@ public class ServiceTest extends TestBase {
     public void testServiceAvailability() throws Exception {
         Assert.assertNotNull(kubernetesClient);
         Assert.assertNotNull(openShiftClient);
+    }
+
+    //Need to check this for class loading errors
+    @Test
+    public void testNamspacedClients() throws Exception {
+        Assert.assertNotNull(kubernetesClient);
+        Assert.assertNotNull(openShiftClient);
+
+        KubernetesClient knc = kubernetesClient.inNamespace("mytest1");
+        Assert.assertEquals("mytest1", knc.getNamespace());
+
+        OpenShiftClient onc = openShiftClient.inNamespace("mytest2");
+        Assert.assertEquals("mytest2", onc.getNamespace());
     }
 
 
