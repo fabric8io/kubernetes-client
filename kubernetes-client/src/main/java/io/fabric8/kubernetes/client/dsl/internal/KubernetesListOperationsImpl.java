@@ -29,7 +29,7 @@ import io.fabric8.kubernetes.client.dsl.ClientKubernetesListNonNamespaceOperatio
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListOperation;
 import io.fabric8.kubernetes.client.dsl.CreateGettable;
 import io.fabric8.kubernetes.client.dsl.Loadable;
-import io.fabric8.kubernetes.client.dsl.OperationSupport;
+import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 
 import java.io.InputStream;
 import java.util.ArrayList;

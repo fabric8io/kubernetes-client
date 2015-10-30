@@ -16,7 +16,6 @@
 
 package io.fabric8.kubernetes.client;
 
-import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.RootPaths;
 
 import java.io.Closeable;
@@ -39,8 +38,6 @@ public interface Client extends ConfigAware, Closeable {
   String getApiVersion();
 
   String getNamespace();
-
-  OkHttpClient getHttpClient();
 
   RootPaths rootPaths();
 
