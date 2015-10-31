@@ -79,13 +79,13 @@
     <okio.version>1.6.0</okio.version>
     <easymock.version>3.2</easymock.version>
     <felix.scr.annotations.version>1.9.8</felix.scr.annotations.version>
-    <jackson.version>2.6.1</jackson.version>
+    <jackson.version>2.6.3</jackson.version>
     <junit.version>4.12</junit.version>
     <kubernetes.model.version>1.0.34</kubernetes.model.version>
     <log4j.version>2.3</log4j.version>
     <mockwebserver.version>20130706</mockwebserver.version>
     <slf4j.version>1.7.12</slf4j.version>
-    <snakeyaml.version>1.15</snakeyaml.version>
+    <snakeyaml.version>1.16</snakeyaml.version>
 
     <scr.annotations.version>1.9.2</scr.annotations.version>
     <sundrio.version>0.1.18</sundrio.version>
