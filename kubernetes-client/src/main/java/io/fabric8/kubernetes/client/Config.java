@@ -55,6 +55,7 @@ public class Config {
   public static final String KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY = "kubernetes.auth.token";
   public static final String KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY = "kubernetes.watch.reconnectInterval";
   public static final String KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY = "kubernetes.watch.reconnectLimit";
+  public static final String KUBERNETES_CONNECTION_TIMEOUT_SYSTEM_PROPERTY = "kubernetes.connection.timeout";
   public static final String KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY = "kubernetes.request.timeout";
   public static final String KUBERNETES_ROLLING_TIMEOUT_SYSTEM_PROPERTY = "kubernetes.rolling.timeout";
   public static final String KUBERNETES_LOGGING_INTERVAL_SYSTEM_PROPERTY = "kubernetes.logging.interval";
@@ -90,6 +91,7 @@ public class Config {
   private String oauthToken;
   private int watchReconnectInterval = 1000;
   private int watchReconnectLimit = -1;
+  private int connectionTimeout = 10 * 1000;
   private int requestTimeout = 10 * 1000;
   private long rollingTimeout = DEFAULT_ROLLING_TIMEOUT;
   private int loggingInterval = DEFAULT_LOGGING_INTERVAL;
@@ -113,7 +115,7 @@ public class Config {
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder")
-  public Config(String masterUrl, String apiVersion, String namespace, Boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int requestTimeout, long rollingTimeout, int loggingInterval, String proxy) {
+  public Config(String masterUrl, String apiVersion, String namespace, Boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, int loggingInterval, String proxy) {
     this();
     this.trustCerts = trustCerts;
     this.masterUrl = masterUrl;
@@ -133,6 +135,7 @@ public class Config {
     this.oauthToken = oauthToken;
     this.watchReconnectInterval = watchReconnectInterval;
     this.watchReconnectLimit = watchReconnectLimit;
+    this.connectionTimeout = connectionTimeout;
     this.requestTimeout = requestTimeout;
     this.rollingTimeout = rollingTimeout;
     this.loggingInterval = loggingInterval;
@@ -185,6 +188,7 @@ public class Config {
       config.setLoggingInterval(Integer.parseInt(configuredLoggingInterval));
     }
 
+    config.setConnectionTimeout(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CONNECTION_TIMEOUT_SYSTEM_PROPERTY, config.getConnectionTimeout()));
     config.setRequestTimeout(Utils.getSystemPropertyOrEnvVar(KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY, config.getRequestTimeout()));
 
     config.setProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_ALL_PROXY, config.getProxy()));
@@ -391,6 +395,14 @@ public class Config {
 
   public static ConfigBuilder builder() {
     return new ConfigBuilder();
+  }
+
+  public int getConnectionTimeout() {
+    return connectionTimeout;
+  }
+
+  public void setConnectionTimeout(int connectionTimeout) {
+    this.connectionTimeout = connectionTimeout;
   }
 
   public int getRequestTimeout() {

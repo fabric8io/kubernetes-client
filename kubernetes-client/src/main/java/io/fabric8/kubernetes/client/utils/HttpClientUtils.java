@@ -109,6 +109,10 @@ public class HttpClientUtils {
                 });
             }
 
+            if (config.getConnectionTimeout() > 0) {
+                httpClient.setConnectTimeout(config.getConnectionTimeout(), TimeUnit.MILLISECONDS);
+            }
+
             if (config.getRequestTimeout() > 0) {
                 httpClient.setReadTimeout(config.getRequestTimeout(), TimeUnit.MILLISECONDS);
             }
