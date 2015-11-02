@@ -25,6 +25,14 @@ import io.fabric8.openshift.client.OpenShiftClient;
 
 public class OpenShiftMockServer extends KubernetesMockServer {
 
+  public OpenShiftMockServer() {
+    super();
+  }
+
+  public OpenShiftMockServer(boolean useHttps) {
+    super(useHttps);
+  }
+
   @Override
   public void init() {
     super.init();
