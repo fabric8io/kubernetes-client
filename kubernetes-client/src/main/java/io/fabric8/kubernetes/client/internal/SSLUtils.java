@@ -58,6 +58,7 @@ public final class SSLUtils {
         Config sslConfig = new ConfigBuilder(config)
                 .withMasterUrl(Config.HTTPS_PROTOCOL_PREFIX + config.getMasterUrl())
                 .withRequestTimeout(1000)
+                .withConnectionTimeout(1000)
                 .build();
 
         OkHttpClient client = HttpClientUtils.createHttpClient(config);
