@@ -33,12 +33,24 @@ import java.util.Queue;
 
 public class KubernetesMockServer {
 
+  private final boolean useHttps;
+
   private MockWebServer server = new MockWebServer();
   private Map<ServerRequest, Queue<ServerResponse>> responses = new HashMap<>();
 
+  public KubernetesMockServer() {
+    this(true);
+  }
+
+  public KubernetesMockServer(boolean useHttps) {
+    this.useHttps = useHttps;
+  }
+
   public void init()  {
     try {
-      server.useHttps(MockSSLContextFactory.create().getSocketFactory(), false);
+      if (useHttps) {
+        server.useHttps(MockSSLContextFactory.create().getSocketFactory(), false);
+      }
       server.setDispatcher(new Dispatcher() {
         @Override
         public MockResponse dispatch(RecordedRequest request) throws InterruptedException {

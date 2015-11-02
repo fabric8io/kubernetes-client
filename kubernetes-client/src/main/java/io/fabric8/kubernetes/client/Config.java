@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.AuthInfo;
 import io.fabric8.kubernetes.api.model.Cluster;
 import io.fabric8.kubernetes.api.model.Context;
 import io.fabric8.kubernetes.client.internal.KubeConfigUtils;
+import io.fabric8.kubernetes.client.internal.SSLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.sundr.builder.annotations.Buildable;
 import org.slf4j.Logger;
@@ -69,8 +70,10 @@ public class Config {
   public static final Long DEFAULT_ROLLING_TIMEOUT = 15 * 60 * 1000L;
   public static final int DEFAULT_LOGGING_INTERVAL = 20 * 1000;
 
-  private boolean trustCerts;
+  public static String HTTP_PROTOCOL_PREFIX = "http://";
+  public static String HTTPS_PROTOCOL_PREFIX = "https://";
 
+  private boolean trustCerts;
   private String masterUrl = "https://kubernetes.default.svc";
   private String apiVersion = "v1";
   private String namespace;
@@ -99,6 +102,10 @@ public class Config {
       tryServiceAccount(this);
     }
     configFromSysPropsOrEnvVars(this);
+
+    if (!this.masterUrl.toLowerCase().startsWith(HTTP_PROTOCOL_PREFIX) && !this.masterUrl.startsWith(HTTPS_PROTOCOL_PREFIX)) {
+      this.masterUrl = (SSLUtils.isHttpsAvailable(this) ? HTTPS_PROTOCOL_PREFIX : HTTP_PROTOCOL_PREFIX) + this.masterUrl;
+    }
 
     if (!this.masterUrl.endsWith("/")) {
       this.masterUrl = this.masterUrl + "/";
@@ -130,6 +137,10 @@ public class Config {
     this.rollingTimeout = rollingTimeout;
     this.loggingInterval = loggingInterval;
     this.proxy = proxy;
+
+    if (!this.masterUrl.toLowerCase().startsWith(HTTP_PROTOCOL_PREFIX) && !this.masterUrl.startsWith(HTTPS_PROTOCOL_PREFIX)) {
+      this.masterUrl = (SSLUtils.isHttpsAvailable(this) ? HTTPS_PROTOCOL_PREFIX : HTTP_PROTOCOL_PREFIX) + this.masterUrl;
+    }
 
     if (!this.masterUrl.endsWith("/")) {
       this.masterUrl = this.masterUrl + "/";

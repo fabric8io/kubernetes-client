@@ -26,7 +26,7 @@ class ServerRequest {
   }
 
   public ServerRequest(String method, String path) {
-    this.method = method;
+    this.method = method.toUpperCase();
     this.path = path;
   }
 
