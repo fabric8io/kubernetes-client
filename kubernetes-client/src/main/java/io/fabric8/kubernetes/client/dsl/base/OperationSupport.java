@@ -114,7 +114,7 @@ public class OperationSupport {
 
   protected <T> String checkNamespace(T item) {
     String operationNs = getNamespace();
-    String itemNs = item instanceof HasMetadata ? ((HasMetadata) item).getMetadata().getNamespace() : null;
+    String itemNs = (item instanceof HasMetadata && ((HasMetadata)item).getMetadata() != null) ? ((HasMetadata) item).getMetadata().getNamespace() : null;
     if (Utils.isNullOrEmpty(operationNs) && Utils.isNullOrEmpty(itemNs)) {
       if (!isNamespaceRequired()) {
         return null;
