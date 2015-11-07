@@ -117,10 +117,13 @@ public class HttpClientUtils {
                 httpClient.setReadTimeout(config.getRequestTimeout(), TimeUnit.MILLISECONDS);
             }
 
-            if (config.getProxy() != null) {
+            // Only check proxy if it's a full URL with protocol
+            if (config.getMasterUrl().toLowerCase().startsWith(Config.HTTP_PROTOCOL_PREFIX) || config.getMasterUrl().startsWith(Config.HTTPS_PROTOCOL_PREFIX)) {
                 try {
-                    URL u = new URL(config.getProxy());
-                    httpClient.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(u.getHost(), u.getPort())));
+                    URL proxyUrl = getProxyUrl(config);
+                    if (proxyUrl != null) {
+                        httpClient.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyUrl.getHost(), proxyUrl.getPort())));
+                    }
                 } catch (MalformedURLException e) {
                     throw new KubernetesClientException("Invalid proxy server configuration", e);
                 }
@@ -130,5 +133,23 @@ public class HttpClientUtils {
         } catch (Exception e) {
             throw KubernetesClientException.launderThrowable(e);
         }
+    }
+
+    private static URL getProxyUrl(Config config) throws MalformedURLException {
+        URL master = new URL(config.getMasterUrl());
+        String host = master.getHost();
+        for (String noProxy : config.getNoProxy()) {
+            if (host.endsWith(noProxy)) {
+                return null;
+            }
+        }
+        String proxy = config.getHttpsProxy();
+        if (master.getProtocol().equals("http")) {
+            proxy = config.getHttpProxy();
+        }
+        if (proxy != null) {
+            return new URL(proxy);
+        }
+        return null;
     }
 }

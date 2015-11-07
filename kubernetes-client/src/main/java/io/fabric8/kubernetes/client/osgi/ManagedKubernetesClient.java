@@ -102,6 +102,7 @@ import static io.fabric8.kubernetes.client.Config.KUBERNETES_HTTPS_PROXY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_HTTP_PROXY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_MASTER_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_NAMESPACE_SYSTEM_PROPERTY;
+import static io.fabric8.kubernetes.client.Config.KUBERNETES_NO_PROXY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY;
@@ -151,11 +152,13 @@ public class ManagedKubernetesClient extends BaseClient implements KubernetesCli
   @Property(name = KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY, description = "Request timeout", intValue = 10000)
   private int requestTimeout = Integer.parseInt(Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY, "10000"));
   @Property(name = KUBERNETES_HTTP_PROXY, description = "HTTP Proxy")
-  private String httpProxy = Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_HTTPS_PROXY);
+  private String httpProxy = Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_HTTP_PROXY);
   @Property(name = KUBERNETES_HTTPS_PROXY, description = "HTTPS Proxy")
   private String httpsProxy = Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_HTTPS_PROXY);
   @Property(name = KUBERNETES_ALL_PROXY, description = "All Proxy")
-  private String allProxy = Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_HTTPS_PROXY);
+  private String allProxy = Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_ALL_PROXY);
+  @Property(name = KUBERNETES_NO_PROXY, description = "No Proxy")
+  private String noProxy = Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_NO_PROXY);
   @Property(name = KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY, description = "Kubernetes trust certifacates flag", boolValue = false)
   private Boolean trustCerts = Utils.getSystemPropertyOrEnvVar(KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY, Boolean.FALSE);
 
@@ -163,6 +166,8 @@ public class ManagedKubernetesClient extends BaseClient implements KubernetesCli
 
   @Activate
   public void activate(Map<String, Object> properties) {
+    String noProxyProperty = (String) properties.get(KUBERNETES_NO_PROXY);
+    String[] noProxy = noProxyProperty != null ? noProxyProperty.split(",") : null;
     Config config = new ConfigBuilder()
       .withMasterUrl((String) properties.get(KUBERNETES_MASTER_SYSTEM_PROPERTY))
       .withApiVersion((String) properties.get(KUBERNETES_API_VERSION_SYSTEM_PROPERTY))
@@ -181,7 +186,9 @@ public class ManagedKubernetesClient extends BaseClient implements KubernetesCli
       .withWatchReconnectInterval((int) properties.get(KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY))
       .withWatchReconnectLimit((int) properties.get(KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY))
       .withRequestTimeout((int) properties.get(KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY))
-      .withProxy(httpProxy != null ? httpProxy : (httpsProxy != null ? httpProxy : allProxy))
+      .withHttpProxy((String) properties.get(KUBERNETES_HTTP_PROXY))
+      .withHttpsProxy((String) properties.get(KUBERNETES_HTTPS_PROXY))
+      .withNoProxy(noProxy)
       .build();
 
     delegate = new DefaultKubernetesClient(config);

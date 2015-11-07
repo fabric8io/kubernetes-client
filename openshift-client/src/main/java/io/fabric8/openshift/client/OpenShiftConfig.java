@@ -43,8 +43,8 @@ public class OpenShiftConfig extends Config {
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder",
     refs = {@BuildableReference(Config.class)}
   )
-  public OpenShiftConfig(String openShiftUrl, String oapiVersion, String masterUrl, String apiVersion, String namespace, Boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, int loggingInterval, String proxy) {
-    super(masterUrl, apiVersion, namespace, trustCerts, caCertFile, caCertData, clientCertFile, clientCertData, clientKeyFile, clientKeyData, clientKeyAlgo, clientKeyPassphrase, username, password, oauthToken, watchReconnectInterval, watchReconnectLimit, connectionTimeout, requestTimeout, rollingTimeout, loggingInterval, proxy);
+  public OpenShiftConfig(String openShiftUrl, String oapiVersion, String masterUrl, String apiVersion, String namespace, Boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, int loggingInterval, String httpProxy, String httpsProxy, String[] noProxy) {
+    super(masterUrl, apiVersion, namespace, trustCerts, caCertFile, caCertData, clientCertFile, clientCertData, clientKeyFile, clientKeyData, clientKeyAlgo, clientKeyPassphrase, username, password, oauthToken, watchReconnectInterval, watchReconnectLimit, connectionTimeout, requestTimeout, rollingTimeout, loggingInterval, httpProxy, httpsProxy, noProxy);
     this.oapiVersion = oapiVersion;
     this.openShiftUrl = openShiftUrl;
 
@@ -66,7 +66,9 @@ public class OpenShiftConfig extends Config {
       kubernetesConfig.getWatchReconnectInterval(), kubernetesConfig.getWatchReconnectLimit(),
       kubernetesConfig.getConnectionTimeout(), kubernetesConfig.getRequestTimeout(),
       kubernetesConfig.getRollingTimeout(), kubernetesConfig.getLoggingInterval(),
-      kubernetesConfig.getProxy());
+      kubernetesConfig.getHttpProxy(),
+      kubernetesConfig.getHttpsProxy(),
+      kubernetesConfig.getNoProxy());
   }
 
   public static OpenShiftConfig wrap(Config config) {

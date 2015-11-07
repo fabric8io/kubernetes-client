@@ -67,6 +67,7 @@ public class Config {
   public static final String KUBERNETES_HTTP_PROXY = "http.proxy";
   public static final String KUBERNETES_HTTPS_PROXY = "https.proxy";
   public static final String KUBERNETES_ALL_PROXY = "all.proxy";
+  public static final String KUBERNETES_NO_PROXY = "no.proxy";
 
   public static final Long DEFAULT_ROLLING_TIMEOUT = 15 * 60 * 1000L;
   public static final int DEFAULT_LOGGING_INTERVAL = 20 * 1000;
@@ -95,7 +96,9 @@ public class Config {
   private int requestTimeout = 10 * 1000;
   private long rollingTimeout = DEFAULT_ROLLING_TIMEOUT;
   private int loggingInterval = DEFAULT_LOGGING_INTERVAL;
-  private String proxy;
+  private String httpProxy;
+  private String httpsProxy;
+  private String[] noProxy;
 
   private Map<Integer, String> errorMessages = new HashMap<>();
 
@@ -115,7 +118,7 @@ public class Config {
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder")
-  public Config(String masterUrl, String apiVersion, String namespace, Boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, int loggingInterval, String proxy) {
+  public Config(String masterUrl, String apiVersion, String namespace, Boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, int loggingInterval, String httpProxy, String httpsProxy, String[] noProxy) {
     this();
     this.trustCerts = trustCerts;
     this.masterUrl = masterUrl;
@@ -139,7 +142,9 @@ public class Config {
     this.requestTimeout = requestTimeout;
     this.rollingTimeout = rollingTimeout;
     this.loggingInterval = loggingInterval;
-    this.proxy = proxy;
+    this.httpProxy= httpProxy;
+    this.httpsProxy= httpsProxy;
+    this.noProxy= noProxy;
 
     if (!this.masterUrl.toLowerCase().startsWith(HTTP_PROTOCOL_PREFIX) && !this.masterUrl.startsWith(HTTPS_PROTOCOL_PREFIX)) {
       this.masterUrl = (SSLUtils.isHttpsAvailable(this) ? HTTPS_PROTOCOL_PREFIX : HTTP_PROTOCOL_PREFIX) + this.masterUrl;
@@ -191,9 +196,16 @@ public class Config {
     config.setConnectionTimeout(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CONNECTION_TIMEOUT_SYSTEM_PROPERTY, config.getConnectionTimeout()));
     config.setRequestTimeout(Utils.getSystemPropertyOrEnvVar(KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY, config.getRequestTimeout()));
 
-    config.setProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_ALL_PROXY, config.getProxy()));
-    config.setProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_HTTPS_PROXY, config.getProxy()));
-    config.setProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_HTTP_PROXY, config.getProxy()));
+    config.setHttpProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_ALL_PROXY, config.getHttpProxy()));
+    config.setHttpsProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_ALL_PROXY, config.getHttpsProxy()));
+
+    config.setHttpsProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_HTTPS_PROXY, config.getHttpsProxy()));
+    config.setHttpProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_HTTP_PROXY, config.getHttpProxy()));
+
+    String noProxyVar = Utils.getSystemPropertyOrEnvVar(KUBERNETES_NO_PROXY);
+    if (noProxyVar != null) {
+      config.setNoProxy(noProxyVar.split(","));
+    }
   }
 
   private boolean tryServiceAccount(Config config) {
@@ -429,12 +441,28 @@ public class Config {
     this.loggingInterval = loggingInterval;
   }
 
-  public void setProxy(String proxy) {
-    this.proxy = proxy;
+  public void setHttpProxy(String httpProxy) {
+    this.httpProxy= httpProxy;
   }
 
-  public String getProxy() {
-    return proxy;
+  public String getHttpProxy() {
+    return httpProxy;
+  }
+
+  public void setHttpsProxy(String httpsProxy) {
+    this.httpsProxy= httpsProxy;
+  }
+
+  public String getHttpsProxy() {
+    return httpsProxy;
+  }
+
+  public void setNoProxy(String[] noProxy) {
+    this.noProxy = noProxy;
+  }
+
+  public String[] getNoProxy() {
+    return noProxy;
   }
 
   public String getNamespace() {
