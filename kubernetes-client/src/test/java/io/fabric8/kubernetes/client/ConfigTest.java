@@ -105,7 +105,7 @@ public class ConfigTest {
       .withWatchReconnectInterval(5000)
       .withWatchReconnectLimit(5)
       .withRequestTimeout(5000)
-      .withProxy("httpProxy")
+      .withHttpProxy("httpProxy")
       .build();
 
     assertConfig(config);
@@ -199,7 +199,7 @@ public class ConfigTest {
     assertEquals("algo", config.getClientKeyAlgo());
     assertEquals("passphrase", config.getClientKeyPassphrase());
 
-    assertEquals("httpProxy", config.getProxy());
+    assertEquals("httpProxy", config.getHttpProxy());
 
     assertEquals(5000, config.getWatchReconnectInterval());
     assertEquals(5, config.getWatchReconnectLimit());
