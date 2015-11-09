@@ -313,5 +313,6 @@ public class KubernetesMockClientTest {
 
     client = client.inNamespace("ns2");
     Assert.assertNotNull(client);
+    Assert.assertEquals("ns2", client.getNamespace());
   }
 }

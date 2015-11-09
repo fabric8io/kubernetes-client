@@ -449,7 +449,7 @@ public class OpenShiftMockClient implements Replayable<OpenShiftClient>, Verifia
     return subjectAccessReviews;
   }
 
-  public OpenShiftMockClient inNamespace(String namespace) {
+  public OpenShiftMockClient inNamespace(final String namespace) {
     IArgumentMatcher matcher = getArgument(namespace);
     OpenShiftMockClient op = namespaceMap.get(matcher);
     if (op == null) {
@@ -458,6 +458,7 @@ public class OpenShiftMockClient implements Replayable<OpenShiftClient>, Verifia
       expect(client.inNamespace(namespace)).andAnswer(new IAnswer<OpenShiftClient>() {
         @Override
         public OpenShiftClient answer() throws Throwable {
+          namespacedClient.getNamespace().andReturn(namespace).anyTimes();
           return namespacedClient.replay();
         }
       }).anyTimes();
@@ -473,11 +474,20 @@ public class OpenShiftMockClient implements Replayable<OpenShiftClient>, Verifia
       expect(client.inAnyNamespace()).andAnswer(new IAnswer<OpenShiftClient>() {
         @Override
         public OpenShiftClient answer() throws Throwable {
+          namespacedClient.getNamespace().andReturn(null).anyTimes();
           return namespacedClient.replay();
         }
       }).anyTimes();
     }
     return anyNamespaceOp;
+  }
+
+  public IExpectationSetters<String> getNamespace() {
+    return expect(client.getNamespace());
+  }
+
+  public  <T extends Client> IExpectationSetters<Boolean> isAdaptable(Class<T> type) {
+    return expect(client.isAdaptable(type));
   }
 
   public <T extends Client> IExpectationSetters<T> adapt(Class<T> type) {
