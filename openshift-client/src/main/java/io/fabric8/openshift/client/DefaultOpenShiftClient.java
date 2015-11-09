@@ -67,6 +67,8 @@ import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
+import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
+import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigList;
@@ -135,6 +137,7 @@ import io.fabric8.openshift.client.dsl.internal.RoleBindingOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.RouteOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.TemplateOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.UserOperationsImpl;
+import io.fabric8.openshift.client.internal.OpenShiftOAuthInterceptor;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -155,6 +158,7 @@ public class DefaultOpenShiftClient extends BaseClient implements OpenShiftClien
   public DefaultOpenShiftClient(final OpenShiftConfig config) throws KubernetesClientException {
     super(config);
     try {
+      addOpenShiftAuthInterceptor();
       this.delegate = new DefaultKubernetesClient(httpClient, config);
       this.openShiftUrl = new URL(config.getOpenShiftUrl());
     } catch (MalformedURLException e) {
@@ -169,11 +173,17 @@ public class DefaultOpenShiftClient extends BaseClient implements OpenShiftClien
   private DefaultOpenShiftClient(OkHttpClient httpClient, OpenShiftConfig config) throws KubernetesClientException {
     super(httpClient, config);
     try {
+      addOpenShiftAuthInterceptor();
       this.delegate = new DefaultKubernetesClient(httpClient, config);
       this.openShiftUrl = new URL(config.getOpenShiftUrl());
     } catch (MalformedURLException e) {
       throw new KubernetesClientException("Could not create client", e);
     }
+  }
+
+  private void addOpenShiftAuthInterceptor() {
+    httpClient.setAuthenticator(null);
+    httpClient.interceptors().add(new OpenShiftOAuthInterceptor(httpClient,  OpenShiftConfig.wrap(getConfiguration())));
   }
 
   @Override
