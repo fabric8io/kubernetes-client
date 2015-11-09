@@ -40,9 +40,8 @@
     <osgi.private>
       io.fabric8.kubernetes.client.dsl.base,
       io.fabric8.openshift.client.handlers,
-      io.fabric8.openshift.client.dsl.internal,
-      com.squareup*,
-      okio*,
+      io.fabric8.openshift.client.internal,
+      io.fabric8.openshift.client.dsl.internal
     </osgi.private>
   </properties>
 
