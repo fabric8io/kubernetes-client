@@ -236,7 +236,7 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
   }
 
 
-  public KubernetesMockClient inNamespace(String namespace) {
+  public KubernetesMockClient inNamespace(final String namespace) {
     IArgumentMatcher matcher = getArgument(namespace);
     KubernetesMockClient op = namespaceMap.get(matcher);
     if (op == null) {
@@ -245,6 +245,7 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
       expect(client.inNamespace(namespace)).andAnswer(new IAnswer<KubernetesClient>() {
         @Override
         public KubernetesClient answer() throws Throwable {
+          namespacedClient.getNamespace().andReturn(namespace).anyTimes();
           return namespacedClient.replay();
         }
       }).anyTimes();
@@ -260,11 +261,20 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
       expect(client.inAnyNamespace()).andAnswer(new IAnswer<KubernetesClient>() {
         @Override
         public KubernetesClient answer() throws Throwable {
+          namespacedClient.getNamespace().andReturn(null).anyTimes();
           return namespacedClient.replay();
         }
       }).anyTimes();
     }
     return anyNamespaceOp;
+  }
+
+  public IExpectationSetters<String> getNamespace() {
+    return expect(client.getNamespace());
+  }
+
+  public  <T extends Client> IExpectationSetters<Boolean> isAdaptable(Class<T> type) {
+    return expect(client.isAdaptable(type));
   }
 
   public <T extends Client> IExpectationSetters<T> adapt(Class<T> type) {
