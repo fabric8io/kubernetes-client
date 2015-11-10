@@ -29,7 +29,7 @@ public class RouteOperationsImpl extends OpenShiftOperation<Route, RouteList, Do
   }
 
   public RouteOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascasing, Route item) {
-    super(client, config, "routes", namespace, name, cascasing, item);
+    super(client, config, null, null, "routes", namespace, name, cascasing, item);
   }
 
 }

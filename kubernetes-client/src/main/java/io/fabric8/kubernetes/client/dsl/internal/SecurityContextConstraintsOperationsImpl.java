@@ -29,7 +29,7 @@ public class SecurityContextConstraintsOperationsImpl  extends BaseOperation<Sec
   }
 
   public SecurityContextConstraintsOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, SecurityContextConstraints item) {
-    super(client, config, "securitycontextconstraints", namespace, name, cascading, item);
+    super(client, config, null, null, "securitycontextconstraints", namespace, name, cascading, item);
   }
 
   @Override

@@ -48,17 +48,35 @@ public class OperationSupport {
   protected final String resourceT;
   protected final String namespace;
   protected final String name;
+  protected final String apiGroup;
+  protected final String apiVersion;
 
   public OperationSupport() {
-    this(null, null, null, null, null);
+    this(null, null, null, null, null, null, null);
   }
 
-  public OperationSupport(OkHttpClient client, Config config, String resourceT, String namespace, String name) {
+  public OperationSupport(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name) {
     this.client = client;
     this.config = config;
     this.resourceT = resourceT;
     this.namespace = namespace;
     this.name = name;
+    this.apiGroup = apiGroup;
+    if (apiVersion != null) {
+      this.apiVersion = apiVersion;
+    } else if (config != null) {
+      this.apiVersion = config.getApiVersion();
+    } else {
+      this.apiVersion = "v1";
+    }
+  }
+
+  public String getAPIGroup() {
+    return apiGroup;
+  }
+
+  public String getAPIVersion() {
+    return apiVersion;
   }
 
   public String getResourceT() {
@@ -79,7 +97,10 @@ public class OperationSupport {
 
   public URL getRootUrl() {
     try {
-      return new URL(URLUtils.join(config.getMasterUrl().toString(), "api", config.getApiVersion()));
+      if (apiGroup != null) {
+        return new URL(URLUtils.join(config.getMasterUrl().toString(), "apis", apiGroup, apiVersion));
+      }
+      return new URL(URLUtils.join(config.getMasterUrl().toString(), "api", apiVersion));
     } catch (MalformedURLException e) {
       throw KubernetesClientException.launderThrowable(e);
     }

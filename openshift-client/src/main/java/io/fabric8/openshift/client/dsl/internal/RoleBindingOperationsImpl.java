@@ -28,6 +28,6 @@ public class RoleBindingOperationsImpl extends OpenShiftOperation<RoleBinding, R
   }
 
   public RoleBindingOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, RoleBinding item) {
-    super(client, config, "rolebindings", namespace, name, cascading, item);
+    super(client, config, null, null, "rolebindings", namespace, name, cascading, item);
   }
 }

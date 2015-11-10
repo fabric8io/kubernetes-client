@@ -28,7 +28,7 @@ public class UserOperationsImpl extends OpenShiftOperation<User, UserList, Donea
   }
 
   public UserOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, User item) {
-    super(client, config, "users", namespace, name, cascading, item);
+    super(client, config, null, null, "users", namespace, name, cascading, item);
   }
 
   @Override

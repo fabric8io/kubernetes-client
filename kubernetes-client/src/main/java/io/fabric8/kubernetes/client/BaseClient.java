@@ -25,7 +25,7 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import java.net.URL;
 
 
-public class BaseClient implements Client {
+public abstract class BaseClient implements Client {
   
   protected OkHttpClient httpClient;
   private URL masterUrl;
@@ -96,6 +96,11 @@ public class BaseClient implements Client {
   }
 
   @Override
+  public String getApiGroup() {
+    return null;
+  }
+
+  @Override
   public String getApiVersion() {
     return apiVersion;
   }
@@ -132,7 +137,7 @@ public class BaseClient implements Client {
 
   @Override
   public RootPaths rootPaths() {
-    return new BaseOperation(httpClient, configuration, "", null, null, false, null, RootPaths.class, null, null) {
+    return new BaseOperation(httpClient, configuration, null, null, "", null, null, false, null, RootPaths.class, null, null) {
     }.getRootPaths();
   }
 }

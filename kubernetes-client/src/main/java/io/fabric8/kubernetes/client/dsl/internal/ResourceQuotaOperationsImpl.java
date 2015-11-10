@@ -32,6 +32,6 @@ public class ResourceQuotaOperationsImpl extends HasMetadataOperation<ResourceQu
   }
 
   public ResourceQuotaOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, ResourceQuota item) {
-    super(client, config, "resourcequotas", namespace, name, cascading, item);
+    super(client, config, null, null, "resourcequotas", namespace, name, cascading, item);
   }
 }

@@ -30,7 +30,7 @@ public class ProjectOperationsImpl extends OpenShiftOperation<Project, ProjectLi
   }
 
   public ProjectOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, Project item) {
-    super(client, config, "projects", namespace, name, cascading, item);
+    super(client, config, null, null, "projects", namespace, name, cascading, item);
   }
 
 

@@ -60,7 +60,7 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
   }
 
   public ReplicationControllerOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, ReplicationController item, Boolean rolling, long rollingTimeout, TimeUnit rollingTimeUnit) {
-    super(client, config, "replicationcontrollers", namespace, name, cascading, item);
+    super(client, config, null, null, "replicationcontrollers", namespace, name, cascading, item);
     this.rolling = rolling;
     this.rollingTimeout = rollingTimeout;
     this.rollingTimeUnit = rollingTimeUnit;

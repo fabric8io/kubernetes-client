@@ -36,7 +36,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
   }
 
   public PodOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, Pod item) {
-    super(client, config, "pods", namespace, name, cascading, item);
+    super(client, config, null, null, "pods", namespace, name, cascading, item);
   }
 
   @Override

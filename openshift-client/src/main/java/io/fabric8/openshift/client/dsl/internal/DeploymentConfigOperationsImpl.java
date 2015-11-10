@@ -30,6 +30,6 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
   }
 
   public DeploymentConfigOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, DeploymentConfig item) {
-    super(client, config, "deploymentconfigs", namespace, name, cascading, item);
+    super(client, config, null, null, "deploymentconfigs", namespace, name, cascading, item);
   }
 }

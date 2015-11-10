@@ -71,8 +71,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   private boolean reaping;
   protected Reaper reaper;
 
-  protected BaseOperation(OkHttpClient client, Config config, String resourceT, String namespace, String name, Boolean cascading, T item) {
-    super(client, config, resourceT,namespace,name);
+  protected BaseOperation(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item) {
+    super(client, config, apiGroup, apiVersion, resourceT, namespace, name);
     this.cascading = cascading;
     this.item = item;
     this.type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
@@ -81,8 +81,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     this.reaper = null;
   }
 
-  protected BaseOperation(OkHttpClient client, Config config, String resourceT, String namespace, String name, Boolean cascading, T item, Class<T> type, Class<L> listType, Class<D> doneableType) {
-    super(client, config, resourceT,namespace,name);
+  protected BaseOperation(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item, Class<T> type, Class<L> listType, Class<D> doneableType) {
+    super(client, config, apiGroup, apiVersion, resourceT, namespace, name);
     this.cascading = cascading;
     this.item = item;
     this.type = type;

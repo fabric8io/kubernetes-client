@@ -31,12 +31,12 @@ import java.util.concurrent.TimeUnit;
 public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
   extends BaseOperation< T, L, D, R> {
 
-  protected HasMetadataOperation(OkHttpClient client, Config config, String resourceT, String namespace, String name, Boolean cascading, T item) {
-    super(client, config, resourceT, namespace, name, cascading, item);
+  protected HasMetadataOperation(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item) {
+    super(client, config, apiGroup, apiVersion, resourceT, namespace, name, cascading, item);
   }
 
-  protected HasMetadataOperation(OkHttpClient client, Config config, String resourceT, String namespace, String name, Boolean cascading, T item, Class<T> type, Class<L> listType, Class<D> doneableType) {
-    super(client, config, resourceT, namespace, name, cascading, item, type, listType, doneableType);
+  protected HasMetadataOperation(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item, Class<T> type, Class<L> listType, Class<D> doneableType) {
+    super(client, config, apiGroup, apiVersion, resourceT, namespace, name, cascading, item, type, listType, doneableType);
   }
 
   @Override
@@ -89,13 +89,14 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
       } catch (KubernetesClientException e) {
         caught = e;
         // Only retry if there's a conflict - this is normally to do with resource version & server updates.
-        if (e.getCode() == 409) {
-          if (i < maxTries - 1) {
-            try {
-              TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e1) {
-              // Ignore this... would only hide the proper exception
-            }
+        if (e.getCode() != 409) {
+          break;
+        }
+        if (i < maxTries - 1) {
+          try {
+            TimeUnit.SECONDS.sleep(1);
+          } catch (InterruptedException e1) {
+            // Ignore this... would only hide the proper exception
           }
         }
       } catch (Exception e) {

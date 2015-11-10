@@ -30,7 +30,7 @@ public class NamespaceOperationsImpl  extends HasMetadataOperation<Namespace, Na
   }
 
   public NamespaceOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, Namespace item) {
-    super(client, config, "namespaces", namespace, name, cascading, item);
+    super(client, config, null, null, "namespaces", namespace, name, cascading, item);
   }
 
   @Override

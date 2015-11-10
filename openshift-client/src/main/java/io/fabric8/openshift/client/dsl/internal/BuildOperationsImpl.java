@@ -30,6 +30,6 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
   }
 
   public BuildOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, Build item) {
-    super(client, config, "builds", namespace, name, cascading, item);
+    super(client, config, null, null, "builds", namespace, name, cascading, item);
   }
 }

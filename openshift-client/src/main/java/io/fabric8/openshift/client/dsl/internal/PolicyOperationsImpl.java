@@ -28,6 +28,6 @@ public class PolicyOperationsImpl extends OpenShiftOperation<Policy, PolicyList,
   }
 
   public PolicyOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, Policy item) {
-    super(client, config, "policies", namespace, name, cascading, item);
+    super(client, config, null, null, "policies", namespace, name, cascading, item);
   }
 }

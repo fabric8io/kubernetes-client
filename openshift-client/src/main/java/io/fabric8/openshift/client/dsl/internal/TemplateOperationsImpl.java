@@ -44,7 +44,7 @@ public class TemplateOperationsImpl
   }
 
   public TemplateOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, Template item) {
-    super(client, config, "templates", namespace, name, cascading, item);
+    super(client, config, null, null, "templates", namespace, name, cascading, item);
   }
 
   @Override

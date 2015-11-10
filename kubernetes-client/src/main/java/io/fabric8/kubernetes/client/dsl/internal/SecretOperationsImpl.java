@@ -29,6 +29,6 @@ public class SecretOperationsImpl  extends HasMetadataOperation<Secret, SecretLi
   }
 
   public SecretOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, Secret item) {
-    super(client, config, "secrets", namespace, name, cascading, item);
+    super(client, config, null, null, "secrets", namespace, name, cascading, item);
   }
 }

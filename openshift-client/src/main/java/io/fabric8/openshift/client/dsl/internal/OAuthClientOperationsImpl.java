@@ -30,7 +30,7 @@ public class OAuthClientOperationsImpl extends OpenShiftOperation<OAuthClient, O
   }
 
   public OAuthClientOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, OAuthClient item) {
-    super(client, config, "oauthclients", namespace, name, cascading, item);
+    super(client, config, null, null, "oauthclients", namespace, name, cascading, item);
   }
 
   @Override

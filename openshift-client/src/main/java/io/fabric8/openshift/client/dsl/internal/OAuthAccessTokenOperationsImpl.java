@@ -30,7 +30,7 @@ public class OAuthAccessTokenOperationsImpl extends OpenShiftOperation<OAuthAcce
   }
 
   public OAuthAccessTokenOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, OAuthAccessToken item) {
-    super(client, config, "oauthaccesstokens", namespace, name, cascading, item);
+    super(client, config, null, null, "oauthaccesstokens", namespace, name, cascading, item);
   }
 
   @Override

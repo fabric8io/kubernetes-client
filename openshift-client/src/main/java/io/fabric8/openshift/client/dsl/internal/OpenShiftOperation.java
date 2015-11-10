@@ -32,8 +32,8 @@ import java.net.URL;
 public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
   extends HasMetadataOperation<T, L, D, R> {
 
-  protected OpenShiftOperation(OkHttpClient client, OpenShiftConfig config, String resourceT, String namespace, String name, Boolean cascading, T item) {
-    super(client, config, resourceT, namespace, name, cascading, item);
+  protected OpenShiftOperation(OkHttpClient client, OpenShiftConfig config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item) {
+    super(client, config, apiGroup, apiVersion, resourceT, namespace, name, cascading, item);
   }
 
   @Override

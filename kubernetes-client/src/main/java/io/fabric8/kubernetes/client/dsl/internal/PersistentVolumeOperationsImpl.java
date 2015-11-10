@@ -31,6 +31,6 @@ public class PersistentVolumeOperationsImpl
   }
 
   public PersistentVolumeOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, PersistentVolume item) {
-    super(client, config, "persistentvolumes", namespace, name, cascading, item);
+    super(client, config, null, null, "persistentvolumes", namespace, name, cascading, item);
   }
 }

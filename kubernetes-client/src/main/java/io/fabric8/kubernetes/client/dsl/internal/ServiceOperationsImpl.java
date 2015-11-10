@@ -32,7 +32,7 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
   }
 
   public ServiceOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, Service item) {
-    super(client, config, "services", namespace, name, cascading, item);
+    super(client, config, null, null, "services", namespace, name, cascading, item);
   }
 
   @Override

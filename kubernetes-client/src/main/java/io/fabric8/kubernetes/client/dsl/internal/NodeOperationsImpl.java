@@ -30,7 +30,7 @@ public class NodeOperationsImpl extends HasMetadataOperation<Node, NodeList, Don
   }
 
   public NodeOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, Node item) {
-    super(client, config, "nodes", namespace, name, cascading, item);
+    super(client, config, null, null, "nodes", namespace, name, cascading, item);
   }
 
   @Override

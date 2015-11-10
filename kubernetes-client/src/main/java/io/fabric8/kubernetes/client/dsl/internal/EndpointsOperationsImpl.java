@@ -32,6 +32,6 @@ public class EndpointsOperationsImpl extends HasMetadataOperation<Endpoints, End
 
 
   public EndpointsOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, Endpoints item) {
-    super(client, config, "endpoints", namespace, name, cascading, item);
+    super(client, config, null, null, "endpoints", namespace, name, cascading, item);
   }
 }

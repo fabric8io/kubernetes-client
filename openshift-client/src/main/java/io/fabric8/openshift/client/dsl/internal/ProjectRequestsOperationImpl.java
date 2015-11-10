@@ -40,7 +40,7 @@ public class ProjectRequestsOperationImpl extends OperationSupport implements Cl
     }
 
     public ProjectRequestsOperationImpl(OkHttpClient client, OpenShiftConfig config, ProjectRequest item) {
-        super(client, config, "projectrequests", null, null);
+        super(client, config, null, null, "projectrequests", null, null);
         this.item = item;
     }
 

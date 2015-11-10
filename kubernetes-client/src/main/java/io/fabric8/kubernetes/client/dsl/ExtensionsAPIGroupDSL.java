@@ -13,10 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client;
 
-public interface KubernetesClient extends GenericKubernetesClient<KubernetesClient> {
+package io.fabric8.kubernetes.client.dsl;
 
-  ExtensionsAPIGroupClient extensions();
+import io.fabric8.kubernetes.api.model.extensions.DoneableJob;
+import io.fabric8.kubernetes.api.model.extensions.Job;
+import io.fabric8.kubernetes.api.model.extensions.JobList;
+import io.fabric8.kubernetes.client.Client;
+
+public interface ExtensionsAPIGroupDSL extends Client {
+
+  ClientMixedOperation<Job, JobList, DoneableJob, ClientResource<Job, DoneableJob>> jobs();
 
 }

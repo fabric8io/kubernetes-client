@@ -28,7 +28,7 @@ public class GroupOperationsImpl extends OpenShiftOperation<Group, GroupList, Do
   }
 
   public GroupOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, Group item) {
-    super(client, config, "groups", namespace, name, cascading, item);
+    super(client, config, null, null, "groups", namespace, name, cascading, item);
   }
 
   @Override

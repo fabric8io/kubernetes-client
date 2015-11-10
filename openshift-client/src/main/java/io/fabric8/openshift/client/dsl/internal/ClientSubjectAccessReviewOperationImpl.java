@@ -42,7 +42,7 @@ public class ClientSubjectAccessReviewOperationImpl extends OperationSupport imp
   }
 
   public ClientSubjectAccessReviewOperationImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
-    super(client, config, "subjectaccessreviews", namespace, null);
+    super(client, config, null, null, "subjectaccessreviews", namespace, null);
   }
 
   @Override

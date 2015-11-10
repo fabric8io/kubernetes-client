@@ -31,6 +31,6 @@ extends HasMetadataOperation<PersistentVolumeClaim, PersistentVolumeClaimList, D
   }
 
   public PersistentVolumeClaimOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, PersistentVolumeClaim item) {
-    super(client, config, "persistentvolumeclaims", namespace, name, cascading, item);
+    super(client, config, null, null, "persistentvolumeclaims", namespace, name, cascading, item);
   }
 }

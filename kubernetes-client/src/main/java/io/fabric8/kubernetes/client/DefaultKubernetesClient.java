@@ -175,4 +175,9 @@ public class DefaultKubernetesClient extends BaseClient implements KubernetesCli
   public KubernetesClient inAnyNamespace() {
     return inNamespace(null);
   }
+
+  @Override
+  public ExtensionsAPIGroupClient extensions() {
+    return adapt(ExtensionsAPIGroupClient.class);
+  }
 }

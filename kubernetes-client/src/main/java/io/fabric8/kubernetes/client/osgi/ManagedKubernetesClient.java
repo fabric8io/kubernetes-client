@@ -62,6 +62,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
+import io.fabric8.kubernetes.client.ExtensionsAPIGroupClient;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.ResourceHandler;
@@ -266,6 +267,11 @@ public class ManagedKubernetesClient extends BaseClient implements KubernetesCli
   @Override
   public RootPaths rootPaths() {
     return delegate.rootPaths();
+  }
+
+  @Override
+  public ExtensionsAPIGroupClient extensions() {
+    return delegate.extensions();
   }
 
   @Override

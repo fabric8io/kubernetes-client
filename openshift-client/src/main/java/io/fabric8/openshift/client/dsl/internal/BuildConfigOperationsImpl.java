@@ -47,7 +47,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
   }
 
   public BuildConfigOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, BuildConfig item, String secret, String triggerType) {
-    super(client, config, "buildconfigs", namespace, name, cascading, item);
+    super(client, config, null, null, "buildconfigs", namespace, name, cascading, item);
     this.triggerType = triggerType;
     this.secret = secret;
   }

@@ -38,7 +38,7 @@ public class FullExample {
     private static final Logger logger = LoggerFactory.getLogger(FullExample.class);
 
     public static void main(String[] args) throws InterruptedException {
-        String master = "https://localhost:8443/";
+        String master = "http://localhost:8080/";
         if (args.length == 1) {
             master = args[0];
         }
@@ -70,6 +70,8 @@ public class FullExample {
 
                 ResourceQuota quota = new ResourceQuotaBuilder().withNewMetadata().withName("pod-quota").endMetadata().withNewSpec().addToHard("pods", new Quantity("10")).endSpec().build();
                 log("Create resource quota", client.resourceQuotas().inNamespace("thisisatest").create(quota));
+
+                log("Get jobs in namespace", client.extensions().jobs().inNamespace("thisisatest").list());
 
                 // Create an RC
                 ReplicationController rc = new ReplicationControllerBuilder()

@@ -28,6 +28,6 @@ public class PolicyBindingOperationsImpl extends OpenShiftOperation<PolicyBindin
   }
 
   public PolicyBindingOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, PolicyBinding item) {
-    super(client, config, "policybindings", namespace, name, cascading, item);
+    super(client, config, null, null, "policybindings", namespace, name, cascading, item);
   }
 }

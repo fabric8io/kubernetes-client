@@ -46,7 +46,7 @@ public class KubernetesListOperationsImpl
   private KubernetesList item;
 
   public KubernetesListOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    super(client, config, null, namespace, null);
+    super(client, config, null, null, null, namespace, null);
   }
 
   @Override

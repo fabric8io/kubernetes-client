@@ -30,6 +30,6 @@ public class ServiceAccountOperationsImpl extends HasMetadataOperation<ServiceAc
   }
 
   public ServiceAccountOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, ServiceAccount item) {
-    super(client, config, "serviceaccounts", namespace, name, cascading, item);
+    super(client, config, null, null, "serviceaccounts", namespace, name, cascading, item);
   }
 }
