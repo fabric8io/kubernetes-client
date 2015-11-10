@@ -16,30 +16,16 @@
 
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.model.RootPaths;
+import com.squareup.okhttp.OkHttpClient;
+import org.junit.Assert;
+import org.junit.Test;
 
-import java.io.Closeable;
-import java.net.URL;
+public class AdaptTest {
 
-public interface Client extends ConfigAware, Closeable {
-
-  /**
-   * Checks if the client can be adapted to an other client type.
-   * @param type  The target client class.
-   * @param <C>   The target client type.
-   * @return      Returns true if a working {@link io.fabric8.kubernetes.client.ExtensionAdapter} is found.
-   */
-  <C> Boolean  isAdaptable(Class<C> type);
-
-  <C> C adapt(Class<C> type);
-
-  URL getMasterUrl();
-
-  String getApiVersion();
-
-  String getNamespace();
-
-  RootPaths rootPaths();
-
-  void close();
+    @Test
+    public void testAdaptToHttpClient() {
+        KubernetesClient client = new DefaultKubernetesClient();
+        Assert.assertTrue(client.isAdaptable(OkHttpClient.class));
+        Assert.assertNotNull(client.adapt(OkHttpClient.class));
+    }
 }

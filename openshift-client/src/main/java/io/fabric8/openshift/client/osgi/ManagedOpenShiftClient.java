@@ -417,7 +417,7 @@ public class ManagedOpenShiftClient extends BaseClient implements OpenShiftClien
   }
 
   @Override
-  public <C extends Client> C adapt(Class<C> type) {
+  public <C> C adapt(Class<C> type) {
     return delegate.adapt(type);
   }
 
