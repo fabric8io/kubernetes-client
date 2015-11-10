@@ -35,8 +35,6 @@ public interface Client extends ConfigAware, Closeable {
 
   URL getMasterUrl();
 
-  String getApiGroup();
-
   String getApiVersion();
 
   String getNamespace();

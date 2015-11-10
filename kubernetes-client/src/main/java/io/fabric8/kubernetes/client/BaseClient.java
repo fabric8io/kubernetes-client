@@ -96,11 +96,6 @@ public abstract class BaseClient implements Client {
   }
 
   @Override
-  public String getApiGroup() {
-    return null;
-  }
-
-  @Override
   public String getApiVersion() {
     return apiVersion;
   }
