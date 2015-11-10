@@ -34,7 +34,7 @@ public class WatchExample {
   private static final Logger logger = LoggerFactory.getLogger(WatchExample.class);
 
   public static void main(String[] args) throws InterruptedException {
-    String master = "https://localhost:8443/";
+    String master = "http://localhost:8080/";
     if (args.length == 1) {
       master = args[0];
     }
@@ -42,6 +42,24 @@ public class WatchExample {
     final CountDownLatch closeLatch = new CountDownLatch(1);
     Config config = new ConfigBuilder().withMasterUrl(master).withWatchReconnectLimit(2).build();
     try (final KubernetesClient client = new DefaultKubernetesClient(config)) {
+      try (Watch watch = client.replicationControllers().inNamespace("default").withName("test").watch(new Watcher<ReplicationController>() {
+        @Override
+        public void eventReceived(Action action, ReplicationController resource) {
+          logger.info("{}: {}", action, resource.getMetadata().getResourceVersion());
+        }
+
+        @Override
+        public void onClose(KubernetesClientException e) {
+          if (e != null) {
+            logger.error(e.getMessage(), e);
+            closeLatch.countDown();
+          }
+        }
+      })) {
+        closeLatch.await(10, TimeUnit.SECONDS);
+      } catch (KubernetesClientException | InterruptedException e) {
+        logger.error("Could not watch resources", e);
+      }
       try (Watch watch = client.replicationControllers().inNamespace("default").watch(new Watcher<ReplicationController>() {
         @Override
         public void eventReceived(Action action, ReplicationController resource) {
@@ -56,7 +74,7 @@ public class WatchExample {
           }
         }
       })) {
-        closeLatch.await(1, TimeUnit.MINUTES);
+        closeLatch.await(10, TimeUnit.SECONDS);
       } catch (KubernetesClientException | InterruptedException e) {
         logger.error("Could not watch resources", e);
       }

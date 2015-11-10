@@ -87,6 +87,7 @@ public class BaseClient implements Client {
     if (httpClient.getConnectionPool() != null) {
       httpClient.getConnectionPool().evictAll();
     }
+    httpClient.getDispatcher().getExecutorService().shutdown();
   }
 
   @Override
