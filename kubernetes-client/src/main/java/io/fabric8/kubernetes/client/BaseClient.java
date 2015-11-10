@@ -94,20 +94,24 @@ public class BaseClient implements Client {
   }
 
   @Override
-  public <C extends Client> Boolean isAdaptable(Class<C> type) {
+  public <C> Boolean isAdaptable(Class<C> type) {
     ExtensionAdapter<C> adapter = Adapters.get(type);
     if (adapter != null) {
       return adapter.isAdaptable(this);
-    } else {
+    } else if (type.isAssignableFrom(OkHttpClient.class)) {
+      return true;
+    }else {
       return false;
     }
   }
 
   @Override
-  public <C extends Client> C adapt(Class<C> type) {
+  public <C> C adapt(Class<C> type) {
     ExtensionAdapter<C> adapter = Adapters.get(type);
     if (adapter != null) {
       return adapter.adapt(this);
+    } else if (type.isAssignableFrom(OkHttpClient.class)) {
+      return (C) httpClient;
     }
     throw new IllegalStateException("No adapter available for type:" + type);
   }

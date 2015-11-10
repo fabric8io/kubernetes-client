@@ -22,7 +22,7 @@ package io.fabric8.kubernetes.client;
  *
  * @param <C> The Client.
  */
-public interface ExtensionAdapter<C extends Client> {
+public interface ExtensionAdapter<C> {
 
   /**
    * @return The concrete class of the {@link io.fabric8.kubernetes.client.Client}.
