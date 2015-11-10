@@ -33,11 +33,11 @@ public class SecurityContextConstraintsHandler implements ResourceHandler<Securi
 
   @Override
   public SecurityContextConstraints create(OkHttpClient client, Config config, String namespace, SecurityContextConstraints item) {
-    return new SecurityContextConstraintsOperationsImpl(client, config, namespace, null, true, item).create();
+    return new SecurityContextConstraintsOperationsImpl(client, config, null, namespace, null, true, item).create();
   }
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, SecurityContextConstraints item) {
-    return new SecurityContextConstraintsOperationsImpl(client, config, namespace, null, true, item).delete(item);
+    return new SecurityContextConstraintsOperationsImpl(client, config, null, namespace, null, true, item).delete(item);
   }
 }

@@ -32,11 +32,11 @@ import java.net.URL;
 public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, DoneablePod, ClientLoggableResource<Pod, DoneablePod>> implements ClientLoggableResource<Pod,DoneablePod> {
 
   public PodOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(client, config, namespace, null, true, null);
+    this(client, config, null, namespace, null, true, null);
   }
 
-  public PodOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, Pod item) {
-    super(client, config, null, null, "pods", namespace, name, cascading, item);
+  public PodOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Pod item) {
+    super(client, config, null, apiVersion, "pods", namespace, name, cascading, item);
   }
 
   @Override

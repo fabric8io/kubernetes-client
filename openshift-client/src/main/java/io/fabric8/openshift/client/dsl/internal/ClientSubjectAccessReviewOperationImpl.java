@@ -38,16 +38,16 @@ public class ClientSubjectAccessReviewOperationImpl extends OperationSupport imp
 
 
   public ClientSubjectAccessReviewOperationImpl(OkHttpClient client, OpenShiftConfig config) {
-    this(client, config, null);
+    this(client, config, null, null);
   }
 
-  public ClientSubjectAccessReviewOperationImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
-    super(client, config, null, null, "subjectaccessreviews", namespace, null);
+  public ClientSubjectAccessReviewOperationImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace) {
+    super(client, config, null, apiVersion, "subjectaccessreviews", namespace, null);
   }
 
   @Override
   public CreateableLocalSubjectAccessReview inNamespace(String namespace) {
-    return new ClientSubjectAccessReviewOperationImpl(client, OpenShiftConfig.wrap(getConfig()), namespace).local();
+    return new ClientSubjectAccessReviewOperationImpl(client, OpenShiftConfig.wrap(getConfig()), null, namespace).local();
   }
 
   @Override

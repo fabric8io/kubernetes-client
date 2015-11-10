@@ -34,11 +34,11 @@ public class PolicyHandler implements ResourceHandler<Policy> {
 
   @Override
   public Policy create(OkHttpClient client, Config config, String namespace, Policy item) {
-      return new PolicyOperationsImpl(client, OpenShiftConfig.wrap(config), namespace, null, true, item).create();
+      return new PolicyOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item).create();
     }
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Policy item) {
-      return new PolicyOperationsImpl(client, OpenShiftConfig.wrap(config), namespace, null, true, item).delete(item);
+      return new PolicyOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item).delete(item);
     }
 }

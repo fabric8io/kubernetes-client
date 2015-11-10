@@ -144,8 +144,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   public R withName(String name) {
     try {
       return (R) getClass()
-        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, Boolean.class, type)
-        .newInstance(client, config, namespace, name, cascading, item);
+        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type)
+        .newInstance(client, config, apiVersion, namespace, name, cascading, item);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -155,8 +155,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   public ClientNonNamespaceOperation<T, L, D, R> inNamespace(String namespace) {
     try {
       return getClass()
-        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, Boolean.class, type)
-        .newInstance(client, config, namespace, name, cascading, item);
+        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type)
+        .newInstance(client, config, apiVersion, namespace, name, cascading, item);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -172,8 +172,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   public EditReplaceDeletable<T, T, D, Boolean> cascading(boolean enabled) {
     try {
       return getClass()
-        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, Boolean.class, type)
-        .newInstance(client, config, namespace, name, enabled, item);
+        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type)
+        .newInstance(client, config, apiVersion, namespace, name, enabled, item);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -183,8 +183,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   public R load(InputStream is) {
     try {
       return (R) getClass()
-        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, Boolean.class, type)
-        .newInstance(client, config, namespace, name, cascading, unmarshal(is, type));
+        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type)
+        .newInstance(client, config, apiVersion, namespace, name, cascading, unmarshal(is, type));
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }

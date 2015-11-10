@@ -27,11 +27,11 @@ public class EndpointsOperationsImpl extends HasMetadataOperation<Endpoints, End
   ClientResource<Endpoints, DoneableEndpoints>> {
 
   public EndpointsOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(client, config, namespace, null, true, null);
+    this(client, config, null, namespace, null, true, null);
   }
 
 
-  public EndpointsOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, Endpoints item) {
-    super(client, config, null, null, "endpoints", namespace, name, cascading, item);
+  public EndpointsOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Endpoints item) {
+    super(client, config, null, apiVersion, "endpoints", namespace, name, cascading, item);
   }
 }

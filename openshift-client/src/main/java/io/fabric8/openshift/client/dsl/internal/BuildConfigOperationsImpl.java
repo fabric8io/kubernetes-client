@@ -43,34 +43,34 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
   private final String triggerType;
 
   public BuildConfigOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
-    this(client, config, namespace, null, true, null, null, null);
+    this(client, config, null, namespace, null, true, null, null, null);
   }
 
-  public BuildConfigOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace, String name, Boolean cascading, BuildConfig item, String secret, String triggerType) {
-    super(client, config, null, null, "buildconfigs", namespace, name, cascading, item);
+  public BuildConfigOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, BuildConfig item, String secret, String triggerType) {
+    super(client, config, null, apiVersion, "buildconfigs", namespace, name, cascading, item);
     this.triggerType = triggerType;
     this.secret = secret;
   }
 
   @Override
   public ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void> withName(String name) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getNamespace(), name, isCascading(), getItem(), secret, triggerType);
+    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), name, isCascading(), getItem(), secret, triggerType);
   }
 
   @Override
   public OpenShiftOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void>> inNamespace(String namespace) {
-    return new BuildConfigOperationsImpl(client, getConfig(), namespace, getName(), isCascading(), getItem(), secret, triggerType);
+    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), secret, triggerType);
   }
 
 
   @Override
   public Typeable<Triggerable<WebHookTrigger, Void>> withSecret(String secret) {
-    return new BuildConfigOperationsImpl(client,getConfig(), getNamespace(), getName(), isCascading(), getItem(), secret, triggerType);
+    return new BuildConfigOperationsImpl(client,getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), secret, triggerType);
   }
 
   @Override
   public ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void> load(InputStream is) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getNamespace(), getName(), isCascading(), unmarshal(is, getType()), secret, triggerType);
+    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), unmarshal(is, getType()), secret, triggerType);
   }
 
   @Override
@@ -106,6 +106,6 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
 
   @Override
   public Triggerable<WebHookTrigger, Void> withType(String type) {
-    return new BuildConfigOperationsImpl(client,  getConfig(), getNamespace(), getName(), isCascading(), getItem(), secret, type);
+    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), secret, type);
   }
 }

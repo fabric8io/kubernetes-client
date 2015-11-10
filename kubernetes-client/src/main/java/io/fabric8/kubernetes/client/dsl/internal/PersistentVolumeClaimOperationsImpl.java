@@ -27,10 +27,10 @@ public class PersistentVolumeClaimOperationsImpl
 extends HasMetadataOperation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, ClientResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> {
 
   public PersistentVolumeClaimOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(client, config, namespace, null, true, null);
+    this(client, config, null, namespace, null, true, null);
   }
 
-  public PersistentVolumeClaimOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, PersistentVolumeClaim item) {
-    super(client, config, null, null, "persistentvolumeclaims", namespace, name, cascading, item);
+  public PersistentVolumeClaimOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, PersistentVolumeClaim item) {
+    super(client, config, null, apiVersion, "persistentvolumeclaims", namespace, name, cascading, item);
   }
 }

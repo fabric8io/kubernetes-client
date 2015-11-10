@@ -36,11 +36,11 @@ public class ProjectRequestsOperationImpl extends OperationSupport implements Cl
     private final ProjectRequest item;
 
     public ProjectRequestsOperationImpl(OkHttpClient client, OpenShiftConfig config) {
-        this(client, config, null);
+        this(client, config, null, null);
     }
 
-    public ProjectRequestsOperationImpl(OkHttpClient client, OpenShiftConfig config, ProjectRequest item) {
-        super(client, config, null, null, "projectrequests", null, null);
+    public ProjectRequestsOperationImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, ProjectRequest item) {
+        super(client, config, null, apiVersion, "projectrequests", null, null);
         this.item = item;
     }
 

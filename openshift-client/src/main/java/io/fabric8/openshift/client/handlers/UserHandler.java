@@ -35,11 +35,11 @@ public class UserHandler implements ResourceHandler<User> {
 
   @Override
   public User create(OkHttpClient client, Config config, String namespace, User item) {
-      return new UserOperationsImpl(client, OpenShiftConfig.wrap(config), namespace, null, true, item).create();
+      return new UserOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item).create();
   }
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, User item) {
-      return new UserOperationsImpl(client, OpenShiftConfig.wrap(config), namespace, null, true, item).delete(item);
+      return new UserOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item).delete(item);
     }
 }

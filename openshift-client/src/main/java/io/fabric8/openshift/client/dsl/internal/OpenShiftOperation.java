@@ -49,8 +49,8 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
   public R withName(String name) {
     try {
       return (R) getClass()
-        .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, Boolean.class, getType())
-        .newInstance(client, getConfig(), getNamespace(), name, isCascading(), getItem());
+        .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, String.class, Boolean.class, getType())
+        .newInstance(client, getConfig(), getAPIVersion(), getNamespace(), name, isCascading(), getItem());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -60,8 +60,8 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
   public OpenShiftOperation<T, L, D, R> inNamespace(String namespace) {
     try {
       return getClass()
-        .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, Boolean.class, getType())
-        .newInstance(client, getConfig(), namespace, getName(), isCascading(), getItem());
+        .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, String.class, Boolean.class, getType())
+        .newInstance(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -72,8 +72,8 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
   public EditReplaceDeletable<T, T, D, Boolean> cascading(boolean enabled) {
     try {
       return (R) getClass()
-        .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, Boolean.class, getType())
-        .newInstance(client, getConfig(), getNamespace(), getName(), enabled, getItem());
+        .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, String.class, Boolean.class, getType())
+        .newInstance(client, getConfig(), getAPIVersion(), getNamespace(), getName(), enabled, getItem());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -83,8 +83,8 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
   public R load(InputStream is) {
     try {
       return (R) getClass()
-        .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, Boolean.class, getType())
-        .newInstance(client, getConfig(), getNamespace(), getName(), isCascading(), unmarshal(is, getType()));
+        .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, String.class, Boolean.class, getType())
+        .newInstance(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), unmarshal(is, getType()));
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }

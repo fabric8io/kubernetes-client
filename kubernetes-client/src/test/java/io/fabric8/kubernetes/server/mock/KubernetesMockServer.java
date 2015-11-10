@@ -57,7 +57,7 @@ public class KubernetesMockServer {
   }
 
   public String[] getRootPaths() {
-    return new String[]{"/api"};
+    return new String[]{"/api", "/apis/extensions"};
   }
 
   public void destroy() throws IOException {

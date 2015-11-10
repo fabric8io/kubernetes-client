@@ -32,11 +32,11 @@ public class ServiceHandler implements ResourceHandler<Service> {
 
   @Override
   public Service create(OkHttpClient client, Config config, String namespace, Service item) {
-    return new ServiceOperationsImpl(client, config, namespace, null, true, item).create();
+    return new ServiceOperationsImpl(client, config, null, namespace, null, true, item).create();
   }
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Service item) {
-    return new ServiceOperationsImpl(client, config, namespace, null, true, item).delete(item);
+    return new ServiceOperationsImpl(client, config, null, namespace, null, true, item).delete(item);
   }
 }

@@ -341,7 +341,7 @@ public class DefaultOpenShiftClient extends BaseClient implements OpenShiftClien
 
   @Override
   public ClientSubjectAccessReviewOperation<CreateableSubjectAccessReview, CreateableLocalSubjectAccessReview> subjectAccessReviews() {
-    return new ClientSubjectAccessReviewOperationImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()), getNamespace());
+    return new ClientSubjectAccessReviewOperationImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()), null, getNamespace());
   }
 
   @Override

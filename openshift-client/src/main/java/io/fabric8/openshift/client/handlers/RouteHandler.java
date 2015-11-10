@@ -35,11 +35,11 @@ public class RouteHandler implements ResourceHandler<Route> {
 
   @Override
   public Route create(OkHttpClient client, Config config, String namespace, Route item) {
-      return new RouteOperationsImpl(client, OpenShiftConfig.wrap(config), namespace, null, true, item).create();
+      return new RouteOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item).create();
   }
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Route item) {
-      return new RouteOperationsImpl(client, OpenShiftConfig.wrap(config), namespace, null, true, item).delete(item);
+      return new RouteOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item).delete(item);
   }
 }

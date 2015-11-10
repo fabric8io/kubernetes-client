@@ -36,7 +36,7 @@ public class ProjectRequestHandler implements ResourceHandler<ProjectRequest> {
 
   @Override
   public ProjectRequest create(OkHttpClient client, Config config, String namespace, ProjectRequest item) {
-      return new ProjectRequestsOperationImpl(client, OpenShiftConfig.wrap(config), item).create();
+      return new ProjectRequestsOperationImpl(client, OpenShiftConfig.wrap(config), null, item).create();
   }
 
   @Override

@@ -56,11 +56,11 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
   private final TimeUnit rollingTimeUnit;
 
   public ReplicationControllerOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(client, config, namespace, null, true, null, false, config.getRollingTimeout(), TimeUnit.MINUTES);
+    this(client, config, null, namespace, null, true, null, false, config.getRollingTimeout(), TimeUnit.MINUTES);
   }
 
-  public ReplicationControllerOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, ReplicationController item, Boolean rolling, long rollingTimeout, TimeUnit rollingTimeUnit) {
-    super(client, config, null, null, "replicationcontrollers", namespace, name, cascading, item);
+  public ReplicationControllerOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, ReplicationController item, Boolean rolling, long rollingTimeout, TimeUnit rollingTimeUnit) {
+    super(client, config, null, apiVersion, "replicationcontrollers", namespace, name, cascading, item);
     this.rolling = rolling;
     this.rollingTimeout = rollingTimeout;
     this.rollingTimeUnit = rollingTimeUnit;
@@ -71,7 +71,7 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
   public ClientRollableScallableResource<ReplicationController, DoneableReplicationController> load(InputStream is) {
     try {
       ReplicationController item = unmarshal(is, ReplicationController.class);
-      return new ReplicationControllerOperationsImpl(client, getConfig(), getNamespace(), getName(), isCascading(), item, rolling, rollingTimeout, rollingTimeUnit);
+      return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), item, rolling, rollingTimeout, rollingTimeUnit);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -79,18 +79,18 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
 
   @Override
   public ClientNonNamespaceOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>> inNamespace(String namespace) {
-    return new ReplicationControllerOperationsImpl(client, getConfig(), namespace, getName(), isCascading(), getItem(), rolling, rollingTimeout, rollingTimeUnit);
+    return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), rolling, rollingTimeout, rollingTimeUnit);
   }
 
 
   @Override
   public ImageEditReplaceable<ReplicationController, ReplicationController, DoneableReplicationController> withTimeout(long timeout, TimeUnit unit) {
-    return new ReplicationControllerOperationsImpl(client, getConfig(),namespace, getName(), isCascading(), getItem(), rolling, timeout, rollingTimeUnit);
+    return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), rolling, timeout, rollingTimeUnit);
   }
 
   @Override
   public ImageEditReplaceable<ReplicationController, ReplicationController, DoneableReplicationController> withTimeoutInMillis(long timeoutInMillis) {
-    return new ReplicationControllerOperationsImpl(client, getConfig(), namespace, getName(), isCascading(), getItem(), rolling, timeoutInMillis, TimeUnit.MILLISECONDS);
+    return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), rolling, timeoutInMillis, TimeUnit.MILLISECONDS);
   }
 
   @Override
@@ -100,12 +100,12 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
 
   @Override
   public ClientRollableScallableResource<ReplicationController, DoneableReplicationController> withName(String name) {
-    return new ReplicationControllerOperationsImpl(client, getConfig(), getNamespace(), name, isCascading(), getItem(), rolling, rollingTimeout, rollingTimeUnit);
+    return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), name, isCascading(), getItem(), rolling, rollingTimeout, rollingTimeUnit);
   }
 
   @Override
   public EditReplaceDeletable<ReplicationController, ReplicationController, DoneableReplicationController, Boolean> cascading(boolean enabled) {
-    return new ReplicationControllerOperationsImpl(client, getConfig(), getNamespace(), getName(), enabled, getItem(), rolling, rollingTimeout, rollingTimeUnit);
+    return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), enabled, getItem(), rolling, rollingTimeout, rollingTimeUnit);
   }
 
   @Override
@@ -154,7 +154,7 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
 
   @Override
   public ReplicationControllerOperationsImpl rolling() {
-    return new ReplicationControllerOperationsImpl(client, getConfig(), getNamespace(), getName(), isCascading(), getItem(), true, rollingTimeout, rollingTimeUnit);
+    return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), true, rollingTimeout, rollingTimeUnit);
   }
 
   @Override
