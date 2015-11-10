@@ -54,6 +54,23 @@ public class BaseClient implements Client {
       }
       this.masterUrl = new URL(config.getMasterUrl());
 
+      Adapters.register(new ExtensionAdapter<OkHttpClient>() {
+        @Override
+        public Class<OkHttpClient> getExtensionType() {
+          return OkHttpClient.class;
+        }
+
+        @Override
+        public Boolean isAdaptable(Client client) {
+          return client instanceof BaseClient;
+        }
+
+        @Override
+        public OkHttpClient adapt(Client client) {
+          return httpClient;
+        }
+      });
+
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
@@ -94,7 +111,7 @@ public class BaseClient implements Client {
   }
 
   @Override
-  public <C extends Client> Boolean isAdaptable(Class<C> type) {
+  public <C> Boolean isAdaptable(Class<C> type) {
     ExtensionAdapter<C> adapter = Adapters.get(type);
     if (adapter != null) {
       return adapter.isAdaptable(this);
@@ -104,7 +121,7 @@ public class BaseClient implements Client {
   }
 
   @Override
-  public <C extends Client> C adapt(Class<C> type) {
+  public <C> C adapt(Class<C> type) {
     ExtensionAdapter<C> adapter = Adapters.get(type);
     if (adapter != null) {
       return adapter.adapt(this);
