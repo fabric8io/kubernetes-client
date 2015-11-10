@@ -59,14 +59,14 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
   private WebSocketCall webSocketCall;
   private OkHttpClient clonedClient;
 
-  public WatchConnectionManager(final OkHttpClient clonedClient, final BaseOperation<T, L, ?, ?> baseOperation, final String version, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit) throws InterruptedException, ExecutionException, MalformedURLException {
+  public WatchConnectionManager(final OkHttpClient client, final BaseOperation<T, L, ?, ?> baseOperation, final String version, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit) throws InterruptedException, ExecutionException, MalformedURLException {
     if (version == null) {
       KubernetesResourceList currentList = baseOperation.list();
       this.resourceVersion = new AtomicReference<>(currentList.getMetadata().getResourceVersion());
     } else {
       this.resourceVersion = new AtomicReference<>(version);
     }
-    this.clonedClient = clonedClient;
+    this.clonedClient = client.clone();
     this.baseOperation = baseOperation;
     this.watcher = watcher;
     this.reconnectInterval = reconnectInterval;
@@ -76,7 +76,7 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
   }
 
   private final void runWatch() throws MalformedURLException, ExecutionException, InterruptedException {
-    URL requestUrl = baseOperation.getResourceUrl();
+    URL requestUrl = baseOperation.getNamespacedUrl();
 
     HttpUrl.Builder httpUrlBuilder = HttpUrl.get(requestUrl).newBuilder();
 
@@ -86,9 +86,14 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
     }
 
     String fieldQueryString = baseOperation.getFieldQueryParam();
-    if (fieldQueryString.length() > 0) {
-      httpUrlBuilder.addQueryParameter("fieldSelector", fieldQueryString);
+    String name = baseOperation.getName();
+    if (name != null && name.length() > 0) {
+      if (fieldQueryString.length() > 0) {
+        fieldQueryString += ",";
+      }
+      fieldQueryString += "metadata.name=" + name;
     }
+    httpUrlBuilder.addQueryParameter("fieldSelector", fieldQueryString);
 
     httpUrlBuilder
       .addQueryParameter("resourceVersion", this.resourceVersion.get())
@@ -179,8 +184,6 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
   @Override
   public void close() {
     forceClosed.set(true);
-    // Trigger shutdown of the dispatcher's executor so this process can exit cleanly.
-    clonedClient.getDispatcher().getExecutorService().shutdown();
     try {
       WebSocket ws = webSocketRef.get();
       if (ws != null) {

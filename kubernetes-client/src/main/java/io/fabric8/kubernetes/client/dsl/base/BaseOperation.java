@@ -435,7 +435,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   public Watch watch(String resourceVersion, final Watcher<T> watcher) throws KubernetesClientException {
     try {
-      return new WatchConnectionManager(client.clone(), this, resourceVersion, watcher, config.getWatchReconnectInterval(), config.getWatchReconnectLimit());
+      return new WatchConnectionManager(client, this, resourceVersion, watcher, config.getWatchReconnectInterval(), config.getWatchReconnectLimit());
     } catch (MalformedURLException | InterruptedException | ExecutionException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
