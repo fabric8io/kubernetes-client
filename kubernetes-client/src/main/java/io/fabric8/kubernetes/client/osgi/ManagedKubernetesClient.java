@@ -284,7 +284,7 @@ public class ManagedKubernetesClient extends BaseClient implements KubernetesCli
   }
 
   @Override
-  public <C extends Client> C adapt(Class<C> type) {
+  public <C> C adapt(Class<C> type) {
     return delegate.adapt(type);
   }
 

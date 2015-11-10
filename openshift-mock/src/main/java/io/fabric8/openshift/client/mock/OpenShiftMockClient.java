@@ -486,11 +486,11 @@ public class OpenShiftMockClient implements Replayable<OpenShiftClient>, Verifia
     return expect(client.getNamespace());
   }
 
-  public  <T extends Client> IExpectationSetters<Boolean> isAdaptable(Class<T> type) {
+  public  <T> IExpectationSetters<Boolean> isAdaptable(Class<T> type) {
     return expect(client.isAdaptable(type));
   }
 
-  public <T extends Client> IExpectationSetters<T> adapt(Class<T> type) {
+  public <T> IExpectationSetters<T> adapt(Class<T> type) {
     return expect(client.adapt(type));
   }
 }
