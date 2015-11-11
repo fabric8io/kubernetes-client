@@ -23,7 +23,6 @@ import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
-import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
@@ -173,8 +172,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   public EditReplaceDeletable<T, T, D, Boolean> cascading(boolean enabled) {
     try {
       return getClass()
-        .getConstructor(Client.class, String.class, String.class, Boolean.class, type)
-        .newInstance(client, namespace, name, enabled, item);
+        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, Boolean.class, type)
+        .newInstance(client, config, namespace, name, enabled, item);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -184,8 +183,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   public R load(InputStream is) {
     try {
       return (R) getClass()
-        .getConstructor(Client.class, String.class, String.class, Boolean.class, type)
-        .newInstance(client, namespace, name, cascading, unmarshal(is, type));
+        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, Boolean.class, type)
+        .newInstance(client, config, namespace, name, cascading, unmarshal(is, type));
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
