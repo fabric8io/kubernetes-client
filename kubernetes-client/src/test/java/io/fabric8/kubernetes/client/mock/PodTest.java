@@ -121,7 +121,7 @@ public class PodTest extends KubernetesMockServerTestBase {
     deleted = client.pods().withName("pod2").delete();
     assertFalse(deleted);
 
-    deleted = client.pods().inNamespace("ns1").withName("pod2").delete();
+    deleted = client.pods().inNamespace("ns1").withName("pod2").cascading(false).delete();
     assertTrue(deleted);
   }
 
@@ -194,6 +194,13 @@ public class PodTest extends KubernetesMockServerTestBase {
   public void testGetLogNotFound() {
     KubernetesClient client = getClient();
     client.pods().withName("pod5").getLog(true);
+  }
+
+  @Test
+  public void testLoad() {
+    KubernetesClient client = getClient();
+    Pod pod = client.pods().load(getClass().getResourceAsStream("/test-pod.yml")).get();
+    assertEquals("nginx", pod.getMetadata().getName());
   }
 
   /**
