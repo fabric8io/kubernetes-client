@@ -16,15 +16,17 @@
 package io.fabric8.kubernetes.client;
 
 import com.squareup.okhttp.OkHttpClient;
-import io.fabric8.kubernetes.api.model.RootPaths;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
-import java.util.List;
-
 @Component
 @Service
-public class ExtensionsAPIGroupExtensionAdapter implements ExtensionAdapter<ExtensionsAPIGroupClient> {
+public class ExtensionsAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<ExtensionsAPIGroupClient> {
+
+  @Override
+  protected String getAPIGroupName() {
+    return "extensions";
+  }
 
   @Override
   public Class<ExtensionsAPIGroupClient> getExtensionType() {
@@ -32,26 +34,7 @@ public class ExtensionsAPIGroupExtensionAdapter implements ExtensionAdapter<Exte
   }
 
   @Override
-  public Boolean isAdaptable(Client client) {
-    RootPaths rootPaths = client.rootPaths();
-    if (rootPaths != null) {
-      List<String> paths = rootPaths.getPaths();
-      if (paths != null) {
-        for (String path : paths) {
-          if (java.util.Objects.equals("/apis/extensions", path)) {
-            return true;
-          }
-        }
-      }
-    }
-    return false;
-  }
-
-  @Override
-  public ExtensionsAPIGroupClient adapt(Client client) {
-    if (!isAdaptable(client)) {
-      throw new APIGroupNotAvailableException("extensions");
-    }
+  protected ExtensionsAPIGroupClient newInstance(Client client) {
     return new ExtensionsAPIGroupClient(client.adapt(OkHttpClient.class), client.getConfiguration());
   }
 
