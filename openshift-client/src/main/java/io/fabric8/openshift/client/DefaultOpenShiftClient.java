@@ -170,7 +170,7 @@ public class DefaultOpenShiftClient extends BaseClient implements OpenShiftClien
     this(new OpenShiftConfigBuilder().withMasterUrl(masterUrl).build());
   }
 
-  private DefaultOpenShiftClient(OkHttpClient httpClient, OpenShiftConfig config) throws KubernetesClientException {
+  protected DefaultOpenShiftClient(OkHttpClient httpClient, OpenShiftConfig config) throws KubernetesClientException {
     super(httpClient, config);
     try {
       addOpenShiftAuthInterceptor();

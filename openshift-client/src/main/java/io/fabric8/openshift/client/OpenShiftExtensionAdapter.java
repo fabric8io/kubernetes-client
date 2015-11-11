@@ -16,6 +16,7 @@
 
 package io.fabric8.openshift.client;
 
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
@@ -54,7 +55,7 @@ public class OpenShiftExtensionAdapter implements ExtensionAdapter<OpenShiftClie
     if (!isAdaptable(client)) {
       throw new OpenShiftNotAvailableException("OpenShift is not available. Root paths at: " + client.getMasterUrl() + " do not include oapi.");
     }
-    return new DefaultOpenShiftClient(client.getConfiguration());
+    return new DefaultOpenShiftClient(client.adapt(OkHttpClient.class), OpenShiftConfig.wrap(client.getConfiguration()));
   }
 
   /**
