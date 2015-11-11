@@ -15,7 +15,7 @@ KubernetesClient client = new DefaultKubernetesClient();
 OpenShift extensions, such as `Build`s, etc then simply do:
 
 ```java
-OpenShiftClient osClient = new DefaultKubernetesClient();
+OpenShiftClient osClient = new DefaultOpenShiftClient();
 ```
 
 This will use settings from different sources in the following order of priority:
@@ -117,3 +117,32 @@ Service myservice = client.services().inNamespace("default").createNew()
                      .endMetadata()
                      .done();
 ```
+
+### Adapting the client
+
+The client supports plug-able adapters. An example adapter is the [OpenShift Adapter](openshift-client/src/main/java/io/fabric8/openshift/client/OpenShiftExtensionAdapter.java)
+which allows adapting an existing [KubernetesClient](kubernetes-client/src/main/java/io/fabric8/kubernetes/client/KubernetesClient.java) instance to an [OpenShiftClient](openshift-client/src/main/java/io/fabric8/openshift/client/OpenShiftClient.java) one.
+ 
+ For example:
+ 
+```java
+KuberntesClient client = new DefaultKubernetesClient();
+
+OpenShiftClient oClient = client.adapt(OpenShiftClient.class);
+```
+
+The client also support the isAdaptable() method which checks if the adaptation is possible and returns true if it does.
+
+```java
+KuberntesClient client = new DefaultKubernetesClient();
+if (client.isAdaptable(OpenShiftClient.class)) {
+    OpenShiftClient oClient = client.adapt(OpenShiftClient.class);
+} else {
+    throw new Exception("Adapting to OpenShiftClient not support. Check if adapter is present, and that env provides /oapi root path.");
+}
+```
+
+### Adapting and close()
+Note that when using adapt() both the adaptee and the target will share the same resources (underlying http client, thread pools etc). 
+This means that close() is not required to be used on every single instance created via adapt. 
+Calling close() on any of the adapt() managed instances or the original instance, will properly clean up all the resources and thus none of the instances will be usable any longer.
