@@ -16,7 +16,6 @@
 
 package io.fabric8.openshift.server.mock;
 
-import io.fabric8.kubernetes.api.model.RootPathsBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.server.mock.KubernetesMockServer;
@@ -34,9 +33,8 @@ public class OpenShiftMockServer extends KubernetesMockServer {
   }
 
   @Override
-  public void init() {
-    super.init();
-    expect().withPath("/").andReturn(200, new RootPathsBuilder().addToPaths("/api", "/oapi").build()).always();
+  public String[] getRootPaths() {
+    return new String[]{"/api","/oapi"};
   }
 
   public OpenShiftClient createOpenShiftClient() {

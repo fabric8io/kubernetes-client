@@ -16,10 +16,7 @@
 
 package io.fabric8.kubernetes.server.mock;
 
-import com.google.mockwebserver.Dispatcher;
-import com.google.mockwebserver.MockResponse;
 import com.google.mockwebserver.MockWebServer;
-import com.google.mockwebserver.RecordedRequest;
 import io.fabric8.kubernetes.api.model.RootPathsBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
@@ -51,40 +48,16 @@ public class KubernetesMockServer {
       if (useHttps) {
         server.useHttps(MockSSLContextFactory.create().getSocketFactory(), false);
       }
-      server.setDispatcher(new Dispatcher() {
-        @Override
-        public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
-          String method = request.getMethod();
-          String path = request.getPath();
-          ServerRequest key = new ServerRequest(method, path);
-          ServerRequest keyForAnyMethod = new ServerRequest(path);
-          if (responses.containsKey(key)) {
-            Queue<ServerResponse> queue = responses.get(key);
-            return handleResponse(queue.peek(), queue);
-          } else if (responses.containsKey(keyForAnyMethod)) {
-            Queue<ServerResponse> queue = responses.get(keyForAnyMethod);
-            return handleResponse(queue.peek(), queue);
-          }
-          return new MockResponse().setResponseCode(404);
-        }
-      });
-      expect().get().withPath("/").andReturn(200, new RootPathsBuilder().addToPaths("/api").build()).always();
+      server.setDispatcher(new MockDispatcher(responses));
+      expect().get().withPath("/").andReturn(200, new RootPathsBuilder().addToPaths(getRootPaths()).build()).always();
       server.play();
     } catch (Throwable t) {
       throw new RuntimeException(t);
     }
   }
 
-  private MockResponse handleResponse(ServerResponse response, Queue<ServerResponse> queue) {
-    if (response == null) {
-      return new MockResponse().setResponseCode(404);
-    } else if (response.isToBeRemoved()) {
-      queue.remove();
-    }
-    MockResponse mockResponse = new MockResponse();
-    mockResponse.setBody(response.getBody());
-    mockResponse.setResponseCode(response.getCode());
-    return mockResponse;
+  public String[] getRootPaths() {
+    return new String[]{"/api"};
   }
 
   public void destroy() throws IOException {
