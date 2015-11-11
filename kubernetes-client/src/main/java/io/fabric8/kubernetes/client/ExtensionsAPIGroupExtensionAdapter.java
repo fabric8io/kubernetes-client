@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client;
 
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
@@ -51,7 +52,7 @@ public class ExtensionsAPIGroupExtensionAdapter implements ExtensionAdapter<Exte
     if (!isAdaptable(client)) {
       throw new APIGroupNotAvailableException("extensions");
     }
-    return new ExtensionsAPIGroupClient(client.getConfiguration());
+    return new ExtensionsAPIGroupClient(client.adapt(OkHttpClient.class), client.getConfiguration());
   }
 
 }

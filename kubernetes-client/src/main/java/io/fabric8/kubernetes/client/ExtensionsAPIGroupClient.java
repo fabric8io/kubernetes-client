@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client;
 
+import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.extensions.Deployment;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
 import io.fabric8.kubernetes.api.model.extensions.DoneableDeployment;
@@ -33,8 +34,8 @@ public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAP
     super();
   }
 
-  public ExtensionsAPIGroupClient(final Config config) throws KubernetesClientException {
-    super(config);
+  public ExtensionsAPIGroupClient(OkHttpClient httpClient, final Config config) throws KubernetesClientException {
+    super(httpClient, config);
   }
 
   @Override
