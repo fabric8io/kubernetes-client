@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.ResourceQuota;
 import io.fabric8.kubernetes.api.model.ResourceQuotaBuilder;
+import io.fabric8.kubernetes.client.APIGroupNotAvailableException;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
@@ -38,7 +39,7 @@ public class FullExample {
     private static final Logger logger = LoggerFactory.getLogger(FullExample.class);
 
     public static void main(String[] args) throws InterruptedException {
-        String master = "http://localhost:8080/";
+        String master = "https://localhost:8443/";
         if (args.length == 1) {
             master = args[0];
         }
@@ -71,7 +72,11 @@ public class FullExample {
                 ResourceQuota quota = new ResourceQuotaBuilder().withNewMetadata().withName("pod-quota").endMetadata().withNewSpec().addToHard("pods", new Quantity("10")).endSpec().build();
                 log("Create resource quota", client.resourceQuotas().inNamespace("thisisatest").create(quota));
 
-                log("Get jobs in namespace", client.extensions().jobs().inNamespace("thisisatest").list());
+                try {
+                  log("Get jobs in namespace", client.extensions().jobs().inNamespace("thisisatest").list());
+                } catch (APIGroupNotAvailableException e) {
+                  log("Skipping jobs example - extensions API group not available");
+                }
 
                 // Create an RC
                 ReplicationController rc = new ReplicationControllerBuilder()
