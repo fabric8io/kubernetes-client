@@ -47,6 +47,9 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
 
   @Override
   public R withName(String name) {
+    if (name == null || name.length() == 0) {
+      throw new IllegalArgumentException("Name must be provided.");
+    }
     try {
       return (R) getClass()
         .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, String.class, Boolean.class, getType())

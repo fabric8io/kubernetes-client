@@ -54,6 +54,9 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
 
   @Override
   public ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void> withName(String name) {
+    if (name == null || name.length() == 0) {
+      throw new IllegalArgumentException("Name must be provided.");
+    }
     return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), name, isCascading(), getItem(), secret, triggerType);
   }
 

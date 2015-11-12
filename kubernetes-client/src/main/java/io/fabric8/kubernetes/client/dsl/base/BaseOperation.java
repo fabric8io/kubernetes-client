@@ -142,6 +142,9 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   @Override
   public R withName(String name) {
+    if (name == null || name.length() == 0) {
+      throw new IllegalArgumentException("Name must be provided.");
+    }
     try {
       return (R) getClass()
         .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type)

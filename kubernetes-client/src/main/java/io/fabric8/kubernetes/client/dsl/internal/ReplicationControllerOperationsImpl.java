@@ -100,6 +100,9 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
 
   @Override
   public ClientRollableScallableResource<ReplicationController, DoneableReplicationController> withName(String name) {
+    if (name == null || name.length() == 0) {
+      throw new IllegalArgumentException("Name must be provided.");
+    }
     return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), name, isCascading(), getItem(), rolling, rollingTimeout, rollingTimeUnit);
   }
 
