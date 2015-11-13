@@ -25,6 +25,10 @@ public abstract class APIGroupExtensionAdapter<T> implements ExtensionAdapter<T>
 
   @Override
   public Boolean isAdaptable(Client client) {
+    //TODO: This is currently broken, so we can't trust root paths
+    return true;
+
+    /*
     RootPaths rootPaths = client.rootPaths();
     if (rootPaths != null) {
       List<String> paths = rootPaths.getPaths();
@@ -37,6 +41,7 @@ public abstract class APIGroupExtensionAdapter<T> implements ExtensionAdapter<T>
       }
     }
     return false;
+    */
   }
 
   @Override
