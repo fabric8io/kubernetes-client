@@ -108,6 +108,7 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
   private final MockServiceAccount serviceAccounts = new MockServiceAccount();
   private final MockSecurityContextConstraints securityContextConstraints = new MockSecurityContextConstraints();
   private final MockKubernetesListOperationImpl kubernetesLists = new MockKubernetesListOperationImpl();
+  private final ExtensionsAPIGroupMockClient extensions = new ExtensionsAPIGroupMockClient();
 
 
   public KubernetesMockClient() {
@@ -125,6 +126,8 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
     expect(client.serviceAccounts()).andReturn(serviceAccounts.getDelegate()).anyTimes();
     expect(client.securityContextConstraints()).andReturn(securityContextConstraints.getDelegate()).anyTimes();
     expect(client.lists()).andReturn(kubernetesLists.getDelegate()).anyTimes();
+
+    expect(client.extensions()).andReturn(extensions.getDelegate()).anyTimes();
     client.close();
     EasyMock.expectLastCall().anyTimes();
   }
@@ -144,6 +147,8 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
     serviceAccounts.replay();
     securityContextConstraints.replay();
     kubernetesLists.replay();
+
+    extensions.replay();
     EasyMock.replay(client);
     return client;
   }
@@ -164,6 +169,8 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
     serviceAccounts.verify();
     securityContextConstraints.verify();
     kubernetesLists.verify();
+
+    extensions.verify();
     EasyMock.verify(client);
   }
 
@@ -231,10 +238,14 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
     return securityContextConstraints;
   }
 
+
   public MockKubernetesListOperation lists() {
     return kubernetesLists;
   }
 
+  public ExtensionsAPIGroupMockClient extensions() {
+    return extensions;
+  }
 
   public KubernetesMockClient inNamespace(final String namespace) {
     IArgumentMatcher matcher = getArgument(namespace);

@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.SecurityContextConstraintsList;
 import io.fabric8.kubernetes.api.model.SecurityContextConstraintsListBuilder;
+import io.fabric8.kubernetes.api.model.extensions.JobBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -314,5 +315,31 @@ public class KubernetesMockClientTest {
     client = client.inNamespace("ns2");
     Assert.assertNotNull(client);
     Assert.assertEquals("ns2", client.getNamespace());
+  }
+
+  @Test
+  public void testJobs() {
+    KubernetesMockClient mock = new KubernetesMockClient();
+    mock.extensions().jobs().inNamespace(eq("ns1")).withName(eq("job1")).get().andReturn(new JobBuilder()
+                    .withNewMetadata().withName("job1").endMetadata()
+                    .build()
+    ).anyTimes();
+
+    mock.extensions().jobs().inNamespace("ns1").withName("job2").get().andReturn(new JobBuilder()
+                    .withNewMetadata().withName("pod2").endMetadata()
+                    .build()
+    ).once();
+
+    mock.extensions().jobs().inNamespace("ns1").withName("job2").get().andReturn(null).once();
+
+    KubernetesClient client = mock.replay();
+
+    //We are testing the internal anyTimes() on namespace and name.
+    for (int i = 0; i < 5; i++) {
+      Object o = client.extensions().jobs().inNamespace("ns1").withName("job1");
+      Assert.assertNotNull(client.extensions().jobs().inNamespace("ns1").withName("job1").get());
+    }
+    Assert.assertNotNull(client.extensions().jobs().inNamespace("ns1").withName("job2").get());
+    Assert.assertNull(client.extensions().jobs().inNamespace("ns1").withName("job2").get());
   }
 }
