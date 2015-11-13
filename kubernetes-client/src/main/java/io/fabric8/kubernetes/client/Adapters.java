@@ -17,11 +17,14 @@
 package io.fabric8.kubernetes.client;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.Set;
 
 public final class Adapters {
 
+  private static final Set<ClassLoader> CLASS_LOADERS = new HashSet<>();
   private static final Map<Class, ExtensionAdapter> EXTENSION_ADAPTER_MAP = new HashMap<>();
 
   private Adapters() {
@@ -30,9 +33,7 @@ public final class Adapters {
 
   static {
     //Register adapters
-    for (ExtensionAdapter adapter : ServiceLoader.load(ExtensionAdapter.class)) {
-      register(adapter);
-    }
+    discoverServices(Adapters.class.getClassLoader());
   }
 
   public static <C> void register(ExtensionAdapter<C> adapter) {
@@ -44,6 +45,15 @@ public final class Adapters {
   }
 
   public static <C> ExtensionAdapter<C> get(Class<C> type) {
+    discoverServices(type.getClassLoader());
     return EXTENSION_ADAPTER_MAP.get(type);
+  }
+
+  private static void discoverServices(ClassLoader classLoader) {
+    if (CLASS_LOADERS.add(classLoader)) {
+      for (ExtensionAdapter adapter : ServiceLoader.load(ExtensionAdapter.class, classLoader)) {
+        register(adapter);
+      }
+    }
   }
 }
