@@ -64,7 +64,7 @@ public class KubernetesListTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testLoadAndCreate() {
-    expect().withPath("/api/v1/namespaces/test/replicationcontrollers").andReturn(201, replicationController1).once();
+    expect().withPath("/api/v1/namespaces/test/replicationcontrollers").andReturn(201, replicationController1).times(2);
 
     KubernetesClient client = getClient();
     InputStream is = KubernetesListTest.class.getResourceAsStream("/test-rclist.json");
