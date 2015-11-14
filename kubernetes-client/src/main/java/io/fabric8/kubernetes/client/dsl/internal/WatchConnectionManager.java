@@ -25,13 +25,14 @@ import com.squareup.okhttp.ws.WebSocketCall;
 import com.squareup.okhttp.ws.WebSocketListener;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import okio.Buffer;
 import okio.BufferedSource;
-import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -119,7 +120,12 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
       @Override
       public void onFailure(IOException e, Response response) {
         if (!forceClosed.get()) {
-          watcher.onClose(new KubernetesClientException("Connection unexpectedly closed", e));
+          try {
+            Status responseStatus = mapper.readValue(response.body().byteStream(), Status.class);
+            watcher.onClose(new KubernetesClientException("Connection unexpectedly closed", response.code(), responseStatus));
+          } catch (IOException ioe) {
+            watcher.onClose(new KubernetesClientException("Connection unexpectedly closed", e));
+          }
         }
       }
 
