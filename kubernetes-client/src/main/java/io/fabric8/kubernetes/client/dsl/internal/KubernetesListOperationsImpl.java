@@ -59,7 +59,7 @@ public class KubernetesListOperationsImpl
   public KubernetesList create(KubernetesList... items) {
     List<HasMetadata> createdItems = new ArrayList<>();
     if (items.length == 0) {
-      items[0] = get();
+      items = new KubernetesList[]{get()};
     }
     for (KubernetesList i : items) {
       for (HasMetadata r : i.getItems()) {
