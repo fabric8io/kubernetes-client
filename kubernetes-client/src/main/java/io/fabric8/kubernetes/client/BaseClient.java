@@ -67,7 +67,7 @@ public abstract class BaseClient implements Client {
 
         @Override
         public OkHttpClient adapt(Client client) {
-          return httpClient;
+          return httpClient.clone();
         }
       });
 
