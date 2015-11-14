@@ -16,6 +16,12 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.squareup.okhttp.OkHttpClient;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DoneableKubernetesList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -30,11 +36,6 @@ import io.fabric8.kubernetes.client.dsl.ClientKubernetesListOperation;
 import io.fabric8.kubernetes.client.dsl.CreateGettable;
 import io.fabric8.kubernetes.client.dsl.Loadable;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class KubernetesListOperationsImpl
   extends OperationSupport
@@ -57,6 +58,9 @@ public class KubernetesListOperationsImpl
   @Override
   public KubernetesList create(KubernetesList... items) {
     List<HasMetadata> createdItems = new ArrayList<>();
+    if (items.length == 0) {
+      items[0] = get();
+    }
     for (KubernetesList i : items) {
       for (HasMetadata r : i.getItems()) {
         HasMetadata created = create(r);

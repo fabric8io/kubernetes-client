@@ -16,6 +16,10 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import org.junit.Test;
+
+import java.io.InputStream;
+
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
@@ -26,7 +30,6 @@ import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -57,6 +60,16 @@ public class KubernetesListTest extends KubernetesMockServerTestBase {
     assertTrue(result.getItems().contains(pod1));
     assertTrue(result.getItems().contains(service1));
     assertTrue(result.getItems().contains(replicationController1));
+  }
+
+  @Test
+  public void testLoadAndCreate() {
+    KubernetesClient client = getClient();
+    InputStream is = KubernetesListTest.class.getResourceAsStream("/test-rclist.json");
+    KubernetesList result = client.inNamespace("test").lists().load(is).create();
+
+    assertNotNull(result);
+    assertEquals(2, result.getItems().size());
   }
 
   @Test
