@@ -46,6 +46,7 @@ public class AdaptTest {
   public void testSharedClient() {
     KubernetesClient client = mock.createClient();
     OpenShiftClient oclient = client.adapt(OpenShiftClient.class);
-    Assert.assertTrue(client.adapt(OkHttpClient.class) == oclient.adapt(OkHttpClient.class));
+    Assert.assertNotNull(client.adapt(OkHttpClient.class));
+    Assert.assertNotNull(oclient.adapt(OkHttpClient.class));
   }
 }
