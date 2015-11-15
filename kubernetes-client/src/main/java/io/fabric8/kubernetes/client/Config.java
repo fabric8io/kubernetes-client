@@ -29,7 +29,6 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -209,12 +208,12 @@ public class Config {
 
   private boolean tryServiceAccount(Config config) {
     if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYSERVICEACCOUNT_SYSTEM_PROPERTY, true)) {
-      boolean serviceAccountCaCertExists = Files.isRegularFile(Paths.get(KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH));
+      boolean serviceAccountCaCertExists = Files.isRegularFile(new File(KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH).toPath());
       if (serviceAccountCaCertExists) {
         config.setCaCertFile(KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH);
       }
       try {
-        String serviceTokenCandidate = new String(Files.readAllBytes(Paths.get(KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH)));
+        String serviceTokenCandidate = new String(Files.readAllBytes(new File(KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH).toPath()));
         if (serviceTokenCandidate != null) {
           config.setOauthToken(serviceTokenCandidate);
           String txt = "Configured service account doesn't have access. Service account may have been revoked.";
@@ -232,7 +231,7 @@ public class Config {
   private boolean tryKubeConfig(Config config) {
     if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, true)) {
       String kubeConfigFile = Utils.getSystemPropertyOrEnvVar(KUBERNETES_KUBECONFIG_FILE, new File(System.getProperty("user.home", "."), ".kube" + File.separator + "config").toString());
-      boolean kubeConfigFileExists = Files.isRegularFile(Paths.get(kubeConfigFile));
+      boolean kubeConfigFileExists = Files.isRegularFile(new File(kubeConfigFile).toPath());
       if (kubeConfigFileExists) {
         try {
           io.fabric8.kubernetes.api.model.Config kubeConfig = KubeConfigUtils.parseConfig(new File(kubeConfigFile));
