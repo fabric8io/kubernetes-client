@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.client.ResourceNotFoundException;
+
 public interface Gettable<T> {
 
   /**
@@ -22,5 +24,12 @@ public interface Gettable<T> {
    * @throws io.fabric8.kubernetes.client.KubernetesClientException if an error occurs
    */
   T get();
+
+
+  /**
+   * @return the item or throws Exception if the item doesn't exist.
+   * @throws io.fabric8.kubernetes.client.KubernetesClientException if an error occurs
+   */
+  T getRequired() throws ResourceNotFoundException;
 
 }

@@ -19,6 +19,7 @@ package io.fabric8.kubernetes.client.mock;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.ResourceNotFoundException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
@@ -210,6 +211,11 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   @Override
   public IExpectationSetters<T> get() {
     return expect(delegate.get());
+  }
+
+  @Override
+  public IExpectationSetters<T> getRequired() throws ResourceNotFoundException {
+    return expect(delegate.getRequired());
   }
 
   @Override

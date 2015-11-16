@@ -89,6 +89,7 @@ public class KubernetesMockClientTest {
     Assert.assertNull(client.pods().inNamespace("ns1").withName("pod2").get());
   }
 
+
   @Test
   public void testDelete() {
     KubernetesMockClient mock = new KubernetesMockClient();

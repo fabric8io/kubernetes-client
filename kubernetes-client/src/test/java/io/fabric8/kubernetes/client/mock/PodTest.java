@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.ResourceNotFoundException;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -72,8 +73,8 @@ public class PodTest extends KubernetesMockServerTestBase {
     KubernetesClient client = getClient();
     PodList podList = client.pods()
       .withLabel("key1", "value1")
-      .withLabel("key2","value2")
-      .withLabel("key3","value3")
+      .withLabel("key2", "value2")
+      .withLabel("key3", "value3")
       .list();
 
 
@@ -82,11 +83,19 @@ public class PodTest extends KubernetesMockServerTestBase {
 
     podList = client.pods()
       .withLabel("key1", "value1")
-      .withLabel("key2","value2")
+      .withLabel("key2", "value2")
       .list();
 
     assertNotNull(podList);
     assertEquals(3, podList.getItems().size());
+  }
+
+
+
+  @Test(expected = ResourceNotFoundException.class)
+  public void testGetRequired() throws ResourceNotFoundException {
+    KubernetesClient client = getClient();
+    Pod pod = client.pods().inNamespace("ns").withName("non-existent-pod").getRequired();
   }
 
 
