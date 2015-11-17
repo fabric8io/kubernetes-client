@@ -62,7 +62,7 @@ import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListMixedOperation;
-import io.fabric8.kubernetes.client.dsl.ClientLoggableResource;
+import io.fabric8.kubernetes.client.dsl.ClientPodResource;
 import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
@@ -220,7 +220,7 @@ public class DefaultOpenShiftClient extends BaseClient implements OpenShiftClien
   }
 
   @Override
-  public ClientMixedOperation<Pod, PodList, DoneablePod, ClientLoggableResource<Pod, DoneablePod>> pods() {
+  public ClientMixedOperation<Pod, PodList, DoneablePod, ClientPodResource<Pod, DoneablePod>> pods() {
     return delegate.pods();
   }
 

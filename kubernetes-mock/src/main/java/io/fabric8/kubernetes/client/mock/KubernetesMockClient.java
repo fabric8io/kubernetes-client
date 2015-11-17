@@ -43,7 +43,6 @@ import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
-import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.mock.impl.MockEndpoints;
@@ -210,7 +209,7 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
     return persistentVolumeClaims;
   }
 
-  public MockOperation<Pod, PodList, MockDoneablePod, MockLoggableResource<Pod, MockDoneablePod, Boolean>> pods() {
+  public MockOperation<Pod, PodList, MockDoneablePod, MockPodResource<Pod, MockDoneablePod, Boolean>> pods() {
     return pods;
   }
 

@@ -16,16 +16,7 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Loggable<S> {
+public interface Inputable<I, T> {
 
-  S getLog();
-
-  @Deprecated
-  S getLog(String id);
-
-  S getLog(Boolean isPretty);
-
-  @Deprecated
-  S getLog(String id, Boolean isPretty);
-
+    T usingInput(I in);
 }

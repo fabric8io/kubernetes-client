@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.fabric8.kubernetes.client.dsl;
 
-package io.fabric8.kubernetes.client.mock;
+public interface TtyExecErrorable<I, E, T> extends
+        TtyExecable<I, T>,
+        Errorable<E, TtyExecable<I, T>> {
 
-import io.fabric8.kubernetes.client.dsl.LoggableResource;
-import org.easymock.IExpectationSetters;
-
-public interface MockLoggableResource<T, D, B> extends LoggableResource<T, IExpectationSetters<T>, D, IExpectationSetters<B>, IExpectationSetters<String>> {
 }

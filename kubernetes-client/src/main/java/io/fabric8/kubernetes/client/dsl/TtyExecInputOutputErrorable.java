@@ -13,7 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.fabric8.kubernetes.client.dsl;
 
-public interface ClientLoggableResource<T, D> extends ClientResource<T, D>, Loggable<String> {
+public interface TtyExecInputOutputErrorable<I, O, E, X, T> extends
+        TtyExecOutputErrorable<X, O, E, T>,
+        Inputable<I, TtyExecOutputErrorable<X, O, E, T>> {
+
 }

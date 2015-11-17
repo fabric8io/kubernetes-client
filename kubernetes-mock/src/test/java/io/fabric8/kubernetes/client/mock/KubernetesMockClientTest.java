@@ -28,6 +28,7 @@ import io.fabric8.kubernetes.api.model.SecurityContextConstraintsList;
 import io.fabric8.kubernetes.api.model.SecurityContextConstraintsListBuilder;
 import io.fabric8.kubernetes.api.model.extensions.JobBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.Watch;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Test;
@@ -61,8 +62,6 @@ public class KubernetesMockClientTest {
    Assert.assertEquals(expectedPod, client.pods().inNamespace("ns1").createNew().withNewMetadata().withName("pod1").endMetadata().done());
   }
 
-
-
   @Test
   public void testGetPod() {
     KubernetesMockClient mock = new KubernetesMockClient();
@@ -88,6 +87,21 @@ public class KubernetesMockClientTest {
     Assert.assertNotNull(client.pods().inNamespace("ns1").withName("pod2").get());
     Assert.assertNull(client.pods().inNamespace("ns1").withName("pod2").get());
   }
+
+  @Test
+  public void testExec() {
+    KubernetesMockClient mock = new KubernetesMockClient();
+    mock.pods().inNamespace(eq("ns1")).withName(eq("pod1")).withTTY().exec("env").andReturn(new Watch() {
+      @Override
+      public void close() {
+
+      }
+    }).anyTimes();
+
+    KubernetesClient client = mock.replay();
+    Assert.assertNotNull(client.pods().inNamespace("ns1").withName("pod1").withTTY().exec("env"));
+  }
+
 
   @Test
   public void testDelete() {

@@ -13,19 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Loggable<S> {
+public interface Containerable<I, T> {
 
-  S getLog();
-
-  @Deprecated
-  S getLog(String id);
-
-  S getLog(Boolean isPretty);
-
-  @Deprecated
-  S getLog(String id, Boolean isPretty);
-
+    T inContainer(I id);
 }
