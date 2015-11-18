@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientPodResource;
 import io.fabric8.kubernetes.client.dsl.ContainerResource;
+import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.dsl.Execable;
 import io.fabric8.kubernetes.client.dsl.TtyExecErrorable;
 import io.fabric8.kubernetes.client.dsl.TtyExecOutputErrorable;
@@ -38,6 +39,8 @@ import org.easymock.IExpectationSetters;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -99,17 +102,17 @@ public class MockPod<C extends Client>  extends BaseMockOperation<Pod, PodList, 
 
 
   @Override
-  public IExpectationSetters<Watch> exec(String... input) {
+  public IExpectationSetters<ExecWatch> exec(String... input) {
     return expect(getDelegate().exec(input));
   }
 
   @Override
-  public TtyExecOutputErrorable<String, OutputStream, OutputStream, IExpectationSetters<Watch>> usingInput(InputStream in) {
+  public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, IExpectationSetters<ExecWatch>> readingInput(InputStream in) {
     IArgumentMatcher matcher = getArgument(in);
     MockPod op = inMap.get(matcher);
     if (op == null) {
       op = new MockPod();
-      expect(getDelegate().usingInput(in)).andReturn(op.getDelegate()).anyTimes();
+      expect(getDelegate().readingInput(in)).andReturn(op.getDelegate()).anyTimes();
       nested.add(op);
       containerMap.put(matcher, op);
     }
@@ -117,12 +120,22 @@ public class MockPod<C extends Client>  extends BaseMockOperation<Pod, PodList, 
   }
 
   @Override
-  public TtyExecErrorable<String, OutputStream, IExpectationSetters<Watch>> usingOut(OutputStream out) {
+  public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, IExpectationSetters<ExecWatch>> writingInput(PipedOutputStream in) {
+    throw new UnsupportedOperationException("Not implemented yet");
+  }
+
+  @Override
+  public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, IExpectationSetters<ExecWatch>> redirectInput() {
+    throw new UnsupportedOperationException("Not implemented yet");
+  }
+
+  @Override
+  public TtyExecErrorable<String, OutputStream, PipedInputStream, IExpectationSetters<ExecWatch>> writingOutput(OutputStream out) {
     IArgumentMatcher matcher = getArgument(out);
     MockPod op = outMap.get(matcher);
     if (op == null) {
       op = new MockPod();
-      expect(getDelegate().usingOut(out)).andReturn(op.getDelegate()).anyTimes();
+      expect(getDelegate().writingOutput(out)).andReturn(op.getDelegate()).anyTimes();
       nested.add(op);
       containerMap.put(matcher, op);
     }
@@ -130,12 +143,22 @@ public class MockPod<C extends Client>  extends BaseMockOperation<Pod, PodList, 
   }
 
   @Override
-  public TtyExecable<String, IExpectationSetters<Watch>> usingError(OutputStream err) {
+  public TtyExecErrorable<String, OutputStream, PipedInputStream, IExpectationSetters<ExecWatch>> readingOutput(PipedInputStream in) {
+    throw new UnsupportedOperationException("Not implemented yet");
+  }
+
+  @Override
+  public TtyExecErrorable<String, OutputStream, PipedInputStream, IExpectationSetters<ExecWatch>> redirectOutput() {
+    throw new UnsupportedOperationException("Not implemented yet");
+  }
+
+  @Override
+  public TtyExecable<String, IExpectationSetters<ExecWatch>> writingError(OutputStream err) {
     IArgumentMatcher matcher = getArgument(err);
     MockPod op = errMap.get(matcher);
     if (op == null) {
       op = new MockPod();
-      expect(getDelegate().usingError(err)).andReturn(op.getDelegate()).anyTimes();
+      expect(getDelegate().writingError(err)).andReturn(op.getDelegate()).anyTimes();
       nested.add(op);
       containerMap.put(matcher, op);
     }
@@ -143,7 +166,17 @@ public class MockPod<C extends Client>  extends BaseMockOperation<Pod, PodList, 
   }
 
   @Override
-  public Execable<String, IExpectationSetters<Watch>> withTTY() {
+  public TtyExecable<String, IExpectationSetters<ExecWatch>> readingError(PipedInputStream in) {
+    throw new UnsupportedOperationException("Not implemented yet");
+  }
+
+  @Override
+  public TtyExecable<String, IExpectationSetters<ExecWatch>> redirectError() {
+    throw new UnsupportedOperationException("Not implemented yet");
+  }
+
+  @Override
+  public Execable<String, IExpectationSetters<ExecWatch>> withTTY() {
     if (allocatingTerminalMock == null) {
       allocatingTerminalMock = new MockPod();
     }
@@ -154,7 +187,7 @@ public class MockPod<C extends Client>  extends BaseMockOperation<Pod, PodList, 
   }
 
   @Override
-  public ContainerResource<String, InputStream, OutputStream, OutputStream, String, IExpectationSetters<Watch>> inContainer(String containerId) {
+  public ContainerResource<String, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, IExpectationSetters<ExecWatch>> inContainer(String containerId) {
     IArgumentMatcher matcher = getArgument(containerId);
     MockPod op = containerMap.get(matcher);
     if (op == null) {

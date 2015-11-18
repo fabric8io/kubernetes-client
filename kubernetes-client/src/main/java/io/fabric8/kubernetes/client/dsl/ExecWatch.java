@@ -13,19 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.kubernetes.client.dsl;
 
-/**
- * @param <O>   Where to write err to.
- * @param <P>   Where to read err from.
- * @param <T>   The return type.
- */
-public interface Errorable<O, P, T> {
+import java.io.Closeable;
+import java.io.InputStream;
+import java.io.OutputStream;
 
-    T writingError(O in);
+public interface ExecWatch extends Closeable {
 
-    T readingError(P in);
+  OutputStream getInput();
 
-    T redirectError();
+  InputStream getOutput();
+
+  InputStream getError();
+
+  /**
+   * Close the Watch.
+   */
+  void close();
+
 }

@@ -13,21 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.kubernetes.examples;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.Watch;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.fabric8.kubernetes.client.dsl.ExecWatch;
 
 public class ExecExample {
-
-
-    private static final Logger logger = LoggerFactory.getLogger(FullExample.class);
 
     public static void main(String[] args) throws InterruptedException {
         String master = "https://localhost:8443/";
@@ -41,21 +35,17 @@ public class ExecExample {
             podName = args[0];
         }
 
-
-        Watch watch = null;
         Config config = new ConfigBuilder().withMasterUrl(master).build();
-        try (final KubernetesClient client = new DefaultKubernetesClient(config)) {
-            watch = client.pods().withName(podName)
-                    .usingInput(System.in)
-                    .usingOut(System.out)
-                    .usingError(System.err)
-                    .withTTY()
-                    .exec();
+        try (final KubernetesClient client = new DefaultKubernetesClient(config);
+             ExecWatch watch = client.pods().withName(podName)
+                .readingInput(System.in)
+                .writingOutput(System.out)
+                .writingError(System.err)
+                .withTTY()
+                .exec()){
+
+
             Thread.sleep(10 * 1000);
-        } finally {
-            if (watch != null) {
-                watch.close();
-            }
         }
     }
 }

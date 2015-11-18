@@ -27,6 +27,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.dsl.ClientPodResource;
 import io.fabric8.kubernetes.client.dsl.ContainerResource;
+import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.dsl.Execable;
 import io.fabric8.kubernetes.client.dsl.TtyExecErrorable;
 import io.fabric8.kubernetes.client.dsl.TtyExecOutputErrorable;
@@ -36,6 +37,8 @@ import io.fabric8.kubernetes.client.utils.URLUtils;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
@@ -47,6 +50,10 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
     private final InputStream in;
     private final OutputStream out;
     private final OutputStream err;
+
+    private final PipedOutputStream inPipe;
+    private final PipedInputStream outPipe;
+    private final PipedInputStream errPipe;
     private final boolean withTTY;
 
     public PodOperationsImpl(OkHttpClient client, Config config, String namespace) {
@@ -54,15 +61,18 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
     }
 
     public PodOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Pod item) {
-        this(client, config, apiVersion, namespace, name, cascading, item, null, null, null, null, false);
+        this(client, config, apiVersion, namespace, name, cascading, item, null, null, null, null, null, null, null, false);
     }
 
-    public PodOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Pod item, String containerId, InputStream in, OutputStream out, OutputStream err, boolean withTTY) {
+    public PodOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Pod item, String containerId, InputStream in, PipedOutputStream inPipe, OutputStream out, PipedInputStream outPipe, OutputStream err, PipedInputStream errPipe, boolean withTTY) {
         super(client, config, null, apiVersion, "pods", namespace, name, cascading, item);
         this.containerId = containerId;
         this.in = in;
+        this.inPipe = inPipe;
         this.out = out;
+        this.outPipe = outPipe;
         this.err = err;
+        this.errPipe = errPipe;
         this.withTTY = withTTY;
     }
 
@@ -93,26 +103,21 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
 
     @Override
     public String getLog(String containerId) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, out, err, withTTY).getLog(true);
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY).getLog(true);
     }
 
     @Override
     public String getLog(String containerId, Boolean isPretty) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, out, err, withTTY).getLog(isPretty);
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY).getLog(isPretty);
     }
 
     @Override
-    public ContainerResource<String, InputStream, OutputStream, OutputStream, String, Watch> inContainer(String containerId) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, out, err, withTTY);
+    public ContainerResource<String, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch> inContainer(String containerId) {
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY);
     }
 
     @Override
-    public TtyExecable<String, Watch> usingError(OutputStream err) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, out, err, withTTY);
-    }
-
-    @Override
-    public Watch exec(String... command) {
+    public ExecWatch exec(String... command) {
         StringBuilder sb = new StringBuilder();
         String[] actualCommands = command.length >= 1 ? command : EMPTY_COMMAND;
 
@@ -134,13 +139,13 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
         if (withTTY) {
             sb.append("&tty=true");
         }
-        if (in != null) {
+        if (in != null || inPipe != null) {
             sb.append("&stdin=true");
         }
-        if (out != null) {
+        if (out != null || outPipe != null) {
             sb.append("&stdout=true");
         }
-        if (err != null) {
+        if (err != null || errPipe != null) {
             sb.append("&stderr=true");
         }
 
@@ -150,36 +155,64 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
             OkHttpClient clone = client.clone();
             clone.setReadTimeout(0, TimeUnit.MILLISECONDS);
             WebSocketCall webSocketCall = WebSocketCall.create(clone, r.build());
-            final ExecWebSocketListener execWebSocketListener = new ExecWebSocketListener(in, out, err);
+            final ExecWebSocketListener execWebSocketListener = new ExecWebSocketListener(in, out, err, inPipe, outPipe, errPipe);
             webSocketCall.enqueue(execWebSocketListener);
-            return new Watch() {
-                @Override
-                public void close() {
-                    try {
-                        execWebSocketListener.close();
-                    } catch (Exception e) {
-                        throw KubernetesClientException.launderThrowable(e);
-                    }
-                }
-            };
+            execWebSocketListener.waitUntiReady();
+            return execWebSocketListener;
         } catch (Throwable t) {
             throw KubernetesClientException.launderThrowable(t);
         }
     }
 
     @Override
-    public TtyExecOutputErrorable<String, OutputStream, OutputStream, Watch> usingInput(InputStream in) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, out, err, withTTY);
+    public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, ExecWatch> readingInput(InputStream in) {
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY);
     }
 
     @Override
-    public TtyExecErrorable<String, OutputStream, Watch> usingOut(OutputStream out) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, out, err, withTTY);
+    public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, ExecWatch> writingInput(PipedOutputStream inPipe) {
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY);
     }
 
     @Override
-    public Execable<String, Watch> withTTY() {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, out, err, true);
+    public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, ExecWatch> redirectInput() {
+        return writingInput(new PipedOutputStream());
+    }
+
+    @Override
+    public TtyExecErrorable<String, OutputStream, PipedInputStream, ExecWatch> writingOutput(OutputStream out) {
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY);
+    }
+
+    @Override
+    public TtyExecErrorable<String, OutputStream, PipedInputStream, ExecWatch> readingOutput(PipedInputStream outPipe) {
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY);
+    }
+
+    @Override
+    public TtyExecErrorable<String, OutputStream, PipedInputStream, ExecWatch> redirectOutput() {
+        return readingOutput(new PipedInputStream());
+    }
+
+    @Override
+    public TtyExecable<String, ExecWatch> writingError(OutputStream err) {
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY);
+    }
+
+    @Override
+    public TtyExecable<String, ExecWatch> readingError(PipedInputStream errPipe) {
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY);
+    }
+
+    @Override
+    public TtyExecable<String, ExecWatch> redirectError() {
+        return readingError(new PipedInputStream());
+    }
+
+
+    @Override
+    public Execable<String, ExecWatch> withTTY() {
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, true);
     }
 }
 

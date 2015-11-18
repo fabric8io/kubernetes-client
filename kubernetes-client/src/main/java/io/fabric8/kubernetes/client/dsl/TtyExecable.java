@@ -15,6 +15,11 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+/**
+ *
+ * @param <I> The exec input.
+ * @param <T> The exec output.
+ */
 public interface TtyExecable<I, T> extends
         Ttyable<Execable<I, T>>,
         Execable<I, T> {

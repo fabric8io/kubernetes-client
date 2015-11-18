@@ -15,13 +15,13 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.client.Watch;
-
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 
 public interface ClientPodResource<T, D> extends ClientResource<T, D>,
         Loggable<String>,
-        Containerable<String, ContainerResource<String, InputStream, OutputStream, OutputStream, String, Watch>>,
-        ContainerResource<String, InputStream, OutputStream, OutputStream, String, Watch> {
+        Containerable<String, ContainerResource<String, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch>>,
+        ContainerResource<String, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch> {
 }

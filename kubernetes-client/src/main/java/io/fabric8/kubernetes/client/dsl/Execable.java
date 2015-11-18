@@ -16,8 +16,12 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Execable<I, T> {
+/**
+ * @param <X>   The exec input
+ * @param <T>   The exec output
+ */
+public interface Execable<X, T> {
 
-    T exec(I... input);
+    T exec(X... input);
 
 }

@@ -16,7 +16,11 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Inputable<I, T> {
+public interface Inputable<I, P, T> {
 
-    T usingInput(I in);
+    T readingInput(I in);
+
+    T writingInput(P in);
+
+    T redirectInput();
 }

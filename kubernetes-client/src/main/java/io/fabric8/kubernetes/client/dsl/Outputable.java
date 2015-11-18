@@ -16,7 +16,16 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Outputable<I, T> {
+/**
+ * @param <O>   Where to write err to.
+ * @param <P>   Where to read err from.
+ * @param <T>   The return type.
+ */
+public interface Outputable<O, P, T> {
 
-    T usingOut(I in);
+    T writingOutput(O in);
+
+    T readingOutput(P in);
+
+    T redirectOutput();
 }
