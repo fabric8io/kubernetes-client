@@ -15,12 +15,14 @@
  */
 package io.fabric8.kubernetes.examples;
 
+import io.fabric8.kubernetes.client.Callback;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
+import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -55,29 +57,23 @@ public class ExecPipesExample {
                 ExecWatch watch = client.pods().withName(podName)
                         .redirectInput()
                         .readingOutput(pin)
-                        .exec()) {
+                        .exec();
+                InputStreamPumper pump = new InputStreamPumper(pin, new SystemOutCallback())) {
 
-            executorService.submit(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            String line;
-                            try {
-                                while ((line = reader.readLine()) != null) {
-                                    System.out.println(line);
-                                }
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-
+            executorService.submit(pump);
             watch.getInput().write("ls -al\n".getBytes());
             Thread.sleep(5 * 1000);
         } catch (Exception e) {
             throw KubernetesClientException.launderThrowable(e);
         } finally {
-            executorService.shutdown();
+            executorService.shutdownNow();
+        }
+    }
+
+    private static class SystemOutCallback implements Callback<byte[]> {
+        @Override
+        public void call(byte[] data) {
+            System.out.print(new String(data));
         }
     }
 }

@@ -19,8 +19,10 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.ws.WebSocket;
 import com.squareup.okhttp.ws.WebSocketListener;
+import io.fabric8.kubernetes.client.Callback;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
+import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 import okio.Buffer;
 import okio.BufferedSink;
 import okio.BufferedSource;
@@ -28,11 +30,8 @@ import okio.ByteString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
@@ -57,7 +56,7 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
 
     private final AtomicReference<WebSocket> webSocketcRef = new AtomicReference<>();
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
-    private final InputStreamPumper pumper = new InputStreamPumper();
+    private final InputStreamPumper pumper;
 
     private final AtomicBoolean started = new AtomicBoolean(false);
     private final ArrayBlockingQueue<Object> queue = new ArrayBlockingQueue<>(1);
@@ -70,6 +69,16 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
         this.input = inputPipe;
         this.output = outputPipe;
         this.error = errorPipe;
+        this.pumper = new InputStreamPumper(this.in, new Callback<byte[]>() {
+            @Override
+            public void call(byte[] data) {
+                try {
+                    send(data);
+                } catch (Exception e) {
+                    //
+                }                 
+            }
+        });
     }
 
     @Override
@@ -83,9 +92,18 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
         } catch (Throwable t) {
             throw KubernetesClientException.launderThrowable(t);
         }
+
+        WebSocket ws = webSocketcRef.get();
+        try {
+            if (ws != null) {
+                ws.close(1000, "Closing...");
+            }
+        } catch (Throwable t) {
+            throw KubernetesClientException.launderThrowable(t);
+        }
     }
 
-    public void waitUntiReady() {
+    public void waitUntilReady() {
         try {
             Object obj = queue.poll(10, TimeUnit.SECONDS);
             if (obj instanceof Boolean && ((Boolean) obj)) {
@@ -188,20 +206,14 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
         if (bytes.length > 0) {
             WebSocket ws = webSocketcRef.get();
             if (ws != null) {
-
                 try (BufferedSink sink = ws.newMessageSink(WebSocket.PayloadType.BINARY)) {
                     sink.write(new byte[]{0});
                     sink.write(bytes);
-                    sink.flush();
                 }
             }
         }
     }
-
-    private void send(String msg) throws IOException {
-        send(msg.getBytes());
-    }
-
+    
     private static InputStream inputStreamOrPipe(InputStream stream, PipedOutputStream out) {
         if (stream != null) {
             return stream;
@@ -219,29 +231,6 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
             return new PipedOutputStream();
         } else {
             return null;
-        }
-    }
-
-    private class InputStreamPumper implements Runnable, Closeable {
-
-        private boolean keepReading = true;
-        @Override
-        public void run() {
-            try (InputStreamReader reader = new InputStreamReader(in);
-                 BufferedReader bufferedReader = new BufferedReader(reader)) {
-                String line;
-                while (keepReading && !Thread.currentThread().isInterrupted() && (line = bufferedReader.readLine()) != null) {
-                    send(line + "\n");
-                }
-            } catch (IOException e) {
-                if (keepReading) {
-                    LOGGER.error("Error while pumping stream.", e);
-                }
-            }
-        }
-
-        public void close() {
-            keepReading = false;
         }
     }
  }

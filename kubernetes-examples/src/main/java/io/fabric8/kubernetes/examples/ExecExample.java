@@ -44,7 +44,6 @@ public class ExecExample {
                 .withTTY()
                 .exec()){
 
-
             Thread.sleep(10 * 1000);
         }
     }

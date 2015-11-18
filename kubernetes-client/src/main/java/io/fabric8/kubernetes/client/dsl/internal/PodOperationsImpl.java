@@ -157,7 +157,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
             WebSocketCall webSocketCall = WebSocketCall.create(clone, r.build());
             final ExecWebSocketListener execWebSocketListener = new ExecWebSocketListener(in, out, err, inPipe, outPipe, errPipe);
             webSocketCall.enqueue(execWebSocketListener);
-            execWebSocketListener.waitUntiReady();
+            execWebSocketListener.waitUntilReady();
             return execWebSocketListener;
         } catch (Throwable t) {
             throw KubernetesClientException.launderThrowable(t);
