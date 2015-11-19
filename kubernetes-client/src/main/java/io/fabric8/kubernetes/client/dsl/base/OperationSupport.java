@@ -39,9 +39,11 @@ import java.util.concurrent.ExecutionException;
 
 public class OperationSupport {
 
+
+  public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
   protected static final ObjectMapper JSON_MAPPER = new ObjectMapper();
   protected static final ObjectMapper YAML_MAPPER = new ObjectMapper(new YAMLFactory());
-  public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+  private static final String CLIENT_STATUS_FLAG = "CLIENT_STATUS_FLAG";
   
   protected final OkHttpClient client;
   protected final Config config;
@@ -216,21 +218,25 @@ public class OperationSupport {
   }
 
   Status createStatus(int statusCode, String message) {
-    return new StatusBuilder().withCode(statusCode).withMessage(message).build();
+    Status status = new StatusBuilder()
+            .withCode(statusCode)
+            .withMessage(message)
+            .build();
+    status.getAdditionalProperties().put(CLIENT_STATUS_FLAG, "true");
+    return status;
   }
 
   KubernetesClientException requestFailure(Request request, Status status) {
     StringBuilder sb = new StringBuilder();
     sb.append("Failure executing: ").append(request.method())
-      .append(" at: ").append(request.urlString())
-      .append(". Received status: ").append(status).append(".");
+      .append(" at: ").append(request.urlString()).append(".");
 
     if (status.getMessage() != null && !status.getMessage().isEmpty()) {
       sb.append(" Message: ").append(status.getMessage()).append(".");
     }
 
-    if (status.getReason() != null && !status.getReason().isEmpty()) {
-      sb.append(" Reason: ").append(status.getReason()).append(".");
+    if (status != null && !status.getAdditionalProperties().containsKey(CLIENT_STATUS_FLAG)) {
+      sb.append(" Received status: ").append(status).append(".");
     }
 
     return new KubernetesClientException(sb.toString(), status.getCode(), status);
