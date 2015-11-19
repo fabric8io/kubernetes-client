@@ -62,6 +62,13 @@ public class MockPod<C extends Client>  extends BaseMockOperation<Pod, PodList, 
   private Map<IArgumentMatcher, MockPod> outMap = new HashMap<>();
   private Map<IArgumentMatcher, MockPod> errMap = new HashMap<>();
 
+  private Map<IArgumentMatcher, MockPod> inPipeMap = new HashMap<>();
+  private Map<IArgumentMatcher, MockPod> outPipeMap = new HashMap<>();
+  private Map<IArgumentMatcher, MockPod> errPipeMap = new HashMap<>();
+
+  private MockPod redirectIn;
+  private MockPod redirectOut;
+  private MockPod redirectErr;
   private MockPod allocatingTerminalMock;
 
 
@@ -120,13 +127,25 @@ public class MockPod<C extends Client>  extends BaseMockOperation<Pod, PodList, 
   }
 
   @Override
-  public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, IExpectationSetters<ExecWatch>> writingInput(PipedOutputStream in) {
-    throw new UnsupportedOperationException("Not implemented yet");
+  public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, IExpectationSetters<ExecWatch>> writingInput(PipedOutputStream out) {
+    IArgumentMatcher matcher = getArgument(out);
+    MockPod op = inPipeMap.get(matcher);
+    if (op == null) {
+      op = new MockPod();
+      expect(getDelegate().writingInput(out)).andReturn(op.getDelegate()).anyTimes();
+      nested.add(op);
+      inPipeMap.put(matcher, op);
+    }
+    return op;
   }
 
   @Override
   public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, IExpectationSetters<ExecWatch>> redirectInput() {
-    throw new UnsupportedOperationException("Not implemented yet");
+    if (redirectIn == null) {
+      redirectIn = new MockPod();
+    }
+    expect(getDelegate().redirectInput()).andReturn(redirectIn.getDelegate()).anyTimes();
+    return redirectIn;
   }
 
   @Override
@@ -144,12 +163,24 @@ public class MockPod<C extends Client>  extends BaseMockOperation<Pod, PodList, 
 
   @Override
   public TtyExecErrorable<String, OutputStream, PipedInputStream, IExpectationSetters<ExecWatch>> readingOutput(PipedInputStream in) {
-    throw new UnsupportedOperationException("Not implemented yet");
+    IArgumentMatcher matcher = getArgument(in);
+    MockPod op = outPipeMap.get(matcher);
+    if (op == null) {
+      op = new MockPod();
+      expect(getDelegate().readingOutput(in)).andReturn(op.getDelegate()).anyTimes();
+      nested.add(op);
+      outPipeMap.put(matcher, op);
+    }
+    return op;
   }
 
   @Override
   public TtyExecErrorable<String, OutputStream, PipedInputStream, IExpectationSetters<ExecWatch>> redirectOutput() {
-    throw new UnsupportedOperationException("Not implemented yet");
+    if (redirectOut == null) {
+      redirectOut = new MockPod();
+    }
+    expect(getDelegate().redirectInput()).andReturn(redirectOut.getDelegate()).anyTimes();
+    return redirectOut;
   }
 
   @Override
@@ -167,12 +198,24 @@ public class MockPod<C extends Client>  extends BaseMockOperation<Pod, PodList, 
 
   @Override
   public TtyExecable<String, IExpectationSetters<ExecWatch>> readingError(PipedInputStream in) {
-    throw new UnsupportedOperationException("Not implemented yet");
+    IArgumentMatcher matcher = getArgument(in);
+    MockPod op = errPipeMap.get(matcher);
+    if (op == null) {
+      op = new MockPod();
+      expect(getDelegate().readingOutput(in)).andReturn(op.getDelegate()).anyTimes();
+      nested.add(op);
+      errPipeMap.put(matcher, op);
+    }
+    return op;
   }
 
   @Override
   public TtyExecable<String, IExpectationSetters<ExecWatch>> redirectError() {
-    throw new UnsupportedOperationException("Not implemented yet");
+    if (redirectErr == null) {
+      redirectErr = new MockPod();
+    }
+    expect(getDelegate().redirectInput()).andReturn(redirectErr.getDelegate()).anyTimes();
+    return redirectErr;
   }
 
   @Override
