@@ -253,9 +253,8 @@ public class Config {
               config.setUsername(currentAuthInfo.getUsername());
               config.setPassword(currentAuthInfo.getPassword());
 
-              String txt = "Token may have expired! Please use kubectl login / oc login to log-in again.";
-              config.getErrorMessages().put(401, "Unauthorized! " + txt);
-              config.getErrorMessages().put(403, "Forbidden!" + txt);
+              config.getErrorMessages().put(401, "Unauthorized! Token may have expired! Please log-in again.");
+              config.getErrorMessages().put(403, "Forbidden! User "+config.getUsername()+ " doesn't have permission.");
             }
             return true;
           }
