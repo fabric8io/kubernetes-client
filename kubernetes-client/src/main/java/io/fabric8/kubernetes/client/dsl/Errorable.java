@@ -27,5 +27,5 @@ public interface Errorable<O, P, T> {
 
     T readingError(P in);
 
-    T redirectError();
+    T redirectingError();
 }

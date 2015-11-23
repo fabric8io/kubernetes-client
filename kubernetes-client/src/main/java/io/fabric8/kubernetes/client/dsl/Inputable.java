@@ -22,5 +22,5 @@ public interface Inputable<I, P, T> {
 
     T writingInput(P in);
 
-    T redirectInput();
+    T redirectingInput();
 }

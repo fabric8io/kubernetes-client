@@ -27,5 +27,5 @@ public interface Outputable<O, P, T> {
 
     T readingOutput(P in);
 
-    T redirectOutput();
+    T redirectingOutput();
 }
