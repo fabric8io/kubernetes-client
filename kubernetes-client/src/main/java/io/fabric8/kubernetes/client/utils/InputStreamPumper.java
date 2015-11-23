@@ -23,6 +23,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.InterruptedIOException;
 
 public class InputStreamPumper implements Runnable, Closeable {
 
@@ -49,9 +50,13 @@ public class InputStreamPumper implements Runnable, Closeable {
                 System.arraycopy(buffer, 0, actual, 0, length);
                 callback.call(actual);
             }
+        } catch (InterruptedIOException e) {
+            LOGGER.debug("Interrupted while pumping stream.", e);
         } catch (IOException e) {
             if (!Thread.currentThread().isInterrupted()) {
                 LOGGER.error("Error while pumping stream.", e);
+            } else {
+                LOGGER.debug("Interrupted while pumping stream.", e);
             }
         }
     }
