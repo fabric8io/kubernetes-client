@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
 import io.fabric8.kubernetes.api.model.extensions.Job;
 import io.fabric8.kubernetes.api.model.extensions.JobList;
 import io.fabric8.kubernetes.client.ExtensionsAPIGroupClient;
+import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.mock.impl.MockDeployment;
 import io.fabric8.kubernetes.client.mock.impl.MockJobs;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableDeployment;
@@ -29,9 +30,9 @@ import org.easymock.EasyMock;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 
-public class ExtensionsAPIGroupMockClient implements Replayable<ExtensionsAPIGroupClient>, Verifiable {
+public class ExtensionsAPIGroupMockClient implements Replayable<ExtensionsAPIGroupDSL>, Verifiable {
 
-    private final ExtensionsAPIGroupClient client = createMock(ExtensionsAPIGroupClient.class);
+    private final ExtensionsAPIGroupDSL client = createMock(ExtensionsAPIGroupDSL.class);
 
     private MockJobs jobs = new MockJobs();
     private MockDeployment deployments = new MockDeployment();
@@ -43,7 +44,7 @@ public class ExtensionsAPIGroupMockClient implements Replayable<ExtensionsAPIGro
         EasyMock.expectLastCall().anyTimes();
     }
 
-    public ExtensionsAPIGroupClient replay() {
+    public ExtensionsAPIGroupDSL replay() {
         jobs.replay();
         deployments.replay();
         EasyMock.replay(client);
@@ -65,7 +66,7 @@ public class ExtensionsAPIGroupMockClient implements Replayable<ExtensionsAPIGro
         return jobs;
     }
 
-    public ExtensionsAPIGroupClient getDelegate() {
+    public ExtensionsAPIGroupDSL getDelegate() {
         return client;
     }
 }
