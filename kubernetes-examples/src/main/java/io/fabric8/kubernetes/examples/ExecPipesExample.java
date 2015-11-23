@@ -45,20 +45,16 @@ public class ExecPipesExample {
             podName = args[0];
         }
 
-
         Config config = new ConfigBuilder().withMasterUrl(master).build();
         ExecutorService executorService = Executors.newSingleThreadExecutor();
-
         try (
-                PipedInputStream pin = new PipedInputStream();
-                InputStreamReader isReader = new InputStreamReader(pin);
-                final BufferedReader reader = new BufferedReader(isReader);
                 KubernetesClient client = new DefaultKubernetesClient(config);
                 ExecWatch watch = client.pods().withName(podName)
                         .redirectInput()
-                        .readingOutput(pin)
+                        .redirectOutput()
                         .exec();
-                InputStreamPumper pump = new InputStreamPumper(pin, new SystemOutCallback())) {
+                InputStreamPumper pump = new InputStreamPumper(watch.getOutput(), new SystemOutCallback()))
+        {
 
             executorService.submit(pump);
             watch.getInput().write("ls -al\n".getBytes());
