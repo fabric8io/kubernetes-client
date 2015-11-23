@@ -175,7 +175,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
     }
 
     @Override
-    public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, ExecWatch> redirectInput() {
+    public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, ExecWatch> redirectingInput() {
         return writingInput(new PipedOutputStream());
     }
 
@@ -190,7 +190,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
     }
 
     @Override
-    public TtyExecErrorable<String, OutputStream, PipedInputStream, ExecWatch> redirectOutput() {
+    public TtyExecErrorable<String, OutputStream, PipedInputStream, ExecWatch> redirectingOutput() {
         return readingOutput(new PipedInputStream());
     }
 
@@ -205,7 +205,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
     }
 
     @Override
-    public TtyExecable<String, ExecWatch> redirectError() {
+    public TtyExecable<String, ExecWatch> redirectingError() {
         return readingError(new PipedInputStream());
     }
 

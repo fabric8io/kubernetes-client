@@ -24,10 +24,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PipedInputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -50,8 +47,8 @@ public class ExecPipesExample {
         try (
                 KubernetesClient client = new DefaultKubernetesClient(config);
                 ExecWatch watch = client.pods().withName(podName)
-                        .redirectInput()
-                        .redirectOutput()
+                        .redirectingInput()
+                        .redirectingOutput()
                         .exec();
                 InputStreamPumper pump = new InputStreamPumper(watch.getOutput(), new SystemOutCallback()))
         {

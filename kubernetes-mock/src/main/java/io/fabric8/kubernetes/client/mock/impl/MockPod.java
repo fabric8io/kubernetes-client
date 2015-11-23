@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientPodResource;
 import io.fabric8.kubernetes.client.dsl.ContainerResource;
@@ -140,11 +139,11 @@ public class MockPod<C extends Client>  extends BaseMockOperation<Pod, PodList, 
   }
 
   @Override
-  public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, IExpectationSetters<ExecWatch>> redirectInput() {
+  public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, IExpectationSetters<ExecWatch>> redirectingInput() {
     if (redirectIn == null) {
       redirectIn = new MockPod();
     }
-    expect(getDelegate().redirectInput()).andReturn(redirectIn.getDelegate()).anyTimes();
+    expect(getDelegate().redirectingInput()).andReturn(redirectIn.getDelegate()).anyTimes();
     return redirectIn;
   }
 
@@ -175,11 +174,11 @@ public class MockPod<C extends Client>  extends BaseMockOperation<Pod, PodList, 
   }
 
   @Override
-  public TtyExecErrorable<String, OutputStream, PipedInputStream, IExpectationSetters<ExecWatch>> redirectOutput() {
+  public TtyExecErrorable<String, OutputStream, PipedInputStream, IExpectationSetters<ExecWatch>> redirectingOutput() {
     if (redirectOut == null) {
       redirectOut = new MockPod();
     }
-    expect(getDelegate().redirectInput()).andReturn(redirectOut.getDelegate()).anyTimes();
+    expect(getDelegate().redirectingInput()).andReturn(redirectOut.getDelegate()).anyTimes();
     return redirectOut;
   }
 
@@ -210,11 +209,11 @@ public class MockPod<C extends Client>  extends BaseMockOperation<Pod, PodList, 
   }
 
   @Override
-  public TtyExecable<String, IExpectationSetters<ExecWatch>> redirectError() {
+  public TtyExecable<String, IExpectationSetters<ExecWatch>> redirectingError() {
     if (redirectErr == null) {
       redirectErr = new MockPod();
     }
-    expect(getDelegate().redirectInput()).andReturn(redirectErr.getDelegate()).anyTimes();
+    expect(getDelegate().redirectingInput()).andReturn(redirectErr.getDelegate()).anyTimes();
     return redirectErr;
   }
 
