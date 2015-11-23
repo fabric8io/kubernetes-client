@@ -71,6 +71,7 @@ import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
+import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
@@ -269,7 +270,7 @@ public class ManagedKubernetesClient extends BaseClient implements KubernetesCli
   }
 
   @Override
-  public ExtensionsAPIGroupClient extensions() {
+  public ExtensionsAPIGroupDSL extensions() {
     return delegate.extensions();
   }
 
