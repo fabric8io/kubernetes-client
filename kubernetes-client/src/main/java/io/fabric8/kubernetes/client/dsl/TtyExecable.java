@@ -13,19 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Loggable<S> {
-
-  S getLog();
-
-  @Deprecated
-  S getLog(String id);
-
-  S getLog(Boolean isPretty);
-
-  @Deprecated
-  S getLog(String id, Boolean isPretty);
+/**
+ *
+ * @param <I> The exec input.
+ * @param <T> The exec output.
+ */
+public interface TtyExecable<I, T> extends
+        Ttyable<Execable<I, T>>,
+        Execable<I, T> {
 
 }

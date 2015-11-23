@@ -28,7 +28,7 @@ import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.ClientLoggableResource;
+import io.fabric8.kubernetes.client.dsl.ClientPodResource;
 import io.fabric8.kubernetes.client.dsl.ClientOperation;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
 import org.slf4j.Logger;
@@ -213,7 +213,7 @@ class RollingUpdater<C extends Client> {
     return new ReplicationControllerOperationsImpl(client, config, namespace);
   }
 
-  private ClientOperation<Pod, PodList, DoneablePod, ClientLoggableResource<Pod, DoneablePod>> pods() {
+  private ClientOperation<Pod, PodList, DoneablePod, ClientPodResource<Pod, DoneablePod>> pods() {
     return new PodOperationsImpl(client, config, namespace);
   }
 

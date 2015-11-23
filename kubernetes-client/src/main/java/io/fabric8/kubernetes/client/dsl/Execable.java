@@ -16,16 +16,12 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Loggable<S> {
+/**
+ * @param <X>   The exec input
+ * @param <T>   The exec output
+ */
+public interface Execable<X, T> {
 
-  S getLog();
-
-  @Deprecated
-  S getLog(String id);
-
-  S getLog(Boolean isPretty);
-
-  @Deprecated
-  S getLog(String id, Boolean isPretty);
+    T exec(X... input);
 
 }

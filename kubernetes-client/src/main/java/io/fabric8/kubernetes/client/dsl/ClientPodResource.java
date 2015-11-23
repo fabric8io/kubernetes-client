@@ -13,19 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Loggable<S> {
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 
-  S getLog();
-
-  @Deprecated
-  S getLog(String id);
-
-  S getLog(Boolean isPretty);
-
-  @Deprecated
-  S getLog(String id, Boolean isPretty);
-
+public interface ClientPodResource<T, D> extends ClientResource<T, D>,
+        Loggable<String>,
+        Containerable<String, ContainerResource<String, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch>>,
+        ContainerResource<String, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch> {
 }

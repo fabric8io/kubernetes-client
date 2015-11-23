@@ -16,16 +16,11 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Loggable<S> {
+public interface Inputable<I, P, T> {
 
-  S getLog();
+    T readingInput(I in);
 
-  @Deprecated
-  S getLog(String id);
+    T writingInput(P in);
 
-  S getLog(Boolean isPretty);
-
-  @Deprecated
-  S getLog(String id, Boolean isPretty);
-
+    T redirectInput();
 }

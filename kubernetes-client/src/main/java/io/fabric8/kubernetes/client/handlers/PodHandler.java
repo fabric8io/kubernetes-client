@@ -34,11 +34,11 @@ public class PodHandler implements ResourceHandler<Pod> {
 
   @Override
   public Pod create(OkHttpClient client, Config config, String namespace, Pod item) {
-    return new PodOperationsImpl(client, config, null, namespace, null, true, item).create();
+    return new PodOperationsImpl(client, config, null, namespace, null, true, item, null, null, null, null, null, null, null, false).create();
   }
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Pod item) {
-    return new PodOperationsImpl(client, config, null, namespace, null, true, item).delete(item);
+    return new PodOperationsImpl(client, config, null, namespace, null, true, item, null, null, null, null, null, null, null, false).delete(item);
   }
 }

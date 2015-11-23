@@ -13,19 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Loggable<S> {
+import java.io.Closeable;
+import java.io.InputStream;
+import java.io.OutputStream;
 
-  S getLog();
+public interface ExecWatch extends Closeable {
 
-  @Deprecated
-  S getLog(String id);
+  OutputStream getInput();
 
-  S getLog(Boolean isPretty);
+  InputStream getOutput();
 
-  @Deprecated
-  S getLog(String id, Boolean isPretty);
+  InputStream getError();
+
+  /**
+   * Close the Watch.
+   */
+  void close();
 
 }

@@ -16,16 +16,16 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Loggable<S> {
+/**
+ * @param <O>   Where to write err to.
+ * @param <P>   Where to read err from.
+ * @param <T>   The return type.
+ */
+public interface Outputable<O, P, T> {
 
-  S getLog();
+    T writingOutput(O in);
 
-  @Deprecated
-  S getLog(String id);
+    T readingOutput(P in);
 
-  S getLog(Boolean isPretty);
-
-  @Deprecated
-  S getLog(String id, Boolean isPretty);
-
+    T redirectOutput();
 }

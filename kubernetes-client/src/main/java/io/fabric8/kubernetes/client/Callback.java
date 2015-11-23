@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl;
 
-public interface ClientLoggableResource<T, D> extends ClientResource<T, D>, Loggable<String> {
+package io.fabric8.kubernetes.client;
+
+public interface Callback<T> {
+
+    void call(T input);
 }

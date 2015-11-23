@@ -14,10 +14,18 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client.mock;
+package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.client.dsl.LoggableResource;
-import org.easymock.IExpectationSetters;
+/**
+ * @param <O>   Where to write err to.
+ * @param <P>   Where to read err from.
+ * @param <T>   The return type.
+ */
+public interface Errorable<O, P, T> {
 
-public interface MockLoggableResource<T, D, B> extends LoggableResource<T, IExpectationSetters<T>, D, IExpectationSetters<B>, IExpectationSetters<String>> {
+    T writingError(O in);
+
+    T readingError(P in);
+
+    T redirectError();
 }
