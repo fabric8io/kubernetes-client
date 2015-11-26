@@ -39,7 +39,7 @@
 
   <modules>
     <module>features</module>
-    <module>itests</module>
+    <!--module>itests</module-->
   </modules>
 
 </project>
