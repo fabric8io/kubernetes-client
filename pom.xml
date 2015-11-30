@@ -88,7 +88,7 @@
     <snakeyaml.version>1.11</snakeyaml.version>
 
     <scr.annotations.version>1.9.2</scr.annotations.version>
-    <sundrio.version>0.1.19</sundrio.version>
+    <sundrio.version>0.1.20</sundrio.version>
 
     <maven.bundle.plugin.version>2.5.4</maven.bundle.plugin.version>
     <maven.buildhelper.plugin.version>1.9.1</maven.buildhelper.plugin.version>
