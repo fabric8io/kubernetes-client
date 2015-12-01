@@ -71,6 +71,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   private boolean reaping;
   protected Reaper reaper;
 
+  private boolean namespaceRequired = true;
+
   protected BaseOperation(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item) {
     super(client, config, apiGroup, apiVersion, resourceT, namespace, name);
     this.cascading = cascading;
@@ -455,7 +457,12 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   public boolean isNamespaceRequired() {
-    return true;
+    return namespaceRequired;
+  }
+
+  public ClientMixedOperation setNamespaceRequired(boolean namespaceRequired) {
+    this.namespaceRequired = namespaceRequired;
+    return this;
   }
 
   protected T handleResponse(Request.Builder requestBuilder, int successStatusCode) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
