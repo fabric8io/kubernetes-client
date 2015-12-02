@@ -29,6 +29,4 @@ public interface ClientMixedOperation<T, L, D, R extends ClientResource<T, D>>
   extends ClientResource<T, D>,
   ClientOperation<T, L, D, R>,
   ClientNonNamespaceOperation<T, L, D, R> {
-
-    ClientMixedOperation setNamespaceRequired(boolean namespaceRequired);
 }
