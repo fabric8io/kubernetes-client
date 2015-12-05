@@ -16,22 +16,5 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-import java.io.OutputStream;
-
-public interface Loggable<S, W> {
-
-  S getLog();
-
-  S getLog(Boolean isPretty);
-
-  W watchLog();
-
-  W watchLog(OutputStream out);
-
-  @Deprecated
-  S getLog(String id);
-
-  @Deprecated
-  S getLog(String id, Boolean isPretty);
-
+public interface TailPrettyLoggable<T, W> extends Tailable<PrettyLoggable<T, W>>, PrettyLoggable<T, W> {
 }

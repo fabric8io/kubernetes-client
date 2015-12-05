@@ -24,11 +24,15 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.dsl.ClientPodResource;
 import io.fabric8.kubernetes.client.dsl.ContainerResource;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.dsl.Execable;
+import io.fabric8.kubernetes.client.dsl.LogWatch;
+import io.fabric8.kubernetes.client.dsl.Loggable;
+import io.fabric8.kubernetes.client.dsl.PrettyLoggable;
+import io.fabric8.kubernetes.client.dsl.TailPrettyLoggable;
+import io.fabric8.kubernetes.client.dsl.TimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TtyExecErrorable;
 import io.fabric8.kubernetes.client.dsl.TtyExecOutputErrorable;
 import io.fabric8.kubernetes.client.dsl.TtyExecable;
@@ -55,16 +59,23 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
     private final PipedInputStream outPipe;
     private final PipedInputStream errPipe;
     private final boolean withTTY;
+    private final boolean withTerminatedStatus;
+    private final boolean withTimestamps;
+    private final String sinceTimestamp;
+    private final Integer sinceSeconds;
+    private final Integer withTailingLines;
+    private final boolean withPrettyOutput;
+
 
     public PodOperationsImpl(OkHttpClient client, Config config, String namespace) {
         this(client, config, null, namespace, null, true, null);
     }
 
     public PodOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Pod item) {
-        this(client, config, apiVersion, namespace, name, cascading, item, null, null, null, null, null, null, null, false);
+        this(client, config, apiVersion, namespace, name, cascading, item, null, null, null, null, null, null, null, false, false, false, null, null, null, false);
     }
 
-    public PodOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Pod item, String containerId, InputStream in, PipedOutputStream inPipe, OutputStream out, PipedInputStream outPipe, OutputStream err, PipedInputStream errPipe, boolean withTTY) {
+    public PodOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Pod item, String containerId, InputStream in, PipedOutputStream inPipe, OutputStream out, PipedInputStream outPipe, OutputStream err, PipedInputStream errPipe, boolean withTTY, boolean withTerminatedStatus, boolean withTimestamps, String sinceTimestamp, Integer sinceSeconds, Integer withTailingLines, boolean withPrettyOutput) {
         super(client, config, null, apiVersion, "pods", namespace, name, cascading, item);
         this.containerId = containerId;
         this.in = in;
@@ -74,23 +85,39 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
         this.err = err;
         this.errPipe = errPipe;
         this.withTTY = withTTY;
+        this.withTerminatedStatus = withTerminatedStatus;
+        this.withTimestamps = withTimestamps;
+        this.sinceTimestamp = sinceTimestamp;
+        this.sinceSeconds = sinceSeconds;
+        this.withTailingLines = withTailingLines;
+        this.withPrettyOutput = withPrettyOutput;
+    }
+
+    protected String getLogParameters() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("log?pretty=").append(withPrettyOutput);
+        if (containerId != null && !containerId.isEmpty()) {
+            sb.append("&container=").append(containerId);
+        }
+        if (withTerminatedStatus) {
+            sb.append("&previous=true");
+        }
+        if (sinceSeconds != null) {
+            sb.append("&sinceSeconds=").append(sinceSeconds);
+        } else if (sinceTimestamp != null) {
+            sb.append("&sinceTime=").append(sinceTimestamp);
+        }
+
+        if (withTailingLines != null) {
+            sb.append("&tailLines=").append(withTailingLines);
+        }
+        return sb.toString();
     }
 
     @Override
     public String getLog() {
-        return getLog(true);
-    }
-
-    @Override
-    public String getLog(Boolean isPretty) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("log?pretty=").append(isPretty);
-        if (containerId != null && !containerId.isEmpty()) {
-            sb.append("&container=").append(containerId);
-        }
-
         try {
-            URL url = new URL(URLUtils.join(getResourceUrl().toString(), sb.toString()));
+            URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters()));
             Request.Builder requestBuilder = new Request.Builder().get().url(url);
             Request request = requestBuilder.build();
             Response response = client.newCall(request).execute();
@@ -102,18 +129,42 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
     }
 
     @Override
+    public String getLog(Boolean isPretty) {
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, isPretty).getLog();
+    }
+
+    @Override
+    public LogWatch watchLog() {
+        return watchLog(null);
+    }
+
+    @Override
+    public LogWatch watchLog(OutputStream out) {
+        try {
+            URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters() + "&follow=true"));
+            Request request = new Request.Builder().url(url).get().build();
+            final LogWatchCallback callback = new LogWatchCallback(out);
+            client.newCall(request).enqueue(callback);
+            callback.waitUntilReady();
+            return callback;
+        } catch (Throwable t) {
+            throw KubernetesClientException.launderThrowable(t);
+        }
+    }
+
+    @Override
     public String getLog(String containerId) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY).getLog(true);
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput).getLog();
     }
 
     @Override
     public String getLog(String containerId, Boolean isPretty) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY).getLog(isPretty);
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, isPretty).getLog();
     }
 
     @Override
-    public ContainerResource<String, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch> inContainer(String containerId) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY);
+    public ContainerResource<String, LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch> inContainer(String containerId) {
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput);
     }
 
     @Override
@@ -166,12 +217,12 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
 
     @Override
     public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, ExecWatch> readingInput(InputStream in) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY);
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput);
     }
 
     @Override
     public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, ExecWatch> writingInput(PipedOutputStream inPipe) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY);
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput);
     }
 
     @Override
@@ -181,12 +232,12 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
 
     @Override
     public TtyExecErrorable<String, OutputStream, PipedInputStream, ExecWatch> writingOutput(OutputStream out) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY);
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput);
     }
 
     @Override
     public TtyExecErrorable<String, OutputStream, PipedInputStream, ExecWatch> readingOutput(PipedInputStream outPipe) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY);
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput);
     }
 
     @Override
@@ -196,12 +247,12 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
 
     @Override
     public TtyExecable<String, ExecWatch> writingError(OutputStream err) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY);
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput);
     }
 
     @Override
     public TtyExecable<String, ExecWatch> readingError(PipedInputStream errPipe) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY);
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput);
     }
 
     @Override
@@ -212,7 +263,33 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
 
     @Override
     public Execable<String, ExecWatch> withTTY() {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, true);
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, true, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput);
+    }
+
+    @Override
+    public Loggable<String, LogWatch> withPrettyOutput() {
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, true, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, true);
+    }
+
+
+    @Override
+    public PrettyLoggable<String, LogWatch> tailingLines(int withTailingLines) {
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, true, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput);
+    }
+
+    @Override
+    public TailPrettyLoggable<String, LogWatch> sinceTime(String sinceTimestamp) {
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, true, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput);
+    }
+
+    @Override
+    public TailPrettyLoggable<String, LogWatch> sinceSeconds(int sinceSeconds) {
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, true, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput);
+    }
+
+    @Override
+    public TimeTailPrettyLoggable<String, LogWatch> terminated() {
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), containerId, in, inPipe, out, outPipe, err, errPipe, true, true, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput);
     }
 }
 
