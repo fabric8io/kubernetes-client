@@ -25,6 +25,11 @@ import io.fabric8.kubernetes.client.dsl.ClientPodResource;
 import io.fabric8.kubernetes.client.dsl.ContainerResource;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.dsl.Execable;
+import io.fabric8.kubernetes.client.dsl.LogWatch;
+import io.fabric8.kubernetes.client.dsl.Loggable;
+import io.fabric8.kubernetes.client.dsl.PrettyLoggable;
+import io.fabric8.kubernetes.client.dsl.TailPrettyLoggable;
+import io.fabric8.kubernetes.client.dsl.TimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TtyExecErrorable;
 import io.fabric8.kubernetes.client.dsl.TtyExecOutputErrorable;
 import io.fabric8.kubernetes.client.dsl.TtyExecable;
@@ -65,11 +70,18 @@ public class MockPod<C extends Client>  extends BaseMockOperation<Pod, PodList, 
   private Map<IArgumentMatcher, MockPod> outPipeMap = new HashMap<>();
   private Map<IArgumentMatcher, MockPod> errPipeMap = new HashMap<>();
 
+  private final Map<IArgumentMatcher, MockPod>  sinceTimeMap = new HashMap<>();
+  private final Map<IArgumentMatcher, MockPod>  sinceSecondsMap = new HashMap<>();
+  private final Map<IArgumentMatcher, MockPod>  tailMap = new HashMap<>();
+  private final Map<IArgumentMatcher, MockPod>  logOutputMap = new HashMap<>();
+
   private MockPod redirectIn;
   private MockPod redirectOut;
   private MockPod redirectErr;
   private MockPod allocatingTerminalMock;
 
+  private MockPod terminatedStatusMock;
+  private MockPod prettyOutputMock;
 
   //Dummy interface to use for mocking.
   private interface PodDelegate
@@ -88,22 +100,39 @@ public class MockPod<C extends Client>  extends BaseMockOperation<Pod, PodList, 
 
   @Override
   public IExpectationSetters<String> getLog() {
-    return expect(((ClientPodResource<Pod, DoneablePod>) getDelegate()).getLog());
+    return expect((getDelegate()).getLog());
   }
 
   @Override
   public IExpectationSetters<String> getLog(String id) {
-    return expect(((ClientPodResource<Pod, DoneablePod>) getDelegate()).getLog(id));
+    return expect((getDelegate()).getLog(id));
   }
 
   @Override
   public IExpectationSetters<String> getLog(Boolean isPretty) {
-    return expect(((ClientPodResource<Pod, DoneablePod>) getDelegate()).getLog(isPretty));
+    return expect((getDelegate()).getLog(isPretty));
+  }
+
+  @Override
+  public IExpectationSetters<LogWatch> watchLog() {
+    return expect((getDelegate()).watchLog());
+  }
+
+  @Override
+  public IExpectationSetters<LogWatch> watchLog(OutputStream out) {
+    IArgumentMatcher matcher = getArgument(out);
+    MockPod op = logOutputMap.get(matcher);
+    if (op == null) {
+      op = new MockPod();
+      nested.add(op);
+      logOutputMap.put(matcher, op);
+    }
+    return expect(getDelegate().watchLog(out));
   }
 
   @Override
   public IExpectationSetters<String> getLog(String id, Boolean isPretty) {
-    return expect(((ClientPodResource<Pod, DoneablePod>) getDelegate()).getLog(id, isPretty));
+    return expect((getDelegate()).getLog(id, isPretty));
   }
 
 
@@ -229,7 +258,7 @@ public class MockPod<C extends Client>  extends BaseMockOperation<Pod, PodList, 
   }
 
   @Override
-  public ContainerResource<String, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, IExpectationSetters<ExecWatch>> inContainer(String containerId) {
+  public ContainerResource<String, LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, IExpectationSetters<ExecWatch>> inContainer(String containerId) {
     IArgumentMatcher matcher = getArgument(containerId);
     MockPod op = containerMap.get(matcher);
     if (op == null) {
@@ -237,6 +266,68 @@ public class MockPod<C extends Client>  extends BaseMockOperation<Pod, PodList, 
       expect(getDelegate().inContainer(containerId)).andReturn(op.getDelegate()).anyTimes();
       nested.add(op);
       containerMap.put(matcher, op);
+    }
+    return op;
+  }
+
+
+  @Override
+  public Loggable<IExpectationSetters<String>, IExpectationSetters<LogWatch>> withPrettyOutput() {
+    if (prettyOutputMock == null) {
+      prettyOutputMock = new MockPod();
+    }
+    expect(getDelegate().withPrettyOutput()).andReturn(prettyOutputMock.getDelegate()).anyTimes();
+    nested.add(allocatingTerminalMock);
+
+    return prettyOutputMock;
+  }
+
+  @Override
+  public PrettyLoggable<IExpectationSetters<String>, IExpectationSetters<LogWatch>> tailingLines(int lines) {
+    IArgumentMatcher matcher = getArgument(lines);
+    MockPod op = tailMap.get(matcher);
+    if (op == null) {
+      op = new MockPod();
+      expect(getDelegate().tailingLines(lines)).andReturn(op.getDelegate()).anyTimes();
+      nested.add(op);
+      tailMap.put(matcher, op);
+    }
+    return op;
+  }
+
+  @Override
+  public TimeTailPrettyLoggable<IExpectationSetters<String>, IExpectationSetters<LogWatch>> terminated() {
+    if (terminatedStatusMock == null) {
+      terminatedStatusMock = new MockPod();
+    }
+    expect(getDelegate().withPrettyOutput()).andReturn(terminatedStatusMock.getDelegate()).anyTimes();
+    nested.add(terminatedStatusMock);
+
+    return terminatedStatusMock;
+  }
+
+  @Override
+  public TailPrettyLoggable<IExpectationSetters<String>, IExpectationSetters<LogWatch>> sinceTime(String timestamp) {
+    IArgumentMatcher matcher = getArgument(timestamp);
+    MockPod op = sinceTimeMap.get(matcher);
+    if (op == null) {
+      op = new MockPod();
+      expect(getDelegate().sinceTime(timestamp)).andReturn(op.getDelegate()).anyTimes();
+      nested.add(op);
+      sinceTimeMap.put(matcher, op);
+    }
+    return op;
+  }
+
+  @Override
+  public TailPrettyLoggable<IExpectationSetters<String>, IExpectationSetters<LogWatch>> sinceSeconds(int seconds) {
+    IArgumentMatcher matcher = getArgument(seconds);
+    MockPod op = sinceSecondsMap.get(matcher);
+    if (op == null) {
+      op = new MockPod();
+      expect(getDelegate().sinceSeconds(seconds)).andReturn(op.getDelegate()).anyTimes();
+      nested.add(op);
+      sinceSecondsMap.put(matcher, op);
     }
     return op;
   }

@@ -13,25 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.kubernetes.client.dsl;
 
-import java.io.OutputStream;
+public interface Timeable<T> {
 
-public interface Loggable<S, W> {
 
-  S getLog();
+    T sinceTime(String timestamp);
 
-  S getLog(Boolean isPretty);
-
-  W watchLog();
-
-  W watchLog(OutputStream out);
-
-  @Deprecated
-  S getLog(String id);
-
-  @Deprecated
-  S getLog(String id, Boolean isPretty);
-
+    T sinceSeconds(int seconds);
 }

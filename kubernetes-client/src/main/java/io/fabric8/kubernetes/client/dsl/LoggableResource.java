@@ -15,5 +15,5 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface LoggableResource<I, T, D, B, S> extends Resource<I, T, D, B>, Loggable<S> {
+public interface LoggableResource<I, T, D, B, S, W> extends Resource<I, T, D, B>, TerminateTimeTailPrettyLoggable<S, W> {
 }

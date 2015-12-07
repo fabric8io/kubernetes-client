@@ -16,10 +16,10 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.dsl.ContainerResource;
 import io.fabric8.kubernetes.client.dsl.Containerable;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
+import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.LoggableResource;
 import org.easymock.IExpectationSetters;
 
@@ -29,7 +29,7 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 
 public interface MockPodResource<T, D, B>
-        extends LoggableResource<T, IExpectationSetters<T>, D, IExpectationSetters<B>, IExpectationSetters<String>>,
-        Containerable<String, ContainerResource<String, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, IExpectationSetters<ExecWatch>>>,
-        ContainerResource<IExpectationSetters<String>, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, IExpectationSetters<ExecWatch>> {
+        extends LoggableResource<T, IExpectationSetters<T>, D, IExpectationSetters<B>, IExpectationSetters<String>, IExpectationSetters<LogWatch>>,
+        Containerable<String, ContainerResource<String, LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, IExpectationSetters<ExecWatch>>>,
+        ContainerResource<IExpectationSetters<String>, IExpectationSetters<LogWatch>, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, IExpectationSetters<ExecWatch>> {
 }

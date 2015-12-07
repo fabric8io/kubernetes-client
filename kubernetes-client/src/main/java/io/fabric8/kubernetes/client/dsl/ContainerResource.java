@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface ContainerResource<S, I, PI, O, PO, X, T>
+public interface ContainerResource<S,W, I, PI, O, PO, X, T>
         extends TtyExecInputOutputErrorable<X, O, PO, I, PI, T>,
-        Loggable<S> {
+        TerminateTimeTailPrettyLoggable<S, W> {
 }
