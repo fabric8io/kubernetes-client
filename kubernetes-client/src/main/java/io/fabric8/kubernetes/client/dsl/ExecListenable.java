@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.fabric8.kubernetes.client.dsl;
+
 
 /**
  *
  * @param <I> The exec input.
  * @param <T> The exec output.
  */
-public interface TtyExecable<I, T> extends
-        Ttyable<ExecListenable<I, T>>,
-        ExecListenable<I, T> {
-
+public interface ExecListenable<I, T>  extends
+        Listenable<Execable<I, T>, ExecListener>,
+        Execable<I, T> {
 }

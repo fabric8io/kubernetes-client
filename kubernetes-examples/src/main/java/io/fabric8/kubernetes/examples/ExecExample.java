@@ -15,11 +15,15 @@
  */
 package io.fabric8.kubernetes.examples;
 
+import com.squareup.okhttp.Response;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
+
+import java.io.IOException;
 
 public class ExecExample {
 
@@ -42,9 +46,29 @@ public class ExecExample {
                 .writingOutput(System.out)
                 .writingError(System.err)
                 .withTTY()
+                .usingListener(new SimpleListener())
                 .exec()){
 
             Thread.sleep(10 * 1000);
         }
     }
+
+    private static class SimpleListener implements ExecListener {
+
+        @Override
+        public void onOpen(Response response) {
+            System.out.println("The shell will remain open for 10 seconds.");
+        }
+
+        @Override
+        public void onFailure(IOException e, Response response) {
+            System.err.println("shell barfed");
+        }
+
+        @Override
+        public void onClose(int code, String reason) {
+            System.out.println("The shell will now close.");
+        }
+    }
+
 }

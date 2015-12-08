@@ -21,6 +21,7 @@ import com.squareup.okhttp.ws.WebSocket;
 import com.squareup.okhttp.ws.WebSocketListener;
 import io.fabric8.kubernetes.client.Callback;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 import okio.Buffer;
@@ -60,8 +61,10 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
 
     private final AtomicBoolean started = new AtomicBoolean(false);
     private final ArrayBlockingQueue<Object> queue = new ArrayBlockingQueue<>(1);
+    private final ExecListener listener;
 
-    public ExecWebSocketListener(InputStream in, OutputStream out, OutputStream err, PipedOutputStream inputPipe, PipedInputStream outputPipe, PipedInputStream errorPipe) {
+    public ExecWebSocketListener(InputStream in, OutputStream out, OutputStream err, PipedOutputStream inputPipe, PipedInputStream outputPipe, PipedInputStream errorPipe, ExecListener listener) {
+        this.listener = listener;
         this.in = inputStreamOrPipe(in, inputPipe);
         this.out = outputStreamOrPipe(out, outputPipe);
         this.err = outputStreamOrPipe(err, errorPipe);
@@ -137,15 +140,25 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
             queue.add(true);
         } catch (IOException e) {
             queue.add(e);
+        } finally {
+            if (listener != null) {
+                listener.onOpen(response);
+            }
         }
     }
 
     @Override
     public void onFailure(IOException ioe, Response response) {
-        LOGGER.error(response != null ? response.message() : "Exec Failure.", ioe);
-        //We only need to queue startup failures.
-        if (!started.get()) {
-            queue.add(ioe);
+        try {
+            LOGGER.error(response != null ? response.message() : "Exec Failure.", ioe);
+            //We only need to queue startup failures.
+            if (!started.get()) {
+                queue.add(ioe);
+            }
+        } finally {
+            if (listener != null) {
+                listener.onFailure(ioe, response);
+            }
         }
     }
 
@@ -188,6 +201,9 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
     @Override
     public void onClose(int i, String s) {
         LOGGER.debug("Exec Web Socket: On Close");
+        if (listener != null) {
+            listener.onClose(i, s);
+        }
     }
 
     public OutputStream getInput() {
