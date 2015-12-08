@@ -75,7 +75,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <okhttp.version>2.5.0</okhttp.version>
+    <okhttp.version>2.6.0</okhttp.version>
     <okio.version>1.6.0</okio.version>
     <easymock.version>3.2</easymock.version>
     <felix.scr.annotations.version>1.9.8</felix.scr.annotations.version>

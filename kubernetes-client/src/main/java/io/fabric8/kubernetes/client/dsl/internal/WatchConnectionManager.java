@@ -20,6 +20,7 @@ import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+import com.squareup.okhttp.ResponseBody;
 import com.squareup.okhttp.ws.WebSocket;
 import com.squareup.okhttp.ws.WebSocketCall;
 import com.squareup.okhttp.ws.WebSocketListener;
@@ -32,7 +33,6 @@ import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import okio.Buffer;
-import okio.BufferedSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -130,9 +130,9 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
       }
 
       @Override
-      public void onMessage(BufferedSource bufferedSource, WebSocket.PayloadType payloadType) throws IOException {
+      public void onMessage(ResponseBody message) throws IOException {
         try {
-          WatchEvent event = mapper.readValue(bufferedSource.inputStream(), WatchEvent.class);
+          WatchEvent event = mapper.readValue(message.byteStream(), WatchEvent.class);
           T obj = (T) event.getObject();
           //Dirty cast - should always be valid though
           String currentResourceVersion = resourceVersion.get();
@@ -142,15 +142,14 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
           }
           Watcher.Action action = Watcher.Action.valueOf(event.getType());
           watcher.eventReceived(action, obj);
-          bufferedSource.close();
         } catch (IOException e) {
-          logger.error("Could not deserialize watch event: {}", bufferedSource.readUtf8(), e);
+          logger.error("Could not deserialize watch event: {}", message.source().readUtf8(), e);
         } catch (ClassCastException e) {
           logger.error("Received wrong type of object for watch", e);
         } catch (IllegalArgumentException e) {
           logger.error("Invalid event type", e);
         } finally {
-          bufferedSource.close();
+          message.close();
         }
       }
 

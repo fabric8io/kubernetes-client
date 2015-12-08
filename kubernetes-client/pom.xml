@@ -31,6 +31,7 @@
 
   <properties>
     <osgi.import>
+      !android.util*,
       *
     </osgi.import>
     <osgi.export>
@@ -150,12 +151,22 @@
     </dependency>
     <dependency>
       <groupId>com.squareup.okhttp</groupId>
+      <artifactId>logging-interceptor</artifactId>
+      <version>${okhttp.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.squareup.okhttp</groupId>
       <artifactId>okhttp-ws</artifactId>
       <version>${okhttp.version}</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jul-to-slf4j</artifactId>
       <version>${slf4j.version}</version>
     </dependency>
     <dependency>

@@ -16,7 +16,9 @@
 
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
+import com.squareup.okhttp.ResponseBody;
 import com.squareup.okhttp.ws.WebSocket;
 import com.squareup.okhttp.ws.WebSocketListener;
 import io.fabric8.kubernetes.client.Callback;
@@ -25,8 +27,6 @@ import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 import okio.Buffer;
-import okio.BufferedSink;
-import okio.BufferedSource;
 import okio.ByteString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -163,10 +163,10 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
     }
 
     @Override
-    public void onMessage(BufferedSource bufferedSource, WebSocket.PayloadType payloadType) throws IOException {
-        try {
-            byte streamID = bufferedSource.readByte();
-            ByteString byteString = bufferedSource.readByteString();
+    public void onMessage(ResponseBody message) throws IOException {
+      try {
+            byte streamID = message.source().readByte();
+            ByteString byteString = message.source().readByteString();
             if (byteString.size() > 0) {
                 switch (streamID) {
                     case 1:
@@ -189,7 +189,7 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
                 }
             }
         } finally {
-            bufferedSource.close();
+            message.close();
         }
     }
 
@@ -222,10 +222,7 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
         if (bytes.length > 0) {
             WebSocket ws = webSocketcRef.get();
             if (ws != null) {
-                try (BufferedSink sink = ws.newMessageSink(WebSocket.PayloadType.BINARY)) {
-                    sink.write(new byte[]{0});
-                    sink.write(bytes);
-                }
+                ws.sendMessage(RequestBody.create(WebSocket.BINARY, bytes));
             }
         }
     }
