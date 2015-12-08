@@ -16,8 +16,10 @@
 
 package io.fabric8.openshift.client.mock;
 
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.openshift.client.dsl.ProcessableResource;
 import org.easymock.IExpectationSetters;
 
-public interface MockProcessableResource<T, D, B> extends ProcessableResource<T, IExpectationSetters<T>, D, IExpectationSetters<B>> {
+public interface MockProcessableResource<T, D, B> extends ProcessableResource<T, IExpectationSetters<T>, D, IExpectationSetters<B>, IExpectationSetters<Watch>, Watcher<T>> {
 }

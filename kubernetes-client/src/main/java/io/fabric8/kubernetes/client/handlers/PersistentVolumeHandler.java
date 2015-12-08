@@ -34,11 +34,11 @@ public class PersistentVolumeHandler implements ResourceHandler<PersistentVolume
 
   @Override
   public PersistentVolume create(OkHttpClient client, Config config, String namespace, PersistentVolume item) {
-    return new PersistentVolumeOperationsImpl(client, config, null, namespace, null, true, item).create();
+    return new PersistentVolumeOperationsImpl(client, config, null, namespace, null, true, item, null).create();
   }
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, PersistentVolume item) {
-    return new PersistentVolumeOperationsImpl(client, config, null, namespace, null, true, item).delete(item);
+    return new PersistentVolumeOperationsImpl(client, config, null, namespace, null, true, item, null).delete(item);
   }
 }

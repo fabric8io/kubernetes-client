@@ -25,10 +25,10 @@ import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 
 public class SecretOperationsImpl  extends HasMetadataOperation<Secret, SecretList, DoneableSecret, ClientResource<Secret, DoneableSecret>> {
   public SecretOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(client, config, null, namespace, null, true, null);
+    this(client, config, null, namespace, null, true, null, null);
   }
 
-  public SecretOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Secret item) {
-    super(client, config, null, apiVersion, "secrets", namespace, name, cascading, item);
+  public SecretOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Secret item, String resourceVersion) {
+    super(client, config, null, apiVersion, "secrets", namespace, name, cascading, item, resourceVersion);
   }
 }

@@ -34,11 +34,11 @@ public class GroupHandler implements ResourceHandler<Group> {
 
   @Override
   public Group create(OkHttpClient client, Config config, String namespace, Group item) {
-      return new GroupOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item).create();
+      return new GroupOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).create();
   }
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Group item) {
-      return new GroupOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item).delete(item);
+      return new GroupOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).delete(item);
     }
 }

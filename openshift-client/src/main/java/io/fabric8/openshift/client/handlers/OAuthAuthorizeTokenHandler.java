@@ -34,11 +34,11 @@ public class OAuthAuthorizeTokenHandler implements ResourceHandler<OAuthAuthoriz
   }
   @Override
   public OAuthAuthorizeToken create(OkHttpClient client, Config config, String namespace, OAuthAuthorizeToken item) {
-      return new OAuthAuthorizeTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item).create();
+      return new OAuthAuthorizeTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).create();
   }
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, OAuthAuthorizeToken item) {
-      return new OAuthAuthorizeTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item).delete(item);
+      return new OAuthAuthorizeTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).delete(item);
   }
 }

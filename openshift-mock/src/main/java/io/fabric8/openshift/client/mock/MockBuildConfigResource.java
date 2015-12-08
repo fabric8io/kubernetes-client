@@ -16,10 +16,12 @@
 
 package io.fabric8.openshift.client.mock;
 
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.client.dsl.BuildConfigResource;
 import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableBuildConfig;
 import org.easymock.IExpectationSetters;
 
-public interface MockBuildConfigResource extends BuildConfigResource<BuildConfig, IExpectationSetters<BuildConfig>, MockDoneableBuildConfig, IExpectationSetters<Boolean>,  IExpectationSetters<Void>, IExpectationSetters<Void>> {
+public interface MockBuildConfigResource extends BuildConfigResource<BuildConfig, IExpectationSetters<BuildConfig>, MockDoneableBuildConfig, IExpectationSetters<Boolean>,  IExpectationSetters<Void>, IExpectationSetters<Void>, IExpectationSetters<Watch>, Watcher<BuildConfig>> {
 }

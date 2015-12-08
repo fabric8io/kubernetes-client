@@ -33,6 +33,7 @@ import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.Reaper;
+import io.fabric8.kubernetes.client.dsl.Watchable;
 import io.fabric8.kubernetes.client.dsl.internal.WatchConnectionManager;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 
@@ -67,11 +68,12 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   private final Class<T> type;
   private final Class<L> listType;
   private final Class<D> doneableType;
+  private final String resourceVersion;
 
   private boolean reaping;
   protected Reaper reaper;
 
-  protected BaseOperation(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item) {
+  protected BaseOperation(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion) {
     super(client, config, apiGroup, apiVersion, resourceT, namespace, name);
     this.cascading = cascading;
     this.item = item;
@@ -79,12 +81,14 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     this.listType = (Class<L>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
     this.doneableType = (Class<D>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[2];
     this.reaper = null;
+    this.resourceVersion = resourceVersion;
   }
 
-  protected BaseOperation(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item, Class<T> type, Class<L> listType, Class<D> doneableType) {
+  protected BaseOperation(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Class<T> type, Class<L> listType, Class<D> doneableType) {
     super(client, config, apiGroup, apiVersion, resourceT, namespace, name);
     this.cascading = cascading;
     this.item = item;
+    this.resourceVersion = resourceVersion;
     this.type = type;
     this.listType = listType;
     this.doneableType = doneableType;
@@ -147,8 +151,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     }
     try {
       return (R) getClass()
-        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type)
-        .newInstance(client, config, apiVersion, namespace, name, cascading, item);
+        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type, String.class)
+        .newInstance(client, config, apiVersion, namespace, name, cascading, item, null);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -158,8 +162,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   public ClientNonNamespaceOperation<T, L, D, R> inNamespace(String namespace) {
     try {
       return getClass()
-        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type)
-        .newInstance(client, config, apiVersion, namespace, name, cascading, item);
+        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type, String.class)
+        .newInstance(client, config, apiVersion, namespace, name, cascading, item, null);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -175,8 +179,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   public EditReplaceDeletable<T, T, D, Boolean> cascading(boolean enabled) {
     try {
       return getClass()
-        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type)
-        .newInstance(client, config, apiVersion, namespace, name, enabled, item);
+        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type, String.class)
+        .newInstance(client, config, apiVersion, namespace, name, enabled, item, null);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -186,8 +190,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   public R load(InputStream is) {
     try {
       return (R) getClass()
-        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type)
-        .newInstance(client, config, apiVersion, namespace, name, cascading, unmarshal(is, type));
+        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type, String.class)
+        .newInstance(client, config, apiVersion, namespace, name, cascading, unmarshal(is, type), null);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -231,53 +235,53 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean> withLabels(Map<String, String> labels) {
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withLabels(Map<String, String> labels) {
     this.labels.putAll(labels);
     return this;
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean> withoutLabels(Map<String, String> labels) throws
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withoutLabels(Map<String, String> labels) throws
     KubernetesClientException {
     labelsNot.putAll(labels);
     return this;
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean> withLabelIn(String key, String... values) throws
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withLabelIn(String key, String... values) throws
     KubernetesClientException {
     labelsIn.put(key, values);
     return this;
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean> withLabelNotIn(String key, String... values) throws
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withLabelNotIn(String key, String... values) throws
     KubernetesClientException {
     labelsNotIn.put(key, values);
     return this;
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean> withLabel(String key, String value) {
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withLabel(String key, String value) {
     labels.put(key, value);
     return this;
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean> withoutLabel(String key, String value) throws
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withoutLabel(String key, String value) throws
     KubernetesClientException {
     labelsNot.put(key, value);
     return this;
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean> withFields(Map<String, String> labels) {
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withFields(Map<String, String> labels) {
     fields.putAll(labels);
     return this;
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean> withField(String key, String value) {
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withField(String key, String value) {
     fields.put(key, value);
     return this;
   }
@@ -431,6 +435,11 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     delete(list().getItems());
   }
 
+  @Override
+  public Watchable<Watch, Watcher<T>> withResourceVersion(String resourceVersion) {
+    return null;
+  }
+
   public Watch watch(final Watcher<T> watcher) throws KubernetesClientException {
     return watch(null, watcher);
   }
@@ -480,6 +489,10 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   public T getItem() {
     return item;
+  }
+
+  public String getResourceVersion() {
+    return resourceVersion;
   }
 
   public String getResourceT() {

@@ -16,8 +16,10 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ScaleableResource;
 import org.easymock.IExpectationSetters;
 
-public interface MockScaleableResource<T, D, B> extends ScaleableResource<T, IExpectationSetters<T>, D, IExpectationSetters<B>> {
+public interface MockScaleableResource<T, D, B> extends ScaleableResource<T, IExpectationSetters<T>, D, IExpectationSetters<B>, IExpectationSetters<Watch>, Watcher<T>> {
 }

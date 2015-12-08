@@ -33,10 +33,10 @@ public class NodeHandler implements ResourceHandler<Node> {
 
   @Override
   public Node create(OkHttpClient client, Config config, String namespace, Node item) {
-    return new NodeOperationsImpl(client, config, null, namespace, null, true, item).create();
+    return new NodeOperationsImpl(client, config, null, namespace, null, true, item, null).create();
   }
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Node item) {
-    return new NodeOperationsImpl(client, config, null, namespace, null, true, item).delete(item);
+    return new NodeOperationsImpl(client, config, null, namespace, null, true, item, null).delete(item);
   }
 }

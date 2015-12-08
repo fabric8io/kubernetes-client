@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ContainerResource;
 import io.fabric8.kubernetes.client.dsl.Containerable;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
@@ -29,7 +31,7 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 
 public interface MockPodResource<T, D, B>
-        extends LoggableResource<T, IExpectationSetters<T>, D, IExpectationSetters<B>, IExpectationSetters<String>, IExpectationSetters<LogWatch>>,
+        extends LoggableResource<T, IExpectationSetters<T>, D, IExpectationSetters<B>, IExpectationSetters<String>, IExpectationSetters<LogWatch>, IExpectationSetters<Watch>, Watcher<T>>,
         Containerable<String, ContainerResource<String, LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, IExpectationSetters<ExecWatch>>>,
         ContainerResource<IExpectationSetters<String>, IExpectationSetters<LogWatch>, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, IExpectationSetters<ExecWatch>> {
 }

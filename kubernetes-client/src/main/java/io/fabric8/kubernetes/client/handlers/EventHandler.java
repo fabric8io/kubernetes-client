@@ -34,11 +34,11 @@ public class EventHandler implements ResourceHandler<Event> {
 
   @Override
   public Event create(OkHttpClient client, Config config, String namespace, Event item) {
-    return new EventOperationsImpl(client, config, null, namespace, null, true, item).create();
+    return new EventOperationsImpl(client, config, null, namespace, null, true, item, null).create();
   }
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Event item) {
-    return new EventOperationsImpl(client, config, null, namespace, null, true, item).delete(item);
+    return new EventOperationsImpl(client, config, null, namespace, null, true, item, null).delete(item);
   }
 }

@@ -34,11 +34,11 @@ public class EndpointsHandler implements ResourceHandler<Endpoints> {
 
   @Override
   public Endpoints create(OkHttpClient client, Config config, String namespace, Endpoints item) {
-    return new EndpointsOperationsImpl(client, config, null, namespace, null, true, item).create();
+    return new EndpointsOperationsImpl(client, config, null, namespace, null, true, item, null).create();
   }
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Endpoints item) {
-    return new EndpointsOperationsImpl(client, config, null, namespace, null, true, item).delete(item);
+    return new EndpointsOperationsImpl(client, config, null, namespace, null, true, item, null).delete(item);
   }
 }

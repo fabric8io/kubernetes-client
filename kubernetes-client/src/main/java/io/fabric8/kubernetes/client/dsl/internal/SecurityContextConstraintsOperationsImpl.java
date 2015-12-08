@@ -25,11 +25,11 @@ import io.fabric8.kubernetes.client.dsl.ClientResource;
 
 public class SecurityContextConstraintsOperationsImpl  extends BaseOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> {
   public SecurityContextConstraintsOperationsImpl(OkHttpClient client, Config config) {
-    this(client, config, null, null, null, true, null);
+    this(client, config, null, null, null, true, null, null);
   }
 
-  public SecurityContextConstraintsOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, SecurityContextConstraints item) {
-    super(client, config, null, apiVersion, "securitycontextconstraints", namespace, name, cascading, item);
+  public SecurityContextConstraintsOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, SecurityContextConstraints item, String resourceVersion) {
+    super(client, config, null, apiVersion, "securitycontextconstraints", namespace, name, cascading, item, resourceVersion);
   }
 
   @Override
