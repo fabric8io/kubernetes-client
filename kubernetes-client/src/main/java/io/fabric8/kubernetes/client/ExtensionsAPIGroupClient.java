@@ -19,13 +19,17 @@ import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.extensions.Deployment;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
 import io.fabric8.kubernetes.api.model.extensions.DoneableDeployment;
+import io.fabric8.kubernetes.api.model.extensions.DoneableIngress;
 import io.fabric8.kubernetes.api.model.extensions.DoneableJob;
+import io.fabric8.kubernetes.api.model.extensions.Ingress;
+import io.fabric8.kubernetes.api.model.extensions.IngressList;
 import io.fabric8.kubernetes.api.model.extensions.Job;
 import io.fabric8.kubernetes.api.model.extensions.JobList;
 import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.internal.DeploymentOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.IngressOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.JobOperationsImpl;
 
 public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAPIGroupDSL {
@@ -47,5 +51,11 @@ public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAP
   public ClientMixedOperation<Deployment, DeploymentList, DoneableDeployment, ClientResource<Deployment, DoneableDeployment>> deployments() {
     return new DeploymentOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
+
+  @Override
+  public ClientMixedOperation<Ingress, IngressList, DoneableIngress, ClientResource<Ingress, DoneableIngress>> ingress() {
+    return new IngressOperationsImpl(httpClient, getConfiguration(), getNamespace());
+  }
+
 
 }
