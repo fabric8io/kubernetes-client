@@ -13,8 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.fabric8.kubernetes.client.dsl;
 
-public interface FilterWatchListMultiDeletable<T, L, B, H, W> extends FilterWatchListDeletable<T, L, B, H, W>, MultiDeleteable<T, B> {
 
+/**
+ *
+ * @param <I> The exec input.
+ * @param <T> The exec output.
+ */
+public interface ExecListenable<I, T>  extends
+        Listenable<Execable<I, T>, ExecListener>,
+        Execable<I, T> {
 }

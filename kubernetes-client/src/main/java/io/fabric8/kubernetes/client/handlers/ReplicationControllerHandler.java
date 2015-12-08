@@ -34,11 +34,11 @@ public class ReplicationControllerHandler implements ResourceHandler<Replication
   }
   @Override
   public ReplicationController create(OkHttpClient client, Config config, String namespace, ReplicationController item) {
-    return new ReplicationControllerOperationsImpl(client, config, null, namespace, null, true, item, false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).create();
+    return new ReplicationControllerOperationsImpl(client, config, null, namespace, null, true, item, null, false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).create();
   }
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, ReplicationController item) {
-    return new ReplicationControllerOperationsImpl(client, config, null, namespace, null, true, item, false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).delete(item);
+    return new ReplicationControllerOperationsImpl(client, config, null, namespace, null, true, item, null, false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).delete(item);
   }
 }

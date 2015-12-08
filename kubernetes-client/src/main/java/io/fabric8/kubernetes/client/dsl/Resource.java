@@ -23,6 +23,8 @@ package io.fabric8.kubernetes.client.dsl;
  * @param <T>   The output of the operations (usually corresponds to the resource type). In most cases its the same as the input.
  * @param <D>   The "Inlineable / Doneable" type of the resource.
  * @param <B>   The return type for {@link Deletable} operations (e.g. Boolean, Future<Boolean>, resource type etc).
+ * @param <H>   The type of {@link io.fabric8.kubernetes.client.Watch}.
+ * @param <W>   The type of {@link io.fabric8.kubernetes.client.Watcher}.
  */
-public interface Resource<I, T, D, B> extends CreateGettable<I, T, D>, Updateable<I, T>, CascadingEditReplaceDeletable<I, T, D, B>, Watchable<T> {
+public interface Resource<I, T, D, B, H, W> extends CreateGettable<I, T, D>, Updateable<I, T>, CascadingEditReplaceDeletable<I, T, D, B>, VersionWatchable<H, W> {
 }

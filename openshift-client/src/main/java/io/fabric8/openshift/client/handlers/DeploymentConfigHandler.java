@@ -34,11 +34,11 @@ public class DeploymentConfigHandler implements ResourceHandler<DeploymentConfig
 
   @Override
   public DeploymentConfig create(OkHttpClient client, Config config, String namespace, DeploymentConfig item) {
-      return new DeploymentConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item).create();
+      return new DeploymentConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).create();
   }
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, DeploymentConfig item) {
-      return new DeploymentConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item).delete(item);
+      return new DeploymentConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).delete(item);
     }
 }

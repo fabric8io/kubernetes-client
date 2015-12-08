@@ -15,6 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface ScaleableResource<I, T, D, B> extends Resource<I, T, D, B>,
+public interface ScaleableResource<I, T, D, B, H, W> extends Resource<I, T, D, B, H, W>,
   Scaleable<T> {
 }

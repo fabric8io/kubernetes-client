@@ -26,11 +26,11 @@ import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 public class NamespaceOperationsImpl  extends HasMetadataOperation<Namespace, NamespaceList, DoneableNamespace, ClientResource<Namespace, DoneableNamespace>> {
 
   public NamespaceOperationsImpl(OkHttpClient client, Config config) {
-    this(client, config, null, null, null, true, null);
+    this(client, config, null, null, null, true, null, null);
   }
 
-  public NamespaceOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Namespace item) {
-    super(client, config, null, apiVersion, "namespaces", namespace, name, cascading, item);
+  public NamespaceOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Namespace item, String resourceVersion) {
+    super(client, config, null, apiVersion, "namespaces", namespace, name, cascading, item, resourceVersion);
   }
 
   @Override

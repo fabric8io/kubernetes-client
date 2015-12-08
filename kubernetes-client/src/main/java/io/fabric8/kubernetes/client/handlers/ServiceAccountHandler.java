@@ -33,11 +33,11 @@ public class ServiceAccountHandler implements ResourceHandler<ServiceAccount> {
 
   @Override
   public ServiceAccount create(OkHttpClient client, Config config, String namespace, ServiceAccount item) {
-    return new ServiceAccountOperationsImpl(client, config, null, namespace, null, true, item).create();
+    return new ServiceAccountOperationsImpl(client, config, null, namespace, null, true, item, null).create();
   }
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, ServiceAccount item) {
-    return new ServiceAccountOperationsImpl(client, config, null, namespace, null, true, item).delete(item);
+    return new ServiceAccountOperationsImpl(client, config, null, namespace, null, true, item, null).delete(item);
   }
 }

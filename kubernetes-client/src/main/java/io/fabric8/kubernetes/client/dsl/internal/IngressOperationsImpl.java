@@ -26,10 +26,10 @@ import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 public class IngressOperationsImpl extends HasMetadataOperation<Ingress, IngressList, DoneableIngress, ClientResource<Ingress, DoneableIngress>>{
 
   public IngressOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(client, config, "v1beta1", namespace, null, true, null);
+    this(client, config, "v1beta1", namespace, null, true, null, null);
   }
 
-  public IngressOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Ingress item) {
-    super(client, config, "extensions", apiVersion, "ingresses", namespace, name, cascading, item);
+  public IngressOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Ingress item, String resourceVersion) {
+    super(client, config, "extensions", apiVersion, "ingresses", namespace, name, cascading, item, resourceVersion);
   }
 }

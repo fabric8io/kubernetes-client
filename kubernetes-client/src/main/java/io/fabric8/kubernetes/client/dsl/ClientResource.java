@@ -16,5 +16,8 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface ClientResource<T, D> extends Resource<T, T, D, Boolean> {
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
+
+public interface ClientResource<T, D> extends Resource<T, T, D, Boolean, Watch, Watcher<T>> {
 }

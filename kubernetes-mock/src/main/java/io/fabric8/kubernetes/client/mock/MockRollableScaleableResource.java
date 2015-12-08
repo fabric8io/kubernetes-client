@@ -16,11 +16,13 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.Rollable;
 import io.fabric8.kubernetes.client.dsl.ScaleableResource;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplaceable;
 import org.easymock.IExpectationSetters;
 
-public interface MockRollableScaleableResource<T, D, B> extends ScaleableResource<T, IExpectationSetters<T>, D, IExpectationSetters<B>>,
+public interface MockRollableScaleableResource<T, D, B> extends ScaleableResource<T, IExpectationSetters<T>, D, IExpectationSetters<B>, IExpectationSetters<Watch>, Watcher<T>>,
   Rollable<TimeoutImageEditReplaceable<T, IExpectationSetters<T>, D>> {
 }

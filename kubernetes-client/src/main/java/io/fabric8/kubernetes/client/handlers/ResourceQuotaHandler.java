@@ -33,11 +33,11 @@ public class ResourceQuotaHandler implements ResourceHandler<ResourceQuota> {
 
   @Override
   public ResourceQuota create(OkHttpClient client, Config config, String namespace, ResourceQuota item) {
-    return new ResourceQuotaOperationsImpl(client, config, null, namespace, null, true, item).create();
+    return new ResourceQuotaOperationsImpl(client, config, null, namespace, null, true, item, null).create();
   }
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, ResourceQuota item) {
-    return new ResourceQuotaOperationsImpl(client, config, null, namespace, null, true, item).delete(item);
+    return new ResourceQuotaOperationsImpl(client, config, null, namespace, null, true, item, null).delete(item);
   }
 }

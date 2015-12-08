@@ -34,11 +34,11 @@ public class ProjectHandler implements ResourceHandler<Project> {
 
   @Override
   public Project create(OkHttpClient client, Config config, String namespace, Project item) {
-      return new ProjectOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item).create();
+      return new ProjectOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).create();
     }
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Project item) {
-      return new ProjectOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item).delete(item);
+      return new ProjectOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).delete(item);
     }
 }

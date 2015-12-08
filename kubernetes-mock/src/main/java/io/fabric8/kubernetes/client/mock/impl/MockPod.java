@@ -23,6 +23,8 @@ import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientPodResource;
 import io.fabric8.kubernetes.client.dsl.ContainerResource;
+import io.fabric8.kubernetes.client.dsl.ExecListenable;
+import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.dsl.Execable;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
@@ -82,6 +84,7 @@ public class MockPod<C extends Client>  extends BaseMockOperation<Pod, PodList, 
 
   private MockPod terminatedStatusMock;
   private MockPod prettyOutputMock;
+
 
   //Dummy interface to use for mocking.
   private interface PodDelegate
@@ -247,7 +250,7 @@ public class MockPod<C extends Client>  extends BaseMockOperation<Pod, PodList, 
   }
 
   @Override
-  public Execable<String, IExpectationSetters<ExecWatch>> withTTY() {
+  public ExecListenable<String, IExpectationSetters<ExecWatch>> withTTY() {
     if (allocatingTerminalMock == null) {
       allocatingTerminalMock = new MockPod();
     }
@@ -330,6 +333,12 @@ public class MockPod<C extends Client>  extends BaseMockOperation<Pod, PodList, 
       sinceSecondsMap.put(matcher, op);
     }
     return op;
+  }
+
+  @Override
+  public Execable<String, IExpectationSetters<ExecWatch>> usingListener(ExecListener listener) {
+    expect(getDelegate().usingListener(listener)).andReturn(getDelegate()).once();
+    return this;
   }
 
   @Override

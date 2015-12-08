@@ -15,13 +15,11 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
+public interface Watchable<H, W> {
 
-public interface Watchable<T> {
+    H watch(W watcher);
 
-  Watch watch(Watcher<T> watcher) throws KubernetesClientException;
+    @Deprecated
+    H watch(String resourceVersion, W watcher);
 
-  Watch watch(String resourceVersion, Watcher<T> watcher) throws KubernetesClientException;
 }
