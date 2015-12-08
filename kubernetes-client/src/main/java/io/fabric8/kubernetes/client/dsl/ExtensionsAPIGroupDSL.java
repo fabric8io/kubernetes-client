@@ -19,7 +19,10 @@ package io.fabric8.kubernetes.client.dsl;
 import io.fabric8.kubernetes.api.model.extensions.Deployment;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
 import io.fabric8.kubernetes.api.model.extensions.DoneableDeployment;
+import io.fabric8.kubernetes.api.model.extensions.DoneableIngress;
 import io.fabric8.kubernetes.api.model.extensions.DoneableJob;
+import io.fabric8.kubernetes.api.model.extensions.Ingress;
+import io.fabric8.kubernetes.api.model.extensions.IngressList;
 import io.fabric8.kubernetes.api.model.extensions.Job;
 import io.fabric8.kubernetes.api.model.extensions.JobList;
 import io.fabric8.kubernetes.client.Client;
@@ -29,5 +32,7 @@ public interface ExtensionsAPIGroupDSL extends Client {
   ClientMixedOperation<Job, JobList, DoneableJob, ClientResource<Job, DoneableJob>> jobs();
 
   ClientMixedOperation<Deployment, DeploymentList, DoneableDeployment, ClientResource<Deployment, DoneableDeployment>> deployments();
+
+  ClientMixedOperation<Ingress, IngressList, DoneableIngress, ClientResource<Ingress, DoneableIngress>> ingress();
 
 }
