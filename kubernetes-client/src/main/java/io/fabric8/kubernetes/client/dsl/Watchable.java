@@ -19,4 +19,7 @@ public interface Watchable<H, W> {
 
     H watch(W watcher);
 
+    @Deprecated
+    H watch(String resourceVersion, W watcher);
+
 }

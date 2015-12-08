@@ -380,4 +380,9 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   public IExpectationSetters<Watch> watch(Watcher<T> watcher) {
     return expect(delegate.watch(watcher));
   }
+
+  @Override
+  public IExpectationSetters<Watch> watch(String resourceVersion, Watcher<T> watcher) {
+    throw new UnsupportedOperationException();
+  }
 }
