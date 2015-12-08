@@ -16,12 +16,6 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.squareup.okhttp.OkHttpClient;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DoneableKubernetesList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -30,12 +24,18 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.ResourceHandler;
+import io.fabric8.kubernetes.client.ResourceNotFoundException;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListOperation;
 import io.fabric8.kubernetes.client.dsl.CreateGettable;
 import io.fabric8.kubernetes.client.dsl.Loadable;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class KubernetesListOperationsImpl
   extends OperationSupport
@@ -96,6 +96,17 @@ public class KubernetesListOperationsImpl
   @Override
   public KubernetesList get() {
     return item;
+  }
+
+  @Override
+  public KubernetesList getRequired() throws ResourceNotFoundException {
+    KubernetesList result = get();
+    if (result != null) {
+      return null;
+    }
+    StringBuilder sb = new StringBuilder();
+    sb.append("Failed to load resource ").append(" of type: " + KubernetesList.class.getName()).append(".");
+    throw new ResourceNotFoundException(sb.toString());
   }
 
   private <T extends HasMetadata> T create(T resource) {

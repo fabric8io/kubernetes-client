@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.mock.impl;
 
 import io.fabric8.kubernetes.api.model.DoneableKubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesList;
+import io.fabric8.kubernetes.client.ResourceNotFoundException;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.CreateGettable;
 import io.fabric8.kubernetes.client.mock.MockKubernetesListNonNamesapceOperation;
@@ -135,5 +136,10 @@ public class MockKubernetesListOperationImpl  implements
   @Override
   public IExpectationSetters<KubernetesList> get() {
     return expect(delegate.get());
+  }
+
+  @Override
+  public IExpectationSetters<KubernetesList> getRequired() throws ResourceNotFoundException {
+    return expect(delegate.getRequired());
   }
 }

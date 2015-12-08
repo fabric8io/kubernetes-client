@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.ResourceNotFoundException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
@@ -35,6 +36,7 @@ import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.Reaper;
 import io.fabric8.kubernetes.client.dsl.internal.WatchConnectionManager;
 import io.fabric8.kubernetes.client.utils.URLUtils;
+import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -110,6 +112,28 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     } catch (InterruptedException | ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
+  }
+
+  @Override
+  public T getRequired() throws ResourceNotFoundException {
+    T result = get();
+    if (result != null) {
+      return null;
+    }
+    StringBuilder sb = new StringBuilder();
+    sb.append("Failed to find resource");
+    if (type != null) {
+      sb.append(" of type: " + type.getName());
+    }
+    if (!Utils.isNullOrEmpty(name)) {
+      sb.append(" with name: "+name);
+    }
+
+    if (!Utils.isNullOrEmpty(name)) {
+      sb.append( "in namespace: "+namespace);
+    }
+    sb.append(".");
+    throw new ResourceNotFoundException(sb.toString());
   }
 
   public RootPaths getRootPaths() {
