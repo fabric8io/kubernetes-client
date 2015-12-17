@@ -41,7 +41,15 @@ public class CertUtils {
 
   public static InputStream getInputStreamFromDataOrFile(String data, String file) throws FileNotFoundException {
     if (data != null) {
-      return new ByteArrayInputStream(ByteString.decodeBase64(data).toByteArray());
+      byte[] bytes = null;
+      ByteString decoded = ByteString.decodeBase64(data);
+      if (decoded != null) {
+          bytes = decoded.toByteArray();
+      } else {
+          bytes = data.getBytes();
+      }
+
+      return new ByteArrayInputStream(bytes);
     }
     if (file != null) {
       return new FileInputStream(file);
