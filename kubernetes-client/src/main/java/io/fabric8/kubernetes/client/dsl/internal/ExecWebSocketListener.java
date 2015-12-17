@@ -222,7 +222,10 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
         if (bytes.length > 0) {
             WebSocket ws = webSocketRef.get();
             if (ws != null) {
-                ws.sendMessage(RequestBody.create(WebSocket.BINARY, bytes));
+                byte[] toSend = new byte[bytes.length + 1];
+                toSend[0] = 0;
+                System.arraycopy(bytes, 0, toSend, 1, bytes.length);
+                ws.sendMessage(RequestBody.create(WebSocket.BINARY, toSend));
             }
         }
     }
