@@ -55,7 +55,7 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
     private final PipedInputStream output;
     private final PipedInputStream error;
 
-    private final AtomicReference<WebSocket> webSocketcRef = new AtomicReference<>();
+    private final AtomicReference<WebSocket> webSocketRef = new AtomicReference<>();
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final InputStreamPumper pumper;
 
@@ -96,7 +96,7 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
             throw KubernetesClientException.launderThrowable(t);
         }
 
-        WebSocket ws = webSocketcRef.get();
+        WebSocket ws = webSocketRef.get();
         try {
             if (ws != null) {
                 ws.close(1000, "Closing...");
@@ -134,7 +134,7 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
                 error.connect((PipedOutputStream) err);
             }
 
-            webSocketcRef.set(webSocket);
+            webSocketRef.set(webSocket);
             executorService.submit(pumper);
             started.set(true);
             queue.add(true);
@@ -220,7 +220,7 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
 
     private void send(byte[] bytes) throws IOException {
         if (bytes.length > 0) {
-            WebSocket ws = webSocketcRef.get();
+            WebSocket ws = webSocketRef.get();
             if (ws != null) {
                 ws.sendMessage(RequestBody.create(WebSocket.BINARY, bytes));
             }
