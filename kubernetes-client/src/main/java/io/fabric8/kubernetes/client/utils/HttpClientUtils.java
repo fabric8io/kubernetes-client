@@ -148,10 +148,12 @@ public class HttpClientUtils {
     private static URL getProxyUrl(Config config) throws MalformedURLException {
         URL master = new URL(config.getMasterUrl());
         String host = master.getHost();
-        for (String noProxy : config.getNoProxy()) {
-            if (host.endsWith(noProxy)) {
-                return null;
-            }
+        if (config.getNoProxy() != null) {
+	        for (String noProxy : config.getNoProxy()) {
+	            if (host.endsWith(noProxy)) {
+	                return null;
+	            }
+	        }
         }
         String proxy = config.getHttpsProxy();
         if (master.getProtocol().equals("http")) {
