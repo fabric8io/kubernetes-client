@@ -152,7 +152,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     try {
       return (R) getClass()
         .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type, String.class)
-        .newInstance(client, config, apiVersion, namespace, name, cascading, item, null);
+        .newInstance(client, config, apiVersion, namespace, name, cascading, item, resourceVersion);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -163,7 +163,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     try {
       return getClass()
         .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type, String.class)
-        .newInstance(client, config, apiVersion, namespace, name, cascading, item, null);
+        .newInstance(client, config, apiVersion, namespace, name, cascading, item, resourceVersion);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -180,7 +180,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     try {
       return getClass()
         .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type, String.class)
-        .newInstance(client, config, apiVersion, namespace, name, enabled, item, null);
+        .newInstance(client, config, apiVersion, namespace, name, enabled, item, resourceVersion);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -191,7 +191,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     try {
       return (R) getClass()
         .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type, String.class)
-        .newInstance(client, config, apiVersion, namespace, name, cascading, unmarshal(is, type), null);
+        .newInstance(client, config, apiVersion, namespace, name, cascading, unmarshal(is, type), resourceVersion);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -437,11 +437,17 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   @Override
   public Watchable<Watch, Watcher<T>> withResourceVersion(String resourceVersion) {
-    return null;
+    try {
+      return getClass()
+              .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type, String.class)
+              .newInstance(client, config, apiVersion, namespace, name, cascading, item, resourceVersion);
+    } catch (Throwable t) {
+      throw KubernetesClientException.launderThrowable(t);
+    }
   }
 
   public Watch watch(final Watcher<T> watcher) throws KubernetesClientException {
-    return watch(null, watcher);
+    return watch(resourceVersion, watcher);
   }
 
   public Watch watch(String resourceVersion, final Watcher<T> watcher) throws KubernetesClientException {
