@@ -64,7 +64,9 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
         request = builder.build();
         Response response = chain.proceed(request);
 
-        if (response.code() == 401 || response.code() == 403) {
+        if ((response.code() == 401 || response.code() == 403)
+                && Utils.isNotNullOrEmpty(config.getUsername())
+                && Utils.isNotNullOrEmpty(config.getPassword())) {
             synchronized (client) {
                 token = authorize();
                 if(token != null) {
