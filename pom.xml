@@ -81,7 +81,7 @@
     <felix.scr.annotations.version>1.9.8</felix.scr.annotations.version>
     <jackson.version>2.7.0</jackson.version>
     <junit.version>4.12</junit.version>
-    <kubernetes.model.version>1.0.40</kubernetes.model.version>
+    <kubernetes.model.version>1.0.41</kubernetes.model.version>
     <log4j.version>2.5</log4j.version>
     <mockwebserver.version>20130706</mockwebserver.version>
     <slf4j.version>1.7.13</slf4j.version>
