@@ -66,6 +66,7 @@ public final class SSLUtils {
             Request request = new Request.Builder().get().url(sslConfig.getMasterUrl())
                     .build();
             Response response = client.newCall(request).execute();
+            response.body().close();
             return response.isSuccessful();
         } catch (Throwable t) {
             LOG.warn("SSL handshake failed. Falling back to insecure connection.");

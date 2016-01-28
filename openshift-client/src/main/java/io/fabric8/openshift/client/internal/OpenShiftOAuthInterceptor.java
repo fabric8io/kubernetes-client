@@ -94,6 +94,7 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
             String credential = Credentials.basic(config.getUsername(), new String(config.getPassword()));
             URL url = new URL(URLUtils.join(config.getMasterUrl(), AUTHORIZE_PATH));
             Response response = clone.newCall(new Request.Builder().get().url(url).header(AUTHORIZATION, credential).build()).execute();
+            response.body().close();
             String token = response.priorResponse().networkResponse().header(LOCATION);
             token = token.substring(token.indexOf(BEFORE_TOKEN) + BEFORE_TOKEN.length());
             token = token.substring(0, token.indexOf(AFTER_TOKEN));
