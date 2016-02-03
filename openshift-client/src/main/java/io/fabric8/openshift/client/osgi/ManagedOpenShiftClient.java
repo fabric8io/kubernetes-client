@@ -16,6 +16,9 @@
 
 package io.fabric8.openshift.client.osgi;
 
+import io.fabric8.kubernetes.api.model.ComponentStatus;
+import io.fabric8.kubernetes.api.model.ComponentStatusList;
+import io.fabric8.kubernetes.api.model.DoneableComponentStatus;
 import io.fabric8.kubernetes.api.model.DoneableEndpoints;
 import io.fabric8.kubernetes.api.model.DoneableEvent;
 import io.fabric8.kubernetes.api.model.DoneableNamespace;
@@ -263,6 +266,11 @@ public class ManagedOpenShiftClient extends BaseClient implements OpenShiftClien
   @Override
   public ClientMixedOperation<Build, BuildList, DoneableBuild, ClientResource<Build, DoneableBuild>> builds() {
     return delegate.builds();
+  }
+  
+  @Override
+  public ClientMixedOperation<ComponentStatus, ComponentStatusList, DoneableComponentStatus, ClientResource<ComponentStatus, DoneableComponentStatus>> componentstatuses() {
+    return delegate.componentstatuses();
   }
 
   @Override
