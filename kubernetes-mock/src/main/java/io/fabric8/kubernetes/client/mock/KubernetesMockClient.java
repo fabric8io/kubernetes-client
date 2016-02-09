@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.ComponentStatus;
+import io.fabric8.kubernetes.api.model.ComponentStatusList;
 import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsList;
 import io.fabric8.kubernetes.api.model.Event;
@@ -45,6 +47,7 @@ import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.mock.impl.MockComponentStatus;
 import io.fabric8.kubernetes.client.mock.impl.MockEndpoints;
 import io.fabric8.kubernetes.client.mock.impl.MockEvent;
 import io.fabric8.kubernetes.client.mock.impl.MockKubernetesListOperationImpl;
@@ -59,6 +62,7 @@ import io.fabric8.kubernetes.client.mock.impl.MockSecret;
 import io.fabric8.kubernetes.client.mock.impl.MockSecurityContextConstraints;
 import io.fabric8.kubernetes.client.mock.impl.MockService;
 import io.fabric8.kubernetes.client.mock.impl.MockServiceAccount;
+import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableComponentStatus;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableEndpoints;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableEvent;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableNamespace;
@@ -92,7 +96,7 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
   private KubernetesMockClient anyNamespaceOp;
   private Map<IArgumentMatcher, KubernetesMockClient> namespaceMap = new HashMap<>();
 
-
+  private final MockComponentStatus componentstatuses = new MockComponentStatus();
   private final MockEndpoints endpoints = new MockEndpoints();
   private final MockEvent events = new MockEvent();
   private final MockNode nodes = new MockNode();
@@ -111,6 +115,7 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
 
 
   public KubernetesMockClient() {
+	expect(client.componentstatuses()).andReturn(componentstatuses.getDelegate()).anyTimes();
     expect(client.endpoints()).andReturn(endpoints.getDelegate()).anyTimes();
     expect(client.events()).andReturn(events.getDelegate()).anyTimes();
     expect(client.nodes()).andReturn(nodes.getDelegate()).anyTimes();
@@ -132,6 +137,7 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
   }
 
   public KubernetesClient replay() {
+	componentstatuses.replay();
     endpoints.replay();
     events.replay();
     nodes.replay();
@@ -154,6 +160,7 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
 
   @Override
   public void verify() {
+	componentstatuses.verify();
     endpoints.verify();
     events.verify();
     nodes.verify();
@@ -185,6 +192,10 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
     return expect(client.rootPaths());
   }
 
+  public MockOperation<ComponentStatus, ComponentStatusList, MockDoneableComponentStatus, MockResource<ComponentStatus, MockDoneableComponentStatus, Boolean>> componentstatuses() {
+    return componentstatuses;
+  }
+  
   public MockOperation<Endpoints, EndpointsList, MockDoneableEndpoints, MockResource<Endpoints, MockDoneableEndpoints, Boolean>> endpoints() {
     return endpoints;
   }
