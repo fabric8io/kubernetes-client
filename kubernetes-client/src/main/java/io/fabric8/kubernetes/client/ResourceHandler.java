@@ -18,14 +18,17 @@ package io.fabric8.kubernetes.client;
 
 
 import com.squareup.okhttp.OkHttpClient;
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 
-public interface ResourceHandler<T> {
+public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
 
   String getKind();
 
   T create(OkHttpClient client, Config config, String namespace, T item);
 
   T replace(OkHttpClient client, Config config, String namespace, T item);
+
+  V edit(T item);
 
   Boolean delete(OkHttpClient client, Config config, String namespace, T item);
 }

@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.handlers;
 
 import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.Event;
+import io.fabric8.kubernetes.api.model.EventBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.internal.EventOperationsImpl;
@@ -25,7 +26,7 @@ import org.apache.felix.scr.annotations.Service;
 
 @Component
 @Service
-public class EventHandler implements ResourceHandler<Event> {
+public class EventHandler implements ResourceHandler<Event, EventBuilder> {
 
   @Override
   public String getKind() {
@@ -40,6 +41,11 @@ public class EventHandler implements ResourceHandler<Event> {
   @Override
   public Event replace(OkHttpClient client, Config config, String namespace, Event item) {
     return new EventOperationsImpl(client, config, null, namespace, null, true, item, null).replace(item);
+  }
+
+  @Override
+  public EventBuilder edit(Event item) {
+    return new EventBuilder(item);
   }
 
   @Override

@@ -19,6 +19,7 @@ import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.openshift.api.model.Policy;
+import io.fabric8.openshift.api.model.PolicyBuilder;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.internal.PolicyOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
@@ -26,7 +27,7 @@ import org.apache.felix.scr.annotations.Service;
 
 @Component
 @Service
-public class PolicyHandler implements ResourceHandler<Policy> {
+public class PolicyHandler implements ResourceHandler<Policy, PolicyBuilder> {
   @Override
   public String getKind() {
     return Policy.class.getSimpleName();
@@ -40,6 +41,11 @@ public class PolicyHandler implements ResourceHandler<Policy> {
   @Override
   public Policy replace(OkHttpClient client, Config config, String namespace, Policy item) {
     return new PolicyOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).replace(item);
+  }
+
+  @Override
+  public PolicyBuilder edit(Policy item) {
+    return new PolicyBuilder(item);
   }
 
   @Override

@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.handlers;
 
 import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.Service;
+import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.internal.ServiceOperationsImpl;
@@ -24,7 +25,7 @@ import org.apache.felix.scr.annotations.Component;
 
 @Component
 @org.apache.felix.scr.annotations.Service
-public class ServiceHandler implements ResourceHandler<Service> {
+public class ServiceHandler implements ResourceHandler<Service, ServiceBuilder> {
   @Override
   public String getKind() {
     return Service.class.getSimpleName();
@@ -38,6 +39,11 @@ public class ServiceHandler implements ResourceHandler<Service> {
   @Override
   public Service replace(OkHttpClient client, Config config, String namespace, Service item) {
     return new ServiceOperationsImpl(client, config, null, namespace, null, true, item, null).replace(item);
+  }
+
+  @Override
+  public ServiceBuilder edit(Service item) {
+    return new ServiceBuilder(item);
   }
 
   @Override

@@ -19,6 +19,7 @@ import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.openshift.api.model.ImageStream;
+import io.fabric8.openshift.api.model.ImageStreamBuilder;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.internal.ImageStreamOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
@@ -26,7 +27,7 @@ import org.apache.felix.scr.annotations.Service;
 
 @Component
 @Service
-public class ImageStreamHandler implements ResourceHandler<ImageStream> {
+public class ImageStreamHandler implements ResourceHandler<ImageStream, ImageStreamBuilder> {
 
   @Override
   public String getKind() {
@@ -41,6 +42,11 @@ public class ImageStreamHandler implements ResourceHandler<ImageStream> {
   @Override
   public ImageStream replace(OkHttpClient client, Config config, String namespace, ImageStream item) {
     return new ImageStreamOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).replace(item);
+  }
+
+  @Override
+  public ImageStreamBuilder edit(ImageStream item) {
+    return new ImageStreamBuilder(item);
   }
 
   @Override

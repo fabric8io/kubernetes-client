@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.handlers;
 
 import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.Secret;
+import io.fabric8.kubernetes.api.model.SecretBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.internal.SecretOperationsImpl;
@@ -25,7 +26,7 @@ import org.apache.felix.scr.annotations.Service;
 
 @Component
 @Service
-public class SecretHandler implements ResourceHandler<Secret> {
+public class SecretHandler implements ResourceHandler<Secret, SecretBuilder> {
   @Override
   public String getKind() {
     return Secret.class.getSimpleName();
@@ -39,6 +40,11 @@ public class SecretHandler implements ResourceHandler<Secret> {
   @Override
   public Secret replace(OkHttpClient client, Config config, String namespace, Secret item) {
     return new SecretOperationsImpl(client, config, null, namespace, null, true, item, null).replace(item);
+  }
+
+  @Override
+  public SecretBuilder edit(Secret item) {
+    return new SecretBuilder(item);
   }
 
   @Override

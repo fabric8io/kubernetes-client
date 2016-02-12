@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.handlers;
 
 import com.squareup.okhttp.OkHttpClient;
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
@@ -33,9 +34,11 @@ import java.util.List;
 
 @Component
 @org.apache.felix.scr.annotations.Service
-public class KubernetesListHandler implements ResourceHandler<KubernetesList> {
+public class KubernetesListHandler implements ResourceHandler<KubernetesList, KubernetesListBuilder> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(KubernetesListHandler.class);
+
+  private interface HasMetadataVisitiableBuilder extends VisitableBuilder<HasMetadata, HasMetadataVisitiableBuilder>{}
 
   @Override
   public String getKind() {
@@ -52,7 +55,7 @@ public class KubernetesListHandler implements ResourceHandler<KubernetesList> {
     List<HasMetadata> replacedItems = new ArrayList<>();
 
     for (HasMetadata metadata : item.getItems()) {
-      ResourceHandler<HasMetadata> handler = Handlers.get(item.getKind());
+      ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> handler = Handlers.get(item.getKind());
       if (handler == null) {
         LOGGER.warn("No handler found for:" + item.getKind() + ". Ignoring");
       } else {
@@ -60,6 +63,11 @@ public class KubernetesListHandler implements ResourceHandler<KubernetesList> {
       }
     }
     return new KubernetesListBuilder(item).withItems(replacedItems).build();
+  }
+
+  @Override
+  public KubernetesListBuilder edit(KubernetesList item) {
+    return new KubernetesListBuilder(item);
   }
 
   @Override

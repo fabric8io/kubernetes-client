@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.openshift.api.model.DeploymentConfig;
+import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.internal.DeploymentConfigOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
@@ -27,7 +28,7 @@ import org.apache.felix.scr.annotations.Service;
 
 @Component
 @Service
-public class DeploymentConfigHandler implements ResourceHandler<DeploymentConfig> {
+public class DeploymentConfigHandler implements ResourceHandler<DeploymentConfig, DeploymentConfigBuilder> {
   @Override
   public String getKind() {
     return DeploymentConfig.class.getSimpleName();
@@ -41,6 +42,11 @@ public class DeploymentConfigHandler implements ResourceHandler<DeploymentConfig
   @Override
   public DeploymentConfig replace(OkHttpClient client, Config config, String namespace, DeploymentConfig item) {
     return new DeploymentConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).replace(item);
+  }
+
+  @Override
+  public DeploymentConfigBuilder edit(DeploymentConfig item) {
+    return new DeploymentConfigBuilder(item);
   }
 
   @Override

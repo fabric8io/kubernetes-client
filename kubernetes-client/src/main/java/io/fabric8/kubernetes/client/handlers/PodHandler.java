@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.handlers;
 import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.Watch;
@@ -29,7 +30,7 @@ import org.apache.felix.scr.annotations.Service;
 
 @Component
 @Service
-public class PodHandler implements ResourceHandler<Pod> {
+public class PodHandler implements ResourceHandler<Pod, PodBuilder> {
 
   @Override
   public String getKind() {
@@ -44,6 +45,11 @@ public class PodHandler implements ResourceHandler<Pod> {
   @Override
   public Pod replace(OkHttpClient client, Config config, String namespace, Pod item) {
     return new PodOperationsImpl(client, config, null, namespace, null, true, item, null, null, null, null, null, null, null, null, false, false, false, null, null, null, false, null).replace(item);
+  }
+
+  @Override
+  public PodBuilder edit(Pod item) {
+    return new PodBuilder(item);
   }
 
   @Override

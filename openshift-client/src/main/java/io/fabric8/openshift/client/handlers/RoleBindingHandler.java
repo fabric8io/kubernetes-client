@@ -19,6 +19,7 @@ import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.openshift.api.model.RoleBinding;
+import io.fabric8.openshift.api.model.RoleBindingBuilder;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.internal.RoleBindingOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
@@ -26,7 +27,7 @@ import org.apache.felix.scr.annotations.Service;
 
 @Component
 @Service
-public class RoleBindingHandler implements ResourceHandler<RoleBinding> {
+public class RoleBindingHandler implements ResourceHandler<RoleBinding, RoleBindingBuilder> {
 
   @Override
   public String getKind() {
@@ -41,6 +42,11 @@ public class RoleBindingHandler implements ResourceHandler<RoleBinding> {
   @Override
   public RoleBinding replace(OkHttpClient client, Config config, String namespace, RoleBinding item) {
     return new RoleBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).replace(item);
+  }
+
+  @Override
+  public RoleBindingBuilder edit(RoleBinding item) {
+    return new RoleBindingBuilder(item);
   }
 
   @Override

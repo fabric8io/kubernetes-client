@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.handlers;
 
 import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.ReplicationController;
+import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.internal.ReplicationControllerOperationsImpl;
@@ -27,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 @Service
-public class ReplicationControllerHandler implements ResourceHandler<ReplicationController> {
+public class ReplicationControllerHandler implements ResourceHandler<ReplicationController, ReplicationControllerBuilder> {
 
   @Override
   public String getKind() {
@@ -41,6 +42,11 @@ public class ReplicationControllerHandler implements ResourceHandler<Replication
   @Override
   public ReplicationController replace(OkHttpClient client, Config config, String namespace, ReplicationController item) {
     return new ReplicationControllerOperationsImpl(client, config, null, namespace, null, true, item, null, false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).replace(item);
+  }
+
+  @Override
+  public ReplicationControllerBuilder edit(ReplicationController item) {
+    return new ReplicationControllerBuilder(item);
   }
 
   @Override

@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.handlers;
 
 import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.SecurityContextConstraints;
+import io.fabric8.kubernetes.api.model.SecurityContextConstraintsBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.internal.SecurityContextConstraintsOperationsImpl;
@@ -25,7 +26,7 @@ import org.apache.felix.scr.annotations.Service;
 
 @Component
 @Service
-public class SecurityContextConstraintsHandler implements ResourceHandler<SecurityContextConstraints> {
+public class SecurityContextConstraintsHandler implements ResourceHandler<SecurityContextConstraints, SecurityContextConstraintsBuilder> {
   @Override
   public String getKind() {
     return SecurityContextConstraints.class.getSimpleName();
@@ -39,6 +40,11 @@ public class SecurityContextConstraintsHandler implements ResourceHandler<Securi
   @Override
   public SecurityContextConstraints replace(OkHttpClient client, Config config, String namespace, SecurityContextConstraints item) {
     return new SecurityContextConstraintsOperationsImpl(client, config, null, namespace, null, true, item, null).replace(item);
+  }
+
+  @Override
+  public SecurityContextConstraintsBuilder edit(SecurityContextConstraints item) {
+    return new SecurityContextConstraintsBuilder(item);
   }
 
   @Override

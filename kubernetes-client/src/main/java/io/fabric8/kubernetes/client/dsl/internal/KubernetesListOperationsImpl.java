@@ -16,12 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.squareup.okhttp.OkHttpClient;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DoneableKubernetesList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -36,7 +31,11 @@ import io.fabric8.kubernetes.client.dsl.ClientKubernetesListOperation;
 import io.fabric8.kubernetes.client.dsl.CreateGettable;
 import io.fabric8.kubernetes.client.dsl.Loadable;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
-import io.fabric8.openshift.api.model.Template;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class KubernetesListOperationsImpl
   extends OperationSupport
@@ -103,8 +102,8 @@ public class KubernetesListOperationsImpl
     return item;
   }
 
-  private <T extends HasMetadata> T create(T resource) {
-    ResourceHandler<T> handler = Handlers.get(resource.getKind());
+  private <T extends HasMetadata, V extends VisitableBuilder<T, V>> T create(T resource) {
+    ResourceHandler<T, V> handler = Handlers.get(resource.getKind());
     if (handler != null) {
       return handler.create(client, config, namespace, resource);
     }

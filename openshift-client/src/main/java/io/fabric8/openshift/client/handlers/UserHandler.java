@@ -19,6 +19,7 @@ import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.openshift.api.model.User;
+import io.fabric8.openshift.api.model.UserBuilder;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.internal.UserOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
@@ -26,7 +27,7 @@ import org.apache.felix.scr.annotations.Service;
 
 @Component
 @Service
-public class UserHandler implements ResourceHandler<User> {
+public class UserHandler implements ResourceHandler<User, UserBuilder> {
 
   @Override
   public String getKind() {
@@ -41,6 +42,11 @@ public class UserHandler implements ResourceHandler<User> {
   @Override
   public User replace(OkHttpClient client, Config config, String namespace, User item) {
     return new UserOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).replace(item);
+  }
+
+  @Override
+  public UserBuilder edit(User item) {
+    return new UserBuilder(item);
   }
 
   @Override

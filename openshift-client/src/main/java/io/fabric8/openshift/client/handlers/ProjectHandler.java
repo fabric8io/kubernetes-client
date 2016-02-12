@@ -16,9 +16,11 @@
 package io.fabric8.openshift.client.handlers;
 
 import com.squareup.okhttp.OkHttpClient;
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.openshift.api.model.Project;
+import io.fabric8.openshift.api.model.ProjectBuilder;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.internal.ProjectOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
@@ -26,7 +28,7 @@ import org.apache.felix.scr.annotations.Service;
 
 @Component
 @Service
-public class ProjectHandler implements ResourceHandler<Project> {
+public class ProjectHandler implements ResourceHandler<Project, ProjectBuilder> {
   @Override
   public String getKind() {
     return Project.class.getSimpleName();
@@ -40,6 +42,11 @@ public class ProjectHandler implements ResourceHandler<Project> {
   @Override
   public Project replace(OkHttpClient client, Config config, String namespace, Project item) {
     return new ProjectOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).replace(item);
+  }
+
+  @Override
+  public ProjectBuilder edit(Project item) {
+    return new ProjectBuilder(item);
   }
 
   @Override

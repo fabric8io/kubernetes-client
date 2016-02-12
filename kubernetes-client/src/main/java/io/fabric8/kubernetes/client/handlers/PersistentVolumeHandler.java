@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.handlers;
 
 import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.PersistentVolume;
+import io.fabric8.kubernetes.api.model.PersistentVolumeBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.internal.PersistentVolumeOperationsImpl;
@@ -25,7 +26,7 @@ import org.apache.felix.scr.annotations.Service;
 
 @Component
 @Service
-public class PersistentVolumeHandler implements ResourceHandler<PersistentVolume> {
+public class PersistentVolumeHandler implements ResourceHandler<PersistentVolume, PersistentVolumeBuilder> {
 
   @Override
   public String getKind() {
@@ -40,6 +41,11 @@ public class PersistentVolumeHandler implements ResourceHandler<PersistentVolume
   @Override
   public PersistentVolume replace(OkHttpClient client, Config config, String namespace, PersistentVolume item) {
     return new PersistentVolumeOperationsImpl(client, config, null, namespace, null, true, item, null).replace(item);
+  }
+
+  @Override
+  public PersistentVolumeBuilder edit(PersistentVolume item) {
+    return new PersistentVolumeBuilder(item);
   }
 
   @Override
