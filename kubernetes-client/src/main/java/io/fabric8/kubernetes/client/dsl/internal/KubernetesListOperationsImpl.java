@@ -36,6 +36,7 @@ import io.fabric8.kubernetes.client.dsl.ClientKubernetesListOperation;
 import io.fabric8.kubernetes.client.dsl.CreateGettable;
 import io.fabric8.kubernetes.client.dsl.Loadable;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
+import io.fabric8.openshift.api.model.Template;
 
 public class KubernetesListOperationsImpl
   extends OperationSupport
@@ -47,6 +48,10 @@ public class KubernetesListOperationsImpl
   private KubernetesList item;
 
   public KubernetesListOperationsImpl(OkHttpClient client, Config config, String namespace) {
+    this(client, config, namespace, null, null, null, null);
+  }
+
+  public KubernetesListOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, KubernetesList item, String resourceVersion) {
     super(client, config, null, null, null, namespace, null);
   }
 

@@ -14,16 +14,9 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client;
+package io.fabric8.kubernetes.client.dsl;
 
+public interface NamespaceGetApplyDeletable<T, B> extends GetApplyDeletable<T, B>, Namespaceable<GetApplyDeletable<T, B>>
+{
 
-import com.squareup.okhttp.OkHttpClient;
-
-public interface ResourceHandler<T> {
-
-  String getKind();
-
-  T create(OkHttpClient client, Config config, String namespace, T item);
-
-  Boolean delete(OkHttpClient client, Config config, String namespace, T item);
 }
