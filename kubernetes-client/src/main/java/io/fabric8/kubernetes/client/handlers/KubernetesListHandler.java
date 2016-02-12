@@ -16,16 +16,27 @@
 package io.fabric8.kubernetes.client.handlers;
 
 import com.squareup.okhttp.OkHttpClient;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
+import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.internal.KubernetesListOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @org.apache.felix.scr.annotations.Service
 public class KubernetesListHandler implements ResourceHandler<KubernetesList> {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(KubernetesListHandler.class);
+
   @Override
   public String getKind() {
     return Service.class.getSimpleName();
@@ -34,6 +45,21 @@ public class KubernetesListHandler implements ResourceHandler<KubernetesList> {
   @Override
   public KubernetesList create(OkHttpClient client, Config config, String namespace, KubernetesList item) {
     return new KubernetesListOperationsImpl(client, config, namespace, null, true, item, null).create();
+  }
+
+  @Override
+  public KubernetesList replace(OkHttpClient client, Config config, String namespace, KubernetesList item) {
+    List<HasMetadata> replacedItems = new ArrayList<>();
+
+    for (HasMetadata metadata : item.getItems()) {
+      ResourceHandler<HasMetadata> handler = Handlers.get(item.getKind());
+      if (handler == null) {
+        LOGGER.warn("No handler found for:" + item.getKind() + ". Ignoring");
+      } else {
+        replacedItems.add(handler.replace(client, config, namespace, metadata));
+      }
+    }
+    return new KubernetesListBuilder(item).withItems(replacedItems).build();
   }
 
   @Override

@@ -40,6 +40,11 @@ public class ProjectRequestHandler implements ResourceHandler<ProjectRequest> {
   }
 
   @Override
+  public ProjectRequest replace(OkHttpClient client, Config config, String namespace, ProjectRequest item) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, ProjectRequest item) {
     throw new UnsupportedOperationException();
   }

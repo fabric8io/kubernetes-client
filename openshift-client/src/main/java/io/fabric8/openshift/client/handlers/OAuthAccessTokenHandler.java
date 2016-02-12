@@ -39,6 +39,11 @@ public class OAuthAccessTokenHandler implements ResourceHandler<OAuthAccessToken
   }
 
   @Override
+  public OAuthAccessToken replace(OkHttpClient client, Config config, String namespace, OAuthAccessToken item) {
+    return new OAuthAccessTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).replace(item);
+  }
+
+  @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, OAuthAccessToken item) {
       return new OAuthAccessTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).delete(item);
     }

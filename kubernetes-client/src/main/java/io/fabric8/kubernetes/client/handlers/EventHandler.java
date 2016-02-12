@@ -38,6 +38,11 @@ public class EventHandler implements ResourceHandler<Event> {
   }
 
   @Override
+  public Event replace(OkHttpClient client, Config config, String namespace, Event item) {
+    return new EventOperationsImpl(client, config, null, namespace, null, true, item, null).replace(item);
+  }
+
+  @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Event item) {
     return new EventOperationsImpl(client, config, null, namespace, null, true, item, null).delete(item);
   }

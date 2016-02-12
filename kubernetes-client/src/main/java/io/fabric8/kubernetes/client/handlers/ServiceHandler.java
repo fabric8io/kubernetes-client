@@ -36,6 +36,11 @@ public class ServiceHandler implements ResourceHandler<Service> {
   }
 
   @Override
+  public Service replace(OkHttpClient client, Config config, String namespace, Service item) {
+    return new ServiceOperationsImpl(client, config, null, namespace, null, true, item, null).replace(item);
+  }
+
+  @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Service item) {
     return new ServiceOperationsImpl(client, config, null, namespace, null, true, item, null).delete(item);
   }

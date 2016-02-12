@@ -38,6 +38,11 @@ public class GroupHandler implements ResourceHandler<Group> {
   }
 
   @Override
+  public Group replace(OkHttpClient client, Config config, String namespace, Group item) {
+    return new GroupOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).replace(item);
+  }
+
+  @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Group item) {
       return new GroupOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).delete(item);
     }

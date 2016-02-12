@@ -35,6 +35,12 @@ public class NodeHandler implements ResourceHandler<Node> {
   public Node create(OkHttpClient client, Config config, String namespace, Node item) {
     return new NodeOperationsImpl(client, config, null, namespace, null, true, item, null).create();
   }
+
+  @Override
+  public Node replace(OkHttpClient client, Config config, String namespace, Node item) {
+    return new NodeOperationsImpl(client, config, null, namespace, null, true, item, null).replace(item);
+  }
+
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Node item) {
     return new NodeOperationsImpl(client, config, null, namespace, null, true, item, null).delete(item);

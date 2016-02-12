@@ -37,6 +37,11 @@ public class SecretHandler implements ResourceHandler<Secret> {
   }
 
   @Override
+  public Secret replace(OkHttpClient client, Config config, String namespace, Secret item) {
+    return new SecretOperationsImpl(client, config, null, namespace, null, true, item, null).replace(item);
+  }
+
+  @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Secret item) {
     return new SecretOperationsImpl(client, config, null, namespace, null, true, item, null).delete(item);
   }

@@ -38,6 +38,11 @@ public class NamespaceHandler implements ResourceHandler<Namespace> {
   }
 
   @Override
+  public Namespace replace(OkHttpClient client, Config config, String namespace, Namespace item) {
+    return new NamespaceOperationsImpl(client, config, null, namespace, null, true, item, null).replace(item);
+  }
+
+  @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Namespace item) {
     return new NamespaceOperationsImpl(client, config, null, namespace, null, true, item, null).delete(item);
   }

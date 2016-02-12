@@ -38,6 +38,11 @@ public class TemplateHandler implements ResourceHandler<Template> {
       return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).create();
   }
 
+  @Override
+  public Template replace(OkHttpClient client, Config config, String namespace, Template item) {
+    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).replace(item);
+  }
+
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Template item) {

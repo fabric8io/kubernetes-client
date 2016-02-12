@@ -39,6 +39,11 @@ public class OAuthClientHandler implements ResourceHandler<OAuthClient> {
   }
 
   @Override
+  public OAuthClient replace(OkHttpClient client, Config config, String namespace, OAuthClient item) {
+    return new OAuthClientOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).replace(item);
+  }
+
+  @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, OAuthClient item) {
       return new OAuthClientOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).delete(item);
     }

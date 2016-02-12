@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 @Service
 public class ReplicationControllerHandler implements ResourceHandler<ReplicationController> {
+
   @Override
   public String getKind() {
     return ReplicationController.class.getSimpleName();
@@ -35,6 +36,11 @@ public class ReplicationControllerHandler implements ResourceHandler<Replication
   @Override
   public ReplicationController create(OkHttpClient client, Config config, String namespace, ReplicationController item) {
     return new ReplicationControllerOperationsImpl(client, config, null, namespace, null, true, item, null, false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).create();
+  }
+
+  @Override
+  public ReplicationController replace(OkHttpClient client, Config config, String namespace, ReplicationController item) {
+    return new ReplicationControllerOperationsImpl(client, config, null, namespace, null, true, item, null, false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).replace(item);
   }
 
   @Override

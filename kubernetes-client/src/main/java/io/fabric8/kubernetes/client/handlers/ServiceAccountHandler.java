@@ -37,6 +37,11 @@ public class ServiceAccountHandler implements ResourceHandler<ServiceAccount> {
   }
 
   @Override
+  public ServiceAccount replace(OkHttpClient client, Config config, String namespace, ServiceAccount item) {
+    return new ServiceAccountOperationsImpl(client, config, null, namespace, null, true, item, null).replace(item);
+  }
+
+  @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, ServiceAccount item) {
     return new ServiceAccountOperationsImpl(client, config, null, namespace, null, true, item, null).delete(item);
   }

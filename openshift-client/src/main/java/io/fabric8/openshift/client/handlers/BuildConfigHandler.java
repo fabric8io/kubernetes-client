@@ -39,6 +39,11 @@ public class BuildConfigHandler implements ResourceHandler<BuildConfig> {
   }
 
   @Override
+  public BuildConfig replace(OkHttpClient client, Config config, String namespace, BuildConfig item) {
+    return new BuildConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, null, null).replace(item);
+  }
+
+  @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, BuildConfig item) {
       return new BuildConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, null, null).delete(item);
   }

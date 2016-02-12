@@ -25,5 +25,7 @@ public interface ResourceHandler<T> {
 
   T create(OkHttpClient client, Config config, String namespace, T item);
 
+  T replace(OkHttpClient client, Config config, String namespace, T item);
+
   Boolean delete(OkHttpClient client, Config config, String namespace, T item);
 }

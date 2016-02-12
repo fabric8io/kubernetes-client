@@ -16,6 +16,7 @@
 package io.fabric8.openshift.client.handlers;
 
 import com.squareup.okhttp.OkHttpClient;
+import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.openshift.api.model.DeploymentConfig;
@@ -35,6 +36,11 @@ public class DeploymentConfigHandler implements ResourceHandler<DeploymentConfig
   @Override
   public DeploymentConfig create(OkHttpClient client, Config config, String namespace, DeploymentConfig item) {
       return new DeploymentConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).create();
+  }
+
+  @Override
+  public DeploymentConfig replace(OkHttpClient client, Config config, String namespace, DeploymentConfig item) {
+    return new DeploymentConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).replace(item);
   }
 
   @Override

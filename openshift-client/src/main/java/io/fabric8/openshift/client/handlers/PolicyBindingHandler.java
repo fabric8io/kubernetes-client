@@ -39,6 +39,11 @@ public class PolicyBindingHandler implements ResourceHandler<PolicyBinding> {
   }
 
   @Override
+  public PolicyBinding replace(OkHttpClient client, Config config, String namespace, PolicyBinding item) {
+    return new PolicyBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).replace(item);
+  }
+
+  @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, PolicyBinding item) {
       return new PolicyBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).delete(item);
     }
