@@ -273,7 +273,7 @@ public class OperationSupport {
     return new KubernetesClientException(sb.toString(), e);
   }
 
-  protected <T> T unmarshal(InputStream is) throws KubernetesClientException {
+  protected static <T> T unmarshal(InputStream is) throws KubernetesClientException {
     try (BufferedInputStream bis = new BufferedInputStream(is)) {
       bis.mark(-1);
       int intch;
@@ -292,7 +292,7 @@ public class OperationSupport {
     }
   }
 
-   protected <T> T unmarshal(InputStream is, Class<T> type) throws KubernetesClientException {
+   protected static <T> T unmarshal(InputStream is, Class<T> type) throws KubernetesClientException {
     try (BufferedInputStream bis = new BufferedInputStream(is)) {
       bis.mark(-1);
       int intch;

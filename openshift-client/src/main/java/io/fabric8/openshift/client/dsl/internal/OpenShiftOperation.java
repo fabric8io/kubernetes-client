@@ -19,9 +19,11 @@ import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
+import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
@@ -88,6 +90,17 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
       return (R) getClass()
         .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, String.class, Boolean.class, getType(), String.class, Boolean.class)
         .newInstance(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), unmarshal(is, getType()), getResourceVersion(), getReloadingFromServer());
+    } catch (Throwable t) {
+      throw KubernetesClientException.launderThrowable(t);
+    }
+  }
+
+  @Override
+  public Gettable<T> fromServer() {
+    try {
+      return (R) getClass()
+              .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, String.class, Boolean.class, getType(), String.class, Boolean.class)
+              .newInstance(client, config, apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), true);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
