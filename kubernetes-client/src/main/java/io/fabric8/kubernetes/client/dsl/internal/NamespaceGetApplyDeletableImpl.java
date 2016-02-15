@@ -141,7 +141,7 @@ public class NamespaceGetApplyDeletableImpl extends OperationSupport implements 
 
     private static <T> ResourceHandler handlerOf(T item) {
         if (item instanceof HasMetadata) {
-            return Handlers.get(((HasMetadata) item).getKind());
+            return Handlers.<HasMetadata, HasMetadataVisitiableBuilder>get(((HasMetadata) item).getKind());
         } else if (item instanceof KubernetesList) {
             return new KubernetesListHandler();
         } else {

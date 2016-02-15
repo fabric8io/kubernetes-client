@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.Handlers;
+import io.fabric8.kubernetes.client.HasMetadataVisitiableBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListMixedOperation;
@@ -120,7 +121,7 @@ public class KubernetesListOperationsImpl
   public Boolean delete(List<KubernetesList> lists) {
     for (KubernetesList list : lists) {
       for (HasMetadata item : list.getItems()) {
-        ResourceHandler handler = (ResourceHandler) Handlers.get(item.getKind());
+        ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> handler = Handlers.get(item.getKind());
         if (!handler.delete(client, config, namespace, item)) {
           return false;
         }
