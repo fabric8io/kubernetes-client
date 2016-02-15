@@ -43,16 +43,18 @@ public class NamespaceGetApplyDeletableImpl extends OperationSupport implements 
 
     private final String namespace;
     private final Boolean fromServer;
-    private final InputStream is;
     private final Object item;
     private final ResourceHandler hanlder;
 
     public NamespaceGetApplyDeletableImpl(OkHttpClient client, Config config, String namespace, Boolean fromServer, InputStream is) {
+        this(client, config, namespace, fromServer, unmarshal(is));
+    }
+
+    public NamespaceGetApplyDeletableImpl(OkHttpClient client, Config config, String namespace, Boolean fromServer, Object item) {
         super(client, config, null, null, null, null, null);
         this.namespace = namespace;
         this.fromServer = fromServer;
-        this.is = is;
-        this.item = unmarshal(is);
+        this.item = item;
         this.hanlder = handlerOf(item);
         if (hanlder == null) {
             throw new KubernetesClientException("No handler found for object:" + item);
@@ -150,11 +152,11 @@ public class NamespaceGetApplyDeletableImpl extends OperationSupport implements 
 
     @Override
     public GetApplyDeletable<List<HasMetadata>, Boolean> inNamespace(String namespace) {
-        return new NamespaceGetApplyDeletableImpl(client, config, namespace, fromServer, is);
+        return new NamespaceGetApplyDeletableImpl(client, config, namespace, fromServer, item);
     }
 
     @Override
     public Gettable<List<HasMetadata>> fromServer() {
-        return new NamespaceGetApplyDeletableImpl(client, config, namespace, true, is);
+        return new NamespaceGetApplyDeletableImpl(client, config, namespace, true, item);
     }
 }
