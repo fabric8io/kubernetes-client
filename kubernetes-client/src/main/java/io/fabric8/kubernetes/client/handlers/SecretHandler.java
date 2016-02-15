@@ -43,6 +43,11 @@ public class SecretHandler implements ResourceHandler<Secret, SecretBuilder> {
   }
 
   @Override
+  public Secret reload(OkHttpClient client, Config config, String namespace, Secret item) {
+    return new SecretOperationsImpl(client, config, null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
   public SecretBuilder edit(Secret item) {
     return new SecretBuilder(item);
   }

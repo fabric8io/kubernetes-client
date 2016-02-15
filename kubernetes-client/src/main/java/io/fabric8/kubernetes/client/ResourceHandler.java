@@ -24,11 +24,50 @@ public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
 
   String getKind();
 
+  /**
+   * Create the specified resource.
+   * @param client        An instance of the http client.
+   * @param config        The client config.
+   * @param namespace     The target namespace.
+   * @param item          The resource to create.
+   * @return              The created resource.
+   */
   T create(OkHttpClient client, Config config, String namespace, T item);
 
+  /**
+   * Replace the specified resource.
+   * @param client        An instance of the http client.
+   * @param config        The client config.
+   * @param namespace     The target namespace.
+   * @param item          The resource to replace.
+   * @return              The created resource.
+   */
   T replace(OkHttpClient client, Config config, String namespace, T item);
 
+  /**
+   * Reload the specified resource (if exists).
+   * @param client        An instance of the http client.
+   * @param config        The client config.
+   * @param namespace     The target namespace.
+   * @param item          The resource to reload.
+   * @return              The reloaded resource.
+   */
+  T reload(OkHttpClient client, Config config, String namespace, T item);
+
+  /**
+   * Edit the specified resource.
+   * @param item          The resource to edit.
+   * @return              The resource editor.
+   */
   V edit(T item);
 
+  /**
+   * Delete the specified resource (if exists).
+   * @param client        An instance of the http client.
+   * @param config        The client config.
+   * @param namespace     The target namespace.
+   * @param item          The resource to delete.
+   * @return              The true if the resource was successfully deleted.
+   */
   Boolean delete(OkHttpClient client, Config config, String namespace, T item);
 }

@@ -45,6 +45,11 @@ public class DeploymentConfigHandler implements ResourceHandler<DeploymentConfig
   }
 
   @Override
+  public DeploymentConfig reload(OkHttpClient client, Config config, String namespace, DeploymentConfig item) {
+    return new DeploymentConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
   public DeploymentConfigBuilder edit(DeploymentConfig item) {
     return new DeploymentConfigBuilder(item);
   }

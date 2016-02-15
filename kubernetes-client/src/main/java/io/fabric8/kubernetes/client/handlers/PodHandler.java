@@ -48,6 +48,11 @@ public class PodHandler implements ResourceHandler<Pod, PodBuilder> {
   }
 
   @Override
+  public Pod reload(OkHttpClient client, Config config, String namespace, Pod item) {
+    return new PodOperationsImpl(client, config, null, namespace, null, true, item, null, false, null, null, null, null, null, null, null, false, false, false, null, null, null, false, null).fromServer().get();
+  }
+
+  @Override
   public PodBuilder edit(Pod item) {
     return new PodBuilder(item);
   }

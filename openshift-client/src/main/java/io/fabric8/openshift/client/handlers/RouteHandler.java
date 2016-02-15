@@ -45,6 +45,11 @@ public class RouteHandler implements ResourceHandler<Route, RouteBuilder> {
   }
 
   @Override
+  public Route reload(OkHttpClient client, Config config, String namespace, Route item) {
+    return new RouteOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
   public RouteBuilder edit(Route item) {
     return new RouteBuilder(item);
   }

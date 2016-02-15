@@ -43,6 +43,11 @@ public class ResourceQuotaHandler implements ResourceHandler<ResourceQuota, Reso
   }
 
   @Override
+  public ResourceQuota reload(OkHttpClient client, Config config, String namespace, ResourceQuota item) {
+    return new ResourceQuotaOperationsImpl(client, config, null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
   public ResourceQuotaBuilder edit(ResourceQuota item) {
     return new ResourceQuotaBuilder(item);
   }

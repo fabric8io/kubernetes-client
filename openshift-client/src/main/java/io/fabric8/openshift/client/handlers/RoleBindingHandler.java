@@ -45,6 +45,11 @@ public class RoleBindingHandler implements ResourceHandler<RoleBinding, RoleBind
   }
 
   @Override
+  public RoleBinding reload(OkHttpClient client, Config config, String namespace, RoleBinding item) {
+    return new RoleBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
   public RoleBindingBuilder edit(RoleBinding item) {
     return new RoleBindingBuilder(item);
   }

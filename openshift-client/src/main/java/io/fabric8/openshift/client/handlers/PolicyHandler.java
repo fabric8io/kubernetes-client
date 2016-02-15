@@ -44,6 +44,11 @@ public class PolicyHandler implements ResourceHandler<Policy, PolicyBuilder> {
   }
 
   @Override
+  public Policy reload(OkHttpClient client, Config config, String namespace, Policy item) {
+    return new PolicyOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
   public PolicyBuilder edit(Policy item) {
     return new PolicyBuilder(item);
   }

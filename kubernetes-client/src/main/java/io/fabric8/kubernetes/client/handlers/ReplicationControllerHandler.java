@@ -45,6 +45,11 @@ public class ReplicationControllerHandler implements ResourceHandler<Replication
   }
 
   @Override
+  public ReplicationController reload(OkHttpClient client, Config config, String namespace, ReplicationController item) {
+    return new ReplicationControllerOperationsImpl(client, config, null, namespace, null, true, item, null, false, false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).fromServer().get();
+  }
+
+  @Override
   public ReplicationControllerBuilder edit(ReplicationController item) {
     return new ReplicationControllerBuilder(item);
   }

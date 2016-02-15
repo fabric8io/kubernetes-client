@@ -45,6 +45,11 @@ public class PolicyBindingHandler implements ResourceHandler<PolicyBinding, Poli
   }
 
   @Override
+  public PolicyBinding reload(OkHttpClient client, Config config, String namespace, PolicyBinding item) {
+    return new PolicyBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
   public PolicyBindingBuilder edit(PolicyBinding item) {
     return new PolicyBindingBuilder(item);
   }

@@ -47,6 +47,11 @@ public class ProjectRequestHandler implements ResourceHandler<ProjectRequest, Pr
   }
 
   @Override
+  public ProjectRequest reload(OkHttpClient client, Config config, String namespace, ProjectRequest item) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
   public ProjectRequestBuilder edit(ProjectRequest item) {
     return new ProjectRequestBuilder(item);
   }

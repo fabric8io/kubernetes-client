@@ -44,6 +44,11 @@ public class GroupHandler implements ResourceHandler<Group, GroupBuilder> {
   }
 
   @Override
+  public Group reload(OkHttpClient client, Config config, String namespace, Group item) {
+    return new GroupOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
   public GroupBuilder edit(Group item) {
     return new GroupBuilder(item);
   }

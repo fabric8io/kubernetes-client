@@ -45,6 +45,11 @@ public class ProjectHandler implements ResourceHandler<Project, ProjectBuilder> 
   }
 
   @Override
+  public Project reload(OkHttpClient client, Config config, String namespace, Project item) {
+    return new ProjectOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
   public ProjectBuilder edit(Project item) {
     return new ProjectBuilder(item);
   }

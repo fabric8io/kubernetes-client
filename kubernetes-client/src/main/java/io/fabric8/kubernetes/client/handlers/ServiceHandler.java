@@ -42,6 +42,11 @@ public class ServiceHandler implements ResourceHandler<Service, ServiceBuilder> 
   }
 
   @Override
+  public Service reload(OkHttpClient client, Config config, String namespace, Service item) {
+    return new ServiceOperationsImpl(client, config, null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
   public ServiceBuilder edit(Service item) {
     return new ServiceBuilder(item);
   }

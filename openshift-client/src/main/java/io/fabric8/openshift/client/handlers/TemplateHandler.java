@@ -45,6 +45,11 @@ public class TemplateHandler implements ResourceHandler<Template, TemplateBuilde
   }
 
   @Override
+  public Template reload(OkHttpClient client, Config config, String namespace, Template item) {
+    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
   public TemplateBuilder edit(Template item) {
     return new TemplateBuilder(item);
   }

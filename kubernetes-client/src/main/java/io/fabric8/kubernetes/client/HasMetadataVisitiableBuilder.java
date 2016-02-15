@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client.dsl;
+package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.client.FromServerGettable;
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.client.handlers.KubernetesListHandler;
 
-public interface GetApplyDeletable<T, B> extends FromServerGettable<T>, Applicable<T>, Deletable<B> {
-}
+public interface HasMetadataVisitiableBuilder extends VisitableBuilder<HasMetadata, HasMetadataVisitiableBuilder> {}

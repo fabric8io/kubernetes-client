@@ -43,6 +43,11 @@ public class ServiceAccountHandler implements ResourceHandler<ServiceAccount, Se
   }
 
   @Override
+  public ServiceAccount reload(OkHttpClient client, Config config, String namespace, ServiceAccount item) {
+    return new ServiceAccountOperationsImpl(client, config, null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
   public ServiceAccountBuilder edit(ServiceAccount item) {
     return new ServiceAccountBuilder(item);
   }

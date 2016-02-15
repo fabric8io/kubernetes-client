@@ -44,6 +44,11 @@ public class NamespaceHandler implements ResourceHandler<Namespace, NamespaceBui
   }
 
   @Override
+  public Namespace reload(OkHttpClient client, Config config, String namespace, Namespace item) {
+    return new NamespaceOperationsImpl(client, config, null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
   public NamespaceBuilder edit(Namespace item) {
     return new NamespaceBuilder(item);
   }

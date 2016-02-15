@@ -44,6 +44,11 @@ public class EventHandler implements ResourceHandler<Event, EventBuilder> {
   }
 
   @Override
+  public Event reload(OkHttpClient client, Config config, String namespace, Event item) {
+    return new EventOperationsImpl(client, config, null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
   public EventBuilder edit(Event item) {
     return new EventBuilder(item);
   }

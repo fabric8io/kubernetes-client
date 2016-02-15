@@ -43,6 +43,11 @@ public class PersistentVolumeClaimHandler implements ResourceHandler<PersistentV
   }
 
   @Override
+  public PersistentVolumeClaim reload(OkHttpClient client, Config config, String namespace, PersistentVolumeClaim item) {
+    return new PersistentVolumeClaimOperationsImpl(client, config, null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
   public PersistentVolumeClaimBuilder edit(PersistentVolumeClaim item) {
     return new PersistentVolumeClaimBuilder(item);
   }

@@ -45,6 +45,11 @@ public class OAuthAccessTokenHandler implements ResourceHandler<OAuthAccessToken
   }
 
   @Override
+  public OAuthAccessToken reload(OkHttpClient client, Config config, String namespace, OAuthAccessToken item) {
+    return new OAuthAccessTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
   public OAuthAccessTokenBuilder edit(OAuthAccessToken item) {
     return new OAuthAccessTokenBuilder(item);
   }

@@ -45,6 +45,11 @@ public class EndpointsHandler implements ResourceHandler<Endpoints, EndpointsBui
   }
 
   @Override
+  public Endpoints reload(OkHttpClient client, Config config, String namespace, Endpoints item) {
+    return new EndpointsOperationsImpl(client, config, null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
   public EndpointsBuilder edit(Endpoints item) {
     return new EndpointsBuilder(item);
   }

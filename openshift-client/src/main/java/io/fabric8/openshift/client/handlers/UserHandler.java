@@ -45,6 +45,11 @@ public class UserHandler implements ResourceHandler<User, UserBuilder> {
   }
 
   @Override
+  public User reload(OkHttpClient client, Config config, String namespace, User item) {
+    return new UserOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
   public UserBuilder edit(User item) {
     return new UserBuilder(item);
   }

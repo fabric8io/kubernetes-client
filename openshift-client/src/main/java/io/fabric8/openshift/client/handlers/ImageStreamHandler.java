@@ -45,6 +45,11 @@ public class ImageStreamHandler implements ResourceHandler<ImageStream, ImageStr
   }
 
   @Override
+  public ImageStream reload(OkHttpClient client, Config config, String namespace, ImageStream item) {
+    return new ImageStreamOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
   public ImageStreamBuilder edit(ImageStream item) {
     return new ImageStreamBuilder(item);
   }

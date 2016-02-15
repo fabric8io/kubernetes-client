@@ -45,6 +45,11 @@ public class OAuthClientHandler implements ResourceHandler<OAuthClient, OAuthCli
   }
 
   @Override
+  public OAuthClient reload(OkHttpClient client, Config config, String namespace, OAuthClient item) {
+    return new OAuthClientOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
   public OAuthClientBuilder edit(OAuthClient item) {
     return new OAuthClientBuilder(item);
   }

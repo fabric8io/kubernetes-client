@@ -43,6 +43,11 @@ public class NodeHandler implements ResourceHandler<Node, NodeBuilder> {
   }
 
   @Override
+  public Node reload(OkHttpClient client, Config config, String namespace, Node item) {
+    return new NodeOperationsImpl(client, config, null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
   public NodeBuilder edit(Node item) {
     return new NodeBuilder(item);
   }

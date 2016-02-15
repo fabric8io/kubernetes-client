@@ -44,6 +44,11 @@ public class OAuthAuthorizeTokenHandler implements ResourceHandler<OAuthAuthoriz
   }
 
   @Override
+  public OAuthAuthorizeToken reload(OkHttpClient client, Config config, String namespace, OAuthAuthorizeToken item) {
+    return new OAuthAuthorizeTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
   public OAuthAuthorizeTokenBuilder edit(OAuthAuthorizeToken item) {
     return new OAuthAuthorizeTokenBuilder(item);
   }

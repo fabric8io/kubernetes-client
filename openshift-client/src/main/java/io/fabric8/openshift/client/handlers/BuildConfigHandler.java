@@ -45,6 +45,11 @@ public class BuildConfigHandler implements ResourceHandler<BuildConfig, BuildCon
   }
 
   @Override
+  public BuildConfig reload(OkHttpClient client, Config config, String namespace, BuildConfig item) {
+    return new BuildConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, null, null).fromServer().get();
+  }
+
+  @Override
   public BuildConfigBuilder edit(BuildConfig item) {
     return new BuildConfigBuilder(item);
   }
