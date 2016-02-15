@@ -68,11 +68,17 @@ public class NamespaceGetApplyDeletableImpl extends OperationSupport implements 
             ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
             HasMetadata r = h.reload(client, config, namespace, meta);
             if (r == null) {
-                result.add(h.create(client, config, namespace, meta));
+                HasMetadata created = h.create(client, config, namespace, meta);
+                if (created != null) {
+                    result.add(created);
+                }
             } else if (ResourceCompare.equals(r, meta)) {
                 LOGGER.debug("Item has not changed. Skipping");
             } else {
-                result.add(h.replace(client, config, namespace, meta));
+                HasMetadata replaced = h.replace(client, config, namespace, meta);
+                if (replaced != null) {
+                    result.add(replaced);
+                }
             }
         }
         return result;
@@ -103,7 +109,10 @@ public class NamespaceGetApplyDeletableImpl extends OperationSupport implements 
             List<HasMetadata> result = new ArrayList<>();
             for (HasMetadata meta : asHasMetadata(item)) {
                 ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
-                result.add(h.reload(client, config, namespace, meta));
+                HasMetadata reloaded = h.reload(client, config, namespace, meta);
+                if (reloaded != null) {
+                    result.add(reloaded);
+                }
             }
             return result;
         } else {
