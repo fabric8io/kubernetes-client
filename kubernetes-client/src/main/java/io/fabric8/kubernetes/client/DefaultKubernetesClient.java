@@ -112,7 +112,7 @@ public class DefaultKubernetesClient extends BaseClient implements KubernetesCli
 
   @Override
   public NamespaceGetApplyDeletable<List<HasMetadata>, Boolean> load(InputStream is) {
-    return new NamespaceGetApplyDeletableImpl(httpClient, getConfiguration(), null, false, is) {
+    return new NamespaceGetApplyDeletableImpl(httpClient, getConfiguration(), getNamespace(), false, is) {
     };
   }
 
