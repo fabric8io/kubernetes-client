@@ -19,7 +19,8 @@ package io.fabric8.kubernetes.client.mock.impl;
 import io.fabric8.kubernetes.api.model.DoneableKubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListMixedOperation;
-import io.fabric8.kubernetes.client.dsl.CreateGettable;
+import io.fabric8.kubernetes.client.dsl.CreateFromServerGettable;
+import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.mock.MockKubernetesListNonNamesapceOperation;
 import io.fabric8.kubernetes.client.mock.MockKubernetesListOperation;
 import io.fabric8.kubernetes.client.mock.Mockable;
@@ -40,7 +41,7 @@ import static org.easymock.EasyMock.expect;
 public class MockKubernetesListOperationImpl  implements
   MockKubernetesListNonNamesapceOperation,
   MockKubernetesListOperation,
-  CreateGettable<KubernetesList, IExpectationSetters<KubernetesList>, DoneableKubernetesList>,
+        CreateFromServerGettable<KubernetesList, IExpectationSetters<KubernetesList>, DoneableKubernetesList>,
   Mockable {
 
   @Override
@@ -53,9 +54,14 @@ public class MockKubernetesListOperationImpl  implements
     return expect(delegate.delete(items));
   }
 
+  @Override
+  public Gettable<IExpectationSetters<KubernetesList>> fromServer() {
+    return null;
+  }
+
   //Dummy interface to use for mocking.
   private interface KubernetesListDelegate extends ClientKubernetesListMixedOperation,
-    CreateGettable<KubernetesList, KubernetesList,DoneableKubernetesList> {
+          CreateFromServerGettable<KubernetesList, KubernetesList,DoneableKubernetesList> {
   }
 
   private final KubernetesListDelegate delegate;
@@ -110,7 +116,7 @@ public class MockKubernetesListOperationImpl  implements
   }
 
   @Override
-  public CreateGettable<KubernetesList, IExpectationSetters<KubernetesList>, DoneableKubernetesList> load(InputStream input) {
+  public CreateFromServerGettable<KubernetesList, IExpectationSetters<KubernetesList>, DoneableKubernetesList> load(InputStream input) {
     if (loadedMockOp == null) {
       loadedMockOp = newInstance();
     }

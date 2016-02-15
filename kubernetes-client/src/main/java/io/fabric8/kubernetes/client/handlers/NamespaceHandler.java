@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.handlers;
 
 import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.Namespace;
+import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceOperationsImpl;
@@ -25,7 +26,7 @@ import org.apache.felix.scr.annotations.Service;
 
 @Component
 @Service
-public class NamespaceHandler implements ResourceHandler<Namespace> {
+public class NamespaceHandler implements ResourceHandler<Namespace, NamespaceBuilder> {
 
   @Override
   public String getKind() {
@@ -34,11 +35,26 @@ public class NamespaceHandler implements ResourceHandler<Namespace> {
 
   @Override
   public Namespace create(OkHttpClient client, Config config, String namespace, Namespace item) {
-    return new NamespaceOperationsImpl(client, config, null, namespace, null, true, item, null).create();
+    return new NamespaceOperationsImpl(client, config, null, namespace, null, true, item, null, false).create();
+  }
+
+  @Override
+  public Namespace replace(OkHttpClient client, Config config, String namespace, Namespace item) {
+    return new NamespaceOperationsImpl(client, config, null, namespace, null, true, item, null, false).replace(item);
+  }
+
+  @Override
+  public Namespace reload(OkHttpClient client, Config config, String namespace, Namespace item) {
+    return new NamespaceOperationsImpl(client, config, null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
+  public NamespaceBuilder edit(Namespace item) {
+    return new NamespaceBuilder(item);
   }
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Namespace item) {
-    return new NamespaceOperationsImpl(client, config, null, namespace, null, true, item, null).delete(item);
+    return new NamespaceOperationsImpl(client, config, null, namespace, null, true, item, null, false).delete(item);
   }
 }

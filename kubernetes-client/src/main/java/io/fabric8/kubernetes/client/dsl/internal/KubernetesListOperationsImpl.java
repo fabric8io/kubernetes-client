@@ -16,37 +16,43 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.squareup.okhttp.OkHttpClient;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DoneableKubernetesList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.Handlers;
+import io.fabric8.kubernetes.client.HasMetadataVisitiableBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListOperation;
-import io.fabric8.kubernetes.client.dsl.CreateGettable;
+import io.fabric8.kubernetes.client.dsl.CreateFromServerGettable;
+import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.Loadable;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class KubernetesListOperationsImpl
   extends OperationSupport
   implements ClientKubernetesListOperation,
   ClientKubernetesListMixedOperation,
-  Loadable<InputStream, CreateGettable<KubernetesList, KubernetesList, DoneableKubernetesList>>,
-  CreateGettable<KubernetesList, KubernetesList, DoneableKubernetesList> {
+  Loadable<InputStream, CreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList>>,
+        CreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList> {
 
   private KubernetesList item;
 
   public KubernetesListOperationsImpl(OkHttpClient client, Config config, String namespace) {
+    this(client, config, namespace, null, null, null, null);
+  }
+
+  public KubernetesListOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, KubernetesList item, String resourceVersion) {
     super(client, config, null, null, null, namespace, null);
   }
 
@@ -88,7 +94,7 @@ public class KubernetesListOperationsImpl
   }
 
   @Override
-  public CreateGettable<KubernetesList, KubernetesList, DoneableKubernetesList> load(InputStream is) {
+  public CreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList> load(InputStream is) {
     item = unmarshal(is, KubernetesList.class);
     return this;
   }
@@ -98,8 +104,8 @@ public class KubernetesListOperationsImpl
     return item;
   }
 
-  private <T extends HasMetadata> T create(T resource) {
-    ResourceHandler<T> handler = Handlers.get(resource.getKind());
+  private <T extends HasMetadata, V extends VisitableBuilder<T, V>> T create(T resource) {
+    ResourceHandler<T, V> handler = Handlers.get(resource.getKind());
     if (handler != null) {
       return handler.create(client, config, namespace, resource);
     }
@@ -115,12 +121,17 @@ public class KubernetesListOperationsImpl
   public Boolean delete(List<KubernetesList> lists) {
     for (KubernetesList list : lists) {
       for (HasMetadata item : list.getItems()) {
-        ResourceHandler handler = (ResourceHandler) Handlers.get(item.getKind());
+        ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> handler = Handlers.get(item.getKind());
         if (!handler.delete(client, config, namespace, item)) {
           return false;
         }
       }
     }
     return true;
+  }
+
+  @Override
+  public Gettable<KubernetesList> fromServer() {
+    return null;
   }
 }

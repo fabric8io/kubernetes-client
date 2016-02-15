@@ -19,6 +19,7 @@ import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.openshift.api.model.BuildConfig;
+import io.fabric8.openshift.api.model.BuildConfigBuilder;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.internal.BuildConfigOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
@@ -26,7 +27,7 @@ import org.apache.felix.scr.annotations.Service;
 
 @Component
 @Service
-public class BuildConfigHandler implements ResourceHandler<BuildConfig> {
+public class BuildConfigHandler implements ResourceHandler<BuildConfig, BuildConfigBuilder> {
 
   @Override
   public String getKind() {
@@ -35,11 +36,26 @@ public class BuildConfigHandler implements ResourceHandler<BuildConfig> {
 
   @Override
   public BuildConfig create(OkHttpClient client, Config config, String namespace, BuildConfig item) {
-      return new BuildConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, null, null).create();
+      return new BuildConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, null, null).create();
+  }
+
+  @Override
+  public BuildConfig replace(OkHttpClient client, Config config, String namespace, BuildConfig item) {
+    return new BuildConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, null, null).replace(item);
+  }
+
+  @Override
+  public BuildConfig reload(OkHttpClient client, Config config, String namespace, BuildConfig item) {
+    return new BuildConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, null, null).fromServer().get();
+  }
+
+  @Override
+  public BuildConfigBuilder edit(BuildConfig item) {
+    return new BuildConfigBuilder(item);
   }
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, BuildConfig item) {
-      return new BuildConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, null, null).delete(item);
+      return new BuildConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, null, null).delete(item);
   }
 }

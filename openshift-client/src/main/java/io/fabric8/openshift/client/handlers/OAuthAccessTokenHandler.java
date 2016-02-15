@@ -19,6 +19,7 @@ import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.openshift.api.model.OAuthAccessToken;
+import io.fabric8.openshift.api.model.OAuthAccessTokenBuilder;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.internal.OAuthAccessTokenOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
@@ -26,7 +27,7 @@ import org.apache.felix.scr.annotations.Service;
 
 @Component
 @Service
-public class OAuthAccessTokenHandler implements ResourceHandler<OAuthAccessToken> {
+public class OAuthAccessTokenHandler implements ResourceHandler<OAuthAccessToken, OAuthAccessTokenBuilder> {
 
   @Override
   public String getKind() {
@@ -35,11 +36,26 @@ public class OAuthAccessTokenHandler implements ResourceHandler<OAuthAccessToken
 
   @Override
   public OAuthAccessToken create(OkHttpClient client, Config config, String namespace, OAuthAccessToken item) {
-      return new OAuthAccessTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).create();
+      return new OAuthAccessTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).create();
+  }
+
+  @Override
+  public OAuthAccessToken replace(OkHttpClient client, Config config, String namespace, OAuthAccessToken item) {
+    return new OAuthAccessTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).replace(item);
+  }
+
+  @Override
+  public OAuthAccessToken reload(OkHttpClient client, Config config, String namespace, OAuthAccessToken item) {
+    return new OAuthAccessTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
+  public OAuthAccessTokenBuilder edit(OAuthAccessToken item) {
+    return new OAuthAccessTokenBuilder(item);
   }
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, OAuthAccessToken item) {
-      return new OAuthAccessTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).delete(item);
+      return new OAuthAccessTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).delete(item);
     }
 }

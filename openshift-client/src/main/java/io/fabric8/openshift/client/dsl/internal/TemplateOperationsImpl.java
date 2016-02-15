@@ -40,11 +40,11 @@ public class TemplateOperationsImpl
   implements TemplateOperation {
 
   public TemplateOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
-    this(client, config, null, namespace, null, true, null, null);
+    this(client, config, null, namespace, null, true, null, null, false);
   }
 
-  public TemplateOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, Template item, String resourceVersion) {
-    super(client, config, null, apiVersion, "templates", namespace, name, cascading, item, resourceVersion);
+  public TemplateOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, Template item, String resourceVersion, Boolean reloadingFromServer) {
+    super(client, config, null, apiVersion, "templates", namespace, name, cascading, item, resourceVersion, reloadingFromServer);
   }
 
   @Override

@@ -28,12 +28,12 @@ public class ComponentStatusOperationsImpl extends HasMetadataOperation<Componen
 ClientResource<ComponentStatus, DoneableComponentStatus>> {
 
 	public ComponentStatusOperationsImpl(OkHttpClient client, Config config, String namespace) {
-		this(client, config, null, namespace, null, true, null, null);
+		this(client, config, null, namespace, null, true, null, null, false);
 	}
 
 
-	public ComponentStatusOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, ComponentStatus item, String resourceVersion) {
-		super(client, config, null, apiVersion, "componentstatuses", namespace, name, cascading, item, resourceVersion);
+	public ComponentStatusOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, ComponentStatus item, String resourceVersion, Boolean reloadingFromServer) {
+		super(client, config, null, apiVersion, "componentstatuses", namespace, name, cascading, item, resourceVersion, reloadingFromServer);
 	}
 
 }

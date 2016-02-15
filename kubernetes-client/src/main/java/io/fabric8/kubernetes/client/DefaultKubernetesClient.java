@@ -37,6 +37,7 @@ import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsList;
 import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventList;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceList;
 import io.fabric8.kubernetes.api.model.Node;
@@ -66,6 +67,8 @@ import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
 import io.fabric8.kubernetes.client.dsl.internal.ComponentStatusOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.NamespaceGetApplyDeletable;
+import io.fabric8.kubernetes.client.dsl.internal.NamespaceGetApplyDeletableImpl;
 import io.fabric8.kubernetes.client.dsl.internal.EndpointsOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.EventOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.KubernetesListOperationsImpl;
@@ -80,6 +83,9 @@ import io.fabric8.kubernetes.client.dsl.internal.SecretOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.SecurityContextConstraintsOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ServiceAccountOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ServiceOperationsImpl;
+
+import java.io.InputStream;
+import java.util.List;
 
 public class DefaultKubernetesClient extends BaseClient implements KubernetesClient {
 
@@ -102,6 +108,12 @@ public class DefaultKubernetesClient extends BaseClient implements KubernetesCli
   @Override
   public ClientMixedOperation<ComponentStatus, ComponentStatusList, DoneableComponentStatus, ClientResource<ComponentStatus, DoneableComponentStatus>> componentstatuses() {
     return new ComponentStatusOperationsImpl(httpClient, getConfiguration(), getNamespace());
+  }
+
+  @Override
+  public NamespaceGetApplyDeletable<List<HasMetadata>, Boolean> load(InputStream is) {
+    return new NamespaceGetApplyDeletableImpl(httpClient, getConfiguration(), null, false, is) {
+    };
   }
 
   @Override

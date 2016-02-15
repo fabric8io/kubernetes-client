@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.handlers;
 
 import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.Service;
+import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.internal.ServiceOperationsImpl;
@@ -24,7 +25,7 @@ import org.apache.felix.scr.annotations.Component;
 
 @Component
 @org.apache.felix.scr.annotations.Service
-public class ServiceHandler implements ResourceHandler<Service> {
+public class ServiceHandler implements ResourceHandler<Service, ServiceBuilder> {
   @Override
   public String getKind() {
     return Service.class.getSimpleName();
@@ -32,11 +33,26 @@ public class ServiceHandler implements ResourceHandler<Service> {
 
   @Override
   public Service create(OkHttpClient client, Config config, String namespace, Service item) {
-    return new ServiceOperationsImpl(client, config, null, namespace, null, true, item, null).create();
+    return new ServiceOperationsImpl(client, config, null, namespace, null, true, item, null, false).create();
+  }
+
+  @Override
+  public Service replace(OkHttpClient client, Config config, String namespace, Service item) {
+    return new ServiceOperationsImpl(client, config, null, namespace, null, true, item, null, false).replace(item);
+  }
+
+  @Override
+  public Service reload(OkHttpClient client, Config config, String namespace, Service item) {
+    return new ServiceOperationsImpl(client, config, null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
+  public ServiceBuilder edit(Service item) {
+    return new ServiceBuilder(item);
   }
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Service item) {
-    return new ServiceOperationsImpl(client, config, null, namespace, null, true, item, null).delete(item);
+    return new ServiceOperationsImpl(client, config, null, namespace, null, true, item, null, false).delete(item);
   }
 }

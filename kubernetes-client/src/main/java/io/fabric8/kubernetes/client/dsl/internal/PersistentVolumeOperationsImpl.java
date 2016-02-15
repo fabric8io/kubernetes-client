@@ -27,11 +27,11 @@ public class PersistentVolumeOperationsImpl
   extends HasMetadataOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, ClientResource<PersistentVolume, DoneablePersistentVolume>> {
 
   public PersistentVolumeOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(client, config, null, namespace, null, true, null, null);
+    this(client, config, null, namespace, null, true, null, null, false);
   }
 
-  public PersistentVolumeOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, PersistentVolume item, String resourceVersion) {
-    super(client, config, null, apiVersion, "persistentvolumes", namespace, name, cascading, item, resourceVersion);
+  public PersistentVolumeOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, PersistentVolume item, String resourceVersion, Boolean reloadingFromServer) {
+    super(client, config, null, apiVersion, "persistentvolumes", namespace, name, cascading, item, resourceVersion, reloadingFromServer);
   }
 
   @Override

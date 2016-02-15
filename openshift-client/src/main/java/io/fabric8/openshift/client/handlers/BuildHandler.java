@@ -19,6 +19,7 @@ import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.openshift.api.model.Build;
+import io.fabric8.openshift.api.model.BuildBuilder;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.internal.BuildOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
@@ -26,7 +27,7 @@ import org.apache.felix.scr.annotations.Service;
 
 @Component
 @Service
-public class BuildHandler implements ResourceHandler<Build> {
+public class BuildHandler implements ResourceHandler<Build, BuildBuilder> {
 
   @Override
   public String getKind() {
@@ -35,11 +36,26 @@ public class BuildHandler implements ResourceHandler<Build> {
 
   @Override
   public Build create(OkHttpClient client, Config config, String namespace, Build item) {
-      return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).create();
+      return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).create();
+  }
+
+  @Override
+  public Build replace(OkHttpClient client, Config config, String namespace, Build item) {
+    return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).replace(item);
+  }
+
+  @Override
+  public Build reload(OkHttpClient client, Config config, String namespace, Build item) {
+    return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
+  public BuildBuilder edit(Build item) {
+    return new BuildBuilder(item);
   }
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Build item) {
-      return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).delete(item);
+      return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).delete(item);
   }
 }

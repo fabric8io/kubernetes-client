@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.handlers;
 
 import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
+import io.fabric8.kubernetes.api.model.PersistentVolumeClaimBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.internal.PersistentVolumeClaimOperationsImpl;
@@ -25,7 +26,7 @@ import org.apache.felix.scr.annotations.Service;
 
 @Component
 @Service
-public class PersistentVolumeClaimHandler implements ResourceHandler<PersistentVolumeClaim> {
+public class PersistentVolumeClaimHandler implements ResourceHandler<PersistentVolumeClaim, PersistentVolumeClaimBuilder> {
   @Override
   public String getKind() {
     return PersistentVolumeClaim.class.getSimpleName();
@@ -33,11 +34,26 @@ public class PersistentVolumeClaimHandler implements ResourceHandler<PersistentV
 
   @Override
   public PersistentVolumeClaim create(OkHttpClient client, Config config, String namespace, PersistentVolumeClaim item) {
-    return new PersistentVolumeClaimOperationsImpl(client, config, null, namespace, null, true, item, null).create();
+    return new PersistentVolumeClaimOperationsImpl(client, config, null, namespace, null, true, item, null, false).create();
+  }
+
+  @Override
+  public PersistentVolumeClaim replace(OkHttpClient client, Config config, String namespace, PersistentVolumeClaim item) {
+    return new PersistentVolumeClaimOperationsImpl(client, config, null, namespace, null, true, item, null, false).replace(item);
+  }
+
+  @Override
+  public PersistentVolumeClaim reload(OkHttpClient client, Config config, String namespace, PersistentVolumeClaim item) {
+    return new PersistentVolumeClaimOperationsImpl(client, config, null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
+  public PersistentVolumeClaimBuilder edit(PersistentVolumeClaim item) {
+    return new PersistentVolumeClaimBuilder(item);
   }
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, PersistentVolumeClaim item) {
-    return new PersistentVolumeClaimOperationsImpl(client, config, null, namespace, null, true, item, null).delete(item);
+    return new PersistentVolumeClaimOperationsImpl(client, config, null, namespace, null, true, item, null, false).delete(item);
   }
 }

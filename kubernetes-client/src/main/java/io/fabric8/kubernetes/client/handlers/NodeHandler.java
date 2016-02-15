@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.handlers;
 
 import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.Node;
+import io.fabric8.kubernetes.api.model.NodeBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.internal.NodeOperationsImpl;
@@ -25,7 +26,7 @@ import org.apache.felix.scr.annotations.Service;
 
 @Component
 @Service
-public class NodeHandler implements ResourceHandler<Node> {
+public class NodeHandler implements ResourceHandler<Node, NodeBuilder> {
   @Override
   public String getKind() {
     return Node.class.getSimpleName();
@@ -33,10 +34,26 @@ public class NodeHandler implements ResourceHandler<Node> {
 
   @Override
   public Node create(OkHttpClient client, Config config, String namespace, Node item) {
-    return new NodeOperationsImpl(client, config, null, namespace, null, true, item, null).create();
+    return new NodeOperationsImpl(client, config, null, namespace, null, true, item, null, false).create();
   }
+
+  @Override
+  public Node replace(OkHttpClient client, Config config, String namespace, Node item) {
+    return new NodeOperationsImpl(client, config, null, namespace, null, true, item, null, false).replace(item);
+  }
+
+  @Override
+  public Node reload(OkHttpClient client, Config config, String namespace, Node item) {
+    return new NodeOperationsImpl(client, config, null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
+  public NodeBuilder edit(Node item) {
+    return new NodeBuilder(item);
+  }
+
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Node item) {
-    return new NodeOperationsImpl(client, config, null, namespace, null, true, item, null).delete(item);
+    return new NodeOperationsImpl(client, config, null, namespace, null, true, item, null, false).delete(item);
   }
 }

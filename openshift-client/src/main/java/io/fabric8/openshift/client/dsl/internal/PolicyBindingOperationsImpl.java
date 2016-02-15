@@ -24,10 +24,10 @@ import io.fabric8.openshift.client.OpenShiftConfig;
 
 public class PolicyBindingOperationsImpl extends OpenShiftOperation<PolicyBinding, PolicyBindingList, DoneablePolicyBinding, ClientResource<PolicyBinding, DoneablePolicyBinding>> {
   public PolicyBindingOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
-    this(client, config, null, namespace, null, true, null, null);
+    this(client, config, null, namespace, null, true, null, null, false);
   }
 
-  public PolicyBindingOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, PolicyBinding item, String resourceVersion) {
-    super(client, config, null, apiVersion, "policybindings", namespace, name, cascading, item, resourceVersion);
+  public PolicyBindingOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, PolicyBinding item, String resourceVersion, Boolean reloadingFromServer) {
+    super(client, config, null, apiVersion, "policybindings", namespace, name, cascading, item, resourceVersion, reloadingFromServer);
   }
 }

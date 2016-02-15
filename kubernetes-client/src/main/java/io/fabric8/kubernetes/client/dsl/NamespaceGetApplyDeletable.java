@@ -13,15 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.model.DoneableKubernetesList;
-import io.fabric8.kubernetes.api.model.KubernetesList;
+public interface NamespaceGetApplyDeletable<T, B> extends GetApplyDeletable<T, B>, Namespaceable<GetApplyDeletable<T, B>>
+{
 
-import java.io.InputStream;
-
-public interface ClientKubernetesListNonNamespaceOperation extends
-  Createable<KubernetesList, KubernetesList, DoneableKubernetesList>,
-  MultiDeleteable<KubernetesList, Boolean>,
-  Loadable<InputStream, CreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList>> {
 }
