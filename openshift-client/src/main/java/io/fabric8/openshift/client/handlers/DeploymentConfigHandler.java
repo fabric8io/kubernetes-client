@@ -36,12 +36,12 @@ public class DeploymentConfigHandler implements ResourceHandler<DeploymentConfig
 
   @Override
   public DeploymentConfig create(OkHttpClient client, Config config, String namespace, DeploymentConfig item) {
-      return new DeploymentConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).create();
+      return new DeploymentConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).create();
   }
 
   @Override
   public DeploymentConfig replace(OkHttpClient client, Config config, String namespace, DeploymentConfig item) {
-    return new DeploymentConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).replace(item);
+    return new DeploymentConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).replace(item);
   }
 
   @Override
@@ -51,6 +51,6 @@ public class DeploymentConfigHandler implements ResourceHandler<DeploymentConfig
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, DeploymentConfig item) {
-      return new DeploymentConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).delete(item);
+      return new DeploymentConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).delete(item);
     }
 }

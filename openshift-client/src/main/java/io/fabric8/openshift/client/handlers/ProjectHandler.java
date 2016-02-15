@@ -36,12 +36,12 @@ public class ProjectHandler implements ResourceHandler<Project, ProjectBuilder> 
 
   @Override
   public Project create(OkHttpClient client, Config config, String namespace, Project item) {
-      return new ProjectOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).create();
+      return new ProjectOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).create();
     }
 
   @Override
   public Project replace(OkHttpClient client, Config config, String namespace, Project item) {
-    return new ProjectOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).replace(item);
+    return new ProjectOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).replace(item);
   }
 
   @Override
@@ -51,6 +51,6 @@ public class ProjectHandler implements ResourceHandler<Project, ProjectBuilder> 
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Project item) {
-      return new ProjectOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).delete(item);
+      return new ProjectOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).delete(item);
     }
 }

@@ -35,12 +35,12 @@ public class GroupHandler implements ResourceHandler<Group, GroupBuilder> {
 
   @Override
   public Group create(OkHttpClient client, Config config, String namespace, Group item) {
-      return new GroupOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).create();
+      return new GroupOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).create();
   }
 
   @Override
   public Group replace(OkHttpClient client, Config config, String namespace, Group item) {
-    return new GroupOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).replace(item);
+    return new GroupOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).replace(item);
   }
 
   @Override
@@ -50,6 +50,6 @@ public class GroupHandler implements ResourceHandler<Group, GroupBuilder> {
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Group item) {
-      return new GroupOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).delete(item);
+      return new GroupOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).delete(item);
     }
 }

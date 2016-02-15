@@ -35,12 +35,12 @@ public class PolicyHandler implements ResourceHandler<Policy, PolicyBuilder> {
 
   @Override
   public Policy create(OkHttpClient client, Config config, String namespace, Policy item) {
-      return new PolicyOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).create();
+      return new PolicyOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).create();
     }
 
   @Override
   public Policy replace(OkHttpClient client, Config config, String namespace, Policy item) {
-    return new PolicyOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).replace(item);
+    return new PolicyOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).replace(item);
   }
 
   @Override
@@ -50,6 +50,6 @@ public class PolicyHandler implements ResourceHandler<Policy, PolicyBuilder> {
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Policy item) {
-      return new PolicyOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).delete(item);
+      return new PolicyOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).delete(item);
     }
 }

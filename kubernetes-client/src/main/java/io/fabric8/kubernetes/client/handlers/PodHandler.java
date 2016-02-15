@@ -39,12 +39,12 @@ public class PodHandler implements ResourceHandler<Pod, PodBuilder> {
 
   @Override
   public Pod create(OkHttpClient client, Config config, String namespace, Pod item) {
-    return new PodOperationsImpl(client, config, null, namespace, null, true, item, null, null, null, null, null, null, null, null, false, false, false, null, null, null, false, null).create();
+    return new PodOperationsImpl(client, config, null, namespace, null, true, item, null, false, null, null, null, null, null, null, null, false, false, false, null, null, null, false, null).create();
   }
 
   @Override
   public Pod replace(OkHttpClient client, Config config, String namespace, Pod item) {
-    return new PodOperationsImpl(client, config, null, namespace, null, true, item, null, null, null, null, null, null, null, null, false, false, false, null, null, null, false, null).replace(item);
+    return new PodOperationsImpl(client, config, null, namespace, null, true, item, null, false, null, null, null, null, null, null, null, false, false, false, null, null, null, false, null).replace(item);
   }
 
   @Override
@@ -54,6 +54,6 @@ public class PodHandler implements ResourceHandler<Pod, PodBuilder> {
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Pod item) {
-    return new PodOperationsImpl(client, config, null, namespace, null, true, item, null, null, null, null, null, null, null, null, false, false, false, null, null, null, false, null).delete(item);
+    return new PodOperationsImpl(client, config, null, namespace, null, true, item, null, false, null, null, null, null, null, null, null, false, false, false, null, null, null, false, null).delete(item);
   }
 }

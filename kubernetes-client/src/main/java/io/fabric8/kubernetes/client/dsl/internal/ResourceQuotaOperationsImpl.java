@@ -27,11 +27,11 @@ public class ResourceQuotaOperationsImpl extends HasMetadataOperation<ResourceQu
   ClientResource<ResourceQuota, DoneableResourceQuota>> {
 
   public ResourceQuotaOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(client, config, null, namespace, null, true, null, null);
+    this(client, config, null, namespace, null, true, null, null, false);
 
   }
 
-  public ResourceQuotaOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, ResourceQuota item, String resourceVersion) {
-    super(client, config, null, apiVersion, "resourcequotas", namespace, name, cascading, item, resourceVersion);
+  public ResourceQuotaOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, ResourceQuota item, String resourceVersion, Boolean reloadingFromServer) {
+    super(client, config, null, apiVersion, "resourcequotas", namespace, name, cascading, item, resourceVersion, reloadingFromServer);
   }
 }

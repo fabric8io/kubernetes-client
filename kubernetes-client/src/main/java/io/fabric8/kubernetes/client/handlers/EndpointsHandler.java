@@ -36,12 +36,12 @@ public class EndpointsHandler implements ResourceHandler<Endpoints, EndpointsBui
 
   @Override
   public Endpoints create(OkHttpClient client, Config config, String namespace, Endpoints item) {
-    return new EndpointsOperationsImpl(client, config, null, namespace, null, true, item, null).create();
+    return new EndpointsOperationsImpl(client, config, null, namespace, null, true, item, null, false).create();
   }
 
   @Override
   public Endpoints replace(OkHttpClient client, Config config, String namespace, Endpoints item) {
-    return new EndpointsOperationsImpl(client, config, null, namespace, null, true, item, null).replace(item);
+    return new EndpointsOperationsImpl(client, config, null, namespace, null, true, item, null, false).replace(item);
   }
 
   @Override
@@ -51,6 +51,6 @@ public class EndpointsHandler implements ResourceHandler<Endpoints, EndpointsBui
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Endpoints item) {
-    return new EndpointsOperationsImpl(client, config, null, namespace, null, true, item, null).delete(item);
+    return new EndpointsOperationsImpl(client, config, null, namespace, null, true, item, null, false).delete(item);
   }
 }

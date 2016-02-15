@@ -26,5 +26,5 @@ package io.fabric8.kubernetes.client.dsl;
  * @param <H>   The type of {@link io.fabric8.kubernetes.client.Watch}.
  * @param <W>   The type of {@link io.fabric8.kubernetes.client.Watcher}.
  */
-public interface Resource<I, T, D, B, H, W> extends CreateGettable<I, T, D>, Updateable<I, T>, CascadingEditReplaceDeletable<I, T, D, B>, VersionWatchable<H, W> {
+public interface Resource<I, T, D, B, H, W> extends CreateFromServerGettable<I, T, D>, Updateable<I, T>, CascadingEditReplaceDeletable<I, T, D, B>, VersionWatchable<H, W> {
 }

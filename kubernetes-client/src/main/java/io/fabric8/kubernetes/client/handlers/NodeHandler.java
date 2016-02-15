@@ -34,12 +34,12 @@ public class NodeHandler implements ResourceHandler<Node, NodeBuilder> {
 
   @Override
   public Node create(OkHttpClient client, Config config, String namespace, Node item) {
-    return new NodeOperationsImpl(client, config, null, namespace, null, true, item, null).create();
+    return new NodeOperationsImpl(client, config, null, namespace, null, true, item, null, false).create();
   }
 
   @Override
   public Node replace(OkHttpClient client, Config config, String namespace, Node item) {
-    return new NodeOperationsImpl(client, config, null, namespace, null, true, item, null).replace(item);
+    return new NodeOperationsImpl(client, config, null, namespace, null, true, item, null, false).replace(item);
   }
 
   @Override
@@ -49,6 +49,6 @@ public class NodeHandler implements ResourceHandler<Node, NodeBuilder> {
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Node item) {
-    return new NodeOperationsImpl(client, config, null, namespace, null, true, item, null).delete(item);
+    return new NodeOperationsImpl(client, config, null, namespace, null, true, item, null, false).delete(item);
   }
 }

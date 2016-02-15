@@ -34,12 +34,12 @@ public class ResourceQuotaHandler implements ResourceHandler<ResourceQuota, Reso
 
   @Override
   public ResourceQuota create(OkHttpClient client, Config config, String namespace, ResourceQuota item) {
-    return new ResourceQuotaOperationsImpl(client, config, null, namespace, null, true, item, null).create();
+    return new ResourceQuotaOperationsImpl(client, config, null, namespace, null, true, item, null, false).create();
   }
 
   @Override
   public ResourceQuota replace(OkHttpClient client, Config config, String namespace, ResourceQuota item) {
-    return new ResourceQuotaOperationsImpl(client, config, null, namespace, null, true, item, null).replace(item);
+    return new ResourceQuotaOperationsImpl(client, config, null, namespace, null, true, item, null, false).replace(item);
   }
 
   @Override
@@ -49,6 +49,6 @@ public class ResourceQuotaHandler implements ResourceHandler<ResourceQuota, Reso
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, ResourceQuota item) {
-    return new ResourceQuotaOperationsImpl(client, config, null, namespace, null, true, item, null).delete(item);
+    return new ResourceQuotaOperationsImpl(client, config, null, namespace, null, true, item, null, false).delete(item);
   }
 }

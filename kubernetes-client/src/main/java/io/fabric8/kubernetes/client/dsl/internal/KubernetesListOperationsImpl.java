@@ -28,7 +28,8 @@ import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListOperation;
-import io.fabric8.kubernetes.client.dsl.CreateGettable;
+import io.fabric8.kubernetes.client.dsl.CreateFromServerGettable;
+import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.Loadable;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 
@@ -41,8 +42,8 @@ public class KubernetesListOperationsImpl
   extends OperationSupport
   implements ClientKubernetesListOperation,
   ClientKubernetesListMixedOperation,
-  Loadable<InputStream, CreateGettable<KubernetesList, KubernetesList, DoneableKubernetesList>>,
-  CreateGettable<KubernetesList, KubernetesList, DoneableKubernetesList> {
+  Loadable<InputStream, CreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList>>,
+        CreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList> {
 
   private KubernetesList item;
 
@@ -92,7 +93,7 @@ public class KubernetesListOperationsImpl
   }
 
   @Override
-  public CreateGettable<KubernetesList, KubernetesList, DoneableKubernetesList> load(InputStream is) {
+  public CreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList> load(InputStream is) {
     item = unmarshal(is, KubernetesList.class);
     return this;
   }
@@ -126,5 +127,10 @@ public class KubernetesListOperationsImpl
       }
     }
     return true;
+  }
+
+  @Override
+  public Gettable<KubernetesList> fromServer() {
+    return null;
   }
 }

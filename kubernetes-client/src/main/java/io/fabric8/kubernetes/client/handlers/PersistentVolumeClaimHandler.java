@@ -34,12 +34,12 @@ public class PersistentVolumeClaimHandler implements ResourceHandler<PersistentV
 
   @Override
   public PersistentVolumeClaim create(OkHttpClient client, Config config, String namespace, PersistentVolumeClaim item) {
-    return new PersistentVolumeClaimOperationsImpl(client, config, null, namespace, null, true, item, null).create();
+    return new PersistentVolumeClaimOperationsImpl(client, config, null, namespace, null, true, item, null, false).create();
   }
 
   @Override
   public PersistentVolumeClaim replace(OkHttpClient client, Config config, String namespace, PersistentVolumeClaim item) {
-    return new PersistentVolumeClaimOperationsImpl(client, config, null, namespace, null, true, item, null).replace(item);
+    return new PersistentVolumeClaimOperationsImpl(client, config, null, namespace, null, true, item, null, false).replace(item);
   }
 
   @Override
@@ -49,6 +49,6 @@ public class PersistentVolumeClaimHandler implements ResourceHandler<PersistentV
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, PersistentVolumeClaim item) {
-    return new PersistentVolumeClaimOperationsImpl(client, config, null, namespace, null, true, item, null).delete(item);
+    return new PersistentVolumeClaimOperationsImpl(client, config, null, namespace, null, true, item, null, false).delete(item);
   }
 }

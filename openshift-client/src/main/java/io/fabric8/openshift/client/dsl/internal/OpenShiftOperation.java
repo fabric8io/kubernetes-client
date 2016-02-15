@@ -32,8 +32,8 @@ import java.net.URL;
 public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
   extends HasMetadataOperation<T, L, D, R> {
 
-  protected OpenShiftOperation(OkHttpClient client, OpenShiftConfig config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion) {
-    super(client, config, apiGroup, apiVersion, resourceT, namespace, name, cascading, item, resourceVersion);
+  protected OpenShiftOperation(OkHttpClient client, OpenShiftConfig config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer) {
+    super(client, config, apiGroup, apiVersion, resourceT, namespace, name, cascading, item, resourceVersion, reloadingFromServer);
   }
 
   @Override
@@ -52,8 +52,8 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
     }
     try {
       return (R) getClass()
-        .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, String.class, Boolean.class, getType(), String.class)
-        .newInstance(client, getConfig(), getAPIVersion(), getNamespace(), name, isCascading(), getItem(), getResourceVersion());
+        .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, String.class, Boolean.class, getType(), String.class, Boolean.class)
+        .newInstance(client, getConfig(), getAPIVersion(), getNamespace(), name, isCascading(), getItem(), getResourceVersion(), getReloadingFromServer());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -63,8 +63,8 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
   public OpenShiftOperation<T, L, D, R> inNamespace(String namespace) {
     try {
       return getClass()
-        .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, String.class, Boolean.class, getType(), String.class)
-        .newInstance(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion());
+        .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, String.class, Boolean.class, getType(), String.class, Boolean.class)
+        .newInstance(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), getReloadingFromServer());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -75,8 +75,8 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
   public EditReplaceDeletable<T, T, D, Boolean> cascading(boolean enabled) {
     try {
       return (R) getClass()
-        .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, String.class, Boolean.class, getType(), String.class)
-        .newInstance(client, getConfig(), getAPIVersion(), getNamespace(), getName(), enabled, getItem(), getResourceVersion());
+        .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, String.class, Boolean.class, getType(), String.class, Boolean.class)
+        .newInstance(client, getConfig(), getAPIVersion(), getNamespace(), getName(), enabled, getItem(), getResourceVersion(), getReloadingFromServer());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -86,8 +86,8 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
   public R load(InputStream is) {
     try {
       return (R) getClass()
-        .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, String.class, Boolean.class, getType(), String.class)
-        .newInstance(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), unmarshal(is, getType()), getResourceVersion());
+        .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, String.class, Boolean.class, getType(), String.class, Boolean.class)
+        .newInstance(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), unmarshal(is, getType()), getResourceVersion(), getReloadingFromServer());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }

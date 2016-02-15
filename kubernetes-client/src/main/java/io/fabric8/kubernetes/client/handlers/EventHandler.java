@@ -35,12 +35,12 @@ public class EventHandler implements ResourceHandler<Event, EventBuilder> {
 
   @Override
   public Event create(OkHttpClient client, Config config, String namespace, Event item) {
-    return new EventOperationsImpl(client, config, null, namespace, null, true, item, null).create();
+    return new EventOperationsImpl(client, config, null, namespace, null, true, item, null, false).create();
   }
 
   @Override
   public Event replace(OkHttpClient client, Config config, String namespace, Event item) {
-    return new EventOperationsImpl(client, config, null, namespace, null, true, item, null).replace(item);
+    return new EventOperationsImpl(client, config, null, namespace, null, true, item, null, false).replace(item);
   }
 
   @Override
@@ -50,6 +50,6 @@ public class EventHandler implements ResourceHandler<Event, EventBuilder> {
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Event item) {
-    return new EventOperationsImpl(client, config, null, namespace, null, true, item, null).delete(item);
+    return new EventOperationsImpl(client, config, null, namespace, null, true, item, null, false).delete(item);
   }
 }

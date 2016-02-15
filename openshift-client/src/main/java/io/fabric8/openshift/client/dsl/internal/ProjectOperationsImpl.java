@@ -26,11 +26,11 @@ public class ProjectOperationsImpl extends OpenShiftOperation<Project, ProjectLi
   ClientResource<Project, DoneableProject>> {
 
   public ProjectOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
-    this(client, config, null, null, null, true, null, null);
+    this(client, config, null, null, null, true, null, null, false);
   }
 
-  public ProjectOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, Project item, String resourceVersion) {
-    super(client, config, null, apiVersion, "projects", namespace, name, cascading, item, resourceVersion);
+  public ProjectOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, Project item, String resourceVersion, Boolean reloadingFromServer) {
+    super(client, config, null, apiVersion, "projects", namespace, name, cascading, item, resourceVersion, reloadingFromServer);
   }
 
 

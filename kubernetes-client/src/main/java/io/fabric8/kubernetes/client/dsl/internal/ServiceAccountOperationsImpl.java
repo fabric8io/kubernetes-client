@@ -26,10 +26,10 @@ import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 public class ServiceAccountOperationsImpl extends HasMetadataOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, ClientResource<ServiceAccount, DoneableServiceAccount>> {
 
   public ServiceAccountOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(client, config, null, namespace, null, true, null, null);
+    this(client, config, null, namespace, null, true, null, null, false);
   }
 
-  public ServiceAccountOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, ServiceAccount item, String resourceVersion) {
-    super(client, config, null, apiVersion, "serviceaccounts", namespace, name, cascading, item, resourceVersion);
+  public ServiceAccountOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, ServiceAccount item, String resourceVersion, Boolean reloadingFromServer) {
+    super(client, config, null, apiVersion, "serviceaccounts", namespace, name, cascading, item, resourceVersion, reloadingFromServer);
   }
 }

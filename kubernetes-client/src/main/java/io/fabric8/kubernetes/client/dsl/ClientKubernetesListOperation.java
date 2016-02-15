@@ -23,5 +23,5 @@ import java.io.InputStream;
 public interface ClientKubernetesListOperation extends
   Namespaceable<ClientKubernetesListNonNamespaceOperation>,
   MultiDeleteable<KubernetesList, Boolean>,
-  Loadable<InputStream, CreateGettable<KubernetesList,KubernetesList,DoneableKubernetesList>> {
+  Loadable<InputStream, CreateFromServerGettable<KubernetesList,KubernetesList,DoneableKubernetesList>> {
 }

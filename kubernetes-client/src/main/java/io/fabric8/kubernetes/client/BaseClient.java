@@ -132,7 +132,7 @@ public abstract class BaseClient implements Client {
 
   @Override
   public RootPaths rootPaths() {
-    return new BaseOperation(httpClient, configuration, null, null, "", null, null, false, null, null, RootPaths.class, null, null) {
+    return new BaseOperation(httpClient, configuration, null, null, "", null, null, false, null, null, false, RootPaths.class, null, null) {
     }.getRootPaths();
   }
 }

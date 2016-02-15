@@ -36,12 +36,12 @@ public class BuildHandler implements ResourceHandler<Build, BuildBuilder> {
 
   @Override
   public Build create(OkHttpClient client, Config config, String namespace, Build item) {
-      return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).create();
+      return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).create();
   }
 
   @Override
   public Build replace(OkHttpClient client, Config config, String namespace, Build item) {
-    return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).replace(item);
+    return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).replace(item);
   }
 
   @Override
@@ -51,6 +51,6 @@ public class BuildHandler implements ResourceHandler<Build, BuildBuilder> {
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Build item) {
-      return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).delete(item);
+      return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).delete(item);
   }
 }
