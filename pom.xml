@@ -79,6 +79,7 @@
     <okio.version>1.6.0</okio.version>
     <easymock.version>3.4</easymock.version>
     <felix.scr.annotations.version>1.9.8</felix.scr.annotations.version>
+    <generex.version>0.0.4</generex.version>
     <jackson.version>2.7.0</jackson.version>
     <junit.version>4.12</junit.version>
     <kubernetes.model.version>1.0.41</kubernetes.model.version>
