@@ -36,6 +36,8 @@
     </osgi.import>
     <osgi.export>
       io.fabric8.kubernetes.client*,
+      dk.brics.automaton*,
+      com.mifmif*,
       com.squareup*,
       okio*
     </osgi.export>
@@ -178,6 +180,12 @@
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
       <version>${jackson.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.mifmif</groupId>
+      <artifactId>generex</artifactId>
+      <version>${generex.version}</version>
     </dependency>
 
     <!-- Compile Only Dependencies -->

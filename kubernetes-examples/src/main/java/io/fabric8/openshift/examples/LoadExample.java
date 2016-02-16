@@ -41,8 +41,26 @@ public class LoadExample {
         OpenShiftClient client = kubernetesClient.adapt(OpenShiftClient.class);
 
         List<HasMetadata> list = client.load(TemplateExample.class.getResourceAsStream("/test-template.yml")).get();
+        System.out.println("Found in file:" + list.size() + " items.");
         for (HasMetadata meta : list) {
-            System.out.println("Loaded " + meta.getKind() + ":" + meta.getMetadata().getName());
+            System.out.println(meta.getKind() + ":" + meta.getMetadata().getName());
         }
+
+
+        list = client.load(TemplateExample.class.getResourceAsStream("/test-template.yml")).fromServer().get();
+        System.out.println("Found on server:" + list.size() + " items.");
+        for (HasMetadata meta : list) {
+            System.out.println( meta.getKind() + ":" + meta.getMetadata().getName());
+        }
+
+        list = client.load(TemplateExample.class.getResourceAsStream("/test-template.yml")).apply();
+        System.out.println("Applied:" + list.size() + " items.");
+        for (HasMetadata meta : list) {
+            System.out.println( meta.getKind() + ":" + meta.getMetadata().getName());
+        }
+
+        Boolean result = client.load(TemplateExample.class.getResourceAsStream("/test-template.yml")).delete();
+        System.out.println("Deleted:" + result);
+
     }
 }
