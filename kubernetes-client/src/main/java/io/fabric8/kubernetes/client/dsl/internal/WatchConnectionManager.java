@@ -120,9 +120,9 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
       @Override
       public void onFailure(IOException e, Response response) {
         if (!forceClosed.get()) {
-          if (response != null) {
-            try {
-              Status responseStatus = mapper.readValue(response.body().byteStream(), Status.class);
+          if (response != null && response.body() != null) {
+            try (ResponseBody body = response.body()) {
+              Status responseStatus = mapper.readValue(body.byteStream(), Status.class);
               watcher.onClose(
                 new KubernetesClientException("Connection unexpectedly closed", response.code(),
                                               responseStatus));
