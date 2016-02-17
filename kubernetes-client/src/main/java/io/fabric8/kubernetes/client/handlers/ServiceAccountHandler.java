@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.handlers;
 
 import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
+import io.fabric8.kubernetes.api.model.ServiceAccountBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.internal.ServiceAccountOperationsImpl;
@@ -25,7 +26,7 @@ import org.apache.felix.scr.annotations.Service;
 
 @Component
 @Service
-public class ServiceAccountHandler implements ResourceHandler<ServiceAccount> {
+public class ServiceAccountHandler implements ResourceHandler<ServiceAccount, ServiceAccountBuilder> {
   @Override
   public String getKind() {
     return ServiceAccount.class.getSimpleName();
@@ -33,11 +34,26 @@ public class ServiceAccountHandler implements ResourceHandler<ServiceAccount> {
 
   @Override
   public ServiceAccount create(OkHttpClient client, Config config, String namespace, ServiceAccount item) {
-    return new ServiceAccountOperationsImpl(client, config, null, namespace, null, true, item, null).create();
+    return new ServiceAccountOperationsImpl(client, config, null, namespace, null, true, item, null, false).create();
+  }
+
+  @Override
+  public ServiceAccount replace(OkHttpClient client, Config config, String namespace, ServiceAccount item) {
+    return new ServiceAccountOperationsImpl(client, config, null, namespace, null, true, item, null, false).replace(item);
+  }
+
+  @Override
+  public ServiceAccount reload(OkHttpClient client, Config config, String namespace, ServiceAccount item) {
+    return new ServiceAccountOperationsImpl(client, config, null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
+  public ServiceAccountBuilder edit(ServiceAccount item) {
+    return new ServiceAccountBuilder(item);
   }
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, ServiceAccount item) {
-    return new ServiceAccountOperationsImpl(client, config, null, namespace, null, true, item, null).delete(item);
+    return new ServiceAccountOperationsImpl(client, config, null, namespace, null, true, item, null, false).delete(item);
   }
 }

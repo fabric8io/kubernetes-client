@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 
 import java.util.HashMap;
@@ -37,15 +38,15 @@ public final class Handlers {
     }
   }
 
-  public static <T extends HasMetadata, C extends Client> void register(ResourceHandler<T> handler) {
+  public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> void register(ResourceHandler<T,V> handler) {
     RESOURCE_HANDLER_MAP.put(handler.getKind().toLowerCase(), handler);
   }
 
-  public static <T extends HasMetadata, C extends Client> void unregister(ResourceHandler<T> handler) {
+  public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> void unregister(ResourceHandler<T,V> handler) {
     RESOURCE_HANDLER_MAP.remove(handler.getKind().toLowerCase());
   }
 
-  public static <T extends HasMetadata, C extends Client> ResourceHandler<T> get(String kind) {
+  public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> get(String kind) {
     return RESOURCE_HANDLER_MAP.get(kind.toLowerCase());
   }
 }

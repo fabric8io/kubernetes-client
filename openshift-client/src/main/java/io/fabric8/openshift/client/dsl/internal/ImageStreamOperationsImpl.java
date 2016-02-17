@@ -26,10 +26,10 @@ public class ImageStreamOperationsImpl extends OpenShiftOperation<ImageStream, I
   ClientResource<ImageStream, DoneableImageStream>> {
 
   public ImageStreamOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
-    this(client, config, null, namespace, null, true, null, null);
+    this(client, config, null, namespace, null, true, null, null, false);
   }
 
-  public ImageStreamOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, ImageStream item, String resourceVersion) {
-    super(client, config, null, apiVersion, "imagestreams", namespace, name, cascading, item, resourceVersion);
+  public ImageStreamOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, ImageStream item, String resourceVersion, Boolean reloadingFromServer) {
+    super(client, config, null, apiVersion, "imagestreams", namespace, name, cascading, item, resourceVersion, reloadingFromServer);
   }
 }

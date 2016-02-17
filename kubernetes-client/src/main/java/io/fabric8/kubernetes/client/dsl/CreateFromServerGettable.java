@@ -16,5 +16,7 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface CreateGettable<I, T, D> extends Createable<I, T, D>, Gettable<T> {
+import io.fabric8.kubernetes.client.FromServerGettable;
+
+public interface CreateFromServerGettable<I, T, D> extends Createable<I, T, D>, FromServerGettable<T> {
 }

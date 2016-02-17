@@ -19,6 +19,7 @@ import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.openshift.api.model.OAuthAuthorizeToken;
+import io.fabric8.openshift.api.model.OAuthAuthorizeTokenBuilder;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.internal.OAuthAuthorizeTokenOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
@@ -26,7 +27,7 @@ import org.apache.felix.scr.annotations.Service;
 
 @Component
 @Service
-public class OAuthAuthorizeTokenHandler implements ResourceHandler<OAuthAuthorizeToken> {
+public class OAuthAuthorizeTokenHandler implements ResourceHandler<OAuthAuthorizeToken, OAuthAuthorizeTokenBuilder> {
 
   @Override
   public String getKind() {
@@ -34,11 +35,26 @@ public class OAuthAuthorizeTokenHandler implements ResourceHandler<OAuthAuthoriz
   }
   @Override
   public OAuthAuthorizeToken create(OkHttpClient client, Config config, String namespace, OAuthAuthorizeToken item) {
-      return new OAuthAuthorizeTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).create();
+      return new OAuthAuthorizeTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).create();
+  }
+
+  @Override
+  public OAuthAuthorizeToken replace(OkHttpClient client, Config config, String namespace, OAuthAuthorizeToken item) {
+    return new OAuthAuthorizeTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).replace(item);
+  }
+
+  @Override
+  public OAuthAuthorizeToken reload(OkHttpClient client, Config config, String namespace, OAuthAuthorizeToken item) {
+    return new OAuthAuthorizeTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
+  public OAuthAuthorizeTokenBuilder edit(OAuthAuthorizeToken item) {
+    return new OAuthAuthorizeTokenBuilder(item);
   }
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, OAuthAuthorizeToken item) {
-      return new OAuthAuthorizeTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).delete(item);
+      return new OAuthAuthorizeTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).delete(item);
   }
 }

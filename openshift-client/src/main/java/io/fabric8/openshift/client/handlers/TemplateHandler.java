@@ -19,6 +19,7 @@ import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.openshift.api.model.Template;
+import io.fabric8.openshift.api.model.TemplateBuilder;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.internal.TemplateOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
@@ -26,7 +27,7 @@ import org.apache.felix.scr.annotations.Service;
 
 @Component
 @Service
-public class TemplateHandler implements ResourceHandler<Template> {
+public class TemplateHandler implements ResourceHandler<Template, TemplateBuilder> {
 
   @Override
   public String getKind() {
@@ -35,12 +36,27 @@ public class TemplateHandler implements ResourceHandler<Template> {
 
   @Override
   public Template create(OkHttpClient client, Config config, String namespace, Template item) {
-      return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).create();
+      return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).create();
+  }
+
+  @Override
+  public Template replace(OkHttpClient client, Config config, String namespace, Template item) {
+    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).replace(item);
+  }
+
+  @Override
+  public Template reload(OkHttpClient client, Config config, String namespace, Template item) {
+    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
+  public TemplateBuilder edit(Template item) {
+    return new TemplateBuilder(item);
   }
 
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Template item) {
-      return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).delete(item);
+      return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).delete(item);
   }
 }

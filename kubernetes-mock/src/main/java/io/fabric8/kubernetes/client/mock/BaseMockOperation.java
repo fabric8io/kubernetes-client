@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
+import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.Watchable;
 import org.easymock.EasyMock;
@@ -68,6 +69,7 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
 
   private BaseMockOperation loadedMockOp;
   private BaseMockOperation allNamespacesOp;
+  private BaseMockOperation fromServerOp;
   private Map<IArgumentMatcher, BaseMockOperation> nameMap = new HashMap<>();
   private Map<IArgumentMatcher, BaseMockOperation> namespaceMap = new HashMap<>();
   private Map<IArgumentMatcher, BaseMockOperation> resourceVersionMap = new HashMap<>();
@@ -384,5 +386,17 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   @Override
   public IExpectationSetters<Watch> watch(String resourceVersion, Watcher<T> watcher) {
     throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Gettable<IExpectationSetters<T>> fromServer() {
+    BaseMockOperation<T, L, D, B, R, E> op = fromServerOp;
+    if (op == null) {
+      op = newInstance();
+      expect(delegate.fromServer()).andReturn(op.getDelegate()).anyTimes();
+      nested.add(op);
+    }
+    fromServerOp = op;
+    return op;
   }
 }

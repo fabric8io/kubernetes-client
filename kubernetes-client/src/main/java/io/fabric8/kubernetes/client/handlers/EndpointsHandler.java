@@ -16,7 +16,9 @@
 package io.fabric8.kubernetes.client.handlers;
 
 import com.squareup.okhttp.OkHttpClient;
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.Endpoints;
+import io.fabric8.kubernetes.api.model.EndpointsBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.internal.EndpointsOperationsImpl;
@@ -25,7 +27,7 @@ import org.apache.felix.scr.annotations.Service;
 
 @Component
 @Service
-public class EndpointsHandler implements ResourceHandler<Endpoints> {
+public class EndpointsHandler implements ResourceHandler<Endpoints, EndpointsBuilder> {
 
   @Override
   public String getKind() {
@@ -34,11 +36,26 @@ public class EndpointsHandler implements ResourceHandler<Endpoints> {
 
   @Override
   public Endpoints create(OkHttpClient client, Config config, String namespace, Endpoints item) {
-    return new EndpointsOperationsImpl(client, config, null, namespace, null, true, item, null).create();
+    return new EndpointsOperationsImpl(client, config, null, namespace, null, true, item, null, false).create();
+  }
+
+  @Override
+  public Endpoints replace(OkHttpClient client, Config config, String namespace, Endpoints item) {
+    return new EndpointsOperationsImpl(client, config, null, namespace, null, true, item, null, false).replace(item);
+  }
+
+  @Override
+  public Endpoints reload(OkHttpClient client, Config config, String namespace, Endpoints item) {
+    return new EndpointsOperationsImpl(client, config, null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
+  public EndpointsBuilder edit(Endpoints item) {
+    return new EndpointsBuilder(item);
   }
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Endpoints item) {
-    return new EndpointsOperationsImpl(client, config, null, namespace, null, true, item, null).delete(item);
+    return new EndpointsOperationsImpl(client, config, null, namespace, null, true, item, null, false).delete(item);
   }
 }

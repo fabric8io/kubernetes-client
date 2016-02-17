@@ -19,6 +19,7 @@ import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.openshift.api.model.Group;
+import io.fabric8.openshift.api.model.GroupBuilder;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.internal.GroupOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
@@ -26,7 +27,7 @@ import org.apache.felix.scr.annotations.Service;
 
 @Component
 @Service
-public class GroupHandler implements ResourceHandler<Group> {
+public class GroupHandler implements ResourceHandler<Group, GroupBuilder> {
   @Override
   public String getKind() {
     return Group.class.getSimpleName();
@@ -34,11 +35,26 @@ public class GroupHandler implements ResourceHandler<Group> {
 
   @Override
   public Group create(OkHttpClient client, Config config, String namespace, Group item) {
-      return new GroupOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).create();
+      return new GroupOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).create();
+  }
+
+  @Override
+  public Group replace(OkHttpClient client, Config config, String namespace, Group item) {
+    return new GroupOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).replace(item);
+  }
+
+  @Override
+  public Group reload(OkHttpClient client, Config config, String namespace, Group item) {
+    return new GroupOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).fromServer().get();
+  }
+
+  @Override
+  public GroupBuilder edit(Group item) {
+    return new GroupBuilder(item);
   }
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Group item) {
-      return new GroupOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null).delete(item);
+      return new GroupOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).delete(item);
     }
 }

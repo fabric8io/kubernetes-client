@@ -23,6 +23,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.Config;
@@ -272,7 +273,26 @@ public class OperationSupport {
     return new KubernetesClientException(sb.toString(), e);
   }
 
-   protected <T> T unmarshal(InputStream is, Class<T> type) throws KubernetesClientException {
+  protected static <T> T unmarshal(InputStream is) throws KubernetesClientException {
+    try (BufferedInputStream bis = new BufferedInputStream(is)) {
+      bis.mark(-1);
+      int intch;
+      do {
+        intch = bis.read();
+      } while (intch > -1 && Character.isWhitespace(intch));
+      bis.reset();
+
+      ObjectMapper mapper = JSON_MAPPER;
+      if (intch != '{') {
+        mapper = YAML_MAPPER;
+      }
+      return mapper.readerFor(KubernetesResource.class).readValue(bis);
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+
+   protected static <T> T unmarshal(InputStream is, Class<T> type) throws KubernetesClientException {
     try (BufferedInputStream bis = new BufferedInputStream(is)) {
       bis.mark(-1);
       int intch;
