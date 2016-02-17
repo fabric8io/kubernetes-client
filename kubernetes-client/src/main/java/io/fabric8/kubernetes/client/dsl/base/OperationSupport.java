@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.base;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.squareup.okhttp.MediaType;
@@ -230,10 +231,14 @@ public class OperationSupport {
     } else if (customMessage != null) {
       throw requestFailure(request, createStatus(statusCode, customMessage));
     } else {
+      String str = "";
       try {
-        Status status = JSON_MAPPER.readValue(response.body().byteStream(), Status.class);
+        str = response.body().string();
+        Status status = JSON_MAPPER.readValue(str, Status.class);
         throw requestFailure(request, status);
-      } catch (IOException e) {
+      } catch (JsonParseException e) {
+        throw requestFailure(request, createStatus(statusCode, str));
+      }catch (IOException e) {
         throw requestFailure(request, createStatus(statusCode, ""));
       }
     }
