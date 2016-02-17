@@ -53,7 +53,10 @@ public class LoadExample {
             System.out.println( meta.getKind() + ":" + meta.getMetadata().getName());
         }
 
-        list = client.load(TemplateExample.class.getResourceAsStream("/test-template.yml")).apply();
+        list = client.load(TemplateExample.class.getResourceAsStream("/test-template.yml"))
+                .deletingExisting()
+                .apply();
+
         System.out.println("Applied:" + list.size() + " items.");
         for (HasMetadata meta : list) {
             System.out.println( meta.getKind() + ":" + meta.getMetadata().getName());

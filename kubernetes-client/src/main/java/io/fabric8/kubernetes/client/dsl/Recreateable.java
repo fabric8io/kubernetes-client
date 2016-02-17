@@ -16,7 +16,7 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.client.FromServerGettable;
+public interface Recreateable<T> {
 
-public interface GetApplyDeletable<T, B> extends FromServerGettable<T>, Applicable<T>, Deletable<B> {
+    T deletingExisting();
 }

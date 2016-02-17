@@ -45,7 +45,7 @@ public class KubernetesListHandler implements ResourceHandler<KubernetesList, Ku
 
   @Override
   public KubernetesList create(OkHttpClient client, Config config, String namespace, KubernetesList item) {
-    return new KubernetesListOperationsImpl(client, config, namespace, null, true, item, null).create();
+    return new KubernetesListOperationsImpl(client, config, namespace, null, true, false, false, item, null).create();
   }
 
   @Override
@@ -85,6 +85,6 @@ public class KubernetesListHandler implements ResourceHandler<KubernetesList, Ku
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, KubernetesList item) {
-    return new KubernetesListOperationsImpl(client, config, namespace, null, true, item, null).delete(item);
+    return new KubernetesListOperationsImpl(client, config, namespace, null, true, false, false, item, null).delete(item);
   }
 }

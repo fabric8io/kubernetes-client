@@ -16,7 +16,5 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface NamespaceGetApplyDeletable<T, B> extends GetApplyDeletable<T, B>, Namespaceable<GetApplyDeletable<T, B>>
-{
-
+public interface RecreateApplicable<T> extends Applicable<T>, Recreateable<Applicable<T>> {
 }

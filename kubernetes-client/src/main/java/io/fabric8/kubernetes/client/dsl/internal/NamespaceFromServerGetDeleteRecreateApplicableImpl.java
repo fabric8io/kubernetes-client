@@ -26,9 +26,10 @@ import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.HasMetadataVisitiableBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.ResourceHandler;
-import io.fabric8.kubernetes.client.dsl.GetApplyDeletable;
+import io.fabric8.kubernetes.client.dsl.Applicable;
+import io.fabric8.kubernetes.client.dsl.FromServerGetDeleteRecreateApplicable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
-import io.fabric8.kubernetes.client.dsl.NamespaceGetApplyDeletable;
+import io.fabric8.kubernetes.client.dsl.NamespaceFromServerGetDeleteRecreateApplicable;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.handlers.KubernetesListHandler;
 import io.fabric8.kubernetes.client.utils.ResourceCompare;
@@ -43,25 +44,28 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NamespaceGetApplyDeletableImpl extends OperationSupport implements NamespaceGetApplyDeletable<List<HasMetadata>, Boolean> {
+public class NamespaceFromServerGetDeleteRecreateApplicableImpl extends OperationSupport implements NamespaceFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(NamespaceGetApplyDeletableImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NamespaceFromServerGetDeleteRecreateApplicableImpl.class);
     private static final String EXPRESSION = "expression";
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private final String namespace;
+
     private final Boolean fromServer;
+    private final Boolean deletingExisting;
     private final Object item;
     private final ResourceHandler hanlder;
 
-    public NamespaceGetApplyDeletableImpl(OkHttpClient client, Config config, String namespace, Boolean fromServer, InputStream is) {
-        this(client, config, namespace, fromServer, unmarshal(is));
+    public NamespaceFromServerGetDeleteRecreateApplicableImpl(OkHttpClient client, Config config, String namespace, Boolean fromServer, Boolean deletingExisting, InputStream is) {
+        this(client, config, namespace, fromServer, deletingExisting, unmarshal(is));
     }
 
-    public NamespaceGetApplyDeletableImpl(OkHttpClient client, Config config, String namespace, Boolean fromServer, Object item) {
+    public NamespaceFromServerGetDeleteRecreateApplicableImpl(OkHttpClient client, Config config, String namespace, Boolean fromServer, Boolean deletingExisting, Object item) {
         super(client, config, null, null, null, null, null);
         this.namespace = namespace;
         this.fromServer = fromServer;
+        this.deletingExisting = deletingExisting;
         this.item = item;
         this.hanlder = handlerOf(item);
         if (hanlder == null) {
@@ -76,6 +80,16 @@ public class NamespaceGetApplyDeletableImpl extends OperationSupport implements 
             ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
             HasMetadata r = h.reload(client, config, namespace, meta);
             if (r == null) {
+                HasMetadata created = h.create(client, config, namespace, meta);
+                if (created != null) {
+                    result.add(created);
+                }
+            } else if(deletingExisting) {
+                Boolean deleted = h.delete(client, config, namespace, meta);
+                if (!deleted) {
+                    throw new KubernetesClientException("Failed to delete existing item:" + meta);
+                }
+
                 HasMetadata created = h.create(client, config, namespace, meta);
                 if (created != null) {
                     result.add(created);
@@ -210,12 +224,17 @@ public class NamespaceGetApplyDeletableImpl extends OperationSupport implements 
     }
 
     @Override
-    public GetApplyDeletable<List<HasMetadata>, Boolean> inNamespace(String namespace) {
-        return new NamespaceGetApplyDeletableImpl(client, config, namespace, fromServer, item);
+    public FromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> inNamespace(String namespace) {
+        return new NamespaceFromServerGetDeleteRecreateApplicableImpl(client, config, namespace, fromServer, deletingExisting, item);
     }
 
     @Override
     public Gettable<List<HasMetadata>> fromServer() {
-        return new NamespaceGetApplyDeletableImpl(client, config, namespace, true, item);
+        return new NamespaceFromServerGetDeleteRecreateApplicableImpl(client, config, namespace, true, deletingExisting, item);
+    }
+
+    @Override
+    public Applicable<List<HasMetadata>> deletingExisting() {
+        return new NamespaceFromServerGetDeleteRecreateApplicableImpl(client, config, namespace, fromServer, true, item);
     }
 }
