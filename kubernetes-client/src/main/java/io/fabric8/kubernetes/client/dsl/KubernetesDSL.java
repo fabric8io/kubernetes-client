@@ -67,7 +67,7 @@ public interface KubernetesDSL {
 	
   ClientMixedOperation<ComponentStatus, ComponentStatusList, DoneableComponentStatus, ClientResource<ComponentStatus, DoneableComponentStatus>> componentstatuses();
 
-  NamespaceGetApplyDeletable<List<HasMetadata>,Boolean> load(InputStream is);
+  NamespaceFromServerGetDeleteRecreateApplicable<List<HasMetadata>,Boolean> load(InputStream is);
 
   ClientMixedOperation<Endpoints, EndpointsList, DoneableEndpoints, ClientResource<Endpoints, DoneableEndpoints>> endpoints();
 

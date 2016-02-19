@@ -29,7 +29,8 @@ import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListOperation;
-import io.fabric8.kubernetes.client.dsl.CreateFromServerGettable;
+import io.fabric8.kubernetes.client.dsl.Createable;
+import io.fabric8.kubernetes.client.dsl.RecreateFromServerGettable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.Loadable;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
@@ -43,17 +44,22 @@ public class KubernetesListOperationsImpl
   extends OperationSupport
   implements ClientKubernetesListOperation,
   ClientKubernetesListMixedOperation,
-  Loadable<InputStream, CreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList>>,
-        CreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList> {
+  Loadable<InputStream, RecreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList>>,
+        RecreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList> {
 
-  private KubernetesList item;
+  private final KubernetesList item;
+  private final Boolean fromServer;
+  private final Boolean deletingExisting;
 
   public KubernetesListOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(client, config, namespace, null, null, null, null);
+    this(client, config, namespace, null, null, false, false, null, null);
   }
 
-  public KubernetesListOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, KubernetesList item, String resourceVersion) {
+  public KubernetesListOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, Boolean fromServer, Boolean deletingExisting, KubernetesList item, String resourceVersion) {
     super(client, config, null, null, null, namespace, null);
+    this.fromServer = fromServer;
+    this.deletingExisting = deletingExisting;
+    this.item = item;
   }
 
   @Override
@@ -94,9 +100,8 @@ public class KubernetesListOperationsImpl
   }
 
   @Override
-  public CreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList> load(InputStream is) {
-    item = unmarshal(is, KubernetesList.class);
-    return this;
+  public RecreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList> load(InputStream is) {
+    return new KubernetesListOperationsImpl(client, config, namespace, null, false, fromServer, deletingExisting, unmarshal(is, KubernetesList.class), null);
   }
 
   @Override
@@ -132,6 +137,11 @@ public class KubernetesListOperationsImpl
 
   @Override
   public Gettable<KubernetesList> fromServer() {
-    return null;
+    return new KubernetesListOperationsImpl(client, config, namespace, null, false, true, deletingExisting, item, null);
+  }
+
+  @Override
+  public Createable<KubernetesList, KubernetesList, DoneableKubernetesList> deletingExisting() {
+    return new KubernetesListOperationsImpl(client, config, namespace, null, false, fromServer, true, item, null);
   }
 }

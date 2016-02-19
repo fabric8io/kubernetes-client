@@ -67,8 +67,8 @@ import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
 import io.fabric8.kubernetes.client.dsl.internal.ComponentStatusOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.NamespaceGetApplyDeletable;
-import io.fabric8.kubernetes.client.dsl.internal.NamespaceGetApplyDeletableImpl;
+import io.fabric8.kubernetes.client.dsl.NamespaceFromServerGetDeleteRecreateApplicable;
+import io.fabric8.kubernetes.client.dsl.internal.NamespaceFromServerGetDeleteRecreateApplicableImpl;
 import io.fabric8.kubernetes.client.dsl.internal.EndpointsOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.EventOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.KubernetesListOperationsImpl;
@@ -111,8 +111,8 @@ public class DefaultKubernetesClient extends BaseClient implements KubernetesCli
   }
 
   @Override
-  public NamespaceGetApplyDeletable<List<HasMetadata>, Boolean> load(InputStream is) {
-    return new NamespaceGetApplyDeletableImpl(httpClient, getConfiguration(), getNamespace(), false, is) {
+  public NamespaceFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> load(InputStream is) {
+    return new NamespaceFromServerGetDeleteRecreateApplicableImpl(httpClient, getConfiguration(), getNamespace(), false, false, is) {
     };
   }
 

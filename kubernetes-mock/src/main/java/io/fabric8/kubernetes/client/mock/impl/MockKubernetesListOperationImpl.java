@@ -19,7 +19,8 @@ package io.fabric8.kubernetes.client.mock.impl;
 import io.fabric8.kubernetes.api.model.DoneableKubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListMixedOperation;
-import io.fabric8.kubernetes.client.dsl.CreateFromServerGettable;
+import io.fabric8.kubernetes.client.dsl.Createable;
+import io.fabric8.kubernetes.client.dsl.RecreateFromServerGettable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.mock.MockKubernetesListNonNamesapceOperation;
 import io.fabric8.kubernetes.client.mock.MockKubernetesListOperation;
@@ -41,7 +42,7 @@ import static org.easymock.EasyMock.expect;
 public class MockKubernetesListOperationImpl  implements
   MockKubernetesListNonNamesapceOperation,
   MockKubernetesListOperation,
-        CreateFromServerGettable<KubernetesList, IExpectationSetters<KubernetesList>, DoneableKubernetesList>,
+        RecreateFromServerGettable<KubernetesList, IExpectationSetters<KubernetesList>, DoneableKubernetesList>,
   Mockable {
 
   @Override
@@ -54,14 +55,9 @@ public class MockKubernetesListOperationImpl  implements
     return expect(delegate.delete(items));
   }
 
-  @Override
-  public Gettable<IExpectationSetters<KubernetesList>> fromServer() {
-    return null;
-  }
-
   //Dummy interface to use for mocking.
   private interface KubernetesListDelegate extends ClientKubernetesListMixedOperation,
-          CreateFromServerGettable<KubernetesList, KubernetesList,DoneableKubernetesList> {
+          RecreateFromServerGettable<KubernetesList, KubernetesList,DoneableKubernetesList> {
   }
 
   private final KubernetesListDelegate delegate;
@@ -69,6 +65,9 @@ public class MockKubernetesListOperationImpl  implements
 
   private MockKubernetesListOperationImpl loadedMockOp;
   private Map<IArgumentMatcher, MockKubernetesListOperationImpl> namespaceMap = new HashMap<>();
+
+  private Map<IArgumentMatcher, MockKubernetesListOperationImpl> fromServerMap = new HashMap<>();
+  private Map<IArgumentMatcher, MockKubernetesListOperationImpl> deletingExistingMap = new HashMap<>();
 
   public MockKubernetesListOperationImpl() {
     this(EasyMock.createMock(KubernetesListDelegate.class));
@@ -116,7 +115,7 @@ public class MockKubernetesListOperationImpl  implements
   }
 
   @Override
-  public CreateFromServerGettable<KubernetesList, IExpectationSetters<KubernetesList>, DoneableKubernetesList> load(InputStream input) {
+  public RecreateFromServerGettable<KubernetesList, IExpectationSetters<KubernetesList>, DoneableKubernetesList> load(InputStream input) {
     if (loadedMockOp == null) {
       loadedMockOp = newInstance();
     }
@@ -141,5 +140,31 @@ public class MockKubernetesListOperationImpl  implements
   @Override
   public IExpectationSetters<KubernetesList> get() {
     return expect(delegate.get());
+  }
+
+  @Override
+  public Gettable<IExpectationSetters<KubernetesList>> fromServer() {
+    IArgumentMatcher matcher = getArgument(true);
+    MockKubernetesListOperationImpl op = fromServerMap.get(matcher);
+    if (op == null) {
+      op = newInstance();
+      expect(delegate.fromServer()).andReturn(op.getDelegate()).anyTimes();
+      nested.add(op);
+      fromServerMap.put(matcher, op);
+    }
+    return op;
+  }
+
+  @Override
+  public Createable<KubernetesList, IExpectationSetters<KubernetesList>, DoneableKubernetesList> deletingExisting() {
+    IArgumentMatcher matcher = getArgument(true);
+    MockKubernetesListOperationImpl op = deletingExistingMap.get(matcher);
+    if (op == null) {
+      op = newInstance();
+      expect(delegate.deletingExisting()).andReturn(op.getDelegate()).anyTimes();
+      nested.add(op);
+      deletingExistingMap.put(matcher, op);
+    }
+    return op;
   }
 }

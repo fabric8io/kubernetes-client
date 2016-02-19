@@ -32,6 +32,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
+import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import okio.Buffer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -121,17 +122,10 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
       public void onFailure(IOException e, Response response) {
         if (!forceClosed.get()) {
           if (response != null && response.body() != null) {
-            try (ResponseBody body = response.body()) {
-              Status responseStatus = mapper.readValue(body.byteStream(), Status.class);
-              watcher.onClose(
-                new KubernetesClientException("Connection unexpectedly closed", response.code(),
-                                              responseStatus));
-              return;
-            } catch (IOException ioe) {
-              // that's fine, we'll call onClose later without response info
-            }
+            Status status = OperationSupport.createStatus(response);
+            watcher.onClose(new KubernetesClientException(status));
+            return;
           }
-
           watcher.onClose(new KubernetesClientException("Connection unexpectedly closed", e));
         }
       }

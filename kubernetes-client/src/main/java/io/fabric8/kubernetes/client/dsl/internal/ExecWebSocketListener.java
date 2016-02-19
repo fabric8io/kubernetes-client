@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.client.Callback;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
+import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 import okio.Buffer;
 import okio.ByteString;
@@ -139,7 +140,7 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
             started.set(true);
             queue.add(true);
         } catch (IOException e) {
-            queue.add(e);
+            queue.add(new KubernetesClientException(OperationSupport.createStatus(response)));
         } finally {
             if (listener != null) {
                 listener.onOpen(response);
@@ -153,7 +154,7 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
             LOGGER.error(response != null ? response.message() : "Exec Failure.", ioe);
             //We only need to queue startup failures.
             if (!started.get()) {
-                queue.add(ioe);
+                queue.add(new KubernetesClientException(OperationSupport.createStatus(response)));
             }
         } finally {
             if (listener != null) {

@@ -18,7 +18,7 @@ package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.DoneableKubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesList;
-import io.fabric8.kubernetes.client.dsl.CreateFromServerGettable;
+import io.fabric8.kubernetes.client.dsl.RecreateFromServerGettable;
 import io.fabric8.kubernetes.client.dsl.Createable;
 import io.fabric8.kubernetes.client.dsl.Loadable;
 import org.easymock.IExpectationSetters;
@@ -27,5 +27,5 @@ import java.io.InputStream;
 
 public interface MockKubernetesListNonNamesapceOperation extends
   Createable<KubernetesList, IExpectationSetters<KubernetesList>, DoneableKubernetesList>,
-  Loadable<InputStream, CreateFromServerGettable<KubernetesList, IExpectationSetters<KubernetesList>, DoneableKubernetesList>> {
+  Loadable<InputStream, RecreateFromServerGettable<KubernetesList, IExpectationSetters<KubernetesList>, DoneableKubernetesList>> {
 }
