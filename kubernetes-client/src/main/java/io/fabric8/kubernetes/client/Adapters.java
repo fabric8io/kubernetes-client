@@ -34,6 +34,7 @@ public final class Adapters {
   static {
     //Register adapters
     discoverServices(Adapters.class.getClassLoader());
+    discoverServices(Thread.currentThread().getContextClassLoader());
   }
 
   public static <C> void register(ExtensionAdapter<C> adapter) {
@@ -50,6 +51,9 @@ public final class Adapters {
   }
 
   private static void discoverServices(ClassLoader classLoader) {
+    if (classLoader == null) {
+      return;
+    }
     if (CLASS_LOADERS.add(classLoader)) {
       for (ExtensionAdapter adapter : ServiceLoader.load(ExtensionAdapter.class, classLoader)) {
         register(adapter);

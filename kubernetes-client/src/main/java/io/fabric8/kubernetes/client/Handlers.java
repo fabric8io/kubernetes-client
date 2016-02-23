@@ -36,6 +36,13 @@ public final class Handlers {
     for (ResourceHandler handler : ServiceLoader.load(ResourceHandler.class)) {
       register(handler);
     }
+
+    //Also try using context classloader
+    if (Thread.currentThread().getContextClassLoader() != null) {
+      for (ResourceHandler handler : ServiceLoader.load(ResourceHandler.class, Thread.currentThread().getContextClassLoader())) {
+        register(handler);
+      }
+    }
   }
 
   public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> void register(ResourceHandler<T,V> handler) {
