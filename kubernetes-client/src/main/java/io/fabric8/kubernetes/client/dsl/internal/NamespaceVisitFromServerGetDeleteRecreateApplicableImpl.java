@@ -18,6 +18,8 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mifmif.common.regex.Generex;
 import com.squareup.okhttp.OkHttpClient;
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
+import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
@@ -27,9 +29,9 @@ import io.fabric8.kubernetes.client.HasMetadataVisitiableBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.Applicable;
-import io.fabric8.kubernetes.client.dsl.FromServerGetDeleteRecreateApplicable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
-import io.fabric8.kubernetes.client.dsl.NamespaceFromServerGetDeleteRecreateApplicable;
+import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetDeleteRecreateApplicable;
+import io.fabric8.kubernetes.client.dsl.VisitFromServerGetDeleteRecreateApplicable;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.handlers.KubernetesListHandler;
 import io.fabric8.kubernetes.client.utils.ResourceCompare;
@@ -44,9 +46,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NamespaceFromServerGetDeleteRecreateApplicableImpl extends OperationSupport implements NamespaceFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> {
+public class NamespaceVisitFromServerGetDeleteRecreateApplicableImpl extends OperationSupport implements NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(NamespaceFromServerGetDeleteRecreateApplicableImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NamespaceVisitFromServerGetDeleteRecreateApplicableImpl.class);
     private static final String EXPRESSION = "expression";
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -54,18 +56,20 @@ public class NamespaceFromServerGetDeleteRecreateApplicableImpl extends Operatio
 
     private final Boolean fromServer;
     private final Boolean deletingExisting;
+    private final List<Visitor> visitors;
     private final Object item;
     private final ResourceHandler hanlder;
 
-    public NamespaceFromServerGetDeleteRecreateApplicableImpl(OkHttpClient client, Config config, String namespace, Boolean fromServer, Boolean deletingExisting, InputStream is) {
-        this(client, config, namespace, fromServer, deletingExisting, unmarshal(is));
+    public NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(OkHttpClient client, Config config, String namespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, InputStream is) {
+        this(client, config, namespace, fromServer, deletingExisting, visitors, unmarshal(is));
     }
 
-    public NamespaceFromServerGetDeleteRecreateApplicableImpl(OkHttpClient client, Config config, String namespace, Boolean fromServer, Boolean deletingExisting, Object item) {
+    public NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(OkHttpClient client, Config config, String namespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item) {
         super(client, config, null, null, null, null, null);
         this.namespace = namespace;
         this.fromServer = fromServer;
         this.deletingExisting = deletingExisting;
+        this.visitors = visitors != null ? visitors : new ArrayList<Visitor>();
         this.item = item;
         this.hanlder = handlerOf(item);
         if (hanlder == null) {
@@ -76,7 +80,7 @@ public class NamespaceFromServerGetDeleteRecreateApplicableImpl extends Operatio
     @Override
     public List<HasMetadata> apply() {
         List<HasMetadata> result = new ArrayList<>();
-        for (HasMetadata meta : asHasMetadata(item, true)) {
+        for (HasMetadata meta : acceptVisitors(asHasMetadata(item, true), visitors)) {
             ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
             HasMetadata r = h.reload(client, config, namespace, meta);
             if (r == null) {
@@ -133,15 +137,34 @@ public class NamespaceFromServerGetDeleteRecreateApplicableImpl extends Operatio
                 ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
                 HasMetadata reloaded = h.reload(client, config, namespace, meta);
                 if (reloaded != null) {
+                    HasMetadata edited = reloaded;
+                    //Let's apply any visitor that might have been specified.
+                    for (Visitor v : visitors) {
+                        h.edit(edited).accept(v).build();
+                    }
                     result.add(reloaded);
                 }
             }
             return result;
         } else {
-            return asHasMetadata(item, false);
+            return acceptVisitors(asHasMetadata(item, true), visitors);
         }
     }
 
+    private static List<HasMetadata> acceptVisitors(List<HasMetadata> list, List<Visitor> visitors) {
+        List<HasMetadata> result = new ArrayList<>();
+        for (HasMetadata item : list) {
+            ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(item);
+            VisitableBuilder<HasMetadata, ?> builder = h.edit(item);
+
+            //Let's apply any visitor that might have been specified.
+            for (Visitor v : visitors) {
+                builder.accept(v);
+            }
+            result.add(builder.build());
+        }
+        return result;
+    }
 
     private static <T> List<HasMetadata> asHasMetadata(T item, Boolean enableProccessing) {
         List<HasMetadata> result = new ArrayList<>();
@@ -224,17 +247,24 @@ public class NamespaceFromServerGetDeleteRecreateApplicableImpl extends Operatio
     }
 
     @Override
-    public FromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> inNamespace(String namespace) {
-        return new NamespaceFromServerGetDeleteRecreateApplicableImpl(client, config, namespace, fromServer, deletingExisting, item);
+    public VisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> inNamespace(String namespace) {
+        return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(client, config, namespace, fromServer, deletingExisting, visitors, item);
     }
 
     @Override
     public Gettable<List<HasMetadata>> fromServer() {
-        return new NamespaceFromServerGetDeleteRecreateApplicableImpl(client, config, namespace, true, deletingExisting, item);
+        return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(client, config, namespace, true, deletingExisting, visitors, item);
     }
 
     @Override
     public Applicable<List<HasMetadata>> deletingExisting() {
-        return new NamespaceFromServerGetDeleteRecreateApplicableImpl(client, config, namespace, fromServer, true, item);
+        return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(client, config, namespace, fromServer, true, visitors, item);
+    }
+
+    @Override
+    public VisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> accept(Visitor visitor) {
+        List<Visitor> newVisitors = new ArrayList<>(visitors);
+        newVisitors.add(visitor);
+        return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(client, config, namespace, fromServer, true, newVisitors, item);
     }
 }

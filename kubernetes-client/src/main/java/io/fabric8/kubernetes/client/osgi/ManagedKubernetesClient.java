@@ -75,7 +75,7 @@ import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.NamespaceFromServerGetDeleteRecreateApplicable;
+import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetDeleteRecreateApplicable;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
@@ -211,7 +211,7 @@ public class ManagedKubernetesClient extends BaseClient implements KubernetesCli
   }
 
   @Override
-  public NamespaceFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> load(InputStream is) {
+  public NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> load(InputStream is) {
     return delegate.load(is);
   }
 

@@ -16,7 +16,8 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface NamespaceFromServerGetDeleteRecreateApplicable<T, B> extends FromServerGetDeleteRecreateApplicable<T, B>, Namespaceable<FromServerGetDeleteRecreateApplicable<T, B>>
-{
+import io.fabric8.kubernetes.api.builder.Visitable;
+import io.fabric8.kubernetes.client.FromServerGettable;
 
+public interface VisitFromServerGetDeleteRecreateApplicable<T, B> extends Visitable<VisitFromServerGetDeleteRecreateApplicable<T, B>>, FromServerGettable<T>, RecreateApplicable<T>, Deletable<B> {
 }
