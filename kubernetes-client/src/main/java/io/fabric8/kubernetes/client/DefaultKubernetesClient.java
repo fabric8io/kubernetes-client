@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client;
 
 import com.squareup.okhttp.OkHttpClient;
 
+import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.ComponentStatus;
 import io.fabric8.kubernetes.api.model.ComponentStatusList;
 import io.fabric8.kubernetes.api.model.DoneableComponentStatus;
@@ -67,8 +68,8 @@ import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
 import io.fabric8.kubernetes.client.dsl.internal.ComponentStatusOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.NamespaceFromServerGetDeleteRecreateApplicable;
-import io.fabric8.kubernetes.client.dsl.internal.NamespaceFromServerGetDeleteRecreateApplicableImpl;
+import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetDeleteRecreateApplicable;
+import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetDeleteRecreateApplicableImpl;
 import io.fabric8.kubernetes.client.dsl.internal.EndpointsOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.EventOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.KubernetesListOperationsImpl;
@@ -85,6 +86,7 @@ import io.fabric8.kubernetes.client.dsl.internal.ServiceAccountOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ServiceOperationsImpl;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DefaultKubernetesClient extends BaseClient implements KubernetesClient {
@@ -111,8 +113,8 @@ public class DefaultKubernetesClient extends BaseClient implements KubernetesCli
   }
 
   @Override
-  public NamespaceFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> load(InputStream is) {
-    return new NamespaceFromServerGetDeleteRecreateApplicableImpl(httpClient, getConfiguration(), getNamespace(), false, false, is) {
+  public NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> load(InputStream is) {
+    return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(httpClient, getConfiguration(), getNamespace(), false, false, new ArrayList<Visitor>(), is) {
     };
   }
 
