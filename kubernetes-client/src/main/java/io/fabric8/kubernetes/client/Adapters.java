@@ -45,12 +45,25 @@ public final class Adapters {
   }
 
   public static <C> ExtensionAdapter<C> get(Class<C> type) {
-    discoverServices(type.getClassLoader());
-    return EXTENSION_ADAPTER_MAP.get(type);
+    if (EXTENSION_ADAPTER_MAP.containsKey(type)) {
+      return EXTENSION_ADAPTER_MAP.get(type);
+    } else {
+      for (ExtensionAdapter adapter : ServiceLoader.load(ExtensionAdapter.class, type.getClassLoader())) {
+        if (adapter.getExtensionType().equals(type)) {
+          return adapter;
+        }
+      }
+      for (ExtensionAdapter adapter : ServiceLoader.load(ExtensionAdapter.class, Thread.currentThread().getContextClassLoader())) {
+        if (adapter.getExtensionType().equals(type)) {
+          return adapter;
+        }
+      }
+      return null;
+    }
   }
 
   private static void discoverServices(ClassLoader classLoader) {
-    if (CLASS_LOADERS.add(classLoader)) {
+    if (classLoader != null && CLASS_LOADERS.add(classLoader)) {
       for (ExtensionAdapter adapter : ServiceLoader.load(ExtensionAdapter.class, classLoader)) {
         register(adapter);
       }

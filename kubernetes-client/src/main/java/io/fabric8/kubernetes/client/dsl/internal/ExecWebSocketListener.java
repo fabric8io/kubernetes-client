@@ -21,6 +21,7 @@ import com.squareup.okhttp.Response;
 import com.squareup.okhttp.ResponseBody;
 import com.squareup.okhttp.ws.WebSocket;
 import com.squareup.okhttp.ws.WebSocketListener;
+import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.Callback;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
@@ -151,10 +152,11 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
     @Override
     public void onFailure(IOException ioe, Response response) {
         try {
-            LOGGER.error(response != null ? response.message() : "Exec Failure.", ioe);
+            Status status = OperationSupport.createStatus(response);
+            LOGGER.error("Exec Failure: HTTP:" + status.getCode() + ". Message:" + status.getMessage(), ioe);
             //We only need to queue startup failures.
             if (!started.get()) {
-                queue.add(new KubernetesClientException(OperationSupport.createStatus(response)));
+                queue.add(new KubernetesClientException(status));
             }
         } finally {
             if (listener != null) {

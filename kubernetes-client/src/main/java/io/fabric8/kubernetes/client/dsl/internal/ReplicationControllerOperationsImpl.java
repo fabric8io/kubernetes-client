@@ -25,13 +25,16 @@ import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
 import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
-import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.ImageEditReplaceable;
 import io.fabric8.kubernetes.client.dsl.Reaper;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplaceable;
+import io.fabric8.kubernetes.client.dsl.Watchable;
+import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -104,6 +107,16 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
       throw new IllegalArgumentException("Name must be provided.");
     }
     return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), name, isCascading(), getItem(), getResourceVersion(), getReloadingFromServer(), rolling, rollingTimeout, rollingTimeUnit );
+  }
+
+  @Override
+  public ClientRollableScallableResource<ReplicationController, DoneableReplicationController> fromServer() {
+    return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(),true, rolling, rollingTimeout, rollingTimeUnit );
+  }
+
+  @Override
+  public Watchable<Watch, Watcher<ReplicationController>> withResourceVersion(String resourceVersion) {
+    return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), resourceVersion, getReloadingFromServer(), rolling, rollingTimeout, rollingTimeUnit );
   }
 
   @Override

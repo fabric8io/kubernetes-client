@@ -23,6 +23,7 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
+import com.squareup.okhttp.ResponseBody;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.Status;
@@ -239,8 +240,15 @@ public class OperationSupport {
   public static Status createStatus(Response response) {
     int statusCode = response.code();
     String statusMessage = "";
+    ResponseBody body = response != null ? response.body() : null;
     try {
-      statusMessage = response.body().string();
+      if (response == null) {
+        statusMessage = "No response";
+      } else if (body != null) {
+        statusMessage = body.string();
+      } else if (response.message() != null) {
+        statusMessage = response.message();
+      }
       return JSON_MAPPER.readValue(statusMessage, Status.class);
     } catch (JsonParseException e) {
       return createStatus(statusCode, statusMessage);

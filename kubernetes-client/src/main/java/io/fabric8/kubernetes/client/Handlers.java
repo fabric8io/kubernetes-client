@@ -20,11 +20,14 @@ import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.Set;
 
 public final class Handlers {
 
+  private static final Set<ClassLoader> CLASS_LOADERS = new HashSet<>();
   private static final Map<String, ResourceHandler> RESOURCE_HANDLER_MAP = new HashMap<>();
 
   private Handlers() {
@@ -33,9 +36,7 @@ public final class Handlers {
 
   static {
     //Register handlers
-    for (ResourceHandler handler : ServiceLoader.load(ResourceHandler.class)) {
-      register(handler);
-    }
+    discoverHandlers(ResourceHandler.class.getClassLoader());
   }
 
   public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> void register(ResourceHandler<T,V> handler) {
@@ -47,6 +48,23 @@ public final class Handlers {
   }
 
   public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> get(String kind) {
-    return RESOURCE_HANDLER_MAP.get(kind.toLowerCase());
+    if (RESOURCE_HANDLER_MAP.containsKey(kind.toLowerCase())) {
+      return RESOURCE_HANDLER_MAP.get(kind.toLowerCase());
+    } else {
+      for (ResourceHandler handler : ServiceLoader.load(ResourceHandler.class, Thread.currentThread().getContextClassLoader())) {
+        if (handler.getKind().equals(kind)) {
+          return handler;
+        }
+      }
+      return null;
+    }
+  }
+
+  private static void discoverHandlers(ClassLoader classLoader) {
+    if (classLoader != null && CLASS_LOADERS.add(classLoader)) {
+      for (ResourceHandler handler : ServiceLoader.load(ResourceHandler.class, classLoader)) {
+        register(handler);
+      }
+    }
   }
 }
