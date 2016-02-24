@@ -456,8 +456,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   public Watchable<Watch, Watcher<T>> withResourceVersion(String resourceVersion) {
     try {
       return getClass()
-              .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type, String.class)
-              .newInstance(client, config, apiVersion, namespace, name, cascading, item, resourceVersion);
+              .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type, String.class, Boolean.class)
+              .newInstance(client, config, apiVersion, namespace, name, cascading, item, resourceVersion, false);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
