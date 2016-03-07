@@ -36,17 +36,17 @@ public class TemplateHandler implements ResourceHandler<Template, TemplateBuilde
 
   @Override
   public Template create(OkHttpClient client, Config config, String namespace, Template item) {
-      return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).create();
+      return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).create();
   }
 
   @Override
   public Template replace(OkHttpClient client, Config config, String namespace, Template item) {
-    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).replace(item);
+    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).replace(item);
   }
 
   @Override
   public Template reload(OkHttpClient client, Config config, String namespace, Template item) {
-    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).fromServer().get();
+    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).fromServer().get();
   }
 
   @Override
@@ -57,6 +57,6 @@ public class TemplateHandler implements ResourceHandler<Template, TemplateBuilde
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Template item) {
-      return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).delete(item);
+      return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).delete(item);
   }
 }

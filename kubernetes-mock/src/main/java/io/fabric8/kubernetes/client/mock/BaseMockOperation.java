@@ -18,17 +18,9 @@ package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
-import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
-import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
-import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
-import io.fabric8.kubernetes.client.dsl.Gettable;
-import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.Watchable;
+import io.fabric8.kubernetes.client.dsl.*;
 import org.easymock.EasyMock;
 import org.easymock.IArgumentMatcher;
 import org.easymock.IExpectationSetters;
@@ -36,12 +28,7 @@ import org.easymock.internal.matchers.And;
 
 import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static io.fabric8.kubernetes.client.mock.util.MockUtils.getArgument;
 import static org.easymock.EasyMock.expect;
@@ -74,6 +61,7 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   private Map<IArgumentMatcher, BaseMockOperation> namespaceMap = new HashMap<>();
   private Map<IArgumentMatcher, BaseMockOperation> resourceVersionMap = new HashMap<>();
   private Map<IArgumentMatcher, BaseMockOperation> cascadingMap = new HashMap<>();
+  private Map<IArgumentMatcher, BaseMockOperation> gracePeriodMap = new HashMap<>();
 
   private Map<IArgumentMatcher, BaseMockOperation> labelMap = new HashMap<>();
   private Map<IArgumentMatcher, BaseMockOperation> labelNotMap = new HashMap<>();
@@ -398,5 +386,18 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
     }
     fromServerOp = op;
     return op;
+  }
+
+  @Override public Deletable<IExpectationSetters<Boolean>> withGracePeriod(long gracePeriodSeconds)
+  {
+    IArgumentMatcher matcher = getArgument(gracePeriodSeconds);
+    BaseMockOperation<T, L, D, B, R, E> op = resourceVersionMap.get(matcher);
+    if (op == null) {
+      op = newInstance();
+      expect(delegate.withGracePeriod(gracePeriodSeconds)).andReturn((R) op.getDelegate()).anyTimes();
+      nested.add(op);
+      gracePeriodMap.put(matcher, op);
+    }
+    return (E) op;
   }
 }

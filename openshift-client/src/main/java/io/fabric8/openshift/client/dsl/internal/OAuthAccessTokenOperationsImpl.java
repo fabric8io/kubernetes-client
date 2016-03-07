@@ -26,11 +26,11 @@ public class OAuthAccessTokenOperationsImpl extends OpenShiftOperation<OAuthAcce
   ClientResource<OAuthAccessToken, DoneableOAuthAccessToken>> {
 
   public OAuthAccessTokenOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
-    this(client, config, null, null, null, true, null, null, false);
+    this(client, config, null, null, null, true, null, null, false, -1);
   }
 
-  public OAuthAccessTokenOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, OAuthAccessToken item, String resourceVersion, Boolean reloadingFromServer) {
-    super(client, config, null, apiVersion, "oauthaccesstokens", namespace, name, cascading, item, resourceVersion, reloadingFromServer);
+  public OAuthAccessTokenOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, OAuthAccessToken item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds) {
+    super(client, config, null, apiVersion, "oauthaccesstokens", namespace, name, cascading, item, resourceVersion, reloadingFromServer, -1);
   }
 
   @Override

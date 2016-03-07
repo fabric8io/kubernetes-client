@@ -35,17 +35,17 @@ public class OAuthAuthorizeTokenHandler implements ResourceHandler<OAuthAuthoriz
   }
   @Override
   public OAuthAuthorizeToken create(OkHttpClient client, Config config, String namespace, OAuthAuthorizeToken item) {
-      return new OAuthAuthorizeTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).create();
+      return new OAuthAuthorizeTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).create();
   }
 
   @Override
   public OAuthAuthorizeToken replace(OkHttpClient client, Config config, String namespace, OAuthAuthorizeToken item) {
-    return new OAuthAuthorizeTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).replace(item);
+    return new OAuthAuthorizeTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).replace(item);
   }
 
   @Override
   public OAuthAuthorizeToken reload(OkHttpClient client, Config config, String namespace, OAuthAuthorizeToken item) {
-    return new OAuthAuthorizeTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).fromServer().get();
+    return new OAuthAuthorizeTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).fromServer().get();
   }
 
   @Override
@@ -55,6 +55,6 @@ public class OAuthAuthorizeTokenHandler implements ResourceHandler<OAuthAuthoriz
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, OAuthAuthorizeToken item) {
-      return new OAuthAuthorizeTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).delete(item);
+      return new OAuthAuthorizeTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).delete(item);
   }
 }

@@ -36,17 +36,17 @@ public class PolicyBindingHandler implements ResourceHandler<PolicyBinding, Poli
 
   @Override
   public PolicyBinding create(OkHttpClient client, Config config, String namespace, PolicyBinding item) {
-      return new PolicyBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).create();
+      return new PolicyBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).create();
   }
 
   @Override
   public PolicyBinding replace(OkHttpClient client, Config config, String namespace, PolicyBinding item) {
-    return new PolicyBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).replace(item);
+    return new PolicyBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).replace(item);
   }
 
   @Override
   public PolicyBinding reload(OkHttpClient client, Config config, String namespace, PolicyBinding item) {
-    return new PolicyBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).fromServer().get();
+    return new PolicyBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).fromServer().get();
   }
 
   @Override
@@ -56,6 +56,6 @@ public class PolicyBindingHandler implements ResourceHandler<PolicyBinding, Poli
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, PolicyBinding item) {
-      return new PolicyBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).delete(item);
+      return new PolicyBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).delete(item);
     }
 }

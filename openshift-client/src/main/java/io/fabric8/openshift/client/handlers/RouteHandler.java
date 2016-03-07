@@ -36,17 +36,17 @@ public class RouteHandler implements ResourceHandler<Route, RouteBuilder> {
 
   @Override
   public Route create(OkHttpClient client, Config config, String namespace, Route item) {
-      return new RouteOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).create();
+      return new RouteOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).create();
   }
 
   @Override
   public Route replace(OkHttpClient client, Config config, String namespace, Route item) {
-    return new RouteOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).replace(item);
+    return new RouteOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).replace(item);
   }
 
   @Override
   public Route reload(OkHttpClient client, Config config, String namespace, Route item) {
-    return new RouteOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).fromServer().get();
+    return new RouteOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).fromServer().get();
   }
 
   @Override
@@ -56,6 +56,6 @@ public class RouteHandler implements ResourceHandler<Route, RouteBuilder> {
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Route item) {
-      return new RouteOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).delete(item);
+      return new RouteOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).delete(item);
   }
 }

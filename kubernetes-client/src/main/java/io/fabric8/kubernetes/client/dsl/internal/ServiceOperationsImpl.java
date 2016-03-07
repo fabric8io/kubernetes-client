@@ -28,11 +28,11 @@ import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 public class ServiceOperationsImpl extends HasMetadataOperation<Service, ServiceList, DoneableService, ClientResource<Service, DoneableService>> {
 
   public ServiceOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(client, config, null, namespace, null, true, null, null, false);
+    this(client, config, null, namespace, null, true, null, null, false, -1);
   }
 
-  public ServiceOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Service item, String resourceVersion, Boolean reloadingFromServer) {
-    super(client, config, null, apiVersion, "services", namespace, name, cascading, item, resourceVersion, reloadingFromServer);
+  public ServiceOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Service item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds) {
+    super(client, config, null, apiVersion, "services", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds);
   }
 
   @Override

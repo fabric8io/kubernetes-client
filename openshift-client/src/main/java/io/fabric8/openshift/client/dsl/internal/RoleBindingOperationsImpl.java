@@ -24,10 +24,10 @@ import io.fabric8.openshift.client.OpenShiftConfig;
 
 public class RoleBindingOperationsImpl extends OpenShiftOperation<RoleBinding, RoleBindingList, DoneableRoleBinding, ClientResource<RoleBinding, DoneableRoleBinding>> {
   public RoleBindingOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
-    this(client, config, null, namespace, null, true, null, null, false);
+    this(client, config, null, namespace, null, true, null, null, false, -1);
   }
 
-  public RoleBindingOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, RoleBinding item, String resourceVersion, Boolean reloadingFromServer) {
-    super(client, config, null, apiVersion, "rolebindings", namespace, name, cascading, item, resourceVersion, reloadingFromServer);
+  public RoleBindingOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, RoleBinding item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds) {
+    super(client, config, null, apiVersion, "rolebindings", namespace, name, cascading, item, resourceVersion, reloadingFromServer, -1);
   }
 }

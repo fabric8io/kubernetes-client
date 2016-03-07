@@ -36,17 +36,17 @@ public class RoleBindingHandler implements ResourceHandler<RoleBinding, RoleBind
 
   @Override
   public RoleBinding create(OkHttpClient client, Config config, String namespace, RoleBinding item) {
-      return new RoleBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).create();
+      return new RoleBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).create();
     }
 
   @Override
   public RoleBinding replace(OkHttpClient client, Config config, String namespace, RoleBinding item) {
-    return new RoleBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).replace(item);
+    return new RoleBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).replace(item);
   }
 
   @Override
   public RoleBinding reload(OkHttpClient client, Config config, String namespace, RoleBinding item) {
-    return new RoleBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).fromServer().get();
+    return new RoleBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).fromServer().get();
   }
 
   @Override
@@ -56,6 +56,6 @@ public class RoleBindingHandler implements ResourceHandler<RoleBinding, RoleBind
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, RoleBinding item) {
-      return new RoleBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).delete(item);
+      return new RoleBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).delete(item);
     }
 }

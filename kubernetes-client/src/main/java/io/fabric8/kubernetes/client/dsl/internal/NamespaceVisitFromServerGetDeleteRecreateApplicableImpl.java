@@ -28,10 +28,7 @@ import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.HasMetadataVisitiableBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.ResourceHandler;
-import io.fabric8.kubernetes.client.dsl.Applicable;
-import io.fabric8.kubernetes.client.dsl.Gettable;
-import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetDeleteRecreateApplicable;
-import io.fabric8.kubernetes.client.dsl.VisitFromServerGetDeleteRecreateApplicable;
+import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.handlers.KubernetesListHandler;
 import io.fabric8.kubernetes.client.utils.ResourceCompare;
@@ -58,23 +55,25 @@ public class NamespaceVisitFromServerGetDeleteRecreateApplicableImpl extends Ope
     private final Boolean deletingExisting;
     private final List<Visitor> visitors;
     private final Object item;
-    private final ResourceHandler hanlder;
+    private final ResourceHandler handler;
+    private final long gracePeriodSeconds;
 
     public NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(OkHttpClient client, Config config, String namespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, InputStream is) {
-        this(client, config, namespace, fromServer, deletingExisting, visitors, unmarshal(is));
+        this(client, config, namespace, fromServer, deletingExisting, visitors, unmarshal(is), -1);
     }
 
-    public NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(OkHttpClient client, Config config, String namespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item) {
+    public NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(OkHttpClient client, Config config, String namespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item, long gracePeriodSeconds) {
         super(client, config, null, null, null, null, null);
         this.namespace = namespace;
         this.fromServer = fromServer;
         this.deletingExisting = deletingExisting;
         this.visitors = visitors != null ? visitors : new ArrayList<Visitor>();
         this.item = item;
-        this.hanlder = handlerOf(item);
-        if (hanlder == null) {
+        this.handler = handlerOf(item);
+        if (handler == null) {
             throw new KubernetesClientException("No handler found for object:" + item);
         }
+        this.gracePeriodSeconds = gracePeriodSeconds;
     }
 
     @Override
@@ -248,23 +247,28 @@ public class NamespaceVisitFromServerGetDeleteRecreateApplicableImpl extends Ope
 
     @Override
     public VisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> inNamespace(String namespace) {
-        return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(client, config, namespace, fromServer, deletingExisting, visitors, item);
+        return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(client, config, namespace, fromServer, deletingExisting, visitors, item, gracePeriodSeconds);
     }
 
     @Override
     public Gettable<List<HasMetadata>> fromServer() {
-        return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(client, config, namespace, true, deletingExisting, visitors, item);
+        return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(client, config, namespace, true, deletingExisting, visitors, item, gracePeriodSeconds);
     }
 
     @Override
     public Applicable<List<HasMetadata>> deletingExisting() {
-        return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(client, config, namespace, fromServer, true, visitors, item);
+        return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(client, config, namespace, fromServer, true, visitors, item, gracePeriodSeconds);
     }
 
     @Override
     public VisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> accept(Visitor visitor) {
         List<Visitor> newVisitors = new ArrayList<>(visitors);
         newVisitors.add(visitor);
-        return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(client, config, namespace, fromServer, true, newVisitors, item);
+        return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(client, config, namespace, fromServer, true, newVisitors, item, gracePeriodSeconds);
     }
+
+  @Override public Deletable<Boolean> withGracePeriod(long gracePeriodSeconds)
+  {
+    return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(client, config, namespace, fromServer, true, visitors, item, gracePeriodSeconds);
+  }
 }

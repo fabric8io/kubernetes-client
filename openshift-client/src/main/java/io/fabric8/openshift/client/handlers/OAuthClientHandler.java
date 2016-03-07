@@ -36,17 +36,17 @@ public class OAuthClientHandler implements ResourceHandler<OAuthClient, OAuthCli
 
   @Override
   public OAuthClient create(OkHttpClient client, Config config, String namespace, OAuthClient item) {
-      return new OAuthClientOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).create();
+      return new OAuthClientOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).create();
   }
 
   @Override
   public OAuthClient replace(OkHttpClient client, Config config, String namespace, OAuthClient item) {
-    return new OAuthClientOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).replace(item);
+    return new OAuthClientOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).replace(item);
   }
 
   @Override
   public OAuthClient reload(OkHttpClient client, Config config, String namespace, OAuthClient item) {
-    return new OAuthClientOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).fromServer().get();
+    return new OAuthClientOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).fromServer().get();
   }
 
   @Override
@@ -56,6 +56,6 @@ public class OAuthClientHandler implements ResourceHandler<OAuthClient, OAuthCli
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, OAuthClient item) {
-      return new OAuthClientOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).delete(item);
+      return new OAuthClientOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).delete(item);
     }
 }

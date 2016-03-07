@@ -24,11 +24,11 @@ import io.fabric8.openshift.client.OpenShiftConfig;
 
 public class UserOperationsImpl extends OpenShiftOperation<User, UserList, DoneableUser, ClientResource<User, DoneableUser>> {
   public UserOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
-    this(client, config, null, namespace, null, true, null, null, false);
+    this(client, config, null, namespace, null, true, null, null, false, -1);
   }
 
-  public UserOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, User item, String resourceVersion, Boolean reloadingFromServer) {
-    super(client, config, null, apiVersion, "users", namespace, name, cascading, item, resourceVersion, reloadingFromServer);
+  public UserOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, User item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds) {
+    super(client, config, null, apiVersion, "users", namespace, name, cascading, item, resourceVersion, reloadingFromServer, -1);
   }
 
   @Override
