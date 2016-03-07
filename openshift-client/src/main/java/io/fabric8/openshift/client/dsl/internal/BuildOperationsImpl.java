@@ -26,10 +26,10 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
   ClientResource<Build, DoneableBuild>> {
 
   public BuildOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
-    this(client, config, null, namespace, null, true, null, null, false);
+    this(client, config, null, namespace, null, true, null, null, false, -1);
   }
 
-  public BuildOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, Build item, String resourceVersion, Boolean reloadingFromServer) {
-    super(client, config, null, apiVersion, "builds", namespace, name, cascading, item, resourceVersion, reloadingFromServer );
+  public BuildOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, Build item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds) {
+    super(client, config, null, apiVersion, "builds", namespace, name, cascading, item, resourceVersion, reloadingFromServer, -1);
   }
 }

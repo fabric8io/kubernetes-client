@@ -24,11 +24,11 @@ import io.fabric8.openshift.client.OpenShiftConfig;
 
 public class GroupOperationsImpl extends OpenShiftOperation<Group, GroupList, DoneableGroup, ClientResource<Group, DoneableGroup>> {
   public GroupOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
-    this(client, config, null, namespace, null, true, null, null, false);
+    this(client, config, null, namespace, null, true, null, null, false, -1);
   }
 
-  public GroupOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, Group item, String resourceVersion, Boolean reloadingFromServer) {
-    super(client, config, null, apiVersion, "groups", namespace, name, cascading, item, resourceVersion, reloadingFromServer);
+  public GroupOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, Group item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds) {
+    super(client, config, null, apiVersion, "groups", namespace, name, cascading, item, resourceVersion, reloadingFromServer, -1);
   }
 
   @Override

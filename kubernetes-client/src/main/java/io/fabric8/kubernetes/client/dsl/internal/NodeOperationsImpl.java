@@ -26,11 +26,11 @@ import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 public class NodeOperationsImpl extends HasMetadataOperation<Node, NodeList, DoneableNode, ClientResource<Node, DoneableNode>> {
 
   public NodeOperationsImpl(OkHttpClient client, Config config) {
-    this(client, config, null, null, null, true, null, null, false);
+    this(client, config, null, null, null, true, null, null, false, -1);
   }
 
-  public NodeOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Node item, String resourceVersion, Boolean reloadingFromServer) {
-    super(client, config, null, apiVersion, "nodes", namespace, name, cascading, item, resourceVersion, reloadingFromServer);
+  public NodeOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Node item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds) {
+    super(client, config, null, apiVersion, "nodes", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds);
   }
 
   @Override

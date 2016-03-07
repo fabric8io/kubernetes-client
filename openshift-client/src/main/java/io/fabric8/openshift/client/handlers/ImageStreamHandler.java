@@ -36,17 +36,17 @@ public class ImageStreamHandler implements ResourceHandler<ImageStream, ImageStr
 
   @Override
   public ImageStream create(OkHttpClient client, Config config, String namespace, ImageStream item) {
-      return new ImageStreamOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).create();
+      return new ImageStreamOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).create();
   }
 
   @Override
   public ImageStream replace(OkHttpClient client, Config config, String namespace, ImageStream item) {
-    return new ImageStreamOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).replace(item);
+    return new ImageStreamOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).replace(item);
   }
 
   @Override
   public ImageStream reload(OkHttpClient client, Config config, String namespace, ImageStream item) {
-    return new ImageStreamOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).fromServer().get();
+    return new ImageStreamOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).fromServer().get();
   }
 
   @Override
@@ -56,6 +56,6 @@ public class ImageStreamHandler implements ResourceHandler<ImageStream, ImageStr
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, ImageStream item) {
-      return new ImageStreamOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).delete(item);
+      return new ImageStreamOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).delete(item);
     }
 }

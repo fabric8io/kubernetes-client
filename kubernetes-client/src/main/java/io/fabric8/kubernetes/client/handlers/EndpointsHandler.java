@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.handlers;
 
 import com.squareup.okhttp.OkHttpClient;
-import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsBuilder;
 import io.fabric8.kubernetes.client.Config;
@@ -36,17 +35,17 @@ public class EndpointsHandler implements ResourceHandler<Endpoints, EndpointsBui
 
   @Override
   public Endpoints create(OkHttpClient client, Config config, String namespace, Endpoints item) {
-    return new EndpointsOperationsImpl(client, config, null, namespace, null, true, item, null, false).create();
+    return new EndpointsOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1).create();
   }
 
   @Override
   public Endpoints replace(OkHttpClient client, Config config, String namespace, Endpoints item) {
-    return new EndpointsOperationsImpl(client, config, null, namespace, null, true, item, null, false).replace(item);
+    return new EndpointsOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1).replace(item);
   }
 
   @Override
   public Endpoints reload(OkHttpClient client, Config config, String namespace, Endpoints item) {
-    return new EndpointsOperationsImpl(client, config, null, namespace, null, true, item, null, false).fromServer().get();
+    return new EndpointsOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1).fromServer().get();
   }
 
   @Override
@@ -56,6 +55,6 @@ public class EndpointsHandler implements ResourceHandler<Endpoints, EndpointsBui
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Endpoints item) {
-    return new EndpointsOperationsImpl(client, config, null, namespace, null, true, item, null, false).delete(item);
+    return new EndpointsOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1).delete(item);
   }
 }

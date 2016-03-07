@@ -34,17 +34,17 @@ public class SecretHandler implements ResourceHandler<Secret, SecretBuilder> {
 
   @Override
   public Secret create(OkHttpClient client, Config config, String namespace, Secret item) {
-    return new SecretOperationsImpl(client, config, null, namespace, null, true, item, null, false).create();
+    return new SecretOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1).create();
   }
 
   @Override
   public Secret replace(OkHttpClient client, Config config, String namespace, Secret item) {
-    return new SecretOperationsImpl(client, config, null, namespace, null, true, item, null, false).replace(item);
+    return new SecretOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1).replace(item);
   }
 
   @Override
   public Secret reload(OkHttpClient client, Config config, String namespace, Secret item) {
-    return new SecretOperationsImpl(client, config, null, namespace, null, true, item, null, false).fromServer().get();
+    return new SecretOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1).fromServer().get();
   }
 
   @Override
@@ -54,6 +54,6 @@ public class SecretHandler implements ResourceHandler<Secret, SecretBuilder> {
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Secret item) {
-    return new SecretOperationsImpl(client, config, null, namespace, null, true, item, null, false).delete(item);
+    return new SecretOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1).delete(item);
   }
 }

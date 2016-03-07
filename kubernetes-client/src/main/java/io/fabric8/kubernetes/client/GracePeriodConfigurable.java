@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl;
+package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.client.GracePeriodConfigurable;
-
-public interface WatchListDeletable<T, L, B, H, W> extends VersionWatchable<H, W>, Listable<L>, Deletable<B>,
-                                                           GracePeriodConfigurable<Deletable<B>>
+public interface GracePeriodConfigurable<T>
 {
+    T withGracePeriod(long gracePeriodSeconds);
 }

@@ -35,17 +35,17 @@ public class PersistentVolumeHandler implements ResourceHandler<PersistentVolume
 
   @Override
   public PersistentVolume create(OkHttpClient client, Config config, String namespace, PersistentVolume item) {
-    return new PersistentVolumeOperationsImpl(client, config, null, namespace, null, true, item, null, false).create();
+    return new PersistentVolumeOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1).create();
   }
 
   @Override
   public PersistentVolume replace(OkHttpClient client, Config config, String namespace, PersistentVolume item) {
-    return new PersistentVolumeOperationsImpl(client, config, null, namespace, null, true, item, null, false).replace(item);
+    return new PersistentVolumeOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1).replace(item);
   }
 
   @Override
   public PersistentVolume reload(OkHttpClient client, Config config, String namespace, PersistentVolume item) {
-    return new PersistentVolumeOperationsImpl(client, config, null, namespace, null, true, item, null, false).fromServer().get();
+    return new PersistentVolumeOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1).fromServer().get();
   }
 
   @Override
@@ -55,6 +55,6 @@ public class PersistentVolumeHandler implements ResourceHandler<PersistentVolume
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, PersistentVolume item) {
-    return new PersistentVolumeOperationsImpl(client, config, null, namespace, null, true, item, null, false).delete(item);
+    return new PersistentVolumeOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1).delete(item);
   }
 }

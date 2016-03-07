@@ -27,10 +27,10 @@ public class EventOperationsImpl extends HasMetadataOperation<Event, EventList, 
   ClientResource<Event, DoneableEvent>> {
 
   public EventOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(client, config, null, namespace, null, true, null, null, false);
+    this(client, config, null, namespace, null, true, null, null, false, -1);
   }
 
-  public EventOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Event item, String resourceVersion, Boolean reloadingFromServer) {
-    super(client, config, null, apiVersion, "events", namespace, name, cascading, item, resourceVersion, reloadingFromServer);
+  public EventOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Event item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds) {
+    super(client, config, null, apiVersion, "events", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds);
   }
 }

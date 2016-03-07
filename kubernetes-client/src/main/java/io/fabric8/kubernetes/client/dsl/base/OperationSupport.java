@@ -24,10 +24,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.ResponseBody;
-import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.KubernetesResource;
-import io.fabric8.kubernetes.api.model.Status;
-import io.fabric8.kubernetes.api.model.StatusBuilder;
+import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.URLUtils;
@@ -173,12 +170,19 @@ public class OperationSupport {
   }
 
 
-  protected <T> void handleDelete(T resource) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    handleDelete(getResourceUrl(checkNamespace(resource), checkName(resource)));
+  protected <T> void handleDelete(T resource, long gracePeriodSeconds) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+    handleDelete(getResourceUrl(checkNamespace(resource), checkName(resource)), gracePeriodSeconds);
   }
 
-  protected void handleDelete(URL requestUrl) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    Request.Builder requestBuilder = new Request.Builder().delete(null).url(requestUrl);
+  protected void handleDelete(URL requestUrl, long gracePeriodSeconds) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+    RequestBody requestBody = null;
+    if (gracePeriodSeconds >= 0) {
+      DeleteOptions deleteOptions = new DeleteOptions();
+      deleteOptions.setGracePeriodSeconds(gracePeriodSeconds);
+      requestBody = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(deleteOptions));
+    }
+
+    Request.Builder requestBuilder = new Request.Builder().delete(requestBody).url(requestUrl);
     handleResponse(requestBuilder, 200, null);
   }
 

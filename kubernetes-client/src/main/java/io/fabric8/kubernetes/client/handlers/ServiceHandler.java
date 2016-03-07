@@ -33,17 +33,17 @@ public class ServiceHandler implements ResourceHandler<Service, ServiceBuilder> 
 
   @Override
   public Service create(OkHttpClient client, Config config, String namespace, Service item) {
-    return new ServiceOperationsImpl(client, config, null, namespace, null, true, item, null, false).create();
+    return new ServiceOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1).create();
   }
 
   @Override
   public Service replace(OkHttpClient client, Config config, String namespace, Service item) {
-    return new ServiceOperationsImpl(client, config, null, namespace, null, true, item, null, false).replace(item);
+    return new ServiceOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1).replace(item);
   }
 
   @Override
   public Service reload(OkHttpClient client, Config config, String namespace, Service item) {
-    return new ServiceOperationsImpl(client, config, null, namespace, null, true, item, null, false).fromServer().get();
+    return new ServiceOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1).fromServer().get();
   }
 
   @Override
@@ -53,6 +53,6 @@ public class ServiceHandler implements ResourceHandler<Service, ServiceBuilder> 
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Service item) {
-    return new ServiceOperationsImpl(client, config, null, namespace, null, true, item, null, false).delete(item);
+    return new ServiceOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1).delete(item);
   }
 }

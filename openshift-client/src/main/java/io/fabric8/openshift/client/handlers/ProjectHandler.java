@@ -36,17 +36,17 @@ public class ProjectHandler implements ResourceHandler<Project, ProjectBuilder> 
 
   @Override
   public Project create(OkHttpClient client, Config config, String namespace, Project item) {
-      return new ProjectOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).create();
+      return new ProjectOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).create();
     }
 
   @Override
   public Project replace(OkHttpClient client, Config config, String namespace, Project item) {
-    return new ProjectOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).replace(item);
+    return new ProjectOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).replace(item);
   }
 
   @Override
   public Project reload(OkHttpClient client, Config config, String namespace, Project item) {
-    return new ProjectOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).fromServer().get();
+    return new ProjectOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).fromServer().get();
   }
 
   @Override
@@ -56,6 +56,6 @@ public class ProjectHandler implements ResourceHandler<Project, ProjectBuilder> 
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Project item) {
-      return new ProjectOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).delete(item);
+      return new ProjectOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).delete(item);
     }
 }

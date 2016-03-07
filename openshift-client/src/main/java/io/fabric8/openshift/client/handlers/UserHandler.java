@@ -36,17 +36,17 @@ public class UserHandler implements ResourceHandler<User, UserBuilder> {
 
   @Override
   public User create(OkHttpClient client, Config config, String namespace, User item) {
-      return new UserOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).create();
+      return new UserOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).create();
   }
 
   @Override
   public User replace(OkHttpClient client, Config config, String namespace, User item) {
-    return new UserOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).replace(item);
+    return new UserOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).replace(item);
   }
 
   @Override
   public User reload(OkHttpClient client, Config config, String namespace, User item) {
-    return new UserOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).fromServer().get();
+    return new UserOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).fromServer().get();
   }
 
   @Override
@@ -56,6 +56,6 @@ public class UserHandler implements ResourceHandler<User, UserBuilder> {
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, User item) {
-      return new UserOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).delete(item);
+      return new UserOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).delete(item);
     }
 }

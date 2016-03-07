@@ -35,17 +35,17 @@ public class GroupHandler implements ResourceHandler<Group, GroupBuilder> {
 
   @Override
   public Group create(OkHttpClient client, Config config, String namespace, Group item) {
-      return new GroupOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).create();
+      return new GroupOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).create();
   }
 
   @Override
   public Group replace(OkHttpClient client, Config config, String namespace, Group item) {
-    return new GroupOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).replace(item);
+    return new GroupOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).replace(item);
   }
 
   @Override
   public Group reload(OkHttpClient client, Config config, String namespace, Group item) {
-    return new GroupOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).fromServer().get();
+    return new GroupOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).fromServer().get();
   }
 
   @Override
@@ -55,6 +55,6 @@ public class GroupHandler implements ResourceHandler<Group, GroupBuilder> {
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Group item) {
-      return new GroupOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false).delete(item);
+      return new GroupOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).delete(item);
     }
 }

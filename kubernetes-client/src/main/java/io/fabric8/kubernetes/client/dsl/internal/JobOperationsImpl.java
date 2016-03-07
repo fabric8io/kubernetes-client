@@ -26,10 +26,10 @@ import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, DoneableJob, ClientResource<Job, DoneableJob>> {
 
   public JobOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(client, config, "v1beta1", namespace, null, true, null, null, false);
+    this(client, config, "v1beta1", namespace, null, true, null, null, false, -1);
   }
 
-  public JobOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Job item, String resourceVersion, Boolean reloadingFromServer) {
-    super(client, config, "extensions", apiVersion, "jobs", namespace, name, cascading, item, resourceVersion, reloadingFromServer);
+  public JobOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Job item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds) {
+    super(client, config, "extensions", apiVersion, "jobs", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds);
   }
 }
