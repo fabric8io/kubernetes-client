@@ -34,7 +34,7 @@ public class OAuthClientOperationsImpl extends OpenShiftOperation<OAuthClient, O
   }
 
   @Override
-  public boolean isNamespaceRequired() {
+  public boolean isResourceNamespaced() {
     return false;
   }
 }

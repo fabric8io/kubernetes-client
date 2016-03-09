@@ -17,8 +17,10 @@
 package io.fabric8.openshift.client.dsl.internal;
 
 import com.squareup.okhttp.OkHttpClient;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
+import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.LocalSubjectAccessReview;
 import io.fabric8.openshift.api.model.LocalSubjectAccessReviewBuilder;
 import io.fabric8.openshift.api.model.SubjectAccessReview;
@@ -112,6 +114,23 @@ public class ClientSubjectAccessReviewOperationImpl extends OperationSupport imp
 
   private CreateableLocalSubjectAccessReview local() {
     return new CreateableLocalSubjectAccessReviewImpl(client);
+  }
+
+  //Subject Access Review is a category on its own so we need to override the default behavior.
+  @Override
+  protected <T> String checkNamespace(T item) {
+    String operationNs = getNamespace();
+    String itemNs = (item instanceof HasMetadata && ((HasMetadata)item).getMetadata() != null) ? ((HasMetadata) item).getMetadata().getNamespace() : null;
+    if (Utils.isNullOrEmpty(operationNs) && Utils.isNullOrEmpty(itemNs)) {
+      return null;
+    } else if (Utils.isNullOrEmpty(itemNs)) {
+      return operationNs;
+    } else if (Utils.isNullOrEmpty(operationNs)) {
+      return itemNs;
+    } else if (itemNs.equals(operationNs)) {
+      return itemNs;
+    }
+    throw new KubernetesClientException("Namespace mismatch. Item namespace:" + itemNs + ". Operation namespace:" + operationNs + ".");
   }
 
   private class CreateableSubjectAccessReviewImpl extends CreateableSubjectAccessReview {

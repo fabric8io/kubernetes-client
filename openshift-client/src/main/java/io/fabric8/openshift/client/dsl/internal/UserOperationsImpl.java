@@ -32,7 +32,7 @@ public class UserOperationsImpl extends OpenShiftOperation<User, UserList, Donea
   }
 
   @Override
-  public boolean isNamespaceRequired() {
+  public boolean isResourceNamespaced() {
     return false;
   }
 }

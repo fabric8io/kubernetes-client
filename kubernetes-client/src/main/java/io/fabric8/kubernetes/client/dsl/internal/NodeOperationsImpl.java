@@ -34,7 +34,7 @@ public class NodeOperationsImpl extends HasMetadataOperation<Node, NodeList, Don
   }
 
   @Override
-  public boolean isNamespaceRequired() {
+  public boolean isResourceNamespaced() {
     return false;
   }
 }

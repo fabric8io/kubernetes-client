@@ -32,7 +32,7 @@ public class GroupOperationsImpl extends OpenShiftOperation<Group, GroupList, Do
   }
 
   @Override
-  public boolean isNamespaceRequired() {
+  public boolean isResourceNamespaced() {
     return false;
   }
 }

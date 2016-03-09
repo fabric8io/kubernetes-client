@@ -482,7 +482,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     throw new KubernetesClientException("Cannot update read-only resources");
   }
 
-  public boolean isNamespaceRequired() {
+  public boolean isResourceNamespaced() {
     return true;
   }
 
