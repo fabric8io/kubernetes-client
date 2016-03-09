@@ -93,8 +93,8 @@ public class OperationSupport {
     return name;
   }
 
-  public boolean isNamespaceRequired() {
-    return false;
+  public boolean isResourceNamespaced() {
+    return true;
   }
 
   public URL getRootUrl() {
@@ -110,7 +110,9 @@ public class OperationSupport {
 
   public URL getNamespacedUrl(String namespace) throws MalformedURLException {
     URL requestUrl = getRootUrl();
-    if (namespace != null) {
+    if (!isResourceNamespaced()) {
+      //if resource is not namespaced don't even bother to check the namespace.
+    } else if (Utils.isNotNullOrEmpty(namespace)) {
       requestUrl = new URL(URLUtils.join(requestUrl.toString(), "namespaces", namespace));
     }
     requestUrl = new URL(URLUtils.join(requestUrl.toString(), resourceT));
@@ -139,7 +141,7 @@ public class OperationSupport {
     String operationNs = getNamespace();
     String itemNs = (item instanceof HasMetadata && ((HasMetadata)item).getMetadata() != null) ? ((HasMetadata) item).getMetadata().getNamespace() : null;
     if (Utils.isNullOrEmpty(operationNs) && Utils.isNullOrEmpty(itemNs)) {
-      if (!isNamespaceRequired()) {
+      if (!isResourceNamespaced()) {
         return null;
       } else {
         throw new KubernetesClientException("Namespace not specified. But operation requires namespace.");

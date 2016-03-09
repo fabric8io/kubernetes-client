@@ -33,9 +33,4 @@ public class PersistentVolumeOperationsImpl
   public PersistentVolumeOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, PersistentVolume item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds) {
     super(client, config, null, apiVersion, "persistentvolumes", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds);
   }
-
-  @Override
-  public boolean isNamespaceRequired() {
-    return false;
-  }
 }

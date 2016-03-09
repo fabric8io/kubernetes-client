@@ -36,7 +36,7 @@ public class NamespaceOperationsImpl  extends HasMetadataOperation<Namespace, Na
   }
 
   @Override
-  public boolean isNamespaceRequired() {
+  public boolean isResourceNamespaced() {
     return false;
   }
 }

@@ -33,7 +33,7 @@ public class SecurityContextConstraintsOperationsImpl  extends BaseOperation<Sec
   }
 
   @Override
-  public boolean isNamespaceRequired() {
+  public boolean isResourceNamespaced() {
     return false;
   }
 }

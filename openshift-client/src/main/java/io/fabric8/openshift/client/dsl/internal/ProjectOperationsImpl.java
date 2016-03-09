@@ -35,7 +35,7 @@ public class ProjectOperationsImpl extends OpenShiftOperation<Project, ProjectLi
 
 
   @Override
-  public boolean isNamespaceRequired() {
+  public boolean isResourceNamespaced() {
     return false;
   }
 }

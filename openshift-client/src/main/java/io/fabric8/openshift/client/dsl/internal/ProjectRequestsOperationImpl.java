@@ -45,7 +45,7 @@ public class ProjectRequestsOperationImpl extends OperationSupport implements Cl
     }
 
     @Override
-    public boolean isNamespaceRequired() {
+    public boolean isResourceNamespaced() {
         return false;
     }
 

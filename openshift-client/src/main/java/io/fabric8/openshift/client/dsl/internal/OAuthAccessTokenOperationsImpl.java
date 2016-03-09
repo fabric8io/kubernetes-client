@@ -34,7 +34,7 @@ public class OAuthAccessTokenOperationsImpl extends OpenShiftOperation<OAuthAcce
   }
 
   @Override
-  public boolean isNamespaceRequired() {
+  public boolean isResourceNamespaced() {
     return false;
   }
 }
