@@ -99,13 +99,12 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
     try {
       //TODO: This needs some attention.
       String triggerUrl = URLUtils.join(getResourceUrl().toString(), "webhooks", secret, triggerType);
-      RequestBody requestBody = RequestBody.create(JSON, BaseOperation.JSON_MAPPER.writer().writeValueAsString(trigger));
+      RequestBody requestBody = RequestBody.create(JSON, BaseOperation.JSON_MAPPER.writer().writeValueAsBytes(trigger));
       Request.Builder requestBuilder = new Request.Builder()
         .post(requestBody)
         .url(triggerUrl)
-        .addHeader("Content-Type", "application/json")
         .addHeader("X-Github-Event", "push");
-      handleResponse(requestBuilder, 200);
+      handleResponse(requestBuilder, 200, null);
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }

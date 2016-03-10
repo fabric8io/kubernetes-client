@@ -40,7 +40,7 @@ import java.util.concurrent.ExecutionException;
 public class OperationSupport {
 
 
-  public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+  public static final MediaType JSON = MediaType.parse("application/json");
   protected static final ObjectMapper JSON_MAPPER = new ObjectMapper();
   protected static final ObjectMapper YAML_MAPPER = new ObjectMapper(new YAMLFactory());
   private static final String CLIENT_STATUS_FLAG = "CLIENT_STATUS_FLAG";
