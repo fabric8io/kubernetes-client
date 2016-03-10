@@ -207,17 +207,18 @@ public class OperationSupport {
 
   protected <T> T handleResponse(Request.Builder requestBuilder, int successStatusCode, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     Request request = requestBuilder.build();
-    try {
-      Response response = client.newCall(request).execute();
-      try (ResponseBody body = response.body()) {
-        assertResponseCode(request, response, successStatusCode);
-        if (type != null) {
-          return JSON_MAPPER.readValue(body.byteStream(), type);
-        } else {
-          return null;
-        }
+    Response response = client.newCall(request).execute();
+    try (ResponseBody body = response.body()) {
+      assertResponseCode(request, response, successStatusCode);
+      if (type != null) {
+        return JSON_MAPPER.readValue(body.byteStream(), type);
+      } else {
+        return null;
       }
     } catch (Exception e) {
+      if (e instanceof KubernetesClientException) {
+        throw e;
+      }
       throw requestException(request, e);
     }
   }
