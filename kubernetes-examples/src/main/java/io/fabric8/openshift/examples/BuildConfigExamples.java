@@ -48,10 +48,10 @@ public class BuildConfigExamples {
     try {
       // Create a namespace for all our stuff
       Namespace ns = new NamespaceBuilder().withNewMetadata().withName("thisisatest").addToLabels("this", "rocks").endMetadata().build();
-      ServiceAccount fabric8 = client.serviceAccounts().inNamespace("default").withName("fabric8").get();
-      fabric8 = new ServiceAccountBuilder(fabric8).editMetadata().withNamespace("thisisatest").withResourceVersion(null).endMetadata().build();
-
       log("Created namespace", client.namespaces().create(ns));
+
+      ServiceAccount fabric8 = new ServiceAccountBuilder().withNewMetadata().withName("fabric8").endMetadata().build();
+
       client.serviceAccounts().inNamespace("thisisatest").create(fabric8);
 
       log("Created image stream", client.imageStreams().inNamespace("thisisatest").createNew()
@@ -62,7 +62,7 @@ public class BuildConfigExamples {
         .addNewTag()
         .withName("latest")
         .endTag()
-        .withDockerImageRepository("fabric8/example-camel-cdi:latest")
+        .withDockerImageRepository("fabric8/example-camel-cdi")
         .endSpec()
         .withNewStatus().withDockerImageRepository("").endStatus()
         .done());
