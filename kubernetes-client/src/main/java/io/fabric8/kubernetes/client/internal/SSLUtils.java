@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.internal;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+import com.squareup.okhttp.ResponseBody;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
@@ -66,8 +67,9 @@ public final class SSLUtils {
             Request request = new Request.Builder().get().url(sslConfig.getMasterUrl())
                     .build();
             Response response = client.newCall(request).execute();
-            response.body().close();
-            return response.isSuccessful();
+            try (ResponseBody body = response.body()) {
+              return response.isSuccessful();
+            }
         } catch (Throwable t) {
             LOG.warn("SSL handshake failed. Falling back to insecure connection.");
         } finally {

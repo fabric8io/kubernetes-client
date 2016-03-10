@@ -44,7 +44,7 @@ public class OperationSupport {
   protected static final ObjectMapper JSON_MAPPER = new ObjectMapper();
   protected static final ObjectMapper YAML_MAPPER = new ObjectMapper(new YAMLFactory());
   private static final String CLIENT_STATUS_FLAG = "CLIENT_STATUS_FLAG";
-  
+
   protected final OkHttpClient client;
   protected final Config config;
   protected final String resourceT;
@@ -207,17 +207,18 @@ public class OperationSupport {
 
   protected <T> T handleResponse(Request.Builder requestBuilder, int successStatusCode, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     Request request = requestBuilder.build();
-    Response response = null;
     try {
-      response = client.newCall(request).execute();
+      Response response = client.newCall(request).execute();
+      try (ResponseBody body = response.body()) {
+        assertResponseCode(request, response, successStatusCode);
+        if (type != null) {
+          return JSON_MAPPER.readValue(body.byteStream(), type);
+        } else {
+          return null;
+        }
+      }
     } catch (Exception e) {
       throw requestException(request, e);
-    }
-    assertResponseCode(request, response, successStatusCode);
-    if (type != null) {
-      return JSON_MAPPER.readValue(response.body().byteStream(), type);
-    } else {
-      return null;
     }
   }
 

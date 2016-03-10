@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+import com.squareup.okhttp.ResponseBody;
 import com.squareup.okhttp.ws.WebSocketCall;
 import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.Pod;
@@ -26,9 +27,9 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientPodResource;
 import io.fabric8.kubernetes.client.dsl.ContainerResource;
+import io.fabric8.kubernetes.client.dsl.ExecListenable;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
-import io.fabric8.kubernetes.client.dsl.ExecListenable;
 import io.fabric8.kubernetes.client.dsl.Execable;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.Loggable;
@@ -126,8 +127,10 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
             Request.Builder requestBuilder = new Request.Builder().get().url(url);
             Request request = requestBuilder.build();
             Response response = client.newCall(request).execute();
-            assertResponseCode(request, response, 200);
-            return response.body().string();
+            try (ResponseBody body = response.body()) {
+              assertResponseCode(request, response, 200);
+              return body.string();
+            }
         } catch (Throwable t) {
             throw KubernetesClientException.launderThrowable(t);
         }
