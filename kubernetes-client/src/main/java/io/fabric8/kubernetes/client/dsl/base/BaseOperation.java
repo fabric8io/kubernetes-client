@@ -18,7 +18,7 @@ package io.fabric8.kubernetes.client.dsl.base;
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
-import io.fabric8.kubernetes.api.builder.Visitor;
+import io.fabric8.kubernetes.api.builder.Function;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.RootPaths;
@@ -27,7 +27,15 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.client.dsl.*;
+import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
+import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.Deletable;
+import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
+import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
+import io.fabric8.kubernetes.client.dsl.Gettable;
+import io.fabric8.kubernetes.client.dsl.Reaper;
+import io.fabric8.kubernetes.client.dsl.Watchable;
 import io.fabric8.kubernetes.client.dsl.internal.WatchConnectionManager;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 
@@ -229,11 +237,11 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   @Override
   public D createNew() throws KubernetesClientException {
-    final Visitor<T> visitor = new Visitor<T>() {
+    final Function<T, T> visitor = new Function<T, T>() {
       @Override
-      public void visit(T resource) {
+      public T apply(T resource) {
         try {
-          create(resource);
+          return create(resource);
         } catch (Exception e) {
           throw KubernetesClientException.launderThrowable(e);
         }
@@ -241,7 +249,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     };
 
     try {
-      return getDoneableType().getDeclaredConstructor(Visitor.class).newInstance(visitor);
+      return getDoneableType().getDeclaredConstructor(Function.class).newInstance(visitor);
     } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException e) {
       throw KubernetesClientException.launderThrowable(e);
     }

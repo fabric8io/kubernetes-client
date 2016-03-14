@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client.mock.impl.doneables;
 
-import io.fabric8.kubernetes.api.builder.Visitor;
+import io.fabric8.kubernetes.api.builder.Function;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.client.mock.MockDoneable;
 import io.fabric8.openshift.api.model.DoneableProjectRequest;
@@ -31,10 +31,9 @@ public class MockDoneableProjectRequest extends ProjectRequestFluentImpl<MockDon
     private interface DelegateInterface extends Doneable<ProjectRequest>, ProjectRequestFluent<DoneableProjectRequest> {
     }
 
-    private final Visitor<ProjectRequest> visitor = new Visitor<ProjectRequest>() {
+    private final Function<ProjectRequest, ProjectRequest> visitor = new Function<ProjectRequest, ProjectRequest>() {
         @Override
-        public void visit(ProjectRequest item) {
-        }
+        public ProjectRequest apply(ProjectRequest item) {return item;}
     };
 
     private final DelegateInterface delegate;

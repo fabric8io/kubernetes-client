@@ -18,35 +18,35 @@ package io.fabric8.kubernetes.client.mock.impl.donable;
 
 import io.fabric8.kubernetes.api.builder.Function;
 import io.fabric8.kubernetes.api.model.Doneable;
-import io.fabric8.kubernetes.api.model.DoneableSecurityContextConstraints;
-import io.fabric8.kubernetes.api.model.SecurityContextConstraints;
-import io.fabric8.kubernetes.api.model.SecurityContextConstraintsBuilder;
-import io.fabric8.kubernetes.api.model.SecurityContextConstraintsFluent;
-import io.fabric8.kubernetes.api.model.SecurityContextConstraintsFluentImpl;
+import io.fabric8.kubernetes.api.model.extensions.DoneableDaemonSet;
+import io.fabric8.kubernetes.api.model.extensions.DaemonSet;
+import io.fabric8.kubernetes.api.model.extensions.DaemonSetBuilder;
+import io.fabric8.kubernetes.api.model.extensions.DaemonSetFluent;
+import io.fabric8.kubernetes.api.model.extensions.DaemonSetFluentImpl;
 import io.fabric8.kubernetes.client.mock.MockDoneable;
 import org.easymock.EasyMock;
 import org.easymock.IExpectationSetters;
 
-public class MockDoneableSecurityContextConstraints extends SecurityContextConstraintsFluentImpl<MockDoneableSecurityContextConstraints> implements MockDoneable<SecurityContextConstraints> {
-
-
-  private interface DelegateInterface extends Doneable<SecurityContextConstraints>, SecurityContextConstraintsFluent<DoneableSecurityContextConstraints> {}
-  private final Function<SecurityContextConstraints, SecurityContextConstraints> visitor = new Function<SecurityContextConstraints, SecurityContextConstraints>() {
+public class MockDoneableDaemonSet extends DaemonSetFluentImpl<MockDoneableDaemonSet> implements MockDoneable<DaemonSet> {
+  private interface DelegateInterface extends Doneable<DaemonSet>, DaemonSetFluent<DoneableDaemonSet> {}
+  private final Function<DaemonSet, DaemonSet> visitor = new Function<DaemonSet, DaemonSet>() {
     @Override
-    public SecurityContextConstraints apply(SecurityContextConstraints item) {return item;}
+    public DaemonSet apply(DaemonSet item) {return item;}
   };
 
   private final DelegateInterface delegate;
 
-  public MockDoneableSecurityContextConstraints() {
-    super(new SecurityContextConstraintsBuilder()
+  public MockDoneableDaemonSet() {
+    super(new DaemonSetBuilder()
       .withNewMetadata().endMetadata()
+      .withNewSpec().endSpec()
+      .withNewStatus().endStatus()
       .build());
     this.delegate = EasyMock.createMock(DelegateInterface .class);
   }
 
   @Override
-  public IExpectationSetters<SecurityContextConstraints> done() {
+  public IExpectationSetters<DaemonSet> done() {
     return EasyMock.expect(delegate.done());
   }
 
@@ -62,10 +62,10 @@ public class MockDoneableSecurityContextConstraints extends SecurityContextConst
   }
 
   @Override
-  public Doneable<SecurityContextConstraints> getDelegate() {
-    return new DoneableSecurityContextConstraints(new SecurityContextConstraintsBuilder(this).build(), visitor) {
+  public Doneable<DaemonSet> getDelegate() {
+    return new DoneableDaemonSet(new DaemonSetBuilder(this).build(), visitor) {
       @Override
-      public SecurityContextConstraints done() {
+      public DaemonSet done() {
         return delegate.done();
       }
     };

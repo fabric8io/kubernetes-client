@@ -16,7 +16,7 @@
 
 package io.fabric8.kubernetes.client.mock.impl.donable;
 
-import io.fabric8.kubernetes.api.builder.Visitor;
+import io.fabric8.kubernetes.api.builder.Function;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.extensions.DoneableIngress;
 import io.fabric8.kubernetes.api.model.extensions.Ingress;
@@ -29,9 +29,9 @@ import org.easymock.IExpectationSetters;
 
 public class MockDoneableIngress extends IngressFluentImpl<MockDoneableIngress> implements MockDoneable<Ingress> {
   private interface DelegateInterface extends Doneable<Ingress>, IngressFluent<DoneableIngress> {}
-  private final Visitor<Ingress> visitor = new Visitor<Ingress>() {
+  private final Function<Ingress, Ingress> visitor = new Function<Ingress, Ingress>() {
     @Override
-    public void visit(Ingress item) {}
+    public Ingress apply(Ingress item) {return item;}
   };
 
   private final DelegateInterface delegate;

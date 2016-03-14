@@ -16,7 +16,7 @@
 
 package io.fabric8.kubernetes.client.mock.impl.donable;
 
-import io.fabric8.kubernetes.api.builder.Visitor;
+import io.fabric8.kubernetes.api.builder.Function;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.Pod;
@@ -30,9 +30,9 @@ import org.easymock.IExpectationSetters;
 public class MockDoneablePod extends PodFluentImpl<MockDoneablePod> implements MockDoneable<Pod> {
 
   private interface DelegateInterface extends Doneable<Pod>, PodFluent<DoneablePod>{}
-  private final Visitor<Pod> visitor = new Visitor<Pod>() {
+  private final Function<Pod, Pod> visitor = new Function<Pod, Pod>() {
     @Override
-    public void visit(Pod item) {}
+    public Pod apply(Pod item) {return item;}
   };
 
   private final DelegateInterface delegate;
