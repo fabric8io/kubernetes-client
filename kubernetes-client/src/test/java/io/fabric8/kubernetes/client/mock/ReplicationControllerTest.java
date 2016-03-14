@@ -194,8 +194,6 @@ public class ReplicationControllerTest extends KubernetesMockServerTestBase {
     assertEquals(5, repl.getStatus().getReplicas().intValue());
   }
 
-
-
   @Ignore
   @Test
   public void testUpdate() {

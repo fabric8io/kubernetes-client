@@ -15,10 +15,7 @@
  */
 package io.fabric8.kubernetes.client.mock.impl.donable;
 
-import org.easymock.EasyMock;
-import org.easymock.IExpectationSetters;
-
-import io.fabric8.kubernetes.api.builder.Visitor;
+import io.fabric8.kubernetes.api.builder.Function;
 import io.fabric8.kubernetes.api.model.ComponentStatus;
 import io.fabric8.kubernetes.api.model.ComponentStatusBuilder;
 import io.fabric8.kubernetes.api.model.ComponentStatusFluent;
@@ -26,13 +23,15 @@ import io.fabric8.kubernetes.api.model.ComponentStatusFluentImpl;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.DoneableComponentStatus;
 import io.fabric8.kubernetes.client.mock.MockDoneable;
+import org.easymock.EasyMock;
+import org.easymock.IExpectationSetters;
 
 public class MockDoneableComponentStatus extends ComponentStatusFluentImpl<MockDoneableComponentStatus> implements MockDoneable<ComponentStatus> {
 
 	  private interface DelegateInterface extends Doneable<ComponentStatus>, ComponentStatusFluent<DoneableComponentStatus> {}
-	  private final Visitor<ComponentStatus> visitor = new Visitor<ComponentStatus>() {
+	  private final Function<ComponentStatus, ComponentStatus> visitor = new Function<ComponentStatus, ComponentStatus>() {
 	    @Override
-	    public void visit(ComponentStatus item) {}
+	    public ComponentStatus apply(ComponentStatus item) {return item;}
 	  };
 
 	  private final DelegateInterface delegate;
@@ -67,5 +66,5 @@ public class MockDoneableComponentStatus extends ComponentStatusFluentImpl<MockD
 	      }
 	    };
 	  }
-	  
+
 	}

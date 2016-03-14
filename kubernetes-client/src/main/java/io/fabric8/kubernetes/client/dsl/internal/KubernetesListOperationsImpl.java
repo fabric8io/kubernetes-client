@@ -16,8 +16,8 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.squareup.okhttp.OkHttpClient;
+import io.fabric8.kubernetes.api.builder.Function;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
-import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DoneableKubernetesList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
@@ -30,9 +30,9 @@ import io.fabric8.kubernetes.client.dsl.ClientKubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListOperation;
 import io.fabric8.kubernetes.client.dsl.Createable;
-import io.fabric8.kubernetes.client.dsl.RecreateFromServerGettable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.Loadable;
+import io.fabric8.kubernetes.client.dsl.RecreateFromServerGettable;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 
 import java.io.InputStream;
@@ -87,11 +87,11 @@ public class KubernetesListOperationsImpl
 
   @Override
   public DoneableKubernetesList createNew() {
-    return new DoneableKubernetesList(new Visitor<KubernetesList>() {
+    return new DoneableKubernetesList(new Function<KubernetesList, KubernetesList>() {
       @Override
-      public void visit(KubernetesList list) {
+      public KubernetesList apply(KubernetesList item) {
         try {
-          create(list);
+          return create(item);
         } catch (Exception e) {
           throw KubernetesClientException.launderThrowable(e);
         }
