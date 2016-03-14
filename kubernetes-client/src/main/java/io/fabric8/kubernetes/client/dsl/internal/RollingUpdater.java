@@ -90,7 +90,11 @@ class RollingUpdater<C extends Client> {
 
       for (Pod pod : oldRCPods.getItems()) {
         pod.getMetadata().getLabels().put(DEPLOYMENT_KEY, oldDeploymentHash);
-        pods().inNamespace(namespace).withName(pod.getMetadata().getName()).replace(pod);
+        try {
+          pods().inNamespace(namespace).withName(pod.getMetadata().getName()).replace(pod);
+        } catch (KubernetesClientException e) {
+          LOG.warn("Unable to add deployment key to pod: {}", e.getMessage());
+        }
       }
 
       // Now we can update the old RC with the new selector
