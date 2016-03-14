@@ -26,7 +26,7 @@ import java.net.URL;
 
 
 public abstract class BaseClient implements Client {
-  
+
   protected OkHttpClient httpClient;
   private URL masterUrl;
   private String apiVersion;
@@ -87,7 +87,12 @@ public abstract class BaseClient implements Client {
     if (httpClient.getConnectionPool() != null) {
       httpClient.getConnectionPool().evictAll();
     }
-    httpClient.getDispatcher().getExecutorService().shutdown();
+    if (httpClient.getDispatcher() != null &&
+      httpClient.getDispatcher().getExecutorService() != null &&
+      !httpClient.getDispatcher().getExecutorService().isShutdown()
+      ) {
+      httpClient.getDispatcher().getExecutorService().shutdown();
+    }
   }
 
   @Override
