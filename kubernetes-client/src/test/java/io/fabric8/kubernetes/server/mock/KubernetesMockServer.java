@@ -16,7 +16,7 @@
 
 package io.fabric8.kubernetes.server.mock;
 
-import com.google.mockwebserver.MockWebServer;
+import com.squareup.okhttp.mockwebserver.MockWebServer;
 import io.fabric8.kubernetes.api.model.RootPathsBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
@@ -50,7 +50,7 @@ public class KubernetesMockServer {
       }
       server.setDispatcher(new MockDispatcher(responses));
       expect().get().withPath("/").andReturn(200, new RootPathsBuilder().addToPaths(getRootPaths()).build()).always();
-      server.play();
+      server.start();
     } catch (Throwable t) {
       throw new RuntimeException(t);
     }

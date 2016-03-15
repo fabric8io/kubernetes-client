@@ -16,9 +16,10 @@
 
 package io.fabric8.kubernetes.server.mock;
 
-import com.google.mockwebserver.Dispatcher;
-import com.google.mockwebserver.MockResponse;
-import com.google.mockwebserver.RecordedRequest;
+
+import com.squareup.okhttp.mockwebserver.Dispatcher;
+import com.squareup.okhttp.mockwebserver.MockResponse;
+import com.squareup.okhttp.mockwebserver.RecordedRequest;
 
 import java.util.Map;
 import java.util.Queue;
