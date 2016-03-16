@@ -16,12 +16,7 @@
 
 package io.fabric8.kubernetes.server.mock;
 
-public interface Timeable<T> {
+public interface Failable<T> {
 
-  T always();
-
-  T once();
-
-  T times(int times);
-
+    T failure(Object response, Exception e);
 }

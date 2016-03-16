@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.server.mock;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.fabric8.kubernetes.api.builder.Function;
 
 import java.util.ArrayDeque;
 import java.util.Map;
@@ -48,37 +49,37 @@ public class MockServerExpectationImpl implements MockServerExpectation {
   }
 
   @Override
-  public Pathable<Returnable<Timeable>> any() {
+  public Pathable<ReturnOrWebsocketable<Timeable<Void>>> any() {
     return new MockServerExpectationImpl("", path, statusCode, body, times, responses);
   }
 
   @Override
-  public Pathable<Returnable<Timeable>> post() {
+  public Pathable<ReturnOrWebsocketable<Timeable<Void>>> post() {
     return new MockServerExpectationImpl("post", path, statusCode, body, times, responses);
   }
 
   @Override
-  public Pathable<Returnable<Timeable>> get() {
+  public Pathable<ReturnOrWebsocketable<Timeable<Void>>> get() {
     return new MockServerExpectationImpl("get", path, statusCode, body, times, responses);
   }
 
   @Override
-  public Pathable<Returnable<Timeable>> put() {
+  public Pathable<ReturnOrWebsocketable<Timeable<Void>>> put() {
     return new MockServerExpectationImpl("put", path, statusCode, body, times, responses);
   }
 
   @Override
-  public Pathable<Returnable<Timeable>> delete() {
+  public Pathable<ReturnOrWebsocketable<Timeable<Void>>> delete() {
     return new MockServerExpectationImpl("delete", path, statusCode, body, times, responses);
   }
 
   @Override
-  public Returnable<Timeable> withPath(String path) {
+  public ReturnOrWebsocketable<Timeable<Void>> withPath(String path) {
     return new MockServerExpectationImpl(method, path, statusCode, body, times, responses);
   }
 
   @Override
-  public Timeable andReturn(int statusCode, Object content) {
+  public Timeable<Void> andReturn(int statusCode, Object content) {
     if (content instanceof String) {
       return new MockServerExpectationImpl(method, path, statusCode, (String) content, times, responses);
     } else {
@@ -91,20 +92,23 @@ public class MockServerExpectationImpl implements MockServerExpectation {
   }
 
   @Override
-  public void always() {
-    enqueue(new ServerRequest(method, path), new ServerResponse(statusCode, body, false));
+  public Void always() {
+    enqueue(new ServerRequest(method, path), new ServerResponse(statusCode, body, null, false));
+    return null;//Void
   }
 
   @Override
-  public void once() {
-    enqueue(new ServerRequest(method, path), new ServerResponse(statusCode, body, true));
+  public Void once() {
+    enqueue(new ServerRequest(method, path), new ServerResponse(statusCode, body, null, true));
+    return null;//Void
   }
 
   @Override
-  public void times(int times) {
+  public Void times(int times) {
     for (int i = 0; i < times; i++) {
       once();
     }
+    return null;//Void
   }
 
   private void enqueue(ServerRequest req, ServerResponse resp) {
@@ -114,5 +118,36 @@ public class MockServerExpectationImpl implements MockServerExpectation {
       responses.put(req, queuedResponses);
     }
     queuedResponses.add(resp);
+  }
+
+
+  @Override
+  public WebSocketSessionBuilder<Timeable<Void>> andUpgradeToWebSocket() {
+    return new InlineWebSocketSessionBuilder<>(new Function<WebSocketSession, Timeable<Void>>() {
+      @Override
+      public Timeable<Void> apply(final WebSocketSession webSocketSession) {
+        return new Timeable<Void>() {
+          @Override
+          public Void always() {
+            enqueue(new ServerRequest(method, path), new ServerResponse(statusCode, null, webSocketSession, false));
+            return null;//Void
+          }
+
+          @Override
+          public Void once() {
+            enqueue(new ServerRequest(method, path), new ServerResponse(statusCode, null, webSocketSession, true));
+            return null;//Void
+          }
+
+          @Override
+          public Void times(int times) {
+            for (int i = 0; i < times; i++) {
+              once();
+            }
+            return null;//Void
+          }
+        };
+      }
+    });
   }
 }

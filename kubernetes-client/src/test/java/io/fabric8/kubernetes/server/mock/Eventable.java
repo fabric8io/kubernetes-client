@@ -16,12 +16,10 @@
 
 package io.fabric8.kubernetes.server.mock;
 
-public interface Timeable<T> {
+public interface Eventable<T> {
 
-  T always();
+    Emitable<Timeable<T>> expect(Object in);
 
-  T once();
-
-  T times(int times);
+    Emitable<T> waitFor(long millis);
 
 }

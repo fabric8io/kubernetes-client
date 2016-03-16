@@ -20,11 +20,13 @@ class ServerResponse {
 
   private final int code;
   private final String body;
+  private final WebSocketSession webSocketSession;
   private final boolean toBeRemoved;
 
-  public ServerResponse(int code, String body, boolean toBeRemoved) {
+  public ServerResponse(int code, String body, WebSocketSession webSocketSession, boolean toBeRemoved) {
     this.code = code;
     this.body = body;
+    this.webSocketSession = webSocketSession;
     this.toBeRemoved = toBeRemoved;
   }
 
@@ -34,6 +36,10 @@ class ServerResponse {
 
   public String getBody() {
     return body;
+  }
+
+  public WebSocketSession getWebSocketSession() {
+    return webSocketSession;
   }
 
   public boolean isToBeRemoved() {

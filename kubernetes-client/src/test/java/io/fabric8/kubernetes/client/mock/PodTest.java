@@ -16,18 +16,29 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import com.squareup.okhttp.Response;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
+import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.dsl.ExecListener;
+import io.fabric8.kubernetes.client.dsl.ExecWatch;
+import io.fabric8.kubernetes.server.mock.OutputStreamMessage;
 import org.junit.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class PodTest extends KubernetesMockServerTestBase {
@@ -89,23 +100,6 @@ public class PodTest extends KubernetesMockServerTestBase {
     assertEquals(3, podList.getItems().size());
   }
 
-
-  @Test
-  public void testGet() {
-    expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, new PodBuilder().build()).once();
-    expect().withPath("/api/v1/namespaces/ns1/pods/pod2").andReturn(200, new PodBuilder().build()).once();
-
-    KubernetesClient client = getClient();
-
-    Pod pod = client.pods().withName("pod1").get();
-    assertNotNull(pod);
-
-    pod = client.pods().withName("pod2").get();
-    assertNull(pod);
-
-    pod = client.pods().inNamespace("ns1").withName("pod2").get();
-    assertNotNull(pod);
-  }
 
 
   @Test
@@ -189,6 +183,89 @@ public class PodTest extends KubernetesMockServerTestBase {
     log = client.pods().inNamespace("test4").withName("pod4").getLog("cnt4", true);
     assertEquals(pod4Log, log);
   }
+
+  @Test
+  public void testExec() throws InterruptedException {
+    String expectedOutput = "file1 file2";
+    expect().withPath("/api/v1/namespaces/test/pods/pod1/exec?command=ls&tty=true&stdout=true")
+            .andUpgradeToWebSocket()
+                .open(new OutputStreamMessage(expectedOutput))
+                .done()
+            .always();
+
+    KubernetesClient client = getClient();
+
+    final CountDownLatch execLatch = new CountDownLatch(1);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ExecWatch watch = client.pods().withName("pod1").writingOutput(baos).usingListener(new ExecListener() {
+      @Override
+      public void onOpen(Response response) {
+      }
+
+      @Override
+      public void onFailure(IOException e, Response response) {
+        execLatch.countDown();
+      }
+
+      @Override
+      public void onClose(int code, String reason) {
+        execLatch.countDown();
+      }
+    }).exec("ls");
+
+    execLatch.await(10, TimeUnit.MINUTES);
+    assertNotNull(watch);
+    assertEquals(expectedOutput, baos.toString());
+  }
+
+
+
+  @Test
+  public void testWatch() throws InterruptedException {
+    //We start with a list
+    Pod pod1 = new PodBuilder()
+            .withNewMetadata()
+            .withName("pod1")
+            .withResourceVersion("1")
+            .endMetadata()
+            .build();
+
+    expect().withPath("/api/v1/namespaces/test/pods").andReturn(200, new PodListBuilder()
+            .withNewMetadata()
+                .withResourceVersion("1")
+            .endMetadata()
+            .addToItems(pod1)
+            .build()
+    ).once();
+
+    expect().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true")
+            .andUpgradeToWebSocket()
+            .open()
+            .waitFor(15000).andEmit(new WatchEvent(pod1, "DELETED"))
+            .done()
+            .always();
+
+    KubernetesClient client = getClient();
+
+    final CountDownLatch deleteLatch = new CountDownLatch(1);
+    Watch watch = client.pods().withName("pod1").watch(new Watcher<Pod>() {
+      @Override
+      public void eventReceived(Action action, Pod resource) {
+        switch (action) {
+          case DELETED:
+            deleteLatch.countDown();
+        }
+      }
+
+      @Override
+      public void onClose(KubernetesClientException cause) {
+
+      }
+    });
+
+    assertTrue(deleteLatch.await(10, TimeUnit.MINUTES));
+  }
+
 
   @Test(expected = KubernetesClientException.class)
   public void testGetLogNotFound() {

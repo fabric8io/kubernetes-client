@@ -55,8 +55,12 @@ public class MockDispatcher extends Dispatcher {
             queue.remove();
         }
         MockResponse mockResponse = new MockResponse();
-        mockResponse.setBody(response.getBody());
-        mockResponse.setResponseCode(response.getCode());
+        if (response.getWebSocketSession() != null) {
+            mockResponse.withWebSocketUpgrade(response.getWebSocketSession());
+        } else {
+            mockResponse.setBody(response.getBody());
+            mockResponse.setResponseCode(response.getCode());
+        }
         return mockResponse;
     }
 
