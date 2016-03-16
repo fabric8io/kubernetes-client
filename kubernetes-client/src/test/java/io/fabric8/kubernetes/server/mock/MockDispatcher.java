@@ -16,9 +16,10 @@
 
 package io.fabric8.kubernetes.server.mock;
 
-import com.google.mockwebserver.Dispatcher;
-import com.google.mockwebserver.MockResponse;
-import com.google.mockwebserver.RecordedRequest;
+
+import com.squareup.okhttp.mockwebserver.Dispatcher;
+import com.squareup.okhttp.mockwebserver.MockResponse;
+import com.squareup.okhttp.mockwebserver.RecordedRequest;
 
 import java.util.Map;
 import java.util.Queue;
@@ -54,8 +55,12 @@ public class MockDispatcher extends Dispatcher {
             queue.remove();
         }
         MockResponse mockResponse = new MockResponse();
-        mockResponse.setBody(response.getBody());
-        mockResponse.setResponseCode(response.getCode());
+        if (response.getWebSocketSession() != null) {
+            mockResponse.withWebSocketUpgrade(response.getWebSocketSession());
+        } else {
+            mockResponse.setBody(response.getBody());
+            mockResponse.setResponseCode(response.getCode());
+        }
         return mockResponse;
     }
 

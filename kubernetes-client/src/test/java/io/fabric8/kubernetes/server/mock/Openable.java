@@ -16,12 +16,7 @@
 
 package io.fabric8.kubernetes.server.mock;
 
-public interface Timeable<T> {
+public interface Openable<T> {
 
-  T always();
-
-  T once();
-
-  T times(int times);
-
+    T open(Object... response);
 }

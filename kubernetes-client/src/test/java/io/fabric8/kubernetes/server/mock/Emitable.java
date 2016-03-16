@@ -16,12 +16,13 @@
 
 package io.fabric8.kubernetes.server.mock;
 
-public interface Timeable<T> {
+public interface Emitable<T> {
 
-  T always();
-
-  T once();
-
-  T times(int times);
+    /**
+     * Emit an event. This will be received by the client's onMessage.
+     * @param event
+     * @return
+     */
+    T andEmit(Object event);
 
 }

@@ -16,12 +16,7 @@
 
 package io.fabric8.kubernetes.server.mock;
 
-public interface Timeable<T> {
+import io.fabric8.kubernetes.api.model.Doneable;
 
-  T always();
-
-  T once();
-
-  T times(int times);
-
+public interface EventDoneable<T> extends Eventable<EventDoneable<T>>, Doneable<T> {
 }

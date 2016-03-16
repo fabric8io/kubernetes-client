@@ -13,14 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.kubernetes.server.mock;
 
-public interface MockServerExpectation extends HttpMethodable<Pathable<Returnable<Timeable>>>,
-  Pathable<Returnable<Timeable>>,
-  Returnable<Timeable>,
-  Timeable {
-
-
+public interface MockServerExpectation extends HttpMethodable<Pathable<ReturnOrWebsocketable<Timeable<Void>>>>,
+        Pathable<ReturnOrWebsocketable<Timeable<Void>>>,
+        ReturnOrWebsocketable<Timeable<Void>>,
+        Timeable<Void> {
 
 }

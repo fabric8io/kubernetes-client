@@ -16,12 +16,7 @@
 
 package io.fabric8.kubernetes.server.mock;
 
-public interface Timeable<T> {
-
-  T always();
-
-  T once();
-
-  T times(int times);
-
+public interface WebSocketSessionBuilder<T> extends
+        Openable<EventDoneable<T>>,
+        Failable<T> {
 }
