@@ -28,6 +28,10 @@ public class SecurityContextConstraintsOperationsImpl  extends BaseOperation<Sec
     this(client, config, null, null, null, true, null, null, false);
   }
 
+  public SecurityContextConstraintsOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, SecurityContextConstraints item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds) {
+    super(client, config, null, apiVersion, "securitycontextconstraints", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds);
+  }
+
   public SecurityContextConstraintsOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, SecurityContextConstraints item, String resourceVersion, Boolean reloadingFromServer) {
     super(client, config, null, apiVersion, "securitycontextconstraints", namespace, name, cascading, item, resourceVersion, reloadingFromServer, -1);
   }
