@@ -47,6 +47,7 @@ System properties are preferred over environment variables. The following system
 * `kubernetes.auth.token` / `KUBERNETES_AUTH_TOKEN`
 * `kubernetes.watch.reconnectInterval` / `KUBERNETES_WATCH_RECONNECTINTERVAL`
 * `kubernetes.watch.reconnectLimit` / `KUBERNETES_WATCH_RECONNECTLIMIT`
+* `kubernetes.user.agent` / `KUBERNETES_USER_AGENT`
 
 Alternatively you can use the `ConfigBuilder` to create a config object for the Kubernetes client:
 
