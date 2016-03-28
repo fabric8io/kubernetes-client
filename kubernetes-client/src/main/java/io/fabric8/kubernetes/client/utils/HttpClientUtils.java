@@ -139,6 +139,16 @@ public class HttpClientUtils {
                 }
             }
 
+            if (config.getUserAgent() != null && !config.getUserAgent().isEmpty()) {
+                httpClient.networkInterceptors().add(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Request agent = chain.request().newBuilder().header("User-Agent", config.getUserAgent()).build();
+                        return chain.proceed(agent);
+                    }
+                });
+            }
+
             return httpClient;
         } catch (Exception e) {
             throw KubernetesClientException.launderThrowable(e);
