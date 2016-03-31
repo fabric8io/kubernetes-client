@@ -16,9 +16,9 @@
 
 package io.fabric8.kubernetes.client.mock.impl;
 
-import io.fabric8.kubernetes.api.model.extensions.DoneableConfigMap;
-import io.fabric8.kubernetes.api.model.extensions.ConfigMap;
-import io.fabric8.kubernetes.api.model.extensions.ConfigMapList;
+import io.fabric8.kubernetes.api.model.ConfigMap;
+import io.fabric8.kubernetes.api.model.ConfigMapList;
+import io.fabric8.kubernetes.api.model.DoneableConfigMap;
 import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;

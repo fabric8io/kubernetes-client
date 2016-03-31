@@ -16,11 +16,13 @@
 package io.fabric8.kubernetes.client;
 
 import com.squareup.okhttp.OkHttpClient;
-
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.ComponentStatus;
 import io.fabric8.kubernetes.api.model.ComponentStatusList;
+import io.fabric8.kubernetes.api.model.ConfigMap;
+import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.api.model.DoneableComponentStatus;
+import io.fabric8.kubernetes.api.model.DoneableConfigMap;
 import io.fabric8.kubernetes.api.model.DoneableEndpoints;
 import io.fabric8.kubernetes.api.model.DoneableEvent;
 import io.fabric8.kubernetes.api.model.DoneableNamespace;
@@ -62,18 +64,19 @@ import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListMixedOperation;
-import io.fabric8.kubernetes.client.dsl.ClientPodResource;
 import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.ClientPodResource;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
-import io.fabric8.kubernetes.client.dsl.internal.ComponentStatusOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetDeleteRecreateApplicable;
-import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetDeleteRecreateApplicableImpl;
+import io.fabric8.kubernetes.client.dsl.internal.ComponentStatusOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.ConfigMapOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.EndpointsOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.EventOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.KubernetesListOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetDeleteRecreateApplicableImpl;
 import io.fabric8.kubernetes.client.dsl.internal.NodeOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.PersistentVolumeClaimOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.PersistentVolumeOperationsImpl;
@@ -106,7 +109,7 @@ public class DefaultKubernetesClient extends BaseClient implements KubernetesCli
   public DefaultKubernetesClient(String masterUrl) throws KubernetesClientException {
     super(masterUrl);
   }
-  
+
   @Override
   public ClientMixedOperation<ComponentStatus, ComponentStatusList, DoneableComponentStatus, ClientResource<ComponentStatus, DoneableComponentStatus>> componentstatuses() {
     return new ComponentStatusOperationsImpl(httpClient, getConfiguration(), getNamespace());
@@ -186,6 +189,11 @@ public class DefaultKubernetesClient extends BaseClient implements KubernetesCli
   @Override
   public ClientNonNamespaceOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints() {
     return new SecurityContextConstraintsOperationsImpl(httpClient, getConfiguration());
+  }
+
+  @Override
+  public ClientMixedOperation<ConfigMap, ConfigMapList, DoneableConfigMap, ClientResource<ConfigMap, DoneableConfigMap>> configMaps() {
+    return new ConfigMapOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
   @Override

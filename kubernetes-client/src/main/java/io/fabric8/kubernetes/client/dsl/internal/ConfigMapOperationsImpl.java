@@ -16,9 +16,9 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.squareup.okhttp.OkHttpClient;
-import io.fabric8.kubernetes.api.model.extensions.ConfigMap;
-import io.fabric8.kubernetes.api.model.extensions.ConfigMapList;
-import io.fabric8.kubernetes.api.model.extensions.DoneableConfigMap;
+import io.fabric8.kubernetes.api.model.ConfigMap;
+import io.fabric8.kubernetes.api.model.ConfigMapList;
+import io.fabric8.kubernetes.api.model.DoneableConfigMap;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
@@ -26,10 +26,10 @@ import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 public class ConfigMapOperationsImpl extends HasMetadataOperation<ConfigMap, ConfigMapList, DoneableConfigMap, ClientResource<ConfigMap, DoneableConfigMap>>{
 
   public ConfigMapOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(client, config, "v1beta1", namespace, null, true, null, null, false, -1);
+    this(client, config, null, namespace, null, true, null, null, false, -1);
   }
 
   public ConfigMapOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, ConfigMap item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds) {
-    super(client, config, "extensions", apiVersion, "configmaps", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds);
+    super(client, config, null, apiVersion, "configmaps", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds);
   }
 }

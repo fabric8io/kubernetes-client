@@ -19,7 +19,10 @@ import com.squareup.okhttp.OkHttpClient;
 
 import io.fabric8.kubernetes.api.model.ComponentStatus;
 import io.fabric8.kubernetes.api.model.ComponentStatusList;
+import io.fabric8.kubernetes.api.model.ConfigMap;
+import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.api.model.DoneableComponentStatus;
+import io.fabric8.kubernetes.api.model.DoneableConfigMap;
 import io.fabric8.kubernetes.api.model.DoneableEndpoints;
 import io.fabric8.kubernetes.api.model.DoneableEvent;
 import io.fabric8.kubernetes.api.model.DoneableNamespace;
@@ -197,7 +200,7 @@ public class DefaultOpenShiftClient extends BaseClient implements OpenShiftClien
   public URL getOpenshiftUrl() {
     return openShiftUrl;
   }
-  
+
   @Override
   public ClientMixedOperation<ComponentStatus, ComponentStatusList, DoneableComponentStatus, ClientResource<ComponentStatus, DoneableComponentStatus>> componentstatuses() {
     return new ComponentStatusOperationsImpl(httpClient, getConfiguration(), getNamespace());
@@ -276,6 +279,11 @@ public class DefaultOpenShiftClient extends BaseClient implements OpenShiftClien
   @Override
   public ClientNonNamespaceOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints() {
     return delegate.securityContextConstraints();
+  }
+
+  @Override
+  public ClientMixedOperation<ConfigMap, ConfigMapList, DoneableConfigMap, ClientResource<ConfigMap, DoneableConfigMap>> configMaps() {
+    return delegate.configMaps();
   }
 
   @Override

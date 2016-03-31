@@ -18,7 +18,10 @@ package io.fabric8.kubernetes.client.dsl;
 
 import io.fabric8.kubernetes.api.model.ComponentStatus;
 import io.fabric8.kubernetes.api.model.ComponentStatusList;
+import io.fabric8.kubernetes.api.model.ConfigMap;
+import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.api.model.DoneableComponentStatus;
+import io.fabric8.kubernetes.api.model.DoneableConfigMap;
 import io.fabric8.kubernetes.api.model.DoneableEndpoints;
 import io.fabric8.kubernetes.api.model.DoneableEvent;
 import io.fabric8.kubernetes.api.model.DoneableNamespace;
@@ -64,7 +67,7 @@ import java.io.InputStream;
 import java.util.List;
 
 public interface KubernetesDSL {
-	
+
   ClientMixedOperation<ComponentStatus, ComponentStatusList, DoneableComponentStatus, ClientResource<ComponentStatus, DoneableComponentStatus>> componentstatuses();
 
   NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>,Boolean> load(InputStream is);
@@ -96,5 +99,7 @@ public interface KubernetesDSL {
   ClientKubernetesListMixedOperation lists();
 
   ClientNonNamespaceOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints();
+
+  ClientMixedOperation<ConfigMap, ConfigMapList, DoneableConfigMap, ClientResource<ConfigMap, DoneableConfigMap>> configMaps();
 
 }

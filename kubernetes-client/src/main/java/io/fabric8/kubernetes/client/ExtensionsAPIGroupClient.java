@@ -16,13 +16,10 @@
 package io.fabric8.kubernetes.client;
 
 import com.squareup.okhttp.OkHttpClient;
-import io.fabric8.kubernetes.api.model.extensions.ConfigMap;
-import io.fabric8.kubernetes.api.model.extensions.ConfigMapList;
 import io.fabric8.kubernetes.api.model.extensions.DaemonSet;
 import io.fabric8.kubernetes.api.model.extensions.DaemonSetList;
 import io.fabric8.kubernetes.api.model.extensions.Deployment;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
-import io.fabric8.kubernetes.api.model.extensions.DoneableConfigMap;
 import io.fabric8.kubernetes.api.model.extensions.DoneableDaemonSet;
 import io.fabric8.kubernetes.api.model.extensions.DoneableDeployment;
 import io.fabric8.kubernetes.api.model.extensions.DoneableIngress;
@@ -37,7 +34,6 @@ import io.fabric8.kubernetes.api.model.extensions.ThirdPartyResourceList;
 import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.internal.ConfigMapOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.DaemonSetOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.DeploymentOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.IngressOperationsImpl;
@@ -78,11 +74,6 @@ public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAP
   @Override
   public ClientMixedOperation<DaemonSet, DaemonSetList, DoneableDaemonSet, ClientResource<DaemonSet, DoneableDaemonSet>> daemonSets() {
     return new DaemonSetOperationsImpl(httpClient, getConfiguration(), getNamespace());
-  }
-
-  @Override
-  public ClientMixedOperation<ConfigMap, ConfigMapList, DoneableConfigMap, ClientResource<ConfigMap, DoneableConfigMap>> configMaps() {
-    return new ConfigMapOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
   public ClientMixedOperation<ThirdPartyResource, ThirdPartyResourceList, DoneableThirdPartyResource, ClientResource<ThirdPartyResource, DoneableThirdPartyResource>> thirdPartyResources() {
