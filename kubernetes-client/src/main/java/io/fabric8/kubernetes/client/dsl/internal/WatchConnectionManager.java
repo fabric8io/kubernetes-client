@@ -136,6 +136,16 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
           return;
         }
 
+        if (reconnectLimit >= 0 && currentReconnectAttempt.getAndIncrement() >= reconnectLimit) {
+          watcher.onClose(new KubernetesClientException("Connection unexpectedly closed", e));
+          return;
+        }
+        try {
+          TimeUnit.MILLISECONDS.sleep(reconnectInterval);
+        } catch (InterruptedException e1) {
+          watcher.onClose(new KubernetesClientException("Connection unexpectedly closed", e1));
+          return;
+        }
         onClose(4000, "Connection unexpectedly closed");
       }
 
