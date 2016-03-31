@@ -17,12 +17,12 @@
 package io.fabric8.kubernetes.client.mock.impl.donable;
 
 import io.fabric8.kubernetes.api.builder.Function;
+import io.fabric8.kubernetes.api.model.ConfigMap;
+import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
+import io.fabric8.kubernetes.api.model.ConfigMapFluent;
+import io.fabric8.kubernetes.api.model.ConfigMapFluentImpl;
 import io.fabric8.kubernetes.api.model.Doneable;
-import io.fabric8.kubernetes.api.model.extensions.DoneableConfigMap;
-import io.fabric8.kubernetes.api.model.extensions.ConfigMap;
-import io.fabric8.kubernetes.api.model.extensions.ConfigMapBuilder;
-import io.fabric8.kubernetes.api.model.extensions.ConfigMapFluent;
-import io.fabric8.kubernetes.api.model.extensions.ConfigMapFluentImpl;
+import io.fabric8.kubernetes.api.model.DoneableConfigMap;
 import io.fabric8.kubernetes.client.mock.MockDoneable;
 import org.easymock.EasyMock;
 import org.easymock.IExpectationSetters;

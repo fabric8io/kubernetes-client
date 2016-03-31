@@ -18,6 +18,8 @@ package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.ComponentStatus;
 import io.fabric8.kubernetes.api.model.ComponentStatusList;
+import io.fabric8.kubernetes.api.model.ConfigMap;
+import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsList;
 import io.fabric8.kubernetes.api.model.Event;
@@ -48,6 +50,7 @@ import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.mock.impl.MockComponentStatus;
+import io.fabric8.kubernetes.client.mock.impl.MockConfigMap;
 import io.fabric8.kubernetes.client.mock.impl.MockEndpoints;
 import io.fabric8.kubernetes.client.mock.impl.MockEvent;
 import io.fabric8.kubernetes.client.mock.impl.MockKubernetesListOperationImpl;
@@ -63,6 +66,7 @@ import io.fabric8.kubernetes.client.mock.impl.MockSecurityContextConstraints;
 import io.fabric8.kubernetes.client.mock.impl.MockService;
 import io.fabric8.kubernetes.client.mock.impl.MockServiceAccount;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableComponentStatus;
+import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableConfigMap;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableEndpoints;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableEvent;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableNamespace;
@@ -110,12 +114,13 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
   private final MockSecret secrets = new MockSecret();
   private final MockServiceAccount serviceAccounts = new MockServiceAccount();
   private final MockSecurityContextConstraints securityContextConstraints = new MockSecurityContextConstraints();
+  private final MockConfigMap configMaps = new MockConfigMap();
   private final MockKubernetesListOperationImpl kubernetesLists = new MockKubernetesListOperationImpl();
   private final ExtensionsAPIGroupMockClient extensions = new ExtensionsAPIGroupMockClient();
 
 
   public KubernetesMockClient() {
-	expect(client.componentstatuses()).andReturn(componentstatuses.getDelegate()).anyTimes();
+	  expect(client.componentstatuses()).andReturn(componentstatuses.getDelegate()).anyTimes();
     expect(client.endpoints()).andReturn(endpoints.getDelegate()).anyTimes();
     expect(client.events()).andReturn(events.getDelegate()).anyTimes();
     expect(client.nodes()).andReturn(nodes.getDelegate()).anyTimes();
@@ -129,6 +134,7 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
     expect(client.secrets()).andReturn(secrets.getDelegate()).anyTimes();
     expect(client.serviceAccounts()).andReturn(serviceAccounts.getDelegate()).anyTimes();
     expect(client.securityContextConstraints()).andReturn(securityContextConstraints.getDelegate()).anyTimes();
+    expect(client.configMaps()).andReturn(configMaps.getDelegate()).anyTimes();
     expect(client.lists()).andReturn(kubernetesLists.getDelegate()).anyTimes();
 
     expect(client.extensions()).andReturn(extensions.getDelegate()).anyTimes();
@@ -174,6 +180,7 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
     secrets.verify();
     serviceAccounts.verify();
     securityContextConstraints.verify();
+    configMaps.verify();
     kubernetesLists.verify();
 
     extensions.verify();
@@ -195,7 +202,7 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
   public MockOperation<ComponentStatus, ComponentStatusList, MockDoneableComponentStatus, MockResource<ComponentStatus, MockDoneableComponentStatus, Boolean>> componentstatuses() {
     return componentstatuses;
   }
-  
+
   public MockOperation<Endpoints, EndpointsList, MockDoneableEndpoints, MockResource<Endpoints, MockDoneableEndpoints, Boolean>> endpoints() {
     return endpoints;
   }
@@ -246,6 +253,10 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
 
   public MockOperation<SecurityContextConstraints, SecurityContextConstraintsList, MockDoneableSecurityContextConstraints, MockResource<SecurityContextConstraints, MockDoneableSecurityContextConstraints, Boolean>> securityContextConstraints() {
     return securityContextConstraints;
+  }
+
+  public MockOperation<ConfigMap, ConfigMapList, MockDoneableConfigMap, MockResource<ConfigMap, MockDoneableConfigMap, Boolean>> configMaps() {
+    return configMaps;
   }
 
 
