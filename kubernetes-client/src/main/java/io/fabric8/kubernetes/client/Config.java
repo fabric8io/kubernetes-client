@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.api.model.Context;
 import io.fabric8.kubernetes.client.internal.KubeConfigUtils;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.kubernetes.client.Version;
 import io.sundr.builder.annotations.Buildable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -237,7 +236,7 @@ public class Config {
 
   private boolean tryKubeConfig(Config config) {
     if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, true)) {
-      String kubeConfigFile = Utils.getSystemPropertyOrEnvVar(KUBERNETES_KUBECONFIG_FILE, new File(System.getProperty("user.home", "."), ".kube" + File.separator + "config").toString());
+      String kubeConfigFile = Utils.getSystemPropertyOrEnvVar(KUBERNETES_KUBECONFIG_FILE, new File(getHomeDir(), ".kube" + File.separator + "config").toString());
       boolean kubeConfigFileExists = Files.isRegularFile(new File(kubeConfigFile).toPath());
       if (kubeConfigFileExists) {
         try {
@@ -271,6 +270,38 @@ public class Config {
       }
     }
     return false;
+  }
+
+  private String getHomeDir() {
+    String osName = System.getProperty("os.name").toLowerCase();
+    if (osName.startsWith("win")) {
+      String homeDrive = System.getenv("HOMEDRIVE");
+      String homePath = System.getenv("HOMEPATH");
+      if (!homeDrive.isEmpty() && !homePath.isEmpty()) {
+        String homeDir = homeDrive + homePath;
+        File f = new File(homeDir);
+        if (f.exists() && f.isDirectory()) {
+          return homeDir;
+        }
+      }
+      String userProfile = System.getenv("USERPROFILE");
+      if (!userProfile.isEmpty()) {
+        File f = new File(userProfile);
+        if (f.exists() && f.isDirectory()) {
+          return userProfile;
+        }
+      }
+    }
+    String home = System.getenv("HOME");
+    if (!home.isEmpty()) {
+      File f = new File(home);
+      if (f.exists() && f.isDirectory()) {
+        return home;
+      }
+    }
+
+    //Fall back to user.home should never really get here
+    return System.getProperty("user.home", ".");
   }
 
   public String getOauthToken() {
