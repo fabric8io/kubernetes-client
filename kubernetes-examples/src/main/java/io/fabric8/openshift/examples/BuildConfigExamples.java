@@ -36,11 +36,6 @@ public class BuildConfigExamples {
   private static final Logger logger = LoggerFactory.getLogger(BuildConfigExamples.class);
 
   public static void main(String[] args) throws InterruptedException {
-    String master = "https://localhost:8443/";
-    if (args.length == 1) {
-      master = args[0];
-    }
-
     Config config = new ConfigBuilder().build();
     KubernetesClient kubernetesClient = new DefaultKubernetesClient(config);
     OpenShiftClient client = kubernetesClient.adapt(OpenShiftClient.class);
@@ -114,23 +109,24 @@ public class BuildConfigExamples {
         .endSpec()
         .done());
 
-      client.buildConfigs().inNamespace("thisisatest").withName("custom-build-config").instantiate(new BuildRequestBuilder()
+      Build build = client.buildConfigs().inNamespace("thisisatest").withName("custom-build-config").instantiate(new BuildRequestBuilder()
         .withNewMetadata().withName("custom-build-config").endMetadata()
         .build());
+      log("Build:", build.getMetadata().getName());
 
-        client.buildConfigs().inNamespace("thisisatest").withName("custom-build-config")
+      client.buildConfigs().inNamespace("thisisatest").withName("custom-build-config")
+        .withSecret("secret101")
+        .withType("github")
+        .trigger(new WebHookTriggerBuilder()
           .withSecret("secret101")
-          .withType("github")
-          .trigger(new WebHookTriggerBuilder()
-            .withSecret("secret101")
-            .build());
+          .build());
 
 
       Thread.sleep(6000);
 
       log("Builds:");
-      for (Build build: client.builds().inNamespace("thisisatest").list().getItems()) {
-        log("\t\t\t"+build.getMetadata().getName());
+      for (Build b: client.builds().inNamespace("thisisatest").list().getItems()) {
+        log("\t\t\t"+b.getMetadata().getName());
       }
 
 
