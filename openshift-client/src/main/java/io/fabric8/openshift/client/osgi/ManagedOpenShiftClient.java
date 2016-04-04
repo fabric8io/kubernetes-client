@@ -281,7 +281,7 @@ public class ManagedOpenShiftClient extends BaseClient implements OpenShiftClien
   }
 
   @Override
-  public ClientMixedOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Void>> buildConfigs() {
+  public ClientMixedOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build>> buildConfigs() {
     return delegate.buildConfigs();
   }
 
