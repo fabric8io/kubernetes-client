@@ -277,7 +277,7 @@ public class Config {
     if (osName.startsWith("win")) {
       String homeDrive = System.getenv("HOMEDRIVE");
       String homePath = System.getenv("HOMEPATH");
-      if (!homeDrive.isEmpty() && !homePath.isEmpty()) {
+      if (homeDrive != null && !homeDrive.isEmpty() && homePath != null && !homePath.isEmpty()) {
         String homeDir = homeDrive + homePath;
         File f = new File(homeDir);
         if (f.exists() && f.isDirectory()) {
@@ -285,7 +285,7 @@ public class Config {
         }
       }
       String userProfile = System.getenv("USERPROFILE");
-      if (!userProfile.isEmpty()) {
+      if (userProfile != null && !userProfile.isEmpty()) {
         File f = new File(userProfile);
         if (f.exists() && f.isDirectory()) {
           return userProfile;
@@ -293,7 +293,7 @@ public class Config {
       }
     }
     String home = System.getenv("HOME");
-    if (!home.isEmpty()) {
+    if (home != null && !home.isEmpty()) {
       File f = new File(home);
       if (f.exists() && f.isDirectory()) {
         return home;
