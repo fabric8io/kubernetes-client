@@ -522,7 +522,12 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     return resourceVersion;
   }
 
+  @Deprecated
   public Boolean getReloadingFromServer() {
+    return isReloadingFromServer();
+  }
+
+  public Boolean isReloadingFromServer() {
     return reloadingFromServer;
   }
 

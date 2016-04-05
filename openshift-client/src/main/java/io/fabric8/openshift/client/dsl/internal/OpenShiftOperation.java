@@ -19,11 +19,13 @@ import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
+import io.fabric8.kubernetes.client.dsl.Watchable;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
@@ -55,7 +57,7 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
     try {
       return (R) getClass()
         .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, String.class, Boolean.class, getType(), String.class, Boolean.class, long.class)
-        .newInstance(client, getConfig(), getAPIVersion(), getNamespace(), name, isCascading(), getItem(), getResourceVersion(), getReloadingFromServer(), getGracePeriodSeconds());
+        .newInstance(client, getConfig(), getAPIVersion(), getNamespace(), name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -66,7 +68,7 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
     try {
       return getClass()
         .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, String.class, Boolean.class, getType(), String.class, Boolean.class, long.class)
-        .newInstance(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), getReloadingFromServer(), getGracePeriodSeconds());
+        .newInstance(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -78,7 +80,7 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
     try {
       return (R) getClass()
         .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, String.class, Boolean.class, getType(), String.class, Boolean.class, long.class)
-        .newInstance(client, getConfig(), getAPIVersion(), getNamespace(), getName(), enabled, getItem(), getResourceVersion(), getReloadingFromServer(), getGracePeriodSeconds());
+        .newInstance(client, getConfig(), getAPIVersion(), getNamespace(), getName(), enabled, getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -89,7 +91,18 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
     try {
       return (R) getClass()
         .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, String.class, Boolean.class, getType(), String.class, Boolean.class, long.class)
-        .newInstance(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), unmarshal(is, getType()), getResourceVersion(), getReloadingFromServer(), getGracePeriodSeconds());
+        .newInstance(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), unmarshal(is, getType()), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds());
+    } catch (Throwable t) {
+      throw KubernetesClientException.launderThrowable(t);
+    }
+  }
+
+  @Override
+  public Watchable<Watch, Watcher<T>> withResourceVersion(String resourceVersion) {
+    try {
+      return getClass()
+        .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, String.class, Boolean.class, getType(), String.class, Boolean.class, long.class)
+        .newInstance(client, getConfig(), getAPIGroup(), getNamespace(), getName(), isCascading(), getItem(), resourceVersion, isReloadingFromServer(), getGracePeriodSeconds());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
