@@ -19,9 +19,12 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.Triggerable;
 import io.fabric8.kubernetes.client.dsl.Typeable;
+import io.fabric8.kubernetes.client.dsl.Watchable;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.openshift.api.model.BuildConfig;
@@ -114,5 +117,10 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
   @Override
   public Triggerable<WebHookTrigger, Void> withType(String type) {
     return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), getReloadingFromServer(), secret, type);
+  }
+
+  @Override
+  public Watchable<Watch, Watcher<BuildConfig>> withResourceVersion(String resourceVersion) {
+    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), resourceVersion, getReloadingFromServer(), secret, triggerType);
   }
 }
