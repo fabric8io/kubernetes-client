@@ -62,12 +62,12 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
     if (name == null || name.length() == 0) {
       throw new IllegalArgumentException("Name must be provided.");
     }
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), name, isCascading(), getItem(), getResourceVersion(), getReloadingFromServer(), secret, triggerType);
+    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), secret, triggerType);
   }
 
   @Override
   public OpenShiftOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build>> inNamespace(String namespace) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), getReloadingFromServer(), secret, triggerType);
+    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), secret, triggerType);
   }
 
   @Override
@@ -77,12 +77,12 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
 
   @Override
   public Typeable<Triggerable<WebHookTrigger, Void>> withSecret(String secret) {
-    return new BuildConfigOperationsImpl(client,getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), getReloadingFromServer(), secret, triggerType);
+    return new BuildConfigOperationsImpl(client,getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), secret, triggerType);
   }
 
   @Override
   public ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build> load(InputStream is) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), unmarshal(is, getType()), getResourceVersion(), getReloadingFromServer(), secret, triggerType);
+    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), unmarshal(is, getType()), getResourceVersion(), isReloadingFromServer(), secret, triggerType);
   }
 
   @Override
@@ -116,11 +116,11 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
 
   @Override
   public Triggerable<WebHookTrigger, Void> withType(String type) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), getReloadingFromServer(), secret, type);
+    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), secret, type);
   }
 
   @Override
   public Watchable<Watch, Watcher<BuildConfig>> withResourceVersion(String resourceVersion) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), resourceVersion, getReloadingFromServer(), secret, triggerType);
+    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), resourceVersion, isReloadingFromServer(), secret, triggerType);
   }
 }

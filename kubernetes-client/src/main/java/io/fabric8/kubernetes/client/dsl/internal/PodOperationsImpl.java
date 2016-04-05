@@ -138,7 +138,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
 
     @Override
     public String getLog(Boolean isPretty) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), getReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, isPretty, execListener).getLog();
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, isPretty, execListener).getLog();
     }
 
     @Override
@@ -162,17 +162,17 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
 
     @Override
     public String getLog(String containerId) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), getReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener).getLog();
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener).getLog();
     }
 
     @Override
     public String getLog(String containerId, Boolean isPretty) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), getReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, isPretty, execListener).getLog();
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, isPretty, execListener).getLog();
     }
 
     @Override
     public ContainerResource<String, LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch> inContainer(String containerId) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), getReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener);
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener);
     }
 
     @Override
@@ -225,12 +225,12 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
 
     @Override
     public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, ExecWatch> readingInput(InputStream in) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), getReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener);
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener);
     }
 
     @Override
     public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, ExecWatch> writingInput(PipedOutputStream inPipe) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), getReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener);
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener);
     }
 
     @Override
@@ -240,12 +240,12 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
 
     @Override
     public TtyExecErrorable<String, OutputStream, PipedInputStream, ExecWatch> writingOutput(OutputStream out) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), getReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener);
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener);
     }
 
     @Override
     public TtyExecErrorable<String, OutputStream, PipedInputStream, ExecWatch> readingOutput(PipedInputStream outPipe) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), getReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener);
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener);
     }
 
     @Override
@@ -255,12 +255,12 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
 
     @Override
     public TtyExecable<String, ExecWatch> writingError(OutputStream err) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), getReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener);
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener);
     }
 
     @Override
     public TtyExecable<String, ExecWatch> readingError(PipedInputStream errPipe) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), getReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener);
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener);
     }
 
     @Override
@@ -271,38 +271,38 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
 
     @Override
     public ExecListenable<String, ExecWatch> withTTY() {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), getReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, true, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener);
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, true, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener);
     }
 
     @Override
     public Loggable<String, LogWatch> withPrettyOutput() {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), getReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, true, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, true, execListener);
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, true, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, true, execListener);
     }
 
 
     @Override
     public PrettyLoggable<String, LogWatch> tailingLines(int withTailingLines) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), getReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, true, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener);
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, true, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener);
     }
 
     @Override
     public TailPrettyLoggable<String, LogWatch> sinceTime(String sinceTimestamp) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), getReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, true, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener);
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, true, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener);
     }
 
     @Override
     public TailPrettyLoggable<String, LogWatch> sinceSeconds(int sinceSeconds) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), getReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, true, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener);
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, true, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener);
     }
 
     @Override
     public TimeTailPrettyLoggable<String, LogWatch> terminated() {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), getReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, true, true, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener);
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, true, true, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener);
     }
 
     @Override
     public Execable<String, ExecWatch> usingListener(ExecListener execListener) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), getReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, true, true, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener);
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), containerId, in, inPipe, out, outPipe, err, errPipe, true, true, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener);
     }
 }
 
