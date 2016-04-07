@@ -45,9 +45,9 @@ import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.mock.MockKubernetesListOperation;
-import io.fabric8.kubernetes.client.mock.MockPodResource;
 import io.fabric8.kubernetes.client.mock.MockNonNamespaceOperation;
 import io.fabric8.kubernetes.client.mock.MockOperation;
+import io.fabric8.kubernetes.client.mock.MockPodResource;
 import io.fabric8.kubernetes.client.mock.MockResource;
 import io.fabric8.kubernetes.client.mock.MockRollableScaleableResource;
 import io.fabric8.kubernetes.client.mock.Replayable;
@@ -83,6 +83,8 @@ import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigList;
 import io.fabric8.openshift.api.model.BuildList;
+import io.fabric8.openshift.api.model.ClusterRoleBinding;
+import io.fabric8.openshift.api.model.ClusterRoleBindingList;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.api.model.Group;
@@ -112,6 +114,7 @@ import io.fabric8.openshift.api.model.UserList;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.mock.impl.MockBuild;
 import io.fabric8.openshift.client.mock.impl.MockBuildConfig;
+import io.fabric8.openshift.client.mock.impl.MockClusterRoleBinding;
 import io.fabric8.openshift.client.mock.impl.MockDeploymentConfig;
 import io.fabric8.openshift.client.mock.impl.MockGroup;
 import io.fabric8.openshift.client.mock.impl.MockImageStream;
@@ -129,6 +132,7 @@ import io.fabric8.openshift.client.mock.impl.MockTemplate;
 import io.fabric8.openshift.client.mock.impl.MockUser;
 import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableBuild;
 import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableBuildConfig;
+import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableClusterRoleBinding;
 import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableDeploymentConfig;
 import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableGroup;
 import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableImageStream;
@@ -193,6 +197,7 @@ public class OpenShiftMockClient implements Replayable<OpenShiftClient>, Verifia
   private final MockPolicy policies = new MockPolicy();
   private final MockPolicyBinding policyBindings = new MockPolicyBinding();
   private final MockRoleBinding roleBindings = new MockRoleBinding();
+  private final MockClusterRoleBinding clusterRoleBindings = new MockClusterRoleBinding();
   private final MockSubjectAccessReview subjectAccessReviews = new MockSubjectAccessReview();
 
   public OpenShiftMockClient() {
@@ -228,6 +233,7 @@ public class OpenShiftMockClient implements Replayable<OpenShiftClient>, Verifia
     expect(client.policies()).andReturn(policies.getDelegate()).anyTimes();
     expect(client.policyBindings()).andReturn(policyBindings.getDelegate()).anyTimes();
     expect(client.roleBindings()).andReturn(roleBindings.getDelegate()).anyTimes();
+    expect(client.clusterRoleBindings()).andReturn(clusterRoleBindings.getDelegate()).anyTimes();
     expect(client.subjectAccessReviews()).andReturn(subjectAccessReviews.getDelegate()).anyTimes();
 
     client.close();
@@ -267,6 +273,7 @@ public class OpenShiftMockClient implements Replayable<OpenShiftClient>, Verifia
     policies.replay();
     policyBindings.replay();
     roleBindings.replay();
+    clusterRoleBindings.replay();
     subjectAccessReviews.replay();
 
     EasyMock.replay(client);
@@ -307,6 +314,7 @@ public class OpenShiftMockClient implements Replayable<OpenShiftClient>, Verifia
     policies.verify();
     policyBindings.verify();
     roleBindings.verify();
+    clusterRoleBindings.verify();
     subjectAccessReviews.verify();
     EasyMock.verify(client);
   }
@@ -442,6 +450,10 @@ public class OpenShiftMockClient implements Replayable<OpenShiftClient>, Verifia
 
   public  MockOperation<RoleBinding, RoleBindingList, MockDoneableRoleBinding, MockResource<RoleBinding, MockDoneableRoleBinding, Boolean>> roleBindings() {
     return roleBindings;
+  }
+
+  public  MockOperation<ClusterRoleBinding, ClusterRoleBindingList, MockDoneableClusterRoleBinding, MockResource<ClusterRoleBinding, MockDoneableClusterRoleBinding, Boolean>> clusterRoleBindings() {
+    return clusterRoleBindings;
   }
 
   public MockSubjectAccessReview getSubjectAccessReviews() {
