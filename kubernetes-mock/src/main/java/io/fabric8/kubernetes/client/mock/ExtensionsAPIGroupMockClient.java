@@ -23,19 +23,22 @@ import io.fabric8.kubernetes.api.model.extensions.Ingress;
 import io.fabric8.kubernetes.api.model.extensions.IngressList;
 import io.fabric8.kubernetes.api.model.extensions.Job;
 import io.fabric8.kubernetes.api.model.extensions.JobList;
+import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
+import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
 import io.fabric8.kubernetes.api.model.extensions.ThirdPartyResource;
 import io.fabric8.kubernetes.api.model.extensions.ThirdPartyResourceList;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
-import io.fabric8.kubernetes.client.mock.impl.MockConfigMap;
 import io.fabric8.kubernetes.client.mock.impl.MockDaemonSet;
 import io.fabric8.kubernetes.client.mock.impl.MockDeployment;
 import io.fabric8.kubernetes.client.mock.impl.MockIngress;
 import io.fabric8.kubernetes.client.mock.impl.MockJobs;
+import io.fabric8.kubernetes.client.mock.impl.MockReplicaSet;
 import io.fabric8.kubernetes.client.mock.impl.MockThirdPartyResource;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableDaemonSet;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableDeployment;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableIngress;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableJob;
+import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableReplicaSet;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableThirdPartyResource;
 import org.easymock.EasyMock;
 
@@ -51,6 +54,7 @@ public class ExtensionsAPIGroupMockClient implements Replayable<ExtensionsAPIGro
     private MockIngress ingresses = new MockIngress();
     private MockDaemonSet daemonSets = new MockDaemonSet();
     private MockThirdPartyResource thirdPartyResources = new MockThirdPartyResource();
+    private MockReplicaSet replicaSets = new MockReplicaSet();
 
     public ExtensionsAPIGroupMockClient() {
         expect(client.jobs()).andReturn(jobs.getDelegate()).anyTimes();
@@ -59,6 +63,7 @@ public class ExtensionsAPIGroupMockClient implements Replayable<ExtensionsAPIGro
         expect(client.ingresses()).andReturn(ingresses.getDelegate()).anyTimes();
         expect(client.daemonSets()).andReturn(daemonSets.getDelegate()).anyTimes();
         expect(client.thirdPartyResources()).andReturn(thirdPartyResources.getDelegate()).anyTimes();
+        expect(client.replicaSets()).andReturn(replicaSets.getDelegate()).anyTimes();
         client.close();
         EasyMock.expectLastCall().anyTimes();
     }
@@ -66,6 +71,10 @@ public class ExtensionsAPIGroupMockClient implements Replayable<ExtensionsAPIGro
     public ExtensionsAPIGroupDSL replay() {
         jobs.replay();
         deployments.replay();
+        ingresses.replay();
+        daemonSets.replay();
+        thirdPartyResources.replay();
+        replicaSets.replay();
         EasyMock.replay(client);
         return client;
     }
@@ -77,6 +86,7 @@ public class ExtensionsAPIGroupMockClient implements Replayable<ExtensionsAPIGro
         ingresses.verify();
         daemonSets.verify();
         thirdPartyResources.verify();
+        replicaSets.verify();
         EasyMock.verify(client);
     }
 
@@ -103,6 +113,10 @@ public class ExtensionsAPIGroupMockClient implements Replayable<ExtensionsAPIGro
 
     public MockOperation<ThirdPartyResource, ThirdPartyResourceList, MockDoneableThirdPartyResource, MockResource<ThirdPartyResource, MockDoneableThirdPartyResource, Boolean>> thirdPartyResources() {
         return thirdPartyResources;
+    }
+
+    public MockOperation<ReplicaSet, ReplicaSetList, MockDoneableReplicaSet, MockResource<ReplicaSet, MockDoneableReplicaSet, Boolean>> replicaSets() {
+        return replicaSets;
     }
 
     public ExtensionsAPIGroupDSL getDelegate() {

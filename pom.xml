@@ -82,7 +82,7 @@
     <generex.version>0.0.4</generex.version>
     <jackson.version>2.7.0</jackson.version>
     <junit.version>4.12</junit.version>
-    <kubernetes.model.version>1.0.44</kubernetes.model.version>
+    <kubernetes.model.version>1.0.45</kubernetes.model.version>
     <log4j.version>2.5</log4j.version>
 
     <slf4j.version>1.7.13</slf4j.version>

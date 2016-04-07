@@ -24,11 +24,14 @@ import io.fabric8.kubernetes.api.model.extensions.DoneableDaemonSet;
 import io.fabric8.kubernetes.api.model.extensions.DoneableDeployment;
 import io.fabric8.kubernetes.api.model.extensions.DoneableIngress;
 import io.fabric8.kubernetes.api.model.extensions.DoneableJob;
+import io.fabric8.kubernetes.api.model.extensions.DoneableReplicaSet;
 import io.fabric8.kubernetes.api.model.extensions.DoneableThirdPartyResource;
 import io.fabric8.kubernetes.api.model.extensions.Ingress;
 import io.fabric8.kubernetes.api.model.extensions.IngressList;
 import io.fabric8.kubernetes.api.model.extensions.Job;
 import io.fabric8.kubernetes.api.model.extensions.JobList;
+import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
+import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
 import io.fabric8.kubernetes.api.model.extensions.ThirdPartyResource;
 import io.fabric8.kubernetes.api.model.extensions.ThirdPartyResourceList;
 import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
@@ -38,6 +41,7 @@ import io.fabric8.kubernetes.client.dsl.internal.DaemonSetOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.DeploymentOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.IngressOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.JobOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.ReplicaSetOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ThirdPartyResourceOperationsImpl;
 
 public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAPIGroupDSL {
@@ -78,6 +82,10 @@ public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAP
 
   public ClientMixedOperation<ThirdPartyResource, ThirdPartyResourceList, DoneableThirdPartyResource, ClientResource<ThirdPartyResource, DoneableThirdPartyResource>> thirdPartyResources() {
     return new ThirdPartyResourceOperationsImpl(httpClient, getConfiguration(), getNamespace());
+  }
+
+  public ClientMixedOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, ClientResource<ReplicaSet, DoneableReplicaSet>> replicaSets() {
+    return new ReplicaSetOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
 }
