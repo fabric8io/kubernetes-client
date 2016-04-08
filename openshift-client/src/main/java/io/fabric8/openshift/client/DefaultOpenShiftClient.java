@@ -235,7 +235,7 @@ public class DefaultOpenShiftClient extends BaseClient implements OpenShiftClien
   }
 
   @Override
-  public ClientMixedOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, ClientResource<PersistentVolume, DoneablePersistentVolume>> persistentVolumes() {
+  public ClientNonNamespaceOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, ClientResource<PersistentVolume, DoneablePersistentVolume>> persistentVolumes() {
     return delegate.persistentVolumes();
   }
 

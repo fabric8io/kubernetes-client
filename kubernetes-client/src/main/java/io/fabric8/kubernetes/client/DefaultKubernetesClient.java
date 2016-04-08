@@ -142,8 +142,8 @@ public class DefaultKubernetesClient extends BaseClient implements KubernetesCli
   }
 
   @Override
-  public ClientMixedOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, ClientResource<PersistentVolume, DoneablePersistentVolume>> persistentVolumes() {
-    return new PersistentVolumeOperationsImpl(httpClient, getConfiguration(), getNamespace());
+  public ClientNonNamespaceOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, ClientResource<PersistentVolume, DoneablePersistentVolume>> persistentVolumes() {
+    return new PersistentVolumeOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
