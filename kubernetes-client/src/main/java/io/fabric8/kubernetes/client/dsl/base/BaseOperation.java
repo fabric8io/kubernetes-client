@@ -354,10 +354,10 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   public String getFieldQueryParam() {
     StringBuilder sb = new StringBuilder();
     if (fields != null && !fields.isEmpty()) {
-      if (sb.length() > 0) {
-        sb.append(",");
-      }
       for (Iterator<Map.Entry<String, String>> iter = fields.entrySet().iterator(); iter.hasNext(); ) {
+        if (sb.length() > 0) {
+          sb.append(",");
+        }
         Map.Entry<String, String> entry = iter.next();
         sb.append(entry.getKey()).append("=").append(entry.getValue());
       }
