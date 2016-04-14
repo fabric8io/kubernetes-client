@@ -15,23 +15,25 @@
  * limitations under the License.
  */
 node{
-  checkout scm
-  sh "git remote set-url origin git@github.com:fabric8io/kubernetes-client.git"
+  ws{
+    checkout scm
+    sh "git remote set-url origin git@github.com:fabric8io/kubernetes-client.git"
 
-  def pipeline = load 'release.groovy'
+    def pipeline = load 'release.groovy'
 
-  stage 'Updating dependencies'
-  def prId = pipeline.updateDependencies('http://central.maven.org/maven2/')
+    stage 'Updating dependencies'
+    def prId = pipeline.updateDependencies('http://central.maven.org/maven2/')
 
-  stage 'Stage'
-  def stagedProject = pipeline.stage()
+    stage 'Stage'
+    def stagedProject = pipeline.stage()
 
-  stage 'Approve'
-  pipeline.approveRelease(stagedProject)
+    stage 'Approve'
+    pipeline.approveRelease(stagedProject)
 
-  stage 'Promote'
-  pipeline.release(stagedProject)
-  if (prId != null){
-    pipeline.mergePullRequest(prId)
+    stage 'Promote'
+    pipeline.release(stagedProject)
+    if (prId != null){
+      pipeline.mergePullRequest(prId)
+    }    
   }
 }
