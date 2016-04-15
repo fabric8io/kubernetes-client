@@ -26,11 +26,13 @@ import com.squareup.okhttp.ws.WebSocketCall;
 import com.squareup.okhttp.ws.WebSocketListener;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
+import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import okio.Buffer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +41,7 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -58,9 +61,12 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
   private final int reconnectInterval;
   private final AtomicInteger currentReconnectAttempt = new AtomicInteger(0);
   private final AtomicReference<WebSocket> webSocketRef = new AtomicReference<>();
+  private final ExecutorService executor = Executors.newSingleThreadExecutor();
+  private final AtomicBoolean started = new AtomicBoolean(false);
+  private final ArrayBlockingQueue<Object> queue = new ArrayBlockingQueue<>(1);
+
   private WebSocketCall webSocketCall;
   private OkHttpClient clonedClient;
-  private ExecutorService executor = Executors.newSingleThreadExecutor();
 
   public WatchConnectionManager(final OkHttpClient client, final BaseOperation<T, L, ?, ?> baseOperation, final String version, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit) throws InterruptedException, ExecutionException, MalformedURLException {
     if (version == null) {
@@ -117,11 +123,19 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
       public void onOpen(WebSocket webSocket, Response response) {
         webSocketRef.set(webSocket);
         currentReconnectAttempt.set(0);
+        started.set(true);
+        queue.add(true);
       }
 
       @Override
       public void onFailure(IOException e, Response response) {
-        e.printStackTrace();
+        //We only need to queue startup failures.
+        Status status = OperationSupport.createStatus(response);
+        logger.error("Exec Failure: HTTP:" + status.getCode() + ". Message:" + status.getMessage(), e);
+        if (!started.get()) {
+          queue.add(new KubernetesClientException(status));
+        }
+
         try {
           if (response != null && response.body() != null){
             response.body().close();
@@ -131,7 +145,6 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
         }
 
         if (forceClosed.get()) {
-          executor.shutdownNow();
           watcher.onClose(null);
           return;
         }
@@ -181,10 +194,10 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
       @Override
       public void onClose(final int code, final String reason) {
         if (forceClosed.get()) {
-          executor.shutdownNow();
           watcher.onClose(null);
           return;
         }
+
         executor.submit(new Runnable() {
           @Override
           public void run() {
@@ -213,6 +226,21 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
     });
   }
 
+  public void waitUntilReady() {
+    try {
+      Object obj = queue.poll(10, TimeUnit.SECONDS);
+      if (obj instanceof Boolean && ((Boolean) obj)) {
+        return;
+      } else {
+        if (obj instanceof Throwable) {
+          throw (Throwable) obj;
+        }
+      }
+    } catch (Throwable t) {
+      throw KubernetesClientException.launderThrowable(t);
+    }
+  }
+
   @Override
   public void close() {
     forceClosed.set(true);
@@ -224,6 +252,14 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
     } catch (IOException e) {
       e.printStackTrace();
     }
-  }
 
+    try {
+      executor.shutdown();
+      if (!executor.awaitTermination(10, TimeUnit.SECONDS)) {
+        executor.shutdownNow();
+      }
+    } catch (Throwable t) {
+      throw KubernetesClientException.launderThrowable(t);
+    }
+  }
 }
