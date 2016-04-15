@@ -16,6 +16,7 @@
 package io.fabric8.openshift.client;
 
 import com.squareup.okhttp.OkHttpClient;
+
 import io.fabric8.kubernetes.api.model.ComponentStatus;
 import io.fabric8.kubernetes.api.model.ComponentStatusList;
 import io.fabric8.kubernetes.api.model.ConfigMap;
@@ -66,6 +67,7 @@ import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.ExtensionsAPIGroupClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListMixedOperation;
@@ -391,5 +393,10 @@ public class DefaultOpenShiftClient extends BaseClient implements OpenShiftClien
   @Override
   public OpenShiftClient inAnyNamespace() {
     return inNamespace(null);
+  }
+
+  @Override
+  public ExtensionsAPIGroupClient extensions() {
+    return adapt(ExtensionsAPIGroupClient.class);
   }
 }

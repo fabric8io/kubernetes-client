@@ -16,6 +16,7 @@
 package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.client.GenericKubernetesClient;
+import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftDSL;
 
 import java.net.URL;
@@ -25,5 +26,7 @@ public interface OpenShiftClient extends
   GenericKubernetesClient<OpenShiftClient> {
 
   URL getOpenshiftUrl();
+
+  ExtensionsAPIGroupDSL extensions();
 
 }
