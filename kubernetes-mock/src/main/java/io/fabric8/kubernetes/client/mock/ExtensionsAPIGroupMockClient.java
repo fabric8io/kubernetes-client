@@ -15,10 +15,14 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
 import io.fabric8.kubernetes.api.model.extensions.DaemonSet;
 import io.fabric8.kubernetes.api.model.extensions.DaemonSetList;
 import io.fabric8.kubernetes.api.model.extensions.Deployment;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
+import io.fabric8.kubernetes.api.model.extensions.HorizontalPodAutoscaler;
+import io.fabric8.kubernetes.api.model.extensions.HorizontalPodAutoscalerList;
 import io.fabric8.kubernetes.api.model.extensions.Ingress;
 import io.fabric8.kubernetes.api.model.extensions.IngressList;
 import io.fabric8.kubernetes.api.model.extensions.Job;
@@ -30,20 +34,20 @@ import io.fabric8.kubernetes.api.model.extensions.ThirdPartyResourceList;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.mock.impl.MockDaemonSet;
 import io.fabric8.kubernetes.client.mock.impl.MockDeployment;
+import io.fabric8.kubernetes.client.mock.impl.MockHorizontalPodAutoscaler;
 import io.fabric8.kubernetes.client.mock.impl.MockIngress;
 import io.fabric8.kubernetes.client.mock.impl.MockJobs;
 import io.fabric8.kubernetes.client.mock.impl.MockReplicaSet;
 import io.fabric8.kubernetes.client.mock.impl.MockThirdPartyResource;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableDaemonSet;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableDeployment;
+import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableHorizontalPodAutoscaler;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableIngress;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableJob;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableReplicaSet;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableThirdPartyResource;
-import org.easymock.EasyMock;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
+import org.easymock.EasyMock;
 
 public class ExtensionsAPIGroupMockClient implements Replayable<ExtensionsAPIGroupDSL>, Verifiable {
 
@@ -55,6 +59,7 @@ public class ExtensionsAPIGroupMockClient implements Replayable<ExtensionsAPIGro
     private MockDaemonSet daemonSets = new MockDaemonSet();
     private MockThirdPartyResource thirdPartyResources = new MockThirdPartyResource();
     private MockReplicaSet replicaSets = new MockReplicaSet();
+    private MockHorizontalPodAutoscaler horizontalPodAutoscalers = new MockHorizontalPodAutoscaler();
 
     public ExtensionsAPIGroupMockClient() {
         expect(client.jobs()).andReturn(jobs.getDelegate()).anyTimes();
@@ -64,6 +69,7 @@ public class ExtensionsAPIGroupMockClient implements Replayable<ExtensionsAPIGro
         expect(client.daemonSets()).andReturn(daemonSets.getDelegate()).anyTimes();
         expect(client.thirdPartyResources()).andReturn(thirdPartyResources.getDelegate()).anyTimes();
         expect(client.replicaSets()).andReturn(replicaSets.getDelegate()).anyTimes();
+        expect(client.horizontalPodAutoscalers()).andReturn(horizontalPodAutoscalers.getDelegate()).anyTimes();
         client.close();
         EasyMock.expectLastCall().anyTimes();
     }
@@ -75,6 +81,7 @@ public class ExtensionsAPIGroupMockClient implements Replayable<ExtensionsAPIGro
         daemonSets.replay();
         thirdPartyResources.replay();
         replicaSets.replay();
+        horizontalPodAutoscalers.replay();
         EasyMock.replay(client);
         return client;
     }
@@ -87,6 +94,7 @@ public class ExtensionsAPIGroupMockClient implements Replayable<ExtensionsAPIGro
         daemonSets.verify();
         thirdPartyResources.verify();
         replicaSets.verify();
+        horizontalPodAutoscalers.verify();
         EasyMock.verify(client);
     }
 
@@ -117,6 +125,10 @@ public class ExtensionsAPIGroupMockClient implements Replayable<ExtensionsAPIGro
 
     public MockOperation<ReplicaSet, ReplicaSetList, MockDoneableReplicaSet, MockResource<ReplicaSet, MockDoneableReplicaSet, Boolean>> replicaSets() {
         return replicaSets;
+    }
+
+    public MockOperation<HorizontalPodAutoscaler, HorizontalPodAutoscalerList, MockDoneableHorizontalPodAutoscaler, MockResource<HorizontalPodAutoscaler, MockDoneableHorizontalPodAutoscaler, Boolean>> horizontalPodAutoscalers() {
+        return horizontalPodAutoscalers;
     }
 
     public ExtensionsAPIGroupDSL getDelegate() {
