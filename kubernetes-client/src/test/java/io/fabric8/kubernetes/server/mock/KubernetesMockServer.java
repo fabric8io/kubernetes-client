@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.api.model.RootPathsBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -64,7 +64,7 @@ public class KubernetesMockServer {
     server.shutdown();
   }
 
-  public KubernetesClient createClient() {
+  public NamespacedKubernetesClient createClient() {
     Config config = new ConfigBuilder()
       .withMasterUrl(server.getUrl("/").toString())
       .withTrustCerts(true)

@@ -23,7 +23,7 @@ import io.fabric8.openshift.api.model.SubjectAccessReview;
 import io.fabric8.openshift.api.model.SubjectAccessReviewBuilder;
 import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
 import io.fabric8.openshift.api.model.SubjectAccessReviewResponseBuilder;
-import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -48,7 +48,7 @@ public class SubjectAccessReviewMockTest {
     mock.getSubjectAccessReviews().create(review2).andReturn(expectedResponse2);
 
 
-    OpenShiftClient client = mock.replay();
+    NamespacedOpenShiftClient client = mock.replay();
     SubjectAccessReviewResponse response = client.subjectAccessReviews().create(review1);
     Assert.assertEquals(expectedResponse1, response);
 
@@ -77,7 +77,7 @@ public class SubjectAccessReviewMockTest {
     mock.getSubjectAccessReviews().inNamespace("ns2").create(review2).andReturn(expectedResponse2);
 
 
-    OpenShiftClient client = mock.replay();
+    NamespacedOpenShiftClient client = mock.replay();
     SubjectAccessReviewResponse response = client.subjectAccessReviews().inNamespace("ns1").create(review1);
     Assert.assertEquals(expectedResponse1, response);
 

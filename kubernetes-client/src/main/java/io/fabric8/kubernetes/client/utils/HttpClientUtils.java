@@ -78,28 +78,11 @@ public class HttpClientUtils {
             }
 
             if (isNotNullOrEmpty(config.getUsername()) && isNotNullOrEmpty(config.getPassword())) {
-                httpClient.setAuthenticator(new Authenticator() {
-
+                httpClient.interceptors().add(new Interceptor() {
                     @Override
-                    public Request authenticate(Proxy proxy, Response response) throws IOException {
-                        List<Challenge> challenges = response.challenges();
-                        Request request = response.request();
-                        HttpUrl url = request.httpUrl();
-                        for (int i = 0, size = challenges.size(); i < size; i++) {
-                            Challenge challenge = challenges.get(i);
-                            if (!"Basic".equalsIgnoreCase(challenge.getScheme())) continue;
-
-                            String credential = Credentials.basic(config.getUsername(), config.getPassword());
-                            return request.newBuilder()
-                                    .header("Authorization", credential)
-                                    .build();
-                        }
-                        return null;
-                    }
-
-                    @Override
-                    public Request authenticateProxy(Proxy proxy, Response response) throws IOException {
-                        return null;
+                    public Response intercept(Chain chain) throws IOException {
+                        Request authReq = chain.request().newBuilder().addHeader("Authorization", Credentials.basic(config.getUsername(), config.getPassword())).build();
+                        return chain.proceed(authReq);
                     }
                 });
             } else if (config.getOauthToken() != null) {

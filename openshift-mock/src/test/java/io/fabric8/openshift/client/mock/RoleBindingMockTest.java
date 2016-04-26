@@ -21,7 +21,7 @@ import io.fabric8.openshift.api.model.RoleBinding;
 import io.fabric8.openshift.api.model.RoleBindingBuilder;
 import io.fabric8.openshift.api.model.RoleBindingList;
 import io.fabric8.openshift.api.model.RoleBindingListBuilder;
-import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -39,7 +39,7 @@ public class RoleBindingMockTest {
 
     mock.roleBindings().inNamespace("ns1").create(rb1).andReturn(rb1).anyTimes();
 
-    OpenShiftClient client = mock.replay();
+    NamespacedOpenShiftClient client = mock.replay();
 
     RoleBinding response = client.roleBindings().inNamespace("ns1").create(rb1);
     Assert.assertEquals(rb1, response);
@@ -57,7 +57,7 @@ public class RoleBindingMockTest {
 
     mock.roleBindings().inNamespace("ns1").list().andReturn(new RoleBindingListBuilder().addToItems(rb1).build()).anyTimes();
 
-    OpenShiftClient client = mock.replay();
+    NamespacedOpenShiftClient client = mock.replay();
 
     RoleBindingList response = client.roleBindings().inNamespace("ns1").list();
 

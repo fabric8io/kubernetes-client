@@ -27,8 +27,7 @@ import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.SecurityContextConstraintsList;
 import io.fabric8.kubernetes.api.model.SecurityContextConstraintsListBuilder;
 import io.fabric8.kubernetes.api.model.extensions.JobBuilder;
-import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -48,7 +47,7 @@ public class KubernetesMockClientTest {
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").endMetadata().build();
     mock.pods().inNamespace("ns1").create(pod1).andReturn(pod1).anyTimes();
 
-    KubernetesClient client = mock.replay();
+    NamespacedKubernetesClient client = mock.replay();
     Assert.assertNotNull(client.pods().inNamespace("ns1").create(pod1));
   }
 
@@ -60,7 +59,7 @@ public class KubernetesMockClientTest {
     mock.pods().inNamespace("ns1").createNew().withNewMetadata().withName("pod1").endMetadata().done().andReturn(expectedPod).anyTimes();
 
 
-    KubernetesClient client = mock.replay();
+    NamespacedKubernetesClient client = mock.replay();
    Assert.assertEquals(expectedPod, client.pods().inNamespace("ns1").createNew().withNewMetadata().withName("pod1").endMetadata().done());
   }
 
@@ -79,7 +78,7 @@ public class KubernetesMockClientTest {
 
     mock.pods().inNamespace("ns1").withName("pod2").get().andReturn(null).once();
 
-    KubernetesClient client = mock.replay();
+    NamespacedKubernetesClient client = mock.replay();
 
     //We are testing the internal anyTimes() on namespace and name.
     for (int i = 0; i < 5; i++) {
@@ -115,7 +114,7 @@ public class KubernetesMockClientTest {
       }
     }).anyTimes();
 
-    KubernetesClient client = mock.replay();
+    NamespacedKubernetesClient client = mock.replay();
     Assert.assertNotNull(client.pods().inNamespace("ns1").withName("pod1").withTTY().exec("env"));
   }
 
@@ -128,7 +127,7 @@ public class KubernetesMockClientTest {
     mock.pods().delete(pod1, pod2).andReturn(true).once();
     mock.pods().delete(pod1, pod2).andReturn(false).times(4);
 
-    KubernetesClient client = mock.replay();
+    NamespacedKubernetesClient client = mock.replay();
 
     int counter = 0;
     for (int i = 0; i < 5; i++) {
@@ -159,7 +158,7 @@ public class KubernetesMockClientTest {
         .build()
     ).anyTimes();
 
-    KubernetesClient client = mock.replay();
+    NamespacedKubernetesClient client = mock.replay();
 
     for (int i = 0; i < 5; i++) {
       PodList result = client.pods().inNamespace("ns1").withLabel("component", "f1").list();
@@ -180,7 +179,7 @@ public class KubernetesMockClientTest {
     KubernetesMockClient mock = new KubernetesMockClient();
     mock.pods().inNamespace("ns1").withName("name").cascading(false).delete().andReturn(true).anyTimes();
 
-    KubernetesClient client = mock.replay();
+    NamespacedKubernetesClient client = mock.replay();
 
     for (int i = 0; i < 5; i++) {
       client.pods().inNamespace("ns1").withName("name").cascading(false).delete();
@@ -211,7 +210,7 @@ public class KubernetesMockClientTest {
     mock.replicationControllers().inNamespace("ns1").withName("repl1").scale(3).andReturn(repl1).once();
 
 
-    KubernetesClient client = mock.replay();
+    NamespacedKubernetesClient client = mock.replay();
 
     client.replicationControllers().inNamespace("ns1").withName("repl1").scale(1);
     client.replicationControllers().inNamespace("ns1").withName("repl1").scale(2);
@@ -235,7 +234,7 @@ public class KubernetesMockClientTest {
     mock.replicationControllers().inNamespace("ns1").withName("repl1").rolling().updateImage("myimage2").andReturn(repl1).once();
 
 
-    KubernetesClient client = mock.replay();
+    NamespacedKubernetesClient client = mock.replay();
 
     client.replicationControllers().inNamespace("ns1").withName("repl1").rolling().updateImage("myimage");
     client.replicationControllers().inNamespace("ns1").withName("repl1").rolling().updateImage("myimage2");
@@ -255,7 +254,7 @@ public class KubernetesMockClientTest {
       .build();
 
     mock.replicationControllers().inNamespace("ns1").load(EasyMock.<InputStream>anyObject()).get().andReturn(repl1);
-    KubernetesClient client = mock.replay();
+    NamespacedKubernetesClient client = mock.replay();
 
     InputStream is = EasyMock.createMock(InputStream.class);
     Assert.assertEquals(repl1, client.replicationControllers().inNamespace("ns1").load(is).get());
@@ -281,7 +280,7 @@ public class KubernetesMockClientTest {
       .build();
 
     mock.lists().inNamespace("ns1").load(EasyMock.<InputStream>anyObject()).get().andReturn(list1);
-    KubernetesClient client = mock.replay();
+    NamespacedKubernetesClient client = mock.replay();
 
     InputStream is = EasyMock.createMock(InputStream.class);
     Assert.assertEquals(list1, client.lists().inNamespace("ns1").load(is).get());
@@ -303,7 +302,7 @@ public class KubernetesMockClientTest {
       .endItem()
       .build()).anyTimes();
 
-    KubernetesClient client = mock.replay();
+    NamespacedKubernetesClient client = mock.replay();
 
     for (int i = 0; i < 5; i++) {
       SecurityContextConstraintsList result = client.securityContextConstraints().list();
@@ -319,7 +318,7 @@ public class KubernetesMockClientTest {
     mock.pods().inNamespace("ns1").withName("myPod").getLog("cnt1", true).andReturn("log1").anyTimes();
     mock.pods().inNamespace("ns1").withName("myPod").getLog("cnt2", true).andReturn("log2").anyTimes();
 
-    KubernetesClient client = mock.replay();
+    NamespacedKubernetesClient client = mock.replay();
 
     Assert.assertEquals("log1", client.pods().inNamespace("ns1").withName("myPod").getLog("cnt1", true));
     Assert.assertEquals("log2", client.pods().inNamespace("ns1").withName("myPod").getLog("cnt2", true));
@@ -338,7 +337,7 @@ public class KubernetesMockClientTest {
     ns1.replicationControllers().withName("repl1").get().andReturn(new ReplicationControllerBuilder().withNewMetadata().withName("repl1").endMetadata().build());
     ns2.replicationControllers().withName("repl2").get().andReturn(new ReplicationControllerBuilder().withNewMetadata().withName("repl1").endMetadata().build());
 
-    KubernetesClient client = mock.replay();
+    NamespacedKubernetesClient client = mock.replay();
     client = client.inNamespace("ns1");
     Assert.assertNotNull(client);
     Assert.assertNotNull(client.replicationControllers().withName("repl1").get());
@@ -363,7 +362,7 @@ public class KubernetesMockClientTest {
 
     mock.extensions().jobs().inNamespace("ns1").withName("job2").get().andReturn(null).once();
 
-    KubernetesClient client = mock.replay();
+    NamespacedKubernetesClient client = mock.replay();
 
     //We are testing the internal anyTimes() on namespace and name.
     for (int i = 0; i < 5; i++) {

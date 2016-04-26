@@ -68,7 +68,7 @@ import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.ExtensionsAPIGroupClient;
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
@@ -157,10 +157,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-public class DefaultOpenShiftClient extends BaseClient implements OpenShiftClient {
+public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpenShiftClient {
 
   private URL openShiftUrl;
-  private KubernetesClient delegate;
+  private NamespacedKubernetesClient delegate;
 
   public DefaultOpenShiftClient() throws KubernetesClientException {
     this(new OpenShiftConfigBuilder().build());
@@ -382,7 +382,7 @@ public class DefaultOpenShiftClient extends BaseClient implements OpenShiftClien
   }
 
   @Override
-  public OpenShiftClient inNamespace(String namespace) {
+  public NamespacedOpenShiftClient inNamespace(String namespace) {
     OpenShiftConfig updated = new OpenShiftConfigBuilder(new OpenShiftConfig(getConfiguration()))
       .withOpenShiftUrl(openShiftUrl.toString())
       .withNamespace(namespace)
@@ -391,7 +391,7 @@ public class DefaultOpenShiftClient extends BaseClient implements OpenShiftClien
   }
 
   @Override
-  public OpenShiftClient inAnyNamespace() {
+  public NamespacedOpenShiftClient inAnyNamespace() {
     return inNamespace(null);
   }
 

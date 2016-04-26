@@ -17,7 +17,8 @@
 package io.fabric8.kubernetes.karaf.itests;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
+import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,10 +56,10 @@ public class ServiceTest extends TestBase {
     protected BundleContext bundleContext;
 
     @Inject
-    KubernetesClient kubernetesClient;
+    NamespacedKubernetesClient kubernetesClient;
 
     @Inject
-    OpenShiftClient openShiftClient;
+    NamespacedOpenShiftClient openShiftClient;
 
     @Test
     public void testServiceAvailability() throws Exception {
@@ -72,10 +73,10 @@ public class ServiceTest extends TestBase {
         Assert.assertNotNull(kubernetesClient);
         Assert.assertNotNull(openShiftClient);
 
-        KubernetesClient knc = kubernetesClient.inNamespace("mytest1");
+        NamespacedKubernetesClient knc = kubernetesClient.inNamespace("mytest1");
         Assert.assertEquals("mytest1", knc.getNamespace());
 
-        OpenShiftClient onc = openShiftClient.inNamespace("mytest2");
+        NamespacedOpenShiftClient onc = openShiftClient.inNamespace("mytest2");
         Assert.assertEquals("mytest2", onc.getNamespace());
     }
 

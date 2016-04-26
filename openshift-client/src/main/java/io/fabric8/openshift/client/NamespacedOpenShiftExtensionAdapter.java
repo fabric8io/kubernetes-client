@@ -17,31 +17,28 @@
 package io.fabric8.openshift.client;
 
 import com.squareup.okhttp.OkHttpClient;
-import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
-import java.net.URI;
 import java.net.URL;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 @Component
 @Service
-public class OpenShiftExtensionAdapter extends OpenshiftAdapterSupport implements ExtensionAdapter<OpenShiftClient> {
+public class NamespacedOpenShiftExtensionAdapter extends OpenshiftAdapterSupport implements ExtensionAdapter<NamespacedOpenShiftClient> {
+
+  private static final ConcurrentMap<URL, Boolean> IS_OPENSHIFT = new ConcurrentHashMap<>();
 
   @Override
-  public Class<OpenShiftClient> getExtensionType() {
-    return OpenShiftClient.class;
+  public Class<NamespacedOpenShiftClient> getExtensionType() {
+    return NamespacedOpenShiftClient.class;
   }
 
-
   @Override
-  public OpenShiftClient adapt(Client client) {
+  public NamespacedOpenShiftClient adapt(Client client) {
     if (!isAdaptable(client)) {
       throw new OpenShiftNotAvailableException("OpenShift is not available. Root paths at: " + client.getMasterUrl() + " do not include oapi.");
     }

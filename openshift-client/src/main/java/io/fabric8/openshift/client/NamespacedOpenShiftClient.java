@@ -13,13 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client;
+package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.dsl.AnyNamespaceable;
-import io.fabric8.kubernetes.client.dsl.Namespaceable;
+import io.fabric8.kubernetes.client.GenericKubernetesClient;
 
+public interface NamespacedOpenShiftClient extends OpenShiftClient,
+  GenericKubernetesClient<NamespacedOpenShiftClient> {
 
-public interface GenericKubernetesClient<C extends Client> extends Client, KubernetesClient,
-  Namespaceable<C>,
-  AnyNamespaceable<C> {
 }

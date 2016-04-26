@@ -70,6 +70,7 @@ import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientPodResource;
@@ -120,12 +121,12 @@ import static io.fabric8.kubernetes.client.Config.KUBERNETES_WATCH_RECONNECT_INT
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY;
 
 @Component(immediate = true, configurationPid = "io.fabric8.kubernetes.client", policy = ConfigurationPolicy.OPTIONAL)
-@Service(KubernetesClient.class)
+@Service({KubernetesClient.class,NamespacedKubernetesClient.class})
 @References({
   @Reference(referenceInterface = io.fabric8.kubernetes.client.ResourceHandler.class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC, bind = "bindResourceHandler", unbind = "unbindResourceHandler"),
   @Reference(referenceInterface = ExtensionAdapter.class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC, bind = "bindExtensionAdapter", unbind = "unbindExtensionAdapter")
 })
-public class ManagedKubernetesClient extends BaseClient implements KubernetesClient {
+public class ManagedKubernetesClient extends BaseClient implements NamespacedKubernetesClient {
 
   @Property(name = KUBERNETES_MASTER_SYSTEM_PROPERTY, description = "Master URL", value = "https://kubernetes.default.svc")
   private String masterUrl = Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY, "https://kubernetes.default.svc");
@@ -172,7 +173,7 @@ public class ManagedKubernetesClient extends BaseClient implements KubernetesCli
   @Property(name = KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY, description = "Kubernetes trust certifacates flag", boolValue = false)
   private Boolean trustCerts = Utils.getSystemPropertyOrEnvVar(KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY, Boolean.FALSE);
 
-  private KubernetesClient delegate;
+  private NamespacedKubernetesClient delegate;
 
   @Activate
   public void activate(Map<String, Object> properties) {
@@ -263,14 +264,6 @@ public class ManagedKubernetesClient extends BaseClient implements KubernetesCli
     return delegate.nodes();
   }
 
-  public KubernetesClient inNamespace(String name) {
-    return delegate.inNamespace(name);
-  }
-
-  public KubernetesClient inAnyNamespace() {
-    return delegate.inAnyNamespace();
-  }
-
   public ClientMixedOperation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, ClientResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> persistentVolumeClaims() {
     return delegate.persistentVolumeClaims();
   }
@@ -341,5 +334,15 @@ public class ManagedKubernetesClient extends BaseClient implements KubernetesCli
 
   public void unbindExtensionAdapter(ExtensionAdapter adapter) {
     Adapters.unregister(adapter);
+  }
+
+  @Override
+  public NamespacedKubernetesClient inAnyNamespace() {
+    return delegate.inAnyNamespace();
+  }
+
+  @Override
+  public NamespacedKubernetesClient inNamespace(String name) {
+    return delegate.inNamespace(name);
   }
 }

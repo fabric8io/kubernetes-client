@@ -15,9 +15,11 @@
  */
 package io.fabric8.kubernetes.examples;
 
+import io.fabric8.kubernetes.client.AutoAdaptableKubernetesClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.openshift.client.DefaultOpenShiftClient;
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +40,7 @@ public class CredentialsExample {
           .withPassword("admin")
           .withNamespace("default")
           .build();
-        try (final OpenShiftClient client = new DefaultOpenShiftClient(config)) {
+        try (final KubernetesClient client = new AutoAdaptableKubernetesClient(config)) {
 
           log("Received pods", client.pods().list());
 
