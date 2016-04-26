@@ -68,7 +68,7 @@ public class KubernetesListTest extends KubernetesMockServerTestBase {
 
     KubernetesClient client = getClient();
     InputStream is = KubernetesListTest.class.getResourceAsStream("/test-rclist.json");
-    KubernetesList result = client.inNamespace("test").lists().load(is).create();
+    KubernetesList result = client.lists().inNamespace("test").load(is).create();
 
     assertNotNull(result);
     assertEquals(2, result.getItems().size());

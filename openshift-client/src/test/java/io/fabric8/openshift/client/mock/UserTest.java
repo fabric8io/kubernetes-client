@@ -20,6 +20,7 @@ import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.api.model.UserBuilder;
 import io.fabric8.openshift.api.model.UserList;
 import io.fabric8.openshift.api.model.UserListBuilder;
+import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.Test;
 
@@ -39,7 +40,7 @@ public class UserTest extends OpenShiftMockServerTestBase {
       .addNewItem().and().build()).always();
 
 
-    OpenShiftClient client = getOpenshiftClient();
+    NamespacedOpenShiftClient client = getOpenshiftClient();
 
     UserList userList = client.users().list();
     assertNotNull(userList);

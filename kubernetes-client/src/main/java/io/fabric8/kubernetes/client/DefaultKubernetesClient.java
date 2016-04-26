@@ -69,6 +69,7 @@ import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientPodResource;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
+import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetDeleteRecreateApplicable;
 import io.fabric8.kubernetes.client.dsl.internal.ComponentStatusOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ConfigMapOperationsImpl;
@@ -92,7 +93,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DefaultKubernetesClient extends BaseClient implements KubernetesClient {
+public class DefaultKubernetesClient extends BaseClient implements NamespacedKubernetesClient {
 
   public DefaultKubernetesClient() throws KubernetesClientException {
     super();
@@ -197,19 +198,19 @@ public class DefaultKubernetesClient extends BaseClient implements KubernetesCli
   }
 
   @Override
-  public KubernetesClient inNamespace(String namespace)
+  public NamespacedKubernetesClient inNamespace(String namespace)
   {
     Config updated = new ConfigBuilder(getConfiguration()).withNamespace(namespace).build();
     return new DefaultKubernetesClient(httpClient, updated);
   }
 
   @Override
-  public KubernetesClient inAnyNamespace() {
+  public NamespacedKubernetesClient inAnyNamespace() {
     return inNamespace(null);
   }
 
   @Override
-  public ExtensionsAPIGroupClient extensions() {
+  public ExtensionsAPIGroupDSL extensions() {
     return adapt(ExtensionsAPIGroupClient.class);
   }
 }

@@ -66,9 +66,9 @@ import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListMixedOperation;
-import io.fabric8.kubernetes.client.dsl.ClientPodResource;
 import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.ClientPodResource;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
@@ -124,6 +124,7 @@ import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.api.model.UserList;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
+import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
@@ -133,7 +134,6 @@ import io.fabric8.openshift.client.dsl.ClientSubjectAccessReviewOperation;
 import io.fabric8.openshift.client.dsl.ClientTemplateResource;
 import io.fabric8.openshift.client.dsl.CreateableLocalSubjectAccessReview;
 import io.fabric8.openshift.client.dsl.CreateableSubjectAccessReview;
-
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.ConfigurationPolicy;
@@ -172,8 +172,8 @@ import static io.fabric8.openshift.client.OpenShiftConfig.KUBERNETES_OAPI_VERSIO
 import static io.fabric8.openshift.client.OpenShiftConfig.OPENSHIFT_URL_SYTEM_PROPERTY;
 
 @Component(immediate = true, configurationPid = "io.fabric8.openshift.client", policy = ConfigurationPolicy.OPTIONAL)
-@Service(OpenShiftClient.class)
-public class ManagedOpenShiftClient extends BaseClient implements OpenShiftClient {
+@Service({OpenShiftClient.class, NamespacedOpenShiftClient.class})
+public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpenShiftClient {
 
   @Property(name = OPENSHIFT_URL_SYTEM_PROPERTY)
   private String openshiftUrl = Utils.getSystemPropertyOrEnvVar(OPENSHIFT_URL_SYTEM_PROPERTY);
@@ -226,7 +226,7 @@ public class ManagedOpenShiftClient extends BaseClient implements OpenShiftClien
   @Property(name = KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY, description = "Kubernetes trust certifacates flag", boolValue = false)
   private Boolean trustCerts = Utils.getSystemPropertyOrEnvVar(KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY, Boolean.FALSE);
 
-  private OpenShiftClient delegate;
+  private DefaultOpenShiftClient delegate;
 
   @Activate
   public void activate(Map<String, Object> properties) {
@@ -486,18 +486,17 @@ public class ManagedOpenShiftClient extends BaseClient implements OpenShiftClien
   }
 
   @Override
-  public OpenShiftClient inNamespace(String name) {
-    return delegate.inNamespace(name);
-  }
-
-  @Override
-  public OpenShiftClient inAnyNamespace() {
-    return delegate.inAnyNamespace();
-  }
-
-  @Override
   public ExtensionsAPIGroupDSL extensions() {
     return delegate.extensions();
   }
 
+  @Override
+  public NamespacedOpenShiftClient inAnyNamespace() {
+    return delegate.inAnyNamespace();
+  }
+
+  @Override
+  public NamespacedOpenShiftClient inNamespace(String name) {
+    return delegate.inNamespace(name);
+  }
 }

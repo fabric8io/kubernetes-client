@@ -111,7 +111,7 @@ import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.api.model.UserList;
-import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import io.fabric8.openshift.client.mock.impl.MockBuild;
 import io.fabric8.openshift.client.mock.impl.MockBuildConfig;
 import io.fabric8.openshift.client.mock.impl.MockClusterRoleBinding;
@@ -159,9 +159,9 @@ import static io.fabric8.kubernetes.client.mock.util.MockUtils.getArgument;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 
-public class OpenShiftMockClient implements Replayable<OpenShiftClient>, Verifiable {
+public class OpenShiftMockClient implements Replayable<NamespacedOpenShiftClient>, Verifiable {
 
-  private final OpenShiftClient client = createMock(OpenShiftClient.class);
+  private final NamespacedOpenShiftClient client = createMock(NamespacedOpenShiftClient.class);
 
   private OpenShiftMockClient anyNamespaceOp;
   private Map<IArgumentMatcher, OpenShiftMockClient> namespaceMap = new HashMap<>();
@@ -201,7 +201,7 @@ public class OpenShiftMockClient implements Replayable<OpenShiftClient>, Verifia
   private final MockSubjectAccessReview subjectAccessReviews = new MockSubjectAccessReview();
 
   public OpenShiftMockClient() {
-    expect(client.adapt(OpenShiftClient.class)).andReturn(client).anyTimes();
+    expect(client.adapt(NamespacedOpenShiftClient.class)).andReturn(client).anyTimes();
     expect(client.endpoints()).andReturn(endpoints.getDelegate()).anyTimes();
     expect(client.events()).andReturn(events.getDelegate()).anyTimes();
     expect(client.nodes()).andReturn(nodes.getDelegate()).anyTimes();
@@ -240,7 +240,7 @@ public class OpenShiftMockClient implements Replayable<OpenShiftClient>, Verifia
     EasyMock.expectLastCall().anyTimes();
   }
 
-  public OpenShiftClient replay() {
+  public NamespacedOpenShiftClient replay() {
     endpoints.replay();
     events.replay();
     nodes.replay();
@@ -466,9 +466,9 @@ public class OpenShiftMockClient implements Replayable<OpenShiftClient>, Verifia
     if (op == null) {
       final OpenShiftMockClient namespacedClient = new OpenShiftMockClient();
       op = namespacedClient;
-      expect(client.inNamespace(namespace)).andAnswer(new IAnswer<OpenShiftClient>() {
+      expect(client.inNamespace(namespace)).andAnswer(new IAnswer<NamespacedOpenShiftClient>() {
         @Override
-        public OpenShiftClient answer() throws Throwable {
+        public NamespacedOpenShiftClient answer() throws Throwable {
           namespacedClient.getNamespace().andReturn(namespace).anyTimes();
           return namespacedClient.replay();
         }
@@ -482,9 +482,9 @@ public class OpenShiftMockClient implements Replayable<OpenShiftClient>, Verifia
     if (anyNamespaceOp == null) {
       final OpenShiftMockClient namespacedClient = new OpenShiftMockClient();
       anyNamespaceOp = namespacedClient;
-      expect(client.inAnyNamespace()).andAnswer(new IAnswer<OpenShiftClient>() {
+      expect(client.inAnyNamespace()).andAnswer(new IAnswer<NamespacedOpenShiftClient>() {
         @Override
-        public OpenShiftClient answer() throws Throwable {
+        public NamespacedOpenShiftClient answer() throws Throwable {
           namespacedClient.getNamespace().andReturn(null).anyTimes();
           return namespacedClient.replay();
         }

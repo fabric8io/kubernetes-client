@@ -20,6 +20,7 @@ import io.fabric8.openshift.api.model.Group;
 import io.fabric8.openshift.api.model.GroupBuilder;
 import io.fabric8.openshift.api.model.GroupList;
 import io.fabric8.openshift.api.model.GroupListBuilder;
+import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.Test;
 
@@ -39,7 +40,7 @@ public class GroupTest extends OpenShiftMockServerTestBase {
       .addNewItem().and().build()).always();
 
 
-    OpenShiftClient client = getOpenshiftClient();
+    NamespacedOpenShiftClient client = getOpenshiftClient();
 
     GroupList groupList = client.groups().list();
     assertNotNull(groupList);

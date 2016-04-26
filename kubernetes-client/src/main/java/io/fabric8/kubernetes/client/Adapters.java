@@ -16,8 +16,11 @@
 
 package io.fabric8.kubernetes.client;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.Set;
@@ -60,6 +63,16 @@ public final class Adapters {
       }
       return null;
     }
+  }
+
+  public static <C> Collection<ExtensionAdapter<? extends C>> list(Class<C> type) {
+    List<ExtensionAdapter<? extends C>> result = new ArrayList<>();
+    for (ExtensionAdapter candidate : EXTENSION_ADAPTER_MAP.values()) {
+        if (type.isAssignableFrom(candidate.getExtensionType())) {
+            result.add(candidate);
+        }
+    }
+    return result;
   }
 
   private static void discoverServices(ClassLoader classLoader) {

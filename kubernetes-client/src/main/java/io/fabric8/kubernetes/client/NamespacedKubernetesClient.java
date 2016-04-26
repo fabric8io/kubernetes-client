@@ -15,11 +15,6 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.client.dsl.AnyNamespaceable;
-import io.fabric8.kubernetes.client.dsl.Namespaceable;
+public interface NamespacedKubernetesClient extends GenericKubernetesClient<NamespacedKubernetesClient> {
 
-
-public interface GenericKubernetesClient<C extends Client> extends Client, KubernetesClient,
-  Namespaceable<C>,
-  AnyNamespaceable<C> {
 }

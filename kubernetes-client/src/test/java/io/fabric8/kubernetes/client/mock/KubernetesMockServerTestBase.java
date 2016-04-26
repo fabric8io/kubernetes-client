@@ -17,6 +17,7 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.server.mock.MockServerExpectation;
 import org.junit.After;
@@ -27,7 +28,7 @@ import java.io.IOException;
 public class KubernetesMockServerTestBase {
 
   private KubernetesMockServer mock = new KubernetesMockServer();
-  private KubernetesClient client;
+  private NamespacedKubernetesClient client;
 
   @Before
   public void setUp() throws Exception {
@@ -41,7 +42,7 @@ public class KubernetesMockServerTestBase {
     client.close();
   }
 
-  public KubernetesClient getClient() {
+  public NamespacedKubernetesClient getClient() {
     return client;
   }
 

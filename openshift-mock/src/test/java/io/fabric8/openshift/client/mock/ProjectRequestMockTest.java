@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.openshift.api.model.ProjectRequest;
 import io.fabric8.openshift.api.model.ProjectRequestBuilder;
-import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -36,7 +36,7 @@ public class ProjectRequestMockTest {
 
     mock.projectrequests().create(req1).andReturn(req1).anyTimes();
 
-    OpenShiftClient client = mock.replay();
+    NamespacedOpenShiftClient client = mock.replay();
     ProjectRequest response = client.projectrequests().create(req1);
     Assert.assertEquals(req1, response);
   }
@@ -49,7 +49,7 @@ public class ProjectRequestMockTest {
 
     mock.projectrequests().list().andReturn(status).anyTimes();
 
-    OpenShiftClient client = mock.replay();
+    NamespacedOpenShiftClient client = mock.replay();
     Status response = client.projectrequests().list();
     Assert.assertNotNull(response);
     Assert.assertEquals("success", response.getMessage());

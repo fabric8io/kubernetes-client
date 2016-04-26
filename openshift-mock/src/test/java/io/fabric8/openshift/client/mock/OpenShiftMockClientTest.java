@@ -29,7 +29,7 @@ import io.fabric8.openshift.api.model.UserBuilder;
 import io.fabric8.openshift.api.model.UserList;
 import io.fabric8.openshift.api.model.UserListBuilder;
 import io.fabric8.openshift.api.model.WebHookTrigger;
-import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Test;
@@ -54,7 +54,7 @@ public class OpenShiftMockClientTest {
 
     mock.builds().inNamespace("ns1").withName("build2").get().andReturn(null).once();
 
-    OpenShiftClient client = mock.replay();
+    NamespacedOpenShiftClient client = mock.replay();
 
     //We are testing the internal anyTimes() on namespace and name.
     for (int i = 0; i < 5; i++) {
@@ -85,7 +85,7 @@ public class OpenShiftMockClientTest {
         .build()
     ).anyTimes();
 
-    OpenShiftClient client = mock.replay();
+    NamespacedOpenShiftClient client = mock.replay();
 
     for (int i=0;i<5;i++) {
       BuildList result = client.builds().inNamespace("ns1").withLabel("component", "f1").list();
@@ -105,7 +105,7 @@ public class OpenShiftMockClientTest {
   public void testWebHookTrigger() {
     OpenShiftMockClient mock = new OpenShiftMockClient();
     mock.buildConfigs().inNamespace("ns1").withName("build1").withSecret("secret101").withType("github").trigger(EasyMock.<WebHookTrigger>anyObject()).andReturn(null).once();
-    OpenShiftClient client = mock.replay();
+    NamespacedOpenShiftClient client = mock.replay();
     client.buildConfigs().inNamespace("ns1").withName("build1").withSecret("secret101").withType("github").trigger(new WebHookTrigger());
     mock.verify();
   }
@@ -129,7 +129,7 @@ public class OpenShiftMockClientTest {
     mock.users().withLabel("key1", "value1").list().andReturn(new UserListBuilder().addToItems(myuser).build()).anyTimes();
 
 
-    OpenShiftClient client = mock.replay();
+    NamespacedOpenShiftClient client = mock.replay();
     UserList userList = client.users().list();
     Assert.assertFalse(userList.getItems().isEmpty());
 
@@ -156,7 +156,7 @@ public class OpenShiftMockClientTest {
     mock.groups().withLabel("key1", "value1").list().andReturn(new GroupListBuilder().addToItems(mygroup).build()).anyTimes();
 
 
-    OpenShiftClient client = mock.replay();
+    NamespacedOpenShiftClient client = mock.replay();
     GroupList groupList = client.groups().list();
     Assert.assertFalse(groupList.getItems().isEmpty());
 

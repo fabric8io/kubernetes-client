@@ -48,7 +48,7 @@ import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.mock.impl.MockComponentStatus;
 import io.fabric8.kubernetes.client.mock.impl.MockConfigMap;
 import io.fabric8.kubernetes.client.mock.impl.MockEndpoints;
@@ -93,9 +93,9 @@ import static io.fabric8.kubernetes.client.mock.util.MockUtils.getArgument;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 
-public class KubernetesMockClient implements Replayable<KubernetesClient>, Verifiable {
+public class KubernetesMockClient implements Replayable<NamespacedKubernetesClient>, Verifiable {
 
-  private final KubernetesClient client = createMock(KubernetesClient.class);
+  private final NamespacedKubernetesClient client = createMock(NamespacedKubernetesClient.class);
 
   private KubernetesMockClient anyNamespaceOp;
   private Map<IArgumentMatcher, KubernetesMockClient> namespaceMap = new HashMap<>();
@@ -142,7 +142,7 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
     EasyMock.expectLastCall().anyTimes();
   }
 
-  public KubernetesClient replay() {
+  public NamespacedKubernetesClient replay() {
 	componentstatuses.replay();
     endpoints.replay();
     events.replay();
@@ -274,9 +274,9 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
     if (op == null) {
       final KubernetesMockClient namespacedClient = new KubernetesMockClient();
       op = namespacedClient;
-      expect(client.inNamespace(namespace)).andAnswer(new IAnswer<KubernetesClient>() {
+      expect(client.inNamespace(namespace)).andAnswer(new IAnswer<NamespacedKubernetesClient>() {
         @Override
-        public KubernetesClient answer() throws Throwable {
+        public NamespacedKubernetesClient answer() throws Throwable {
           namespacedClient.getNamespace().andReturn(namespace).anyTimes();
           return namespacedClient.replay();
         }
@@ -290,9 +290,9 @@ public class KubernetesMockClient implements Replayable<KubernetesClient>, Verif
     if (anyNamespaceOp == null) {
       final KubernetesMockClient namespacedClient = new KubernetesMockClient();
       anyNamespaceOp = namespacedClient;
-      expect(client.inAnyNamespace()).andAnswer(new IAnswer<KubernetesClient>() {
+      expect(client.inAnyNamespace()).andAnswer(new IAnswer<NamespacedKubernetesClient>() {
         @Override
-        public KubernetesClient answer() throws Throwable {
+        public NamespacedKubernetesClient answer() throws Throwable {
           namespacedClient.getNamespace().andReturn(null).anyTimes();
           return namespacedClient.replay();
         }

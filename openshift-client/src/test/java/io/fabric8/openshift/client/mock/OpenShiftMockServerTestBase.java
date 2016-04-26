@@ -17,6 +17,7 @@
 package io.fabric8.openshift.client.mock;
 
 import io.fabric8.kubernetes.server.mock.MockServerExpectation;
+import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.server.mock.OpenShiftMockServer;
 import org.junit.After;
@@ -27,7 +28,7 @@ import java.io.IOException;
 public class OpenShiftMockServerTestBase {
 
   private OpenShiftMockServer mock = new OpenShiftMockServer();
-  private OpenShiftClient client;
+  private NamespacedOpenShiftClient client;
 
   @Before
   public void setUp() throws IOException {
@@ -42,7 +43,7 @@ public class OpenShiftMockServerTestBase {
   }
 
 
-  public OpenShiftClient getOpenshiftClient() {
+  public NamespacedOpenShiftClient getOpenshiftClient() {
     return client;
   }
 

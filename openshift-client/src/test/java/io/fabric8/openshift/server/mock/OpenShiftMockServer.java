@@ -20,6 +20,8 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.server.mock.KubernetesMockServer;
+import io.fabric8.openshift.client.DefaultOpenShiftClient;
+import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 
 public class OpenShiftMockServer extends KubernetesMockServer {
@@ -37,12 +39,12 @@ public class OpenShiftMockServer extends KubernetesMockServer {
     return new String[]{"/api","/oapi"};
   }
 
-  public OpenShiftClient createOpenShiftClient() {
+  public NamespacedOpenShiftClient createOpenShiftClient() {
     Config config = new ConfigBuilder()
       .withMasterUrl(getServer().getUrl("/").toString())
       .withNamespace("test")
       .withTrustCerts(true)
       .build();
-    return new DefaultKubernetesClient(config).adapt(OpenShiftClient.class);
+    return new DefaultOpenShiftClient(config);
   }
 }

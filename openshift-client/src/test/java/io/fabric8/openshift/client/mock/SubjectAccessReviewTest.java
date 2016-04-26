@@ -20,6 +20,7 @@ import io.fabric8.openshift.api.model.LocalSubjectAccessReviewBuilder;
 import io.fabric8.openshift.api.model.SubjectAccessReviewBuilder;
 import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
 import io.fabric8.openshift.api.model.SubjectAccessReviewResponseBuilder;
+import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.Test;
 
@@ -35,7 +36,7 @@ public class SubjectAccessReviewTest extends OpenShiftMockServerTestBase {
       .withReason("r1")
       .build()).once();
 
-    OpenShiftClient client = getOpenshiftClient();
+    NamespacedOpenShiftClient client = getOpenshiftClient();
 
     SubjectAccessReviewResponse response = client.inAnyNamespace().subjectAccessReviews().create(new SubjectAccessReviewBuilder().build());
     assertNotNull(response);
@@ -49,7 +50,7 @@ public class SubjectAccessReviewTest extends OpenShiftMockServerTestBase {
       .withReason("r2")
       .build()).once();
 
-    OpenShiftClient client = getOpenshiftClient();
+    NamespacedOpenShiftClient client = getOpenshiftClient();
 
     SubjectAccessReviewResponse response = client.inAnyNamespace().subjectAccessReviews().createNew().withUser("user").withVerb("verb").done();
     assertNotNull(response);
