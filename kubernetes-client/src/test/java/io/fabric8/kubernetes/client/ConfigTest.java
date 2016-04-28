@@ -20,11 +20,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class ConfigTest {
+
+  private static final String TEST_KUBECONFIG_FILE = decodeUrl(ConfigTest.class.getResource("/test-kubeconfig").getFile());
 
   @Before
   public void setUp() {
@@ -143,9 +148,18 @@ public class ConfigTest {
     assertConfig(config);
   }
 
+  private static String decodeUrl(String url) {
+    try {
+      return URLDecoder.decode(url, "UTF-8");
+    } catch (UnsupportedEncodingException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
   @Test
   public void testWithKubeConfig() {
-    System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, getClass().getResource("/test-kubeconfig").getFile());
+
+    System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_FILE);
     Config config = new Config();
     assertNotNull(config);
 
@@ -156,7 +170,7 @@ public class ConfigTest {
 
   @Test
   public void testWithKubeConfigAndSystemProperties() {
-    System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, getClass().getResource("/test-kubeconfig").getFile());
+    System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_FILE);
     System.setProperty(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY, "http://somehost:80");
 
     Config config = new Config();
@@ -168,7 +182,7 @@ public class ConfigTest {
 
   @Test
   public void testWithKubeConfigAndSytemPropertiesAndBuilder() {
-    System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, getClass().getResource("/test-kubeconfig").getFile());
+    System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_FILE);
     System.setProperty(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY, "http://somehost:80");
 
     Config config = new ConfigBuilder()
