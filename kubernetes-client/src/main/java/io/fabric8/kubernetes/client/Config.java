@@ -213,32 +213,42 @@ public class Config {
   }
 
   private boolean tryServiceAccount(Config config) {
+    LOGGER.debug("Trying to configure client from service account...");
     if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYSERVICEACCOUNT_SYSTEM_PROPERTY, true)) {
       boolean serviceAccountCaCertExists = Files.isRegularFile(new File(KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH).toPath());
       if (serviceAccountCaCertExists) {
+        LOGGER.debug("Found service account ca cert at: ["+KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH+"].");
         config.setCaCertFile(KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH);
+      } else {
+        LOGGER.debug("Did not find service account ca cert at: ["+KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH+"].");
       }
       try {
         String serviceTokenCandidate = new String(Files.readAllBytes(new File(KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH).toPath()));
         if (serviceTokenCandidate != null) {
+          LOGGER.debug("Found service account token at: ["+KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH+"].");
           config.setOauthToken(serviceTokenCandidate);
           String txt = "Configured service account doesn't have access. Service account may have been revoked.";
           config.getErrorMessages().put(401, "Unauthorized! " + txt);
           config.getErrorMessages().put(403, "Forbidden!" + txt);
           return true;
+        } else {
+          LOGGER.debug("Did not find service account token at: ["+KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH+"].");
         }
       } catch (IOException e) {
         // No service account token available...
+        LOGGER.warn("Error reading service account token from: ["+KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH+"]. Ignoring.");
       }
     }
     return false;
   }
 
   private boolean tryKubeConfig(Config config) {
+    LOGGER.debug("Trying to configure client from Kubernetes config...");
     if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, true)) {
       String kubeConfigFile = Utils.getSystemPropertyOrEnvVar(KUBERNETES_KUBECONFIG_FILE, new File(getHomeDir(), ".kube" + File.separator + "config").toString());
       boolean kubeConfigFileExists = Files.isRegularFile(new File(kubeConfigFile).toPath());
       if (kubeConfigFileExists) {
+        LOGGER.debug("Found for Kubernetes config at: ["+kubeConfigFile+"].");
         try {
           io.fabric8.kubernetes.api.model.Config kubeConfig = KubeConfigUtils.parseConfig(new File(kubeConfigFile));
           Context currentContext = KubeConfigUtils.getCurrentContext(kubeConfig);
@@ -265,8 +275,10 @@ public class Config {
             return true;
           }
         } catch (IOException e) {
-          LOGGER.error("Could not load kube config file from {}", kubeConfigFile, e);
+          LOGGER.error("Could not load Kubernetes config file from {}", kubeConfigFile, e);
         }
+      } else {
+        LOGGER.debug("Did not find Kubernetes config at: ["+kubeConfigFile+"]. Ignoring.");
       }
     }
     return false;
