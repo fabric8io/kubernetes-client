@@ -78,8 +78,10 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
         if (got == null) {
           return null;
         }
+
+        item = handleReplace(item);
         item.getMetadata().setResourceVersion(got.getMetadata().getResourceVersion());
-        return handleReplace(item);
+        return item;
       } catch (KubernetesClientException e) {
         caught = e;
         // Only retry if there's a conflict - this is normally to do with resource version & server updates.
