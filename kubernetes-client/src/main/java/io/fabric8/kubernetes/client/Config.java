@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.client.internal.KubeConfigUtils;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.sundr.builder.annotations.Buildable;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,6 +60,8 @@ public class Config {
   public static final String KUBERNETES_ROLLING_TIMEOUT_SYSTEM_PROPERTY = "kubernetes.rolling.timeout";
   public static final String KUBERNETES_LOGGING_INTERVAL_SYSTEM_PROPERTY = "kubernetes.logging.interval";
 
+  // avoid inlining by calling new String("") in order to change value with reflection for test purposes
+  public static final String KUBERNETES_NAMESPACE_PATH = new String("/var/run/secrets/kubernetes.io/serviceaccount/namespace");
   public static final String KUBERNETES_NAMESPACE_SYSTEM_PROPERTY = "kubernetes.namespace";
   public static final String KUBERNETES_KUBECONFIG_FILE = "kubeconfig";
   public static final String KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH = "/var/run/secrets/kubernetes.io/serviceaccount/token";
@@ -107,6 +110,7 @@ public class Config {
   public Config() {
     if (!tryKubeConfig(this)) {
       tryServiceAccount(this);
+      tryNamespaceFromPath(this);
     }
     configFromSysPropsOrEnvVars(this);
 
@@ -279,6 +283,26 @@ public class Config {
         }
       } else {
         LOGGER.debug("Did not find Kubernetes config at: ["+kubeConfigFile+"]. Ignoring.");
+      }
+    }
+    return false;
+  }
+
+  private boolean tryNamespaceFromPath(Config config) {
+    //For backwards compatibility, only checks KUBERNETES_NAMESPACE_PATH if no KUBERNETES_NAMESPACE_SYSTEM_PROPERTY provided
+    if (Utils.isNullOrEmpty(Utils.getSystemPropertyOrEnvVar(KUBERNETES_NAMESPACE_SYSTEM_PROPERTY))) {
+      LOGGER.debug("Trying to configure client namespace from Kubernetes service account namespace path...");
+      boolean serviceAccountNamespaceExists = Files.isRegularFile(new File(KUBERNETES_NAMESPACE_PATH).toPath());
+      if (serviceAccountNamespaceExists) {
+        LOGGER.debug("Found service account namespace at: ["+KUBERNETES_NAMESPACE_PATH+"].");
+        try {
+          config.setNamespace(StringUtils.removeEnd(new String(Files.readAllBytes(new File(KUBERNETES_NAMESPACE_PATH).toPath())), System.getProperty("line.separator")));
+          return true;
+        } catch (IOException e) {
+          LOGGER.error("Error reading service account namespace from: ["+KUBERNETES_NAMESPACE_PATH+"].", e);
+        }
+      } else {
+        LOGGER.debug("Did not find service account namespace at: ["+KUBERNETES_NAMESPACE_PATH+"]. Ignoring.");
       }
     }
     return false;
