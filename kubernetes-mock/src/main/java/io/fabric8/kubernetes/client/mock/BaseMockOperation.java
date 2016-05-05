@@ -279,6 +279,20 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   }
 
   @Override
+  public FilterWatchListDeletable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>, IExpectationSetters<Watch>, Watcher<T>> withLabel(String key) {
+    IArgumentMatcher matcher = getArgument(key);
+
+    BaseMockOperation<T, L, D, B, R, E> op = labelMap.get(matcher);
+    if (op == null) {
+      op = newInstance();
+      expect(delegate.withLabel(key)).andReturn(op.getDelegate()).anyTimes();
+      nested.add(op);
+      labelMap.put(matcher, op);
+    }
+    return op;
+  }
+
+  @Override
   public FilterWatchListDeletable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>, IExpectationSetters<Watch>, Watcher<T>> withoutLabel(String key, String value) {
     IArgumentMatcher keyMatcher = getArgument(key);
     IArgumentMatcher valueMatcher = getArgument(value);
@@ -288,6 +302,20 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
     if (op == null) {
       op = newInstance();
       expect(delegate.withoutLabel(key, value)).andReturn(op.getDelegate()).anyTimes();
+      nested.add(op);
+      labelNotMap.put(matcher, op);
+    }
+    return op;
+  }
+
+  @Override
+  public FilterWatchListDeletable<IExpectationSetters<T>, IExpectationSetters<L>, IExpectationSetters<Boolean>, IExpectationSetters<Watch>, Watcher<T>> withoutLabel(String key) {
+    IArgumentMatcher matcher = getArgument(key);
+
+    BaseMockOperation<T, L, D, B, R, E> op = labelNotMap.get(matcher);
+    if (op == null) {
+      op = newInstance();
+      expect(delegate.withoutLabel(key)).andReturn(op.getDelegate()).anyTimes();
       nested.add(op);
       labelNotMap.put(matcher, op);
     }

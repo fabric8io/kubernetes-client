@@ -289,10 +289,19 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withoutLabel(String key, String value) throws
-    KubernetesClientException {
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withLabel(String key) {
+    return withLabel(key, null);
+  }
+
+  @Override
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withoutLabel(String key, String value) {
     labelsNot.put(key, value);
     return this;
+  }
+
+  @Override
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withoutLabel(String key) {
+    return withoutLabel(key, null);
   }
 
   @Override
@@ -315,7 +324,11 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
           sb.append(",");
         }
         Map.Entry<String, String> entry = iter.next();
-        sb.append(entry.getKey()).append("=").append(entry.getValue());
+        if (entry.getValue() != null) {
+            sb.append(entry.getKey()).append("=").append(entry.getValue());
+        } else {
+            sb.append(entry.getKey());
+        }
       }
     }
 
@@ -325,7 +338,11 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
           sb.append(",");
         }
         Map.Entry<String, String> entry = iter.next();
-        sb.append(entry.getKey()).append("!=").append(entry.getValue());
+        if (entry.getValue() != null) {
+            sb.append(entry.getKey()).append("!=").append(entry.getValue());
+        } else {
+            sb.append('!').append(entry.getKey());
+        }
       }
     }
 
