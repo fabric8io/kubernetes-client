@@ -29,7 +29,11 @@ public interface Filterable<T> {
 
   T withLabel(String key, String value);
 
+  T withLabel(String key);
+
   T withoutLabel(String key, String value);
+
+  T withoutLabel(String key);
 
   T withFields(Map<String, String> labels);
 
