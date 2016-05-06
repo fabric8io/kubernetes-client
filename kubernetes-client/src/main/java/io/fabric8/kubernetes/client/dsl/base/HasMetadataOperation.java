@@ -74,12 +74,23 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
             reaper.reap();
           }
         }
-        T got = get();
+        final T got = get();
         if (got == null) {
           return null;
         }
-        item.getMetadata().setResourceVersion(got.getMetadata().getResourceVersion());
-        return handleReplace(item);
+        final Function<T, T> visitor = new Function<T, T>() {
+          @Override
+          public T apply(T resource) {
+            try {
+              resource.getMetadata().setResourceVersion(got.getMetadata().getResourceVersion());
+              return handleReplace(resource);
+            } catch (Exception e) {
+              throw KubernetesClientException.launderThrowable(e);
+            }
+          }
+        };
+        D doneable = (D) getDoneableType().getDeclaredConstructor(getType(), Function.class).newInstance(item, visitor);
+        return doneable.done();
       } catch (KubernetesClientException e) {
         caught = e;
         // Only retry if there's a conflict - this is normally to do with resource version & server updates.
