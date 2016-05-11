@@ -27,7 +27,6 @@ public class ConfigTest {
 
   private static final String TEST_KUBECONFIG_FILE = decodeUrl(ConfigTest.class.getResource("/test-kubeconfig").getFile());
   private static final String TEST_NAMESPACE_FILE = decodeUrl(ConfigTest.class.getResource("/test-namespace").getFile());
-  private static final String TEST_EMPTYNAMESPACE_FILE = decodeUrl(ConfigTest.class.getResource("/test-emptynamespace").getFile());
 
   @Before
   public void setUp() {
@@ -204,17 +203,6 @@ public class ConfigTest {
     assertNotNull(config);
     assertEquals("http://somehost:80/", config.getMasterUrl());
     assertEquals("testnsfrompath", config.getNamespace());
-  }
-
-  @Test
-  public void testWithEmptyNamespacePath() {
-    System.setProperty(Config.KUBERNETES_NAMESPACE_FILE, TEST_EMPTYNAMESPACE_FILE);
-    System.setProperty(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY, "http://somehost:80");
-
-    Config config = new Config();
-    assertNotNull(config);
-    assertEquals("http://somehost:80/", config.getMasterUrl());
-    assertEquals("", config.getNamespace());
   }
 
   @Test
