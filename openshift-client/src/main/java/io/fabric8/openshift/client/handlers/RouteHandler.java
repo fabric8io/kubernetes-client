@@ -25,6 +25,8 @@ import io.fabric8.openshift.client.dsl.internal.RouteOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
+import java.util.TreeMap;
+
 @Component
 @Service
 public class RouteHandler implements ResourceHandler<Route, RouteBuilder> {
@@ -36,17 +38,17 @@ public class RouteHandler implements ResourceHandler<Route, RouteBuilder> {
 
   @Override
   public Route create(OkHttpClient client, Config config, String namespace, Route item) {
-      return new RouteOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).create();
+      return new RouteOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).create();
   }
 
   @Override
   public Route replace(OkHttpClient client, Config config, String namespace, Route item) {
-    return new RouteOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).replace(item);
+    return new RouteOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).replace(item);
   }
 
   @Override
   public Route reload(OkHttpClient client, Config config, String namespace, Route item) {
-    return new RouteOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).fromServer().get();
+    return new RouteOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).fromServer().get();
   }
 
   @Override
@@ -56,6 +58,6 @@ public class RouteHandler implements ResourceHandler<Route, RouteBuilder> {
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Route item) {
-      return new RouteOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).delete(item);
+      return new RouteOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).delete(item);
   }
 }

@@ -25,6 +25,8 @@ import io.fabric8.openshift.client.dsl.internal.BuildConfigOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
+import java.util.TreeMap;
+
 @Component
 @Service
 public class BuildConfigHandler implements ResourceHandler<BuildConfig, BuildConfigBuilder> {
@@ -36,17 +38,17 @@ public class BuildConfigHandler implements ResourceHandler<BuildConfig, BuildCon
 
   @Override
   public BuildConfig create(OkHttpClient client, Config config, String namespace, BuildConfig item) {
-      return new BuildConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, null, null).create();
+      return new BuildConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null).create();
   }
 
   @Override
   public BuildConfig replace(OkHttpClient client, Config config, String namespace, BuildConfig item) {
-    return new BuildConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, null, null).replace(item);
+    return new BuildConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null).replace(item);
   }
 
   @Override
   public BuildConfig reload(OkHttpClient client, Config config, String namespace, BuildConfig item) {
-    return new BuildConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, null, null).fromServer().get();
+    return new BuildConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null).fromServer().get();
   }
 
   @Override
@@ -56,6 +58,6 @@ public class BuildConfigHandler implements ResourceHandler<BuildConfig, BuildCon
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, BuildConfig item) {
-      return new BuildConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, null, null).delete(item);
+      return new BuildConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null).delete(item);
   }
 }

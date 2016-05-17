@@ -25,6 +25,8 @@ import io.fabric8.openshift.client.dsl.internal.ImageStreamOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
+import java.util.TreeMap;
+
 @Component
 @Service
 public class ImageStreamHandler implements ResourceHandler<ImageStream, ImageStreamBuilder> {
@@ -36,17 +38,17 @@ public class ImageStreamHandler implements ResourceHandler<ImageStream, ImageStr
 
   @Override
   public ImageStream create(OkHttpClient client, Config config, String namespace, ImageStream item) {
-      return new ImageStreamOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).create();
+      return new ImageStreamOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).create();
   }
 
   @Override
   public ImageStream replace(OkHttpClient client, Config config, String namespace, ImageStream item) {
-    return new ImageStreamOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).replace(item);
+    return new ImageStreamOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).replace(item);
   }
 
   @Override
   public ImageStream reload(OkHttpClient client, Config config, String namespace, ImageStream item) {
-    return new ImageStreamOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).fromServer().get();
+    return new ImageStreamOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).fromServer().get();
   }
 
   @Override
@@ -56,6 +58,6 @@ public class ImageStreamHandler implements ResourceHandler<ImageStream, ImageStr
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, ImageStream item) {
-      return new ImageStreamOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).delete(item);
+      return new ImageStreamOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).delete(item);
     }
 }

@@ -23,17 +23,20 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 public class SecurityContextConstraintsOperationsImpl  extends BaseOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> {
   public SecurityContextConstraintsOperationsImpl(OkHttpClient client, Config config) {
     this(client, config, null, null, null, true, null, null, false);
   }
 
-  public SecurityContextConstraintsOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, SecurityContextConstraints item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds) {
-    super(client, config, null, apiVersion, "securitycontextconstraints", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds);
+  public SecurityContextConstraintsOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, SecurityContextConstraints item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
+    super(client, config, null, apiVersion, "securitycontextconstraints", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
   }
 
   public SecurityContextConstraintsOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, SecurityContextConstraints item, String resourceVersion, Boolean reloadingFromServer) {
-    super(client, config, null, apiVersion, "securitycontextconstraints", namespace, name, cascading, item, resourceVersion, reloadingFromServer, -1);
+    super(client, config, null, apiVersion, "securitycontextconstraints", namespace, name, cascading, item, resourceVersion, reloadingFromServer, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
   }
 
   @Override

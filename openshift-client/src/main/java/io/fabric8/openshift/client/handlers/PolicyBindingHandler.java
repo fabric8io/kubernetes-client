@@ -25,6 +25,8 @@ import io.fabric8.openshift.client.dsl.internal.PolicyBindingOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
+import java.util.TreeMap;
+
 @Component
 @Service
 public class PolicyBindingHandler implements ResourceHandler<PolicyBinding, PolicyBindingBuilder> {
@@ -36,17 +38,17 @@ public class PolicyBindingHandler implements ResourceHandler<PolicyBinding, Poli
 
   @Override
   public PolicyBinding create(OkHttpClient client, Config config, String namespace, PolicyBinding item) {
-      return new PolicyBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).create();
+      return new PolicyBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).create();
   }
 
   @Override
   public PolicyBinding replace(OkHttpClient client, Config config, String namespace, PolicyBinding item) {
-    return new PolicyBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).replace(item);
+    return new PolicyBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).replace(item);
   }
 
   @Override
   public PolicyBinding reload(OkHttpClient client, Config config, String namespace, PolicyBinding item) {
-    return new PolicyBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).fromServer().get();
+    return new PolicyBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).fromServer().get();
   }
 
   @Override
@@ -56,6 +58,6 @@ public class PolicyBindingHandler implements ResourceHandler<PolicyBinding, Poli
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, PolicyBinding item) {
-      return new PolicyBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).delete(item);
+      return new PolicyBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).delete(item);
     }
 }

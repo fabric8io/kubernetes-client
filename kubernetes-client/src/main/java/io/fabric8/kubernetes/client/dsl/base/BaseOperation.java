@@ -61,11 +61,11 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   private final Boolean cascading;
   private final T item;
 
-  private final Map<String, String> labels = new TreeMap<>();
-  private final Map<String, String> labelsNot = new TreeMap<>();
-  private final Map<String, String[]> labelsIn = new TreeMap<>();
-  private final Map<String, String[]> labelsNotIn = new TreeMap<>();
-  private final Map<String, String> fields = new TreeMap<>();
+  private final Map<String, String> labels;
+  private final Map<String, String> labelsNot;
+  private final Map<String, String[]> labelsIn;
+  private final Map<String, String[]> labelsNotIn;
+  private final Map<String, String> fields;
 
   private final Class<T> type;
   private final Class<L> listType;
@@ -77,7 +77,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   private boolean reaping;
   protected Reaper reaper;
 
-  protected BaseOperation(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds) {
+  protected BaseOperation(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields)  {
     super(client, config, apiGroup, apiVersion, resourceT, namespace, name);
     this.cascading = cascading;
     this.item = item;
@@ -88,6 +88,11 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     this.reaper = null;
     this.resourceVersion = resourceVersion;
     this.gracePeriodSeconds = gracePeriodSeconds;
+    this.labels = labels;
+    this.labelsNot = labelsNot;
+    this.labelsIn = labelsIn;
+    this.labelsNotIn = labelsNotIn;
+    this.fields = fields;
   }
 
   protected BaseOperation(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, Class<T> type, Class<L> listType, Class<D> doneableType) {
@@ -101,6 +106,11 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     this.doneableType = doneableType;
     this.reaper = null;
     this.gracePeriodSeconds = -1;
+    this.labels = new TreeMap<>();
+    this.labelsNot = new TreeMap<>();
+    this.labelsIn = new TreeMap<>();
+    this.labelsNotIn = new TreeMap<>();
+    this.fields = new TreeMap<>();
   }
 
   @Override
@@ -161,8 +171,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     }
     try {
       return (R) getClass()
-        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type, String.class, Boolean.class, long.class)
-        .newInstance(client, config, apiVersion, namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds);
+        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type, String.class, Boolean.class, long.class, Map.class, Map.class, Map.class, Map.class, Map.class)
+        .newInstance(client, config, apiVersion, namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -172,8 +182,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   public ClientNonNamespaceOperation<T, L, D, R> inNamespace(String namespace) {
     try {
       return getClass()
-        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type, String.class, Boolean.class, long.class)
-        .newInstance(client, config, apiVersion, namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds);
+        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type, String.class, Boolean.class, long.class, Map.class, Map.class, Map.class, Map.class, Map.class)
+        .newInstance(client, config, apiVersion, namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -189,8 +199,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   public EditReplaceDeletable<T, T, D, Boolean> cascading(boolean cascading) {
     try {
       return getClass()
-        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type, String.class, Boolean.class, long.class)
-        .newInstance(client, config, apiVersion, namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds);
+        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type, String.class, Boolean.class, long.class, Map.class, Map.class, Map.class, Map.class, Map.class)
+        .newInstance(client, config, apiVersion, namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -200,8 +210,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   public R load(InputStream is) {
     try {
       return (R) getClass()
-        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type, String.class, Boolean.class, long.class)
-        .newInstance(client, config, apiVersion, namespace, name, cascading, unmarshal(is, type), resourceVersion, reloadingFromServer, gracePeriodSeconds);
+        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type, String.class, Boolean.class, long.class, Map.class, Map.class, Map.class, Map.class, Map.class)
+        .newInstance(client, config, apiVersion, namespace, name, cascading, unmarshal(is, type), resourceVersion, reloadingFromServer, gracePeriodSeconds, getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -211,8 +221,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   public Gettable<T> fromServer() {
     try {
       return (R) getClass()
-              .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type, String.class, Boolean.class, long.class)
-              .newInstance(client, config, apiVersion, namespace, name, cascading, item, resourceVersion, true, gracePeriodSeconds);
+              .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type, String.class, Boolean.class, long.class, Map.class, Map.class, Map.class, Map.class, Map.class)
+              .newInstance(client, config, apiVersion, namespace, name, cascading, item, resourceVersion, true, gracePeriodSeconds, getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -477,8 +487,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   public Watchable<Watch, Watcher<T>> withResourceVersion(String resourceVersion) {
     try {
       return getClass()
-              .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type, String.class, Boolean.class, long.class)
-              .newInstance(client, config, apiVersion, namespace, name, cascading, item, resourceVersion, false, gracePeriodSeconds);
+              .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type, String.class, Boolean.class, long.class, Map.class, Map.class, Map.class, Map.class, Map.class)
+              .newInstance(client, config, apiVersion, namespace, name, cascading, item, resourceVersion, false, gracePeriodSeconds, getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -578,13 +588,33 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     this.reaping = reaping;
   }
 
+  protected Map<String, String> getLabels() {
+    return labels;
+  }
+
+  protected Map<String, String> getLabelsNot() {
+    return labelsNot;
+  }
+
+  protected Map<String, String[]> getLabelsIn() {
+    return labelsIn;
+  }
+
+  protected Map<String, String[]> getLabelsNotIn() {
+    return labelsNotIn;
+  }
+
+  protected Map<String, String> getFields() {
+    return fields;
+  }
+
   @Override
   public Deletable<Boolean> withGracePeriod(long gracePeriodSeconds)
   {
     try {
       return getClass()
-        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type, String.class, Boolean.class, long.class)
-        .newInstance(client, config, apiVersion, namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds);
+        .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type, String.class, Boolean.class, long.class, Map.class, Map.class, Map.class, Map.class, Map.class)
+        .newInstance(client, config, apiVersion, namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }

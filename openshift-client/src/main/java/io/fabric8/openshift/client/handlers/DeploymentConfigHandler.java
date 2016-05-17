@@ -16,7 +16,6 @@
 package io.fabric8.openshift.client.handlers;
 
 import com.squareup.okhttp.OkHttpClient;
-import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.openshift.api.model.DeploymentConfig;
@@ -25,6 +24,8 @@ import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.internal.DeploymentConfigOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
+
+import java.util.TreeMap;
 
 @Component
 @Service
@@ -36,17 +37,17 @@ public class DeploymentConfigHandler implements ResourceHandler<DeploymentConfig
 
   @Override
   public DeploymentConfig create(OkHttpClient client, Config config, String namespace, DeploymentConfig item) {
-      return new DeploymentConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).create();
+      return new DeploymentConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).create();
   }
 
   @Override
   public DeploymentConfig replace(OkHttpClient client, Config config, String namespace, DeploymentConfig item) {
-    return new DeploymentConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).replace(item);
+    return new DeploymentConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).replace(item);
   }
 
   @Override
   public DeploymentConfig reload(OkHttpClient client, Config config, String namespace, DeploymentConfig item) {
-    return new DeploymentConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).fromServer().get();
+    return new DeploymentConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).fromServer().get();
   }
 
   @Override
@@ -56,6 +57,6 @@ public class DeploymentConfigHandler implements ResourceHandler<DeploymentConfig
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, DeploymentConfig item) {
-      return new DeploymentConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1).delete(item);
+      return new DeploymentConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).delete(item);
     }
 }

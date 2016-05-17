@@ -24,6 +24,8 @@ import io.fabric8.kubernetes.client.dsl.internal.PersistentVolumeClaimOperations
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
+import java.util.TreeMap;
+
 @Component
 @Service
 public class PersistentVolumeClaimHandler implements ResourceHandler<PersistentVolumeClaim, PersistentVolumeClaimBuilder> {
@@ -34,17 +36,17 @@ public class PersistentVolumeClaimHandler implements ResourceHandler<PersistentV
 
   @Override
   public PersistentVolumeClaim create(OkHttpClient client, Config config, String namespace, PersistentVolumeClaim item) {
-    return new PersistentVolumeClaimOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1).create();
+    return new PersistentVolumeClaimOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).create();
   }
 
   @Override
   public PersistentVolumeClaim replace(OkHttpClient client, Config config, String namespace, PersistentVolumeClaim item) {
-    return new PersistentVolumeClaimOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1).replace(item);
+    return new PersistentVolumeClaimOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).replace(item);
   }
 
   @Override
   public PersistentVolumeClaim reload(OkHttpClient client, Config config, String namespace, PersistentVolumeClaim item) {
-    return new PersistentVolumeClaimOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1).fromServer().get();
+    return new PersistentVolumeClaimOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).fromServer().get();
   }
 
   @Override
@@ -54,6 +56,6 @@ public class PersistentVolumeClaimHandler implements ResourceHandler<PersistentV
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, PersistentVolumeClaim item) {
-    return new PersistentVolumeClaimOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1).delete(item);
+    return new PersistentVolumeClaimOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).delete(item);
   }
 }

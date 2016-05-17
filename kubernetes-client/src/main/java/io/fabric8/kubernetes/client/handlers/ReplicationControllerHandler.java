@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.client.dsl.internal.ReplicationControllerOperations
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
+import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -36,17 +37,17 @@ public class ReplicationControllerHandler implements ResourceHandler<Replication
   }
   @Override
   public ReplicationController create(OkHttpClient client, Config config, String namespace, ReplicationController item) {
-    return new ReplicationControllerOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, false,  config.getRollingTimeout(), TimeUnit.MILLISECONDS).create();
+    return new ReplicationControllerOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).create();
   }
 
   @Override
   public ReplicationController replace(OkHttpClient client, Config config, String namespace, ReplicationController item) {
-    return new ReplicationControllerOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).replace(item);
+    return new ReplicationControllerOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).replace(item);
   }
 
   @Override
   public ReplicationController reload(OkHttpClient client, Config config, String namespace, ReplicationController item) {
-    return new ReplicationControllerOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).fromServer().get();
+    return new ReplicationControllerOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).fromServer().get();
   }
 
   @Override
@@ -56,6 +57,6 @@ public class ReplicationControllerHandler implements ResourceHandler<Replication
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, ReplicationController item) {
-    return new ReplicationControllerOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).delete(item);
+    return new ReplicationControllerOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).delete(item);
   }
 }

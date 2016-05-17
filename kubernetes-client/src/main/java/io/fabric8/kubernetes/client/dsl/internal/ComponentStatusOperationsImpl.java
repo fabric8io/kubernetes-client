@@ -24,16 +24,19 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 public class ComponentStatusOperationsImpl extends HasMetadataOperation<ComponentStatus, ComponentStatusList, DoneableComponentStatus,
 ClientResource<ComponentStatus, DoneableComponentStatus>> {
 
 	public ComponentStatusOperationsImpl(OkHttpClient client, Config config, String namespace) {
-		this(client, config, null, namespace, null, true, null, null, false, -1);
+		this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
 	}
 
 
-	public ComponentStatusOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, ComponentStatus item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds) {
-		super(client, config, null, apiVersion, "componentstatuses", namespace, name, cascading, item, resourceVersion, reloadingFromServer, -1);
+	public ComponentStatusOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, ComponentStatus item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
+		super(client, config, null, apiVersion, "componentstatuses", namespace, name, cascading, item, resourceVersion, reloadingFromServer, -1, labels, labelsNot, labelsIn, labelsNotIn, fields);
 	}
 
 }

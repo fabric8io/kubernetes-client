@@ -41,7 +41,9 @@ import org.slf4j.LoggerFactory;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -60,11 +62,11 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
   private final TimeUnit rollingTimeUnit;
 
   public ReplicationControllerOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(client, config, null, namespace, null, true, null, null, false, -1, false, config.getRollingTimeout(), TimeUnit.MINUTES );
+    this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), false, config.getRollingTimeout(), TimeUnit.MINUTES);
   }
 
-  public ReplicationControllerOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, ReplicationController item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Boolean rolling, long rollingTimeout, TimeUnit rollingTimeUnit) {
-    super(client, config, null, apiVersion, "replicationcontrollers", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds);
+  public ReplicationControllerOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, ReplicationController item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, Boolean rolling, long rollingTimeout, TimeUnit rollingTimeUnit) {
+    super(client, config, null, apiVersion, "replicationcontrollers", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
     this.rolling = rolling;
     this.rollingTimeout = rollingTimeout;
     this.rollingTimeUnit = rollingTimeUnit;
@@ -75,7 +77,7 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
   public ClientRollableScallableResource<ReplicationController, DoneableReplicationController> load(InputStream is) {
     try {
       ReplicationController item = unmarshal(is, ReplicationController.class);
-      return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), item, getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), rolling, rollingTimeout, rollingTimeUnit);
+      return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), item, getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rolling, rollingTimeout, rollingTimeUnit);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -83,18 +85,18 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
 
   @Override
   public ClientNonNamespaceOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>> inNamespace(String namespace) {
-    return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), rolling, rollingTimeout, rollingTimeUnit);
+    return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rolling, rollingTimeout, rollingTimeUnit);
   }
 
 
   @Override
   public ImageEditReplaceable<ReplicationController, ReplicationController, DoneableReplicationController> withTimeout(long timeout, TimeUnit unit) {
-    return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), rolling, timeout, rollingTimeUnit);
+    return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rolling, timeout, rollingTimeUnit);
   }
 
   @Override
   public ImageEditReplaceable<ReplicationController, ReplicationController, DoneableReplicationController> withTimeoutInMillis(long timeoutInMillis) {
-    return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), rolling, timeoutInMillis, TimeUnit.MILLISECONDS);
+    return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rolling, timeoutInMillis, TimeUnit.MILLISECONDS);
   }
 
   @Override
@@ -107,22 +109,22 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
     if (name == null || name.length() == 0) {
       throw new IllegalArgumentException("Name must be provided.");
     }
-    return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), rolling, rollingTimeout, rollingTimeUnit );
+    return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rolling, rollingTimeout, rollingTimeUnit);
   }
 
   @Override
   public ClientRollableScallableResource<ReplicationController, DoneableReplicationController> fromServer() {
-    return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), true, getGracePeriodSeconds(), rolling, rollingTimeout, rollingTimeUnit );
+    return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), true, getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rolling, rollingTimeout, rollingTimeUnit);
   }
 
   @Override
   public Watchable<Watch, Watcher<ReplicationController>> withResourceVersion(String resourceVersion) {
-    return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), resourceVersion, isReloadingFromServer(), getGracePeriodSeconds(), rolling, rollingTimeout, rollingTimeUnit );
+    return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), resourceVersion, isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rolling, rollingTimeout, rollingTimeUnit);
   }
 
   @Override
   public EditReplaceDeletable<ReplicationController, ReplicationController, DoneableReplicationController, Boolean> cascading(boolean enabled) {
-    return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), enabled, getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), rolling, rollingTimeout, rollingTimeUnit);
+    return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), enabled, getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rolling, rollingTimeout, rollingTimeUnit);
   }
 
   @Override
@@ -171,7 +173,7 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
 
   @Override
   public ReplicationControllerOperationsImpl rolling() {
-    return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), true, rollingTimeout, rollingTimeUnit);
+    return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), true, rollingTimeout, rollingTimeUnit);
   }
 
   @Override

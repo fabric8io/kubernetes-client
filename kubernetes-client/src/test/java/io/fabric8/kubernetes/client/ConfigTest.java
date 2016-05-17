@@ -196,6 +196,7 @@ public class ConfigTest {
 
   @Test
   public void testWithNamespacePath() {
+    System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, "nokubeconfigfile");
     System.setProperty(Config.KUBERNETES_NAMESPACE_FILE, TEST_NAMESPACE_FILE);
     System.setProperty(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY, "http://somehost:80");
 
@@ -207,6 +208,7 @@ public class ConfigTest {
 
   @Test
   public void testWithNonExistingNamespacePath() {
+    System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, "nokubeconfigfile");
     System.setProperty(Config.KUBERNETES_NAMESPACE_FILE, "nonamespace");
     System.setProperty(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY, "http://somehost:80");
 
