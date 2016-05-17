@@ -22,14 +22,17 @@ import io.fabric8.openshift.api.model.ImageStream;
 import io.fabric8.openshift.api.model.ImageStreamList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 public class ImageStreamOperationsImpl extends OpenShiftOperation<ImageStream, ImageStreamList, DoneableImageStream,
   ClientResource<ImageStream, DoneableImageStream>> {
 
   public ImageStreamOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
-    this(client, config, null, namespace, null, true, null, null, false, -1);
+    this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
   }
 
-  public ImageStreamOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, ImageStream item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds) {
-    super(client, config, null, apiVersion, "imagestreams", namespace, name, cascading, item, resourceVersion, reloadingFromServer, -1);
+  public ImageStreamOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, ImageStream item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
+    super(client, config, null, apiVersion, "imagestreams", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
   }
 }

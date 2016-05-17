@@ -24,6 +24,8 @@ import io.fabric8.kubernetes.client.dsl.internal.ResourceQuotaOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
+import java.util.TreeMap;
+
 @Component
 @Service
 public class ResourceQuotaHandler implements ResourceHandler<ResourceQuota, ResourceQuotaBuilder> {
@@ -34,17 +36,17 @@ public class ResourceQuotaHandler implements ResourceHandler<ResourceQuota, Reso
 
   @Override
   public ResourceQuota create(OkHttpClient client, Config config, String namespace, ResourceQuota item) {
-    return new ResourceQuotaOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1).create();
+    return new ResourceQuotaOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).create();
   }
 
   @Override
   public ResourceQuota replace(OkHttpClient client, Config config, String namespace, ResourceQuota item) {
-    return new ResourceQuotaOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1).replace(item);
+    return new ResourceQuotaOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).replace(item);
   }
 
   @Override
   public ResourceQuota reload(OkHttpClient client, Config config, String namespace, ResourceQuota item) {
-    return new ResourceQuotaOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1).fromServer().get();
+    return new ResourceQuotaOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).fromServer().get();
   }
 
   @Override
@@ -54,6 +56,6 @@ public class ResourceQuotaHandler implements ResourceHandler<ResourceQuota, Reso
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, ResourceQuota item) {
-    return new ResourceQuotaOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1).delete(item);
+    return new ResourceQuotaOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).delete(item);
   }
 }

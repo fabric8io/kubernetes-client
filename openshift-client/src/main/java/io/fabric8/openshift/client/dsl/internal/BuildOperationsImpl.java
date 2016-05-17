@@ -22,14 +22,17 @@ import io.fabric8.openshift.api.model.BuildList;
 import io.fabric8.openshift.api.model.DoneableBuild;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, DoneableBuild,
   ClientResource<Build, DoneableBuild>> {
 
   public BuildOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
-    this(client, config, null, namespace, null, true, null, null, false, -1);
+    this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
   }
 
-  public BuildOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, Build item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds) {
-    super(client, config, null, apiVersion, "builds", namespace, name, cascading, item, resourceVersion, reloadingFromServer, -1);
+  public BuildOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, Build item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
+    super(client, config, null, apiVersion, "builds", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
   }
 }

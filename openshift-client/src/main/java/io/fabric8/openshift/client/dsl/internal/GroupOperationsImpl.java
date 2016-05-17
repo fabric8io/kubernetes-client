@@ -22,13 +22,16 @@ import io.fabric8.openshift.api.model.Group;
 import io.fabric8.openshift.api.model.GroupList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 public class GroupOperationsImpl extends OpenShiftOperation<Group, GroupList, DoneableGroup, ClientResource<Group, DoneableGroup>> {
   public GroupOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
-    this(client, config, null, namespace, null, true, null, null, false, -1);
+    this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
   }
 
-  public GroupOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, Group item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds) {
-    super(client, config, null, apiVersion, "groups", namespace, name, cascading, item, resourceVersion, reloadingFromServer, -1);
+  public GroupOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, Group item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
+    super(client, config, null, apiVersion, "groups", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
   }
 
   @Override

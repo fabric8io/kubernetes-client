@@ -22,12 +22,15 @@ import io.fabric8.openshift.api.model.Policy;
 import io.fabric8.openshift.api.model.PolicyList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 public class PolicyOperationsImpl extends OpenShiftOperation<Policy, PolicyList, DoneablePolicy, ClientResource<Policy, DoneablePolicy>> {
   public PolicyOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
-    this(client, config, null, namespace, null, true, null, null, false, -1);
+    this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
   }
 
-  public PolicyOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, Policy item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds) {
-    super(client, config, null, apiVersion, "policies", namespace, name, cascading, item, resourceVersion, reloadingFromServer, -1);
+  public PolicyOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, Policy item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
+    super(client, config, null, apiVersion, "policies", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
   }
 }

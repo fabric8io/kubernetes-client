@@ -23,6 +23,8 @@ import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.internal.ServiceOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
 
+import java.util.TreeMap;
+
 @Component
 @org.apache.felix.scr.annotations.Service
 public class ServiceHandler implements ResourceHandler<Service, ServiceBuilder> {
@@ -33,17 +35,17 @@ public class ServiceHandler implements ResourceHandler<Service, ServiceBuilder> 
 
   @Override
   public Service create(OkHttpClient client, Config config, String namespace, Service item) {
-    return new ServiceOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1).create();
+    return new ServiceOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).create();
   }
 
   @Override
   public Service replace(OkHttpClient client, Config config, String namespace, Service item) {
-    return new ServiceOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1).replace(item);
+    return new ServiceOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).replace(item);
   }
 
   @Override
   public Service reload(OkHttpClient client, Config config, String namespace, Service item) {
-    return new ServiceOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1).fromServer().get();
+    return new ServiceOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).fromServer().get();
   }
 
   @Override
@@ -53,6 +55,6 @@ public class ServiceHandler implements ResourceHandler<Service, ServiceBuilder> 
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Service item) {
-    return new ServiceOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1).delete(item);
+    return new ServiceOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).delete(item);
   }
 }
