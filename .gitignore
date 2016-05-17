@@ -10,6 +10,10 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 
+# Eclipse
+.project
+.settings/
+.classpath
 
 ### Java template
 *.class
