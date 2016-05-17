@@ -16,20 +16,17 @@
 
 package io.fabric8.kubernetes.client;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class ConfigTest {
 
   private static final String TEST_KUBECONFIG_FILE = decodeUrl(ConfigTest.class.getResource("/test-kubeconfig").getFile());
+  private static final String TEST_NAMESPACE_FILE = decodeUrl(ConfigTest.class.getResource("/test-namespace").getFile());
 
   @Before
   public void setUp() {
@@ -52,6 +49,8 @@ public class ConfigTest {
     System.getProperties().remove(Config.KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY);
     System.getProperties().remove(Config.KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY);
     System.getProperties().remove(Config.KUBERNETES_HTTP_PROXY);
+    System.getProperties().remove(Config.KUBERNETES_KUBECONFIG_FILE);
+    System.getProperties().remove(Config.KUBERNETES_NAMESPACE_FILE);
   }
 
   @After
@@ -192,6 +191,55 @@ public class ConfigTest {
     assertNotNull(config);
     assertEquals("http://somehost:80/", config.getMasterUrl());
     assertEquals("token", config.getOauthToken());
+    assertEquals("testns2", config.getNamespace());
+  }
+
+  @Test
+  public void testWithNamespacePath() {
+    System.setProperty(Config.KUBERNETES_NAMESPACE_FILE, TEST_NAMESPACE_FILE);
+    System.setProperty(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY, "http://somehost:80");
+
+    Config config = new Config();
+    assertNotNull(config);
+    assertEquals("http://somehost:80/", config.getMasterUrl());
+    assertEquals("testnsfrompath", config.getNamespace());
+  }
+
+  @Test
+  public void testWithNonExistingNamespacePath() {
+    System.setProperty(Config.KUBERNETES_NAMESPACE_FILE, "nonamespace");
+    System.setProperty(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY, "http://somehost:80");
+
+    Config config = new Config();
+    assertNotNull(config);
+    assertEquals("http://somehost:80/", config.getMasterUrl());
+    assertEquals(null, config.getNamespace());
+  }
+
+  @Test
+  public void testWithNamespacePathAndSystemProperties() {
+    System.setProperty(Config.KUBERNETES_NAMESPACE_FILE, TEST_NAMESPACE_FILE);
+    System.setProperty(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY, "http://somehost:80");
+    System.setProperty(Config.KUBERNETES_NAMESPACE_SYSTEM_PROPERTY, "testns");
+
+    Config config = new Config();
+    assertNotNull(config);
+    assertEquals("http://somehost:80/", config.getMasterUrl());
+    assertEquals("testns", config.getNamespace());
+  }
+
+  @Test
+  public void testWithNamespacePathAndSytemPropertiesAndBuilder() {
+    System.setProperty(Config.KUBERNETES_NAMESPACE_FILE, TEST_NAMESPACE_FILE);
+    System.setProperty(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY, "http://somehost:80");
+    System.setProperty(Config.KUBERNETES_NAMESPACE_SYSTEM_PROPERTY, "tobeoverriden");
+
+    Config config = new ConfigBuilder()
+      .withNamespace("testns2")
+      .build();
+
+    assertNotNull(config);
+    assertEquals("http://somehost:80/", config.getMasterUrl());
     assertEquals("testns2", config.getNamespace());
   }
 

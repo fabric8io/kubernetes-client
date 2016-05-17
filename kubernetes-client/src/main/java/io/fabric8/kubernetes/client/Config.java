@@ -59,6 +59,9 @@ public class Config {
   public static final String KUBERNETES_ROLLING_TIMEOUT_SYSTEM_PROPERTY = "kubernetes.rolling.timeout";
   public static final String KUBERNETES_LOGGING_INTERVAL_SYSTEM_PROPERTY = "kubernetes.logging.interval";
 
+  public static final String KUBERNETES_TRYNAMESPACE_PATH_SYSTEM_PROPERTY = "kubernetes.tryNamespacePath";
+  public static final String KUBERNETES_NAMESPACE_PATH = "/var/run/secrets/kubernetes.io/serviceaccount/namespace";
+  public static final String KUBERNETES_NAMESPACE_FILE = "kubenamespace";
   public static final String KUBERNETES_NAMESPACE_SYSTEM_PROPERTY = "kubernetes.namespace";
   public static final String KUBERNETES_KUBECONFIG_FILE = "kubeconfig";
   public static final String KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH = "/var/run/secrets/kubernetes.io/serviceaccount/token";
@@ -107,6 +110,7 @@ public class Config {
   public Config() {
     if (!tryKubeConfig(this)) {
       tryServiceAccount(this);
+      tryNamespaceFromPath(this);
     }
     configFromSysPropsOrEnvVars(this);
 
@@ -279,6 +283,27 @@ public class Config {
         }
       } else {
         LOGGER.debug("Did not find Kubernetes config at: ["+kubeConfigFile+"]. Ignoring.");
+      }
+    }
+    return false;
+  }
+
+  private boolean tryNamespaceFromPath(Config config) {
+    LOGGER.debug("Trying to configure client namespace from Kubernetes service account namespace path...");
+    if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_TRYNAMESPACE_PATH_SYSTEM_PROPERTY, true)) {
+      String serviceAccountNamespace = Utils.getSystemPropertyOrEnvVar(KUBERNETES_NAMESPACE_FILE, KUBERNETES_NAMESPACE_PATH);
+      boolean serviceAccountNamespaceExists = Files.isRegularFile(new File(serviceAccountNamespace).toPath());
+      if (serviceAccountNamespaceExists) {
+        LOGGER.debug("Found service account namespace at: [" + serviceAccountNamespace + "].");
+        try {
+          String namespace = new String(Files.readAllBytes(new File(serviceAccountNamespace).toPath()));
+          config.setNamespace(namespace.replace(System.lineSeparator(), ""));
+          return true;
+        } catch (IOException e) {
+          LOGGER.error("Error reading service account namespace from: [" + serviceAccountNamespace + "].", e);
+        }
+      } else {
+        LOGGER.debug("Did not find service account namespace at: [" + serviceAccountNamespace + "]. Ignoring.");
       }
     }
     return false;
