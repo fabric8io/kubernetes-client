@@ -20,22 +20,71 @@ import io.fabric8.kubernetes.api.model.extensions.DoneableReplicaSet;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
 import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
-import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
+import io.fabric8.kubernetes.client.dsl.ImageEditReplaceable;
+import io.fabric8.kubernetes.client.dsl.Rollable;
+import io.fabric8.kubernetes.client.dsl.Scaleable;
+import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplaceable;
 import io.fabric8.kubernetes.client.mock.BaseMockOperation;
-import io.fabric8.kubernetes.client.mock.MockResource;
+import io.fabric8.kubernetes.client.mock.MockRollableScaleableResource;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableReplicaSet;
 import org.easymock.EasyMock;
+import org.easymock.IExpectationSetters;
 
-public class MockReplicaSet extends BaseMockOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, MockDoneableReplicaSet,
-  ClientResource<ReplicaSet, DoneableReplicaSet>, MockResource<ReplicaSet, MockDoneableReplicaSet, Boolean>>
-  implements MockResource<ReplicaSet, MockDoneableReplicaSet, Boolean> {
+import java.util.concurrent.TimeUnit;
+
+import static org.easymock.EasyMock.expect;
+
+public class MockReplicaSet extends BaseMockOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet,
+  MockDoneableReplicaSet, ClientRollableScallableResource<ReplicaSet, DoneableReplicaSet>,
+  MockRollableScaleableResource<ReplicaSet, MockDoneableReplicaSet, Boolean>>
+  implements MockRollableScaleableResource<ReplicaSet, MockDoneableReplicaSet, Boolean>,
+  TimeoutImageEditReplaceable<ReplicaSet, IExpectationSetters<ReplicaSet>, MockDoneableReplicaSet> {
+
+  private MockReplicaSet rolling;
+
+  @Override
+  public TimeoutImageEditReplaceable<ReplicaSet, IExpectationSetters<ReplicaSet>, MockDoneableReplicaSet> rolling() {
+    if (rolling == null) {
+      rolling = (MockReplicaSet) newInstance();
+      expect(((Rollable<?>)getDelegate()).rolling())
+        .andReturn(rolling.getDelegate())
+        .anyTimes();
+      getNested().add(rolling);
+    }
+    return rolling;
+  }
+
+  @Override
+  public IExpectationSetters<ReplicaSet> scale(int count) {
+    return expect(((Scaleable<ReplicaSet>) getDelegate()).scale(count));
+  }
+
+  @Override
+  public IExpectationSetters<ReplicaSet> scale(int count, boolean wait) {
+    return expect(((Scaleable<ReplicaSet>) getDelegate()).scale(count, wait));
+  }
+
+  @Override
+  public IExpectationSetters<ReplicaSet> updateImage(String image) {
+    return expect(((ImageEditReplaceable<ReplicaSet, ReplicaSet, DoneableReplicaSet>) getDelegate()).updateImage(image));
+  }
+
+  @Override
+  public ImageEditReplaceable<ReplicaSet, IExpectationSetters<ReplicaSet>, MockDoneableReplicaSet> withTimeout(long timeout, TimeUnit unit) {
+    return null;
+  }
+
+  @Override
+  public ImageEditReplaceable<ReplicaSet, IExpectationSetters<ReplicaSet>, MockDoneableReplicaSet> withTimeoutInMillis(long timeoutInMillis) {
+    return null;
+  }
 
   //Dummy interface to use for mocking.
   private interface ReplicaSetDelegate
-    extends ClientMixedOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet,
-    ClientRollableScallableResource<ReplicaSet, DoneableReplicaSet>>,
-    ClientResource<ReplicaSet, DoneableReplicaSet> {
+    extends ClientMixedOperation<ReplicaSet, ReplicaSet, DoneableReplicaSet, ClientRollableScallableResource<ReplicaSet, DoneableReplicaSet>>,
+    ClientRollableScallableResource<ReplicaSet, DoneableReplicaSet>,
+    TimeoutImageEditReplaceable<ReplicaSet, ReplicaSet, DoneableReplicaSet> {
 
   }
 

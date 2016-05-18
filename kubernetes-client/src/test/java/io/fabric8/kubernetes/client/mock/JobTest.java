@@ -110,8 +110,51 @@ public class JobTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testDelete() {
-    expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder().build()).once();
-    expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/jobs/job2").andReturn(200, new JobBuilder().build()).once();
+    expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder().withNewMetadata()
+      .withName("job1")
+      .withResourceVersion("1")
+      .endMetadata()
+      .withNewSpec()
+      .withParallelism(0)
+      .endSpec()
+      .withNewStatus()
+      .withActive(1)
+      .endStatus()
+      .build()).once();
+    expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder().withNewMetadata()
+      .withName("job1")
+      .withResourceVersion("1")
+      .endMetadata()
+      .withNewSpec()
+      .withParallelism(0)
+      .endSpec()
+      .withNewStatus()
+      .withActive(0)
+      .endStatus()
+      .build()).times(5);
+
+    expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs/job2").andReturn(200, new JobBuilder().withNewMetadata()
+      .withName("job2")
+      .withResourceVersion("1")
+      .endMetadata()
+      .withNewSpec()
+      .withParallelism(0)
+      .endSpec()
+      .withNewStatus()
+      .withActive(1)
+      .endStatus()
+      .build()).once();
+    expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs/job2").andReturn(200, new JobBuilder().withNewMetadata()
+      .withName("job2")
+      .withResourceVersion("1")
+      .endMetadata()
+      .withNewSpec()
+      .withParallelism(0)
+      .endSpec()
+      .withNewStatus()
+      .withActive(0)
+      .endStatus()
+      .build()).times(5);
 
     KubernetesClient client = getClient();
 
@@ -119,9 +162,6 @@ public class JobTest extends KubernetesMockServerTestBase {
     assertNotNull(deleted);
 
     deleted = client.extensions().jobs().withName("job2").delete();
-    assertFalse(deleted);
-
-    deleted = client.extensions().jobs().inNamespace("ns1").withName("job2").delete();
     assertTrue(deleted);
   }
 

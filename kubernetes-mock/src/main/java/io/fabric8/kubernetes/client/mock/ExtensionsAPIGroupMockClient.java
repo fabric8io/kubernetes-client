@@ -15,8 +15,6 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
 import io.fabric8.kubernetes.api.model.extensions.DaemonSet;
 import io.fabric8.kubernetes.api.model.extensions.DaemonSetList;
 import io.fabric8.kubernetes.api.model.extensions.Deployment;
@@ -36,7 +34,7 @@ import io.fabric8.kubernetes.client.mock.impl.MockDaemonSet;
 import io.fabric8.kubernetes.client.mock.impl.MockDeployment;
 import io.fabric8.kubernetes.client.mock.impl.MockHorizontalPodAutoscaler;
 import io.fabric8.kubernetes.client.mock.impl.MockIngress;
-import io.fabric8.kubernetes.client.mock.impl.MockJobs;
+import io.fabric8.kubernetes.client.mock.impl.MockJob;
 import io.fabric8.kubernetes.client.mock.impl.MockReplicaSet;
 import io.fabric8.kubernetes.client.mock.impl.MockThirdPartyResource;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableDaemonSet;
@@ -46,14 +44,16 @@ import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableIngress;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableJob;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableReplicaSet;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableThirdPartyResource;
-
 import org.easymock.EasyMock;
+
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
 
 public class ExtensionsAPIGroupMockClient implements Replayable<ExtensionsAPIGroupDSL>, Verifiable {
 
     private final ExtensionsAPIGroupDSL client = createMock(ExtensionsAPIGroupDSL.class);
 
-    private MockJobs jobs = new MockJobs();
+    private MockJob jobs = new MockJob();
     private MockDeployment deployments = new MockDeployment();
     private MockIngress ingresses = new MockIngress();
     private MockDaemonSet daemonSets = new MockDaemonSet();
@@ -98,11 +98,11 @@ public class ExtensionsAPIGroupMockClient implements Replayable<ExtensionsAPIGro
         EasyMock.verify(client);
     }
 
-    public MockOperation<Job, JobList, MockDoneableJob, MockResource<Job, MockDoneableJob, Boolean>> jobs() {
+    public MockOperation<Job, JobList, MockDoneableJob, MockScaleableResource<Job, MockDoneableJob, Boolean>> jobs() {
         return jobs;
     }
 
-    public MockOperation<Deployment, DeploymentList, MockDoneableDeployment, MockResource<Deployment, MockDoneableDeployment, Boolean>> deployments() {
+    public MockOperation<Deployment, DeploymentList, MockDoneableDeployment, MockScaleableResource<Deployment, MockDoneableDeployment, Boolean>> deployments() {
         return deployments;
     }
 
@@ -123,7 +123,7 @@ public class ExtensionsAPIGroupMockClient implements Replayable<ExtensionsAPIGro
         return thirdPartyResources;
     }
 
-    public MockOperation<ReplicaSet, ReplicaSetList, MockDoneableReplicaSet, MockResource<ReplicaSet, MockDoneableReplicaSet, Boolean>> replicaSets() {
+    public MockOperation<ReplicaSet, ReplicaSetList, MockDoneableReplicaSet, MockRollableScaleableResource<ReplicaSet, MockDoneableReplicaSet, Boolean>> replicaSets() {
         return replicaSets;
     }
 

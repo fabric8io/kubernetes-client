@@ -41,9 +41,9 @@ import io.fabric8.kubernetes.client.Client;
 
 public interface ExtensionsAPIGroupDSL extends Client {
 
-  ClientMixedOperation<Job, JobList, DoneableJob, ClientResource<Job, DoneableJob>> jobs();
+  ClientMixedOperation<Job, JobList, DoneableJob, ClientScaleableResource<Job, DoneableJob>> jobs();
 
-  ClientMixedOperation<Deployment, DeploymentList, DoneableDeployment, ClientResource<Deployment, DoneableDeployment>> deployments();
+  ClientMixedOperation<Deployment, DeploymentList, DoneableDeployment, ClientScaleableResource<Deployment, DoneableDeployment>> deployments();
 
   @Deprecated
   ClientMixedOperation<Ingress, IngressList, DoneableIngress, ClientResource<Ingress, DoneableIngress>> ingress();
@@ -54,7 +54,7 @@ public interface ExtensionsAPIGroupDSL extends Client {
 
   ClientMixedOperation<ThirdPartyResource, ThirdPartyResourceList, DoneableThirdPartyResource, ClientResource<ThirdPartyResource, DoneableThirdPartyResource>> thirdPartyResources();
 
-  ClientMixedOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, ClientResource<ReplicaSet, DoneableReplicaSet>> replicaSets();
+  ClientMixedOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, ClientRollableScallableResource<ReplicaSet, DoneableReplicaSet>> replicaSets();
 
   ClientMixedOperation<HorizontalPodAutoscaler, HorizontalPodAutoscalerList, DoneableHorizontalPodAutoscaler, ClientResource<HorizontalPodAutoscaler, DoneableHorizontalPodAutoscaler>> horizontalPodAutoscalers();
 }

@@ -38,6 +38,8 @@ import io.fabric8.kubernetes.api.model.extensions.ThirdPartyResource;
 import io.fabric8.kubernetes.api.model.extensions.ThirdPartyResourceList;
 import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
+import io.fabric8.kubernetes.client.dsl.ClientScaleableResource;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.internal.DaemonSetOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.DeploymentOperationsImpl;
@@ -60,12 +62,12 @@ public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAP
   }
 
   @Override
-  public ClientMixedOperation<Job, JobList, DoneableJob, ClientResource<Job, DoneableJob>> jobs() {
+  public ClientMixedOperation<Job, JobList, DoneableJob, ClientScaleableResource<Job, DoneableJob>> jobs() {
     return new JobOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
   @Override
-  public ClientMixedOperation<Deployment, DeploymentList, DoneableDeployment, ClientResource<Deployment, DoneableDeployment>> deployments() {
+  public ClientMixedOperation<Deployment, DeploymentList, DoneableDeployment, ClientScaleableResource<Deployment, DoneableDeployment>> deployments() {
     return new DeploymentOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
@@ -89,7 +91,7 @@ public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAP
     return new ThirdPartyResourceOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
-  public ClientMixedOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, ClientResource<ReplicaSet, DoneableReplicaSet>> replicaSets() {
+  public ClientMixedOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, ClientRollableScallableResource<ReplicaSet, DoneableReplicaSet>> replicaSets() {
     return new ReplicaSetOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 

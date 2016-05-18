@@ -110,8 +110,51 @@ public class DeploymentTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testDelete() {
-    expect().withPath("/apis/extensions/v1beta1/namespaces/test/deployments/deployment1").andReturn(200, new DeploymentBuilder().build()).once();
-    expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/deployments/deployment2").andReturn(200, new DeploymentBuilder().build()).once();
+    expect().withPath("/apis/extensions/v1beta1/namespaces/test/deployments/deployment1").andReturn(200, new DeploymentBuilder().withNewMetadata()
+      .withName("deployment1")
+      .withResourceVersion("1")
+      .endMetadata()
+      .withNewSpec()
+      .withReplicas(0)
+      .endSpec()
+      .withNewStatus()
+      .withReplicas(1)
+      .endStatus()
+      .build()).once();
+    expect().withPath("/apis/extensions/v1beta1/namespaces/test/deployments/deployment1").andReturn(200, new DeploymentBuilder().withNewMetadata()
+      .withName("deployment1")
+      .withResourceVersion("1")
+      .endMetadata()
+      .withNewSpec()
+      .withReplicas(0)
+      .endSpec()
+      .withNewStatus()
+      .withReplicas(0)
+      .endStatus()
+      .build()).times(5);
+
+    expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/deployments/deployment2").andReturn(200, new DeploymentBuilder().withNewMetadata()
+      .withName("deployment2")
+      .withResourceVersion("1")
+      .endMetadata()
+      .withNewSpec()
+      .withReplicas(0)
+      .endSpec()
+      .withNewStatus()
+      .withReplicas(1)
+      .endStatus()
+      .build()).once();
+    expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/deployments/deployment2").andReturn(200, new DeploymentBuilder().withNewMetadata()
+      .withName("deployment2")
+      .withResourceVersion("1")
+      .endMetadata()
+      .withNewSpec()
+      .withReplicas(0)
+      .endSpec()
+      .withNewStatus()
+      .withReplicas(0)
+      .endStatus()
+      .build()).times(5);
 
     KubernetesClient client = getClient();
 
