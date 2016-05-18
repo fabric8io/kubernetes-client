@@ -28,7 +28,7 @@ public class MockServerExpectationImpl implements MockServerExpectation {
 
   private static final ObjectMapper MAPPER = new ObjectMapper();
 
-  private final String method;
+  private final HttpMethod method;
   private final String path;
   private final int statusCode;
   private final String body;
@@ -37,9 +37,9 @@ public class MockServerExpectationImpl implements MockServerExpectation {
   private final Map<ServerRequest, Queue<ServerResponse>> responses;
 
   public MockServerExpectationImpl(Map<ServerRequest, Queue<ServerResponse>> responses) {
-    this("", null, 200, null, 1, responses);
+    this(HttpMethod.ANY, null, 200, null, 1, responses);
   }
-  public MockServerExpectationImpl(String method, String path, int statusCode, String body, int times, Map<ServerRequest, Queue<ServerResponse>> responses) {
+  public MockServerExpectationImpl(HttpMethod method, String path, int statusCode, String body, int times, Map<ServerRequest, Queue<ServerResponse>> responses) {
     this.method = method;
     this.path = path;
     this.statusCode = statusCode;
@@ -50,27 +50,27 @@ public class MockServerExpectationImpl implements MockServerExpectation {
 
   @Override
   public Pathable<ReturnOrWebsocketable<Timeable<Void>>> any() {
-    return new MockServerExpectationImpl("", path, statusCode, body, times, responses);
+    return new MockServerExpectationImpl(HttpMethod.ANY, path, statusCode, body, times, responses);
   }
 
   @Override
   public Pathable<ReturnOrWebsocketable<Timeable<Void>>> post() {
-    return new MockServerExpectationImpl("post", path, statusCode, body, times, responses);
+    return new MockServerExpectationImpl(HttpMethod.POST, path, statusCode, body, times, responses);
   }
 
   @Override
   public Pathable<ReturnOrWebsocketable<Timeable<Void>>> get() {
-    return new MockServerExpectationImpl("get", path, statusCode, body, times, responses);
+    return new MockServerExpectationImpl(HttpMethod.GET, path, statusCode, body, times, responses);
   }
 
   @Override
   public Pathable<ReturnOrWebsocketable<Timeable<Void>>> put() {
-    return new MockServerExpectationImpl("put", path, statusCode, body, times, responses);
+    return new MockServerExpectationImpl(HttpMethod.PUT, path, statusCode, body, times, responses);
   }
 
   @Override
   public Pathable<ReturnOrWebsocketable<Timeable<Void>>> delete() {
-    return new MockServerExpectationImpl("delete", path, statusCode, body, times, responses);
+    return new MockServerExpectationImpl(HttpMethod.DELETE, path, statusCode, body, times, responses);
   }
 
   @Override
@@ -93,13 +93,13 @@ public class MockServerExpectationImpl implements MockServerExpectation {
 
   @Override
   public Void always() {
-    enqueue(new ServerRequest(method, path), new ServerResponse(statusCode, body, null, false));
+    enqueue(new ServerRequest(method, path), new ServerResponse(statusCode, body, null, true));
     return null;//Void
   }
 
   @Override
   public Void once() {
-    enqueue(new ServerRequest(method, path), new ServerResponse(statusCode, body, null, true));
+    enqueue(new ServerRequest(method, path), new ServerResponse(statusCode, body, null, false));
     return null;//Void
   }
 
@@ -129,13 +129,13 @@ public class MockServerExpectationImpl implements MockServerExpectation {
         return new Timeable<Void>() {
           @Override
           public Void always() {
-            enqueue(new ServerRequest(method, path), new ServerResponse(statusCode, null, webSocketSession, false));
+            enqueue(new ServerRequest(method, path), new ServerResponse(statusCode, null, webSocketSession, true));
             return null;//Void
           }
 
           @Override
           public Void once() {
-            enqueue(new ServerRequest(method, path), new ServerResponse(statusCode, null, webSocketSession, true));
+            enqueue(new ServerRequest(method, path), new ServerResponse(statusCode, null, webSocketSession, false));
             return null;//Void
           }
 

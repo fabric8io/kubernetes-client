@@ -34,7 +34,7 @@ public class MockDispatcher extends Dispatcher {
 
     @Override
     public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
-        String method = request.getMethod();
+        HttpMethod method = HttpMethod.valueOf(request.getMethod());
         String path = request.getPath();
         ServerRequest key = new ServerRequest(method, path);
         ServerRequest keyForAnyMethod = new ServerRequest(path);
@@ -51,7 +51,7 @@ public class MockDispatcher extends Dispatcher {
     private MockResponse handleResponse(ServerResponse response, Queue<ServerResponse> queue) {
         if (response == null) {
             return new MockResponse().setResponseCode(404);
-        } else if (response.isToBeRemoved()) {
+        } else if (!response.isRepeatable()) {
             queue.remove();
         }
         MockResponse mockResponse = new MockResponse();
@@ -59,7 +59,7 @@ public class MockDispatcher extends Dispatcher {
             mockResponse.withWebSocketUpgrade(response.getWebSocketSession());
         } else {
             mockResponse.setBody(response.getBody());
-            mockResponse.setResponseCode(response.getCode());
+            mockResponse.setResponseCode(response.getStatusCode());
         }
         return mockResponse;
     }

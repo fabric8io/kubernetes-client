@@ -16,31 +16,50 @@
 
 package io.fabric8.kubernetes.server.mock;
 
-class ServerRequest {
+public class ServerRequest {
 
-  private final String method;
+  private static final String ROOT = "/";
+
+  private final HttpMethod method;
   private final String path;
 
-  public ServerRequest(String path) {
-    this("", path);
+  public ServerRequest() {
+    this(HttpMethod.ANY, ROOT);
   }
 
-  public ServerRequest(String method, String path) {
-    this.method = method.toUpperCase();
+  public ServerRequest(String path) {
+    this(HttpMethod.ANY, path);
+  }
+
+  public ServerRequest(HttpMethod method, String path) {
+    this.method = method;
     this.path = path;
   }
 
+  public HttpMethod getMethod() {
+    return method;
+  }
+
+  public String getPath() {
+    return path;
+  }
+
   @Override
-  public boolean equals(Object obj) {
-    if (obj != null && obj instanceof ServerRequest) {
-      ServerRequest other = (ServerRequest) obj;
-      return method.equals(other.method) && path.equals(other.path);
-    }
-    return false;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    ServerRequest that = (ServerRequest) o;
+
+    if (method != that.method) return false;
+    return path != null ? path.equals(that.path) : that.path == null;
+
   }
 
   @Override
   public int hashCode() {
-    return (method + path).hashCode();
+    int result = method != null ? method.hashCode() : 0;
+    result = 31 * result + (path != null ? path.hashCode() : 0);
+    return result;
   }
 }

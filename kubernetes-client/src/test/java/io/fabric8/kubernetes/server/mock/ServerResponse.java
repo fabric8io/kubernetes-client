@@ -16,22 +16,22 @@
 
 package io.fabric8.kubernetes.server.mock;
 
-class ServerResponse {
+public class ServerResponse {
 
-  private final int code;
+  private final int statusCode;
   private final String body;
   private final WebSocketSession webSocketSession;
-  private final boolean toBeRemoved;
+  private final boolean repeatable;
 
-  public ServerResponse(int code, String body, WebSocketSession webSocketSession, boolean toBeRemoved) {
-    this.code = code;
+  public ServerResponse(int statusCode, String body, WebSocketSession webSocketSession, boolean repeatable) {
+    this.statusCode = statusCode;
     this.body = body;
     this.webSocketSession = webSocketSession;
-    this.toBeRemoved = toBeRemoved;
+    this.repeatable = repeatable;
   }
 
-  public int getCode() {
-    return code;
+  public int getStatusCode() {
+    return statusCode;
   }
 
   public String getBody() {
@@ -42,7 +42,30 @@ class ServerResponse {
     return webSocketSession;
   }
 
-  public boolean isToBeRemoved() {
-    return toBeRemoved;
+  public boolean isRepeatable() {
+    return repeatable;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    ServerResponse that = (ServerResponse) o;
+
+    if (statusCode != that.statusCode) return false;
+    if (repeatable != that.repeatable) return false;
+    if (body != null ? !body.equals(that.body) : that.body != null) return false;
+    return webSocketSession != null ? webSocketSession.equals(that.webSocketSession) : that.webSocketSession == null;
+
+  }
+
+  @Override
+  public int hashCode() {
+    int result = statusCode;
+    result = 31 * result + (body != null ? body.hashCode() : 0);
+    result = 31 * result + (webSocketSession != null ? webSocketSession.hashCode() : 0);
+    result = 31 * result + (repeatable ? 1 : 0);
+    return result;
   }
 }
