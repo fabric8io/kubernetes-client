@@ -38,7 +38,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class WebSocketSession implements WebSocketListener {
 
-    private final WebSocketMessage[] open;
+    private final List<WebSocketMessage> open;
     private final WebSocketMessage failure;
     private final Exception cause;
 
@@ -50,11 +50,12 @@ public class WebSocketSession implements WebSocketListener {
     private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
 
-    public WebSocketSession(WebSocketMessage[] open, WebSocketMessage failure, Exception cause) {
+    public WebSocketSession(List<WebSocketMessage> open, WebSocketMessage failure, Exception cause) {
         this.open = open;
         this.failure = failure;
         this.cause = cause;
     }
+
 
     @Override
     public void onOpen(WebSocket webSocket, Response response) {
@@ -101,6 +102,18 @@ public class WebSocketSession implements WebSocketListener {
 
     }
 
+    public List<WebSocketMessage> getOpen() {
+        return open;
+    }
+
+    public WebSocketMessage getFailure() {
+        return failure;
+    }
+
+    public Exception getCause() {
+        return cause;
+    }
+
     public Map<Object, Queue<WebSocketMessage>> getRequestEvents() {
         return requestEvents;
     }
@@ -108,7 +121,6 @@ public class WebSocketSession implements WebSocketListener {
     public List<WebSocketMessage> getTimedEvents() {
         return timedEvents;
     }
-
 
     private void checkIfShouldClose() {
         if (requestEvents.isEmpty()) {
