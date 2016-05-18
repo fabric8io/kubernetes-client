@@ -21,6 +21,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.builder.Function;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Queue;
 
 public class InlineWebSocketSessionBuilder<T> implements WebSocketSessionBuilder<T>,
@@ -44,7 +47,7 @@ public class InlineWebSocketSessionBuilder<T> implements WebSocketSessionBuilder
 
     @Override
     public T failure(Object response, Exception e) {
-        return function.apply(new WebSocketSession(null, toWebSocketMessage(response), e));
+        return function.apply(new WebSocketSession(Collections.<WebSocketMessage>emptyList(), toWebSocketMessage(response), e));
     }
 
     @Override
@@ -93,10 +96,10 @@ public class InlineWebSocketSessionBuilder<T> implements WebSocketSessionBuilder
         };
     }
 
-    private WebSocketMessage[] toWebSocketMessages(Object... content) {
-        WebSocketMessage[] response = new WebSocketMessage[content.length];
-        for (int i=0;i<content.length;i++) {
-            response[i] = toWebSocketMessage(content[i]);
+    private List<WebSocketMessage> toWebSocketMessages(Object... messages) {
+        List<WebSocketMessage> response = new ArrayList<>();
+        for (Object msg : messages) {
+            response.add(toWebSocketMessage(msg));
         }
         return response;
     }

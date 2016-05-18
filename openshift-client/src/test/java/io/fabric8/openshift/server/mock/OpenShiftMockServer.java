@@ -41,7 +41,7 @@ public class OpenShiftMockServer extends KubernetesMockServer {
 
   public NamespacedOpenShiftClient createOpenShiftClient() {
     Config config = new ConfigBuilder()
-      .withMasterUrl(getServer().getUrl("/").toString())
+      .withMasterUrl(url("/"))
       .withNamespace("test")
       .withTrustCerts(true)
       .build();

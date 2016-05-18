@@ -16,10 +16,9 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.server.mock.KubernetesMockServer;
-import io.fabric8.kubernetes.server.mock.MockServerExpectation;
+import io.fabric8.mockwebserver.dsl.MockServerExpectation;
 import org.junit.After;
 import org.junit.Before;
 

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.kubernetes.server.mock;
 
 import com.squareup.okhttp.mockwebserver.MockWebServer;
@@ -22,62 +21,50 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
+import io.fabric8.mockwebserver.DefaultMockServer;
+import io.fabric8.mockwebserver.ServerRequest;
+import io.fabric8.mockwebserver.ServerResponse;
 
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 
-public class KubernetesMockServer {
+public class KubernetesMockServer extends DefaultMockServer {
 
-  private final boolean useHttps;
-
-  private MockWebServer server = new MockWebServer();
-  private Map<ServerRequest, Queue<ServerResponse>> responses = new HashMap<>();
-
-  public KubernetesMockServer() {
-    this(true);
-  }
-
-  public KubernetesMockServer(boolean useHttps) {
-    this.useHttps = useHttps;
-  }
-
-  public void init()  {
-    try {
-      if (useHttps) {
-        server.useHttps(MockSSLContextFactory.create().getSocketFactory(), false);
-      }
-      server.setDispatcher(new MockDispatcher(responses));
-      expect().get().withPath("/").andReturn(200, new RootPathsBuilder().addToPaths(getRootPaths()).build()).always();
-      server.start();
-    } catch (Throwable t) {
-      throw new RuntimeException(t);
+    public KubernetesMockServer() {
+        this(true);
     }
-  }
 
-  public String[] getRootPaths() {
-    return new String[]{"/api", "/apis/extensions"};
-  }
+    public KubernetesMockServer(boolean useHttps) {
+        super(useHttps);
+    }
 
-  public void destroy() throws IOException {
-    server.shutdown();
-  }
+    public KubernetesMockServer(MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, boolean useHttps) {
+        super(server, responses, useHttps);
+    }
 
-  public NamespacedKubernetesClient createClient() {
-    Config config = new ConfigBuilder()
-      .withMasterUrl(server.getUrl("/").toString())
-      .withTrustCerts(true)
-      .withNamespace("test")
-      .build();
-    return new DefaultKubernetesClient(config);
-  }
+    public void init() {
+        start();
+    }
 
-  public MockWebServer getServer() {
-    return server;
-  }
+    public void destroy() {
+        shutdown();
+    }
 
-  public MockServerExpectation expect() {
-    return new MockServerExpectationImpl(responses);
-  }
+    public void onStart() {
+        expect().get().withPath("/").andReturn(200, new RootPathsBuilder().addToPaths(getRootPaths()).build()).always();
+    }
+
+    public String[] getRootPaths() {
+        return new String[]{"/api", "/apis/extensions"};
+    }
+
+    public NamespacedKubernetesClient createClient() {
+        Config config = new ConfigBuilder()
+                .withMasterUrl(url("/"))
+                .withTrustCerts(true)
+                .withNamespace("test")
+                .build();
+        return new DefaultKubernetesClient(config);
+    }
+
 }
