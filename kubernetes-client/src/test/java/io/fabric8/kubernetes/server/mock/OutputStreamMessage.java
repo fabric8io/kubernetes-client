@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes.server.mock;
 
+import io.fabric8.mockwebserver.internal.WebSocketMessage;
+
 public class OutputStreamMessage extends WebSocketMessage {
 
     private static final byte OUT_STREAM_ID = 1;
