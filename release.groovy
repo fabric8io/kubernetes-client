@@ -18,6 +18,7 @@ def updateDependencies(source){
 
   def properties = []
   properties << ['<kubernetes.model.version>','io/fabric8/kubernetes-model']
+  properties << ['<mockwebserver.version>','io/fabric8/mockwebserver']
 
   updatePropertyVersion{
     updates = properties
