@@ -20,22 +20,35 @@ import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
 import io.fabric8.kubernetes.api.model.extensions.DoneableDeployment;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
-import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
+import io.fabric8.kubernetes.client.dsl.ClientScaleableResource;
+import io.fabric8.kubernetes.client.dsl.Scaleable;
 import io.fabric8.kubernetes.client.mock.BaseMockOperation;
-import io.fabric8.kubernetes.client.mock.MockResource;
+import io.fabric8.kubernetes.client.mock.MockScaleableResource;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableDeployment;
 import org.easymock.EasyMock;
+import org.easymock.IExpectationSetters;
+
+import static org.easymock.EasyMock.expect;
 
 public class MockDeployment<C extends Client> extends BaseMockOperation<Deployment, DeploymentList, DoneableDeployment, MockDoneableDeployment,
-        ClientResource<Deployment, DoneableDeployment>,
-        MockResource<Deployment, MockDoneableDeployment, Boolean>>
-        implements MockResource<Deployment, MockDoneableDeployment, Boolean> {
+  ClientScaleableResource<Deployment, DoneableDeployment>,
+  MockScaleableResource<Deployment, MockDoneableDeployment, Boolean>>
+  implements MockScaleableResource<Deployment, MockDoneableDeployment, Boolean> {
 
-    //Dummy interface to use for mocking.
+  @Override
+  public IExpectationSetters<Deployment> scale(int count) {
+    return expect(((Scaleable<Deployment>) getDelegate()).scale(count));
+  }
+
+  @Override
+  public IExpectationSetters<Deployment> scale(int count, boolean wait) {
+    return expect(((Scaleable<Deployment>) getDelegate()).scale(count, wait));
+  }
+
+  //Dummy interface to use for mocking.
     private interface DeploymentDelegate
-            extends ClientMixedOperation<Deployment, DeploymentList, DoneableDeployment, ClientRollableScallableResource<Deployment, DoneableDeployment>>,
-            ClientResource<Deployment, DoneableDeployment> {
+            extends ClientMixedOperation<Deployment, DeploymentList, DoneableDeployment, ClientScaleableResource<Deployment, DoneableDeployment>>,
+            ClientScaleableResource<Deployment, DoneableDeployment> {
 
     }
 

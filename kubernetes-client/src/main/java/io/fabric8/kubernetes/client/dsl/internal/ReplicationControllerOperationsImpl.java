@@ -159,7 +159,7 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
     };
 
     ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-    ScheduledFuture poller = executor.scheduleWithFixedDelay(rcPoller, 0, 100, TimeUnit.MILLISECONDS);
+    ScheduledFuture poller = executor.scheduleWithFixedDelay(rcPoller, 0, POLL_INTERVAL_MS, TimeUnit.MILLISECONDS);
     try {
       countDownLatch.await(rollingTimeout, rollingTimeUnit);
       executor.shutdown();
@@ -197,7 +197,7 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
       .editSpec().editTemplate().editSpec().withContainers(Collections.singletonList(updatedContainer))
       .endSpec().endTemplate().endSpec();
 
-    return new  RollingUpdater(client, config, namespace).rollUpdate(oldRC, newRCBuilder.build());
+    return new ReplicationControllerRollingUpdater(client, config, namespace).rollUpdate(oldRC, newRCBuilder.build());
   }
 
   @Override
@@ -210,7 +210,7 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
       @Override
       public void visit(ReplicationController rc) {
         try {
-          new RollingUpdater(client, config, namespace).rollUpdate(getMandatory(), rc);
+          new ReplicationControllerRollingUpdater(client, config, namespace).rollUpdate(getMandatory(), rc);
         } catch (Exception e) {
           throw KubernetesClientException.launderThrowable(e);
         }
@@ -229,7 +229,7 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
     if (!rolling) {
       return super.replace(rc);
     }
-    return new RollingUpdater(client, config, namespace, rollingTimeUnit.toMillis(rollingTimeout), getConfig().getLoggingInterval()).rollUpdate(getMandatory(), rc);
+    return new ReplicationControllerRollingUpdater(client, config, namespace, rollingTimeUnit.toMillis(rollingTimeout), getConfig().getLoggingInterval()).rollUpdate(getMandatory(), rc);
   }
 
   private static class ReplicationControllerReaper implements Reaper {

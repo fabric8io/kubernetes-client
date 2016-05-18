@@ -26,7 +26,12 @@ import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.SecurityContextConstraintsList;
 import io.fabric8.kubernetes.api.model.SecurityContextConstraintsListBuilder;
+import io.fabric8.kubernetes.api.model.extensions.Deployment;
+import io.fabric8.kubernetes.api.model.extensions.DeploymentBuilder;
+import io.fabric8.kubernetes.api.model.extensions.Job;
 import io.fabric8.kubernetes.api.model.extensions.JobBuilder;
+import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
+import io.fabric8.kubernetes.api.model.extensions.ReplicaSetBuilder;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import org.easymock.EasyMock;
@@ -209,12 +214,54 @@ public class KubernetesMockClientTest {
     mock.replicationControllers().inNamespace("ns1").withName("repl1").scale(2).andReturn(repl1).once();
     mock.replicationControllers().inNamespace("ns1").withName("repl1").scale(3).andReturn(repl1).once();
 
+    ReplicaSet replicaSet = new ReplicaSetBuilder()
+      .withNewMetadata()
+      .withName("repl1")
+      .endMetadata()
+      .build();
+
+    mock.extensions().replicaSets().inNamespace("ns1").withName("repl1").scale(1).andReturn(replicaSet).once();
+    mock.extensions().replicaSets().inNamespace("ns1").withName("repl1").scale(2).andReturn(replicaSet).once();
+    mock.extensions().replicaSets().inNamespace("ns1").withName("repl1").scale(3).andReturn(replicaSet).once();
+
+    Deployment dep = new DeploymentBuilder()
+      .withNewMetadata()
+      .withName("repl1")
+      .endMetadata()
+      .build();
+
+    mock.extensions().deployments().inNamespace("ns1").withName("repl1").scale(1).andReturn(dep).once();
+    mock.extensions().deployments().inNamespace("ns1").withName("repl1").scale(2).andReturn(dep).once();
+    mock.extensions().deployments().inNamespace("ns1").withName("repl1").scale(3).andReturn(dep).once();
+
+    Job job = new JobBuilder()
+      .withNewMetadata()
+      .withName("repl1")
+      .endMetadata()
+      .build();
+
+    mock.extensions().jobs().inNamespace("ns1").withName("repl1").scale(1).andReturn(job).once();
+    mock.extensions().jobs().inNamespace("ns1").withName("repl1").scale(2).andReturn(job).once();
+    mock.extensions().jobs().inNamespace("ns1").withName("repl1").scale(3).andReturn(job).once();
+
 
     NamespacedKubernetesClient client = mock.replay();
 
     client.replicationControllers().inNamespace("ns1").withName("repl1").scale(1);
     client.replicationControllers().inNamespace("ns1").withName("repl1").scale(2);
     client.replicationControllers().inNamespace("ns1").withName("repl1").scale(3);
+
+    client.extensions().replicaSets().inNamespace("ns1").withName("repl1").scale(1);
+    client.extensions().replicaSets().inNamespace("ns1").withName("repl1").scale(2);
+    client.extensions().replicaSets().inNamespace("ns1").withName("repl1").scale(3);
+
+    client.extensions().deployments().inNamespace("ns1").withName("repl1").scale(1);
+    client.extensions().deployments().inNamespace("ns1").withName("repl1").scale(2);
+    client.extensions().deployments().inNamespace("ns1").withName("repl1").scale(3);
+
+    client.extensions().jobs().inNamespace("ns1").withName("repl1").scale(1);
+    client.extensions().jobs().inNamespace("ns1").withName("repl1").scale(2);
+    client.extensions().jobs().inNamespace("ns1").withName("repl1").scale(3);
 
     EasyMock.verify(client);
   }
@@ -371,5 +418,31 @@ public class KubernetesMockClientTest {
     }
     Assert.assertNotNull(client.extensions().jobs().inNamespace("ns1").withName("job2").get());
     Assert.assertNull(client.extensions().jobs().inNamespace("ns1").withName("job2").get());
+  }
+
+  @Test
+  public void testDeployments() {
+    KubernetesMockClient mock = new KubernetesMockClient();
+    mock.extensions().deployments().inNamespace(eq("ns1")).withName(eq("deployment1")).get().andReturn(new DeploymentBuilder()
+                    .withNewMetadata().withName("deployment1").endMetadata()
+                    .build()
+    ).anyTimes();
+
+    mock.extensions().deployments().inNamespace("ns1").withName("deployment2").get().andReturn(new DeploymentBuilder()
+                    .withNewMetadata().withName("pod2").endMetadata()
+                    .build()
+    ).once();
+
+    mock.extensions().deployments().inNamespace("ns1").withName("deployment2").get().andReturn(null).once();
+
+    NamespacedKubernetesClient client = mock.replay();
+
+    //We are testing the internal anyTimes() on namespace and name.
+    for (int i = 0; i < 5; i++) {
+      Object o = client.extensions().deployments().inNamespace("ns1").withName("deployment1");
+      Assert.assertNotNull(client.extensions().deployments().inNamespace("ns1").withName("deployment1").get());
+    }
+    Assert.assertNotNull(client.extensions().deployments().inNamespace("ns1").withName("deployment2").get());
+    Assert.assertNull(client.extensions().deployments().inNamespace("ns1").withName("deployment2").get());
   }
 }
