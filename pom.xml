@@ -74,7 +74,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <mockwebserver.version>0.0.1</mockwebserver.version>
+    <mockwebserver.version>0.0.2</mockwebserver.version>
     <okhttp.version>2.7.2</okhttp.version>
     <okio.version>1.6.0</okio.version>
     <easymock.version>3.4</easymock.version>

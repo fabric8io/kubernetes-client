@@ -21,26 +21,40 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
+import io.fabric8.mockwebserver.Context;
+import io.fabric8.mockwebserver.ContextBuilder;
 import io.fabric8.mockwebserver.DefaultMockServer;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
+import io.fabric8.mockwebserver.internal.DefaultWebSocketWriter;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 
 public class KubernetesMockServer extends DefaultMockServer {
+
+    private static final Context context = new ContextBuilder()
+            .withReader(new KubernetesWebSocketReader())
+            .withWriter(new DefaultWebSocketWriter())
+            .build();
 
     public KubernetesMockServer() {
         this(true);
     }
 
     public KubernetesMockServer(boolean useHttps) {
-        super(useHttps);
+        this(new MockWebServer(), new HashMap(), useHttps);
     }
 
     public KubernetesMockServer(MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, boolean useHttps) {
-        super(server, responses, useHttps);
+        this(context, server, responses, useHttps);
     }
+
+    public KubernetesMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, boolean useHttps) {
+        super(context, server, responses, useHttps);
+    }
+
 
     public void init() {
         start();
