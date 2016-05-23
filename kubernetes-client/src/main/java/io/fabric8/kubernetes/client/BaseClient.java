@@ -25,7 +25,7 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import java.net.URL;
 
 
-public abstract class BaseClient implements Client {
+public abstract class BaseClient implements Client, HttpClientAware {
 
   protected OkHttpClient httpClient;
   private URL masterUrl;
@@ -55,6 +55,7 @@ public abstract class BaseClient implements Client {
       this.masterUrl = new URL(config.getMasterUrl());
 
       Adapters.register(new ExtensionAdapter<OkHttpClient>() {
+
         @Override
         public Class<OkHttpClient> getExtensionType() {
           return OkHttpClient.class;
@@ -62,12 +63,15 @@ public abstract class BaseClient implements Client {
 
         @Override
         public Boolean isAdaptable(Client client) {
-          return client instanceof BaseClient;
+          return client instanceof HttpClientAware;
         }
 
         @Override
         public OkHttpClient adapt(Client client) {
-          return httpClient.clone();
+          if (client instanceof HttpClientAware) {
+            return ((HttpClientAware)client).getHttpClient().clone();
+          }
+          throw new IllegalArgumentException("This adapter only supports instances of HttpClientAware.");
         }
       });
 
@@ -114,6 +118,11 @@ public abstract class BaseClient implements Client {
   @Override
   public Config getConfiguration() {
     return configuration;
+  }
+
+  @Override
+  public OkHttpClient getHttpClient() {
+    return httpClient;
   }
 
   @Override
