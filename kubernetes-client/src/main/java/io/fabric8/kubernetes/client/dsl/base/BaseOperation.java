@@ -119,7 +119,12 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
       return item;
     }
     try {
-      URL requestUrl = getNamespacedUrl();
+      URL requestUrl = null;
+      if (item != null) {
+        requestUrl = getNamespacedUrl(item);
+      } else {
+        requestUrl = getNamespacedUrl();
+      }
       if (name != null) {
         requestUrl = new URL(URLUtils.join(requestUrl.toString(), name));
       } else if (item != null && reloadingFromServer) {
@@ -415,7 +420,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   @Override
   public Boolean delete() {
-    if (name != null && !name.isEmpty()) {
+    if (item != null || (name != null && !name.isEmpty())) {
       try {
         if (cascading && !isReaping()) {
           if (reaper != null) {
@@ -452,19 +457,24 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   @Override
   public Boolean delete(List<T> items) {
-    try {
-      for (T item : items) {
-        handleDelete(item, gracePeriodSeconds);
+    boolean deleted = true;
+    for (T item : items) {
+      try {
+        R op = (R) getClass()
+          .getConstructor(OkHttpClient.class, Config.class, String.class, String.class, String.class, Boolean.class, type, String.class, Boolean.class, long.class, Map.class, Map.class, Map.class, Map.class, Map.class)
+          .newInstance(client, config, apiVersion, namespace, name, cascading, item, resourceVersion, true, gracePeriodSeconds, getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
+        deleted &= op.delete();
+      } catch (KubernetesClientException e) {
+        if (e.getCode() != 404) {
+          throw e;
+        }
+        return false;
+      } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+        throw KubernetesClientException.launderThrowable(e);
       }
-    } catch (KubernetesClientException e) {
-      if (e.getCode() != 404) {
-        throw e;
-      }
-      return false;
-    } catch (InterruptedException | ExecutionException | IOException e) {
-      throw KubernetesClientException.launderThrowable(e);
     }
-    return true;
+
+    return deleted;
   }
 
   void deleteThis() throws KubernetesClientException {

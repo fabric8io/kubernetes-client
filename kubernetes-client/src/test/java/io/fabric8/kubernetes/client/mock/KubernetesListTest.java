@@ -16,10 +16,6 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import org.junit.Test;
-
-import java.io.InputStream;
-
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
@@ -30,6 +26,9 @@ import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import org.junit.Test;
+
+import java.io.InputStream;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -39,7 +38,11 @@ public class KubernetesListTest extends KubernetesMockServerTestBase {
 
   Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
   Service service1 = new ServiceBuilder().withNewMetadata().withName("service1").withNamespace("test").and().build();
-  ReplicationController replicationController1 = new ReplicationControllerBuilder().withNewMetadata().withName("repl1").withNamespace("test").and().build();
+  ReplicationController replicationController1 = new ReplicationControllerBuilder()
+    .withNewMetadata().withName("repl1").withNamespace("test").endMetadata()
+    .withNewSpec().withReplicas(1).endSpec()
+    .withNewStatus().withReplicas(1).endStatus()
+    .build();
 
   KubernetesList list = new KubernetesListBuilder().withItems(pod1, service1, replicationController1).build();
 
@@ -78,7 +81,11 @@ public class KubernetesListTest extends KubernetesMockServerTestBase {
   public void testDelete() {
     expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, pod1).always();
     expect().withPath("/api/v1/namespaces/test/services/service1").andReturn(200, service1).always();
-    expect().withPath("/api/v1/namespaces/test/replicationcontrollers/repl1").andReturn(200, replicationController1).always();
+    expect().withPath("/api/v1/namespaces/test/replicationcontrollers/repl1").andReturn(200, replicationController1).once();
+    expect().withPath("/api/v1/namespaces/test/replicationcontrollers/repl1").andReturn(200, new ReplicationControllerBuilder(replicationController1)
+      .editSpec().withReplicas(0).and()
+      .editStatus().withReplicas(0).and().build()
+    ).times(5);
 
     KubernetesClient client = getClient();
     Boolean result = client.lists().delete(list);

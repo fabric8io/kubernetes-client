@@ -168,12 +168,38 @@ public class JobTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testDeleteMulti() {
-    Job job1 = new JobBuilder().withNewMetadata().withName("job1").withNamespace("test").and().build();
-    Job job2 = new JobBuilder().withNewMetadata().withName("job2").withNamespace("ns1").and().build();
+    Job job1 = new JobBuilder().withNewMetadata()
+      .withNamespace("test")
+      .withName("job1")
+      .withResourceVersion("1")
+      .endMetadata()
+      .withNewSpec()
+      .withParallelism(0)
+      .endSpec()
+      .withNewStatus()
+      .withActive(1)
+      .endStatus()
+      .build();
+    Job job2 = new JobBuilder().withNewMetadata()
+      .withNamespace("ns1")
+      .withName("job2")
+      .withResourceVersion("1")
+      .endMetadata()
+      .withNewSpec()
+      .withParallelism(0)
+      .endSpec()
+      .withNewStatus()
+      .withActive(1)
+      .endStatus()
+      .build();
     Job job3 = new JobBuilder().withNewMetadata().withName("job3").withNamespace("any").and().build();
 
     expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs/job1").andReturn(200, job1).once();
+    expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder(job1)
+      .editStatus().withActive(0).endStatus().build()).times(5);
     expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/jobs/job2").andReturn(200, job2).once();
+    expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/jobs/job2").andReturn(200, new JobBuilder(job2)
+      .editStatus().withActive(0).endStatus().build()).times(5);
 
     KubernetesClient client = getClient();
 
