@@ -77,7 +77,8 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
       public void run() {
         Deployment deployment = getMandatory();
         atomicDeployment.set(deployment);
-        if (Objects.equals(deployment.getSpec().getReplicas(), deployment.getStatus().getReplicas())) {
+        int currentReplicas = deployment.getStatus().getReplicas() != null ? deployment.getStatus().getReplicas() : 0;
+        if (Objects.equals(deployment.getSpec().getReplicas(), currentReplicas)) {
           countDownLatch.countDown();
         } else {
           LOG.debug("Only {}/{} pods scheduled for Deployment: {} in namespace: {} seconds so waiting...",
@@ -94,8 +95,9 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
     } catch (InterruptedException e) {
       poller.cancel(true);
       executor.shutdown();
+      int currentReplicas = atomicDeployment.get().getStatus().getReplicas() != null ? atomicDeployment.get().getStatus().getReplicas() : 0;
       LOG.error("Only {}/{} pod(s) ready for Deployment: {} in namespace: {} - giving up",
-        atomicDeployment.get().getStatus().getReplicas(), atomicDeployment.get().getSpec().getReplicas(), atomicDeployment.get().getMetadata().getName(), namespace);
+        currentReplicas, atomicDeployment.get().getSpec().getReplicas(), atomicDeployment.get().getMetadata().getName(), namespace);
     }
   }
 

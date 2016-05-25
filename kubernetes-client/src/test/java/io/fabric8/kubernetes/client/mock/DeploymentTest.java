@@ -171,17 +171,52 @@ public class DeploymentTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testDeleteMulti() {
-    Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test").and().build();
-    Deployment deployment2 = new DeploymentBuilder().withNewMetadata().withName("deployment2").withNamespace("ns1").and().build();
+    Deployment deployment1 = new DeploymentBuilder().withNewMetadata()
+      .withNamespace("test")
+      .withName("deployment1")
+      .withResourceVersion("1")
+      .endMetadata()
+      .withNewSpec()
+      .withReplicas(0)
+      .endSpec()
+      .withNewStatus()
+      .withReplicas(1)
+      .endStatus()
+      .build();
+
+    Deployment deployment2 = new DeploymentBuilder().withNewMetadata()
+      .withNamespace("ns1")
+      .withName("deployment2")
+      .withResourceVersion("1")
+      .endMetadata()
+      .withNewSpec()
+      .withReplicas(0)
+      .endSpec()
+      .withNewStatus()
+      .withReplicas(1)
+      .endStatus()
+      .build();
+
     Deployment deployment3 = new DeploymentBuilder().withNewMetadata().withName("deployment3").withNamespace("any").and().build();
 
     expect().withPath("/apis/extensions/v1beta1/namespaces/test/deployments/deployment1").andReturn(200, deployment1).once();
+    expect().withPath("/apis/extensions/v1beta1/namespaces/test/deployments/deployment1").andReturn(200, new DeploymentBuilder(deployment1)
+      .editStatus()
+      .withReplicas(0)
+      .endStatus()
+      .build()).times(5);
+
     expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/deployments/deployment2").andReturn(200, deployment2).once();
+    expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/deployments/deployment2").andReturn(200, new DeploymentBuilder(deployment2)
+      .editStatus()
+      .withReplicas(0)
+      .endStatus()
+      .build()).times(5);
 
     KubernetesClient client = getClient();
 
     Boolean deleted = client.extensions().deployments().inAnyNamespace().delete(deployment1, deployment2);
-    assertNotNull(deleted);
+    assertTrue(deleted);
 
     deleted = client.extensions().deployments().inAnyNamespace().delete(deployment3);
     assertFalse(deleted);
@@ -190,7 +225,6 @@ public class DeploymentTest extends KubernetesMockServerTestBase {
   @Test(expected = KubernetesClientException.class)
   public void testDeleteWithNamespaceMismatch() {
     Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test").and().build();
-    Deployment deployment2 = new DeploymentBuilder().withNewMetadata().withName("deployment2").withNamespace("ns1").and().build();
     KubernetesClient client = getClient();
 
     Boolean deleted = client.extensions().deployments().inNamespace("test1").delete(deployment1);

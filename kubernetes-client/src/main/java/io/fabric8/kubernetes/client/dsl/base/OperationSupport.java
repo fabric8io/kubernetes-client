@@ -123,6 +123,10 @@ public class OperationSupport {
     return getNamespacedUrl(getNamespace());
   }
 
+  public <T> URL getNamespacedUrl(T item) throws MalformedURLException {
+    return getNamespacedUrl(checkNamespace(item));
+  }
+
   public URL getResourceUrl(String namespace, String name) throws MalformedURLException {
     if (name == null) {
       return getNamespacedUrl(namespace);
