@@ -35,6 +35,7 @@ public class ReplicationControllerHandler implements ResourceHandler<Replication
   public String getKind() {
     return ReplicationController.class.getSimpleName();
   }
+
   @Override
   public ReplicationController create(OkHttpClient client, Config config, String namespace, ReplicationController item) {
     return new ReplicationControllerOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).create();
