@@ -154,7 +154,9 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
             URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters() + "&follow=true"));
             Request request = new Request.Builder().url(url).get().build();
             final LogWatchCallback callback = new LogWatchCallback(out);
-            client.newCall(request).enqueue(callback);
+            OkHttpClient clone = client.clone();
+            clone.setReadTimeout(0, TimeUnit.MILLISECONDS);
+            clone.newCall(request).enqueue(callback);
             callback.waitUntilReady();
             return callback;
         } catch (Throwable t) {
