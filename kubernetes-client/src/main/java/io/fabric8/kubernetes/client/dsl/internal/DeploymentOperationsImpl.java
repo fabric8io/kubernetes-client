@@ -68,6 +68,22 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
     return res;
   }
 
+  @Override
+  public DoneableDeployment edit() {
+    if (isCascading()) {
+      return cascading(false).edit();
+    }
+    return super.edit();
+  }
+
+  @Override
+  public Deployment replace(Deployment item) {
+    if (isCascading()) {
+      return cascading(false).replace(item);
+    }
+    return super.replace(item);
+  }
+
   /**
    * Lets wait until there are enough Ready pods of the given Deployment
    */
@@ -116,7 +132,6 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
       Deployment deployment = oper.cascading(false).edit().editSpec().withReplicas(0).withPaused(true).withRevisionHistoryLimit(0).endSpec().done();
       waitForObservedGeneration(deployment.getStatus().getObservedGeneration());
       reapMatchingReplicaSets(deployment.getSpec().getSelector());
-      oper.cascading(false).delete();
     }
 
     private void waitForObservedGeneration(final long observedGeneration) {
