@@ -106,7 +106,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
     ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     ScheduledFuture poller = executor.scheduleWithFixedDelay(jobPoller, 0, POLL_INTERVAL_MS, TimeUnit.MILLISECONDS);
     try {
-      countDownLatch.await();
+      countDownLatch.await(getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS);
       executor.shutdown();
     } catch (InterruptedException e) {
       poller.cancel(true);

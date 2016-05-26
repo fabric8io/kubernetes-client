@@ -58,6 +58,7 @@ public class Config {
   public static final String KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY = "kubernetes.request.timeout";
   public static final String KUBERNETES_ROLLING_TIMEOUT_SYSTEM_PROPERTY = "kubernetes.rolling.timeout";
   public static final String KUBERNETES_LOGGING_INTERVAL_SYSTEM_PROPERTY = "kubernetes.logging.interval";
+  public static final String KUBERNETES_SCALE_TIMEOUT_SYSTEM_PROPERTY = "kubernetes.scale.timeout";
 
   public static final String KUBERNETES_TRYNAMESPACE_PATH_SYSTEM_PROPERTY = "kubernetes.tryNamespacePath";
   public static final String KUBERNETES_NAMESPACE_PATH = "/var/run/secrets/kubernetes.io/serviceaccount/namespace";
@@ -74,6 +75,7 @@ public class Config {
   public static final String KUBERNETES_USER_AGENT = "fabric8-kubernetes-client/" + Version.clientVersion() ;
 
   public static final Long DEFAULT_ROLLING_TIMEOUT = 15 * 60 * 1000L;
+  public static final Long DEFAULT_SCALE_TIMEOUT = 10 * 60 * 1000L;
   public static final int DEFAULT_LOGGING_INTERVAL = 20 * 1000;
 
   public static String HTTP_PROTOCOL_PREFIX = "http://";
@@ -99,6 +101,7 @@ public class Config {
   private int connectionTimeout = 10 * 1000;
   private int requestTimeout = 10 * 1000;
   private long rollingTimeout = DEFAULT_ROLLING_TIMEOUT;
+  private long scaleTimeout = DEFAULT_SCALE_TIMEOUT;
   private int loggingInterval = DEFAULT_LOGGING_INTERVAL;
   private String httpProxy;
   private String httpsProxy;
@@ -124,7 +127,7 @@ public class Config {
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder")
-  public Config(String masterUrl, String apiVersion, String namespace, boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, int loggingInterval, String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages, String userAgent) {
+  public Config(String masterUrl, String apiVersion, String namespace, boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, long scaleTimeout, int loggingInterval, String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages, String userAgent) {
     this.trustCerts = trustCerts;
     this.masterUrl = masterUrl;
     this.apiVersion = apiVersion;
@@ -146,6 +149,7 @@ public class Config {
     this.connectionTimeout = connectionTimeout;
     this.requestTimeout = requestTimeout;
     this.rollingTimeout = rollingTimeout;
+    this.scaleTimeout = scaleTimeout;
     this.loggingInterval = loggingInterval;
     this.httpProxy= httpProxy;
     this.httpsProxy= httpsProxy;
@@ -193,6 +197,11 @@ public class Config {
     String configuredRollingTimeout = Utils.getSystemPropertyOrEnvVar(KUBERNETES_ROLLING_TIMEOUT_SYSTEM_PROPERTY, String.valueOf(DEFAULT_ROLLING_TIMEOUT));
     if (configuredRollingTimeout != null) {
       config.setRollingTimeout(Long.parseLong(configuredRollingTimeout));
+    }
+
+    String configuredScaleTimeout = Utils.getSystemPropertyOrEnvVar(KUBERNETES_SCALE_TIMEOUT_SYSTEM_PROPERTY, String.valueOf(DEFAULT_SCALE_TIMEOUT));
+    if (configuredScaleTimeout != null) {
+      config.setScaleTimeout(Long.parseLong(configuredScaleTimeout));
     }
 
 
@@ -503,6 +512,14 @@ public class Config {
 
   public void setRollingTimeout(long rollingTimeout) {
     this.rollingTimeout = rollingTimeout;
+  }
+
+  public long getScaleTimeout() {
+    return scaleTimeout;
+  }
+
+  public void setScaleTimeout(long scaleTimeout) {
+    this.scaleTimeout = scaleTimeout;
   }
 
   public int getLoggingInterval() {

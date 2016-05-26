@@ -60,11 +60,11 @@ public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, R
   private final TimeUnit rollingTimeUnit;
 
   public ReplicaSetOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(client, config, "v1beta1", namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), false, config.getRollingTimeout(), TimeUnit.MINUTES);
+    this(client, config, "v1beta1", namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), false, config.getRollingTimeout(), TimeUnit.MILLISECONDS);
   }
 
   public ReplicaSetOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, ReplicaSet item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    this(client, config, apiVersion, namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields, false, config.getRollingTimeout(), TimeUnit.MINUTES);
+    this(client, config, apiVersion, namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields, false, config.getRollingTimeout(), TimeUnit.MILLISECONDS);
   }
 
   public ReplicaSetOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, ReplicaSet item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, Boolean rolling, long rollingTimeout, TimeUnit rollingTimeUnit) {
@@ -77,7 +77,7 @@ public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, R
 
   @Override
   public ImageEditReplaceable<ReplicaSet, ReplicaSet, DoneableReplicaSet> withTimeout(long timeout, TimeUnit unit) {
-    return new ReplicaSetOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rolling, timeout, rollingTimeUnit);
+    return new ReplicaSetOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rolling, timeout, unit);
   }
 
   @Override
@@ -135,7 +135,7 @@ public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, R
       public void run() {
         ReplicaSet rc = getMandatory();
         atomicRC.set(rc);
-        if (Objects.equals(rc.getSpec().getReplicas(), rc.getStatus().getReplicas())) {
+        if (rc.getStatus().getObservedGeneration() >= rc.getMetadata().getGeneration() && Objects.equals(rc.getSpec().getReplicas(), rc.getStatus().getReplicas())) {
           countDownLatch.countDown();
         } else {
           LOG.debug("Only {}/{} replicas scheduled for ReplicaSet: {} in namespace: {} seconds so waiting...",
