@@ -81,7 +81,7 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
         Deployment deployment = getMandatory();
         atomicDeployment.set(deployment);
         int currentReplicas = deployment.getStatus().getReplicas() != null ? deployment.getStatus().getReplicas() : 0;
-        if (Objects.equals(deployment.getSpec().getReplicas(), currentReplicas)) {
+        if (deployment.getStatus().getObservedGeneration() >= deployment.getMetadata().getGeneration() && Objects.equals(deployment.getSpec().getReplicas(), currentReplicas)) {
           countDownLatch.countDown();
         } else {
           LOG.debug("Only {}/{} pods scheduled for Deployment: {} in namespace: {} seconds so waiting...",
@@ -93,7 +93,7 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
     ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     ScheduledFuture poller = executor.scheduleWithFixedDelay(deploymentPoller, 0, POLL_INTERVAL_MS, TimeUnit.MILLISECONDS);
     try {
-      countDownLatch.await();
+      countDownLatch.await(getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS);
       executor.shutdown();
     } catch (InterruptedException e) {
       poller.cancel(true);
