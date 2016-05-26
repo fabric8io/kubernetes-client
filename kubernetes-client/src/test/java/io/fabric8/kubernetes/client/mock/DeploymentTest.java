@@ -119,6 +119,7 @@ public class DeploymentTest extends KubernetesMockServerTestBase {
       .endSpec()
       .withNewStatus()
       .withReplicas(1)
+      .withObservedGeneration(1l)
       .endStatus()
       .build()).once();
     expect().withPath("/apis/extensions/v1beta1/namespaces/test/deployments/deployment1").andReturn(200, new DeploymentBuilder().withNewMetadata()
@@ -130,6 +131,7 @@ public class DeploymentTest extends KubernetesMockServerTestBase {
       .endSpec()
       .withNewStatus()
       .withReplicas(0)
+      .withObservedGeneration(2l)
       .endStatus()
       .build()).times(5);
 
@@ -142,6 +144,7 @@ public class DeploymentTest extends KubernetesMockServerTestBase {
       .endSpec()
       .withNewStatus()
       .withReplicas(1)
+      .withObservedGeneration(1l)
       .endStatus()
       .build()).once();
     expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/deployments/deployment2").andReturn(200, new DeploymentBuilder().withNewMetadata()
@@ -153,6 +156,7 @@ public class DeploymentTest extends KubernetesMockServerTestBase {
       .endSpec()
       .withNewStatus()
       .withReplicas(0)
+      .withObservedGeneration(2l)
       .endStatus()
       .build()).times(5);
 
@@ -181,6 +185,7 @@ public class DeploymentTest extends KubernetesMockServerTestBase {
       .endSpec()
       .withNewStatus()
       .withReplicas(1)
+      .withObservedGeneration(1l)
       .endStatus()
       .build();
 
@@ -194,6 +199,7 @@ public class DeploymentTest extends KubernetesMockServerTestBase {
       .endSpec()
       .withNewStatus()
       .withReplicas(1)
+      .withObservedGeneration(1l)
       .endStatus()
       .build();
 
@@ -203,6 +209,7 @@ public class DeploymentTest extends KubernetesMockServerTestBase {
     expect().withPath("/apis/extensions/v1beta1/namespaces/test/deployments/deployment1").andReturn(200, new DeploymentBuilder(deployment1)
       .editStatus()
       .withReplicas(0)
+      .withObservedGeneration(2l)
       .endStatus()
       .build()).times(5);
 
@@ -210,6 +217,7 @@ public class DeploymentTest extends KubernetesMockServerTestBase {
     expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/deployments/deployment2").andReturn(200, new DeploymentBuilder(deployment2)
       .editStatus()
       .withReplicas(0)
+      .withObservedGeneration(2l)
       .endStatus()
       .build()).times(5);
 

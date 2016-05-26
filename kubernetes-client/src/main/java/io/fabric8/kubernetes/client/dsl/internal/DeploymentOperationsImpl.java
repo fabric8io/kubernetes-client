@@ -19,7 +19,10 @@ import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.extensions.Deployment;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
 import io.fabric8.kubernetes.api.model.extensions.DoneableDeployment;
+import io.fabric8.kubernetes.api.model.extensions.LabelSelector;
+import io.fabric8.kubernetes.api.model.extensions.LabelSelectorRequirement;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientScaleableResource;
 import io.fabric8.kubernetes.client.dsl.Reaper;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
@@ -110,7 +113,67 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
 
     @Override
     public void reap() {
-      oper.scale(0, true);
+      Deployment deployment = oper.cascading(false).edit().editSpec().withReplicas(0).withPaused(true).withRevisionHistoryLimit(0).endSpec().done();
+      waitForObservedGeneration(deployment.getStatus().getObservedGeneration());
+      reapMatchingReplicaSets(deployment.getSpec().getSelector());
+      oper.cascading(false).delete();
+    }
+
+    private void waitForObservedGeneration(final long observedGeneration) {
+      final CountDownLatch countDownLatch = new CountDownLatch(1);
+
+      final Runnable deploymentPoller = new Runnable() {
+        public void run() {
+          Deployment deployment = oper.getMandatory();
+          if (observedGeneration <= deployment.getStatus().getObservedGeneration()) {
+            countDownLatch.countDown();
+          }
+        }
+      };
+
+      ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+      ScheduledFuture poller = executor.scheduleWithFixedDelay(deploymentPoller, 0, 10, TimeUnit.MILLISECONDS);
+      try {
+        countDownLatch.await(1, TimeUnit.MINUTES);
+        executor.shutdown();
+      } catch (InterruptedException e) {
+        poller.cancel(true);
+        executor.shutdown();
+        throw KubernetesClientException.launderThrowable(e);
+      }
+    }
+
+    private void reapMatchingReplicaSets(LabelSelector selector) {
+      if (selector == null || (selector.getMatchLabels() == null && selector.getMatchExpressions() == null)) {
+        return;
+      }
+      ReplicaSetOperationsImpl rsOper = new ReplicaSetOperationsImpl(oper.client, oper.getConfig(), oper.getNamespace());
+      rsOper.inNamespace(oper.getNamespace());
+      if (selector.getMatchLabels() != null) {
+        for (Map.Entry<String, String> entry : selector.getMatchLabels().entrySet()) {
+          rsOper.withLabel(entry.getKey(), entry.getValue());
+        }
+      }
+      if (selector.getMatchExpressions() != null) {
+        for (LabelSelectorRequirement req : selector.getMatchExpressions()) {
+          switch (req.getOperator()) {
+            case "In":
+              rsOper.withLabelIn(req.getKey(), req.getValues().toArray(new String[]{}));
+              break;
+            case "NotIn":
+              rsOper.withLabelNotIn(req.getKey(), req.getValues().toArray(new String[]{}));
+              break;
+            case "DoesNotExist":
+              rsOper.withoutLabel(req.getKey());
+              break;
+            case "Exists":
+              rsOper.withLabel(req.getKey());
+              break;
+          }
+        }
+      }
+
+      rsOper.delete();
     }
   }
 }
