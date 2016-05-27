@@ -86,7 +86,6 @@ class ReplicaSetRollingUpdater extends RollingUpdater<ReplicaSet, ReplicaSetList
   protected ReplicaSet updateDeploymentKey(ReplicaSet obj, String hash) {
     return new ReplicaSetBuilder(obj)
       .editSpec()
-      .withReplicas(0)
       .editSelector().addToMatchLabels(DEPLOYMENT_KEY, hash).endSelector()
       .editTemplate().editMetadata().addToLabels(DEPLOYMENT_KEY, hash).endMetadata().endTemplate()
       .endSpec()
@@ -97,7 +96,6 @@ class ReplicaSetRollingUpdater extends RollingUpdater<ReplicaSet, ReplicaSetList
   protected ReplicaSet removeDeploymentKey(ReplicaSet obj) {
     return new ReplicaSetBuilder(obj)
       .editSpec()
-      .withReplicas(0)
       .editSelector().removeFromMatchLabels(DEPLOYMENT_KEY).endSelector()
       .editTemplate().editMetadata().removeFromLabels(DEPLOYMENT_KEY).endMetadata().endTemplate()
       .endSpec()

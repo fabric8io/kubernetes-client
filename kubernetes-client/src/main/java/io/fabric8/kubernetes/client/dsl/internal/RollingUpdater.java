@@ -121,7 +121,8 @@ abstract class RollingUpdater<T extends HasMetadata, L, D> {
       //   - Set the new RC name to contain the hash if matches old RC name.
       //   - Add selector containing deployment hash.
       //   - Ensure it looks like a new RC by resetting resource version.
-      T createdObj = createClone(newObj, newName, newDeploymentHash);
+      T clonedObj = createClone(newObj, newName, newDeploymentHash);
+      T createdObj = resources().inNamespace(namespace).create(clonedObj);
 
       // Now do the scale up/scale down dance
       int oldReplicas = getReplicas(oldObj);
