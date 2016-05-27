@@ -58,7 +58,7 @@ class ReplicationControllerRollingUpdater extends RollingUpdater<ReplicationCont
   protected ReplicationController updateDeploymentKey(ReplicationController obj, String hash) {
     return new ReplicationControllerBuilder(obj)
       .editSpec()
-      .withReplicas(0).addToSelector(DEPLOYMENT_KEY, hash)
+      .addToSelector(DEPLOYMENT_KEY, hash)
       .editTemplate().editMetadata().addToLabels(DEPLOYMENT_KEY, hash).endMetadata().endTemplate()
       .endSpec()
       .build();
@@ -68,7 +68,7 @@ class ReplicationControllerRollingUpdater extends RollingUpdater<ReplicationCont
   protected ReplicationController removeDeploymentKey(ReplicationController obj) {
     return new ReplicationControllerBuilder(obj)
       .editSpec()
-      .withReplicas(0).removeFromSelector(DEPLOYMENT_KEY)
+      .removeFromSelector(DEPLOYMENT_KEY)
       .editTemplate().editMetadata().removeFromLabels(DEPLOYMENT_KEY).endMetadata().endTemplate()
       .endSpec()
       .build();
