@@ -53,6 +53,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 
+import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
 import static io.fabric8.kubernetes.client.utils.Utils.join;
 
 public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
@@ -403,12 +404,12 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
       HttpUrl.Builder requestUrlBuilder = HttpUrl.get(getNamespacedUrl()).newBuilder();
 
       String labelQueryParam = getLabelQueryParam();
-      if (labelQueryParam.length() > 0) {
+      if (isNotNullOrEmpty(labelQueryParam)) {
         requestUrlBuilder.addQueryParameter("labelSelector", labelQueryParam);
       }
 
       String fieldQueryString = getFieldQueryParam();
-      if (fieldQueryString.length() > 0) {
+      if (isNotNullOrEmpty(fieldQueryString)) {
         requestUrlBuilder.addQueryParameter("fieldSelector", fieldQueryString);
       }
 

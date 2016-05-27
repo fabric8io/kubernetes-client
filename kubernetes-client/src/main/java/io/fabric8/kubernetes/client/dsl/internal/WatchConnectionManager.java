@@ -50,6 +50,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
+
 public class WatchConnectionManager<T, L extends KubernetesResourceList> implements Watch {
 
   private static final ObjectMapper mapper = new ObjectMapper();
@@ -90,7 +92,7 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
     HttpUrl.Builder httpUrlBuilder = HttpUrl.get(requestUrl).newBuilder();
 
     String labelQueryParam = baseOperation.getLabelQueryParam();
-    if (labelQueryParam.length() > 0) {
+    if (isNotNullOrEmpty(labelQueryParam)) {
       httpUrlBuilder.addQueryParameter("labelSelector", labelQueryParam);
     }
 
@@ -102,7 +104,9 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
       }
       fieldQueryString += "metadata.name=" + name;
     }
-    httpUrlBuilder.addQueryParameter("fieldSelector", fieldQueryString);
+    if (isNotNullOrEmpty(fieldQueryString)) {
+      httpUrlBuilder.addQueryParameter("fieldSelector", fieldQueryString);
+    }
 
     httpUrlBuilder
       .addQueryParameter("resourceVersion", this.resourceVersion.get())
