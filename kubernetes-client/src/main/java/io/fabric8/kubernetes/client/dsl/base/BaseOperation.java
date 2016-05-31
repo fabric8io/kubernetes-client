@@ -18,7 +18,6 @@ package io.fabric8.kubernetes.client.dsl.base;
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
-import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.builder.Function;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
@@ -632,11 +631,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     }
   }
 
-  private Class<? extends Config> getConfigType() {
-    Class configType = getConfig().getClass();
-    if (config instanceof Editable) {
-      return configType.getSuperclass();
-    }
-    return configType;
+  protected Class<? extends Config> getConfigType() {
+    return Config.class;
   }
 }

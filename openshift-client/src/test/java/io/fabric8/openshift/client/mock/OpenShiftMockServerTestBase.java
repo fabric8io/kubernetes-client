@@ -26,7 +26,7 @@ import java.io.IOException;
 
 public class OpenShiftMockServerTestBase {
 
-  private OpenShiftMockServer mock = new OpenShiftMockServer();
+  protected OpenShiftMockServer mock = new OpenShiftMockServer();
   private NamespacedOpenShiftClient client;
 
   @Before
@@ -40,7 +40,6 @@ public class OpenShiftMockServerTestBase {
     client.close();
     mock.destroy();
   }
-
 
   public NamespacedOpenShiftClient getOpenshiftClient() {
     return client;
