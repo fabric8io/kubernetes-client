@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.squareup.okhttp.OkHttpClient;
+import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
@@ -44,7 +45,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static io.fabric8.kubernetes.client.internal.SerializationUtils.dumpWithoutRuntimeStateAsYaml;
 
-abstract class RollingUpdater<T extends HasMetadata, L, D> {
+abstract class RollingUpdater<T extends HasMetadata, L, D extends Doneable<T>> {
   static final String DEPLOYMENT_KEY = "deployment";
 
   private static final Long DEFAULT_ROLLING_TIMEOUT = 15 * 60 * 1000L; // 15 mins
@@ -73,9 +74,9 @@ abstract class RollingUpdater<T extends HasMetadata, L, D> {
 
   protected abstract PodList listSelectedPods(T obj);
 
-  protected abstract T updateDeploymentKey(T obj, String hash);
+  protected abstract void updateDeploymentKey(D obj, String hash);
 
-  protected abstract T removeDeploymentKey(T obj);
+  protected abstract void removeDeploymentKey(D obj);
 
   protected abstract int getReplicas(T obj);
 
@@ -95,24 +96,27 @@ abstract class RollingUpdater<T extends HasMetadata, L, D> {
       PodList oldPods = listSelectedPods(oldObj);
 
       for (Pod pod : oldPods.getItems()) {
-        pod.getMetadata().getLabels().put(DEPLOYMENT_KEY, oldDeploymentHash);
         try {
-          pods().inNamespace(namespace).withName(pod.getMetadata().getName()).replace(pod);
+          pods().inNamespace(namespace).withName(pod.getMetadata().getName())
+            .edit()
+            .editMetadata().addToLabels(DEPLOYMENT_KEY, oldDeploymentHash)
+            .and().done();
         } catch (KubernetesClientException e) {
           LOG.warn("Unable to add deployment key to pod: {}", e.getMessage());
         }
       }
 
       // Now we can update the old object with the new selector
-      oldObj = updateDeploymentKey(oldObj, oldDeploymentHash);
-      resources().inNamespace(namespace).withName(oldName).cascading(false).replace(oldObj);
+      D editable = resources().inNamespace(namespace).withName(oldName).cascading(false).edit();
+      updateDeploymentKey(editable, oldDeploymentHash);
+      oldObj = editable.done();
 
       // Get a hash of the new RC for
       String newDeploymentHash = md5sum(newObj);
 
       // And a name for the cloned object
       String newName = newObj.getMetadata().getName();
-      if (newName == null || newName.equals(oldObj.getMetadata().getName())) {
+      if (newName == null || newName.equals(oldName)) {
         newName = newName + "-" + newDeploymentHash;
       }
 
@@ -150,8 +154,9 @@ abstract class RollingUpdater<T extends HasMetadata, L, D> {
 
         resources().inNamespace(namespace).withName(newName).cascading(false).delete();
 
-        createdObj = removeDeploymentKey(createdObj);
-        createdObj = resources().inNamespace(namespace).withName(createdObj.getMetadata().getName()).cascading(false).replace(createdObj);
+        editable = resources().inNamespace(namespace).withName(createdObj.getMetadata().getName()).cascading(false).edit();
+        removeDeploymentKey(editable);
+        createdObj = editable.done();
       }
 
       return createdObj;

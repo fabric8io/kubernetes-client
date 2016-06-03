@@ -15,8 +15,5 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface ImageEditReplaceable<I, T, D> extends EditReplaceable<I, T, D> {
-
-  T updateImage(String image);
-
+public interface EditReplacePatchable<I, T, D> extends Editable<D>, Replaceable<I, T>, Updateable<I, T>, Patchable<I, T> {
 }

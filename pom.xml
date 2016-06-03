@@ -75,15 +75,16 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <mockwebserver.version>0.0.2</mockwebserver.version>
-    <okhttp.version>2.7.2</okhttp.version>
+    <okhttp.version>2.7.5</okhttp.version>
     <okio.version>1.6.0</okio.version>
     <easymock.version>3.4</easymock.version>
     <felix.scr.annotations.version>1.9.8</felix.scr.annotations.version>
     <generex.version>0.0.4</generex.version>
     <jackson.version>2.7.0</jackson.version>
     <junit.version>4.12</junit.version>
-    <kubernetes.model.version>1.0.49</kubernetes.model.version>
+    <kubernetes.model.version>1.0.51</kubernetes.model.version>
     <log4j.version>2.5</log4j.version>
+    <zjsonpatch.version>0.2.3</zjsonpatch.version>
 
     <slf4j.version>1.7.13</slf4j.version>
     <snakeyaml.version>1.16</snakeyaml.version>

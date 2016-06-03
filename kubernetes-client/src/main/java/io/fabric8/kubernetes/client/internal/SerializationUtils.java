@@ -15,14 +15,14 @@
  */
 package io.fabric8.kubernetes.client.internal;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ReplicationController;
-import io.fabric8.kubernetes.api.model.ReplicationControllerStatus;
+import io.fabric8.kubernetes.client.internal.serializationmixins.ObjectMetaMixIn;
+import io.fabric8.kubernetes.client.internal.serializationmixins.ReplicationControllerMixIn;
 
 public class SerializationUtils {
 
@@ -33,8 +33,8 @@ public class SerializationUtils {
   public static ObjectMapper getStatelessMapper() {
     if (statelessMapper == null) {
       statelessMapper = new ObjectMapper(new YAMLFactory());
-      statelessMapper.addMixIn(ObjectMeta.class, ObjectMetaMixIn.class);
-      statelessMapper.addMixIn(ReplicationController.class, StatelessReplicationControllerMixIn.class);
+      statelessMapper.addMixInAnnotations(ObjectMeta.class, ObjectMetaMixIn.class);
+      statelessMapper.addMixInAnnotations(ReplicationController.class, ReplicationControllerMixIn.class);
     }
     return statelessMapper;
   }
@@ -52,49 +52,6 @@ public class SerializationUtils {
 
   public static String dumpWithoutRuntimeStateAsYaml(HasMetadata obj) throws JsonProcessingException {
     return getStatelessMapper().writeValueAsString(obj);
-  }
-
-  abstract class ObjectMetaMixIn extends ObjectMeta {
-    @JsonIgnore
-    private String creationTimestamp;
-    @JsonIgnore
-    private String deletionTimestamp;
-    @JsonIgnore
-    private Long generation;
-    @JsonIgnore
-    private String resourceVersion;
-    @JsonIgnore
-    private String selfLink;
-    @JsonIgnore
-    private String uid;
-
-    @Override
-    @JsonIgnore
-    public abstract String getCreationTimestamp();
-    @Override
-    @JsonIgnore
-    public abstract String getDeletionTimestamp();
-    @Override
-    @JsonIgnore
-    public abstract Long getGeneration();
-    @Override
-    @JsonIgnore
-    public abstract String getResourceVersion();
-    @Override
-    @JsonIgnore
-    public abstract String getSelfLink();
-    @Override
-    @JsonIgnore
-    public abstract String getUid();
-  }
-
-  abstract class StatelessReplicationControllerMixIn extends ReplicationController {
-    @JsonIgnore
-    private ReplicationControllerStatus status;
-
-    @Override
-    @JsonIgnore
-    public abstract ReplicationControllerStatus getStatus();
   }
 
 }

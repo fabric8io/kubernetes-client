@@ -13,16 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.fabric8.kubernetes.client.dsl;
 
-package io.fabric8.kubernetes.client.mock;
+public interface ImageEditReplacePatchable<I, T, D> extends EditReplacePatchable<I, T, D> {
 
-import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.client.dsl.Rollable;
-import io.fabric8.kubernetes.client.dsl.ScaleableResource;
-import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
-import org.easymock.IExpectationSetters;
+  T updateImage(String image);
 
-public interface MockRollableScaleableResource<T, D, B> extends ScaleableResource<T, IExpectationSetters<T>, D, IExpectationSetters<B>, IExpectationSetters<Watch>, Watcher<T>>,
-  Rollable<TimeoutImageEditReplacePatchable<T, IExpectationSetters<T>, D>> {
 }

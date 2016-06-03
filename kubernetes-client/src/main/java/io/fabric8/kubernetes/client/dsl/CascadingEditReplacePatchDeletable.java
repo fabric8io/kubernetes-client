@@ -16,7 +16,7 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface CascadingEditReplaceDeletable<I,D,T,B> extends
-  EditReplaceDeletable<I,D,T,B>,
-  Cascading<EditReplaceDeletable<I,D,T,B>> {
+public interface CascadingEditReplacePatchDeletable<I,D,T,B> extends
+  EditReplacePatchDeletable<I,D,T,B>,
+  Cascading<EditReplacePatchDeletable<I,D,T,B>> {
 }

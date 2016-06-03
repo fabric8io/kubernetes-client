@@ -51,4 +51,18 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
         throw KubernetesClientException.launderThrowable(e);
       }
   }
+
+  @Override
+  public Service patch(Service item) {
+      try {
+        Service old = getMandatory();
+        return super.patch(new ServiceBuilder(item)
+          .editSpec()
+          .withClusterIP(old.getSpec().getClusterIP())
+          .endSpec()
+          .build());
+      } catch (Exception e) {
+        throw KubernetesClientException.launderThrowable(e);
+      }
+  }
 }

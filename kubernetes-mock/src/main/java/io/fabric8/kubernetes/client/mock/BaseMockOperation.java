@@ -177,7 +177,7 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   }
 
   @Override
-  public EditReplaceDeletable<T, IExpectationSetters<T>, B, IExpectationSetters<Boolean>> cascading(boolean enabled) {
+  public EditReplacePatchDeletable<T, IExpectationSetters<T>, B, IExpectationSetters<Boolean>> cascading(boolean enabled) {
     IArgumentMatcher matcher = getArgument(enabled);
     BaseMockOperation<T, L, D, B, R, E> op = cascadingMap.get(matcher);
     if (op == null) {
@@ -196,6 +196,11 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
 
   @Override
   public IExpectationSetters<T> replace(T item) {
+    return null;
+  }
+
+  @Override
+  public IExpectationSetters<T> patch(T item) {
     return null;
   }
 

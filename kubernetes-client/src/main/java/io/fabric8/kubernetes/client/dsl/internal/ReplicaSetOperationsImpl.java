@@ -28,10 +28,10 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
-import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
-import io.fabric8.kubernetes.client.dsl.ImageEditReplaceable;
+import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
+import io.fabric8.kubernetes.client.dsl.ImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.Reaper;
-import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplaceable;
+import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.Watchable;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import org.slf4j.Logger;
@@ -51,7 +51,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, ClientRollableScallableResource<ReplicaSet, DoneableReplicaSet>>
   implements ClientRollableScallableResource<ReplicaSet, DoneableReplicaSet>,
-  TimeoutImageEditReplaceable<ReplicaSet, ReplicaSet, DoneableReplicaSet> {
+  TimeoutImageEditReplacePatchable<ReplicaSet, ReplicaSet, DoneableReplicaSet> {
 
   static final transient Logger LOG = LoggerFactory.getLogger(ReplicationControllerOperationsImpl.class);
 
@@ -76,12 +76,12 @@ public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, R
   }
 
   @Override
-  public ImageEditReplaceable<ReplicaSet, ReplicaSet, DoneableReplicaSet> withTimeout(long timeout, TimeUnit unit) {
+  public ImageEditReplacePatchable<ReplicaSet, ReplicaSet, DoneableReplicaSet> withTimeout(long timeout, TimeUnit unit) {
     return new ReplicaSetOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rolling, timeout, unit);
   }
 
   @Override
-  public ImageEditReplaceable<ReplicaSet, ReplicaSet, DoneableReplicaSet> withTimeoutInMillis(long timeoutInMillis) {
+  public ImageEditReplacePatchable<ReplicaSet, ReplicaSet, DoneableReplicaSet> withTimeoutInMillis(long timeoutInMillis) {
     return new ReplicaSetOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rolling, timeoutInMillis, TimeUnit.MILLISECONDS);
   }
 
@@ -109,7 +109,7 @@ public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, R
   }
 
   @Override
-  public EditReplaceDeletable<ReplicaSet, ReplicaSet, DoneableReplicaSet, Boolean> cascading(boolean enabled) {
+  public EditReplacePatchDeletable<ReplicaSet, ReplicaSet, DoneableReplicaSet, Boolean> cascading(boolean enabled) {
     return new ReplicaSetOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), enabled, getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rolling, rollingTimeout, rollingTimeUnit);
   }
 
@@ -214,6 +214,14 @@ public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, R
   public ReplicaSet replace(ReplicaSet rc) {
     if (!rolling) {
       return super.replace(rc);
+    }
+    return new ReplicaSetRollingUpdater(client, config, namespace, rollingTimeUnit.toMillis(rollingTimeout), getConfig().getLoggingInterval()).rollUpdate(getMandatory(), rc);
+  }
+
+  @Override
+  public ReplicaSet patch(ReplicaSet rc) {
+    if (!rolling) {
+      return super.patch(rc);
     }
     return new ReplicaSetRollingUpdater(client, config, namespace, rollingTimeUnit.toMillis(rollingTimeout), getConfig().getLoggingInterval()).rollUpdate(getMandatory(), rc);
   }

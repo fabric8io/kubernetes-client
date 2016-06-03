@@ -200,6 +200,12 @@
     </dependency>
 
     <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>zjsonpatch</artifactId>
+      <version>${zjsonpatch.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>com.github.mifmif</groupId>
       <artifactId>generex</artifactId>
       <version>${generex.version}</version>

@@ -55,23 +55,19 @@ class ReplicationControllerRollingUpdater extends RollingUpdater<ReplicationCont
   }
 
   @Override
-  protected ReplicationController updateDeploymentKey(ReplicationController obj, String hash) {
-    return new ReplicationControllerBuilder(obj)
-      .editSpec()
+  protected void updateDeploymentKey(DoneableReplicationController obj, String hash) {
+    obj.editSpec()
       .addToSelector(DEPLOYMENT_KEY, hash)
       .editTemplate().editMetadata().addToLabels(DEPLOYMENT_KEY, hash).endMetadata().endTemplate()
-      .endSpec()
-      .build();
+      .endSpec();
   }
 
   @Override
-  protected ReplicationController removeDeploymentKey(ReplicationController obj) {
-    return new ReplicationControllerBuilder(obj)
-      .editSpec()
+  protected void removeDeploymentKey(DoneableReplicationController obj) {
+    obj.editSpec()
       .removeFromSelector(DEPLOYMENT_KEY)
       .editTemplate().editMetadata().removeFromLabels(DEPLOYMENT_KEY).endMetadata().endTemplate()
-      .endSpec()
-      .build();
+      .endSpec();
   }
 
   @Override

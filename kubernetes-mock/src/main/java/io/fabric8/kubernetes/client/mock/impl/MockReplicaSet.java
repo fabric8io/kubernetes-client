@@ -21,10 +21,10 @@ import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
 import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
-import io.fabric8.kubernetes.client.dsl.ImageEditReplaceable;
+import io.fabric8.kubernetes.client.dsl.ImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.Rollable;
 import io.fabric8.kubernetes.client.dsl.Scaleable;
-import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplaceable;
+import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockRollableScaleableResource;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableReplicaSet;
@@ -39,12 +39,12 @@ public class MockReplicaSet extends BaseMockOperation<ReplicaSet, ReplicaSetList
   MockDoneableReplicaSet, ClientRollableScallableResource<ReplicaSet, DoneableReplicaSet>,
   MockRollableScaleableResource<ReplicaSet, MockDoneableReplicaSet, Boolean>>
   implements MockRollableScaleableResource<ReplicaSet, MockDoneableReplicaSet, Boolean>,
-  TimeoutImageEditReplaceable<ReplicaSet, IExpectationSetters<ReplicaSet>, MockDoneableReplicaSet> {
+  TimeoutImageEditReplacePatchable<ReplicaSet, IExpectationSetters<ReplicaSet>, MockDoneableReplicaSet> {
 
   private MockReplicaSet rolling;
 
   @Override
-  public TimeoutImageEditReplaceable<ReplicaSet, IExpectationSetters<ReplicaSet>, MockDoneableReplicaSet> rolling() {
+  public TimeoutImageEditReplacePatchable<ReplicaSet, IExpectationSetters<ReplicaSet>, MockDoneableReplicaSet> rolling() {
     if (rolling == null) {
       rolling = (MockReplicaSet) newInstance();
       expect(((Rollable<?>)getDelegate()).rolling())
@@ -67,16 +67,16 @@ public class MockReplicaSet extends BaseMockOperation<ReplicaSet, ReplicaSetList
 
   @Override
   public IExpectationSetters<ReplicaSet> updateImage(String image) {
-    return expect(((ImageEditReplaceable<ReplicaSet, ReplicaSet, DoneableReplicaSet>) getDelegate()).updateImage(image));
+    return expect(((ImageEditReplacePatchable<ReplicaSet, ReplicaSet, DoneableReplicaSet>) getDelegate()).updateImage(image));
   }
 
   @Override
-  public ImageEditReplaceable<ReplicaSet, IExpectationSetters<ReplicaSet>, MockDoneableReplicaSet> withTimeout(long timeout, TimeUnit unit) {
+  public ImageEditReplacePatchable<ReplicaSet, IExpectationSetters<ReplicaSet>, MockDoneableReplicaSet> withTimeout(long timeout, TimeUnit unit) {
     return null;
   }
 
   @Override
-  public ImageEditReplaceable<ReplicaSet, IExpectationSetters<ReplicaSet>, MockDoneableReplicaSet> withTimeoutInMillis(long timeoutInMillis) {
+  public ImageEditReplacePatchable<ReplicaSet, IExpectationSetters<ReplicaSet>, MockDoneableReplicaSet> withTimeoutInMillis(long timeoutInMillis) {
     return null;
   }
 
@@ -84,7 +84,7 @@ public class MockReplicaSet extends BaseMockOperation<ReplicaSet, ReplicaSetList
   private interface ReplicaSetDelegate
     extends ClientMixedOperation<ReplicaSet, ReplicaSet, DoneableReplicaSet, ClientRollableScallableResource<ReplicaSet, DoneableReplicaSet>>,
     ClientRollableScallableResource<ReplicaSet, DoneableReplicaSet>,
-    TimeoutImageEditReplaceable<ReplicaSet, ReplicaSet, DoneableReplicaSet> {
+    TimeoutImageEditReplacePatchable<ReplicaSet, ReplicaSet, DoneableReplicaSet> {
 
   }
 
