@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
+import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -255,6 +256,11 @@ public class PodTest extends KubernetesMockServerTestBase {
           case DELETED:
             deleteLatch.countDown();
         }
+      }
+
+      @Override
+      public void errorReceived(Status status) {
+
       }
 
       @Override

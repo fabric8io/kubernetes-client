@@ -51,6 +51,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
+import static java.net.HttpURLConnection.HTTP_GONE;
 
 public class WatchConnectionManager<T, L extends KubernetesResourceList> implements Watch {
 
@@ -133,11 +134,18 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
 
       @Override
       public void onFailure(IOException e, Response response) {
-        //We only need to queue startup failures.
-        Status status = OperationSupport.createStatus(response);
-        logger.error("Exec Failure: HTTP:" + status.getCode() + ". Message:" + status.getMessage(), e);
-        if (!started.get()) {
-          queue.add(new KubernetesClientException(status));
+        if (response != null) {
+          //We only need to queue startup failures.
+          Status status = OperationSupport.createStatus(response);
+          logger.error("Exec Failure: HTTP:" + status.getCode() + ". Message:" + status.getMessage(), e);
+          if (!started.get()) {
+            queue.add(new KubernetesClientException(status));
+          }
+        } else {
+          logger.error("Exec Failure", e);
+          if (!started.get()) {
+            queue.add(KubernetesClientException.launderThrowable(e));
+          }
         }
 
         try {
@@ -168,19 +176,35 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
 
       @Override
       public void onMessage(ResponseBody message) throws IOException {
+        String messageSource = null;
         try {
-          WatchEvent event = mapper.readValue(message.byteStream(), WatchEvent.class);
-          T obj = (T) event.getObject();
-          //Dirty cast - should always be valid though
-          String currentResourceVersion = resourceVersion.get();
-          String newResourceVersion = ((HasMetadata) obj).getMetadata().getResourceVersion();
-          if (currentResourceVersion.compareTo(newResourceVersion) < 0) {
-            resourceVersion.compareAndSet(currentResourceVersion, newResourceVersion);
+          messageSource = message.string();
+          WatchEvent event = mapper.readValue(messageSource, WatchEvent.class);
+
+          if (event.getObject() instanceof HasMetadata) {
+            T obj = (T) event.getObject();
+            //Dirty cast - should always be valid though
+            String currentResourceVersion = resourceVersion.get();
+            String newResourceVersion = ((HasMetadata) obj).getMetadata().getResourceVersion();
+            if (currentResourceVersion.compareTo(newResourceVersion) < 0) {
+              resourceVersion.compareAndSet(currentResourceVersion, newResourceVersion);
+            }
+            Watcher.Action action = Watcher.Action.valueOf(event.getType());
+            watcher.eventReceived(action, obj);
+          } else if (event.getObject() instanceof Status){
+            Status status = (Status) event.getObject();
+
+            // The resource version no longer exists - this has to be handled by the caller.
+            if (status.getCode() == HTTP_GONE) {
+              close();
+              watcher.onClose(new KubernetesClientException(status));
+              return;
+            }
+
+            watcher.errorReceived(status);
           }
-          Watcher.Action action = Watcher.Action.valueOf(event.getType());
-          watcher.eventReceived(action, obj);
         } catch (IOException e) {
-          logger.error("Could not deserialize watch event: {}", message.source().readUtf8(), e);
+          logger.error("Could not deserialize watch event: {}", messageSource, e);
         } catch (ClassCastException e) {
           logger.error("Received wrong type of object for watch", e);
         } catch (IllegalArgumentException e) {
@@ -202,10 +226,24 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
           return;
         }
 
+        // Let's close the websocket before trying to reopen a new one.
+        try {
+          WebSocket ws = webSocketRef.get();
+          if (ws != null) {
+            ws.close(1000, "Closing...");
+            webSocketRef.set(null);
+          }
+        } catch (IOException e) {
+          e.printStackTrace();
+        } catch (IllegalStateException e) {
+          // Ignore...
+        }
+
         executor.submit(new Runnable() {
           @Override
           public void run() {
             try {
+              queue.clear();
               runWatch();
             } catch (ExecutionException e) {
               if (e.getCause() != null && e.getCause().getCause() != null && e.getCause().getCause() instanceof ConnectException) {
@@ -233,7 +271,7 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
   public void waitUntilReady() {
     try {
       Object obj = queue.poll(10, TimeUnit.SECONDS);
-      if (obj instanceof Boolean && ((Boolean) obj)) {
+      if (Boolean.TRUE.equals(obj)) {
         return;
       } else {
         if (obj instanceof Throwable) {
@@ -252,6 +290,7 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
       WebSocket ws = webSocketRef.get();
       if (ws != null) {
         ws.close(1000, "Closing...");
+        webSocketRef.set(null);
       }
     } catch (IOException e) {
       e.printStackTrace();
