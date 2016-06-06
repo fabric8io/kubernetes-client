@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.kubernetes.client.dsl;
 
-public interface TimeoutImageEditReplaceable<I, T, D> extends
-  Timeoutable<ImageEditReplaceable<I, T, D>>,
-  ImageEditReplaceable<I, T, D> {
+public interface Patchable<I, T> {
+
+  T patch(I item);
+
 }

@@ -13,16 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.fabric8.kubernetes.client.internal.patchmixins;
 
-package io.fabric8.kubernetes.client.mock;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.fabric8.openshift.api.model.Build;
+import io.fabric8.openshift.api.model.BuildSpec;
 
-import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.client.dsl.Rollable;
-import io.fabric8.kubernetes.client.dsl.ScaleableResource;
-import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
-import org.easymock.IExpectationSetters;
+public abstract class BuildMixIn extends Build {
+  @JsonIgnore
+  private BuildSpec spec;
 
-public interface MockRollableScaleableResource<T, D, B> extends ScaleableResource<T, IExpectationSetters<T>, D, IExpectationSetters<B>, IExpectationSetters<Watch>, Watcher<T>>,
-  Rollable<TimeoutImageEditReplacePatchable<T, IExpectationSetters<T>, D>> {
+  @Override
+  @JsonIgnore
+  public abstract BuildSpec getSpec();
 }

@@ -13,7 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.fabric8.kubernetes.client.dsl;
 
-public interface EditReplaceable<I, T, D> extends Editable<D>, Replaceable<I, T>, Updateable<I, T> {
+import io.fabric8.kubernetes.client.GracePeriodConfigurable;
+
+public interface EditReplacePatchDeletable<I, T, D, B> extends EditReplacePatchable<I, T, D>, Deletable<B>,
+                                                          GracePeriodConfigurable<Deletable<B>>
+{
 }

@@ -48,7 +48,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
               reaper.reap();
             }
           }
-          return replace(resource);
+          return patch(resource);
         } catch (Exception e) {
           throw KubernetesClientException.launderThrowable(e);
         }
@@ -85,6 +85,53 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
             try {
               resource.getMetadata().setResourceVersion(got.getMetadata().getResourceVersion());
               return handleReplace(resource);
+            } catch (Exception e) {
+              throw KubernetesClientException.launderThrowable(e);
+            }
+          }
+        };
+        D doneable = (D) getDoneableType().getDeclaredConstructor(getType(), Function.class).newInstance(item, visitor);
+        return doneable.done();
+      } catch (KubernetesClientException e) {
+        caught = e;
+        // Only retry if there's a conflict - this is normally to do with resource version & server updates.
+        if (e.getCode() != 409) {
+          break;
+        }
+        if (i < maxTries - 1) {
+          try {
+            TimeUnit.SECONDS.sleep(1);
+          } catch (InterruptedException e1) {
+            // Ignore this... would only hide the proper exception
+          }
+        }
+      } catch (Exception e) {
+        caught = e;
+      }
+    }
+    throw KubernetesClientException.launderThrowable(caught);
+  }
+
+  public T patch(T item) {
+    Exception caught = null;
+    int maxTries = 10;
+    for (int i = 0; i < maxTries; i++) {
+      try {
+        if (isCascading()) {
+          if (reaper != null && !isReaping()) {
+            setReaping(true);
+            reaper.reap();
+          }
+        }
+        final T got = get();
+        if (got == null) {
+          return null;
+        }
+        final Function<T, T> visitor = new Function<T, T>() {
+          @Override
+          public T apply(T resource) {
+            try {
+              return handlePatch(got, resource);
             } catch (Exception e) {
               throw KubernetesClientException.launderThrowable(e);
             }

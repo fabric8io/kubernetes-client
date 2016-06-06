@@ -83,23 +83,19 @@ class ReplicaSetRollingUpdater extends RollingUpdater<ReplicaSet, ReplicaSetList
   }
 
   @Override
-  protected ReplicaSet updateDeploymentKey(ReplicaSet obj, String hash) {
-    return new ReplicaSetBuilder(obj)
-      .editSpec()
+  protected void updateDeploymentKey(DoneableReplicaSet obj, String hash) {
+    obj.editSpec()
       .editSelector().addToMatchLabels(DEPLOYMENT_KEY, hash).endSelector()
       .editTemplate().editMetadata().addToLabels(DEPLOYMENT_KEY, hash).endMetadata().endTemplate()
-      .endSpec()
-      .build();
+      .endSpec();
   }
 
   @Override
-  protected ReplicaSet removeDeploymentKey(ReplicaSet obj) {
-    return new ReplicaSetBuilder(obj)
-      .editSpec()
+  protected void removeDeploymentKey(DoneableReplicaSet obj) {
+    obj.editSpec()
       .editSelector().removeFromMatchLabels(DEPLOYMENT_KEY).endSelector()
       .editTemplate().editMetadata().removeFromLabels(DEPLOYMENT_KEY).endMetadata().endTemplate()
-      .endSpec()
-      .build();
+      .endSpec();
   }
 
   @Override

@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.base;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.squareup.okhttp.MediaType;
@@ -24,11 +25,16 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.ResponseBody;
-import io.fabric8.kubernetes.api.model.*;
+import io.fabric8.kubernetes.api.model.DeleteOptions;
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.Status;
+import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
+import io.fabric8.zjsonpatch.JsonDiff;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -37,10 +43,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
+import static io.fabric8.kubernetes.client.internal.PatchUtils.patchMapper;
+
 public class OperationSupport {
 
 
   public static final MediaType JSON = MediaType.parse("application/json");
+  public static final MediaType JSON_PATCH = MediaType.parse("application/json-patch+json");
   protected static final ObjectMapper JSON_MAPPER = new ObjectMapper();
   protected static final ObjectMapper YAML_MAPPER = new ObjectMapper(new YAMLFactory());
   private static final String CLIENT_STATUS_FLAG = "CLIENT_STATUS_FLAG";
@@ -201,6 +210,13 @@ public class OperationSupport {
   protected <T> T handleReplace(T updated, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     RequestBody body = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(updated));
     Request.Builder requestBuilder = new Request.Builder().put(body).url(getResourceUrl(checkNamespace(updated), checkName(updated)));
+    return handleResponse(requestBuilder, 200, type);
+  }
+
+  protected <T> T handlePatch(T current, T updated, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+    JsonNode diff = JsonDiff.asJson(patchMapper().valueToTree(current), patchMapper().valueToTree(updated));
+    RequestBody body = RequestBody.create(JSON_PATCH, JSON_MAPPER.writeValueAsString(diff));
+    Request.Builder requestBuilder = new Request.Builder().patch(body).url(getResourceUrl(checkNamespace(updated), checkName(updated)));
     return handleResponse(requestBuilder, 200, type);
   }
 

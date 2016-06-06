@@ -84,6 +84,14 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
     return super.replace(item);
   }
 
+  @Override
+  public Deployment patch(Deployment item) {
+    if (isCascading()) {
+      return cascading(false).patch(item);
+    }
+    return super.patch(item);
+  }
+
   /**
    * Lets wait until there are enough Ready pods of the given Deployment
    */

@@ -31,7 +31,7 @@ import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.Deletable;
-import io.fabric8.kubernetes.client.dsl.EditReplaceDeletable;
+import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.Reaper;
@@ -202,7 +202,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
 
   @Override
-  public EditReplaceDeletable<T, T, D, Boolean> cascading(boolean cascading) {
+  public EditReplacePatchDeletable<T, T, D, Boolean> cascading(boolean cascading) {
     try {
       return getClass()
         .getConstructor(OkHttpClient.class, getConfigType(), String.class, String.class, String.class, Boolean.class, getType(), String.class, Boolean.class, long.class, Map.class, Map.class, Map.class, Map.class, Map.class)
@@ -530,6 +530,11 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     throw new KubernetesClientException("Cannot update read-only resources");
   }
 
+  @Override
+  public T patch(T item) {
+    throw new KubernetesClientException("Cannot update read-only resources");
+  }
+
   public boolean isResourceNamespaced() {
     return true;
   }
@@ -544,6 +549,10 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   protected T handleReplace(T updated) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     return handleReplace(updated, getType());
+  }
+
+  protected T handlePatch(T current, T updated) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+    return handlePatch(current, updated, getType());
   }
 
   protected T handleGet(URL resourceUrl) throws InterruptedException, ExecutionException, IOException {

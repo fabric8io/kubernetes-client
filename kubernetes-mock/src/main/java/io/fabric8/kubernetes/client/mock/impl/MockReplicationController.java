@@ -21,10 +21,10 @@ import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
-import io.fabric8.kubernetes.client.dsl.ImageEditReplaceable;
+import io.fabric8.kubernetes.client.dsl.ImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.Rollable;
 import io.fabric8.kubernetes.client.dsl.Scaleable;
-import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplaceable;
+import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.mock.BaseMockOperation;
 import io.fabric8.kubernetes.client.mock.MockRollableScaleableResource;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableReplicationController;
@@ -39,16 +39,16 @@ public class MockReplicationController  extends BaseMockOperation<ReplicationCon
   MockDoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>,
   MockRollableScaleableResource<ReplicationController, MockDoneableReplicationController, Boolean>>
   implements MockRollableScaleableResource<ReplicationController, MockDoneableReplicationController, Boolean>,
-  TimeoutImageEditReplaceable<ReplicationController, IExpectationSetters<ReplicationController>, MockDoneableReplicationController> {
+  TimeoutImageEditReplacePatchable<ReplicationController, IExpectationSetters<ReplicationController>, MockDoneableReplicationController> {
 
 
   @Override
-  public ImageEditReplaceable<ReplicationController, IExpectationSetters<ReplicationController>, MockDoneableReplicationController> withTimeout(long timeout, TimeUnit unit) {
+  public ImageEditReplacePatchable<ReplicationController, IExpectationSetters<ReplicationController>, MockDoneableReplicationController> withTimeout(long timeout, TimeUnit unit) {
     return null;
   }
 
   @Override
-  public ImageEditReplaceable<ReplicationController, IExpectationSetters<ReplicationController>, MockDoneableReplicationController> withTimeoutInMillis(long timeoutInMillis) {
+  public ImageEditReplacePatchable<ReplicationController, IExpectationSetters<ReplicationController>, MockDoneableReplicationController> withTimeoutInMillis(long timeoutInMillis) {
     return null;
   }
 
@@ -56,7 +56,7 @@ public class MockReplicationController  extends BaseMockOperation<ReplicationCon
   private interface ReplicationControllerDelegate
     extends ClientMixedOperation<ReplicationController, ReplicationController, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>>,
     ClientRollableScallableResource<ReplicationController, DoneableReplicationController>,
-    TimeoutImageEditReplaceable<ReplicationController, ReplicationController, DoneableReplicationController> {
+    TimeoutImageEditReplacePatchable<ReplicationController, ReplicationController, DoneableReplicationController> {
 
   }
 
@@ -82,11 +82,11 @@ public class MockReplicationController  extends BaseMockOperation<ReplicationCon
 
   @Override
   public IExpectationSetters<ReplicationController> updateImage(String image) {
-    return expect(((ImageEditReplaceable<ReplicationController, ReplicationController, DoneableReplicationController>) getDelegate()).updateImage(image));
+    return expect(((ImageEditReplacePatchable<ReplicationController, ReplicationController, DoneableReplicationController>) getDelegate()).updateImage(image));
   }
 
   @Override
-  public TimeoutImageEditReplaceable<ReplicationController, IExpectationSetters<ReplicationController>, MockDoneableReplicationController> rolling() {
+  public TimeoutImageEditReplacePatchable<ReplicationController, IExpectationSetters<ReplicationController>, MockDoneableReplicationController> rolling() {
     if (rolling == null) {
       rolling = (MockReplicationController) newInstance();
       expect(((Rollable<?>)getDelegate()).rolling())
