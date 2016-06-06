@@ -15,9 +15,13 @@
  */
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.api.model.Status;
+
 public interface Watcher<T> {
 
   void eventReceived(Action action, T resource);
+
+  void errorReceived(Status status);
 
   /**
    * Run when the watcher finally closes.

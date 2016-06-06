@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.examples;
 
 import io.fabric8.kubernetes.api.model.ReplicationController;
+import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
@@ -28,6 +29,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+
+import static io.fabric8.kubernetes.client.Watcher.Action.ERROR;
 
 public class WatchExample {
 
@@ -49,6 +52,11 @@ public class WatchExample {
         }
 
         @Override
+        public void errorReceived(Status status) {
+          logger.error("{}: {}", ERROR, status);
+        }
+
+        @Override
         public void onClose(KubernetesClientException e) {
           if (e != null) {
             logger.error(e.getMessage(), e);
@@ -64,6 +72,11 @@ public class WatchExample {
         @Override
         public void eventReceived(Action action, ReplicationController resource) {
           logger.info("{}: {}", action, resource.getMetadata().getResourceVersion());
+        }
+
+        @Override
+        public void errorReceived(Status status) {
+          logger.error("{}: {}", ERROR, status);
         }
 
         @Override
