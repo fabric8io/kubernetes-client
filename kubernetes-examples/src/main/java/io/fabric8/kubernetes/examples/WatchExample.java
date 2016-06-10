@@ -52,11 +52,6 @@ public class WatchExample {
         }
 
         @Override
-        public void errorReceived(Status status) {
-          logger.error("{}: {}", ERROR, status);
-        }
-
-        @Override
         public void onClose(KubernetesClientException e) {
           if (e != null) {
             logger.error(e.getMessage(), e);
@@ -72,11 +67,6 @@ public class WatchExample {
         @Override
         public void eventReceived(Action action, ReplicationController resource) {
           logger.info("{}: {}", action, resource.getMetadata().getResourceVersion());
-        }
-
-        @Override
-        public void errorReceived(Status status) {
-          logger.error("{}: {}", ERROR, status);
         }
 
         @Override

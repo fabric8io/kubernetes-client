@@ -259,11 +259,6 @@ public class PodTest extends KubernetesMockServerTestBase {
       }
 
       @Override
-      public void errorReceived(Status status) {
-
-      }
-
-      @Override
       public void onClose(KubernetesClientException cause) {
 
       }
