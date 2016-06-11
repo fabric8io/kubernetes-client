@@ -56,11 +56,6 @@ public class FullExample {
                 }
 
                 @Override
-                public void errorReceived(Status status) {
-                  logger.warn("{}: {}", ERROR, status);
-                }
-
-                @Override
                 public void onClose(KubernetesClientException e) {
                     if (e != null) {
                         e.printStackTrace();

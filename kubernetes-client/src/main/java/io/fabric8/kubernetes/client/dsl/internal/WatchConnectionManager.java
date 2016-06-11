@@ -126,6 +126,7 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
 
       @Override
       public void onOpen(WebSocket webSocket, Response response) {
+        logger.debug("WebSocket successfully opened");
         webSocketRef.set(webSocket);
         currentReconnectAttempt.set(0);
         started.set(true);
@@ -201,7 +202,7 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
               return;
             }
 
-            watcher.errorReceived(status);
+            logger.error("Error received: {}", status.toString());
           }
         } catch (IOException e) {
           logger.error("Could not deserialize watch event: {}", messageSource, e);
