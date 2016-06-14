@@ -94,7 +94,11 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
       public void run() {
         Job job = getMandatory();
         atomicJob.set(job);
-        if (Objects.equals(job.getSpec().getParallelism(), job.getStatus().getActive())) {
+        Integer activeJobs  = job.getStatus().getActive();
+        if (activeJobs == null){
+          activeJobs = 0;
+        }
+        if (Objects.equals(job.getSpec().getParallelism(), activeJobs)) {
           countDownLatch.countDown();
         } else {
           LOG.debug("Only {}/{} pods scheduled for Job: {} in namespace: {} seconds so waiting...",
