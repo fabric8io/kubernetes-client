@@ -79,10 +79,10 @@
     <okio.version>1.6.0</okio.version>
     <easymock.version>3.4</easymock.version>
     <felix.scr.annotations.version>1.9.8</felix.scr.annotations.version>
-    <generex.version>0.0.4</generex.version>
-    <jackson.version>2.7.0</jackson.version>
+    <generex.version>1.0.1</generex.version>
+    <jackson.version>2.7.5</jackson.version>
     <junit.version>4.12</junit.version>
-    <kubernetes.model.version>1.0.51</kubernetes.model.version>
+    <kubernetes.model.version>1.0.52</kubernetes.model.version>
     <log4j.version>2.5</log4j.version>
     <zjsonpatch.version>0.2.3</zjsonpatch.version>
 
@@ -90,14 +90,14 @@
     <snakeyaml.version>1.16</snakeyaml.version>
 
     <scr.annotations.version>1.9.12</scr.annotations.version>
-    <sundrio.version>0.2.7</sundrio.version>
+    <sundrio.version>0.3.3</sundrio.version>
 
-    <maven.bundle.plugin.version>2.5.4</maven.bundle.plugin.version>
-    <maven.buildhelper.plugin.version>1.9.1</maven.buildhelper.plugin.version>
-    <maven.jar.plugin.version>2.6</maven.jar.plugin.version>
-    <maven.resources.plugin.version>2.7</maven.resources.plugin.version>
-    <maven.surefire.plugin.version>2.18.1</maven.surefire.plugin.version>
-    <maven.scr.plugin.version>1.21.0</maven.scr.plugin.version>
+    <maven.bundle.plugin.version>3.0.1</maven.bundle.plugin.version>
+    <maven.buildhelper.plugin.version>1.10</maven.buildhelper.plugin.version>
+    <maven.jar.plugin.version>3.0.1</maven.jar.plugin.version>
+    <maven.resources.plugin.version>3.0.1</maven.resources.plugin.version>
+    <maven.surefire.plugin.version>2.19.1</maven.surefire.plugin.version>
+    <maven.scr.plugin.version>1.22.0</maven.scr.plugin.version>
 
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
