@@ -124,6 +124,7 @@
     <module>openshift-mock</module>
     <module>kubernetes-examples</module>
     <module>platforms</module>
+    <module>kubernetes-tests</module>
   </modules>
 
   <build>
