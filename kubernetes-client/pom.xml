@@ -60,6 +60,7 @@
           <reuseForks>false</reuseForks>
           <!-- We cleanup system properties an env vars, so that we can test in a predictable env -->
           <environmentVariables>
+            <KUBERNETES_MASTER></KUBERNETES_MASTER>
             <KUBERNETES_API_VERSION></KUBERNETES_API_VERSION>
             <KUBERNETES_TRUST_CERTIFICATES></KUBERNETES_TRUST_CERTIFICATES>
             <KUBERNETES_CERTS_CA_FILE></KUBERNETES_CERTS_CA_FILE>
@@ -240,21 +241,6 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>${junit.version}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
-      <version>${log4j.version}</version>
-      <scope>test</scope>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
-      <version>${log4j.version}</version>
-      <optional>true</optional>
       <scope>test</scope>
     </dependency>
   </dependencies>
