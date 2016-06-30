@@ -31,6 +31,7 @@ import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigList;
+import io.fabric8.openshift.api.model.BuildList;
 import io.fabric8.openshift.api.model.BuildRequest;
 import io.fabric8.openshift.api.model.DoneableBuildConfig;
 import io.fabric8.openshift.api.model.WebHookTrigger;
@@ -46,6 +47,9 @@ import java.util.TreeMap;
 public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, BuildConfigList, DoneableBuildConfig,
         ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build>>
   implements BuildConfigOperation {
+
+  public static final String BUILD_CONFIG_LABEL = "openshift.io/build-config.name";
+  public static final String BUILD_CONFIG_ANNOTATION = "openshift.io/build-config.name";
 
   private final String secret;
   private final String triggerType;
@@ -134,8 +138,30 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
     return buildConfigOperations;
   }
 
+  /*
+   * Labels are limited to 63 chars so need to first truncate the build config name (if required), retrieve builds with matching label,
+   * then check the build config name against the builds' build config annotation which have no such length restriction (but
+   * aren't usable for searching). Would be better if referenced build config was available via fields but it currently isn't...
+   */
   private void deleteBuilds() {
-    new BuildOperationsImpl(client, (OpenShiftConfig) config, namespace).withLabel("buildconfig", "edam").delete();
+    String buildConfigLabelValue = getName().substring(0, Math.min(getName().length(), 63));
+    BuildList matchingBuilds = new BuildOperationsImpl(client, (OpenShiftConfig) config, namespace).inNamespace(namespace).withLabel(BUILD_CONFIG_LABEL, buildConfigLabelValue).list();
+
+    if (matchingBuilds.getItems() != null) {
+
+      for (Build matchingBuild : matchingBuilds.getItems()) {
+
+        if (matchingBuild.getMetadata() != null &&
+          matchingBuild.getMetadata().getAnnotations() != null &&
+          getName().equals(matchingBuild.getMetadata().getAnnotations().get(BUILD_CONFIG_ANNOTATION))) {
+
+          new BuildOperationsImpl(client, (OpenShiftConfig) config, namespace).inNamespace(matchingBuild.getMetadata().getNamespace()).withName(matchingBuild.getMetadata().getName()).delete();
+
+        }
+
+      }
+
+    }
   }
 
   private static class BuildConfigReaper implements Reaper {
