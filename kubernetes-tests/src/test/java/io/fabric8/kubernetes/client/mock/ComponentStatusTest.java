@@ -36,7 +36,7 @@ public class ComponentStatusTest extends KubernetesMockServerTestBase	 {
 	
 	@Test
 	public void testComponentStatus() {
-		expect().withPath("/api/v1/namespaces/test/componentstatuses/scheduler").andReturn(200, status).once();
+		expect().withPath("/api/v1/componentstatuses/scheduler").andReturn(200, status).once();
 	
 		KubernetesClient client = getClient();
 		ComponentStatus stat = client.componentstatuses().withName("scheduler").get();
@@ -46,7 +46,7 @@ public class ComponentStatusTest extends KubernetesMockServerTestBase	 {
 	
 	@Test
 	public void testComponentStatusList() {
-		expect().withPath("/api/v1/namespaces/test/componentstatuses").andReturn(200, status).once();
+		expect().withPath("/api/v1/componentstatuses").andReturn(200, status).once();
 	
 		KubernetesClient client = getClient();
 		ComponentStatusList stats = client.componentstatuses().list();
