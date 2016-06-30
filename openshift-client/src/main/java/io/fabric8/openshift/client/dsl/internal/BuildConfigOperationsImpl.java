@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.Gettable;
+import io.fabric8.kubernetes.client.dsl.Reaper;
 import io.fabric8.kubernetes.client.dsl.Triggerable;
 import io.fabric8.kubernetes.client.dsl.Typeable;
 import io.fabric8.kubernetes.client.dsl.Watchable;
@@ -61,6 +62,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
     super(client, config, null, apiVersion, "buildconfigs", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
     this.triggerType = triggerType;
     this.secret = secret;
+    reaper = new BuildConfigReaper(this);
   }
 
   @Override
@@ -130,5 +132,22 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
     BuildConfigOperationsImpl buildConfigOperations = new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), resourceVersion, isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType);
 
     return buildConfigOperations;
+  }
+
+  private void deleteBuilds() {
+    new BuildOperationsImpl(client, (OpenShiftConfig) config, namespace).withLabel("buildconfig", "edam").delete();
+  }
+
+  private static class BuildConfigReaper implements Reaper {
+    private BuildConfigOperationsImpl oper;
+
+    public BuildConfigReaper(BuildConfigOperationsImpl oper) {
+      this.oper = oper;
+    }
+
+    @Override
+    public void reap() {
+      oper.deleteBuilds();
+    }
   }
 }
