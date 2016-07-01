@@ -20,6 +20,7 @@ import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigBuilder;
 import io.fabric8.openshift.api.model.BuildConfigList;
 import io.fabric8.openshift.api.model.BuildConfigListBuilder;
+import io.fabric8.openshift.api.model.BuildListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.Test;
 
@@ -87,8 +88,10 @@ public class BuildConfigTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testDelete() {
-    expect().withPath("/oapi/v1/namespaces/test/buildconfigs/bc1").andReturn(200, new BuildConfigBuilder().build()).once();
-    expect().withPath("/oapi/v1/namespaces/ns1/buildconfigs/bc2").andReturn( 200, new BuildConfigBuilder().build()).once();
+    expect().withPath("/oapi/v1/namespaces/test/buildconfigs/bc1").andReturn(200, new BuildConfigBuilder().withNewMetadata().withName("bc1").and().build()).once();
+    expect().withPath("/oapi/v1/namespaces/test/builds?labelSelector=openshift.io/build-config.name%3Dbc1").andReturn( 200, new BuildListBuilder().build()).once();
+    expect().withPath("/oapi/v1/namespaces/ns1/buildconfigs/bc2").andReturn( 200, new BuildConfigBuilder().withNewMetadata().withName("bc2").and().build()).once();
+    expect().withPath("/oapi/v1/namespaces/ns1/builds?labelSelector=openshift.io/build-config.name%3Dbc2").andReturn( 200, new BuildListBuilder().build()).once();
 
     OpenShiftClient client = getOpenshiftClient();
 
