@@ -2,6 +2,12 @@
 This client provides access to the full [Kubernetes](http://kubernetes.io/) &
 [OpenShift 3](http://openshift.org/) REST APIs via a fluent DSL.
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.fabric8/kubernetes-client/badge.svg?style=flat-square)](https://maven-badges.herokuapp.com/maven-central/io.fabric8/kubernetes-client/)
+[![Javadocs](http://www.javadoc.io/badge/io.fabric8/kubernetes-client.svg?color=blue)](http://www.javadoc.io/doc/io.fabric8/kubernetes-client)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.fabric8/openshift-client/badge.svg?style=flat-square)](https://maven-badges.herokuapp.com/maven-central/io.fabric8/openshift-client/)
+[![Javadocs](http://www.javadoc.io/badge/io.fabric8/kubernetes-client.svg?color=blue)](http://www.javadoc.io/doc/io.fabric8/openshift-client)
+
+
 ## Usage
 
 ### Creating a client
