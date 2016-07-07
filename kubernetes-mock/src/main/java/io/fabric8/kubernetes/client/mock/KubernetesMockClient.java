@@ -158,7 +158,7 @@ public class KubernetesMockClient implements Replayable<NamespacedKubernetesClie
     serviceAccounts.replay();
     securityContextConstraints.replay();
     kubernetesLists.replay();
-
+    configMaps.replay();
     extensions.replay();
     EasyMock.replay(client);
     return client;
