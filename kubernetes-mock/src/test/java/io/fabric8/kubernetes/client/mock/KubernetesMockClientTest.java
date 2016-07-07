@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+
+import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
@@ -44,6 +46,20 @@ import java.io.OutputStream;
 import static org.easymock.EasyMock.eq;
 
 public class KubernetesMockClientTest {
+
+  @Test
+  public void testGetconfigMap() {
+    KubernetesMockClient mock = new KubernetesMockClient();
+
+    mock.configMaps().inNamespace(eq("ns1")).withName(eq("configMap1")).get().andReturn( new ConfigMapBuilder()
+      .withNewMetadata().withName("configMap1").endMetadata()
+      .build()
+    ).anyTimes();
+
+    NamespacedKubernetesClient client = mock.replay();
+
+    Assert.assertNotNull(client.configMaps().inNamespace("ns1").withName("configMap1").get());
+  }
 
   @Test
   public void testCreate() {
