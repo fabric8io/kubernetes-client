@@ -30,8 +30,6 @@ import java.util.concurrent.ConcurrentMap;
 @Service
 public class NamespacedOpenShiftExtensionAdapter extends OpenshiftAdapterSupport implements ExtensionAdapter<NamespacedOpenShiftClient> {
 
-  private static final ConcurrentMap<URL, Boolean> IS_OPENSHIFT = new ConcurrentHashMap<>();
-
   @Override
   public Class<NamespacedOpenShiftClient> getExtensionType() {
     return NamespacedOpenShiftClient.class;
