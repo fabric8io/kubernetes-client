@@ -15,3 +15,4 @@
 #
 
 io.fabric8.openshift.client.OpenShiftExtensionAdapter
+io.fabric8.openshift.client.NamespacedOpenShiftExtensionAdapter
