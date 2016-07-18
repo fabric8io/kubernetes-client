@@ -42,6 +42,7 @@ import io.fabric8.openshift.client.dsl.buildconfig.*;
 import okio.BufferedSink;
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 import java.util.TreeMap;
@@ -192,41 +193,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
 
   @Override
   public Build fromInputStream(final InputStream inputStream) {
-    // TODO: Get query options from https://github.com/openshift/origin/blob/master/pkg/build/api/types.go#L841-L841
     try {
-
-      StringBuilder sb = new StringBuilder();
-      sb.append(URLUtils.join(getResourceUrl().toString(), "instantiatebinary"));
-
-      if (Utils.isNullOrEmpty(message)) {
-        sb.append("?commit=");
-      } else {
-        sb.append("?commit=").append(message);
-      }
-
-      if (!Utils.isNullOrEmpty(authorName)) {
-        sb.append("&revision.authorName=").append(authorName);
-      }
-
-      if (!Utils.isNullOrEmpty(authorEmail)) {
-        sb.append("&revision.authorEmail=").append(authorEmail);
-      }
-
-      if (!Utils.isNullOrEmpty(committerName)) {
-        sb.append("&revision.committerName=").append(committerName);
-      }
-
-      if (!Utils.isNullOrEmpty(committerEmail)) {
-        sb.append("&revision.committerEmail=").append(committerEmail);
-      }
-
-      if (!Utils.isNullOrEmpty(commit)) {
-        sb.append("&revision.commit=").append(commit);
-      }
-
-      if (!Utils.isNullOrEmpty(asFile)) {
-        sb.append("&asFile=").append(asFile);
-      }
 
       RequestBody requestBody = new RequestBody() {
         @Override
@@ -245,11 +212,58 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
         }
       };
 
-      Request.Builder requestBuilder = new Request.Builder().post(requestBody).url(sb.toString());
+      Request.Builder requestBuilder = new Request.Builder().post(requestBody).url(getQueryParameters());
       return handleResponse(requestBuilder, 201, Build.class);
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
+  }
+
+  @Override
+  public Build fromFile(final File file) {
+    try {
+      RequestBody requestBody = RequestBody.create(MediaType.parse("application/octet-stream"), file);
+      Request.Builder requestBuilder = new Request.Builder().post(requestBody).url(getQueryParameters());
+      return handleResponse(requestBuilder, 201, Build.class);
+    } catch (Exception e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+
+  private String getQueryParameters() throws MalformedURLException {
+    StringBuilder sb = new StringBuilder();
+    sb.append(URLUtils.join(getResourceUrl().toString(), "instantiatebinary"));
+
+    if (Utils.isNullOrEmpty(message)) {
+      sb.append("?commit=");
+    } else {
+      sb.append("?commit=").append(message);
+    }
+
+    if (!Utils.isNullOrEmpty(authorName)) {
+      sb.append("&revision.authorName=").append(authorName);
+    }
+
+    if (!Utils.isNullOrEmpty(authorEmail)) {
+      sb.append("&revision.authorEmail=").append(authorEmail);
+    }
+
+    if (!Utils.isNullOrEmpty(committerName)) {
+      sb.append("&revision.committerName=").append(committerName);
+    }
+
+    if (!Utils.isNullOrEmpty(committerEmail)) {
+      sb.append("&revision.committerEmail=").append(committerEmail);
+    }
+
+    if (!Utils.isNullOrEmpty(commit)) {
+      sb.append("&revision.commit=").append(commit);
+    }
+
+    if (!Utils.isNullOrEmpty(asFile)) {
+      sb.append("&asFile=").append(asFile);
+    }
+    return sb.toString();
   }
 
   @Override
