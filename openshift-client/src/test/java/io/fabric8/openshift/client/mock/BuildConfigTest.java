@@ -16,13 +16,12 @@
 
 package io.fabric8.openshift.client.mock;
 
-import io.fabric8.openshift.api.model.BuildConfig;
-import io.fabric8.openshift.api.model.BuildConfigBuilder;
-import io.fabric8.openshift.api.model.BuildConfigList;
-import io.fabric8.openshift.api.model.BuildConfigListBuilder;
-import io.fabric8.openshift.api.model.BuildListBuilder;
+import io.fabric8.openshift.api.model.*;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.Test;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -83,6 +82,28 @@ public class BuildConfigTest extends OpenShiftMockServerTestBase {
     buildConfig = client.buildConfigs().inNamespace("ns1").withName("bc2").get();
     assertNotNull(buildConfig);
     assertEquals("bc2", buildConfig.getMetadata().getName());
+  }
+
+  @Test
+  public void testBinaryBuild() {
+    expect().post().withPath("/oapi/v1/namespaces/ns1/buildconfigs/bc2/instantiatebinary?commit=some%20commit&revision.authorName=author%20name&revision.committerName=committer%20name&revision.committerEmail=committer@someorg.com")
+      .andReturn(201, new BuildBuilder()
+      .withNewMetadata().withName("bc2").endMetadata().build()).once();
+
+
+    OpenShiftClient client = getOpenshiftClient();
+    InputStream dummy = new ByteArrayInputStream("".getBytes() );
+
+    Build build = client.buildConfigs().inNamespace("ns1").withName("bc2").instantiateBinary()
+      .withCommitterName("committer name")
+      .withCommitterEmail("committer@someorg.com")
+      .withAuthorName("author name")
+      .withAuthorEmail("author@someorg.com")
+      .withMessage("some commit")
+      .fromInputStream(dummy);
+
+
+    assertNotNull(build);
   }
 
 
