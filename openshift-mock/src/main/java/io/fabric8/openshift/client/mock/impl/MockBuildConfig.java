@@ -35,6 +35,7 @@ import org.easymock.EasyMock;
 import org.easymock.IArgumentMatcher;
 import org.easymock.IExpectationSetters;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,6 +64,11 @@ public class MockBuildConfig extends BaseMockOperation<BuildConfig, BuildConfigL
   @Override
   public IExpectationSetters<Void> instantiate(BuildRequest request) {
     return expect(((Instantiateable<BuildRequest, Void>) getDelegate()).instantiate(request));
+  }
+
+  @Override
+  public IExpectationSetters<Void> instantiateBinary(InputStream inputStream) {
+    return expect(((Instantiateable<BuildRequest, Void>) getDelegate()).instantiateBinary(inputStream));
   }
 
   @Override
