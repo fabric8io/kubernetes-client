@@ -16,7 +16,6 @@
 
 package io.fabric8.openshift.client.dsl;
 
-import io.fabric8.kubernetes.client.dsl.Instantiateable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.Secretable;
 import io.fabric8.kubernetes.client.dsl.Triggerable;

@@ -16,7 +16,7 @@
 
 package io.fabric8.openshift.client.mock.impl;
 
-import io.fabric8.kubernetes.client.dsl.Instantiateable;
+import io.fabric8.openshift.client.dsl.Instantiateable;
 import io.fabric8.kubernetes.client.dsl.Secretable;
 import io.fabric8.kubernetes.client.dsl.Triggerable;
 import io.fabric8.kubernetes.client.dsl.Typeable;
@@ -29,6 +29,7 @@ import io.fabric8.openshift.api.model.DoneableBuildConfig;
 import io.fabric8.openshift.api.model.WebHookTrigger;
 import io.fabric8.openshift.client.dsl.BuildConfigOperation;
 import io.fabric8.openshift.client.dsl.ClientBuildConfigResource;
+import io.fabric8.openshift.client.dsl.buildconfig.CommitterAuthorMessageAsFileInputStreamable;
 import io.fabric8.openshift.client.mock.MockBuildConfigResource;
 import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableBuildConfig;
 import org.easymock.EasyMock;
@@ -36,6 +37,7 @@ import org.easymock.IArgumentMatcher;
 import org.easymock.IExpectationSetters;
 
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,9 +69,10 @@ public class MockBuildConfig extends BaseMockOperation<BuildConfig, BuildConfigL
   }
 
   @Override
-  public IExpectationSetters<Void> instantiateBinary(InputStream inputStream) {
-    return expect(((Instantiateable<BuildRequest, Void>) getDelegate()).instantiateBinary(inputStream));
+  public CommitterAuthorMessageAsFileInputStreamable<IExpectationSetters<Void>> instantiateBinary() {
+    throw new UnsupportedOperationException("Not implemented yet");
   }
+
 
   @Override
   public Typeable<Triggerable<WebHookTrigger, IExpectationSetters<Void>>> withSecret(String secret) {

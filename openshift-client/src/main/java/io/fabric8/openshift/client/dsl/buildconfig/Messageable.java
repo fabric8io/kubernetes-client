@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.fabric8.openshift.client.dsl.buildconfig;
 
-package io.fabric8.kubernetes.client.dsl;
+/**
+ * Created by iocanel on 7/18/16.
+ */
+public interface Messageable<T> {
 
-import java.io.InputStream;
-
-public interface Instantiateable<T, I> {
-
-  I instantiate(T request);
-
-  I instantiateBinary(InputStream inputStream);
+  T withMessage(String message);
 }
