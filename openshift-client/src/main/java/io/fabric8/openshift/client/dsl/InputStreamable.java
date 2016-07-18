@@ -15,6 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl;
 
+import java.io.File;
 import java.io.InputStream;
 
 /**
@@ -24,4 +25,5 @@ public interface InputStreamable<T> {
 
   T fromInputStream(InputStream inputStream);
 
+  T fromFile(File file);
 }
