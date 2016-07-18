@@ -16,7 +16,11 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
+import java.io.InputStream;
+
 public interface Instantiateable<T, I> {
 
   I instantiate(T request);
+
+  I instantiateBinary(InputStream inputStream);
 }

@@ -15,9 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.*;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
@@ -38,8 +36,10 @@ import io.fabric8.openshift.api.model.WebHookTrigger;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.BuildConfigOperation;
 import io.fabric8.openshift.client.dsl.ClientBuildConfigResource;
+import io.sundr.codegen.utils.IOUtils;
+import okio.BufferedSink;
 
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 import java.util.Map;
 import java.util.TreeMap;
@@ -102,6 +102,36 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
     try {
       URL instantiationUrl = new URL(URLUtils.join(getResourceUrl().toString(), "instantiate"));
       RequestBody requestBody = RequestBody.create(JSON, BaseOperation.JSON_MAPPER.writer().writeValueAsString(request));
+      Request.Builder requestBuilder = new Request.Builder().post(requestBody).url(instantiationUrl);
+      return handleResponse(requestBuilder, 201, Build.class);
+    } catch (Exception e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+
+  @Override
+  public Build instantiateBinary(final InputStream inputStream) {
+    // TODO: Get query options from https://github.com/openshift/origin/blob/master/pkg/build/api/types.go#L841-L841
+    try {
+      URL instantiationUrl = new URL(URLUtils.join(getResourceUrl().toString(), "instantiate"));
+
+      RequestBody requestBody = new RequestBody() {
+        @Override
+        public MediaType contentType() {
+          return MediaType.parse("application/octet-stream");
+        }
+
+        @Override
+        public void writeTo(BufferedSink sink) throws IOException {
+          OutputStream outputStream = sink.outputStream();
+          byte[] buffer = new byte[32 * 1024];
+          int len;
+          while ((len = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, len);
+          }
+        }
+      };
+
       Request.Builder requestBuilder = new Request.Builder().post(requestBody).url(instantiationUrl);
       return handleResponse(requestBuilder, 201, Build.class);
     } catch (Exception e) {
