@@ -174,6 +174,9 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
    * aren't usable for searching). Would be better if referenced build config was available via fields but it currently isn't...
    */
   private void deleteBuilds() {
+    if (getName() == null) {
+        return;
+    }
     String buildConfigLabelValue = getName().substring(0, Math.min(getName().length(), 63));
     BuildList matchingBuilds = new BuildOperationsImpl(client, (OpenShiftConfig) config, namespace).inNamespace(namespace).withLabel(BUILD_CONFIG_LABEL, buildConfigLabelValue).list();
 
