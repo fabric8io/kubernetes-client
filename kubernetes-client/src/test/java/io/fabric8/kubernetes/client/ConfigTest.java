@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client;
 
 import org.junit.*;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
@@ -165,6 +166,8 @@ public class ConfigTest {
     assertEquals("https://172.28.128.4:8443/", config.getMasterUrl());
     assertEquals("testns", config.getNamespace());
     assertEquals("token", config.getOauthToken());
+    assertTrue(config.getCaCertFile().endsWith("testns/ca.pem"));
+    assertTrue(new File(config.getCaCertFile()).isAbsolute());
   }
 
   @Test
