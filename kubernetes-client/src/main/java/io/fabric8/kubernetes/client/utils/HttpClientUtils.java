@@ -15,10 +15,8 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
-import com.squareup.okhttp.Authenticator;
-import com.squareup.okhttp.Challenge;
+import com.squareup.okhttp.ConnectionSpec;
 import com.squareup.okhttp.Credentials;
-import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -41,7 +39,7 @@ import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URL;
 import java.security.GeneralSecurityException;
-import java.util.List;
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
@@ -130,6 +128,13 @@ public class HttpClientUtils {
                         return chain.proceed(agent);
                     }
                 });
+            }
+
+            if (config.getTlsVersions() != null && config.getTlsVersions().length > 0) {
+              ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
+                .tlsVersions(config.getTlsVersions())
+                .build();
+              httpClient.setConnectionSpecs(Collections.singletonList(spec));
             }
 
             return httpClient;
