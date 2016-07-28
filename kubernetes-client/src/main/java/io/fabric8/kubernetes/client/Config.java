@@ -63,7 +63,7 @@ public class Config {
   public static final String KUBERNETES_LOGGING_INTERVAL_SYSTEM_PROPERTY = "kubernetes.logging.interval";
   public static final String KUBERNETES_SCALE_TIMEOUT_SYSTEM_PROPERTY = "kubernetes.scale.timeout";
 
-  public static final String KUBERNETES_TLS_VERSION = "kubernetes.tls.version";
+  public static final String KUBERNETES_TLS_VERSIONS = "kubernetes.tls.versions";
 
   public static final String KUBERNETES_TRYNAMESPACE_PATH_SYSTEM_PROPERTY = "kubernetes.tryNamespacePath";
   public static final String KUBERNETES_NAMESPACE_PATH = "/var/run/secrets/kubernetes.io/serviceaccount/namespace";
@@ -231,7 +231,7 @@ public class Config {
       config.setNoProxy(noProxyVar.split(","));
     }
 
-    String tlsVersionsVar = Utils.getSystemPropertyOrEnvVar(KUBERNETES_TLS_VERSION);
+    String tlsVersionsVar = Utils.getSystemPropertyOrEnvVar(KUBERNETES_TLS_VERSIONS);
     if (tlsVersionsVar != null && !tlsVersionsVar.isEmpty()) {
       String[] tlsVersionsSplit = tlsVersionsVar.split(",");
       TlsVersion[] tlsVersions = new TlsVersion[tlsVersionsSplit.length];
