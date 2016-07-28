@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
+import java.util.Map;
+
 public class Utils {
 
   public static boolean isNullOrEmpty(String str) {
@@ -23,6 +25,19 @@ public class Utils {
 
   public static boolean isNotNullOrEmpty(String str) {
     return !isNullOrEmpty(str);
+  }
+
+  public static String getProperty(Map<String, Object> properties, String propertyName, String defaultValue) {
+    String answer = (String)properties.get(propertyName);
+    if (!Utils.isNullOrEmpty(answer)) {
+      return answer;
+    }
+
+    return getSystemPropertyOrEnvVar(propertyName, defaultValue);
+  }
+
+  public static String getProperty(Map<String, Object> properties, String propertyName) {
+    return getProperty(properties, propertyName, null);
   }
 
   public static String getSystemPropertyOrEnvVar(String systemPropertyName, String envVarName, String defaultValue) {

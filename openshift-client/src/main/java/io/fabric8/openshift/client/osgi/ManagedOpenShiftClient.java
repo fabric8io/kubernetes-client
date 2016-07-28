@@ -16,6 +16,11 @@
 
 package io.fabric8.openshift.client.osgi;
 
+import java.io.InputStream;
+import java.net.URL;
+import java.util.List;
+import java.util.Map;
+
 import io.fabric8.kubernetes.api.model.ComponentStatus;
 import io.fabric8.kubernetes.api.model.ComponentStatusList;
 import io.fabric8.kubernetes.api.model.ConfigMap;
@@ -74,7 +79,6 @@ import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetDeleteRecreateApplicable;
 import io.fabric8.kubernetes.client.utils.URLUtils;
-import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigList;
@@ -138,15 +142,8 @@ import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.ConfigurationPolicy;
 import org.apache.felix.scr.annotations.Deactivate;
-import org.apache.felix.scr.annotations.Property;
 import org.apache.felix.scr.annotations.Service;
 
-import java.io.InputStream;
-import java.net.URL;
-import java.util.List;
-import java.util.Map;
-
-import static io.fabric8.kubernetes.client.Config.KUBERNETES_ALL_PROXY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_API_VERSION_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_AUTH_BASIC_PASSWORD_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_AUTH_BASIC_USERNAME_SYSTEM_PROPERTY;
@@ -165,9 +162,9 @@ import static io.fabric8.kubernetes.client.Config.KUBERNETES_NAMESPACE_SYSTEM_PR
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_NO_PROXY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY;
-import static io.fabric8.kubernetes.client.Config.KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY;
+import static io.fabric8.kubernetes.client.utils.Utils.getProperty;
 import static io.fabric8.openshift.client.OpenShiftConfig.KUBERNETES_OAPI_VERSION_SYSTEM_PROPERTY;
 import static io.fabric8.openshift.client.OpenShiftConfig.OPENSHIFT_URL_SYTEM_PROPERTY;
 
@@ -175,92 +172,41 @@ import static io.fabric8.openshift.client.OpenShiftConfig.OPENSHIFT_URL_SYTEM_PR
 @Service({OpenShiftClient.class, NamespacedOpenShiftClient.class})
 public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpenShiftClient {
 
-  @Property(name = OPENSHIFT_URL_SYTEM_PROPERTY)
-  private String openshiftUrl = Utils.getSystemPropertyOrEnvVar(OPENSHIFT_URL_SYTEM_PROPERTY);
-
-  @Property(name = KUBERNETES_OAPI_VERSION_SYSTEM_PROPERTY, value = "v1")
-  private String oapiVersion = Utils.getSystemPropertyOrEnvVar(KUBERNETES_OAPI_VERSION_SYSTEM_PROPERTY);
-
-  @Property(name = KUBERNETES_MASTER_SYSTEM_PROPERTY, description = "Master URL", value = "https://kubernetes.default.svc")
-  private String masterUrl = Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY, "https://kubernetes.default.svc");
-  @Property(name = KUBERNETES_API_VERSION_SYSTEM_PROPERTY, description = "Api Version", value = "v1")
-  private String apiVersion = Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_API_VERSION_SYSTEM_PROPERTY, "v1");
-  @Property(name = KUBERNETES_NAMESPACE_SYSTEM_PROPERTY, description = "Default namespace", value = "default")
-  private String namespace = Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_NAMESPACE_SYSTEM_PROPERTY, "default");
-  @Property(name = KUBERNETES_CA_CERTIFICATE_FILE_SYSTEM_PROPERTY, description = "CA Certificate (Path to file)")
-  private String caCertFile = Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_CA_CERTIFICATE_FILE_SYSTEM_PROPERTY);
-  @Property(name = KUBERNETES_CA_CERTIFICATE_DATA_SYSTEM_PROPERTY, description = "CA Certificate (Data)")
-  private String caCertData = Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_CA_CERTIFICATE_DATA_SYSTEM_PROPERTY);
-  @Property(name = KUBERNETES_CLIENT_CERTIFICATE_FILE_SYSTEM_PROPERTY, description = "Client Certificate (Path to file)")
-  private String clientCertFile = Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_CLIENT_CERTIFICATE_FILE_SYSTEM_PROPERTY);
-  @Property(name = KUBERNETES_CLIENT_CERTIFICATE_DATA_SYSTEM_PROPERTY, description = "Client Certificate (Data)")
-  private String clientCertData = Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_CLIENT_CERTIFICATE_DATA_SYSTEM_PROPERTY);
-  @Property(name = KUBERNETES_CLIENT_KEY_FILE_SYSTEM_PROPERTY, description = "Client Key (Path to file)")
-  private String clientKeyFile = Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_CLIENT_KEY_FILE_SYSTEM_PROPERTY);
-  @Property(name = KUBERNETES_CLIENT_KEY_DATA_SYSTEM_PROPERTY, description = "Client Key (Data)")
-  private String clientKeyData = Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_CLIENT_KEY_DATA_SYSTEM_PROPERTY);
-  @Property(name = KUBERNETES_CLIENT_KEY_ALGO_SYSTEM_PROPERTY, description = "Client Key Algorithm")
-  private String clientKeyAlgo = Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_CLIENT_KEY_ALGO_SYSTEM_PROPERTY, "RSA");
-  @Property(name = KUBERNETES_CLIENT_KEY_PASSPHRASE_SYSTEM_PROPERTY, description = "Client passphrase")
-  private String clientKeyPassphrase = Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_CLIENT_KEY_PASSPHRASE_SYSTEM_PROPERTY, "changeit");
-  @Property(name = KUBERNETES_AUTH_BASIC_USERNAME_SYSTEM_PROPERTY, description = "Username")
-  private String username = Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_AUTH_BASIC_USERNAME_SYSTEM_PROPERTY);
-  @Property(name = KUBERNETES_AUTH_BASIC_PASSWORD_SYSTEM_PROPERTY, description = "Username")
-  private String password = Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_AUTH_BASIC_PASSWORD_SYSTEM_PROPERTY);
-  @Property(name = KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY, description = "OAuth Token")
-  private String oauthToken = Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY);
-  @Property(name = KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY, description = "Watch reconnect interval", intValue = 1000)
-  private int watchReconnectInterval = Integer.parseInt(Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY, "1000"));
-  @Property(name = KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY, description = "Watch reconnect limit", intValue = -1)
-  private int watchReconnectLimit = Integer.parseInt(Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY, "-1"));
-  @Property(name = KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY, description = "Request timeout", intValue = 10000)
-  private int requestTimeout = Integer.parseInt(Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY, "10000"));
-  @Property(name = KUBERNETES_HTTP_PROXY, description = "HTTP Proxy")
-  private String httpProxy = Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_HTTP_PROXY);
-  @Property(name = KUBERNETES_HTTPS_PROXY, description = "HTTPS Proxy")
-  private String httpsProxy = Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_HTTPS_PROXY);
-  @Property(name = KUBERNETES_ALL_PROXY, description = "All Proxy")
-  private String allProxy = Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_ALL_PROXY);
-  @Property(name = KUBERNETES_NO_PROXY, description = "No Proxy")
-  private String noProxy = Utils.getSystemPropertyOrEnvVar(Config.KUBERNETES_NO_PROXY);
-  @Property(name = KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY, description = "Kubernetes trust certifacates flag", boolValue = false)
-  private Boolean trustCerts = Utils.getSystemPropertyOrEnvVar(KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY, Boolean.FALSE);
-
   private DefaultOpenShiftClient delegate;
 
   @Activate
   public void activate(Map<String, Object> properties) {
-    String masterUrl = (String) properties.get(KUBERNETES_MASTER_SYSTEM_PROPERTY);
+    String masterUrl = getProperty(properties, KUBERNETES_MASTER_SYSTEM_PROPERTY, "https://kubernetes.default.svc");
 
-    String openshiftUrl = (String) properties.get(OPENSHIFT_URL_SYTEM_PROPERTY);
-    String oapiVersion = (String) properties.get(OPENSHIFT_URL_SYTEM_PROPERTY);
+    String openshiftUrl = getProperty(properties, OPENSHIFT_URL_SYTEM_PROPERTY);
+    String oapiVersion = getProperty(properties, KUBERNETES_OAPI_VERSION_SYSTEM_PROPERTY, "v1");
 
-    String noProxyProperty = (String) properties.get(KUBERNETES_NO_PROXY);
+    String noProxyProperty = getProperty(properties, KUBERNETES_NO_PROXY);
     String[] noProxy = noProxyProperty != null ? noProxyProperty.split(",") : null;
 
     OpenShiftConfig config = new OpenShiftConfigBuilder()
-      .withMasterUrl(masterUrl)
-      .withApiVersion((String) properties.get(KUBERNETES_API_VERSION_SYSTEM_PROPERTY))
-      .withNamespace((String) properties.get(KUBERNETES_NAMESPACE_SYSTEM_PROPERTY))
-      .withCaCertFile((String) properties.get(KUBERNETES_CA_CERTIFICATE_FILE_SYSTEM_PROPERTY))
-      .withCaCertData((String) properties.get(KUBERNETES_CA_CERTIFICATE_DATA_SYSTEM_PROPERTY))
-      .withClientCertFile((String) properties.get(KUBERNETES_CLIENT_CERTIFICATE_FILE_SYSTEM_PROPERTY))
-      .withClientCertData((String) properties.get(KUBERNETES_CLIENT_CERTIFICATE_DATA_SYSTEM_PROPERTY))
-      .withClientKeyFile((String) properties.get(KUBERNETES_CLIENT_KEY_FILE_SYSTEM_PROPERTY))
-      .withClientKeyData((String) properties.get(KUBERNETES_CLIENT_KEY_DATA_SYSTEM_PROPERTY))
-      .withClientKeyAlgo((String) properties.get(KUBERNETES_CLIENT_KEY_ALGO_SYSTEM_PROPERTY))
-      .withClientKeyPassphrase((String) properties.get(KUBERNETES_CLIENT_KEY_PASSPHRASE_SYSTEM_PROPERTY))
-      .withUsername((String) properties.get(KUBERNETES_AUTH_BASIC_USERNAME_SYSTEM_PROPERTY))
-      .withPassword((String) properties.get(KUBERNETES_AUTH_BASIC_PASSWORD_SYSTEM_PROPERTY))
-      .withOauthToken((String) properties.get(KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY))
-      .withWatchReconnectInterval((int) properties.get(KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY))
-      .withWatchReconnectLimit((int) properties.get(KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY))
-      .withRequestTimeout((int) properties.get(KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY))
-      .withHttpProxy((String) properties.get(KUBERNETES_HTTP_PROXY))
-      .withHttpsProxy((String) properties.get(KUBERNETES_HTTPS_PROXY))
-      .withNoProxy(noProxy)
-      .withOpenShiftUrl((openshiftUrl != null && !openshiftUrl.isEmpty()) ? openshiftUrl : URLUtils.join(masterUrl, "oapi", oapiVersion))
-      .build();
+        .withMasterUrl(masterUrl)
+        .withApiVersion(getProperty(properties,KUBERNETES_API_VERSION_SYSTEM_PROPERTY, "v1"))
+        .withNamespace(getProperty(properties, KUBERNETES_NAMESPACE_SYSTEM_PROPERTY, "default"))
+        .withCaCertFile(getProperty(properties, KUBERNETES_CA_CERTIFICATE_FILE_SYSTEM_PROPERTY))
+        .withCaCertData(getProperty(properties, KUBERNETES_CA_CERTIFICATE_DATA_SYSTEM_PROPERTY))
+        .withClientCertFile(getProperty(properties, KUBERNETES_CLIENT_CERTIFICATE_FILE_SYSTEM_PROPERTY))
+        .withClientCertData(getProperty(properties, KUBERNETES_CLIENT_CERTIFICATE_DATA_SYSTEM_PROPERTY))
+        .withClientKeyFile(getProperty(properties, KUBERNETES_CLIENT_KEY_FILE_SYSTEM_PROPERTY))
+        .withClientKeyData(getProperty(properties, KUBERNETES_CLIENT_KEY_DATA_SYSTEM_PROPERTY))
+        .withClientKeyAlgo(getProperty(properties, KUBERNETES_CLIENT_KEY_ALGO_SYSTEM_PROPERTY, "RSA"))
+        .withClientKeyPassphrase(getProperty(properties, KUBERNETES_CLIENT_KEY_PASSPHRASE_SYSTEM_PROPERTY, "changeit"))
+        .withUsername(getProperty(properties, KUBERNETES_AUTH_BASIC_USERNAME_SYSTEM_PROPERTY))
+        .withPassword(getProperty(properties, KUBERNETES_AUTH_BASIC_PASSWORD_SYSTEM_PROPERTY))
+        .withOauthToken(getProperty(properties, KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY))
+        .withWatchReconnectInterval(Integer.parseInt(getProperty(properties, KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY, "1000")))
+        .withWatchReconnectLimit(Integer.parseInt(getProperty(properties, KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY, "-1")))
+        .withRequestTimeout(Integer.parseInt(getProperty(properties, KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY, "10000")))
+        .withHttpProxy(getProperty(properties, KUBERNETES_HTTP_PROXY))
+        .withHttpsProxy(getProperty(properties, KUBERNETES_HTTPS_PROXY))
+        .withNoProxy(noProxy)
+        .withOpenShiftUrl((openshiftUrl != null && !openshiftUrl.isEmpty()) ? openshiftUrl : URLUtils.join(masterUrl, "oapi", oapiVersion))
+        .build();
 
     delegate = new DefaultOpenShiftClient(config);
   }
