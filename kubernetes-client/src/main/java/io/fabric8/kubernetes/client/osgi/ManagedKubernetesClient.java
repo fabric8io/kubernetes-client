@@ -115,7 +115,6 @@ import static io.fabric8.kubernetes.client.Config.KUBERNETES_OAUTH_TOKEN_SYSTEM_
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY;
-import static io.fabric8.kubernetes.client.utils.Utils.getProperty;
 
 @Component(immediate = true, configurationPid = "io.fabric8.kubernetes.client", policy = ConfigurationPolicy.OPTIONAL)
 @Service({KubernetesClient.class,NamespacedKubernetesClient.class})
@@ -129,33 +128,71 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
 
   @Activate
   public void activate(Map<String, Object> properties) {
-    String noProxyProperty = getProperty(properties, KUBERNETES_NO_PROXY);
-    String[] noProxy = noProxyProperty != null ? noProxyProperty.split(",") : null;
+    final ConfigBuilder builder = new ConfigBuilder();
 
-    Config config = new ConfigBuilder()
-        .withMasterUrl(getProperty(properties, KUBERNETES_MASTER_SYSTEM_PROPERTY, "https://kubernetes.default.svc"))
-        .withApiVersion(getProperty(properties,KUBERNETES_API_VERSION_SYSTEM_PROPERTY, "v1"))
-        .withNamespace(getProperty(properties, KUBERNETES_NAMESPACE_SYSTEM_PROPERTY, "default"))
-        .withCaCertFile(getProperty(properties, KUBERNETES_CA_CERTIFICATE_FILE_SYSTEM_PROPERTY))
-        .withCaCertData(getProperty(properties, KUBERNETES_CA_CERTIFICATE_DATA_SYSTEM_PROPERTY))
-        .withClientCertFile(getProperty(properties, KUBERNETES_CLIENT_CERTIFICATE_FILE_SYSTEM_PROPERTY))
-        .withClientCertData(getProperty(properties, KUBERNETES_CLIENT_CERTIFICATE_DATA_SYSTEM_PROPERTY))
-        .withClientKeyFile(getProperty(properties, KUBERNETES_CLIENT_KEY_FILE_SYSTEM_PROPERTY))
-        .withClientKeyData(getProperty(properties, KUBERNETES_CLIENT_KEY_DATA_SYSTEM_PROPERTY))
-        .withClientKeyAlgo(getProperty(properties, KUBERNETES_CLIENT_KEY_ALGO_SYSTEM_PROPERTY, "RSA"))
-        .withClientKeyPassphrase(getProperty(properties, KUBERNETES_CLIENT_KEY_PASSPHRASE_SYSTEM_PROPERTY, "changeit"))
-        .withUsername(getProperty(properties, KUBERNETES_AUTH_BASIC_USERNAME_SYSTEM_PROPERTY))
-        .withPassword(getProperty(properties, KUBERNETES_AUTH_BASIC_PASSWORD_SYSTEM_PROPERTY))
-        .withOauthToken(getProperty(properties, KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY))
-        .withWatchReconnectInterval(Integer.parseInt(getProperty(properties, KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY, "1000")))
-        .withWatchReconnectLimit(Integer.parseInt(getProperty(properties, KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY, "-1")))
-        .withRequestTimeout(Integer.parseInt(getProperty(properties, KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY, "10000")))
-        .withHttpProxy(getProperty(properties, KUBERNETES_HTTP_PROXY))
-        .withHttpsProxy(getProperty(properties, KUBERNETES_HTTPS_PROXY))
-        .withNoProxy(noProxy)
-        .build();
+    if (properties.containsKey(KUBERNETES_MASTER_SYSTEM_PROPERTY)) {
+      builder.withMasterUrl((String) properties.get(KUBERNETES_MASTER_SYSTEM_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_API_VERSION_SYSTEM_PROPERTY)) {
+      builder.withApiVersion((String) properties.get(KUBERNETES_API_VERSION_SYSTEM_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_NAMESPACE_SYSTEM_PROPERTY)) {
+      builder.withNamespace((String) properties.get(KUBERNETES_NAMESPACE_SYSTEM_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_CA_CERTIFICATE_FILE_SYSTEM_PROPERTY)) {
+      builder.withCaCertFile((String) properties.get(KUBERNETES_CA_CERTIFICATE_FILE_SYSTEM_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_CA_CERTIFICATE_DATA_SYSTEM_PROPERTY)) {
+      builder.withCaCertData((String) properties.get(KUBERNETES_CA_CERTIFICATE_DATA_SYSTEM_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_CLIENT_CERTIFICATE_FILE_SYSTEM_PROPERTY)) {
+      builder.withClientCertFile((String) properties.get(KUBERNETES_CLIENT_CERTIFICATE_FILE_SYSTEM_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_CLIENT_CERTIFICATE_DATA_SYSTEM_PROPERTY)) {
+      builder.withClientCertData((String) properties.get(KUBERNETES_CLIENT_CERTIFICATE_DATA_SYSTEM_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_CLIENT_KEY_FILE_SYSTEM_PROPERTY)) {
+      builder.withClientKeyFile((String) properties.get(KUBERNETES_CLIENT_KEY_FILE_SYSTEM_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_CLIENT_KEY_DATA_SYSTEM_PROPERTY)) {
+      builder.withClientKeyData((String) properties.get(KUBERNETES_CLIENT_KEY_DATA_SYSTEM_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_CLIENT_KEY_ALGO_SYSTEM_PROPERTY)) {
+      builder.withClientKeyAlgo((String) properties.get(KUBERNETES_CLIENT_KEY_ALGO_SYSTEM_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_CLIENT_KEY_PASSPHRASE_SYSTEM_PROPERTY)) {
+      builder.withClientKeyPassphrase((String) properties.get(KUBERNETES_CLIENT_KEY_PASSPHRASE_SYSTEM_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_AUTH_BASIC_USERNAME_SYSTEM_PROPERTY)) {
+      builder.withUsername((String) properties.get(KUBERNETES_AUTH_BASIC_USERNAME_SYSTEM_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_AUTH_BASIC_PASSWORD_SYSTEM_PROPERTY)) {
+      builder.withPassword((String) properties.get(KUBERNETES_AUTH_BASIC_PASSWORD_SYSTEM_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY)) {
+      builder.withOauthToken((String) properties.get(KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY)) {
+      builder.withWatchReconnectInterval(Integer.parseInt((String) properties.get(KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY)));
+    }
+    if (properties.containsKey(KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY)) {
+      builder.withWatchReconnectLimit(Integer.parseInt((String) properties.get(KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY)));
+    }
+    if (properties.containsKey(KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY)) {
+      builder.withRequestTimeout(Integer.parseInt((String) properties.get(KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY)));
+    }
+    if (properties.containsKey(KUBERNETES_HTTP_PROXY)) {
+      builder.withHttpProxy((String) properties.get(KUBERNETES_HTTP_PROXY));
+    }
+    if (properties.containsKey(KUBERNETES_HTTPS_PROXY)) {
+      builder.withHttpsProxy((String) properties.get(KUBERNETES_HTTPS_PROXY));
+    }
+    if (properties.containsKey(KUBERNETES_NO_PROXY)) {
+      String noProxyProperty = (String) properties.get(KUBERNETES_NO_PROXY);
+      builder.withNoProxy(noProxyProperty.split(","));
+    }
 
-    delegate = new DefaultKubernetesClient(config);
+    delegate = new DefaultKubernetesClient(builder.build());
   }
 
   @Deactivate
