@@ -272,28 +272,42 @@ public class Config {
     return false;
   }
 
+  private String absolutify(File relativeTo, String filename) {
+    if (filename == null) {
+      return null;
+    }
+
+    File file = new File(filename);
+    if (file.isAbsolute()) {
+      return file.getAbsolutePath();
+    }
+
+    return new File(relativeTo.getParentFile(), filename).getAbsolutePath();
+  }
+
   private boolean tryKubeConfig(Config config) {
     LOGGER.debug("Trying to configure client from Kubernetes config...");
     if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, true)) {
-      String kubeConfigFile = Utils.getSystemPropertyOrEnvVar(KUBERNETES_KUBECONFIG_FILE, new File(getHomeDir(), ".kube" + File.separator + "config").toString());
-      boolean kubeConfigFileExists = Files.isRegularFile(new File(kubeConfigFile).toPath());
+      File kubeConfigFile = new File(
+          Utils.getSystemPropertyOrEnvVar(KUBERNETES_KUBECONFIG_FILE, new File(getHomeDir(), ".kube" + File.separator + "config").toString()));
+      boolean kubeConfigFileExists = Files.isRegularFile(kubeConfigFile.toPath());
       if (kubeConfigFileExists) {
-        LOGGER.debug("Found for Kubernetes config at: ["+kubeConfigFile+"].");
+        LOGGER.debug("Found for Kubernetes config at: ["+kubeConfigFile.getPath()+"].");
         try {
-          io.fabric8.kubernetes.api.model.Config kubeConfig = KubeConfigUtils.parseConfig(new File(kubeConfigFile));
+          io.fabric8.kubernetes.api.model.Config kubeConfig = KubeConfigUtils.parseConfig(kubeConfigFile);
           Context currentContext = KubeConfigUtils.getCurrentContext(kubeConfig);
           Cluster currentCluster = KubeConfigUtils.getCluster(kubeConfig, currentContext);
           if (currentCluster != null) {
             config.setMasterUrl(currentCluster.getServer());
             config.setNamespace(currentContext.getNamespace());
             config.setTrustCerts(currentCluster.getInsecureSkipTlsVerify() != null && currentCluster.getInsecureSkipTlsVerify());
-            config.setCaCertFile(currentCluster.getCertificateAuthority());
+            config.setCaCertFile(absolutify(kubeConfigFile, currentCluster.getCertificateAuthority()));
             config.setCaCertData(currentCluster.getCertificateAuthorityData());
             AuthInfo currentAuthInfo = KubeConfigUtils.getUserAuthInfo(kubeConfig, currentContext);
             if (currentAuthInfo != null) {
-              config.setClientCertFile(currentAuthInfo.getClientCertificate());
+              config.setClientCertFile(absolutify(kubeConfigFile, currentAuthInfo.getClientCertificate()));
               config.setClientCertData(currentAuthInfo.getClientCertificateData());
-              config.setClientKeyFile(currentAuthInfo.getClientKey());
+              config.setClientKeyFile(absolutify(kubeConfigFile, currentAuthInfo.getClientKey()));
               config.setClientKeyData(currentAuthInfo.getClientKeyData());
               config.setOauthToken(currentAuthInfo.getToken());
               config.setUsername(currentAuthInfo.getUsername());
@@ -305,10 +319,10 @@ public class Config {
             return true;
           }
         } catch (IOException e) {
-          LOGGER.error("Could not load Kubernetes config file from {}", kubeConfigFile, e);
+          LOGGER.error("Could not load Kubernetes config file from {}", kubeConfigFile.getPath(), e);
         }
       } else {
-        LOGGER.debug("Did not find Kubernetes config at: ["+kubeConfigFile+"]. Ignoring.");
+        LOGGER.debug("Did not find Kubernetes config at: ["+kubeConfigFile.getPath()+"]. Ignoring.");
       }
     }
     return false;
