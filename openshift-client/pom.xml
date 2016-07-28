@@ -35,10 +35,9 @@
       *
     </osgi.import>
     <osgi.export>
-      io.fabric8.openshift.client*
+      io.fabric8.openshift.client*;-noimport:=true
     </osgi.export>
     <osgi.private>
-      io.fabric8.kubernetes.client.dsl.base,
       io.fabric8.openshift.client.handlers,
       io.fabric8.openshift.client.internal,
       io.fabric8.openshift.client.dsl.internal

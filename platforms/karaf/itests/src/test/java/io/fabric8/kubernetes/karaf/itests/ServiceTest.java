@@ -16,7 +16,11 @@
 
 package io.fabric8.kubernetes.karaf.itests;
 
-import io.fabric8.kubernetes.client.KubernetesClient;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import javax.inject.Inject;
+
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import org.junit.Assert;
@@ -34,14 +38,8 @@ import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 
-import javax.inject.Inject;
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-
 import static org.ops4j.pax.exam.CoreOptions.maven;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.configureSecurity;
-import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.debugConfiguration;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.editConfigurationFileExtend;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.features;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
@@ -80,7 +78,6 @@ public class ServiceTest extends TestBase {
         Assert.assertEquals("mytest2", onc.getNamespace());
     }
 
-
     @ProbeBuilder
     public TestProbeBuilder probeConfiguration(TestProbeBuilder probe) {
         probe.setHeader(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional");
@@ -93,10 +90,13 @@ public class ServiceTest extends TestBase {
         return new Option[]{
                 karafDistributionConfiguration().frameworkUrl(karafUrl).name("Apache Karaf").unpackDirectory(new File("target/exam")),
                 configureSecurity().disableKarafMBeanServerBuilder(),
-                features(getFeaturesFile().toURL().toString(), "scr", "openshift-client"),
-                editConfigurationFileExtend("etc/org.ops4j.pax.url.mvn.cfg", "org.ops4j.pax.url.mvn.repositories", "file:"+System.getProperty("features.repo")+"@snapshots@releases"),
+                features(getFeaturesFile().toURI().toString(), "scr", "openshift-client"),
+                editConfigurationFileExtend(
+                    "etc/org.ops4j.pax.url.mvn.cfg",
+                    "org.ops4j.pax.url.mvn.repositories",
+                    "file:"+System.getProperty("features.repo")+"@id=local@snapshots@releases"),
                 keepRuntimeFolder(),
-                logLevel(LogLevelOption.LogLevel.DEBUG),
+                logLevel(LogLevelOption.LogLevel.INFO),
         };
     }
 }

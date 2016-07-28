@@ -35,11 +35,7 @@
       *
     </osgi.import>
     <osgi.export>
-      io.fabric8.kubernetes.client*,
-      dk.brics.automaton*,
-      com.mifmif*,
-      okhttp3*,
-      okio*
+      io.fabric8.kubernetes.client*;-noimport:=true
     </osgi.export>
     <osgi.private>
       io.fabric8.kubernetes.client.internal,
@@ -115,6 +111,7 @@
       <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
+        <extensions>false</extensions>
         <executions>
           <execution>
             <id>bundle</id>
