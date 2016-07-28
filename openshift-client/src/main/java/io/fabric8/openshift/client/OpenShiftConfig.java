@@ -16,6 +16,7 @@
 
 package io.fabric8.openshift.client;
 
+import com.squareup.okhttp.TlsVersion;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -43,8 +44,8 @@ public class OpenShiftConfig extends Config {
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false, refs = {@BuildableReference(Config.class)})
-  public OpenShiftConfig(String openShiftUrl, String oapiVersion, String masterUrl, String apiVersion, String namespace, Boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, long scaleTimeout, int loggingInterval, String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages, String userAgent) {
-    super(masterUrl, apiVersion, namespace, trustCerts, caCertFile, caCertData, clientCertFile, clientCertData, clientKeyFile, clientKeyData, clientKeyAlgo, clientKeyPassphrase, username, password, oauthToken, watchReconnectInterval, watchReconnectLimit, connectionTimeout, requestTimeout, rollingTimeout, scaleTimeout, loggingInterval, httpProxy, httpsProxy, noProxy, errorMessages, userAgent);
+  public OpenShiftConfig(String openShiftUrl, String oapiVersion, String masterUrl, String apiVersion, String namespace, Boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, long scaleTimeout, int loggingInterval, String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages, String userAgent, TlsVersion[] tlsVersions) {
+    super(masterUrl, apiVersion, namespace, trustCerts, caCertFile, caCertData, clientCertFile, clientCertData, clientKeyFile, clientKeyData, clientKeyAlgo, clientKeyPassphrase, username, password, oauthToken, watchReconnectInterval, watchReconnectLimit, connectionTimeout, requestTimeout, rollingTimeout, scaleTimeout, loggingInterval, httpProxy, httpsProxy, noProxy, errorMessages, userAgent, tlsVersions);
     this.oapiVersion = oapiVersion;
     this.openShiftUrl = openShiftUrl;
 
@@ -71,7 +72,8 @@ public class OpenShiftConfig extends Config {
       kubernetesConfig.getHttpsProxy(),
       kubernetesConfig.getNoProxy(),
       kubernetesConfig.getErrorMessages(),
-      kubernetesConfig.getUserAgent()
+      kubernetesConfig.getUserAgent(),
+      kubernetesConfig.getTlsVersions()
       );
   }
 

@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.server.mock;
 
+import com.squareup.okhttp.TlsVersion;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import org.junit.Assert;
@@ -35,6 +36,7 @@ public class MasterProtocolTest {
         Config config = new ConfigBuilder()
                 .withMasterUrl(host + ":" +port)
                 .withTrustCerts(true)
+                .withTlsVersions(TlsVersion.TLS_1_2, TlsVersion.TLS_1_1, TlsVersion.TLS_1_0)
                 .build();
         Assert.assertTrue(config.getMasterUrl().startsWith(Config.HTTPS_PROTOCOL_PREFIX));
         sslServer.destroy();

@@ -38,7 +38,6 @@ System properties are preferred over environment variables. The following system
 * `kubernetes.master` / `KUBERNETES_MASTER`
 * `kubernetes.api.version` / `KUBERNETES_API_VERSION`
 * `kubernetes.oapi.version` / `KUBERNETES_OAPI_VERSION`
-* `kubernetes.tls.protocols` / `KUBERNETES_TLS_PROTOCOLS`
 * `kubernetes.trust.certificates` / `KUBERNETES_TRUST_CERTIFICATES`
 * `kubernetes.certs.ca.file` / `KUBERNETES_CERTS_CA_FILE`
 * `kubernetes.certs.ca.data` / `KUBERNETES_CERTS_CA_DATA`
@@ -56,6 +55,7 @@ System properties are preferred over environment variables. The following system
 * `kubernetes.watch.reconnectInterval` / `KUBERNETES_WATCH_RECONNECTINTERVAL`
 * `kubernetes.watch.reconnectLimit` / `KUBERNETES_WATCH_RECONNECTLIMIT`
 * `kubernetes.user.agent` / `KUBERNETES_USER_AGENT`
+* `kubernetes.tls.version` / `KUBERNETES_TLS_VERSION`
 
 Alternatively you can use the `ConfigBuilder` to create a config object for the Kubernetes client:
 

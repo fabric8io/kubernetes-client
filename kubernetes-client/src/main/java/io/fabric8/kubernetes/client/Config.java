@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.client;
 
+import com.squareup.okhttp.TlsVersion;
 import io.fabric8.kubernetes.api.model.AuthInfo;
 import io.fabric8.kubernetes.api.model.Cluster;
 import io.fabric8.kubernetes.api.model.Context;
@@ -31,6 +32,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.squareup.okhttp.TlsVersion.TLS_1_2;
 
 public class Config {
 
@@ -60,6 +63,8 @@ public class Config {
   public static final String KUBERNETES_LOGGING_INTERVAL_SYSTEM_PROPERTY = "kubernetes.logging.interval";
   public static final String KUBERNETES_SCALE_TIMEOUT_SYSTEM_PROPERTY = "kubernetes.scale.timeout";
 
+  public static final String KUBERNETES_TLS_VERSION = "kubernetes.tls.version";
+
   public static final String KUBERNETES_TRYNAMESPACE_PATH_SYSTEM_PROPERTY = "kubernetes.tryNamespacePath";
   public static final String KUBERNETES_NAMESPACE_PATH = "/var/run/secrets/kubernetes.io/serviceaccount/namespace";
   public static final String KUBERNETES_NAMESPACE_FILE = "kubenamespace";
@@ -78,8 +83,8 @@ public class Config {
   public static final Long DEFAULT_SCALE_TIMEOUT = 10 * 60 * 1000L;
   public static final int DEFAULT_LOGGING_INTERVAL = 20 * 1000;
 
-  public static String HTTP_PROTOCOL_PREFIX = "http://";
-  public static String HTTPS_PROTOCOL_PREFIX = "https://";
+  public static final String HTTP_PROTOCOL_PREFIX = "http://";
+  public static final String HTTPS_PROTOCOL_PREFIX = "https://";
 
   private boolean trustCerts;
   private String masterUrl = "https://kubernetes.default.svc";
@@ -107,6 +112,7 @@ public class Config {
   private String httpsProxy;
   private String[] noProxy;
   private String userAgent;
+  private TlsVersion[] tlsVersions = new TlsVersion[]{TLS_1_2};
 
   private Map<Integer, String> errorMessages = new HashMap<>();
 
@@ -127,7 +133,7 @@ public class Config {
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
-  public Config(String masterUrl, String apiVersion, String namespace, boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, long scaleTimeout, int loggingInterval, String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages, String userAgent) {
+  public Config(String masterUrl, String apiVersion, String namespace, boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, long scaleTimeout, int loggingInterval, String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages, String userAgent, TlsVersion[] tlsVersions) {
     this.trustCerts = trustCerts;
     this.masterUrl = masterUrl;
     this.apiVersion = apiVersion;
@@ -156,6 +162,7 @@ public class Config {
     this.noProxy= noProxy;
     this.errorMessages = errorMessages;
     this.userAgent = userAgent;
+    this.tlsVersions = tlsVersions;
 
     if (!this.masterUrl.toLowerCase().startsWith(HTTP_PROTOCOL_PREFIX) && !this.masterUrl.startsWith(HTTPS_PROTOCOL_PREFIX)) {
       this.masterUrl = (SSLUtils.isHttpsAvailable(this) ? HTTPS_PROTOCOL_PREFIX : HTTP_PROTOCOL_PREFIX) + this.masterUrl;
@@ -222,6 +229,16 @@ public class Config {
     String noProxyVar = Utils.getSystemPropertyOrEnvVar(KUBERNETES_NO_PROXY);
     if (noProxyVar != null) {
       config.setNoProxy(noProxyVar.split(","));
+    }
+
+    String tlsVersionsVar = Utils.getSystemPropertyOrEnvVar(KUBERNETES_TLS_VERSION);
+    if (tlsVersionsVar != null && !tlsVersionsVar.isEmpty()) {
+      String[] tlsVersionsSplit = tlsVersionsVar.split(",");
+      TlsVersion[] tlsVersions = new TlsVersion[tlsVersionsSplit.length];
+      for (int i = 0; i < tlsVersionsSplit.length; i++) {
+        tlsVersions[i] = TlsVersion.forJavaName(tlsVersionsSplit[i]);
+      }
+      config.setTlsVersions(tlsVersions);
     }
   }
 
@@ -568,5 +585,13 @@ public class Config {
 
   public void setUserAgent(String userAgent) {
     this.userAgent = userAgent;
+  }
+
+  public TlsVersion[] getTlsVersions() {
+    return tlsVersions;
+  }
+
+  public void setTlsVersions(TlsVersion[] tlsVersions) {
+    this.tlsVersions = tlsVersions;
   }
 }
