@@ -16,11 +16,14 @@
 
 package io.fabric8.kubernetes.client;
 
+import com.squareup.okhttp.TlsVersion;
 import org.junit.*;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
+import static com.squareup.okhttp.TlsVersion.TLS_1_1;
+import static com.squareup.okhttp.TlsVersion.TLS_1_2;
 import static org.junit.Assert.*;
 
 public class ConfigTest {
@@ -81,6 +84,8 @@ public class ConfigTest {
     System.setProperty(Config.KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY, "5000");
     System.setProperty(Config.KUBERNETES_HTTP_PROXY, "httpProxy");
 
+    System.setProperty(Config.KUBERNETES_TLS_VERSIONS, "TLSv1.2,TLSv1.1");
+
     Config config = new Config();
     assertConfig(config);
 
@@ -110,6 +115,7 @@ public class ConfigTest {
       .withWatchReconnectLimit(5)
       .withRequestTimeout(5000)
       .withHttpProxy("httpProxy")
+      .withTlsVersions(TLS_1_2, TLS_1_1)
       .build();
 
     assertConfig(config);
@@ -138,6 +144,8 @@ public class ConfigTest {
     System.setProperty(Config.KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY, "5");
     System.setProperty(Config.KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY, "5000");
     System.setProperty(Config.KUBERNETES_HTTP_PROXY, "httpProxy");
+
+    System.setProperty(Config.KUBERNETES_TLS_VERSIONS, "TLSv1.2,TLSv1.1");
 
     Config config = new ConfigBuilder()
       .withMasterUrl("http://somehost:80")
@@ -268,5 +276,7 @@ public class ConfigTest {
     assertEquals(5000, config.getWatchReconnectInterval());
     assertEquals(5, config.getWatchReconnectLimit());
     assertEquals(5000, config.getRequestTimeout());
+
+    assertArrayEquals(new TlsVersion[]{TLS_1_2, TLS_1_1}, config.getTlsVersions());
   }
 }
