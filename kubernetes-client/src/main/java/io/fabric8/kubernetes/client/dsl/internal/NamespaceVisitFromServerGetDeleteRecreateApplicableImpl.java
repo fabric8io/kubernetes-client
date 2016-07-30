@@ -17,7 +17,7 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mifmif.common.regex.Generex;
-import com.squareup.okhttp.OkHttpClient;
+import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -170,7 +170,7 @@ public class NamespaceVisitFromServerGetDeleteRecreateApplicableImpl extends Ope
         if (item instanceof KubernetesList) {
             result.addAll(((KubernetesList) item).getItems());
         } else if (item instanceof Template) {
-            
+
             if (!enableProccessing) {
                 result.addAll(((Template) item).getObjects());
             } else {
@@ -207,7 +207,7 @@ public class NamespaceVisitFromServerGetDeleteRecreateApplicableImpl extends Ope
             return null;
         }
     }
-    
+
     private static List<HasMetadata> processTemplate(Template template, Boolean failOnMissing)  {
         List<Parameter> parameters = template != null ? template.getParameters() : null;
         KubernetesList list = new KubernetesListBuilder()

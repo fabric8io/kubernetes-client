@@ -49,7 +49,7 @@ import io.fabric8.kubernetes.client.dsl.internal.JobOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ReplicaSetOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ThirdPartyResourceOperationsImpl;
 
-import com.squareup.okhttp.OkHttpClient;
+import okhttp3.OkHttpClient;
 
 public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAPIGroupDSL {
 

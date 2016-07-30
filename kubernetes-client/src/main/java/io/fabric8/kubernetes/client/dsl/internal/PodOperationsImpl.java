@@ -15,11 +15,11 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-import com.squareup.okhttp.ResponseBody;
-import com.squareup.okhttp.ws.WebSocketCall;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+import okhttp3.ws.WebSocketCall;
 import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
@@ -154,8 +154,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
             URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters() + "&follow=true"));
             Request request = new Request.Builder().url(url).get().build();
             final LogWatchCallback callback = new LogWatchCallback(out);
-            OkHttpClient clone = client.clone();
-            clone.setReadTimeout(0, TimeUnit.MILLISECONDS);
+            OkHttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
             clone.newCall(request).enqueue(callback);
             callback.waitUntilReady();
             return callback;
@@ -215,8 +214,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
         try {
             URL url = new URL(URLUtils.join(getResourceUrl().toString(), sb.toString()));
             Request.Builder r = new Request.Builder().url(url).get();
-            OkHttpClient clone = client.clone();
-            clone.setReadTimeout(0, TimeUnit.MILLISECONDS);
+            OkHttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
             WebSocketCall webSocketCall = WebSocketCall.create(clone, r.build());
             final ExecWebSocketListener execWebSocketListener = new ExecWebSocketListener(in, out, err, inPipe, outPipe, errPipe, execListener);
             webSocketCall.enqueue(execWebSocketListener);

@@ -17,7 +17,7 @@
 package io.fabric8.kubernetes.client;
 
 
-import com.squareup.okhttp.OkHttpClient;
+import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 
 public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {

@@ -16,14 +16,14 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.squareup.okhttp.HttpUrl;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-import com.squareup.okhttp.ResponseBody;
-import com.squareup.okhttp.ws.WebSocket;
-import com.squareup.okhttp.ws.WebSocketCall;
-import com.squareup.okhttp.ws.WebSocketListener;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+import okhttp3.ws.WebSocket;
+import okhttp3.ws.WebSocketCall;
+import okhttp3.ws.WebSocketListener;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.Status;
@@ -78,7 +78,7 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
     } else {
       this.resourceVersion = new AtomicReference<>(version);
     }
-    this.clonedClient = client.clone();
+    this.clonedClient = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
     this.baseOperation = baseOperation;
     this.watcher = watcher;
     this.reconnectInterval = reconnectInterval;
@@ -118,7 +118,6 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
       .url(httpUrlBuilder.build())
       .addHeader("Origin", requestUrl.getProtocol() + "://" + requestUrl.getHost() + ":" + requestUrl.getPort())
       .build();
-    clonedClient.setReadTimeout(0, TimeUnit.MILLISECONDS);
 
     webSocketCall = WebSocketCall.create(clonedClient, request);
     webSocketCall.enqueue(new WebSocketListener() {
@@ -149,12 +148,8 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
           }
         }
 
-        try {
-          if (response != null && response.body() != null){
-            response.body().close();
-          }
-        } catch (IOException e1) {
-          e1.printStackTrace();
+        if (response != null && response.body() != null){
+          response.body().close();
         }
 
         if (forceClosed.get()) {

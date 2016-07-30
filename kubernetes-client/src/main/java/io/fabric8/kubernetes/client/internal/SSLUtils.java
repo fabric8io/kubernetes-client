@@ -15,13 +15,13 @@
  */
 package io.fabric8.kubernetes.client.internal;
 
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-import com.squareup.okhttp.ResponseBody;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,8 +73,8 @@ public final class SSLUtils {
         } catch (Throwable t) {
             LOG.warn("SSL handshake failed. Falling back to insecure connection.");
         } finally {
-            if (client != null && client.getConnectionPool() != null) {
-                client.getConnectionPool().evictAll();
+            if (client != null && client.connectionPool() != null) {
+                client.connectionPool().evictAll();
             }
         }
         return false;
@@ -85,19 +85,6 @@ public final class SSLUtils {
     }
 
     public static SSLContext sslContext(KeyManager[] keyManagers, TrustManager[] trustManagers, boolean trustCerts) throws CertificateException, UnrecoverableKeyException, NoSuchAlgorithmException, KeyStoreException, IOException, InvalidKeySpecException, KeyManagementException {
-        if (trustManagers == null && trustCerts) {
-            trustManagers = new TrustManager[]{new X509TrustManager() {
-                public void checkClientTrusted(X509Certificate[] chain, String s) {
-                }
-
-                public void checkServerTrusted(X509Certificate[] chain, String s) {
-                }
-
-                public X509Certificate[] getAcceptedIssuers() {
-                    return new X509Certificate[0];
-                }
-            }};
-        }
         SSLContext sslContext = SSLContext.getInstance("TLS");
         sslContext.init(keyManagers, trustManagers, new SecureRandom());
         return sslContext;
@@ -108,14 +95,27 @@ public final class SSLUtils {
     }
 
     public static TrustManager[] trustManagers(String certData, String certFile, boolean isTrustCerts) throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
-        TrustManager[] trustManagers = null;
-        if (!isTrustCerts && (isNotNullOrEmpty(certData) || isNotNullOrEmpty(certFile))) {
-            KeyStore trustStore = createTrustStore(certData, certFile);
-            TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-            tmf.init(trustStore);
-            trustManagers = tmf.getTrustManagers();
+        TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+        KeyStore trustStore = null;
+        if (isTrustCerts) {
+            return new TrustManager[]{
+                new X509TrustManager() {
+                    public void checkClientTrusted(X509Certificate[] chain, String s) {
+                    }
+
+                    public void checkServerTrusted(X509Certificate[] chain, String s) {
+                    }
+
+                    public X509Certificate[] getAcceptedIssuers() {
+                        return new X509Certificate[0];
+                    }
+                }
+            };
+        } else if (isNotNullOrEmpty(certData) || isNotNullOrEmpty(certFile)) {
+            trustStore = createTrustStore(certData, certFile);
         }
-        return trustManagers;
+        tmf.init(trustStore);
+        return tmf.getTrustManagers();
     }
 
     public static KeyManager[] keyManagers(Config config) throws NoSuchAlgorithmException, UnrecoverableKeyException, KeyStoreException, CertificateException, InvalidKeySpecException, IOException {

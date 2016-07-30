@@ -26,7 +26,7 @@
 
   <groupId>io.fabric8</groupId>
   <artifactId>kubernetes-client-project</artifactId>
-  <version>1.4-SNAPSHOT</version>
+  <version>1.5-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Fabric8 :: Kubernetes :: Project</name>
 
@@ -74,9 +74,9 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <mockwebserver.version>0.0.2</mockwebserver.version>
-    <okhttp.version>2.7.5</okhttp.version>
-    <okio.version>1.6.0</okio.version>
+    <mockwebserver.version>0.0.3</mockwebserver.version>
+    <okhttp.version>3.4.1</okhttp.version>
+    <okio.version>1.9.0</okio.version>
     <easymock.version>3.4</easymock.version>
     <felix.scr.annotations.version>1.9.8</felix.scr.annotations.version>
     <generex.version>1.0.1</generex.version>

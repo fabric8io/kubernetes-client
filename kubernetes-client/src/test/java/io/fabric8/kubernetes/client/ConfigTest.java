@@ -16,15 +16,15 @@
 
 package io.fabric8.kubernetes.client;
 
-import com.squareup.okhttp.TlsVersion;
+import okhttp3.TlsVersion;
 import org.junit.*;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
-import static com.squareup.okhttp.TlsVersion.TLS_1_1;
-import static com.squareup.okhttp.TlsVersion.TLS_1_2;
+import static okhttp3.TlsVersion.TLS_1_1;
+import static okhttp3.TlsVersion.TLS_1_2;
 import static org.junit.Assert.*;
 
 public class ConfigTest {

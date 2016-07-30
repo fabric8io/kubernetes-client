@@ -19,12 +19,12 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
-import com.squareup.okhttp.ResponseBody;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 import io.fabric8.kubernetes.api.model.DeleteOptions;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -297,7 +297,7 @@ public class OperationSupport {
   KubernetesClientException requestFailure(Request request, Status status) {
     StringBuilder sb = new StringBuilder();
     sb.append("Failure executing: ").append(request.method())
-      .append(" at: ").append(request.urlString()).append(".");
+      .append(" at: ").append(request.url().toString()).append(".");
 
     if (status.getMessage() != null && !status.getMessage().isEmpty()) {
       sb.append(" Message: ").append(status.getMessage()).append(".");
@@ -313,7 +313,7 @@ public class OperationSupport {
   KubernetesClientException requestException(Request request, Exception e) {
     StringBuilder sb = new StringBuilder();
     sb.append("Error executing: ").append(request.method())
-      .append(" at: ").append(request.urlString())
+      .append(" at: ").append(request.url().toString())
       .append(". Cause: ").append(e.getMessage());
 
     return new KubernetesClientException(sb.toString(), e);

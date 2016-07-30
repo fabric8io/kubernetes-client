@@ -16,11 +16,11 @@
 
 package io.fabric8.openshift.client.internal;
 
-import com.squareup.okhttp.Credentials;
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
+import okhttp3.Credentials;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -91,8 +91,9 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
 
     private  String authorize() {
         try {
-            OkHttpClient clone = client.clone();
-            clone.interceptors().remove(this);
+            OkHttpClient.Builder builder = client.newBuilder();
+            builder.interceptors().remove(this);
+            OkHttpClient clone = builder.build();
 
             String credential = Credentials.basic(config.getUsername(), new String(config.getPassword()));
             URL url = new URL(URLUtils.join(config.getMasterUrl(), AUTHORIZE_PATH));
