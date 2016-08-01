@@ -15,7 +15,8 @@
  */
 package io.fabric8.openshift.client;
 
-import com.squareup.okhttp.OkHttpClient;
+import okhttp3.Authenticator;
+import okhttp3.OkHttpClient;
 
 import io.fabric8.kubernetes.api.model.ComponentStatus;
 import io.fabric8.kubernetes.api.model.ComponentStatusList;
@@ -197,8 +198,8 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   private void addOpenShiftAuthInterceptor() {
-    httpClient.setAuthenticator(null);
-    httpClient.interceptors().add(new OpenShiftOAuthInterceptor(httpClient,  OpenShiftConfig.wrap(getConfiguration())));
+    httpClient = httpClient.newBuilder().authenticator(Authenticator.NONE).build();
+    httpClient = httpClient.newBuilder().addInterceptor(new OpenShiftOAuthInterceptor(httpClient,  OpenShiftConfig.wrap(getConfiguration()))).build();
   }
 
   @Override

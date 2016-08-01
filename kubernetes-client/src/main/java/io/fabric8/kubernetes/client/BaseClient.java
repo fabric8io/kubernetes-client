@@ -16,7 +16,7 @@
 
 package io.fabric8.kubernetes.client;
 
-import com.squareup.okhttp.OkHttpClient;
+import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
@@ -69,7 +69,7 @@ public abstract class BaseClient implements Client, HttpClientAware {
         @Override
         public OkHttpClient adapt(Client client) {
           if (client instanceof HttpClientAware) {
-            return ((HttpClientAware)client).getHttpClient().clone();
+            return ((HttpClientAware)client).getHttpClient().newBuilder().build();
           }
           throw new IllegalArgumentException("This adapter only supports instances of HttpClientAware.");
         }
@@ -88,14 +88,14 @@ public abstract class BaseClient implements Client, HttpClientAware {
 
   @Override
   public void close() {
-    if (httpClient.getConnectionPool() != null) {
-      httpClient.getConnectionPool().evictAll();
+    if (httpClient.connectionPool() != null) {
+      httpClient.connectionPool().evictAll();
     }
-    if (httpClient.getDispatcher() != null &&
-      httpClient.getDispatcher().getExecutorService() != null &&
-      !httpClient.getDispatcher().getExecutorService().isShutdown()
+    if (httpClient.dispatcher() != null &&
+      httpClient.dispatcher().executorService() != null &&
+      !httpClient.dispatcher().executorService().isShutdown()
       ) {
-      httpClient.getDispatcher().getExecutorService().shutdown();
+      httpClient.dispatcher().executorService().shutdown();
     }
   }
 

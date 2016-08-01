@@ -16,7 +16,7 @@
 
 package io.fabric8.kubernetes.server.mock;
 
-import com.squareup.okhttp.ResponseBody;
+import okhttp3.ResponseBody;
 import io.fabric8.mockwebserver.WebSocketReader;
 import io.fabric8.mockwebserver.utils.Closeables;
 import okio.ByteString;

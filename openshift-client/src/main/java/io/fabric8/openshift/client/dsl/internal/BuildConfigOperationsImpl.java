@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
-import com.squareup.okhttp.*;
+import okhttp3.*;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;

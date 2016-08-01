@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import com.squareup.okhttp.Response;
-import com.squareup.okhttp.ws.WebSocket;
+import okhttp3.Response;
+import okhttp3.ws.WebSocket;
 
 import java.io.IOException;
 

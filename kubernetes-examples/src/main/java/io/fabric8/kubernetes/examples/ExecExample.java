@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.examples;
 
-import com.squareup.okhttp.Response;
+import okhttp3.Response;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;

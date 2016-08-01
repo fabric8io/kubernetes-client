@@ -16,11 +16,11 @@
 
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
-import com.squareup.okhttp.ResponseBody;
-import com.squareup.okhttp.ws.WebSocket;
-import com.squareup.okhttp.ws.WebSocketListener;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+import okhttp3.ws.WebSocket;
+import okhttp3.ws.WebSocketListener;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.Callback;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -81,7 +81,7 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
                     send(data);
                 } catch (Exception e) {
                     //
-                }                 
+                }
             }
         });
     }
@@ -232,7 +232,7 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
             }
         }
     }
-    
+
     private static InputStream inputStreamOrPipe(InputStream stream, PipedOutputStream out) {
         if (stream != null) {
             return stream;

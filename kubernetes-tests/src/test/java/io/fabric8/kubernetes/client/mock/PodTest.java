@@ -16,7 +16,7 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import com.squareup.okhttp.Response;
+import okhttp3.Response;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;

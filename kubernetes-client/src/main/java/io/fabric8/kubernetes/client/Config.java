@@ -16,7 +16,7 @@
 
 package io.fabric8.kubernetes.client;
 
-import com.squareup.okhttp.TlsVersion;
+import okhttp3.TlsVersion;
 import io.fabric8.kubernetes.api.model.AuthInfo;
 import io.fabric8.kubernetes.api.model.Cluster;
 import io.fabric8.kubernetes.api.model.Context;
@@ -33,7 +33,7 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.squareup.okhttp.TlsVersion.TLS_1_2;
+import static okhttp3.TlsVersion.TLS_1_2;
 
 public class Config {
 

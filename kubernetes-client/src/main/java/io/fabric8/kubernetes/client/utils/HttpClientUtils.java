@@ -15,16 +15,16 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
-import com.squareup.okhttp.ConnectionSpec;
-import com.squareup.okhttp.Credentials;
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
+import okhttp3.ConnectionSpec;
+import okhttp3.Credentials;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +33,7 @@ import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
@@ -48,14 +49,14 @@ public class HttpClientUtils {
 
     public static OkHttpClient createHttpClient(final Config config) {
         try {
-            OkHttpClient httpClient = new OkHttpClient();
+            OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
 
             // Follow any redirects
-            httpClient.setFollowRedirects(true);
-            httpClient.setFollowSslRedirects(true);
+            httpClientBuilder.followRedirects(true);
+            httpClientBuilder.followSslRedirects(true);
 
             if (config.isTrustCerts()) {
-                httpClient.setHostnameVerifier(new HostnameVerifier() {
+                httpClientBuilder.hostnameVerifier(new HostnameVerifier() {
                     @Override
                     public boolean verify(String s, SSLSession sslSession) {
                         return true;
@@ -67,16 +68,21 @@ public class HttpClientUtils {
             KeyManager[] keyManagers = SSLUtils.keyManagers(config);
 
             if (keyManagers != null || trustManagers != null || config.isTrustCerts()) {
+                X509TrustManager trustManager = null;
+                if (trustManagers != null && trustManagers.length == 1) {
+                  trustManager = (X509TrustManager) trustManagers[0];
+                }
+
                 try {
                     SSLContext sslContext = SSLUtils.sslContext(keyManagers, trustManagers, config.isTrustCerts());
-                    httpClient.setSslSocketFactory(sslContext.getSocketFactory());
+                    httpClientBuilder.sslSocketFactory(sslContext.getSocketFactory(), trustManager);
                 } catch (GeneralSecurityException e) {
                     throw new AssertionError(); // The system has no TLS. Just give up.
                 }
             }
 
             if (isNotNullOrEmpty(config.getUsername()) && isNotNullOrEmpty(config.getPassword())) {
-                httpClient.interceptors().add(new Interceptor() {
+                httpClientBuilder.addInterceptor(new Interceptor() {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
                         Request authReq = chain.request().newBuilder().addHeader("Authorization", Credentials.basic(config.getUsername(), config.getPassword())).build();
@@ -84,7 +90,7 @@ public class HttpClientUtils {
                     }
                 });
             } else if (config.getOauthToken() != null) {
-                httpClient.interceptors().add(new Interceptor() {
+                httpClientBuilder.addInterceptor(new Interceptor() {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
                         Request authReq = chain.request().newBuilder().addHeader("Authorization", "Bearer " + config.getOauthToken()).build();
@@ -97,15 +103,15 @@ public class HttpClientUtils {
             if (reqLogger.isTraceEnabled()) {
                 HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
                 loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-                httpClient.networkInterceptors().add(loggingInterceptor);
+                httpClientBuilder.addNetworkInterceptor(loggingInterceptor);
             }
 
             if (config.getConnectionTimeout() > 0) {
-                httpClient.setConnectTimeout(config.getConnectionTimeout(), TimeUnit.MILLISECONDS);
+                httpClientBuilder.connectTimeout(config.getConnectionTimeout(), TimeUnit.MILLISECONDS);
             }
 
             if (config.getRequestTimeout() > 0) {
-                httpClient.setReadTimeout(config.getRequestTimeout(), TimeUnit.MILLISECONDS);
+                httpClientBuilder.readTimeout(config.getRequestTimeout(), TimeUnit.MILLISECONDS);
             }
 
             // Only check proxy if it's a full URL with protocol
@@ -113,7 +119,7 @@ public class HttpClientUtils {
                 try {
                     URL proxyUrl = getProxyUrl(config);
                     if (proxyUrl != null) {
-                        httpClient.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyUrl.getHost(), proxyUrl.getPort())));
+                        httpClientBuilder.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyUrl.getHost(), proxyUrl.getPort())));
                     }
                 } catch (MalformedURLException e) {
                     throw new KubernetesClientException("Invalid proxy server configuration", e);
@@ -121,7 +127,7 @@ public class HttpClientUtils {
             }
 
             if (config.getUserAgent() != null && !config.getUserAgent().isEmpty()) {
-                httpClient.networkInterceptors().add(new Interceptor() {
+                httpClientBuilder.addNetworkInterceptor(new Interceptor() {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
                         Request agent = chain.request().newBuilder().header("User-Agent", config.getUserAgent()).build();
@@ -134,10 +140,10 @@ public class HttpClientUtils {
               ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
                 .tlsVersions(config.getTlsVersions())
                 .build();
-              httpClient.setConnectionSpecs(Collections.singletonList(spec));
+              httpClientBuilder.connectionSpecs(Collections.singletonList(spec));
             }
 
-            return httpClient;
+            return httpClientBuilder.build();
         } catch (Exception e) {
             throw KubernetesClientException.launderThrowable(e);
         }

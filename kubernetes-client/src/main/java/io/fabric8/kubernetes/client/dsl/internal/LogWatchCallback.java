@@ -15,12 +15,12 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,7 +86,7 @@ public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
     }
 
     @Override
-    public void onFailure(Request request, IOException ioe) {
+    public void onFailure(Call call, IOException ioe) {
         LOGGER.error("Log Callback Failure.", ioe);
         //We only need to queue startup failures.
         if (!started.get()) {
@@ -95,7 +95,7 @@ public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
     }
 
     @Override
-    public void onResponse(Response response) throws IOException {
+    public void onResponse(Call call, Response response) throws IOException {
         if (out instanceof PipedOutputStream && output != null) {
             output.connect((PipedOutputStream) out);
         }
