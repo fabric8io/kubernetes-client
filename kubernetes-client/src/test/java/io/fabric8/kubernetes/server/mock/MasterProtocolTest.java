@@ -23,6 +23,8 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+import static okhttp3.TlsVersion.TLS_1_0;
+
 public class MasterProtocolTest {
 
     @Test
@@ -34,6 +36,7 @@ public class MasterProtocolTest {
         Integer port = sslServer.getServer().getPort();
         Config config = new ConfigBuilder()
                 .withMasterUrl(host + ":" +port)
+                .withTlsVersions(TLS_1_0)
                 .withTrustCerts(true)
                 .build();
         Assert.assertTrue(config.getMasterUrl().startsWith(Config.HTTPS_PROTOCOL_PREFIX));

@@ -55,6 +55,7 @@ public class ConfigTest {
     System.getProperties().remove(Config.KUBERNETES_HTTP_PROXY);
     System.getProperties().remove(Config.KUBERNETES_KUBECONFIG_FILE);
     System.getProperties().remove(Config.KUBERNETES_NAMESPACE_FILE);
+    System.getProperties().remove(Config.KUBERNETES_TLS_VERSIONS);
   }
 
   @After

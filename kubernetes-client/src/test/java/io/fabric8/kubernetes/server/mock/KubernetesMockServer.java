@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.server.mock;
 
-import okhttp3.mockwebserver.MockWebServer;
 import io.fabric8.kubernetes.api.model.RootPathsBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
@@ -27,10 +26,13 @@ import io.fabric8.mockwebserver.DefaultMockServer;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.mockwebserver.internal.DefaultWebSocketWriter;
+import okhttp3.mockwebserver.MockWebServer;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
+
+import static okhttp3.TlsVersion.TLS_1_0;
 
 public class KubernetesMockServer extends DefaultMockServer {
 
@@ -76,6 +78,7 @@ public class KubernetesMockServer extends DefaultMockServer {
         Config config = new ConfigBuilder()
                 .withMasterUrl(url("/"))
                 .withTrustCerts(true)
+                .withTlsVersions(TLS_1_0)
                 .withNamespace("test")
                 .build();
         return new DefaultKubernetesClient(config);
