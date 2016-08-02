@@ -55,7 +55,7 @@ System properties are preferred over environment variables. The following system
 * `kubernetes.watch.reconnectInterval` / `KUBERNETES_WATCH_RECONNECTINTERVAL`
 * `kubernetes.watch.reconnectLimit` / `KUBERNETES_WATCH_RECONNECTLIMIT`
 * `kubernetes.user.agent` / `KUBERNETES_USER_AGENT`
-* `kubernetes.tls.version` / `KUBERNETES_TLS_VERSION`
+* `kubernetes.tls.versions` / `KUBERNETES_TLS_VERSIONS`
 
 Alternatively you can use the `ConfigBuilder` to create a config object for the Kubernetes client:
 
@@ -131,9 +131,9 @@ Service myservice = client.services().inNamespace("default").createNew()
 
 The client supports plug-able adapters. An example adapter is the [OpenShift Adapter](openshift-client/src/main/java/io/fabric8/openshift/client/OpenShiftExtensionAdapter.java)
 which allows adapting an existing [KubernetesClient](kubernetes-client/src/main/java/io/fabric8/kubernetes/client/KubernetesClient.java) instance to an [OpenShiftClient](openshift-client/src/main/java/io/fabric8/openshift/client/OpenShiftClient.java) one.
- 
+
  For example:
- 
+
 ```java
 KuberntesClient client = new DefaultKubernetesClient();
 
@@ -152,6 +152,6 @@ if (client.isAdaptable(OpenShiftClient.class)) {
 ```
 
 ### Adapting and close()
-Note that when using adapt() both the adaptee and the target will share the same resources (underlying http client, thread pools etc). 
-This means that close() is not required to be used on every single instance created via adapt. 
+Note that when using adapt() both the adaptee and the target will share the same resources (underlying http client, thread pools etc).
+This means that close() is not required to be used on every single instance created via adapt.
 Calling close() on any of the adapt() managed instances or the original instance, will properly clean up all the resources and thus none of the instances will be usable any longer.
