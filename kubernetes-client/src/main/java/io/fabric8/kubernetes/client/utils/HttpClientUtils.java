@@ -73,6 +73,10 @@ public class HttpClientUtils {
                 } catch (GeneralSecurityException e) {
                     throw new AssertionError(); // The system has no TLS. Just give up.
                 }
+            } else {
+              SSLContext context = SSLContext.getInstance("TLSv1.2");
+              context.init(null, null, null);
+              httpClient.setSslSocketFactory(context.getSocketFactory());
             }
 
             if (isNotNullOrEmpty(config.getUsername()) && isNotNullOrEmpty(config.getPassword())) {

@@ -98,7 +98,7 @@ public final class SSLUtils {
                 }
             }};
         }
-        SSLContext sslContext = SSLContext.getInstance("TLS");
+        SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
         sslContext.init(keyManagers, trustManagers, new SecureRandom());
         return sslContext;
     }

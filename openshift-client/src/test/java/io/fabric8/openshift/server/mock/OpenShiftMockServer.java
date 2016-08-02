@@ -18,11 +18,11 @@ package io.fabric8.openshift.server.mock;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.server.mock.KubernetesMockServer;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
-import io.fabric8.openshift.client.OpenShiftClient;
+
+import static com.squareup.okhttp.TlsVersion.TLS_1_0;
 
 public class OpenShiftMockServer extends KubernetesMockServer {
 
@@ -44,6 +44,7 @@ public class OpenShiftMockServer extends KubernetesMockServer {
       .withMasterUrl(url("/"))
       .withNamespace("test")
       .withTrustCerts(true)
+      .withTlsVersions(TLS_1_0)
       .build();
     return new DefaultOpenShiftClient(config);
   }

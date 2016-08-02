@@ -32,6 +32,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 
+import static com.squareup.okhttp.TlsVersion.TLS_1_0;
+
 public class KubernetesMockServer extends DefaultMockServer {
 
     private static final Context context = new ContextBuilder()
@@ -76,6 +78,7 @@ public class KubernetesMockServer extends DefaultMockServer {
         Config config = new ConfigBuilder()
                 .withMasterUrl(url("/"))
                 .withTrustCerts(true)
+                .withTlsVersions(TLS_1_0)
                 .withNamespace("test")
                 .build();
         return new DefaultKubernetesClient(config);
