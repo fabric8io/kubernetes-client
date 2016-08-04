@@ -26,7 +26,7 @@
 
   <groupId>io.fabric8</groupId>
   <artifactId>kubernetes-client-project</artifactId>
-  <version>1.4-SNAPSHOT</version>
+  <version>1.4.0.redhat-000006</version>
   <packaging>pom</packaging>
   <name>Fabric8 :: Kubernetes :: Project</name>
 
@@ -82,7 +82,7 @@
     <generex.version>1.0.1</generex.version>
     <jackson.version>2.7.5</jackson.version>
     <junit.version>4.12</junit.version>
-    <kubernetes.model.version>1.0.52</kubernetes.model.version>
+    <kubernetes.model.version>1.1.0.redhat-000006</kubernetes.model.version>
     <log4j.version>2.5</log4j.version>
     <zjsonpatch.version>0.2.3</zjsonpatch.version>
 
