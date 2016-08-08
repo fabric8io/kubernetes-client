@@ -15,6 +15,9 @@
  */
 package io.fabric8.kubernetes.karaf.itests;
 
+import java.io.File;
+import javax.inject.Inject;
+
 import org.apache.karaf.features.FeaturesService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,9 +28,6 @@ import org.ops4j.pax.exam.karaf.options.LogLevelOption;
 import org.ops4j.pax.exam.options.MavenArtifactUrlReference;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
-
-import javax.inject.Inject;
-import java.io.File;
 
 import static org.ops4j.pax.exam.CoreOptions.maven;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.configureSecurity;
@@ -65,7 +65,10 @@ public class FeatureInstallationTest extends TestBase {
                 configureSecurity().disableKarafMBeanServerBuilder(),
                 keepRuntimeFolder(),
                 editConfigurationFilePut("etc/system.properties", "features.xml", System.getProperty("features.xml")),
-                editConfigurationFileExtend("etc/org.ops4j.pax.url.mvn.cfg", "org.ops4j.pax.url.mvn.repositories", "file:"+System.getProperty("features.repo")+"@snapshots@releases"),
+                editConfigurationFileExtend(
+                    "etc/org.ops4j.pax.url.mvn.cfg",
+                    "org.ops4j.pax.url.mvn.repositories",
+                    "file:"+System.getProperty("features.repo")+"@id=local@snapshots@releases"),
                 logLevel(LogLevelOption.LogLevel.INFO),
         };
     }
