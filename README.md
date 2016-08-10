@@ -2,12 +2,15 @@
 This client provides access to the full [Kubernetes](http://kubernetes.io/) &
 [OpenShift 3](http://openshift.org/) REST APIs via a fluent DSL.
 
-* kubernetes-client: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.fabric8/kubernetes-client/badge.svg?style=flat-square)](https://maven-badges.herokuapp.com/maven-central/io.fabric8/kubernetes-client/)
+[![CircleCI](https://img.shields.io/circleci/project/fabric8io/kubernetes-client.svg?maxAge=2592000)](https://circleci.com/gh/fabric8io/kubernetes-client)
+[![Dependency Status](https://dependencyci.com/github/fabric8io/kubernetes-client/badge)](https://dependencyci.com/github/fabric8io/kubernetes-client)
+
+* kubernetes-client: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-client.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-client)
 [![Javadocs](http://www.javadoc.io/badge/io.fabric8/kubernetes-client.svg?color=blue)](http://www.javadoc.io/doc/io.fabric8/kubernetes-client)
-* kubernetes-model: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.fabric8/kubernetes-model/badge.svg?style=flat-square)](https://maven-badges.herokuapp.com/maven-central/io.fabric8/kubernetes-model/)
+* kubernetes-model: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model)
 [![Javadocs](http://www.javadoc.io/badge/io.fabric8/kubernetes-model.svg?color=blue)](http://www.javadoc.io/doc/io.fabric8/kubernetes-model)
-* openshift-client: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.fabric8/openshift-client/badge.svg?style=flat-square)](https://maven-badges.herokuapp.com/maven-central/io.fabric8/openshift-client/)
-[![Javadocs](http://www.javadoc.io/badge/io.fabric8/kubernetes-client.svg?color=blue)](http://www.javadoc.io/doc/io.fabric8/openshift-client)
+* openshift-client: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/openshift-client.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Aopenshift-client)
+[![Javadocs](http://www.javadoc.io/badge/io.fabric8/openshift-client.svg?color=blue)](http://www.javadoc.io/doc/io.fabric8/openshift-client)
 
 
 ## Usage
