@@ -29,7 +29,7 @@ import io.fabric8.openshift.api.model.DoneableBuildConfig;
 import io.fabric8.openshift.api.model.WebHookTrigger;
 import io.fabric8.openshift.client.dsl.BuildConfigOperation;
 import io.fabric8.openshift.client.dsl.ClientBuildConfigResource;
-import io.fabric8.openshift.client.dsl.buildconfig.CommitterAuthorMessageAsFileTimeoutTimeoutTimeoutTimeoutInputStreamable;
+import io.fabric8.openshift.client.dsl.buildconfig.CommitterAuthorMessageAsFileTimeoutInputStreamable;
 import io.fabric8.openshift.client.mock.MockBuildConfigResource;
 import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableBuildConfig;
 import org.easymock.EasyMock;
@@ -67,7 +67,7 @@ public class MockBuildConfig extends BaseMockOperation<BuildConfig, BuildConfigL
   }
 
   @Override
-  public CommitterAuthorMessageAsFileTimeoutTimeoutTimeoutTimeoutInputStreamable<IExpectationSetters<Void>> instantiateBinary() {
+  public CommitterAuthorMessageAsFileTimeoutInputStreamable<IExpectationSetters<Void>> instantiateBinary() {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 

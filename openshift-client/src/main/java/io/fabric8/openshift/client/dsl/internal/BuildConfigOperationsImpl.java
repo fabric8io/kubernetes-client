@@ -40,10 +40,10 @@ import io.fabric8.openshift.client.dsl.InputStreamable;
 import io.fabric8.openshift.client.dsl.TimeoutInputStreamable;
 import io.fabric8.openshift.client.dsl.buildconfig.AsFileTimeoutInputStreamable;
 import io.fabric8.openshift.client.dsl.buildconfig.AuthorEmailable;
-import io.fabric8.openshift.client.dsl.buildconfig.AuthorMessageAsFileTimeoutTimeoutTimeoutInputStreamable;
-import io.fabric8.openshift.client.dsl.buildconfig.CommitterAuthorMessageAsFileTimeoutTimeoutTimeoutTimeoutInputStreamable;
+import io.fabric8.openshift.client.dsl.buildconfig.AuthorMessageAsFileTimeoutInputStreamable;
+import io.fabric8.openshift.client.dsl.buildconfig.CommitterAuthorMessageAsFileTimeoutInputStreamable;
 import io.fabric8.openshift.client.dsl.buildconfig.CommitterEmailable;
-import io.fabric8.openshift.client.dsl.buildconfig.MessageAsFileTimeoutTimeoutInputStreamable;
+import io.fabric8.openshift.client.dsl.buildconfig.MessageAsFileTimeoutInputStreamable;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -150,7 +150,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
   }
 
   @Override
-  public CommitterAuthorMessageAsFileTimeoutTimeoutTimeoutTimeoutInputStreamable<Build> instantiateBinary() {
+  public CommitterAuthorMessageAsFileTimeoutInputStreamable<Build> instantiateBinary() {
     return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
   }
 
@@ -294,14 +294,14 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
   }
 
   @Override
-  public MessageAsFileTimeoutTimeoutInputStreamable<Build> withAuthorEmail(String email) {
+  public MessageAsFileTimeoutInputStreamable<Build> withAuthorEmail(String email) {
     return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
   }
 
 
 
   @Override
-  public AuthorMessageAsFileTimeoutTimeoutTimeoutInputStreamable<Build> withCommitterEmail(String committerEmail) {
+  public AuthorMessageAsFileTimeoutInputStreamable<Build> withCommitterEmail(String committerEmail) {
     return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
   }
 
@@ -313,12 +313,12 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
   }
 
   @Override
-  public AuthorEmailable<MessageAsFileTimeoutTimeoutInputStreamable<Build>> withAuthorName(String authorName) {
+  public AuthorEmailable<MessageAsFileTimeoutInputStreamable<Build>> withAuthorName(String authorName) {
     return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
   }
 
   @Override
-  public CommitterEmailable<AuthorMessageAsFileTimeoutTimeoutTimeoutInputStreamable<Build>> withCommitterName(String committerName) {
+  public CommitterEmailable<AuthorMessageAsFileTimeoutInputStreamable<Build>> withCommitterName(String committerName) {
     return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
   }
 

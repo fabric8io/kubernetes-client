@@ -25,12 +25,12 @@ import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigList;
 import io.fabric8.openshift.api.model.DoneableBuildConfig;
 import io.fabric8.openshift.api.model.WebHookTrigger;
-import io.fabric8.openshift.client.dsl.buildconfig.CommitterAuthorMessageAsFileTimeoutTimeoutTimeoutTimeoutInputStreamable;
+import io.fabric8.openshift.client.dsl.buildconfig.CommitterAuthorMessageAsFileTimeoutInputStreamable;
 
 public interface BuildConfigOperation extends ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build>,
   ClientMixedOperation<BuildConfig, BuildConfigList, DoneableBuildConfig,ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build>>,
   Typeable<Triggerable<WebHookTrigger, Void>>,
   Triggerable<WebHookTrigger, Void>,
   Secretable<Typeable<Triggerable<WebHookTrigger, Void>>>,
-  CommitterAuthorMessageAsFileTimeoutTimeoutTimeoutTimeoutInputStreamable<Build> {
+  CommitterAuthorMessageAsFileTimeoutInputStreamable<Build> {
 }

@@ -16,11 +16,11 @@
 
 package io.fabric8.openshift.client.dsl;
 
-import io.fabric8.openshift.client.dsl.buildconfig.CommitterAuthorMessageAsFileTimeoutTimeoutTimeoutTimeoutInputStreamable;
+import io.fabric8.openshift.client.dsl.buildconfig.CommitterAuthorMessageAsFileTimeoutInputStreamable;
 
 public interface Instantiateable<T, I> {
 
   I instantiate(T request);
 
-  CommitterAuthorMessageAsFileTimeoutTimeoutTimeoutTimeoutInputStreamable<I> instantiateBinary();
+  CommitterAuthorMessageAsFileTimeoutInputStreamable<I> instantiateBinary();
 }
