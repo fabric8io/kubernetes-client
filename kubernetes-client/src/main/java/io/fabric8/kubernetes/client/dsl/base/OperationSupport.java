@@ -226,6 +226,10 @@ public class OperationSupport {
   }
 
   protected <T> T handleResponse(Request.Builder requestBuilder, int successStatusCode, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+    return handleResponse(client, requestBuilder, successStatusCode, type);
+  }
+
+  protected <T> T handleResponse(OkHttpClient client, Request.Builder requestBuilder, int successStatusCode, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     Request request = requestBuilder.build();
     Response response = client.newCall(request).execute();
     try (ResponseBody body = response.body()) {

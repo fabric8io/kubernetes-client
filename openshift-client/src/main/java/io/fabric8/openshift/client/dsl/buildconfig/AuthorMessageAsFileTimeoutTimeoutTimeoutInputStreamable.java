@@ -13,14 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.fabric8.openshift.client.dsl.buildconfig;
 
-package io.fabric8.openshift.client.dsl;
-
-import io.fabric8.openshift.client.dsl.buildconfig.CommitterAuthorMessageAsFileTimeoutTimeoutTimeoutTimeoutInputStreamable;
-
-public interface Instantiateable<T, I> {
-
-  I instantiate(T request);
-
-  CommitterAuthorMessageAsFileTimeoutTimeoutTimeoutTimeoutInputStreamable<I> instantiateBinary();
+/**
+ * Created by iocanel on 7/18/16.
+ */
+public interface AuthorMessageAsFileTimeoutTimeoutTimeoutInputStreamable<T> extends MessageAsFileTimeoutTimeoutInputStreamable<T>,
+  AuthorNameOrEmailable<MessageAsFileTimeoutTimeoutInputStreamable<T>> {
 }

@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openshift.client.dsl.buildconfig;
 
-/**
- * Created by iocanel on 7/18/16.
- */
-public interface AuthorMessageAsFileInputStreamable<T> extends MessageAsFileInputStreamable<T>,
-  AuthorNameOrEmailable<MessageAsFileInputStreamable<T>> {
+package io.fabric8.openshift.client.dsl;
+
+import io.fabric8.kubernetes.client.dsl.Timeoutable;
+
+public interface TimeoutInputStreamable<T> extends
+  Timeoutable<InputStreamable<T>>,
+  InputStreamable<T> {
 }
