@@ -16,18 +16,28 @@
 
 package io.fabric8.openshift.client.mock;
 
-import io.fabric8.openshift.api.model.*;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.openshift.api.model.Build;
+import io.fabric8.openshift.api.model.BuildBuilder;
+import io.fabric8.openshift.api.model.BuildConfig;
+import io.fabric8.openshift.api.model.BuildConfigBuilder;
+import io.fabric8.openshift.api.model.BuildConfigList;
+import io.fabric8.openshift.api.model.BuildConfigListBuilder;
+import io.fabric8.openshift.api.model.BuildListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.net.SocketTimeoutException;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class BuildConfigTest extends OpenShiftMockServerTestBase {
 
@@ -104,6 +114,27 @@ public class BuildConfigTest extends OpenShiftMockServerTestBase {
 
 
     assertNotNull(build);
+  }
+
+  // TODO Add delay to mockwebserver. Disabled as too dependent on timing issues right now.
+  //@Test
+  public void testBinaryBuildWithTimeout() {
+    expect().post().delay(200).withPath("/oapi/v1/namespaces/ns1/buildconfigs/bc2/instantiatebinary?commit=")
+      .andReturn(201, new BuildBuilder()
+      .withNewMetadata().withName("bc2").endMetadata().build()).once();
+
+    OpenShiftClient client = getOpenshiftClient();
+    InputStream dummy = new ByteArrayInputStream("".getBytes() );
+
+    try {
+      client.buildConfigs().inNamespace("ns1").withName("bc2").instantiateBinary()
+        .withTimeout(100, TimeUnit.MILLISECONDS)
+        .fromInputStream(dummy);
+    } catch (KubernetesClientException e) {
+      assertEquals(SocketTimeoutException.class, e.getCause().getClass());
+      return;
+    }
+    fail("Expected exception");
   }
 
 

@@ -15,8 +15,11 @@
  */
 package io.fabric8.openshift.client.dsl.buildconfig;
 
+import io.fabric8.openshift.client.dsl.TimeoutInputStreamable;
+
 /**
  * Created by iocanel on 7/18/16.
  */
-public interface MessageAsFileInputStreamable<T> extends AsFileInputStreamable<T>, Messageable<AsFileInputStreamable<T>> {
+public interface AsFileTimeoutInputStreamable<T> extends TimeoutInputStreamable<T>, AsFileable<TimeoutInputStreamable<T>> {
+
 }

@@ -29,9 +29,13 @@ public class OpenShiftConfig extends Config {
 
   public static final String KUBERNETES_OAPI_VERSION_SYSTEM_PROPERTY = "kubernetes.oapi.version";
   public static final String OPENSHIFT_URL_SYTEM_PROPERTY = "openshift.url";
+  public static final String OPENSHIFT_BUILD_TIMEOUT_SYSTEM_PROPERTY = "openshift.build.timeout";
+
+  public static final Long DEFAULT_BUILD_TIMEOUT = 5 * 60 * 1000L;
 
   private String oapiVersion = "v1";
   private String openShiftUrl;
+  private long buildTimeout = DEFAULT_BUILD_TIMEOUT;
 
   //This is not meant to be used. This constructor is used only by the generated builder.
   OpenShiftConfig() {
@@ -39,15 +43,16 @@ public class OpenShiftConfig extends Config {
 
   public OpenShiftConfig(Config kubernetesConfig) {
     this(kubernetesConfig,
-      getDefaultOpenShiftUrl(kubernetesConfig), getDefaultOapiVersion(kubernetesConfig)
+      getDefaultOpenShiftUrl(kubernetesConfig), getDefaultOapiVersion(kubernetesConfig), DEFAULT_BUILD_TIMEOUT
     );
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false, refs = {@BuildableReference(Config.class)})
-  public OpenShiftConfig(String openShiftUrl, String oapiVersion, String masterUrl, String apiVersion, String namespace, Boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, long scaleTimeout, int loggingInterval, String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages, String userAgent, TlsVersion[] tlsVersions) {
+  public OpenShiftConfig(String openShiftUrl, String oapiVersion, String masterUrl, String apiVersion, String namespace, Boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, long scaleTimeout, int loggingInterval, String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages, String userAgent, TlsVersion[] tlsVersions, long buildTimeout) {
     super(masterUrl, apiVersion, namespace, trustCerts, caCertFile, caCertData, clientCertFile, clientCertData, clientKeyFile, clientKeyData, clientKeyAlgo, clientKeyPassphrase, username, password, oauthToken, watchReconnectInterval, watchReconnectLimit, connectionTimeout, requestTimeout, rollingTimeout, scaleTimeout, loggingInterval, httpProxy, httpsProxy, noProxy, errorMessages, userAgent, tlsVersions);
     this.oapiVersion = oapiVersion;
     this.openShiftUrl = openShiftUrl;
+    this.buildTimeout = buildTimeout;
 
     if (this.openShiftUrl == null || this.openShiftUrl.isEmpty()) {
       this.openShiftUrl = URLUtils.join(getMasterUrl(), "oapi", this.oapiVersion);
@@ -57,7 +62,7 @@ public class OpenShiftConfig extends Config {
     }
   }
 
-  public OpenShiftConfig(Config kubernetesConfig, String openShiftUrl, String oapiVersion) {
+  public OpenShiftConfig(Config kubernetesConfig, String openShiftUrl, String oapiVersion, long buildTimeout) {
     this(openShiftUrl, oapiVersion, kubernetesConfig.getMasterUrl(), kubernetesConfig.getApiVersion(), kubernetesConfig.getNamespace(), kubernetesConfig.isTrustCerts(),
       kubernetesConfig.getCaCertFile(), kubernetesConfig.getCaCertData(),
       kubernetesConfig.getClientCertFile(), kubernetesConfig.getClientCertData(),
@@ -73,7 +78,8 @@ public class OpenShiftConfig extends Config {
       kubernetesConfig.getNoProxy(),
       kubernetesConfig.getErrorMessages(),
       kubernetesConfig.getUserAgent(),
-      kubernetesConfig.getTlsVersions()
+      kubernetesConfig.getTlsVersions(),
+      buildTimeout
       );
   }
 
@@ -103,5 +109,13 @@ public class OpenShiftConfig extends Config {
 
   public void setOpenShiftUrl(String openShiftUrl) {
     this.openShiftUrl = openShiftUrl;
+  }
+
+  public long getBuildTimeout() {
+    return buildTimeout;
+  }
+
+  public void setBuildTimeout(long buildTimeout) {
+    this.buildTimeout = buildTimeout;
   }
 }
