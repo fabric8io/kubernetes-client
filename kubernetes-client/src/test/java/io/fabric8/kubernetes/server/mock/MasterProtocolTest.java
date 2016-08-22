@@ -32,14 +32,15 @@ public class MasterProtocolTest {
         KubernetesMockServer sslServer = new KubernetesMockServer();
         sslServer.init();
 
-        String host = sslServer.getServer().getHostName();
-        Integer port = sslServer.getServer().getPort();
+        String host = sslServer.getHostName();
+        Integer port = sslServer.getPort();
         Config config = new ConfigBuilder()
                 .withMasterUrl(host + ":" +port)
                 .withTlsVersions(TLS_1_0)
                 .withTrustCerts(true)
                 .build();
-        Assert.assertTrue(config.getMasterUrl().startsWith(Config.HTTPS_PROTOCOL_PREFIX));
+        Assert.assertTrue(config.getMasterUrl().toLowerCase().startsWith(Config.HTTPS_PROTOCOL_PREFIX));
+
         sslServer.destroy();
     }
 
@@ -47,12 +48,12 @@ public class MasterProtocolTest {
     public void testWithoutSSL() throws IOException {
         KubernetesMockServer plainServer = new KubernetesMockServer(false);
         plainServer.init();
-        String host = plainServer.getServer().getHostName();
-        Integer port = plainServer.getServer().getPort();
+        String host = plainServer.getHostName();
+        Integer port = plainServer.getPort();
         Config config = new ConfigBuilder()
                 .withMasterUrl(host + ":" +port)
                 .build();
-        Assert.assertTrue(config.getMasterUrl().startsWith(Config.HTTP_PROTOCOL_PREFIX));
+        Assert.assertTrue(config.getMasterUrl().toLowerCase().startsWith(Config.HTTP_PROTOCOL_PREFIX));
         plainServer.destroy();
     }
 }

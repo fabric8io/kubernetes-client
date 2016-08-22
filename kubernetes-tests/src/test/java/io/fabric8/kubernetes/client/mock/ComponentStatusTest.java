@@ -15,40 +15,44 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import org.junit.Test;
-
 import io.fabric8.kubernetes.api.model.ComponentCondition;
 import io.fabric8.kubernetes.api.model.ComponentStatus;
 import io.fabric8.kubernetes.api.model.ComponentStatusBuilder;
 import io.fabric8.kubernetes.api.model.ComponentStatusList;
 import io.fabric8.kubernetes.api.model.ComponentStatusListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.server.mock.KubernetesServer;
+import org.junit.Rule;
+import org.junit.Test;
 
-public class ComponentStatusTest extends KubernetesMockServerTestBase	 {
-	ComponentStatus status = new ComponentStatusBuilder().withConditions(new ComponentCondition(null, "ok", 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+public class ComponentStatusTest {
+  @Rule
+  public KubernetesServer server = new KubernetesServer();
+
+	ComponentStatus status = new ComponentStatusBuilder().withConditions(new ComponentCondition(null, "ok",
 			"True", "Healthy")).build();
-	
+
 	ComponentStatusList list = new ComponentStatusListBuilder().addNewItem().addNewCondition()
 			.and().endItem().build();
-	
+
 	@Test
 	public void testComponentStatus() {
-		expect().withPath("/api/v1/componentstatuses/scheduler").andReturn(200, status).once();
-	
-		KubernetesClient client = getClient();
+    server.expect().withPath("/api/v1/componentstatuses/scheduler").andReturn(200, status).once();
+
+		KubernetesClient client = server.getClient();
 		ComponentStatus stat = client.componentstatuses().withName("scheduler").get();
 	    assertNotNull(stat);
 	    assertEquals(1, stat.getConditions().size());
 	}
-	
+
 	@Test
 	public void testComponentStatusList() {
-		expect().withPath("/api/v1/componentstatuses").andReturn(200, status).once();
-	
-		KubernetesClient client = getClient();
+    server.expect().withPath("/api/v1/componentstatuses").andReturn(200, status).once();
+
+		KubernetesClient client = server.getClient();
 		ComponentStatusList stats = client.componentstatuses().list();
 	    assertNotNull(stats);
 	}

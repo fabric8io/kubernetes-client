@@ -22,21 +22,23 @@ import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
 import io.fabric8.openshift.api.model.SubjectAccessReviewResponseBuilder;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
+import org.junit.Rule;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class SubjectAccessReviewTest extends OpenShiftMockServerTestBase {
-
+public class SubjectAccessReviewTest {
+  @Rule
+  public OpenShiftServer server = new OpenShiftServer();
 
   @Test
   public void testCreate() {
-    expect().withPath("/oapi/v1/subjectaccessreviews").andReturn(201, new SubjectAccessReviewResponseBuilder()
+   server.expect().withPath("/oapi/v1/subjectaccessreviews").andReturn(201, new SubjectAccessReviewResponseBuilder()
       .withReason("r1")
       .build()).once();
 
-    NamespacedOpenShiftClient client = getOpenshiftClient();
+    NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
     SubjectAccessReviewResponse response = client.inAnyNamespace().subjectAccessReviews().create(new SubjectAccessReviewBuilder().build());
     assertNotNull(response);
@@ -46,11 +48,11 @@ public class SubjectAccessReviewTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testCreateInLine() {
-    expect().withPath("/oapi/v1/subjectaccessreviews").andReturn(201, new SubjectAccessReviewResponseBuilder()
+   server.expect().withPath("/oapi/v1/subjectaccessreviews").andReturn(201, new SubjectAccessReviewResponseBuilder()
       .withReason("r2")
       .build()).once();
 
-    NamespacedOpenShiftClient client = getOpenshiftClient();
+    NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
     SubjectAccessReviewResponse response = client.inAnyNamespace().subjectAccessReviews().createNew().withUser("user").withVerb("verb").done();
     assertNotNull(response);
@@ -60,11 +62,11 @@ public class SubjectAccessReviewTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testCreateLocal() {
-    expect().withPath("/oapi/v1/namespaces/test/subjectaccessreviews").andReturn(201, new SubjectAccessReviewResponseBuilder()
+   server.expect().withPath("/oapi/v1/namespaces/test/subjectaccessreviews").andReturn(201, new SubjectAccessReviewResponseBuilder()
       .withReason("r1")
       .build()).once();
 
-    OpenShiftClient client = getOpenshiftClient();
+    OpenShiftClient client = server.getOpenshiftClient();
 
     SubjectAccessReviewResponse response = client.subjectAccessReviews().inNamespace("test").create(new LocalSubjectAccessReviewBuilder().build());
     assertNotNull(response);
@@ -74,11 +76,11 @@ public class SubjectAccessReviewTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testCreateLocalInLine() {
-    expect().withPath("/oapi/v1/namespaces/test/subjectaccessreviews").andReturn( 201, new SubjectAccessReviewResponseBuilder()
+   server.expect().withPath("/oapi/v1/namespaces/test/subjectaccessreviews").andReturn( 201, new SubjectAccessReviewResponseBuilder()
       .withReason("r2")
       .build()).once();
 
-    OpenShiftClient client = getOpenshiftClient();
+    OpenShiftClient client = server.getOpenshiftClient();
 
     SubjectAccessReviewResponse response = client.subjectAccessReviews().inNamespace("test").createNew().withUser("user").withVerb("verb").done();
     assertNotNull(response);

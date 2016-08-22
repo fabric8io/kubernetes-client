@@ -16,12 +16,10 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import okhttp3.Response;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
-import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -29,7 +27,10 @@ import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
+import io.fabric8.kubernetes.server.mock.KubernetesServer;
 import io.fabric8.kubernetes.server.mock.OutputStreamMessage;
+import okhttp3.Response;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -42,23 +43,25 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class PodTest extends KubernetesMockServerTestBase {
+public class PodTest {
+  @Rule
+  public KubernetesServer server = new KubernetesServer();
 
   @Test
   public void testList() {
-    expect().withPath("/api/v1/namespaces/test/pods").andReturn(200, new PodListBuilder().build()).once();
-    expect().withPath("/api/v1/namespaces/ns1/pods").andReturn(200, new PodListBuilder()
+   server.expect().withPath("/api/v1/namespaces/test/pods").andReturn(200, new PodListBuilder().build()).once();
+   server.expect().withPath("/api/v1/namespaces/ns1/pods").andReturn(200, new PodListBuilder()
       .addNewItem().and()
       .addNewItem().and().build()).once();
 
-    expect().withPath("/api/v1/pods").andReturn(200, new PodListBuilder()
+   server.expect().withPath("/api/v1/pods").andReturn(200, new PodListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .addNewItem()
       .and().build()).once();
 
 
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
     PodList podList = client.pods().list();
     assertNotNull(podList);
     assertEquals(0, podList.getItems().size());
@@ -74,14 +77,14 @@ public class PodTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testListWithLables() {
-    expect().withPath("/api/v1/namespaces/test/pods?labelSelector=" + toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new PodListBuilder().build()).always();
-    expect().withPath("/api/v1/namespaces/test/pods?labelSelector=" + toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new PodListBuilder()
+   server.expect().withPath("/api/v1/namespaces/test/pods?labelSelector=" + toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new PodListBuilder().build()).always();
+   server.expect().withPath("/api/v1/namespaces/test/pods?labelSelector=" + toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new PodListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .addNewItem().and()
       .build()).once();
 
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
     PodList podList = client.pods()
       .withLabel("key1", "value1")
       .withLabel("key2","value2")
@@ -105,10 +108,10 @@ public class PodTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testDelete() {
-    expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, new PodBuilder().build()).once();
-    expect().withPath("/api/v1/namespaces/ns1/pods/pod2").andReturn(200, new PodBuilder().build()).once();
+   server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, new PodBuilder().build()).once();
+   server.expect().withPath("/api/v1/namespaces/ns1/pods/pod2").andReturn(200, new PodBuilder().build()).once();
 
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
 
     Boolean deleted = client.pods().withName("pod1").delete();
     assertNotNull(deleted);
@@ -127,10 +130,10 @@ public class PodTest extends KubernetesMockServerTestBase {
     Pod pod2 = new PodBuilder().withNewMetadata().withName("pod2").withNamespace("ns1").and().build();
     Pod pod3 = new PodBuilder().withNewMetadata().withName("pod3").withNamespace("any").and().build();
 
-    expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, pod1).once();
-    expect().withPath("/api/v1/namespaces/ns1/pods/pod2").andReturn(200, pod2).once();
+   server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, pod1).once();
+   server.expect().withPath("/api/v1/namespaces/ns1/pods/pod2").andReturn(200, pod2).once();
 
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
 
     Boolean deleted = client.pods().inAnyNamespace().delete(pod1, pod2);
     assertNotNull(deleted);
@@ -143,7 +146,7 @@ public class PodTest extends KubernetesMockServerTestBase {
   public void testDeleteWithNamespaceMismatch() {
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
     Pod pod2 = new PodBuilder().withNewMetadata().withName("pod2").withNamespace("ns1").and().build();
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
 
     Boolean deleted = client.pods().inNamespace("test1").delete(pod1);
     assertNotNull(deleted);
@@ -153,7 +156,7 @@ public class PodTest extends KubernetesMockServerTestBase {
   public void testCreateWithNameMismatch() {
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
     Pod pod2 = new PodBuilder().withNewMetadata().withName("pod2").withNamespace("ns1").and().build();
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
 
     client.pods().inNamespace("test1").withName("mypod1").create(pod1);
   }
@@ -165,12 +168,12 @@ public class PodTest extends KubernetesMockServerTestBase {
     String pod3Log = "pod3Log";
     String pod4Log = "pod4Log";
 
-    expect().withPath("/api/v1/namespaces/test/pods/pod1/log?pretty=true").andReturn(200, pod1Log).once();
-    expect().withPath("/api/v1/namespaces/test/pods/pod2/log?pretty=false").andReturn(200, pod2Log).once();
-    expect().withPath("/api/v1/namespaces/test/pods/pod3/log?pretty=false&container=cnt3").andReturn(200, pod3Log).once();
-    expect().withPath("/api/v1/namespaces/test4/pods/pod4/log?pretty=true&container=cnt4").andReturn(200, pod4Log).once();
+   server.expect().withPath("/api/v1/namespaces/test/pods/pod1/log?pretty=true").andReturn(200, pod1Log).once();
+   server.expect().withPath("/api/v1/namespaces/test/pods/pod2/log?pretty=false").andReturn(200, pod2Log).once();
+   server.expect().withPath("/api/v1/namespaces/test/pods/pod3/log?pretty=false&container=cnt3").andReturn(200, pod3Log).once();
+   server.expect().withPath("/api/v1/namespaces/test4/pods/pod4/log?pretty=true&container=cnt4").andReturn(200, pod4Log).once();
 
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
 
     String log = client.pods().withName("pod1").getLog(true);
     assertEquals(pod1Log, log);
@@ -188,13 +191,13 @@ public class PodTest extends KubernetesMockServerTestBase {
   @Test
   public void testExec() throws InterruptedException {
     String expectedOutput = "file1 file2";
-    expect().withPath("/api/v1/namespaces/test/pods/pod1/exec?command=ls&tty=true&stdout=true")
+   server.expect().withPath("/api/v1/namespaces/test/pods/pod1/exec?command=ls&tty=true&stdout=true")
             .andUpgradeToWebSocket()
                 .open(new OutputStreamMessage(expectedOutput))
                 .done()
             .always();
 
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
 
     final CountDownLatch execLatch = new CountDownLatch(1);
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -231,7 +234,7 @@ public class PodTest extends KubernetesMockServerTestBase {
             .endMetadata()
             .build();
 
-    expect().withPath("/api/v1/namespaces/test/pods").andReturn(200, new PodListBuilder()
+   server.expect().withPath("/api/v1/namespaces/test/pods").andReturn(200, new PodListBuilder()
             .withNewMetadata()
                 .withResourceVersion("1")
             .endMetadata()
@@ -239,14 +242,14 @@ public class PodTest extends KubernetesMockServerTestBase {
             .build()
     ).once();
 
-    expect().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true")
+   server.expect().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true")
             .andUpgradeToWebSocket()
             .open()
             .waitFor(15000).andEmit(new WatchEvent(pod1, "DELETED"))
             .done()
             .always();
 
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
 
     final CountDownLatch deleteLatch = new CountDownLatch(1);
     Watch watch = client.pods().withName("pod1").watch(new Watcher<Pod>() {
@@ -270,13 +273,13 @@ public class PodTest extends KubernetesMockServerTestBase {
 
   @Test(expected = KubernetesClientException.class)
   public void testGetLogNotFound() {
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
     client.pods().withName("pod5").getLog(true);
   }
 
   @Test
   public void testLoad() {
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
     Pod pod = client.pods().load(getClass().getResourceAsStream("/test-pod.yml")).get();
     assertEquals("nginx", pod.getMetadata().getName());
   }

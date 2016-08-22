@@ -22,6 +22,8 @@ import io.fabric8.kubernetes.api.model.extensions.JobList;
 import io.fabric8.kubernetes.api.model.extensions.JobListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.server.mock.KubernetesServer;
+import org.junit.Rule;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -30,23 +32,25 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-public class JobTest extends KubernetesMockServerTestBase {
+public class JobTest {
+  @Rule
+  public KubernetesServer server = new KubernetesServer();
 
   @Test
   public void testList() {
-    expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs").andReturn(200, new JobListBuilder().build()).once();
-    expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/jobs").andReturn(200, new JobListBuilder()
+   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs").andReturn(200, new JobListBuilder().build()).once();
+   server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/jobs").andReturn(200, new JobListBuilder()
       .addNewItem().and()
       .addNewItem().and().build()).once();
 
-    expect().withPath("/apis/extensions/v1beta1/jobs").andReturn(200, new JobListBuilder()
+   server.expect().withPath("/apis/extensions/v1beta1/jobs").andReturn(200, new JobListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .addNewItem()
       .and().build()).once();
 
 
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
     JobList jobList = client.extensions().jobs().list();
     assertNotNull(jobList);
     assertEquals(0, jobList.getItems().size());
@@ -62,14 +66,14 @@ public class JobTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testListWithLables() {
-    expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs?labelSelector=" + toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new JobListBuilder().build()).always();
-    expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs?labelSelector=" + toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new JobListBuilder()
+   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs?labelSelector=" + toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new JobListBuilder().build()).always();
+   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs?labelSelector=" + toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new JobListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .addNewItem().and()
       .build()).once();
 
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
     JobList jobList = client.extensions().jobs()
       .withLabel("key1", "value1")
       .withLabel("key2","value2")
@@ -92,10 +96,10 @@ public class JobTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testGet() {
-    expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder().build()).once();
-    expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/jobs/job2").andReturn(200, new JobBuilder().build()).once();
+   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder().build()).once();
+   server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/jobs/job2").andReturn(200, new JobBuilder().build()).once();
 
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
 
     Job job = client.extensions().jobs().withName("job1").get();
     assertNotNull(job);
@@ -110,7 +114,7 @@ public class JobTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testDelete() {
-    expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder().withNewMetadata()
+   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder().withNewMetadata()
       .withName("job1")
       .withResourceVersion("1")
       .endMetadata()
@@ -121,7 +125,7 @@ public class JobTest extends KubernetesMockServerTestBase {
       .withActive(1)
       .endStatus()
       .build()).once();
-    expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder().withNewMetadata()
+   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder().withNewMetadata()
       .withName("job1")
       .withResourceVersion("1")
       .endMetadata()
@@ -133,7 +137,7 @@ public class JobTest extends KubernetesMockServerTestBase {
       .endStatus()
       .build()).times(5);
 
-    expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs/job2").andReturn(200, new JobBuilder().withNewMetadata()
+   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs/job2").andReturn(200, new JobBuilder().withNewMetadata()
       .withName("job2")
       .withResourceVersion("1")
       .endMetadata()
@@ -144,7 +148,7 @@ public class JobTest extends KubernetesMockServerTestBase {
       .withActive(1)
       .endStatus()
       .build()).once();
-    expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs/job2").andReturn(200, new JobBuilder().withNewMetadata()
+   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs/job2").andReturn(200, new JobBuilder().withNewMetadata()
       .withName("job2")
       .withResourceVersion("1")
       .endMetadata()
@@ -156,7 +160,7 @@ public class JobTest extends KubernetesMockServerTestBase {
       .endStatus()
       .build()).times(5);
 
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
 
     Boolean deleted = client.extensions().jobs().withName("job1").delete();
     assertNotNull(deleted);
@@ -194,14 +198,14 @@ public class JobTest extends KubernetesMockServerTestBase {
       .build();
     Job job3 = new JobBuilder().withNewMetadata().withName("job3").withNamespace("any").and().build();
 
-    expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs/job1").andReturn(200, job1).once();
-    expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder(job1)
+   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs/job1").andReturn(200, job1).once();
+   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder(job1)
       .editStatus().withActive(0).endStatus().build()).times(5);
-    expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/jobs/job2").andReturn(200, job2).once();
-    expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/jobs/job2").andReturn(200, new JobBuilder(job2)
+   server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/jobs/job2").andReturn(200, job2).once();
+   server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/jobs/job2").andReturn(200, new JobBuilder(job2)
       .editStatus().withActive(0).endStatus().build()).times(5);
 
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
 
     Boolean deleted = client.extensions().jobs().inAnyNamespace().delete(job1, job2);
     assertNotNull(deleted);
@@ -214,7 +218,7 @@ public class JobTest extends KubernetesMockServerTestBase {
   public void testDeleteWithNamespaceMismatch() {
     Job job1 = new JobBuilder().withNewMetadata().withName("job1").withNamespace("test").and().build();
     Job job2 = new JobBuilder().withNewMetadata().withName("job2").withNamespace("ns1").and().build();
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
 
     Boolean deleted = client.extensions().jobs().inNamespace("test1").delete(job1);
     assertNotNull(deleted);
@@ -224,7 +228,7 @@ public class JobTest extends KubernetesMockServerTestBase {
   public void testCreateWithNameMismatch() {
     Job job1 = new JobBuilder().withNewMetadata().withName("job1").withNamespace("test").and().build();
     Job job2 = new JobBuilder().withNewMetadata().withName("job2").withNamespace("ns1").and().build();
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
 
     client.extensions().jobs().inNamespace("test1").withName("myjob1").create(job1);
   }

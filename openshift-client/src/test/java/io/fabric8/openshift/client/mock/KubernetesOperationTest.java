@@ -21,18 +21,21 @@ import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.openshift.api.model.BuildConfigBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
+import org.junit.Rule;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
-public class KubernetesOperationTest extends OpenShiftMockServerTestBase {
+public class KubernetesOperationTest {
+  @Rule
+  public OpenShiftServer server = new OpenShiftServer();
 
   @Test
   public void testDelete() {
-    expect().withPath("/api/v1/namespaces/test/replicationcontrollers/rc1").andReturn(200, new ReplicationControllerBuilder().build()).once();
-    expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, new PodBuilder().build()).once();
+   server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers/rc1").andReturn(200, new ReplicationControllerBuilder().build()).once();
+   server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, new PodBuilder().build()).once();
 
-    OpenShiftClient client = getOpenshiftClient();
+    OpenShiftClient client = server.getOpenshiftClient();
 
     Boolean deleted = client.replicationControllers().withName("rc1").cascading(false).delete();
     assertTrue(deleted);
@@ -43,12 +46,12 @@ public class KubernetesOperationTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testDeleteWithAdapt() {
-    expect().withPath("/api/v1/namespaces/test/replicationcontrollers/rc1").andReturn(200, new ReplicationControllerBuilder().build()).once();
-    expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, new PodBuilder().build()).once();
-    expect().withPath("/oapi/v1/namespaces/test/buildconfigs/bc1").andReturn(200, new BuildConfigBuilder().build()).once();
-    expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, new PodBuilder().build()).once();
+   server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers/rc1").andReturn(200, new ReplicationControllerBuilder().build()).once();
+   server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, new PodBuilder().build()).once();
+   server.expect().withPath("/oapi/v1/namespaces/test/buildconfigs/bc1").andReturn(200, new BuildConfigBuilder().build()).once();
+   server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, new PodBuilder().build()).once();
 
-    try (KubernetesClient client = mock.createClient()) {
+    try (KubernetesClient client = server.getKubernetesClient()) {
       Boolean deleted = client.replicationControllers().withName("rc1").cascading(false).delete();
       assertTrue(deleted);
 
