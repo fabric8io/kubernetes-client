@@ -40,10 +40,11 @@ import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URL;
 import java.security.GeneralSecurityException;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
+import static okhttp3.ConnectionSpec.CLEARTEXT;
 
 public class HttpClientUtils {
 
@@ -144,7 +145,7 @@ public class HttpClientUtils {
               ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
                 .tlsVersions(config.getTlsVersions())
                 .build();
-              httpClientBuilder.connectionSpecs(Collections.singletonList(spec));
+              httpClientBuilder.connectionSpecs(Arrays.asList(spec, CLEARTEXT));
             }
 
             return httpClientBuilder.build();

@@ -16,15 +16,24 @@
 package io.fabric8.kubernetes.server.mock;
 
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
-import io.fabric8.kubernetes.server.mock.KubernetesMockServer;
 import io.fabric8.mockwebserver.dsl.MockServerExpectation;
 import org.junit.rules.ExternalResource;
 
 public class KubernetesServer extends ExternalResource {
-  private KubernetesMockServer mock = new KubernetesMockServer();
+  private KubernetesMockServer mock;
   private NamespacedKubernetesClient client;
+  private boolean https;
+
+  public KubernetesServer() {
+    this(true);
+  }
+
+  public KubernetesServer(boolean https) {
+    this.https = https;
+  }
 
   public void before() {
+    mock = new KubernetesMockServer(https);
     mock.init();
     client = mock.createClient();
   }
