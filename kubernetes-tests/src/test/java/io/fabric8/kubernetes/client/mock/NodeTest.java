@@ -24,6 +24,8 @@ import io.fabric8.kubernetes.api.model.NodeListBuilder;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.server.mock.KubernetesServer;
+import org.junit.Rule;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -32,13 +34,15 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-public class NodeTest extends KubernetesMockServerTestBase {
+public class NodeTest {
+  @Rule
+  public KubernetesServer server = new KubernetesServer();
 
   @Test
   public void testList() {
-    expect().withPath("/api/v1/nodes").andReturn(200, new NodeListBuilder().addNewItem().and().build()).once();
+   server.expect().withPath("/api/v1/nodes").andReturn(200, new NodeListBuilder().addNewItem().and().build()).once();
 
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
     NodeList nodeList = client.nodes().list();
     assertNotNull(nodeList);
     assertEquals(1, nodeList.getItems().size());
@@ -47,10 +51,10 @@ public class NodeTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testGet() {
-    expect().withPath("/api/v1/nodes/node1").andReturn(200, new PodBuilder().build()).once();
-    expect().withPath("/api/v1/nodes/node2").andReturn(200, new PodBuilder().build()).once();
+   server.expect().withPath("/api/v1/nodes/node1").andReturn(200, new PodBuilder().build()).once();
+   server.expect().withPath("/api/v1/nodes/node2").andReturn(200, new PodBuilder().build()).once();
 
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
 
     Node node = client.nodes().withName("node1").get();
     assertNotNull(node);
@@ -65,10 +69,10 @@ public class NodeTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testDelete() {
-    expect().withPath("/api/v1/nodes/node1").andReturn(200, new PodBuilder().build()).once();
-    expect().withPath("/api/v1/nodes/node2").andReturn(200, new PodBuilder().build()).once();
+   server.expect().withPath("/api/v1/nodes/node1").andReturn(200, new PodBuilder().build()).once();
+   server.expect().withPath("/api/v1/nodes/node2").andReturn(200, new PodBuilder().build()).once();
 
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
 
     Boolean deleted = client.nodes().withName("node1").delete();
     assertTrue(deleted);
@@ -84,7 +88,7 @@ public class NodeTest extends KubernetesMockServerTestBase {
   @Test(expected = KubernetesClientException.class)
   public void testCreateWithNameMismatch() {
     Namespace ns1 = new NamespaceBuilder().withNewMetadata().withName("ns1").and().build();
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
 
     client.namespaces().withName("myns1").create(ns1);
   }

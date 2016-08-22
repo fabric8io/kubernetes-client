@@ -22,6 +22,8 @@ import io.fabric8.kubernetes.api.model.extensions.IngressList;
 import io.fabric8.kubernetes.api.model.extensions.IngressListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.server.mock.KubernetesServer;
+import org.junit.Rule;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -30,23 +32,25 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-public class IngressTest extends KubernetesMockServerTestBase {
+public class IngressTest {
+  @Rule
+  public KubernetesServer server = new KubernetesServer();
 
   @Test
   public void testList() {
-    expect().withPath("/apis/extensions/v1beta1/namespaces/test/ingresses").andReturn(200, new IngressListBuilder().build()).once();
-    expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/ingresses").andReturn(200, new IngressListBuilder()
+   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/ingresses").andReturn(200, new IngressListBuilder().build()).once();
+   server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/ingresses").andReturn(200, new IngressListBuilder()
       .addNewItem().and()
       .addNewItem().and().build()).once();
 
-    expect().withPath("/apis/extensions/v1beta1/ingresses").andReturn(200, new IngressListBuilder()
+   server.expect().withPath("/apis/extensions/v1beta1/ingresses").andReturn(200, new IngressListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .addNewItem()
       .and().build()).once();
 
 
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
     IngressList ingressList = client.extensions().ingress().list();
     assertNotNull(ingressList);
     assertEquals(0, ingressList.getItems().size());
@@ -62,14 +66,14 @@ public class IngressTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testListWithLables() {
-    expect().withPath("/apis/extensions/v1beta1/namespaces/test/ingresses?labelSelector=" + toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new IngressListBuilder().build()).always();
-    expect().withPath("/apis/extensions/v1beta1/namespaces/test/ingresses?labelSelector=" + toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new IngressListBuilder()
+   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/ingresses?labelSelector=" + toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new IngressListBuilder().build()).always();
+   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/ingresses?labelSelector=" + toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new IngressListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .addNewItem().and()
       .build()).once();
 
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
     IngressList ingressList = client.extensions().ingress()
       .withLabel("key1", "value1")
       .withLabel("key2","value2")
@@ -92,10 +96,10 @@ public class IngressTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testGet() {
-    expect().withPath("/apis/extensions/v1beta1/namespaces/test/ingresses/ingress1").andReturn(200, new IngressBuilder().build()).once();
-    expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/ingresses/ingress2").andReturn(200, new IngressBuilder().build()).once();
+   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/ingresses/ingress1").andReturn(200, new IngressBuilder().build()).once();
+   server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/ingresses/ingress2").andReturn(200, new IngressBuilder().build()).once();
 
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
 
     Ingress ingress = client.extensions().ingress().withName("ingress1").get();
     assertNotNull(ingress);
@@ -110,10 +114,10 @@ public class IngressTest extends KubernetesMockServerTestBase {
 
   @Test
   public void testDelete() {
-    expect().withPath("/apis/extensions/v1beta1/namespaces/test/ingresses/ingress1").andReturn(200, new IngressBuilder().build()).once();
-    expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/ingresses/ingress2").andReturn(200, new IngressBuilder().build()).once();
+   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/ingresses/ingress1").andReturn(200, new IngressBuilder().build()).once();
+   server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/ingresses/ingress2").andReturn(200, new IngressBuilder().build()).once();
 
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
 
     Boolean deleted = client.extensions().ingress().withName("ingress1").delete();
     assertNotNull(deleted);
@@ -132,10 +136,10 @@ public class IngressTest extends KubernetesMockServerTestBase {
     Ingress ingress2 = new IngressBuilder().withNewMetadata().withName("ingress2").withNamespace("ns1").and().build();
     Ingress ingress3 = new IngressBuilder().withNewMetadata().withName("ingress3").withNamespace("any").and().build();
 
-    expect().withPath("/apis/extensions/v1beta1/namespaces/test/ingresses/ingress1").andReturn(200, ingress1).once();
-    expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/ingresses/ingress2").andReturn(200, ingress2).once();
+   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/ingresses/ingress1").andReturn(200, ingress1).once();
+   server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/ingresses/ingress2").andReturn(200, ingress2).once();
 
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
 
     Boolean deleted = client.extensions().ingress().inAnyNamespace().delete(ingress1, ingress2);
     assertNotNull(deleted);
@@ -148,7 +152,7 @@ public class IngressTest extends KubernetesMockServerTestBase {
   public void testDeleteWithNamespaceMismatch() {
     Ingress ingress1 = new IngressBuilder().withNewMetadata().withName("ingress1").withNamespace("test").and().build();
     Ingress ingress2 = new IngressBuilder().withNewMetadata().withName("ingress2").withNamespace("ns1").and().build();
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
 
     Boolean deleted = client.extensions().ingress().inNamespace("test1").delete(ingress1);
     assertNotNull(deleted);
@@ -158,7 +162,7 @@ public class IngressTest extends KubernetesMockServerTestBase {
   public void testCreateWithNameMismatch() {
     Ingress ingress1 = new IngressBuilder().withNewMetadata().withName("ingress1").withNamespace("test").and().build();
     Ingress ingress2 = new IngressBuilder().withNewMetadata().withName("ingress2").withNamespace("ns1").and().build();
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
 
     client.extensions().ingress().inNamespace("test1").withName("myingress1").create(ingress1);
   }

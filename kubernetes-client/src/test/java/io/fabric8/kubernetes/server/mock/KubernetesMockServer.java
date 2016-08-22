@@ -67,7 +67,7 @@ public class KubernetesMockServer extends DefaultMockServer {
     }
 
     public void onStart() {
-        expect().get().withPath("/").andReturn(200, new RootPathsBuilder().addToPaths(getRootPaths()).build()).always();
+       expect().get().withPath("/").andReturn(200, new RootPathsBuilder().addToPaths(getRootPaths()).build()).always();
     }
 
     public String[] getRootPaths() {

@@ -21,6 +21,8 @@ import io.fabric8.kubernetes.api.model.SecurityContextConstraintsBuilder;
 import io.fabric8.kubernetes.api.model.SecurityContextConstraintsList;
 import io.fabric8.kubernetes.api.model.SecurityContextConstraintsListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.server.mock.KubernetesServer;
+import org.junit.Rule;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -28,16 +30,18 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class SecurityContextConstraintsTest extends KubernetesMockServerTestBase {
+public class SecurityContextConstraintsTest {
+  @Rule
+  public KubernetesServer server = new KubernetesServer();
 
   @Test
   public void testList() {
-    expect().withPath("/api/v1/securitycontextconstraints").andReturn(200, new SecurityContextConstraintsListBuilder()
+   server.expect().withPath("/api/v1/securitycontextconstraints").andReturn(200, new SecurityContextConstraintsListBuilder()
             .addNewItem().endItem()
             .build()).once();
 
 
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
     SecurityContextConstraintsList sccList = client.securityContextConstraints().list();
     assertNotNull(sccList);
     assertEquals(1, sccList.getItems().size());
@@ -45,10 +49,10 @@ public class SecurityContextConstraintsTest extends KubernetesMockServerTestBase
 
   @Test
   public void testDelete() {
-    expect().withPath("/api/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().build()).once();
-    expect().withPath("/api/v1/securitycontextconstraints/scc2").andReturn(200, new SecurityContextConstraintsBuilder().build()).once();
+   server.expect().withPath("/api/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().build()).once();
+   server.expect().withPath("/api/v1/securitycontextconstraints/scc2").andReturn(200, new SecurityContextConstraintsBuilder().build()).once();
 
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
 
     Boolean deleted = client.securityContextConstraints().withName("scc1").delete();
     assertNotNull(deleted);
@@ -62,10 +66,10 @@ public class SecurityContextConstraintsTest extends KubernetesMockServerTestBase
 
   @Test
   public void testEdit() {
-    expect().withPath("/api/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().withNewMetadata().withName("scc1").and().build()).times(2);
-    expect().withPath("/api/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().withNewMetadata().withName("scc1").and().addToAllowedCapabilities("allowed").build()).once();
+   server.expect().withPath("/api/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().withNewMetadata().withName("scc1").and().build()).times(2);
+   server.expect().withPath("/api/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().withNewMetadata().withName("scc1").and().addToAllowedCapabilities("allowed").build()).once();
 
-    KubernetesClient client = getClient();
+    KubernetesClient client = server.getClient();
     SecurityContextConstraints scc = client.securityContextConstraints().withName("scc1").edit().addToAllowedCapabilities("allowed").done();
     assertNotNull(scc);
     assertEquals(1, scc.getAllowedCapabilities().size());

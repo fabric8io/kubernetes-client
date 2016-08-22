@@ -25,6 +25,7 @@ import io.fabric8.openshift.api.model.BuildConfigList;
 import io.fabric8.openshift.api.model.BuildConfigListBuilder;
 import io.fabric8.openshift.api.model.BuildListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -39,22 +40,24 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-public class BuildConfigTest extends OpenShiftMockServerTestBase {
+public class BuildConfigTest {
+  @Rule
+  public OpenShiftServer server = new OpenShiftServer();
 
   @Test
   public void testList() {
-    expect().withPath("/oapi/v1/namespaces/test/buildconfigs").andReturn(200, new BuildConfigListBuilder().build()).once();
-    expect().withPath("/oapi/v1/namespaces/ns1/buildconfigs").andReturn(200, new BuildConfigListBuilder()
+   server.expect().withPath("/oapi/v1/namespaces/test/buildconfigs").andReturn(200, new BuildConfigListBuilder().build()).once();
+   server.expect().withPath("/oapi/v1/namespaces/ns1/buildconfigs").andReturn(200, new BuildConfigListBuilder()
       .addNewItem().and()
       .addNewItem().and().build()).once();
 
-    expect().withPath("/oapi/v1/buildconfigs").andReturn(200, new BuildConfigListBuilder()
+   server.expect().withPath("/oapi/v1/buildconfigs").andReturn(200, new BuildConfigListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .addNewItem()
       .and().build()).once();
 
-    OpenShiftClient client = getOpenshiftClient();
+    OpenShiftClient client = server.getOpenshiftClient();
 
     BuildConfigList buildConfigList = client.buildConfigs().list();
     assertNotNull(buildConfigList);
@@ -72,15 +75,15 @@ public class BuildConfigTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testGet() {
-    expect().withPath("/oapi/v1/namespaces/test/buildconfigs/bc1").andReturn(200, new BuildConfigBuilder()
+   server.expect().withPath("/oapi/v1/namespaces/test/buildconfigs/bc1").andReturn(200, new BuildConfigBuilder()
       .withNewMetadata().withName("bc1").endMetadata()
       .build()).once();
 
-    expect().withPath("/oapi/v1/namespaces/ns1/buildconfigs/bc2").andReturn(200, new BuildConfigBuilder()
+   server.expect().withPath("/oapi/v1/namespaces/ns1/buildconfigs/bc2").andReturn(200, new BuildConfigBuilder()
       .withNewMetadata().withName("bc2").endMetadata()
       .build()).once();
 
-    OpenShiftClient client = getOpenshiftClient();
+    OpenShiftClient client = server.getOpenshiftClient();
 
     BuildConfig buildConfig = client.buildConfigs().withName("bc1").get();
     assertNotNull(buildConfig);
@@ -96,12 +99,12 @@ public class BuildConfigTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testBinaryBuild() {
-    expect().post().withPath("/oapi/v1/namespaces/ns1/buildconfigs/bc2/instantiatebinary?commit=some%20commit&revision.authorName=author%20name&revision.committerName=committer%20name&revision.committerEmail=committer@someorg.com")
+   server.expect().post().withPath("/oapi/v1/namespaces/ns1/buildconfigs/bc2/instantiatebinary?commit=some%20commit&revision.authorName=author%20name&revision.committerName=committer%20name&revision.committerEmail=committer@someorg.com")
       .andReturn(201, new BuildBuilder()
       .withNewMetadata().withName("bc2").endMetadata().build()).once();
 
 
-    OpenShiftClient client = getOpenshiftClient();
+    OpenShiftClient client = server.getOpenshiftClient();
     InputStream dummy = new ByteArrayInputStream("".getBytes() );
 
     Build build = client.buildConfigs().inNamespace("ns1").withName("bc2").instantiateBinary()
@@ -119,11 +122,11 @@ public class BuildConfigTest extends OpenShiftMockServerTestBase {
   // TODO Add delay to mockwebserver. Disabled as too dependent on timing issues right now.
   //@Test
   public void testBinaryBuildWithTimeout() {
-    expect().post().delay(200).withPath("/oapi/v1/namespaces/ns1/buildconfigs/bc2/instantiatebinary?commit=")
+   server.expect().post().delay(200).withPath("/oapi/v1/namespaces/ns1/buildconfigs/bc2/instantiatebinary?commit=")
       .andReturn(201, new BuildBuilder()
       .withNewMetadata().withName("bc2").endMetadata().build()).once();
 
-    OpenShiftClient client = getOpenshiftClient();
+    OpenShiftClient client = server.getOpenshiftClient();
     InputStream dummy = new ByteArrayInputStream("".getBytes() );
 
     try {
@@ -140,12 +143,12 @@ public class BuildConfigTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testDelete() {
-    expect().withPath("/oapi/v1/namespaces/test/buildconfigs/bc1").andReturn(200, new BuildConfigBuilder().withNewMetadata().withName("bc1").and().build()).once();
-    expect().withPath("/oapi/v1/namespaces/test/builds?labelSelector=openshift.io/build-config.name%3Dbc1").andReturn( 200, new BuildListBuilder().build()).once();
-    expect().withPath("/oapi/v1/namespaces/ns1/buildconfigs/bc2").andReturn( 200, new BuildConfigBuilder().withNewMetadata().withName("bc2").and().build()).once();
-    expect().withPath("/oapi/v1/namespaces/ns1/builds?labelSelector=openshift.io/build-config.name%3Dbc2").andReturn( 200, new BuildListBuilder().build()).once();
+   server.expect().withPath("/oapi/v1/namespaces/test/buildconfigs/bc1").andReturn(200, new BuildConfigBuilder().withNewMetadata().withName("bc1").and().build()).once();
+   server.expect().withPath("/oapi/v1/namespaces/test/builds?labelSelector=openshift.io/build-config.name%3Dbc1").andReturn( 200, new BuildListBuilder().build()).once();
+   server.expect().withPath("/oapi/v1/namespaces/ns1/buildconfigs/bc2").andReturn( 200, new BuildConfigBuilder().withNewMetadata().withName("bc2").and().build()).once();
+   server.expect().withPath("/oapi/v1/namespaces/ns1/builds?labelSelector=openshift.io/build-config.name%3Dbc2").andReturn( 200, new BuildListBuilder().build()).once();
 
-    OpenShiftClient client = getOpenshiftClient();
+    OpenShiftClient client = server.getOpenshiftClient();
 
     Boolean deleted = client.buildConfigs().withName("bc1").delete();
     assertNotNull(deleted);

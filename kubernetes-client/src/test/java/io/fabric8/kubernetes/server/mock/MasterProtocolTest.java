@@ -40,6 +40,7 @@ public class MasterProtocolTest {
                 .withTrustCerts(true)
                 .build();
         Assert.assertTrue(config.getMasterUrl().startsWith(Config.HTTPS_PROTOCOL_PREFIX));
+
         sslServer.destroy();
     }
 
@@ -47,8 +48,8 @@ public class MasterProtocolTest {
     public void testWithoutSSL() throws IOException {
         KubernetesMockServer plainServer = new KubernetesMockServer(false);
         plainServer.init();
-        String host = plainServer.getServer().getHostName();
-        Integer port = plainServer.getServer().getPort();
+        String host = plainServer.getHostName();
+        Integer port = plainServer.getPort();
         Config config = new ConfigBuilder()
                 .withMasterUrl(host + ":" +port)
                 .build();

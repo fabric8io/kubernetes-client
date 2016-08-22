@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.mock;
 import io.fabric8.kubernetes.api.model.EventListBuilder;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.server.mock.KubernetesServer;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -26,7 +27,9 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.startsWith;
 
-public class ErrorMessageTest extends KubernetesMockServerTestBase {
+public class ErrorMessageTest {
+  @Rule
+  public KubernetesServer server = new KubernetesServer();
 
     @Rule
     public ExpectedException expectedEx = ExpectedException.none();
@@ -38,16 +41,16 @@ public class ErrorMessageTest extends KubernetesMockServerTestBase {
         expectedEx.expectMessage(containsString("Message: MSG"));
         expectedEx.expectMessage(not(containsString("Received status")));
 
-        getClient().getConfiguration().getErrorMessages().put(403, "MSG");
-        expect().withPath("/api/v1/namespaces/test/events").andReturn(200, new EventListBuilder()
+        server.getClient().getConfiguration().getErrorMessages().put(403, "MSG");
+       server.expect().withPath("/api/v1/namespaces/test/events").andReturn(200, new EventListBuilder()
                 .addNewItem()
                 .withNewMetadata()
                 .withName("event1")
                 .endMetadata()
                 .endItem().build()).once();
-        expect().withPath("/api/v1/namespaces/test/events/event1").andReturn(403, Boolean.FALSE).once();
+       server.expect().withPath("/api/v1/namespaces/test/events/event1").andReturn(403, Boolean.FALSE).once();
 
-        KubernetesClient client = getClient();
+        KubernetesClient client = server.getClient();
 
         client.events().inNamespace("test").delete();
     }
@@ -58,14 +61,14 @@ public class ErrorMessageTest extends KubernetesMockServerTestBase {
         expectedEx.expectMessage(containsString("Received status"));
         expectedEx.expectMessage(containsString("Message: This operation"));
 
-        expect().withPath("/api/v1/namespaces/test/events").andReturn(500, new StatusBuilder()
+       server.expect().withPath("/api/v1/namespaces/test/events").andReturn(500, new StatusBuilder()
                 .withMessage("This operation is not allowed for some reason")
                 .withReason("Some reason")
                 .withCode(500)
                 .build()).once();
 
 
-        KubernetesClient client = getClient();
+        KubernetesClient client = server.getClient();
 
         client.events().inNamespace("test").createNew().withNewMetadata().withName("event1").endMetadata().done();
     }

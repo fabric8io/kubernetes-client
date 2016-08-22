@@ -21,6 +21,7 @@ import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.api.model.DeploymentConfigListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
+import org.junit.Rule;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -29,22 +30,24 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-public class DeploymentConfigTest extends OpenShiftMockServerTestBase {
+public class DeploymentConfigTest {
+  @Rule
+  public OpenShiftServer server = new OpenShiftServer();
 
   @Test
   public void testList() {
-    expect().withPath("/oapi/v1/namespaces/test/deploymentconfigs").andReturn(200, new DeploymentConfigListBuilder().build()).once();
-    expect().withPath("/oapi/v1/namespaces/ns1/deploymentconfigs").andReturn(200, new DeploymentConfigListBuilder()
+   server.expect().withPath("/oapi/v1/namespaces/test/deploymentconfigs").andReturn(200, new DeploymentConfigListBuilder().build()).once();
+   server.expect().withPath("/oapi/v1/namespaces/ns1/deploymentconfigs").andReturn(200, new DeploymentConfigListBuilder()
       .addNewItem().and()
       .addNewItem().and().build()).once();
 
-    expect().withPath("/oapi/v1/deploymentconfigs").andReturn(200, new DeploymentConfigListBuilder()
+   server.expect().withPath("/oapi/v1/deploymentconfigs").andReturn(200, new DeploymentConfigListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .addNewItem()
       .and().build()).once();
 
-    OpenShiftClient client = getOpenshiftClient();
+    OpenShiftClient client = server.getOpenshiftClient();
 
     DeploymentConfigList buildConfigList = client.deploymentConfigs().list();
     assertNotNull(buildConfigList);
@@ -62,15 +65,15 @@ public class DeploymentConfigTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testGet() {
-    expect().withPath("/oapi/v1/namespaces/test/deploymentconfigs/dc1").andReturn(200, new DeploymentConfigBuilder()
+   server.expect().withPath("/oapi/v1/namespaces/test/deploymentconfigs/dc1").andReturn(200, new DeploymentConfigBuilder()
       .withNewMetadata().withName("dc1").endMetadata()
       .build()).once();
 
-    expect().withPath("/oapi/v1/namespaces/ns1/deploymentconfigs/dc2").andReturn(200, new DeploymentConfigBuilder()
+   server.expect().withPath("/oapi/v1/namespaces/ns1/deploymentconfigs/dc2").andReturn(200, new DeploymentConfigBuilder()
       .withNewMetadata().withName("dc2").endMetadata()
       .build()).once();
 
-    OpenShiftClient client = getOpenshiftClient();
+    OpenShiftClient client = server.getOpenshiftClient();
 
     DeploymentConfig buildConfig = client.deploymentConfigs().withName("dc1").get();
     assertNotNull(buildConfig);
@@ -87,10 +90,10 @@ public class DeploymentConfigTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testDelete() {
-    expect().withPath("/oapi/v1/namespaces/test/deploymentconfigs/dc1").andReturn(200, new DeploymentConfigBuilder().build()).once();
-    expect().withPath("/oapi/v1/namespaces/ns1/deploymentconfigs/dc2").andReturn( 200, new DeploymentConfigBuilder().build()).once();
+   server.expect().withPath("/oapi/v1/namespaces/test/deploymentconfigs/dc1").andReturn(200, new DeploymentConfigBuilder().build()).once();
+   server.expect().withPath("/oapi/v1/namespaces/ns1/deploymentconfigs/dc2").andReturn( 200, new DeploymentConfigBuilder().build()).once();
 
-    OpenShiftClient client = getOpenshiftClient();
+    OpenShiftClient client = server.getOpenshiftClient();
 
     Boolean deleted = client.deploymentConfigs().withName("dc1").delete();
     assertNotNull(deleted);

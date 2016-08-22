@@ -21,6 +21,7 @@ import io.fabric8.openshift.api.model.OAuthClientBuilder;
 import io.fabric8.openshift.api.model.OAuthClientList;
 import io.fabric8.openshift.api.model.OAuthClientListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
+import org.junit.Rule;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -29,16 +30,18 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-public class OAuthClientTest extends OpenShiftMockServerTestBase {
+public class OAuthClientTest {
+  @Rule
+  public OpenShiftServer server = new OpenShiftServer();
 
   @Test
   public void testList() {
-    expect().withPath("/oapi/v1/oauthclients").andReturn(200, new OAuthClientListBuilder()
+   server.expect().withPath("/oapi/v1/oauthclients").andReturn(200, new OAuthClientListBuilder()
       .addNewItem().and()
       .addNewItem().and().build()).once();
 
 
-    OpenShiftClient client = getOpenshiftClient();
+    OpenShiftClient client = server.getOpenshiftClient();
 
     OAuthClientList oauthclientList = client.oAuthClients().list();
     assertNotNull(oauthclientList);
@@ -48,15 +51,15 @@ public class OAuthClientTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testGet() {
-    expect().withPath("/oapi/v1/oauthclients/client1").andReturn(200, new OAuthClientBuilder()
+   server.expect().withPath("/oapi/v1/oauthclients/client1").andReturn(200, new OAuthClientBuilder()
       .withNewMetadata().withName("client1").endMetadata()
       .build()).once();
 
-    expect().withPath("/oapi/v1/oauthclients/client2").andReturn(200, new OAuthClientBuilder()
+   server.expect().withPath("/oapi/v1/oauthclients/client2").andReturn(200, new OAuthClientBuilder()
       .withNewMetadata().withName("client2").endMetadata()
       .build()).once();
 
-    OpenShiftClient client = getOpenshiftClient();
+    OpenShiftClient client = server.getOpenshiftClient();
 
     OAuthClient oauthclient = client.oAuthClients().withName("client1").get();
     assertNotNull(oauthclient);
@@ -73,10 +76,10 @@ public class OAuthClientTest extends OpenShiftMockServerTestBase {
 
   @Test
   public void testDelete() {
-    expect().withPath("/oapi/v1/oauthclients/client1").andReturn(200, new OAuthClientBuilder().build()).once();
-    expect().withPath("/oapi/v1/oauthclients/client2").andReturn(200, new OAuthClientBuilder().build()).once();
+   server.expect().withPath("/oapi/v1/oauthclients/client1").andReturn(200, new OAuthClientBuilder().build()).once();
+   server.expect().withPath("/oapi/v1/oauthclients/client2").andReturn(200, new OAuthClientBuilder().build()).once();
 
-    OpenShiftClient client = getOpenshiftClient();
+    OpenShiftClient client = server.getOpenshiftClient();
 
     Boolean deleted = client.oAuthClients().withName("client1").delete();
     assertNotNull(deleted);
