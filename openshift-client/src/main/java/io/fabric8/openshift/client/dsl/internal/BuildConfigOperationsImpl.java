@@ -235,7 +235,10 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
         }
       };
 
-      OkHttpClient newClient = client.newBuilder().readTimeout(timeout, timeoutUnit).build();
+      OkHttpClient newClient = client.newBuilder()
+        .readTimeout(timeout, timeoutUnit)
+        .writeTimeout(timeout, timeoutUnit)
+        .build();
       Request.Builder requestBuilder = new Request.Builder().post(requestBody).url(getQueryParameters());
       return handleResponse(newClient, requestBuilder, 201, Build.class);
     } catch (Exception e) {
