@@ -119,7 +119,7 @@ public class KubernetesMockClient implements Replayable<NamespacedKubernetesClie
   private final MockServiceAccount serviceAccounts = new MockServiceAccount();
   private final MockSecurityContextConstraints securityContextConstraints = new MockSecurityContextConstraints();
   private final MockConfigMap configMaps = new MockConfigMap();
-  private final MockLimitRange limits = new MockLimitRange();
+  private final MockLimitRange limitRanges = new MockLimitRange();
   private final MockKubernetesListOperationImpl kubernetesLists = new MockKubernetesListOperationImpl();
   private final ExtensionsAPIGroupMockClient extensions = new ExtensionsAPIGroupMockClient();
 
@@ -140,7 +140,7 @@ public class KubernetesMockClient implements Replayable<NamespacedKubernetesClie
     expect(client.serviceAccounts()).andReturn(serviceAccounts.getDelegate()).anyTimes();
     expect(client.securityContextConstraints()).andReturn(securityContextConstraints.getDelegate()).anyTimes();
     expect(client.configMaps()).andReturn(configMaps.getDelegate()).anyTimes();
-    expect(client.limits()).andReturn(limits.getDelegate()).anyTimes();
+    expect(client.limitRanges()).andReturn(limitRanges.getDelegate()).anyTimes();
     expect(client.lists()).andReturn(kubernetesLists.getDelegate()).anyTimes();
 
     expect(client.extensions()).andReturn(extensions.getDelegate()).anyTimes();
@@ -165,6 +165,7 @@ public class KubernetesMockClient implements Replayable<NamespacedKubernetesClie
     securityContextConstraints.replay();
     kubernetesLists.replay();
     configMaps.replay();
+    limitRanges.replay();
     extensions.replay();
     EasyMock.replay(client);
     return client;
@@ -187,6 +188,7 @@ public class KubernetesMockClient implements Replayable<NamespacedKubernetesClie
     serviceAccounts.verify();
     securityContextConstraints.verify();
     configMaps.verify();
+    limitRanges.verify();
     kubernetesLists.verify();
 
     extensions.verify();
@@ -265,8 +267,8 @@ public class KubernetesMockClient implements Replayable<NamespacedKubernetesClie
     return configMaps;
   }
 
-  public MockOperation<LimitRange, LimitRangeList, MockDoneableLimitRange, MockResource<LimitRange, MockDoneableLimitRange, Boolean>> limits() {
-    return limits;
+  public MockOperation<LimitRange, LimitRangeList, MockDoneableLimitRange, MockResource<LimitRange, MockDoneableLimitRange, Boolean>> limitRanges() {
+    return limitRanges;
   }
 
 

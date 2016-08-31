@@ -15,17 +15,20 @@
  */
 package io.fabric8.kubernetes.client.handlers;
 
-import com.squareup.okhttp.OkHttpClient;
 import io.fabric8.kubernetes.api.model.LimitRange;
+import io.fabric8.kubernetes.api.model.LimitRangeBuilder;
+import io.fabric8.kubernetes.client.dsl.internal.LimitRangeOperationsImpl;
+import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
-import io.fabric8.kubernetes.client.dsl.internal.LimitRangeOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
+import java.util.TreeMap;
+
 @Component
 @Service
-public class LimitRangeHandler implements ResourceHandler<LimitRange> {
+public class LimitRangeHandler implements ResourceHandler<LimitRange, LimitRangeBuilder> {
   @Override
   public String getKind() {
     return LimitRange.class.getSimpleName();
@@ -33,11 +36,26 @@ public class LimitRangeHandler implements ResourceHandler<LimitRange> {
 
   @Override
   public LimitRange create(OkHttpClient client, Config config, String namespace, LimitRange item) {
-    return new LimitRangeOperationsImpl(client, config, null, namespace, null, true, item).create();
+    return new LimitRangeOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).create();
+  }
+
+  @Override
+  public LimitRange replace(OkHttpClient client, Config config, String namespace, LimitRange item) {
+    return new LimitRangeOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).replace(item);
+  }
+
+  @Override
+  public LimitRange reload(OkHttpClient client, Config config, String namespace, LimitRange item) {
+    return new LimitRangeOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).fromServer().get();
+  }
+
+  @Override
+  public LimitRangeBuilder edit(LimitRange item) {
+    return new LimitRangeBuilder(item);
   }
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, LimitRange item) {
-    return new LimitRangeOperationsImpl(client, config, null, namespace, null, true, item).delete(item);
+    return new LimitRangeOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).delete(item);
   }
 }

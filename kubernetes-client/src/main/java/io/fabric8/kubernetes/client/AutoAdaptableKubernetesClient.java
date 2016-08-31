@@ -214,8 +214,8 @@ public class AutoAdaptableKubernetesClient extends DefaultKubernetesClient {
     }
 
     @Override
-    public ClientMixedOperation<LimitRange, LimitRangeList, DoneableLimitRange, ClientResource<LimitRange, DoneableLimitRange>> limits() {
-      return delegate.limits();
+    public ClientMixedOperation<LimitRange, LimitRangeList, DoneableLimitRange, ClientResource<LimitRange, DoneableLimitRange>> limitRanges() {
+      return delegate.limitRanges();
     }
 
     @Override

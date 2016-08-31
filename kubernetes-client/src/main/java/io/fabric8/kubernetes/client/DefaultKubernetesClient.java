@@ -15,6 +15,10 @@
  */
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.api.model.DoneableLimitRange;
+import io.fabric8.kubernetes.api.model.LimitRange;
+import io.fabric8.kubernetes.api.model.LimitRangeList;
+import io.fabric8.kubernetes.client.dsl.internal.LimitRangeOperationsImpl;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.ComponentStatus;
@@ -195,6 +199,11 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   @Override
   public ClientMixedOperation<ConfigMap, ConfigMapList, DoneableConfigMap, ClientResource<ConfigMap, DoneableConfigMap>> configMaps() {
     return new ConfigMapOperationsImpl(httpClient, getConfiguration(), getNamespace());
+  }
+
+  @Override
+  public ClientMixedOperation<LimitRange, LimitRangeList, DoneableLimitRange, ClientResource<LimitRange, DoneableLimitRange>> limitRanges() {
+    return new LimitRangeOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
   @Override

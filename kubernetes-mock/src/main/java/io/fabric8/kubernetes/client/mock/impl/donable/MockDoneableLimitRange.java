@@ -16,7 +16,7 @@
 
 package io.fabric8.kubernetes.client.mock.impl.donable;
 
-import io.fabric8.kubernetes.api.builder.Visitor;
+import io.fabric8.kubernetes.api.builder.Function;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.DoneableLimitRange;
 import io.fabric8.kubernetes.api.model.LimitRange;
@@ -31,9 +31,9 @@ public class MockDoneableLimitRange extends LimitRangeFluentImpl<MockDoneableLim
 
 
   private interface DelegateInterface extends Doneable<LimitRange>, LimitRangeFluent<DoneableLimitRange> {}
-  private final Visitor<LimitRange> visitor = new Visitor<LimitRange>() {
+  private final Function<LimitRange, LimitRange> visitor = new Function<LimitRange, LimitRange>() {
     @Override
-    public void visit(LimitRange item) {}
+    public LimitRange apply(LimitRange item) { return item;}
   };
 
   private final DelegateInterface delegate;
@@ -71,4 +71,5 @@ public class MockDoneableLimitRange extends LimitRangeFluentImpl<MockDoneableLim
       }
     };
   }
+
 }
