@@ -16,6 +16,9 @@
 
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.api.model.DoneableLimitRange;
+import io.fabric8.kubernetes.api.model.LimitRange;
+import io.fabric8.kubernetes.api.model.LimitRangeList;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.ComponentStatus;
 import io.fabric8.kubernetes.api.model.ComponentStatusList;
@@ -208,6 +211,11 @@ public class AutoAdaptableKubernetesClient extends DefaultKubernetesClient {
     @Override
     public ClientMixedOperation<ConfigMap, ConfigMapList, DoneableConfigMap, ClientResource<ConfigMap, DoneableConfigMap>> configMaps() {
         return delegate.configMaps();
+    }
+
+    @Override
+    public ClientMixedOperation<LimitRange, LimitRangeList, DoneableLimitRange, ClientResource<LimitRange, DoneableLimitRange>> limits() {
+      return delegate.limits();
     }
 
     @Override
