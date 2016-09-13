@@ -20,6 +20,7 @@ package io.fabric8.kubernetes.client.mock;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
+import io.fabric8.kubernetes.api.model.LimitRangeBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
@@ -46,6 +47,20 @@ import java.io.OutputStream;
 import static org.easymock.EasyMock.eq;
 
 public class KubernetesMockClientTest {
+
+  @Test
+  public void testGetLimitRange() {
+    KubernetesMockClient mock = new KubernetesMockClient();
+
+    mock.limitRanges().inNamespace(eq("ns1")).withName(eq("limits1")).get().andReturn(new LimitRangeBuilder()
+                                                                                           .withNewMetadata().withName("limits1").endMetadata()
+                                                                                           .build()
+    ).anyTimes();
+
+    NamespacedKubernetesClient client = mock.replay();
+
+    Assert.assertNotNull(client.limitRanges().inNamespace("ns1").withName("limits1").get());
+  }
 
   @Test
   public void testGetconfigMap() {

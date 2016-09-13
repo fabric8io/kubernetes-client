@@ -15,6 +15,9 @@
  */
 package io.fabric8.openshift.client;
 
+import io.fabric8.kubernetes.api.model.DoneableLimitRange;
+import io.fabric8.kubernetes.api.model.LimitRange;
+import io.fabric8.kubernetes.api.model.LimitRangeList;
 import okhttp3.Authenticator;
 import okhttp3.OkHttpClient;
 
@@ -290,6 +293,11 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public ClientMixedOperation<ConfigMap, ConfigMapList, DoneableConfigMap, ClientResource<ConfigMap, DoneableConfigMap>> configMaps() {
     return delegate.configMaps();
+  }
+
+  @Override
+  public ClientMixedOperation<LimitRange, LimitRangeList, DoneableLimitRange, ClientResource<LimitRange, DoneableLimitRange>> limitRanges() {
+    return delegate.limitRanges();
   }
 
   @Override

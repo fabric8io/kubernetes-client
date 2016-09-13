@@ -24,6 +24,8 @@ import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsList;
 import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventList;
+import io.fabric8.kubernetes.api.model.LimitRange;
+import io.fabric8.kubernetes.api.model.LimitRangeList;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceList;
 import io.fabric8.kubernetes.api.model.Node;
@@ -54,6 +56,7 @@ import io.fabric8.kubernetes.client.mock.impl.MockConfigMap;
 import io.fabric8.kubernetes.client.mock.impl.MockEndpoints;
 import io.fabric8.kubernetes.client.mock.impl.MockEvent;
 import io.fabric8.kubernetes.client.mock.impl.MockKubernetesListOperationImpl;
+import io.fabric8.kubernetes.client.mock.impl.MockLimitRange;
 import io.fabric8.kubernetes.client.mock.impl.MockNamespace;
 import io.fabric8.kubernetes.client.mock.impl.MockNode;
 import io.fabric8.kubernetes.client.mock.impl.MockPersistentVolume;
@@ -69,6 +72,7 @@ import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableComponentStatu
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableConfigMap;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableEndpoints;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableEvent;
+import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableLimitRange;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableNamespace;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableNode;
 import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneablePersistentVolume;
@@ -115,6 +119,7 @@ public class KubernetesMockClient implements Replayable<NamespacedKubernetesClie
   private final MockServiceAccount serviceAccounts = new MockServiceAccount();
   private final MockSecurityContextConstraints securityContextConstraints = new MockSecurityContextConstraints();
   private final MockConfigMap configMaps = new MockConfigMap();
+  private final MockLimitRange limitRanges = new MockLimitRange();
   private final MockKubernetesListOperationImpl kubernetesLists = new MockKubernetesListOperationImpl();
   private final ExtensionsAPIGroupMockClient extensions = new ExtensionsAPIGroupMockClient();
 
@@ -135,6 +140,7 @@ public class KubernetesMockClient implements Replayable<NamespacedKubernetesClie
     expect(client.serviceAccounts()).andReturn(serviceAccounts.getDelegate()).anyTimes();
     expect(client.securityContextConstraints()).andReturn(securityContextConstraints.getDelegate()).anyTimes();
     expect(client.configMaps()).andReturn(configMaps.getDelegate()).anyTimes();
+    expect(client.limitRanges()).andReturn(limitRanges.getDelegate()).anyTimes();
     expect(client.lists()).andReturn(kubernetesLists.getDelegate()).anyTimes();
 
     expect(client.extensions()).andReturn(extensions.getDelegate()).anyTimes();
@@ -159,6 +165,7 @@ public class KubernetesMockClient implements Replayable<NamespacedKubernetesClie
     securityContextConstraints.replay();
     kubernetesLists.replay();
     configMaps.replay();
+    limitRanges.replay();
     extensions.replay();
     EasyMock.replay(client);
     return client;
@@ -181,6 +188,7 @@ public class KubernetesMockClient implements Replayable<NamespacedKubernetesClie
     serviceAccounts.verify();
     securityContextConstraints.verify();
     configMaps.verify();
+    limitRanges.verify();
     kubernetesLists.verify();
 
     extensions.verify();
@@ -257,6 +265,10 @@ public class KubernetesMockClient implements Replayable<NamespacedKubernetesClie
 
   public MockOperation<ConfigMap, ConfigMapList, MockDoneableConfigMap, MockResource<ConfigMap, MockDoneableConfigMap, Boolean>> configMaps() {
     return configMaps;
+  }
+
+  public MockOperation<LimitRange, LimitRangeList, MockDoneableLimitRange, MockResource<LimitRange, MockDoneableLimitRange, Boolean>> limitRanges() {
+    return limitRanges;
   }
 
 
