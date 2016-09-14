@@ -212,6 +212,11 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
     return delegate.load(is);
   }
 
+  @Override
+  public NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> resource(HasMetadata is) {
+    return delegate.resource(is);
+  }
+
   public ClientMixedOperation<Endpoints, EndpointsList, DoneableEndpoints, ClientResource<Endpoints, DoneableEndpoints>> endpoints() {
     return delegate.endpoints();
   }

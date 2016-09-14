@@ -139,6 +139,11 @@ public class AutoAdaptableKubernetesClient extends DefaultKubernetesClient {
     }
 
     @Override
+    public NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> resource(HasMetadata is) {
+        return delegate.resource(is);
+    }
+
+    @Override
     public ClientMixedOperation<Endpoints, EndpointsList, DoneableEndpoints, ClientResource<Endpoints, DoneableEndpoints>> endpoints() {
         return delegate.endpoints();
     }
