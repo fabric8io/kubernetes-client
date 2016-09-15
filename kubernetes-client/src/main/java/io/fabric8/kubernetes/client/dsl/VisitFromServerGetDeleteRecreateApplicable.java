@@ -22,7 +22,7 @@ import io.fabric8.kubernetes.client.GracePeriodConfigurable;
 
 public interface VisitFromServerGetDeleteRecreateApplicable<T, B> extends Visitable<VisitFromServerGetDeleteRecreateApplicable<T, B>>,
                                                                           FromServerGettable<T>, RecreateApplicable<T>,
-                                                                          Deletable<B>,
-                                                                          GracePeriodConfigurable<Deletable<B>>
+                                                                          CascadingDeletable<B>,
+                                                                          GracePeriodConfigurable<CascadingDeletable<B>>
 {
 }

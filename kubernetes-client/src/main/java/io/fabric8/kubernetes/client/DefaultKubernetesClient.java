@@ -122,13 +122,13 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> load(InputStream is) {
-    return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<Visitor>(), is) {
+    return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<Visitor>(), is, false) {
     };
   }
 
   @Override
   public NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> resource(HasMetadata item) {
-    return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<Visitor>(), item, -1) {
+    return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<Visitor>(), item, -1, false) {
     };
   }
 
