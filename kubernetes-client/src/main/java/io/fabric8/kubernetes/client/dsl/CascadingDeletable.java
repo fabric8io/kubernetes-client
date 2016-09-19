@@ -13,16 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.builder.Visitable;
-import io.fabric8.kubernetes.client.FromServerGettable;
-import io.fabric8.kubernetes.client.GracePeriodConfigurable;
-
-public interface VisitFromServerGetDeleteRecreateApplicable<T, B> extends Visitable<VisitFromServerGetDeleteRecreateApplicable<T, B>>,
-                                                                          FromServerGettable<T>, RecreateApplicable<T>,
-                                                                          CascadingDeletable<B>,
-                                                                          GracePeriodConfigurable<CascadingDeletable<B>>
-{
+/**
+ * Created by iocanel on 9/15/16.
+ */
+public interface CascadingDeletable<B> extends Deletable<B>, Cascading<Deletable<B>> {
 }

@@ -63,8 +63,9 @@ public class NamespaceVisitFromServerGetDeleteRecreateApplicableImpl extends Ope
     private final Object item;
     private final ResourceHandler handler;
     private final long gracePeriodSeconds;
+    private final Boolean cascading;
 
-    /**
+  /**
      * We need to be able to either use an explicit namespace or fallback to the client default.
      * Either-way we need to update the object itself or the client will complain about a mismatch.
      * And this is how we its done.
@@ -89,11 +90,11 @@ public class NamespaceVisitFromServerGetDeleteRecreateApplicableImpl extends Ope
         }
     }
 
-    public NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, InputStream is) {
-        this(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, unmarshal(is), -1);
+    public NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, InputStream is, Boolean cascading) {
+        this(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, unmarshal(is), -1, cascading);
     }
 
-    public NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item, long gracePeriodSeconds) {
+    public NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item, long gracePeriodSeconds, Boolean cascading) {
         super(client, config, null, null, null, null, null);
         this.fallbackNamespace = namespace;
         this.explicitNamespace = explicitNamespace;
@@ -102,8 +103,9 @@ public class NamespaceVisitFromServerGetDeleteRecreateApplicableImpl extends Ope
         this.visitors = visitors != null ? new ArrayList<>(visitors) : new ArrayList<Visitor>();
         this.item = item;
         this.handler = handlerOf(item);
+        this.cascading = cascading;
         if (handler == null) {
-            throw new KubernetesClientException("No handler found for object:" + item);
+          throw new KubernetesClientException("No handler found for object:" + item);
         }
         this.gracePeriodSeconds = gracePeriodSeconds;
         this.visitors.add(new ChangeNamespace(explicitNamespace, fallbackNamespace));
@@ -282,28 +284,36 @@ public class NamespaceVisitFromServerGetDeleteRecreateApplicableImpl extends Ope
 
     @Override
     public VisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> inNamespace(String explicitNamespace) {
-        return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, deletingExisting, visitors, item, gracePeriodSeconds);
+        return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, deletingExisting, visitors, item, gracePeriodSeconds, cascading);
     }
 
     @Override
     public Gettable<List<HasMetadata>> fromServer() {
-        return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(client, config, fallbackNamespace, explicitNamespace, true, deletingExisting, visitors, item, gracePeriodSeconds);
+        return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(client, config, fallbackNamespace, explicitNamespace, true, deletingExisting, visitors, item, gracePeriodSeconds, cascading);
     }
 
     @Override
     public Applicable<List<HasMetadata>> deletingExisting() {
-        return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds);
+        return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, cascading);
     }
 
     @Override
     public VisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> accept(Visitor visitor) {
         List<Visitor> newVisitors = new ArrayList<>(visitors);
         newVisitors.add(visitor);
-        return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, newVisitors, item, gracePeriodSeconds);
+        return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, newVisitors, item, gracePeriodSeconds, cascading);
     }
 
-  @Override public Deletable<Boolean> withGracePeriod(long gracePeriodSeconds)
+  @Override public CascadingDeletable<Boolean> withGracePeriod(long gracePeriodSeconds)
   {
-    return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds);
+    return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, cascading);
   }
+
+
+  @Override
+  public Deletable<Boolean> cascading(boolean cascading) {
+    return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, cascading);
+  }
+
+
 }

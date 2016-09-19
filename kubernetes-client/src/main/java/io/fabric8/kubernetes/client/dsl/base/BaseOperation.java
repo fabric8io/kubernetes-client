@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.base;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -97,7 +98,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   protected BaseOperation(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, Class<T> type, Class<L> listType, Class<D> doneableType) {
-    super(client, config, apiGroup, apiVersion, resourceT, namespace, name);
+    super(client, config, apiGroup, apiVersion(item, apiVersion), resourceT, namespace, name);
     this.cascading = cascading;
     this.item = item;
     this.resourceVersion = resourceVersion;
@@ -112,6 +113,22 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     this.labelsIn = new TreeMap<>();
     this.labelsNotIn = new TreeMap<>();
     this.fields = new TreeMap<>();
+  }
+
+  /**
+   * Returns the api version falling back to the items apiVersion if not null.
+   * @param <T>
+   * @param item
+   * @param apiVersion
+   * @return
+   */
+  private static <T> String apiVersion(T item, String apiVersion) {
+    if (apiVersion != null && !apiVersion.isEmpty()) {
+      return apiVersion;
+    } else if (item instanceof HasMetadata) {
+      return ((HasMetadata)item).getApiVersion();
+    }
+    return null;
   }
 
   @Override
