@@ -16,14 +16,6 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-import okhttp3.ws.WebSocket;
-import okhttp3.ws.WebSocketCall;
-import okhttp3.ws.WebSocketListener;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.Status;
@@ -33,6 +25,14 @@ import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+import okhttp3.ws.WebSocket;
+import okhttp3.ws.WebSocketCall;
+import okhttp3.ws.WebSocketListener;
 import okio.Buffer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,8 +43,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -64,11 +65,12 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
   private final int reconnectInterval;
   private final AtomicInteger currentReconnectAttempt = new AtomicInteger(0);
   private final AtomicReference<WebSocket> webSocketRef = new AtomicReference<>();
-  private final ExecutorService executor = Executors.newSingleThreadExecutor();
+  private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
   private final AtomicBoolean started = new AtomicBoolean(false);
   private final ArrayBlockingQueue<Object> queue = new ArrayBlockingQueue<>(1);
 
   private WebSocketCall webSocketCall;
+  private ScheduledFuture pingFuture;
   private OkHttpClient clonedClient;
 
   public WatchConnectionManager(final OkHttpClient client, final BaseOperation<T, L, ?, ?> baseOperation, final String version, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit) throws InterruptedException, ExecutionException, MalformedURLException {
@@ -78,7 +80,7 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
     } else {
       this.resourceVersion = new AtomicReference<>(version);
     }
-    this.clonedClient = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
+    this.clonedClient = client.newBuilder().readTimeout(1200, TimeUnit.MILLISECONDS).build();
     this.baseOperation = baseOperation;
     this.watcher = watcher;
     this.reconnectInterval = reconnectInterval;
@@ -124,12 +126,26 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
       private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
       @Override
-      public void onOpen(WebSocket webSocket, Response response) {
+      public void onOpen(final WebSocket webSocket, Response response) {
         logger.debug("WebSocket successfully opened");
         webSocketRef.set(webSocket);
         currentReconnectAttempt.set(0);
         started.set(true);
+        queue.clear();
         queue.add(true);
+        pingFuture = executor.scheduleAtFixedRate(
+          new Runnable() {
+            @Override
+            public void run() {
+              try {
+                webSocket.sendPing(new Buffer().writeUtf8("Alive?"));
+              } catch (IOException e) {
+                logger.error("Failed to send ping", e);
+                onClose(4000, "Connection unexpectedly closed");
+              }
+            }
+          }, 0, 1, TimeUnit.SECONDS
+        );
       }
 
       @Override
@@ -212,11 +228,22 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
 
       @Override
       public void onPong(Buffer buffer) {
-
+        try {
+          if (!buffer.equals(new Buffer().writeUtf8("Alive?"))) {
+            logger.error("Failed to verify pong");
+            onClose(4000, "Connection unexpectedly closed");
+          }
+        } finally{
+          buffer.close();
+        }
       }
 
       @Override
       public void onClose(final int code, final String reason) {
+        if (!pingFuture.isCancelled() && !pingFuture.isDone()) {
+          pingFuture.cancel(true);
+        }
+
         if (forceClosed.get()) {
           watcher.onClose(null);
           return;
@@ -288,17 +315,30 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
         ws.close(1000, "Closing...");
         webSocketRef.set(null);
       }
-    } catch (IOException e) {
+    } catch (IOException | IllegalStateException e) {
       e.printStackTrace();
     }
 
-    try {
-      executor.shutdown();
-      if (!executor.awaitTermination(10, TimeUnit.SECONDS)) {
-        executor.shutdownNow();
+    if (!executor.isShutdown()) {
+      try {
+        executor.shutdown();
+        if (!executor.awaitTermination(1, TimeUnit.SECONDS)) {
+          executor.shutdownNow();
+        }
+      } catch (InterruptedException e) {
+        e.printStackTrace();
       }
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(t);
+    }
+
+    if (!executor.isShutdown()) {
+      try {
+        executor.shutdown();
+        if (!executor.awaitTermination(10, TimeUnit.SECONDS)) {
+          executor.shutdownNow();
+        }
+      } catch (Throwable t) {
+        throw KubernetesClientException.launderThrowable(t);
+      }
     }
   }
 }
