@@ -90,8 +90,47 @@ public class DeploymentConfigTest {
 
   @Test
   public void testDelete() {
-   server.expect().withPath("/oapi/v1/namespaces/test/deploymentconfigs/dc1").andReturn(200, new DeploymentConfigBuilder().build()).once();
-   server.expect().withPath("/oapi/v1/namespaces/ns1/deploymentconfigs/dc2").andReturn( 200, new DeploymentConfigBuilder().build()).once();
+    DeploymentConfig dc1 = new DeploymentConfigBuilder()
+      .withNewMetadata()
+        .withName("dc1")
+      .endMetadata()
+      .withNewSpec()
+        .withReplicas(1)
+        .addToSelector("name", "dc1")
+        .withNewTemplate()
+          .withNewSpec()
+            .addNewContainer()
+              .withName("container")
+              .withImage("image")
+            .endContainer()
+          .endSpec()
+        .endTemplate()
+      .endSpec()
+      .build();
+
+    DeploymentConfig dc2 = new DeploymentConfigBuilder()
+      .withNewMetadata()
+        .withName("dc2")
+      .endMetadata()
+      .withNewSpec()
+        .withReplicas(1)
+        .addToSelector("name", "dc1")
+        .withNewTemplate()
+          .withNewSpec()
+            .addNewContainer()
+              .withName("container")
+              .withImage("image")
+            .endContainer()
+          .endSpec()
+        .endTemplate()
+      .endSpec()
+      .withNewStatus()
+        .withObservedGeneration(1L)
+      .endStatus()
+      .build();
+
+   server.expect().withPath("/oapi/v1/namespaces/test/deploymentconfigs/dc1").andReturn(200, dc1).times(2);
+   server.expect().withPath("/oapi/v1/namespaces/ns1/deploymentconfigs/dc2").andReturn( 200, dc2).times(5);
 
     OpenShiftClient client = server.getOpenshiftClient();
 
