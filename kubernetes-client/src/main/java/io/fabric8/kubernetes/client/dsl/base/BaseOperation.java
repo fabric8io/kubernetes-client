@@ -139,11 +139,9 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   private static String trimVersion(String apiVersion) {
     if (apiVersion == null) {
       return null;
-    } else if (apiVersion.contains("/")) {
-      String[] versionParts = apiVersion.split("/");
-      return versionParts[versionParts.length - 1];
     } else {
-      return apiVersion;
+      String[] versionParts = apiVersion.split("/");
+      return versionParts.length > 1 ? versionParts[versionParts.length - 1] : apiVersion;
     }
   }
 
