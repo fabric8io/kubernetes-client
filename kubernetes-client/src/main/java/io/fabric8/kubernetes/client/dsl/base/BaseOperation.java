@@ -80,7 +80,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   protected Reaper reaper;
 
   protected BaseOperation(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields)  {
-    super(client, config, apiGroup, apiVersion, resourceT, namespace, name);
+    super(client, config, apiGroup, apiVersion(item, apiVersion), resourceT, namespace, name);
     this.cascading = cascading;
     this.item = item;
     this.reloadingFromServer = reloadingFromServer;
@@ -124,11 +124,25 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
    */
   private static <T> String apiVersion(T item, String apiVersion) {
     if (apiVersion != null && !apiVersion.isEmpty()) {
-      return apiVersion;
+      return trimVersion(apiVersion);
     } else if (item instanceof HasMetadata) {
-      return ((HasMetadata)item).getApiVersion();
+      return trimVersion(((HasMetadata)item).getApiVersion());
     }
     return null;
+  }
+
+  /**
+   * Separates apiVersion for apiGroup/apiVersion combination.
+   * @param apiVersion  The apiVersion or apiGroup/apiVersion combo.
+   * @return            Just the apiVersion part without the apiGroup.
+     */
+  private static String trimVersion(String apiVersion) {
+    if (apiVersion == null) {
+      return null;
+    } else {
+      String[] versionParts = apiVersion.split("/");
+      return versionParts[versionParts.length - 1];
+    }
   }
 
   @Override
