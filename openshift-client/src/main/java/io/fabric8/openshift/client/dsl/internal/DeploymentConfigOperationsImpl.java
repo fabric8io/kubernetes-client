@@ -16,7 +16,8 @@
 package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.ClientScaleableResource;
+
 import io.fabric8.kubernetes.client.dsl.Reaper;
 import io.fabric8.kubernetes.client.dsl.internal.ReplicationControllerOperationsImpl;
 import io.fabric8.openshift.api.model.DeploymentConfig;
@@ -34,7 +35,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public class DeploymentConfigOperationsImpl extends OpenShiftOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig,
-  ClientResource<DeploymentConfig, DoneableDeploymentConfig>> {
+  ClientScaleableResource<DeploymentConfig, DoneableDeploymentConfig>> implements  ClientScaleableResource<DeploymentConfig, DoneableDeploymentConfig> {
 
   public DeploymentConfigOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
     this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
@@ -115,4 +116,19 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
       }
     }
   }
+
+  @Override
+  public DeploymentConfig scale(int count) {
+    return scale(count, false);
+  }
+
+  @Override
+  public DeploymentConfig scale(int count, boolean wait) {
+    DeploymentConfig res = cascading(false).edit().editSpec().withReplicas(count).endSpec().done();
+    if (wait) {
+      res = getMandatory();
+    }
+    return res;
+  }
+
 }
