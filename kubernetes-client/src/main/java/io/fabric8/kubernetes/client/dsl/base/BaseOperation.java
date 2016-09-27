@@ -141,7 +141,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
       return null;
     } else {
       String[] versionParts = apiVersion.split("/");
-      return versionParts.length > 1 ? versionParts[versionParts.length - 1] : apiVersion;
+      return versionParts[versionParts.length - 1];
     }
   }
 
