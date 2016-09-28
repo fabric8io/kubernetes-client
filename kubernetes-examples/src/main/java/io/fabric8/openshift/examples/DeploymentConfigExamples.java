@@ -54,9 +54,12 @@ public class DeploymentConfigExamples {
           .withName("nginx")
         .endMetadata()
         .withNewSpec()
-          .withReplicas(2)
+          .withReplicas(1)
           .addToSelector("app", "nginx")
           .withNewTemplate()
+            .withNewMetadata()
+              .addToLabels("app", "nginx")
+            .endMetadata()
             .withNewSpec()
               .addNewContainer()
                 .withName("nginx")
@@ -70,10 +73,11 @@ public class DeploymentConfigExamples {
         .endSpec()
         .done());
 
-      Thread.sleep(6000);
+
+      client.deploymentConfigs().inNamespace("thisisatest").withName("nginx").scale(2, true);
+      log("Created pods:", client.pods().inNamespace("thisisatest").list().getItems());
       client.deploymentConfigs().inNamespace("thisisatest").withName("nginx").scale(0);
 
-      Thread.sleep(6000);
       log("Done.");
     }finally {
       client.namespaces().withName("thisisatest").delete();
