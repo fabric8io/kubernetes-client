@@ -92,6 +92,8 @@ import io.fabric8.openshift.api.model.Group;
 import io.fabric8.openshift.api.model.GroupList;
 import io.fabric8.openshift.api.model.ImageStream;
 import io.fabric8.openshift.api.model.ImageStreamList;
+import io.fabric8.openshift.api.model.ImageStreamTag;
+import io.fabric8.openshift.api.model.ImageStreamTagList;
 import io.fabric8.openshift.api.model.OAuthAccessToken;
 import io.fabric8.openshift.api.model.OAuthAccessTokenList;
 import io.fabric8.openshift.api.model.OAuthAuthorizeToken;
@@ -119,6 +121,7 @@ import io.fabric8.openshift.client.mock.impl.MockClusterRoleBinding;
 import io.fabric8.openshift.client.mock.impl.MockDeploymentConfig;
 import io.fabric8.openshift.client.mock.impl.MockGroup;
 import io.fabric8.openshift.client.mock.impl.MockImageStream;
+import io.fabric8.openshift.client.mock.impl.MockImageStreamTag;
 import io.fabric8.openshift.client.mock.impl.MockOAuthAccessToken;
 import io.fabric8.openshift.client.mock.impl.MockOAuthAuthorizeToken;
 import io.fabric8.openshift.client.mock.impl.MockOAuthClient;
@@ -137,6 +140,7 @@ import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableClusterRoleBi
 import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableDeploymentConfig;
 import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableGroup;
 import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableImageStream;
+import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableImageStreamTag;
 import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableOAuthAccessToken;
 import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableOAuthAuthorizeToken;
 import io.fabric8.openshift.client.mock.impl.doneables.MockDoneableOAuthClient;
@@ -187,6 +191,7 @@ public class OpenShiftMockClient implements Replayable<NamespacedOpenShiftClient
   private final MockBuildConfig buildConfigs = new MockBuildConfig();
   private final MockDeploymentConfig deploymentConfigs = new MockDeploymentConfig();
   private final MockImageStream imageStreams = new MockImageStream();
+  private final MockImageStreamTag imageStreamTags = new MockImageStreamTag();
   private final MockOAuthAccessToken oAuthAccessTokens = new MockOAuthAccessToken();
   private final MockOAuthAuthorizeToken oAuthAuthorizeTokens = new MockOAuthAuthorizeToken();
   private final MockOAuthClient oAuthClients = new MockOAuthClient();
@@ -222,6 +227,7 @@ public class OpenShiftMockClient implements Replayable<NamespacedOpenShiftClient
     expect(client.buildConfigs()).andReturn(buildConfigs.getDelegate()).anyTimes();
     expect(client.deploymentConfigs()).andReturn(deploymentConfigs.getDelegate()).anyTimes();
     expect(client.imageStreams()).andReturn(imageStreams.getDelegate()).anyTimes();
+    expect(client.imageStreamTags()).andReturn(imageStreamTags.getDelegate()).anyTimes();
     expect(client.oAuthAccessTokens()).andReturn(oAuthAccessTokens.getDelegate()).anyTimes();
     expect(client.oAuthAuthorizeTokens()).andReturn(oAuthAuthorizeTokens.getDelegate()).anyTimes();
     expect(client.oAuthClients()).andReturn(oAuthClients.getDelegate()).anyTimes();
@@ -261,6 +267,7 @@ public class OpenShiftMockClient implements Replayable<NamespacedOpenShiftClient
     buildConfigs.replay();
     deploymentConfigs.replay();
     imageStreams.replay();
+    imageStreamTags.replay();
     oAuthAccessTokens.replay();
     oAuthAuthorizeTokens.replay();
     oAuthClients.replay();
@@ -303,6 +310,7 @@ public class OpenShiftMockClient implements Replayable<NamespacedOpenShiftClient
     buildConfigs.verify();
     deploymentConfigs.verify();
     imageStreams.verify();
+    imageStreamTags.verify();
     oAuthAccessTokens.verify();
     oAuthAuthorizeTokens.verify();
     oAuthClients.verify();
@@ -402,6 +410,10 @@ public class OpenShiftMockClient implements Replayable<NamespacedOpenShiftClient
 
   public MockOperation<ImageStream, ImageStreamList, MockDoneableImageStream, MockResource<ImageStream, MockDoneableImageStream, Boolean>> imageStreams() {
     return imageStreams;
+  }
+
+  public MockOperation<ImageStreamTag, ImageStreamTagList, MockDoneableImageStreamTag, MockResource<ImageStreamTag, MockDoneableImageStreamTag, Boolean>> imageStreamTags() {
+    return imageStreamTags;
   }
 
   public MockNonNamespaceOperation<OAuthAccessToken, OAuthAccessTokenList, MockDoneableOAuthAccessToken, MockResource<OAuthAccessToken, MockDoneableOAuthAccessToken, Boolean>> oAuthAccessTokens() {
