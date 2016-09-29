@@ -24,6 +24,12 @@ import io.fabric8.openshift.api.model.Group;
 import io.fabric8.openshift.api.model.GroupBuilder;
 import io.fabric8.openshift.api.model.GroupList;
 import io.fabric8.openshift.api.model.GroupListBuilder;
+import io.fabric8.openshift.api.model.Image;
+import io.fabric8.openshift.api.model.ImageBuilder;
+import io.fabric8.openshift.api.model.ImageStreamTag;
+import io.fabric8.openshift.api.model.ImageStreamTagBuilder;
+import io.fabric8.openshift.api.model.TagReference;
+import io.fabric8.openshift.api.model.TagReferenceBuilder;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.api.model.UserBuilder;
 import io.fabric8.openshift.api.model.UserList;
@@ -167,4 +173,27 @@ public class OpenShiftMockClientTest {
     mock.verify();
   }
 
+
+  @Test
+  public void testImageStreamTags() {
+    OpenShiftMockClient mock = new OpenShiftMockClient();
+    Image image = new ImageBuilder()
+      .withNewMetadata()
+        .withName("myimage")
+      .endMetadata()
+      .build();
+
+
+    TagReference tagRef = new TagReferenceBuilder().withName("mytag").build();
+
+    ImageStreamTag expetected = new ImageStreamTagBuilder().withImage(image).withTag(tagRef).build();
+
+    mock.imageStreamTags().inNamespace("ns").createNew().withImage(image).withTag(tagRef).done().andReturn(expetected).atLeastOnce();
+
+    NamespacedOpenShiftClient client = mock.replay();
+
+    ImageStreamTag acutual = client.imageStreamTags().inNamespace("ns").createNew().withImage(image).withTag(tagRef).done();
+    Assert.assertEquals(expetected, acutual);
+    mock.verify();
+  }
 }
