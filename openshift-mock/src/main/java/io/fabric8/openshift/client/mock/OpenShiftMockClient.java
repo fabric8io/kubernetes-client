@@ -50,6 +50,7 @@ import io.fabric8.kubernetes.client.mock.MockOperation;
 import io.fabric8.kubernetes.client.mock.MockPodResource;
 import io.fabric8.kubernetes.client.mock.MockResource;
 import io.fabric8.kubernetes.client.mock.MockRollableScaleableResource;
+import io.fabric8.kubernetes.client.mock.MockScaleableResource;
 import io.fabric8.kubernetes.client.mock.Replayable;
 import io.fabric8.kubernetes.client.mock.Verifiable;
 import io.fabric8.kubernetes.client.mock.impl.MockEndpoints;
@@ -395,7 +396,7 @@ public class OpenShiftMockClient implements Replayable<NamespacedOpenShiftClient
     return buildConfigs;
   }
 
-  public MockOperation<DeploymentConfig, DeploymentConfigList, MockDoneableDeploymentConfig, MockResource<DeploymentConfig, MockDoneableDeploymentConfig, Boolean>> deploymentConfigs() {
+  public MockOperation<DeploymentConfig, DeploymentConfigList, MockDoneableDeploymentConfig, MockScaleableResource<DeploymentConfig, MockDoneableDeploymentConfig, Boolean>> deploymentConfigs() {
     return deploymentConfigs;
   }
 

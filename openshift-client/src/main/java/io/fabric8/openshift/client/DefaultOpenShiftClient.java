@@ -18,6 +18,7 @@ package io.fabric8.openshift.client;
 import io.fabric8.kubernetes.api.model.DoneableLimitRange;
 import io.fabric8.kubernetes.api.model.LimitRange;
 import io.fabric8.kubernetes.api.model.LimitRangeList;
+import io.fabric8.kubernetes.client.dsl.ClientScaleableResource;
 import okhttp3.Authenticator;
 import okhttp3.OkHttpClient;
 
@@ -316,7 +317,7 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public ClientMixedOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, ClientResource<DeploymentConfig, DoneableDeploymentConfig>> deploymentConfigs() {
+  public ClientMixedOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, ClientScaleableResource<DeploymentConfig, DoneableDeploymentConfig>> deploymentConfigs() {
     return new DeploymentConfigOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
