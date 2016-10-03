@@ -196,12 +196,12 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
 
   @Override
   public IExpectationSetters<T> replace(T item) {
-    return null;
+    return expect(delegate.replace(item));
   }
 
   @Override
   public IExpectationSetters<T> patch(T item) {
-    return null;
+    return expect(delegate.patch(item));
   }
 
   @Override
