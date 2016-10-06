@@ -113,40 +113,45 @@ public class NamespaceVisitFromServerGetDeleteRecreateApplicableImpl extends Ope
 
     @Override
     public List<HasMetadata> apply() {
-        List<HasMetadata> result = new ArrayList<>();
-        for (HasMetadata meta : acceptVisitors(asHasMetadata(item, true), visitors)) {
-            ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
-            HasMetadata r = h.reload(client, config, meta.getMetadata().getNamespace(), meta);
-            String namespaceToUse =  meta.getMetadata().getNamespace();
-
-            if (r == null) {
-                HasMetadata created = h.create(client, config, namespaceToUse, meta);
-                if (created != null) {
-                    result.add(created);
-                }
-            } else if(deletingExisting) {
-                Boolean deleted = h.delete(client, config, namespaceToUse, meta);
-                if (!deleted) {
-                    throw new KubernetesClientException("Failed to delete existing item:" + meta);
-                }
-
-                HasMetadata created = h.create(client, config, namespaceToUse, meta);
-                if (created != null) {
-                    result.add(created);
-                }
-            } else if (ResourceCompare.equals(r, meta)) {
-                LOGGER.debug("Item has not changed. Skipping");
-            } else {
-                HasMetadata replaced = h.replace(client, config, namespaceToUse, meta);
-                if (replaced != null) {
-                    result.add(replaced);
-                }
-            }
-        }
-        return result;
+       return createOrReplace();
     }
 
-    @Override
+  @Override
+  public List<HasMetadata> createOrReplace() {
+    List<HasMetadata> result = new ArrayList<>();
+    for (HasMetadata meta : acceptVisitors(asHasMetadata(item, true), visitors)) {
+      ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
+      HasMetadata r = h.reload(client, config, meta.getMetadata().getNamespace(), meta);
+      String namespaceToUse =  meta.getMetadata().getNamespace();
+
+      if (r == null) {
+        HasMetadata created = h.create(client, config, namespaceToUse, meta);
+        if (created != null) {
+          result.add(created);
+        }
+      } else if(deletingExisting) {
+        Boolean deleted = h.delete(client, config, namespaceToUse, meta);
+        if (!deleted) {
+          throw new KubernetesClientException("Failed to delete existing item:" + meta);
+        }
+
+        HasMetadata created = h.create(client, config, namespaceToUse, meta);
+        if (created != null) {
+          result.add(created);
+        }
+      } else if (ResourceCompare.equals(r, meta)) {
+        LOGGER.debug("Item has not changed. Skipping");
+      } else {
+        HasMetadata replaced = h.replace(client, config, namespaceToUse, meta);
+        if (replaced != null) {
+          result.add(replaced);
+        }
+      }
+    }
+    return result;
+  }
+
+  @Override
     public Boolean delete() {
         //First pass check before deleting
         for (HasMetadata meta : acceptVisitors(asHasMetadata(item, true), visitors)) {
