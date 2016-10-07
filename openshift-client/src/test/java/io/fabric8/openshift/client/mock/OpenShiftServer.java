@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.mockwebserver.dsl.MockServerExpectation;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import io.fabric8.openshift.server.mock.OpenShiftMockServer;
+import okhttp3.mockwebserver.MockWebServer;
 import org.junit.rules.ExternalResource;
 
 public class OpenShiftServer extends ExternalResource {
@@ -55,5 +56,9 @@ public class OpenShiftServer extends ExternalResource {
   @Deprecated
   public void expectAndReturnAsString(String path, int code, String body) {
     expect().withPath(path).andReturn(code, body).always();
+  }
+
+  public MockWebServer getMockServer() {
+    return mock.getServer();
   }
 }
