@@ -121,6 +121,26 @@ public class BaseMockOperation<T, L extends KubernetesResourceList, D extends Do
   }
 
   @Override
+  public IExpectationSetters<T> createOrReplace(T item) {
+    return expect(delegate.createOrReplace(item));
+  }
+
+  @Override
+  public B createOrReplaceWithNew() {
+    B mock = null;
+    try {
+      mock = (B) mockDoneableType.newInstance();
+      expect(delegate.createOrReplaceWithNew()).andReturn((D) mock.getDelegate()).once();
+    } catch (Throwable t) {
+      throw new RuntimeException(t);
+    }
+    if (mock instanceof Mockable) {
+      nested.add((Mockable) mock);
+    }
+    return mock;
+  }
+
+  @Override
   public IExpectationSetters<Boolean> delete() {
     return expect(delegate.delete());
   }

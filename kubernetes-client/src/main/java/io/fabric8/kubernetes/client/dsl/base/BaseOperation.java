@@ -302,6 +302,36 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     }
   }
 
+
+  @Override
+  public D createOrReplaceWithNew() throws KubernetesClientException {
+    final Function<T, T> visitor = new Function<T, T>() {
+      @Override
+      public T apply(T resource) {
+        try {
+          return createOrReplace(resource);
+        } catch (Exception e) {
+          throw KubernetesClientException.launderThrowable(e);
+        }
+      }
+    };
+
+    try {
+      return getDoneableType().getDeclaredConstructor(Function.class).newInstance(visitor);
+    } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+
+  @Override
+  public T createOrReplace(T item) {
+    if (get() == null) {
+      return create(item);
+    } else {
+      return replace(item);
+    }
+  }
+
   @Override
   public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withLabels(Map<String, String> labels) {
     this.labels.putAll(labels);

@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.client.dsl.internal.CreateOrReplaceable;
+
 /**
  * Interface that describes the operation that can be done on a Kubernetes resource (e.g. Pod, Service etc).
  * This is intended to act as the common denominator of resource operations. To accomodate resources with more specialized operations, this interface should be used as a base.
@@ -26,5 +28,5 @@ package io.fabric8.kubernetes.client.dsl;
  * @param <H>   The type of {@link io.fabric8.kubernetes.client.Watch}.
  * @param <W>   The type of {@link io.fabric8.kubernetes.client.Watcher}.
  */
-public interface Resource<I, T, D, B, H, W> extends CreateFromServerGettable<I, T, D>, Updateable<I, T>, CascadingEditReplacePatchDeletable<I, T, D, B>, VersionWatchable<H, W> {
+public interface Resource<I, T, D, B, H, W> extends CreateOrReplaceable<I,T,D>, CreateFromServerGettable<I, T, D>, Updateable<I, T>, CascadingEditReplacePatchDeletable<I, T, D, B>, VersionWatchable<H, W> {
 }
