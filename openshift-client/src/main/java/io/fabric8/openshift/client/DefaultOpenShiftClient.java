@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.model.LimitRangeList;
 import io.fabric8.kubernetes.client.dsl.ClientScaleableResource;
 import io.fabric8.openshift.api.model.*;
 import io.fabric8.openshift.client.dsl.internal.ImageStreamTagOperationsImpl;
+import okhttp3.Authenticator;
 import okhttp3.OkHttpClient;
 
 import io.fabric8.kubernetes.api.model.ComponentStatus;
@@ -155,7 +156,8 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   private OkHttpClient clientWithOpenShiftOAuhtInterceptor(OkHttpClient httpClient) {
     OkHttpClient.Builder builder = httpClient.newBuilder();
     builder.interceptors().clear();
-    builder.interceptors().add(new OpenShiftOAuthInterceptor(httpClient, OpenShiftConfig.wrap(getConfiguration())));
+    builder.authenticator(Authenticator.NONE)
+           .interceptors().add(new OpenShiftOAuthInterceptor(httpClient, OpenShiftConfig.wrap(getConfiguration())));
     return builder.build();
   }
 
