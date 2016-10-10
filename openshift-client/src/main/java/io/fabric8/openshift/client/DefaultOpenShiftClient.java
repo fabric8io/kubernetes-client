@@ -132,7 +132,7 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   public DefaultOpenShiftClient(final OpenShiftConfig config) throws KubernetesClientException {
     super(config);
     try {
-      this.delegate = new DefaultKubernetesClient(clientWithOpenShiftOAuhtInterceptor(httpClient), config);
+      this.delegate = new DefaultKubernetesClient(clientWithOpenShiftOAuthInterceptor(httpClient), config);
       this.openShiftUrl = new URL(config.getOpenShiftUrl());
     } catch (MalformedURLException e) {
       throw new KubernetesClientException("Could not create client", e);
@@ -146,14 +146,14 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   protected DefaultOpenShiftClient(OkHttpClient httpClient, OpenShiftConfig config) throws KubernetesClientException {
     super(httpClient, config);
     try {
-      this.delegate = new DefaultKubernetesClient(clientWithOpenShiftOAuhtInterceptor(httpClient), config);
+      this.delegate = new DefaultKubernetesClient(clientWithOpenShiftOAuthInterceptor(httpClient), config);
       this.openShiftUrl = new URL(config.getOpenShiftUrl());
     } catch (MalformedURLException e) {
       throw new KubernetesClientException("Could not create client", e);
     }
   }
 
-  private OkHttpClient clientWithOpenShiftOAuhtInterceptor(OkHttpClient httpClient) {
+  private OkHttpClient clientWithOpenShiftOAuthInterceptor(OkHttpClient httpClient) {
     httpClient = httpClient.newBuilder().authenticator(Authenticator.NONE).build();
     OkHttpClient.Builder builder = httpClient.newBuilder();
     builder.interceptors().clear();
