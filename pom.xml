@@ -79,7 +79,6 @@
     <okhttp.bundle.version>3.4.1_1</okhttp.bundle.version>
     <okio.version>1.9.0</okio.version>
     <okio.bundle.version>1.9.0_1</okio.bundle.version>
-    <easymock.version>3.4</easymock.version>
     <felix.scr.annotations.version>1.9.8</felix.scr.annotations.version>
     <generex.version>1.0.1</generex.version>
     <generex.bundle.version>1.0.1_1</generex.bundle.version>
@@ -124,9 +123,7 @@
 
   <modules>
     <module>kubernetes-client</module>
-    <module>kubernetes-mock</module>
     <module>openshift-client</module>
-    <module>openshift-mock</module>
     <module>kubernetes-examples</module>
     <module>platforms</module>
     <module>kubernetes-tests</module>
