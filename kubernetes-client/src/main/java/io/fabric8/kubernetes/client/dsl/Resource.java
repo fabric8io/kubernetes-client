@@ -28,5 +28,5 @@ import io.fabric8.kubernetes.client.dsl.internal.CreateOrReplaceable;
  * @param <H>   The type of {@link io.fabric8.kubernetes.client.Watch}.
  * @param <W>   The type of {@link io.fabric8.kubernetes.client.Watcher}.
  */
-public interface Resource<I, T, D, B, H, W> extends CreateOrReplaceable<I,T,D>, CreateFromServerGettable<I, T, D>, Updateable<I, T>, CascadingEditReplacePatchDeletable<I, T, D, B>, VersionWatchable<H, W> {
+public interface Resource<I, T, D, B, H, W> extends CreateOrReplaceable<I,T,D>, CreateFromServerGettable<I, T, D>, CascadingEditReplacePatchDeletable<I, T, D, B>, VersionWatchable<H, W> {
 }

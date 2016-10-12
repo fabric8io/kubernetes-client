@@ -581,12 +581,6 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   @Override
-  public T update(T item) {
-    return replace(item);
-  }
-
-
-  @Override
   public T replace(T item) {
     throw new KubernetesClientException("Cannot update read-only resources");
   }
