@@ -28,10 +28,4 @@ public interface Loggable<S, W> {
 
   W watchLog(OutputStream out);
 
-  @Deprecated
-  S getLog(String id);
-
-  @Deprecated
-  S getLog(String id, Boolean isPretty);
-
 }

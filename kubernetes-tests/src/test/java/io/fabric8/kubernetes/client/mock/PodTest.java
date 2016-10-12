@@ -181,10 +181,10 @@ public class PodTest {
     log = client.pods().withName("pod2").getLog(false);
     assertEquals(pod2Log, log);
 
-    log = client.pods().withName("pod3").getLog("cnt3", false);
+    log = client.pods().withName("pod3").inContainer("cnt3").getLog();
     assertEquals(pod3Log, log);
 
-    log = client.pods().inNamespace("test4").withName("pod4").getLog("cnt4", true);
+    log = client.pods().inNamespace("test4").withName("pod4").inContainer("cnt4").withPrettyOutput().getLog();
     assertEquals(pod4Log, log);
   }
 
