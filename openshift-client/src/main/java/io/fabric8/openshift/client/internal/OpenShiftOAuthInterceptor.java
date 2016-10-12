@@ -64,23 +64,33 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
         request = builder.build();
         Response response = chain.proceed(request);
 
-        if ((response.code() == 401 || response.code() == 403)
-                && Utils.isNotNullOrEmpty(config.getUsername())
-                && Utils.isNotNullOrEmpty(config.getPassword())) {
-            // Close the previous response to prevent leaked connections.
-            response.body().close();
-
-            synchronized (client) {
-                token = authorize();
-                if(token != null) {
-                    oauthToken.set(token);
-                    setAuthHeader(builder, token);
-                    request = builder.build();
-                    return chain.proceed(request); //repeat request with new token
-                }
+        //If response is Forbidden or Unauthorized, try to obtain a token via authorize() or via config.
+        if (response.code() != 401 && response.code() != 403) {
+          return response;
+        } else if (Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword())) {
+          synchronized (client) {
+            token = authorize();
+            if (token != null) {
+              oauthToken.set(token);
             }
+          }
+        } else if (Utils.isNotNullOrEmpty(config.getOauthToken())) {
+          token = config.getOauthToken();
+          oauthToken.set(token);
         }
+
+
+      //If token was obtain, then retry request using the obtained token.
+      if (Utils.isNotNullOrEmpty(token)) {
+        // Close the previous response to prevent leaked connections.
+        response.body().close();
+
+        setAuthHeader(builder, token);
+        request = builder.build();
+        return chain.proceed(request); //repeat request with new token
+      } else {
         return response;
+      }
     }
 
     private void setAuthHeader(Request.Builder builder, String token) {
