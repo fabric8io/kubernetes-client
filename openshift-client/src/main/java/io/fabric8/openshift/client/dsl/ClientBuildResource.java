@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client.dsl;
+package io.fabric8.openshift.client.dsl;
 
-import java.io.OutputStream;
+import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.Secretable;
+import io.fabric8.kubernetes.client.dsl.TerminateTimeTailPrettyLoggable;
+import io.fabric8.kubernetes.client.dsl.Triggerable;
+import io.fabric8.kubernetes.client.dsl.Typeable;
+import io.fabric8.openshift.api.model.BuildRequest;
+import io.fabric8.openshift.api.model.WebHookTrigger;
 
-public interface Loggable<S, W> {
-
-  S getLog();
-
-  S getLog(Boolean isPretty);
-
-  W watchLog();
-
-  W watchLog(OutputStream out);
-
+public interface ClientBuildResource<T, D, S, W> extends ClientResource<T, D>,
+  TerminateTimeTailPrettyLoggable<S, W> {
 }

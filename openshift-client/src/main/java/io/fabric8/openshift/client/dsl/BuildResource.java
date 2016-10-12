@@ -16,18 +16,8 @@
 
 package io.fabric8.openshift.client.dsl;
 
-import io.fabric8.kubernetes.client.dsl.LogWatch;
-import io.fabric8.kubernetes.client.dsl.LoggableResource;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.Secretable;
-import io.fabric8.kubernetes.client.dsl.Triggerable;
-import io.fabric8.kubernetes.client.dsl.Typeable;
-import io.fabric8.openshift.api.model.BuildRequest;
-import io.fabric8.openshift.api.model.WebHookTrigger;
+import io.fabric8.kubernetes.client.dsl.TerminateTimeTailPrettyLoggable;
 
-public interface BuildResource<I, T, D, B, S, N, H, W> extends LoggableResource<I, T, D, B, H, String, LogWatch, W>,
-  Instantiateable<BuildRequest, N>,
-  Typeable<Triggerable<WebHookTrigger, S>>,
-  Triggerable<WebHookTrigger, S>,
-  Secretable<Typeable<Triggerable<WebHookTrigger, S>>> {
+public interface BuildResource<I, T, D, B, H, S, L, W> extends Resource<I, T, D, B, H, W>, TerminateTimeTailPrettyLoggable<S, L> {
 }

@@ -127,7 +127,10 @@ public class BuildConfigExamples {
       log("Builds:");
       for (Build b: client.builds().inNamespace("thisisatest").list().getItems()) {
         log("\t\t\t"+b.getMetadata().getName());
+
+        log("\t\t\t\t\t Log:");client.builds().inNamespace("thisisatest").withName(b.getMetadata().getName()).watchLog(System.out);
       }
+
 
 
       log("Done.");
