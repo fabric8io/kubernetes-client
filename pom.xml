@@ -79,7 +79,6 @@
     <okhttp.bundle.version>3.4.1_1</okhttp.bundle.version>
     <okio.version>1.9.0</okio.version>
     <okio.bundle.version>1.9.0_1</okio.bundle.version>
-    <felix.scr.annotations.version>1.9.8</felix.scr.annotations.version>
     <generex.version>1.0.1</generex.version>
     <generex.bundle.version>1.0.1_1</generex.bundle.version>
     <automaton.version>1.11-8</automaton.version>
