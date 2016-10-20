@@ -185,17 +185,18 @@ public class OperationSupport {
   }
 
 
-  protected <T> void handleDelete(T resource, long gracePeriodSeconds) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    handleDelete(getResourceUrl(checkNamespace(resource), checkName(resource)), gracePeriodSeconds);
+  protected <T> void handleDelete(T resource, long gracePeriodSeconds, boolean cascading) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+    handleDelete(getResourceUrl(checkNamespace(resource), checkName(resource)), gracePeriodSeconds, cascading);
   }
 
-  protected void handleDelete(URL requestUrl, long gracePeriodSeconds) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+  protected void handleDelete(URL requestUrl, long gracePeriodSeconds, boolean cascading) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     RequestBody requestBody = null;
+    DeleteOptions deleteOptions = new DeleteOptions();
+    deleteOptions.setOrphanDependents(!cascading);
     if (gracePeriodSeconds >= 0) {
-      DeleteOptions deleteOptions = new DeleteOptions();
       deleteOptions.setGracePeriodSeconds(gracePeriodSeconds);
-      requestBody = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(deleteOptions));
     }
+    requestBody = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(deleteOptions));
 
     Request.Builder requestBuilder = new Request.Builder().delete(requestBody).url(requestUrl);
     handleResponse(requestBuilder, 200, null);

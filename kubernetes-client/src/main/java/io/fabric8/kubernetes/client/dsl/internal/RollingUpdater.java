@@ -50,6 +50,8 @@ abstract class RollingUpdater<T extends HasMetadata, L, D extends Doneable<T>> {
 
   private static final Long DEFAULT_ROLLING_TIMEOUT = 15 * 60 * 1000L; // 15 mins
 
+  private static final Long DEFAULT_SERVER_GC_WAIT_TIMEOUT = 60 * 1000L; // 60 seconds
+
   private static final transient Logger LOG = LoggerFactory.getLogger(RollingUpdater.class);
 
   protected final OkHttpClient client;
@@ -147,12 +149,15 @@ abstract class RollingUpdater<T extends HasMetadata, L, D extends Doneable<T>> {
 
       // Check if we need to rename it back to the original RC name
       if (Objects.equals(oldName, newObj.getMetadata().getName())) {
+        // first delete the resource and orphan its pods.
+        resources().inNamespace(namespace).withName(newName).cascading(false).delete();
+
+        waitUntilDeleted(namespace, newName);
+
         createdObj.getMetadata().setResourceVersion(null);
         createdObj.getMetadata().setName(oldName);
 
         createdObj = resources().inNamespace(namespace).create(createdObj);
-
-        resources().inNamespace(namespace).withName(newName).cascading(false).delete();
 
         editable = resources().inNamespace(namespace).withName(createdObj.getMetadata().getName()).cascading(false).edit();
         removeDeploymentKey(editable);
@@ -209,6 +214,48 @@ abstract class RollingUpdater<T extends HasMetadata, L, D extends Doneable<T>> {
       executor.shutdown();
       LOG.warn("Only {}/{} pod(s) ready for {}: {} in namespace: {}  after waiting for {} seconds so giving up",
           podCount.get(), requiredPodCount, obj.getKind(), obj.getMetadata().getName(), namespace, TimeUnit.MILLISECONDS.toSeconds(rollingTimeoutMillis));
+    }
+  }
+
+  /**
+   * Since k8s v1.4.x, rc/rs deletes are asynchronous.
+   * Lets wait until the resource is actually deleted in the server
+   */
+  private void waitUntilDeleted(final String namespace, final String name) {
+    final CountDownLatch countDownLatch = new CountDownLatch(1);
+
+    final Runnable waitTillDeletedPoller = new Runnable() {
+      public void run() {
+        try {
+          T res = resources().inNamespace(namespace).withName(name).get();
+          if (res == null) {
+            countDownLatch.countDown();
+          }
+        } catch (KubernetesClientException e) {
+          if (e.getCode() == 404) {
+            countDownLatch.countDown();
+          }
+        }
+      }
+    };
+
+    ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+    ScheduledFuture poller = executor.scheduleWithFixedDelay(waitTillDeletedPoller, 0, 5, TimeUnit.SECONDS);
+    ScheduledFuture logger = executor.scheduleWithFixedDelay(new Runnable() {
+      @Override
+      public void run() {
+        LOG.debug("Found resource {}/{} not yet deleted on server, so waiting...", namespace, name);
+      }
+    }, 0, loggingIntervalMillis, TimeUnit.MILLISECONDS);
+    try {
+      countDownLatch.await(DEFAULT_SERVER_GC_WAIT_TIMEOUT, TimeUnit.MILLISECONDS);
+      executor.shutdown();
+    } catch (InterruptedException e) {
+      poller.cancel(true);
+      logger.cancel(true);
+      executor.shutdown();
+      LOG.warn("Still found deleted resource {} in namespace: {}  after waiting for {} seconds so giving up",
+               name, namespace, TimeUnit.MILLISECONDS.toSeconds(DEFAULT_SERVER_GC_WAIT_TIMEOUT));
     }
   }
 
