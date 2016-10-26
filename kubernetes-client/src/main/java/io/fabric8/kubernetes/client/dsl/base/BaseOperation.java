@@ -542,9 +542,9 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   void deleteThis() throws KubernetesClientException {
     try {
       if (item != null) {
-        handleDelete(item, gracePeriodSeconds);
+        handleDelete(item, gracePeriodSeconds, cascading);
       } else {
-        handleDelete(getResourceUrl(), gracePeriodSeconds);
+        handleDelete(getResourceUrl(), gracePeriodSeconds, cascading);
       }
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
