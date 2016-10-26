@@ -49,7 +49,7 @@ class ReplicaSetRollingUpdater extends RollingUpdater<ReplicaSet, ReplicaSetList
       .endMetadata()
       .editSpec()
       .withReplicas(0)
-      .editSelector().addToMatchLabels(DEPLOYMENT_KEY, newDeploymentHash).endSelector()
+      .editExtensionsSelector().addToMatchLabels(DEPLOYMENT_KEY, newDeploymentHash).endExtensionsSelector()
       .editTemplate().editMetadata().addToLabels(DEPLOYMENT_KEY, newDeploymentHash).endMetadata().endTemplate()
       .endSpec()
       .build();
@@ -85,7 +85,7 @@ class ReplicaSetRollingUpdater extends RollingUpdater<ReplicaSet, ReplicaSetList
   @Override
   protected void updateDeploymentKey(DoneableReplicaSet obj, String hash) {
     obj.editSpec()
-      .editSelector().addToMatchLabels(DEPLOYMENT_KEY, hash).endSelector()
+      .editExtensionsSelector().addToMatchLabels(DEPLOYMENT_KEY, hash).endExtensionsSelector()
       .editTemplate().editMetadata().addToLabels(DEPLOYMENT_KEY, hash).endMetadata().endTemplate()
       .endSpec();
   }
@@ -93,7 +93,7 @@ class ReplicaSetRollingUpdater extends RollingUpdater<ReplicaSet, ReplicaSetList
   @Override
   protected void removeDeploymentKey(DoneableReplicaSet obj) {
     obj.editSpec()
-      .editSelector().removeFromMatchLabels(DEPLOYMENT_KEY).endSelector()
+      .editExtensionsSelector().removeFromMatchLabels(DEPLOYMENT_KEY).endExtensionsSelector()
       .editTemplate().editMetadata().removeFromLabels(DEPLOYMENT_KEY).endMetadata().endTemplate()
       .endSpec();
   }
