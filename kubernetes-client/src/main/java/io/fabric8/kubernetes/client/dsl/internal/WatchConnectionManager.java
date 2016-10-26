@@ -140,7 +140,7 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
               try {
                 webSocket.sendPing(new Buffer().writeUtf8("Alive?"));
               } catch (IOException e) {
-                logger.error("Failed to send ping", e);
+                logger.debug("Failed to send ping", e);
                 onClose(4000, "Connection unexpectedly closed");
               }
             }
