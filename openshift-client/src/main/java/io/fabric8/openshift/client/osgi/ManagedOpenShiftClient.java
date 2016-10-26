@@ -292,6 +292,11 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
+  public ClientMixedOperation<Role, RoleList, DoneableRole, ClientResource<Role, DoneableRole>> roles() {
+    return delegate.roles();
+  }
+
+  @Override
   public ClientMixedOperation<RoleBinding, RoleBindingList, DoneableRoleBinding, ClientResource<RoleBinding, DoneableRoleBinding>> roleBindings() {
     return delegate.roleBindings();
   }

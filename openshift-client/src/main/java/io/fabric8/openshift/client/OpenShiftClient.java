@@ -67,7 +67,10 @@ public interface OpenShiftClient extends KubernetesClient {
 
   ClientProjectRequestOperation projectrequests();
 
-  ClientMixedOperation<RoleBinding, RoleBindingList, DoneableRoleBinding, ClientResource<RoleBinding, DoneableRoleBinding>> roleBindings();
+  ClientMixedOperation<Role, RoleList, DoneableRole, ClientResource<Role, DoneableRole>> roles();
+
+  ClientMixedOperation<RoleBinding, RoleBindingList, DoneableRoleBinding, ClientResource<RoleBinding, DoneableRoleBinding>>
+  roleBindings();
 
   ClientMixedOperation<Route, RouteList, DoneableRoute, ClientResource<Route, DoneableRoute>> routes();
 
