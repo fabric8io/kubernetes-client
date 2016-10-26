@@ -79,7 +79,7 @@ public class RoleBindingOperationsImpl extends OpenShiftOperation<RoleBinding, R
     builder.accept(new TypedVisitor<ObjectReferenceBuilder>() {
       @Override
       public void visit(ObjectReferenceBuilder o) {
-        if (o.getKind().equals("ServiceAccount") && (o.getNamespace() == null || o.getNamespace().isEmpty())) {
+        if (o.getKind() != null && o.getKind().equals("ServiceAccount") && (o.getNamespace() == null || o.getNamespace().isEmpty())) {
           o.withNamespace(getNamespace());
         }
       }
