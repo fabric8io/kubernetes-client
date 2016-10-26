@@ -33,7 +33,7 @@ public class ResourceCompare {
 
     public static <T>  boolean equals(T left, T right) {
         HashMap<String, Object> leftMap = trim((Map<String, Object>) JSON_MAPPER.convertValue(left, TYPE_REF));
-        HashMap<String, Object> rightMap = trim((Map<String, Object>) JSON_MAPPER.convertValue(left, TYPE_REF));
+        HashMap<String, Object> rightMap = trim((Map<String, Object>) JSON_MAPPER.convertValue(right, TYPE_REF));
         return leftMap.equals(rightMap);
     }
 
