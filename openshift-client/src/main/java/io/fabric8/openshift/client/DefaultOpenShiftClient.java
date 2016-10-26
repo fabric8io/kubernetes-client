@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.openshift.api.model.*;
 import io.fabric8.openshift.client.dsl.ClientBuildResource;
 import io.fabric8.openshift.client.dsl.internal.ImageStreamTagOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.RoleOperationsImpl;
 import okhttp3.Authenticator;
 import okhttp3.OkHttpClient;
 
@@ -325,6 +326,11 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public ClientProjectRequestOperation projectrequests() {
     return new ProjectRequestsOperationImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+  }
+
+  @Override
+  public ClientMixedOperation<Role, RoleList, DoneableRole, ClientResource<Role, DoneableRole>> roles() {
+    return new RoleOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override
