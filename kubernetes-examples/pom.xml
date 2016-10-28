@@ -67,14 +67,6 @@
             </goals>
           </execution>
         </executions>
-        <configuration>
-          <mainClass>io.fabric8.kubernetes.examples.PodLogExample</mainClass>
-          <arguments>
-            <argument>${podName}</argument>
-            <argument>${masterUrl}</argument>
-            <argument>${namespace}</argument>
-          </arguments>
-        </configuration>
       </plugin>
     </plugins>
   </build>
