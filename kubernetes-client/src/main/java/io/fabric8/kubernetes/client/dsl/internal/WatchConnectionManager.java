@@ -260,7 +260,7 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
         try {
           WebSocket ws = webSocketRef.get();
           if (ws != null) {
-            ws.close(1000, "Closing...");
+            ws.close(0, null);
             webSocketRef.set(null);
           }
         } catch (IOException e) {
@@ -319,7 +319,7 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
     try {
       WebSocket ws = webSocketRef.get();
       if (ws != null) {
-        ws.close(1000, "Closing...");
+        ws.close(0, null);
         webSocketRef.set(null);
       }
     } catch (IOException | IllegalStateException e) {
