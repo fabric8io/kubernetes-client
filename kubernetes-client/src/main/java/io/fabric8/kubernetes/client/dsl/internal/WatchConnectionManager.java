@@ -332,17 +332,6 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
         if (!executor.awaitTermination(1, TimeUnit.SECONDS)) {
           executor.shutdownNow();
         }
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
-    }
-
-    if (!executor.isShutdown()) {
-      try {
-        executor.shutdown();
-        if (!executor.awaitTermination(10, TimeUnit.SECONDS)) {
-          executor.shutdownNow();
-        }
       } catch (Throwable t) {
         throw KubernetesClientException.launderThrowable(t);
       }
