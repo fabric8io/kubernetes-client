@@ -142,11 +142,13 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
           new Runnable() {
             @Override
             public void run() {
-              try {
-                webSocket.sendPing(new Buffer().writeUtf8("Alive?"));
-              } catch (IOException e) {
-                logger.debug("Failed to send ping", e);
-                onClose(4000, "Connection unexpectedly closed");
+              if (!forceClosed.get()) {
+                try {
+                    webSocket.sendPing(new Buffer().writeUtf8("Alive?"));
+                } catch (IOException e) {
+                  logger.debug("Failed to send ping", e);
+                  onClose(4000, "Connection unexpectedly closed");
+                }
               }
             }
           }, 0, websocketPingInterval, TimeUnit.MILLISECONDS
