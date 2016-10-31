@@ -572,7 +572,16 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   public Watch watch(String resourceVersion, final Watcher<T> watcher) throws KubernetesClientException {
     try {
-      WatchConnectionManager watch = new WatchConnectionManager(client, this, resourceVersion, watcher, config.getWatchReconnectInterval(), config.getWatchReconnectLimit());
+      WatchConnectionManager watch = new WatchConnectionManager(
+        client,
+        this,
+        resourceVersion,
+        watcher,
+        config.getWatchReconnectInterval(),
+        config.getWatchReconnectLimit(),
+        config.getWebsocketTimeout(),
+        config.getWebsocketPingInterval()
+      );
       watch.waitUntilReady();
       return watch;
     } catch (MalformedURLException | InterruptedException | ExecutionException e) {

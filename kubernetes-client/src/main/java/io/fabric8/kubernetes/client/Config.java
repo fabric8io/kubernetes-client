@@ -62,6 +62,8 @@ public class Config {
   public static final String KUBERNETES_ROLLING_TIMEOUT_SYSTEM_PROPERTY = "kubernetes.rolling.timeout";
   public static final String KUBERNETES_LOGGING_INTERVAL_SYSTEM_PROPERTY = "kubernetes.logging.interval";
   public static final String KUBERNETES_SCALE_TIMEOUT_SYSTEM_PROPERTY = "kubernetes.scale.timeout";
+  public static final String KUBERNETES_WEBSOCKET_TIMEOUT_SYSTEM_PROPERTY = "kubernetes.websocket.timeout";
+  public static final String KUBERNETES_WEBSOCKET_PING_INTERVAL_SYSTEM_PROPERTY = "kubernetes.websocket.ping.interval";
 
   public static final String KUBERNETES_TLS_VERSIONS = "kubernetes.tls.versions";
 
@@ -82,6 +84,8 @@ public class Config {
   public static final Long DEFAULT_ROLLING_TIMEOUT = 15 * 60 * 1000L;
   public static final Long DEFAULT_SCALE_TIMEOUT = 10 * 60 * 1000L;
   public static final int DEFAULT_LOGGING_INTERVAL = 20 * 1000;
+  public static final Long DEFAULT_WEBSOCKET_TIMEOUT = 5 * 1000L;
+  public static final Long DEFAULT_WEBSOCKET_PING_INTERVAL = 1 * 1000L;
 
   public static final String HTTP_PROTOCOL_PREFIX = "http://";
   public static final String HTTPS_PROTOCOL_PREFIX = "https://";
@@ -108,6 +112,8 @@ public class Config {
   private long rollingTimeout = DEFAULT_ROLLING_TIMEOUT;
   private long scaleTimeout = DEFAULT_SCALE_TIMEOUT;
   private int loggingInterval = DEFAULT_LOGGING_INTERVAL;
+  private long websocketTimeout = DEFAULT_WEBSOCKET_TIMEOUT;
+  private long websocketPingInterval = DEFAULT_WEBSOCKET_PING_INTERVAL;
   private String httpProxy;
   private String httpsProxy;
   private String[] noProxy;
@@ -133,7 +139,7 @@ public class Config {
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
-  public Config(String masterUrl, String apiVersion, String namespace, boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, long scaleTimeout, int loggingInterval, String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages, String userAgent, TlsVersion[] tlsVersions) {
+  public Config(String masterUrl, String apiVersion, String namespace, boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, long scaleTimeout, int loggingInterval, String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages, String userAgent, TlsVersion[] tlsVersions, long websocketTimeout, long websocketPingInterval) {
     this.masterUrl = masterUrl;
     this.apiVersion = apiVersion;
     this.namespace = namespace;
@@ -162,6 +168,8 @@ public class Config {
     this.errorMessages = errorMessages;
     this.userAgent = userAgent;
     this.tlsVersions = tlsVersions;
+    this.websocketTimeout = websocketTimeout;
+    this.websocketPingInterval = websocketPingInterval;
 
     if (!this.masterUrl.toLowerCase().startsWith(HTTP_PROTOCOL_PREFIX) && !this.masterUrl.startsWith(HTTPS_PROTOCOL_PREFIX)) {
       this.masterUrl = (SSLUtils.isHttpsAvailable(this) ? HTTPS_PROTOCOL_PREFIX : HTTP_PROTOCOL_PREFIX) + this.masterUrl;
@@ -218,6 +226,16 @@ public class Config {
 
     config.setConnectionTimeout(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CONNECTION_TIMEOUT_SYSTEM_PROPERTY, config.getConnectionTimeout()));
     config.setRequestTimeout(Utils.getSystemPropertyOrEnvVar(KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY, config.getRequestTimeout()));
+
+    String configuredWebsocketTimeout = Utils.getSystemPropertyOrEnvVar(KUBERNETES_WEBSOCKET_TIMEOUT_SYSTEM_PROPERTY, String.valueOf(config.getWebsocketTimeout()));
+    if (configuredWebsocketTimeout != null) {
+      config.setWebsocketTimeout(Long.parseLong(configuredWebsocketTimeout));
+    }
+
+    String configuredWebsocketPingInterval = Utils.getSystemPropertyOrEnvVar(KUBERNETES_WEBSOCKET_PING_INTERVAL_SYSTEM_PROPERTY, String.valueOf(config.getWebsocketPingInterval()));
+    if (configuredWebsocketPingInterval != null) {
+      config.setWebsocketPingInterval(Long.parseLong(configuredWebsocketPingInterval));
+    }
 
     config.setHttpProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_ALL_PROXY, config.getHttpProxy()));
     config.setHttpsProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_ALL_PROXY, config.getHttpsProxy()));
@@ -606,5 +624,21 @@ public class Config {
 
   public void setTlsVersions(TlsVersion[] tlsVersions) {
     this.tlsVersions = tlsVersions;
+  }
+
+  public long getWebsocketTimeout() {
+    return websocketTimeout;
+  }
+
+  public void setWebsocketTimeout(long websocketTimeout) {
+    this.websocketTimeout = websocketTimeout;
+  }
+
+  public long getWebsocketPingInterval() {
+    return websocketPingInterval;
+  }
+
+  public void setWebsocketPingInterval(long websocketPingInterval) {
+    this.websocketPingInterval = websocketPingInterval;
   }
 }
