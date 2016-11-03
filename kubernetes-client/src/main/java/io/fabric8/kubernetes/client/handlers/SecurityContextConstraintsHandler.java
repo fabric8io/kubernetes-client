@@ -39,7 +39,7 @@ public class SecurityContextConstraintsHandler implements ResourceHandler<Securi
 
   @Override
   public SecurityContextConstraints replace(OkHttpClient client, Config config, String namespace, SecurityContextConstraints item) {
-    return new SecurityContextConstraintsOperationsImpl(client, config, null, namespace, null, true, item, null, false).replace(item);
+    return new SecurityContextConstraintsOperationsImpl(client, config, null, namespace, null, true, item, null, true).replace(item);
   }
 
   @Override

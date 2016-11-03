@@ -36,7 +36,7 @@ public class ServiceAccountHandler implements ResourceHandler<ServiceAccount, Se
 
   @Override
   public ServiceAccount create(OkHttpClient client, Config config, String namespace, ServiceAccount item) {
-    return new ServiceAccountOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).create();
+    return new ServiceAccountOperationsImpl(client, config, null, namespace, null, true, item, null, true, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).create();
   }
 
   @Override

@@ -43,7 +43,7 @@ public class ReplicationControllerHandler implements ResourceHandler<Replication
 
   @Override
   public ReplicationController replace(OkHttpClient client, Config config, String namespace, ReplicationController item) {
-    return new ReplicationControllerOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).replace(item);
+    return new ReplicationControllerOperationsImpl(client, config, null, namespace, null, true, item, null, true, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).replace(item);
   }
 
   @Override

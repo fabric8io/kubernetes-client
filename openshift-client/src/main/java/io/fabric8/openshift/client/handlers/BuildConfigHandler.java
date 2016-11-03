@@ -46,7 +46,7 @@ public class BuildConfigHandler implements ResourceHandler<BuildConfig, BuildCon
   @Override
   public BuildConfig replace(OkHttpClient client, Config config, String namespace, BuildConfig item) {
     OpenShiftConfig osConfig = OpenShiftConfig.wrap(config);
-    return new BuildConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, null, null, null, osConfig.getBuildTimeout(), TimeUnit.MILLISECONDS).replace(item);
+    return new BuildConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, true, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, null, null, null, osConfig.getBuildTimeout(), TimeUnit.MILLISECONDS).replace(item);
   }
 
   @Override

@@ -43,7 +43,7 @@ public class RoleBindingHandler implements ResourceHandler<RoleBinding, RoleBind
 
   @Override
   public RoleBinding replace(OkHttpClient client, Config config, String namespace, RoleBinding item) {
-    return new RoleBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).replace(item);
+    return new RoleBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, true, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).replace(item);
   }
 
   @Override

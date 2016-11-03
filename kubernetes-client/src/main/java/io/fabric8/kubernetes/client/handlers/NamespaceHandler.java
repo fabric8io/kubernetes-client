@@ -42,7 +42,7 @@ public class NamespaceHandler implements ResourceHandler<Namespace, NamespaceBui
 
   @Override
   public Namespace replace(OkHttpClient client, Config config, String namespace, Namespace item) {
-    return new NamespaceOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).replace(item);
+    return new NamespaceOperationsImpl(client, config, null, namespace, null, true, item, null, true, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).replace(item);
   }
 
   @Override
