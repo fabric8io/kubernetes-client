@@ -132,6 +132,9 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
 
       @Override
       public void onOpen(final WebSocket webSocket, Response response) {
+        if(response != null && response.body() != null) {
+          response.body().close();
+        }
         logger.debug("WebSocket successfully opened");
         webSocketRef.set(webSocket);
         currentReconnectAttempt.set(0);
