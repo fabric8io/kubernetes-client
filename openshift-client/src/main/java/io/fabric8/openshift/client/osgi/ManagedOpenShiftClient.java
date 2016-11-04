@@ -139,6 +139,7 @@ import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
 import io.fabric8.openshift.client.dsl.ClientBuildConfigResource;
 import io.fabric8.openshift.client.dsl.ClientBuildResource;
+import io.fabric8.openshift.client.dsl.ClientDeployableScalableResource;
 import io.fabric8.openshift.client.dsl.ClientProjectRequestOperation;
 import io.fabric8.openshift.client.dsl.ClientSubjectAccessReviewOperation;
 import io.fabric8.openshift.client.dsl.ClientTemplateResource;
@@ -298,7 +299,7 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public ClientMixedOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, ClientScaleableResource<DeploymentConfig, DoneableDeploymentConfig>> deploymentConfigs() {
+  public ClientMixedOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, ClientDeployableScalableResource<DeploymentConfig, DoneableDeploymentConfig>> deploymentConfigs() {
     return delegate.deploymentConfigs();
   }
 

@@ -15,9 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
-import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.ClientScaleableResource;
 
 import io.fabric8.kubernetes.client.dsl.Reaper;
 import io.fabric8.kubernetes.client.dsl.internal.ReplicationControllerOperationsImpl;
@@ -25,6 +23,7 @@ import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.api.model.DoneableDeploymentConfig;
 import io.fabric8.openshift.client.OpenShiftConfig;
+import io.fabric8.openshift.client.dsl.ClientDeployableScalableResource;
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,10 +39,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class DeploymentConfigOperationsImpl extends OpenShiftOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig,
-  ClientScaleableResource<DeploymentConfig, DoneableDeploymentConfig>> implements  ClientScaleableResource<DeploymentConfig, DoneableDeploymentConfig> {
+  ClientDeployableScalableResource<DeploymentConfig, DoneableDeploymentConfig>> implements ClientDeployableScalableResource<DeploymentConfig, DoneableDeploymentConfig> {
 
   private static final Logger LOG = LoggerFactory.getLogger(DeploymentConfigOperationsImpl.class);
-  private static final String DEPLOYMENT_CONFIG_REF = "openshift.io/deployment-config.name";
 
   public DeploymentConfigOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
     this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
@@ -76,6 +74,22 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
       return cascading(false).patch(item);
     }
     return super.patch(item);
+  }
+
+  @Override
+  public DeploymentConfig deployLatest() {
+    return deployLatest(false);
+  }
+
+  @Override
+  public DeploymentConfig deployLatest(boolean wait) {
+    Long currentVersion = getMandatory().getStatus().getLatestVersion();
+    DeploymentConfig deployment = cascading(false).edit().editStatus().withLatestVersion(++currentVersion).endStatus().done();
+    if (wait) {
+      waitUntilDeploymentConfigIsScaled();
+      deployment = getMandatory();
+    }
+    return deployment;
   }
 
   private static class DeploymentConfigReaper implements Reaper {
@@ -132,12 +146,12 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
 
   @Override
   public DeploymentConfig scale(int count, boolean wait) {
-    DeploymentConfig res = cascading(false).edit().editSpec().withReplicas(count).endSpec().done();
+    DeploymentConfig deployment = cascading(false).edit().editSpec().withReplicas(count).endSpec().done();
     if (wait) {
       waitUntilDeploymentConfigIsScaled();
-      res = getMandatory();
+      deployment = getMandatory();
     }
-    return res;
+    return deployment;
   }
 
   /**

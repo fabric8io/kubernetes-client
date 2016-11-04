@@ -27,6 +27,7 @@ import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.openshift.api.model.*;
 import io.fabric8.openshift.client.dsl.ClientBuildConfigResource;
 import io.fabric8.openshift.client.dsl.ClientBuildResource;
+import io.fabric8.openshift.client.dsl.ClientDeployableScalableResource;
 import io.fabric8.openshift.client.dsl.ClientProjectRequestOperation;
 import io.fabric8.openshift.client.dsl.ClientSubjectAccessReviewOperation;
 import io.fabric8.openshift.client.dsl.ClientTemplateResource;
@@ -45,7 +46,7 @@ public interface OpenShiftClient extends KubernetesClient {
 
   ClientMixedOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build>> buildConfigs();
 
-  ClientMixedOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, ClientScaleableResource<DeploymentConfig, DoneableDeploymentConfig>> deploymentConfigs();
+  ClientMixedOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, ClientDeployableScalableResource<DeploymentConfig, DoneableDeploymentConfig>> deploymentConfigs();
 
   ClientNonNamespaceOperation<Group, GroupList, DoneableGroup, ClientResource<Group, DoneableGroup>> groups();
 
