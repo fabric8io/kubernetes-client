@@ -43,7 +43,7 @@ public class ReplicaSetHandler implements ResourceHandler<ReplicaSet, ReplicaSet
 
   @Override
   public ReplicaSet replace(OkHttpClient client, Config config, String namespace, ReplicaSet item) {
-    return new ReplicaSetOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).replace(item);
+    return new ReplicaSetOperationsImpl(client, config, null, namespace, null, true, item, null, true, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).replace(item);
   }
 
   @Override

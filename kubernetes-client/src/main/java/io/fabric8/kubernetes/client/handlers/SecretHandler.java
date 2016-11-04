@@ -41,7 +41,7 @@ public class SecretHandler implements ResourceHandler<Secret, SecretBuilder> {
 
   @Override
   public Secret replace(OkHttpClient client, Config config, String namespace, Secret item) {
-    return new SecretOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).replace(item);
+    return new SecretOperationsImpl(client, config, null, namespace, null, true, item, null, true, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).replace(item);
   }
 
   @Override

@@ -42,7 +42,7 @@ public class OAuthAuthorizeTokenHandler implements ResourceHandler<OAuthAuthoriz
 
   @Override
   public OAuthAuthorizeToken replace(OkHttpClient client, Config config, String namespace, OAuthAuthorizeToken item) {
-    return new OAuthAuthorizeTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).replace(item);
+    return new OAuthAuthorizeTokenOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, true, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).replace(item);
   }
 
   @Override

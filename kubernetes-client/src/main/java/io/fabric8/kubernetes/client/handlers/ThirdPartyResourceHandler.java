@@ -42,7 +42,7 @@ public class ThirdPartyResourceHandler implements ResourceHandler<ThirdPartyReso
 
   @Override
   public ThirdPartyResource replace(OkHttpClient client, Config config, String namespace, ThirdPartyResource item) {
-    return new ThirdPartyResourceOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).replace(item);
+    return new ThirdPartyResourceOperationsImpl(client, config, null, namespace, null, true, item, null, true, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).replace(item);
   }
 
   @Override

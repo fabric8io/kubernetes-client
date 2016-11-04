@@ -43,7 +43,7 @@ public class BuildHandler implements ResourceHandler<Build, BuildBuilder> {
 
   @Override
   public Build replace(OkHttpClient client, Config config, String namespace, Build item) {
-    return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, false, false, false, null, -1, -1, false, null).replace(item);
+    return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, true, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, false, false, false, null, -1, -1, false, null).replace(item);
   }
 
   @Override

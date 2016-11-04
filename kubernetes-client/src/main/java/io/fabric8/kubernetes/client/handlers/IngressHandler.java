@@ -42,7 +42,7 @@ public class IngressHandler implements ResourceHandler<Ingress, IngressBuilder> 
 
   @Override
   public Ingress replace(OkHttpClient client, Config config, String namespace, Ingress item) {
-    return new IngressOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).replace(item);
+    return new IngressOperationsImpl(client, config, null, namespace, null, true, item, null, true, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).replace(item);
   }
 
   @Override
