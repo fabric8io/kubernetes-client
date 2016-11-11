@@ -135,7 +135,8 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   public DefaultOpenShiftClient(final OpenShiftConfig config) throws KubernetesClientException {
     super(config);
     try {
-      this.delegate = new DefaultKubernetesClient(clientWithOpenShiftOAuthInterceptor(httpClient), config);
+      this.httpClient = clientWithOpenShiftOAuthInterceptor(this.httpClient);
+      this.delegate = new DefaultKubernetesClient(this.httpClient, config);
       this.openShiftUrl = new URL(config.getOpenShiftUrl());
     } catch (MalformedURLException e) {
       throw new KubernetesClientException("Could not create client", e);
