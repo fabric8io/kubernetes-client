@@ -114,7 +114,7 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
             response = response.networkResponse() != null ? response.networkResponse() : response;
             String token = response.header(LOCATION);
             if (token == null || token.isEmpty()) {
-              throw new IllegalStateException("Unexpected response, to the authorization request. Missing header:[" + LOCATION + "]!");
+              throw new IllegalStateException("Unexpected response (" + response.code() + " " + response.message() + "), to the authorization request. Missing header:[" + LOCATION + "]!");
             }
             token = token.substring(token.indexOf(BEFORE_TOKEN) + BEFORE_TOKEN.length());
             token = token.substring(0, token.indexOf(AFTER_TOKEN));
