@@ -64,23 +64,33 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
         request = builder.build();
         Response response = chain.proceed(request);
 
-        if ((response.code() == 401 || response.code() == 403)
-                && Utils.isNotNullOrEmpty(config.getUsername())
-                && Utils.isNotNullOrEmpty(config.getPassword())) {
-            // Close the previous response to prevent leaked connections.
-            response.body().close();
-
-            synchronized (client) {
-                token = authorize();
-                if(token != null) {
-                    oauthToken.set(token);
-                    setAuthHeader(builder, token);
-                    request = builder.build();
-                    return chain.proceed(request); //repeat request with new token
-                }
+        //If response is Forbidden or Unauthorized, try to obtain a token via authorize() or via config.
+        if (response.code() != 401 && response.code() != 403) {
+          return response;
+        } else if (Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword())) {
+          synchronized (client) {
+            token = authorize();
+            if (token != null) {
+              oauthToken.set(token);
             }
+          }
+        } else if (Utils.isNotNullOrEmpty(config.getOauthToken())) {
+          token = config.getOauthToken();
+          oauthToken.set(token);
         }
+
+
+      //If token was obtain, then retry request using the obtained token.
+      if (Utils.isNotNullOrEmpty(token)) {
+        // Close the previous response to prevent leaked connections.
+        response.body().close();
+
+        setAuthHeader(builder, token);
+        request = builder.build();
+        return chain.proceed(request); //repeat request with new token
+      } else {
         return response;
+      }
     }
 
     private void setAuthHeader(Request.Builder builder, String token) {
@@ -98,8 +108,14 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
             String credential = Credentials.basic(config.getUsername(), new String(config.getPassword()));
             URL url = new URL(URLUtils.join(config.getMasterUrl(), AUTHORIZE_PATH));
             Response response = clone.newCall(new Request.Builder().get().url(url).header(AUTHORIZATION, credential).build()).execute();
+
             response.body().close();
-            String token = response.priorResponse().networkResponse().header(LOCATION);
+            response = response.priorResponse() != null ? response.priorResponse() : response;
+            response = response.networkResponse() != null ? response.networkResponse() : response;
+            String token = response.header(LOCATION);
+            if (token == null || token.isEmpty()) {
+              throw new IllegalStateException("Unexpected response (" + response.code() + " " + response.message() + "), to the authorization request. Missing header:[" + LOCATION + "]!");
+            }
             token = token.substring(token.indexOf(BEFORE_TOKEN) + BEFORE_TOKEN.length());
             token = token.substring(0, token.indexOf(AFTER_TOKEN));
             return token;
