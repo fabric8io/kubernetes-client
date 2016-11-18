@@ -15,11 +15,13 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientScaleableResource;
 
 import io.fabric8.kubernetes.client.dsl.Reaper;
+import io.fabric8.kubernetes.client.dsl.internal.PodOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ReplicationControllerOperationsImpl;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
@@ -38,12 +40,15 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DeploymentConfigOperationsImpl extends OpenShiftOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig,
   ClientScaleableResource<DeploymentConfig, DoneableDeploymentConfig>> implements  ClientScaleableResource<DeploymentConfig, DoneableDeploymentConfig> {
 
   private static final Logger LOG = LoggerFactory.getLogger(DeploymentConfigOperationsImpl.class);
   private static final String DEPLOYMENT_CONFIG_REF = "openshift.io/deployment-config.name";
+  static final String DEPLOYER_REGEX_FORMAT = "%s\\-\\d+\\-deploy";
 
   public DeploymentConfigOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
     this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
@@ -98,6 +103,7 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
           .withLabels(selector)
           .delete();
       }
+      reapMatchingDeployer(deployment.getMetadata().getName());
     }
 
     private void waitForObservedGeneration(final long observedGeneration) {
@@ -121,6 +127,16 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
         poller.cancel(true);
         executor.shutdown();
         throw KubernetesClientException.launderThrowable(e);
+      }
+    }
+
+    private void reapMatchingDeployer(String name) {
+      Pattern deployerPattern = Pattern.compile(String.format(DEPLOYER_REGEX_FORMAT, name));
+      for (Pod pod : new PodOperationsImpl(operation.client, operation.getConfig(), operation.getNamespace()).withLabel(DEPLOYMENT_CONFIG_REF).list().getItems()) {
+        Matcher matcher = deployerPattern.matcher(pod.getMetadata().getName());
+        if (matcher.matches()) {
+          new PodOperationsImpl(operation.client, operation.getConfig(), operation.getNamespace()).withName(pod.getMetadata().getName()).cascading(true).delete();
+        }
       }
     }
   }

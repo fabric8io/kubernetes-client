@@ -16,6 +16,9 @@
 
 package io.fabric8.openshift.client.mock;
 
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodBuilder;
+import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
@@ -129,8 +132,17 @@ public class DeploymentConfigTest {
       .endStatus()
       .build();
 
+    Pod deployerPod = new PodBuilder()
+      .withNewMetadata()
+        .withName("dc2-1-deploy")
+        .addToLabels("openshift.io/deployment-config.name", "dc2-1")
+      .endMetadata()
+      .build();
+
    server.expect().withPath("/oapi/v1/namespaces/test/deploymentconfigs/dc1").andReturn(200, dc1).times(2);
    server.expect().withPath("/oapi/v1/namespaces/ns1/deploymentconfigs/dc2").andReturn( 200, dc2).times(5);
+   server.expect().withPath("/api/v1/namespaces/ns1/pods?labelSelector=openshift.io/deployment-config.name").andReturn( 200, new PodListBuilder().withItems(deployerPod).build()).once();
+   server.expect().delete().withPath("/api/v1/namespaces/ns1/pods/dc2-1-deply").andReturn(200, "").once();
 
     OpenShiftClient client = server.getOpenshiftClient();
 
