@@ -151,13 +151,17 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
 
     final Runnable rcPoller = new Runnable() {
       public void run() {
-        ReplicationController rc = getMandatory();
-        atomicRC.set(rc);
-        if (Objects.equals(rc.getSpec().getReplicas(), rc.getStatus().getReplicas())) {
-          countDownLatch.countDown();
-        } else {
-          LOG.debug("Only {}/{} replicas scheduled for ReplicationController: {} in namespace: {} seconds so waiting...",
+        try {
+          ReplicationController rc = getMandatory();
+          atomicRC.set(rc);
+          if (Objects.equals(rc.getSpec().getReplicas(), rc.getStatus().getReplicas())) {
+            countDownLatch.countDown();
+          } else {
+            LOG.debug("Only {}/{} replicas scheduled for ReplicationController: {} in namespace: {} seconds so waiting...",
               rc.getStatus().getReplicas(), rc.getSpec().getReplicas(), rc.getMetadata().getName(), namespace);
+          }
+        } catch (Throwable t) {
+          LOG.error("Error while waiting for ReplicationController to be scaled.", t);
         }
       }
     };
