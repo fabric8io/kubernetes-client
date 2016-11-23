@@ -133,13 +133,18 @@ public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, R
 
     final Runnable rcPoller = new Runnable() {
       public void run() {
-        ReplicaSet rc = getMandatory();
-        atomicRC.set(rc);
-        if (rc.getStatus().getObservedGeneration() >= rc.getMetadata().getGeneration() && Objects.equals(rc.getSpec().getReplicas(), rc.getStatus().getReplicas())) {
-          countDownLatch.countDown();
-        } else {
+        try {
+          ReplicaSet rc = getMandatory();
+          atomicRC.set(rc);
+          long generation = rc.getMetadata().getGeneration() != null ? rc.getMetadata().getGeneration() : 0;
+          long observedGeneration = rc.getStatus() != null && rc.getStatus().getObservedGeneration() != null ? rc.getStatus().getObservedGeneration() : -1;
+           if (observedGeneration >= generation && Objects.equals(rc.getSpec().getReplicas(), rc.getStatus().getReplicas())) {
+            countDownLatch.countDown();
+          }
           LOG.debug("Only {}/{} replicas scheduled for ReplicaSet: {} in namespace: {} seconds so waiting...",
-            rc.getStatus().getReplicas(), rc.getSpec().getReplicas(), rc.getMetadata().getName(), namespace);
+              rc.getStatus().getReplicas(), rc.getSpec().getReplicas(), rc.getMetadata().getName(), namespace);
+        } catch (Throwable t) {
+          LOG.error("Error while waiting for ReplicaSet to be scaled.", t);
         }
       }
     };

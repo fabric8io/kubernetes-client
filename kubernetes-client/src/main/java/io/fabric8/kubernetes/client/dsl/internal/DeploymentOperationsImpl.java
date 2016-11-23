@@ -102,14 +102,20 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
 
     final Runnable deploymentPoller = new Runnable() {
       public void run() {
-        Deployment deployment = getMandatory();
-        atomicDeployment.set(deployment);
-        int currentReplicas = deployment.getStatus().getReplicas() != null ? deployment.getStatus().getReplicas() : 0;
-        if (deployment.getStatus().getObservedGeneration() >= deployment.getMetadata().getGeneration() && Objects.equals(deployment.getSpec().getReplicas(), currentReplicas)) {
-          countDownLatch.countDown();
-        } else {
-          LOG.debug("Only {}/{} pods scheduled for Deployment: {} in namespace: {} seconds so waiting...",
-            deployment.getStatus().getReplicas(), deployment.getSpec().getReplicas(), deployment.getMetadata().getName(), namespace);
+        try {
+          Deployment deployment = getMandatory();
+          atomicDeployment.set(deployment);
+          int currentReplicas = deployment.getStatus().getReplicas() != null ? deployment.getStatus().getReplicas() : 0;
+          long generation = deployment.getMetadata().getGeneration() != null ? deployment.getMetadata().getGeneration() : 0;
+          long observedGeneration = deployment.getStatus() != null && deployment.getStatus().getObservedGeneration() != null ? deployment.getStatus().getObservedGeneration() : -1;
+          if (observedGeneration >= generation && Objects.equals(deployment.getSpec().getReplicas(), currentReplicas)) {
+            countDownLatch.countDown();
+          } else {
+            LOG.debug("Only {}/{} pods scheduled for Deployment: {} in namespace: {} seconds so waiting...",
+              deployment.getStatus().getReplicas(), deployment.getSpec().getReplicas(), deployment.getMetadata().getName(), namespace);
+          }
+        } catch (Throwable t) {
+          LOG.error("Error while waiting for Deployment to be scaled.", t);
         }
       }
     };
