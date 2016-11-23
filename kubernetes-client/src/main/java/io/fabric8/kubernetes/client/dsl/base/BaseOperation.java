@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.base;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -325,6 +326,9 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   @Override
   public T createOrReplace(T item) {
+    if (Utils.isNullOrEmpty(name) && item instanceof HasMetadata) {
+      return withName(((HasMetadata)item).getMetadata().getName()).createOrReplace(item);
+    }
     if (get() == null) {
       return create(item);
     } else {

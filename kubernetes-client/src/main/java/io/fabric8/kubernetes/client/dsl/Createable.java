@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Createable<I, T, D> {
+public interface Createable<I, T, D>  {
 
   T create(I... item);
 

@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.dsl;
 
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.dsl.internal.CreateOrReplaceable;
 
 import java.io.InputStream;
 
@@ -32,6 +33,7 @@ public interface ClientNonNamespaceOperation<T, L, D, R> extends
   Nameable<R>,
   FilterWatchListMultiDeletable<T, L, Boolean, Watch, Watcher<T>>,
   Createable<T, T, D>,
+  CreateOrReplaceable<T, T, D>,
   Loadable<InputStream, R> {
 
 }
