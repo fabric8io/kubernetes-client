@@ -56,6 +56,8 @@ import static java.net.HttpURLConnection.HTTP_GONE;
 
 public class WatchConnectionManager<T, L extends KubernetesResourceList> implements Watch {
 
+  private static final Logger logger = LoggerFactory.getLogger(WatchConnectionManager.class);
+
   private static final ObjectMapper mapper = new ObjectMapper();
   private final AtomicBoolean forceClosed = new AtomicBoolean();
   private final AtomicReference<String> resourceVersion;
@@ -128,8 +130,6 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
 
     webSocketCall = WebSocketCall.create(clonedClient, request);
     webSocketCall.enqueue(new WebSocketListener() {
-      private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
       @Override
       public void onOpen(final WebSocket webSocket, Response response) {
         if(response != null && response.body() != null) {
@@ -267,7 +267,7 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
             webSocketRef.set(null);
           }
         } catch (IOException e) {
-          e.printStackTrace();
+          logger.warn("Could not properly close websocket", e);
         } catch (IllegalStateException e) {
           // Ignore...
         }
@@ -326,7 +326,7 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
         webSocketRef.set(null);
       }
     } catch (IOException | IllegalStateException e) {
-      e.printStackTrace();
+      logger.warn("Failed to cleanly close websocket", e);
     }
 
     if (!executor.isShutdown()) {
