@@ -16,19 +16,20 @@
 
 package io.fabric8.openshift.client.mock;
 
-import io.fabric8.openshift.api.model.DeploymentConfig;
-import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
-import io.fabric8.openshift.api.model.DeploymentConfigList;
-import io.fabric8.openshift.api.model.DeploymentConfigListBuilder;
-import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.Rule;
-import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
+import org.junit.Rule;
+import org.junit.Test;
+
+import io.fabric8.openshift.api.model.DeploymentConfig;
+import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
+import io.fabric8.openshift.api.model.DeploymentConfigList;
+import io.fabric8.openshift.api.model.DeploymentConfigListBuilder;
+import io.fabric8.openshift.client.OpenShiftClient;
 
 public class DeploymentConfigTest {
   @Rule
@@ -62,7 +63,6 @@ public class DeploymentConfigTest {
     assertEquals(3, buildConfigList.getItems().size());
   }
 
-
   @Test
   public void testGet() {
    server.expect().withPath("/oapi/v1/namespaces/test/deploymentconfigs/dc1").andReturn(200, new DeploymentConfigBuilder()
@@ -86,7 +86,6 @@ public class DeploymentConfigTest {
     assertNotNull(buildConfig);
     assertEquals("dc2", buildConfig.getMetadata().getName());
   }
-
 
   @Test
   public void testDelete() {
@@ -144,4 +143,22 @@ public class DeploymentConfigTest {
     assertTrue(deleted);
   }
 
+	@Test
+	public void testDeployingLatest() {
+		server.expect().withPath("/oapi/v1/namespaces/test/deploymentconfigs/dc1")
+				.andReturn(200, new DeploymentConfigBuilder().withNewMetadata().withName("dc1").endMetadata()
+						.withNewStatus().withLatestVersion(1L).endStatus().build())
+				.always();
+
+		server.expect().patch().withPath("/oapi/v1/namespaces/test/deploymentconfigs/dc1")
+				.andReturn(200, new DeploymentConfigBuilder().withNewMetadata().withName("dc1").endMetadata()
+						.withNewStatus().withLatestVersion(2L).endStatus().build())
+				.once();
+
+		OpenShiftClient client = server.getOpenshiftClient();
+
+		DeploymentConfig deploymentConfig = client.deploymentConfigs().withName("dc1").deployLatest();
+		assertNotNull(deploymentConfig);
+		assertEquals(new Long(2), deploymentConfig.getStatus().getLatestVersion());
+	}
 }
