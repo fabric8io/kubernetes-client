@@ -132,8 +132,9 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
     }
 
     @Override
-    public void reap() {
+    public boolean reap() {
       oper.scale(0, true);
+      return false;
     }
   }
 }

@@ -27,6 +27,9 @@ import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildRequestBuilder;
+import io.fabric8.openshift.api.model.DeploymentTriggerPolicy;
+import io.fabric8.openshift.api.model.ProjectRequest;
+import io.fabric8.openshift.api.model.ProjectRequestBuilder;
 import io.fabric8.openshift.api.model.WebHookTriggerBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.slf4j.Logger;
@@ -41,20 +44,29 @@ public class DeploymentConfigExamples {
     OpenShiftClient client = kubernetesClient.adapt(OpenShiftClient.class);
 
     try {
-      // Create a namespace for all our stuff
-      Namespace ns = new NamespaceBuilder().withNewMetadata().withName("thisisatest").addToLabels("this", "rocks").endMetadata().build();
-      log("Created namespace", client.namespaces().create(ns));
+      ProjectRequest  projectRequest = new ProjectRequestBuilder()
+          .withNewMetadata()
+            .withName("thisisatest")
+            .addToLabels("project", "thisisatest")
+          .endMetadata()
+          .build();
+
+
+      log("Created project", client.projectrequests().create(projectRequest));
 
       ServiceAccount fabric8 = new ServiceAccountBuilder().withNewMetadata().withName("fabric8").endMetadata().build();
 
-      client.serviceAccounts().inNamespace("thisisatest").create(fabric8);
+      client.serviceAccounts().inNamespace("thisisatest").createOrReplace(fabric8);
 
-      log("Created deployment", client.deploymentConfigs().inNamespace("thisisatest").createNew()
+      log("Created deployment", client.deploymentConfigs().inNamespace("thisisatest").createOrReplaceWithNew()
         .withNewMetadata()
           .withName("nginx")
         .endMetadata()
         .withNewSpec()
           .withReplicas(1)
+          .addNewTrigger()
+            .withType("ConfigChange")
+          .endTrigger()
           .addToSelector("app", "nginx")
           .withNewTemplate()
             .withNewMetadata()
@@ -76,11 +88,13 @@ public class DeploymentConfigExamples {
 
       client.deploymentConfigs().inNamespace("thisisatest").withName("nginx").scale(2, true);
       log("Created pods:", client.pods().inNamespace("thisisatest").list().getItems());
-      client.deploymentConfigs().inNamespace("thisisatest").withName("nginx").scale(0);
+      client.deploymentConfigs().inNamespace("thisisatest").withName("nginx").delete();
+      log("Pods:", client.pods().inNamespace("thisisatest").list().getItems());
+      log("Replication Controllers:", client.replicationControllers().inNamespace("thisisatest").list().getItems());
 
       log("Done.");
     }finally {
-      client.namespaces().withName("thisisatest").delete();
+     // client.projects().withName("thisisatest").delete();
       client.close();
     }
   }

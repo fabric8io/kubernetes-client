@@ -239,8 +239,9 @@ public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, R
     }
 
     @Override
-    public void reap() {
+    public boolean reap() {
       oper.scale(0, true);
+      return false;
     }
   }
 }

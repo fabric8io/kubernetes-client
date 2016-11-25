@@ -343,8 +343,9 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
     }
 
     @Override
-    public void reap() {
+    public boolean reap() {
       oper.deleteBuilds();
+      return false;
     }
   }
 }
