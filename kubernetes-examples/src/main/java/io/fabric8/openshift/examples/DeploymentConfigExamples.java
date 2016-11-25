@@ -16,19 +16,16 @@
 
 package io.fabric8.openshift.examples;
 
-import io.fabric8.kubernetes.api.model.Namespace;
-import io.fabric8.kubernetes.api.model.NamespaceBuilder;
-import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.openshift.api.model.Build;
-import io.fabric8.openshift.api.model.BuildRequestBuilder;
-import io.fabric8.openshift.api.model.WebHookTriggerBuilder;
+import io.fabric8.openshift.api.model.ProjectRequest;
+import io.fabric8.openshift.api.model.ProjectRequestBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,9 +38,15 @@ public class DeploymentConfigExamples {
     OpenShiftClient client = kubernetesClient.adapt(OpenShiftClient.class);
 
     try {
-      // Create a namespace for all our stuff
-      Namespace ns = new NamespaceBuilder().withNewMetadata().withName("thisisatest").addToLabels("this", "rocks").endMetadata().build();
-      log("Created namespace", client.namespaces().create(ns));
+      ProjectRequest  projectRequest = new ProjectRequestBuilder()
+          .withNewMetadata()
+            .withName("thisisatest")
+            .addToLabels("project", "thisisatest")
+          .endMetadata()
+          .build();
+
+
+      log("Created project", client.projectrequests().create(projectRequest));
 
       ServiceAccount fabric8 = new ServiceAccountBuilder().withNewMetadata().withName("fabric8").endMetadata().build();
 
@@ -55,6 +58,9 @@ public class DeploymentConfigExamples {
         .endMetadata()
         .withNewSpec()
           .withReplicas(1)
+          .addNewTrigger()
+            .withType("ConfigChange")
+          .endTrigger()
           .addToSelector("app", "nginx")
           .withNewTemplate()
             .withNewMetadata()
@@ -76,11 +82,13 @@ public class DeploymentConfigExamples {
 
       client.deploymentConfigs().inNamespace("thisisatest").withName("nginx").scale(2, true);
       log("Created pods:", client.pods().inNamespace("thisisatest").list().getItems());
-      client.deploymentConfigs().inNamespace("thisisatest").withName("nginx").scale(0);
+      client.deploymentConfigs().inNamespace("thisisatest").withName("nginx").delete();
+      log("Pods:", client.pods().inNamespace("thisisatest").list().getItems());
+      log("Replication Controllers:", client.replicationControllers().inNamespace("thisisatest").list().getItems());
 
       log("Done.");
     }finally {
-      client.namespaces().withName("thisisatest").delete();
+     // client.projects().withName("thisisatest").delete();
       client.close();
     }
   }

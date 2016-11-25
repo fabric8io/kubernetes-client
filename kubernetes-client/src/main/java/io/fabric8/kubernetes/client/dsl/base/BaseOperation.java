@@ -457,7 +457,10 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
         if (cascading && !isReaping()) {
           if (reaper != null) {
             setReaping(true);
-            reaper.reap();
+            //If the reaper also removes the target resource, we can return asap.
+            if (reaper.reap()) {
+              return true;
+            }
           }
         }
         deleteThis();

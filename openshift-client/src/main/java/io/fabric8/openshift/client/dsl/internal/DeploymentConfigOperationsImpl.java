@@ -15,10 +15,8 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
-import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientScaleableResource;
-
 import io.fabric8.kubernetes.client.dsl.Reaper;
 import io.fabric8.kubernetes.client.dsl.internal.ReplicationControllerOperationsImpl;
 import io.fabric8.openshift.api.model.DeploymentConfig;
@@ -29,6 +27,7 @@ import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
@@ -89,15 +88,22 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
     }
 
     @Override
-    public void reap() {
+    public boolean reap() {
       DeploymentConfig deployment = operation.cascading(false).edit().editSpec().withReplicas(0).endSpec().done();
       waitForObservedGeneration(deployment.getStatus().getObservedGeneration());
-      Map<String, String> selector = deployment.getSpec().getSelector();
+
+      //We are deleting the DC before reaping the replication controller, because the RC's won't go otherwise.
+      Boolean reaped = operation.cascading(false).delete();
+
+      Map<String, String> selector = new HashMap<>();
+      selector.put(DEPLOYMENT_CONFIG_REF, deployment.getMetadata().getName());
       if (selector != null && !selector.isEmpty()) {
         Boolean deleted = new ReplicationControllerOperationsImpl(client, operation.getConfig(), operation.getNamespace())
           .withLabels(selector)
           .delete();
       }
+
+      return reaped;
     }
 
     private void waitForObservedGeneration(final long observedGeneration) {
