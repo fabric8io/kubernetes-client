@@ -28,6 +28,7 @@ import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
@@ -42,6 +43,8 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
   ClientDeployableScalableResource<DeploymentConfig, DoneableDeploymentConfig>> implements ClientDeployableScalableResource<DeploymentConfig, DoneableDeploymentConfig> {
 
   private static final Logger LOG = LoggerFactory.getLogger(DeploymentConfigOperationsImpl.class);
+  private static final String DEPLOYMENT_CONFIG_REF = "openshift.io/deployment-config.name";
+
 
   public DeploymentConfigOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
     this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
@@ -103,15 +106,22 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
     }
 
     @Override
-    public void reap() {
+    public boolean reap() {
       DeploymentConfig deployment = operation.cascading(false).edit().editSpec().withReplicas(0).endSpec().done();
       waitForObservedGeneration(deployment.getStatus().getObservedGeneration());
-      Map<String, String> selector = deployment.getSpec().getSelector();
+
+      //We are deleting the DC before reaping the replication controller, because the RC's won't go otherwise.
+      Boolean reaped = operation.cascading(false).delete();
+
+      Map<String, String> selector = new HashMap<>();
+      selector.put(DEPLOYMENT_CONFIG_REF, deployment.getMetadata().getName());
       if (selector != null && !selector.isEmpty()) {
         Boolean deleted = new ReplicationControllerOperationsImpl(client, operation.getConfig(), operation.getNamespace())
           .withLabels(selector)
           .delete();
       }
+
+      return reaped;
     }
 
     private void waitForObservedGeneration(final long observedGeneration) {

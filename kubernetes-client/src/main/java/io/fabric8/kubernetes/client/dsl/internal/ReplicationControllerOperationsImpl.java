@@ -248,8 +248,9 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
     }
 
     @Override
-    public void reap() {
+    public boolean reap() {
       oper.scale(0, true);
+      return false;
     }
   }
 }
