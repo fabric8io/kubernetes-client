@@ -41,6 +41,8 @@ import io.fabric8.kubernetes.client.dsl.Watchable;
 import io.fabric8.kubernetes.client.dsl.internal.WatchConnectionManager;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -253,6 +255,29 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
+  }
+
+  @Override
+  public R load(URL url) {
+    try (InputStream inputStream = url.openStream()) {
+      return load(inputStream);
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+
+  @Override
+  public R load(File file) {
+    try (FileInputStream fis = new FileInputStream(file)) {
+      return load(fis);
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+
+  @Override
+  public R load(String path) {
+    return load(new File(path));
   }
 
   @Override

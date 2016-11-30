@@ -16,7 +16,37 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Loadable<I, T> {
+import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
 
-  T load(I input);
+public interface Loadable<T> {
+
+  /**
+   * Load from an {@link InputStream}.
+   * @param is  The input stream.
+   * @return
+   */
+  T load(InputStream is);
+
+  /**
+   * Load from a {@link URL}.
+   * @param url  The url.
+   * @return
+   */
+  T load(URL url);
+
+  /**
+   * Load from a {@link File}.
+   * @param file  The file.
+   * @return
+   */
+  T load(File file);
+
+  /**
+   * Load from path.
+   * @param path  The path.
+   * @return
+   */
+  T load(String path);
 }

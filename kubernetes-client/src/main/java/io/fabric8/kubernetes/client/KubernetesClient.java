@@ -88,6 +88,8 @@ public interface KubernetesClient extends Client {
 
   NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>,Boolean> resource(HasMetadata is);
 
+  NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>,Boolean> resource(String s);
+
   ClientMixedOperation<Endpoints, EndpointsList, DoneableEndpoints, ClientResource<Endpoints, DoneableEndpoints>> endpoints();
 
   ClientMixedOperation<Event, EventList, DoneableEvent, ClientResource<Event, DoneableEvent>> events();
