@@ -12,6 +12,13 @@ This client provides access to the full [Kubernetes](http://kubernetes.io/) &
 * openshift-client: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/openshift-client.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Aopenshift-client)
 [![Javadocs](http://www.javadoc.io/badge/io.fabric8/openshift-client.svg?color=blue)](http://www.javadoc.io/doc/io.fabric8/openshift-client)
 
+- [Usage](#usage)
+    - [Creating a client](#creating-a-client)
+    - [Configuring the client](#configuring-the-client)
+    - [Loading resources from external sources](#loading-resources-from-external-sources)
+    - [Passing a reference of a resource to the client](#passing-a-reference-of-a-resource-to-the-client)
+    - [Adapting a client](#adaptin-a-client)
+        - [Adapting and close](#adapting-and-close)
 
 ## Usage
 
@@ -28,6 +35,8 @@ OpenShift extensions, such as `Build`s, etc then simply do:
 ```java
 OpenShiftClient osClient = new DefaultOpenShiftClient();
 ```
+
+### Configuring the client
 
 This will use settings from different sources in the following order of priority:
 
@@ -130,6 +139,32 @@ Service myservice = client.services().inNamespace("default").createNew()
                      .done();
 ```
 
+### Loading resources from external sources
+
+There are cases where you want to read a resource from an external source, rather than defining it using the clients DSL.
+For those cases the client allows you to load the resource from:
+
+- A file *(Supports both java.io.File and java.lang.String)*
+- A url
+- An input stream
+
+Once the resource is loaded, you can treat it as you would, had you created it yourself.
+
+For example lets read a pod, from a yml file and work with it:
+
+    Pod refreshed = client.load('/path/to/a/pod.yml').fromServer().get();    
+    Boolean deleted = client.load('/workspace/pod.yml').delete();
+    LogWatch handle = client.load('/workspace/pod.yml').watchLog(System.out);
+    
+### Passing a reference of a resource to the client
+
+In the same spirit you can use an object created externally (either a a reference or using its string representation.
+
+For example:
+
+    Pod pod = someThirdPartyCodeThatCreatesAPod();
+    Boolean deleted = client.resource(pod).delete();
+
 ### Adapting the client
 
 The client supports plug-able adapters. An example adapter is the [OpenShift Adapter](openshift-client/src/main/java/io/fabric8/openshift/client/OpenShiftExtensionAdapter.java)
@@ -154,7 +189,7 @@ if (client.isAdaptable(OpenShiftClient.class)) {
 }
 ```
 
-### Adapting and close()
+#### Adapting and close
 Note that when using adapt() both the adaptee and the target will share the same resources (underlying http client, thread pools etc).
 This means that close() is not required to be used on every single instance created via adapt.
 Calling close() on any of the adapt() managed instances or the original instance, will properly clean up all the resources and thus none of the instances will be usable any longer.
