@@ -32,5 +32,5 @@ public interface ClientOperation<T, L, D, R>
   AnyNamespaceable<FilterWatchListMultiDeletable<T, L, Boolean, Watch, Watcher<T>>>,
   Namespaceable<ClientNonNamespaceOperation<T, L, D, R>>,
   FilterWatchListMultiDeletable<T, L, Boolean, Watch, Watcher<T>>,
-  Loadable<InputStream, R> {
+  Loadable<R> {
 }

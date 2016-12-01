@@ -34,6 +34,6 @@ public interface ClientNonNamespaceOperation<T, L, D, R> extends
   FilterWatchListMultiDeletable<T, L, Boolean, Watch, Watcher<T>>,
   Createable<T, T, D>,
   CreateOrReplaceable<T, T, D>,
-  Loadable<InputStream, R> {
+  Loadable<R> {
 
 }

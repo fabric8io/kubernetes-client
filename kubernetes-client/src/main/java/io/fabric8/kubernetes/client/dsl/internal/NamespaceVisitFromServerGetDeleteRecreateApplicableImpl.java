@@ -40,8 +40,10 @@ import io.fabric8.openshift.api.model.Template;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -220,6 +222,12 @@ public class NamespaceVisitFromServerGetDeleteRecreateApplicableImpl extends Ope
             }
         } else if (item instanceof HasMetadata) {
             result.add((HasMetadata) item);
+        } else if (item instanceof String) {
+          try (InputStream is = new ByteArrayInputStream(((String)item).getBytes(StandardCharsets.UTF_8))) {
+            return asHasMetadata(unmarshal(is), enableProccessing);
+          } catch (IOException e) {
+            throw KubernetesClientException.launderThrowable(e);
+          }
         }
         return result;
     }

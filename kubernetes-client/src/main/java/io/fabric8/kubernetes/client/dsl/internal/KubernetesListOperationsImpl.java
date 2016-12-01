@@ -35,7 +35,12 @@ import io.fabric8.kubernetes.client.dsl.Loadable;
 import io.fabric8.kubernetes.client.dsl.RecreateFromServerGettable;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,7 +49,7 @@ public class KubernetesListOperationsImpl
   extends OperationSupport
   implements ClientKubernetesListOperation,
   ClientKubernetesListMixedOperation,
-  Loadable<InputStream, RecreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList>>,
+  Loadable<RecreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList>>,
         RecreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList> {
 
   private final KubernetesList item;
@@ -97,6 +102,29 @@ public class KubernetesListOperationsImpl
         }
       }
     });
+  }
+
+  @Override
+  public RecreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList> load(URL url) {
+    try (InputStream inputStream = url.openStream()) {
+      return load(inputStream);
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+
+  @Override
+  public RecreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList>  load(File file) {
+    try (FileInputStream fis = new FileInputStream(file)) {
+      return load(fis);
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+
+  @Override
+  public RecreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList>  load(String path) {
+    return load(new File(path));
   }
 
   @Override
