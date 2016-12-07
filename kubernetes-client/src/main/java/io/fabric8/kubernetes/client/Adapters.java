@@ -16,6 +16,9 @@
 
 package io.fabric8.kubernetes.client;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -26,6 +29,8 @@ import java.util.ServiceLoader;
 import java.util.Set;
 
 public final class Adapters {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(Adapters.class);
 
   private static final Set<ClassLoader> CLASS_LOADERS = new HashSet<>();
   private static final Map<Class, ExtensionAdapter> EXTENSION_ADAPTER_MAP = new HashMap<>();
@@ -51,15 +56,35 @@ public final class Adapters {
     if (EXTENSION_ADAPTER_MAP.containsKey(type)) {
       return EXTENSION_ADAPTER_MAP.get(type);
     } else {
-      for (ExtensionAdapter adapter : ServiceLoader.load(ExtensionAdapter.class, type.getClassLoader())) {
-        if (adapter.getExtensionType().equals(type)) {
-          return adapter;
+
+      try {
+        for (ExtensionAdapter adapter : ServiceLoader.load(ExtensionAdapter.class, ExtensionAdapter.class.getClassLoader())) {
+          if (adapter.getExtensionType().equals(type)) {
+            return adapter;
+          }
         }
+      } catch (Throwable t) {
+        LOGGER.warn("Can't read ExtensionAdapter using the ExtensionAdapter class loader. Falling back to type class loader");
       }
-      for (ExtensionAdapter adapter : ServiceLoader.load(ExtensionAdapter.class, Thread.currentThread().getContextClassLoader())) {
-        if (adapter.getExtensionType().equals(type)) {
-          return adapter;
+
+      try {
+        for (ExtensionAdapter adapter : ServiceLoader.load(ExtensionAdapter.class, type.getClassLoader())) {
+          if (adapter.getExtensionType().equals(type)) {
+            return adapter;
+          }
         }
+      } catch (Throwable t) {
+        LOGGER.warn("Can't read ExtensionAdapter using type class loader. Falling back to Thread context class loader");
+      }
+
+      try {
+        for (ExtensionAdapter adapter : ServiceLoader.load(ExtensionAdapter.class, Thread.currentThread().getContextClassLoader())) {
+          if (adapter.getExtensionType().equals(type)) {
+            return adapter;
+          }
+        }
+      } catch (Throwable t) {
+        LOGGER.error("Can't read ExtensionAdapter using type Thread context class loader.");
       }
       return null;
     }
