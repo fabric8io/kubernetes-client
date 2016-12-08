@@ -85,7 +85,7 @@
     <automaton.bundle.version>1.11-8_1</automaton.bundle.version>
     <jackson.version>2.7.5</jackson.version>
     <junit.version>4.12</junit.version>
-    <kubernetes.model.version>1.0.63</kubernetes.model.version>
+    <kubernetes.model.version>1.0.64</kubernetes.model.version>
     <log4j.version>2.5</log4j.version>
     <zjsonpatch.version>0.2.3</zjsonpatch.version>
 
@@ -93,7 +93,7 @@
     <snakeyaml.version>1.17</snakeyaml.version>
 
     <scr.annotations.version>1.9.12</scr.annotations.version>
-    <sundrio.version>0.3.3</sundrio.version>
+    <sundrio.version>0.3.12</sundrio.version>
 
     <maven.bundle.plugin.version>2.5.4</maven.bundle.plugin.version>
     <maven.buildhelper.plugin.version>1.10</maven.buildhelper.plugin.version>
