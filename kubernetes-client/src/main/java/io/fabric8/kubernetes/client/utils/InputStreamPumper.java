@@ -31,12 +31,18 @@ public class InputStreamPumper implements Runnable, Closeable {
 
     private final InputStream in;
     private final Callback<byte[]> callback;
+    private final Runnable onClose;
     private boolean keepReading = true;
     private Thread thread;
 
     public InputStreamPumper(InputStream in, Callback<byte[]> callback) {
+      this(in, callback, null);
+    }
+
+    public InputStreamPumper(InputStream in, Callback<byte[]> callback, Runnable onClose) {
         this.in = in;
         this.callback = callback;
+        this.onClose = onClose;
     }
 
     @Override
@@ -65,6 +71,9 @@ public class InputStreamPumper implements Runnable, Closeable {
         keepReading = false;
         if (thread != null) {
             thread.interrupt();
+        }
+        if (onClose != null) {
+          onClose.run();
         }
     }
 }
