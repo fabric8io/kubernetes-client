@@ -95,7 +95,7 @@ public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
     }
 
     @Override
-    public void onResponse(Call call, Response response) throws IOException {
+    public void onResponse(Call call, final Response response) throws IOException {
         if (out instanceof PipedOutputStream && output != null) {
             output.connect((PipedOutputStream) out);
         }
@@ -108,6 +108,11 @@ public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
                 } catch (IOException e) {
                     throw KubernetesClientException.launderThrowable(e);
                 }
+            }
+        }, new Runnable() {
+            @Override
+            public void run() {
+                response.close();
             }
         });
         executorService.submit(pumper);
