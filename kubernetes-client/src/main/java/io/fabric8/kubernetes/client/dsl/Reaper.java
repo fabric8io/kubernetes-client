@@ -17,6 +17,10 @@ package io.fabric8.kubernetes.client.dsl;
 
 public interface Reaper {
 
-  void reap();
+  /**
+   * Reaps the dependants of the target resource.
+   * @return  True if the target resource has also been reaped, false otherwise.
+   */
+  boolean reap();
 
 }
