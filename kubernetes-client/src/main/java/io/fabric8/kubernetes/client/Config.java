@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.api.model.ConfigBuilder;
+import okhttp3.Authenticator;
 import okhttp3.TlsVersion;
 import io.fabric8.kubernetes.api.model.AuthInfo;
 import io.fabric8.kubernetes.api.model.Cluster;
@@ -116,6 +118,7 @@ public class Config {
   private long websocketPingInterval = DEFAULT_WEBSOCKET_PING_INTERVAL;
   private String httpProxy;
   private String httpsProxy;
+  private Authenticator proxyAuthenticator;
   private String[] noProxy;
   private String userAgent;
   private TlsVersion[] tlsVersions = new TlsVersion[]{TLS_1_2};
@@ -640,5 +643,12 @@ public class Config {
 
   public void setWebsocketPingInterval(long websocketPingInterval) {
     this.websocketPingInterval = websocketPingInterval;
+  }
+  public Authenticator getProxyAuthenticator() {
+    return proxyAuthenticator;
+  }
+
+  public void setProxyAuthenticator(Authenticator proxyAuthenticator) {
+    this.proxyAuthenticator = proxyAuthenticator;
   }
 }

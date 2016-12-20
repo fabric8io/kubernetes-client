@@ -18,12 +18,7 @@ package io.fabric8.kubernetes.client.utils;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
-import okhttp3.ConnectionSpec;
-import okhttp3.Credentials;
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
 import okhttp3.logging.HttpLoggingInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -125,7 +120,13 @@ public class HttpClientUtils {
                     URL proxyUrl = getProxyUrl(config);
                     if (proxyUrl != null) {
                         httpClientBuilder.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyUrl.getHost(), proxyUrl.getPort())));
+
+                        Authenticator proxyAuthenticator = config.getProxyAuthenticator();
+                        if (proxyAuthenticator != null){
+                           httpClientBuilder.proxyAuthenticator(proxyAuthenticator);
+                        }
                     }
+
                 } catch (MalformedURLException e) {
                     throw new KubernetesClientException("Invalid proxy server configuration", e);
                 }
