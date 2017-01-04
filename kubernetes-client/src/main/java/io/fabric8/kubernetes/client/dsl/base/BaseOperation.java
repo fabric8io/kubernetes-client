@@ -552,22 +552,23 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   @Override
   public Boolean delete(List<T> items) {
     boolean deleted = true;
-    for (T item : items) {
-      try {
-        R op = (R) getClass()
-          .getConstructor(OkHttpClient.class, getConfigType(), String.class, String.class, String.class, Boolean.class, getType(), String.class, Boolean.class, long.class, Map.class, Map.class, Map.class, Map.class, Map.class)
-          .newInstance(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), item, getResourceVersion(), true, getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
-        deleted &= op.delete();
-      } catch (KubernetesClientException e) {
-        if (e.getCode() != 404) {
-          throw e;
+    if (items != null) {
+      for (T item : items) {
+        try {
+          R op = (R) getClass()
+            .getConstructor(OkHttpClient.class, getConfigType(), String.class, String.class, String.class, Boolean.class, getType(), String.class, Boolean.class, long.class, Map.class, Map.class, Map.class, Map.class, Map.class)
+            .newInstance(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), item, getResourceVersion(), true, getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
+          deleted &= op.delete();
+        } catch (KubernetesClientException e) {
+          if (e.getCode() != 404) {
+            throw e;
+          }
+          return false;
+        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+          throw KubernetesClientException.launderThrowable(e);
         }
-        return false;
-      } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-        throw KubernetesClientException.launderThrowable(e);
       }
     }
-
     return deleted;
   }
 
