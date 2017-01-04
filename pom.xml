@@ -87,7 +87,7 @@
     <junit.version>4.12</junit.version>
     <kubernetes.model.version>1.0.65</kubernetes.model.version>
     <log4j.version>2.5</log4j.version>
-    <zjsonpatch.version>0.2.3</zjsonpatch.version>
+    <zjsonpatch.version>0.3.0</zjsonpatch.version>
 
     <slf4j.version>1.7.13</slf4j.version>
     <snakeyaml.version>1.17</snakeyaml.version>
