@@ -29,5 +29,4 @@
       stage 'Promote'
       pipeline.release(stagedProject)
     }
-  }
 }
