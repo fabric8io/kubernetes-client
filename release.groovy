@@ -61,6 +61,15 @@ def mergePullRequest(prId){
     project = 'fabric8io/kubernetes-client'
     pullRequestId = prId
   }
+}
 
+def updateDownstreamDependencies(stagedProject) {
+  pushPomPropertyChangePR {
+    propertyName = 'kubernetes-client.version'
+    projects = [
+            'fabric8io/fabric8'
+    ]
+    version = stagedProject[1]
+  }
 }
 return this;
