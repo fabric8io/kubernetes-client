@@ -145,6 +145,9 @@ public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, R
               rc.getStatus().getReplicas(), rc.getSpec().getReplicas(), rc.getMetadata().getName(), namespace);
         } catch (Throwable t) {
           LOG.error("Error while waiting for ReplicaSet to be scaled.", t);
+
+          // lets trigger the latch so that the separate calling thread will fail on its call to getMandatory()
+          countDownLatch.countDown();
         }
       }
     };
