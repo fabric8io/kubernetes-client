@@ -62,7 +62,7 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
   public Deployment scale(int count, boolean wait) {
     Deployment res = cascading(false).edit().editSpec().withReplicas(count).endSpec().done();
     if (wait) {
-      waitUntilDeploymentIsScaled();
+      waitUntilDeploymentIsScaled(count);
       res = getMandatory();
     }
     return res;
@@ -95,7 +95,7 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
   /**
    * Lets wait until there are enough Ready pods of the given Deployment
    */
-  private void waitUntilDeploymentIsScaled() {
+  private void waitUntilDeploymentIsScaled(final int count) {
     final CountDownLatch countDownLatch = new CountDownLatch(1);
 
     final AtomicReference<Deployment> atomicDeployment = new AtomicReference<>();
@@ -103,7 +103,17 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
     final Runnable deploymentPoller = new Runnable() {
       public void run() {
         try {
-          Deployment deployment = getMandatory();
+          Deployment deployment = get();
+          //If the rs is gone, we shouldn't wait.
+          if (deployment == null) {
+            if (count == 0) {
+              countDownLatch.countDown();
+              return;
+            } else {
+              return;
+            }
+          }
+
           atomicDeployment.set(deployment);
           int currentReplicas = deployment.getStatus().getReplicas() != null ? deployment.getStatus().getReplicas() : 0;
           long generation = deployment.getMetadata().getGeneration() != null ? deployment.getMetadata().getGeneration() : 0;

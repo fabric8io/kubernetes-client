@@ -15,6 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.model.extensions.Deployment;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 
 import io.fabric8.kubernetes.client.dsl.Reaper;
@@ -89,7 +90,7 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
     Long currentVersion = getMandatory().getStatus().getLatestVersion();
     DeploymentConfig deployment = cascading(false).edit().editStatus().withLatestVersion(++currentVersion).endStatus().done();
     if (wait) {
-      waitUntilDeploymentConfigIsScaled();
+      waitUntilDeploymentConfigIsScaled(deployment.getSpec().getReplicas());
       deployment = getMandatory();
     }
     return deployment;
@@ -158,7 +159,7 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
   public DeploymentConfig scale(int count, boolean wait) {
     DeploymentConfig deployment = cascading(false).edit().editSpec().withReplicas(count).endSpec().done();
     if (wait) {
-      waitUntilDeploymentConfigIsScaled();
+      waitUntilDeploymentConfigIsScaled(count);
       deployment = getMandatory();
     }
     return deployment;
@@ -167,14 +168,23 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
   /**
    * Lets wait until there are enough Ready pods of the given Deployment
    */
-  private void waitUntilDeploymentConfigIsScaled() {
+  private void waitUntilDeploymentConfigIsScaled(final int count) {
     final CountDownLatch countDownLatch = new CountDownLatch(1);
 
     final AtomicReference<DeploymentConfig> atomicDeploymentConfig = new AtomicReference<>();
 
     final Runnable deploymentPoller = new Runnable() {
       public void run() {
-        DeploymentConfig deploymentConfig = getMandatory();
+        DeploymentConfig deploymentConfig = get();
+        //If the rs is gone, we shouldn't wait.
+        if (deploymentConfig == null) {
+          if (count == 0) {
+            countDownLatch.countDown();
+            return;
+          } else {
+            return;
+          }
+        }
         atomicDeploymentConfig.set(deploymentConfig);
         int currentReplicas = deploymentConfig.getStatus().getReplicas() != null ? deploymentConfig.getStatus().getReplicas() : 0;
         if (deploymentConfig.getStatus().getObservedGeneration() >= deploymentConfig.getMetadata().getGeneration() && Objects.equals(deploymentConfig.getSpec().getReplicas(), currentReplicas)) {

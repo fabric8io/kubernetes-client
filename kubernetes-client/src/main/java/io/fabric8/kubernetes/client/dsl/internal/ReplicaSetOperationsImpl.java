@@ -117,7 +117,7 @@ public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, R
   public ReplicaSet scale(int count, boolean wait) {
     ReplicaSet res = cascading(false).edit().editSpec().withReplicas(count).endSpec().done();
     if (wait) {
-      waitUntilScaled();
+      waitUntilScaled(count);
       res = getMandatory();
     }
     return res;
@@ -126,7 +126,7 @@ public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, R
   /**
    * Lets wait until there are enough Ready pods
    */
-  private void waitUntilScaled() {
+  private void waitUntilScaled(final int count) {
     final CountDownLatch countDownLatch = new CountDownLatch(1);
 
     final AtomicReference<ReplicaSet> atomicRC = new AtomicReference<>();
@@ -134,7 +134,17 @@ public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, R
     final Runnable rcPoller = new Runnable() {
       public void run() {
         try {
-          ReplicaSet rc = getMandatory();
+          ReplicaSet rc = get();
+          //If the rs is gone, we shouldn't wait.
+          if (rc == null) {
+            if (count == 0) {
+              countDownLatch.countDown();
+              return;
+            } else {
+              return;
+            }
+          }
+
           atomicRC.set(rc);
           long generation = rc.getMetadata().getGeneration() != null ? rc.getMetadata().getGeneration() : 0;
           long observedGeneration = rc.getStatus() != null && rc.getStatus().getObservedGeneration() != null ? rc.getStatus().getObservedGeneration() : -1;

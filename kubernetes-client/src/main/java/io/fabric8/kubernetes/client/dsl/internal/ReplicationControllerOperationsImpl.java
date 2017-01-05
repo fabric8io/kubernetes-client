@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Container;
@@ -135,7 +136,7 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
   public ReplicationController scale(int count, boolean wait) {
     ReplicationController res = cascading(false).edit().editSpec().withReplicas(count).endSpec().done();
     if (wait) {
-      waitUntilRCIsScaled();
+      waitUntilRCIsScaled(count);
       res = getMandatory();
     }
     return res;
@@ -144,7 +145,7 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
   /**
    * Lets wait until there are enough Ready pods of the given RC
    */
-  private void waitUntilRCIsScaled() {
+  private void waitUntilRCIsScaled(final int count) {
     final CountDownLatch countDownLatch = new CountDownLatch(1);
 
     final AtomicReference<ReplicationController> atomicRC = new AtomicReference<>();
@@ -152,7 +153,17 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
     final Runnable rcPoller = new Runnable() {
       public void run() {
         try {
-          ReplicationController rc = getMandatory();
+          ReplicationController rc = get();
+          //If the rs is gone, we shouldn't wait.
+          if (rc == null) {
+            if (count == 0) {
+              countDownLatch.countDown();
+              return;
+            } else {
+              return;
+            }
+          }
+
           atomicRC.set(rc);
           if (Objects.equals(rc.getSpec().getReplicas(), rc.getStatus().getReplicas())) {
             countDownLatch.countDown();
