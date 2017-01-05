@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.extensions.Deployment;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
@@ -32,6 +33,8 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -96,20 +99,20 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
    * Lets wait until there are enough Ready pods of the given Deployment
    */
   private void waitUntilDeploymentIsScaled(final int count) {
-    final CountDownLatch countDownLatch = new CountDownLatch(1);
-
+    final BlockingQueue<Object> queue = new ArrayBlockingQueue<>(1);
     final AtomicReference<Deployment> atomicDeployment = new AtomicReference<>();
 
     final Runnable deploymentPoller = new Runnable() {
       public void run() {
         try {
           Deployment deployment = get();
-          //If the rs is gone, we shouldn't wait.
+          //If the deployment is gone, we shouldn't wait.
           if (deployment == null) {
             if (count == 0) {
-              countDownLatch.countDown();
+              queue.put(true);
               return;
             } else {
+              queue.put(new IllegalStateException("Can't wait for Deployment: " + checkName(getItem()) + " in namespace: " + checkName(getItem()) + " to scale. Resource is no longer available."));
               return;
             }
           }
@@ -119,7 +122,7 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
           long generation = deployment.getMetadata().getGeneration() != null ? deployment.getMetadata().getGeneration() : 0;
           long observedGeneration = deployment.getStatus() != null && deployment.getStatus().getObservedGeneration() != null ? deployment.getStatus().getObservedGeneration() : -1;
           if (observedGeneration >= generation && Objects.equals(deployment.getSpec().getReplicas(), currentReplicas)) {
-            countDownLatch.countDown();
+            queue.put(true);
           } else {
             LOG.debug("Only {}/{} pods scheduled for Deployment: {} in namespace: {} seconds so waiting...",
               deployment.getStatus().getReplicas(), deployment.getSpec().getReplicas(), deployment.getMetadata().getName(), namespace);
@@ -133,14 +136,14 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
     ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     ScheduledFuture poller = executor.scheduleWithFixedDelay(deploymentPoller, 0, POLL_INTERVAL_MS, TimeUnit.MILLISECONDS);
     try {
-      countDownLatch.await(getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS);
-      executor.shutdown();
-    } catch (InterruptedException e) {
+      if (Utils.waitUntilReady(queue, getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS)) {
+        int currentReplicas = atomicDeployment.get().getStatus().getReplicas() != null ? atomicDeployment.get().getStatus().getReplicas() : 0;
+        LOG.error("Only {}/{} pod(s) ready for Deployment: {} in namespace: {} - giving up",
+          currentReplicas, atomicDeployment.get().getSpec().getReplicas(), atomicDeployment.get().getMetadata().getName(), namespace);
+      }
+    } finally {
       poller.cancel(true);
       executor.shutdown();
-      int currentReplicas = atomicDeployment.get().getStatus().getReplicas() != null ? atomicDeployment.get().getStatus().getReplicas() : 0;
-      LOG.error("Only {}/{} pod(s) ready for Deployment: {} in namespace: {} - giving up",
-        currentReplicas, atomicDeployment.get().getSpec().getReplicas(), atomicDeployment.get().getMetadata().getName(), namespace);
     }
   }
 

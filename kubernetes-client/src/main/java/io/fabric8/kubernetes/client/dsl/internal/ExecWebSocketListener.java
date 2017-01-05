@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
@@ -109,18 +110,7 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
     }
 
     public void waitUntilReady() {
-        try {
-            Object obj = queue.poll(10, TimeUnit.SECONDS);
-            if (obj instanceof Boolean && ((Boolean) obj)) {
-                return;
-            } else {
-                if (obj instanceof Throwable) {
-                    throw (Throwable) obj;
-                }
-            }
-        } catch (Throwable t) {
-            throw KubernetesClientException.launderThrowable(t);
-        }
+      Utils.waitUntilReady(queue, 10, TimeUnit.SECONDS);
     }
 
     @Override

@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
+import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -67,18 +68,7 @@ public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
     }
 
     public void waitUntilReady() {
-        try {
-            Object obj = queue.poll(10, TimeUnit.SECONDS);
-            if (obj instanceof Boolean && ((Boolean) obj)) {
-                return;
-            } else {
-                if (obj instanceof Throwable) {
-                    throw (Throwable) obj;
-                }
-            }
-        } catch (Throwable t) {
-            throw KubernetesClientException.launderThrowable(t);
-        }
+      Utils.waitUntilReady(queue, 10, TimeUnit.SECONDS);
     }
 
     public InputStream getOutput() {

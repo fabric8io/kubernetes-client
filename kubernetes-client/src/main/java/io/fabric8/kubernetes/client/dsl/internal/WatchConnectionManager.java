@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
+import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -302,18 +303,7 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
   }
 
   public void waitUntilReady() {
-    try {
-      Object obj = queue.poll(10, TimeUnit.SECONDS);
-      if (Boolean.TRUE.equals(obj)) {
-        return;
-      } else {
-        if (obj instanceof Throwable) {
-          throw (Throwable) obj;
-        }
-      }
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(t);
-    }
+    Utils.waitUntilReady(queue, 10, TimeUnit.SECONDS);
   }
 
   @Override

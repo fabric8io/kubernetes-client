@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Container;
@@ -41,7 +42,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Queue;
 import java.util.TreeMap;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -127,8 +130,7 @@ public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, R
    * Lets wait until there are enough Ready pods
    */
   private void waitUntilScaled(final int count) {
-    final CountDownLatch countDownLatch = new CountDownLatch(1);
-
+    final ArrayBlockingQueue<Object> queue = new ArrayBlockingQueue<>(1);
     final AtomicReference<ReplicaSet> atomicRC = new AtomicReference<>();
 
     final Runnable rcPoller = new Runnable() {
@@ -138,9 +140,10 @@ public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, R
           //If the rs is gone, we shouldn't wait.
           if (rc == null) {
             if (count == 0) {
-              countDownLatch.countDown();
+              queue.put(true);
               return;
             } else {
+              queue.put(new IllegalStateException("Can't wait for ReplicaSet: " + checkName(getItem()) + " in namespace: " + checkName(getItem()) + " to scale. Resource is no longer available."));
               return;
             }
           }
@@ -149,7 +152,7 @@ public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, R
           long generation = rc.getMetadata().getGeneration() != null ? rc.getMetadata().getGeneration() : 0;
           long observedGeneration = rc.getStatus() != null && rc.getStatus().getObservedGeneration() != null ? rc.getStatus().getObservedGeneration() : -1;
            if (observedGeneration >= generation && Objects.equals(rc.getSpec().getReplicas(), rc.getStatus().getReplicas())) {
-            countDownLatch.countDown();
+             queue.put(true);
           }
           LOG.debug("Only {}/{} replicas scheduled for ReplicaSet: {} in namespace: {} seconds so waiting...",
               rc.getStatus().getReplicas(), rc.getSpec().getReplicas(), rc.getMetadata().getName(), namespace);
@@ -162,13 +165,13 @@ public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, R
     ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     ScheduledFuture poller = executor.scheduleWithFixedDelay(rcPoller, 0, POLL_INTERVAL_MS, TimeUnit.MILLISECONDS);
     try {
-      countDownLatch.await(rollingTimeout, rollingTimeUnit);
-      executor.shutdown();
-    } catch (InterruptedException e) {
+      if (Utils.waitUntilReady(queue, rollingTimeout, rollingTimeUnit)) {
+        LOG.error("Only {}/{} pod(s) ready for ReplicaSet: {} in namespace: {}  after waiting for {} seconds so giving up",
+          atomicRC.get().getStatus().getReplicas(), atomicRC.get().getSpec().getReplicas(), atomicRC.get().getMetadata().getName(), namespace, rollingTimeUnit.toSeconds(rollingTimeout));
+      }
+    } finally {
       poller.cancel(true);
       executor.shutdown();
-      LOG.error("Only {}/{} pod(s) ready for ReplicaSet: {} in namespace: {}  after waiting for {} seconds so giving up",
-        atomicRC.get().getStatus().getReplicas(), atomicRC.get().getSpec().getReplicas(), atomicRC.get().getMetadata().getName(), namespace, rollingTimeUnit.toSeconds(rollingTimeout));
     }
   }
 
