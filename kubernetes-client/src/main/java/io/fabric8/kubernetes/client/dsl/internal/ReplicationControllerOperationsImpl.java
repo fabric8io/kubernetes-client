@@ -15,6 +15,10 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import com.sun.jmx.remote.internal.ArrayQueue;
+
+import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
+import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Container;
@@ -44,6 +48,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -135,7 +141,7 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
   public ReplicationController scale(int count, boolean wait) {
     ReplicationController res = cascading(false).edit().editSpec().withReplicas(count).endSpec().done();
     if (wait) {
-      waitUntilRCIsScaled();
+      waitUntilRCIsScaled(count);
       res = getMandatory();
     }
     return res;
@@ -144,18 +150,27 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
   /**
    * Lets wait until there are enough Ready pods of the given RC
    */
-  private void waitUntilRCIsScaled() {
-    final CountDownLatch countDownLatch = new CountDownLatch(1);
-
+  private void waitUntilRCIsScaled(final int count) {
+    final BlockingQueue<Object> queue = new ArrayBlockingQueue<>(1);
     final AtomicReference<ReplicationController> atomicRC = new AtomicReference<>();
 
     final Runnable rcPoller = new Runnable() {
       public void run() {
         try {
-          ReplicationController rc = getMandatory();
+          ReplicationController rc = get();
+          //If the rc is gone, we shouldn't wait.
+          if (rc == null) {
+            if (count == 0) {
+              queue.put(true);
+              return;
+            } else {
+              queue.put(new IllegalStateException("Can't wait for ReplicationController: " + checkName(getItem()) + " in namespace: " + checkName(getItem()) + " to scale. Resource is no longer available."));
+            }
+          }
+
           atomicRC.set(rc);
           if (Objects.equals(rc.getSpec().getReplicas(), rc.getStatus().getReplicas())) {
-            countDownLatch.countDown();
+            queue.put(true);
           } else {
             LOG.debug("Only {}/{} replicas scheduled for ReplicationController: {} in namespace: {} seconds so waiting...",
               rc.getStatus().getReplicas(), rc.getSpec().getReplicas(), rc.getMetadata().getName(), namespace);
@@ -169,13 +184,13 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
     ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     ScheduledFuture poller = executor.scheduleWithFixedDelay(rcPoller, 0, POLL_INTERVAL_MS, TimeUnit.MILLISECONDS);
     try {
-      countDownLatch.await(rollingTimeout, rollingTimeUnit);
-      executor.shutdown();
-    } catch (InterruptedException e) {
+      if (Utils.waitUntilReady(queue, rollingTimeout, rollingTimeUnit)) {
+        LOG.error("Only {}/{} pod(s) ready for ReplicationController: {} in namespace: {}  after waiting for {} seconds so giving up",
+          atomicRC.get().getStatus().getReplicas(), atomicRC.get().getSpec().getReplicas(), atomicRC.get().getMetadata().getName(), namespace, rollingTimeUnit.toSeconds(rollingTimeout));
+      }
+    } finally {
       poller.cancel(true);
       executor.shutdown();
-      LOG.error("Only {}/{} pod(s) ready for ReplicationController: {} in namespace: {}  after waiting for {} seconds so giving up",
-          atomicRC.get().getStatus().getReplicas(), atomicRC.get().getSpec().getReplicas(), atomicRC.get().getMetadata().getName(), namespace, rollingTimeUnit.toSeconds(rollingTimeout));
     }
   }
 

@@ -16,6 +16,11 @@
 package io.fabric8.kubernetes.client.utils;
 
 import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
+
+import io.fabric8.kubernetes.client.KubernetesClientException;
 
 public class Utils {
 
@@ -104,4 +109,27 @@ public class Utils {
     return buf.toString();
   }
 
+
+  /**
+   * Wait until an other thread signals the completion of a task.
+   * If an exception is passed, it will be propagated to the caller.
+   * @param queue     The communication channel.
+   * @param amount    The amount of time to wait.
+   * @param timeUnit  The time unit.
+     */
+  public static boolean waitUntilReady(BlockingQueue<Object> queue, long amount, TimeUnit timeUnit) {
+    try {
+      Object obj = queue.poll(amount, timeUnit);
+      if (obj instanceof Boolean) {
+        return (Boolean) obj;
+      } else {
+        if (obj instanceof Throwable) {
+          throw (Throwable) obj;
+        }
+        return false;
+      }
+    } catch (Throwable t) {
+      throw KubernetesClientException.launderThrowable(t);
+    }
+  }
 }

@@ -15,10 +15,12 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.model.extensions.Deployment;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 
 import io.fabric8.kubernetes.client.dsl.Reaper;
 import io.fabric8.kubernetes.client.dsl.internal.ReplicationControllerOperationsImpl;
+import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.api.model.DoneableDeploymentConfig;
@@ -32,6 +34,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -89,7 +93,7 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
     Long currentVersion = getMandatory().getStatus().getLatestVersion();
     DeploymentConfig deployment = cascading(false).edit().editStatus().withLatestVersion(++currentVersion).endStatus().done();
     if (wait) {
-      waitUntilDeploymentConfigIsScaled();
+      waitUntilDeploymentConfigIsScaled(deployment.getSpec().getReplicas());
       deployment = getMandatory();
     }
     return deployment;
@@ -158,7 +162,7 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
   public DeploymentConfig scale(int count, boolean wait) {
     DeploymentConfig deployment = cascading(false).edit().editSpec().withReplicas(count).endSpec().done();
     if (wait) {
-      waitUntilDeploymentConfigIsScaled();
+      waitUntilDeploymentConfigIsScaled(count);
       deployment = getMandatory();
     }
     return deployment;
@@ -167,36 +171,49 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
   /**
    * Lets wait until there are enough Ready pods of the given Deployment
    */
-  private void waitUntilDeploymentConfigIsScaled() {
-    final CountDownLatch countDownLatch = new CountDownLatch(1);
-
+  private void waitUntilDeploymentConfigIsScaled(final int count) {
+    final BlockingQueue<Object> queue = new ArrayBlockingQueue<Object>(1);
     final AtomicReference<DeploymentConfig> atomicDeploymentConfig = new AtomicReference<>();
 
     final Runnable deploymentPoller = new Runnable() {
       public void run() {
-        DeploymentConfig deploymentConfig = getMandatory();
-        atomicDeploymentConfig.set(deploymentConfig);
-        int currentReplicas = deploymentConfig.getStatus().getReplicas() != null ? deploymentConfig.getStatus().getReplicas() : 0;
-        if (deploymentConfig.getStatus().getObservedGeneration() >= deploymentConfig.getMetadata().getGeneration() && Objects.equals(deploymentConfig.getSpec().getReplicas(), currentReplicas)) {
-          countDownLatch.countDown();
-        } else {
-          LOG.debug("Only {}/{} pods scheduled for DeploymentConfig: {} in namespace: {} seconds so waiting...",
-            deploymentConfig.getStatus().getReplicas(), deploymentConfig.getSpec().getReplicas(), deploymentConfig.getMetadata().getName(), namespace);
+        try {
+          DeploymentConfig deploymentConfig = get();
+          //If the rs is gone, we shouldn't wait.
+          if (deploymentConfig == null) {
+            if (count == 0) {
+              queue.put(true);
+              return;
+            } else {
+              queue.put(new IllegalStateException("Can't wait for DeploymentConfig: " + checkName(getItem()) + " in namespace: " + checkName(getItem()) + " to scale. Resource is no longer available."));
+              return;
+            }
+          }
+          atomicDeploymentConfig.set(deploymentConfig);
+          int currentReplicas = deploymentConfig.getStatus().getReplicas() != null ? deploymentConfig.getStatus().getReplicas() : 0;
+          if (deploymentConfig.getStatus().getObservedGeneration() >= deploymentConfig.getMetadata().getGeneration() && Objects.equals(deploymentConfig.getSpec().getReplicas(), currentReplicas)) {
+            queue.put(true);
+          } else {
+            LOG.debug("Only {}/{} pods scheduled for DeploymentConfig: {} in namespace: {} seconds so waiting...",
+              deploymentConfig.getStatus().getReplicas(), deploymentConfig.getSpec().getReplicas(), deploymentConfig.getMetadata().getName(), namespace);
+          }
+        } catch (Throwable t) {
+          LOG.error("Error while waiting for Deployment to be scaled.", t);
         }
       }
     };
 
-    ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-    ScheduledFuture poller = executor.scheduleWithFixedDelay(deploymentPoller, 0, POLL_INTERVAL_MS, TimeUnit.MILLISECONDS);
-    try {
-      countDownLatch.await(getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS);
-      executor.shutdown();
-    } catch (InterruptedException e) {
-      poller.cancel(true);
-      executor.shutdown();
-      int currentReplicas = atomicDeploymentConfig.get().getStatus().getReplicas() != null ? atomicDeploymentConfig.get().getStatus().getReplicas() : 0;
-      LOG.error("Only {}/{} pod(s) ready for DeploymentConfig: {} in namespace: {} - giving up",
-        currentReplicas, atomicDeploymentConfig.get().getSpec().getReplicas(), atomicDeploymentConfig.get().getMetadata().getName(), namespace);
-    }
+      ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+      ScheduledFuture poller = executor.scheduleWithFixedDelay(deploymentPoller, 0, POLL_INTERVAL_MS, TimeUnit.MILLISECONDS);
+      try {
+        if (Utils.waitUntilReady(queue, getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS)) {
+          int currentReplicas = atomicDeploymentConfig.get().getStatus().getReplicas() != null ? atomicDeploymentConfig.get().getStatus().getReplicas() : 0;
+          LOG.error("Only {}/{} pod(s) ready for DeploymentConfig: {} in namespace: {} - giving up",
+            currentReplicas, atomicDeploymentConfig.get().getSpec().getReplicas(), atomicDeploymentConfig.get().getMetadata().getName(), namespace);
+        }
+      } finally {
+        poller.cancel(true);
+        executor.shutdown();
+      }
   }
 }
