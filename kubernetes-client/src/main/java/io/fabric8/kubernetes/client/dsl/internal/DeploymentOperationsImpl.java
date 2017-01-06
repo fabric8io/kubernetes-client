@@ -161,7 +161,7 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
 
     @Override
     public boolean reap() {
-      Deployment deployment = oper.cascading(false).edit().editSpec().withReplicas(0).withPaused(true).withRevisionHistoryLimit(0).endSpec().done();
+      Deployment deployment = oper.cascading(false).edit().editSpec().withReplicas(0).endSpec().done();
       waitForObservedGeneration(deployment.getStatus().getObservedGeneration());
       reapMatchingReplicaSets(deployment.getSpec().getSelector());
       return false;
