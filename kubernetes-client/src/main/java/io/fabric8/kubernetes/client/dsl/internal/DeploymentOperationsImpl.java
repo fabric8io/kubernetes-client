@@ -100,7 +100,10 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
    */
   private void waitUntilDeploymentIsScaled(final int count) {
     final BlockingQueue<Object> queue = new ArrayBlockingQueue<>(1);
-    final AtomicReference<Deployment> atomicDeployment = new AtomicReference<>();
+    final AtomicReference<Integer> replicasRef = new AtomicReference<>(0);
+
+    final String name = checkName(getItem());
+    final String namespace = checkNamespace(getItem());
 
     final Runnable deploymentPoller = new Runnable() {
       public void run() {
@@ -117,7 +120,7 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
             }
           }
 
-          atomicDeployment.set(deployment);
+          replicasRef.set(deployment.getStatus().getReplicas());
           int currentReplicas = deployment.getStatus().getReplicas() != null ? deployment.getStatus().getReplicas() : 0;
           long generation = deployment.getMetadata().getGeneration() != null ? deployment.getMetadata().getGeneration() : 0;
           long observedGeneration = deployment.getStatus() != null && deployment.getStatus().getObservedGeneration() != null ? deployment.getStatus().getObservedGeneration() : -1;
@@ -137,9 +140,11 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
     ScheduledFuture poller = executor.scheduleWithFixedDelay(deploymentPoller, 0, POLL_INTERVAL_MS, TimeUnit.MILLISECONDS);
     try {
       if (Utils.waitUntilReady(queue, getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS)) {
-        int currentReplicas = atomicDeployment.get().getStatus().getReplicas() != null ? atomicDeployment.get().getStatus().getReplicas() : 0;
-        LOG.error("Only {}/{} pod(s) ready for Deployment: {} in namespace: {} - giving up",
-          currentReplicas, atomicDeployment.get().getSpec().getReplicas(), atomicDeployment.get().getMetadata().getName(), namespace);
+        LOG.debug("{}/{} pod(s) ready for Deployment: {} in namespace: {}.",
+          replicasRef.get(), count, name, namespace);
+      } else {
+        LOG.error("{}/{} pod(s) ready for Deployment: {} in namespace: {}  after waiting for {} seconds so giving up",
+          replicasRef.get(), count, name, namespace, TimeUnit.MILLISECONDS.toSeconds(getConfig().getScaleTimeout()));
       }
     } finally {
       poller.cancel(true);

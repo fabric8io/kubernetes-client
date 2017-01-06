@@ -122,12 +122,10 @@ public class Utils {
       Object obj = queue.poll(amount, timeUnit);
       if (obj instanceof Boolean) {
         return (Boolean) obj;
-      } else {
-        if (obj instanceof Throwable) {
-          throw (Throwable) obj;
-        }
-        return false;
+      } else if (obj instanceof Throwable) {
+        throw (Throwable) obj;
       }
+      return false;
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }

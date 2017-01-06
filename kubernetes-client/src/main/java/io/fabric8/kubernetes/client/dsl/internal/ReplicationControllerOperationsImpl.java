@@ -152,7 +152,10 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
    */
   private void waitUntilRCIsScaled(final int count) {
     final BlockingQueue<Object> queue = new ArrayBlockingQueue<>(1);
-    final AtomicReference<ReplicationController> atomicRC = new AtomicReference<>();
+    final AtomicReference<Integer> replicasRef = new AtomicReference<>(0);
+
+    final String name = checkName(getItem());
+    final String namespace = checkNamespace(getItem());
 
     final Runnable rcPoller = new Runnable() {
       public void run() {
@@ -168,7 +171,7 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
             }
           }
 
-          atomicRC.set(rc);
+          replicasRef.set(rc.getStatus().getReplicas());
           if (Objects.equals(rc.getSpec().getReplicas(), rc.getStatus().getReplicas())) {
             queue.put(true);
           } else {
@@ -185,8 +188,11 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
     ScheduledFuture poller = executor.scheduleWithFixedDelay(rcPoller, 0, POLL_INTERVAL_MS, TimeUnit.MILLISECONDS);
     try {
       if (Utils.waitUntilReady(queue, rollingTimeout, rollingTimeUnit)) {
-        LOG.error("Only {}/{} pod(s) ready for ReplicationController: {} in namespace: {}  after waiting for {} seconds so giving up",
-          atomicRC.get().getStatus().getReplicas(), atomicRC.get().getSpec().getReplicas(), atomicRC.get().getMetadata().getName(), namespace, rollingTimeUnit.toSeconds(rollingTimeout));
+        LOG.debug("{}/{} pod(s) ready for ReplicationController: {} in namespace: {}.",
+          replicasRef.get(), count, name, namespace);
+      } else {
+        LOG.error("{}/{} pod(s) ready for ReplicationController: {} in namespace: {}  after waiting for {} seconds so giving up",
+          replicasRef.get(), count, name, namespace, rollingTimeUnit.toSeconds(rollingTimeout));
       }
     } finally {
       poller.cancel(true);
