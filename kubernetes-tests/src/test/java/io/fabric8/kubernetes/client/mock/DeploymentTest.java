@@ -13,16 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.extensions.Deployment;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentListBuilder;
+import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
+import io.fabric8.kubernetes.api.model.extensions.ReplicaSetBuilder;
+import io.fabric8.kubernetes.api.model.extensions.ReplicaSetListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.server.mock.KubernetesServer;
+
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -76,8 +79,8 @@ public class DeploymentTest {
     KubernetesClient client = server.getClient();
     DeploymentList deploymentList = client.extensions().deployments()
       .withLabel("key1", "value1")
-      .withLabel("key2","value2")
-      .withLabel("key3","value3")
+      .withLabel("key2", "value2")
+      .withLabel("key3", "value3")
       .list();
 
 
@@ -86,7 +89,7 @@ public class DeploymentTest {
 
     deploymentList = client.extensions().deployments()
       .withLabel("key1", "value1")
-      .withLabel("key2","value2")
+      .withLabel("key2", "value2")
       .list();
 
     assertNotNull(deploymentList);
@@ -96,8 +99,8 @@ public class DeploymentTest {
 
   @Test
   public void testGet() {
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/deployments/deployment1").andReturn(200, new DeploymentBuilder().build()).once();
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/deployments/deployment2").andReturn(200, new DeploymentBuilder().build()).once();
+    server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/deployments/deployment1").andReturn(200, new DeploymentBuilder().build()).once();
+    server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/deployments/deployment2").andReturn(200, new DeploymentBuilder().build()).once();
 
     KubernetesClient client = server.getClient();
 
@@ -114,59 +117,70 @@ public class DeploymentTest {
 
   @Test
   public void testDelete() {
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/deployments/deployment1").andReturn(200, new DeploymentBuilder().withNewMetadata()
-      .withName("deployment1")
-      .withResourceVersion("1")
-      .withGeneration(1L)
-      .endMetadata()
-      .withNewSpec()
-      .withReplicas(0)
-      .endSpec()
-      .withNewStatus()
-      .withReplicas(1)
-      .withObservedGeneration(1l)
-      .endStatus()
-      .build()).once();
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/deployments/deployment1").andReturn(200, new DeploymentBuilder().withNewMetadata()
-      .withName("deployment1")
-      .withResourceVersion("1")
-      .withGeneration(1L)
-      .endMetadata()
-      .withNewSpec()
-      .withReplicas(0)
-      .endSpec()
-      .withNewStatus()
-      .withReplicas(0)
-      .withObservedGeneration(2l)
-      .endStatus()
-      .build()).times(5);
 
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/deployments/deployment2").andReturn(200, new DeploymentBuilder().withNewMetadata()
-      .withName("deployment2")
+    Deployment deployment1 = new DeploymentBuilder().withNewMetadata()
+      .withName("deployment1")
+      .addToLabels("key1", "value1")
       .withResourceVersion("1")
       .withGeneration(1L)
       .endMetadata()
       .withNewSpec()
+      .withNewSelector()
+      .addToMatchLabels("key1", "value1")
+      .endSelector()
       .withReplicas(0)
       .endSpec()
       .withNewStatus()
       .withReplicas(1)
       .withObservedGeneration(1l)
       .endStatus()
-      .build()).once();
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/deployments/deployment2").andReturn(200, new DeploymentBuilder().withNewMetadata()
-      .withName("deployment2")
+      .build();
+
+    ReplicaSet replicaSet1 = new ReplicaSetBuilder().withNewMetadata()
+      .withName("rs1")
+      .addToLabels("key1", "value1")
       .withResourceVersion("1")
       .withGeneration(1L)
       .endMetadata()
       .withNewSpec()
+      .withNewSelector()
+      .addToMatchLabels("key1", "value1")
+      .endSelector()
       .withReplicas(0)
       .endSpec()
       .withNewStatus()
-      .withReplicas(0)
-      .withObservedGeneration(2l)
+      .withReplicas(1)
+      .withObservedGeneration(1l)
       .endStatus()
-      .build()).times(5);
+      .build();
+
+    Deployment deployment2 = new DeploymentBuilder().withNewMetadata()
+      .withName("deployment2")
+      .addToLabels("key2", "value2")
+      .withResourceVersion("1")
+      .withGeneration(1L)
+      .endMetadata()
+      .withNewSpec()
+      .withNewSelector()
+      .addToMatchLabels("key2", "value2")
+      .endSelector()
+      .withReplicas(0)
+      .endSpec()
+      .withNewStatus()
+      .withReplicas(1)
+      .withObservedGeneration(1l)
+      .endStatus()
+      .build();
+
+
+    server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/deployments/deployment1").andReturn(200, deployment1).once();
+    server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/deployments/deployment1").andReturn(200, new DeploymentBuilder(deployment1).editSpec().withReplicas(0).endSpec().build()).times(5);
+
+    server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/replicasets?labelSelector=key1%3Dvalue1").andReturn(200, new ReplicaSetListBuilder().addToItems(replicaSet1).build()).once();
+    server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/replicasets/rs1").andReturn(200, replicaSet1).once();
+
+    server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/deployments/deployment2").andReturn(200, deployment2).once();
+    server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/deployments/deployment2").andReturn(200, new DeploymentBuilder(deployment2).editSpec().withReplicas(0).endSpec().build()).times(5);
 
     KubernetesClient client = server.getClient();
 
@@ -215,16 +229,16 @@ public class DeploymentTest {
 
     Deployment deployment3 = new DeploymentBuilder().withNewMetadata().withName("deployment3").withNamespace("any").and().build();
 
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/deployments/deployment1").andReturn(200, deployment1).once();
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/deployments/deployment1").andReturn(200, new DeploymentBuilder(deployment1)
+    server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/deployments/deployment1").andReturn(200, deployment1).once();
+    server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/deployments/deployment1").andReturn(200, new DeploymentBuilder(deployment1)
       .editStatus()
       .withReplicas(0)
       .withObservedGeneration(2l)
       .endStatus()
       .build()).times(5);
 
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/deployments/deployment2").andReturn(200, deployment2).once();
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/deployments/deployment2").andReturn(200, new DeploymentBuilder(deployment2)
+    server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/deployments/deployment2").andReturn(200, deployment2).once();
+    server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/deployments/deployment2").andReturn(200, new DeploymentBuilder(deployment2)
       .editStatus()
       .withReplicas(0)
       .withObservedGeneration(2l)
