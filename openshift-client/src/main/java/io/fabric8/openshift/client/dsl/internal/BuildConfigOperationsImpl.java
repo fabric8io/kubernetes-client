@@ -229,8 +229,9 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
           try {
             source = Okio.source(inputStream);
             sink.writeAll(source);
-          } finally {
-            Util.closeQuietly(source);
+          } catch (IOException e) {
+            throw KubernetesClientException.launderThrowable("Can't instantiate binary build, due to error reading/writing stream. "
+              + "Can be caused if output is stream closed by the server.", e);
           }
         }
       };
@@ -248,10 +249,13 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
 
   @Override
   public Build fromFile(final File file) {
-    try {
-      return fromInputStream(new FileInputStream(file));
-    } catch (FileNotFoundException e) {
-      throw KubernetesClientException.launderThrowable(e);
+    if (!file.exists()) {
+      throw new IllegalArgumentException("Can't instantiate binary build from the specified file. The file does not exists");
+    }
+    try (InputStream is = new FileInputStream(file)) {
+      return fromInputStream(is);
+    } catch (Throwable t) {
+      throw KubernetesClientException.launderThrowable(t);
     }
   }
 
