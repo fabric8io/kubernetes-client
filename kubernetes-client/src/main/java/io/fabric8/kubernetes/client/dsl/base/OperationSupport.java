@@ -282,7 +282,11 @@ public class OperationSupport {
       } else if (response.message() != null) {
         statusMessage = response.message();
       }
-      return JSON_MAPPER.readValue(statusMessage, Status.class);
+      Status status = JSON_MAPPER.readValue(statusMessage, Status.class);
+      if (status.getCode() == null) {
+        status = new StatusBuilder(status).withCode(statusCode).build();
+      }
+      return status;
     } catch (JsonParseException e) {
       return createStatus(statusCode, statusMessage);
     } catch (IOException e) {
