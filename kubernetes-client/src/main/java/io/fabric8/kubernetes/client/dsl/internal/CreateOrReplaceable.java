@@ -17,7 +17,7 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 public interface CreateOrReplaceable<I, T, D> {
 
-  T createOrReplace(I item);
+  T createOrReplace(I... item);
 
   D createOrReplaceWithNew();
 }

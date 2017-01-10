@@ -350,11 +350,22 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   @Override
-  public T createOrReplace(T item) {
+  public T createOrReplace(T... items) {
+    T item = getItem();
+    if (items.length > 1) {
+      throw new IllegalArgumentException("Too many items to create.");
+    } else if (items.length == 1) {
+      item = items[0];
+    }
+
+    if (item == null) {
+      throw new IllegalArgumentException("Nothing to create.");
+    }
+
     if (Utils.isNullOrEmpty(name) && item instanceof HasMetadata) {
       return withName(((HasMetadata)item).getMetadata().getName()).createOrReplace(item);
     }
-    if (get() == null) {
+    if (fromServer().get() == null) {
       return create(item);
     } else {
       return replace(item);
