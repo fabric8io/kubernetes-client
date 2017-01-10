@@ -32,6 +32,7 @@
   <properties>
     <osgi.import>
       !android.util*,
+      com.fasterxml.jackson*;version="[${jackson.bundle.version},3)",
       *
     </osgi.import>
     <osgi.export>
