@@ -84,7 +84,7 @@ public class ResourceListTest {
 
     server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, pod1).times(2);
     server.expect().withPath("/api/v1/namespaces/ns1/pods/pod2").andReturn(200, pod2).times(2);
-    server.expect().withPath("/api/v1/namespaces/ns1/pods/pod3").andReturn(200, pod3).times(1);
+    server.expect().withPath("/api/v1/namespaces/any/pods/pod3").andReturn(200, pod3).times(1);
 
     KubernetesClient client = server.getClient();
 

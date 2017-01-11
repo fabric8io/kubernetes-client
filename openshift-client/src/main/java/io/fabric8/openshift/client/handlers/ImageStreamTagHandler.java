@@ -18,6 +18,8 @@ package io.fabric8.openshift.client.handlers;
 import io.fabric8.kubernetes.client.Config;
 
 import io.fabric8.kubernetes.client.ResourceHandler;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.openshift.api.model.ImageStreamTag;
 import io.fabric8.openshift.api.model.ImageStreamTagBuilder;
 import io.fabric8.openshift.client.OpenShiftConfig;
@@ -61,4 +63,14 @@ public class ImageStreamTagHandler implements ResourceHandler<ImageStreamTag, Im
   public Boolean delete(OkHttpClient client, Config config, String namespace, ImageStreamTag item) {
       return new ImageStreamTagOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).delete(item);
     }
+
+  @Override
+  public Watch watch(OkHttpClient client, Config config, String namespace, ImageStreamTag item, Watcher<ImageStreamTag> watcher) {
+    return new ImageStreamTagOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).watch(watcher);
+  }
+
+  @Override
+  public Watch watch(OkHttpClient client, Config config, String namespace, ImageStreamTag item, String resourceVersion, Watcher<ImageStreamTag> watcher) {
+    return new ImageStreamTagOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).watch(resourceVersion, watcher);
+  }
 }

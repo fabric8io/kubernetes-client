@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.handlers;
 
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
@@ -59,5 +61,15 @@ public class ReplicationControllerHandler implements ResourceHandler<Replication
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, ReplicationController item) {
     return new ReplicationControllerOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).delete(item);
+  }
+
+  @Override
+  public Watch watch(OkHttpClient client, Config config, String namespace, ReplicationController item, Watcher<ReplicationController> watcher) {
+    return new ReplicationControllerOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).watch(watcher);
+  }
+
+  @Override
+  public Watch watch(OkHttpClient client, Config config, String namespace, ReplicationController item, String resourceVersion, Watcher<ReplicationController> watcher) {
+    return new ReplicationControllerOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).watch(resourceVersion, watcher);
   }
 }

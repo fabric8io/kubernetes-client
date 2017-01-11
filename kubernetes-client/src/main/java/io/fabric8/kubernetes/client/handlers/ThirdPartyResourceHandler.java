@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.handlers;
 
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.extensions.ThirdPartyResource;
 import io.fabric8.kubernetes.api.model.extensions.ThirdPartyResourceBuilder;
@@ -58,5 +60,15 @@ public class ThirdPartyResourceHandler implements ResourceHandler<ThirdPartyReso
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, ThirdPartyResource item) {
     return new ThirdPartyResourceOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).delete(item);
+  }
+
+  @Override
+  public Watch watch(OkHttpClient client, Config config, String namespace, ThirdPartyResource item, Watcher<ThirdPartyResource> watcher) {
+    return new ThirdPartyResourceOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).watch(watcher);
+  }
+
+  @Override
+  public Watch watch(OkHttpClient client, Config config, String namespace, ThirdPartyResource item, String resourceVersion, Watcher<ThirdPartyResource> watcher) {
+    return new ThirdPartyResourceOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).watch(resourceVersion, watcher);
   }
 }

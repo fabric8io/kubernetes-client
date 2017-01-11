@@ -15,6 +15,8 @@
  */
 package io.fabric8.openshift.client.handlers;
 
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
@@ -60,5 +62,15 @@ public class TemplateHandler implements ResourceHandler<Template, TemplateBuilde
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Template item) {
       return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).delete(item);
+  }
+
+  @Override
+  public Watch watch(OkHttpClient client, Config config, String namespace, Template item, Watcher<Template> watcher) {
+    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).watch(watcher);
+  }
+
+  @Override
+  public Watch watch(OkHttpClient client, Config config, String namespace, Template item, String resourceVersion, Watcher<Template> watcher) {
+    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).watch(resourceVersion, watcher);
   }
 }

@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.handlers;
 
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetBuilder;
@@ -59,5 +61,15 @@ public class ReplicaSetHandler implements ResourceHandler<ReplicaSet, ReplicaSet
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, ReplicaSet item) {
     return new ReplicaSetOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).delete(item);
+  }
+
+  @Override
+  public Watch watch(OkHttpClient client, Config config, String namespace, ReplicaSet item, Watcher<ReplicaSet> watcher) {
+    return new ReplicaSetOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).watch(watcher);
+  }
+
+  @Override
+  public Watch watch(OkHttpClient client, Config config, String namespace, ReplicaSet item, String resourceVersion, Watcher<ReplicaSet> watcher) {
+    return new ReplicaSetOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).watch(resourceVersion, watcher);
   }
 }

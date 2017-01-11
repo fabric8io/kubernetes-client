@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.handlers;
 
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.extensions.Job;
 import io.fabric8.kubernetes.api.model.extensions.JobBuilder;
@@ -58,5 +60,15 @@ public class JobHandler implements ResourceHandler<Job, JobBuilder> {
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Job item) {
     return new JobOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).delete(item);
+  }
+
+  @Override
+  public Watch watch(OkHttpClient client, Config config, String namespace, Job item, Watcher<Job> watcher) {
+    return new JobOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).watch(watcher);
+  }
+
+  @Override
+  public Watch watch(OkHttpClient client, Config config, String namespace, Job item, String resourceVersion, Watcher<Job> watcher) {
+    return new JobOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).watch(resourceVersion, watcher);
   }
 }

@@ -16,6 +16,8 @@
 
 package io.fabric8.openshift.client.handlers;
 
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.client.Config;
@@ -59,6 +61,16 @@ public class ProjectRequestHandler implements ResourceHandler<ProjectRequest, Pr
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, ProjectRequest item) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Watch watch(OkHttpClient client, Config config, String namespace, ProjectRequest item, Watcher<ProjectRequest> watcher) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Watch watch(OkHttpClient client, Config config, String namespace, ProjectRequest item, String resourceVersion, Watcher<ProjectRequest> watcher) {
     throw new UnsupportedOperationException();
   }
 }

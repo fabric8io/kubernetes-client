@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.handlers;
 
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.SecurityContextConstraints;
 import io.fabric8.kubernetes.api.model.SecurityContextConstraintsBuilder;
@@ -55,5 +57,15 @@ public class SecurityContextConstraintsHandler implements ResourceHandler<Securi
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, SecurityContextConstraints item) {
     return new SecurityContextConstraintsOperationsImpl(client, config, null, namespace, null, true, item, null, false).delete(item);
+  }
+
+  @Override
+  public Watch watch(OkHttpClient client, Config config, String namespace, SecurityContextConstraints item, Watcher<SecurityContextConstraints> watcher) {
+    return new SecurityContextConstraintsOperationsImpl(client, config, null, namespace, null, true, item, null, false).watch(watcher);
+  }
+
+  @Override
+  public Watch watch(OkHttpClient client, Config config, String namespace, SecurityContextConstraints item, String resourceVersion, Watcher<SecurityContextConstraints> watcher) {
+    return new SecurityContextConstraintsOperationsImpl(client, config, null, namespace, null, true, item, null, false).watch(resourceVersion, watcher);
   }
 }
