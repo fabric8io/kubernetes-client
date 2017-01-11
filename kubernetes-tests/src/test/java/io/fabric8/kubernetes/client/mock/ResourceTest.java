@@ -16,17 +16,25 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
+import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.server.mock.OutputStreamMessage;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -79,6 +87,41 @@ public class ResourceTest {
 
     deleted = client.resource(pod3).delete();
     assertFalse(deleted);
+  }
+
+
+  @Test
+  public void testWatch() throws InterruptedException {
+    Pod pod1 = new PodBuilder().withNewMetadata()
+        .withName("pod1")
+        .withResourceVersion("1")
+      .withNamespace("test").and().build();
+
+      server.expect().get().withPath("/api/v1/namespaces/test/pods").andReturn(200, pod1).once();
+      server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(201, pod1).once();
+
+     server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
+        .open()
+          .waitFor(1000).andEmit(new WatchEvent(pod1, "DELETED"))
+        .done()
+      .always();
+
+    KubernetesClient client = server.getClient();
+    final CountDownLatch latch = new CountDownLatch(1);
+
+    Watch watch = client.resource(pod1).watch(new Watcher<HasMetadata>() {
+      @Override
+      public void eventReceived(Action action, HasMetadata resource) {
+        latch.countDown();
+      }
+
+      @Override
+      public void onClose(KubernetesClientException cause) {
+
+      }
+    });
+    Assert.assertTrue(latch.await(5000, TimeUnit.MILLISECONDS));
+    watch.close();
   }
 
 }
