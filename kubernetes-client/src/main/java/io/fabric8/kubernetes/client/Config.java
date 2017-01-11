@@ -118,7 +118,8 @@ public class Config {
   private long websocketPingInterval = DEFAULT_WEBSOCKET_PING_INTERVAL;
   private String httpProxy;
   private String httpsProxy;
-  private Authenticator proxyAuthenticator;
+  private String proxyUsername;
+  private String proxyPassword;
   private String[] noProxy;
   private String userAgent;
   private TlsVersion[] tlsVersions = new TlsVersion[]{TLS_1_2};
@@ -644,11 +645,19 @@ public class Config {
   public void setWebsocketPingInterval(long websocketPingInterval) {
     this.websocketPingInterval = websocketPingInterval;
   }
-  public Authenticator getProxyAuthenticator() {
-    return proxyAuthenticator;
+  public String getProxyUsername() {
+    return proxyUsername;
   }
 
-  public void setProxyAuthenticator(Authenticator proxyAuthenticator) {
-    this.proxyAuthenticator = proxyAuthenticator;
+  public void setProxyUsername(String proxyUsername) {
+    this.proxyUsername = proxyUsername;
+  }
+
+  public String getProxyPassword() {
+    return proxyPassword;
+  }
+
+  public void setProxyPassword(String proxyPassword) {
+    this.proxyPassword = proxyPassword;
   }
 }

@@ -121,9 +121,15 @@ public class HttpClientUtils {
                     if (proxyUrl != null) {
                         httpClientBuilder.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyUrl.getHost(), proxyUrl.getPort())));
 
-                        Authenticator proxyAuthenticator = config.getProxyAuthenticator();
-                        if (proxyAuthenticator != null){
-                           httpClientBuilder.proxyAuthenticator(proxyAuthenticator);
+                        if (config.getProxyUsername() != null) {
+                          httpClientBuilder.proxyAuthenticator(new Authenticator() {
+                            @Override
+                            public Request authenticate(Route route, Response response) throws IOException {
+
+                              String credential = Credentials.basic(config.getProxyUsername(), config.getProxyPassword());
+                              return response.request().newBuilder().header("Proxy-Authorization", credential).build();
+                            }
+                          });
                         }
                     }
 
