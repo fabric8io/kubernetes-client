@@ -18,6 +18,7 @@ import io.fabric8.kubernetes.api.model.DoneableLimitRange;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LimitRange;
 import io.fabric8.kubernetes.api.model.LimitRangeList;
+import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateApplicable;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.ComponentStatus;
 import io.fabric8.kubernetes.api.model.ComponentStatusList;
@@ -73,11 +74,10 @@ import io.fabric8.kubernetes.client.dsl.ClientPodResource;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetDeleteRecreateApplicable;
+import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateApplicable;
 
 import java.io.InputStream;
 import java.net.URL;
-import java.util.List;
 
 public class AutoAdaptableKubernetesClient extends DefaultKubernetesClient {
 
@@ -132,27 +132,27 @@ public class AutoAdaptableKubernetesClient extends DefaultKubernetesClient {
   }
 
   @Override
-  public NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> load(InputStream is) {
+  public NamespaceListVisitFromServerGetDeleteRecreateApplicable<HasMetadata, Boolean> load(InputStream is) {
     return delegate.load(is);
   }
 
   @Override
-  public NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> resourceList(KubernetesResourceList is) {
+  public NamespaceListVisitFromServerGetDeleteRecreateApplicable<HasMetadata, Boolean> resourceList(KubernetesResourceList is) {
     return delegate.resourceList(is);
   }
 
   @Override
-  public NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> resourceList(String s) {
+  public NamespaceListVisitFromServerGetDeleteRecreateApplicable<HasMetadata, Boolean> resourceList(String s) {
     return delegate.resourceList(s);
   }
 
   @Override
-  public NamespaceVisitFromServerGetDeleteRecreateApplicable<HasMetadata, Boolean> resource(HasMetadata is) {
+  public NamespaceVisitFromServerGetWatchDeleteRecreateApplicable<HasMetadata, Boolean> resource(HasMetadata is) {
     return delegate.resource(is);
   }
 
   @Override
-  public NamespaceVisitFromServerGetDeleteRecreateApplicable<HasMetadata, Boolean> resource(String s) {
+  public NamespaceVisitFromServerGetWatchDeleteRecreateApplicable<HasMetadata, Boolean> resource(String s) {
     return delegate.resource(s);
   }
 
