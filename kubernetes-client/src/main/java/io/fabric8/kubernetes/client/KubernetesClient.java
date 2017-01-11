@@ -41,6 +41,7 @@ import io.fabric8.kubernetes.api.model.EndpointsList;
 import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LimitRange;
 import io.fabric8.kubernetes.api.model.LimitRangeList;
 import io.fabric8.kubernetes.api.model.Namespace;
@@ -86,9 +87,13 @@ public interface KubernetesClient extends Client {
 
   NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>,Boolean> load(InputStream is);
 
-  NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>,Boolean> resource(HasMetadata is);
+  NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> resourceList(KubernetesResourceList is);
 
-  NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>,Boolean> resource(String s);
+  NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> resourceList(String s);
+
+  NamespaceVisitFromServerGetDeleteRecreateApplicable<HasMetadata,Boolean> resource(HasMetadata is);
+
+  NamespaceVisitFromServerGetDeleteRecreateApplicable<HasMetadata,Boolean> resource(String s);
 
   ClientMixedOperation<Endpoints, EndpointsList, DoneableEndpoints, ClientResource<Endpoints, DoneableEndpoints>> endpoints();
 

@@ -16,6 +16,7 @@
 package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.api.model.DoneableLimitRange;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LimitRange;
 import io.fabric8.kubernetes.api.model.LimitRangeList;
 import io.fabric8.kubernetes.client.dsl.ClientScaleableResource;
@@ -181,13 +182,23 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> resource(HasMetadata item) {
+  public NamespaceVisitFromServerGetDeleteRecreateApplicable<HasMetadata, Boolean> resource(HasMetadata item) {
     return delegate.resource(item);
   }
 
   @Override
-  public NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> resource(String s) {
+  public NamespaceVisitFromServerGetDeleteRecreateApplicable<HasMetadata, Boolean> resource(String s) {
     return delegate.resource(s);
+  }
+
+  @Override
+  public NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> resourceList(KubernetesResourceList is) {
+    return delegate.resourceList(is);
+  }
+
+  @Override
+  public NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> resourceList(String s) {
+    return delegate.resourceList(s);
   }
 
   @Override

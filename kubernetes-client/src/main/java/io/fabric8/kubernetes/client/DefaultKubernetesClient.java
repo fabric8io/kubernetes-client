@@ -16,9 +16,11 @@
 package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.api.model.DoneableLimitRange;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LimitRange;
 import io.fabric8.kubernetes.api.model.LimitRangeList;
 import io.fabric8.kubernetes.client.dsl.internal.LimitRangeOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetDeleteRecreateApplicableImpl;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.ComponentStatus;
@@ -81,7 +83,7 @@ import io.fabric8.kubernetes.client.dsl.internal.EndpointsOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.EventOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.KubernetesListOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetDeleteRecreateApplicableImpl;
+import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetDeleteRecreateApplicableListImpl;
 import io.fabric8.kubernetes.client.dsl.internal.NodeOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.PersistentVolumeClaimOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.PersistentVolumeOperationsImpl;
@@ -122,18 +124,30 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> load(InputStream is) {
-    return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<Visitor>(), is, false) {
+    return new NamespaceVisitFromServerGetDeleteRecreateApplicableListImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<Visitor>(), is, false) {
     };
   }
 
   @Override
-  public NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> resource(HasMetadata item) {
+  public NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> resourceList(KubernetesResourceList item) {
+    return new NamespaceVisitFromServerGetDeleteRecreateApplicableListImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<Visitor>(), item, -1, false) {
+    };
+  }
+
+  @Override
+  public NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> resourceList(String s) {
+    return new NamespaceVisitFromServerGetDeleteRecreateApplicableListImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<Visitor>(), s, -1, false) {
+    };
+  }
+
+  @Override
+  public NamespaceVisitFromServerGetDeleteRecreateApplicable<HasMetadata, Boolean> resource(HasMetadata item) {
     return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<Visitor>(), item, -1, false) {
     };
   }
 
   @Override
-  public NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> resource(String s) {
+  public NamespaceVisitFromServerGetDeleteRecreateApplicable<HasMetadata, Boolean> resource(String s) {
     return new NamespaceVisitFromServerGetDeleteRecreateApplicableImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<Visitor>(), s, -1, false) {
     };
   }

@@ -16,23 +16,36 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import org.junit.Rule;
-import org.junit.Test;
-
-import java.util.List;
-
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
+import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
+import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.dsl.ExecListener;
+import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.server.mock.OutputStreamMessage;
+import okhttp3.Response;
+import org.junit.Rule;
+import org.junit.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class ResourceTest {
+public class ResourceListTest {
 
   @Rule
   public KubernetesServer server = new KubernetesServer();
@@ -46,8 +59,8 @@ public class ResourceTest {
         server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(201, pod1).once();
 
         KubernetesClient client = server.getClient();
-        HasMetadata response = client.resource(pod1).createOrReplace();
-        assertEquals(pod1, response);
+        List<HasMetadata> response = client.resourceList(new PodListBuilder().addToItems(pod1).build()).createOrReplace();
+        assertTrue(response.contains(pod1));
     }
 
     @Test
@@ -58,8 +71,8 @@ public class ResourceTest {
         server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(201, pod1).once();
 
         KubernetesClient client = server.getClient();
-        HasMetadata response = client.resource(pod1).inNamespace("ns1").apply();
-        assertEquals(pod1, response);
+        List<HasMetadata> response = client.resourceList(new PodListBuilder().addToItems(pod1).build()).inNamespace("ns1").apply();
+        assertTrue(response.contains(pod1));
     }
 
   @Test
@@ -68,16 +81,19 @@ public class ResourceTest {
     Pod pod2 = new PodBuilder().withNewMetadata().withName("pod2").withNamespace("ns1").and().build();
     Pod pod3 = new PodBuilder().withNewMetadata().withName("pod3").withNamespace("any").and().build();
 
-   server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, pod1).once();
-   server.expect().withPath("/api/v1/namespaces/ns1/pods/pod2").andReturn(200, pod2).once();
+
+    server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, pod1).times(2);
+    server.expect().withPath("/api/v1/namespaces/ns1/pods/pod2").andReturn(200, pod2).times(2);
+    server.expect().withPath("/api/v1/namespaces/ns1/pods/pod3").andReturn(200, pod3).times(1);
 
     KubernetesClient client = server.getClient();
-    Boolean deleted = client.resource(pod1).delete();
-    assertTrue(deleted);
-    deleted = client.resource(pod2).delete();
+
+    //First time all items should be deleted.
+    Boolean deleted = client.resourceList(new PodListBuilder().withItems(pod1, pod2, pod3).build()).delete();
     assertTrue(deleted);
 
-    deleted = client.resource(pod3).delete();
+    //Now we expect pod3 to fail.
+    deleted = client.resourceList(new PodListBuilder().withItems(pod1, pod2, pod3).build()).delete();
     assertFalse(deleted);
   }
 

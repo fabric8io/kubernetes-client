@@ -46,6 +46,7 @@ import io.fabric8.kubernetes.api.model.EndpointsList;
 import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LimitRange;
 import io.fabric8.kubernetes.api.model.LimitRangeList;
 import io.fabric8.kubernetes.api.model.Namespace;
@@ -221,12 +222,22 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   @Override
-  public NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> resource(HasMetadata is) {
+  public NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> resourceList(KubernetesResourceList is) {
+    return delegate.resourceList(is);
+  }
+
+  @Override
+  public NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> resourceList(String s) {
+    return delegate.resourceList(s);
+  }
+
+  @Override
+  public NamespaceVisitFromServerGetDeleteRecreateApplicable<HasMetadata, Boolean> resource(HasMetadata is) {
     return delegate.resource(is);
   }
 
   @Override
-  public NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> resource(String s) {
+  public NamespaceVisitFromServerGetDeleteRecreateApplicable<HasMetadata, Boolean> resource(String s) {
     return delegate.resource(s);
   }
 
