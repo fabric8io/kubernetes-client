@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.api.model.ConfigBuilder;
+import okhttp3.Authenticator;
 import okhttp3.TlsVersion;
 import io.fabric8.kubernetes.api.model.AuthInfo;
 import io.fabric8.kubernetes.api.model.Cluster;
@@ -78,6 +80,8 @@ public class Config {
   public static final String KUBERNETES_HTTPS_PROXY = "https.proxy";
   public static final String KUBERNETES_ALL_PROXY = "all.proxy";
   public static final String KUBERNETES_NO_PROXY = "no.proxy";
+  public static final String KUBERNETES_PROXY_USERNAME = "proxy.username";
+  public static final String KUBERNETES_PROXY_PASSWORD = "proxy.password";
 
   public static final String KUBERNETES_USER_AGENT = "fabric8-kubernetes-client/" + Version.clientVersion() ;
 
@@ -116,6 +120,8 @@ public class Config {
   private long websocketPingInterval = DEFAULT_WEBSOCKET_PING_INTERVAL;
   private String httpProxy;
   private String httpsProxy;
+  private String proxyUsername;
+  private String proxyPassword;
   private String[] noProxy;
   private String userAgent;
   private TlsVersion[] tlsVersions = new TlsVersion[]{TLS_1_2};
@@ -139,7 +145,7 @@ public class Config {
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
-  public Config(String masterUrl, String apiVersion, String namespace, boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, long scaleTimeout, int loggingInterval, String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages, String userAgent, TlsVersion[] tlsVersions, long websocketTimeout, long websocketPingInterval) {
+  public Config(String masterUrl, String apiVersion, String namespace, boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, long scaleTimeout, int loggingInterval, String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages, String userAgent, TlsVersion[] tlsVersions, long websocketTimeout, long websocketPingInterval, String proxyUsername, String proxyPassword) {
     this.masterUrl = masterUrl;
     this.apiVersion = apiVersion;
     this.namespace = namespace;
@@ -165,6 +171,8 @@ public class Config {
     this.httpProxy= httpProxy;
     this.httpsProxy= httpsProxy;
     this.noProxy= noProxy;
+    this.proxyUsername = proxyUsername;
+    this.proxyPassword = proxyPassword;
     this.errorMessages = errorMessages;
     this.userAgent = userAgent;
     this.tlsVersions = tlsVersions;
@@ -242,6 +250,9 @@ public class Config {
 
     config.setHttpsProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_HTTPS_PROXY, config.getHttpsProxy()));
     config.setHttpProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_HTTP_PROXY, config.getHttpProxy()));
+
+    config.setProxyUsername(Utils.getSystemPropertyOrEnvVar(KUBERNETES_PROXY_USERNAME, config.getProxyUsername()));
+    config.setProxyPassword(Utils.getSystemPropertyOrEnvVar(KUBERNETES_PROXY_PASSWORD, config.getProxyPassword()));
 
     String noProxyVar = Utils.getSystemPropertyOrEnvVar(KUBERNETES_NO_PROXY);
     if (noProxyVar != null) {
@@ -640,5 +651,20 @@ public class Config {
 
   public void setWebsocketPingInterval(long websocketPingInterval) {
     this.websocketPingInterval = websocketPingInterval;
+  }
+  public String getProxyUsername() {
+    return proxyUsername;
+  }
+
+  public void setProxyUsername(String proxyUsername) {
+    this.proxyUsername = proxyUsername;
+  }
+
+  public String getProxyPassword() {
+    return proxyPassword;
+  }
+
+  public void setProxyPassword(String proxyPassword) {
+    this.proxyPassword = proxyPassword;
   }
 }
