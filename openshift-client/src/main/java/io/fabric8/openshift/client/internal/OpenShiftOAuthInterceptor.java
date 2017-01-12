@@ -54,7 +54,6 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
 
         //Build new request
         Request.Builder builder = request.newBuilder();
-        builder.header("Accept", "application/json");
 
         String token = oauthToken.get();
         if (Utils.isNotNullOrEmpty(token)) {
