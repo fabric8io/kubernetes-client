@@ -16,13 +16,9 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.builder.Visitable;
-import io.fabric8.kubernetes.client.FromServerGettable;
-import io.fabric8.kubernetes.client.GracePeriodConfigurable;
-
-public interface VisitFromServerGetDeleteRecreateApplicable<T, B> extends Visitable<VisitFromServerGetDeleteRecreateApplicable<T, B>>,
-                                                                          FromServerGettable<T>, RecreateApplicable<T>,
-                                                                          CascadingDeletable<B>,
-                                                                          GracePeriodConfigurable<CascadingDeletable<B>>
+public interface NamespaceVisitFromServerGetWatchDeleteRecreateApplicable<T, B> extends
+        VisitFromServerGetWatchDeleteRecreateApplicable<T, B>,
+        Namespaceable<VisitFromServerGetWatchDeleteRecreateApplicable<T, B>>
 {
+
 }

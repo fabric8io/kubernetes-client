@@ -70,4 +70,28 @@ public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
    * @return              The true if the resource was successfully deleted.
    */
   Boolean delete(OkHttpClient client, Config config, String namespace, T item);
+
+
+    /**
+     * Watches the specified resource for changes.
+     * @param client        An instance of the http client.
+     * @param config        The client config.
+     * @param namespace     The target namespace.
+     * @param item          The resource to delete.
+     * @param watcher       The {@link Watcher} to use.
+     * @return              The true if the resource was successfully deleted.
+     */
+  Watch watch(OkHttpClient client, Config config, String namespace, T item, Watcher<T> watcher);
+
+
+  /**
+   * Watches the specified resource for changes.
+   * @param client        An instance of the http client.
+   * @param config        The client config.
+   * @param namespace     The target namespace.
+   * @param item          The resource to delete.
+   * @param watcher       The {@link Watcher} to use.
+   * @return              The true if the resource was successfully deleted.
+   */
+  Watch watch(OkHttpClient client, Config config, String namespace, T item, String resourceVersion, Watcher<T> watcher);
 }

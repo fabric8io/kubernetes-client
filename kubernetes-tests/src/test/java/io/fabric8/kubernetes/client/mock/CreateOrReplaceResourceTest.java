@@ -61,11 +61,9 @@ public class CreateOrReplaceResourceTest {
       .withNewMetadata().withResourceVersion("12345").and().build()).once();
 
     KubernetesClient client = server.getClient();
-    List<HasMetadata> result = client.resource(new PodBuilder().withNewMetadata().withName("pod123").and().withNewSpec().and().build()).createOrReplace();
+    HasMetadata result = client.resource(new PodBuilder().withNewMetadata().withName("pod123").and().withNewSpec().and().build()).createOrReplace();
     assertNotNull(result);
-    assertEquals(1, result.size());
-    Pod pod = (Pod) result.get(0);
-    assertEquals("12345", pod.getMetadata().getResourceVersion());
+    assertEquals("12345", result.getMetadata().getResourceVersion());
   }
 
   @Test

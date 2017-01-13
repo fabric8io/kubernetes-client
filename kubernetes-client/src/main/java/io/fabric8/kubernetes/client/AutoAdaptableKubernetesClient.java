@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.api.model.DoneableLimitRange;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LimitRange;
 import io.fabric8.kubernetes.api.model.LimitRangeList;
+import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateApplicable;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.ComponentStatus;
 import io.fabric8.kubernetes.api.model.ComponentStatusList;
@@ -74,192 +75,205 @@ import io.fabric8.kubernetes.client.dsl.ClientPodResource;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetDeleteRecreateApplicable;
+import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateApplicable;
 
 import java.io.InputStream;
 import java.net.URL;
-import java.util.List;
 
 public class AutoAdaptableKubernetesClient extends DefaultKubernetesClient {
 
-    private KubernetesClient delegate;
+  private KubernetesClient delegate;
 
-    public AutoAdaptableKubernetesClient() throws KubernetesClientException {
-        delegate = adapt(new DefaultKubernetesClient());
+  public AutoAdaptableKubernetesClient() throws KubernetesClientException {
+    delegate = adapt(new DefaultKubernetesClient());
+  }
+
+  public AutoAdaptableKubernetesClient(OkHttpClient httpClient, Config config) throws KubernetesClientException {
+    delegate = adapt(new DefaultKubernetesClient(httpClient, config));
+  }
+
+  public AutoAdaptableKubernetesClient(Config config) throws KubernetesClientException {
+    delegate = adapt(new DefaultKubernetesClient(config));
+  }
+
+  public AutoAdaptableKubernetesClient(String masterUrl) throws KubernetesClientException {
+    delegate = adapt(new DefaultKubernetesClient(masterUrl));
+  }
+
+
+  public static KubernetesClient adapt(KubernetesClient initial) {
+    KubernetesClient result = initial;
+    for (ExtensionAdapter<? extends KubernetesClient> adapter : Adapters.list(KubernetesClient.class)) {
+      if (adapter.isAdaptable(result)) {
+        result = adapter.adapt(result);
+      }
     }
+    return result;
+  }
 
-    public AutoAdaptableKubernetesClient(OkHttpClient httpClient, Config config) throws KubernetesClientException {
-        delegate = adapt(new DefaultKubernetesClient(httpClient, config));
-    }
+  @Override
+  public NamespacedKubernetesClient inNamespace(String namespace) {
+    Config updated = new ConfigBuilder(getConfiguration()).withNamespace(namespace).build();
+    return new AutoAdaptableKubernetesClient(httpClient, updated);
+  }
 
-    public AutoAdaptableKubernetesClient(Config config) throws KubernetesClientException {
-        delegate = adapt(new DefaultKubernetesClient(config));
-    }
+  @Override
+  public NamespacedKubernetesClient inAnyNamespace() {
+    return inNamespace(null);
+  }
 
-    public AutoAdaptableKubernetesClient(String masterUrl) throws KubernetesClientException {
-        delegate = adapt(new DefaultKubernetesClient(masterUrl));
-    }
+  @Override
+  public ExtensionsAPIGroupDSL extensions() {
+    return delegate.extensions();
+  }
 
+  @Override
+  public ClientMixedOperation<ComponentStatus, ComponentStatusList, DoneableComponentStatus, ClientResource<ComponentStatus, DoneableComponentStatus>> componentstatuses() {
+    return delegate.componentstatuses();
+  }
 
-    public static KubernetesClient adapt(KubernetesClient initial) {
-        KubernetesClient result = initial;
-        for (ExtensionAdapter<? extends KubernetesClient> adapter : Adapters.list(KubernetesClient.class)) {
-            if (adapter.isAdaptable(result)) {
-                result = adapter.adapt(result);
-            }
-        }
-        return result;
-    }
+  @Override
+  public NamespaceListVisitFromServerGetDeleteRecreateApplicable<HasMetadata, Boolean> load(InputStream is) {
+    return delegate.load(is);
+  }
 
-    @Override
-    public NamespacedKubernetesClient inNamespace(String namespace)
-    {
-        Config updated = new ConfigBuilder(getConfiguration()).withNamespace(namespace).build();
-        return new AutoAdaptableKubernetesClient(httpClient, updated);
-    }
+  @Override
+  public NamespaceListVisitFromServerGetDeleteRecreateApplicable<HasMetadata, Boolean> resourceList(KubernetesResourceList is) {
+    return delegate.resourceList(is);
+  }
 
-    @Override
-    public NamespacedKubernetesClient inAnyNamespace() {
-        return inNamespace(null);
-    }
+  @Override
+  public NamespaceListVisitFromServerGetDeleteRecreateApplicable<HasMetadata, Boolean> resourceList(String s) {
+    return delegate.resourceList(s);
+  }
 
-    @Override
-    public ExtensionsAPIGroupDSL extensions() {
-        return delegate.extensions();
-    }
+  @Override
+  public NamespaceVisitFromServerGetWatchDeleteRecreateApplicable<HasMetadata, Boolean> resource(HasMetadata is) {
+    return delegate.resource(is);
+  }
 
-    @Override
-    public ClientMixedOperation<ComponentStatus, ComponentStatusList, DoneableComponentStatus, ClientResource<ComponentStatus, DoneableComponentStatus>> componentstatuses() {
-        return delegate.componentstatuses();
-    }
+  @Override
+  public NamespaceVisitFromServerGetWatchDeleteRecreateApplicable<HasMetadata, Boolean> resource(String s) {
+    return delegate.resource(s);
+  }
 
-    @Override
-    public NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> load(InputStream is) {
-        return delegate.load(is);
-    }
+  @Override
+  public ClientMixedOperation<Endpoints, EndpointsList, DoneableEndpoints, ClientResource<Endpoints, DoneableEndpoints>> endpoints() {
+    return delegate.endpoints();
+  }
 
-    @Override
-    public NamespaceVisitFromServerGetDeleteRecreateApplicable<List<HasMetadata>, Boolean> resource(HasMetadata is) {
-        return delegate.resource(is);
-    }
+  @Override
+  public ClientMixedOperation<Event, EventList, DoneableEvent, ClientResource<Event, DoneableEvent>> events() {
+    return delegate.events();
+  }
 
-    @Override
-    public ClientMixedOperation<Endpoints, EndpointsList, DoneableEndpoints, ClientResource<Endpoints, DoneableEndpoints>> endpoints() {
-        return delegate.endpoints();
-    }
+  @Override
+  public ClientNonNamespaceOperation<Namespace, NamespaceList, DoneableNamespace, ClientResource<Namespace, DoneableNamespace>> namespaces() {
+    return delegate.namespaces();
+  }
 
-    @Override
-    public ClientMixedOperation<Event, EventList, DoneableEvent, ClientResource<Event, DoneableEvent>> events() {
-        return delegate.events();
-    }
+  @Override
+  public ClientNonNamespaceOperation<Node, NodeList, DoneableNode, ClientResource<Node, DoneableNode>> nodes() {
+    return delegate.nodes();
+  }
 
-    @Override
-    public ClientNonNamespaceOperation<Namespace, NamespaceList, DoneableNamespace, ClientResource<Namespace, DoneableNamespace>> namespaces() {
-        return delegate.namespaces();
-    }
+  @Override
+  public ClientNonNamespaceOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, ClientResource<PersistentVolume, DoneablePersistentVolume>> persistentVolumes() {
+    return delegate.persistentVolumes();
+  }
 
-    @Override
-    public ClientNonNamespaceOperation<Node, NodeList, DoneableNode, ClientResource<Node, DoneableNode>> nodes() {
-        return delegate.nodes();
-    }
+  @Override
+  public ClientMixedOperation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, ClientResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> persistentVolumeClaims() {
+    return delegate.persistentVolumeClaims();
+  }
 
-    @Override
-    public ClientNonNamespaceOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, ClientResource<PersistentVolume, DoneablePersistentVolume>> persistentVolumes() {
-        return delegate.persistentVolumes();
-    }
+  @Override
+  public ClientMixedOperation<Pod, PodList, DoneablePod, ClientPodResource<Pod, DoneablePod>> pods() {
+    return delegate.pods();
+  }
 
-    @Override
-    public ClientMixedOperation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, ClientResource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> persistentVolumeClaims() {
-        return delegate.persistentVolumeClaims();
-    }
+  @Override
+  public ClientMixedOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>> replicationControllers() {
+    return delegate.replicationControllers();
+  }
 
-    @Override
-    public ClientMixedOperation<Pod, PodList, DoneablePod, ClientPodResource<Pod, DoneablePod>> pods() {
-        return delegate.pods();
-    }
+  @Override
+  public ClientMixedOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota, ClientResource<ResourceQuota, DoneableResourceQuota>> resourceQuotas() {
+    return delegate.resourceQuotas();
+  }
 
-    @Override
-    public ClientMixedOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>> replicationControllers() {
-        return delegate.replicationControllers();
-    }
+  @Override
+  public ClientMixedOperation<Secret, SecretList, DoneableSecret, ClientResource<Secret, DoneableSecret>> secrets() {
+    return delegate.secrets();
+  }
 
-    @Override
-    public ClientMixedOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota, ClientResource<ResourceQuota, DoneableResourceQuota>> resourceQuotas() {
-        return delegate.resourceQuotas();
-    }
+  @Override
+  public ClientMixedOperation<Service, ServiceList, DoneableService, ClientResource<Service, DoneableService>> services() {
+    return delegate.services();
+  }
 
-    @Override
-    public ClientMixedOperation<Secret, SecretList, DoneableSecret, ClientResource<Secret, DoneableSecret>> secrets() {
-        return delegate.secrets();
-    }
+  @Override
+  public ClientMixedOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, ClientResource<ServiceAccount, DoneableServiceAccount>> serviceAccounts() {
+    return delegate.serviceAccounts();
+  }
 
-    @Override
-    public ClientMixedOperation<Service, ServiceList, DoneableService, ClientResource<Service, DoneableService>> services() {
-        return delegate.services();
-    }
+  @Override
+  public ClientKubernetesListMixedOperation lists() {
+    return delegate.lists();
+  }
 
-    @Override
-    public ClientMixedOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, ClientResource<ServiceAccount, DoneableServiceAccount>> serviceAccounts() {
-        return delegate.serviceAccounts();
-    }
+  @Override
+  public ClientNonNamespaceOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints() {
+    return delegate.securityContextConstraints();
+  }
 
-    @Override
-    public ClientKubernetesListMixedOperation lists() {
-        return delegate.lists();
-    }
+  @Override
+  public ClientMixedOperation<ConfigMap, ConfigMapList, DoneableConfigMap, ClientResource<ConfigMap, DoneableConfigMap>> configMaps() {
+    return delegate.configMaps();
+  }
 
-    @Override
-    public ClientNonNamespaceOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, ClientResource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints() {
-        return delegate.securityContextConstraints();
-    }
+  @Override
+  public ClientMixedOperation<LimitRange, LimitRangeList, DoneableLimitRange, ClientResource<LimitRange, DoneableLimitRange>> limitRanges() {
+    return delegate.limitRanges();
+  }
 
-    @Override
-    public ClientMixedOperation<ConfigMap, ConfigMapList, DoneableConfigMap, ClientResource<ConfigMap, DoneableConfigMap>> configMaps() {
-        return delegate.configMaps();
-    }
+  @Override
+  public <C> Boolean isAdaptable(Class<C> type) {
+    return delegate.isAdaptable(type);
+  }
 
-    @Override
-    public ClientMixedOperation<LimitRange, LimitRangeList, DoneableLimitRange, ClientResource<LimitRange, DoneableLimitRange>> limitRanges() {
-      return delegate.limitRanges();
-    }
+  @Override
+  public <C> C adapt(Class<C> type) {
+    return delegate.adapt(type);
+  }
 
-    @Override
-    public <C> Boolean isAdaptable(Class<C> type) {
-        return delegate.isAdaptable(type);
-    }
+  @Override
+  public URL getMasterUrl() {
+    return delegate.getMasterUrl();
+  }
 
-    @Override
-    public <C> C adapt(Class<C> type) {
-        return delegate.adapt(type);
-    }
+  @Override
+  public String getApiVersion() {
+    return delegate.getApiVersion();
+  }
 
-    @Override
-    public URL getMasterUrl() {
-        return delegate.getMasterUrl();
-    }
+  @Override
+  public String getNamespace() {
+    return delegate.getNamespace();
+  }
 
-    @Override
-    public String getApiVersion() {
-        return delegate.getApiVersion();
-    }
+  @Override
+  public RootPaths rootPaths() {
+    return delegate.rootPaths();
+  }
 
-    @Override
-    public String getNamespace() {
-        return delegate.getNamespace();
-    }
+  @Override
+  public void close() {
+    delegate.close();
+  }
 
-    @Override
-    public RootPaths rootPaths() {
-        return delegate.rootPaths();
-    }
-
-    @Override
-    public void close() {
-        delegate.close();
-    }
-
-    @Override
-    public Config getConfiguration() {
-        return delegate.getConfiguration();
-    }
+  @Override
+  public Config getConfiguration() {
+    return delegate.getConfiguration();
+  }
 }

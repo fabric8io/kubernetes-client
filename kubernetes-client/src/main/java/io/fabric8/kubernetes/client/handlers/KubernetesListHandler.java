@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.handlers;
 
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
@@ -86,5 +88,15 @@ public class KubernetesListHandler implements ResourceHandler<KubernetesList, Ku
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, KubernetesList item) {
     return new KubernetesListOperationsImpl(client, config, namespace, null, true, false, false, item, null).delete(item);
+  }
+
+  @Override
+  public Watch watch(OkHttpClient client, Config config, String namespace, KubernetesList item, Watcher<KubernetesList> watcher) {
+    throw new UnsupportedOperationException("Watch is not supported on KubernetesList.");
+  }
+
+  @Override
+  public Watch watch(OkHttpClient client, Config config, String namespace, KubernetesList item, String resourceVersion, Watcher<KubernetesList> watcher) {
+    throw new UnsupportedOperationException("Watch is not supported on KubernetesList.");
   }
 }

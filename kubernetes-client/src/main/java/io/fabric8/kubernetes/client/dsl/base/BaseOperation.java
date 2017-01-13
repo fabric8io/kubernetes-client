@@ -83,7 +83,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   protected Reaper reaper;
 
   protected BaseOperation(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields)  {
-    super(client, config, apiGroup, apiVersion(item, apiVersion), resourceT, namespace, name);
+    super(client, config, apiGroup, apiVersion(item, apiVersion), resourceT, namespace, name(item, name));
     this.cascading = cascading;
     this.item = item;
     this.reloadingFromServer = reloadingFromServer;
@@ -101,7 +101,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   protected BaseOperation(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, Class<T> type, Class<L> listType, Class<D> doneableType) {
-    super(client, config, apiGroup, apiVersion(item, apiVersion), resourceT, namespace, name);
+    super(client, config, apiGroup, apiVersion(item, apiVersion), resourceT, namespace, name(item, name));
     this.cascading = cascading;
     this.item = item;
     this.resourceVersion = resourceVersion;
@@ -116,6 +116,23 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     this.labelsIn = new TreeMap<>();
     this.labelsNotIn = new TreeMap<>();
     this.fields = new TreeMap<>();
+  }
+
+
+  /**
+   * Returns the name and falls back to the item name.
+   * @param item  The item.
+   * @param name  The name to check.
+   * @param <T>
+     * @return
+     */
+  private static <T> String name(T item, String name) {
+    if (name != null && !name.isEmpty()) {
+      return name;
+    } else if (item instanceof HasMetadata) {
+      return ((HasMetadata)item).getMetadata().getName();
+    }
+    return null;
   }
 
   /**

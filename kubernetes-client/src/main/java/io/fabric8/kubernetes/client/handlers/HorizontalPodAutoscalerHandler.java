@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.handlers;
 
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.extensions.HorizontalPodAutoscaler;
 import io.fabric8.kubernetes.api.model.extensions.HorizontalPodAutoscalerBuilder;
@@ -58,5 +60,15 @@ public class HorizontalPodAutoscalerHandler implements ResourceHandler<Horizonta
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, HorizontalPodAutoscaler item) {
     return new HorizontalPodAutoscalerOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).delete(item);
+  }
+
+  @Override
+  public Watch watch(OkHttpClient client, Config config, String namespace, HorizontalPodAutoscaler item, Watcher<HorizontalPodAutoscaler> watcher) {
+    return new HorizontalPodAutoscalerOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).watch(watcher);
+  }
+
+  @Override
+  public Watch watch(OkHttpClient client, Config config, String namespace, HorizontalPodAutoscaler item, String resourceVersion, Watcher<HorizontalPodAutoscaler> watcher) {
+    return new HorizontalPodAutoscalerOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).watch(resourceVersion, watcher);
   }
 }

@@ -15,6 +15,8 @@
  */
 package io.fabric8.openshift.client.handlers;
 
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
@@ -64,5 +66,17 @@ public class BuildConfigHandler implements ResourceHandler<BuildConfig, BuildCon
   public Boolean delete(OkHttpClient client, Config config, String namespace, BuildConfig item) {
     OpenShiftConfig osConfig = OpenShiftConfig.wrap(config);
     return new BuildConfigOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, null, null, null, osConfig.getBuildTimeout(), TimeUnit.MILLISECONDS).delete(item);
+  }
+
+  @Override
+  public Watch watch(OkHttpClient client, Config config, String namespace, BuildConfig item, Watcher<BuildConfig> watcher) {
+    OpenShiftConfig osConfig = OpenShiftConfig.wrap(config);
+    return new BuildConfigOperationsImpl(client, osConfig, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, null, null, null, osConfig.getBuildTimeout(), TimeUnit.MILLISECONDS).watch(watcher);
+  }
+
+  @Override
+  public Watch watch(OkHttpClient client, Config config, String namespace, BuildConfig item, String resourceVersion, Watcher<BuildConfig> watcher) {
+    OpenShiftConfig osConfig = OpenShiftConfig.wrap(config);
+    return new BuildConfigOperationsImpl(client, osConfig, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, null, null, null, osConfig.getBuildTimeout(), TimeUnit.MILLISECONDS).watch(resourceVersion, watcher);
   }
 }
