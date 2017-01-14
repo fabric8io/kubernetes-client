@@ -15,54 +15,28 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
-import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.client.dsl.Gettable;
-import io.fabric8.kubernetes.client.dsl.Reaper;
-import io.fabric8.kubernetes.client.dsl.Triggerable;
-import io.fabric8.kubernetes.client.dsl.Typeable;
-import io.fabric8.kubernetes.client.dsl.Watchable;
-import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
-import io.fabric8.kubernetes.client.utils.URLUtils;
-import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.openshift.api.model.Build;
-import io.fabric8.openshift.api.model.BuildConfig;
-import io.fabric8.openshift.api.model.BuildConfigList;
-import io.fabric8.openshift.api.model.BuildList;
-import io.fabric8.openshift.api.model.BuildRequest;
-import io.fabric8.openshift.api.model.DoneableBuildConfig;
-import io.fabric8.openshift.api.model.WebHookTrigger;
-import io.fabric8.openshift.client.OpenShiftConfig;
-import io.fabric8.openshift.client.dsl.BuildConfigOperation;
-import io.fabric8.openshift.client.dsl.ClientBuildConfigResource;
-import io.fabric8.openshift.client.dsl.InputStreamable;
-import io.fabric8.openshift.client.dsl.TimeoutInputStreamable;
-import io.fabric8.openshift.client.dsl.buildconfig.AsFileTimeoutInputStreamable;
-import io.fabric8.openshift.client.dsl.buildconfig.AuthorEmailable;
-import io.fabric8.openshift.client.dsl.buildconfig.AuthorMessageAsFileTimeoutInputStreamable;
-import io.fabric8.openshift.client.dsl.buildconfig.CommitterAuthorMessageAsFileTimeoutInputStreamable;
-import io.fabric8.openshift.client.dsl.buildconfig.CommitterEmailable;
-import io.fabric8.openshift.client.dsl.buildconfig.MessageAsFileTimeoutInputStreamable;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.internal.Util;
-import okio.BufferedSink;
-import okio.Okio;
-import okio.Source;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
+
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.dsl.*;
+import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
+import io.fabric8.kubernetes.client.utils.URLUtils;
+import io.fabric8.kubernetes.client.utils.Utils;
+import io.fabric8.openshift.api.model.*;
+import io.fabric8.openshift.client.OpenShiftConfig;
+import io.fabric8.openshift.client.dsl.*;
+import io.fabric8.openshift.client.dsl.buildconfig.*;
+import okhttp3.*;
+import okio.BufferedSink;
+import okio.Okio;
+import okio.Source;
 
 public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, BuildConfigList, DoneableBuildConfig,
         ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build>>
@@ -215,6 +189,24 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
 
   @Override
   public Build fromInputStream(final InputStream inputStream) {
+    return fromInputStream(inputStream, -1L);
+  }
+
+  @Override
+  public Build fromFile(final File file) {
+    if (!file.exists()) {
+      throw new IllegalArgumentException("Can't instantiate binary build from the specified file. The file does not exists");
+    }
+    try (InputStream is = new FileInputStream(file)) {
+      // Use a length to prevent chunked encoding with OkHttp, which in turn
+      // doesn't work with 'Expect: 100-continue' negotiation with the OpenShift API server
+      return fromInputStream(is, file.length());
+    } catch (Throwable t) {
+      throw KubernetesClientException.launderThrowable(t);
+    }
+  }
+
+  private Build fromInputStream(final InputStream inputStream, final long contentLength) {
     try {
 
       RequestBody requestBody = new RequestBody() {
@@ -224,45 +216,42 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
         }
 
         @Override
+        public long contentLength() throws IOException {
+          return contentLength;
+        }
+
+        @Override
         public void writeTo(BufferedSink sink) throws IOException {
           Source source = null;
           try {
             source = Okio.source(inputStream);
+            OutputStream os = sink.outputStream();
+
             sink.writeAll(source);
           } catch (IOException e) {
             throw KubernetesClientException.launderThrowable("Can't instantiate binary build, due to error reading/writing stream. "
-              + "Can be caused if output is stream closed by the server.", e);
+                                                             + "Can be caused if the output stream was closed by the server.", e);
           }
         }
       };
 
       OkHttpClient newClient = client.newBuilder()
-        .readTimeout(timeout, timeoutUnit)
-        .writeTimeout(timeout, timeoutUnit)
-        .build();
-      Request.Builder requestBuilder = new Request.Builder().post(requestBody).url(getQueryParameters());
+                                     .readTimeout(timeout, timeoutUnit)
+                                     .writeTimeout(timeout, timeoutUnit)
+                                     .build();
+      Request.Builder requestBuilder =
+          new Request.Builder().post(requestBody)
+                               .header("Expect", "100-continue")
+                               .url(getQueryParameters());
       return handleResponse(newClient, requestBuilder, 201, Build.class);
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
   }
 
-  @Override
-  public Build fromFile(final File file) {
-    if (!file.exists()) {
-      throw new IllegalArgumentException("Can't instantiate binary build from the specified file. The file does not exists");
-    }
-    try (InputStream is = new FileInputStream(file)) {
-      return fromInputStream(is);
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(t);
-    }
-  }
-
   private String getQueryParameters() throws MalformedURLException {
     StringBuilder sb = new StringBuilder();
     sb.append(URLUtils.join(getResourceUrl().toString(), "instantiatebinary"));
-
     if (Utils.isNullOrEmpty(message)) {
       sb.append("?commit=");
     } else {
