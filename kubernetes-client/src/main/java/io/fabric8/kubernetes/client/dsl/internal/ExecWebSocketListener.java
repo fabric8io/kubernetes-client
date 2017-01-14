@@ -98,15 +98,6 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
         } catch (Throwable t) {
             throw KubernetesClientException.launderThrowable(t);
         }
-
-        WebSocket ws = webSocketRef.get();
-        try {
-            if (ws != null) {
-                ws.close(1000, "Closing...");
-            }
-        } catch (Throwable t) {
-            throw KubernetesClientException.launderThrowable(t);
-        }
     }
 
     public void waitUntilReady() {
