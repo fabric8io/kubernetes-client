@@ -56,6 +56,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
@@ -213,6 +214,24 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
 
   @Override
   public Build fromInputStream(final InputStream inputStream) {
+    return fromInputStream(inputStream, -1L);
+  }
+
+  @Override
+  public Build fromFile(final File file) {
+    if (!file.exists()) {
+      throw new IllegalArgumentException("Can't instantiate binary build from the specified file. The file does not exists");
+    }
+    try (InputStream is = new FileInputStream(file)) {
+      // Use a length to prevent chunked encoding with OkHttp, which in turn
+      // doesn't work with 'Expect: 100-continue' negotiation with the OpenShift API server
+      return fromInputStream(is, file.length());
+    } catch (Throwable t) {
+      throw KubernetesClientException.launderThrowable(t);
+    }
+  }
+
+  private Build fromInputStream(final InputStream inputStream, final long contentLength) {
     try {
 
       RequestBody requestBody = new RequestBody() {
@@ -222,45 +241,42 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
         }
 
         @Override
+        public long contentLength() throws IOException {
+          return contentLength;
+        }
+
+        @Override
         public void writeTo(BufferedSink sink) throws IOException {
           Source source = null;
           try {
             source = Okio.source(inputStream);
+            OutputStream os = sink.outputStream();
+
             sink.writeAll(source);
           } catch (IOException e) {
             throw KubernetesClientException.launderThrowable("Can't instantiate binary build, due to error reading/writing stream. "
-              + "Can be caused if output is stream closed by the server.", e);
+                                                             + "Can be caused if the output stream was closed by the server.", e);
           }
         }
       };
 
       OkHttpClient newClient = client.newBuilder()
-        .readTimeout(timeout, timeoutUnit)
-        .writeTimeout(timeout, timeoutUnit)
-        .build();
-      Request.Builder requestBuilder = new Request.Builder().post(requestBody).url(getQueryParameters());
+                                     .readTimeout(timeout, timeoutUnit)
+                                     .writeTimeout(timeout, timeoutUnit)
+                                     .build();
+      Request.Builder requestBuilder =
+          new Request.Builder().post(requestBody)
+                               .header("Expect", "100-continue")
+                               .url(getQueryParameters());
       return handleResponse(newClient, requestBuilder, Build.class);
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
   }
 
-  @Override
-  public Build fromFile(final File file) {
-    if (!file.exists()) {
-      throw new IllegalArgumentException("Can't instantiate binary build from the specified file. The file does not exist");
-    }
-    try (InputStream is = new FileInputStream(file)) {
-      return fromInputStream(is);
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(t);
-    }
-  }
-
   private String getQueryParameters() throws MalformedURLException {
     StringBuilder sb = new StringBuilder();
     sb.append(URLUtils.join(getResourceUrl().toString(), "instantiatebinary"));
-
     if (Utils.isNullOrEmpty(message)) {
       sb.append("?commit=");
     } else {
