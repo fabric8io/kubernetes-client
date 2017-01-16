@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
@@ -30,6 +31,7 @@ import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 import okio.Buffer;
 import okio.ByteString;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,9 +66,11 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
     private final AtomicBoolean started = new AtomicBoolean(false);
     private final ArrayBlockingQueue<Object> queue = new ArrayBlockingQueue<>(1);
     private final ExecListener listener;
-
-    public ExecWebSocketListener(InputStream in, OutputStream out, OutputStream err, PipedOutputStream inputPipe, PipedInputStream outputPipe, PipedInputStream errorPipe, ExecListener listener) {
+    private final OkHttpClient client;
+    
+    public ExecWebSocketListener(InputStream in, OutputStream out, OutputStream err, PipedOutputStream inputPipe, PipedInputStream outputPipe, PipedInputStream errorPipe, ExecListener listener, OkHttpClient client) {
         this.listener = listener;
+        this.client = client;
         this.in = inputStreamOrPipe(in, inputPipe);
         this.out = outputStreamOrPipe(out, outputPipe);
         this.err = outputStreamOrPipe(err, errorPipe);
@@ -94,9 +98,18 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
             if (!executorService.awaitTermination(10, TimeUnit.SECONDS)) {
                 executorService.shutdownNow();
             }
+            if (client != null) {
+                if (client.connectionPool() != null) {
+                    client.connectionPool().evictAll();
+                }
+                if (client.dispatcher() != null) {
+                    client.dispatcher().executorService().shutdown();
+                }
+            }
         } catch (Throwable t) {
             throw KubernetesClientException.launderThrowable(t);
         }
+        
     }
 
     public void waitUntilReady() {

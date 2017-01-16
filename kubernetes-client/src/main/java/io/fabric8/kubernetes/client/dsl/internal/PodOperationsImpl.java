@@ -206,7 +206,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
             Request.Builder r = new Request.Builder().url(url).get();
             OkHttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
             WebSocketCall webSocketCall = WebSocketCall.create(clone, r.build());
-            final ExecWebSocketListener execWebSocketListener = new ExecWebSocketListener(in, out, err, inPipe, outPipe, errPipe, execListener);
+            final ExecWebSocketListener execWebSocketListener = new ExecWebSocketListener(in, out, err, inPipe, outPipe, errPipe, execListener, clone);
             webSocketCall.enqueue(execWebSocketListener);
             execWebSocketListener.waitUntilReady();
             return execWebSocketListener;
