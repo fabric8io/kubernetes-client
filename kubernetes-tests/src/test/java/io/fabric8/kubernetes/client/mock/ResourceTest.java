@@ -97,8 +97,8 @@ public class ResourceTest {
         .withResourceVersion("1")
       .withNamespace("test").and().build();
 
-      server.expect().get().withPath("/api/v1/namespaces/test/pods").andReturn(200, pod1).once();
-      server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(201, pod1).once();
+      server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, pod1).once();
+      server.expect().post().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(201, pod1).once();
 
      server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
         .open()
