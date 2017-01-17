@@ -96,7 +96,16 @@ public class OpenShiftConfig extends Config {
   }
 
   private static String getDefaultOpenShiftUrl(Config config) {
-    return Utils.getSystemPropertyOrEnvVar(OPENSHIFT_URL_SYTEM_PROPERTY, URLUtils.join(config.getMasterUrl(), "oapi", getDefaultOapiVersion(config)));
+    String openshiftUrl = Utils.getSystemPropertyOrEnvVar(OPENSHIFT_URL_SYTEM_PROPERTY);
+    if (openshiftUrl != null) {
+      // The OPENSHIFT_URL environment variable may be provided without the 'oapi' path in some configurations
+      if (!openshiftUrl.contains("/oapi/")) {
+        openshiftUrl = URLUtils.join(openshiftUrl, "oapi", getDefaultOapiVersion(config));
+      }
+      return openshiftUrl;
+    } else {
+      return URLUtils.join(config.getMasterUrl(), "oapi", getDefaultOapiVersion(config));
+    }
   }
 
   public String getOapiVersion() {
