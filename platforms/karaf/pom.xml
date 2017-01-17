@@ -30,7 +30,8 @@
   <name>Fabric8 :: Kubernetes :: Platforms :: Karaf</name>
 
   <properties>
-    <karaf.version>4.0.5</karaf.version>
+    <karaf.version>2.4.0</karaf.version>
+    <karaf.plugin.version>4.0.5</karaf.plugin.version>
     <osgi.version>6.0.0</osgi.version>
     <pax.exam.version>4.9.1</pax.exam.version>
     <servlet.api.version>3.1.0</servlet.api.version>

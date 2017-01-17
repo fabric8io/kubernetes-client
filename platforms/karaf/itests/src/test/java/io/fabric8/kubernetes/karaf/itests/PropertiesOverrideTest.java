@@ -38,7 +38,6 @@ import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 
-import static org.ops4j.pax.exam.CoreOptions.maven;
 import static org.ops4j.pax.exam.CoreOptions.systemProperty;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.configureSecurity;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.editConfigurationFileExtend;
@@ -84,9 +83,9 @@ public class PropertiesOverrideTest extends TestBase {
 
     @Configuration
     public Option[] config() throws URISyntaxException, MalformedURLException {
-        MavenArtifactUrlReference karafUrl = maven().groupId("org.apache.karaf").artifactId("apache-karaf-minimal").versionAsInProject().type("tar.gz");
+        MavenArtifactUrlReference karafUrl = getKarafDistributionUrlReference();
         return new Option[]{
-                karafDistributionConfiguration().frameworkUrl(karafUrl).name("Apache Karaf").unpackDirectory(new File("target/exam")),
+                karafDistributionConfiguration().frameworkUrl(karafUrl).karafVersion(getKarafVersion()).name("Apache Karaf").unpackDirectory(new File("target/exam")),
                 configureSecurity().disableKarafMBeanServerBuilder(),
                 features(getFeaturesFile().toURI().toURL().toString(), "scr", "openshift-client"),
                 editConfigurationFileExtend(

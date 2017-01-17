@@ -62,8 +62,9 @@
 
         <dependency>
             <groupId>org.apache.karaf</groupId>
-            <artifactId>apache-karaf-minimal</artifactId>
+            <artifactId>apache-karaf</artifactId>
             <version>${karaf.version}</version>
+            <classifier>minimal</classifier>
             <scope>test</scope>
             <type>tar.gz</type>
             <exclusions>
@@ -97,6 +98,12 @@
     </dependencies>
 
     <build>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
         <plugins>
             <plugin>
                 <groupId>org.apache.servicemix.tooling</groupId>
@@ -140,7 +147,7 @@
             <plugin>
                 <groupId>org.apache.karaf.tooling</groupId>
                 <artifactId>karaf-maven-plugin</artifactId>
-                <version>${karaf.version}</version>
+                <version>${karaf.plugin.version}</version>
                 <executions>
                     <execution>
                         <id>add-features-to-repo</id>

@@ -16,13 +16,22 @@
 package io.fabric8.kubernetes.karaf.itests;
 
 import org.junit.Assert;
+import org.ops4j.pax.exam.options.MavenArtifactUrlReference;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Properties;
+
+import static org.ops4j.pax.exam.CoreOptions.maven;
 
 public class TestBase {
 
     private static final String FEATURES_XML = "features.xml";
+    private static final String VERSION_PROPERTIES = "versions.properties";
+    private static final String KARAF_VERSION_PROPERTY = "karaf.version";
+    private static String KARAF_VERSION = "";
+
 
     static File getFeaturesFile() throws URISyntaxException {
         String featuresXml = System.getProperty(FEATURES_XML);
@@ -32,4 +41,28 @@ public class TestBase {
         return featuresFile;
     }
 
+    protected MavenArtifactUrlReference getKarafDistributionUrlReference() {
+        return maven()
+            .groupId("org.apache.karaf")
+            .artifactId("apache-karaf")
+            .versionAsInProject()
+            .classifier("minimal")
+            .type("tar.gz");
+    }
+
+    protected String getKarafVersion() {
+      if (KARAF_VERSION.isEmpty()) {
+        Properties properties = new Properties();
+        try {
+          properties.load(TestBase.class.getResourceAsStream(VERSION_PROPERTIES));
+          if (!properties.containsKey(KARAF_VERSION_PROPERTY)) {
+            throw new IllegalStateException(KARAF_VERSION_PROPERTY + " is not configured in " + VERSION_PROPERTIES);
+          }
+          KARAF_VERSION = properties.getProperty(KARAF_VERSION_PROPERTY);
+        } catch (IOException e) {
+          throw new IllegalStateException("Unable to load " + VERSION_PROPERTIES, e);
+        }
+      }
+      return KARAF_VERSION;
+    }
 }
