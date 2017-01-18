@@ -27,8 +27,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-
 public class OpenShiftConfig extends Config {
 
   public static final String KUBERNETES_OAPI_VERSION_SYSTEM_PROPERTY = "kubernetes.oapi.version";
@@ -111,7 +109,7 @@ public class OpenShiftConfig extends Config {
   private static boolean isRootURL(String url) {
     try {
       String path = new URL(url).getPath();
-      return StringUtils.isBlank(path) || "/".equals(path);
+      return "".equals(path) || "/".equals(path);
     } catch (MalformedURLException e) {
       return false;
     }
