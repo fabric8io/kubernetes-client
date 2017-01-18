@@ -23,6 +23,8 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Map;
 
 public class OpenShiftConfig extends Config {
@@ -92,7 +94,25 @@ public class OpenShiftConfig extends Config {
   }
 
   private static String getDefaultOpenShiftUrl(Config config) {
-    return Utils.getSystemPropertyOrEnvVar(OPENSHIFT_URL_SYTEM_PROPERTY, URLUtils.join(config.getMasterUrl(), "oapi", getDefaultOapiVersion(config)));
+    String openshiftUrl = Utils.getSystemPropertyOrEnvVar(OPENSHIFT_URL_SYTEM_PROPERTY);
+    if (openshiftUrl != null) {
+      // The OPENSHIFT_URL environment variable may be set to the root url (i.e. without the '/oapi/version' path) in some configurations
+      if (isRootURL(openshiftUrl)) {
+        openshiftUrl = URLUtils.join(openshiftUrl, "oapi", getDefaultOapiVersion(config));
+      }
+      return openshiftUrl;
+    } else {
+      return URLUtils.join(config.getMasterUrl(), "oapi", getDefaultOapiVersion(config));
+    }
+  }
+
+  private static boolean isRootURL(String url) {
+    try {
+      String path = new URL(url).getPath();
+      return "".equals(path) || "/".equals(path);
+    } catch (MalformedURLException e) {
+      return false;
+    }
   }
 
   public String getOapiVersion() {
