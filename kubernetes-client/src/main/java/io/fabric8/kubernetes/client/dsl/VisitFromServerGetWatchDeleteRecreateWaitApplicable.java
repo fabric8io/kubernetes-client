@@ -16,16 +16,16 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-import java.util.List;
-
 import io.fabric8.kubernetes.api.builder.Visitable;
 import io.fabric8.kubernetes.client.FromServerGettable;
 import io.fabric8.kubernetes.client.GracePeriodConfigurable;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 
-public interface ListVisitFromServerGetDeleteRecreateApplicable<T, B> extends Visitable<ListVisitFromServerGetDeleteRecreateApplicable<T, B>>,
-                                                                          FromServerGettable<List<T>>, RecreateApplicable<List<T>>,
+public interface VisitFromServerGetWatchDeleteRecreateWaitApplicable<T, B> extends Visitable<VisitFromServerGetWatchDeleteRecreateWaitApplicable<T, B>>,
+                                                                          FromServerGettable<T>, RecreateApplicable<T>,
                                                                           CascadingDeletable<B>,
+                                                                          Watchable<Watch, Watcher<T>>,
+                                                                          Waitable<T>,
                                                                           GracePeriodConfigurable<CascadingDeletable<B>> {
 }

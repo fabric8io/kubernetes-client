@@ -15,6 +15,12 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
+import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.internal.readiness.Readiness;
+import io.fabric8.kubernetes.client.internal.readiness.ReadinessWatcher;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableEndpoints;
 import io.fabric8.kubernetes.api.model.Endpoints;
@@ -25,6 +31,8 @@ import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 public class EndpointsOperationsImpl extends HasMetadataOperation<Endpoints, EndpointsList, DoneableEndpoints,
   ClientResource<Endpoints, DoneableEndpoints>> {
@@ -36,5 +44,26 @@ public class EndpointsOperationsImpl extends HasMetadataOperation<Endpoints, End
 
   public EndpointsOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Endpoints item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
     super(client, config, null, apiVersion, "endpoints", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  }
+
+  @Override
+  public Endpoints waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
+    Endpoints endpoints = get();
+    if (endpoints == null) {
+      throw new IllegalArgumentException("Endpoints with name:[" + name + "] in namespace:[" + namespace + "] not found!");
+    }
+
+    if (Readiness.isReady(endpoints)) {
+      return endpoints;
+    }
+
+    final CountDownLatch latch = new CountDownLatch(1);
+    Watcher<Endpoints> watcher = new ReadinessWatcher<>(latch);
+    try (Watch watch = watch(watcher)) {
+      if (latch.await(amount, timeUnit)) {
+        return get();
+      }
+    }
+    throw new KubernetesClientTimeoutException(endpoints.getKind(), getName(), getNamespace(), amount, timeUnit);
   }
 }

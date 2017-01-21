@@ -17,6 +17,7 @@
 package io.fabric8.kubernetes.client;
 
 
+import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 
@@ -94,4 +95,18 @@ public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
    * @return              The true if the resource was successfully deleted.
    */
   Watch watch(OkHttpClient client, Config config, String namespace, T item, String resourceVersion, Watcher<T> watcher);
+
+  /**
+   * Waits until the specified resource is Ready.
+   * For resources that 'readiness' is not applicable the method is equivalent to get.
+   * @param client        An instance of the http client.
+   * @param config        The client config.
+   * @param namespace     The target namespace.
+   * @param item          The resource to wait.
+   * @param amount        The amount of time to wait
+   * @param timeUnit      The wait {@link TimeUnit}.
+   * @return              The true if the resource was successfully deleted.
+   * @throws              InterruptedException
+   */
+  T waitUntilReady(OkHttpClient client, Config config, String namespace, T item, long amount, TimeUnit timeUnit) throws InterruptedException;
 }

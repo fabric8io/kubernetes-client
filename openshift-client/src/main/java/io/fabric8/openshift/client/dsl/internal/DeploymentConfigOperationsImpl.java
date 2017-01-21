@@ -15,18 +15,6 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
-import io.fabric8.kubernetes.api.model.extensions.Deployment;
-import io.fabric8.kubernetes.client.KubernetesClientException;
-
-import io.fabric8.kubernetes.client.dsl.Reaper;
-import io.fabric8.kubernetes.client.dsl.internal.ReplicationControllerOperationsImpl;
-import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.openshift.api.model.DeploymentConfig;
-import io.fabric8.openshift.api.model.DeploymentConfigList;
-import io.fabric8.openshift.api.model.DoneableDeploymentConfig;
-import io.fabric8.openshift.client.OpenShiftConfig;
-import io.fabric8.openshift.client.dsl.ClientDeployableScalableResource;
-import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +30,22 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.dsl.Reaper;
+import io.fabric8.kubernetes.client.dsl.internal.ReplicationControllerOperationsImpl;
+import io.fabric8.kubernetes.client.internal.readiness.Readiness;
+import io.fabric8.kubernetes.client.internal.readiness.ReadinessWatcher;
+import io.fabric8.kubernetes.client.utils.Utils;
+import io.fabric8.openshift.api.model.DeploymentConfig;
+import io.fabric8.openshift.api.model.DeploymentConfigList;
+import io.fabric8.openshift.api.model.DoneableDeploymentConfig;
+import io.fabric8.openshift.client.OpenShiftConfig;
+import io.fabric8.openshift.client.dsl.ClientDeployableScalableResource;
+import okhttp3.OkHttpClient;
 
 public class DeploymentConfigOperationsImpl extends OpenShiftOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig,
   ClientDeployableScalableResource<DeploymentConfig, DoneableDeploymentConfig>> implements ClientDeployableScalableResource<DeploymentConfig, DoneableDeploymentConfig> {
@@ -166,6 +170,27 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
       deployment = getMandatory();
     }
     return deployment;
+  }
+
+  @Override
+  public DeploymentConfig waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
+    DeploymentConfig dc = get();
+    if (dc == null) {
+      throw new IllegalArgumentException("DeploymentConfig with name:[" + name + "] in namespace:[" + namespace + "] not found!");
+    }
+
+    if (Readiness.isReady(dc)) {
+      return dc;
+    }
+
+    final CountDownLatch latch = new CountDownLatch(1);
+    Watcher<DeploymentConfig> watcher = new ReadinessWatcher<>(latch);
+    try (Watch watch = watch(watcher)) {
+      if (latch.await(amount, timeUnit)) {
+        return get();
+      }
+      throw new KubernetesClientTimeoutException(dc.getKind(), getName(), getNamespace(), amount, timeUnit);
+    }
   }
 
   /**

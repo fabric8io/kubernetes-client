@@ -72,4 +72,9 @@ public class ReplicationControllerHandler implements ResourceHandler<Replication
   public Watch watch(OkHttpClient client, Config config, String namespace, ReplicationController item, String resourceVersion, Watcher<ReplicationController> watcher) {
     return new ReplicationControllerOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).watch(resourceVersion, watcher);
   }
+
+  @Override
+  public ReplicationController waitUntilReady(OkHttpClient client, Config config, String namespace, ReplicationController item, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new ReplicationControllerOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).waitUntilReady(amount, timeUnit);
+  }
 }

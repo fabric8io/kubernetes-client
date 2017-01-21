@@ -30,6 +30,8 @@ import io.fabric8.openshift.client.dsl.internal.ProjectRequestsOperationImpl;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
+import java.util.concurrent.TimeUnit;
+
 @Component
 @Service
 public class ProjectRequestHandler implements ResourceHandler<ProjectRequest, ProjectRequestBuilder> {
@@ -71,6 +73,11 @@ public class ProjectRequestHandler implements ResourceHandler<ProjectRequest, Pr
 
   @Override
   public Watch watch(OkHttpClient client, Config config, String namespace, ProjectRequest item, String resourceVersion, Watcher<ProjectRequest> watcher) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public ProjectRequest waitUntilReady(OkHttpClient client, Config config, String namespace, ProjectRequest item, long amount, TimeUnit timeUnit) throws InterruptedException {
     throw new UnsupportedOperationException();
   }
 }
