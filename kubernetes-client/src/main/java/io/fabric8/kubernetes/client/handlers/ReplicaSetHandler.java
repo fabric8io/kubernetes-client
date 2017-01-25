@@ -72,4 +72,9 @@ public class ReplicaSetHandler implements ResourceHandler<ReplicaSet, ReplicaSet
   public Watch watch(OkHttpClient client, Config config, String namespace, ReplicaSet item, String resourceVersion, Watcher<ReplicaSet> watcher) {
     return new ReplicaSetOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).watch(resourceVersion, watcher);
   }
+
+  @Override
+  public ReplicaSet waitUntilReady(OkHttpClient client, Config config, String namespace, ReplicaSet item, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new ReplicaSetOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).waitUntilReady(amount, timeUnit);
+  }
 }

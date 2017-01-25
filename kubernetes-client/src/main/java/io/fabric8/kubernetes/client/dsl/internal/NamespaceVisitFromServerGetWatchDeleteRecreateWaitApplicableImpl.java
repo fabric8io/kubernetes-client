@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
@@ -46,8 +47,8 @@ import io.fabric8.kubernetes.client.dsl.Applicable;
 import io.fabric8.kubernetes.client.dsl.CascadingDeletable;
 import io.fabric8.kubernetes.client.dsl.Deletable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
-import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateApplicable;
-import io.fabric8.kubernetes.client.dsl.VisitFromServerGetWatchDeleteRecreateApplicable;
+import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
+import io.fabric8.kubernetes.client.dsl.VisitFromServerGetWatchDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.handlers.KubernetesListHandler;
 import io.fabric8.kubernetes.client.utils.ResourceCompare;
@@ -59,9 +60,9 @@ import okhttp3.OkHttpClient;
 import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
 import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
 
-public class NamespaceVisitFromServerGetWatchDeleteRecreateApplicableImpl extends OperationSupport implements NamespaceVisitFromServerGetWatchDeleteRecreateApplicable<HasMetadata, Boolean> {
+public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl extends OperationSupport implements NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(NamespaceVisitFromServerGetWatchDeleteRecreateApplicableImpl.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl.class);
   private static final String EXPRESSION = "expression";
   private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -75,6 +76,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateApplicableImpl extend
   private final ResourceHandler handler;
   private final long gracePeriodSeconds;
   private final Boolean cascading;
+
   /**
    * We need to be able to either use an explicit namespace or fallback to the client default.
    * Either-way we need to update the object itself or the client will complain about a mismatch.
@@ -100,11 +102,11 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateApplicableImpl extend
     }
   }
 
-  public NamespaceVisitFromServerGetWatchDeleteRecreateApplicableImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, InputStream is, Boolean cascading) {
+  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, InputStream is, Boolean cascading) {
     this(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, unmarshal(is), -1, cascading);
   }
 
-  public NamespaceVisitFromServerGetWatchDeleteRecreateApplicableImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item, long gracePeriodSeconds, Boolean cascading) {
+  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item, long gracePeriodSeconds, Boolean cascading) {
     super(client, config, null, null, null, null, null);
     this.fallbackNamespace = namespace;
     this.explicitNamespace = explicitNamespace;
@@ -178,36 +180,36 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateApplicableImpl extend
   }
 
   @Override
-  public VisitFromServerGetWatchDeleteRecreateApplicable<HasMetadata, Boolean> inNamespace(String explicitNamespace) {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, deletingExisting, visitors, item, gracePeriodSeconds, cascading);
+  public VisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean> inNamespace(String explicitNamespace) {
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, deletingExisting, visitors, item, gracePeriodSeconds, cascading);
   }
 
   @Override
   public Gettable<HasMetadata> fromServer() {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateApplicableImpl(client, config, fallbackNamespace, explicitNamespace, true, deletingExisting, visitors, item, gracePeriodSeconds, cascading);
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, true, deletingExisting, visitors, item, gracePeriodSeconds, cascading);
   }
 
   @Override
   public Applicable<HasMetadata> deletingExisting() {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, cascading);
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, cascading);
   }
 
   @Override
-  public VisitFromServerGetWatchDeleteRecreateApplicable<HasMetadata, Boolean> accept(Visitor visitor) {
+  public VisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean> accept(Visitor visitor) {
     List<Visitor> newVisitors = new ArrayList<>(visitors);
     newVisitors.add(visitor);
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, newVisitors, item, gracePeriodSeconds, cascading);
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, newVisitors, item, gracePeriodSeconds, cascading);
   }
 
   @Override
   public CascadingDeletable<Boolean> withGracePeriod(long gracePeriodSeconds) {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, cascading);
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, cascading);
   }
 
 
   @Override
   public Deletable<Boolean> cascading(boolean cascading) {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, cascading);
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, cascading);
   }
 
   @Override
@@ -222,6 +224,13 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateApplicableImpl extend
     HasMetadata meta = acceptVisitors(asHasMetadata(item), visitors);
     ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
     return h.watch(client, config, meta.getMetadata().getNamespace(), meta, watcher);
+  }
+
+  @Override
+  public HasMetadata waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
+    HasMetadata meta = acceptVisitors(asHasMetadata(item), visitors);
+    ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
+    return h.waitUntilReady(client, config, meta.getMetadata().getNamespace(), meta, amount, timeUnit);
   }
 
 

@@ -26,6 +26,8 @@ import io.fabric8.kubernetes.client.dsl.internal.SecurityContextConstraintsOpera
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
+import java.util.concurrent.TimeUnit;
+
 @Component
 @Service
 public class SecurityContextConstraintsHandler implements ResourceHandler<SecurityContextConstraints, SecurityContextConstraintsBuilder> {
@@ -67,5 +69,10 @@ public class SecurityContextConstraintsHandler implements ResourceHandler<Securi
   @Override
   public Watch watch(OkHttpClient client, Config config, String namespace, SecurityContextConstraints item, String resourceVersion, Watcher<SecurityContextConstraints> watcher) {
     return new SecurityContextConstraintsOperationsImpl(client, config, null, namespace, null, true, item, null, false).watch(resourceVersion, watcher);
+  }
+
+  @Override
+  public SecurityContextConstraints waitUntilReady(OkHttpClient client, Config config, String namespace, SecurityContextConstraints item, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new SecurityContextConstraintsOperationsImpl(client, config, null, namespace, null, true, item, null, false).waitUntilReady(amount, timeUnit);
   }
 }

@@ -15,8 +15,22 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import io.fabric8.kubernetes.client.utils.Utils;
-import okhttp3.OkHttpClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Objects;
+import java.util.TreeMap;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerBuilder;
@@ -26,6 +40,7 @@ import io.fabric8.kubernetes.api.model.extensions.ReplicaSetBuilder;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
@@ -35,22 +50,10 @@ import io.fabric8.kubernetes.client.dsl.Reaper;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.Watchable;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Queue;
-import java.util.TreeMap;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
+import io.fabric8.kubernetes.client.internal.readiness.Readiness;
+import io.fabric8.kubernetes.client.internal.readiness.ReadinessWatcher;
+import io.fabric8.kubernetes.client.utils.Utils;
+import okhttp3.OkHttpClient;
 
 public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, ClientRollableScallableResource<ReplicaSet, DoneableReplicaSet>>
   implements ClientRollableScallableResource<ReplicaSet, DoneableReplicaSet>,
@@ -247,6 +250,27 @@ public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, R
       return super.patch(rc);
     }
     return new ReplicaSetRollingUpdater(client, config, namespace, rollingTimeUnit.toMillis(rollingTimeout), getConfig().getLoggingInterval()).rollUpdate(getMandatory(), rc);
+  }
+
+  @Override
+  public ReplicaSet waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
+    ReplicaSet rs = get();
+    if (rs == null) {
+      throw new IllegalArgumentException("ReplicaSet with name:[" + name + "] in namespace:[" + namespace + "] not found!");
+    }
+
+    if (Readiness.isReady(rs)) {
+      return rs;
+    }
+
+    final CountDownLatch latch = new CountDownLatch(1);
+    Watcher<ReplicaSet> watcher = new ReadinessWatcher<>(latch);
+    try (Watch watch = watch(watcher)) {
+      if (latch.await(amount, timeUnit)) {
+        return get();
+      }
+    }
+    throw new KubernetesClientTimeoutException(rs.getKind(), getName(), getNamespace(), amount, timeUnit);
   }
 
   private static class ReplicaSetReaper implements Reaper {

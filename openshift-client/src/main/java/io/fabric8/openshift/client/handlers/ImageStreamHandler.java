@@ -28,6 +28,7 @@ import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 
 @Component
 @Service
@@ -71,5 +72,10 @@ public class ImageStreamHandler implements ResourceHandler<ImageStream, ImageStr
   @Override
   public Watch watch(OkHttpClient client, Config config, String namespace, ImageStream item, String resourceVersion, Watcher<ImageStream> watcher) {
     return new ImageStreamOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).watch(resourceVersion, watcher);
+  }
+
+  @Override
+  public ImageStream waitUntilReady(OkHttpClient client, Config config, String namespace, ImageStream item, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new ImageStreamOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilReady(amount, timeUnit);
   }
 }

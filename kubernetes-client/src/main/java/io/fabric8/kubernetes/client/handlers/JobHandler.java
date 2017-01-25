@@ -27,6 +27,7 @@ import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 
 @Component
 @Service
@@ -70,5 +71,10 @@ public class JobHandler implements ResourceHandler<Job, JobBuilder> {
   @Override
   public Watch watch(OkHttpClient client, Config config, String namespace, Job item, String resourceVersion, Watcher<Job> watcher) {
     return new JobOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).watch(resourceVersion, watcher);
+  }
+
+  @Override
+  public Job waitUntilReady(OkHttpClient client, Config config, String namespace, Job item, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new JobOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilReady(amount, timeUnit);
   }
 }
