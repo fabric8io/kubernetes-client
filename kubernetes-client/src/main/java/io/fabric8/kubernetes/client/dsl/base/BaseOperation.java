@@ -55,6 +55,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
 import static io.fabric8.kubernetes.client.utils.Utils.join;
@@ -767,5 +768,10 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   protected Class<? extends Config> getConfigType() {
     return Config.class;
+  }
+
+  @Override
+  public T waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
+    return get();
   }
 }

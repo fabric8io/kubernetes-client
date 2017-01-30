@@ -27,6 +27,7 @@ import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 
 @Component
 @Service
@@ -70,5 +71,10 @@ public class EndpointsHandler implements ResourceHandler<Endpoints, EndpointsBui
   @Override
   public Watch watch(OkHttpClient client, Config config, String namespace, Endpoints item, String resourceVersion, Watcher<Endpoints> watcher) {
     return new EndpointsOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).watch(resourceVersion, watcher);
+  }
+
+  @Override
+  public Endpoints waitUntilReady(OkHttpClient client, Config config, String namespace, Endpoints item, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new EndpointsOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilReady(amount, timeUnit);
   }
 }

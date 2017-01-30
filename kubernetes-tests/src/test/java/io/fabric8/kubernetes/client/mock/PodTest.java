@@ -16,6 +16,15 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import org.junit.Assert;
+import org.junit.Rule;
+import org.junit.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
@@ -30,13 +39,6 @@ import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.server.mock.KubernetesServer;
 import io.fabric8.kubernetes.server.mock.OutputStreamMessage;
 import okhttp3.Response;
-import org.junit.Rule;
-import org.junit.Test;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -282,6 +284,57 @@ public class PodTest {
     KubernetesClient client = server.getClient();
     Pod pod = client.pods().load(getClass().getResourceAsStream("/test-pod.yml")).get();
     assertEquals("nginx", pod.getMetadata().getName());
+  }
+
+  @Test
+  public void testWait() throws InterruptedException {
+    Pod notReady = new PodBuilder()
+      .withNewMetadata()
+      .withName("pod1")
+      .withResourceVersion("1")
+      .withNamespace("test")
+      .endMetadata()
+      .withNewStatus()
+      .addNewCondition()
+      .withType("Ready")
+      .withStatus("False")
+      .endCondition()
+      .endStatus()
+      .build();
+
+
+    Pod ready = new PodBuilder()
+      .withNewMetadata()
+      .withName("pod1")
+      .withResourceVersion("2")
+      .withNamespace("test")
+      .endMetadata()
+      .withNewStatus()
+      .addNewCondition()
+      .withType("Ready")
+      .withStatus("True")
+      .endCondition()
+      .endStatus()
+      .build();
+
+    server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, notReady).once();
+    server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, ready).once();
+
+    server.expect().get().withPath("/api/v1/namespaces/test/pods").andReturn(200, new PodListBuilder()
+      .withNewMetadata()
+      .withResourceVersion("1")
+      .endMetadata()
+      .withItems(notReady).build()).once();
+
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
+      .open()
+      .waitFor(1000).andEmit(new WatchEvent(ready, "MODIFIED"))
+      .done()
+      .always();
+
+    KubernetesClient client = server.getClient();
+    Pod result = client.pods().withName("pod1").waitUntilReady(5, TimeUnit.SECONDS);
+    Assert.assertEquals("2", result.getMetadata().getResourceVersion());
   }
 
   /**
