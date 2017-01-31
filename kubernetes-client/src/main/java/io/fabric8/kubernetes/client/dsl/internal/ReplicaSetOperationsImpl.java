@@ -59,7 +59,7 @@ public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, R
   implements ClientRollableScallableResource<ReplicaSet, DoneableReplicaSet>,
   TimeoutImageEditReplacePatchable<ReplicaSet, ReplicaSet, DoneableReplicaSet> {
 
-  static final transient Logger LOG = LoggerFactory.getLogger(ReplicationControllerOperationsImpl.class);
+  static final transient Logger LOG = LoggerFactory.getLogger(ReplicaSetOperationsImpl.class);
 
   private final Boolean rolling;
   private final long rollingTimeout;
@@ -193,7 +193,7 @@ public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, R
     ReplicaSet oldRC = get();
 
     if (oldRC == null) {
-      throw new KubernetesClientException("Existing replication controller doesn't exist");
+      throw new KubernetesClientException("Existing replica set doesn't exist");
     }
     if (oldRC.getSpec().getTemplate().getSpec().getContainers().size() > 1) {
       throw new KubernetesClientException("Image update is not supported for multicontainer pods");
