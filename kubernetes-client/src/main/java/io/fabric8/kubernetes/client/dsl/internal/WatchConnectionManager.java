@@ -15,6 +15,20 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import java.io.IOException;
+import java.net.ConnectException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
@@ -37,20 +51,6 @@ import okhttp3.ws.WebSocketListener;
 import okio.Buffer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.net.ConnectException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
 import static java.net.HttpURLConnection.HTTP_GONE;
@@ -151,7 +151,7 @@ public class WatchConnectionManager<T, L extends KubernetesResourceList> impleme
                     webSocket.sendPing(new Buffer().writeUtf8("Alive?"));
                 } catch (IOException e) {
                   logger.debug("Failed to send ping", e);
-                  onClose(4000, "Connection unexpectedly closed");
+                  // let onFailure do its job
                 }
               }
             }
