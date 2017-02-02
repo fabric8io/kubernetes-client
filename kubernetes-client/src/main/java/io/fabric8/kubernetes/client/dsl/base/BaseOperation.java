@@ -646,7 +646,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
       );
       watch.waitUntilReady();
       return watch;
-    } catch (MalformedURLException | InterruptedException | ExecutionException e) {
+    } catch (MalformedURLException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
   }
