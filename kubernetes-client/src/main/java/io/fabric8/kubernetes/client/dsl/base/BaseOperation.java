@@ -62,7 +62,7 @@ import static io.fabric8.kubernetes.client.utils.Utils.join;
 
 public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
   extends OperationSupport
-  implements ClientMixedOperation<T, L, D, R> {
+  implements ClientMixedOperation<T, L, D, R>, ClientResource<T,D> {
 
   private final Boolean cascading;
   private final T item;
