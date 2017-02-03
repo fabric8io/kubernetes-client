@@ -154,6 +154,7 @@ import org.apache.felix.scr.annotations.Service;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Collection;
 import java.util.Map;
 
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_API_VERSION_SYSTEM_PROPERTY;
@@ -396,6 +397,16 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(KubernetesResourceList is) {
     return delegate.resourceList(is);
+  }
+
+  @Override
+  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(HasMetadata... items) {
+    return delegate.resourceList(items);
+  }
+
+  @Override
+  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(Collection<HasMetadata> items) {
+    return delegate.resourceList(items);
   }
 
   @Override
