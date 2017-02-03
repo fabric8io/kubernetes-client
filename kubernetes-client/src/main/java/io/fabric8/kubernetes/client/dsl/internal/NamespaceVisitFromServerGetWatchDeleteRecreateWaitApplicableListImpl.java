@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
+import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.builder.Visitor;
@@ -58,7 +59,7 @@ import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
 import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
 
 public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl extends OperationSupport implements NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean>,
-Waitable<List<HasMetadata>> {
+Waitable<List<HasMetadata>>, Readiable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl.class);
     private static final String EXPRESSION = "expression";
@@ -110,6 +111,16 @@ Waitable<List<HasMetadata>> {
       } finally {
         executor.shutdown();
       }
+  }
+
+  @Override
+  public Boolean isReady() {
+    for (final HasMetadata meta : acceptVisitors(get(), visitors)) {
+      if (!Readiness.isReady(meta)) {
+        return false;
+      }
+    }
+    return true;
   }
 
   /**

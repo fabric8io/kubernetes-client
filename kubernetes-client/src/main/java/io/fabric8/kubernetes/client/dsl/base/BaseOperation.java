@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.base;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -768,6 +769,12 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   protected Class<? extends Config> getConfigType() {
     return Config.class;
+  }
+
+  @Override
+  public Boolean isReady() {
+    T i = get();
+    return !(i instanceof HasMetadata) || Readiness.isReady((HasMetadata)i);
   }
 
   @Override
