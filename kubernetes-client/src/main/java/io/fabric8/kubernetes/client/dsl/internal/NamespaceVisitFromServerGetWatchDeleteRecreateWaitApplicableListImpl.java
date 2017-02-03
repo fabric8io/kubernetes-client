@@ -57,9 +57,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
 import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
 
-public class NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImplWait extends OperationSupport implements NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> {
+public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl extends OperationSupport implements NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean>,
+Waitable<List<HasMetadata>> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImplWait.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl.class);
     private static final String EXPRESSION = "expression";
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -136,11 +137,11 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImplWai
         }
     }
 
-    public NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImplWait(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, InputStream is, Boolean cascading) {
+    public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, InputStream is, Boolean cascading) {
         this(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, unmarshal(is), -1, cascading);
     }
 
-    public NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImplWait(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item, long gracePeriodSeconds, Boolean cascading) {
+    public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item, long gracePeriodSeconds, Boolean cascading) {
         super(client, config, null, null, null, null, null);
         this.fallbackNamespace = namespace;
         this.explicitNamespace = explicitNamespace;
@@ -192,6 +193,12 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImplWai
     }
     return result;
   }
+
+  @Override
+  public Waitable<List<HasMetadata>> createOrReplaceAnd() {
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, deletingExisting, visitors, createOrReplace(), gracePeriodSeconds, cascading);
+  }
+
 
   @Override
     public Boolean delete() {
@@ -252,35 +259,35 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImplWai
 
     @Override
     public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> inNamespace(String explicitNamespace) {
-        return new NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImplWait(client, config, fallbackNamespace, explicitNamespace, fromServer, deletingExisting, visitors, item, gracePeriodSeconds, cascading);
+        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, deletingExisting, visitors, item, gracePeriodSeconds, cascading);
     }
 
     @Override
     public Gettable<List<HasMetadata>> fromServer() {
-        return new NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImplWait(client, config, fallbackNamespace, explicitNamespace, true, deletingExisting, visitors, item, gracePeriodSeconds, cascading);
+        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, true, deletingExisting, visitors, item, gracePeriodSeconds, cascading);
     }
 
     @Override
     public Applicable<List<HasMetadata>> deletingExisting() {
-        return new NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImplWait(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, cascading);
+        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, cascading);
     }
 
     @Override
     public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> accept(Visitor visitor) {
         List<Visitor> newVisitors = new ArrayList<>(visitors);
         newVisitors.add(visitor);
-        return new NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImplWait(client, config, fallbackNamespace, explicitNamespace, fromServer, true, newVisitors, item, gracePeriodSeconds, cascading);
+        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, newVisitors, item, gracePeriodSeconds, cascading);
     }
 
   @Override public CascadingDeletable<Boolean> withGracePeriod(long gracePeriodSeconds)
   {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImplWait(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, cascading);
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, cascading);
   }
 
 
   @Override
   public Deletable<Boolean> cascading(boolean cascading) {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImplWait(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, cascading);
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, cascading);
   }
 
 

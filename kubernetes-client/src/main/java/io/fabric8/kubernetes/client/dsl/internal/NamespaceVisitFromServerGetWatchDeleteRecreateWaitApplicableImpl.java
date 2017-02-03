@@ -49,6 +49,7 @@ import io.fabric8.kubernetes.client.dsl.Deletable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.VisitFromServerGetWatchDeleteRecreateWaitApplicable;
+import io.fabric8.kubernetes.client.dsl.Waitable;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.handlers.KubernetesListHandler;
 import io.fabric8.kubernetes.client.utils.ResourceCompare;
@@ -60,7 +61,8 @@ import okhttp3.OkHttpClient;
 import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
 import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
 
-public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl extends OperationSupport implements NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean> {
+public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl extends OperationSupport implements NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean>,
+Waitable<HasMetadata> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl.class);
   private static final String EXPRESSION = "expression";
@@ -76,6 +78,8 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
   private final ResourceHandler handler;
   private final long gracePeriodSeconds;
   private final Boolean cascading;
+
+
 
   /**
    * We need to be able to either use an explicit namespace or fallback to the client default.
@@ -149,6 +153,11 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
     } else {
       return h.replace(client, config, namespaceToUse, meta);
     }
+  }
+
+  @Override
+  public Waitable<HasMetadata> createOrReplaceAnd() {
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, deletingExisting, visitors, createOrReplace(), gracePeriodSeconds, cascading);
   }
 
   @Override
