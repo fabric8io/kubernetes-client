@@ -67,7 +67,8 @@ def updateDownstreamDependencies(stagedProject) {
   pushPomPropertyChangePR {
     propertyName = 'kubernetes-client.version'
     projects = [
-            'fabric8io/fabric8'
+            'fabric8io/fabric8',
+            'fabric8io/fabric8-platform'
     ]
     version = stagedProject[1]
   }
