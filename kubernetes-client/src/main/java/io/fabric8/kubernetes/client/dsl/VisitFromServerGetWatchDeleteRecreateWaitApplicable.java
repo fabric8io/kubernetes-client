@@ -26,6 +26,5 @@ public interface VisitFromServerGetWatchDeleteRecreateWaitApplicable<T, B> exten
                                                                           FromServerGettable<T>, RecreateApplicable<T>,
                                                                           CascadingDeletable<B>,
                                                                           Watchable<Watch, Watcher<T>>,
-                                                                          Waitable<T>,
                                                                           GracePeriodConfigurable<CascadingDeletable<B>> {
 }

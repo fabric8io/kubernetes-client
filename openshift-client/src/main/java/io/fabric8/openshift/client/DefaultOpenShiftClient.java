@@ -119,6 +119,7 @@ import io.fabric8.openshift.client.internal.OpenShiftOAuthInterceptor;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collection;
 
 public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpenShiftClient {
 
@@ -193,6 +194,16 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(KubernetesResourceList is) {
     return delegate.resourceList(is);
+  }
+
+  @Override
+  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(HasMetadata... items) {
+    return delegate.resourceList(items);
+  }
+
+  @Override
+  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(Collection<HasMetadata> items) {
+    return delegate.resourceList(items);
   }
 
   @Override

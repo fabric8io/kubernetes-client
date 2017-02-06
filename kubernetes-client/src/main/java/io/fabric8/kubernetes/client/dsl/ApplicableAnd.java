@@ -16,7 +16,7 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface RecreateApplicable<T> extends Applicable<T>,
-  ApplicableAnd<Waitable<T>>,
-  Recreateable<Applicable<T>> {
+public interface ApplicableAnd<T> {
+
+    T createOrReplaceAnd();
 }

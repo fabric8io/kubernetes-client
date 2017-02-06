@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.kubernetes.client.dsl;
 
-public interface RecreateApplicable<T> extends Applicable<T>,
-  ApplicableAnd<Waitable<T>>,
-  Recreateable<Applicable<T>> {
+public interface Readiable {
+
+  Boolean isReady();
 }
