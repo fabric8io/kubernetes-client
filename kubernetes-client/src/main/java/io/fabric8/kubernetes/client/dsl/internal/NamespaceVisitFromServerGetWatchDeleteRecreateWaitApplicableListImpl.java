@@ -329,6 +329,12 @@ Waitable<List<HasMetadata>>, Readiable {
       } catch (IOException e) {
         throw KubernetesClientException.launderThrowable(e);
       }
+    } else if (item instanceof Collection) {
+      for (Object o : (Collection)item) {
+        if (o instanceof HasMetadata) {
+          result.add((HasMetadata) o);
+        }
+      }
     }
     return result;
   }
