@@ -345,7 +345,7 @@ Waitable<List<HasMetadata>>, Readiable {
     } else if (item instanceof KubernetesList) {
       return new KubernetesListHandler();
     }  else {
-      return null;
+      throw new IllegalArgumentException("Could not find a registered handler for item: [" + item + "].");
     }
   }
 
