@@ -160,23 +160,19 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
 
   @Override
   public Deployment waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
-    Deployment rs = get();
-    if (rs == null) {
+    Deployment deployment = get();
+    if (deployment == null) {
       throw new IllegalArgumentException("Deployment with name:[" + name + "] in namespace:[" + namespace + "] not found!");
     }
 
-    if (Readiness.isReady(rs)) {
-      return rs;
+    if (Readiness.isReady(deployment)) {
+      return deployment;
     }
 
-    final CountDownLatch latch = new CountDownLatch(1);
-    Watcher<Deployment> watcher = new ReadinessWatcher<>(latch);
+    ReadinessWatcher<Deployment> watcher = new ReadinessWatcher<>(deployment.getKind(), getName(), getNamespace());
     try (Watch watch = watch(watcher)) {
-      if (latch.await(amount, timeUnit)) {
-        return get();
-      }
+      return watcher.await(amount, timeUnit);
     }
-    throw new KubernetesClientTimeoutException(rs.getKind(), getName(), getNamespace(), amount, timeUnit);
   }
 
   private static class DeploymentReaper implements Reaper {

@@ -314,13 +314,9 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
       return pod;
     }
 
-    final CountDownLatch latch = new CountDownLatch(1);
-    Watcher<Pod> watcher = new ReadinessWatcher<>(latch);
+    ReadinessWatcher<Pod> watcher = new ReadinessWatcher<>(pod.getKind(), getName(), getNamespace());
     try (Watch watch = watch(watcher)) {
-      if (latch.await(amount, timeUnit)) {
-        return get();
-      }
-      throw new KubernetesClientTimeoutException(pod.getKind(), getName(), getNamespace(), amount, timeUnit);
+      return watcher.await(amount, timeUnit);
     }
   }
 }

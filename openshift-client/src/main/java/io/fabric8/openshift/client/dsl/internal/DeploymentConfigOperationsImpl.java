@@ -183,13 +183,9 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
       return dc;
     }
 
-    final CountDownLatch latch = new CountDownLatch(1);
-    Watcher<DeploymentConfig> watcher = new ReadinessWatcher<>(latch);
+    ReadinessWatcher<DeploymentConfig> watcher = new ReadinessWatcher<>(dc.getKind(), getName(), getNamespace());
     try (Watch watch = watch(watcher)) {
-      if (latch.await(amount, timeUnit)) {
-        return get();
-      }
-      throw new KubernetesClientTimeoutException(dc.getKind(), getName(), getNamespace(), amount, timeUnit);
+      return watcher.await(amount, timeUnit);
     }
   }
 
