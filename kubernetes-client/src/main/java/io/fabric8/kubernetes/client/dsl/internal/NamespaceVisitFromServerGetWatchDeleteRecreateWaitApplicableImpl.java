@@ -15,9 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mifmif.common.regex.Generex;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +31,6 @@ import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
-import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.Handlers;
@@ -55,9 +51,6 @@ import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.handlers.KubernetesListHandler;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.ResourceCompare;
-import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.openshift.api.model.Parameter;
-import io.fabric8.openshift.api.model.Template;
 import okhttp3.OkHttpClient;
 
 import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
@@ -68,8 +61,6 @@ Waitable<HasMetadata>,
   Readiable {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl.class);
-  private static final String EXPRESSION = "expression";
-  private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
   private final String fallbackNamespace;
   private final String explicitNamespace;
@@ -81,8 +72,6 @@ Waitable<HasMetadata>,
   private final ResourceHandler handler;
   private final long gracePeriodSeconds;
   private final Boolean cascading;
-
-
 
   /**
    * We need to be able to either use an explicit namespace or fallback to the client default.
@@ -290,22 +279,6 @@ Waitable<HasMetadata>,
     throw new IllegalArgumentException("Item needs to be an instance of HasMetadata or String.");
   }
 
-  private static <T> String nameOf(T item) {
-    if (item instanceof HasMetadata) {
-      return ((HasMetadata) item).getMetadata().getName();
-    } else {
-      return null;
-    }
-  }
-
-  private static <T> String namespaceOf(T item) {
-    if (item instanceof HasMetadata) {
-      return ((HasMetadata) item).getMetadata().getNamespace();
-    } else {
-      return null;
-    }
-  }
-
   private static <T> ResourceHandler handlerOf(T item) {
     if (item instanceof HasMetadata) {
       return Handlers.<HasMetadata, HasMetadataVisitiableBuilder>get(((HasMetadata) item).getKind());
@@ -315,43 +288,5 @@ Waitable<HasMetadata>,
       return null;
     }
   }
-
-  private static List<HasMetadata> processTemplate(Template template, Boolean failOnMissing) {
-    List<Parameter> parameters = template != null ? template.getParameters() : null;
-    KubernetesList list = new KubernetesListBuilder()
-      .withItems(template.getObjects())
-      .build();
-
-    try {
-      String json = OBJECT_MAPPER.writeValueAsString(list);
-      if (parameters != null && !parameters.isEmpty()) {
-        // lets make a few passes in case there's expressions in values
-        for (int i = 0; i < 5; i++) {
-          for (Parameter parameter : parameters) {
-            String name = parameter.getName();
-            String regex = "${" + name + "}";
-            String value;
-            if (Utils.isNotNullOrEmpty(parameter.getValue())) {
-              value = parameter.getValue();
-            } else if (EXPRESSION.equals(parameter.getGenerate())) {
-              Generex generex = new Generex(parameter.getFrom());
-              value = generex.random();
-            } else if (failOnMissing) {
-              throw new IllegalArgumentException("No value available for parameter name: " + name);
-            } else {
-              value = "";
-            }
-            json = json.replace(regex, value);
-          }
-        }
-      }
-
-      list = OBJECT_MAPPER.readValue(json, KubernetesList.class);
-    } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
-    return list.getItems();
-  }
-
 
 }

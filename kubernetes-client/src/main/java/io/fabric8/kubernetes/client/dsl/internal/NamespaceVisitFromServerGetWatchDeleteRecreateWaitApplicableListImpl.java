@@ -327,22 +327,6 @@ Waitable<List<HasMetadata>>, Readiable {
     return result;
   }
 
-  private static <T> String nameOf(T item) {
-    if (item instanceof HasMetadata) {
-      return ((HasMetadata) item).getMetadata().getName();
-    } else {
-      return null;
-    }
-  }
-
-  private static <T> String namespaceOf(T item) {
-    if (item instanceof HasMetadata) {
-      return ((HasMetadata) item).getMetadata().getNamespace();
-    } else {
-      return null;
-    }
-  }
-
   private static <T> ResourceHandler handlerOf(T item) {
     if (item instanceof HasMetadata) {
       return Handlers.<HasMetadata, HasMetadataVisitiableBuilder>get(((HasMetadata) item).getKind());
