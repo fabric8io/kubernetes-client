@@ -199,7 +199,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     try {
       URL requestUrl = new URL(config.getMasterUrl());
       Request.Builder req = new Request.Builder().get().url(requestUrl);
-      return handleResponse(req, 200, RootPaths.class);
+      return handleResponse(req, RootPaths.class);
     } catch (KubernetesClientException e) {
       if (e.getCode() != 404) {
         throw e;
@@ -533,7 +533,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
       }
 
       Request.Builder requestBuilder = new Request.Builder().get().url(requestUrlBuilder.build());
-      return handleResponse(requestBuilder, 200, listType);
+      return handleResponse(requestBuilder, listType);
     } catch (InterruptedException | ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
@@ -666,8 +666,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     return true;
   }
 
-  protected T handleResponse(Request.Builder requestBuilder, int successStatusCode) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    return handleResponse(requestBuilder, successStatusCode, getType());
+  protected T handleResponse(Request.Builder requestBuilder) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+    return handleResponse(requestBuilder, getType());
   }
 
   protected T handleCreate(T resource) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {

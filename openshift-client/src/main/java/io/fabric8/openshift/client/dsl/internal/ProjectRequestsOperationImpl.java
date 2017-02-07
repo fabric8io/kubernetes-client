@@ -94,7 +94,7 @@ public class ProjectRequestsOperationImpl extends OperationSupport implements Cl
     try {
       URL requestUrl = getNamespacedUrl();
       Request.Builder requestBuilder = new Request.Builder().get().url(requestUrl);
-      return handleResponse(requestBuilder, 200, Status.class);
+      return handleResponse(requestBuilder, Status.class);
     } catch (InterruptedException | ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
