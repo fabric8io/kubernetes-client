@@ -143,7 +143,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
       URL instantiationUrl = new URL(URLUtils.join(getResourceUrl().toString(), "instantiate"));
       RequestBody requestBody = RequestBody.create(JSON, BaseOperation.JSON_MAPPER.writer().writeValueAsString(request));
       Request.Builder requestBuilder = new Request.Builder().post(requestBody).url(instantiationUrl);
-      return handleResponse(requestBuilder, 201, Build.class);
+      return handleResponse(requestBuilder, Build.class);
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
@@ -165,7 +165,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
         .post(requestBody)
         .url(triggerUrl)
         .addHeader("X-Github-Event", "push");
-      handleResponse(requestBuilder, 200, null);
+      handleResponse(requestBuilder, null);
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
@@ -241,7 +241,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
         .writeTimeout(timeout, timeoutUnit)
         .build();
       Request.Builder requestBuilder = new Request.Builder().post(requestBody).url(getQueryParameters());
-      return handleResponse(newClient, requestBuilder, 201, Build.class);
+      return handleResponse(newClient, requestBuilder, Build.class);
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
