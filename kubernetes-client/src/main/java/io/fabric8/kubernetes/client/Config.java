@@ -17,7 +17,6 @@
 package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.api.model.ConfigBuilder;
-import okhttp3.Authenticator;
 import okhttp3.TlsVersion;
 import io.fabric8.kubernetes.api.model.AuthInfo;
 import io.fabric8.kubernetes.api.model.Cluster;
@@ -93,6 +92,8 @@ public class Config {
 
   public static final String HTTP_PROTOCOL_PREFIX = "http://";
   public static final String HTTPS_PROTOCOL_PREFIX = "https://";
+
+  private static final String ACCESS_TOKEN = "access-token";
 
   private boolean trustCerts;
   private String masterUrl = "https://kubernetes.default.svc";
@@ -340,6 +341,10 @@ public class Config {
               config.setOauthToken(currentAuthInfo.getToken());
               config.setUsername(currentAuthInfo.getUsername());
               config.setPassword(currentAuthInfo.getPassword());
+
+              if (Utils.isNullOrEmpty(config.getOauthToken()) && currentAuthInfo.getAuthProvider() != null && !Utils.isNullOrEmpty(currentAuthInfo.getAuthProvider().getConfig().get(ACCESS_TOKEN))) {
+                config.setOauthToken(currentAuthInfo.getAuthProvider().getConfig().get(ACCESS_TOKEN));
+              }
 
               config.getErrorMessages().put(401, "Unauthorized! Token may have expired! Please log-in again.");
               config.getErrorMessages().put(403, "Forbidden! User "+currentContext.getUser()+ " doesn't have permission.");
