@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -40,7 +39,6 @@ import io.fabric8.kubernetes.api.model.extensions.ReplicaSetBuilder;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
@@ -263,14 +261,10 @@ public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, R
       return rs;
     }
 
-    final CountDownLatch latch = new CountDownLatch(1);
-    Watcher<ReplicaSet> watcher = new ReadinessWatcher<>(latch);
+    ReadinessWatcher<ReplicaSet> watcher = new ReadinessWatcher<>(rs.getKind(), getName(), getNamespace());
     try (Watch watch = watch(watcher)) {
-      if (latch.await(amount, timeUnit)) {
-        return get();
-      }
+      return watcher.await(amount, timeUnit);
     }
-    throw new KubernetesClientTimeoutException(rs.getKind(), getName(), getNamespace(), amount, timeUnit);
   }
 
   private static class ReplicaSetReaper implements Reaper {

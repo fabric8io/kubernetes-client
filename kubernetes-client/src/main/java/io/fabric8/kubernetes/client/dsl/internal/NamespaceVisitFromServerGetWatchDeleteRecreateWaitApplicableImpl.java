@@ -245,7 +245,7 @@ Waitable<HasMetadata>,
 
   @Override
   public HasMetadata waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
-    HasMetadata meta = acceptVisitors(asHasMetadata(item), visitors);
+    HasMetadata meta = acceptVisitors(asHasMetadata(get()), visitors);
     ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
     return h.waitUntilReady(client, config, meta.getMetadata().getNamespace(), meta, amount, timeUnit);
   }

@@ -15,10 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
-import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.client.internal.readiness.ReadinessWatcher;
 import okhttp3.OkHttpClient;
@@ -31,7 +28,7 @@ import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.concurrent.CountDownLatch;
+
 import java.util.concurrent.TimeUnit;
 
 public class EndpointsOperationsImpl extends HasMetadataOperation<Endpoints, EndpointsList, DoneableEndpoints,
@@ -57,13 +54,9 @@ public class EndpointsOperationsImpl extends HasMetadataOperation<Endpoints, End
       return endpoints;
     }
 
-    final CountDownLatch latch = new CountDownLatch(1);
-    Watcher<Endpoints> watcher = new ReadinessWatcher<>(latch);
+    ReadinessWatcher<Endpoints> watcher = new ReadinessWatcher<>(endpoints.getKind(), getName(), getNamespace());
     try (Watch watch = watch(watcher)) {
-      if (latch.await(amount, timeUnit)) {
-        return get();
-      }
+      return watcher.await(amount, timeUnit);
     }
-    throw new KubernetesClientTimeoutException(endpoints.getKind(), getName(), getNamespace(), amount, timeUnit);
   }
 }

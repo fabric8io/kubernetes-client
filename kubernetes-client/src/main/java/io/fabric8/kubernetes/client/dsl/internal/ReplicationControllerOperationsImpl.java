@@ -274,13 +274,9 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
       return rc;
     }
 
-    final CountDownLatch latch = new CountDownLatch(1);
-    Watcher<ReplicationController> watcher = new ReadinessWatcher<>(latch);
+    ReadinessWatcher<ReplicationController> watcher = new ReadinessWatcher<>(rc.getKind(), getName(), getNamespace());
     try (Watch watch = watch(watcher)) {
-      if (latch.await(amount, timeUnit)) {
-        return get();
-      }
-      throw new KubernetesClientTimeoutException(rc.getKind(), getName(), getNamespace(), amount, timeUnit);
+      return watcher.await(amount, timeUnit);
     }
   }
 
