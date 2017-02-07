@@ -302,7 +302,7 @@ public class OperationSupport {
     return status;
   }
 
-  KubernetesClientException requestFailure(Request request, Status status) {
+  public static KubernetesClientException requestFailure(Request request, Status status) {
     StringBuilder sb = new StringBuilder();
     sb.append("Failure executing: ").append(request.method())
       .append(" at: ").append(request.url().toString()).append(".");
@@ -318,7 +318,7 @@ public class OperationSupport {
     return new KubernetesClientException(sb.toString(), status.getCode(), status);
   }
 
-  KubernetesClientException requestException(Request request, Exception e) {
+  public static KubernetesClientException requestException(Request request, Exception e) {
     StringBuilder sb = new StringBuilder();
     sb.append("Error executing: ").append(request.method())
       .append(" at: ").append(request.url().toString())

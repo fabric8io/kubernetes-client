@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.dsl.base;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.Utils;
+import java.net.ProtocolException;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -651,9 +652,15 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     } catch (MalformedURLException e) {
       throw KubernetesClientException.launderThrowable(e);
     } catch (KubernetesClientException ke) {
-      WatchHTTPManager watch = null;
+      if (ke.getCode() != 200) {
+        throw ke;
+      }
+
+      // If the HTTP return code is 200, we retry the watch again using a persistent hanging
+      // HTTP GET. This is meant to handle cases like kubectl local proxy which does not support
+      // websockets. Issue: https://github.com/kubernetes/kubernetes/issues/25126
       try {
-        watch = new WatchHTTPManager(
+        return new WatchHTTPManager(
           client,
           this,
           resourceVersion,
@@ -665,7 +672,6 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
       } catch (MalformedURLException e) {
         throw KubernetesClientException.launderThrowable(e);
       }
-      return watch;
     }
   }
 

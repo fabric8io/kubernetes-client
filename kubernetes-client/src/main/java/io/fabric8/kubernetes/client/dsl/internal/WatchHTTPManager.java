@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2017 Google, Inc.
+ * Copyright (C) 2015 Red Hat, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
@@ -24,11 +23,13 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.WatchEvent;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 
+import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -111,7 +112,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
 
     this.clonedClient = clonedClient;
     requestUrl = baseOperation.getNamespacedUrl();
-    scheduleReconnect();
+    runWatch();
   }
 
   private final void runWatch() {
@@ -149,12 +150,17 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
     Response response = null;
     try {
       response = clonedClient.newCall(request).execute();
+      if(!response.isSuccessful()) {
+        throw OperationSupport.requestFailure(request,
+          OperationSupport.createStatus(response.code(), response.message()));
+      }
+
       BufferedSource source = response.body().source();
       while (!source.exhausted()) {
         String message = source.readUtf8LineStrict();
         onMessage(message);
       }
-    } catch (IOException e) {
+    } catch (Exception e) {
       logger.info("Watch connection close received. reason: {}", e.getMessage());
     } finally {
       if (forceClosed.get()) {
@@ -165,6 +171,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
         watcher.onClose(new KubernetesClientException("Connection unexpectedly closed"));
         return;
       }
+
 
       // if we get here, the source is exhausted, so, we have lost our "watch".
       // we must reconnect.
@@ -228,7 +235,6 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
         watcher.eventReceived(action, obj);
       } else if (event.getObject() instanceof Status) {
         Status status = (Status) event.getObject();
-
         // The resource version no longer exists - this has to be handled by the caller.
         if (status.getCode() == HTTP_GONE) {
           // exception
