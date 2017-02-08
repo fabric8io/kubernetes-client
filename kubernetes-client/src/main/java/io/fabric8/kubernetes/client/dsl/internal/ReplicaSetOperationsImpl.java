@@ -261,7 +261,7 @@ public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, R
       return rs;
     }
 
-    ReadinessWatcher<ReplicaSet> watcher = new ReadinessWatcher<>(rs.getKind(), getName(), getNamespace());
+    ReadinessWatcher<ReplicaSet> watcher = new ReadinessWatcher<>(rs);
     try (Watch watch = watch(watcher)) {
       return watcher.await(amount, timeUnit);
     }

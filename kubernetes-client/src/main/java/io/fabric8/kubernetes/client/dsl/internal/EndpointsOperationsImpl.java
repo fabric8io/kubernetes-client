@@ -54,7 +54,7 @@ public class EndpointsOperationsImpl extends HasMetadataOperation<Endpoints, End
       return endpoints;
     }
 
-    ReadinessWatcher<Endpoints> watcher = new ReadinessWatcher<>(endpoints.getKind(), getName(), getNamespace());
+    ReadinessWatcher<Endpoints> watcher = new ReadinessWatcher<>(endpoints);
     try (Watch watch = watch(watcher)) {
       return watcher.await(amount, timeUnit);
     }

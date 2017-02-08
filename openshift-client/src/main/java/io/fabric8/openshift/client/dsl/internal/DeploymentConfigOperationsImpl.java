@@ -32,9 +32,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.Reaper;
 import io.fabric8.kubernetes.client.dsl.internal.ReplicationControllerOperationsImpl;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
@@ -183,7 +181,7 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
       return dc;
     }
 
-    ReadinessWatcher<DeploymentConfig> watcher = new ReadinessWatcher<>(dc.getKind(), getName(), getNamespace());
+    ReadinessWatcher<DeploymentConfig> watcher = new ReadinessWatcher<>(dc);
     try (Watch watch = watch(watcher)) {
       return watcher.await(amount, timeUnit);
     }
