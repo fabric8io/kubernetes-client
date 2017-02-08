@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Component
 @org.apache.felix.scr.annotations.Service
@@ -97,6 +98,11 @@ public class KubernetesListHandler implements ResourceHandler<KubernetesList, Ku
 
   @Override
   public Watch watch(OkHttpClient client, Config config, String namespace, KubernetesList item, String resourceVersion, Watcher<KubernetesList> watcher) {
+    throw new UnsupportedOperationException("Watch is not supported on KubernetesList.");
+  }
+
+  @Override
+  public KubernetesList waitUntilReady(OkHttpClient client, Config config, String namespace, KubernetesList item, long amount, TimeUnit timeUnit) throws InterruptedException {
     throw new UnsupportedOperationException("Watch is not supported on KubernetesList.");
   }
 }

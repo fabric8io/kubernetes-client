@@ -15,16 +15,24 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-import okhttp3.ws.WebSocketCall;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.net.URL;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
 import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ClientPodResource;
 import io.fabric8.kubernetes.client.dsl.ContainerResource;
 import io.fabric8.kubernetes.client.dsl.ExecListenable;
@@ -40,16 +48,14 @@ import io.fabric8.kubernetes.client.dsl.TtyExecErrorable;
 import io.fabric8.kubernetes.client.dsl.TtyExecOutputErrorable;
 import io.fabric8.kubernetes.client.dsl.TtyExecable;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
+import io.fabric8.kubernetes.client.internal.readiness.Readiness;
+import io.fabric8.kubernetes.client.internal.readiness.ReadinessWatcher;
 import io.fabric8.kubernetes.client.utils.URLUtils;
-
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.net.URL;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.concurrent.TimeUnit;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+import okhttp3.ws.WebSocketCall;
 
 public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, DoneablePod, ClientPodResource<Pod, DoneablePod>> implements ClientPodResource<Pod, DoneablePod> {
 
@@ -130,7 +136,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
             Request request = requestBuilder.build();
             Response response = client.newCall(request).execute();
             try (ResponseBody body = response.body()) {
-              assertResponseCode(request, response, 200);
+              assertResponseCode(request, response);
               return body.string();
             }
         } catch (Throwable t) {
@@ -296,5 +302,22 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
     public Execable<String, ExecWatch> usingListener(ExecListener execListener) {
         return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, true, true, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener);
     }
+
+  @Override
+  public Pod waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
+    Pod pod = get();
+    if (pod == null) {
+      throw new IllegalArgumentException("Pod with name:[" + name + "] in namespace:[" + namespace + "] not found!");
+    }
+
+    if (Readiness.isReady(pod)) {
+      return pod;
+    }
+
+    ReadinessWatcher<Pod> watcher = new ReadinessWatcher<>(pod.getKind(), getName(), getNamespace());
+    try (Watch watch = watch(watcher)) {
+      return watcher.await(amount, timeUnit);
+    }
+  }
 }
 

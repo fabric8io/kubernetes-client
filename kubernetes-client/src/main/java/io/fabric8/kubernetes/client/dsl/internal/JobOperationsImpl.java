@@ -16,9 +16,9 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import okhttp3.OkHttpClient;
-import io.fabric8.kubernetes.api.model.extensions.DoneableJob;
-import io.fabric8.kubernetes.api.model.extensions.Job;
-import io.fabric8.kubernetes.api.model.extensions.JobList;
+import io.fabric8.kubernetes.api.model.DoneableJob;
+import io.fabric8.kubernetes.api.model.Job;
+import io.fabric8.kubernetes.api.model.JobList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientScaleableResource;

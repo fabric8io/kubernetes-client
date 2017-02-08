@@ -27,6 +27,7 @@ import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 
 @Component
 @Service
@@ -71,4 +72,10 @@ public class ConfigMapHandler implements ResourceHandler<ConfigMap, ConfigMapBui
   public Watch watch(OkHttpClient client, Config config, String namespace, ConfigMap item, String resourceVersion, Watcher<ConfigMap> watcher) {
     return new ConfigMapOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).watch(resourceVersion, watcher);
   }
+
+  @Override
+  public ConfigMap waitUntilReady(OkHttpClient client, Config config, String namespace, ConfigMap item, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new ConfigMapOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilReady(amount, timeUnit);
+  }
+
 }

@@ -28,6 +28,7 @@ import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 
 @Component
 @Service
@@ -71,5 +72,10 @@ public class PolicyBindingHandler implements ResourceHandler<PolicyBinding, Poli
   @Override
   public Watch watch(OkHttpClient client, Config config, String namespace, PolicyBinding item, String resourceVersion, Watcher<PolicyBinding> watcher) {
     return new PolicyBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).watch(resourceVersion, watcher);
+  }
+
+  @Override
+  public PolicyBinding waitUntilReady(OkHttpClient client, Config config, String namespace, PolicyBinding item, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new PolicyBindingOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilReady(amount, timeUnit);
   }
 }

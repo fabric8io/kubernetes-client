@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.base;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -55,13 +56,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
 import static io.fabric8.kubernetes.client.utils.Utils.join;
 
 public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
   extends OperationSupport
-  implements ClientMixedOperation<T, L, D, R> {
+  implements ClientMixedOperation<T, L, D, R>, ClientResource<T,D> {
 
   private final Boolean cascading;
   private final T item;
@@ -197,7 +199,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     try {
       URL requestUrl = new URL(config.getMasterUrl());
       Request.Builder req = new Request.Builder().get().url(requestUrl);
-      return handleResponse(req, 200, RootPaths.class);
+      return handleResponse(req, RootPaths.class);
     } catch (KubernetesClientException e) {
       if (e.getCode() != 404) {
         throw e;
@@ -531,7 +533,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
       }
 
       Request.Builder requestBuilder = new Request.Builder().get().url(requestUrlBuilder.build());
-      return handleResponse(requestBuilder, 200, listType);
+      return handleResponse(requestBuilder, listType);
     } catch (InterruptedException | ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
@@ -645,7 +647,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
       );
       watch.waitUntilReady();
       return watch;
-    } catch (MalformedURLException | InterruptedException | ExecutionException e) {
+    } catch (MalformedURLException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
   }
@@ -664,8 +666,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     return true;
   }
 
-  protected T handleResponse(Request.Builder requestBuilder, int successStatusCode) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    return handleResponse(requestBuilder, successStatusCode, getType());
+  protected T handleResponse(Request.Builder requestBuilder) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+    return handleResponse(requestBuilder, getType());
   }
 
   protected T handleCreate(T resource) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
@@ -767,5 +769,16 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   protected Class<? extends Config> getConfigType() {
     return Config.class;
+  }
+
+  @Override
+  public Boolean isReady() {
+    T i = get();
+    return !(i instanceof HasMetadata) || Readiness.isReady((HasMetadata)i);
+  }
+
+  @Override
+  public T waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
+    return get();
   }
 }

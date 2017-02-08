@@ -119,7 +119,7 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
       Request request = requestBuilder.build();
       Response response = client.newCall(request).execute();
       try (ResponseBody body = response.body()) {
-        assertResponseCode(request, response, 200);
+        assertResponseCode(request, response);
         return body.string();
       }
     } catch (Throwable t) {

@@ -199,42 +199,42 @@ public class OperationSupport {
     requestBody = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(deleteOptions));
 
     Request.Builder requestBuilder = new Request.Builder().delete(requestBody).url(requestUrl);
-    handleResponse(requestBuilder, 200, null);
+    handleResponse(requestBuilder, null);
   }
 
   protected <T, I> T handleCreate(I resource, Class<T> outputType) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     RequestBody body = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(resource));
     Request.Builder requestBuilder = new Request.Builder().post(body).url(getNamespacedUrl(checkNamespace(resource)));
-    return handleResponse(requestBuilder, 201, outputType);
+    return handleResponse(requestBuilder, outputType);
   }
 
   protected <T> T handleReplace(T updated, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     RequestBody body = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(updated));
     Request.Builder requestBuilder = new Request.Builder().put(body).url(getResourceUrl(checkNamespace(updated), checkName(updated)));
-    return handleResponse(requestBuilder, 200, type);
+    return handleResponse(requestBuilder, type);
   }
 
   protected <T> T handlePatch(T current, T updated, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     JsonNode diff = JsonDiff.asJson(patchMapper().valueToTree(current), patchMapper().valueToTree(updated));
     RequestBody body = RequestBody.create(JSON_PATCH, JSON_MAPPER.writeValueAsString(diff));
     Request.Builder requestBuilder = new Request.Builder().patch(body).url(getResourceUrl(checkNamespace(updated), checkName(updated)));
-    return handleResponse(requestBuilder, 200, type);
+    return handleResponse(requestBuilder, type);
   }
 
   protected <T> T handleGet(URL resourceUrl, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     Request.Builder requestBuilder = new Request.Builder().get().url(resourceUrl);
-    return handleResponse(requestBuilder, 200, type);
+    return handleResponse(requestBuilder, type);
   }
 
-  protected <T> T handleResponse(Request.Builder requestBuilder, int successStatusCode, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    return handleResponse(client, requestBuilder, successStatusCode, type);
+  protected <T> T handleResponse(Request.Builder requestBuilder, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+    return handleResponse(client, requestBuilder, type);
   }
 
-  protected <T> T handleResponse(OkHttpClient client, Request.Builder requestBuilder, int successStatusCode, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+  protected <T> T handleResponse(OkHttpClient client, Request.Builder requestBuilder, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     Request request = requestBuilder.build();
     Response response = client.newCall(request).execute();
     try (ResponseBody body = response.body()) {
-      assertResponseCode(request, response, successStatusCode);
+      assertResponseCode(request, response);
       if (type != null) {
         return JSON_MAPPER.readValue(body.byteStream(), type);
       } else {
@@ -253,14 +253,13 @@ public class OperationSupport {
    *
    * @param request            The {#link Request} object.
    * @param response           The {@link Response} object.
-   * @param expectedStatusCode The expected status code.
    * @throws KubernetesClientException When the response code is not the expected.
    */
-  protected void assertResponseCode(Request request, Response response, int expectedStatusCode) {
+  protected void assertResponseCode(Request request, Response response) {
     int statusCode = response.code();
     String customMessage = config.getErrorMessages().get(statusCode);
 
-    if (statusCode == expectedStatusCode) {
+    if (response.isSuccessful()) {
       return;
     } else if (customMessage != null) {
       throw requestFailure(request, createStatus(statusCode, customMessage));

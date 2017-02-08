@@ -24,6 +24,13 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 
 public class Utils {
 
+  public static <T> T checkNotNull(T ref, String message) {
+    if (ref == null) {
+      throw new NullPointerException(message);
+    }
+    return ref;
+  }
+
   public static boolean isNullOrEmpty(String str) {
     return str == null || str.isEmpty();
   }

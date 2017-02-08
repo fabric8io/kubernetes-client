@@ -28,6 +28,7 @@ import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 
 @Component
 @Service
@@ -71,5 +72,10 @@ public class OAuthClientHandler implements ResourceHandler<OAuthClient, OAuthCli
   @Override
   public Watch watch(OkHttpClient client, Config config, String namespace, OAuthClient item, String resourceVersion, Watcher<OAuthClient> watcher) {
     return new OAuthClientOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).watch(resourceVersion, watcher);
+  }
+
+  @Override
+  public OAuthClient waitUntilReady(OkHttpClient client, Config config, String namespace, OAuthClient item, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new OAuthClientOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilReady(amount, timeUnit);
   }
 }

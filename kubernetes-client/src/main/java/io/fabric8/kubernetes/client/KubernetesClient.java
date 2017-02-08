@@ -73,11 +73,11 @@ import io.fabric8.kubernetes.client.dsl.ClientPodResource;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateApplicable;
-import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateApplicable;
+import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
+import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
 
 import java.io.InputStream;
-import java.util.List;
+import java.util.Collection;
 
 public interface KubernetesClient extends Client {
 
@@ -85,15 +85,19 @@ public interface KubernetesClient extends Client {
 
   ClientMixedOperation<ComponentStatus, ComponentStatusList, DoneableComponentStatus, ClientResource<ComponentStatus, DoneableComponentStatus>> componentstatuses();
 
-  NamespaceListVisitFromServerGetDeleteRecreateApplicable<HasMetadata,Boolean> load(InputStream is);
+  NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata,Boolean> load(InputStream is);
 
-  NamespaceListVisitFromServerGetDeleteRecreateApplicable<HasMetadata, Boolean> resourceList(KubernetesResourceList is);
+  NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(String s);
 
-  NamespaceListVisitFromServerGetDeleteRecreateApplicable<HasMetadata, Boolean> resourceList(String s);
+  NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(KubernetesResourceList list);
 
-  NamespaceVisitFromServerGetWatchDeleteRecreateApplicable<HasMetadata,Boolean> resource(HasMetadata is);
+  NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(HasMetadata... items);
 
-  NamespaceVisitFromServerGetWatchDeleteRecreateApplicable<HasMetadata,Boolean> resource(String s);
+  NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(Collection<HasMetadata> items);
+
+  <T extends HasMetadata> NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<T ,Boolean> resource(T is);
+
+  NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata,Boolean> resource(String s);
 
   ClientMixedOperation<Endpoints, EndpointsList, DoneableEndpoints, ClientResource<Endpoints, DoneableEndpoints>> endpoints();
 

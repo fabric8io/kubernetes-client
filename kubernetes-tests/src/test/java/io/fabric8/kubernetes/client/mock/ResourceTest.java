@@ -20,21 +20,19 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
-import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.server.mock.KubernetesServer;
-import io.fabric8.kubernetes.server.mock.OutputStreamMessage;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -109,9 +107,9 @@ public class ResourceTest {
     KubernetesClient client = server.getClient();
     final CountDownLatch latch = new CountDownLatch(1);
 
-    Watch watch = client.resource(pod1).watch(new Watcher<HasMetadata>() {
+    Watch watch = client.resource(pod1).watch(new Watcher<Pod>() {
       @Override
-      public void eventReceived(Action action, HasMetadata resource) {
+      public void eventReceived(Action action, Pod resource) {
         latch.countDown();
       }
 
@@ -124,4 +122,80 @@ public class ResourceTest {
     watch.close();
   }
 
+
+  @Test
+  public void testWaitUntilReady() throws InterruptedException {
+    Pod pod1 = new PodBuilder().withNewMetadata()
+      .withName("pod1")
+      .withResourceVersion("1")
+      .withNamespace("test").and().build();
+
+
+    Pod noReady = new PodBuilder(pod1).withNewStatus()
+      .addNewCondition()
+          .withType("Ready")
+          .withStatus("False")
+        .endCondition()
+      .endStatus()
+      .build();
+
+    Pod ready = new PodBuilder(pod1).withNewStatus()
+        .addNewCondition()
+          .withType("Ready")
+          .withStatus("True")
+        .endCondition()
+      .endStatus()
+      .build();
+
+    server.expect().get().withPath("/api/v1/namespaces/test/pods").andReturn(200, noReady).once();
+
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
+      .open()
+      .waitFor(1000).andEmit(new WatchEvent(ready, "MODIFIED"))
+      .done()
+      .always();
+
+    KubernetesClient client = server.getClient();
+    Pod p = client.resource(noReady).waitUntilReady(5, TimeUnit.SECONDS);
+    Assert.assertTrue(Readiness.isPodReady(p));
+  }
+
+  @Test
+  public void testCreateAndWaitUntilReady() throws InterruptedException {
+    Pod pod1 = new PodBuilder().withNewMetadata()
+      .withName("pod1")
+      .withResourceVersion("1")
+      .withNamespace("test").and().build();
+
+
+    Pod noReady = new PodBuilder(pod1).withNewStatus()
+      .addNewCondition()
+      .withType("Ready")
+      .withStatus("False")
+      .endCondition()
+      .endStatus()
+      .build();
+
+    Pod ready = new PodBuilder(pod1).withNewStatus()
+      .addNewCondition()
+      .withType("Ready")
+      .withStatus("True")
+      .endCondition()
+      .endStatus()
+      .build();
+
+    server.expect().get().withPath("/api/v1/namespaces/test/pods").andReturn(200, noReady).once();
+    server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(201, noReady).once();
+
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
+      .open()
+      .waitFor(1000).andEmit(new WatchEvent(ready, "MODIFIED"))
+      .done()
+      .always();
+
+    KubernetesClient client = server.getClient();
+    Pod p = client.resource(noReady).createOrReplaceAnd().waitUntilReady(5, TimeUnit.SECONDS);
+    Assert.assertTrue(Readiness.isPodReady(p));
+  }
 }
+

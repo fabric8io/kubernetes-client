@@ -27,6 +27,7 @@ import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 
 @Component
 @Service
@@ -70,5 +71,10 @@ public class PodHandler implements ResourceHandler<Pod, PodBuilder> {
   @Override
   public Watch watch(OkHttpClient client, Config config, String namespace, Pod item, String resourceVersion, Watcher<Pod> watcher) {
     return new PodOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, null, false, false, false, null, null, null, false, null).watch(resourceVersion, watcher);
+  }
+
+  @Override
+  public Pod waitUntilReady(OkHttpClient client, Config config, String namespace, Pod item, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new PodOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, null, false, false, false, null, null, null, false, null).waitUntilReady(amount,timeUnit);
   }
 }

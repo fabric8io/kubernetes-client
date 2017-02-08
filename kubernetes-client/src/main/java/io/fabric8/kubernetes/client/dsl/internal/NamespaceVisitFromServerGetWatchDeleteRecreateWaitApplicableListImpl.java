@@ -20,6 +20,8 @@ import com.mifmif.common.regex.Generex;
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
+import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
+import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.builder.Visitor;
@@ -46,14 +48,22 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
 import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
 
-public class NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImpl extends OperationSupport implements NamespaceListVisitFromServerGetDeleteRecreateApplicable<HasMetadata, Boolean> {
+public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl extends OperationSupport implements NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean>,
+Waitable<List<HasMetadata>>, Readiable {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl.class);
     private static final String EXPRESSION = "expression";
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -67,6 +77,57 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImpl ex
 
     private final long gracePeriodSeconds;
     private final Boolean cascading;
+
+  @Override
+  public List<HasMetadata> waitUntilReady(final long amount, final TimeUnit timeUnit) throws InterruptedException {
+    List<HasMetadata> items = acceptVisitors(asHasMetadata(item, true), visitors);
+    if (items.size() == 0) {
+      return Collections.emptyList();
+    }
+
+    final List<HasMetadata> result = new ArrayList<>();
+    final int size = items.size();
+    final AtomicInteger ready = new AtomicInteger(0);
+    ExecutorService executor = Executors.newFixedThreadPool(size);
+
+      try {
+        final CountDownLatch latch = new CountDownLatch(size);
+        for (final HasMetadata meta : items) {
+          final ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
+          executor.submit(new Runnable() {
+            @Override
+            public void run() {
+              try {
+                result.add(h.waitUntilReady(client, config, meta.getMetadata().getNamespace(), meta, amount, timeUnit));
+                ready.incrementAndGet();
+              } catch (Throwable t) {
+                //consider all errors as not ready.
+              } finally {
+                //We don't want to wait for items that will never become ready
+                latch.countDown();
+              }
+            }
+          });
+        }
+        if(checkReady(latch, size, ready, amount, timeUnit)) {
+          return result;
+        } else {
+          throw new KubernetesClientTimeoutException(getNamespace(), amount, timeUnit);
+        }
+      } finally {
+        executor.shutdown();
+      }
+  }
+
+  @Override
+  public Boolean isReady() {
+    for (final HasMetadata meta : acceptVisitors(get(), visitors)) {
+      if (!Readiness.isReady(meta)) {
+        return false;
+      }
+    }
+    return true;
+  }
 
   /**
      * We need to be able to either use an explicit namespace or fallback to the client default.
@@ -93,11 +154,11 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImpl ex
         }
     }
 
-    public NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, InputStream is, Boolean cascading) {
+    public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, InputStream is, Boolean cascading) {
         this(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, unmarshal(is), -1, cascading);
     }
 
-    public NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item, long gracePeriodSeconds, Boolean cascading) {
+    public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item, long gracePeriodSeconds, Boolean cascading) {
         super(client, config, null, null, null, null, null);
         this.fallbackNamespace = namespace;
         this.explicitNamespace = explicitNamespace;
@@ -149,6 +210,12 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImpl ex
     }
     return result;
   }
+
+  @Override
+  public Waitable<List<HasMetadata>> createOrReplaceAnd() {
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, deletingExisting, visitors, createOrReplace(), gracePeriodSeconds, cascading);
+  }
+
 
   @Override
     public Boolean delete() {
@@ -208,36 +275,36 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImpl ex
 
 
     @Override
-    public ListVisitFromServerGetDeleteRecreateApplicable<HasMetadata, Boolean> inNamespace(String explicitNamespace) {
-        return new NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, deletingExisting, visitors, item, gracePeriodSeconds, cascading);
+    public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> inNamespace(String explicitNamespace) {
+        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, deletingExisting, visitors, item, gracePeriodSeconds, cascading);
     }
 
     @Override
     public Gettable<List<HasMetadata>> fromServer() {
-        return new NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, true, deletingExisting, visitors, item, gracePeriodSeconds, cascading);
+        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, true, deletingExisting, visitors, item, gracePeriodSeconds, cascading);
     }
 
     @Override
     public Applicable<List<HasMetadata>> deletingExisting() {
-        return new NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, cascading);
+        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, cascading);
     }
 
     @Override
-    public ListVisitFromServerGetDeleteRecreateApplicable<HasMetadata, Boolean> accept(Visitor visitor) {
+    public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> accept(Visitor visitor) {
         List<Visitor> newVisitors = new ArrayList<>(visitors);
         newVisitors.add(visitor);
-        return new NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, newVisitors, item, gracePeriodSeconds, cascading);
+        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, newVisitors, item, gracePeriodSeconds, cascading);
     }
 
   @Override public CascadingDeletable<Boolean> withGracePeriod(long gracePeriodSeconds)
   {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, cascading);
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, cascading);
   }
 
 
   @Override
   public Deletable<Boolean> cascading(boolean cascading) {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, cascading);
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, cascading);
   }
 
 
@@ -262,24 +329,14 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImpl ex
       } catch (IOException e) {
         throw KubernetesClientException.launderThrowable(e);
       }
+    } else if (item instanceof Collection) {
+      for (Object o : (Collection)item) {
+        if (o instanceof HasMetadata) {
+          result.add((HasMetadata) o);
+        }
+      }
     }
     return result;
-  }
-
-  private static <T> String nameOf(T item) {
-    if (item instanceof HasMetadata) {
-      return ((HasMetadata) item).getMetadata().getName();
-    } else {
-      return null;
-    }
-  }
-
-  private static <T> String namespaceOf(T item) {
-    if (item instanceof HasMetadata) {
-      return ((HasMetadata) item).getMetadata().getNamespace();
-    } else {
-      return null;
-    }
   }
 
   private static <T> ResourceHandler handlerOf(T item) {
@@ -288,7 +345,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImpl ex
     } else if (item instanceof KubernetesList) {
       return new KubernetesListHandler();
     }  else {
-      return null;
+      throw new IllegalArgumentException("Could not find a registered handler for item: [" + item + "].");
     }
   }
 
@@ -329,5 +386,24 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateApplicableListImpl ex
     return list.getItems();
   }
 
+  /**
+   * Waits until the latch reaches to zero and then checks if the expected result
+   * @param latch       The latch.
+   * @param expected    The expected number.
+   * @param actual      The actual number.
+   * @param amount      The amount of time to wait.
+   * @param timeUnit    The timeUnit.
+   * @return
+   */
+  private static boolean checkReady(CountDownLatch latch, int expected, AtomicInteger actual, long amount, TimeUnit timeUnit) {
+    try {
+      if (latch.await(amount, timeUnit)) {
+        return actual.intValue() == expected;
+      }
+      return false;
+    } catch (InterruptedException e) {
+      return false;
+    }
+  }
 
 }

@@ -26,7 +26,6 @@ package io.fabric8.kubernetes.client.dsl;
  * @param <R> The resource operations.
  */
 public interface ClientMixedOperation<T, L, D, R extends ClientResource<T, D>>
-  extends ClientResource<T, D>,
-  ClientOperation<T, L, D, R>,
+  extends ClientOperation<T, L, D, R>,
   ClientNonNamespaceOperation<T, L, D, R> {
 }

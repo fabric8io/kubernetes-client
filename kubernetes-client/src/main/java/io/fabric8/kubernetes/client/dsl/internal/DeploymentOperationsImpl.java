@@ -15,13 +15,18 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.internal.readiness.Readiness;
+import io.fabric8.kubernetes.client.internal.readiness.ReadinessWatcher;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.extensions.Deployment;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
 import io.fabric8.kubernetes.api.model.extensions.DoneableDeployment;
-import io.fabric8.kubernetes.api.model.extensions.LabelSelector;
-import io.fabric8.kubernetes.api.model.extensions.LabelSelectorRequirement;
+import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ClientScaleableResource;
@@ -149,6 +154,23 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
     } finally {
       poller.cancel(true);
       executor.shutdown();
+    }
+  }
+
+  @Override
+  public Deployment waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
+    Deployment deployment = get();
+    if (deployment == null) {
+      throw new IllegalArgumentException("Deployment with name:[" + name + "] in namespace:[" + namespace + "] not found!");
+    }
+
+    if (Readiness.isReady(deployment)) {
+      return deployment;
+    }
+
+    ReadinessWatcher<Deployment> watcher = new ReadinessWatcher<>(deployment.getKind(), getName(), getNamespace());
+    try (Watch watch = watch(watcher)) {
+      return watcher.await(amount, timeUnit);
     }
   }
 

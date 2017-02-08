@@ -27,6 +27,7 @@ import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 
 @Component
 @Service
@@ -69,5 +70,10 @@ public class PersistentVolumeClaimHandler implements ResourceHandler<PersistentV
   @Override
   public Watch watch(OkHttpClient client, Config config, String namespace, PersistentVolumeClaim item, String resourceVersion, Watcher<PersistentVolumeClaim> watcher) {
     return new PersistentVolumeClaimOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).watch(resourceVersion, watcher);
+  }
+
+  @Override
+  public PersistentVolumeClaim waitUntilReady(OkHttpClient client, Config config, String namespace, PersistentVolumeClaim item, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new PersistentVolumeClaimOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilReady(amount, timeUnit);
   }
 }

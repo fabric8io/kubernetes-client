@@ -15,8 +15,21 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import io.fabric8.kubernetes.client.utils.Utils;
-import okhttp3.OkHttpClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Objects;
+import java.util.TreeMap;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerBuilder;
@@ -35,28 +48,16 @@ import io.fabric8.kubernetes.client.dsl.Reaper;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.Watchable;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Queue;
-import java.util.TreeMap;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
+import io.fabric8.kubernetes.client.internal.readiness.Readiness;
+import io.fabric8.kubernetes.client.internal.readiness.ReadinessWatcher;
+import io.fabric8.kubernetes.client.utils.Utils;
+import okhttp3.OkHttpClient;
 
 public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, ClientRollableScallableResource<ReplicaSet, DoneableReplicaSet>>
   implements ClientRollableScallableResource<ReplicaSet, DoneableReplicaSet>,
   TimeoutImageEditReplacePatchable<ReplicaSet, ReplicaSet, DoneableReplicaSet> {
 
-  static final transient Logger LOG = LoggerFactory.getLogger(ReplicationControllerOperationsImpl.class);
+  static final transient Logger LOG = LoggerFactory.getLogger(ReplicaSetOperationsImpl.class);
 
   private final Boolean rolling;
   private final long rollingTimeout;
@@ -190,7 +191,7 @@ public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, R
     ReplicaSet oldRC = get();
 
     if (oldRC == null) {
-      throw new KubernetesClientException("Existing replication controller doesn't exist");
+      throw new KubernetesClientException("Existing replica set doesn't exist");
     }
     if (oldRC.getSpec().getTemplate().getSpec().getContainers().size() > 1) {
       throw new KubernetesClientException("Image update is not supported for multicontainer pods");
@@ -247,6 +248,23 @@ public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, R
       return super.patch(rc);
     }
     return new ReplicaSetRollingUpdater(client, config, namespace, rollingTimeUnit.toMillis(rollingTimeout), getConfig().getLoggingInterval()).rollUpdate(getMandatory(), rc);
+  }
+
+  @Override
+  public ReplicaSet waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
+    ReplicaSet rs = get();
+    if (rs == null) {
+      throw new IllegalArgumentException("ReplicaSet with name:[" + name + "] in namespace:[" + namespace + "] not found!");
+    }
+
+    if (Readiness.isReady(rs)) {
+      return rs;
+    }
+
+    ReadinessWatcher<ReplicaSet> watcher = new ReadinessWatcher<>(rs.getKind(), getName(), getNamespace());
+    try (Watch watch = watch(watcher)) {
+      return watcher.await(amount, timeUnit);
+    }
   }
 
   private static class ReplicaSetReaper implements Reaper {

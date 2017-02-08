@@ -15,6 +15,12 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.model.Endpoints;
+import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.internal.readiness.Readiness;
+import io.fabric8.kubernetes.client.internal.readiness.ReadinessWatcher;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableService;
 import io.fabric8.kubernetes.api.model.Service;
@@ -27,6 +33,8 @@ import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 public class ServiceOperationsImpl extends HasMetadataOperation<Service, ServiceList, DoneableService, ClientResource<Service, DoneableService>> {
 
@@ -64,5 +72,16 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
       } catch (Exception e) {
         throw KubernetesClientException.launderThrowable(e);
       }
+  }
+
+  @Override
+  public Service waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
+    Service service = get();
+    if (service == null) {
+      throw new IllegalArgumentException("Service with name:[" + name + "] in namespace:[" + namespace + "] not found!");
+    }
+    EndpointsOperationsImpl endpointsOperation = new EndpointsOperationsImpl(client, config, apiVersion, getNamespace(), getName(), isCascading(), null, null, isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
+    Endpoints endpoints = endpointsOperation.waitUntilReady(amount, timeUnit);
+    return get();
   }
 }
