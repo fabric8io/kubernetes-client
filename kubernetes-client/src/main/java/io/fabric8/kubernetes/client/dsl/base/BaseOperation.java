@@ -40,6 +40,7 @@ import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.Reaper;
 import io.fabric8.kubernetes.client.dsl.Watchable;
 import io.fabric8.kubernetes.client.dsl.internal.WatchConnectionManager;
+import io.fabric8.kubernetes.client.dsl.internal.WatchHTTPManager;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 
 import java.io.File;
@@ -649,6 +650,27 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
       return watch;
     } catch (MalformedURLException e) {
       throw KubernetesClientException.launderThrowable(e);
+    } catch (KubernetesClientException ke) {
+      if (ke.getCode() != 200) {
+        throw ke;
+      }
+
+      // If the HTTP return code is 200, we retry the watch again using a persistent hanging
+      // HTTP GET. This is meant to handle cases like kubectl local proxy which does not support
+      // websockets. Issue: https://github.com/kubernetes/kubernetes/issues/25126
+      try {
+        return new WatchHTTPManager(
+          client,
+          this,
+          resourceVersion,
+          watcher,
+          config.getWatchReconnectInterval(),
+          config.getWatchReconnectLimit(),
+          config.getConnectionTimeout()
+        );
+      } catch (MalformedURLException e) {
+        throw KubernetesClientException.launderThrowable(e);
+      }
     }
   }
 
