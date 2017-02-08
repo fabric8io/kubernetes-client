@@ -48,6 +48,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -78,15 +80,19 @@ Waitable<List<HasMetadata>>, Readiable {
 
   @Override
   public List<HasMetadata> waitUntilReady(final long amount, final TimeUnit timeUnit) throws InterruptedException {
-    List<HasMetadata> items = asHasMetadata(item, true);
+    List<HasMetadata> items = acceptVisitors(asHasMetadata(item, true), visitors);
+    if (items.size() == 0) {
+      return Collections.emptyList();
+    }
+
     final List<HasMetadata> result = new ArrayList<>();
-    final int size = result.size();
+    final int size = items.size();
     final AtomicInteger ready = new AtomicInteger(0);
     ExecutorService executor = Executors.newFixedThreadPool(size);
 
       try {
         final CountDownLatch latch = new CountDownLatch(size);
-        for (final HasMetadata meta : acceptVisitors(items, visitors)) {
+        for (final HasMetadata meta : items) {
           final ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
           executor.submit(new Runnable() {
             @Override
@@ -323,24 +329,14 @@ Waitable<List<HasMetadata>>, Readiable {
       } catch (IOException e) {
         throw KubernetesClientException.launderThrowable(e);
       }
+    } else if (item instanceof Collection) {
+      for (Object o : (Collection)item) {
+        if (o instanceof HasMetadata) {
+          result.add((HasMetadata) o);
+        }
+      }
     }
     return result;
-  }
-
-  private static <T> String nameOf(T item) {
-    if (item instanceof HasMetadata) {
-      return ((HasMetadata) item).getMetadata().getName();
-    } else {
-      return null;
-    }
-  }
-
-  private static <T> String namespaceOf(T item) {
-    if (item instanceof HasMetadata) {
-      return ((HasMetadata) item).getMetadata().getNamespace();
-    } else {
-      return null;
-    }
   }
 
   private static <T> ResourceHandler handlerOf(T item) {
@@ -349,7 +345,7 @@ Waitable<List<HasMetadata>>, Readiable {
     } else if (item instanceof KubernetesList) {
       return new KubernetesListHandler();
     }  else {
-      return null;
+      throw new IllegalArgumentException("Could not find a registered handler for item: [" + item + "].");
     }
   }
 
