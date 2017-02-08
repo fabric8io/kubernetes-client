@@ -72,6 +72,15 @@ public class Readiness {
     DeploymentSpec spec = d.getSpec();
     DeploymentStatus status = d.getStatus();
 
+    if (status == null || status.getReplicas() == null || status.getAvailableReplicas() == null) {
+      return false;
+    }
+
+    //Can be true in testing, so handle it to make test writing easier.
+    if (spec == null || spec.getReplicas() == null) {
+      return false;
+    }
+
     return spec.getReplicas().intValue() == status.getReplicas() &&
       spec.getReplicas().intValue() <= status.getAvailableReplicas();
   }
@@ -82,6 +91,14 @@ public class Readiness {
     ReplicaSetSpec spec = r.getSpec();
     ReplicaSetStatus status = r.getStatus();
 
+    if (status == null || status.getReadyReplicas() == null) {
+      return false;
+    }
+
+    //Can be true in testing, so handle it to make test writing easier.
+    if (spec == null || spec.getReplicas() == null) {
+      return false;
+    }
     return spec.getReplicas().intValue() == status.getReadyReplicas();
   }
 
@@ -90,6 +107,15 @@ public class Readiness {
     Utils.checkNotNull(d, "Deployment can't be null.");
     DeploymentConfigSpec spec = d.getSpec();
     DeploymentConfigStatus status = d.getStatus();
+
+    if (status == null || status.getReplicas() == null || status.getAvailableReplicas() == null) {
+      return false;
+    }
+
+    //Can be true in testing, so handle it to make test writing easier.
+    if (spec == null || spec.getReplicas() == null) {
+      return false;
+    }
 
     return spec.getReplicas().intValue() == status.getReplicas() &&
       spec.getReplicas().intValue() <= status.getAvailableReplicas();
@@ -100,6 +126,15 @@ public class Readiness {
     ReplicationControllerSpec spec = r.getSpec();
     ReplicationControllerStatus status = r.getStatus();
 
+    if (status == null || status.getReadyReplicas() == null) {
+      return false;
+    }
+
+    //Can be true in testing, so handle it to make test writing easier.
+    if (spec == null || spec.getReplicas() == null) {
+      return false;
+    }
+
     return spec.getReplicas().intValue() == status.getReadyReplicas();
   }
 
@@ -107,6 +142,10 @@ public class Readiness {
     Utils.checkNotNull(e, "Endpoints can't be null.");
     String name = e.getMetadata().getName();
     Utils.checkNotNull(name, "Endpoints name can't be null.");
+
+    if (e.getSubsets() == null) {
+      return false;
+    }
 
     for (EndpointSubset subset : e.getSubsets()) {
       if(!subset.getAddresses().isEmpty() && !subset.getPorts().isEmpty()) {
@@ -119,21 +158,33 @@ public class Readiness {
   public static boolean isPodReady(Pod pod) {
     Utils.checkNotNull(pod, "Pod can't be null.");
     PodCondition condition = getPodReadyCondition(pod);
+
+    //Can be true in testing, so handle it to make test writing easier.
+    if (condition == null  || condition.getStatus() == null) {
+      return false;
+    }
     return condition.getStatus().equalsIgnoreCase(TRUE);
   }
 
 
+  /**
+   * Returns the ready condition of the pod.
+   * @param pod   The target pod.
+   * @return      The {@link PodCondition} or null if not found.
+   */
   private static PodCondition getPodReadyCondition(Pod pod) {
     Utils.checkNotNull(pod, "Pod can't be null.");
-    Utils.checkNotNull(pod.getStatus(), "Pod status can't be null.");
-    Utils.checkNotNull(pod.getStatus().getConditions(), "Pod conditions can't be null.");
+
+    if (pod.getStatus() == null || pod.getStatus().getConditions() == null) {
+      return null;
+    }
 
     for (PodCondition condition : pod.getStatus().getConditions()) {
       if (POD_READY.equals(condition.getType())) {
         return condition;
       }
     }
-    throw new IllegalStateException("Can't find ready condition for pod: [" + pod.getMetadata().getName() + "].");
+    return null;
   }
 }
 
