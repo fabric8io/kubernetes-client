@@ -55,6 +55,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
 import static java.net.HttpURLConnection.HTTP_GONE;
+import static java.net.HttpURLConnection.HTTP_OK;
 
 public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesResourceList<T>> implements Watch {
 
@@ -190,6 +191,15 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
           if (response != null && response.body() != null) {
             response.body().close();
           }
+          return;
+        }
+
+        // We do not expect a 200 in response to the websocket connection. If it occurs, we throw
+        // an exception and try the watch via a persistent HTTP Get.
+        if (response != null && response.code() == HTTP_OK) {
+          queue.add(new KubernetesClientException("Received 200 on websocket",
+            response.code(), null));
+          response.body().close();
           return;
         }
 
