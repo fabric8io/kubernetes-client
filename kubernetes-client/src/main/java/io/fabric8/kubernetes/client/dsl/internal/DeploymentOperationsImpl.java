@@ -15,9 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.client.internal.readiness.ReadinessWatcher;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -168,7 +166,7 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
       return deployment;
     }
 
-    ReadinessWatcher<Deployment> watcher = new ReadinessWatcher<>(deployment.getKind(), getName(), getNamespace());
+    ReadinessWatcher<Deployment> watcher = new ReadinessWatcher<>(deployment);
     try (Watch watch = watch(watcher)) {
       return watcher.await(amount, timeUnit);
     }

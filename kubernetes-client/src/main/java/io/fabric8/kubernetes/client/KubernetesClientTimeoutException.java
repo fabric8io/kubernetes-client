@@ -15,18 +15,56 @@
  */
 package io.fabric8.kubernetes.client;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import io.fabric8.kubernetes.api.model.HasMetadata;
 
 public class KubernetesClientTimeoutException extends KubernetesClientException {
 
-  private static final String RESOURCE_FORMAT = "Timed out waiting for [] milliseconds for [%s] with name:[%s] in namespace [%s].";
-  private static final String RESOURCES_FORMAT = "Timed out waiting for [] milliseconds for multiple resources in namespace [%s].";
+  private static final String RESOURCE_FORMAT = "Timed out waiting for [%d] milliseconds for [%s] with name:[%s] in namespace [%s].";
+  private static final String KNOWS_RESOURCES_FORMAT = "Timed out waiting for [%d] milliseconds for multiple resources. %s";
 
-  public KubernetesClientTimeoutException(String kind, String name, String namespace, long amount, TimeUnit timeUnit) {
-    super(String.format(RESOURCE_FORMAT, kind, name, namespace, timeUnit.toMillis(amount)));
+  private final List<HasMetadata> resourcesNotReady;
+
+  public KubernetesClientTimeoutException(HasMetadata resource, long amount, TimeUnit timeUnit) {
+    super(String.format(RESOURCE_FORMAT, resource.getKind(), resource.getMetadata().getName(), resource.getMetadata().getNamespace(), timeUnit.toMillis(amount)));
+    this.resourcesNotReady = Collections.unmodifiableList(Arrays.asList(resource));
   }
 
-  public KubernetesClientTimeoutException(String namespace, long amount, TimeUnit timeUnit) {
-    super(String.format(RESOURCES_FORMAT, namespace, timeUnit.toMillis(amount)));
+  public KubernetesClientTimeoutException(Collection<HasMetadata> resourcesNotReady, long amount, TimeUnit timeUnit) {
+    super(String.format(KNOWS_RESOURCES_FORMAT, timeUnit.toMillis(amount), notReadyToString(resourcesNotReady)));
+    this.resourcesNotReady = Collections.unmodifiableList(new ArrayList<>(resourcesNotReady));
+  }
+
+  public List<HasMetadata> getResourcesNotReady() {
+    return resourcesNotReady;
+  }
+
+  /**
+   * Creates a string listing all the resources that are not ready.
+   * @param resources The resources that are not ready.
+   * @return
+     */
+  private static String notReadyToString(Iterable<HasMetadata> resources) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("Resources that are not ready: ");
+    boolean first = true;
+    for (HasMetadata r : resources) {
+      if (first) {
+        first = false;
+      } else {
+        sb.append(", ");
+      }
+      sb.append("[Kind:").append(r.getKind())
+        .append(" Name:").append(r.getMetadata().getName())
+        .append(" Namespace:").append(r.getMetadata().getNamespace())
+        .append("]");
+    }
+    return sb.toString();
   }
 }

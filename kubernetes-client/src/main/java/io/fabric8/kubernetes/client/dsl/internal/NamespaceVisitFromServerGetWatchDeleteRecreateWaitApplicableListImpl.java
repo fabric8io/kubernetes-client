@@ -86,6 +86,7 @@ Waitable<List<HasMetadata>>, Readiable {
     }
 
     final List<HasMetadata> result = new ArrayList<>();
+    final List<HasMetadata> notReady = new ArrayList<>();
     final int size = items.size();
     final AtomicInteger ready = new AtomicInteger(0);
     ExecutorService executor = Executors.newFixedThreadPool(size);
@@ -101,6 +102,7 @@ Waitable<List<HasMetadata>>, Readiable {
                 result.add(h.waitUntilReady(client, config, meta.getMetadata().getNamespace(), meta, amount, timeUnit));
                 ready.incrementAndGet();
               } catch (Throwable t) {
+                notReady.add(meta);
                 //consider all errors as not ready.
               } finally {
                 //We don't want to wait for items that will never become ready
@@ -112,7 +114,7 @@ Waitable<List<HasMetadata>>, Readiable {
         if(checkReady(latch, size, ready, amount, timeUnit)) {
           return result;
         } else {
-          throw new KubernetesClientTimeoutException(getNamespace(), amount, timeUnit);
+          throw new KubernetesClientTimeoutException(notReady, amount, timeUnit);
         }
       } finally {
         executor.shutdown();

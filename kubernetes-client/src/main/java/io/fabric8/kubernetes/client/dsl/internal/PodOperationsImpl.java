@@ -22,7 +22,6 @@ import java.io.PipedOutputStream;
 import java.net.URL;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import io.fabric8.kubernetes.api.model.DoneablePod;
@@ -30,9 +29,7 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ClientPodResource;
 import io.fabric8.kubernetes.client.dsl.ContainerResource;
 import io.fabric8.kubernetes.client.dsl.ExecListenable;
@@ -314,7 +311,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
       return pod;
     }
 
-    ReadinessWatcher<Pod> watcher = new ReadinessWatcher<>(pod.getKind(), getName(), getNamespace());
+    ReadinessWatcher<Pod> watcher = new ReadinessWatcher<>(pod);
     try (Watch watch = watch(watcher)) {
       return watcher.await(amount, timeUnit);
     }

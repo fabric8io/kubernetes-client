@@ -26,7 +26,6 @@ import java.util.Objects;
 import java.util.TreeMap;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -42,7 +41,6 @@ import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
@@ -274,7 +272,7 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
       return rc;
     }
 
-    ReadinessWatcher<ReplicationController> watcher = new ReadinessWatcher<>(rc.getKind(), getName(), getNamespace());
+    ReadinessWatcher<ReplicationController> watcher = new ReadinessWatcher<>(rc);
     try (Watch watch = watch(watcher)) {
       return watcher.await(amount, timeUnit);
     }
