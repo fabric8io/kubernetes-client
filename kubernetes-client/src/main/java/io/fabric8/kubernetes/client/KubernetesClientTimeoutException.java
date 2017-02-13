@@ -15,14 +15,14 @@
  */
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import io.fabric8.kubernetes.api.model.HasMetadata;
 
 public class KubernetesClientTimeoutException extends KubernetesClientException {
 
@@ -32,7 +32,7 @@ public class KubernetesClientTimeoutException extends KubernetesClientException 
   private final List<HasMetadata> resourcesNotReady;
 
   public KubernetesClientTimeoutException(HasMetadata resource, long amount, TimeUnit timeUnit) {
-    super(String.format(RESOURCE_FORMAT, resource.getKind(), resource.getMetadata().getName(), resource.getMetadata().getNamespace(), timeUnit.toMillis(amount)));
+    super(String.format(RESOURCE_FORMAT, timeUnit.toMillis(amount), resource.getKind(), resource.getMetadata().getName(), resource.getMetadata().getNamespace()));
     this.resourcesNotReady = Collections.unmodifiableList(Arrays.asList(resource));
   }
 
