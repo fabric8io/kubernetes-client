@@ -11,6 +11,7 @@ io.fabric8.openshift.client.handlers.PolicyBindingHandler
 io.fabric8.openshift.client.handlers.PolicyHandler
 io.fabric8.openshift.client.handlers.ProjectHandler
 io.fabric8.openshift.client.handlers.ProjectRequestHandler
+io.fabric8.openshift.client.handlers.RoleBindingHandler
 io.fabric8.openshift.client.handlers.RouteHandler
 io.fabric8.openshift.client.handlers.TemplateHandler
 io.fabric8.openshift.client.handlers.UserHandler
