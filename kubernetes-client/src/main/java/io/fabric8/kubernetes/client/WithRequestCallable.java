@@ -15,13 +15,26 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.client.dsl.AnyNamespaceable;
-import io.fabric8.kubernetes.client.dsl.Namespaceable;
-import io.fabric8.kubernetes.client.dsl.RequestConfigurable;
+import io.fabric8.kubernetes.api.builder.Function;
+import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 
+public class WithRequestCallable<C extends Client> implements FunctionCallable<C> {
 
-public interface GenericKubernetesClient<C extends Client> extends Client, KubernetesClient,
-  Namespaceable<C>,
-  AnyNamespaceable<C>,
-  RequestConfigurable<C> {
+  private final C client;
+  private final RequestConfig requestConfig;
+
+  public WithRequestCallable(C client, RequestConfig requestConfig) {
+    this.client = client;
+    this.requestConfig = requestConfig;
+  }
+
+  @Override
+  public <O> O call(Function<C, O> function) {
+    try {
+      RequestConfigHolder.set(requestConfig);
+      return function.apply(client);
+    } finally {
+      RequestConfigHolder.remove();
+    }
+  }
 }

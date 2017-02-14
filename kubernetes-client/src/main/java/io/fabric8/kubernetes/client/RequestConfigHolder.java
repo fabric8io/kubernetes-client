@@ -15,13 +15,19 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.client.dsl.AnyNamespaceable;
-import io.fabric8.kubernetes.client.dsl.Namespaceable;
-import io.fabric8.kubernetes.client.dsl.RequestConfigurable;
+class RequestConfigHolder {
 
+  private static final ThreadLocal<RequestConfig> REQUEST_CONFIG = new ThreadLocal<>();
 
-public interface GenericKubernetesClient<C extends Client> extends Client, KubernetesClient,
-  Namespaceable<C>,
-  AnyNamespaceable<C>,
-  RequestConfigurable<C> {
+  static RequestConfig get() {
+    return REQUEST_CONFIG.get();
+  }
+
+  static void set(RequestConfig requestConfig) {
+    REQUEST_CONFIG.set(requestConfig);
+  }
+
+  static void remove() {
+    REQUEST_CONFIG.remove();
+  }
 }

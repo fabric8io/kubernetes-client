@@ -19,8 +19,11 @@ import io.fabric8.kubernetes.api.model.DoneableLimitRange;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LimitRange;
 import io.fabric8.kubernetes.api.model.LimitRangeList;
+import io.fabric8.kubernetes.client.RequestConfig;
+import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
+import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.openshift.api.model.*;
 import io.fabric8.openshift.client.dsl.ClientBuildResource;
 import io.fabric8.openshift.client.dsl.ClientDeployableScalableResource;
@@ -130,6 +133,10 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
     this(new OpenShiftConfigBuilder().build());
   }
 
+  public DefaultOpenShiftClient(String masterUrl) throws KubernetesClientException {
+    this(new OpenShiftConfigBuilder().withMasterUrl(masterUrl).build());
+  }
+
   public DefaultOpenShiftClient(final Config config) throws KubernetesClientException {
     this(new OpenShiftConfig(config));
   }
@@ -143,10 +150,6 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
     } catch (MalformedURLException e) {
       throw new KubernetesClientException("Could not create client", e);
     }
-  }
-
-  public DefaultOpenShiftClient(String masterUrl) throws KubernetesClientException {
-    this(new OpenShiftConfigBuilder().withMasterUrl(masterUrl).build());
   }
 
   protected DefaultOpenShiftClient(OkHttpClient httpClient, OpenShiftConfig config) throws KubernetesClientException {
@@ -408,5 +411,10 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public ExtensionsAPIGroupClient extensions() {
     return adapt(ExtensionsAPIGroupClient.class);
+  }
+
+  @Override
+  public FunctionCallable<NamespacedOpenShiftClient> withRequestConfig(RequestConfig requestConfig) {
+    return new WithRequestCallable<NamespacedOpenShiftClient>(this, requestConfig);
   }
 }

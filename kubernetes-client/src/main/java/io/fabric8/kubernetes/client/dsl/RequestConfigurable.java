@@ -13,15 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client;
+package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.client.dsl.AnyNamespaceable;
-import io.fabric8.kubernetes.client.dsl.Namespaceable;
-import io.fabric8.kubernetes.client.dsl.RequestConfigurable;
+import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.RequestConfig;
 
+public interface RequestConfigurable<C extends Client> {
 
-public interface GenericKubernetesClient<C extends Client> extends Client, KubernetesClient,
-  Namespaceable<C>,
-  AnyNamespaceable<C>,
-  RequestConfigurable<C> {
+  FunctionCallable<C> withRequestConfig(RequestConfig requestConfig);
 }
