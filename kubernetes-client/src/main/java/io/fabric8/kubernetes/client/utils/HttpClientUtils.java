@@ -81,23 +81,20 @@ public class HttpClientUtils {
               httpClientBuilder.sslSocketFactory(context.getSocketFactory(), (X509TrustManager) trustManagers[0]);
             }
 
-            if (isNotNullOrEmpty(config.getUsername()) && isNotNullOrEmpty(config.getPassword())) {
-                httpClientBuilder.addInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        Request authReq = chain.request().newBuilder().addHeader("Authorization", Credentials.basic(config.getUsername(), config.getPassword())).build();
-                        return chain.proceed(authReq);
-                    }
-                });
-            } else if (config.getOauthToken() != null) {
-                httpClientBuilder.addInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        Request authReq = chain.request().newBuilder().addHeader("Authorization", "Bearer " + config.getOauthToken()).build();
-                        return chain.proceed(authReq);
-                    }
-                });
+          httpClientBuilder.addInterceptor(new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+              Request request = chain.request();
+              if (isNotNullOrEmpty(config.getUsername()) && isNotNullOrEmpty(config.getPassword())) {
+                Request authReq = chain.request().newBuilder().addHeader("Authorization", Credentials.basic(config.getUsername(), config.getPassword())).build();
+                return chain.proceed(authReq);
+              } else if (isNotNullOrEmpty(config.getOauthToken())) {
+                Request authReq = chain.request().newBuilder().addHeader("Authorization", "Bearer " + config.getOauthToken()).build();
+                return chain.proceed(authReq);
+              }
+              return chain.proceed(request);
             }
+          });
 
             Logger reqLogger = LoggerFactory.getLogger(HttpLoggingInterceptor.class);
             if (reqLogger.isTraceEnabled()) {
