@@ -107,6 +107,12 @@ public class Config {
   private String clientKeyData;
   private String clientKeyAlgo = "RSA";
   private String clientKeyPassphrase = "changeit";
+
+  private RequestConfig requestConfig = new RequestConfig();
+
+  /**
+   * fields not used but needed for builder generation.
+   */
   private String username;
   private String password;
   private String oauthToken;
@@ -119,6 +125,10 @@ public class Config {
   private int loggingInterval = DEFAULT_LOGGING_INTERVAL;
   private long websocketTimeout = DEFAULT_WEBSOCKET_TIMEOUT;
   private long websocketPingInterval = DEFAULT_WEBSOCKET_PING_INTERVAL;
+  /**
+   * end of fields not used but needed for builder generation.
+   */
+
   private String httpProxy;
   private String httpsProxy;
   private String proxyUsername;
@@ -159,16 +169,9 @@ public class Config {
     this.clientKeyData = clientKeyData;
     this.clientKeyAlgo = clientKeyAlgo;
     this.clientKeyPassphrase = clientKeyPassphrase;
-    this.username = username;
-    this.password = password;
-    this.oauthToken = oauthToken;
-    this.watchReconnectInterval = watchReconnectInterval;
-    this.watchReconnectLimit = watchReconnectLimit;
-    this.connectionTimeout = connectionTimeout;
-    this.requestTimeout = requestTimeout;
-    this.rollingTimeout = rollingTimeout;
-    this.scaleTimeout = scaleTimeout;
-    this.loggingInterval = loggingInterval;
+
+    this.requestConfig = new RequestConfig(username, password, oauthToken, watchReconnectLimit, watchReconnectInterval, connectionTimeout, rollingTimeout, requestTimeout, scaleTimeout, loggingInterval, websocketTimeout, websocketPingInterval);
+
     this.httpProxy= httpProxy;
     this.httpsProxy= httpsProxy;
     this.noProxy= noProxy;
@@ -177,8 +180,6 @@ public class Config {
     this.errorMessages = errorMessages;
     this.userAgent = userAgent;
     this.tlsVersions = tlsVersions;
-    this.websocketTimeout = websocketTimeout;
-    this.websocketPingInterval = websocketPingInterval;
 
     if (!this.masterUrl.toLowerCase().startsWith(HTTP_PROTOCOL_PREFIX) && !this.masterUrl.startsWith(HTTPS_PROTOCOL_PREFIX)) {
       this.masterUrl = (SSLUtils.isHttpsAvailable(this) ? HTTPS_PROTOCOL_PREFIX : HTTP_PROTOCOL_PREFIX) + this.masterUrl;
@@ -415,27 +416,27 @@ public class Config {
   }
 
   public String getOauthToken() {
-    return oauthToken;
+    return getRequestConfig().getOauthToken();
   }
 
   public void setOauthToken(String oauthToken) {
-    this.oauthToken = oauthToken;
+    this.requestConfig.setOauthToken(oauthToken);
   }
 
   public String getPassword() {
-    return password;
+    return getRequestConfig().getPassword();
   }
 
   public void setPassword(String password) {
-    this.password = password;
+   this.requestConfig.setPassword(password);
   }
 
   public String getUsername() {
-    return username;
+    return getRequestConfig().getUsername();
   }
 
   public void setUsername(String username) {
-    this.username = username;
+    this.requestConfig.setUsername(username);
   }
 
   public String getClientKeyPassphrase() {
@@ -527,19 +528,19 @@ public class Config {
   }
 
   public int getWatchReconnectInterval() {
-    return watchReconnectInterval;
+    return requestConfig.getWatchReconnectInterval();
   }
 
   public void setWatchReconnectInterval(int watchReconnectInterval) {
-    this.watchReconnectInterval = watchReconnectInterval;
+    this.requestConfig.setWatchReconnectInterval(watchReconnectInterval);
   }
 
   public int getWatchReconnectLimit() {
-    return watchReconnectLimit;
+    return getRequestConfig().getWatchReconnectLimit();
   }
 
   public void setWatchReconnectLimit(int watchReconnectLimit) {
-    this.watchReconnectLimit = watchReconnectLimit;
+    this.requestConfig.setWatchReconnectLimit(watchReconnectLimit);
   }
 
   public Map<Integer, String> getErrorMessages() {
@@ -555,43 +556,43 @@ public class Config {
   }
 
   public int getConnectionTimeout() {
-    return connectionTimeout;
+    return getRequestConfig().getConnectionTimeout();
   }
 
   public void setConnectionTimeout(int connectionTimeout) {
-    this.connectionTimeout = connectionTimeout;
+    this.requestConfig.setConnectionTimeout(connectionTimeout);
   }
 
   public int getRequestTimeout() {
-    return requestTimeout;
+    return getRequestConfig().getRequestTimeout();
   }
 
   public void setRequestTimeout(int requestTimeout) {
-    this.requestTimeout = requestTimeout;
+    this.requestConfig.setRequestTimeout(requestTimeout);
   }
 
   public long getRollingTimeout() {
-    return rollingTimeout;
+    return getRequestConfig().getRollingTimeout();
   }
 
   public void setRollingTimeout(long rollingTimeout) {
-    this.rollingTimeout = rollingTimeout;
+    this.requestConfig.setRollingTimeout(rollingTimeout);
   }
 
   public long getScaleTimeout() {
-    return scaleTimeout;
+    return getRequestConfig().getScaleTimeout();
   }
 
   public void setScaleTimeout(long scaleTimeout) {
-    this.scaleTimeout = scaleTimeout;
+    this.requestConfig.setScaleTimeout(scaleTimeout);
   }
 
   public int getLoggingInterval() {
-    return loggingInterval;
+    return getRequestConfig().getLoggingInterval();
   }
 
   public void setLoggingInterval(int loggingInterval) {
-    this.loggingInterval = loggingInterval;
+    this.requestConfig.setLoggingInterval(loggingInterval);
   }
 
   public void setHttpProxy(String httpProxy) {
@@ -643,19 +644,19 @@ public class Config {
   }
 
   public long getWebsocketTimeout() {
-    return websocketTimeout;
+    return getRequestConfig().getWebsocketTimeout();
   }
 
   public void setWebsocketTimeout(long websocketTimeout) {
-    this.websocketTimeout = websocketTimeout;
+    this.requestConfig.setWebsocketTimeout(websocketTimeout);
   }
 
   public long getWebsocketPingInterval() {
-    return websocketPingInterval;
+    return getRequestConfig().getWebsocketPingInterval();
   }
 
   public void setWebsocketPingInterval(long websocketPingInterval) {
-    this.websocketPingInterval = websocketPingInterval;
+    this.requestConfig.setWebsocketPingInterval(websocketPingInterval);
   }
   public String getProxyUsername() {
     return proxyUsername;
@@ -671,5 +672,10 @@ public class Config {
 
   public void setProxyPassword(String proxyPassword) {
     this.proxyPassword = proxyPassword;
+  }
+
+  public RequestConfig getRequestConfig() {
+    RequestConfig rc = RequestConfigHolder.get();
+    return rc != null ? rc : this.requestConfig;
   }
 }
