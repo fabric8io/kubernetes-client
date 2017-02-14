@@ -53,28 +53,6 @@ public abstract class BaseClient implements Client, HttpClientAware {
           " or environment variable \"" + Utils.convertSystemPropertyNameToEnvVar(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY) + "\"");
       }
       this.masterUrl = new URL(config.getMasterUrl());
-
-      Adapters.register(new ExtensionAdapter<OkHttpClient>() {
-
-        @Override
-        public Class<OkHttpClient> getExtensionType() {
-          return OkHttpClient.class;
-        }
-
-        @Override
-        public Boolean isAdaptable(Client client) {
-          return client instanceof HttpClientAware;
-        }
-
-        @Override
-        public OkHttpClient adapt(Client client) {
-          if (client instanceof HttpClientAware) {
-            return ((HttpClientAware)client).getHttpClient().newBuilder().build();
-          }
-          throw new IllegalArgumentException("This adapter only supports instances of HttpClientAware.");
-        }
-      });
-
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
