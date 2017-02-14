@@ -11,12 +11,9 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package io.fabric8.kubernetes.client.internal;
+package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.api.builder.Function;
-import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.RequestConfig;
-import io.fabric8.kubernetes.client.RequestConfigHolder;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 
 public class WithRequestCallable<C extends Client> implements FunctionCallable<C> {
