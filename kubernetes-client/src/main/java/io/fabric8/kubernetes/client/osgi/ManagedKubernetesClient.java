@@ -80,6 +80,7 @@ import io.fabric8.kubernetes.client.ExtensionAdapter;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
+import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
@@ -88,6 +89,7 @@ import io.fabric8.kubernetes.client.dsl.ClientPodResource;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
 import org.apache.felix.scr.annotations.Activate;
@@ -383,5 +385,10 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   @Override
   public NamespacedKubernetesClient inNamespace(String name) {
     return delegate.inNamespace(name);
+  }
+
+  @Override
+  public FunctionCallable<NamespacedKubernetesClient> withRequestConfig(RequestConfig requestConfig) {
+    return delegate.withRequestConfig(requestConfig);
   }
 }

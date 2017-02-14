@@ -20,9 +20,11 @@ import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LimitRange;
 import io.fabric8.kubernetes.api.model.LimitRangeList;
+import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.internal.LimitRangeOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl;
+import io.fabric8.kubernetes.client.internal.WithRequestCallable;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.ComponentStatus;
@@ -258,8 +260,14 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
     return inNamespace(null);
   }
 
+
+  @Override
+  public FunctionCallable<NamespacedKubernetesClient> withRequestConfig(RequestConfig requestConfig) {
+    return new WithRequestCallable<NamespacedKubernetesClient>(this, requestConfig);
+  }
   @Override
   public ExtensionsAPIGroupDSL extensions() {
     return adapt(ExtensionsAPIGroupClient.class);
   }
+
 }
