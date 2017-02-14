@@ -37,6 +37,10 @@ public abstract class BaseClient implements Client, HttpClientAware {
     this(new ConfigBuilder().build());
   }
 
+  public BaseClient(String masterUrl) throws KubernetesClientException {
+    this(new ConfigBuilder().withMasterUrl(masterUrl).build());
+  }
+
   public BaseClient(final Config config) throws KubernetesClientException {
     this(HttpClientUtils.createHttpClient(config), config);
   }
@@ -56,12 +60,6 @@ public abstract class BaseClient implements Client, HttpClientAware {
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
-  }
-
-
-
-  public BaseClient(String masterUrl) throws KubernetesClientException {
-    this(new ConfigBuilder().withMasterUrl(masterUrl).build());
   }
 
   @Override

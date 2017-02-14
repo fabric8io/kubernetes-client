@@ -107,16 +107,17 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
     super();
   }
 
-  public DefaultKubernetesClient(OkHttpClient httpClient, Config config) throws KubernetesClientException {
-    super(httpClient, config);
+  public DefaultKubernetesClient(String masterUrl) throws KubernetesClientException {
+    super(masterUrl);
   }
 
   public DefaultKubernetesClient(Config config) throws KubernetesClientException {
     super(config);
   }
 
-  public DefaultKubernetesClient(String masterUrl) throws KubernetesClientException {
-    super(masterUrl);
+
+  public DefaultKubernetesClient(OkHttpClient httpClient, Config config) throws KubernetesClientException {
+    super(httpClient, config);
   }
 
   @Override

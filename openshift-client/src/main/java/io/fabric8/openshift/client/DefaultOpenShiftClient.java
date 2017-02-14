@@ -130,6 +130,10 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
     this(new OpenShiftConfigBuilder().build());
   }
 
+  public DefaultOpenShiftClient(String masterUrl) throws KubernetesClientException {
+    this(new OpenShiftConfigBuilder().withMasterUrl(masterUrl).build());
+  }
+
   public DefaultOpenShiftClient(final Config config) throws KubernetesClientException {
     this(new OpenShiftConfig(config));
   }
@@ -143,10 +147,6 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
     } catch (MalformedURLException e) {
       throw new KubernetesClientException("Could not create client", e);
     }
-  }
-
-  public DefaultOpenShiftClient(String masterUrl) throws KubernetesClientException {
-    this(new OpenShiftConfigBuilder().withMasterUrl(masterUrl).build());
   }
 
   protected DefaultOpenShiftClient(OkHttpClient httpClient, OpenShiftConfig config) throws KubernetesClientException {
