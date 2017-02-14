@@ -170,7 +170,7 @@
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>okhttp-ws</artifactId>
-      <version>${okhttp.version}</version>
+      <version>3.4.1</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
