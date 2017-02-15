@@ -15,8 +15,6 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
-import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.Loggable;
@@ -24,9 +22,8 @@ import io.fabric8.kubernetes.client.dsl.PrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.internal.LogWatchCallback;
-import io.fabric8.kubernetes.client.dsl.internal.PodOperationsImpl;
 import io.fabric8.kubernetes.client.utils.URLUtils;
-import io.fabric8.openshift.client.dsl.ClientBuildResource;
+import io.fabric8.openshift.client.dsl.BuildResource;
 import okhttp3.OkHttpClient;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildList;
@@ -46,8 +43,8 @@ import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, DoneableBuild,
-  ClientBuildResource<Build, DoneableBuild, String, LogWatch>> implements
-  ClientBuildResource<Build, DoneableBuild, String, LogWatch> {
+  BuildResource<Build, DoneableBuild, String, LogWatch>> implements
+  BuildResource<Build, DoneableBuild, String, LogWatch> {
 
   private final InputStream in;
   private final OutputStream out;

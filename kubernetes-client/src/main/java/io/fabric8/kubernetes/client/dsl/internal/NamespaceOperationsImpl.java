@@ -15,18 +15,18 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.client.dsl.Resource;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableNamespace;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceList;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 
 import java.util.Map;
 import java.util.TreeMap;
 
-public class NamespaceOperationsImpl  extends HasMetadataOperation<Namespace, NamespaceList, DoneableNamespace, ClientResource<Namespace, DoneableNamespace>> {
+public class NamespaceOperationsImpl  extends HasMetadataOperation<Namespace, NamespaceList, DoneableNamespace, Resource<Namespace, DoneableNamespace>> {
 
   public NamespaceOperationsImpl(OkHttpClient client, Config config) {
     this(client, config, null, null, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());

@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.api.model.Job;
 import io.fabric8.kubernetes.api.model.JobList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.ClientScaleableResource;
+import io.fabric8.kubernetes.client.dsl.ScalableResource;
 import io.fabric8.kubernetes.client.dsl.Reaper;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import org.slf4j.Logger;
@@ -38,8 +38,8 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, DoneableJob, ClientScaleableResource<Job, DoneableJob>>
-  implements ClientScaleableResource<Job, DoneableJob> {
+public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, DoneableJob, ScalableResource<Job, DoneableJob>>
+  implements ScalableResource<Job, DoneableJob> {
 
   static final transient Logger LOG = LoggerFactory.getLogger(JobOperationsImpl.class);
 
@@ -53,7 +53,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
   }
 
   @Override
-  public ClientScaleableResource<Job, DoneableJob> load(InputStream is) {
+  public ScalableResource<Job, DoneableJob> load(InputStream is) {
     try {
       Job item = unmarshal(is, Job.class);
       return new JobOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), item, getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
@@ -63,7 +63,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
   }
 
   @Override
-  public ClientScaleableResource<Job, DoneableJob> fromServer() {
+  public ScalableResource<Job, DoneableJob> fromServer() {
     return new JobOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), true, getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
   }
 

@@ -15,8 +15,8 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.client.dsl.Resource;
 import okhttp3.OkHttpClient;
-import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.ClusterRoleBinding;
 import io.fabric8.openshift.api.model.ClusterRoleBindingList;
 import io.fabric8.openshift.api.model.DoneableClusterRoleBinding;
@@ -25,7 +25,7 @@ import io.fabric8.openshift.client.OpenShiftConfig;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class ClusterRoleBindingOperationsImpl extends OpenShiftOperation<ClusterRoleBinding, ClusterRoleBindingList, DoneableClusterRoleBinding, ClientResource<ClusterRoleBinding, DoneableClusterRoleBinding>> {
+public class ClusterRoleBindingOperationsImpl extends OpenShiftOperation<ClusterRoleBinding, ClusterRoleBindingList, DoneableClusterRoleBinding, Resource<ClusterRoleBinding, DoneableClusterRoleBinding>> {
   public ClusterRoleBindingOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
     this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
   }

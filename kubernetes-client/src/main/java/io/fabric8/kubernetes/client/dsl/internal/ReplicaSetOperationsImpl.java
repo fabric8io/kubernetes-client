@@ -41,7 +41,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
+import io.fabric8.kubernetes.client.dsl.RollableScallableResource;
 import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
 import io.fabric8.kubernetes.client.dsl.ImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.Reaper;
@@ -53,8 +53,8 @@ import io.fabric8.kubernetes.client.internal.readiness.ReadinessWatcher;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.OkHttpClient;
 
-public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, ClientRollableScallableResource<ReplicaSet, DoneableReplicaSet>>
-  implements ClientRollableScallableResource<ReplicaSet, DoneableReplicaSet>,
+public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, RollableScallableResource<ReplicaSet, DoneableReplicaSet>>
+  implements RollableScallableResource<ReplicaSet, DoneableReplicaSet>,
   TimeoutImageEditReplacePatchable<ReplicaSet, ReplicaSet, DoneableReplicaSet> {
 
   static final transient Logger LOG = LoggerFactory.getLogger(ReplicaSetOperationsImpl.class);
@@ -95,7 +95,7 @@ public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, R
   }
 
   @Override
-  public ClientRollableScallableResource<ReplicaSet, DoneableReplicaSet> withName(String name) {
+  public RollableScallableResource<ReplicaSet, DoneableReplicaSet> withName(String name) {
     if (name == null || name.length() == 0) {
       throw new IllegalArgumentException("Name must be provided.");
     }
@@ -103,7 +103,7 @@ public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, R
   }
 
   @Override
-  public ClientRollableScallableResource<ReplicaSet, DoneableReplicaSet> fromServer() {
+  public RollableScallableResource<ReplicaSet, DoneableReplicaSet> fromServer() {
     return new ReplicaSetOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), true, getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rolling, rollingTimeout, rollingTimeUnit);
   }
 

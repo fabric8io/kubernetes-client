@@ -13,15 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl;
+package io.fabric8.openshift.client.dsl;
 
-import io.fabric8.kubernetes.api.model.DoneableKubernetesList;
-import io.fabric8.kubernetes.api.model.KubernetesList;
-
-import java.io.InputStream;
-
-public interface ClientKubernetesListOperation extends
-  Namespaceable<ClientKubernetesListNonNamespaceOperation>,
-  MultiDeleteable<KubernetesList, Boolean>,
-  Loadable<RecreateFromServerGettable<KubernetesList,KubernetesList,DoneableKubernetesList>> {
+public interface TemplateResource<T, L, D> extends ProcessableResource<T, L, D> {
 }

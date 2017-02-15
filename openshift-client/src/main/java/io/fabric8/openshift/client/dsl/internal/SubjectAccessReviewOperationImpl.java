@@ -27,7 +27,7 @@ import io.fabric8.openshift.api.model.SubjectAccessReview;
 import io.fabric8.openshift.api.model.SubjectAccessReviewBuilder;
 import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
 import io.fabric8.openshift.client.OpenShiftConfig;
-import io.fabric8.openshift.client.dsl.ClientSubjectAccessReviewOperation;
+import io.fabric8.openshift.client.dsl.SubjectAccessReviewOperation;
 import io.fabric8.openshift.client.dsl.CreateableLocalSubjectAccessReview;
 import io.fabric8.openshift.client.dsl.CreateableSubjectAccessReview;
 
@@ -36,20 +36,20 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
-public class ClientSubjectAccessReviewOperationImpl extends OperationSupport implements ClientSubjectAccessReviewOperation<CreateableSubjectAccessReview, CreateableLocalSubjectAccessReview> {
+public class SubjectAccessReviewOperationImpl extends OperationSupport implements SubjectAccessReviewOperation<CreateableSubjectAccessReview, CreateableLocalSubjectAccessReview> {
 
 
-  public ClientSubjectAccessReviewOperationImpl(OkHttpClient client, OpenShiftConfig config) {
+  public SubjectAccessReviewOperationImpl(OkHttpClient client, OpenShiftConfig config) {
     this(client, config, null, null);
   }
 
-  public ClientSubjectAccessReviewOperationImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace) {
+  public SubjectAccessReviewOperationImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace) {
     super(client, config, null, apiVersion, "subjectaccessreviews", namespace, null);
   }
 
   @Override
   public CreateableLocalSubjectAccessReview inNamespace(String namespace) {
-    return new ClientSubjectAccessReviewOperationImpl(client, OpenShiftConfig.wrap(getConfig()), null, namespace).local();
+    return new SubjectAccessReviewOperationImpl(client, OpenShiftConfig.wrap(getConfig()), null, namespace).local();
   }
 
   @Override

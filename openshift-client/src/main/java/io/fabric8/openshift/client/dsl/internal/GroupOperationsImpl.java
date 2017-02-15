@@ -15,8 +15,8 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.client.dsl.Resource;
 import okhttp3.OkHttpClient;
-import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.DoneableGroup;
 import io.fabric8.openshift.api.model.Group;
 import io.fabric8.openshift.api.model.GroupList;
@@ -25,7 +25,7 @@ import io.fabric8.openshift.client.OpenShiftConfig;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class GroupOperationsImpl extends OpenShiftOperation<Group, GroupList, DoneableGroup, ClientResource<Group, DoneableGroup>> {
+public class GroupOperationsImpl extends OpenShiftOperation<Group, GroupList, DoneableGroup, Resource<Group, DoneableGroup>> {
   public GroupOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
     this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
   }

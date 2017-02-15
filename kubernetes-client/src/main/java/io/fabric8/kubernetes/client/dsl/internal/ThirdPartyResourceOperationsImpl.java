@@ -15,18 +15,18 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.client.dsl.Resource;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.extensions.ThirdPartyResource;
 import io.fabric8.kubernetes.api.model.extensions.ThirdPartyResourceList;
 import io.fabric8.kubernetes.api.model.extensions.DoneableThirdPartyResource;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 
 import java.util.Map;
 import java.util.TreeMap;
 
-public class ThirdPartyResourceOperationsImpl extends HasMetadataOperation<ThirdPartyResource, ThirdPartyResourceList, DoneableThirdPartyResource, ClientResource<ThirdPartyResource, DoneableThirdPartyResource>>{
+public class ThirdPartyResourceOperationsImpl extends HasMetadataOperation<ThirdPartyResource, ThirdPartyResourceList, DoneableThirdPartyResource, Resource<ThirdPartyResource, DoneableThirdPartyResource>>{
 
   public ThirdPartyResourceOperationsImpl(OkHttpClient client, Config config, String namespace) {
     this(client, config, "v1beta1", namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());

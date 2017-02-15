@@ -27,7 +27,7 @@ import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.ParameterValue;
-import io.fabric8.openshift.client.dsl.ClientTemplateResource;
+import io.fabric8.openshift.client.dsl.TemplateResource;
 import io.fabric8.openshift.client.dsl.TemplateOperation;
 
 import java.net.MalformedURLException;
@@ -37,7 +37,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class TemplateOperationsImpl
-  extends OpenShiftOperation<Template, TemplateList, DoneableTemplate, ClientTemplateResource<Template, KubernetesList, DoneableTemplate>>
+  extends OpenShiftOperation<Template, TemplateList, DoneableTemplate, TemplateResource<Template, KubernetesList, DoneableTemplate>>
   implements TemplateOperation {
 
   public TemplateOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {

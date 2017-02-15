@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.client.dsl.base;
 
+import io.fabric8.kubernetes.client.dsl.Resource;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.builder.Function;
 import io.fabric8.kubernetes.api.model.Doneable;
@@ -23,13 +24,12 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.ClientResource;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends ClientResource<T, D>>
+public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
   extends BaseOperation< T, L, D, R> {
 
   protected HasMetadataOperation(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {

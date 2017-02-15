@@ -36,10 +36,10 @@ import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
 import io.fabric8.kubernetes.api.model.extensions.ThirdPartyResource;
 import io.fabric8.kubernetes.api.model.extensions.ThirdPartyResourceList;
-import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
-import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
-import io.fabric8.kubernetes.client.dsl.ClientScaleableResource;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.RollableScallableResource;
+import io.fabric8.kubernetes.client.dsl.ScalableResource;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.internal.DaemonSetOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.DeploymentOperationsImpl;
@@ -62,40 +62,40 @@ public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAP
   }
 
   @Override
-  public ClientMixedOperation<Job, JobList, DoneableJob, ClientScaleableResource<Job, DoneableJob>> jobs() {
+  public MixedOperation<Job, JobList, DoneableJob, ScalableResource<Job, DoneableJob>> jobs() {
     return new JobOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
   @Override
-  public ClientMixedOperation<Deployment, DeploymentList, DoneableDeployment, ClientScaleableResource<Deployment, DoneableDeployment>> deployments() {
+  public MixedOperation<Deployment, DeploymentList, DoneableDeployment, ScalableResource<Deployment, DoneableDeployment>> deployments() {
     return new DeploymentOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
   @Override
   @Deprecated
-  public ClientMixedOperation<Ingress, IngressList, DoneableIngress, ClientResource<Ingress, DoneableIngress>> ingress() {
+  public MixedOperation<Ingress, IngressList, DoneableIngress, Resource<Ingress, DoneableIngress>> ingress() {
     return ingresses();
   }
 
   @Override
-  public ClientMixedOperation<Ingress, IngressList, DoneableIngress, ClientResource<Ingress, DoneableIngress>> ingresses() {
+  public MixedOperation<Ingress, IngressList, DoneableIngress, Resource<Ingress, DoneableIngress>> ingresses() {
     return new IngressOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
   @Override
-  public ClientMixedOperation<DaemonSet, DaemonSetList, DoneableDaemonSet, ClientResource<DaemonSet, DoneableDaemonSet>> daemonSets() {
+  public MixedOperation<DaemonSet, DaemonSetList, DoneableDaemonSet, Resource<DaemonSet, DoneableDaemonSet>> daemonSets() {
     return new DaemonSetOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
-  public ClientMixedOperation<ThirdPartyResource, ThirdPartyResourceList, DoneableThirdPartyResource, ClientResource<ThirdPartyResource, DoneableThirdPartyResource>> thirdPartyResources() {
+  public MixedOperation<ThirdPartyResource, ThirdPartyResourceList, DoneableThirdPartyResource, Resource<ThirdPartyResource, DoneableThirdPartyResource>> thirdPartyResources() {
     return new ThirdPartyResourceOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
-  public ClientMixedOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, ClientRollableScallableResource<ReplicaSet, DoneableReplicaSet>> replicaSets() {
+  public MixedOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, RollableScallableResource<ReplicaSet, DoneableReplicaSet>> replicaSets() {
     return new ReplicaSetOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
-  public ClientMixedOperation<HorizontalPodAutoscaler, HorizontalPodAutoscalerList, DoneableHorizontalPodAutoscaler, ClientResource<HorizontalPodAutoscaler, DoneableHorizontalPodAutoscaler>> horizontalPodAutoscalers() {
+  public MixedOperation<HorizontalPodAutoscaler, HorizontalPodAutoscalerList, DoneableHorizontalPodAutoscaler, Resource<HorizontalPodAutoscaler, DoneableHorizontalPodAutoscaler>> horizontalPodAutoscalers() {
     return new HorizontalPodAutoscalerOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 }

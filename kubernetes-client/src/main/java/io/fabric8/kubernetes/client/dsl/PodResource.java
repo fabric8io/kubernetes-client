@@ -20,7 +20,7 @@ import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 
-public interface ClientPodResource<T, D> extends ClientResource<T, D>,
+public interface PodResource<T, D> extends Resource<T, D>,
         Loggable<String, LogWatch>,
         Containerable<String, ContainerResource<String, LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch>>,
         ContainerResource<String, LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch> {

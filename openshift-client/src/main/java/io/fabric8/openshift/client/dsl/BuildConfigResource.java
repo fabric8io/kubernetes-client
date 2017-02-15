@@ -16,14 +16,14 @@
 
 package io.fabric8.openshift.client.dsl;
 
-import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.Secretable;
 import io.fabric8.kubernetes.client.dsl.Triggerable;
 import io.fabric8.kubernetes.client.dsl.Typeable;
 import io.fabric8.openshift.api.model.BuildRequest;
 import io.fabric8.openshift.api.model.WebHookTrigger;
 
-public interface ClientBuildConfigResource<T, D, S, I> extends ClientResource<T, D>,
+public interface BuildConfigResource<T, D, S, I> extends Resource<T, D>,
   Instantiateable<BuildRequest, I>,
   Typeable<Triggerable<WebHookTrigger, S>>,
   Triggerable<WebHookTrigger, S>,

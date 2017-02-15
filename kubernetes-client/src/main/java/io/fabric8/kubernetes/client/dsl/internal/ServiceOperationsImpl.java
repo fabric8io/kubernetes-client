@@ -16,11 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.Endpoints;
-import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
-import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.client.internal.readiness.Readiness;
-import io.fabric8.kubernetes.client.internal.readiness.ReadinessWatcher;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.DoneableService;
 import io.fabric8.kubernetes.api.model.Service;
@@ -28,15 +24,14 @@ import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.ClientResource;
+
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public class ServiceOperationsImpl extends HasMetadataOperation<Service, ServiceList, DoneableService, ClientResource<Service, DoneableService>> {
+public class ServiceOperationsImpl extends HasMetadataOperation<Service, ServiceList, DoneableService, Resource<Service, DoneableService>> {
 
   public ServiceOperationsImpl(OkHttpClient client, Config config, String namespace) {
     this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());

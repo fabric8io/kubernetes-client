@@ -15,7 +15,11 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface ClientKubernetesListMixedOperation extends
-  ClientKubernetesListOperation,
-  ClientKubernetesListNonNamespaceOperation {
+import io.fabric8.kubernetes.api.model.DoneableKubernetesList;
+import io.fabric8.kubernetes.api.model.KubernetesList;
+
+public interface KubernetesListOperation extends
+  Namespaceable<KubernetesListNonNamespaceOperation>,
+  MultiDeleteable<KubernetesList, Boolean>,
+  Loadable<RecreateFromServerGettable<KubernetesList,KubernetesList,DoneableKubernetesList>> {
 }

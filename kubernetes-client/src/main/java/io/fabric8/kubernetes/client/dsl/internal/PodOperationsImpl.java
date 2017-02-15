@@ -30,7 +30,7 @@ import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.dsl.ClientPodResource;
+import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.ContainerResource;
 import io.fabric8.kubernetes.client.dsl.ExecListenable;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
@@ -54,7 +54,7 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okhttp3.ws.WebSocketCall;
 
-public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, DoneablePod, ClientPodResource<Pod, DoneablePod>> implements ClientPodResource<Pod, DoneablePod> {
+public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, DoneablePod, PodResource<Pod, DoneablePod>> implements PodResource<Pod, DoneablePod> {
 
     private static final String[] EMPTY_COMMAND = {"/bin/sh", "-i"};
 

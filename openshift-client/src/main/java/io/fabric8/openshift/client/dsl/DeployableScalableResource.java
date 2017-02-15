@@ -15,8 +15,8 @@
  */
 package io.fabric8.openshift.client.dsl;
 
-import io.fabric8.kubernetes.client.dsl.ClientScaleableResource;
+import io.fabric8.kubernetes.client.dsl.ScalableResource;
 
-public interface ClientDeployableScalableResource<T, D> extends ClientScaleableResource<T, D>,
+public interface DeployableScalableResource<T, D> extends ScalableResource<T, D>,
   Deployable<T> {
 }

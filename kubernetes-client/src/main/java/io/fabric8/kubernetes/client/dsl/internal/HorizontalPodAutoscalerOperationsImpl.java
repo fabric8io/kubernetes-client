@@ -19,7 +19,7 @@ import io.fabric8.kubernetes.api.model.extensions.DoneableHorizontalPodAutoscale
 import io.fabric8.kubernetes.api.model.extensions.HorizontalPodAutoscaler;
 import io.fabric8.kubernetes.api.model.extensions.HorizontalPodAutoscalerList;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 
 import okhttp3.OkHttpClient;
@@ -27,7 +27,7 @@ import okhttp3.OkHttpClient;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class HorizontalPodAutoscalerOperationsImpl extends HasMetadataOperation<HorizontalPodAutoscaler, HorizontalPodAutoscalerList, DoneableHorizontalPodAutoscaler, ClientResource<HorizontalPodAutoscaler, DoneableHorizontalPodAutoscaler>>{
+public class HorizontalPodAutoscalerOperationsImpl extends HasMetadataOperation<HorizontalPodAutoscaler, HorizontalPodAutoscalerList, DoneableHorizontalPodAutoscaler, Resource<HorizontalPodAutoscaler, DoneableHorizontalPodAutoscaler>>{
 
   public HorizontalPodAutoscalerOperationsImpl(OkHttpClient client, Config config, String namespace) {
     this(client, config, "v1beta1", namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());

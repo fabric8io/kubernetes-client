@@ -13,11 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.api.model.DoneableKubernetesList;
+import io.fabric8.kubernetes.api.model.KubernetesList;
 
-public interface ClientResource<T, D> extends Resource<T, T, D, Boolean, Watch, Watcher<T>> {
+import java.io.InputStream;
+
+public interface KubernetesListNonNamespaceOperation extends
+  Createable<KubernetesList, KubernetesList, DoneableKubernetesList>,
+  MultiDeleteable<KubernetesList, Boolean>,
+  Loadable<RecreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList>> {
 }

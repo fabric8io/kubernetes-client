@@ -35,7 +35,7 @@ import io.fabric8.openshift.api.model.DoneableBuildConfig;
 import io.fabric8.openshift.api.model.WebHookTrigger;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.BuildConfigOperation;
-import io.fabric8.openshift.client.dsl.ClientBuildConfigResource;
+import io.fabric8.openshift.client.dsl.BuildConfigResource;
 import io.fabric8.openshift.client.dsl.InputStreamable;
 import io.fabric8.openshift.client.dsl.TimeoutInputStreamable;
 import io.fabric8.openshift.client.dsl.buildconfig.AsFileTimeoutInputStreamable;
@@ -48,14 +48,12 @@ import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.internal.Util;
 import okio.BufferedSink;
 import okio.Okio;
 import okio.Source;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -65,7 +63,7 @@ import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, BuildConfigList, DoneableBuildConfig,
-        ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build>>
+  BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build>>
         implements BuildConfigOperation {
 
   public static final String BUILD_CONFIG_LABEL = "openshift.io/build-config.name";
@@ -110,7 +108,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
   }
 
   @Override
-  public ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build> withName(String name) {
+  public BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build> withName(String name) {
     if (name == null || name.length() == 0) {
       throw new IllegalArgumentException("Name must be provided.");
     }
@@ -118,7 +116,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
   }
 
   @Override
-  public OpenShiftOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build>> inNamespace(String namespace) {
+  public OpenShiftOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build>> inNamespace(String namespace) {
     return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
   }
 
@@ -133,7 +131,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
   }
 
   @Override
-  public ClientBuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build> load(InputStream is) {
+  public BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build> load(InputStream is) {
     return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), unmarshal(is, getType()), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
   }
 

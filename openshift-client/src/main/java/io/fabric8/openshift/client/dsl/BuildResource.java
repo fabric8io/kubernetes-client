@@ -13,7 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.fabric8.openshift.client.dsl;
 
-public interface ClientTemplateResource<T, L, D> extends ClientProcessableResource<T, L, D> {
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.TerminateTimeTailPrettyLoggable;
+
+public interface BuildResource<T, D, S, W> extends Resource<T, D>,
+  TerminateTimeTailPrettyLoggable<S, W> {
 }

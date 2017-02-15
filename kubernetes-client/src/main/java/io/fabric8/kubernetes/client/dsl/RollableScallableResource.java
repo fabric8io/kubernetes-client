@@ -13,17 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.fabric8.kubernetes.client.dsl;
 
-package io.fabric8.openshift.client.dsl;
-
-import io.fabric8.kubernetes.client.dsl.ClientResource;
-import io.fabric8.kubernetes.client.dsl.Secretable;
-import io.fabric8.kubernetes.client.dsl.TerminateTimeTailPrettyLoggable;
-import io.fabric8.kubernetes.client.dsl.Triggerable;
-import io.fabric8.kubernetes.client.dsl.Typeable;
-import io.fabric8.openshift.api.model.BuildRequest;
-import io.fabric8.openshift.api.model.WebHookTrigger;
-
-public interface ClientBuildResource<T, D, S, W> extends ClientResource<T, D>,
-  TerminateTimeTailPrettyLoggable<S, W> {
+public interface RollableScallableResource<T, D> extends ScalableResource<T, D>,
+  Rollable<TimeoutImageEditReplacePatchable<T, T, D>> {
 }
