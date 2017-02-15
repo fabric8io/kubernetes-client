@@ -16,8 +16,6 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.client.dsl.internal.CreateOrReplaceable;
-
 /**
  * Interface that describes the operation that can be done on a Kubernetes resource (e.g. Pod, Service etc).
  * This is intended to act as the common denominator of resource operations. To accomodate resources with more specialized operations, this interface should be used as a base.

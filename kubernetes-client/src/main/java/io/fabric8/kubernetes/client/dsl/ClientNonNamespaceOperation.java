@@ -17,9 +17,6 @@ package io.fabric8.kubernetes.client.dsl;
 
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.client.dsl.internal.CreateOrReplaceable;
-
-import java.io.InputStream;
 
 /**
  * The entry point to client operations that are either "cross namespace resources", or are available in the invocation chain
