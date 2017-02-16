@@ -42,11 +42,11 @@ import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.api.model.DoneableDeploymentConfig;
 import io.fabric8.openshift.client.OpenShiftConfig;
-import io.fabric8.openshift.client.dsl.ClientDeployableScalableResource;
+import io.fabric8.openshift.client.dsl.DeployableScalableResource;
 import okhttp3.OkHttpClient;
 
 public class DeploymentConfigOperationsImpl extends OpenShiftOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig,
-  ClientDeployableScalableResource<DeploymentConfig, DoneableDeploymentConfig>> implements ClientDeployableScalableResource<DeploymentConfig, DoneableDeploymentConfig> {
+  DeployableScalableResource<DeploymentConfig, DoneableDeploymentConfig>> implements DeployableScalableResource<DeploymentConfig, DoneableDeploymentConfig> {
 
   private static final Logger LOG = LoggerFactory.getLogger(DeploymentConfigOperationsImpl.class);
   private static final String DEPLOYMENT_CONFIG_REF = "openshift.io/deployment-config.name";

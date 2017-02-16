@@ -15,6 +15,9 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface ClientScaleableResource<T, D> extends ClientResource<T, D>,
-  Scaleable<T> {
+public interface CreateOrReplaceable<I, T, D> {
+
+  T createOrReplace(I... item);
+
+  D createOrReplaceWithNew();
 }

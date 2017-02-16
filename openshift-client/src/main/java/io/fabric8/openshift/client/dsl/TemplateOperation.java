@@ -16,11 +16,11 @@
 package io.fabric8.openshift.client.dsl;
 
 import io.fabric8.kubernetes.api.model.KubernetesList;
-import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.openshift.api.model.DoneableTemplate;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateList;
 
-public interface TemplateOperation extends ClientTemplateResource<Template, KubernetesList, DoneableTemplate>,
-  ClientMixedOperation<Template, TemplateList, DoneableTemplate, ClientTemplateResource<Template, KubernetesList, DoneableTemplate>> {
+public interface TemplateOperation extends TemplateResource<Template, KubernetesList, DoneableTemplate>,
+  MixedOperation<Template, TemplateList, DoneableTemplate, TemplateResource<Template, KubernetesList, DoneableTemplate>> {
 }

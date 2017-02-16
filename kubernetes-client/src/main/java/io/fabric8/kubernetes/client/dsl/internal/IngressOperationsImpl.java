@@ -15,18 +15,18 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.client.dsl.Resource;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.extensions.DoneableIngress;
 import io.fabric8.kubernetes.api.model.extensions.Ingress;
 import io.fabric8.kubernetes.api.model.extensions.IngressList;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 
 import java.util.Map;
 import java.util.TreeMap;
 
-public class IngressOperationsImpl extends HasMetadataOperation<Ingress, IngressList, DoneableIngress, ClientResource<Ingress, DoneableIngress>>{
+public class IngressOperationsImpl extends HasMetadataOperation<Ingress, IngressList, DoneableIngress, Resource<Ingress, DoneableIngress>>{
 
   public IngressOperationsImpl(OkHttpClient client, Config config, String namespace) {
     this(client, config, "v1beta1", namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());

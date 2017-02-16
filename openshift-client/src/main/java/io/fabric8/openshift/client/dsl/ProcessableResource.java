@@ -17,6 +17,6 @@ package io.fabric8.openshift.client.dsl;
 
 import io.fabric8.kubernetes.client.dsl.Resource;
 
-public interface ProcessableResource<I, T, D, B, H, W> extends Resource<I, T, D, B, H, W>,
-  Processable<T> {
+public interface ProcessableResource<T, L, D> extends Resource<T, D>,
+  Processable<L> {
 }

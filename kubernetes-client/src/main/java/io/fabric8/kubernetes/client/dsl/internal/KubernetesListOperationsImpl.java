@@ -15,6 +15,9 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.client.dsl.KubernetesListMixedOperation;
+import io.fabric8.kubernetes.client.dsl.KubernetesListOperation;
+import io.fabric8.kubernetes.client.dsl.Loadable;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.builder.Function;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
@@ -26,18 +29,14 @@ import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.HasMetadataVisitiableBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.ResourceHandler;
-import io.fabric8.kubernetes.client.dsl.ClientKubernetesListMixedOperation;
-import io.fabric8.kubernetes.client.dsl.ClientKubernetesListNonNamespaceOperation;
-import io.fabric8.kubernetes.client.dsl.ClientKubernetesListOperation;
+import io.fabric8.kubernetes.client.dsl.KubernetesListNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Createable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
-import io.fabric8.kubernetes.client.dsl.Loadable;
 import io.fabric8.kubernetes.client.dsl.RecreateFromServerGettable;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -47,8 +46,8 @@ import java.util.List;
 
 public class KubernetesListOperationsImpl
   extends OperationSupport
-  implements ClientKubernetesListOperation,
-  ClientKubernetesListMixedOperation,
+  implements KubernetesListOperation,
+  KubernetesListMixedOperation,
   Loadable<RecreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList>>,
         RecreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList> {
 
@@ -68,7 +67,7 @@ public class KubernetesListOperationsImpl
   }
 
   @Override
-  public ClientKubernetesListNonNamespaceOperation inNamespace(String namespace) {
+  public KubernetesListNonNamespaceOperation inNamespace(String namespace) {
     return new KubernetesListOperationsImpl(client, config, namespace);
   }
 

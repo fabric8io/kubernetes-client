@@ -15,8 +15,8 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.client.dsl.Resource;
 import okhttp3.OkHttpClient;
-import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.DoneableImageStream;
 import io.fabric8.openshift.api.model.ImageStream;
 import io.fabric8.openshift.api.model.ImageStreamList;
@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class ImageStreamOperationsImpl extends OpenShiftOperation<ImageStream, ImageStreamList, DoneableImageStream,
-  ClientResource<ImageStream, DoneableImageStream>> {
+  Resource<ImageStream, DoneableImageStream>> {
 
   public ImageStreamOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
     this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());

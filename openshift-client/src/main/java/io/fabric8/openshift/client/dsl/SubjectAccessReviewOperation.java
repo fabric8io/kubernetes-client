@@ -23,7 +23,7 @@ import io.fabric8.openshift.api.model.LocalSubjectAccessReview;
 import io.fabric8.openshift.api.model.SubjectAccessReview;
 import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
 
-public interface ClientSubjectAccessReviewOperation<S extends Doneable<SubjectAccessReviewResponse>, L extends Doneable<SubjectAccessReviewResponse>> extends
+public interface SubjectAccessReviewOperation<S extends Doneable<SubjectAccessReviewResponse>, L extends Doneable<SubjectAccessReviewResponse>> extends
   Createable<SubjectAccessReview, SubjectAccessReviewResponse, S>,
   Namespaceable<Createable<LocalSubjectAccessReview, SubjectAccessReviewResponse, L>> {
 

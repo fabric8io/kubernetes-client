@@ -15,6 +15,13 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface ClientRollableScallableResource<T, D> extends ClientScaleableResource<T, D>,
-  Rollable<TimeoutImageEditReplacePatchable<T, T, D>> {
+import io.fabric8.kubernetes.api.model.DoneableKubernetesList;
+import io.fabric8.kubernetes.api.model.KubernetesList;
+
+import java.io.InputStream;
+
+public interface KubernetesListNonNamespaceOperation extends
+  Createable<KubernetesList, KubernetesList, DoneableKubernetesList>,
+  MultiDeleteable<KubernetesList, Boolean>,
+  Loadable<RecreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList>> {
 }

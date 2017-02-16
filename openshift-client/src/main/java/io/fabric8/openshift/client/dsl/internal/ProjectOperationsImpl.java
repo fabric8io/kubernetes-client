@@ -15,8 +15,8 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.client.dsl.Resource;
 import okhttp3.OkHttpClient;
-import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.DoneableProject;
 import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.ProjectList;
@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class ProjectOperationsImpl extends OpenShiftOperation<Project, ProjectList, DoneableProject,
-  ClientResource<Project, DoneableProject>> {
+  Resource<Project, DoneableProject>> {
 
   public ProjectOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
     this(client, config, null, null, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());

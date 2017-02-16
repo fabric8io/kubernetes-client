@@ -43,8 +43,8 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
-import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
+import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.RollableScallableResource;
 import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
 import io.fabric8.kubernetes.client.dsl.ImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.Reaper;
@@ -56,8 +56,8 @@ import io.fabric8.kubernetes.client.internal.readiness.ReadinessWatcher;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.OkHttpClient;
 
-public class ReplicationControllerOperationsImpl extends HasMetadataOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>>
-  implements ClientRollableScallableResource<ReplicationController, DoneableReplicationController>,
+public class ReplicationControllerOperationsImpl extends HasMetadataOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, RollableScallableResource<ReplicationController, DoneableReplicationController>>
+  implements RollableScallableResource<ReplicationController, DoneableReplicationController>,
   TimeoutImageEditReplacePatchable<ReplicationController, ReplicationController, DoneableReplicationController> {
 
   static final transient Logger LOG = LoggerFactory.getLogger(ReplicationControllerOperationsImpl.class);
@@ -83,7 +83,7 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
   }
 
   @Override
-  public ClientRollableScallableResource<ReplicationController, DoneableReplicationController> load(InputStream is) {
+  public RollableScallableResource<ReplicationController, DoneableReplicationController> load(InputStream is) {
     try {
       ReplicationController item = unmarshal(is, ReplicationController.class);
       return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), item, getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rolling, rollingTimeout, rollingTimeUnit);
@@ -93,7 +93,7 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
   }
 
   @Override
-  public ClientNonNamespaceOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>> inNamespace(String namespace) {
+  public NonNamespaceOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, RollableScallableResource<ReplicationController, DoneableReplicationController>> inNamespace(String namespace) {
     return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rolling, rollingTimeout, rollingTimeUnit);
   }
 
@@ -114,7 +114,7 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
   }
 
   @Override
-  public ClientRollableScallableResource<ReplicationController, DoneableReplicationController> withName(String name) {
+  public RollableScallableResource<ReplicationController, DoneableReplicationController> withName(String name) {
     if (name == null || name.length() == 0) {
       throw new IllegalArgumentException("Name must be provided.");
     }
@@ -122,7 +122,7 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
   }
 
   @Override
-  public ClientRollableScallableResource<ReplicationController, DoneableReplicationController> fromServer() {
+  public RollableScallableResource<ReplicationController, DoneableReplicationController> fromServer() {
     return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), true, getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rolling, rollingTimeout, rollingTimeUnit);
   }
 

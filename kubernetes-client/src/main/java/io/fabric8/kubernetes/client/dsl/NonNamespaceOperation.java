@@ -17,9 +17,6 @@ package io.fabric8.kubernetes.client.dsl;
 
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.client.dsl.internal.CreateOrReplaceable;
-
-import java.io.InputStream;
 
 /**
  * The entry point to client operations that are either "cross namespace resources", or are available in the invocation chain
@@ -29,7 +26,7 @@ import java.io.InputStream;
  * @param <D>   The doneable variant of the Kubernetes resource type.
  * @param <R>   The resource operations.
  */
-public interface ClientNonNamespaceOperation<T, L, D, R> extends
+public interface NonNamespaceOperation<T, L, D, R> extends
   Nameable<R>,
   FilterWatchListMultiDeletable<T, L, Boolean, Watch, Watcher<T>>,
   Createable<T, T, D>,

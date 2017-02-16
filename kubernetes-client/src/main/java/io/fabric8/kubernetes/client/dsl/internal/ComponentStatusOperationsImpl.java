@@ -15,20 +15,20 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.client.dsl.Resource;
 import okhttp3.OkHttpClient;
 
 import io.fabric8.kubernetes.api.model.ComponentStatus;
 import io.fabric8.kubernetes.api.model.ComponentStatusList;
 import io.fabric8.kubernetes.api.model.DoneableComponentStatus;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 
 import java.util.Map;
 import java.util.TreeMap;
 
 public class ComponentStatusOperationsImpl extends HasMetadataOperation<ComponentStatus, ComponentStatusList, DoneableComponentStatus,
-ClientResource<ComponentStatus, DoneableComponentStatus>> {
+  Resource<ComponentStatus, DoneableComponentStatus>> {
 
 	public ComponentStatusOperationsImpl(OkHttpClient client, Config config) {
 		this(client, config, null, null, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());

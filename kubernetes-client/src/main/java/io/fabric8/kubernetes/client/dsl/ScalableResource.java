@@ -15,13 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.model.DoneableKubernetesList;
-import io.fabric8.kubernetes.api.model.KubernetesList;
-
-import java.io.InputStream;
-
-public interface ClientKubernetesListOperation extends
-  Namespaceable<ClientKubernetesListNonNamespaceOperation>,
-  MultiDeleteable<KubernetesList, Boolean>,
-  Loadable<RecreateFromServerGettable<KubernetesList,KubernetesList,DoneableKubernetesList>> {
+public interface ScalableResource<T, D> extends Resource<T, D>,
+  Scaleable<T> {
 }

@@ -15,18 +15,18 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
-import io.fabric8.kubernetes.client.dsl.ClientResource;
+import java.util.Map;
+import java.util.TreeMap;
+
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.openshift.api.model.DoneableImageStreamTag;
 import io.fabric8.openshift.api.model.ImageStreamTag;
 import io.fabric8.openshift.api.model.ImageStreamTagList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import okhttp3.OkHttpClient;
 
-import java.util.Map;
-import java.util.TreeMap;
-
 public class ImageStreamTagOperationsImpl extends OpenShiftOperation<ImageStreamTag, ImageStreamTagList, DoneableImageStreamTag,
-  ClientResource<ImageStreamTag, DoneableImageStreamTag>> {
+  Resource<ImageStreamTag, DoneableImageStreamTag>> {
 
   public ImageStreamTagOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
     this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());

@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
-import io.fabric8.kubernetes.client.dsl.ClientResource;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.openshift.api.model.DoneableRole;
 import io.fabric8.openshift.api.model.Role;
 import io.fabric8.openshift.api.model.RoleList;
@@ -25,7 +25,7 @@ import okhttp3.OkHttpClient;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class RoleOperationsImpl extends OpenShiftOperation<Role, RoleList, DoneableRole, ClientResource<Role, DoneableRole>> {
+public class RoleOperationsImpl extends OpenShiftOperation<Role, RoleList, DoneableRole, Resource<Role, DoneableRole>> {
   public RoleOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
     this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
   }

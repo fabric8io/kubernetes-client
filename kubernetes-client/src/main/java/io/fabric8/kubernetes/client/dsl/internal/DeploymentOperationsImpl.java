@@ -27,7 +27,7 @@ import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.ClientScaleableResource;
+import io.fabric8.kubernetes.client.dsl.ScalableResource;
 import io.fabric8.kubernetes.client.dsl.Reaper;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import org.slf4j.Logger;
@@ -45,8 +45,8 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, DeploymentList, DoneableDeployment, ClientScaleableResource<Deployment, DoneableDeployment>>
-  implements ClientScaleableResource<Deployment, DoneableDeployment> {
+public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, DeploymentList, DoneableDeployment, ScalableResource<Deployment, DoneableDeployment>>
+  implements ScalableResource<Deployment, DoneableDeployment> {
 
   static final transient Logger LOG = LoggerFactory.getLogger(DeploymentOperationsImpl.class);
 

@@ -15,8 +15,8 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.client.dsl.Resource;
 import okhttp3.OkHttpClient;
-import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.DoneableOAuthClient;
 import io.fabric8.openshift.api.model.OAuthClient;
 import io.fabric8.openshift.api.model.OAuthClientList;
@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class OAuthClientOperationsImpl extends OpenShiftOperation<OAuthClient, OAuthClientList, DoneableOAuthClient,
-  ClientResource<OAuthClient, DoneableOAuthClient>> {
+  Resource<OAuthClient, DoneableOAuthClient>> {
 
   public OAuthClientOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
     this(client, config, null, null, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());

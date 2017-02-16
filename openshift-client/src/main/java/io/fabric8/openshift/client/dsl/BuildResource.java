@@ -19,5 +19,6 @@ package io.fabric8.openshift.client.dsl;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.TerminateTimeTailPrettyLoggable;
 
-public interface BuildResource<I, T, D, B, H, S, L, W> extends Resource<I, T, D, B, H, W>, TerminateTimeTailPrettyLoggable<S, L> {
+public interface BuildResource<T, D, S, W> extends Resource<T, D>,
+  TerminateTimeTailPrettyLoggable<S, W> {
 }

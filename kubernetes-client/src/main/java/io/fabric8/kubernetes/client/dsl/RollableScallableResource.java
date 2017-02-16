@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openshift.client.dsl;
+package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.client.dsl.ClientScaleableResource;
-
-public interface ClientDeployableScalableResource<T, D> extends ClientScaleableResource<T, D>,
-  Deployable<T> {
+public interface RollableScallableResource<T, D> extends ScalableResource<T, D>,
+  Rollable<TimeoutImageEditReplacePatchable<T, T, D>> {
 }

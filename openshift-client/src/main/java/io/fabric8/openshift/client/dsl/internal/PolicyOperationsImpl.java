@@ -15,8 +15,8 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.client.dsl.Resource;
 import okhttp3.OkHttpClient;
-import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.openshift.api.model.DoneablePolicy;
 import io.fabric8.openshift.api.model.Policy;
 import io.fabric8.openshift.api.model.PolicyList;
@@ -25,7 +25,7 @@ import io.fabric8.openshift.client.OpenShiftConfig;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class PolicyOperationsImpl extends OpenShiftOperation<Policy, PolicyList, DoneablePolicy, ClientResource<Policy, DoneablePolicy>> {
+public class PolicyOperationsImpl extends OpenShiftOperation<Policy, PolicyList, DoneablePolicy, Resource<Policy, DoneablePolicy>> {
   public PolicyOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
     this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
   }

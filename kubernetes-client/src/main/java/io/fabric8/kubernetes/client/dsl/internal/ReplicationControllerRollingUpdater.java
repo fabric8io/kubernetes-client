@@ -22,8 +22,8 @@ import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.dsl.ClientOperation;
-import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
+import io.fabric8.kubernetes.client.dsl.Operation;
+import io.fabric8.kubernetes.client.dsl.RollableScallableResource;
 
 class ReplicationControllerRollingUpdater extends RollingUpdater<ReplicationController, ReplicationControllerList, DoneableReplicationController> {
 
@@ -81,7 +81,7 @@ class ReplicationControllerRollingUpdater extends RollingUpdater<ReplicationCont
   }
 
   @Override
-  protected ClientOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, ClientRollableScallableResource<ReplicationController, DoneableReplicationController>> resources() {
+  protected Operation<ReplicationController, ReplicationControllerList, DoneableReplicationController, RollableScallableResource<ReplicationController, DoneableReplicationController>> resources() {
     return new ReplicationControllerOperationsImpl(client, config, namespace);
   }
 }
