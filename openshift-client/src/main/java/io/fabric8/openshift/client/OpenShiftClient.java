@@ -18,7 +18,6 @@ package io.fabric8.openshift.client;
 
 import java.net.URL;
 
-import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
@@ -127,7 +126,7 @@ public interface OpenShiftClient extends KubernetesClient {
 
   MixedOperation<Route, RouteList, DoneableRoute, Resource<Route, DoneableRoute>> routes();
 
-  MixedOperation<Template, TemplateList, DoneableTemplate, TemplateResource<Template, KubernetesList, DoneableTemplate>> templates();
+  MixedOperation<Template, TemplateList, DoneableTemplate, TemplateResource> templates();
 
   NonNamespaceOperation<User, UserList, DoneableUser, Resource<User, DoneableUser>> users();
 

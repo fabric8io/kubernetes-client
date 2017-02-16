@@ -26,5 +26,5 @@ public interface ListVisitFromServerGetDeleteRecreateWaitApplicable<T, B> extend
                                                                           FromServerGettable<List<T>>, RecreateApplicable<List<T>>,
                                                                           CascadingDeletable<B>,
                                                                           Waitable<List<T>>,
-                                                                          GracePeriodConfigurable<CascadingDeletable<B>> {
+                                                                          GracePeriodConfigurable<CascadingDeletable<B>>, AsResource {
 }

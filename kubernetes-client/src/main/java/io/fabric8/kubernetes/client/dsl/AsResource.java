@@ -15,11 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.model.DoneableKubernetesList;
-import io.fabric8.kubernetes.api.model.KubernetesList;
+public interface AsResource {
 
-public interface KubernetesListNonNamespaceOperation extends
-  Createable<KubernetesList, KubernetesList, DoneableKubernetesList>,
-  MultiDeleteable<KubernetesList, Boolean>,
-  Loadable<RecreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList>> {
+  <R extends Resource> R as(Class<R> operationType);
 }

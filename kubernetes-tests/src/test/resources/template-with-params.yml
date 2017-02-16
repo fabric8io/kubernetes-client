@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: example-template
+objects:
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: example-pod
+  spec:
+    containers:
+    - env:
+      - name: PASSWORD
+        value: ${PASSWORD}
+      - name: USERNAME
+        value: ${USERNAME}
+      image: dockerfile/redis
+      name: master
+      ports:
+      - containerPort: 8080
+        protocol: TCP
+parameters:
+- description: Username used for authentication
+  name: USERNAME
+  value: admin
+- description: Password used for Redis authentication
+  from: '[A-Z0-9]{8}'
+  generate: expression
+  name: PASSWORD

@@ -37,7 +37,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class TemplateOperationsImpl
-  extends OpenShiftOperation<Template, TemplateList, DoneableTemplate, TemplateResource<Template, KubernetesList, DoneableTemplate>>
+  extends OpenShiftOperation<Template, TemplateList, DoneableTemplate, TemplateResource>
   implements TemplateOperation {
 
   public TemplateOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
