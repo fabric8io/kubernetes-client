@@ -16,10 +16,18 @@
 
 package io.fabric8.openshift.client.dsl;
 
+import java.util.Map;
+
 import io.fabric8.openshift.client.ParameterValue;
 
 public interface Processable<T> {
 
   T process(ParameterValue... values);
+
+  T process(Map<String, String> map);
+
+  T processLocally(ParameterValue... values);
+
+  T processLocally(Map<String, String> map);
 
 }
