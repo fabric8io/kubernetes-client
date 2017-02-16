@@ -155,7 +155,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
         if (response != null && response.body() != null) {
           response.body().close();
         }
-        logger.info("WebSocket successfully opened");
+        logger.debug("WebSocket successfully opened");
         webSocketRef.set(webSocket);
         currentReconnectAttempt.set(0);
         started.set(true);
@@ -293,7 +293,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
 
       @Override
       public void onClose(final int code, final String reason) {
-        logger.info("WebSocket close received. code: {}, reason: {}", code, reason);
+        logger.debug("WebSocket close received. code: {}, reason: {}", code, reason);
         if (forceClosed.get()) {
           logger.warn("Ignoring onClose for already closed/closing websocket");
           return;
