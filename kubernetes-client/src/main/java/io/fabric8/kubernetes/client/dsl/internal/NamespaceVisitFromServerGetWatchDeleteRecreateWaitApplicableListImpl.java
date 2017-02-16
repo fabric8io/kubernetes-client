@@ -21,6 +21,8 @@ import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
+import io.fabric8.kubernetes.client.ResourceFactories;
+import io.fabric8.kubernetes.client.ResourceFactory;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
@@ -48,6 +50,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -129,6 +132,21 @@ Waitable<List<HasMetadata>>, Readiable {
       }
     }
     return true;
+  }
+
+  @Override
+  public <R extends Resource> R as(Class<R> resourceType) {
+    if (item instanceof HasMetadata) {
+      List<HasMetadata> list = acceptVisitors(Arrays.asList((HasMetadata)item), visitors);
+      return resourceFactoryOf(resourceType).create(client, config, namespace, list.toArray(new HasMetadata[list.size()]));
+    } else if (item instanceof List) {
+      List<HasMetadata> list = acceptVisitors((List<HasMetadata>) item, visitors);
+      return resourceFactoryOf(resourceType).create(client, config, namespace, list.toArray(new HasMetadata[list.size()]));
+    } else {
+      List<HasMetadata> items = acceptVisitors(asHasMetadata(item, true), visitors);
+      return resourceFactoryOf(resourceType).create(client, config, namespace, items.toArray(new HasMetadata[items.size()]));
+    }
+
   }
 
   /**
@@ -339,6 +357,14 @@ Waitable<List<HasMetadata>>, Readiable {
       }
     }
     return result;
+  }
+
+  private static <R extends Resource> ResourceFactory<R> resourceFactoryOf(Class<R> resourceType) {
+    ResourceFactory<R> factory = ResourceFactories.get(resourceType);
+    if (factory == null) {
+      throw new IllegalArgumentException("Could not find a registered resource factory for resource type: [" + resourceType + "].");
+    }
+    return factory;
   }
 
   private static <T> ResourceHandler handlerOf(T item) {

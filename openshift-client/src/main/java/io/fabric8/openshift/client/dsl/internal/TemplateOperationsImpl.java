@@ -15,6 +15,10 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import com.mifmif.common.regex.Generex;
+
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -30,15 +34,20 @@ import io.fabric8.openshift.client.ParameterValue;
 import io.fabric8.openshift.client.dsl.TemplateResource;
 import io.fabric8.openshift.client.dsl.TemplateOperation;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class TemplateOperationsImpl
-  extends OpenShiftOperation<Template, TemplateList, DoneableTemplate, TemplateResource<Template, KubernetesList, DoneableTemplate>>
+  extends OpenShiftOperation<Template, TemplateList, DoneableTemplate, TemplateResource>
   implements TemplateOperation {
+
+  private static final String EXPRESSION = "expression";
 
   public TemplateOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
     this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
@@ -50,11 +59,16 @@ public class TemplateOperationsImpl
 
   @Override
   public KubernetesList process(ParameterValue... values) {
-    Template t = get();
     Map<String, String> valuesMap = new HashMap<>(values.length);
     for (ParameterValue pv : values) {
       valuesMap.put(pv.getName(), pv.getValue());
     }
+    return process(valuesMap);
+  }
+
+  @Override
+  public KubernetesList process(Map<String, String> valuesMap) {
+    Template t = get();
     try {
       for (Parameter p : t.getParameters()) {
         String v = valuesMap.get(p.getName());
@@ -73,6 +87,52 @@ public class TemplateOperationsImpl
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
+  }
+
+  @Override
+  public KubernetesList processLocally(ParameterValue... values) {
+    Map<String, String> valuesMap = new HashMap<>(values.length);
+    for (ParameterValue pv : values) {
+      valuesMap.put(pv.getName(), pv.getValue());
+    }
+    return processLocally(valuesMap);
+  }
+
+  public KubernetesList processLocally(Map<String, String> valuesMap)  {
+    Template t = get();
+
+    List<Parameter> parameters = t != null ? t.getParameters() : null;
+    KubernetesList list = new KubernetesListBuilder()
+      .withItems(t != null && t.getObjects() != null ? t.getObjects() : Collections.<HasMetadata>emptyList())
+      .build();
+
+    try {
+      String json = JSON_MAPPER.writeValueAsString(list);
+      if (parameters != null && !parameters.isEmpty()) {
+        // lets make a few passes in case there's expressions in values
+        for (int i = 0; i < 5; i++) {
+          for (Parameter parameter : parameters) {
+            String name = parameter.getName();
+            String regex = "${" + name + "}";
+            String value;
+            if (valuesMap.containsKey(name)) {
+              value = valuesMap.get(name);
+            } else if (EXPRESSION.equals(parameter.getGenerate())) {
+              Generex generex = new Generex(parameter.getFrom());
+              value = generex.random();
+            } else {
+              throw new IllegalArgumentException("No value available for parameter name: " + name);
+            }
+            json = json.replace(regex, value);
+          }
+        }
+      }
+
+      list = JSON_MAPPER.readValue(json, KubernetesList.class);
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+    return list;
   }
 
   private URL getProcessUrl() throws MalformedURLException {

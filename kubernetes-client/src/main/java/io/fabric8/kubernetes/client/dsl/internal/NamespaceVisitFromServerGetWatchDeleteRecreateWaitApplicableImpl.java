@@ -36,6 +36,8 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.HasMetadataVisitiableBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.ResourceFactories;
+import io.fabric8.kubernetes.client.ResourceFactory;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
@@ -45,6 +47,7 @@ import io.fabric8.kubernetes.client.dsl.Deletable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.Readiable;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.VisitFromServerGetWatchDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.Waitable;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
@@ -72,6 +75,7 @@ Waitable<HasMetadata>,
   private final ResourceHandler handler;
   private final long gracePeriodSeconds;
   private final Boolean cascading;
+
 
   /**
    * We need to be able to either use an explicit namespace or fallback to the client default.
@@ -239,6 +243,11 @@ Waitable<HasMetadata>,
     return h.waitUntilReady(client, config, meta.getMetadata().getNamespace(), meta, amount, timeUnit);
   }
 
+  @Override
+  public <R extends Resource> R as(Class<R> operationType) {
+    HasMetadata meta = acceptVisitors(asHasMetadata(item), visitors);
+    return resourceFactoryOf(operationType).create(client, config, namespace, meta);
+  }
 
   private static HasMetadata acceptVisitors(HasMetadata item, List<Visitor> visitors) {
     ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(item);
@@ -277,6 +286,14 @@ Waitable<HasMetadata>,
       }
     }
     throw new IllegalArgumentException("Item needs to be an instance of HasMetadata or String.");
+  }
+
+  private static <R extends Resource> ResourceFactory<R> resourceFactoryOf(Class<R> resourceFactory) {
+    ResourceFactory<R> factory = ResourceFactories.get(resourceFactory);
+    if (factory == null) {
+      throw new IllegalArgumentException("Could not find a registered resource factory for resource type: [" + resourceFactory + "].");
+    }
+    return factory;
   }
 
   private static <T> ResourceHandler handlerOf(T item) {
