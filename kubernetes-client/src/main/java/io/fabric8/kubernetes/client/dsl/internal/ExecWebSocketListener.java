@@ -17,6 +17,7 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.utils.Utils;
+import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
@@ -65,8 +66,10 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
     private final AtomicBoolean started = new AtomicBoolean(false);
     private final ArrayBlockingQueue<Object> queue = new ArrayBlockingQueue<>(1);
     private final ExecListener listener;
-
-    public ExecWebSocketListener(InputStream in, OutputStream out, OutputStream err, PipedOutputStream inputPipe, PipedInputStream outputPipe, PipedInputStream errorPipe, ExecListener listener) {
+    private final OkHttpClient client;
+    
+    public ExecWebSocketListener(InputStream in, OutputStream out, OutputStream err, PipedOutputStream inputPipe, PipedInputStream outputPipe, PipedInputStream errorPipe, ExecListener listener, OkHttpClient client) {
+        this.client = client;
         this.listener = listener;
         this.in = inputStreamOrPipe(in, inputPipe);
         this.out = outputStreamOrPipe(out, outputPipe);
@@ -95,14 +98,13 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
             if (!executorService.awaitTermination(10, TimeUnit.SECONDS)) {
                 executorService.shutdownNow();
             }
-        } catch (Throwable t) {
-            throw KubernetesClientException.launderThrowable(t);
-        }
-
-        WebSocket ws = webSocketRef.get();
-        try {
-            if (ws != null) {
-                ws.close(1000, "Closing...");
+            if (client != null) {
+                if (client.connectionPool() != null) {
+                    client.connectionPool().evictAll();
+                }
+                if (client.dispatcher() != null) {
+                    client.dispatcher().executorService().shutdown();
+                }
             }
         } catch (Throwable t) {
             throw KubernetesClientException.launderThrowable(t);
