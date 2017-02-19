@@ -133,7 +133,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     if (name != null && !name.isEmpty()) {
       return name;
     } else if (item instanceof HasMetadata) {
-      return ((HasMetadata)item).getMetadata().getName();
+      HasMetadata h = (HasMetadata) item;
+      return h.getMetadata() != null ? h.getMetadata().getName() : null;
     }
     return null;
   }
