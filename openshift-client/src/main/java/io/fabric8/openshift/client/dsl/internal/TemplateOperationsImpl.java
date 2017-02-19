@@ -15,6 +15,14 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.mifmif.common.regex.Generex;
+
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.openshift.api.model.TemplateBuilder;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -30,15 +38,28 @@ import io.fabric8.openshift.client.ParameterValue;
 import io.fabric8.openshift.client.dsl.TemplateResource;
 import io.fabric8.openshift.client.dsl.TemplateOperation;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.TreeMap;
 
 public class TemplateOperationsImpl
   extends OpenShiftOperation<Template, TemplateList, DoneableTemplate, TemplateResource<Template, KubernetesList, DoneableTemplate>>
   implements TemplateOperation {
+
+  private static final String EXPRESSION = "expression";
+  private static final TypeReference<HashMap<String, String>> MAPS_REFERENCE = new TypeReference<HashMap<String, String>>() {
+  };
 
   public TemplateOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
     this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
@@ -49,12 +70,22 @@ public class TemplateOperationsImpl
   }
 
   @Override
-  public KubernetesList process(ParameterValue... values) {
-    Template t = get();
-    Map<String, String> valuesMap = new HashMap<>(values.length);
-    for (ParameterValue pv : values) {
-      valuesMap.put(pv.getName(), pv.getValue());
+  public KubernetesList process(File f) {
+    try (FileInputStream is = new FileInputStream(f)) {
+      return process(is);
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(e);
     }
+  }
+
+  @Override
+  public KubernetesList process(InputStream is) {
+    return process(unmarshal(is, MAPS_REFERENCE));
+  }
+
+  @Override
+  public KubernetesList process(Map<String, String> valuesMap) {
+    Template t = get();
     try {
       for (Parameter p : t.getParameters()) {
         String v = valuesMap.get(p.getName());
@@ -75,6 +106,76 @@ public class TemplateOperationsImpl
     }
   }
 
+  @Override
+  public KubernetesList process(ParameterValue... values) {
+    Map<String, String> valuesMap = new HashMap<>(values.length);
+    for (ParameterValue pv : values) {
+      valuesMap.put(pv.getName(), pv.getValue());
+    }
+    return process(valuesMap);
+  }
+
+
+  @Override
+  public KubernetesList processLocally(File f) {
+    try (FileInputStream is = new FileInputStream(f)) {
+      return processLocally(is);
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+
+  @Override
+  public KubernetesList processLocally(InputStream is) {
+    return processLocally(unmarshal(is, MAPS_REFERENCE));
+  }
+
+  @Override
+  public KubernetesList processLocally(ParameterValue... values) {
+    Map<String, String> valuesMap = new HashMap<>(values.length);
+    for (ParameterValue pv : values) {
+      valuesMap.put(pv.getName(), pv.getValue());
+    }
+    return processLocally(valuesMap);
+  }
+
+  public KubernetesList processLocally(Map<String, String> valuesMap)  {
+    Template t = get();
+
+    List<Parameter> parameters = t != null ? t.getParameters() : null;
+    KubernetesList list = new KubernetesListBuilder()
+      .withItems(t != null && t.getObjects() != null ? t.getObjects() : Collections.<HasMetadata>emptyList())
+      .build();
+
+    try {
+      String json = JSON_MAPPER.writeValueAsString(list);
+      if (parameters != null && !parameters.isEmpty()) {
+        // lets make a few passes in case there's expressions in values
+        for (int i = 0; i < 5; i++) {
+          for (Parameter parameter : parameters) {
+            String name = parameter.getName();
+            String regex = "${" + name + "}";
+            String value;
+            if (valuesMap.containsKey(name)) {
+              value = valuesMap.get(name);
+            } else if (EXPRESSION.equals(parameter.getGenerate())) {
+              Generex generex = new Generex(parameter.getFrom());
+              value = generex.random();
+            } else {
+              throw new IllegalArgumentException("No value available for parameter name: " + name);
+            }
+            json = json.replace(regex, value);
+          }
+        }
+      }
+
+      list = JSON_MAPPER.readValue(json, KubernetesList.class);
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+    return list;
+  }
+
   private URL getProcessUrl() throws MalformedURLException {
     URL requestUrl = getRootUrl();
     if (getNamespace() != null) {
@@ -82,5 +183,32 @@ public class TemplateOperationsImpl
     }
     requestUrl = new URL(URLUtils.join(requestUrl.toString(), "processedtemplates"));
     return requestUrl;
+  }
+
+  @Override
+  public TemplateResource<Template, KubernetesList, DoneableTemplate> load(InputStream is) {
+    Template template = null;
+    Object item = unmarshal(is);
+    if (item instanceof Template) {
+      template = (Template) item;
+    } else if (item instanceof HasMetadata) {
+      template = new TemplateBuilder().withObjects((HasMetadata) item).build();
+    } else if (item instanceof KubernetesResourceList) {
+      List<HasMetadata> list = ((KubernetesResourceList<HasMetadata>) item).getItems();
+      template = new TemplateBuilder().withNewMetadata().endMetadata().withObjects(list.toArray(new HasMetadata[list.size()])).build();
+    } else if (item instanceof HasMetadata[]) {
+      template = new TemplateBuilder().withNewMetadata().endMetadata().withObjects((HasMetadata[]) item).build();
+    } else if (item instanceof Collection) {
+      List<HasMetadata> items = new ArrayList<>();
+      for (Object o : (Collection) item) {
+        if (o instanceof HasMetadata) {
+          items.add((HasMetadata) o);
+        }
+      }
+      template = new TemplateBuilder().withNewMetadata().endMetadata().withObjects(items.toArray(new HasMetadata[items.size()])).build();
+    }
+
+    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, false, template, null, false, 0L,
+      null, null, null, null, null);
   }
 }
