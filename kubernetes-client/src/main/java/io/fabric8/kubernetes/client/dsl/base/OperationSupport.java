@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.base;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -39,6 +40,7 @@ import io.fabric8.zjsonpatch.JsonDiff;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
@@ -346,7 +348,16 @@ public class OperationSupport {
     }
   }
 
-   protected static <T> T unmarshal(InputStream is, Class<T> type) throws KubernetesClientException {
+  protected static <T> T unmarshal(InputStream is, final Class<T> type) throws KubernetesClientException {
+    return unmarshal(is, new TypeReference<T>() {
+      @Override
+      public Type getType() {
+        return type;
+      }
+    });
+  }
+
+  protected static <T> T unmarshal(InputStream is, TypeReference<T> type) throws KubernetesClientException {
     try (BufferedInputStream bis = new BufferedInputStream(is)) {
       bis.mark(-1);
       int intch;
