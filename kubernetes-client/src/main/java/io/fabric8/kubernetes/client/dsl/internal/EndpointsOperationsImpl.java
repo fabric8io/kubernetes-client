@@ -50,13 +50,6 @@ public class EndpointsOperationsImpl extends HasMetadataOperation<Endpoints, End
       throw new IllegalArgumentException("Endpoints with name:[" + name + "] in namespace:[" + namespace + "] not found!");
     }
 
-    if (Readiness.isReady(endpoints)) {
-      return endpoints;
-    }
-
-    ReadinessWatcher<Endpoints> watcher = new ReadinessWatcher<>(endpoints);
-    try (Watch watch = watch(watcher)) {
-      return watcher.await(amount, timeUnit);
-    }
+    return periodicWatchUntilReady(10, System.currentTimeMillis(), Math.max(timeUnit.toMillis(amount) / 10, 1000L), amount);
   }
 }

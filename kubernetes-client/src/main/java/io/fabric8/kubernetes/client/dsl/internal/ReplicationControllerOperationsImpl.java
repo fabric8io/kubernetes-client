@@ -41,6 +41,7 @@ import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
@@ -268,14 +269,7 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
       throw new IllegalArgumentException("ReplicationController with name:[" + name + "] in namespace:[" + namespace + "] not found!");
     }
 
-    if (Readiness.isReady(rc)) {
-      return rc;
-    }
-
-    ReadinessWatcher<ReplicationController> watcher = new ReadinessWatcher<>(rc);
-    try (Watch watch = watch(watcher)) {
-      return watcher.await(amount, timeUnit);
-    }
+    return periodicWatchUntilReady(10, System.currentTimeMillis(), Math.max(timeUnit.toMillis(amount) / 10, 1000L), amount);
   }
 
   private static class ReplicationControllerReaper implements Reaper {

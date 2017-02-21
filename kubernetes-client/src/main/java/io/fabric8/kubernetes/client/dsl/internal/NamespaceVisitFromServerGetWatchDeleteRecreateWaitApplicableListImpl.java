@@ -86,7 +86,7 @@ Waitable<List<HasMetadata>>, Readiable {
     }
 
     final List<HasMetadata> result = new ArrayList<>();
-    final List<HasMetadata> notReady = new ArrayList<>();
+    final List<HasMetadata> notReady = new ArrayList<>(items);
     final int size = items.size();
     final AtomicInteger ready = new AtomicInteger(0);
     ExecutorService executor = Executors.newFixedThreadPool(size);
@@ -101,8 +101,8 @@ Waitable<List<HasMetadata>>, Readiable {
               try {
                 result.add(h.waitUntilReady(client, config, meta.getMetadata().getNamespace(), meta, amount, timeUnit));
                 ready.incrementAndGet();
+                notReady.remove(meta);
               } catch (Throwable t) {
-                notReady.add(meta);
                 //consider all errors as not ready.
               } finally {
                 //We don't want to wait for items that will never become ready

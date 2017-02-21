@@ -176,15 +176,7 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
     if (dc == null) {
       throw new IllegalArgumentException("DeploymentConfig with name:[" + name + "] in namespace:[" + namespace + "] not found!");
     }
-
-    if (Readiness.isReady(dc)) {
-      return dc;
-    }
-
-    ReadinessWatcher<DeploymentConfig> watcher = new ReadinessWatcher<>(dc);
-    try (Watch watch = watch(watcher)) {
-      return watcher.await(amount, timeUnit);
-    }
+    return periodicWatchUntilReady(10, System.currentTimeMillis(), Math.max(timeUnit.toMillis(amount) / 10, 1000L), amount);
   }
 
   /**
