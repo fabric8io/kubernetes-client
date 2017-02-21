@@ -248,7 +248,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
   @Override
   public Build fromFile(final File file) {
     if (!file.exists()) {
-      throw new IllegalArgumentException("Can't instantiate binary build from the specified file. The file does not exists");
+      throw new IllegalArgumentException("Can't instantiate binary build from the specified file. The file does not exist");
     }
     try (InputStream is = new FileInputStream(file)) {
       return fromInputStream(is);
@@ -294,23 +294,19 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
   }
 
   @Override
-  public TimeoutInputStreamable<Build> asFile(String s) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
+  public TimeoutInputStreamable<Build> asFile(String fileName) {
+    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, fileName, timeout, timeoutUnit);
   }
 
   @Override
   public MessageAsFileTimeoutInputStreamable<Build> withAuthorEmail(String email) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, email, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
   }
-
-
 
   @Override
   public AuthorMessageAsFileTimeoutInputStreamable<Build> withCommitterEmail(String committerEmail) {
     return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
   }
-
-
 
   @Override
   public AsFileTimeoutInputStreamable<Build> withMessage(String message) {

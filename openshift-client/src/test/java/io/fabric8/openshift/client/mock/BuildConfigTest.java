@@ -29,6 +29,8 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeUnit;
@@ -98,8 +100,8 @@ public class BuildConfigTest {
   }
 
   @Test
-  public void testBinaryBuild() {
-   server.expect().post().withPath("/oapi/v1/namespaces/ns1/buildconfigs/bc2/instantiatebinary?commit=some%20commit&revision.authorName=author%20name&revision.committerName=committer%20name&revision.committerEmail=committer@someorg.com")
+  public void testBinaryBuildFromInputStream() {
+   server.expect().post().withPath("/oapi/v1/namespaces/ns1/buildconfigs/bc2/instantiatebinary?commit=some%20commit&revision.authorName=author%20name&revision.authorEmail=author@someorg.com&revision.committerName=committer%20name&revision.committerEmail=committer@someorg.com")
       .andReturn(201, new BuildBuilder()
       .withNewMetadata().withName("bc2").endMetadata().build()).once();
 
@@ -115,8 +117,26 @@ public class BuildConfigTest {
       .withMessage("some commit")
       .fromInputStream(dummy);
 
-
     assertNotNull(build);
+  }
+
+  @Test
+  public void testBinaryBuildFromFile() throws IOException {
+    File warFile = new File("target/test.war");
+    warFile.createNewFile();
+
+    server.expect().post().withPath("/oapi/v1/namespaces/ns1/buildconfigs/bc2/instantiatebinary?commit=&asFile=" + warFile.getName())
+      .andReturn(201, new BuildBuilder()
+      .withNewMetadata().withName("bc2").endMetadata().build()).once();
+
+    OpenShiftClient client = server.getOpenshiftClient();
+
+    Build build = client.buildConfigs()
+      .inNamespace("ns1")
+      .withName("bc2")
+      .instantiateBinary()
+      .asFile(warFile.getName())
+      .fromFile(warFile);
   }
 
   // TODO Add delay to mockwebserver. Disabled as too dependent on timing issues right now.
