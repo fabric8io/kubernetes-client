@@ -20,5 +20,5 @@ package io.fabric8.openshift.client.dsl.buildconfig;
  */
 public interface AsFileable<T> {
 
-  T asFile(String s);
+  T asFile(String fileName);
 }
