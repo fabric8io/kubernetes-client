@@ -16,7 +16,12 @@
 
 package io.fabric8.kubernetes.client.dsl.base;
 
+import io.fabric8.kubernetes.api.model.ReplicationController;
+import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
+import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.internal.readiness.Readiness;
+import io.fabric8.kubernetes.client.internal.readiness.ReadinessWatcher;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.builder.Function;
 import io.fabric8.kubernetes.api.model.Doneable;
@@ -157,5 +162,36 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
       }
     }
     throw KubernetesClientException.launderThrowable(caught);
+  }
+
+  /**
+   * A wait method that combines watching and polling.
+   * The need for that is that in some cases a pure watcher approach consistently fails.
+   * @param i           The number of iterations to perform.
+   * @param started     Time in milliseconds where the watch started.
+   * @param interval    The amount of time in millis to wait on each iteration.
+   * @param amount      The maximum amount in millis of time since started to wait.
+   * @return            The {@link ReplicationController} if ready.
+   */
+  protected T periodicWatchUntilReady(int i, long started, long interval, long amount) {
+    T item = get();
+    if (Readiness.isReady(item)) {
+      return item;
+    }
+
+    ReadinessWatcher<T> watcher = new ReadinessWatcher<>(item);
+    try (Watch watch = watch(watcher)) {
+      try {
+        return watcher.await(interval, TimeUnit.MILLISECONDS);
+      } catch (KubernetesClientTimeoutException e) {
+        if (i <= 0) {
+          throw e;
+        }
+      }
+
+      long remaining = System.currentTimeMillis() - (started + amount);
+      long next = Math.max(0, Math.min(remaining, interval));
+      return periodicWatchUntilReady(i - 1, started, next, amount);
+    }
   }
 }

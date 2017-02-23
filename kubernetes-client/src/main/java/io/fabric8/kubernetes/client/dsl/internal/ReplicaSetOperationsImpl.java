@@ -257,14 +257,7 @@ public class ReplicaSetOperationsImpl extends HasMetadataOperation<ReplicaSet, R
       throw new IllegalArgumentException("ReplicaSet with name:[" + name + "] in namespace:[" + namespace + "] not found!");
     }
 
-    if (Readiness.isReady(rs)) {
-      return rs;
-    }
-
-    ReadinessWatcher<ReplicaSet> watcher = new ReadinessWatcher<>(rs);
-    try (Watch watch = watch(watcher)) {
-      return watcher.await(amount, timeUnit);
-    }
+    return periodicWatchUntilReady(10, System.currentTimeMillis(), Math.max(timeUnit.toMillis(amount) / 10, 1000L), amount);
   }
 
   private static class ReplicaSetReaper implements Reaper {

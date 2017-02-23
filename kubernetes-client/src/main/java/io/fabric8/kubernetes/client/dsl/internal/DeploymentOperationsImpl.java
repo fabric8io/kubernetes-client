@@ -162,14 +162,7 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
       throw new IllegalArgumentException("Deployment with name:[" + name + "] in namespace:[" + namespace + "] not found!");
     }
 
-    if (Readiness.isReady(deployment)) {
-      return deployment;
-    }
-
-    ReadinessWatcher<Deployment> watcher = new ReadinessWatcher<>(deployment);
-    try (Watch watch = watch(watcher)) {
-      return watcher.await(amount, timeUnit);
-    }
+    return periodicWatchUntilReady(10, System.currentTimeMillis(), Math.max(timeUnit.toMillis(amount) / 10, 1000L), amount);
   }
 
   private static class DeploymentReaper implements Reaper {
