@@ -65,6 +65,8 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
     private final AtomicBoolean started = new AtomicBoolean(false);
     private final ArrayBlockingQueue<Object> queue = new ArrayBlockingQueue<>(1);
     private final ExecListener listener;
+    private final AtomicBoolean executorClosed = new AtomicBoolean(false);
+    private final AtomicBoolean webSocketClosed = new AtomicBoolean(false);
 
     public ExecWebSocketListener(InputStream in, OutputStream out, OutputStream err, PipedOutputStream inputPipe, PipedInputStream outputPipe, PipedInputStream errorPipe, ExecListener listener) {
         this.listener = listener;
@@ -87,26 +89,52 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
         });
     }
 
+
     @Override
     public void close() {
-        pumper.close();
-        executorService.shutdown();
-        try {
-            if (!executorService.awaitTermination(10, TimeUnit.SECONDS)) {
-                executorService.shutdownNow();
-            }
-        } catch (Throwable t) {
-            throw KubernetesClientException.launderThrowable(t);
-        }
+      close(1000, "Closing...");
+    }
 
-        WebSocket ws = webSocketRef.get();
+    public void close(int code, String reason) {
         try {
-            if (ws != null) {
-                ws.close(1000, "Closing...");
-            }
-        } catch (Throwable t) {
-            throw KubernetesClientException.launderThrowable(t);
+         closeExecutor();
+         closeWebSocket(code, reason);
+        } finally {
+          if (listener != null) {
+            listener.onClose(code, reason);
+          }
         }
+    }
+
+    private void closeExecutor() {
+      if (!executorClosed.compareAndSet(false, true)) {
+        return;
+      }
+
+      pumper.close();
+      executorService.shutdownNow();
+      try {
+        if (!executorService.awaitTermination(10, TimeUnit.SECONDS)) {
+          LOGGER.debug("ExecutorService was not cleanly shutdown, after waiting for 10 seconds.");
+        }
+      } catch (Throwable t) {
+        LOGGER.debug("Error shutting down ExecutorService.", t);
+      }
+    }
+
+    private void closeWebSocket(int code, String reason) {
+      if (!webSocketClosed.compareAndSet(false, true)) {
+        return;
+      }
+
+      WebSocket ws = webSocketRef.get();
+      try {
+        if (ws != null) {
+          ws.close(code, reason);
+        }
+      } catch (Throwable t) {
+        LOGGER.debug("Error closing WebSocket.", t);
+      }
     }
 
     public void waitUntilReady() {
@@ -141,18 +169,19 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
 
     @Override
     public void onFailure(IOException ioe, Response response) {
-        try {
-            Status status = OperationSupport.createStatus(response);
-            LOGGER.error("Exec Failure: HTTP:" + status.getCode() + ". Message:" + status.getMessage(), ioe);
-            //We only need to queue startup failures.
-            if (!started.get()) {
-                queue.add(new KubernetesClientException(status));
-            }
-        } finally {
-            if (listener != null) {
-                listener.onFailure(ioe, response);
-            }
+      try {
+        Status status = OperationSupport.createStatus(response);
+        LOGGER.error("Exec Failure: HTTP:" + status.getCode() + ". Message:" + status.getMessage(), ioe);
+        //We only need to queue startup failures.
+        if (!started.get()) {
+          queue.add(new KubernetesClientException(status));
         }
+        closeExecutor();
+      } finally {
+        if (listener != null) {
+          listener.onFailure(ioe, response);
+        }
+      }
     }
 
     @Override
@@ -192,11 +221,16 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
     }
 
     @Override
-    public void onClose(int i, String s) {
-        LOGGER.debug("Exec Web Socket: On Close");
+    public void onClose(int code, String reason) {
+      webSocketClosed.set(true);
+      LOGGER.debug("Exec Web Socket: On Close with code:[{}], due to: [{}]", code, reason);
+      try {
+        closeExecutor();
+      } finally {
         if (listener != null) {
-            listener.onClose(i, s);
+          listener.onClose(code, reason);
         }
+      }
     }
 
     public OutputStream getInput() {
