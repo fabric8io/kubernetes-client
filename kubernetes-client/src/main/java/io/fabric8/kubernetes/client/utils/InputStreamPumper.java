@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.InterruptedIOException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class InputStreamPumper implements Runnable, Closeable {
 
@@ -32,7 +33,9 @@ public class InputStreamPumper implements Runnable, Closeable {
     private final InputStream in;
     private final Callback<byte[]> callback;
     private final Runnable onClose;
-    private boolean keepReading = true;
+    private final AtomicBoolean closed = new AtomicBoolean(false);
+
+    private volatile boolean keepReading = true;
     private Thread thread;
 
     public InputStreamPumper(InputStream in, Callback<byte[]> callback) {
@@ -56,10 +59,11 @@ public class InputStreamPumper implements Runnable, Closeable {
                 System.arraycopy(buffer, 0, actual, 0, length);
                 callback.call(actual);
             }
-        } catch (InterruptedIOException e) {
-            LOGGER.debug("Interrupted while pumping stream.", e);
         } catch (IOException e) {
-            if (!Thread.currentThread().isInterrupted()) {
+            if (!keepReading) {
+              return;
+            }
+            if (!thread.isInterrupted()) {
                 LOGGER.error("Error while pumping stream.", e);
             } else {
                 LOGGER.debug("Interrupted while pumping stream.", e);
@@ -69,10 +73,11 @@ public class InputStreamPumper implements Runnable, Closeable {
 
     public void close() {
         keepReading = false;
-        if (thread != null) {
+        if (thread != null && !thread.isInterrupted()) {
             thread.interrupt();
         }
-        if (onClose != null) {
+
+        if (closed.compareAndSet(false, true) && onClose != null) {
           onClose.run();
         }
     }
