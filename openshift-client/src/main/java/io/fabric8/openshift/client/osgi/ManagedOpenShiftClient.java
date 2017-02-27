@@ -560,4 +560,9 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   public FunctionCallable<NamespacedOpenShiftClient> withRequestConfig(RequestConfig requestConfig) {
     return delegate.withRequestConfig(requestConfig);
   }
+
+  @Override
+  public User currentUser() {
+    return delegate.currentUser();
+  }
 }
