@@ -173,7 +173,7 @@ which allows adapting an existing [KubernetesClient](kubernetes-client/src/main/
  For example:
 
 ```java
-KuberntesClient client = new DefaultKubernetesClient();
+KubernetesClient client = new DefaultKubernetesClient();
 
 OpenShiftClient oClient = client.adapt(OpenShiftClient.class);
 ```
@@ -181,7 +181,7 @@ OpenShiftClient oClient = client.adapt(OpenShiftClient.class);
 The client also support the isAdaptable() method which checks if the adaptation is possible and returns true if it does.
 
 ```java
-KuberntesClient client = new DefaultKubernetesClient();
+KubernetesClient client = new DefaultKubernetesClient();
 if (client.isAdaptable(OpenShiftClient.class)) {
     OpenShiftClient oClient = client.adapt(OpenShiftClient.class);
 } else {
