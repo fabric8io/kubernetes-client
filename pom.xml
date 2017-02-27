@@ -108,16 +108,16 @@
     <exec.master>https://localhost:8443</exec.master>
 
     <javadoc.include.deps>false</javadoc.include.deps>
-    <javadoc.source.includes />
-    <javadoc.package.excludes />
+    <javadoc.source.includes/>
+    <javadoc.package.excludes/>
 
-    <osgi.import />
-    <osgi.export />
-    <osgi.private />
-    <osgi.dynamic.import />
-    <osgi.bundles />
-    <osgi.activator />
-    <osgi.export.service />
+    <osgi.import/>
+    <osgi.export/>
+    <osgi.private/>
+    <osgi.dynamic.import/>
+    <osgi.bundles/>
+    <osgi.activator/>
+    <osgi.export.service/>
   </properties>
 
   <modules>
