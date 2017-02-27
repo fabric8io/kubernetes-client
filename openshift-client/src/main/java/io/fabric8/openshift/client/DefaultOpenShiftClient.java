@@ -417,4 +417,9 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   public FunctionCallable<NamespacedOpenShiftClient> withRequestConfig(RequestConfig requestConfig) {
     return new WithRequestCallable<NamespacedOpenShiftClient>(this, requestConfig);
   }
+
+  @Override
+  public User currentUser() {
+    return users().withName("~").get();
+  }
 }

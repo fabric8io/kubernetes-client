@@ -135,4 +135,8 @@ public interface OpenShiftClient extends KubernetesClient {
 
   MixedOperation<ClusterRoleBinding, ClusterRoleBindingList, DoneableClusterRoleBinding, Resource<ClusterRoleBinding, DoneableClusterRoleBinding>> clusterRoleBindings();
 
+  /**
+   * Returns the current logged in user details similar to the `oc whoami` command.
+   */
+  User currentUser();
 }
