@@ -14,11 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- @Library('github.com/fabric8io/fabric8-pipeline-library@master')
- def dummy
- mavenNode {
-   ws{
-     checkout scm
+@Library('github.com/fabric8io/fabric8-pipeline-library@master')
+def dummy
+clientsTemplate{
+  mavenNode {
+    ws{
+      checkout scm
       sh "git remote set-url origin git@github.com:fabric8io/kubernetes-client.git"
 
       def pipeline = load 'release.groovy'
@@ -28,8 +29,9 @@
 
       stage 'Promote'
       pipeline.release(stagedProject)
-
+      
       stage 'Update downstream dependencies'
       pipeline.updateDownstreamDependencies(stagedProject)
     }
+  }
 }
