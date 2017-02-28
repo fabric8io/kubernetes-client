@@ -21,7 +21,7 @@ import com.mifmif.common.regex.Generex;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.TemplateBuilder;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -50,7 +50,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.TreeMap;
 
 public class TemplateOperationsImpl
@@ -158,6 +157,8 @@ public class TemplateOperationsImpl
             String value;
             if (valuesMap.containsKey(name)) {
               value = valuesMap.get(name);
+            } else if (Utils.isNotNullOrEmpty(parameter.getValue())) {
+              value = parameter.getValue();
             } else if (EXPRESSION.equals(parameter.getGenerate())) {
               Generex generex = new Generex(parameter.getFrom());
               value = generex.random();
