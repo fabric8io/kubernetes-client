@@ -18,7 +18,7 @@ package io.fabric8.kubernetes.client.dsl;
 
 /**
  * A Client Namespace or Non Namespace Operation. This acts as an umbrella for {@link Operation} and {@link NonNamespaceOperation}.
- * Its not intended to be exposed directly into the client and is only usable as a convinient interface internally.
+ * Its not intended to be exposed directly into the client and is only usable as a convenient interface internally.
  *
  * @param <T> The Kubernetes resource type.
  * @param <L> The list variant of the Kubernetes resource type.
