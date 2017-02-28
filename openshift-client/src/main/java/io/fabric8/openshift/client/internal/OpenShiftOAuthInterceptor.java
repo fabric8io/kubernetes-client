@@ -64,41 +64,28 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
         Response response = chain.proceed(request);
 
         //If response is Forbidden or Unauthorized, try to obtain a token via authorize() or via config.
-        if (response.code() != 401 && response.code() != 403) {
+        if (!isUnauthorized(response)) {
           return response;
-        } else if (Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword())) {
+        }
+
+        if (isUnauthorized(response) && Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword())) {
           synchronized (client) {
-            token = authorize();
-            if (token != null) {
-              oauthToken.set(token);
-            }
+            response = tryWithToken(chain, request, response, token);
+            updateTokenOnSuccess(response, token);
           }
-        } else if (Utils.isNotNullOrEmpty(config.getOauthToken())) {
+        }
+
+       if (isUnauthorized(response) && Utils.isNotNullOrEmpty(config.getOauthToken())) {
           token = config.getOauthToken();
-          oauthToken.set(token);
-        }
+          response = tryWithToken(chain, request, response, token);
+          updateTokenOnSuccess(response, token);
+       }
 
-
-      //If token was obtain, then retry request using the obtained token.
-      if (Utils.isNotNullOrEmpty(token)) {
-        // Close the previous response to prevent leaked connections.
-        response.body().close();
-
-        setAuthHeader(builder, token);
-        request = builder.build();
-        return chain.proceed(request); //repeat request with new token
-      } else {
-        return response;
-      }
+      return response;
     }
 
-    private void setAuthHeader(Request.Builder builder, String token) {
-        if (token != null) {
-            builder.header(AUTHORIZATION, String.format("Bearer %s", token));
-        }
-    }
 
-    private  String authorize() {
+    private String authorize() {
         try {
             OkHttpClient.Builder builder = client.newBuilder();
             builder.interceptors().remove(this);
@@ -122,5 +109,37 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
             throw KubernetesClientException.launderThrowable(e);
         }
     }
+
+  private static Response tryWithToken(Chain chain, Request request, Response response, String token) throws IOException {
+    Request.Builder builder = request.newBuilder();
+
+    //If token was obtain, then retry request using the obtained token.
+    if (Utils.isNotNullOrEmpty(token)) {
+      // Close the previous response to prevent leaked connections.
+      response.body().close();
+      setAuthHeader(builder, token);
+      request = builder.build();
+      return chain.proceed(request); //repeat request with new token
+    } else {
+      return response;
+    }
+  }
+
+  private void updateTokenOnSuccess(Response response, String token) throws IOException {
+    if (!isUnauthorized(response)) {
+      oauthToken.set(token);
+    }
+  }
+
+  private static void setAuthHeader(Request.Builder builder, String token) {
+    if (token != null) {
+      builder.header(AUTHORIZATION, String.format("Bearer %s", token));
+    }
+  }
+
+  private static boolean isUnauthorized(Response response) {
+    return response.code() == 401 || response.code() == 403;
+  }
+
 }
 
