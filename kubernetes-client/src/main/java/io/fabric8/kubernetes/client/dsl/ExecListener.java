@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.dsl;
 
 import okhttp3.Response;
-import okhttp3.ws.WebSocket;
 
 import java.io.IOException;
 
@@ -33,12 +32,12 @@ public interface ExecListener {
      * @param response Present when the failure is a direct result of the response (e.g., failed
      * upgrade, non-101 response code, etc.). {@code null} otherwise.
      */
-    void onFailure(IOException e, Response response);
+    void onFailure(Throwable t, Response response);
 
 
     /**
      * Called when the server sends a close message. This may have been initiated
-     * from a call to {@link WebSocket#close(int, String) close()} or as an unprompted
+     * from a call to {@link okhttp3.WebSocket#close(int, String) close()} or as an unprompted
      * message from the server.
      *
      * @param code The <a href="http://tools.ietf.org/html/rfc6455#section-7.4.1">RFC-compliant</a>

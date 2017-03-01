@@ -647,8 +647,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
         watcher,
         config.getWatchReconnectInterval(),
         config.getWatchReconnectLimit(),
-        config.getWebsocketTimeout(),
-        config.getWebsocketPingInterval()
+        config.getWebsocketTimeout()
       );
       watch.waitUntilReady();
       return watch;

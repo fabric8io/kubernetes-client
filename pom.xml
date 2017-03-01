@@ -74,11 +74,11 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <mockwebserver.version>0.0.4</mockwebserver.version>
-    <okhttp.version>3.4.2</okhttp.version>
-    <okhttp.bundle.version>3.4.2_1</okhttp.bundle.version>
-    <okio.version>1.9.0</okio.version>
-    <okio.bundle.version>1.9.0_1</okio.bundle.version>
+    <mockwebserver.version>0.0.12</mockwebserver.version>
+    <okhttp.version>3.6.0</okhttp.version>
+    <okhttp.bundle.version>3.6.0_1</okhttp.bundle.version>
+    <okio.version>1.11.0</okio.version>
+    <okio.bundle.version>1.11.0_1</okio.bundle.version>
     <generex.version>1.0.1</generex.version>
     <generex.bundle.version>1.0.1_1</generex.bundle.version>
     <automaton.version>1.11-8</automaton.version>

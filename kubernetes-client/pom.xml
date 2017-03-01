@@ -168,11 +168,6 @@
       <version>${okhttp.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.squareup.okhttp3</groupId>
-      <artifactId>okhttp-ws</artifactId>
-      <version>${okhttp.version}</version>
-    </dependency>
-    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>${slf4j.version}</version>

@@ -48,11 +48,7 @@ import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.client.internal.readiness.ReadinessWatcher;
 import io.fabric8.kubernetes.client.utils.URLUtils;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-import okhttp3.ws.WebSocketCall;
+import okhttp3.*;
 
 public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, DoneablePod, PodResource<Pod, DoneablePod>> implements PodResource<Pod, DoneablePod> {
 
@@ -208,9 +204,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
             URL url = new URL(URLUtils.join(getResourceUrl().toString(), sb.toString()));
             Request.Builder r = new Request.Builder().url(url).get();
             OkHttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
-            WebSocketCall webSocketCall = WebSocketCall.create(clone, r.build());
             final ExecWebSocketListener execWebSocketListener = new ExecWebSocketListener(in, out, err, inPipe, outPipe, errPipe, execListener);
-            webSocketCall.enqueue(execWebSocketListener);
+            clone.newWebSocket(r.build(), execWebSocketListener);
             execWebSocketListener.waitUntilReady();
             return execWebSocketListener;
         } catch (Throwable t) {
