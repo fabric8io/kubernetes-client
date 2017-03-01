@@ -149,7 +149,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
       @Override
       public void onFailure(WebSocket webSocket, Throwable t, Response response) {
         if (forceClosed.get()) {
-          logger.warn("Ignoring onFailure for already closed/closing websocket", t);
+          logger.debug("Ignoring onFailure for already closed/closing websocket", t);
           // avoid resource leak though
           if (response != null && response.body() != null) {
             response.body().close();
@@ -187,7 +187,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
         }
 
         if (currentReconnectAttempt.get() >= reconnectLimit && reconnectLimit >= 0) {
-          watcher.onClose(new KubernetesClientException("Connection failure", t));
+          closeEvent(new KubernetesClientException("Connection failure", t));
           return;
         }
 
@@ -223,8 +223,8 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
               webSocketRef.set(null); // lose the ref: closing in close() would only generate a Broken pipe
                                       // exception
               // shut down executor, etc.
+              closeEvent(new KubernetesClientException(status));
               close();
-              watcher.onClose(new KubernetesClientException(status));
               return;
             }
 
@@ -250,11 +250,11 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
       public void onClosed(WebSocket webSocket, int code, String reason) {
         logger.debug("WebSocket close received. code: {}, reason: {}", code, reason);
         if (forceClosed.get()) {
-          logger.warn("Ignoring onClose for already closed/closing websocket");
+          logger.debug("Ignoring onClose for already closed/closing websocket");
           return;
         }
         if (currentReconnectAttempt.get() >= reconnectLimit && reconnectLimit >= 0) {
-          watcher.onClose(new KubernetesClientException("Connection unexpectedly closed"));
+          closeEvent(new KubernetesClientException("Connection unexpectedly closed"));
           return;
         }
         scheduleReconnect();
@@ -289,8 +289,8 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
                 // An unexpected error occurred and we didn't even get an onFailure callback.
                 logger.error("Exception in reconnect", e);
                 webSocketRef.set(null);
+                closeEvent(new KubernetesClientException("Unhandled exception in reconnect attempt", e));
                 close();
-                watcher.onClose(new KubernetesClientException("Unhandled exception in reconnect attempt", e));
               }
             }
           }, nextReconnectInterval(), TimeUnit.MILLISECONDS);
@@ -308,7 +308,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   @Override
   public void close() {
     logger.debug("Force closing the watch {}", this);
-    forceClosed.set(true);
+    closeEvent(null);
     closeWebSocket(webSocketRef.getAndSet(null));
     if (!executor.isShutdown()) {
       try {
@@ -321,6 +321,15 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
         throw KubernetesClientException.launderThrowable(t);
       }
     }
+  }
+
+  private void closeEvent(KubernetesClientException cause) {
+    if (forceClosed.get()) {
+      logger.debug("Ignoring duplicate firing of onClose event");
+      return;
+    }
+    forceClosed.set(true);
+    watcher.onClose(cause);
   }
 
   private void closeWebSocket(WebSocket ws) {
