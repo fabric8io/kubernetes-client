@@ -324,11 +324,10 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   }
 
   private void closeEvent(KubernetesClientException cause) {
-    if (forceClosed.get()) {
+    if (forceClosed.getAndSet(true)) {
       logger.debug("Ignoring duplicate firing of onClose event");
       return;
     }
-    forceClosed.set(true);
     watcher.onClose(cause);
   }
 
