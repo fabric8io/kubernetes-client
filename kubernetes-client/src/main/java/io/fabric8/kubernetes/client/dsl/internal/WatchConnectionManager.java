@@ -26,15 +26,8 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.Utils;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-import okhttp3.ws.WebSocket;
-import okhttp3.ws.WebSocketCall;
-import okhttp3.ws.WebSocketListener;
-import okio.Buffer;
+import okhttp3.*;
+import okio.ByteString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,13 +35,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.Executors;
-import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -71,7 +58,6 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   // TODO maybe make this configurable, either as is (an exponent) or a max time
   private final static int maxIntervalExponent = 5; // max 32x slowdown from base interval
   private final long websocketTimeout;
-  private final long websocketPingInterval;
   private final AtomicInteger currentReconnectAttempt = new AtomicInteger(0);
   private final AtomicReference<WebSocket> webSocketRef = new AtomicReference<>();
   // single threaded serial executor
@@ -90,11 +76,10 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   private final ArrayBlockingQueue<Object> queue = new ArrayBlockingQueue<>(1);
   private final URL requestUrl;
 
-  private WebSocketCall webSocketCall;
-  private ScheduledFuture<?> pingFuture;
+  private WebSocket webSocket;
   private OkHttpClient clonedClient;
 
-  public WatchConnectionManager(final OkHttpClient client, final BaseOperation<T, L, ?, ?> baseOperation, final String version, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit, long websocketTimeout, long websocketPingInterval) throws MalformedURLException {
+  public WatchConnectionManager(final OkHttpClient client, final BaseOperation<T, L, ?, ?> baseOperation, final String version, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit, long websocketTimeout) throws MalformedURLException {
     if (version == null) {
       L currentList = baseOperation.list();
       this.resourceVersion = new AtomicReference<>(currentList.getMetadata().getResourceVersion());
@@ -106,7 +91,6 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
     this.reconnectInterval = reconnectInterval;
     this.reconnectLimit = reconnectLimit;
     this.websocketTimeout = websocketTimeout;
-    this.websocketPingInterval = websocketPingInterval;
 
     this.clonedClient = client.newBuilder().readTimeout(this.websocketTimeout, TimeUnit.MILLISECONDS).build();
 
@@ -148,8 +132,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
       .addHeader("Origin", requestUrl.getProtocol() + "://" + requestUrl.getHost() + ":" + requestUrl.getPort())
       .build();
 
-    webSocketCall = WebSocketCall.create(clonedClient, request);
-    webSocketCall.enqueue(new WebSocketListener() {
+    webSocket = clonedClient.newWebSocket(request, new WebSocketListener() {
       @Override
       public void onOpen(final WebSocket webSocket, Response response) {
         if (response != null && response.body() != null) {
@@ -161,32 +144,12 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
         started.set(true);
         queue.clear();
         queue.add(true);
-        pingFuture = executor.scheduleAtFixedRate(new NamedRunnable("websocket ping") {
-          @Override
-          public void execute() {
-            WebSocket ws = webSocketRef.get();
-            if (ws == null) // not currently running
-              return;
-            try {
-              ws.sendPing(new Buffer().writeUtf8("Alive?"));
-            } catch (IOException e) {
-              logger.debug("Failed to send ping", e);
-              // sendPing: IOException - if unable to write the ping. Clients must call close when this happens to
-              // ensure resources are cleaned up.
-              closeWebSocket(ws);
-              // onFailure expects that the socket was already closed by okhttp
-              onFailure(e, null);
-            } catch (IllegalStateException e) {
-              logger.error("Tried to send ping in already closed websocket");
-            }
-          }
-        }, websocketPingInterval, websocketPingInterval, TimeUnit.MILLISECONDS);
       }
 
       @Override
-      public void onFailure(IOException e, Response response) {
+      public void onFailure(WebSocket webSocket, Throwable t, Response response) {
         if (forceClosed.get()) {
-          logger.warn("Ignoring onFailure for already closed/closing websocket", e);
+          logger.warn("Ignoring onFailure for already closed/closing websocket", t);
           // avoid resource leak though
           if (response != null && response.body() != null) {
             response.body().close();
@@ -210,21 +173,21 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
             response.body().close();
           }
           logger.warn("Exec Failure: HTTP {}, Status: {} - {}", response.code(), status.getCode(), status.getMessage(),
-              e);
+              t);
           if (!started.get()) {
             queue.add(new KubernetesClientException(status));
             return; // no reconnect
           }
         } else {
-          logger.warn("Exec Failure", e);
+          logger.warn("Exec Failure", t);
           if (!started.get()) {
-            queue.add(new KubernetesClientException("Failed to start websocket", e));
+            queue.add(new KubernetesClientException("Failed to start websocket", t));
             return; // no reconnect
           }
         }
 
         if (currentReconnectAttempt.get() >= reconnectLimit && reconnectLimit >= 0) {
-          watcher.onClose(new KubernetesClientException("Connection failure", e));
+          watcher.onClose(new KubernetesClientException("Connection failure", t));
           return;
         }
 
@@ -232,11 +195,14 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
       }
 
       @Override
-      public void onMessage(ResponseBody message) throws IOException {
-        String messageSource = null;
+      public void onMessage(WebSocket webSocket, ByteString bytes) {
+        onMessage(webSocket, bytes.utf8());
+      }
+
+      @Override
+      public void onMessage(WebSocket webSocket, String message) {
         try {
-          messageSource = message.string();
-          WatchEvent event = mapper.readValue(messageSource, WatchEvent.class);
+          WatchEvent event = mapper.readValue(message, WatchEvent.class);
 
           if (event.getObject() instanceof HasMetadata) {
             @SuppressWarnings("unchecked")
@@ -264,35 +230,24 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
 
             logger.error("Error received: {}", status.toString());
           } else {
-            logger.error("Unknown message received: {}", messageSource);
+            logger.error("Unknown message received: {}", message);
           }
         } catch (IOException e) {
-          logger.error("Could not deserialize watch event: {}", messageSource, e);
+          logger.error("Could not deserialize watch event: {}", message, e);
         } catch (ClassCastException e) {
           logger.error("Received wrong type of object for watch", e);
         } catch (IllegalArgumentException e) {
           logger.error("Invalid event type", e);
-        } finally {
-          message.close();
         }
       }
 
       @Override
-      public void onPong(Buffer buffer) {
-        try {
-          if (!buffer.equals(new Buffer().writeUtf8("Alive?"))) {
-            logger.error("Failed to verify pong");
-            // onClose expects that the socket was already closed by okhttp
-            closeWebSocket(webSocketRef.get());
-            onClose(4000, "WebSocket pong verification error");
-          }
-        } finally {
-          buffer.close();
-        }
+      public void onClosing(WebSocket webSocket, int code, String reason) {
+        webSocket.close(code, reason);
       }
 
       @Override
-      public void onClose(final int code, final String reason) {
+      public void onClosed(WebSocket webSocket, int code, String reason) {
         logger.debug("WebSocket close received. code: {}, reason: {}", code, reason);
         if (forceClosed.get()) {
           logger.warn("Ignoring onClose for already closed/closing websocket");
@@ -319,7 +274,6 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
           logger.debug("Reconnect already scheduled");
           return;
         }
-        stopWsPing();
         webSocketRef.set(null);
         try {
           // actual reconnect only after the back-off time has passed, without
@@ -355,7 +309,6 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   public void close() {
     logger.debug("Force closing the watch {}", this);
     forceClosed.set(true);
-    stopWsPing();
     closeWebSocket(webSocketRef.getAndSet(null));
     if (!executor.isShutdown()) {
       try {
@@ -370,23 +323,12 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
     }
   }
 
-  private void stopWsPing() {
-    if (pingFuture != null && !pingFuture.isCancelled() && !pingFuture.isDone()) {
-      pingFuture.cancel(true);
-    }
-    pingFuture = null;
-  }
-
   private void closeWebSocket(WebSocket ws) {
     if (ws != null) {
       logger.debug("Closing websocket {}", ws);
       try {
-        ws.close(0, null);
-      } catch (IOException e) {
-        if ("closed".equals(e.getMessage())) {
-          logger.debug("Socket already closed");
-        } else {
-          logger.warn("Failed to write websocket close message: {} {}", e.getClass(), e.getMessage());
+        if (!ws.close(1000, null)) {
+          logger.warn("Failed to close websocket");
         }
       } catch (IllegalStateException e) {
         logger.error("Called close on already closed websocket: {} {}", e.getClass(), e.getMessage());

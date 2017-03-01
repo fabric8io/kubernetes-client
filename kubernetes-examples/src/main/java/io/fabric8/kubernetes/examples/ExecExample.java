@@ -61,7 +61,7 @@ public class ExecExample {
         }
 
         @Override
-        public void onFailure(IOException e, Response response) {
+        public void onFailure(Throwable t, Response response) {
             System.err.println("shell barfed");
         }
 

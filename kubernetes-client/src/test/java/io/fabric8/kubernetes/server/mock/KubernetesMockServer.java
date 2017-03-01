@@ -25,7 +25,6 @@ import io.fabric8.mockwebserver.ContextBuilder;
 import io.fabric8.mockwebserver.DefaultMockServer;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
-import io.fabric8.mockwebserver.internal.DefaultWebSocketWriter;
 import okhttp3.mockwebserver.MockWebServer;
 
 import java.util.HashMap;
@@ -37,8 +36,6 @@ import static okhttp3.TlsVersion.TLS_1_0;
 public class KubernetesMockServer extends DefaultMockServer {
 
     private static final Context context = new ContextBuilder()
-            .withReader(new KubernetesWebSocketReader())
-            .withWriter(new DefaultWebSocketWriter())
             .build();
 
     public KubernetesMockServer() {

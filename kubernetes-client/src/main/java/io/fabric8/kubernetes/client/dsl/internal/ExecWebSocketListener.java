@@ -16,12 +16,6 @@
 
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import io.fabric8.kubernetes.client.utils.Utils;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-import okhttp3.ws.WebSocket;
-import okhttp3.ws.WebSocketListener;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.Callback;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -29,16 +23,15 @@ import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
-import okio.Buffer;
+import io.fabric8.kubernetes.client.utils.Utils;
+import okhttp3.Response;
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
 import okio.ByteString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
+import java.io.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -46,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ExecWebSocketListener implements ExecWatch, WebSocketListener, AutoCloseable {
+public class ExecWebSocketListener extends WebSocketListener implements ExecWatch, AutoCloseable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExecWebSocketListener.class);
 
@@ -167,11 +160,11 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
         }
     }
 
-    @Override
-    public void onFailure(IOException ioe, Response response) {
+  @Override
+  public void onFailure(WebSocket webSocket, Throwable t, Response response) {
       try {
         Status status = OperationSupport.createStatus(response);
-        LOGGER.error("Exec Failure: HTTP:" + status.getCode() + ". Message:" + status.getMessage(), ioe);
+        LOGGER.error("Exec Failure: HTTP:" + status.getCode() + ". Message:" + status.getMessage(), t);
         //We only need to queue startup failures.
         if (!started.get()) {
           queue.add(new KubernetesClientException(status));
@@ -179,16 +172,16 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
         closeExecutor();
       } finally {
         if (listener != null) {
-          listener.onFailure(ioe, response);
+          listener.onFailure(t, response);
         }
       }
     }
 
     @Override
-    public void onMessage(ResponseBody message) throws IOException {
-      try {
-            byte streamID = message.source().readByte();
-            ByteString byteString = message.source().readByteString();
+    public void onMessage(WebSocket webSocket, ByteString bytes) {
+        try {
+            byte streamID = bytes.getByte(0);
+            ByteString byteString = bytes.substring(1);
             if (byteString.size() > 0) {
                 switch (streamID) {
                     case 1:
@@ -210,27 +203,27 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
                         throw new IOException("Unknown stream ID " + streamID);
                 }
             }
+        } catch (IOException e) {
+            throw KubernetesClientException.launderThrowable(e);
+        }
+    }
+
+  @Override
+  public void onClosing(WebSocket webSocket, int code, String reason) {
+    webSocket.close(code, reason);
+  }
+
+  @Override
+    public void onClosed(WebSocket webSocket, int code, String reason) {
+        webSocketClosed.set(true);
+        LOGGER.debug("Exec Web Socket: On Close with code:[{}], due to: [{}]", code, reason);
+        try {
+            closeExecutor();
         } finally {
-            message.close();
+            if (listener != null) {
+              listener.onClose(code, reason);
+            }
         }
-    }
-
-    @Override
-    public void onPong(Buffer buffer) {
-        LOGGER.debug("Exec Web Socket: On Pong");
-    }
-
-    @Override
-    public void onClose(int code, String reason) {
-      webSocketClosed.set(true);
-      LOGGER.debug("Exec Web Socket: On Close with code:[{}], due to: [{}]", code, reason);
-      try {
-        closeExecutor();
-      } finally {
-        if (listener != null) {
-          listener.onClose(code, reason);
-        }
-      }
     }
 
     public OutputStream getInput() {
@@ -252,7 +245,7 @@ public class ExecWebSocketListener implements ExecWatch, WebSocketListener, Auto
                 byte[] toSend = new byte[bytes.length + 1];
                 toSend[0] = 0;
                 System.arraycopy(bytes, 0, toSend, 1, bytes.length);
-                ws.sendMessage(RequestBody.create(WebSocket.BINARY, toSend));
+                ws.send(ByteString.of(toSend));
             }
         }
     }

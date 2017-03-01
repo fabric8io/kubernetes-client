@@ -75,7 +75,7 @@ public class LoadExample {
 
         list = client.load(TemplateExample.class.getResourceAsStream("/test-template.yml"))
                 .deletingExisting()
-                .apply();
+                .createOrReplace();
 
         System.out.println("Applied:" + list.size() + " items.");
         for (HasMetadata meta : list) {

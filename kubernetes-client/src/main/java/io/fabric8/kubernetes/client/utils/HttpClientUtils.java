@@ -111,6 +111,10 @@ public class HttpClientUtils {
                 httpClientBuilder.readTimeout(config.getRequestTimeout(), TimeUnit.MILLISECONDS);
             }
 
+            if (config.getWebsocketPingInterval() > 0) {
+              httpClientBuilder.pingInterval(config.getWebsocketPingInterval(), TimeUnit.MILLISECONDS);
+            }
+
             // Only check proxy if it's a full URL with protocol
             if (config.getMasterUrl().toLowerCase().startsWith(Config.HTTP_PROTOCOL_PREFIX) || config.getMasterUrl().startsWith(Config.HTTPS_PROTOCOL_PREFIX)) {
                 try {
