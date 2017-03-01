@@ -41,17 +41,17 @@ public class BuildHandler implements ResourceHandler<Build, BuildBuilder> {
 
   @Override
   public Build create(OkHttpClient client, Config config, String namespace, Build item) {
-      return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, false, false, false, null, -1, -1, false, null).create();
+      return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, false, false, false, null, -1, -1, false, null, null).create();
   }
 
   @Override
   public Build replace(OkHttpClient client, Config config, String namespace, Build item) {
-    return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, true, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, false, false, false, null, -1, -1, false, null).replace(item);
+    return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, true, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, false, false, false, null, -1, -1, false, null, null).replace(item);
   }
 
   @Override
   public Build reload(OkHttpClient client, Config config, String namespace, Build item) {
-    return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, false, false, false, null, -1, -1, false, null).fromServer().get();
+    return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, false, false, false, null, -1, -1, false, null, null).fromServer().get();
   }
 
   @Override
@@ -61,21 +61,21 @@ public class BuildHandler implements ResourceHandler<Build, BuildBuilder> {
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Build item) {
-      return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, false, false, false, null, -1, -1, false, null).delete(item);
+      return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, false, false, false, null, -1, -1, false, null, null).delete(item);
   }
 
   @Override
   public Watch watch(OkHttpClient client, Config config, String namespace, Build item, Watcher<Build> watcher) {
-    return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, false, false, false, null, -1, -1, false, null).watch(watcher);
+    return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, false, false, false, null, -1, -1, false, null, null).watch(watcher);
   }
 
   @Override
   public Watch watch(OkHttpClient client, Config config, String namespace, Build item, String resourceVersion, Watcher<Build> watcher) {
-    return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, false, false, false, null, -1, -1, false, null).watch(resourceVersion, watcher);
+    return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, false, false, false, null, -1, -1, false, null, null).watch(resourceVersion, watcher);
   }
 
   @Override
   public Build waitUntilReady(OkHttpClient client, Config config, String namespace, Build item, long amount, TimeUnit timeUnit) throws InterruptedException {
-    return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, false, false, false, null, -1, -1, false, null).waitUntilReady(amount, timeUnit);
+    return new BuildOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, false, false, false, null, -1, -1, false, null, null).waitUntilReady(amount, timeUnit);
   }
 }
