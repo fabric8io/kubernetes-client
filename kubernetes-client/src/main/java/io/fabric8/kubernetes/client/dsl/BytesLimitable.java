@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.fabric8.kubernetes.client.dsl;
 
-package io.fabric8.openshift.client.dsl;
+public interface BytesLimitable<T> {
 
-import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
+    T limitBytes(int limitBytes);
 
-public interface BuildResource<T, D, S, W> extends Resource<T, D>,
-  BytesLimitTerminateTimeTailPrettyLoggable<S, W> {
 }

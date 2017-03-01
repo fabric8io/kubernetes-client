@@ -174,6 +174,7 @@ public class PodTest {
    server.expect().withPath("/api/v1/namespaces/test/pods/pod2/log?pretty=false").andReturn(200, pod2Log).once();
    server.expect().withPath("/api/v1/namespaces/test/pods/pod3/log?pretty=false&container=cnt3").andReturn(200, pod3Log).once();
    server.expect().withPath("/api/v1/namespaces/test4/pods/pod4/log?pretty=true&container=cnt4").andReturn(200, pod4Log).once();
+   server.expect().withPath("/api/v1/namespaces/test4/pods/pod1/log?pretty=false&limitBytes=100").andReturn(200, pod1Log).once();
 
     KubernetesClient client = server.getClient();
 
@@ -188,6 +189,9 @@ public class PodTest {
 
     log = client.pods().inNamespace("test4").withName("pod4").inContainer("cnt4").withPrettyOutput().getLog();
     assertEquals(pod4Log, log);
+
+    log = client.pods().inNamespace("test4").withName("pod1").limitBytes(100).getLog();
+    assertEquals(pod1Log, log);
   }
 
   @Test
