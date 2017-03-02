@@ -138,4 +138,33 @@ public class WatchTest {
     }
   }
 
+  @Test
+  public void testOnCloseEvent() throws InterruptedException {
+    logger.info("testOnCloseEvent");
+    final CountDownLatch eventLatch = new CountDownLatch(2);
+    final CountDownLatch closeLatch = new CountDownLatch(1);
+    KubernetesClient client = server.getClient().inNamespace("test");
+
+    server.expect()
+      .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true")
+      .andUpgradeToWebSocket().open().waitFor(2000).andEmit(new WatchEvent(pod1, "MODIFIED")).waitFor(2000)
+      .andEmit(new WatchEvent(pod1, "MODIFIED")).done().once();
+
+    Watch watch = client.pods().withName("pod1").withResourceVersion("1").watch(new Watcher<Pod>() {
+      @Override
+      public void eventReceived(Action action, Pod resource) {
+        eventLatch.countDown();
+      }
+
+      @Override
+      public void onClose(KubernetesClientException cause) {
+        closeLatch.countDown();
+      }
+    });
+
+    assertTrue(eventLatch.await(10, TimeUnit.SECONDS));
+    watch.close();
+    assertTrue(closeLatch.await(10, TimeUnit.SECONDS));
+  }
+
 }
