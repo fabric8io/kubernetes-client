@@ -36,11 +36,7 @@ import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
 import io.fabric8.kubernetes.api.model.extensions.ThirdPartyResource;
 import io.fabric8.kubernetes.api.model.extensions.ThirdPartyResourceList;
-import io.fabric8.kubernetes.client.dsl.MixedOperation;
-import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.RollableScallableResource;
-import io.fabric8.kubernetes.client.dsl.ScalableResource;
-import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.dsl.internal.DaemonSetOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.DeploymentOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.HorizontalPodAutoscalerOperationsImpl;
@@ -87,8 +83,8 @@ public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAP
     return new DaemonSetOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
-  public MixedOperation<ThirdPartyResource, ThirdPartyResourceList, DoneableThirdPartyResource, Resource<ThirdPartyResource, DoneableThirdPartyResource>> thirdPartyResources() {
-    return new ThirdPartyResourceOperationsImpl(httpClient, getConfiguration(), getNamespace());
+  public NonNamespaceOperation<ThirdPartyResource, ThirdPartyResourceList, DoneableThirdPartyResource, Resource<ThirdPartyResource, DoneableThirdPartyResource>> thirdPartyResources() {
+    return new ThirdPartyResourceOperationsImpl(httpClient, getConfiguration());
   }
 
   public MixedOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, RollableScallableResource<ReplicaSet, DoneableReplicaSet>> replicaSets() {
