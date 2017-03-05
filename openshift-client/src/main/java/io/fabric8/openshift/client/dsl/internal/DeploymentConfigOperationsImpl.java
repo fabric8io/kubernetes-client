@@ -93,6 +93,9 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
   @Override
   public DeploymentConfig deployLatest(boolean wait) {
     Long currentVersion = getMandatory().getStatus().getLatestVersion();
+    if(currentVersion == null){
+      currentVersion = 1L;
+    }
     DeploymentConfig deployment = cascading(false).edit().editStatus().withLatestVersion(++currentVersion).endStatus().done();
     if (wait) {
       waitUntilDeploymentConfigIsScaled(deployment.getSpec().getReplicas());
