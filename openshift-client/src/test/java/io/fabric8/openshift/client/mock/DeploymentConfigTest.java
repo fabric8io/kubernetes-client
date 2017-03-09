@@ -161,4 +161,23 @@ public class DeploymentConfigTest {
 		assertNotNull(deploymentConfig);
 		assertEquals(new Long(2), deploymentConfig.getStatus().getLatestVersion());
 	}
+
+  @Test
+  public void testDeployingLatestHandlesMissingLatestVersion() {
+    server.expect().withPath("/oapi/v1/namespaces/test/deploymentconfigs/dc1")
+      .andReturn(200, new DeploymentConfigBuilder().withNewMetadata().withName("dc1").endMetadata()
+        .withNewStatus().endStatus().build())
+      .always();
+
+    server.expect().patch().withPath("/oapi/v1/namespaces/test/deploymentconfigs/dc1")
+      .andReturn(200, new DeploymentConfigBuilder().withNewMetadata().withName("dc1").endMetadata()
+        .withNewStatus().withLatestVersion(1L).endStatus().build())
+      .once();
+
+    OpenShiftClient client = server.getOpenshiftClient();
+
+    DeploymentConfig deploymentConfig = client.deploymentConfigs().withName("dc1").deployLatest();
+    assertNotNull(deploymentConfig);
+    assertEquals(new Long(1), deploymentConfig.getStatus().getLatestVersion());
+  }
 }
