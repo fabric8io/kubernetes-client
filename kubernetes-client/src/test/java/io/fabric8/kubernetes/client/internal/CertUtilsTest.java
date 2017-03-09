@@ -28,6 +28,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
 
+import static org.junit.Assert.assertEquals;
+
 public class CertUtilsTest {
 
   @Ignore
@@ -38,6 +40,12 @@ public class CertUtilsTest {
     Config config = client.getConfiguration();
     KeyStore ts = CertUtils.createTrustStore(config.getCaCertData(), null);
     KeyStore ks = CertUtils.createKeyStore(config.getClientCertData(), null, config.getClientKeyData(), null, "RSA", "changeit".toCharArray());
+  }
+
+  @Test
+  public void testLoadingMultipleCertsFromSameFile() throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+    KeyStore ts = CertUtils.createTrustStore(getClass().getResourceAsStream("/ssl/multiple-certs.pem"));
+    assertEquals(2, ts.size());
   }
 
 }

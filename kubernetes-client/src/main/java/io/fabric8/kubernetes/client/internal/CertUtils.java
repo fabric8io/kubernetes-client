@@ -64,15 +64,17 @@ public class CertUtils {
   }
 
   public static KeyStore createTrustStore(InputStream pemInputStream) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException {
+    KeyStore trustStore = KeyStore.getInstance("JKS");
+    trustStore.load(null);
+
+    while (pemInputStream.available() > 0) {
       CertificateFactory certFactory = CertificateFactory.getInstance("X509");
       X509Certificate cert = (X509Certificate) certFactory.generateCertificate(pemInputStream);
 
-      KeyStore trustStore = KeyStore.getInstance("JKS");
-      trustStore.load(null);
-
       String alias = cert.getSubjectX500Principal().getName();
       trustStore.setCertificateEntry(alias, cert);
-      return trustStore;
+    }
+    return trustStore;
   }
 
 
