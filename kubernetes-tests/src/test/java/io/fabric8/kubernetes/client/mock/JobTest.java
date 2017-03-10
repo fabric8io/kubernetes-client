@@ -38,12 +38,12 @@ public class JobTest {
 
   @Test
   public void testList() {
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs").andReturn(200, new JobListBuilder().build()).once();
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/jobs").andReturn(200, new JobListBuilder()
+   server.expect().withPath("/apis/batch/v2alpha1/namespaces/test/jobs").andReturn(200, new JobListBuilder().build()).once();
+   server.expect().withPath("/apis/batch/v2alpha1/namespaces/ns1/jobs").andReturn(200, new JobListBuilder()
       .addNewItem().and()
       .addNewItem().and().build()).once();
 
-   server.expect().withPath("/apis/extensions/v1beta1/jobs").andReturn(200, new JobListBuilder()
+   server.expect().withPath("/apis/batch/v2alpha1/jobs").andReturn(200, new JobListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .addNewItem()
@@ -66,8 +66,8 @@ public class JobTest {
 
   @Test
   public void testListWithLables() {
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs?labelSelector=" + toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new JobListBuilder().build()).always();
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs?labelSelector=" + toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new JobListBuilder()
+   server.expect().withPath("/apis/batch/v2alpha1/namespaces/test/jobs?labelSelector=" + toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new JobListBuilder().build()).always();
+   server.expect().withPath("/apis/batch/v2alpha1/namespaces/test/jobs?labelSelector=" + toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new JobListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .addNewItem().and()
@@ -96,8 +96,8 @@ public class JobTest {
 
   @Test
   public void testGet() {
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder().build()).once();
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/jobs/job2").andReturn(200, new JobBuilder().build()).once();
+   server.expect().withPath("/apis/batch/v2alpha1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder().build()).once();
+   server.expect().withPath("/apis/batch/v2alpha1/namespaces/ns1/jobs/job2").andReturn(200, new JobBuilder().build()).once();
 
     KubernetesClient client = server.getClient();
 
@@ -114,7 +114,7 @@ public class JobTest {
 
   @Test
   public void testDelete() {
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder().withNewMetadata()
+   server.expect().withPath("/apis/batch/v2alpha1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder().withNewMetadata()
       .withName("job1")
       .withResourceVersion("1")
       .endMetadata()
@@ -125,7 +125,7 @@ public class JobTest {
       .withActive(1)
       .endStatus()
       .build()).once();
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder().withNewMetadata()
+   server.expect().withPath("/apis/batch/v2alpha1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder().withNewMetadata()
       .withName("job1")
       .withResourceVersion("1")
       .endMetadata()
@@ -137,7 +137,7 @@ public class JobTest {
       .endStatus()
       .build()).times(5);
 
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs/job2").andReturn(200, new JobBuilder().withNewMetadata()
+   server.expect().withPath("/apis/batch/v2alpha1/namespaces/test/jobs/job2").andReturn(200, new JobBuilder().withNewMetadata()
       .withName("job2")
       .withResourceVersion("1")
       .endMetadata()
@@ -148,7 +148,7 @@ public class JobTest {
       .withActive(1)
       .endStatus()
       .build()).once();
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs/job2").andReturn(200, new JobBuilder().withNewMetadata()
+   server.expect().withPath("/apis/batch/v2alpha1/namespaces/test/jobs/job2").andReturn(200, new JobBuilder().withNewMetadata()
       .withName("job2")
       .withResourceVersion("1")
       .endMetadata()
@@ -198,11 +198,11 @@ public class JobTest {
       .build();
     Job job3 = new JobBuilder().withNewMetadata().withName("job3").withNamespace("any").and().build();
 
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs/job1").andReturn(200, job1).once();
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder(job1)
+   server.expect().withPath("/apis/batch/v2alpha1/namespaces/test/jobs/job1").andReturn(200, job1).once();
+   server.expect().withPath("/apis/batch/v2alpha1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder(job1)
       .editStatus().withActive(0).endStatus().build()).times(5);
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/jobs/job2").andReturn(200, job2).once();
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/jobs/job2").andReturn(200, new JobBuilder(job2)
+   server.expect().withPath("/apis/batch/v2alpha1/namespaces/ns1/jobs/job2").andReturn(200, job2).once();
+   server.expect().withPath("/apis/batch/v2alpha1/namespaces/ns1/jobs/job2").andReturn(200, new JobBuilder(job2)
       .editStatus().withActive(0).endStatus().build()).times(5);
 
     KubernetesClient client = server.getClient();
