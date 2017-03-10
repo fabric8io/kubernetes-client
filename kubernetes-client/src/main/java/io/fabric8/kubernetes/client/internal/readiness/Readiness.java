@@ -152,7 +152,7 @@ public class Readiness {
         return true;
       }
     }
-    return true;
+    return false;
   }
 
   public static boolean isPodReady(Pod pod) {
