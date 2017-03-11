@@ -174,7 +174,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
    * @return            The {@link ReplicationController} if ready.
    */
   protected T periodicWatchUntilReady(int i, long started, long interval, long amount) {
-    T item = get();
+    T item = fromServer().get();
     if (Readiness.isReady(item)) {
       return item;
     }
