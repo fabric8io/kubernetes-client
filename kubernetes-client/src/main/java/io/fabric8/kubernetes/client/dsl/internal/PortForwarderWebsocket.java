@@ -17,12 +17,12 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.URLEncoder;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.ByteChannel;
+import java.nio.channels.SelectableChannel;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -31,8 +31,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import io.fabric8.kubernetes.client.KubernetesClient;
-import io.sundr.codegen.utils.IOUtils;
+import io.fabric8.kubernetes.client.LocalPortForward;
+import io.fabric8.kubernetes.client.PortForward;
+import io.fabric8.kubernetes.client.utils.URLUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,27 +53,24 @@ public class PortForwarderWebsocket implements PortForwarder {
 
   private static final Logger LOG = LoggerFactory.getLogger(PortForwarderWebsocket.class);
 
-  private KubernetesClient kubernetes;
-
   private OkHttpClient client;
 
-  public PortForwarderWebsocket(KubernetesClient kubernetes, OkHttpClient client) {
-    this.kubernetes = kubernetes;
+  public PortForwarderWebsocket(OkHttpClient client) {
     this.client = client;
   }
 
   @Override
-  public PortForwarderBridgedHandle forward(String namespace, String pod, int port) {
-    return forward(namespace, pod, port, 0);
+  public LocalPortForward forward(URL resourceBaseUrl, int port) {
+    return forward(resourceBaseUrl, port, 0);
   }
 
   @Override
-  public PortForwarderBridgedHandle forward(String namespace, String pod, int port, int localPort) {
-    return forward(namespace, pod, port, null, localPort);
+  public LocalPortForward forward(URL resourceBaseUrl, int port, int localPort) {
+    return forward(resourceBaseUrl, port, null, localPort);
   }
 
   @Override
-  public PortForwarderBridgedHandle forward(final String namespace, final String pod, final int port, final InetAddress localHost, final int localPort) {
+  public LocalPortForward forward(final URL resourceBaseUrl, final int port, final InetAddress localHost, final int localPort) {
     try {
       final ServerSocketChannel server;
       if (localHost == null) {
@@ -81,18 +79,18 @@ public class PortForwarderWebsocket implements PortForwarder {
         server = ServerSocketChannel.open().bind(new InetSocketAddress(localHost, localPort));
       }
       final AtomicBoolean alive = new AtomicBoolean(true);
-      final CopyOnWriteArrayList<PortForwarderHandle> handles = new CopyOnWriteArrayList<>();
+      final CopyOnWriteArrayList<PortForward> handles = new CopyOnWriteArrayList<>();
 
       final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-      final PortForwarderBridgedHandle shutdownHandle = new PortForwarderBridgedHandle() {
+      final LocalPortForward shutdownHandle = new LocalPortForward() {
         @Override
         public void close() throws IOException {
           alive.set(false);
           try {
             server.close();
           } finally {
-            IOUtils.closeQuietly(handles.toArray(new Closeable[]{}));
+            closeQuietly(handles.toArray(new Closeable[]{}));
             closeExecutor(executorService);
           }
         }
@@ -106,7 +104,7 @@ public class PortForwarderWebsocket implements PortForwarder {
         public InetAddress getLocalAddress() {
           try {
             return ((InetSocketAddress) server.getLocalAddress()).getAddress();
-          } catch(IOException e) {
+          } catch (IOException e) {
             throw new IllegalStateException("Cannot determine local address", e);
           }
         }
@@ -115,7 +113,7 @@ public class PortForwarderWebsocket implements PortForwarder {
         public int getLocalPort() {
           try {
             return ((InetSocketAddress) server.getLocalAddress()).getPort();
-          } catch(IOException e) {
+          } catch (IOException e) {
             throw new IllegalStateException("Cannot determine local address", e);
           }
         }
@@ -128,12 +126,12 @@ public class PortForwarderWebsocket implements PortForwarder {
           while (alive.get()) {
             try {
               SocketChannel socket = server.accept();
-              handles.add(forward(namespace, pod, port, socket));
+              handles.add(forward(resourceBaseUrl, port, socket));
             } catch (IOException e) {
               if (alive.get()) {
                 LOG.error("Error while listening for connections", e);
               }
-              IOUtils.closeQuietly(shutdownHandle);
+              closeQuietly(shutdownHandle);
             }
           }
         }
@@ -146,20 +144,18 @@ public class PortForwarderWebsocket implements PortForwarder {
   }
 
   @Override
-  public PortForwarderHandle forward(String namespace, String pod, int port, final ByteChannel clientChannel) {
+  public PortForward forward(URL resourceBaseUrl, int port, final ByteChannel clientChannel) {
+    if (!(clientChannel instanceof SelectableChannel) || !((SelectableChannel) clientChannel).isBlocking()) {
+      throw new IllegalArgumentException("Generic non-blocking channels are not supported");
+    }
 
     final AtomicBoolean alive = new AtomicBoolean(true);
-    final String logPrefix = "FWD[" + namespace + "/" + pod + ":" + port + "]";
+    final String logPrefix = "FWD";
 
-    Request request;
-    try {
-      request = new Request.Builder()
-        .get()
-        .url(kubernetes.getMasterUrl() + "/api/v1/namespaces/" + URLEncoder.encode(namespace, "UTF-8") + "/pods/" + URLEncoder.encode(pod, "UTF-8")+ "/portforward?ports=" + port)
-        .build();
-    } catch (UnsupportedEncodingException e) {
-      throw new IllegalStateException(e);
-    }
+    Request request = new Request.Builder()
+      .get()
+      .url(URLUtils.join(resourceBaseUrl.toString(), "portforward?ports=" + port))
+      .build();
 
     final WebSocket socket = client.newWebSocket(request, new WebSocketListener() {
 
@@ -186,10 +182,10 @@ public class PortForwarderWebsocket implements PortForwarder {
                   ByteString data = ByteString.of(buffer);
                   webSocket.send(data);
                 }
-              } while(alive.get() && read>=0);
+              } while (alive.get() && read >= 0);
 
               closeBothWays(webSocket, 1000, "Completed");
-            } catch(IOException e) {
+            } catch (IOException e) {
               if (alive.get()) {
                 LOG.error("Error while writing client data");
                 closeBothWays(webSocket, 1001, "Client error");
@@ -298,7 +294,7 @@ public class PortForwarderWebsocket implements PortForwarder {
 
     });
 
-    return new PortForwarderHandle() {
+    return new PortForward() {
       @Override
       public void close() throws IOException {
         socket.close(1001, "User closing");
@@ -324,6 +320,19 @@ public class PortForwarderWebsocket implements PortForwarder {
       Thread.currentThread().interrupt();
     } catch (Exception e) {
       LOG.error("Error while closing the executor", e);
+    }
+  }
+
+  public static void closeQuietly(Closeable... cloaseables) {
+    if(cloaseables != null) {
+      for(Closeable c : cloaseables) {
+        try {
+          if(c != null) {
+            c.close();
+          }
+        } catch (IOException ioe) {
+        }
+      }
     }
   }
 

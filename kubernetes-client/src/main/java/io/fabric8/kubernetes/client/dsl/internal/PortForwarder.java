@@ -16,19 +16,23 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import java.net.InetAddress;
+import java.net.URL;
 import java.nio.channels.ByteChannel;
+
+import io.fabric8.kubernetes.client.LocalPortForward;
+import io.fabric8.kubernetes.client.PortForward;
 
 /**
  * Allows to forward local ports (or nio channels) to remote ports in Kubernetes pods.
  */
 public interface PortForwarder {
 
-  PortForwarderBridgedHandle forward(String namespace, String pod, int port);
+  LocalPortForward forward(URL resourceBaseUrl, int port);
 
-  PortForwarderBridgedHandle forward(String namespace, String pod, int port, int localPort);
+  LocalPortForward forward(URL resourceBaseUrl, int port, int localPort);
 
-  PortForwarderBridgedHandle forward(String namespace, String pod, int port, InetAddress localHost, int localPort);
+  LocalPortForward forward(URL resourceBaseUrl, int port, InetAddress localHost, int localPort);
 
-  PortForwarderHandle forward(String namespace, String pod, int port, ByteChannel channel);
+  PortForward forward(URL resourceBaseUrl, int port, ByteChannel channel);
 
 }

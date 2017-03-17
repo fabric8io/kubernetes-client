@@ -22,6 +22,9 @@ import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -32,13 +35,16 @@ import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.LocalPortForward;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.server.mock.KubernetesServer;
 import io.fabric8.kubernetes.server.mock.OutputStreamMessage;
+
 import okhttp3.Response;
+import okio.ByteString;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -341,6 +347,38 @@ public class PodTest {
     Assert.assertEquals("2", result.getMetadata().getResourceVersion());
   }
 
+  @Test
+  public void testPortForward() throws IOException {
+
+    server.expect().withPath("/api/v1/namespaces/test/pods/pod1/portforward?ports=123")
+      .andUpgradeToWebSocket()
+      .open()
+      .waitFor(10).andEmit(portForwardEncode(true, "12")) // data channel info
+      .waitFor(10).andEmit(portForwardEncode(false, "12")) // error channel info
+      .waitFor(10).andEmit(portForwardEncode(true, "Hell"))
+      .waitFor(10).andEmit(portForwardEncode(true, "o World"))
+      .done()
+      .once();
+
+    KubernetesClient client = server.getClient();
+
+    try(LocalPortForward portForward = client.pods().withName("pod1").portForward(123)) {
+      int localPort = portForward.getLocalPort();
+      SocketChannel channel = SocketChannel.open();
+      assertTrue(channel.connect(new InetSocketAddress("localhost", localPort)));
+
+      ByteBuffer buffer = ByteBuffer.allocate(1024);
+      int read;
+      do {
+        read = channel.read(buffer);
+      } while(read >= 0);
+      buffer.flip();
+      String data = ByteString.of(buffer).utf8();
+      assertEquals("Hello World", data);
+    }
+
+  }
+
   /**
    * Converts string to URL encoded string.
    * It's not a fullblown converter, it serves just the purpose of this test.
@@ -350,4 +388,17 @@ public class PodTest {
   private static final String toUrlEncoded(String str) {
     return str.replaceAll("=", "%3D");
   }
+
+  private static String portForwardEncode(boolean dataChannel, String str) {
+    try {
+      byte[] data = str.getBytes("UTF-8");
+      byte[] msg = new byte[data.length + 1];
+      System.arraycopy(data, 0, msg, 1, data.length);
+      msg[0] = dataChannel ? (byte) 0 : (byte) 1;
+      return new String(msg, "UTF-8");
+    } catch (Exception e) {
+      throw new IllegalStateException(e);
+    }
+  }
+
 }

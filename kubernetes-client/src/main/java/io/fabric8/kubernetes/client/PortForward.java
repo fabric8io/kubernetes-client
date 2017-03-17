@@ -13,17 +13,15 @@
  * implied.  See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl.internal;
+package io.fabric8.kubernetes.client;
 
-import java.net.InetAddress;
+import java.io.Closeable;
 
 /**
- * A port forwarder handle that is aware of the host and port where it's bound to.
+ * A handle that allows closing a port forward operation and checking its status.
  */
-public interface PortForwarderBridgedHandle extends PortForwarderHandle {
+public interface PortForward extends Closeable {
 
-  InetAddress getLocalAddress();
-
-  int getLocalPort();
+  boolean isAlive();
 
 }
