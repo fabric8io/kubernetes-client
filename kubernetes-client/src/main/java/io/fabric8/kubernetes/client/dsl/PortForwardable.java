@@ -15,9 +15,9 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface PortForwardable<H, L, C> {
+public interface PortForwardable<H, L, I, O> {
 
-    H portForward(int port, C channel);
+    H portForward(int port, I in, O out);
 
     L portForward(int port);
 

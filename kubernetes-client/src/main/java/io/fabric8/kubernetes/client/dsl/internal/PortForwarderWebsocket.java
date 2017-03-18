@@ -21,10 +21,10 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.URL;
 import java.nio.ByteBuffer;
-import java.nio.channels.ByteChannel;
-import java.nio.channels.SelectableChannel;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.nio.channels.WritableByteChannel;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -126,7 +126,7 @@ public class PortForwarderWebsocket implements PortForwarder {
           while (alive.get()) {
             try {
               SocketChannel socket = server.accept();
-              handles.add(forward(resourceBaseUrl, port, socket));
+              handles.add(forward(resourceBaseUrl, port, socket, socket));
             } catch (IOException e) {
               if (alive.get()) {
                 LOG.error("Error while listening for connections", e);
@@ -144,11 +144,7 @@ public class PortForwarderWebsocket implements PortForwarder {
   }
 
   @Override
-  public PortForward forward(URL resourceBaseUrl, int port, final ByteChannel clientChannel) {
-    if (!(clientChannel instanceof SelectableChannel) || !((SelectableChannel) clientChannel).isBlocking()) {
-      throw new IllegalArgumentException("Generic non-blocking channels are not supported");
-    }
-
+  public PortForward forward(URL resourceBaseUrl, int port, final ReadableByteChannel in, final WritableByteChannel out) {
     final AtomicBoolean alive = new AtomicBoolean(true);
     final String logPrefix = "FWD";
 
@@ -167,32 +163,33 @@ public class PortForwarderWebsocket implements PortForwarder {
       public void onOpen(final WebSocket webSocket, Response response) {
         LOG.debug("{}: onOpen", logPrefix);
 
-        pumperService.execute(new Runnable() {
-          @Override
-          public void run() {
-            ByteBuffer buffer = ByteBuffer.allocate(4096);
-            int read;
-            try {
-              do {
-                buffer.clear();
-                buffer.put((byte) 0); // channel
-                read = clientChannel.read(buffer);
-                if (read > 0) {
-                  buffer.flip();
-                  ByteString data = ByteString.of(buffer);
-                  webSocket.send(data);
-                }
-              } while (alive.get() && read >= 0);
+        if (in != null) {
+          pumperService.execute(new Runnable() {
+            @Override
+            public void run() {
+              ByteBuffer buffer = ByteBuffer.allocate(4096);
+              int read;
+              try {
+                do {
+                  buffer.clear();
+                  buffer.put((byte) 0); // channel
+                  read = in.read(buffer);
+                  if (read > 0) {
+                    buffer.flip();
+                    ByteString data = ByteString.of(buffer);
+                    webSocket.send(data);
+                  }
+                } while (alive.get() && read >= 0);
 
-              closeBothWays(webSocket, 1000, "Completed");
-            } catch (IOException e) {
-              if (alive.get()) {
-                LOG.error("Error while writing client data");
-                closeBothWays(webSocket, 1001, "Client error");
+              } catch (IOException e) {
+                if (alive.get()) {
+                  LOG.error("Error while writing client data");
+                  closeBothWays(webSocket, 1001, "Client error");
+                }
               }
             }
-          }
-        });
+          });
+        }
       }
 
       @Override
@@ -234,15 +231,16 @@ public class PortForwarderWebsocket implements PortForwarder {
           closeForwarder();
         } else {
           // Data
-          try {
-            clientChannel.write(buffer);
-          } catch (IOException e) {
-            if (alive.get()) {
-              LOG.error("Error while forwarding data to the client", e);
-              closeBothWays(webSocket, 1002, "Protocol error");
+          if (out != null) {
+            try {
+              out.write(buffer);
+            } catch (IOException e) {
+              if (alive.get()) {
+                LOG.error("Error while forwarding data to the client", e);
+                closeBothWays(webSocket, 1002, "Protocol error");
+              }
             }
           }
-
         }
 
       }
@@ -273,6 +271,7 @@ public class PortForwarderWebsocket implements PortForwarder {
       }
 
       private void closeBothWays(WebSocket webSocket, int code, String message) {
+        LOG.debug("Closing with code {} and reason: {}", code, message);
         alive.set(false);
         try {
           webSocket.close(code, message);
@@ -284,10 +283,19 @@ public class PortForwarderWebsocket implements PortForwarder {
 
       private void closeForwarder() {
         alive.set(false);
-        try {
-          clientChannel.close();
-        } catch (IOException e) {
-          LOG.error("Error while closing the client channel", e);
+        if (in != null) {
+          try {
+            in.close();
+          } catch (IOException e) {
+            LOG.error("Error while closing the client input channel", e);
+          }
+        }
+        if (out != null && out != in) {
+          try {
+            out.close();
+          } catch (IOException e) {
+            LOG.error("Error while closing the client output channel", e);
+          }
         }
         closeExecutor(pumperService);
       }

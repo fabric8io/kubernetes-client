@@ -20,7 +20,8 @@ import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.net.URL;
-import java.nio.channels.ByteChannel;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.WritableByteChannel;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
@@ -171,9 +172,9 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
     }
 
   @Override
-  public PortForward portForward(int port, ByteChannel channel) {
+  public PortForward portForward(int port, ReadableByteChannel in, WritableByteChannel out) {
     try {
-      return new PortForwarderWebsocket(client).forward(getResourceUrl(), port, channel);
+      return new PortForwarderWebsocket(client).forward(getResourceUrl(), port, in, out);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }

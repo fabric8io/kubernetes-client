@@ -17,7 +17,8 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import java.net.InetAddress;
 import java.net.URL;
-import java.nio.channels.ByteChannel;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.WritableByteChannel;
 
 import io.fabric8.kubernetes.client.LocalPortForward;
 import io.fabric8.kubernetes.client.PortForward;
@@ -33,6 +34,6 @@ public interface PortForwarder {
 
   LocalPortForward forward(URL resourceBaseUrl, int port, InetAddress localHost, int localPort);
 
-  PortForward forward(URL resourceBaseUrl, int port, ByteChannel channel);
+  PortForward forward(URL resourceBaseUrl, int port, ReadableByteChannel in, WritableByteChannel out);
 
 }
