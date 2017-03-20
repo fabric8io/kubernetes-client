@@ -78,12 +78,14 @@ public class PortForwarderWebsocket implements PortForwarder {
       } else {
         server = ServerSocketChannel.open().bind(new InetSocketAddress(localHost, localPort));
       }
+
       final AtomicBoolean alive = new AtomicBoolean(true);
       final CopyOnWriteArrayList<PortForward> handles = new CopyOnWriteArrayList<>();
 
       final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-      final LocalPortForward shutdownHandle = new LocalPortForward() {
+      // Create a handle that can be used to retrieve information and stop the port-forward
+      final LocalPortForward localPortForwardHandle = new LocalPortForward() {
         @Override
         public void close() throws IOException {
           alive.set(false);
@@ -119,6 +121,8 @@ public class PortForwarderWebsocket implements PortForwarder {
         }
       };
 
+      // Start listening on localhost for new connections.
+      // Every new connection will open its own stream on the remote resource.
       executorService.execute(new Runnable() {
         @Override
         public void run() {
@@ -131,13 +135,13 @@ public class PortForwarderWebsocket implements PortForwarder {
               if (alive.get()) {
                 LOG.error("Error while listening for connections", e);
               }
-              closeQuietly(shutdownHandle);
+              closeQuietly(localPortForwardHandle);
             }
           }
         }
       });
 
-      return shutdownHandle;
+      return localPortForwardHandle;
     } catch (IOException e) {
       throw new IllegalStateException("Unable to port forward", e);
     }
@@ -172,7 +176,7 @@ public class PortForwarderWebsocket implements PortForwarder {
               try {
                 do {
                   buffer.clear();
-                  buffer.put((byte) 0); // channel
+                  buffer.put((byte) 0); // channel byte
                   read = in.read(buffer);
                   if (read > 0) {
                     buffer.flip();
@@ -233,7 +237,7 @@ public class PortForwarderWebsocket implements PortForwarder {
           // Data
           if (out != null) {
             try {
-              out.write(buffer);
+              out.write(buffer); // channel byte already skipped
             } catch (IOException e) {
               if (alive.get()) {
                 LOG.error("Error while forwarding data to the client", e);
@@ -242,7 +246,6 @@ public class PortForwarderWebsocket implements PortForwarder {
             }
           }
         }
-
       }
 
       @Override
@@ -271,7 +274,7 @@ public class PortForwarderWebsocket implements PortForwarder {
       }
 
       private void closeBothWays(WebSocket webSocket, int code, String message) {
-        LOG.debug("Closing with code {} and reason: {}", code, message);
+        LOG.debug("{}: Closing with code {} and reason: {}", logPrefix, code, message);
         alive.set(false);
         try {
           webSocket.close(code, message);
@@ -287,14 +290,14 @@ public class PortForwarderWebsocket implements PortForwarder {
           try {
             in.close();
           } catch (IOException e) {
-            LOG.error("Error while closing the client input channel", e);
+            LOG.error(logPrefix + ": Error while closing the client input channel", e);
           }
         }
         if (out != null && out != in) {
           try {
             out.close();
           } catch (IOException e) {
-            LOG.error("Error while closing the client output channel", e);
+            LOG.error(logPrefix + ": Error while closing the client output channel", e);
           }
         }
         closeExecutor(pumperService);

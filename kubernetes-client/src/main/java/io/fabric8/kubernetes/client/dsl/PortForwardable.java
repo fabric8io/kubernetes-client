@@ -17,10 +17,20 @@ package io.fabric8.kubernetes.client.dsl;
 
 public interface PortForwardable<H, L, I, O> {
 
-    H portForward(int port, I in, O out);
+  /**
+   * Connects directly the remote port to the given input and output channels.
+   */
+  H portForward(int port, I in, O out);
 
-    L portForward(int port);
+  /**
+   * Create a server socket on a specified local port. Every connection to the local port will be forwarded to the remote port on the resource.
+   */
+  L portForward(int port, int localPort);
 
-    L portForward(int port, int localPort);
+  /**
+   * Create a server socket on a random local port. Every connection to the local port will be forwarded to the remote port on the resource.
+   * The random local port can be retrieved from the returned object.
+   */
+  L portForward(int port);
 
 }
