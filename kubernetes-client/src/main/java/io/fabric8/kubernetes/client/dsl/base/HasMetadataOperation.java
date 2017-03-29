@@ -189,7 +189,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
         }
       }
 
-      long remaining = System.currentTimeMillis() - (started + amount);
+      long remaining =  (started + amount) - System.currentTimeMillis();
       long next = Math.max(0, Math.min(remaining, interval));
       return periodicWatchUntilReady(i - 1, started, next, amount);
     }
