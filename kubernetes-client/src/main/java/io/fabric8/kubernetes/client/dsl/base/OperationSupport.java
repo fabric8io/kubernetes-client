@@ -264,10 +264,20 @@ public class OperationSupport {
     if (response.isSuccessful()) {
       return;
     } else if (customMessage != null) {
-      throw requestFailure(request, createStatus(statusCode, customMessage));
+      throw requestFailure(request, createStatus(statusCode, combineMessages(customMessage, createStatus(response))));
     } else {
       throw requestFailure(request, createStatus(response));
     }
+  }
+
+  private String combineMessages(String customMessage, Status defaultStatus) {
+    if (defaultStatus != null) {
+      String message = defaultStatus.getMessage();
+      if (message != null && message.length() > 0) {
+        return customMessage + " " + message;
+      }
+    }
+    return customMessage;
   }
 
 
