@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.WithRequestCallable;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.openshift.api.model.*;
 import io.fabric8.openshift.client.dsl.BuildResource;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
@@ -160,6 +161,14 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
     } catch (MalformedURLException e) {
       throw new KubernetesClientException("Could not create client", e);
     }
+  }
+
+  public static DefaultOpenShiftClient fromConfig(String config) {
+    return new DefaultOpenShiftClient(Serialization.unmarshal(config, OpenShiftConfig.class));
+  }
+
+  public static DefaultOpenShiftClient fromConfig(InputStream is) {
+    return new DefaultOpenShiftClient(Serialization.unmarshal(is, OpenShiftConfig.class));
   }
 
   private OkHttpClient clientWithOpenShiftOAuthInterceptor(OkHttpClient httpClient) {

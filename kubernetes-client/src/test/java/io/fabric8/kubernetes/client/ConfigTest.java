@@ -16,11 +16,16 @@
 
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.client.utils.Serialization;
 import okhttp3.TlsVersion;
 import org.junit.*;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLDecoder;
 
 import static okhttp3.TlsVersion.TLS_1_1;
@@ -31,6 +36,8 @@ public class ConfigTest {
 
   private static final String TEST_KUBECONFIG_FILE = decodeUrl(ConfigTest.class.getResource("/test-kubeconfig").getFile());
   private static final String TEST_NAMESPACE_FILE = decodeUrl(ConfigTest.class.getResource("/test-namespace").getFile());
+
+  private static final String TEST_CONFIG_YML_FILE = decodeUrl(ConfigTest.class.getResource("/test-config.yml").getFile());
 
   @Before
   public void setUp() {
@@ -255,6 +262,30 @@ public class ConfigTest {
     assertNotNull(config);
     assertEquals("http://somehost:80/", config.getMasterUrl());
     assertEquals("testns2", config.getNamespace());
+  }
+
+  @Test
+  public void shouldInstantiateClientUsingYaml() throws MalformedURLException {
+    File configYml = new File(TEST_CONFIG_YML_FILE);
+    try (InputStream is = new FileInputStream(configYml)){
+      KubernetesClient client = DefaultKubernetesClient.fromConfig(is);
+      Assert.assertEquals("http://some.url", client.getMasterUrl().toString());
+    } catch (Exception e) {
+      Assert.fail();
+    }
+  }
+
+  @Test
+  public void shouldInstantiateClientUsingSerializeDeserialize() throws MalformedURLException {
+    DefaultKubernetesClient original = new DefaultKubernetesClient();
+    String json = Serialization.asJson(original.getConfiguration());
+    DefaultKubernetesClient copy = DefaultKubernetesClient.fromConfig(json);
+
+    Assert.assertEquals(original.getConfiguration().getMasterUrl(), copy.getConfiguration().getMasterUrl());
+    Assert.assertEquals(original.getConfiguration().getOauthToken(), copy.getConfiguration().getOauthToken());
+    Assert.assertEquals(original.getConfiguration().getNamespace(), copy.getConfiguration().getNamespace());
+    Assert.assertEquals(original.getConfiguration().getUsername(), copy.getConfiguration().getUsername());
+    Assert.assertEquals(original.getConfiguration().getPassword(), copy.getConfiguration().getPassword());
   }
 
   private void assertConfig(Config config) {

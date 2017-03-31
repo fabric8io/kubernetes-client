@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.internal.LimitRangeOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.ComponentStatus;
@@ -119,6 +120,14 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
 
   public DefaultKubernetesClient(OkHttpClient httpClient, Config config) throws KubernetesClientException {
     super(httpClient, config);
+  }
+
+  public static DefaultKubernetesClient fromConfig(String config) {
+    return new DefaultKubernetesClient(Serialization.unmarshal(config, Config.class));
+  }
+
+  public static DefaultKubernetesClient fromConfig(InputStream is) {
+    return new DefaultKubernetesClient(Serialization.unmarshal(is, Config.class));
   }
 
   @Override

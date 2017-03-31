@@ -20,6 +20,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+
+import io.fabric8.kubernetes.client.utils.Serialization;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -52,8 +54,8 @@ public class OperationSupport {
 
   public static final MediaType JSON = MediaType.parse("application/json");
   public static final MediaType JSON_PATCH = MediaType.parse("application/json-patch+json");
-  protected static final ObjectMapper JSON_MAPPER = new ObjectMapper();
-  protected static final ObjectMapper YAML_MAPPER = new ObjectMapper(new YAMLFactory());
+  protected static final ObjectMapper JSON_MAPPER = Serialization.jsonMapper();
+  protected static final ObjectMapper YAML_MAPPER = Serialization.yamlMapper();
   private static final String CLIENT_STATUS_FLAG = "CLIENT_STATUS_FLAG";
 
   protected final OkHttpClient client;
@@ -330,50 +332,15 @@ public class OperationSupport {
   }
 
   protected static <T> T unmarshal(InputStream is) throws KubernetesClientException {
-    try (BufferedInputStream bis = new BufferedInputStream(is)) {
-      bis.mark(-1);
-      int intch;
-      do {
-        intch = bis.read();
-      } while (intch > -1 && Character.isWhitespace(intch));
-      bis.reset();
-
-      ObjectMapper mapper = JSON_MAPPER;
-      if (intch != '{') {
-        mapper = YAML_MAPPER;
-      }
-      return mapper.readerFor(KubernetesResource.class).readValue(bis);
-    } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
+    return Serialization.unmarshal(is);
   }
 
   protected static <T> T unmarshal(InputStream is, final Class<T> type) throws KubernetesClientException {
-    return unmarshal(is, new TypeReference<T>() {
-      @Override
-      public Type getType() {
-        return type;
-      }
-    });
+    return Serialization.unmarshal(is, type);
   }
 
   protected static <T> T unmarshal(InputStream is, TypeReference<T> type) throws KubernetesClientException {
-    try (BufferedInputStream bis = new BufferedInputStream(is)) {
-      bis.mark(-1);
-      int intch;
-      do {
-        intch = bis.read();
-      } while (intch > -1 && Character.isWhitespace(intch));
-      bis.reset();
-
-      ObjectMapper mapper = JSON_MAPPER;
-      if (intch != '{') {
-        mapper = YAML_MAPPER;
-      }
-      return mapper.readValue(bis, type);
-    } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
+   return Serialization.unmarshal(is, type);
   }
 
   public Config getConfig() {
