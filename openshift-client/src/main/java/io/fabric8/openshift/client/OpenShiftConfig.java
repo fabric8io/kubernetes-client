@@ -16,6 +16,10 @@
 
 package io.fabric8.openshift.client;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import okhttp3.TlsVersion;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.utils.URLUtils;
@@ -27,6 +31,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true, allowGetters = true, allowSetters = true)
 public class OpenShiftConfig extends Config {
 
   public static final String KUBERNETES_OAPI_VERSION_SYSTEM_PROPERTY = "kubernetes.oapi.version";
@@ -119,6 +125,7 @@ public class OpenShiftConfig extends Config {
     }
   }
 
+  @JsonProperty("oapiVersion")
   public String getOapiVersion() {
     return oapiVersion;
   }
@@ -127,6 +134,7 @@ public class OpenShiftConfig extends Config {
     this.oapiVersion = oapiVersion;
   }
 
+  @JsonProperty("openShiftUrl")
   public String getOpenShiftUrl() {
     return openShiftUrl;
   }
@@ -135,6 +143,7 @@ public class OpenShiftConfig extends Config {
     this.openShiftUrl = openShiftUrl;
   }
 
+  @JsonProperty("buildTimeout")
   public long getBuildTimeout() {
     return buildTimeout;
   }

@@ -16,6 +16,10 @@
 
 package io.fabric8.kubernetes.client;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import io.fabric8.kubernetes.api.model.ConfigBuilder;
 import okhttp3.TlsVersion;
 import io.fabric8.kubernetes.api.model.AuthInfo;
@@ -36,6 +40,8 @@ import java.util.Map;
 
 import static okhttp3.TlsVersion.TLS_1_2;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true, allowGetters = true, allowSetters = true)
 public class Config {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(Config.class);
@@ -415,6 +421,7 @@ public class Config {
     return System.getProperty("user.home", ".");
   }
 
+  @JsonProperty("oauthToken")
   public String getOauthToken() {
     return getRequestConfig().getOauthToken();
   }
@@ -423,6 +430,7 @@ public class Config {
     this.requestConfig.setOauthToken(oauthToken);
   }
 
+  @JsonProperty("password")
   public String getPassword() {
     return getRequestConfig().getPassword();
   }
@@ -431,6 +439,7 @@ public class Config {
    this.requestConfig.setPassword(password);
   }
 
+  @JsonProperty("username")
   public String getUsername() {
     return getRequestConfig().getUsername();
   }
@@ -439,6 +448,7 @@ public class Config {
     this.requestConfig.setUsername(username);
   }
 
+  @JsonProperty("clientKeyPassphrase")
   public String getClientKeyPassphrase() {
     return clientKeyPassphrase;
   }
@@ -447,6 +457,7 @@ public class Config {
     this.clientKeyPassphrase = clientKeyPassphrase;
   }
 
+  @JsonProperty("clientKeyAlgo")
   public String getClientKeyAlgo() {
     return clientKeyAlgo;
   }
@@ -455,6 +466,7 @@ public class Config {
     this.clientKeyAlgo = clientKeyAlgo;
   }
 
+  @JsonProperty("clientKeyData")
   public String getClientKeyData() {
     return clientKeyData;
   }
@@ -463,6 +475,7 @@ public class Config {
     this.clientKeyData = clientKeyData;
   }
 
+  @JsonProperty("clientKeyFile")
   public String getClientKeyFile() {
     return clientKeyFile;
   }
@@ -471,6 +484,7 @@ public class Config {
     this.clientKeyFile = clientKeyFile;
   }
 
+  @JsonProperty("clientCertData")
   public String getClientCertData() {
     return clientCertData;
   }
@@ -479,6 +493,7 @@ public class Config {
     this.clientCertData = clientCertData;
   }
 
+  @JsonProperty("clientCertFile")
   public String getClientCertFile() {
     return clientCertFile;
   }
@@ -487,6 +502,7 @@ public class Config {
     this.clientCertFile = clientCertFile;
   }
 
+  @JsonProperty("caCertData")
   public String getCaCertData() {
     return caCertData;
   }
@@ -495,6 +511,7 @@ public class Config {
     this.caCertData = caCertData;
   }
 
+  @JsonProperty("caCertFile")
   public String getCaCertFile() {
     return caCertFile;
   }
@@ -503,6 +520,7 @@ public class Config {
     this.caCertFile = caCertFile;
   }
 
+  @JsonProperty("apiVersion")
   public String getApiVersion() {
     return apiVersion;
   }
@@ -511,6 +529,7 @@ public class Config {
     this.apiVersion = apiVersion;
   }
 
+  @JsonProperty("masterUrl")
   public String getMasterUrl() {
     return masterUrl;
   }
@@ -519,6 +538,7 @@ public class Config {
     this.masterUrl = masterUrl;
   }
 
+  @JsonProperty("trustCerts")
   public boolean isTrustCerts() {
     return trustCerts;
   }
@@ -527,6 +547,7 @@ public class Config {
     this.trustCerts = trustCerts;
   }
 
+  @JsonProperty("watchReconnectInterval")
   public int getWatchReconnectInterval() {
     return requestConfig.getWatchReconnectInterval();
   }
@@ -535,6 +556,7 @@ public class Config {
     this.requestConfig.setWatchReconnectInterval(watchReconnectInterval);
   }
 
+  @JsonProperty("watchReconnectLimit")
   public int getWatchReconnectLimit() {
     return getRequestConfig().getWatchReconnectLimit();
   }
@@ -543,6 +565,7 @@ public class Config {
     this.requestConfig.setWatchReconnectLimit(watchReconnectLimit);
   }
 
+  @JsonProperty("errorMessages")
   public Map<Integer, String> getErrorMessages() {
     return errorMessages;
   }
@@ -555,6 +578,7 @@ public class Config {
     return new ConfigBuilder();
   }
 
+  @JsonProperty("connectionTimeout")
   public int getConnectionTimeout() {
     return getRequestConfig().getConnectionTimeout();
   }
@@ -563,6 +587,7 @@ public class Config {
     this.requestConfig.setConnectionTimeout(connectionTimeout);
   }
 
+  @JsonProperty("requestTimeout")
   public int getRequestTimeout() {
     return getRequestConfig().getRequestTimeout();
   }
@@ -571,6 +596,7 @@ public class Config {
     this.requestConfig.setRequestTimeout(requestTimeout);
   }
 
+  @JsonProperty("rollingTimeout")
   public long getRollingTimeout() {
     return getRequestConfig().getRollingTimeout();
   }
@@ -579,6 +605,7 @@ public class Config {
     this.requestConfig.setRollingTimeout(rollingTimeout);
   }
 
+  @JsonProperty("scaleTimeout")
   public long getScaleTimeout() {
     return getRequestConfig().getScaleTimeout();
   }
@@ -587,6 +614,7 @@ public class Config {
     this.requestConfig.setScaleTimeout(scaleTimeout);
   }
 
+  @JsonProperty("loggingInterval")
   public int getLoggingInterval() {
     return getRequestConfig().getLoggingInterval();
   }
@@ -595,10 +623,12 @@ public class Config {
     this.requestConfig.setLoggingInterval(loggingInterval);
   }
 
+
   public void setHttpProxy(String httpProxy) {
     this.httpProxy= httpProxy;
   }
 
+  @JsonProperty("httpProxy")
   public String getHttpProxy() {
     return httpProxy;
   }
@@ -607,6 +637,7 @@ public class Config {
     this.httpsProxy= httpsProxy;
   }
 
+  @JsonProperty("httpsProxy")
   public String getHttpsProxy() {
     return httpsProxy;
   }
@@ -615,10 +646,12 @@ public class Config {
     this.noProxy = noProxy;
   }
 
+  @JsonProperty("noProxy")
   public String[] getNoProxy() {
     return noProxy;
   }
 
+  @JsonProperty("namespace")
   public String getNamespace() {
     return namespace;
   }
@@ -627,6 +660,7 @@ public class Config {
     this.namespace = namespace;
   }
 
+  @JsonProperty("userAgent")
   public String getUserAgent() {
     return userAgent;
   }
@@ -635,6 +669,7 @@ public class Config {
     this.userAgent = userAgent;
   }
 
+  @JsonProperty("tlsVersions")
   public TlsVersion[] getTlsVersions() {
     return tlsVersions;
   }
@@ -643,6 +678,7 @@ public class Config {
     this.tlsVersions = tlsVersions;
   }
 
+  @JsonProperty("websocketTimeout")
   public long getWebsocketTimeout() {
     return getRequestConfig().getWebsocketTimeout();
   }
@@ -651,6 +687,7 @@ public class Config {
     this.requestConfig.setWebsocketTimeout(websocketTimeout);
   }
 
+  @JsonProperty("websocketPingInterval")
   public long getWebsocketPingInterval() {
     return getRequestConfig().getWebsocketPingInterval();
   }
@@ -658,6 +695,8 @@ public class Config {
   public void setWebsocketPingInterval(long websocketPingInterval) {
     this.requestConfig.setWebsocketPingInterval(websocketPingInterval);
   }
+
+  @JsonProperty("proxyUsername")
   public String getProxyUsername() {
     return proxyUsername;
   }
@@ -666,6 +705,7 @@ public class Config {
     this.proxyUsername = proxyUsername;
   }
 
+  @JsonProperty("proxyPassword")
   public String getProxyPassword() {
     return proxyPassword;
   }
