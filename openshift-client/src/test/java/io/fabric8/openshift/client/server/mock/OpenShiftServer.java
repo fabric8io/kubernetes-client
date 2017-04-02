@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openshift.client.mock;
+package io.fabric8.openshift.client.server.mock;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.mockwebserver.dsl.MockServerExpectation;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
-import io.fabric8.openshift.server.mock.OpenShiftMockServer;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.rules.ExternalResource;
 

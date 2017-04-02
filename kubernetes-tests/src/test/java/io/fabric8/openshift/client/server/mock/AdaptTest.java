@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package io.fabric8.openshift.client.mock;
+package io.fabric8.openshift.client.server.mock;
 
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.openshift.client.OpenShiftClient;
-import io.fabric8.openshift.client.server.mock.OpenShiftMockServer;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

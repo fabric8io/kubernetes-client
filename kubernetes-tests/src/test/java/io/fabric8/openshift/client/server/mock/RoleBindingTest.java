@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openshift.client.mock;
+package io.fabric8.openshift.client.server.mock;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.openshift.api.model.RoleBinding;
 import io.fabric8.openshift.api.model.RoleBindingBuilder;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
-import io.fabric8.openshift.client.server.mock.OpenShiftServer;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Rule;
 import org.junit.Test;
