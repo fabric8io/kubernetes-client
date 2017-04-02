@@ -21,6 +21,8 @@ import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.openshift.api.model.BuildConfigBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.server.mock.OpenShiftServer;
+
 import org.junit.Rule;
 import org.junit.Test;
 

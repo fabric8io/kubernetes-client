@@ -22,7 +22,7 @@ import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.api.model.ReplicationControllerListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;

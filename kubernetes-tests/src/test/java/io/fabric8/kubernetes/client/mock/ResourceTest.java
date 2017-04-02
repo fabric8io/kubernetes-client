@@ -32,7 +32,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
-import io.fabric8.kubernetes.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

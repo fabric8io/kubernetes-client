@@ -122,7 +122,9 @@
 
   <modules>
     <module>kubernetes-client</module>
+    <module>kubernetes-server-mock</module>
     <module>openshift-client</module>
+    <module>openshift-server-mock</module>
     <module>kubernetes-examples</module>
     <module>platforms</module>
     <module>kubernetes-tests</module>

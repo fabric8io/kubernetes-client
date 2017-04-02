@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.server.mock;
+package io.fabric8.kubernetes.client.server.mock;
 
 import io.fabric8.kubernetes.api.model.RootPathsBuilder;
 import io.fabric8.kubernetes.client.Config;
@@ -33,8 +33,6 @@ import java.util.Queue;
 
 import static okhttp3.TlsVersion.TLS_1_0;
 
-@Deprecated
-// The class has moved under mvn:io.fabric8:kubernetes-server-mock in package: io.fabric8.client.server.mock
 public class KubernetesMockServer extends DefaultMockServer {
 
     private static final Context context = new ContextBuilder()

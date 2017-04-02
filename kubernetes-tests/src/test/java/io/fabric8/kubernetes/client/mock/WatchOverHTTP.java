@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client;
+package io.fabric8.kubernetes.client.mock;
 
 import static org.junit.Assert.assertTrue;
 
@@ -24,7 +24,11 @@ import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.api.model.WatchEventBuilder;
-import io.fabric8.kubernetes.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import java.net.HttpURLConnection;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;

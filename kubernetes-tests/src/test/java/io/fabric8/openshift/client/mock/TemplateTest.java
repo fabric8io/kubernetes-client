@@ -24,6 +24,8 @@ import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.api.model.TemplateListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.ParameterValue;
+import io.fabric8.openshift.client.server.mock.OpenShiftServer;
+
 import org.junit.Rule;
 import org.junit.Test;
 

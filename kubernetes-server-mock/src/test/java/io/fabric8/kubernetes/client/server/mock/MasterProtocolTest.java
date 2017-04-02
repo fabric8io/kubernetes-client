@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.server.mock;
+package io.fabric8.kubernetes.client.server.mock;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
