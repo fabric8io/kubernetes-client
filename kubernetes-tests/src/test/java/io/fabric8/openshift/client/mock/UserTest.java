@@ -22,6 +22,8 @@ import io.fabric8.openshift.api.model.UserList;
 import io.fabric8.openshift.api.model.UserListBuilder;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.server.mock.OpenShiftServer;
+
 import org.junit.Rule;
 import org.junit.Test;
 

@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-package io.fabric8.openshift.server.mock;
+package io.fabric8.openshift.client.server.mock;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.server.mock.KubernetesMockServer;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 
 import static okhttp3.TlsVersion.TLS_1_0;
 
-@Deprecated
-// The class has moved under mvn:io.fabric8:openshift-server-mock in package: io.fabric8.openshift.client.server.mock
 public class OpenShiftMockServer extends KubernetesMockServer {
 
   public OpenShiftMockServer() {

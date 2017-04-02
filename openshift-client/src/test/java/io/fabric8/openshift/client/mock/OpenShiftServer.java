@@ -22,6 +22,8 @@ import io.fabric8.openshift.server.mock.OpenShiftMockServer;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.rules.ExternalResource;
 
+@Deprecated
+// The class has moved under mvn:io.fabric8:openshift-server-mock in package: io.fabric8.openshift.client.server.mock
 public class OpenShiftServer extends ExternalResource {
   protected OpenShiftMockServer mock = new OpenShiftMockServer();
   private NamespacedOpenShiftClient client;

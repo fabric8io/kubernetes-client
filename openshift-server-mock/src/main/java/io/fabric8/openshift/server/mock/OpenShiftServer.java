@@ -13,40 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.server.mock;
+package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.mockwebserver.dsl.MockServerExpectation;
+import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.rules.ExternalResource;
 
-@Deprecated
-// The class has moved under mvn:io.fabric8:kubernetes-server-mock in package: io.fabric8.client.server.mock
-public class KubernetesServer extends ExternalResource {
-  private KubernetesMockServer mock;
-  private NamespacedKubernetesClient client;
-  private boolean https;
-
-  public KubernetesServer() {
-    this(true);
-  }
-
-  public KubernetesServer(boolean https) {
-    this.https = https;
-  }
+public class OpenShiftServer extends ExternalResource {
+  protected OpenShiftMockServer mock = new OpenShiftMockServer();
+  private NamespacedOpenShiftClient client;
 
   public void before() {
-    mock = new KubernetesMockServer(https);
     mock.init();
-    client = mock.createClient();
+    client = mock.createOpenShiftClient();
   }
 
   public void after() {
-    mock.destroy();
     client.close();
+    mock.destroy();
   }
 
-  public NamespacedKubernetesClient getClient() {
+  public KubernetesClient getKubernetesClient() {
+    return client;
+  }
+
+  public NamespacedOpenShiftClient getOpenshiftClient() {
     return client;
   }
 
@@ -56,18 +49,11 @@ public class KubernetesServer extends ExternalResource {
 
   @Deprecated
   public <T> void expectAndReturnAsJson(String path, int code, T body) {
-   expect().withPath(path).andReturn(code, body).always();
+    expect().withPath(path).andReturn(code, body).always();
   }
+
   @Deprecated
   public void expectAndReturnAsString(String path, int code, String body) {
-    expect().withPath(path).andReturn(code, body).always();
-  }
-  @Deprecated
-  public <T> void expectAndReturnAsJson(String method, String path, int code, T body) {
-    expect().withPath(path).andReturn(code, body).always();
-  }
-  @Deprecated
-  public void expectAndReturnAsString(String method, String path, int code, String body) {
     expect().withPath(path).andReturn(code, body).always();
   }
 
