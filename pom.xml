@@ -94,6 +94,7 @@
 
     <scr.annotations.version>1.9.12</scr.annotations.version>
     <sundrio.version>0.3.12</sundrio.version>
+    <validation.api.version>1.1.0.Final</validation.api.version>
 
     <maven.bundle.plugin.version>2.5.4</maven.bundle.plugin.version>
     <maven.buildhelper.plugin.version>1.10</maven.buildhelper.plugin.version>
@@ -128,6 +129,7 @@
     <module>kubernetes-examples</module>
     <module>platforms</module>
     <module>kubernetes-tests</module>
+    <module>uberjar</module>
   </modules>
 
   <build>
@@ -241,6 +243,20 @@
           <execution>
             <goals>
               <goal>generate-bom</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>${maven.buildhelper.plugin.version}</version>
+        <inherited>true</inherited>
+        <executions>
+          <execution>
+            <id>parse-version</id>
+            <goals>
+              <goal>parse-version</goal>
             </goals>
           </execution>
         </executions>
