@@ -68,7 +68,7 @@ public class DeploymentTest {
   }
 
   @Test
-  public void testListWithLables() {
+  public void testListWithLabels() {
     server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/deployments?labelSelector=" + toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new DeploymentListBuilder().build()).always();
     server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/deployments?labelSelector=" + toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new DeploymentListBuilder()
       .addNewItem().and()

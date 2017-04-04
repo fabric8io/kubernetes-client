@@ -16,6 +16,8 @@
 package io.fabric8.kubernetes.client.dsl.base;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -399,6 +401,38 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   @Override
   public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withLabels(Map<String, String> labels) {
     this.labels.putAll(labels);
+    return this;
+  }
+
+  @Override
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withLabelSelector(LabelSelector selector) {
+    Map<String, String> matchLabels = selector.getMatchLabels();
+    if (matchLabels != null) {
+      this.labels.putAll(matchLabels);
+    }
+    List<LabelSelectorRequirement> matchExpressions = selector.getMatchExpressions();
+    if (matchExpressions != null) {
+      for (LabelSelectorRequirement req : matchExpressions) {
+        String operator = req.getOperator();
+        String key = req.getKey();
+        switch (operator) {
+          case "In":
+            withLabelIn(key, req.getValues().toArray(new String[]{}));
+            break;
+          case "NotIn":
+            withLabelNotIn(key, req.getValues().toArray(new String[]{}));
+            break;
+          case "DoesNotExist":
+            withoutLabel(key);
+            break;
+          case "Exists":
+            withLabel(key);
+            break;
+          default:
+            throw new IllegalArgumentException("Unsupported operator: " + operator);
+        }
+      }
+    }
     return this;
   }
 
