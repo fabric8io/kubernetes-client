@@ -15,6 +15,10 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
+
 import java.util.Map;
 
 public interface Filterable<T> {
@@ -38,5 +42,7 @@ public interface Filterable<T> {
   T withFields(Map<String, String> labels);
 
   T withField(String key, String value);
+
+  T withSelector(LabelSelector selector);
 }
 
