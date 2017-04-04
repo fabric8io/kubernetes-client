@@ -405,7 +405,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withSelector(LabelSelector selector) {
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withLabelSelector(LabelSelector selector) {
     Map<String, String> matchLabels = selector.getMatchLabels();
     if (matchLabels != null) {
       this.labels.putAll(matchLabels);
