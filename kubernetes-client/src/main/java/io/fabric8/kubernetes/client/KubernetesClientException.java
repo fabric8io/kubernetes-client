@@ -49,12 +49,16 @@ public class KubernetesClientException extends RuntimeException {
   }
 
   public static RuntimeException launderThrowable(Throwable cause) {
+    return launderThrowable("An error has occurred.", cause);
+  }
+
+  public static RuntimeException launderThrowable(String message, Throwable cause) {
     if (cause instanceof RuntimeException) {
       return ((RuntimeException) cause);
     } else if (cause instanceof Error) {
       throw ((Error) cause);
     } else {
-      throw new KubernetesClientException("An error has occurred.", cause);
+      throw new KubernetesClientException(message, cause);
     }
   }
 }
