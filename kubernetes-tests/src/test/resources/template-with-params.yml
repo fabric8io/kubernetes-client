@@ -30,6 +30,10 @@ objects:
         value: ${PASSWORD}
       - name: USERNAME
         value: ${USERNAME}
+      - name: OPTIONAL
+        value: ${OPTIONAL}
+      - name: REQUIRED
+        value: ${REQUIRED}
       image: dockerfile/redis
       name: master
       ports:
@@ -43,3 +47,8 @@ parameters:
   from: '[A-Z0-9]{8}'
   generate: expression
   name: PASSWORD
+- description: Optional parameter without value
+  name: OPTIONAL
+- description: Required parameter without value
+  name: REQUIRED
+  required: true

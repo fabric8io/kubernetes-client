@@ -162,6 +162,8 @@ public class TemplateOperationsImpl
             } else if (EXPRESSION.equals(parameter.getGenerate())) {
               Generex generex = new Generex(parameter.getFrom());
               value = generex.random();
+            } else if (parameter.getRequired() == null || !parameter.getRequired()) {
+              value = "";
             } else {
               throw new IllegalArgumentException("No value available for parameter name: " + name);
             }

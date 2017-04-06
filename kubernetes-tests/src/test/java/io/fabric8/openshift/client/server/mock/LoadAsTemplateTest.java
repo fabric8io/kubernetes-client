@@ -49,6 +49,7 @@ public class LoadAsTemplateTest {
     OpenShiftClient client = new DefaultOpenShiftClient();
     Map<String, String> map = new HashMap<>();
     map.put("USERNAME", "root");
+    map.put("REQUIRED", "requiredValue");
 
     KubernetesList list = client.templates().load(getClass().getResourceAsStream("/template-with-params.yml")).processLocally(map);
     assertListIsProcessed(list);
@@ -57,8 +58,6 @@ public class LoadAsTemplateTest {
   @Test
   public void shouldProcessLocallyWithParametersInYaml() throws Exception {
     OpenShiftClient client = new DefaultOpenShiftClient();
-    Map<String, String> map = new HashMap<>();
-    map.put("USERNAME", "root");
 
     KubernetesList list = client.templates().load(getClass().getResourceAsStream("/template-with-params.yml")).processLocally(getClass().getResourceAsStream("/parameters.yml"));
     assertListIsProcessed(list);
@@ -72,6 +71,8 @@ public class LoadAsTemplateTest {
 
     final AtomicBoolean userIsRoot = new AtomicBoolean(false);
     final AtomicBoolean passwordIsNotNull = new AtomicBoolean(false);
+    final AtomicBoolean requiredIsSet = new AtomicBoolean(false);
+    final AtomicBoolean optionalIsEmpty = new AtomicBoolean(false);
     new KubernetesListBuilder(list).accept(new TypedVisitor<EnvVarBuilder>() {
 
       @Override
@@ -80,11 +81,17 @@ public class LoadAsTemplateTest {
           userIsRoot.set(element.getValue().equals("root"));
         } else if (element.getName().equals("PASSWORD")) {
           passwordIsNotNull.set(Utils.isNotNullOrEmpty(element.getValue()));
+        } else if (element.getName().equals("REQUIRED")) {
+          requiredIsSet.set(Utils.isNotNullOrEmpty(element.getValue()));
+        } else if (element.getName().equals("OPTIONAL")) {
+          optionalIsEmpty.set(element.getValue().isEmpty());
         }
       }
     }).build();
 
     assertTrue(userIsRoot.get());
     assertTrue(passwordIsNotNull.get());
+    assertTrue(requiredIsSet.get());
+    assertTrue(optionalIsEmpty.get());
   }
 }
