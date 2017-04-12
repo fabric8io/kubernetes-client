@@ -180,6 +180,9 @@ public class ReplicationControllerOperationsImpl extends HasMetadataOperation<Re
           }
         } catch (Throwable t) {
           LOG.error("Error while waiting for ReplicationController to be scaled.", t);
+
+          // lets trigger the latch so that the separate calling thread will fail on its call to getMandatory()
+          countDownLatch.countDown();
         }
       }
     };
