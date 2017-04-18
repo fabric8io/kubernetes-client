@@ -196,7 +196,7 @@ public class PodTest {
   @Test
   public void testExec() throws InterruptedException {
     String expectedOutput = "file1 file2";
-    server.expect().withPath("/api/v1/namespaces/test/pods/pod1/exec?command=ls&tty=true&stdout=true")
+    server.expect().withPath("/api/v1/namespaces/test/pods/pod1/exec?command=ls&stdout=true")
             .andUpgradeToWebSocket()
                 .open(new OutputStreamMessage(expectedOutput))
                 .done()
