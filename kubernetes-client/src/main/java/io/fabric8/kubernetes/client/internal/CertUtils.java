@@ -15,10 +15,9 @@
  */
 package io.fabric8.kubernetes.client.internal;
 
-import okio.ByteString;
-
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -36,8 +35,13 @@ import java.security.cert.X509Certificate;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.RSAPrivateCrtKeySpec;
+import okio.ByteString;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CertUtils {
+
+  private static final Logger LOG = LoggerFactory.getLogger(CertUtils.class);
 
   public static InputStream getInputStreamFromDataOrFile(String data, String file) throws FileNotFoundException {
     if (data != null) {
@@ -65,7 +69,7 @@ public class CertUtils {
 
   public static KeyStore createTrustStore(InputStream pemInputStream) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException {
     KeyStore trustStore = KeyStore.getInstance("JKS");
-    trustStore.load(null);
+    loadDefaultKeyStoreFiles(trustStore);
 
     while (pemInputStream.available() > 0) {
       CertificateFactory certFactory = CertificateFactory.getInstance("X509");
@@ -76,7 +80,6 @@ public class CertUtils {
     }
     return trustStore;
   }
-
 
   public static KeyStore createKeyStore(InputStream certInputStream, InputStream keyInputStream, String clientKeyAlgo, char[] clientKeyPassphrase) throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeySpecException, KeyStoreException {
       CertificateFactory certFactory = CertificateFactory.getInstance("X509");
@@ -97,12 +100,52 @@ public class CertUtils {
       }
 
       KeyStore keyStore = KeyStore.getInstance("JKS");
-      keyStore.load(null, clientKeyPassphrase);
+      loadDefaultKeyStoreFiles(keyStore);
 
       String alias = cert.getSubjectX500Principal().getName();
       keyStore.setKeyEntry(alias, privateKey, clientKeyPassphrase, new Certificate[]{cert});
 
       return keyStore;
+  }
+
+  private static void loadDefaultKeyStoreFiles(KeyStore keyStore)
+    throws CertificateException, NoSuchAlgorithmException, IOException {
+    File defaultKeyStore = new File(System.getProperty("user.home"), ".keystore");
+    File javaKeyStore =
+      new File(System.getProperty("java.home"), "lib" + File.separator + "security" + File.separator + "cacerts");
+    char[] defaultPassphrase = "changeit".toCharArray();
+
+    boolean loaded = false;
+    String notLoadedMessage = "There is a problem with reading default keystore file %s with the default passphrase %s "
+      + "- the keystore file won't be loaded. The reason is: %s";
+
+    try {
+      // try to load ~/.keystore
+      loaded = loadKeyStoreFile(keyStore, defaultKeyStore, defaultPassphrase);
+    } catch (Exception e) {
+      LOG.info(notLoadedMessage, defaultKeyStore.getAbsolutePath(), defaultPassphrase, e.getMessage());
+    }
+    if (!loaded) {
+      try {
+        // if ~/.keystore cannot be loaded, then try to load jre/lib/security/cacerts
+        loaded = loadKeyStoreFile(keyStore, javaKeyStore, defaultPassphrase);
+      } catch (Exception e) {
+        LOG.info(notLoadedMessage, javaKeyStore.getAbsolutePath(), defaultPassphrase, e.getMessage());
+      }
+    }
+    if (!loaded){
+      // if none of the keystore files cannot be loaded, then create an empty keyStore instance
+      keyStore.load(null);
+    }
+  }
+
+  private static boolean loadKeyStoreFile(KeyStore keyStore, File keyStoreFile, char[] passphrase)
+    throws CertificateException, NoSuchAlgorithmException, IOException {
+    if (keyStoreFile.exists() && keyStoreFile.isFile() && keyStoreFile.length() > 0) {
+      keyStore.load(new FileInputStream(keyStoreFile), passphrase);
+      return true;
+    }
+    return false;
   }
 
   public static KeyStore createKeyStore(String clientCertData, String clientCertFile, String clientKeyData, String clientKeyFile, String clientKeyAlgo, char[] clientKeyPassphrase) throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeySpecException, KeyStoreException {

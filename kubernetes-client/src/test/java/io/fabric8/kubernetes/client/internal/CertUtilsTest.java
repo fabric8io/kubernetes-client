@@ -18,17 +18,16 @@ package io.fabric8.kubernetes.client.internal;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.junit.Ignore;
-import org.junit.Test;
-
 import java.io.IOException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
+import org.junit.Ignore;
+import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class CertUtilsTest {
 
@@ -45,7 +44,7 @@ public class CertUtilsTest {
   @Test
   public void testLoadingMultipleCertsFromSameFile() throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
     KeyStore ts = CertUtils.createTrustStore(getClass().getResourceAsStream("/ssl/multiple-certs.pem"));
-    assertEquals(2, ts.size());
+    assertTrue(ts.size() >= 2);
   }
 
 }
