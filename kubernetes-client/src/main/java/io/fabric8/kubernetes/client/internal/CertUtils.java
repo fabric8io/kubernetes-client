@@ -69,7 +69,7 @@ public class CertUtils {
 
   public static KeyStore createTrustStore(InputStream pemInputStream) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException {
     KeyStore trustStore = KeyStore.getInstance("JKS");
-    loadDefaultKeyStoreFiles(trustStore);
+    loadDefaultTrustStoreFile(trustStore);
 
     while (pemInputStream.available() > 0) {
       CertificateFactory certFactory = CertificateFactory.getInstance("X509");
@@ -100,7 +100,7 @@ public class CertUtils {
       }
 
       KeyStore keyStore = KeyStore.getInstance("JKS");
-      loadDefaultKeyStoreFiles(keyStore);
+      loadDefaultKeyStoreFile(keyStore);
 
       String alias = cert.getSubjectX500Principal().getName();
       keyStore.setKeyEntry(alias, privateKey, clientKeyPassphrase, new Certificate[]{cert});
@@ -108,34 +108,40 @@ public class CertUtils {
       return keyStore;
   }
 
-  private static void loadDefaultKeyStoreFiles(KeyStore keyStore)
+  private static void loadDefaultTrustStoreFile(KeyStore keyStore)
     throws CertificateException, NoSuchAlgorithmException, IOException {
-    File defaultKeyStore = new File(System.getProperty("user.home"), ".keystore");
+
     File javaKeyStore =
       new File(System.getProperty("java.home"), "lib" + File.separator + "security" + File.separator + "cacerts");
     char[] defaultPassphrase = "changeit".toCharArray();
 
-    boolean loaded = false;
+    if (!loadDefaultKeyStoreFiles(keyStore, javaKeyStore, defaultPassphrase)) {
+      keyStore.load(null);
+    }
+  }
+
+  private static void loadDefaultKeyStoreFile(KeyStore keyStore)
+    throws CertificateException, NoSuchAlgorithmException, IOException {
+
+    File defaultKeyStore = new File(System.getProperty("user.home"), ".keystore");
+    char[] defaultPassphrase = "changeit".toCharArray();
+
+    if (!loadDefaultKeyStoreFiles(keyStore, defaultKeyStore, defaultPassphrase)) {
+      keyStore.load(null);
+    }
+  }
+
+  private static boolean loadDefaultKeyStoreFiles(KeyStore keyStore, File fileToLoad, char[] passphrase)
+    throws CertificateException, NoSuchAlgorithmException, IOException {
+
     String notLoadedMessage = "There is a problem with reading default keystore file %s with the default passphrase %s "
       + "- the keystore file won't be loaded. The reason is: %s";
 
     try {
-      // try to load ~/.keystore
-      loaded = loadKeyStoreFile(keyStore, defaultKeyStore, defaultPassphrase);
+      return loadKeyStoreFile(keyStore, fileToLoad, passphrase);
     } catch (Exception e) {
-      LOG.info(notLoadedMessage, defaultKeyStore.getAbsolutePath(), defaultPassphrase, e.getMessage());
-    }
-    if (!loaded) {
-      try {
-        // if ~/.keystore cannot be loaded, then try to load jre/lib/security/cacerts
-        loaded = loadKeyStoreFile(keyStore, javaKeyStore, defaultPassphrase);
-      } catch (Exception e) {
-        LOG.info(notLoadedMessage, javaKeyStore.getAbsolutePath(), defaultPassphrase, e.getMessage());
-      }
-    }
-    if (!loaded){
-      // if none of the keystore files cannot be loaded, then create an empty keyStore instance
-      keyStore.load(null);
+      LOG.info(notLoadedMessage, fileToLoad, passphrase, e.getMessage());
+      return false;
     }
   }
 
