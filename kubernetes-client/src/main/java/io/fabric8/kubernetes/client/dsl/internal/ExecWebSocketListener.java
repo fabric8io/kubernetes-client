@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.Callback;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
@@ -43,6 +44,7 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExecWebSocketListener.class);
 
+    private final Config config;
     private final InputStream in;
     private final OutputStream out;
     private final OutputStream err;
@@ -61,7 +63,13 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
     private final AtomicBoolean executorClosed = new AtomicBoolean(false);
     private final AtomicBoolean webSocketClosed = new AtomicBoolean(false);
 
+  @Deprecated
     public ExecWebSocketListener(InputStream in, OutputStream out, OutputStream err, PipedOutputStream inputPipe, PipedInputStream outputPipe, PipedInputStream errorPipe, ExecListener listener) {
+        this(new Config(), in, out, err, inputPipe, outputPipe, errorPipe, listener);
+    }
+
+    public ExecWebSocketListener(Config config, InputStream in, OutputStream out, OutputStream err, PipedOutputStream inputPipe, PipedInputStream outputPipe, PipedInputStream errorPipe, ExecListener listener) {
+        this.config = config;
         this.listener = listener;
         this.in = inputStreamOrPipe(in, inputPipe);
         this.out = outputStreamOrPipe(out, outputPipe);
@@ -131,7 +139,7 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
     }
 
     public void waitUntilReady() {
-      Utils.waitUntilReady(queue, 10, TimeUnit.SECONDS);
+      Utils.waitUntilReady(queue, config.getWebsocketTimeout(), TimeUnit.MILLISECONDS);
     }
 
     @Override
