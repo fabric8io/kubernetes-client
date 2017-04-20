@@ -68,6 +68,10 @@ System properties are preferred over environment variables. The following system
 * `kubernetes.watch.reconnectLimit` / `KUBERNETES_WATCH_RECONNECTLIMIT`
 * `kubernetes.user.agent` / `KUBERNETES_USER_AGENT`
 * `kubernetes.tls.versions` / `KUBERNETES_TLS_VERSIONS`
+* `kubernetes.truststore.file` / `KUBERNETES_TRUSTSTORE_FILE`
+* `kubernetes.truststore.passphrase` / `KUBERNETES_TRUSTSTORE_PASSPHRASE`
+* `kubernetes.keystore.file` / `KUBERNETES_KEYSTORE_FILE`
+* `kubernetes.keystore.passphrase` / `KUBERNETES_KEYSTORE_PASSPHRASE`
 
 Alternatively you can use the `ConfigBuilder` to create a config object for the Kubernetes client:
 

@@ -91,10 +91,10 @@ public final class SSLUtils {
     }
 
     public static TrustManager[] trustManagers(Config config) throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
-        return trustManagers(config.getCaCertData(), config.getCaCertFile(), config.isTrustCerts());
+        return trustManagers(config.getCaCertData(), config.getCaCertFile(), config.isTrustCerts(), config.getTrustStoreFile(), config.getTrustStorePassphrase());
     }
 
-    public static TrustManager[] trustManagers(String certData, String certFile, boolean isTrustCerts) throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+    public static TrustManager[] trustManagers(String certData, String certFile, boolean isTrustCerts, String trustStoreFile, String trustStorePassphrase) throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
         TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
         KeyStore trustStore = null;
         if (isTrustCerts) {
@@ -112,20 +112,20 @@ public final class SSLUtils {
                 }
             };
         } else if (isNotNullOrEmpty(certData) || isNotNullOrEmpty(certFile)) {
-            trustStore = createTrustStore(certData, certFile);
+            trustStore = createTrustStore(certData, certFile, trustStoreFile, trustStorePassphrase);
         }
         tmf.init(trustStore);
         return tmf.getTrustManagers();
     }
 
     public static KeyManager[] keyManagers(Config config) throws NoSuchAlgorithmException, UnrecoverableKeyException, KeyStoreException, CertificateException, InvalidKeySpecException, IOException {
-        return keyManagers(config.getClientCertData(), config.getClientCertFile(), config.getClientKeyData(), config.getClientKeyFile(), config.getClientKeyAlgo(), config.getClientKeyPassphrase());
+        return keyManagers(config.getClientCertData(), config.getClientCertFile(), config.getClientKeyData(), config.getClientKeyFile(), config.getClientKeyAlgo(), config.getClientKeyPassphrase(), config.getKeyStoreFile(), config.getKeyStorePassphrase());
     }
 
-    public static KeyManager[] keyManagers(String certData, String certFile, String keyData, String keyFile, String algo, String passphrase) throws NoSuchAlgorithmException, UnrecoverableKeyException, KeyStoreException, CertificateException, InvalidKeySpecException, IOException {
+    public static KeyManager[] keyManagers(String certData, String certFile, String keyData, String keyFile, String algo, String passphrase, String keyStoreFile, String keyStorePassphrase) throws NoSuchAlgorithmException, UnrecoverableKeyException, KeyStoreException, CertificateException, InvalidKeySpecException, IOException {
         KeyManager[] keyManagers = null;
         if ((isNotNullOrEmpty(certData) || isNotNullOrEmpty(certFile)) && (isNotNullOrEmpty(keyData) || isNotNullOrEmpty(keyFile))) {
-            KeyStore keyStore = createKeyStore(certData, certFile, keyData, keyFile, algo, passphrase.toCharArray());
+            KeyStore keyStore = createKeyStore(certData, certFile, keyData, keyFile, algo, passphrase.toCharArray(), keyStoreFile, keyStorePassphrase.toCharArray());
             KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
             kmf.init(keyStore, passphrase.toCharArray());
             keyManagers = kmf.getKeyManagers();
@@ -133,8 +133,8 @@ public final class SSLUtils {
         return keyManagers;
     }
 
-    public static KeyManager[] keyManagers(InputStream certInputStream, InputStream keyInputStream, String algo, String passphrase) throws NoSuchAlgorithmException, UnrecoverableKeyException, KeyStoreException, CertificateException, InvalidKeySpecException, IOException {
-        KeyStore keyStore = createKeyStore(certInputStream, keyInputStream, algo, passphrase.toCharArray());
+    public static KeyManager[] keyManagers(InputStream certInputStream, InputStream keyInputStream, String algo, String passphrase, String keyStoreFile, String keyStorePassphrase) throws NoSuchAlgorithmException, UnrecoverableKeyException, KeyStoreException, CertificateException, InvalidKeySpecException, IOException {
+        KeyStore keyStore = createKeyStore(certInputStream, keyInputStream, algo, passphrase.toCharArray(), keyStoreFile, keyStorePassphrase.toCharArray());
         KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
         kmf.init(keyStore, passphrase.toCharArray());
         return kmf.getKeyManagers();

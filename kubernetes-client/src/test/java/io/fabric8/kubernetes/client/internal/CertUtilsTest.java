@@ -37,13 +37,13 @@ public class CertUtilsTest {
     System.setProperty("kubeconfig", "/tmp/ceposta.kubeconfig");
     KubernetesClient client = new DefaultKubernetesClient();
     Config config = client.getConfiguration();
-    KeyStore ts = CertUtils.createTrustStore(config.getCaCertData(), null);
-    KeyStore ks = CertUtils.createKeyStore(config.getClientCertData(), null, config.getClientKeyData(), null, "RSA", "changeit".toCharArray());
+    KeyStore ts = CertUtils.createTrustStore(config.getCaCertData(), null, null, "changeit");
+    KeyStore ks = CertUtils.createKeyStore(config.getClientCertData(), null, config.getClientKeyData(), null, "RSA", "changeit".toCharArray(), null, "changeit".toCharArray());
   }
 
   @Test
   public void testLoadingMultipleCertsFromSameFile() throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
-    KeyStore ts = CertUtils.createTrustStore(getClass().getResourceAsStream("/ssl/multiple-certs.pem"));
+    KeyStore ts = CertUtils.createTrustStore(getClass().getResourceAsStream("/ssl/multiple-certs.pem"), null, "changeit".toCharArray());
     assertTrue(ts.size() >= 2);
   }
 
