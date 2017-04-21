@@ -27,6 +27,9 @@
   import java.io.IOException;
   import java.util.concurrent.ExecutorService;
   import java.util.concurrent.Executors;
+  import java.util.concurrent.Future;
+  import java.util.concurrent.ScheduledExecutorService;
+  import java.util.concurrent.TimeUnit;
 
 /**
  * @Author: Angel Misevski (https://github.com/amisevsk).
@@ -45,22 +48,34 @@ public class ExecLoopExample {
       podName = args[0];
     }
 
-    Config config = new ConfigBuilder().withMasterUrl(master).build();
+      Config config = new ConfigBuilder()
+        .withMasterUrl(master)
+        .build();
 
+      ScheduledExecutorService executorService = Executors.newScheduledThreadPool(20);
       try (OpenShiftClient client = new DefaultOpenShiftClient(config)) {
         for (int i = 0; i < 10; System.out.println("i=" + i), i++) {
-          ExecutorService executorService = Executors.newSingleThreadExecutor();
-          try (ExecWatch watch = client.pods().withName(podName).redirectingOutput().exec("date");
-               InputStreamPumper pump = new InputStreamPumper(watch.getOutput(), new SystemOutCallback())) {
-              executorService.submit(pump);
-              Thread.sleep(2000);
+          ExecWatch watch = null;
+          InputStreamPumper pump = null;
+          try {
+               watch = client.pods().withName(podName).redirectingOutput().exec("date");
+               pump = new InputStreamPumper(watch.getOutput(), new SystemOutCallback());
+               executorService.submit(pump);
+               Future<String> outPumpFuture = executorService.submit(pump, "Done");
+               executorService.scheduleAtFixedRate(new FutureChecker("Pump " + (i + 1), outPumpFuture), 0, 2, TimeUnit.SECONDS);
+
+               //We need to wait or the pumper (ws -> System.out) will not be able to print the message.
+               Thread.sleep(1000);
           } catch (Exception e) {
             throw KubernetesClientException.launderThrowable(e);
           } finally {
-            executorService.shutdown();
+            watch.close();
+            pump.close();
           }
         }
       }
+
+    executorService.shutdown();
     System.out.println("Done.");
   }
 
@@ -68,6 +83,23 @@ public class ExecLoopExample {
     @Override
     public void call(byte[] data) {
       System.out.print(new String(data));
+    }
+  }
+
+  private static class FutureChecker implements Runnable {
+    private final String name;
+    private final Future<String> future;
+
+    private FutureChecker(String name, Future<String> future) {
+      this.name = name;
+      this.future = future;
+    }
+
+    @Override
+    public void run() {
+      if(!future.isDone()) {
+        System.out.println("Future:[" + name + "] is not done yet");
+      }
     }
   }
 }

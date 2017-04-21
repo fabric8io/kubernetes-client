@@ -33,6 +33,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -60,8 +63,11 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
     private final AtomicBoolean started = new AtomicBoolean(false);
     private final ArrayBlockingQueue<Object> queue = new ArrayBlockingQueue<>(1);
     private final ExecListener listener;
+
+    private final AtomicBoolean cleanupOnClose = new AtomicBoolean(false);
     private final AtomicBoolean executorClosed = new AtomicBoolean(false);
     private final AtomicBoolean webSocketClosed = new AtomicBoolean(false);
+    private final Set<Closeable> toClose = new LinkedHashSet<>();
 
   @Deprecated
     public ExecWebSocketListener(InputStream in, OutputStream out, OutputStream err, PipedOutputStream inputPipe, PipedInputStream outputPipe, PipedInputStream errorPipe, ExecListener listener) {
@@ -71,9 +77,9 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
     public ExecWebSocketListener(Config config, InputStream in, OutputStream out, OutputStream err, PipedOutputStream inputPipe, PipedInputStream outputPipe, PipedInputStream errorPipe, ExecListener listener) {
         this.config = config;
         this.listener = listener;
-        this.in = inputStreamOrPipe(in, inputPipe);
-        this.out = outputStreamOrPipe(out, outputPipe);
-        this.err = outputStreamOrPipe(err, errorPipe);
+        this.in = inputStreamOrPipe(in, inputPipe, toClose);
+        this.out = outputStreamOrPipe(out, outputPipe, toClose);
+        this.err = outputStreamOrPipe(err, errorPipe, toClose);
 
         this.input = inputPipe;
         this.output = outputPipe;
@@ -98,8 +104,8 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
 
     public void close(int code, String reason) {
         try {
-         closeExecutor();
-         closeWebSocket(code, reason);
+          cleanupOnClose.set(true);
+          closeWebSocket(code, reason);
         } finally {
           if (listener != null) {
             listener.onClose(code, reason);
@@ -107,16 +113,51 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
         }
     }
 
+  /**
+   * Performs the cleanup tasks:
+   * 1. closes the InputStream pumper
+   * 2. closes all internally managed closeables (piped streams).
+   *
+   * The order of these tasks can't change or its likely that the pumper will through errors,
+   * if the stream it uses closes before the pumper it self.
+   */
+  private void cleanUp() {
+    closeExecutor();
+    closeCloseables();
+  }
+
+  /**
+   *
+   */
+  private void closeCloseables() {
+    for (Closeable c : toClose) {
+      try {
+
+        //Check if we also need to flush
+        if (c instanceof OutputStream) {
+          ((OutputStream)c).flush();
+        }
+
+        c.close();
+      } catch (IOException e) {
+        LOGGER.debug("Error closing:" + c);
+      }
+    }
+  }
+
     private void closeExecutor() {
       if (!executorClosed.compareAndSet(false, true)) {
         return;
       }
 
       pumper.close();
-      executorService.shutdownNow();
+      executorService.shutdown();
       try {
         if (!executorService.awaitTermination(10, TimeUnit.SECONDS)) {
-          LOGGER.debug("ExecutorService was not cleanly shutdown, after waiting for 10 seconds.");
+          List<Runnable> tasks = executorService.shutdownNow();
+          if (!tasks.isEmpty()) {
+            LOGGER.debug("ExecutorService was not cleanly shutdown, after waiting for 10 seconds. Number of remaining tasks:" + tasks.size());
+          }
         }
       } catch (Throwable t) {
         LOGGER.debug("Error shutting down ExecutorService.", t);
@@ -125,6 +166,7 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
 
     private void closeWebSocket(int code, String reason) {
       if (!webSocketClosed.compareAndSet(false, true)) {
+        cleanUp();
         return;
       }
 
@@ -177,7 +219,8 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
         if (!started.get()) {
           queue.add(new KubernetesClientException(status));
         }
-        closeExecutor();
+
+        cleanUp();
       } finally {
         if (listener != null) {
           listener.onFailure(t, response);
@@ -226,7 +269,9 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
         webSocketClosed.set(true);
         LOGGER.debug("Exec Web Socket: On Close with code:[{}], due to: [{}]", code, reason);
         try {
-            closeExecutor();
+            if (cleanupOnClose.get()) {
+              cleanUp();
+            }
         } finally {
             if (listener != null) {
               listener.onClose(code, reason);
@@ -258,21 +303,27 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
         }
     }
 
-    private static InputStream inputStreamOrPipe(InputStream stream, PipedOutputStream out) {
+    private static InputStream inputStreamOrPipe(InputStream stream, PipedOutputStream out, Set<Closeable> toClose) {
         if (stream != null) {
             return stream;
         } else if (out != null) {
-            return new PipedInputStream();
+            PipedInputStream pis = new PipedInputStream();
+            toClose.add(out);
+            toClose.add(pis);
+            return pis;
         } else {
             return null;
         }
     }
 
-    private static OutputStream outputStreamOrPipe(OutputStream stream, PipedInputStream in) {
+    private static OutputStream outputStreamOrPipe(OutputStream stream, PipedInputStream in, Set<Closeable> toClose) {
         if (stream != null) {
             return stream;
         } else if (in != null) {
-            return new PipedOutputStream();
+            PipedOutputStream pos = new PipedOutputStream();
+            toClose.add(in);
+            toClose.add(pos);
+            return pos;
         } else {
             return null;
         }
