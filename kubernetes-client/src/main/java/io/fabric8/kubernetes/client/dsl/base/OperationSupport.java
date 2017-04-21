@@ -284,9 +284,9 @@ public class OperationSupport {
 
 
   public static Status createStatus(Response response) {
-    int statusCode = response.code();
     String statusMessage = "";
     ResponseBody body = response != null ? response.body() : null;
+    int statusCode = response != null ? response.code() : 0;
     try {
       if (response == null) {
         statusMessage = "No response";
