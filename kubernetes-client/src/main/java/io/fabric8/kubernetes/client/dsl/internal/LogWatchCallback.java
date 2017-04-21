@@ -41,6 +41,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static io.fabric8.kubernetes.client.utils.Utils.closeQuietly;
+import static io.fabric8.kubernetes.client.utils.Utils.shutdownExecutorService;
+
 public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogWatchCallback.class);
@@ -100,47 +103,15 @@ public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
      * if the stream it uses closes before the pumper it self.
      */
     private void cleanUp() {
-      closeExecutor();
-      closeCloseables();
-    }
-
-    /**
-     *
-     */
-    private void closeCloseables() {
-      for (Closeable c : toClose) {
-        try {
-
-          //Check if we also need to flush
-          if (c instanceof OutputStream) {
-            ((OutputStream)c).flush();
-          }
-
-          c.close();
-        } catch (IOException e) {
-          LOGGER.debug("Error closing:" + c);
-        }
-      }
-    }
-
-    private void closeExecutor() {
-      if (!closed.compareAndSet(false, true)) {
-        return;
-      }
-
-      if (pumper != null) {
-        pumper.close();
-      }
-      executorService.shutdown();
       try {
-        if (!executorService.awaitTermination(10, TimeUnit.SECONDS)) {
-          List<Runnable> tasks = executorService.shutdownNow();
-          if (!tasks.isEmpty()) {
-            LOGGER.debug("ExecutorService was not cleanly shutdown, after waiting for 10 seconds. Number of remaining tasks:" + tasks.size());
-          }
+        if (!closed.compareAndSet(false, true)) {
+          return;
         }
-      } catch (Throwable t) {
-        LOGGER.debug("Error shutting down ExecutorService.", t);
+
+        closeQuietly(pumper);
+        shutdownExecutorService(executorService);
+      } finally {
+        closeQuietly(toClose);
       }
     }
 

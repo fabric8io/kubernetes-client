@@ -34,7 +34,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -42,6 +41,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+
+import static io.fabric8.kubernetes.client.utils.Utils.closeQuietly;
+import static io.fabric8.kubernetes.client.utils.Utils.shutdownExecutorService;
 
 public class ExecWebSocketListener extends WebSocketListener implements ExecWatch, AutoCloseable {
 
@@ -65,7 +67,8 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
     private final ExecListener listener;
 
     private final AtomicBoolean cleanupOnClose = new AtomicBoolean(false);
-    private final AtomicBoolean executorClosed = new AtomicBoolean(false);
+    private final AtomicBoolean closed = new AtomicBoolean(false);
+
     private final AtomicBoolean webSocketClosed = new AtomicBoolean(false);
     private final Set<Closeable> toClose = new LinkedHashSet<>();
 
@@ -122,47 +125,17 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
    * if the stream it uses closes before the pumper it self.
    */
   private void cleanUp() {
-    closeExecutor();
-    closeCloseables();
-  }
-
-  /**
-   *
-   */
-  private void closeCloseables() {
-    for (Closeable c : toClose) {
-      try {
-
-        //Check if we also need to flush
-        if (c instanceof OutputStream) {
-          ((OutputStream)c).flush();
-        }
-
-        c.close();
-      } catch (IOException e) {
-        LOGGER.debug("Error closing:" + c);
-      }
-    }
-  }
-
-    private void closeExecutor() {
-      if (!executorClosed.compareAndSet(false, true)) {
+    try {
+      if (!closed.compareAndSet(false, true)) {
         return;
       }
 
-      pumper.close();
-      executorService.shutdown();
-      try {
-        if (!executorService.awaitTermination(10, TimeUnit.SECONDS)) {
-          List<Runnable> tasks = executorService.shutdownNow();
-          if (!tasks.isEmpty()) {
-            LOGGER.debug("ExecutorService was not cleanly shutdown, after waiting for 10 seconds. Number of remaining tasks:" + tasks.size());
-          }
-        }
-      } catch (Throwable t) {
-        LOGGER.debug("Error shutting down ExecutorService.", t);
-      }
+      closeQuietly(pumper);
+      shutdownExecutorService(executorService);
+    } finally {
+      closeQuietly(toClose);
     }
+  }
 
     private void closeWebSocket(int code, String reason) {
       if (!webSocketClosed.compareAndSet(false, true)) {
@@ -213,6 +186,10 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
   @Override
   public void onFailure(WebSocket webSocket, Throwable t, Response response) {
       try {
+        //If we have closed the watch ignore everything
+        if (closed.get())  {
+          return;
+        }
         Status status = OperationSupport.createStatus(response);
         LOGGER.error("Exec Failure: HTTP:" + status.getCode() + ". Message:" + status.getMessage(), t);
         //We only need to queue startup failures.
