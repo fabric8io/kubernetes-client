@@ -17,20 +17,24 @@
 package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.client.utils.Serialization;
-import okhttp3.TlsVersion;
-import org.junit.*;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.net.URLDecoder;
+import okhttp3.TlsVersion;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import static okhttp3.TlsVersion.TLS_1_1;
 import static okhttp3.TlsVersion.TLS_1_2;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class ConfigTest {
 
@@ -63,6 +67,10 @@ public class ConfigTest {
     System.getProperties().remove(Config.KUBERNETES_KUBECONFIG_FILE);
     System.getProperties().remove(Config.KUBERNETES_NAMESPACE_FILE);
     System.getProperties().remove(Config.KUBERNETES_TLS_VERSIONS);
+    System.getProperties().remove(Config.KUBERNETES_TRUSTSTORE_FILE_PROPERTY);
+    System.getProperties().remove(Config.KUBERNETES_TRUSTSTORE_PASSPHRASE_PROPERTY);
+    System.getProperties().remove(Config.KUBERNETES_KEYSTORE_FILE_PROPERTY);
+    System.getProperties().remove(Config.KUBERNETES_KEYSTORE_PASSPHRASE_PROPERTY);
   }
 
   @After
@@ -95,6 +103,11 @@ public class ConfigTest {
 
     System.setProperty(Config.KUBERNETES_TLS_VERSIONS, "TLSv1.2,TLSv1.1");
 
+    System.setProperty(Config.KUBERNETES_TRUSTSTORE_FILE_PROPERTY, "/path/to/truststore");
+    System.setProperty(Config.KUBERNETES_TRUSTSTORE_PASSPHRASE_PROPERTY, "truststorePassphrase");
+    System.setProperty(Config.KUBERNETES_KEYSTORE_FILE_PROPERTY, "/path/to/keystore");
+    System.setProperty(Config.KUBERNETES_KEYSTORE_PASSPHRASE_PROPERTY, "keystorePassphrase");
+
     Config config = new Config();
     assertConfig(config);
 
@@ -125,6 +138,10 @@ public class ConfigTest {
       .withRequestTimeout(5000)
       .withHttpProxy("httpProxy")
       .withTlsVersions(TLS_1_2, TLS_1_1)
+      .withTrustStoreFile("/path/to/truststore")
+      .withTrustStorePassphrase("truststorePassphrase")
+      .withKeyStoreFile("/path/to/keystore")
+      .withKeyStorePassphrase("keystorePassphrase")
       .build();
 
     assertConfig(config);
@@ -155,6 +172,11 @@ public class ConfigTest {
     System.setProperty(Config.KUBERNETES_HTTP_PROXY, "httpProxy");
 
     System.setProperty(Config.KUBERNETES_TLS_VERSIONS, "TLSv1.2,TLSv1.1");
+
+    System.setProperty(Config.KUBERNETES_TRUSTSTORE_FILE_PROPERTY, "/path/to/truststore");
+    System.setProperty(Config.KUBERNETES_TRUSTSTORE_PASSPHRASE_PROPERTY, "truststorePassphrase");
+    System.setProperty(Config.KUBERNETES_KEYSTORE_FILE_PROPERTY, "/path/to/keystore");
+    System.setProperty(Config.KUBERNETES_KEYSTORE_PASSPHRASE_PROPERTY, "keystorePassphrase");
 
     Config config = new ConfigBuilder()
       .withMasterUrl("http://somehost:80")
@@ -313,5 +335,10 @@ public class ConfigTest {
     assertEquals(5000, config.getRequestTimeout());
 
     assertArrayEquals(new TlsVersion[]{TLS_1_2, TLS_1_1}, config.getTlsVersions());
+
+    assertEquals("/path/to/truststore", config.getTrustStoreFile());
+    assertEquals("truststorePassphrase", config.getTrustStorePassphrase());
+    assertEquals("/path/to/keystore", config.getKeyStoreFile());
+    assertEquals("keystorePassphrase", config.getKeyStorePassphrase());
   }
 }

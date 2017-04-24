@@ -19,14 +19,18 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class CertUtilsTest {
@@ -43,8 +47,52 @@ public class CertUtilsTest {
 
   @Test
   public void testLoadingMultipleCertsFromSameFile() throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
-    KeyStore ts = CertUtils.createTrustStore(getClass().getResourceAsStream("/ssl/multiple-certs.pem"), null, "changeit".toCharArray());
+    KeyStore ts = CertUtils.createTrustStore(getMultipleCertsInputSteam(), null, "changeit".toCharArray());
     assertTrue(ts.size() >= 2);
   }
 
+  @Test
+  public void testLoadTrustStoreFromFile()
+    throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+
+    String fabric8StorePath = getClass().getResource("/ssl/fabric8-store").getPath();
+    char[] passphrase = "fabric8".toCharArray();
+
+    KeyStore trustStore = CertUtils.createTrustStore(getMultipleCertsInputSteam(), fabric8StorePath, passphrase);
+
+    assertEquals(3, trustStore.size());
+    verifyFabric8InStore(trustStore);
+  }
+
+  @Test
+  public void testLoadKeyStoreFromFile()
+    throws InvalidKeySpecException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+
+    String fabric8StorePath = getClass().getResource("/ssl/fabric8-store").getPath();
+    char[] passphrase = "fabric8".toCharArray();
+    InputStream privateKey = getClass().getResourceAsStream("/ssl/fabric8");
+
+    KeyStore trustStore =
+      CertUtils.createKeyStore(getMultipleCertsInputSteam(), privateKey, "RSA", "changeit".toCharArray(),
+        fabric8StorePath, passphrase);
+
+    assertEquals(2, trustStore.size());
+    verifyFabric8InStore(trustStore);
+  }
+
+  private void verifyFabric8InStore(KeyStore trustStore)
+    throws KeyStoreException, CertificateException, NoSuchAlgorithmException, IOException {
+
+    Certificate certificate = trustStore.getCertificate("fabric8-in-store");
+    assertNotNull(certificate);
+
+    InputStream certificateFile = getClass().getResourceAsStream("/ssl/fabric8.crt");
+    KeyStore storeWithCert = CertUtils.createTrustStore(certificateFile, null, "".toCharArray());
+    String certificateAlias = storeWithCert.getCertificateAlias(certificate);
+    assertNotNull(certificateAlias);
+  }
+
+  private InputStream getMultipleCertsInputSteam() {
+    return getClass().getResourceAsStream("/ssl/multiple-certs.pem");
+  }
 }

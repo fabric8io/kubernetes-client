@@ -150,7 +150,7 @@ public class CertUtils {
         keyStore.load(new FileInputStream(fileToLoad), passphrase);
         return true;
       } catch (Exception e) {
-        LOG.info(notLoadedMessage, fileToLoad, passphrase, e.getMessage());
+        LOG.info(String.format(notLoadedMessage, fileToLoad, passphrase, e.getMessage()));
       }
     }
     return false;
