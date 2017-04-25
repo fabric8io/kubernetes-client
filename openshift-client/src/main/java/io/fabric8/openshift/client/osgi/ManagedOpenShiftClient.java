@@ -70,6 +70,7 @@ import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.RequestConfig;
+import io.fabric8.kubernetes.client.dsl.AppsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.KubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
@@ -544,6 +545,11 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public ExtensionsAPIGroupDSL extensions() {
     return delegate.extensions();
+  }
+
+  @Override
+  public AppsAPIGroupDSL apps() {
+    return delegate.apps();
   }
 
   @Override

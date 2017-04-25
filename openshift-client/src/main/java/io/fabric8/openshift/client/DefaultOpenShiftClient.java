@@ -19,7 +19,9 @@ import io.fabric8.kubernetes.api.model.DoneableLimitRange;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LimitRange;
 import io.fabric8.kubernetes.api.model.LimitRangeList;
+import io.fabric8.kubernetes.client.AppsAPIGroupClient;
 import io.fabric8.kubernetes.client.RequestConfig;
+import io.fabric8.kubernetes.client.dsl.AppsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
@@ -420,6 +422,11 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public ExtensionsAPIGroupClient extensions() {
     return adapt(ExtensionsAPIGroupClient.class);
+  }
+
+  @Override
+  public AppsAPIGroupDSL apps() {
+    return adapt(AppsAPIGroupClient.class);
   }
 
   @Override

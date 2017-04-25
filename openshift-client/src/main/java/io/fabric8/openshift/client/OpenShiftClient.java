@@ -20,6 +20,7 @@ import java.net.URL;
 
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.AppsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -93,6 +94,8 @@ public interface OpenShiftClient extends KubernetesClient {
   URL getOpenshiftUrl();
 
   ExtensionsAPIGroupDSL extensions();
+
+  AppsAPIGroupDSL apps();
 
   MixedOperation<Build, BuildList, DoneableBuild, BuildResource<Build, DoneableBuild, String, LogWatch>> builds();
 
