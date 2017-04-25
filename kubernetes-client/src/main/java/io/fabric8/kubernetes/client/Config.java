@@ -119,9 +119,9 @@ public class Config {
   private String clientKeyAlgo = "RSA";
   private String clientKeyPassphrase = "changeit";
   private String trustStoreFile;
-  private String trustStorePassphrase = "changeit";
+  private String trustStorePassphrase;
   private String keyStoreFile;
-  private String keyStorePassphrase = "changeit";
+  private String keyStorePassphrase;
 
   private RequestConfig requestConfig = new RequestConfig();
 

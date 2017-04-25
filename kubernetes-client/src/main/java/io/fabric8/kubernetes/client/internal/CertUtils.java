@@ -43,6 +43,10 @@ import org.slf4j.LoggerFactory;
 public class CertUtils {
 
   private static final Logger LOG = LoggerFactory.getLogger(CertUtils.class);
+  public static String TRUST_STORE_SYSTEM_PROPERTY = "javax.net.ssl.trustStore";
+  public static String TRUST_STORE_PASSWORD_SYSTEM_PROPERTY = "javax.net.ssl.trustStorePassword";
+  public static String KEY_STORE_SYSTEM_PROPERTY = "javax.net.ssl.keyStore";
+  public static String KEY_STORE_PASSWORD_SYSTEM_PROPERTY = "javax.net.ssl.keyStorePassword";
 
   public static InputStream getInputStreamFromDataOrFile(String data, String file) throws FileNotFoundException {
     if (data != null) {
@@ -64,8 +68,15 @@ public class CertUtils {
 
   public static KeyStore createTrustStore(String caCertData, String caCertFile, String trustStoreFile, String trustStorePassphrase) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException {
     try (InputStream pemInputStream = getInputStreamFromDataOrFile(caCertData, caCertFile)) {
-      return createTrustStore(pemInputStream, trustStoreFile, trustStorePassphrase.toCharArray());
+      return createTrustStore(pemInputStream, trustStoreFile, getTrustStorePassphrase(trustStorePassphrase));
     }
+  }
+
+  private static char[] getTrustStorePassphrase(String trustStorePassphrase) {
+    if (Utils.isNullOrEmpty(trustStorePassphrase)) {
+      return System.getProperty(TRUST_STORE_PASSWORD_SYSTEM_PROPERTY, "changeit").toCharArray();
+    }
+    return trustStorePassphrase.toCharArray();
   }
 
   public static KeyStore createTrustStore(InputStream pemInputStream, String trustStoreFile, char[] trustStorePassphrase) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException {
@@ -121,22 +132,44 @@ public class CertUtils {
   private static void loadDefaultTrustStoreFile(KeyStore keyStore, char[] trustStorePassphrase)
     throws CertificateException, NoSuchAlgorithmException, IOException {
 
-    File javaKeyStore =
-      new File(System.getProperty("java.home"), "lib" + File.separator + "security" + File.separator + "cacerts");
+    File trustStoreFile = getDefaultTrustStoreFile();
 
-    if (!loadDefaultStoreFile(keyStore, javaKeyStore, trustStorePassphrase)) {
+    if (!loadDefaultStoreFile(keyStore, trustStoreFile, trustStorePassphrase)) {
       keyStore.load(null);
     }
+  }
+
+  private static File getDefaultTrustStoreFile() {
+    String securityDirectory =
+      System.getProperty("java.home") + File.separator + "lib" + File.separator + "security" + File.separator;
+
+    String trustStorePath = System.getProperty(TRUST_STORE_SYSTEM_PROPERTY);
+    if (Utils.isNotNullOrEmpty(trustStorePath)) {
+      return new File(trustStorePath);
+    }
+
+    File jssecacertsFile = new File(securityDirectory + "jssecacerts");
+    if (jssecacertsFile.exists() && jssecacertsFile.isFile()) {
+      return jssecacertsFile;
+    }
+
+    return new File(securityDirectory + "cacerts");
   }
 
   private static void loadDefaultKeyStoreFile(KeyStore keyStore, char[] keyStorePassphrase)
     throws CertificateException, NoSuchAlgorithmException, IOException {
 
-    File defaultKeyStore = new File(System.getProperty("user.home"), ".keystore");
+    File defaultKeyStore = getDefaultKeyStoreFile();
 
     if (!loadDefaultStoreFile(keyStore, defaultKeyStore, keyStorePassphrase)) {
       keyStore.load(null);
     }
+  }
+
+  private static File getDefaultKeyStoreFile() {
+    String keyStoreInHome = System.getProperty("user.home") + File.separator + ".keystore";
+    String keyStorePath = System.getProperty(KEY_STORE_SYSTEM_PROPERTY, keyStoreInHome);
+    return new File(keyStorePath);
   }
 
   private static boolean loadDefaultStoreFile(KeyStore keyStore, File fileToLoad, char[] passphrase)
@@ -150,16 +183,28 @@ public class CertUtils {
         keyStore.load(new FileInputStream(fileToLoad), passphrase);
         return true;
       } catch (Exception e) {
-        LOG.info(String.format(notLoadedMessage, fileToLoad, passphrase, e.getMessage()));
+        String passphraseToPrint = passphrase != null ? String.valueOf(passphrase) : null;
+        LOG.info(String.format(notLoadedMessage, fileToLoad, passphraseToPrint, e.getMessage()));
       }
     }
     return false;
   }
 
-  public static KeyStore createKeyStore(String clientCertData, String clientCertFile, String clientKeyData, String clientKeyFile, String clientKeyAlgo, char[] clientKeyPassphrase, String keyStoreFile, char[] keyStorePassphrase) throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeySpecException, KeyStoreException {
+  public static KeyStore createKeyStore(String clientCertData, String clientCertFile, String clientKeyData,
+    String clientKeyFile, String clientKeyAlgo, String clientKeyPassphrase, String keyStoreFile,
+    String keyStorePassphrase)
+    throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeySpecException, KeyStoreException {
     try (InputStream certInputStream = getInputStreamFromDataOrFile(clientCertData, clientCertFile); InputStream keyInputStream = getInputStreamFromDataOrFile(clientKeyData, clientKeyFile)) {
-      return createKeyStore(certInputStream, keyInputStream, clientKeyAlgo, clientKeyPassphrase, keyStoreFile, keyStorePassphrase);
+      return createKeyStore(certInputStream, keyInputStream, clientKeyAlgo, clientKeyPassphrase.toCharArray(),
+        keyStoreFile, getKeyStorePassphrase(keyStorePassphrase));
     }
+  }
+
+  private static char[] getKeyStorePassphrase(String keyStorePassphrase) {
+    if (Utils.isNullOrEmpty(keyStorePassphrase)) {
+      return System.getProperty(KEY_STORE_PASSWORD_SYSTEM_PROPERTY, "changeit").toCharArray();
+    }
+    return keyStorePassphrase.toCharArray();
   }
 
   // This method is inspired and partly taken over from
