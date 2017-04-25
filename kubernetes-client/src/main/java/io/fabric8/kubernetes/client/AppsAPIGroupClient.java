@@ -20,7 +20,7 @@ import io.fabric8.kubernetes.api.model.extensions.StatefulSet;
 import io.fabric8.kubernetes.api.model.extensions.StatefulSetList;
 import io.fabric8.kubernetes.client.dsl.AppsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
-import io.fabric8.kubernetes.client.dsl.RollableScallableResource;
+import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.internal.StatefulSetOperationsImpl;
 import okhttp3.OkHttpClient;
 
@@ -35,7 +35,7 @@ public class AppsAPIGroupClient extends BaseClient implements AppsAPIGroupDSL {
   }
 
   @Override
-  public MixedOperation<StatefulSet, StatefulSetList, DoneableStatefulSet, RollableScallableResource<StatefulSet, DoneableStatefulSet>> statefulSets() {
+  public MixedOperation<StatefulSet, StatefulSetList, DoneableStatefulSet, RollableScalableResource<StatefulSet, DoneableStatefulSet>> statefulSets() {
     return new StatefulSetOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 }

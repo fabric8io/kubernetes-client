@@ -75,7 +75,7 @@ import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRe
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.RollableScallableResource;
+import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import okhttp3.OkHttpClient;
 
 import java.io.InputStream;
@@ -200,7 +200,7 @@ public class AutoAdaptableKubernetesClient extends DefaultKubernetesClient {
   }
 
   @Override
-  public MixedOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, RollableScallableResource<ReplicationController, DoneableReplicationController>> replicationControllers() {
+  public MixedOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, RollableScalableResource<ReplicationController, DoneableReplicationController>> replicationControllers() {
     return delegate.replicationControllers();
   }
 

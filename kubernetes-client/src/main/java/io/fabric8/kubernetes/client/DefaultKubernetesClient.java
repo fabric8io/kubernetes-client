@@ -77,7 +77,7 @@ import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRe
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.RollableScallableResource;
+import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.internal.ComponentStatusOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ConfigMapOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.EndpointsOperationsImpl;
@@ -213,7 +213,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   @Override
-  public MixedOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, RollableScallableResource<ReplicationController, DoneableReplicationController>> replicationControllers() {
+  public MixedOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, RollableScalableResource<ReplicationController, DoneableReplicationController>> replicationControllers() {
     return new ReplicationControllerOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 

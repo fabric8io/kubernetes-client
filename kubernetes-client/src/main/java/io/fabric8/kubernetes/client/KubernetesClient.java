@@ -75,7 +75,7 @@ import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRe
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.RollableScallableResource;
+import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 
 import java.io.InputStream;
 import java.util.Collection;
@@ -116,7 +116,7 @@ public interface KubernetesClient extends Client {
 
   MixedOperation<Pod, PodList, DoneablePod, PodResource<Pod, DoneablePod>> pods();
 
-  MixedOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, RollableScallableResource<ReplicationController, DoneableReplicationController>> replicationControllers();
+  MixedOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, RollableScalableResource<ReplicationController, DoneableReplicationController>> replicationControllers();
 
   MixedOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota, Resource<ResourceQuota, DoneableResourceQuota>> resourceQuotas();
 

@@ -27,7 +27,7 @@ import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
 import io.fabric8.kubernetes.client.dsl.ImageEditReplacePatchable;
-import io.fabric8.kubernetes.client.dsl.RollableScallableResource;
+import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.Watchable;
 import okhttp3.OkHttpClient;
@@ -37,7 +37,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
-public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, RollableScallableResource<ReplicaSet, DoneableReplicaSet>>
+public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, RollableScalableResource<ReplicaSet, DoneableReplicaSet>>
   implements TimeoutImageEditReplacePatchable<ReplicaSet, ReplicaSet, DoneableReplicaSet> {
 
   public ReplicaSetOperationsImpl(OkHttpClient client, Config config, String namespace) {
@@ -63,7 +63,7 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
   }
 
   @Override
-  public RollableScallableResource<ReplicaSet, DoneableReplicaSet> withName(String name) {
+  public RollableScalableResource<ReplicaSet, DoneableReplicaSet> withName(String name) {
     if (name == null || name.length() == 0) {
       throw new IllegalArgumentException("Name must be provided.");
     }
@@ -71,7 +71,7 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
   }
 
   @Override
-  public RollableScallableResource<ReplicaSet, DoneableReplicaSet> fromServer() {
+  public RollableScalableResource<ReplicaSet, DoneableReplicaSet> fromServer() {
     return new ReplicaSetOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), true, getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rolling, rollingTimeout, rollingTimeUnit);
   }
 

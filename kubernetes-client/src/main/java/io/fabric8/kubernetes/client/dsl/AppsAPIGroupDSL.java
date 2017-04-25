@@ -23,6 +23,6 @@ import io.fabric8.kubernetes.client.Client;
 
 public interface AppsAPIGroupDSL extends Client {
 
-  MixedOperation<StatefulSet, StatefulSetList, DoneableStatefulSet, RollableScallableResource<StatefulSet, DoneableStatefulSet>> statefulSets();
+  MixedOperation<StatefulSet, StatefulSetList, DoneableStatefulSet, RollableScalableResource<StatefulSet, DoneableStatefulSet>> statefulSets();
 
 }

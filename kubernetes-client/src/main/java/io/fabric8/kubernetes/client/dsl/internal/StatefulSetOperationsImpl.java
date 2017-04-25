@@ -27,7 +27,7 @@ import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
 import io.fabric8.kubernetes.client.dsl.ImageEditReplacePatchable;
-import io.fabric8.kubernetes.client.dsl.RollableScallableResource;
+import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.Watchable;
 import okhttp3.OkHttpClient;
@@ -37,7 +37,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
-public class StatefulSetOperationsImpl extends RollableScalableResourceOperation<StatefulSet, StatefulSetList, DoneableStatefulSet, RollableScallableResource<StatefulSet, DoneableStatefulSet>>
+public class StatefulSetOperationsImpl extends RollableScalableResourceOperation<StatefulSet, StatefulSetList, DoneableStatefulSet, RollableScalableResource<StatefulSet, DoneableStatefulSet>>
   implements TimeoutImageEditReplacePatchable<StatefulSet, StatefulSet, DoneableStatefulSet>
 {
 
@@ -90,7 +90,7 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
   }
 
   @Override
-  public RollableScallableResource<StatefulSet, DoneableStatefulSet> withName(String name) {
+  public RollableScalableResource<StatefulSet, DoneableStatefulSet> withName(String name) {
     if (name == null || name.length() == 0) {
       throw new IllegalArgumentException("Name must be provided.");
     }
@@ -98,7 +98,7 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
   }
 
   @Override
-  public RollableScallableResource<StatefulSet, DoneableStatefulSet> fromServer() {
+  public RollableScalableResource<StatefulSet, DoneableStatefulSet> fromServer() {
     return new StatefulSetOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), true, getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rolling, rollingTimeout, rollingTimeUnit);
   }
 

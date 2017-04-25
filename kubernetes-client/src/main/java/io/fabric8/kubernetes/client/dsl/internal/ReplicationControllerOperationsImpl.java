@@ -28,7 +28,7 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
 import io.fabric8.kubernetes.client.dsl.ImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
-import io.fabric8.kubernetes.client.dsl.RollableScallableResource;
+import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.Watchable;
 import okhttp3.OkHttpClient;
@@ -39,7 +39,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
-public class ReplicationControllerOperationsImpl extends RollableScalableResourceOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, RollableScallableResource<ReplicationController, DoneableReplicationController>>
+public class ReplicationControllerOperationsImpl extends RollableScalableResourceOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, RollableScalableResource<ReplicationController, DoneableReplicationController>>
   implements TimeoutImageEditReplacePatchable<ReplicationController, ReplicationController, DoneableReplicationController> {
 
   public ReplicationControllerOperationsImpl(OkHttpClient client, Config config, String namespace) {
@@ -55,7 +55,7 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
   }
 
   @Override
-  public RollableScallableResource<ReplicationController, DoneableReplicationController> load(InputStream is) {
+  public RollableScalableResource<ReplicationController, DoneableReplicationController> load(InputStream is) {
     try {
       ReplicationController item = unmarshal(is, ReplicationController.class);
       return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), item, getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rolling, rollingTimeout, rollingTimeUnit);
@@ -65,7 +65,7 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
   }
 
   @Override
-  public NonNamespaceOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, RollableScallableResource<ReplicationController, DoneableReplicationController>> inNamespace(String namespace) {
+  public NonNamespaceOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, RollableScalableResource<ReplicationController, DoneableReplicationController>> inNamespace(String namespace) {
     return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rolling, rollingTimeout, rollingTimeUnit);
   }
 
@@ -107,7 +107,7 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
   }
 
   @Override
-  public RollableScallableResource<ReplicationController, DoneableReplicationController> withName(String name) {
+  public RollableScalableResource<ReplicationController, DoneableReplicationController> withName(String name) {
     if (name == null || name.length() == 0) {
       throw new IllegalArgumentException("Name must be provided.");
     }
@@ -115,7 +115,7 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
   }
 
   @Override
-  public RollableScallableResource<ReplicationController, DoneableReplicationController> fromServer() {
+  public RollableScalableResource<ReplicationController, DoneableReplicationController> fromServer() {
     return new ReplicationControllerOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), true, getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rolling, rollingTimeout, rollingTimeUnit);
   }
 

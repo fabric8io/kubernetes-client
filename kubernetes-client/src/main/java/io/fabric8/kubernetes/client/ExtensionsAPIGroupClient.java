@@ -87,7 +87,7 @@ public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAP
     return new ThirdPartyResourceOperationsImpl(httpClient, getConfiguration());
   }
 
-  public MixedOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, RollableScallableResource<ReplicaSet, DoneableReplicaSet>> replicaSets() {
+  public MixedOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, RollableScalableResource<ReplicaSet, DoneableReplicaSet>> replicaSets() {
     return new ReplicaSetOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 

@@ -22,7 +22,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.RollableScallableResource;
+import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.OkHttpClient;
@@ -43,7 +43,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * Operations for resources that represent scalable, rolling-updatable sets of Pods.
  */
 public abstract class RollableScalableResourceOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
-  extends HasMetadataOperation<T, L, D, R> implements RollableScallableResource<T, D> {
+  extends HasMetadataOperation<T, L, D, R> implements RollableScalableResource<T, D> {
 
   private final Logger Log = LoggerFactory.getLogger(this.getClass());
 

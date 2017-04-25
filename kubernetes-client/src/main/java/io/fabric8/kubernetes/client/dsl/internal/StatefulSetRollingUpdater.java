@@ -27,7 +27,7 @@ import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.Operation;
-import io.fabric8.kubernetes.client.dsl.RollableScallableResource;
+import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import okhttp3.OkHttpClient;
 
 class StatefulSetRollingUpdater extends RollingUpdater<StatefulSet, StatefulSetList, DoneableStatefulSet> {
@@ -109,7 +109,7 @@ class StatefulSetRollingUpdater extends RollingUpdater<StatefulSet, StatefulSetL
   }
 
   @Override
-  protected Operation<StatefulSet, StatefulSetList, DoneableStatefulSet, RollableScallableResource<StatefulSet, DoneableStatefulSet>> resources() {
+  protected Operation<StatefulSet, StatefulSetList, DoneableStatefulSet, RollableScalableResource<StatefulSet, DoneableStatefulSet>> resources() {
     return new StatefulSetOperationsImpl(client, config, namespace);
   }
 }
