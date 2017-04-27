@@ -27,7 +27,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Operation;
 import io.fabric8.kubernetes.client.dsl.PodResource;
-import io.fabric8.kubernetes.client.dsl.RollableScallableResource;
+import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -265,7 +265,7 @@ abstract class RollingUpdater<T extends HasMetadata, L, D extends Doneable<T>> {
     return String.format("%1$032x", i);
   }
 
-  protected abstract Operation<T, L, D, RollableScallableResource<T, D>> resources();
+  protected abstract Operation<T, L, D, RollableScalableResource<T, D>> resources();
 
   protected Operation<Pod, PodList, DoneablePod, PodResource<Pod, DoneablePod>> pods() {
     return new PodOperationsImpl(client, config, namespace);

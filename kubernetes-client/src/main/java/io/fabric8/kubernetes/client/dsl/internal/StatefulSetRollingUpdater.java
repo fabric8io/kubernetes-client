@@ -15,34 +15,34 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
-import io.fabric8.kubernetes.api.model.extensions.DoneableReplicaSet;
-import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
-import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
-import io.fabric8.kubernetes.api.model.extensions.ReplicaSetBuilder;
-import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
+import io.fabric8.kubernetes.api.model.extensions.DoneableStatefulSet;
+import io.fabric8.kubernetes.api.model.extensions.StatefulSet;
+import io.fabric8.kubernetes.api.model.extensions.StatefulSetBuilder;
+import io.fabric8.kubernetes.api.model.extensions.StatefulSetList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.Operation;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
-import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
+import okhttp3.OkHttpClient;
 
-class ReplicaSetRollingUpdater extends RollingUpdater<ReplicaSet, ReplicaSetList, DoneableReplicaSet> {
+class StatefulSetRollingUpdater extends RollingUpdater<StatefulSet, StatefulSetList, DoneableStatefulSet> {
 
-  ReplicaSetRollingUpdater(OkHttpClient client, Config config, String namespace) {
+  StatefulSetRollingUpdater(OkHttpClient client, Config config, String namespace) {
     super(client, config, namespace);
   }
 
-  ReplicaSetRollingUpdater(OkHttpClient client, Config config, String namespace, long rollingTimeoutMillis, long loggingIntervalMillis) {
+  StatefulSetRollingUpdater(OkHttpClient client, Config config, String namespace, long rollingTimeoutMillis, long loggingIntervalMillis) {
     super(client, config, namespace, rollingTimeoutMillis, loggingIntervalMillis);
   }
 
   @Override
-  protected ReplicaSet createClone(ReplicaSet obj, String newName, String newDeploymentHash) {
-    return new ReplicaSetBuilder(obj)
+  protected StatefulSet createClone(StatefulSet obj, String newName, String newDeploymentHash) {
+    return new StatefulSetBuilder(obj)
       .editMetadata()
       .withResourceVersion(null)
       .withName(newName)
@@ -56,7 +56,7 @@ class ReplicaSetRollingUpdater extends RollingUpdater<ReplicaSet, ReplicaSetList
   }
 
   @Override
-  protected PodList listSelectedPods(ReplicaSet obj) {
+  protected PodList listSelectedPods(StatefulSet obj) {
     FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>> podLister = pods().inNamespace(namespace);
     if (obj.getSpec().getSelector().getMatchLabels() != null) {
       podLister.withLabels(obj.getSpec().getSelector().getMatchLabels());
@@ -83,7 +83,7 @@ class ReplicaSetRollingUpdater extends RollingUpdater<ReplicaSet, ReplicaSetList
   }
 
   @Override
-  protected void updateDeploymentKey(DoneableReplicaSet obj, String hash) {
+  protected void updateDeploymentKey(DoneableStatefulSet obj, String hash) {
     obj.editSpec()
       .editSelector().addToMatchLabels(DEPLOYMENT_KEY, hash).endSelector()
       .editTemplate().editMetadata().addToLabels(DEPLOYMENT_KEY, hash).endMetadata().endTemplate()
@@ -91,7 +91,7 @@ class ReplicaSetRollingUpdater extends RollingUpdater<ReplicaSet, ReplicaSetList
   }
 
   @Override
-  protected void removeDeploymentKey(DoneableReplicaSet obj) {
+  protected void removeDeploymentKey(DoneableStatefulSet obj) {
     obj.editSpec()
       .editSelector().removeFromMatchLabels(DEPLOYMENT_KEY).endSelector()
       .editTemplate().editMetadata().removeFromLabels(DEPLOYMENT_KEY).endMetadata().endTemplate()
@@ -99,17 +99,17 @@ class ReplicaSetRollingUpdater extends RollingUpdater<ReplicaSet, ReplicaSetList
   }
 
   @Override
-  protected int getReplicas(ReplicaSet obj) {
+  protected int getReplicas(StatefulSet obj) {
     return obj.getSpec().getReplicas();
   }
 
   @Override
-  protected ReplicaSet setReplicas(ReplicaSet obj, int replicas) {
-    return new ReplicaSetBuilder(obj).editSpec().withReplicas(replicas).endSpec().build();
+  protected StatefulSet setReplicas(StatefulSet obj, int replicas) {
+    return new StatefulSetBuilder(obj).editSpec().withReplicas(replicas).endSpec().build();
   }
 
   @Override
-  protected Operation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, RollableScalableResource<ReplicaSet, DoneableReplicaSet>> resources() {
-    return new ReplicaSetOperationsImpl(client, config, namespace);
+  protected Operation<StatefulSet, StatefulSetList, DoneableStatefulSet, RollableScalableResource<StatefulSet, DoneableStatefulSet>> resources() {
+    return new StatefulSetOperationsImpl(client, config, namespace);
   }
 }
