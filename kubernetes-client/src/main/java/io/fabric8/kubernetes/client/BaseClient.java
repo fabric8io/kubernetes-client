@@ -16,6 +16,11 @@
 
 package io.fabric8.kubernetes.client;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import okhttp3.ConnectionPool;
+import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
@@ -23,9 +28,13 @@ import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.net.URL;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 public abstract class BaseClient implements Client, HttpClientAware {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(BaseClient.class);
 
   protected OkHttpClient httpClient;
   private URL masterUrl;
@@ -64,15 +73,19 @@ public abstract class BaseClient implements Client, HttpClientAware {
 
   @Override
   public void close() {
-    if (httpClient.connectionPool() != null) {
-      httpClient.connectionPool().evictAll();
+    ConnectionPool connectionPool = httpClient.connectionPool();
+    Dispatcher dispatcher = httpClient.dispatcher();
+    ExecutorService executorService = httpClient.dispatcher() != null ? httpClient.dispatcher().executorService() : null;
+
+    if (dispatcher != null) {
+      dispatcher.cancelAll();
     }
-    if (httpClient.dispatcher() != null &&
-      httpClient.dispatcher().executorService() != null &&
-      !httpClient.dispatcher().executorService().isShutdown()
-      ) {
-      httpClient.dispatcher().executorService().shutdown();
+
+    if (connectionPool != null) {
+      connectionPool.evictAll();
     }
+
+    Utils.shutdownExecutorService(executorService);
   }
 
   @Override
