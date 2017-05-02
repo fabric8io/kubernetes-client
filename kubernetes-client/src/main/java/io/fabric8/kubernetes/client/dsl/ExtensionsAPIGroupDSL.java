@@ -24,6 +24,9 @@ import io.fabric8.kubernetes.api.model.extensions.DoneableDaemonSet;
 import io.fabric8.kubernetes.api.model.extensions.DoneableDeployment;
 import io.fabric8.kubernetes.api.model.extensions.DoneableHorizontalPodAutoscaler;
 import io.fabric8.kubernetes.api.model.extensions.DoneableIngress;
+import io.fabric8.kubernetes.api.model.extensions.DoneableNetworkPolicy;
+import io.fabric8.kubernetes.api.model.extensions.NetworkPolicy;
+import io.fabric8.kubernetes.api.model.extensions.NetworkPolicyList;
 import io.fabric8.kubernetes.api.model.DoneableJob;
 import io.fabric8.kubernetes.api.model.extensions.DoneableReplicaSet;
 import io.fabric8.kubernetes.api.model.extensions.DoneableThirdPartyResource;
@@ -49,6 +52,8 @@ public interface ExtensionsAPIGroupDSL extends Client {
   MixedOperation<Ingress, IngressList, DoneableIngress, Resource<Ingress, DoneableIngress>> ingress();
 
   MixedOperation<Ingress, IngressList, DoneableIngress, Resource<Ingress, DoneableIngress>> ingresses();
+  
+  MixedOperation<NetworkPolicy, NetworkPolicyList, DoneableNetworkPolicy, Resource<NetworkPolicy, DoneableNetworkPolicy>> networkPolicies();
 
   MixedOperation<DaemonSet, DaemonSetList, DoneableDaemonSet, Resource<DaemonSet, DoneableDaemonSet>> daemonSets();
 
