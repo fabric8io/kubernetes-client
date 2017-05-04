@@ -125,7 +125,7 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
         return body.string();
       }
     } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(t);
+      throw KubernetesClientException.launderThrowable(forOperationType("getLog"), t);
     }
   }
 
@@ -150,7 +150,7 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
       callback.waitUntilReady();
       return callback;
     } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(t);
+      throw KubernetesClientException.launderThrowable(forOperationType("watchLog"), t);
     }
   }
 
