@@ -61,6 +61,10 @@ public class Serialization {
   }
 
   public static <T> T unmarshal(InputStream is) throws KubernetesClientException {
+    return unmarshal(is, JSON_MAPPER);
+  }
+
+  public static <T> T unmarshal(InputStream is, ObjectMapper mapper) {
     try (BufferedInputStream bis = new BufferedInputStream(is)) {
       bis.mark(-1);
       int intch;
@@ -69,7 +73,6 @@ public class Serialization {
       } while (intch > -1 && Character.isWhitespace(intch));
       bis.reset();
 
-      ObjectMapper mapper = JSON_MAPPER;
       if (intch != '{') {
         mapper = YAML_MAPPER;
       }

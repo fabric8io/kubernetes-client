@@ -16,18 +16,29 @@
 
 package io.fabric8.openshift.client.server.mock;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
+import io.fabric8.kubernetes.api.model.Service;
+import io.fabric8.kubernetes.api.model.ServicePort;
+import io.fabric8.kubernetes.api.model.ServiceSpec;
+import io.fabric8.kubernetes.client.utils.IOHelpers;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateBuilder;
 import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.api.model.TemplateListBuilder;
+import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.ParameterValue;
-
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static io.fabric8.openshift.client.dsl.internal.ReplaceValueStream.replaceValues;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -118,5 +129,43 @@ public class TemplateTest {
     OpenShiftClient client = server.getOpenshiftClient();
     KubernetesList list = client.templates().withName("tmpl1").process(new ParameterValue("name1", "value1"));
     assertNotNull(list);
+  }
+
+  @Test
+  public void shouldLoadTemplateWithNumberParameters() throws Exception {
+    OpenShiftClient client = new DefaultOpenShiftClient();
+    Map<String,String> map = new HashMap<>();
+    map.put("PORT", "8080");
+    KubernetesList list = client.templates().load(replaceValues(getClass().getResourceAsStream("/template-with-number-params.yml"), map)).processLocally(map);
+    assertListIsServiceWithPort8080(list);
+  }
+
+  protected void assertListIsServiceWithPort8080(KubernetesList list) {
+    assertNotNull(list);
+    List<HasMetadata> items = list.getItems();
+    assertNotNull(items);
+    assertEquals(1, items.size());
+    HasMetadata item = items.get(0);
+    assertTrue(item instanceof Service);
+    Service service = (Service) item;
+    ServiceSpec serviceSpec = service.getSpec();
+    assertNotNull(serviceSpec);
+    List<ServicePort> ports = serviceSpec.getPorts();
+    assertEquals(1, ports.size());
+    ServicePort port = ports.get(0);
+    assertEquals(new Integer(8080), port.getPort());
+  }
+
+  @Test
+  public void testLoadParameterizedNumberTemplate() throws IOException {
+    String json = IOHelpers.readFully(getClass().getResourceAsStream("/template-with-number-params.json"));
+    server.expect().withPath("/oapi/v1/namespaces/test/templates/tmpl1").andReturn(200, json).once();
+
+    Map<String,String> map = new HashMap<>();
+    map.put("PORT", "8080");
+
+    OpenShiftClient client = server.getOpenshiftClient();
+    KubernetesList list = client.templates().withName("tmpl1").processLocally(map);
+    assertListIsServiceWithPort8080(list);
   }
 }

@@ -240,7 +240,8 @@ public class OperationSupport {
     try (ResponseBody body = response.body()) {
       assertResponseCode(request, response);
       if (type != null) {
-        return JSON_MAPPER.readValue(body.byteStream(), type);
+        InputStream is = body.byteStream();
+        return unmarshal(type, is);
       } else {
         return null;
       }
@@ -250,6 +251,10 @@ public class OperationSupport {
       }
       throw requestException(request, e);
     }
+  }
+
+  protected <T> T unmarshal(Class<T> type, InputStream is) throws IOException {
+    return JSON_MAPPER.readValue(is, type);
   }
 
   /**

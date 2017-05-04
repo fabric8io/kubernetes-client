@@ -17,26 +17,25 @@ package io.fabric8.openshift.client.dsl.internal;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.mifmif.common.regex.Generex;
-
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.openshift.api.model.TemplateBuilder;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.URLUtils;
+import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.DoneableTemplate;
 import io.fabric8.openshift.api.model.Parameter;
 import io.fabric8.openshift.api.model.Template;
+import io.fabric8.openshift.api.model.TemplateBuilder;
 import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.ParameterValue;
-import io.fabric8.openshift.client.dsl.TemplateResource;
 import io.fabric8.openshift.client.dsl.TemplateOperation;
+import io.fabric8.openshift.client.dsl.TemplateResource;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -59,6 +58,7 @@ public class TemplateOperationsImpl
   private static final String EXPRESSION = "expression";
   private static final TypeReference<HashMap<String, String>> MAPS_REFERENCE = new TypeReference<HashMap<String, String>>() {
   };
+  private ReplaceValueStream replaceValueStream;
 
   public TemplateOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
     this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
@@ -67,6 +67,7 @@ public class TemplateOperationsImpl
   public TemplateOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, Template item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
     super(client, config, null, apiVersion, "templates", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
   }
+
 
   @Override
   public KubernetesList process(File f) {
@@ -139,6 +140,8 @@ public class TemplateOperationsImpl
   }
 
   public KubernetesList processLocally(Map<String, String> valuesMap)  {
+    this.replaceValueStream = new ReplaceValueStream(valuesMap);
+
     Template t = get();
 
     List<Parameter> parameters = t != null ? t.getParameters() : null;
@@ -175,9 +178,12 @@ public class TemplateOperationsImpl
       list = JSON_MAPPER.readValue(json, KubernetesList.class);
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
+    } finally {
+      this.replaceValueStream = null;
     }
     return list;
   }
+
 
   private URL getProcessUrl() throws MalformedURLException {
     URL requestUrl = getRootUrl();
@@ -191,7 +197,7 @@ public class TemplateOperationsImpl
   @Override
   public TemplateResource<Template, KubernetesList, DoneableTemplate> load(InputStream is) {
     Template template = null;
-    Object item = unmarshal(is);
+    Object item = unmarshalTemplate(is);
     if (item instanceof Template) {
       template = (Template) item;
     } else if (item instanceof HasMetadata) {
@@ -214,4 +220,22 @@ public class TemplateOperationsImpl
     return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, false, template, null, false, 0L,
       null, null, null, null, null);
   }
+
+  @Override
+  protected <T> T unmarshal(Class<T> type, InputStream is) throws IOException {
+    if (replaceValueStream != null) {
+      is = replaceValueStream.createInputStream(is);
+    }
+    return super.unmarshal(type, is);
+  }
+
+  protected Object unmarshalTemplate(InputStream is) {
+    if (replaceValueStream != null) {
+      is = replaceValueStream.createInputStream(is);
+    }
+    return unmarshal(is);
+  }
+
+  
+
 }
