@@ -58,14 +58,20 @@ public class TemplateOperationsImpl
   private static final String EXPRESSION = "expression";
   private static final TypeReference<HashMap<String, String>> MAPS_REFERENCE = new TypeReference<HashMap<String, String>>() {
   };
-  private ReplaceValueStream replaceValueStream;
+  private final ReplaceValueStream replaceValueStream;
 
   public TemplateOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
-    this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+    this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null);
   }
 
   public TemplateOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, Template item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
     super(client, config, null, apiVersion, "templates", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+    this.replaceValueStream = null;
+  }
+
+  public TemplateOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, Template item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, ReplaceValueStream replaceValueStream) {
+    super(client, config, null, apiVersion, "templates", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+    this.replaceValueStream = replaceValueStream;
   }
 
 
@@ -87,11 +93,14 @@ public class TemplateOperationsImpl
   public KubernetesList process(Map<String, String> valuesMap) {
     Template t = get();
     try {
-      for (Parameter p : t.getParameters()) {
-        String v = valuesMap.get(p.getName());
-        if (v != null) {
-          p.setGenerate(null);
-          p.setValue(v);
+      List<Parameter> parameters = t.getParameters();
+      if (parameters != null) {
+        for (Parameter p : parameters) {
+          String v = valuesMap.get(p.getName());
+          if (v != null) {
+            p.setGenerate(null);
+            p.setValue(v);
+          }
         }
       }
 
@@ -139,10 +148,14 @@ public class TemplateOperationsImpl
     return processLocally(valuesMap);
   }
 
-  public KubernetesList processLocally(Map<String, String> valuesMap)  {
-    this.replaceValueStream = new ReplaceValueStream(valuesMap);
+  public TemplateResource<Template, KubernetesList, DoneableTemplate> replaceParameters(Map<String, String> valuesMap) {
+    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(),
+      getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), new ReplaceValueStream(valuesMap));
+  }
 
-    Template t = get();
+  public KubernetesList processLocally(Map<String, String> valuesMap)  {
+    TemplateResource<Template, KubernetesList, DoneableTemplate> resource = replaceParameters(valuesMap);
+    Template t = resource.get();
 
     List<Parameter> parameters = t != null ? t.getParameters() : null;
     KubernetesList list = new KubernetesListBuilder()
@@ -178,8 +191,6 @@ public class TemplateOperationsImpl
       list = JSON_MAPPER.readValue(json, KubernetesList.class);
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
-    } finally {
-      this.replaceValueStream = null;
     }
     return list;
   }
@@ -218,7 +229,7 @@ public class TemplateOperationsImpl
     }
 
     return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, false, template, null, false, 0L,
-      null, null, null, null, null);
+      null, null, null, null, null, replaceValueStream);
   }
 
   @Override

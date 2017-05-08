@@ -142,7 +142,10 @@ public class TemplateTest {
 
   protected void assertListIsServiceWithPort8080(KubernetesList list) {
     assertNotNull(list);
-    List<HasMetadata> items = list.getItems();
+    assertListIsServiceWithPort8080(list.getItems());
+  }
+
+  protected static void assertListIsServiceWithPort8080(List<HasMetadata> items) {
     assertNotNull(items);
     assertEquals(1, items.size());
     HasMetadata item = items.get(0);
@@ -158,6 +161,20 @@ public class TemplateTest {
 
   @Test
   public void testLoadParameterizedNumberTemplate() throws IOException {
+    String json = IOHelpers.readFully(getClass().getResourceAsStream("/template-with-number-params.json"));
+    server.expect().withPath("/oapi/v1/namespaces/test/templates/tmpl1").andReturn(200, json).once();
+
+    Map<String,String> map = new HashMap<>();
+    map.put("PORT", "8080");
+
+    OpenShiftClient client = server.getOpenshiftClient();
+    Template template = client.templates().withName("tmpl1").replaceParameters(map).get();
+    List<HasMetadata> list = template.getObjects();
+    assertListIsServiceWithPort8080(list);
+  }
+
+  @Test
+  public void testProcessParameterizedNumberTemplate() throws IOException {
     String json = IOHelpers.readFully(getClass().getResourceAsStream("/template-with-number-params.json"));
     server.expect().withPath("/oapi/v1/namespaces/test/templates/tmpl1").andReturn(200, json).once();
 
