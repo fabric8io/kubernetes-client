@@ -168,7 +168,7 @@ public class TemplateTest {
     map.put("PORT", "8080");
 
     OpenShiftClient client = server.getOpenshiftClient();
-    Template template = client.templates().withName("tmpl1").replaceParameters(map).get();
+    Template template = client.templates().withName("tmpl1").get(map);
     List<HasMetadata> list = template.getObjects();
     assertListIsServiceWithPort8080(list);
   }

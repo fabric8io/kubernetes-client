@@ -148,14 +148,13 @@ public class TemplateOperationsImpl
     return processLocally(valuesMap);
   }
 
-  public TemplateResource<Template, KubernetesList, DoneableTemplate> replaceParameters(Map<String, String> valuesMap) {
+  public Template get(Map<String, String> valuesMap) {
     return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(),
-      getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), new ReplaceValueStream(valuesMap));
+      getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), new ReplaceValueStream(valuesMap)).get();
   }
 
   public KubernetesList processLocally(Map<String, String> valuesMap)  {
-    TemplateResource<Template, KubernetesList, DoneableTemplate> resource = replaceParameters(valuesMap);
-    Template t = resource.get();
+    Template t = get(valuesMap);
 
     List<Parameter> parameters = t != null ? t.getParameters() : null;
     KubernetesList list = new KubernetesListBuilder()
@@ -246,7 +245,4 @@ public class TemplateOperationsImpl
     }
     return unmarshal(is);
   }
-
-  
-
 }
