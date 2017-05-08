@@ -2,7 +2,7 @@
 This client provides access to the full [Kubernetes](http://kubernetes.io/) &
 [OpenShift 3](http://openshift.org/) REST APIs via a fluent DSL.
 
-[![CircleCI](https://img.shields.io/circleci/project/fabric8io/kubernetes-client.svg?maxAge=2592000)](https://circleci.com/gh/fabric8io/kubernetes-client)
+[![CircleCI](https://img.shields.io/circleci/project/github/fabric8io/kubernetes-client/master.svg)](https://circleci.com/gh/fabric8io/kubernetes-client)
 [![Dependency Status](https://dependencyci.com/github/fabric8io/kubernetes-client/badge)](https://dependencyci.com/github/fabric8io/kubernetes-client)
 
 * kubernetes-client: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-client.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-client)
