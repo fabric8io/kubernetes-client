@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.Map;
 
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -82,29 +84,93 @@ public class Serialization {
     }
   }
 
+  /**
+   * Unmarshals a {@link String}
+   * @param str   The {@link String}.
+   * @param type  The target type.
+   * @param <T>
+   * @return
+   * @throws KubernetesClientException
+   */
   public static <T> T unmarshal(String str, final Class<T> type) throws KubernetesClientException {
+    return unmarshal(str, type, Collections.<String, String>emptyMap());
+  }
+
+  /**
+   * Unmarshals a {@link String} optionally performing placeholder substitution to the String.
+   * @param str   The {@link String}.
+   * @param type  The target type.
+   * @param <T>
+   * @return
+   * @throws KubernetesClientException
+     */
+  public static <T> T unmarshal(String str, final Class<T> type, Map<String, String> parameters) throws KubernetesClientException {
     try (InputStream is = new ByteArrayInputStream(str.getBytes(StandardCharsets.UTF_8));) {
       return unmarshal(is, new TypeReference<T>() {
         @Override
         public Type getType() {
           return type;
         }
-      });
+      }, parameters);
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
   }
 
+  /**
+   * Unmarshals an {@link InputStream}.
+   * @param is              The {@link InputStream}.
+   * @param type            The type.
+   * @param <T>
+   * @return
+   * @throws KubernetesClientException
+   */
   public static <T> T unmarshal(InputStream is, final Class<T> type) throws KubernetesClientException {
+    return unmarshal(is, type, Collections.<String, String>emptyMap());
+  }
+
+  /**
+   * Unmarshals an {@link InputStream} optionally performing placeholder substitution to the stream.
+   * @param is              The {@link InputStream}.
+   * @param type            The type.
+   * @param parameters      A {@link Map} with parameters for placeholder substitution.
+   * @param <T>
+   * @return
+   * @throws KubernetesClientException
+   */
+  public static <T> T unmarshal(InputStream is, final Class<T> type, Map<String, String> parameters) throws KubernetesClientException {
     return unmarshal(is, new TypeReference<T>() {
       @Override
       public Type getType() {
         return type;
       }
-    });
+    }, parameters);
   }
 
+
+  /**
+   * Unmarshals an {@link InputStream}.
+   * @param is            The {@link InputStream}.
+   * @param type          The {@link TypeReference}.
+   * @param <T>
+   * @return
+   * @throws KubernetesClientException
+   */
   public static <T> T unmarshal(InputStream is, TypeReference<T> type) throws KubernetesClientException {
+   return unmarshal(is, type, Collections.<String, String>emptyMap());
+  }
+
+  /**
+   * Unmarshals an {@link InputStream} optionally performing placeholder substitution to the stream.
+   *
+   * @param is            The {@link InputStream}.
+   * @param type          The {@link TypeReference}.
+   * @param parameters    A {@link Map} with parameters for placeholder substitution.
+   * @param <T>
+   * @return
+   * @throws KubernetesClientException
+   */
+  public static <T> T unmarshal(InputStream is, TypeReference<T> type, Map<String, String> parameters) throws KubernetesClientException {
     try (BufferedInputStream bis = new BufferedInputStream(is)) {
       bis.mark(-1);
       int intch;
