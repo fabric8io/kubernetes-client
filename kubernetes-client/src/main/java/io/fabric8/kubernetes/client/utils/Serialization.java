@@ -62,11 +62,51 @@ public class Serialization {
     }
   }
 
+  /**
+   * Unmarshals a stream.
+   * @param is    The {@link InputStream}.
+   * @param <T>   The target type.
+   * @return
+   * @throws KubernetesClientException
+   */
   public static <T> T unmarshal(InputStream is) throws KubernetesClientException {
     return unmarshal(is, JSON_MAPPER);
   }
 
+  /**
+   * Unmarshals a stream optionally performing placeholder substitution to the stream.
+   * @param is    The {@link InputStream}.
+   * @param parameters  A {@link Map} with parameters for placeholder substitution.
+   * @param <T>   The target type.
+   * @return
+   * @throws KubernetesClientException
+   */
+  public static <T> T unmarshal(InputStream is, Map<String, String> parameters) throws KubernetesClientException {
+    return unmarshal(is, JSON_MAPPER, parameters);
+  }
+
+  /**
+   * Unmarshals a stream.
+   * @param is      The {@link InputStream}.
+   * @param mapper  The {@link ObjectMapper} to use.
+   * @param <T>     The target type.
+   * @return
+   * @throws KubernetesClientException
+   */
   public static <T> T unmarshal(InputStream is, ObjectMapper mapper) {
+   return unmarshal(is, mapper, Collections.<String, String>emptyMap());
+  }
+
+  /**
+   * Unmarshals a stream optionally performing placeholder substitution to the stream.
+   * @param is          The {@link InputStream}.
+   * @param mapper      The {@link ObjectMapper} to use.
+   * @param parameters  A {@link Map} with parameters for placeholder substitution.
+   * @param <T>         The target type.
+   * @return
+   * @throws KubernetesClientException
+   */
+  public static <T> T unmarshal(InputStream is, ObjectMapper mapper, Map<String, String> parameters) {
     try (BufferedInputStream bis = new BufferedInputStream(is)) {
       bis.mark(-1);
       int intch;
