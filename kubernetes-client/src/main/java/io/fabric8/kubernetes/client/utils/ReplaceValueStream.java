@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openshift.client.dsl.internal;
+package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.utils.IOHelpers;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

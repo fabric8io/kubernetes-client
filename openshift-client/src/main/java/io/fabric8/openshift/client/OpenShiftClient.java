@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.AppsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.ParameterMixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
@@ -130,7 +131,7 @@ public interface OpenShiftClient extends KubernetesClient {
 
   MixedOperation<Route, RouteList, DoneableRoute, Resource<Route, DoneableRoute>> routes();
 
-  MixedOperation<Template, TemplateList, DoneableTemplate, TemplateResource<Template, KubernetesList, DoneableTemplate>> templates();
+  ParameterMixedOperation<Template, TemplateList, DoneableTemplate, TemplateResource<Template, KubernetesList, DoneableTemplate>> templates();
 
   NonNamespaceOperation<User, UserList, DoneableUser, Resource<User, DoneableUser>> users();
 

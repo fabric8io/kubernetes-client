@@ -13,14 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openshift.client.dsl;
 
-import io.fabric8.kubernetes.api.model.KubernetesList;
-import io.fabric8.kubernetes.client.dsl.ParameterMixedOperation;
-import io.fabric8.openshift.api.model.DoneableTemplate;
-import io.fabric8.openshift.api.model.Template;
-import io.fabric8.openshift.api.model.TemplateList;
+package io.fabric8.kubernetes.client.dsl;
 
-public interface TemplateOperation extends TemplateResource<Template, KubernetesList, DoneableTemplate>,
-  ParameterMixedOperation<Template, TemplateList, DoneableTemplate, TemplateResource<Template, KubernetesList, DoneableTemplate>> {
+public interface ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<T, B>
+  extends NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<T, B>, Parameterizable<NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<T, B>> {
+
 }

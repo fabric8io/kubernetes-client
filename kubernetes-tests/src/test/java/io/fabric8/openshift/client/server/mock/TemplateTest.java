@@ -38,7 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static io.fabric8.openshift.client.dsl.internal.ReplaceValueStream.replaceValues;
+import static io.fabric8.kubernetes.client.utils.ReplaceValueStream.replaceValues;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -75,6 +75,22 @@ public class TemplateTest {
     templateList = client.templates().inAnyNamespace().list();
     assertNotNull(templateList);
     assertEquals(3, templateList.getItems().size());
+  }
+
+  @Test
+  public void testListWithParams() throws IOException {
+    String json = IOHelpers.readFully(getClass().getResourceAsStream("/template-list-with-number-params.json"));
+
+    server.expect().withPath("/oapi/v1/namespaces/test/templates").andReturn(200, json).always();
+
+    OpenShiftClient client = server.getOpenshiftClient();
+
+    Map<String,String> map = new HashMap<>();
+    map.put("PORT", "8080");
+
+    TemplateList templateList = client.templates().withParameters(map).list();
+    assertNotNull(templateList);
+    assertEquals(1, templateList.getItems().size());
   }
 
 
@@ -168,7 +184,7 @@ public class TemplateTest {
     map.put("PORT", "8080");
 
     OpenShiftClient client = server.getOpenshiftClient();
-    Template template = client.templates().withName("tmpl1").get(map);
+    Template template = client.templates().withParameters(map).withName("tmpl1").get();
     List<HasMetadata> list = template.getObjects();
     assertListIsServiceWithPort8080(list);
   }

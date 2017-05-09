@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -35,6 +36,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 public class Utils {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(Utils.class);
+  private static final String ALL_CHARS = "abcdefghijklmnopqrstuvwxyz0123456789";
 
   public static <T> T checkNotNull(T ref, String message) {
     if (ref == null) {
@@ -243,5 +245,25 @@ public class Utils {
           }
       }
       return text;
+  }
+
+  public static String randomString(int length) {
+    Random random = new Random();
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < length; i++) {
+      int index = random.nextInt(ALL_CHARS.length());
+      sb.append(ALL_CHARS.charAt(index));
+    }
+    return sb.toString();
+  }
+
+  public static String randomString(String prefix, int length) {
+    Random random = new Random();
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < length - prefix.length(); i++) {
+      int index = random.nextInt(ALL_CHARS.length());
+      sb.append(ALL_CHARS.charAt(index));
+    }
+    return sb.toString();
   }
 }
