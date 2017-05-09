@@ -159,17 +159,15 @@ public class CertUtils {
   private static void loadDefaultKeyStoreFile(KeyStore keyStore, char[] keyStorePassphrase)
     throws CertificateException, NoSuchAlgorithmException, IOException {
 
-    File defaultKeyStore = getDefaultKeyStoreFile();
-
-    if (!loadDefaultStoreFile(keyStore, defaultKeyStore, keyStorePassphrase)) {
-      keyStore.load(null);
+    String keyStorePath = System.getProperty(KEY_STORE_SYSTEM_PROPERTY);
+    if (Utils.isNotNullOrEmpty(keyStorePath)) {
+      File keyStoreFile = new File(keyStorePath);
+      if (loadDefaultStoreFile(keyStore, keyStoreFile, keyStorePassphrase)) {
+        return;
+      }
     }
-  }
 
-  private static File getDefaultKeyStoreFile() {
-    String keyStoreInHome = System.getProperty("user.home") + File.separator + ".keystore";
-    String keyStorePath = System.getProperty(KEY_STORE_SYSTEM_PROPERTY, keyStoreInHome);
-    return new File(keyStorePath);
+    keyStore.load(null);
   }
 
   private static boolean loadDefaultStoreFile(KeyStore keyStore, File fileToLoad, char[] passphrase)
