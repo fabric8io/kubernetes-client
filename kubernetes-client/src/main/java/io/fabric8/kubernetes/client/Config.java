@@ -154,20 +154,34 @@ public class Config {
 
   private Map<Integer, String> errorMessages = new HashMap<>();
 
+  //In future releases (2.4.x) the public constructor will be empty.
+  //The current functionality will be provided by autoConfigure().
+  //This is a necessary change to allow us distinguish between auto configured values and builder values.
+  @Deprecated
   public Config() {
-    if (!tryKubeConfig(this)) {
-      tryServiceAccount(this);
-      tryNamespaceFromPath(this);
-    }
-    configFromSysPropsOrEnvVars(this);
+    autoConfigure(this);
+  }
 
-    if (!this.masterUrl.toLowerCase().startsWith(HTTP_PROTOCOL_PREFIX) && !this.masterUrl.toLowerCase().startsWith(HTTPS_PROTOCOL_PREFIX)) {
-      this.masterUrl = (SSLUtils.isHttpsAvailable(this) ? HTTPS_PROTOCOL_PREFIX : HTTP_PROTOCOL_PREFIX) + this.masterUrl;
+  public static Config autoConfigure() {
+    Config config = new Config();
+    return autoConfigure(config);
+  }
+
+  private static Config autoConfigure(Config config) {
+    if (!tryKubeConfig(config)) {
+      tryServiceAccount(config);
+      tryNamespaceFromPath(config);
+    }
+    configFromSysPropsOrEnvVars(config);
+
+    if (!config.masterUrl.toLowerCase().startsWith(HTTP_PROTOCOL_PREFIX) && !config.masterUrl.toLowerCase().startsWith(HTTPS_PROTOCOL_PREFIX)) {
+      config.masterUrl = (SSLUtils.isHttpsAvailable(config) ? HTTPS_PROTOCOL_PREFIX : HTTP_PROTOCOL_PREFIX) + config.masterUrl;
     }
 
-    if (!this.masterUrl.endsWith("/")) {
-      this.masterUrl = this.masterUrl + "/";
+    if (!config.masterUrl.endsWith("/")) {
+      config.masterUrl = config.masterUrl + "/";
     }
+    return config;
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
@@ -210,7 +224,7 @@ public class Config {
     this.keyStorePassphrase = keyStorePassphrase;
   }
 
-  public void configFromSysPropsOrEnvVars(Config config) {
+  public static void configFromSysPropsOrEnvVars(Config config) {
     config.setTrustCerts(Utils.getSystemPropertyOrEnvVar(KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY, config.isTrustCerts()));
     config.setMasterUrl(Utils.getSystemPropertyOrEnvVar(KUBERNETES_MASTER_SYSTEM_PROPERTY, config.getMasterUrl()));
     config.setApiVersion(Utils.getSystemPropertyOrEnvVar(KUBERNETES_API_VERSION_SYSTEM_PROPERTY, config.getApiVersion()));
@@ -297,7 +311,7 @@ public class Config {
     }
   }
 
-  private boolean tryServiceAccount(Config config) {
+  private static boolean tryServiceAccount(Config config) {
     LOGGER.debug("Trying to configure client from service account...");
     if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYSERVICEACCOUNT_SYSTEM_PROPERTY, true)) {
       boolean serviceAccountCaCertExists = Files.isRegularFile(new File(KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH).toPath());
@@ -327,7 +341,7 @@ public class Config {
     return false;
   }
 
-  private String absolutify(File relativeTo, String filename) {
+  private static String absolutify(File relativeTo, String filename) {
     if (filename == null) {
       return null;
     }
@@ -340,7 +354,7 @@ public class Config {
     return new File(relativeTo.getParentFile(), filename).getAbsolutePath();
   }
 
-  private boolean tryKubeConfig(Config config) {
+  private static boolean tryKubeConfig(Config config) {
     LOGGER.debug("Trying to configure client from Kubernetes config...");
     if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, true)) {
       File kubeConfigFile = new File(
@@ -387,7 +401,7 @@ public class Config {
     return false;
   }
 
-  private boolean tryNamespaceFromPath(Config config) {
+  private static boolean tryNamespaceFromPath(Config config) {
     LOGGER.debug("Trying to configure client namespace from Kubernetes service account namespace path...");
     if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_TRYNAMESPACE_PATH_SYSTEM_PROPERTY, true)) {
       String serviceAccountNamespace = Utils.getSystemPropertyOrEnvVar(KUBERNETES_NAMESPACE_FILE, KUBERNETES_NAMESPACE_PATH);
@@ -408,7 +422,7 @@ public class Config {
     return false;
   }
 
-  private String getHomeDir() {
+  private static String getHomeDir() {
     String osName = System.getProperty("os.name").toLowerCase();
     if (osName.startsWith("win")) {
       String homeDrive = System.getenv("HOMEDRIVE");
