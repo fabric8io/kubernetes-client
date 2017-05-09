@@ -24,6 +24,8 @@ import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 
 import static okhttp3.TlsVersion.TLS_1_0;
 
+@Deprecated
+// The class has moved under mvn:io.fabric8:openshift-server-mock in package: io.fabric8.openshift.client.server.mock
 public class OpenShiftMockServer extends KubernetesMockServer {
 
   public OpenShiftMockServer() {

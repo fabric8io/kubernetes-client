@@ -15,14 +15,28 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.Closeable;
+import java.io.Flushable;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
-import java.util.Queue;
+import java.util.Random;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
 
+
 public class Utils {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(Utils.class);
+  private static final String ALL_CHARS = "abcdefghijklmnopqrstuvwxyz0123456789";
 
   public static <T> T checkNotNull(T ref, String message) {
     if (ref == null) {
@@ -136,5 +150,120 @@ public class Utils {
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
+  }
+
+  /**
+   * Closes the specified {@link ExecutorService}.
+   * @param executorService   The executorService.
+   * @return                  True if shutdown is complete.
+   */
+  public static boolean shutdownExecutorService(ExecutorService executorService) {
+    if (executorService == null) {
+      return false;
+    }
+    //If it hasn't already shutdown, do shutdown.
+    if (!executorService.isShutdown()) {
+      executorService.shutdown();
+    }
+
+    try {
+      //Wait for clean termination
+      if (executorService.awaitTermination(5, TimeUnit.SECONDS)) {
+        return true;
+      }
+
+      //If not already terminated (via shutdownNow) do shutdownNow.
+      if (!executorService.isTerminated()) {
+        executorService.shutdownNow();
+      }
+
+      if (executorService.awaitTermination(5, TimeUnit.SECONDS)) {
+        return true;
+      }
+
+      if (LOGGER.isDebugEnabled()) {
+        List<Runnable> tasks = executorService.shutdownNow();
+        if (!tasks.isEmpty()) {
+          LOGGER.debug("ExecutorService was not cleanly shutdown, after waiting for 10 seconds. Number of remaining tasks:" + tasks.size());
+        }
+      }
+    } catch (InterruptedException e) {
+      executorService.shutdownNow();
+      //Preserve interrupted status
+      Thread.currentThread().interrupt();
+    }
+    return false;
+  }
+
+  /**
+   * Closes and flushes the specified {@link Closeable} items.
+   * @param closeables  An {@link Iterable} of {@link Closeable} items.
+   */
+  public static void closeQuietly(Iterable<Closeable> closeables) {
+    for (Closeable c : closeables) {
+      try {
+        //Check if we also need to flush
+        if (c instanceof Flushable) {
+          ((Flushable) c).flush();
+        }
+
+        if (c != null) {
+          c.close();
+        }
+      } catch (IOException e) {
+        LOGGER.debug("Error closing:" + c);
+      }
+    }
+  }
+
+  /**
+   * Closes and flushes the specified {@link Closeable} items.
+   * @param closeables  An array of {@link Closeable} items.
+   */
+  public static void closeQuietly(Closeable... closeables) {
+    closeQuietly(Arrays.asList(closeables));
+  }
+
+
+  /**
+   * Replaces all occurrencies of the from text with to text without any regular expressions
+   */
+  public static String replaceAllWithoutRegex(String text, String from, String to) {
+      if (text == null) {
+          return null;
+      }
+      int idx = 0;
+      while (true) {
+          idx = text.indexOf(from, idx);
+          if (idx >= 0) {
+              text = text.substring(0, idx) + to + text.substring(idx + from.length());
+
+              // lets start searching after the end of the `to` to avoid possible infinite recursion
+              idx += to.length();
+          } else {
+              break;
+          }
+      }
+      return text;
+  }
+
+  public static String randomString(int length) {
+    Random random = new Random();
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < length; i++) {
+      int index = random.nextInt(ALL_CHARS.length());
+      sb.append(ALL_CHARS.charAt(index));
+    }
+    return sb.toString();
+  }
+
+  public static String randomString(String prefix, int length) {
+    Random random = new Random();
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < length - prefix.length(); i++) {
+      int index = random.nextInt(ALL_CHARS.length());
+      sb.append(ALL_CHARS.charAt(index));
+    }
+    return sb.toString();
   }
 }

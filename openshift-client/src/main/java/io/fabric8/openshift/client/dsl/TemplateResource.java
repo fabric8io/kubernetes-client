@@ -16,4 +16,5 @@
 package io.fabric8.openshift.client.dsl;
 
 public interface TemplateResource<T, L, D> extends ProcessableResource<T, L, D> {
+
 }

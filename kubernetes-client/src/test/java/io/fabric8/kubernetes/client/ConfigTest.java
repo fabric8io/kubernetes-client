@@ -16,21 +16,32 @@
 
 package io.fabric8.kubernetes.client;
 
-import okhttp3.TlsVersion;
-import org.junit.*;
-
+import io.fabric8.kubernetes.client.utils.Serialization;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URLDecoder;
+import okhttp3.TlsVersion;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import static okhttp3.TlsVersion.TLS_1_1;
 import static okhttp3.TlsVersion.TLS_1_2;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class ConfigTest {
 
   private static final String TEST_KUBECONFIG_FILE = decodeUrl(ConfigTest.class.getResource("/test-kubeconfig").getFile());
   private static final String TEST_NAMESPACE_FILE = decodeUrl(ConfigTest.class.getResource("/test-namespace").getFile());
+
+  private static final String TEST_CONFIG_YML_FILE = decodeUrl(ConfigTest.class.getResource("/test-config.yml").getFile());
 
   @Before
   public void setUp() {
@@ -56,6 +67,10 @@ public class ConfigTest {
     System.getProperties().remove(Config.KUBERNETES_KUBECONFIG_FILE);
     System.getProperties().remove(Config.KUBERNETES_NAMESPACE_FILE);
     System.getProperties().remove(Config.KUBERNETES_TLS_VERSIONS);
+    System.getProperties().remove(Config.KUBERNETES_TRUSTSTORE_FILE_PROPERTY);
+    System.getProperties().remove(Config.KUBERNETES_TRUSTSTORE_PASSPHRASE_PROPERTY);
+    System.getProperties().remove(Config.KUBERNETES_KEYSTORE_FILE_PROPERTY);
+    System.getProperties().remove(Config.KUBERNETES_KEYSTORE_PASSPHRASE_PROPERTY);
   }
 
   @After
@@ -88,6 +103,11 @@ public class ConfigTest {
 
     System.setProperty(Config.KUBERNETES_TLS_VERSIONS, "TLSv1.2,TLSv1.1");
 
+    System.setProperty(Config.KUBERNETES_TRUSTSTORE_FILE_PROPERTY, "/path/to/truststore");
+    System.setProperty(Config.KUBERNETES_TRUSTSTORE_PASSPHRASE_PROPERTY, "truststorePassphrase");
+    System.setProperty(Config.KUBERNETES_KEYSTORE_FILE_PROPERTY, "/path/to/keystore");
+    System.setProperty(Config.KUBERNETES_KEYSTORE_PASSPHRASE_PROPERTY, "keystorePassphrase");
+
     Config config = new Config();
     assertConfig(config);
 
@@ -118,6 +138,10 @@ public class ConfigTest {
       .withRequestTimeout(5000)
       .withHttpProxy("httpProxy")
       .withTlsVersions(TLS_1_2, TLS_1_1)
+      .withTrustStoreFile("/path/to/truststore")
+      .withTrustStorePassphrase("truststorePassphrase")
+      .withKeyStoreFile("/path/to/keystore")
+      .withKeyStorePassphrase("keystorePassphrase")
       .build();
 
     assertConfig(config);
@@ -148,6 +172,11 @@ public class ConfigTest {
     System.setProperty(Config.KUBERNETES_HTTP_PROXY, "httpProxy");
 
     System.setProperty(Config.KUBERNETES_TLS_VERSIONS, "TLSv1.2,TLSv1.1");
+
+    System.setProperty(Config.KUBERNETES_TRUSTSTORE_FILE_PROPERTY, "/path/to/truststore");
+    System.setProperty(Config.KUBERNETES_TRUSTSTORE_PASSPHRASE_PROPERTY, "truststorePassphrase");
+    System.setProperty(Config.KUBERNETES_KEYSTORE_FILE_PROPERTY, "/path/to/keystore");
+    System.setProperty(Config.KUBERNETES_KEYSTORE_PASSPHRASE_PROPERTY, "keystorePassphrase");
 
     Config config = new ConfigBuilder()
       .withMasterUrl("http://somehost:80")
@@ -257,6 +286,30 @@ public class ConfigTest {
     assertEquals("testns2", config.getNamespace());
   }
 
+  @Test
+  public void shouldInstantiateClientUsingYaml() throws MalformedURLException {
+    File configYml = new File(TEST_CONFIG_YML_FILE);
+    try (InputStream is = new FileInputStream(configYml)){
+      KubernetesClient client = DefaultKubernetesClient.fromConfig(is);
+      Assert.assertEquals("http://some.url", client.getMasterUrl().toString());
+    } catch (Exception e) {
+      Assert.fail();
+    }
+  }
+
+  @Test
+  public void shouldInstantiateClientUsingSerializeDeserialize() throws MalformedURLException {
+    DefaultKubernetesClient original = new DefaultKubernetesClient();
+    String json = Serialization.asJson(original.getConfiguration());
+    DefaultKubernetesClient copy = DefaultKubernetesClient.fromConfig(json);
+
+    Assert.assertEquals(original.getConfiguration().getMasterUrl(), copy.getConfiguration().getMasterUrl());
+    Assert.assertEquals(original.getConfiguration().getOauthToken(), copy.getConfiguration().getOauthToken());
+    Assert.assertEquals(original.getConfiguration().getNamespace(), copy.getConfiguration().getNamespace());
+    Assert.assertEquals(original.getConfiguration().getUsername(), copy.getConfiguration().getUsername());
+    Assert.assertEquals(original.getConfiguration().getPassword(), copy.getConfiguration().getPassword());
+  }
+
   private void assertConfig(Config config) {
     assertNotNull(config);
     assertTrue(config.isTrustCerts());
@@ -282,5 +335,10 @@ public class ConfigTest {
     assertEquals(5000, config.getRequestTimeout());
 
     assertArrayEquals(new TlsVersion[]{TLS_1_2, TLS_1_1}, config.getTlsVersions());
+
+    assertEquals("/path/to/truststore", config.getTrustStoreFile());
+    assertEquals("truststorePassphrase", config.getTrustStorePassphrase());
+    assertEquals("/path/to/keystore", config.getKeyStoreFile());
+    assertEquals("keystorePassphrase", config.getKeyStorePassphrase());
   }
 }

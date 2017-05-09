@@ -20,6 +20,7 @@ import io.fabric8.mockwebserver.internal.WebSocketMessage;
 
 import java.nio.charset.StandardCharsets;
 
+// The class has moved under mvn:io.fabric8:kubernetes-server-mock in package: io.fabric8.client.server.mock
 public class OutputStreamMessage extends WebSocketMessage {
 
     private static final byte OUT_STREAM_ID = 1;

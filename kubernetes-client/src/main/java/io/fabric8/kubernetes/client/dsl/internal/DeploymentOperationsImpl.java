@@ -209,32 +209,7 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
         return;
       }
       ReplicaSetOperationsImpl rsOper = new ReplicaSetOperationsImpl(oper.client, oper.getConfig(), oper.getNamespace());
-      rsOper.inNamespace(oper.getNamespace());
-      if (selector.getMatchLabels() != null) {
-        for (Map.Entry<String, String> entry : selector.getMatchLabels().entrySet()) {
-          rsOper.withLabel(entry.getKey(), entry.getValue());
-        }
-      }
-      if (selector.getMatchExpressions() != null) {
-        for (LabelSelectorRequirement req : selector.getMatchExpressions()) {
-          switch (req.getOperator()) {
-            case "In":
-              rsOper.withLabelIn(req.getKey(), req.getValues().toArray(new String[]{}));
-              break;
-            case "NotIn":
-              rsOper.withLabelNotIn(req.getKey(), req.getValues().toArray(new String[]{}));
-              break;
-            case "DoesNotExist":
-              rsOper.withoutLabel(req.getKey());
-              break;
-            case "Exists":
-              rsOper.withLabel(req.getKey());
-              break;
-          }
-        }
-      }
-
-      rsOper.delete();
+      rsOper.inNamespace(oper.getNamespace()).withLabelSelector(selector).delete();
     }
   }
 }

@@ -142,7 +142,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
               return body.string();
             }
         } catch (Throwable t) {
-            throw KubernetesClientException.launderThrowable(t);
+            throw KubernetesClientException.launderThrowable(forOperationType("getLog"), t);
         }
     }
 
@@ -167,7 +167,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
             callback.waitUntilReady();
             return callback;
         } catch (Throwable t) {
-            throw KubernetesClientException.launderThrowable(t);
+            throw KubernetesClientException.launderThrowable(forOperationType("watchLog"), t);
         }
     }
 
@@ -245,7 +245,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
             execWebSocketListener.waitUntilReady();
             return execWebSocketListener;
         } catch (Throwable t) {
-            throw KubernetesClientException.launderThrowable(t);
+            throw KubernetesClientException.launderThrowable(forOperationType("exec"), t);
         }
     }
 
@@ -328,7 +328,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
 
     @Override
     public Execable<String, ExecWatch> usingListener(ExecListener execListener) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, true, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes);
+        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes);
     }
 
     @Override

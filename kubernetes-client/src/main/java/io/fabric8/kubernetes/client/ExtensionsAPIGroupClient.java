@@ -23,6 +23,9 @@ import io.fabric8.kubernetes.api.model.extensions.DoneableDaemonSet;
 import io.fabric8.kubernetes.api.model.extensions.DoneableDeployment;
 import io.fabric8.kubernetes.api.model.extensions.DoneableHorizontalPodAutoscaler;
 import io.fabric8.kubernetes.api.model.extensions.DoneableIngress;
+import io.fabric8.kubernetes.api.model.extensions.DoneableNetworkPolicy;
+import io.fabric8.kubernetes.api.model.extensions.NetworkPolicy;
+import io.fabric8.kubernetes.api.model.extensions.NetworkPolicyList;
 import io.fabric8.kubernetes.api.model.DoneableJob;
 import io.fabric8.kubernetes.api.model.extensions.DoneableReplicaSet;
 import io.fabric8.kubernetes.api.model.extensions.DoneableThirdPartyResource;
@@ -42,9 +45,9 @@ import io.fabric8.kubernetes.client.dsl.internal.DeploymentOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.HorizontalPodAutoscalerOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.IngressOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.JobOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.NetworkPolicyOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ReplicaSetOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ThirdPartyResourceOperationsImpl;
-
 import okhttp3.OkHttpClient;
 
 public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAPIGroupDSL {
@@ -77,6 +80,11 @@ public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAP
   public MixedOperation<Ingress, IngressList, DoneableIngress, Resource<Ingress, DoneableIngress>> ingresses() {
     return new IngressOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
+  
+  @Override
+  public MixedOperation<NetworkPolicy, NetworkPolicyList, DoneableNetworkPolicy, Resource<NetworkPolicy, DoneableNetworkPolicy>> networkPolicies() {
+	  return new NetworkPolicyOperationsImpl(httpClient, getConfiguration(), getNamespace());
+  }
 
   @Override
   public MixedOperation<DaemonSet, DaemonSetList, DoneableDaemonSet, Resource<DaemonSet, DoneableDaemonSet>> daemonSets() {
@@ -87,7 +95,7 @@ public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAP
     return new ThirdPartyResourceOperationsImpl(httpClient, getConfiguration());
   }
 
-  public MixedOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, RollableScallableResource<ReplicaSet, DoneableReplicaSet>> replicaSets() {
+  public MixedOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, RollableScalableResource<ReplicaSet, DoneableReplicaSet>> replicaSets() {
     return new ReplicaSetOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 

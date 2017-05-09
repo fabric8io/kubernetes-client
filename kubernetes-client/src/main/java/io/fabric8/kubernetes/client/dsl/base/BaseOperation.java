@@ -16,11 +16,12 @@
 package io.fabric8.kubernetes.client.dsl.base;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.ReplicationController;
-import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
+import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
+import io.fabric8.kubernetes.client.OperationInfo;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.internal.DefaultOperationInfo;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
-import io.fabric8.kubernetes.client.internal.readiness.ReadinessWatcher;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -29,7 +30,6 @@ import io.fabric8.kubernetes.api.builder.Function;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.RootPaths;
-import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
@@ -67,7 +67,10 @@ import static io.fabric8.kubernetes.client.utils.Utils.join;
 
 public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
   extends OperationSupport
-  implements MixedOperation<T, L, D, R>, Resource<T,D> {
+  implements
+  OperationInfo,
+  MixedOperation<T, L, D, R>,
+  Resource<T,D> {
 
   private final Boolean cascading;
   private final T item;
@@ -174,6 +177,17 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   @Override
   public T get() {
+    try {
+    return getMandatory();
+    } catch (KubernetesClientException e) {
+      if (e.getCode() != 404) {
+        throw e;
+      }
+      return null;
+    }
+  }
+
+  public T getMandatory() {
     if (item != null && !reloadingFromServer) {
       return item;
     }
@@ -191,12 +205,16 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
       }
       return handleGet(requestUrl);
     } catch (KubernetesClientException e) {
-      if (e.getCode() != 404) {
-        throw e;
-      }
-      return null;
+      throw KubernetesClientException.launderThrowable(forOperationType("get"), e);
+      //if (e.getCode() != 404) {
+     //   throw e;
+      //} else {
+      //  String resourceType = type != null ? type.getSimpleName() : "Resource";
+      //  String msg = resourceType + " with name: [" + getName() + "]  not found in namespace: [" + (Utils.isNotNullOrEmpty(getNamespace()) ? getName() : getConfig().getNamespace()) + "]";
+     //   throw new KubernetesClientException(msg, 404, new StatusBuilder().withCode(404).withMessage(msg).build());
+     // }
     } catch (InterruptedException | ExecutionException | IOException e) {
-      throw KubernetesClientException.launderThrowable(e);
+      throw KubernetesClientException.launderThrowable(forOperationType("get"), e);
     }
   }
 
@@ -213,14 +231,6 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     } catch (InterruptedException | ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
-  }
-
-  public T getMandatory() {
-    T item = get();
-    if (item != null) {
-      return item;
-    }
-    throw new KubernetesClientException("Resource not found!", 404, new StatusBuilder().withCode(404).withMessage("Not found.").build());
   }
 
   @Override
@@ -328,7 +338,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
         return handleCreate(getItem());
       }
     } catch (InterruptedException | ExecutionException | IOException e) {
-      throw KubernetesClientException.launderThrowable(e);
+      throw KubernetesClientException.launderThrowable(forOperationType("create"), e);
     }
   }
 
@@ -340,7 +350,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
         try {
           return create(resource);
         } catch (Exception e) {
-          throw KubernetesClientException.launderThrowable(e);
+          throw KubernetesClientException.launderThrowable(forOperationType("create"), e);
         }
       }
     };
@@ -348,7 +358,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     try {
       return getDoneableType().getDeclaredConstructor(Function.class).newInstance(visitor);
     } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException e) {
-      throw KubernetesClientException.launderThrowable(e);
+      throw KubernetesClientException.launderThrowable(forOperationType("create"), e);
     }
   }
 
@@ -361,7 +371,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
         try {
           return createOrReplace(resource);
         } catch (Exception e) {
-          throw KubernetesClientException.launderThrowable(e);
+          throw KubernetesClientException.launderThrowable(forOperationType("create or replace"), e);
         }
       }
     };
@@ -369,7 +379,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     try {
       return getDoneableType().getDeclaredConstructor(Function.class).newInstance(visitor);
     } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException e) {
-      throw KubernetesClientException.launderThrowable(e);
+      throw KubernetesClientException.launderThrowable(forOperationType("create or replace"), e);
     }
   }
 
@@ -399,6 +409,38 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   @Override
   public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withLabels(Map<String, String> labels) {
     this.labels.putAll(labels);
+    return this;
+  }
+
+  @Override
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withLabelSelector(LabelSelector selector) {
+    Map<String, String> matchLabels = selector.getMatchLabels();
+    if (matchLabels != null) {
+      this.labels.putAll(matchLabels);
+    }
+    List<LabelSelectorRequirement> matchExpressions = selector.getMatchExpressions();
+    if (matchExpressions != null) {
+      for (LabelSelectorRequirement req : matchExpressions) {
+        String operator = req.getOperator();
+        String key = req.getKey();
+        switch (operator) {
+          case "In":
+            withLabelIn(key, req.getValues().toArray(new String[]{}));
+            break;
+          case "NotIn":
+            withLabelNotIn(key, req.getValues().toArray(new String[]{}));
+            break;
+          case "DoesNotExist":
+            withoutLabel(key);
+            break;
+          case "Exists":
+            withLabel(key);
+            break;
+          default:
+            throw new IllegalArgumentException("Unsupported operator: " + operator);
+        }
+      }
+    }
     return this;
   }
 
@@ -540,7 +582,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
       Request.Builder requestBuilder = new Request.Builder().get().url(requestUrlBuilder.build());
       return handleResponse(requestBuilder, listType);
     } catch (InterruptedException | ExecutionException | IOException e) {
-      throw KubernetesClientException.launderThrowable(e);
+      throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
     }
   }
 
@@ -600,7 +642,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
           }
           return false;
         } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-          throw KubernetesClientException.launderThrowable(e);
+          throw KubernetesClientException.launderThrowable(forOperationType("delete"), e);
         }
       }
     }
@@ -615,7 +657,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
         handleDelete(getResourceUrl(), gracePeriodSeconds, cascading);
       }
     } catch (Exception e) {
-      throw KubernetesClientException.launderThrowable(e);
+      throw KubernetesClientException.launderThrowable(forOperationType("delete"), e);
     }
   }
 
@@ -652,7 +694,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
       watch.waitUntilReady();
       return watch;
     } catch (MalformedURLException e) {
-      throw KubernetesClientException.launderThrowable(e);
+      throw KubernetesClientException.launderThrowable(forOperationType("watch"), e);
     } catch (KubernetesClientException ke) {
       if (ke.getCode() != 200) {
         throw ke;
@@ -672,7 +714,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
           config.getConnectionTimeout()
         );
       } catch (MalformedURLException e) {
-        throw KubernetesClientException.launderThrowable(e);
+        throw KubernetesClientException.launderThrowable(forOperationType("watch"), e);
       }
     }
   }
@@ -781,6 +823,21 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   @Override
+  public String getKind() {
+    return type != null ? type.getSimpleName() : "Resource";
+  }
+
+  @Override
+  public String getOperationType() {
+    return null;
+  }
+
+  @Override
+  public OperationInfo forOperationType(String type) {
+    return new DefaultOperationInfo(getKind(), type, name, namespace);
+  }
+
+  @Override
   public Deletable<Boolean> withGracePeriod(long gracePeriodSeconds)
   {
     try {
@@ -806,5 +863,4 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   public T waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
     return get();
   }
-
 }

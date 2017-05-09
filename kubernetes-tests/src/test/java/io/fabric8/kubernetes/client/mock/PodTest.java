@@ -22,6 +22,7 @@ import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -45,8 +46,9 @@ import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
-import io.fabric8.kubernetes.server.mock.KubernetesServer;
-import io.fabric8.kubernetes.server.mock.OutputStreamMessage;
+
+import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.server.mock.OutputStreamMessage;
 
 import okhttp3.Response;
 import okio.ByteString;
@@ -118,6 +120,13 @@ public class PodTest {
   }
 
 
+  @Test(expected = KubernetesClientException.class)
+  public void testEditMissing() {
+    server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(404, "error message from kubernetes").always();
+    KubernetesClient client = server.getClient();
+
+    client.pods().withName("pod1").edit();
+  }
 
   @Test
   public void testDelete() {
@@ -208,7 +217,7 @@ public class PodTest {
   @Test
   public void testExec() throws InterruptedException {
     String expectedOutput = "file1 file2";
-    server.expect().withPath("/api/v1/namespaces/test/pods/pod1/exec?command=ls&tty=true&stdout=true")
+    server.expect().withPath("/api/v1/namespaces/test/pods/pod1/exec?command=ls&stdout=true")
             .andUpgradeToWebSocket()
                 .open(new OutputStreamMessage(expectedOutput))
                 .done()

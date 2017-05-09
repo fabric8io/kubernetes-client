@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.Callback;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
@@ -32,6 +33,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -39,10 +42,14 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static io.fabric8.kubernetes.client.utils.Utils.closeQuietly;
+import static io.fabric8.kubernetes.client.utils.Utils.shutdownExecutorService;
+
 public class ExecWebSocketListener extends WebSocketListener implements ExecWatch, AutoCloseable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExecWebSocketListener.class);
 
+    private final Config config;
     private final InputStream in;
     private final OutputStream out;
     private final OutputStream err;
@@ -58,14 +65,24 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
     private final AtomicBoolean started = new AtomicBoolean(false);
     private final ArrayBlockingQueue<Object> queue = new ArrayBlockingQueue<>(1);
     private final ExecListener listener;
-    private final AtomicBoolean executorClosed = new AtomicBoolean(false);
-    private final AtomicBoolean webSocketClosed = new AtomicBoolean(false);
 
+    private final AtomicBoolean cleanupOnClose = new AtomicBoolean(false);
+    private final AtomicBoolean closed = new AtomicBoolean(false);
+
+    private final AtomicBoolean webSocketClosed = new AtomicBoolean(false);
+    private final Set<Closeable> toClose = new LinkedHashSet<>();
+
+  @Deprecated
     public ExecWebSocketListener(InputStream in, OutputStream out, OutputStream err, PipedOutputStream inputPipe, PipedInputStream outputPipe, PipedInputStream errorPipe, ExecListener listener) {
+        this(new Config(), in, out, err, inputPipe, outputPipe, errorPipe, listener);
+    }
+
+    public ExecWebSocketListener(Config config, InputStream in, OutputStream out, OutputStream err, PipedOutputStream inputPipe, PipedInputStream outputPipe, PipedInputStream errorPipe, ExecListener listener) {
+        this.config = config;
         this.listener = listener;
-        this.in = inputStreamOrPipe(in, inputPipe);
-        this.out = outputStreamOrPipe(out, outputPipe);
-        this.err = outputStreamOrPipe(err, errorPipe);
+        this.in = inputStreamOrPipe(in, inputPipe, toClose);
+        this.out = outputStreamOrPipe(out, outputPipe, toClose);
+        this.err = outputStreamOrPipe(err, errorPipe, toClose);
 
         this.input = inputPipe;
         this.output = outputPipe;
@@ -90,8 +107,8 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
 
     public void close(int code, String reason) {
         try {
-         closeExecutor();
-         closeWebSocket(code, reason);
+          cleanupOnClose.set(true);
+          closeWebSocket(code, reason);
         } finally {
           if (listener != null) {
             listener.onClose(code, reason);
@@ -99,24 +116,30 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
         }
     }
 
-    private void closeExecutor() {
-      if (!executorClosed.compareAndSet(false, true)) {
+  /**
+   * Performs the cleanup tasks:
+   * 1. closes the InputStream pumper
+   * 2. closes all internally managed closeables (piped streams).
+   *
+   * The order of these tasks can't change or its likely that the pumper will through errors,
+   * if the stream it uses closes before the pumper it self.
+   */
+  private void cleanUp() {
+    try {
+      if (!closed.compareAndSet(false, true)) {
         return;
       }
 
-      pumper.close();
-      executorService.shutdownNow();
-      try {
-        if (!executorService.awaitTermination(10, TimeUnit.SECONDS)) {
-          LOGGER.debug("ExecutorService was not cleanly shutdown, after waiting for 10 seconds.");
-        }
-      } catch (Throwable t) {
-        LOGGER.debug("Error shutting down ExecutorService.", t);
-      }
+      closeQuietly(pumper);
+      shutdownExecutorService(executorService);
+    } finally {
+      closeQuietly(toClose);
     }
+  }
 
     private void closeWebSocket(int code, String reason) {
       if (!webSocketClosed.compareAndSet(false, true)) {
+        cleanUp();
         return;
       }
 
@@ -131,7 +154,7 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
     }
 
     public void waitUntilReady() {
-      Utils.waitUntilReady(queue, 10, TimeUnit.SECONDS);
+      Utils.waitUntilReady(queue, config.getWebsocketTimeout(), TimeUnit.MILLISECONDS);
     }
 
     @Override
@@ -163,13 +186,18 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
   @Override
   public void onFailure(WebSocket webSocket, Throwable t, Response response) {
       try {
+        //If we have closed the watch ignore everything
+        if (closed.get())  {
+          return;
+        }
         Status status = OperationSupport.createStatus(response);
         LOGGER.error("Exec Failure: HTTP:" + status.getCode() + ". Message:" + status.getMessage(), t);
         //We only need to queue startup failures.
         if (!started.get()) {
           queue.add(new KubernetesClientException(status));
         }
-        closeExecutor();
+
+        cleanUp();
       } finally {
         if (listener != null) {
           listener.onFailure(t, response);
@@ -218,7 +246,9 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
         webSocketClosed.set(true);
         LOGGER.debug("Exec Web Socket: On Close with code:[{}], due to: [{}]", code, reason);
         try {
-            closeExecutor();
+            if (cleanupOnClose.get()) {
+              cleanUp();
+            }
         } finally {
             if (listener != null) {
               listener.onClose(code, reason);
@@ -250,21 +280,27 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
         }
     }
 
-    private static InputStream inputStreamOrPipe(InputStream stream, PipedOutputStream out) {
+    private static InputStream inputStreamOrPipe(InputStream stream, PipedOutputStream out, Set<Closeable> toClose) {
         if (stream != null) {
             return stream;
         } else if (out != null) {
-            return new PipedInputStream();
+            PipedInputStream pis = new PipedInputStream();
+            toClose.add(out);
+            toClose.add(pis);
+            return pis;
         } else {
             return null;
         }
     }
 
-    private static OutputStream outputStreamOrPipe(OutputStream stream, PipedInputStream in) {
+    private static OutputStream outputStreamOrPipe(OutputStream stream, PipedInputStream in, Set<Closeable> toClose) {
         if (stream != null) {
             return stream;
         } else if (in != null) {
-            return new PipedOutputStream();
+            PipedOutputStream pos = new PipedOutputStream();
+            toClose.add(in);
+            toClose.add(pos);
+            return pos;
         } else {
             return null;
         }

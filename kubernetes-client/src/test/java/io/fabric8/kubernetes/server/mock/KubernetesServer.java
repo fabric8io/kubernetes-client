@@ -20,6 +20,8 @@ import io.fabric8.mockwebserver.dsl.MockServerExpectation;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.rules.ExternalResource;
 
+@Deprecated
+// The class has moved under mvn:io.fabric8:kubernetes-server-mock in package: io.fabric8.client.server.mock
 public class KubernetesServer extends ExternalResource {
   private KubernetesMockServer mock;
   private NamespacedKubernetesClient client;

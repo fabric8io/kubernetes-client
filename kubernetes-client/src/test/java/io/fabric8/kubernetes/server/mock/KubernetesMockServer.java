@@ -33,6 +33,8 @@ import java.util.Queue;
 
 import static okhttp3.TlsVersion.TLS_1_0;
 
+@Deprecated
+// The class has moved under mvn:io.fabric8:kubernetes-server-mock in package: io.fabric8.client.server.mock
 public class KubernetesMockServer extends DefaultMockServer {
 
     private static final Context context = new ContextBuilder()

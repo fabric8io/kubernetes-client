@@ -17,26 +17,27 @@ package io.fabric8.openshift.client.dsl.internal;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.mifmif.common.regex.Generex;
-
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.openshift.api.model.TemplateBuilder;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
+import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.DoneableTemplate;
 import io.fabric8.openshift.api.model.Parameter;
 import io.fabric8.openshift.api.model.Template;
+import io.fabric8.openshift.api.model.TemplateBuilder;
 import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.ParameterValue;
-import io.fabric8.openshift.client.dsl.TemplateResource;
 import io.fabric8.openshift.client.dsl.TemplateOperation;
+import io.fabric8.openshift.client.dsl.TemplateResource;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -51,6 +52,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.ExecutionException;
 
 public class TemplateOperationsImpl
   extends OpenShiftOperation<Template, TemplateList, DoneableTemplate, TemplateResource<Template, KubernetesList, DoneableTemplate>>
@@ -59,21 +61,29 @@ public class TemplateOperationsImpl
   private static final String EXPRESSION = "expression";
   private static final TypeReference<HashMap<String, String>> MAPS_REFERENCE = new TypeReference<HashMap<String, String>>() {
   };
+  private final Map<String, String> parameters;
 
   public TemplateOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
-    this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+    this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null);
   }
 
   public TemplateOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, Template item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
     super(client, config, null, apiVersion, "templates", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+    this.parameters = null;
   }
+
+  public TemplateOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, Template item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, Map<String, String> parameters) {
+    super(client, config, null, apiVersion, "templates", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+    this.parameters = parameters;
+  }
+
 
   @Override
   public KubernetesList process(File f) {
     try (FileInputStream is = new FileInputStream(f)) {
       return process(is);
     } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(e);
+      throw KubernetesClientException.launderThrowable(forOperationType("process"), e);
     }
   }
 
@@ -86,11 +96,14 @@ public class TemplateOperationsImpl
   public KubernetesList process(Map<String, String> valuesMap) {
     Template t = get();
     try {
-      for (Parameter p : t.getParameters()) {
-        String v = valuesMap.get(p.getName());
-        if (v != null) {
-          p.setGenerate(null);
-          p.setValue(v);
+      List<Parameter> parameters = t.getParameters();
+      if (parameters != null) {
+        for (Parameter p : parameters) {
+          String v = valuesMap.get(p.getName());
+          if (v != null) {
+            p.setGenerate(null);
+            p.setValue(v);
+          }
         }
       }
 
@@ -101,7 +114,7 @@ public class TemplateOperationsImpl
       l.setItems(t.getObjects());
       return l;
     } catch (Exception e) {
-      throw KubernetesClientException.launderThrowable(e);
+      throw KubernetesClientException.launderThrowable(forOperationType("process"), e);
     }
   }
 
@@ -120,7 +133,7 @@ public class TemplateOperationsImpl
     try (FileInputStream is = new FileInputStream(f)) {
       return processLocally(is);
     } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(e);
+      throw KubernetesClientException.launderThrowable(forOperationType("processLocally"), e);
     }
   }
 
@@ -138,8 +151,24 @@ public class TemplateOperationsImpl
     return processLocally(valuesMap);
   }
 
+  @Override
+  public MixedOperation<Template, TemplateList, DoneableTemplate, TemplateResource<Template, KubernetesList, DoneableTemplate>> withParameters(Map<String, String> parameters) {
+    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(),
+      getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), parameters);
+  }
+
   public KubernetesList processLocally(Map<String, String> valuesMap)  {
-    Template t = get();
+    String namespace = getItem() != null ? getItem().getMetadata().getNamespace() : getNamespace();
+    if (namespace == null) {
+      namespace = getConfig().getNamespace();
+    }
+
+    String name = getItem() != null ? getItem().getMetadata().getName() : getName();
+
+    Template t = withParameters(valuesMap)
+      .inNamespace(namespace)
+      .withName(name)
+      .get();
 
     List<Parameter> parameters = t != null ? t.getParameters() : null;
     KubernetesList list = new KubernetesListBuilder()
@@ -152,20 +181,22 @@ public class TemplateOperationsImpl
         // lets make a few passes in case there's expressions in values
         for (int i = 0; i < 5; i++) {
           for (Parameter parameter : parameters) {
-            String name = parameter.getName();
-            String regex = "${" + name + "}";
-            String value;
-            if (valuesMap.containsKey(name)) {
-              value = valuesMap.get(name);
+            String parameterName = parameter.getName();
+            String regex = "${" + parameterName + "}";
+            String parameterValue;
+            if (valuesMap.containsKey(parameterName)) {
+              parameterValue = valuesMap.get(parameterName);
             } else if (Utils.isNotNullOrEmpty(parameter.getValue())) {
-              value = parameter.getValue();
+              parameterValue = parameter.getValue();
             } else if (EXPRESSION.equals(parameter.getGenerate())) {
               Generex generex = new Generex(parameter.getFrom());
-              value = generex.random();
+              parameterValue = generex.random();
+            } else if (parameter.getRequired() == null || !parameter.getRequired()) {
+              parameterValue = "";
             } else {
-              throw new IllegalArgumentException("No value available for parameter name: " + name);
+              throw new IllegalArgumentException("No value available for parameter name: " + parameterName);
             }
-            json = json.replace(regex, value);
+            json = json.replace(regex, parameterValue);
           }
         }
       }
@@ -176,6 +207,7 @@ public class TemplateOperationsImpl
     }
     return list;
   }
+
 
   private URL getProcessUrl() throws MalformedURLException {
     URL requestUrl = getRootUrl();
@@ -188,17 +220,32 @@ public class TemplateOperationsImpl
 
   @Override
   public TemplateResource<Template, KubernetesList, DoneableTemplate> load(InputStream is) {
+    String generatedName = Utils.randomString("template-", 10);
     Template template = null;
-    Object item = unmarshal(is);
+    Object item = Serialization.unmarshal(is, parameters);
     if (item instanceof Template) {
       template = (Template) item;
     } else if (item instanceof HasMetadata) {
-      template = new TemplateBuilder().withObjects((HasMetadata) item).build();
+      HasMetadata h = (HasMetadata) item;
+      template = new TemplateBuilder()
+        .withNewMetadata()
+          .withName(generatedName)
+          .withNamespace(h != null && h.getMetadata() != null ? h.getMetadata().getNamespace() : null)
+        .endMetadata()
+        .withObjects(h).build();
     } else if (item instanceof KubernetesResourceList) {
       List<HasMetadata> list = ((KubernetesResourceList<HasMetadata>) item).getItems();
-      template = new TemplateBuilder().withNewMetadata().endMetadata().withObjects(list.toArray(new HasMetadata[list.size()])).build();
+      template = new TemplateBuilder()
+        .withNewMetadata()
+          .withName(generatedName)
+        .endMetadata()
+        .withObjects(list.toArray(new HasMetadata[list.size()])).build();
     } else if (item instanceof HasMetadata[]) {
-      template = new TemplateBuilder().withNewMetadata().endMetadata().withObjects((HasMetadata[]) item).build();
+      template = new TemplateBuilder()
+        .withNewMetadata()
+          .withName(generatedName)
+        .endMetadata()
+        .withObjects((HasMetadata[]) item).build();
     } else if (item instanceof Collection) {
       List<HasMetadata> items = new ArrayList<>();
       for (Object o : (Collection) item) {
@@ -206,10 +253,38 @@ public class TemplateOperationsImpl
           items.add((HasMetadata) o);
         }
       }
-      template = new TemplateBuilder().withNewMetadata().endMetadata().withObjects(items.toArray(new HasMetadata[items.size()])).build();
+      template = new TemplateBuilder()
+        .withNewMetadata()
+          .withName(generatedName)
+        .endMetadata()
+        .withObjects(items.toArray(new HasMetadata[items.size()])).build();
     }
 
     return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, false, template, null, false, 0L,
-      null, null, null, null, null);
+      null, null, null, null, null, null);
+  }
+
+  @Override
+  public TemplateResource<Template, KubernetesList, DoneableTemplate> withName(String name) {
+    if (name == null || name.length() == 0) {
+      throw new IllegalArgumentException("Name must be provided.");
+    }
+    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), getAPIVersion(), namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(),
+      getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), parameters);
+  }
+
+  @Override
+  public OpenShiftOperation<Template, TemplateList, DoneableTemplate, TemplateResource<Template, KubernetesList, DoneableTemplate>> inNamespace(String namespace) {
+    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), getAPIVersion(), namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(),
+      getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), parameters);
+  }
+
+  @Override
+  protected Template handleGet(URL resourceUrl) throws InterruptedException, ExecutionException, IOException {
+    return super.handleGet(resourceUrl, getType(), this.parameters);
+  }
+
+  protected <T> T handleResponse(Request.Builder requestBuilder, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+    return handleResponse(requestBuilder, type, parameters);
   }
 }

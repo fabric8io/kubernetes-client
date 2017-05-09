@@ -51,7 +51,7 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
           .endSpec()
           .build());
       } catch (Exception e) {
-        throw KubernetesClientException.launderThrowable(e);
+        throw KubernetesClientException.launderThrowable(forOperationType("replace"), e);
       }
   }
 
@@ -65,7 +65,7 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
           .endSpec()
           .build());
       } catch (Exception e) {
-        throw KubernetesClientException.launderThrowable(e);
+        throw KubernetesClientException.launderThrowable(forOperationType("patch"), e);
       }
   }
 

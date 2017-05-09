@@ -53,9 +53,16 @@
 
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-client</artifactId>
+      <artifactId>kubernetes-server-mock</artifactId>
       <version>${project.version}</version>
-      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>openshift-server-mock</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
 
 

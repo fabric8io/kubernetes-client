@@ -20,6 +20,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+
+import io.fabric8.kubernetes.client.utils.Serialization;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -43,6 +45,8 @@ import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import static io.fabric8.kubernetes.client.internal.PatchUtils.patchMapper;
@@ -52,8 +56,8 @@ public class OperationSupport {
 
   public static final MediaType JSON = MediaType.parse("application/json");
   public static final MediaType JSON_PATCH = MediaType.parse("application/json-patch+json");
-  protected static final ObjectMapper JSON_MAPPER = new ObjectMapper();
-  protected static final ObjectMapper YAML_MAPPER = new ObjectMapper(new YAMLFactory());
+  protected static final ObjectMapper JSON_MAPPER = Serialization.jsonMapper();
+  protected static final ObjectMapper YAML_MAPPER = Serialization.yamlMapper();
   private static final String CLIENT_STATUS_FLAG = "CLIENT_STATUS_FLAG";
 
   protected final OkHttpClient client;
@@ -201,44 +205,180 @@ public class OperationSupport {
     requestBody = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(deleteOptions));
 
     Request.Builder requestBuilder = new Request.Builder().delete(requestBody).url(requestUrl);
-    handleResponse(requestBuilder, null);
+    handleResponse(requestBuilder, null, Collections.<String, String>emptyMap());
   }
 
+  /**
+   * Create a resource.
+   * @param resource
+   * @param outputType
+   * @param <T>
+   * @param <I>
+   * @return
+   * @throws ExecutionException
+   * @throws InterruptedException
+   * @throws KubernetesClientException
+     * @throws IOException
+     */
   protected <T, I> T handleCreate(I resource, Class<T> outputType) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     RequestBody body = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(resource));
     Request.Builder requestBuilder = new Request.Builder().post(body).url(getNamespacedUrl(checkNamespace(resource)));
-    return handleResponse(requestBuilder, outputType);
+    return handleResponse(requestBuilder, outputType, Collections.<String, String>emptyMap());
   }
 
+
+  /**
+   * Replace a resource.
+   * @param updated
+   * @param type
+   * @param <T>
+   * @return
+   * @throws ExecutionException
+   * @throws InterruptedException
+   * @throws KubernetesClientException
+   * @throws IOException
+   */
   protected <T> T handleReplace(T updated, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+    return handleReplace(updated, type, Collections.<String, String>emptyMap());
+  }
+
+  /**
+   * Replace a resource, optionally performing placeholder substitution to the response.
+   * @param updated
+   * @param type
+   * @param parameters
+   * @param <T>
+   * @return
+   * @throws ExecutionException
+   * @throws InterruptedException
+   * @throws KubernetesClientException
+     * @throws IOException
+     */
+  protected <T> T handleReplace(T updated, Class<T> type, Map<String, String> parameters) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     RequestBody body = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(updated));
     Request.Builder requestBuilder = new Request.Builder().put(body).url(getResourceUrl(checkNamespace(updated), checkName(updated)));
-    return handleResponse(requestBuilder, type);
+    return handleResponse(requestBuilder, type, parameters);
   }
 
+  /**
+   * Send an http patch and handle the response.
+   * @param current
+   * @param updated
+   * @param type
+   * @param <T>
+   * @return
+   * @throws ExecutionException
+   * @throws InterruptedException
+   * @throws KubernetesClientException
+     * @throws IOException
+     */
   protected <T> T handlePatch(T current, T updated, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     JsonNode diff = JsonDiff.asJson(patchMapper().valueToTree(current), patchMapper().valueToTree(updated));
     RequestBody body = RequestBody.create(JSON_PATCH, JSON_MAPPER.writeValueAsString(diff));
     Request.Builder requestBuilder = new Request.Builder().patch(body).url(getResourceUrl(checkNamespace(updated), checkName(updated)));
-    return handleResponse(requestBuilder, type);
+    return handleResponse(requestBuilder, type, Collections.<String, String>emptyMap());
   }
 
+
+  /**
+   * Send an http get.
+   * @param resourceUrl
+   * @param type
+   * @param <T>
+   * @return
+   * @throws ExecutionException
+   * @throws InterruptedException
+   * @throws KubernetesClientException
+   * @throws IOException
+   */
   protected <T> T handleGet(URL resourceUrl, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+    return handleGet(resourceUrl, type, Collections.<String, String>emptyMap());
+  }
+
+  /**
+   * Send an http, optionally performing placeholder substitution to the response.
+   * @param resourceUrl
+   * @param type
+   * @param parameters
+   * @param <T>
+   * @return
+   * @throws ExecutionException
+   * @throws InterruptedException
+   * @throws KubernetesClientException
+     * @throws IOException
+     */
+  protected <T> T handleGet(URL resourceUrl, Class<T> type, Map<String, String> parameters) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     Request.Builder requestBuilder = new Request.Builder().get().url(resourceUrl);
-    return handleResponse(requestBuilder, type);
+    return handleResponse(requestBuilder, type, parameters);
   }
 
+  /**
+   * Send an http request and handle the response.
+   * @param requestBuilder
+   * @param type
+   * @param <T>
+   * @return
+   * @throws ExecutionException
+   * @throws InterruptedException
+   * @throws KubernetesClientException
+   * @throws IOException
+   */
   protected <T> T handleResponse(Request.Builder requestBuilder, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    return handleResponse(client, requestBuilder, type);
+    return handleResponse(requestBuilder, type, Collections.<String, String>emptyMap());
   }
 
+  /**
+   * Send an http request and handle the response, optionally performing placeholder substitution to the response.
+   * @param requestBuilder
+   * @param type
+   * @param parameters
+   * @param <T>
+   * @return
+   * @throws ExecutionException
+   * @throws InterruptedException
+   * @throws KubernetesClientException
+   * @throws IOException
+   */
+  protected <T> T handleResponse(Request.Builder requestBuilder, Class<T> type, Map<String, String> parameters) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+    return handleResponse(client, requestBuilder, type, parameters);
+  }
+
+  /**
+   * Send an http request and handle the response.
+   * @param client
+   * @param requestBuilder
+   * @param type
+   * @param <T>
+   * @return
+   * @throws ExecutionException
+   * @throws InterruptedException
+   * @throws KubernetesClientException
+   * @throws IOException
+   */
   protected <T> T handleResponse(OkHttpClient client, Request.Builder requestBuilder, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+    return handleResponse(client, requestBuilder, type, Collections.<String, String>emptyMap());
+  }
+
+  /**
+   * Send an http request and handle the response, optionally performing placeholder substitution to the response.
+   * @param client
+   * @param requestBuilder
+   * @param type
+   * @param parameters
+   * @param <T>
+   * @return
+   * @throws ExecutionException
+   * @throws InterruptedException
+   * @throws KubernetesClientException
+   * @throws IOException
+   */
+  protected <T> T handleResponse(OkHttpClient client, Request.Builder requestBuilder, Class<T> type, Map<String, String> parameters) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     Request request = requestBuilder.build();
     Response response = client.newCall(request).execute();
     try (ResponseBody body = response.body()) {
       assertResponseCode(request, response);
       if (type != null) {
-        return JSON_MAPPER.readValue(body.byteStream(), type);
+        return Serialization.unmarshal(body.byteStream(), type, parameters);
       } else {
         return null;
       }
@@ -264,17 +404,27 @@ public class OperationSupport {
     if (response.isSuccessful()) {
       return;
     } else if (customMessage != null) {
-      throw requestFailure(request, createStatus(statusCode, customMessage));
+      throw requestFailure(request, createStatus(statusCode, combineMessages(customMessage, createStatus(response))));
     } else {
       throw requestFailure(request, createStatus(response));
     }
   }
 
+  private String combineMessages(String customMessage, Status defaultStatus) {
+    if (defaultStatus != null) {
+      String message = defaultStatus.getMessage();
+      if (message != null && message.length() > 0) {
+        return customMessage + " " + message;
+      }
+    }
+    return customMessage;
+  }
+
 
   public static Status createStatus(Response response) {
-    int statusCode = response.code();
     String statusMessage = "";
     ResponseBody body = response != null ? response.body() : null;
+    int statusCode = response != null ? response.code() : 0;
     try {
       if (response == null) {
         statusMessage = "No response";
@@ -330,50 +480,15 @@ public class OperationSupport {
   }
 
   protected static <T> T unmarshal(InputStream is) throws KubernetesClientException {
-    try (BufferedInputStream bis = new BufferedInputStream(is)) {
-      bis.mark(-1);
-      int intch;
-      do {
-        intch = bis.read();
-      } while (intch > -1 && Character.isWhitespace(intch));
-      bis.reset();
-
-      ObjectMapper mapper = JSON_MAPPER;
-      if (intch != '{') {
-        mapper = YAML_MAPPER;
-      }
-      return mapper.readerFor(KubernetesResource.class).readValue(bis);
-    } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
+    return Serialization.unmarshal(is);
   }
 
   protected static <T> T unmarshal(InputStream is, final Class<T> type) throws KubernetesClientException {
-    return unmarshal(is, new TypeReference<T>() {
-      @Override
-      public Type getType() {
-        return type;
-      }
-    });
+    return Serialization.unmarshal(is, type);
   }
 
   protected static <T> T unmarshal(InputStream is, TypeReference<T> type) throws KubernetesClientException {
-    try (BufferedInputStream bis = new BufferedInputStream(is)) {
-      bis.mark(-1);
-      int intch;
-      do {
-        intch = bis.read();
-      } while (intch > -1 && Character.isWhitespace(intch));
-      bis.reset();
-
-      ObjectMapper mapper = JSON_MAPPER;
-      if (intch != '{') {
-        mapper = YAML_MAPPER;
-      }
-      return mapper.readValue(bis, type);
-    } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
+   return Serialization.unmarshal(is, type);
   }
 
   public Config getConfig() {

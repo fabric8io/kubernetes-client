@@ -17,10 +17,19 @@ package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.utils.Serialization;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -77,4 +86,16 @@ public class OpenShiftConfigTest {
     assertEquals("https://2.2.2.2/oapi/" + version + "/", config.getOpenShiftUrl());
   }
 
+  @Test
+  public void shouldInstantiateClientUsingSerializeDeserialize() throws MalformedURLException {
+    DefaultOpenShiftClient original = new DefaultOpenShiftClient();
+    String json = Serialization.asJson(original.getConfiguration());
+    DefaultOpenShiftClient copy = DefaultOpenShiftClient.fromConfig(json);
+
+    Assert.assertEquals(original.getConfiguration().getMasterUrl(), copy.getConfiguration().getMasterUrl());
+    Assert.assertEquals(original.getConfiguration().getOauthToken(), copy.getConfiguration().getOauthToken());
+    Assert.assertEquals(original.getConfiguration().getNamespace(), copy.getConfiguration().getNamespace());
+    Assert.assertEquals(original.getConfiguration().getUsername(), copy.getConfiguration().getUsername());
+    Assert.assertEquals(original.getConfiguration().getPassword(), copy.getConfiguration().getPassword());
+  }
 }
