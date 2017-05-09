@@ -55,7 +55,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
           }
           return patch(resource);
         } catch (Exception e) {
-          throw KubernetesClientException.launderThrowable(e);
+          throw KubernetesClientException.launderThrowable(forOperationType("edit"), e);
         }
       }
     };
@@ -64,7 +64,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
       T item = getMandatory();
       return (D) getDoneableType().getDeclaredConstructor(getType(), Function.class).newInstance(item, visitor);
     } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException e) {
-      throw KubernetesClientException.launderThrowable(e);
+      throw KubernetesClientException.launderThrowable(forOperationType("edit"), e);
     }
   }
 
@@ -91,7 +91,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
               resource.getMetadata().setResourceVersion(got.getMetadata().getResourceVersion());
               return handleReplace(resource);
             } catch (Exception e) {
-              throw KubernetesClientException.launderThrowable(e);
+              throw KubernetesClientException.launderThrowable(forOperationType("replace"), e);
             }
           }
         };
@@ -114,7 +114,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
         caught = e;
       }
     }
-    throw KubernetesClientException.launderThrowable(caught);
+    throw KubernetesClientException.launderThrowable(forOperationType("replace"), caught);
   }
 
   public T patch(T item) {
@@ -138,7 +138,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
             try {
               return handlePatch(got, resource);
             } catch (Exception e) {
-              throw KubernetesClientException.launderThrowable(e);
+              throw KubernetesClientException.launderThrowable(forOperationType("patch"), e);
             }
           }
         };
@@ -161,7 +161,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
         caught = e;
       }
     }
-    throw KubernetesClientException.launderThrowable(caught);
+    throw KubernetesClientException.launderThrowable(forOperationType("patch"), caught);
   }
 
   /**

@@ -106,6 +106,13 @@ public class PodTest {
   }
 
 
+  @Test(expected = KubernetesClientException.class)
+  public void testEditMissing() {
+    server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(404, "error message from kubernetes").always();
+    KubernetesClient client = server.getClient();
+
+    client.pods().withName("pod1").edit();
+  }
 
   @Test
   public void testDelete() {

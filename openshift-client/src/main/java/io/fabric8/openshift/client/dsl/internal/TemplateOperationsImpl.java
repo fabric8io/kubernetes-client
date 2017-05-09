@@ -83,7 +83,7 @@ public class TemplateOperationsImpl
     try (FileInputStream is = new FileInputStream(f)) {
       return process(is);
     } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(e);
+      throw KubernetesClientException.launderThrowable(forOperationType("process"), e);
     }
   }
 
@@ -114,7 +114,7 @@ public class TemplateOperationsImpl
       l.setItems(t.getObjects());
       return l;
     } catch (Exception e) {
-      throw KubernetesClientException.launderThrowable(e);
+      throw KubernetesClientException.launderThrowable(forOperationType("process"), e);
     }
   }
 
@@ -133,7 +133,7 @@ public class TemplateOperationsImpl
     try (FileInputStream is = new FileInputStream(f)) {
       return processLocally(is);
     } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(e);
+      throw KubernetesClientException.launderThrowable(forOperationType("processLocally"), e);
     }
   }
 

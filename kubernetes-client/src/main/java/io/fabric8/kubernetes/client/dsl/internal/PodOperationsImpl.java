@@ -138,7 +138,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
               return body.string();
             }
         } catch (Throwable t) {
-            throw KubernetesClientException.launderThrowable(t);
+            throw KubernetesClientException.launderThrowable(forOperationType("getLog"), t);
         }
     }
 
@@ -163,7 +163,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
             callback.waitUntilReady();
             return callback;
         } catch (Throwable t) {
-            throw KubernetesClientException.launderThrowable(t);
+            throw KubernetesClientException.launderThrowable(forOperationType("watchLog"), t);
         }
     }
 
@@ -214,7 +214,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
             execWebSocketListener.waitUntilReady();
             return execWebSocketListener;
         } catch (Throwable t) {
-            throw KubernetesClientException.launderThrowable(t);
+            throw KubernetesClientException.launderThrowable(forOperationType("exec"), t);
         }
     }
 
