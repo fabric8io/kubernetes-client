@@ -21,6 +21,8 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.utils.Utils;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -39,7 +41,7 @@ import static org.junit.Assert.assertTrue;
 
 public class CertUtilsTest {
 
-  private static String FABRIC8_STORE_PATH = CertUtilsTest.class.getResource("/ssl/fabric8-store").getPath();
+  private static String FABRIC8_STORE_PATH = decodeUrl(CertUtilsTest.class.getResource("/ssl/fabric8-store").getPath());
   private static char[] FABRIC8_STORE_PASSPHRASE = "fabric8".toCharArray();
   private Properties systemProperties;
 
@@ -152,5 +154,13 @@ public class CertUtilsTest {
 
   private InputStream getMultipleCertsInputSteam() {
     return getClass().getResourceAsStream("/ssl/multiple-certs.pem");
+  }
+
+  private static String decodeUrl(String url) {
+    try {
+      return URLDecoder.decode(url, "UTF-8");
+    } catch (UnsupportedEncodingException e) {
+      throw new RuntimeException(e);
+    }
   }
 }
