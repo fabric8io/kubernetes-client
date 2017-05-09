@@ -130,8 +130,8 @@ public class CertUtilsTest {
     System.setProperty(CertUtils.KEY_STORE_SYSTEM_PROPERTY, FABRIC8_STORE_PATH);
     System.setProperty(CertUtils.KEY_STORE_PASSWORD_SYSTEM_PROPERTY, String.valueOf(FABRIC8_STORE_PASSPHRASE));
 
-    String privateKeyPath = getClass().getResource("/ssl/fabric8").getPath();
-    String multipleCertsPath = getClass().getResource("/ssl/multiple-certs.pem").getPath();
+    String privateKeyPath = decodeUrl(getClass().getResource("/ssl/fabric8").getPath());
+    String multipleCertsPath = decodeUrl(getClass().getResource("/ssl/multiple-certs.pem").getPath());
 
     KeyStore trustStore =
       CertUtils.createKeyStore(null, multipleCertsPath, null, privateKeyPath, "RSA", "changeit", null, null);
