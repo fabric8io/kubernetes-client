@@ -21,6 +21,7 @@ io.fabric8.kubernetes.client.handlers.EndpointsHandler
 io.fabric8.kubernetes.client.handlers.EventHandler
 io.fabric8.kubernetes.client.handlers.HorizontalPodAutoscalerHandler
 io.fabric8.kubernetes.client.handlers.IngressHandler
+io.fabric8.kubernetes.client.handlers.NetworkPolicyHandler
 io.fabric8.kubernetes.client.handlers.JobHandler
 io.fabric8.kubernetes.client.handlers.NamespaceHandler
 io.fabric8.kubernetes.client.handlers.NodeHandler
