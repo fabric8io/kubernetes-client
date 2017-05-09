@@ -72,6 +72,11 @@ public class Config {
   public static final String KUBERNETES_WEBSOCKET_TIMEOUT_SYSTEM_PROPERTY = "kubernetes.websocket.timeout";
   public static final String KUBERNETES_WEBSOCKET_PING_INTERVAL_SYSTEM_PROPERTY = "kubernetes.websocket.ping.interval";
 
+  public static final String KUBERNETES_TRUSTSTORE_PASSPHRASE_PROPERTY = "kubernetes.truststore.passphrase";
+  public static final String KUBERNETES_TRUSTSTORE_FILE_PROPERTY = "kubernetes.truststore.file";
+  public static final String KUBERNETES_KEYSTORE_PASSPHRASE_PROPERTY = "kubernetes.keystore.passphrase";
+  public static final String KUBERNETES_KEYSTORE_FILE_PROPERTY = "kubernetes.keystore.file";
+
   public static final String KUBERNETES_TLS_VERSIONS = "kubernetes.tls.versions";
 
   public static final String KUBERNETES_TRYNAMESPACE_PATH_SYSTEM_PROPERTY = "kubernetes.tryNamespacePath";
@@ -113,6 +118,10 @@ public class Config {
   private String clientKeyData;
   private String clientKeyAlgo = "RSA";
   private String clientKeyPassphrase = "changeit";
+  private String trustStoreFile;
+  private String trustStorePassphrase;
+  private String keyStoreFile;
+  private String keyStorePassphrase;
 
   private RequestConfig requestConfig = new RequestConfig();
 
@@ -162,7 +171,7 @@ public class Config {
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
-  public Config(String masterUrl, String apiVersion, String namespace, boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, long scaleTimeout, int loggingInterval, String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages, String userAgent, TlsVersion[] tlsVersions, long websocketTimeout, long websocketPingInterval, String proxyUsername, String proxyPassword) {
+  public Config(String masterUrl, String apiVersion, String namespace, boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, long scaleTimeout, int loggingInterval, String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages, String userAgent, TlsVersion[] tlsVersions, long websocketTimeout, long websocketPingInterval, String proxyUsername, String proxyPassword, String trustStoreFile, String trustStorePassphrase, String keyStoreFile, String keyStorePassphrase) {
     this.masterUrl = masterUrl;
     this.apiVersion = apiVersion;
     this.namespace = namespace;
@@ -194,6 +203,11 @@ public class Config {
     if (!this.masterUrl.endsWith("/")) {
       this.masterUrl = this.masterUrl + "/";
     }
+
+    this.trustStoreFile = trustStoreFile;
+    this.trustStorePassphrase = trustStorePassphrase;
+    this.keyStoreFile = keyStoreFile;
+    this.keyStorePassphrase = keyStorePassphrase;
   }
 
   public void configFromSysPropsOrEnvVars(Config config) {
@@ -210,6 +224,11 @@ public class Config {
     config.setClientKeyAlgo(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_ALGO_SYSTEM_PROPERTY, config.getClientKeyAlgo()));
     config.setClientKeyPassphrase(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_PASSPHRASE_SYSTEM_PROPERTY, new String(config.getClientKeyPassphrase())));
     config.setUserAgent(Utils.getSystemPropertyOrEnvVar(KUBERNETES_USER_AGENT, config.getUserAgent()));
+
+    config.setTrustStorePassphrase(Utils.getSystemPropertyOrEnvVar(KUBERNETES_TRUSTSTORE_PASSPHRASE_PROPERTY, config.getTrustStorePassphrase()));
+    config.setTrustStoreFile(Utils.getSystemPropertyOrEnvVar(KUBERNETES_TRUSTSTORE_FILE_PROPERTY, config.getTrustStoreFile()));
+    config.setKeyStorePassphrase(Utils.getSystemPropertyOrEnvVar(KUBERNETES_KEYSTORE_PASSPHRASE_PROPERTY, config.getKeyStorePassphrase()));
+    config.setKeyStoreFile(Utils.getSystemPropertyOrEnvVar(KUBERNETES_KEYSTORE_FILE_PROPERTY, config.getKeyStoreFile()));
 
     config.setOauthToken(Utils.getSystemPropertyOrEnvVar(KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY, config.getOauthToken()));
     config.setUsername(Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_BASIC_USERNAME_SYSTEM_PROPERTY, config.getUsername()));
@@ -718,4 +737,41 @@ public class Config {
     RequestConfig rc = RequestConfigHolder.get();
     return rc != null ? rc : this.requestConfig;
   }
+
+  public void setTrustStorePassphrase(String trustStorePassphrase) {
+    this.trustStorePassphrase = trustStorePassphrase;
+  }
+
+  @JsonProperty("trustStorePassphrase")
+  public String getTrustStorePassphrase() {
+    return trustStorePassphrase;
+  }
+
+  public void setKeyStorePassphrase(String keyStorePassphrase) {
+    this.keyStorePassphrase = keyStorePassphrase;
+  }
+
+  @JsonProperty("keyStorePassphrase")
+  public String getKeyStorePassphrase() {
+    return keyStorePassphrase;
+  }
+
+  public void setTrustStoreFile(String trustStoreFile) {
+    this.trustStoreFile = trustStoreFile;
+  }
+
+  @JsonProperty("trustStoreFile")
+  public String getTrustStoreFile() {
+    return trustStoreFile;
+  }
+
+  public void setKeyStoreFile(String keyStoreFile) {
+    this.keyStoreFile = keyStoreFile;
+  }
+
+  @JsonProperty("keyStoreFile")
+  public String getKeyStoreFile() {
+    return keyStoreFile;
+  }
+
 }

@@ -116,11 +116,15 @@ import static io.fabric8.kubernetes.client.Config.KUBERNETES_CLIENT_KEY_FILE_SYS
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_CLIENT_KEY_PASSPHRASE_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_HTTPS_PROXY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_HTTP_PROXY;
+import static io.fabric8.kubernetes.client.Config.KUBERNETES_KEYSTORE_FILE_PROPERTY;
+import static io.fabric8.kubernetes.client.Config.KUBERNETES_KEYSTORE_PASSPHRASE_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_MASTER_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_NAMESPACE_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_NO_PROXY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY;
+import static io.fabric8.kubernetes.client.Config.KUBERNETES_TRUSTSTORE_FILE_PROPERTY;
+import static io.fabric8.kubernetes.client.Config.KUBERNETES_TRUSTSTORE_PASSPHRASE_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_WEBSOCKET_PING_INTERVAL_SYSTEM_PROPERTY;
@@ -206,6 +210,18 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
     }
     if (properties.containsKey(KUBERNETES_WEBSOCKET_PING_INTERVAL_SYSTEM_PROPERTY)) {
       builder.withWebsocketPingInterval(Long.parseLong((String) properties.get(KUBERNETES_WEBSOCKET_PING_INTERVAL_SYSTEM_PROPERTY)));
+    }
+    if (properties.containsKey(KUBERNETES_TRUSTSTORE_FILE_PROPERTY)) {
+      builder.withTrustStoreFile((String) properties.get(KUBERNETES_TRUSTSTORE_FILE_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_TRUSTSTORE_PASSPHRASE_PROPERTY)) {
+      builder.withTrustStorePassphrase((String) properties.get(KUBERNETES_TRUSTSTORE_PASSPHRASE_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_KEYSTORE_FILE_PROPERTY)) {
+      builder.withKeyStoreFile((String) properties.get(KUBERNETES_KEYSTORE_FILE_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_KEYSTORE_PASSPHRASE_PROPERTY)) {
+      builder.withKeyStorePassphrase((String) properties.get(KUBERNETES_KEYSTORE_PASSPHRASE_PROPERTY));
     }
 
     delegate = new DefaultKubernetesClient(builder.build());
