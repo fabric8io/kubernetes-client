@@ -72,7 +72,12 @@ public class KubernetesClientException extends RuntimeException {
   }
 
   public static RuntimeException launderThrowable(OperationInfo spec, Status status, Throwable cause) {
-    return launderThrowable(describeOperation(spec)+ " failed. Reason: " + status.getMessage(), cause);
+    StringBuilder sb = new StringBuilder();
+    sb.append(describeOperation(spec)+ " failed.");
+    if (status != null && Utils.isNotNullOrEmpty(status.getMessage())) {
+      sb.append("Reason: ").append(status.getMessage());
+    }
+    return launderThrowable(sb.toString(), cause);
   }
 
   private static final String describeOperation(OperationInfo operation) {
