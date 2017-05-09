@@ -13,21 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl;
+package io.fabric8.kubernetes.client.dsl.internal;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
+import java.net.InetAddress;
+import java.net.URL;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 
 import io.fabric8.kubernetes.client.LocalPortForward;
 import io.fabric8.kubernetes.client.PortForward;
 
-public interface PodResource<T, D> extends Resource<T, D>,
-        Loggable<String, LogWatch>,
-        Containerable<String, ContainerResource<String, LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch>>,
-        ContainerResource<String, LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch>,
-        PortForwardable<PortForward, LocalPortForward, ReadableByteChannel, WritableByteChannel> {
+/**
+ * Allows to forward local ports (or nio channels) to remote ports in Kubernetes pods.
+ */
+public interface PortForwarder {
+
+  LocalPortForward forward(URL resourceBaseUrl, int port);
+
+  LocalPortForward forward(URL resourceBaseUrl, int port, int localPort);
+
+  LocalPortForward forward(URL resourceBaseUrl, int port, InetAddress localHost, int localPort);
+
+  PortForward forward(URL resourceBaseUrl, int port, ReadableByteChannel in, WritableByteChannel out);
+
 }

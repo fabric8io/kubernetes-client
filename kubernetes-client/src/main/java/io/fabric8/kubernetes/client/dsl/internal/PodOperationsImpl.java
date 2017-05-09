@@ -20,6 +20,8 @@ import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.net.URL;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.WritableByteChannel;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
@@ -29,6 +31,8 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.LocalPortForward;
+import io.fabric8.kubernetes.client.PortForward;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.ContainerResource;
@@ -167,7 +171,34 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
         }
     }
 
-    @Override
+  @Override
+  public PortForward portForward(int port, ReadableByteChannel in, WritableByteChannel out) {
+    try {
+      return new PortForwarderWebsocket(client).forward(getResourceUrl(), port, in, out);
+    } catch (Throwable t) {
+      throw KubernetesClientException.launderThrowable(t);
+    }
+  }
+
+  @Override
+  public LocalPortForward portForward(int port) {
+    try {
+      return new PortForwarderWebsocket(client).forward(getResourceUrl(), port);
+    } catch (Throwable t) {
+      throw KubernetesClientException.launderThrowable(t);
+    }
+  }
+
+  @Override
+  public LocalPortForward portForward(int port, int localPort) {
+    try {
+      return new PortForwarderWebsocket(client).forward(getResourceUrl(), port, localPort);
+    } catch (Throwable t) {
+      throw KubernetesClientException.launderThrowable(t);
+    }
+  }
+
+  @Override
     public ContainerResource<String, LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch> inContainer(String containerId) {
         return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes);
     }
