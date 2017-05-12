@@ -143,6 +143,16 @@ Service myservice = client.services().inNamespace("default").createNew()
                      .done();
 ```
 
+### Working with extensions
+
+The kubernetes API defines a bunch of extensions like `daemonSets`, `jobs`, `ingresses` and so forth which are all usable in the `extensions()` DSL:
+
+e.g. to list the jobs...
+
+```
+jobs = client.extensions().jobs().list();
+```
+
 ### Loading resources from external sources
 
 There are cases where you want to read a resource from an external source, rather than defining it using the clients DSL.
