@@ -48,14 +48,12 @@ import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.internal.Util;
 import okio.BufferedSink;
 import okio.Okio;
 import okio.Source;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -230,8 +228,9 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
             source = Okio.source(inputStream);
             sink.writeAll(source);
           } catch (IOException e) {
-            throw KubernetesClientException.launderThrowable("Can't instantiate binary build, due to error reading/writing stream. "
-              + "Can be caused if output is stream closed by the server.", e);
+            throw KubernetesClientException.launderThrowable("Can't instantiate binary build for BuildConfig " +
+              getName() + ", due to error reading/writing stream. Check latest build logs with 'oc logs bc/" +
+              getName() + "'. Can be caused if output is stream closed by the server.", e);
           }
         }
       };
