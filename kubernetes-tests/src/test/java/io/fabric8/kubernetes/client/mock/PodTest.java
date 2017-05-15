@@ -260,7 +260,7 @@ public class PodTest {
             .endMetadata()
             .build();
 
-   server.expect().withPath("/api/v1/namespaces/test/pods").andReturn(200, new PodListBuilder()
+   server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, new PodListBuilder()
             .withNewMetadata()
                 .withResourceVersion("1")
             .endMetadata()

@@ -567,7 +567,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   public L list() throws KubernetesClientException {
     try {
-      HttpUrl.Builder requestUrlBuilder = HttpUrl.get(getNamespacedUrl()).newBuilder();
+      HttpUrl.Builder requestUrlBuilder = HttpUrl.get(getResourceUrl()).newBuilder();
 
       String labelQueryParam = getLabelQueryParam();
       if (isNotNullOrEmpty(labelQueryParam)) {
