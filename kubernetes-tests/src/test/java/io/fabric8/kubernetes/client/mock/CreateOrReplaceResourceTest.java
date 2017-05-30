@@ -16,6 +16,9 @@
 package io.fabric8.kubernetes.client.mock;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.fabric8.kubernetes.api.model.ConfigMap;
+import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
@@ -175,5 +178,42 @@ public class CreateOrReplaceResourceTest {
     request = server.getMockServer().takeRequest();
     Pod requestPod = new ObjectMapper().readerFor(Pod.class).readValue(request.getBody().inputStream());
     assertEquals("nginx", requestPod.getMetadata().getName());
+  }
+
+  @Test
+  public void testReplaceWithoutLock() throws Exception {
+    server.expect().get().withPath("/api/v1/namespaces/test/configmaps/map1").andReturn(200, new ConfigMapBuilder()
+      .withNewMetadata().withResourceVersion("1000").and().build()).always();
+
+    server.expect().put().withPath("/api/v1/namespaces/test/configmaps/map1").andReturn(200, new ConfigMapBuilder()
+      .withNewMetadata().withResourceVersion("1001").and().build()).once();
+
+    KubernetesClient client = server.getClient();
+    ConfigMap map = client.configMaps().withName("map1").replace(new ConfigMapBuilder()
+      .withNewMetadata().withName("map1").and().build());
+    assertNotNull(map);
+    assertEquals("1001", map.getMetadata().getResourceVersion());
+
+    server.getMockServer().takeRequest(); // ignore the first request
+    RecordedRequest request = server.getMockServer().takeRequest();
+    ConfigMap replacedMap = new ObjectMapper().readerFor(ConfigMap.class).readValue(request.getBody().inputStream());
+    assertEquals("1000", replacedMap.getMetadata().getResourceVersion());
+  }
+
+  @Test
+  public void testReplaceWithLock() throws Exception {
+    server.expect().put().withPath("/api/v1/namespaces/test/configmaps/map1").andReturn(200, new ConfigMapBuilder()
+      .withNewMetadata().withResourceVersion("1001").and().build()).once();
+
+    KubernetesClient client = server.getClient();
+    ConfigMap map = client.configMaps().withName("map1")
+      .lockResourceVersion("900")
+      .replace(new ConfigMapBuilder().withNewMetadata().withName("map1").and().build());
+    assertNotNull(map);
+    assertEquals("1001", map.getMetadata().getResourceVersion());
+
+    RecordedRequest request = server.getMockServer().takeRequest();
+    ConfigMap replacedMap = new ObjectMapper().readerFor(ConfigMap.class).readValue(request.getBody().inputStream());
+    assertEquals("900", replacedMap.getMetadata().getResourceVersion());
   }
 }
