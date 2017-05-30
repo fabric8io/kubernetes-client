@@ -35,4 +35,5 @@ io.fabric8.kubernetes.client.handlers.SecretHandler
 io.fabric8.kubernetes.client.handlers.SecurityContextConstraintsHandler
 io.fabric8.kubernetes.client.handlers.ServiceAccountHandler
 io.fabric8.kubernetes.client.handlers.ServiceHandler
+io.fabric8.kubernetes.client.handlers.StatefulSetHandler
 io.fabric8.kubernetes.client.handlers.ThirdPartyResourceHandler
