@@ -26,7 +26,7 @@
 
   <groupId>io.fabric8</groupId>
   <artifactId>kubernetes-client-project</artifactId>
-  <version>1.4.14.redhat-SNAPSHOT</version>
+  <version>1.4.14.fuse-000032</version>
   <packaging>pom</packaging>
   <name>Fabric8 :: Kubernetes :: Project</name>
 
@@ -80,7 +80,6 @@
     <okio.version>1.9.0</okio.version>
     <okio.bundle.version>1.9.0_1</okio.bundle.version>
     <easymock.version>3.4</easymock.version>
-    <felix.scr.annotations.version>1.9.8</felix.scr.annotations.version>
     <generex.version>1.0.1</generex.version>
     <generex.bundle.version>1.0.1_1</generex.bundle.version>
     <automaton.version>1.11-8</automaton.version>
@@ -88,7 +87,7 @@
     <jackson.version>2.7.5</jackson.version>
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
     <junit.version>4.12</junit.version>
-    <kubernetes.model.version>1.0.58</kubernetes.model.version>
+    <kubernetes.model.version>1.0.58.fuse-000023</kubernetes.model.version>
     <log4j.version>2.5</log4j.version>
     <zjsonpatch.version>0.2.3</zjsonpatch.version>
 
