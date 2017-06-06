@@ -44,9 +44,8 @@ public class TestBase {
     protected MavenArtifactUrlReference getKarafDistributionUrlReference() {
         return maven()
             .groupId("org.apache.karaf")
-            .artifactId("apache-karaf")
+            .artifactId("apache-karaf-minimal")
             .versionAsInProject()
-            .classifier("minimal")
             .type("tar.gz");
     }
 
