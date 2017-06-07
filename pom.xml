@@ -77,8 +77,8 @@
     <mockwebserver.version>0.0.12</mockwebserver.version>
     <okhttp.version>3.8.0</okhttp.version>
     <okhttp.bundle.version>3.8.0_1</okhttp.bundle.version>
-    <okio.version>1.12.0</okio.version>
-    <okio.bundle.version>1.12.0_1</okio.bundle.version>
+    <okio.version>1.13.0</okio.version>
+    <okio.bundle.version>1.13.0_1</okio.bundle.version>
     <generex.version>1.0.1</generex.version>
     <generex.bundle.version>1.0.1_1</generex.bundle.version>
     <automaton.version>1.11-8</automaton.version>
