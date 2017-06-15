@@ -31,7 +31,6 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -117,7 +116,7 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
           int currentReplicas = getCurrentReplicas(t);
           int desiredReplicas = getDesiredReplicas(t);
           replicasRef.set(currentReplicas);
-          if (Objects.equals(desiredReplicas, currentReplicas)) {
+          if (desiredReplicas == currentReplicas) {
             queue.put(true);
           }
           Log.debug("Only {}/{} replicas scheduled for {}: {} in namespace: {} seconds so waiting...",
