@@ -144,9 +144,4 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
     return item.getSpec().getReplicas();
   }
 
-  @Override
-  long getObservedGeneration(ReplicaSet current) {
-    return (current != null && current.getStatus() != null
-      && current.getStatus().getObservedGeneration() != null)? current.getStatus().getObservedGeneration() : -1;
-  }
 }

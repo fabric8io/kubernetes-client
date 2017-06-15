@@ -84,12 +84,6 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
   }
 
   @Override
-  long getObservedGeneration(StatefulSet current) {
-    return (current != null && current.getStatus() != null && current.getStatus().getObservedGeneration() != null)
-      ? current.getStatus().getObservedGeneration() : -1;
-  }
-
-  @Override
   public RollableScalableResource<StatefulSet, DoneableStatefulSet> withName(String name) {
     if (name == null || name.length() == 0) {
       throw new IllegalArgumentException("Name must be provided.");
