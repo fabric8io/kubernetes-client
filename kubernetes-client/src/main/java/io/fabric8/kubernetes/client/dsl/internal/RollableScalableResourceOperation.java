@@ -65,7 +65,6 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
   // There are no common interfaces through which we could get these values.
   abstract int getCurrentReplicas(T current);
   abstract int getDesiredReplicas(T item);
-  abstract long getObservedGeneration(T current);
 
   @Override
   public T scale(int count) {
@@ -118,9 +117,7 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
           int currentReplicas = getCurrentReplicas(t);
           int desiredReplicas = getDesiredReplicas(t);
           replicasRef.set(currentReplicas);
-          long generation = t.getMetadata().getGeneration() != null ? t.getMetadata().getGeneration() : -1;
-          long observedGeneration = getObservedGeneration(t);
-          if (observedGeneration >= generation && Objects.equals(desiredReplicas, currentReplicas)) {
+          if (Objects.equals(desiredReplicas, currentReplicas)) {
             queue.put(true);
           }
           Log.debug("Only {}/{} replicas scheduled for {}: {} in namespace: {} seconds so waiting...",
