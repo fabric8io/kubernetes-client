@@ -16,9 +16,9 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.model.autoscaling.DoneableHorizontalPodAutoscaler;
-import io.fabric8.kubernetes.api.model.autoscaling.HorizontalPodAutoscaler;
-import io.fabric8.kubernetes.api.model.autoscaling.HorizontalPodAutoscalerList;
+import io.fabric8.kubernetes.api.model.DoneableHorizontalPodAutoscaler;
+import io.fabric8.kubernetes.api.model.HorizontalPodAutoscaler;
+import io.fabric8.kubernetes.api.model.HorizontalPodAutoscalerList;
 import io.fabric8.kubernetes.client.Client;
 
 public interface AutoscalingAPIGroupDSL extends Client {
