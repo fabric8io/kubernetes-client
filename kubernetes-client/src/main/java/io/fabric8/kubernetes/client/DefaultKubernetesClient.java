@@ -68,6 +68,7 @@ import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.dsl.AppsAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.AutoscalingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.KubernetesListMixedOperation;
@@ -285,6 +286,11 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   @Override
   public AppsAPIGroupDSL apps() {
     return adapt(AppsAPIGroupClient.class);
+  }
+
+  @Override
+  public AutoscalingAPIGroupDSL autoscaling() {
+    return adapt(AutoscalingAPIGroupClient.class);
   }
 
 }
