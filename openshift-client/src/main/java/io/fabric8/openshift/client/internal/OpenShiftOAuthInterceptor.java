@@ -21,7 +21,6 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.client.OpenShiftConfig;
@@ -98,29 +97,25 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
         }
     }
 
-    private  String authorize() {
-        try {
-            OkHttpClient.Builder builder = client.newBuilder();
-            builder.interceptors().remove(this);
-            OkHttpClient clone = builder.build();
+    private  String authorize() throws IOException {
+        OkHttpClient.Builder builder = client.newBuilder();
+        builder.interceptors().remove(this);
+        OkHttpClient clone = builder.build();
 
-            String credential = Credentials.basic(config.getUsername(), new String(config.getPassword()));
-            URL url = new URL(URLUtils.join(config.getMasterUrl(), AUTHORIZE_PATH));
-            Response response = clone.newCall(new Request.Builder().get().url(url).header(AUTHORIZATION, credential).build()).execute();
+        String credential = Credentials.basic(config.getUsername(), new String(config.getPassword()));
+        URL url = new URL(URLUtils.join(config.getMasterUrl(), AUTHORIZE_PATH));
+        Response response = clone.newCall(new Request.Builder().get().url(url).header(AUTHORIZATION, credential).build()).execute();
 
-            response.body().close();
-            response = response.priorResponse() != null ? response.priorResponse() : response;
-            response = response.networkResponse() != null ? response.networkResponse() : response;
-            String token = response.header(LOCATION);
-            if (token == null || token.isEmpty()) {
-              throw new KubernetesClientException("Unexpected response (" + response.code() + " " + response.message() + "), to the authorization request. Missing header:[" + LOCATION + "]!");
-            }
-            token = token.substring(token.indexOf(BEFORE_TOKEN) + BEFORE_TOKEN.length());
-            token = token.substring(0, token.indexOf(AFTER_TOKEN));
-            return token;
-        } catch (Exception e) {
-            throw KubernetesClientException.launderThrowable(e);
+        response.body().close();
+        response = response.priorResponse() != null ? response.priorResponse() : response;
+        response = response.networkResponse() != null ? response.networkResponse() : response;
+        String token = response.header(LOCATION);
+        if (token == null || token.isEmpty()) {
+          throw new IOException("Unexpected response(" + response.code() + " " + response.message() + "), to the authorization request. Missing header:[" + LOCATION + "]!");
         }
+        token = token.substring(token.indexOf(BEFORE_TOKEN) + BEFORE_TOKEN.length());
+        token = token.substring(0, token.indexOf(AFTER_TOKEN));
+        return token;
     }
 }
 
