@@ -38,7 +38,7 @@ public class NamespacedOpenShiftExtensionAdapter extends OpenshiftAdapterSupport
   @Override
   public NamespacedOpenShiftClient adapt(Client client) {
     if (!isAdaptable(client)) {
-      throw new OpenShiftNotAvailableException("OpenShift is not available. Root paths at: " + client.getMasterUrl() + " do not include oapi.");
+      throw new OpenShiftNotAvailableException("OpenShift is not available. Root paths at: " + client.getMasterUrl() + " do not include /oapi or the new /apis/*.openshift.io APIs.");
     }
     return new DefaultOpenShiftClient(client.adapt(OkHttpClient.class), OpenShiftConfig.wrap(client.getConfiguration()));
   }
