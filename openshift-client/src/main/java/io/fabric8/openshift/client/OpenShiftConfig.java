@@ -16,19 +16,23 @@
 
 package io.fabric8.openshift.client;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import okhttp3.TlsVersion;
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
+import okhttp3.TlsVersion;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -42,6 +46,7 @@ public class OpenShiftConfig extends Config {
   public static final Long DEFAULT_BUILD_TIMEOUT = 5 * 60 * 1000L;
 
   private String oapiVersion = "v1";
+  private String apiGroupVersion;
   private String openShiftUrl;
   private long buildTimeout = DEFAULT_BUILD_TIMEOUT;
 
@@ -53,6 +58,14 @@ public class OpenShiftConfig extends Config {
     this(kubernetesConfig,
       getDefaultOpenShiftUrl(kubernetesConfig), getDefaultOapiVersion(kubernetesConfig), DEFAULT_BUILD_TIMEOUT
     );
+  }
+
+  public OpenShiftConfig(Config kubernetesConfig, String apiGroupUrl, String apiGroupVersion) {
+    this(kubernetesConfig,
+      getDefaultOpenShiftUrl(kubernetesConfig), getDefaultOapiVersion(kubernetesConfig), DEFAULT_BUILD_TIMEOUT
+    );
+    this.openShiftUrl = apiGroupUrl;
+    this.apiGroupVersion = apiGroupVersion;
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false, refs = {@BuildableReference(Config.class)})
@@ -103,6 +116,26 @@ public class OpenShiftConfig extends Config {
     return config instanceof OpenShiftConfig ? (OpenShiftConfig) config : new OpenShiftConfig(config);
   }
 
+  /**
+   * If the current client supports the new API Group REST API at <code>/apis/*.openshift.io/v1</code>
+   * then lets use that URL otherwise lets stick to the legacy <code>/oapi/v1</code> API
+   *
+   * @param openShiftClient the OpenShift client to use
+   * @param apiGroupName the API Group name like <code>apps.openshift.io</code> or <code>build.openshift.io</code>
+   * @param config the current configuration
+   * @return the current configuration if API groups are not supported otherwise the new configuration
+   */
+  public static OpenShiftConfig withApiGroup(OpenShiftClient openShiftClient, String apiGroupName, OpenShiftConfig config) {
+    if (OpenshiftAdapterSupport.isOpenShiftAPIGroups(openShiftClient)) {
+      String oapiVersion = config.getOapiVersion();
+      String apiGroupUrl = URLUtils.join(config.getMasterUrl(), "apis", apiGroupName, oapiVersion);
+      String apiGroupVersion = URLUtils.join(apiGroupName, oapiVersion);
+      return new OpenShiftConfig(config, apiGroupUrl, apiGroupVersion);
+    } else {
+      return config;
+    }
+  }
+
   private static String getDefaultOapiVersion(Config config) {
     return Utils.getSystemPropertyOrEnvVar(KUBERNETES_OAPI_VERSION_SYSTEM_PROPERTY, config.getApiVersion());
   }
@@ -134,8 +167,25 @@ public class OpenShiftConfig extends Config {
     return oapiVersion;
   }
 
+  @JsonProperty("apiGroupVersion")
+  public String getApiGroupVersion() {
+    return apiGroupVersion;
+  }
+
+  public void setApiGroupVersion(String apiGroupVersion) {
+    this.apiGroupVersion = apiGroupVersion;
+  }
+
   public void setOapiVersion(String oapiVersion) {
     this.oapiVersion = oapiVersion;
+  }
+
+  /**
+   * Returns true if this resource is an API Group using API Group based versions
+   */
+  @JsonIgnore
+  public boolean isApiGroup() {
+    return apiGroupVersion != null && apiGroupVersion.length() > 0;
   }
 
   @JsonProperty("openShiftUrl")
@@ -152,7 +202,43 @@ public class OpenShiftConfig extends Config {
     return buildTimeout;
   }
 
-  public void setBuildTimeout(long buildTimeout) {
+  public <L extends KubernetesResourceList> void setBuildTimeout(long buildTimeout) {
     this.buildTimeout = buildTimeout;
+  }
+
+  /**
+   * Updates the list items if they have missing or default apiVersion values and the resource is currently
+   * using API Groups with custom version strings
+   */
+  public void updateApiVersion(KubernetesResourceList list) {
+    String version = getApiGroupVersion();
+    if (list != null && version != null && version.length() > 0) {
+      List items = list.getItems();
+      if (items != null) {
+        for (Object item : items) {
+          if (item instanceof HasMetadata) {
+            HasMetadata hasMetadata = (HasMetadata) item;
+            ObjectMeta metadata = hasMetadata.getMetadata();
+            if (metadata != null) {
+              hasMetadata.setApiVersion(version);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Updates the resource if it has missing or default apiVersion values and the resource is currently
+   * using API Groups with custom version strings
+   */
+  public void updateApiVersion(HasMetadata hasMetadata) {
+    String version = getApiGroupVersion();
+    if (hasMetadata != null && version != null && version.length() > 0) {
+      ObjectMeta metadata = hasMetadata.getMetadata();
+      if (metadata != null) {
+        hasMetadata.setApiVersion(version);
+      }
+    }
   }
 }
