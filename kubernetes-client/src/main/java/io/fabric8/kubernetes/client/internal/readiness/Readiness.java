@@ -20,6 +20,8 @@ import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodCondition;
+import io.fabric8.kubernetes.api.model.Node;
+import io.fabric8.kubernetes.api.model.NodeCondition;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerSpec;
 import io.fabric8.kubernetes.api.model.ReplicationControllerStatus;
@@ -37,6 +39,7 @@ import io.fabric8.openshift.api.model.DeploymentConfigStatus;
 public class Readiness {
 
   private static final String POD_READY = "Ready";
+  private static final String NODE_READY = "Ready";
   private static final String TRUE = "True";
 
 
@@ -46,7 +49,8 @@ public class Readiness {
       (item instanceof Pod) ||
       (item instanceof DeploymentConfig) ||
       (item instanceof ReplicationController) ||
-      (item instanceof Endpoints);
+      (item instanceof Endpoints) ||
+      (item instanceof Node);
   }
 
   public static boolean isReady(HasMetadata item) {
@@ -62,8 +66,10 @@ public class Readiness {
       return isReplicationControllerReady((ReplicationController) item);
     } else if (item instanceof Endpoints) {
       return isEndpointsReady((Endpoints)item);
+    } else if (item instanceof Node) {
+      return isNodeReady((Node)item);
     } else {
-      throw new IllegalArgumentException("Item needs to be one of [Deployment, ReplicaSet, Pod, DeploymentConfig, ReplicationController], but was: [" + item.getKind() + "]");
+      throw new IllegalArgumentException("Item needs to be one of [Node, Deployment, ReplicaSet, Pod, DeploymentConfig, ReplicationController], but was: [" + item.getKind() + "]");
     }
   }
 
@@ -181,6 +187,36 @@ public class Readiness {
 
     for (PodCondition condition : pod.getStatus().getConditions()) {
       if (POD_READY.equals(condition.getType())) {
+        return condition;
+      }
+    }
+    return null;
+  }
+
+  public static boolean isNodeReady(Node node) {
+    Utils.checkNotNull(node, "Node can't be null.");
+    NodeCondition condition = getNodeReadyCondition(node);
+    if (condition == null || condition.getStatus() == null) {
+      return false;
+    }
+    return condition.getStatus().equalsIgnoreCase(TRUE);
+  }
+
+  /**
+   * Returns the ready condition of the node.
+   * 
+   * @param node The target node.
+   * @return The {@link NodeCondition} or null if not found.
+   */
+  private static NodeCondition getNodeReadyCondition(Node node) {
+    Utils.checkNotNull(node, "Node can't be null.");
+
+    if (node.getStatus() == null || node.getStatus().getConditions() == null) {
+      return null;
+    }
+
+    for (NodeCondition condition : node.getStatus().getConditions()) {
+      if (NODE_READY.equals(condition.getType())) {
         return condition;
       }
     }
