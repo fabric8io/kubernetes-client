@@ -167,7 +167,7 @@ public class OpenShiftConfig extends Config {
     return oapiVersion;
   }
 
-  @JsonProperty("apiGroupVersion")
+  @JsonIgnore
   public String getApiGroupVersion() {
     return apiGroupVersion;
   }
@@ -178,14 +178,6 @@ public class OpenShiftConfig extends Config {
 
   public void setOapiVersion(String oapiVersion) {
     this.oapiVersion = oapiVersion;
-  }
-
-  /**
-   * Returns true if this resource is an API Group using API Group based versions
-   */
-  @JsonIgnore
-  public boolean isApiGroup() {
-    return apiGroupVersion != null && apiGroupVersion.length() > 0;
   }
 
   @JsonProperty("openShiftUrl")
@@ -202,7 +194,7 @@ public class OpenShiftConfig extends Config {
     return buildTimeout;
   }
 
-  public <L extends KubernetesResourceList> void setBuildTimeout(long buildTimeout) {
+  public void setBuildTimeout(long buildTimeout) {
     this.buildTimeout = buildTimeout;
   }
 

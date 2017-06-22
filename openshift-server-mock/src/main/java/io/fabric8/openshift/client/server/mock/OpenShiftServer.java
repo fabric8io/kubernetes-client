@@ -18,6 +18,7 @@ package io.fabric8.openshift.client.server.mock;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.mockwebserver.dsl.MockServerExpectation;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
+import io.fabric8.openshift.client.OpenshiftAdapterSupport;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.rules.ExternalResource;
 
@@ -40,6 +41,15 @@ public class OpenShiftServer extends ExternalResource {
   }
 
   public NamespacedOpenShiftClient getOpenshiftClient() {
+    if (!new OpenshiftAdapterSupport().isAdaptable(client)) {
+      throw new IllegalArgumentException("Client does not support OpenShift!");
+    }
+    // now lets remove the REST request to access the apis to avoid breaking tests :)
+    try {
+      mock.takeRequest();
+    } catch (InterruptedException e) {
+      // ignore
+    }
     return client;
   }
 
