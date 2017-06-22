@@ -149,6 +149,10 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
     this(new OpenShiftConfigBuilder().build());
   }
 
+  public DefaultOpenShiftClient(boolean noServer) throws KubernetesClientException {
+    this(new OpenShiftConfigBuilder().withNoServer(noServer).build());
+  }
+
   public DefaultOpenShiftClient(String masterUrl) throws KubernetesClientException {
     this(new OpenShiftConfigBuilder().withMasterUrl(masterUrl).build());
   }

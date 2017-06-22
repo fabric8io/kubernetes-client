@@ -45,6 +45,7 @@ public class OpenShiftServer extends ExternalResource {
       throw new IllegalArgumentException("Client does not support OpenShift!");
     }
     // now lets remove the REST request to access the apis to avoid breaking tests :)
+
     try {
       mock.takeRequest();
     } catch (InterruptedException e) {
