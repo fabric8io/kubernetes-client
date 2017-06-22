@@ -48,6 +48,7 @@ public class OpenShiftConfig extends Config {
   private String oapiVersion = "v1";
   private String apiGroupVersion;
   private String openShiftUrl;
+  private boolean noServer;
   private long buildTimeout = DEFAULT_BUILD_TIMEOUT;
 
   //This is not meant to be used. This constructor is used only by the generated builder.
@@ -126,7 +127,7 @@ public class OpenShiftConfig extends Config {
    * @return the current configuration if API groups are not supported otherwise the new configuration
    */
   public static OpenShiftConfig withApiGroup(OpenShiftClient openShiftClient, String apiGroupName, OpenShiftConfig config) {
-    if (OpenshiftAdapterSupport.isOpenShiftAPIGroups(openShiftClient)) {
+    if (config.isOpenShiftAPIGroups(openShiftClient)) {
       String oapiVersion = config.getOapiVersion();
       String apiGroupUrl = URLUtils.join(config.getMasterUrl(), "apis", apiGroupName, oapiVersion);
       String apiGroupVersion = URLUtils.join(apiGroupName, oapiVersion);
@@ -134,6 +135,13 @@ public class OpenShiftConfig extends Config {
     } else {
       return config;
     }
+  }
+
+  public boolean isOpenShiftAPIGroups(OpenShiftClient openShiftClient) {
+    if (isNoServer()) {
+      return true;
+    }
+    return OpenshiftAdapterSupport.isOpenShiftAPIGroups(openShiftClient);
   }
 
   private static String getDefaultOapiVersion(Config config) {
@@ -196,6 +204,14 @@ public class OpenShiftConfig extends Config {
 
   public void setBuildTimeout(long buildTimeout) {
     this.buildTimeout = buildTimeout;
+  }
+
+  public boolean isNoServer() {
+    return noServer;
+  }
+
+  public void setNoServer(boolean noServer) {
+    this.noServer = noServer;
   }
 
   /**
