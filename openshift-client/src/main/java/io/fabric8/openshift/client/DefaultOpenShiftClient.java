@@ -134,6 +134,7 @@ import java.util.Collection;
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.APPS;
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.AUTHORIZATION;
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.BUILD;
+import static io.fabric8.openshift.client.OpenShiftAPIGroups.IMAGE;
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.OAUTH;
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.PROJECT;
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.ROUTE;
@@ -344,12 +345,12 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
 
   @Override
   public MixedOperation<ImageStream, ImageStreamList, DoneableImageStream, Resource<ImageStream, DoneableImageStream>> imageStreams() {
-    return new ImageStreamOperationsImpl(httpClient, OpenShiftConfig.withApiGroup(this, BUILD, OpenShiftConfig.wrap(getConfiguration())), getNamespace());
+    return new ImageStreamOperationsImpl(httpClient, OpenShiftConfig.withApiGroup(this, IMAGE, OpenShiftConfig.wrap(getConfiguration())), getNamespace());
   }
 
   @Override
   public MixedOperation<ImageStreamTag, ImageStreamTagList, DoneableImageStreamTag, Resource<ImageStreamTag, DoneableImageStreamTag>> imageStreamTags() {
-    return new ImageStreamTagOperationsImpl(httpClient, OpenShiftConfig.withApiGroup(this, BUILD, OpenShiftConfig.wrap(getConfiguration())), getNamespace());
+    return new ImageStreamTagOperationsImpl(httpClient, OpenShiftConfig.withApiGroup(this, IMAGE, OpenShiftConfig.wrap(getConfiguration())), getNamespace());
   }
 
   @Override
