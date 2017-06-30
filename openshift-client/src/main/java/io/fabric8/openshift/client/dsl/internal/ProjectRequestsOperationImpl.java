@@ -31,6 +31,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
+import static io.fabric8.openshift.client.OpenShiftAPIGroups.PROJECT;
+
 public class ProjectRequestsOperationImpl extends OperationSupport implements ProjectRequestOperation {
 
   private final ProjectRequest item;
@@ -40,7 +42,7 @@ public class ProjectRequestsOperationImpl extends OperationSupport implements Pr
   }
 
   public ProjectRequestsOperationImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, ProjectRequest item) {
-    super(client, config, null, apiVersion, "projectrequests", null, null);
+    super(client, OpenShiftConfig.withApiGroup(client, PROJECT, config), null, apiVersion, "projectrequests", null, null);
     this.item = item;
   }
 

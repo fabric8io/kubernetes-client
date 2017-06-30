@@ -131,16 +131,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
 
-import static io.fabric8.openshift.client.OpenShiftAPIGroups.APPS;
-import static io.fabric8.openshift.client.OpenShiftAPIGroups.AUTHORIZATION;
-import static io.fabric8.openshift.client.OpenShiftAPIGroups.BUILD;
-import static io.fabric8.openshift.client.OpenShiftAPIGroups.IMAGE;
-import static io.fabric8.openshift.client.OpenShiftAPIGroups.OAUTH;
-import static io.fabric8.openshift.client.OpenShiftAPIGroups.PROJECT;
-import static io.fabric8.openshift.client.OpenShiftAPIGroups.ROUTE;
-import static io.fabric8.openshift.client.OpenShiftAPIGroups.TEMPLATE;
-import static io.fabric8.openshift.client.OpenShiftAPIGroups.USER;
-
 public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpenShiftClient {
 
   private URL openShiftUrl;
@@ -150,8 +140,8 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
     this(new OpenShiftConfigBuilder().build());
   }
 
-  public DefaultOpenShiftClient(boolean noServer) throws KubernetesClientException {
-    this(new OpenShiftConfigBuilder().withNoServer(noServer).build());
+  public DefaultOpenShiftClient(boolean disableApiGroupCheck) throws KubernetesClientException {
+    this(new OpenShiftConfigBuilder().withDisableApiGroupCheck(disableApiGroupCheck).build());
   }
 
   public DefaultOpenShiftClient(String masterUrl) throws KubernetesClientException {
@@ -325,102 +315,102 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
 
   @Override
   public MixedOperation<Build, BuildList, DoneableBuild, BuildResource<Build, DoneableBuild, String, LogWatch>> builds() {
-    return new BuildOperationsImpl(httpClient, OpenShiftConfig.withApiGroup(this, BUILD, OpenShiftConfig.wrap(getConfiguration())), getNamespace());
+    return new BuildOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override
   public MixedOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build>> buildConfigs() {
-    return new BuildConfigOperationsImpl(httpClient, OpenShiftConfig.withApiGroup(this, BUILD, OpenShiftConfig.wrap(getConfiguration())), getNamespace());
+    return new BuildConfigOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override
   public MixedOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, DeployableScalableResource<DeploymentConfig, DoneableDeploymentConfig>> deploymentConfigs() {
-    return new DeploymentConfigOperationsImpl(httpClient, OpenShiftConfig.withApiGroup(this, APPS, OpenShiftConfig.wrap(getConfiguration())), getNamespace());
+    return new DeploymentConfigOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override
   public MixedOperation<Group, GroupList, DoneableGroup, Resource<Group, DoneableGroup>> groups() {
-    return new GroupOperationsImpl(httpClient, OpenShiftConfig.withApiGroup(this, USER, OpenShiftConfig.wrap(getConfiguration())), getNamespace());
+    return new GroupOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override
   public MixedOperation<ImageStream, ImageStreamList, DoneableImageStream, Resource<ImageStream, DoneableImageStream>> imageStreams() {
-    return new ImageStreamOperationsImpl(httpClient, OpenShiftConfig.withApiGroup(this, IMAGE, OpenShiftConfig.wrap(getConfiguration())), getNamespace());
+    return new ImageStreamOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override
   public MixedOperation<ImageStreamTag, ImageStreamTagList, DoneableImageStreamTag, Resource<ImageStreamTag, DoneableImageStreamTag>> imageStreamTags() {
-    return new ImageStreamTagOperationsImpl(httpClient, OpenShiftConfig.withApiGroup(this, IMAGE, OpenShiftConfig.wrap(getConfiguration())), getNamespace());
+    return new ImageStreamTagOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override
   public NonNamespaceOperation<OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken, Resource<OAuthAccessToken, DoneableOAuthAccessToken>> oAuthAccessTokens() {
-    return new OAuthAccessTokenOperationsImpl(httpClient, OpenShiftConfig.withApiGroup(this, OAUTH, OpenShiftConfig.wrap(getConfiguration())));
+    return new OAuthAccessTokenOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken, Resource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken>> oAuthAuthorizeTokens() {
-    return new OAuthAuthorizeTokenOperationsImpl(httpClient, OpenShiftConfig.withApiGroup(this, OAUTH, OpenShiftConfig.wrap(getConfiguration())));
+    return new OAuthAuthorizeTokenOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<OAuthClient, OAuthClientList, DoneableOAuthClient, Resource<OAuthClient, DoneableOAuthClient>> oAuthClients() {
-    return new OAuthClientOperationsImpl(httpClient, OpenShiftConfig.withApiGroup(this, OAUTH, OpenShiftConfig.wrap(getConfiguration())));
+    return new OAuthClientOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public MixedOperation<Policy, PolicyList, DoneablePolicy, Resource<Policy, DoneablePolicy>> policies() {
-    return new PolicyOperationsImpl(httpClient, OpenShiftConfig.withApiGroup(this, AUTHORIZATION, OpenShiftConfig.wrap(getConfiguration())), getNamespace());
+    return new PolicyOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override
   public MixedOperation<PolicyBinding, PolicyBindingList, DoneablePolicyBinding, Resource<PolicyBinding, DoneablePolicyBinding>> policyBindings() {
-    return new PolicyBindingOperationsImpl(httpClient, OpenShiftConfig.withApiGroup(this, AUTHORIZATION, OpenShiftConfig.wrap(getConfiguration())), getNamespace());
+    return new PolicyBindingOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override
   public NonNamespaceOperation<Project, ProjectList, DoneableProject, Resource<Project, DoneableProject>> projects() {
-    return new ProjectOperationsImpl(httpClient, OpenShiftConfig.withApiGroup(this, PROJECT, OpenShiftConfig.wrap(getConfiguration())));
+    return new ProjectOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public ProjectRequestOperation projectrequests() {
-    return new ProjectRequestsOperationImpl(httpClient, OpenShiftConfig.withApiGroup(this, PROJECT, OpenShiftConfig.wrap(getConfiguration())));
+    return new ProjectRequestsOperationImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public MixedOperation<Role, RoleList, DoneableRole, Resource<Role, DoneableRole>> roles() {
-    return new RoleOperationsImpl(httpClient, OpenShiftConfig.withApiGroup(this, AUTHORIZATION, OpenShiftConfig.wrap(getConfiguration())), getNamespace());
+    return new RoleOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override
   public MixedOperation<RoleBinding, RoleBindingList, DoneableRoleBinding, Resource<RoleBinding, DoneableRoleBinding>> roleBindings() {
-    return new RoleBindingOperationsImpl(httpClient, OpenShiftConfig.withApiGroup(this, AUTHORIZATION, OpenShiftConfig.wrap(getConfiguration())), getNamespace());
+    return new RoleBindingOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override
   public MixedOperation<Route, RouteList, DoneableRoute, Resource<Route, DoneableRoute>> routes() {
-    return new RouteOperationsImpl(httpClient, OpenShiftConfig.withApiGroup(this, ROUTE, OpenShiftConfig.wrap(getConfiguration())), getNamespace());
+    return new RouteOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override
   public ParameterMixedOperation<Template, TemplateList, DoneableTemplate, TemplateResource<Template, KubernetesList, DoneableTemplate>> templates() {
-    return new TemplateOperationsImpl(httpClient, OpenShiftConfig.withApiGroup(this, TEMPLATE, OpenShiftConfig.wrap(getConfiguration())), getNamespace());
+    return new TemplateOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override
   public MixedOperation<User, UserList, DoneableUser, Resource<User, DoneableUser>> users() {
-    return new UserOperationsImpl(httpClient, OpenShiftConfig.withApiGroup(this, USER, OpenShiftConfig.wrap(getConfiguration())), getNamespace());
+    return new UserOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override
   public SubjectAccessReviewOperation<CreateableSubjectAccessReview, CreateableLocalSubjectAccessReview> subjectAccessReviews() {
-    return new SubjectAccessReviewOperationImpl(httpClient, OpenShiftConfig.withApiGroup(this, AUTHORIZATION, OpenShiftConfig.wrap(getConfiguration())), null, getNamespace());
+    return new SubjectAccessReviewOperationImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()), null, getNamespace());
   }
 
   @Override
   public MixedOperation<ClusterRoleBinding, ClusterRoleBindingList, DoneableClusterRoleBinding, Resource<ClusterRoleBinding, DoneableClusterRoleBinding>> clusterRoleBindings() {
-    return new ClusterRoleBindingOperationsImpl(httpClient, OpenShiftConfig.withApiGroup(this, AUTHORIZATION, OpenShiftConfig.wrap(getConfiguration())), getNamespace());
+    return new ClusterRoleBindingOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override

@@ -45,6 +45,8 @@ import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
 import okhttp3.OkHttpClient;
 
+import static io.fabric8.openshift.client.OpenShiftAPIGroups.APPS;
+
 public class DeploymentConfigOperationsImpl extends OpenShiftOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig,
   DeployableScalableResource<DeploymentConfig, DoneableDeploymentConfig>> implements DeployableScalableResource<DeploymentConfig, DoneableDeploymentConfig> {
 
@@ -57,7 +59,7 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
   }
 
   public DeploymentConfigOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, DeploymentConfig item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, config, null, apiVersion, "deploymentconfigs", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+    super(client, OpenShiftConfig.withApiGroup(client, APPS, config), null, apiVersion, "deploymentconfigs", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
     reaper = new DeploymentConfigReaper(this, client);
   }
 
