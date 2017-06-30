@@ -29,6 +29,7 @@ import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.api.model.TemplateListBuilder;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.OpenShiftConfigBuilder;
 import io.fabric8.openshift.client.ParameterValue;
 import org.junit.Rule;
 import org.junit.Test;
@@ -149,7 +150,7 @@ public class TemplateTest {
 
   @Test
   public void shouldLoadTemplateWithNumberParameters() throws Exception {
-    OpenShiftClient client = new DefaultOpenShiftClient(true);
+    OpenShiftClient client = new DefaultOpenShiftClient(new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
     Map<String,String> map = new HashMap<>();
     map.put("PORT", "8080");
     KubernetesList list = client.templates().load(replaceValues(getClass().getResourceAsStream("/template-with-number-params.yml"), map)).processLocally(map);

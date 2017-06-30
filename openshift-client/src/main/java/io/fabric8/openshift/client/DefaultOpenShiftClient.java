@@ -140,10 +140,6 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
     this(new OpenShiftConfigBuilder().build());
   }
 
-  public DefaultOpenShiftClient(boolean disableApiGroupCheck) throws KubernetesClientException {
-    this(new OpenShiftConfigBuilder().withDisableApiGroupCheck(disableApiGroupCheck).build());
-  }
-
   public DefaultOpenShiftClient(String masterUrl) throws KubernetesClientException {
     this(new OpenShiftConfigBuilder().withMasterUrl(masterUrl).build());
   }

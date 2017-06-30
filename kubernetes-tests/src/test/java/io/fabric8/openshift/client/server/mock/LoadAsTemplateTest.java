@@ -15,6 +15,7 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
+import io.fabric8.openshift.client.OpenShiftConfigBuilder;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -64,7 +65,7 @@ public class LoadAsTemplateTest {
   }
 
   protected DefaultOpenShiftClient createOpenShiftClientWithNoServer() {
-    return new DefaultOpenShiftClient(true);
+    return new DefaultOpenShiftClient(new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
   }
 
   //Check that the processed template is as expected
