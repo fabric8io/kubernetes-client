@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package io.fabric8.openshift.client.server.mock;
+package io.fabric8.openshift.client.examples;
 
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 
-public class Adapt {
+public class AdaptClient {
   public static void main(String[] args) {
     KubernetesClient client = new DefaultKubernetesClient();
     OpenShiftClient oclient = client.adapt(OpenShiftClient.class);

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.fabric8.openshift.client.server.mock;
+package io.fabric8.openshift.client.examples;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.openshift.api.model.DeploymentConfig;
