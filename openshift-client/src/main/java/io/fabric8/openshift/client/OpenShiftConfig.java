@@ -214,39 +214,4 @@ public class OpenShiftConfig extends Config {
     this.noServer = noServer;
   }
 
-  /**
-   * Updates the list items if they have missing or default apiVersion values and the resource is currently
-   * using API Groups with custom version strings
-   */
-  public void updateApiVersion(KubernetesResourceList list) {
-    String version = getApiGroupVersion();
-    if (list != null && version != null && version.length() > 0) {
-      List items = list.getItems();
-      if (items != null) {
-        for (Object item : items) {
-          if (item instanceof HasMetadata) {
-            HasMetadata hasMetadata = (HasMetadata) item;
-            ObjectMeta metadata = hasMetadata.getMetadata();
-            if (metadata != null) {
-              hasMetadata.setApiVersion(version);
-            }
-          }
-        }
-      }
-    }
-  }
-
-  /**
-   * Updates the resource if it has missing or default apiVersion values and the resource is currently
-   * using API Groups with custom version strings
-   */
-  public void updateApiVersion(HasMetadata hasMetadata) {
-    String version = getApiGroupVersion();
-    if (hasMetadata != null && version != null && version.length() > 0) {
-      ObjectMeta metadata = hasMetadata.getMetadata();
-      if (metadata != null) {
-        hasMetadata.setApiVersion(version);
-      }
-    }
-  }
 }

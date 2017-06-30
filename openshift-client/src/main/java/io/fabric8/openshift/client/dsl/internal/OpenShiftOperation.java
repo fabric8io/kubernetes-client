@@ -18,17 +18,16 @@ package io.fabric8.openshift.client.dsl.internal;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.openshift.client.OpenShiftConfig;
+import io.fabric8.openshift.client.internal.ApiVersionHelpers;
 import okhttp3.OkHttpClient;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 import java.util.Map;
 
 public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
@@ -66,14 +65,14 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
   @Override
   public T get() {
     T answer = super.get();
-    getConfig().updateApiVersion(answer);
+    ApiVersionHelpers.updateApiVersion(getConfig(), answer);
     return answer;
   }
 
   @Override
   public L list() throws KubernetesClientException {
     L answer = super.list();
-    getConfig().updateApiVersion(answer);
+    ApiVersionHelpers.updateApiVersion(getConfig(), answer);
     return answer;
   }
 
