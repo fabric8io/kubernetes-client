@@ -46,7 +46,7 @@ public class SubjectAccessReviewOperationImpl extends OperationSupport implement
   }
 
   public SubjectAccessReviewOperationImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace) {
-    super(client, OpenShiftOperation.withApiGroup(client, AUTHORIZATION, config), null, apiVersion, "subjectaccessreviews", namespace, null);
+    super(client, OpenShiftOperation.withApiGroup(client, AUTHORIZATION, apiVersion, config), "subjectaccessreviews", namespace, null);
   }
 
   @Override

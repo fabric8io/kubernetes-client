@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.openshift.client.OpenShiftConfig;
+import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
 
 import java.util.List;
 
@@ -31,8 +32,8 @@ public class ApiVersionHelpers {
    * Updates the list items if they have missing or default apiVersion values and the resource is currently
    * using API Groups with custom version strings
    */
-  public static void updateApiVersion(OpenShiftConfig openShiftConfig, KubernetesResourceList list) {
-    String version = openShiftConfig.getApiGroupVersion();
+  public static void updateApiVersion(OpenShiftOperation operation, OpenShiftConfig openShiftConfig, KubernetesResourceList list) {
+    String version = operation.getApiGroupVersion();
     if (list != null && version != null && version.length() > 0) {
       List items = list.getItems();
       if (items != null) {
@@ -53,8 +54,8 @@ public class ApiVersionHelpers {
    * Updates the resource if it has missing or default apiVersion values and the resource is currently
    * using API Groups with custom version strings
    */
-  public static void updateApiVersion(OpenShiftConfig openShiftConfig, HasMetadata hasMetadata) {
-    String version = openShiftConfig.getApiGroupVersion();
+  public static void updateApiVersion(OpenShiftOperation operation, OpenShiftConfig openShiftConfig, HasMetadata hasMetadata) {
+    String version = operation.getApiGroupVersion();
     if (hasMetadata != null && version != null && version.length() > 0) {
       ObjectMeta metadata = hasMetadata.getMetadata();
       if (metadata != null) {

@@ -41,17 +41,17 @@ public class TemplateHandler implements ResourceHandler<Template, TemplateBuilde
 
   @Override
   public Template create(OkHttpClient client, Config config, String namespace, Template item) {
-      return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null).create();
+      return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null).create();
   }
 
   @Override
   public Template replace(OkHttpClient client, Config config, String namespace, Template item) {
-    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, true, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null).replace(item);
+    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, null, namespace, null, true, item, null, true, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null).replace(item);
   }
 
   @Override
   public Template reload(OkHttpClient client, Config config, String namespace, Template item) {
-    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null).fromServer().get();
+    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null).fromServer().get();
   }
 
   @Override
@@ -62,21 +62,21 @@ public class TemplateHandler implements ResourceHandler<Template, TemplateBuilde
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Template item) {
-      return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null).delete(item);
+      return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null).delete(item);
   }
 
   @Override
   public Watch watch(OkHttpClient client, Config config, String namespace, Template item, Watcher<Template> watcher) {
-    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null).watch(watcher);
+    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null).watch(watcher);
   }
 
   @Override
   public Watch watch(OkHttpClient client, Config config, String namespace, Template item, String resourceVersion, Watcher<Template> watcher) {
-    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null).watch(resourceVersion, watcher);
+    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null).watch(resourceVersion, watcher);
   }
 
   @Override
   public Template waitUntilReady(OkHttpClient client, Config config, String namespace, Template item, long amount, TimeUnit timeUnit) throws InterruptedException {
-    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null).waitUntilReady(amount, timeUnit);
+    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null).waitUntilReady(amount, timeUnit);
   }
 }

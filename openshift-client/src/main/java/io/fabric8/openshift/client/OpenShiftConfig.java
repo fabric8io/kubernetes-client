@@ -43,7 +43,6 @@ public class OpenShiftConfig extends Config {
   public static final Long DEFAULT_BUILD_TIMEOUT = 5 * 60 * 1000L;
 
   private String oapiVersion = "v1";
-  private String apiGroupVersion;
   private String openShiftUrl;
   private boolean disableApiGroupCheck;
   private long buildTimeout = DEFAULT_BUILD_TIMEOUT;
@@ -58,12 +57,11 @@ public class OpenShiftConfig extends Config {
     );
   }
 
-  public OpenShiftConfig(Config kubernetesConfig, String apiGroupUrl, String apiGroupVersion) {
+  public OpenShiftConfig(Config kubernetesConfig, String openShiftUrl) {
     this(kubernetesConfig,
       getDefaultOpenShiftUrl(kubernetesConfig), getDefaultOapiVersion(kubernetesConfig), DEFAULT_BUILD_TIMEOUT
     );
-    this.openShiftUrl = apiGroupUrl;
-    this.apiGroupVersion = apiGroupVersion;
+    this.openShiftUrl = openShiftUrl;
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false, refs = {@BuildableReference(Config.class)})
@@ -150,15 +148,6 @@ public class OpenShiftConfig extends Config {
   @JsonProperty("oapiVersion")
   public String getOapiVersion() {
     return oapiVersion;
-  }
-
-  @JsonIgnore
-  public String getApiGroupVersion() {
-    return apiGroupVersion;
-  }
-
-  public void setApiGroupVersion(String apiGroupVersion) {
-    this.apiGroupVersion = apiGroupVersion;
   }
 
   public void setOapiVersion(String oapiVersion) {
