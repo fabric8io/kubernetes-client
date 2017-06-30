@@ -14,29 +14,30 @@
  * limitations under the License.
  */
 
-package io.fabric8.openshift.client.server.mock;
+package io.fabric8.openshift.client.examples;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.openshift.api.model.BuildConfig;
-import io.fabric8.openshift.api.model.BuildConfigList;
+import io.fabric8.openshift.api.model.ImageStream;
+import io.fabric8.openshift.api.model.ImageStreamList;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 
 import java.util.List;
 
-public class BuildConfigs {
+public class ListImageStreams {
   public static void main(String[] args) {
     try {
       OpenShiftClient client = new DefaultOpenShiftClient();
-      BuildConfigList list = client.buildConfigs().list();
+      ImageStreamList list = client.imageStreams().list();
       if (list == null) {
         System.out.println("ERROR no list returned!");
         return;
       }
-      List<BuildConfig> items = list.getItems();
-      for (BuildConfig item : items) {
-        System.out.println("BuildConfig " + item.getMetadata().getName() + " has version: " + item.getApiVersion());
+      List<ImageStream> items = list.getItems();
+      for (ImageStream item : items) {
+        System.out.println("ImageStream " + item.getMetadata().getName() + " has version: " + item.getApiVersion());
       }
+      System.out.println("Found " + items.size() + " ImageStream(s)");
     } catch (KubernetesClientException e) {
       System.out.println("Failed: " + e);
       e.printStackTrace();
