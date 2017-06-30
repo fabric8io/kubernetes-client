@@ -114,40 +114,6 @@ public class OpenShiftConfig extends Config {
     return config instanceof OpenShiftConfig ? (OpenShiftConfig) config : new OpenShiftConfig(config);
   }
 
-  /**
-   * If the current client supports the new API Group REST API at <code>/apis/*.openshift.io/v1</code>
-   * then lets use that URL otherwise lets stick to the legacy <code>/oapi/v1</code> API
-   *
-   * @param openShiftClient the OpenShift client to use
-   * @param apiGroupName the API Group name like <code>apps.openshift.io</code> or <code>build.openshift.io</code>
-   * @param config the current configuration
-   * @return the current configuration if API groups are not supported otherwise the new configuration
-   */
-  public static OpenShiftConfig withApiGroup(OpenShiftClient openShiftClient, String apiGroupName, OpenShiftConfig config) {
-    if (config.isOpenShiftAPIGroups(openShiftClient)) {
-      String oapiVersion = config.getOapiVersion();
-      String apiGroupUrl = URLUtils.join(config.getMasterUrl(), "apis", apiGroupName, oapiVersion);
-      String apiGroupVersion = URLUtils.join(apiGroupName, oapiVersion);
-      return new OpenShiftConfig(config, apiGroupUrl, apiGroupVersion);
-    } else {
-      return config;
-    }
-  }
-
-  /**
-   * If the current client supports the new API Group REST API at <code>/apis/*.openshift.io/v1</code>
-   * then lets use that URL otherwise lets stick to the legacy <code>/oapi/v1</code> API
-   *
-   * @param httpClient the HTTP client to use
-   * @param apiGroupName the API Group name like <code>apps.openshift.io</code> or <code>build.openshift.io</code>
-   * @param config the current configuration
-   * @return the current configuration if API groups are not supported otherwise the new configuration
-   */
-  public static OpenShiftConfig withApiGroup(OkHttpClient httpClient, String apiGroupName, OpenShiftConfig config) {
-    OpenShiftClient openShiftClient = new DefaultOpenShiftClient(httpClient, config);
-    return withApiGroup(openShiftClient, apiGroupName, config);
-  }
-
   public boolean isOpenShiftAPIGroups(OpenShiftClient openShiftClient) {
     if (isDisableApiGroupCheck()) {
       return false;
