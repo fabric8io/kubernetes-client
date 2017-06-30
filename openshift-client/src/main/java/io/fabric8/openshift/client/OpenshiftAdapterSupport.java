@@ -18,6 +18,7 @@ package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 
 import java.net.URI;
@@ -80,6 +81,13 @@ public class OpenshiftAdapterSupport {
      * @return         True if the new <code>/apis/*.openshift.io/</code> APIs are found in the root paths.
      */
     static boolean isOpenShiftAPIGroups(Client client) {
+        Config configuration = client.getConfiguration();
+        if (configuration instanceof OpenShiftConfig) {
+            OpenShiftConfig openShiftConfig = (OpenShiftConfig) configuration;
+            if (openShiftConfig.isDisableApiGroupCheck()) {
+                return false;
+            }
+        }
         URL masterUrl = client.getMasterUrl();
         if (isOpenShift(client) && USES_OPENSHIFT_APIGROUPS.containsKey(masterUrl)) {
             return USES_OPENSHIFT_APIGROUPS.get(masterUrl);

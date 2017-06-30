@@ -41,19 +41,6 @@ public class OpenShiftServer extends ExternalResource {
   }
 
   public NamespacedOpenShiftClient getOpenshiftClient() {
-    // lets eagerly force the loading of the supported <code>/apis</code>  on the cluster
-    // so that we can then remove and ignore the REST API invocation to avoid
-    // breaking test cases with the <code>/apis</code> request
-    if (!new OpenshiftAdapterSupport().isAdaptable(client)) {
-      throw new IllegalArgumentException("Client does not support OpenShift!");
-    }
-
-    // now lets remove the REST request to access the apis to avoid breaking tests :)
-    try {
-      mock.takeRequest();
-    } catch (InterruptedException e) {
-      // ignore
-    }
     return client;
   }
 

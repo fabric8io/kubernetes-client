@@ -31,13 +31,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import static io.fabric8.openshift.client.OpenShiftAPIGroups.AUTHORIZATION;
+
 public class RoleBindingOperationsImpl extends OpenShiftOperation<RoleBinding, RoleBindingList, DoneableRoleBinding, Resource<RoleBinding, DoneableRoleBinding>> {
   public RoleBindingOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
     this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
   }
 
   public RoleBindingOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, RoleBinding item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, config, null, apiVersion, "rolebindings", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+    super(client, OpenShiftConfig.withApiGroup(client, AUTHORIZATION, config), null, apiVersion, "rolebindings", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
   }
 
   @Override

@@ -16,15 +16,16 @@
 
 package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
+import io.fabric8.openshift.client.OpenShiftConfig;
+import io.fabric8.openshift.client.OpenShiftConfigBuilder;
 
 import static okhttp3.TlsVersion.TLS_1_0;
 
 public class OpenShiftMockServer extends KubernetesMockServer {
+  private boolean disableApiGroupCheck = true;
 
   public OpenShiftMockServer() {
     super();
@@ -40,12 +41,21 @@ public class OpenShiftMockServer extends KubernetesMockServer {
   }
 
   public NamespacedOpenShiftClient createOpenShiftClient() {
-    Config config = new ConfigBuilder()
+    OpenShiftConfig config = new OpenShiftConfigBuilder()
       .withMasterUrl(url("/"))
       .withNamespace("test")
       .withTrustCerts(true)
       .withTlsVersions(TLS_1_0)
+      .withDisableApiGroupCheck(disableApiGroupCheck)
       .build();
     return new DefaultOpenShiftClient(config);
+  }
+
+  public boolean isDisableApiGroupCheck() {
+    return disableApiGroupCheck;
+  }
+
+  public void setDisableApiGroupCheck(boolean disableApiGroupCheck) {
+    this.disableApiGroupCheck = disableApiGroupCheck;
   }
 }

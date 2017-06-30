@@ -20,19 +20,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
+import okhttp3.OkHttpClient;
 import okhttp3.TlsVersion;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -48,7 +45,7 @@ public class OpenShiftConfig extends Config {
   private String oapiVersion = "v1";
   private String apiGroupVersion;
   private String openShiftUrl;
-  private boolean noServer;
+  private boolean disableApiGroupCheck;
   private long buildTimeout = DEFAULT_BUILD_TIMEOUT;
 
   //This is not meant to be used. This constructor is used only by the generated builder.
@@ -137,9 +134,23 @@ public class OpenShiftConfig extends Config {
     }
   }
 
+  /**
+   * If the current client supports the new API Group REST API at <code>/apis/*.openshift.io/v1</code>
+   * then lets use that URL otherwise lets stick to the legacy <code>/oapi/v1</code> API
+   *
+   * @param httpClient the HTTP client to use
+   * @param apiGroupName the API Group name like <code>apps.openshift.io</code> or <code>build.openshift.io</code>
+   * @param config the current configuration
+   * @return the current configuration if API groups are not supported otherwise the new configuration
+   */
+  public static OpenShiftConfig withApiGroup(OkHttpClient httpClient, String apiGroupName, OpenShiftConfig config) {
+    OpenShiftClient openShiftClient = new DefaultOpenShiftClient(httpClient, config);
+    return withApiGroup(openShiftClient, apiGroupName, config);
+  }
+
   public boolean isOpenShiftAPIGroups(OpenShiftClient openShiftClient) {
-    if (isNoServer()) {
-      return true;
+    if (isDisableApiGroupCheck()) {
+      return false;
     }
     return OpenshiftAdapterSupport.isOpenShiftAPIGroups(openShiftClient);
   }
@@ -206,12 +217,12 @@ public class OpenShiftConfig extends Config {
     this.buildTimeout = buildTimeout;
   }
 
-  public boolean isNoServer() {
-    return noServer;
+  public boolean isDisableApiGroupCheck() {
+    return disableApiGroupCheck;
   }
 
-  public void setNoServer(boolean noServer) {
-    this.noServer = noServer;
+  public void setDisableApiGroupCheck(boolean disableApiGroupCheck) {
+    this.disableApiGroupCheck = disableApiGroupCheck;
   }
 
 }
