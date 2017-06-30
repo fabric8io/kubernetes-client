@@ -19,7 +19,6 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import io.fabric8.kubernetes.client.utils.Serialization;
 import okhttp3.MediaType;
@@ -30,7 +29,6 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 import io.fabric8.kubernetes.api.model.DeleteOptions;
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.Config;
@@ -39,10 +37,8 @@ import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.zjsonpatch.JsonDiff;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
@@ -70,6 +66,10 @@ public class OperationSupport {
 
   public OperationSupport() {
     this(null, null, null, null, null, null, null);
+  }
+
+  public OperationSupport(OkHttpClient client, ConfigAndApiGroupsInfo configAndApiGroupsInfo, String resourceT, String namespace, String name) {
+    this(client, configAndApiGroupsInfo.getConfig(), configAndApiGroupsInfo.getApiGroup(), configAndApiGroupsInfo.getApiGroupVersion(), resourceT, namespace ,name);
   }
 
   public OperationSupport(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name) {

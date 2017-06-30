@@ -75,7 +75,7 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
   }
 
   public BuildOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, Build item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, InputStream in, OutputStream out, OutputStream err, PipedOutputStream inPipe, PipedInputStream outPipe, PipedInputStream errPipe, boolean withTTY, boolean withTerminatedStatus, boolean withTimestamps, String sinceTimestamp, Integer sinceSeconds, Integer withTailingLines, boolean withPrettyOutput, String version, Integer limitBytes) {
-    super(client, OpenShiftOperation.withApiGroup(client, BUILD, config), null, apiVersion, "builds", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+    super(client, OpenShiftOperation.withApiGroup(client, BUILD, apiVersion, config), "builds", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
     this.in = in;
     this.out = out;
     this.err = err;
