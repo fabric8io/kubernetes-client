@@ -95,7 +95,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
   }
 
   public BuildConfigOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, BuildConfig item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, String secret, String triggerType, String authorName, String authorEmail, String committerName, String committerEmail, String commit, String message, String asFile, long timeout, TimeUnit timeoutUnit) {
-    super(client, OpenShiftConfig.withApiGroup(client, BUILD, config), null, apiVersion, "buildconfigs", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+    super(client, OpenShiftOperation.withApiGroup(client, BUILD, config), null, apiVersion, "buildconfigs", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
     this.triggerType = triggerType;
     this.secret = secret;
     this.authorName = authorName;

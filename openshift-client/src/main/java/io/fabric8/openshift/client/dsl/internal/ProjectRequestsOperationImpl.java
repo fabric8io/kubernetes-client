@@ -42,7 +42,7 @@ public class ProjectRequestsOperationImpl extends OperationSupport implements Pr
   }
 
   public ProjectRequestsOperationImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, ProjectRequest item) {
-    super(client, OpenShiftConfig.withApiGroup(client, PROJECT, config), null, apiVersion, "projectrequests", null, null);
+    super(client, OpenShiftOperation.withApiGroup(client, PROJECT, config), null, apiVersion, "projectrequests", null, null);
     this.item = item;
   }
 
