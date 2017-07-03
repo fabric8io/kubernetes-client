@@ -146,4 +146,9 @@ public interface OpenShiftClient extends KubernetesClient {
    * Returns the current logged in user details similar to the `oc whoami` command.
    */
   User currentUser();
+
+  /**
+   * Returns true if this cluster is a legacy openshift cluster or supports the given OpenShift API Group defined in {@link OpenShiftAPIGroups}
+   */
+  boolean supportsOpenShiftAPIGroup(String apiGroup);
 }
