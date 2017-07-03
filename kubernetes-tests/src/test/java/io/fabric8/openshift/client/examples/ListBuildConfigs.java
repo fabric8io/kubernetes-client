@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigList;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
+import io.fabric8.openshift.client.OpenShiftAPIGroups;
 import io.fabric8.openshift.client.OpenShiftClient;
 
 import java.util.List;
@@ -28,6 +29,10 @@ public class ListBuildConfigs {
   public static void main(String[] args) {
     try {
       OpenShiftClient client = new DefaultOpenShiftClient();
+      if (!client.supportsOpenShiftAPIGroup(OpenShiftAPIGroups.BUILD)) {
+        System.out.println("WARNING this cluster does not support the API Group " + OpenShiftAPIGroups.BUILD + " so this API call is probably going to fail");
+        return;
+      }
       BuildConfigList list = client.buildConfigs().list();
       if (list == null) {
         System.out.println("ERROR no list returned!");

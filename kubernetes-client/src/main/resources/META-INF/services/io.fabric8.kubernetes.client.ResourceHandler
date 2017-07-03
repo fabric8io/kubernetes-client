@@ -15,6 +15,7 @@
 #
 
 io.fabric8.kubernetes.client.handlers.ConfigMapHandler
+io.fabric8.kubernetes.client.handlers.CustomResourceDefinitionHandler
 io.fabric8.kubernetes.client.handlers.DaemonSetHandler
 io.fabric8.kubernetes.client.handlers.DeploymentHandler
 io.fabric8.kubernetes.client.handlers.EndpointsHandler

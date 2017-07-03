@@ -41,5 +41,12 @@ public interface Client extends ConfigAware, Closeable {
 
   RootPaths rootPaths();
 
+  /**
+   * Returns true if this cluster supports the given API path or API Group ID
+   * @param path
+   * @return
+   */
+  boolean supportsApiPath(String path);
+
   void close();
 }

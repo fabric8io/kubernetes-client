@@ -67,6 +67,9 @@ import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
+import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionList;
+import io.fabric8.kubernetes.api.model.apiextensions.DoneableCustomResourceDefinition;
 import io.fabric8.kubernetes.client.dsl.AppsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.AutoscalingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
@@ -82,6 +85,7 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.internal.ComponentStatusOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ConfigMapOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.CustomResourceDefinitionOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.EndpointsOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.EventOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.KubernetesListOperationsImpl;
@@ -259,6 +263,12 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   public MixedOperation<LimitRange, LimitRangeList, DoneableLimitRange, Resource<LimitRange, DoneableLimitRange>> limitRanges() {
     return new LimitRangeOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
+
+  @Override
+  public NonNamespaceOperation<CustomResourceDefinition, CustomResourceDefinitionList, DoneableCustomResourceDefinition, Resource<CustomResourceDefinition, DoneableCustomResourceDefinition>> customResourceDefinitions() {
+    return new CustomResourceDefinitionOperationsImpl(httpClient, getConfiguration());
+  }
+
 
   @Override
   public NamespacedKubernetesClient inNamespace(String namespace)
