@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.dsl.base;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.OperationInfo;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.internal.DefaultOperationInfo;
@@ -90,6 +91,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   private boolean reaping;
   protected Reaper reaper;
+  protected String apiGroupVersion;
 
   protected BaseOperation(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields)  {
     super(client, config, apiGroup, apiVersion(item, apiVersion), resourceT, namespace, name(item, name));
@@ -178,7 +180,15 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   @Override
   public T get() {
     try {
-    return getMandatory();
+      T answer = getMandatory();
+      if (answer instanceof HasMetadata) {
+        HasMetadata hasMetadata = (HasMetadata) answer;
+        updateApiVersion(hasMetadata);
+      } else if (answer instanceof KubernetesResourceList) {
+        KubernetesResourceList list = (KubernetesResourceList) answer;
+        updateApiVersion(list);
+      }
+      return answer;
     } catch (KubernetesClientException e) {
       if (e.getCode() != 404) {
         throw e;
@@ -580,7 +590,9 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
       }
 
       Request.Builder requestBuilder = new Request.Builder().get().url(requestUrlBuilder.build());
-      return handleResponse(requestBuilder, listType);
+      L answer = handleResponse(requestBuilder, listType);
+      updateApiVersion(answer);
+      return answer;
     } catch (InterruptedException | ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
     }
@@ -738,19 +750,24 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   protected T handleCreate(T resource) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+    updateApiVersionResource(resource);
     return handleCreate(resource, getType());
   }
 
   protected T handleReplace(T updated) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+    updateApiVersionResource(updated);
     return handleReplace(updated, getType());
   }
 
   protected T handlePatch(T current, T updated) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+    updateApiVersionResource(updated);
     return handlePatch(current, updated, getType());
   }
 
   protected T handleGet(URL resourceUrl) throws InterruptedException, ExecutionException, IOException {
-    return handleGet(resourceUrl, getType());
+    T answer = handleGet(resourceUrl, getType());
+    updateApiVersionResource(answer);
+    return answer;
   }
 
   public Boolean isCascading() {
@@ -853,6 +870,60 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     return Config.class;
   }
 
+  /**
+   * Updates the list or single item if it has a missing or incorrect apiVersion
+   */
+  protected void updateApiVersionResource(Object resource) {
+    if (resource instanceof HasMetadata) {
+      HasMetadata hasMetadata = (HasMetadata) resource;
+      updateApiVersion(hasMetadata);
+    } else if (resource instanceof KubernetesResourceList) {
+      KubernetesResourceList list = (KubernetesResourceList) resource;
+      updateApiVersion(list);
+    }
+  }
+
+  /**
+   * Updates the list items if they have missing or default apiVersion values and the resource is currently
+   * using API Groups with custom version strings
+   */
+  protected void updateApiVersion(KubernetesResourceList list) {
+    String version = getApiGroupVersion();
+    if (list != null && version != null && version.length() > 0) {
+      List items = list.getItems();
+      if (items != null) {
+        for (Object item : items) {
+          if (item instanceof HasMetadata) {
+            updateApiVersion((HasMetadata) item);
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Updates the resource if it has missing or default apiVersion values and the resource is currently
+   * using API Groups with custom version strings
+   */
+  protected void updateApiVersion(HasMetadata hasMetadata) {
+    String version = getApiGroupVersion();
+    if (hasMetadata != null && version != null && version.length() > 0) {
+      ObjectMeta metadata = hasMetadata.getMetadata();
+      if (metadata != null) {
+        String current = hasMetadata.getApiVersion();
+        // lets overwrite the api version if its currently missing, the resource uses an API Group with '/'
+        // or we have the default of 'v1' when using an API group version like 'build.openshift.io/v1'
+        if (current == null || "v1".equals(current) || current.indexOf('/') < 0 && version.indexOf('/') > 0) {
+          hasMetadata.setApiVersion(version);
+        }
+      }
+    }
+  }
+
+  public String getApiGroupVersion() {
+    return apiGroupVersion;
+  }
+     
   @Override
   public Boolean isReady() {
     T i = get();
