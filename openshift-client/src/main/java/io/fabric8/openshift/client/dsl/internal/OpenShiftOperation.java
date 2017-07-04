@@ -27,7 +27,6 @@ import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfig;
-import io.fabric8.openshift.client.internal.ApiVersionHelpers;
 import okhttp3.OkHttpClient;
 
 import java.net.MalformedURLException;
@@ -36,7 +35,6 @@ import java.util.Map;
 
 public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
   extends HasMetadataOperation<T, L, D, R> {
-  private final String apiGroupVersion;
 
   protected OpenShiftOperation(OkHttpClient client, ConfigAndApiGroupsInfo config, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
     super(client, config.getConfig(), config.getApiGroup(), config.getApiGroupVersion(), resourceT, namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
@@ -104,24 +102,6 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
   @Override
   public OpenShiftConfig getConfig() {
     return OpenShiftConfig.wrap(super.getConfig());
-  }
-
-  @Override
-  public T get() {
-    T answer = super.get();
-    ApiVersionHelpers.updateApiVersion(this, getConfig(), answer);
-    return answer;
-  }
-
-  @Override
-  public L list() throws KubernetesClientException {
-    L answer = super.list();
-    ApiVersionHelpers.updateApiVersion(this, getConfig(), answer);
-    return answer;
-  }
-
-  public String getApiGroupVersion() {
-    return apiGroupVersion;
   }
 
   protected Class<? extends Config> getConfigType() {
