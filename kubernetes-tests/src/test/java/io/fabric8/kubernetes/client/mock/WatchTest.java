@@ -138,7 +138,7 @@ public class WatchTest {
         closeLatch.countDown();
       }
     })) /* autoclose */ {
-      assertTrue(closeLatch.await(3, TimeUnit.MINUTES));
+      assertTrue(closeLatch.await(10, TimeUnit.MINUTES));
     }
   }
 
