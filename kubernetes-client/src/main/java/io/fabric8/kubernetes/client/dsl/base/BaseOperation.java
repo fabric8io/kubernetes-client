@@ -643,6 +643,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     boolean deleted = true;
     if (items != null) {
       for (T item : items) {
+        updateApiVersionResource(item);
+
         try {
           R op = (R) getClass()
             .getConstructor(OkHttpClient.class, getConfigType(), String.class, String.class, String.class, Boolean.class, getType(), String.class, Boolean.class, long.class, Map.class, Map.class, Map.class, Map.class, Map.class)
@@ -664,6 +666,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   void deleteThis() throws KubernetesClientException {
     try {
       if (item != null) {
+        updateApiVersionResource(item);
         handleDelete(item, gracePeriodSeconds, cascading);
       } else {
         handleDelete(getResourceUrl(), gracePeriodSeconds, cascading);
@@ -901,6 +904,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     }
   }
 
+
   /**
    * Updates the resource if it has missing or default apiVersion values and the resource is currently
    * using API Groups with custom version strings
@@ -908,14 +912,11 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   protected void updateApiVersion(HasMetadata hasMetadata) {
     String version = getApiGroupVersion();
     if (hasMetadata != null && version != null && version.length() > 0) {
-      ObjectMeta metadata = hasMetadata.getMetadata();
-      if (metadata != null) {
-        String current = hasMetadata.getApiVersion();
-        // lets overwrite the api version if its currently missing, the resource uses an API Group with '/'
-        // or we have the default of 'v1' when using an API group version like 'build.openshift.io/v1'
-        if (current == null || "v1".equals(current) || current.indexOf('/') < 0 && version.indexOf('/') > 0) {
-          hasMetadata.setApiVersion(version);
-        }
+      String current = hasMetadata.getApiVersion();
+      // lets overwrite the api version if its currently missing, the resource uses an API Group with '/'
+      // or we have the default of 'v1' when using an API group version like 'build.openshift.io/v1'
+      if (current == null || "v1".equals(current) || current.indexOf('/') < 0 && version.indexOf('/') > 0) {
+        hasMetadata.setApiVersion(version);
       }
     }
   }
@@ -923,7 +924,14 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   public String getApiGroupVersion() {
     return apiGroupVersion;
   }
-     
+
+  /**
+   * Return true if this is an API Group where the versions include a slash in them
+   */
+  public boolean isApiGroup() {
+    return apiGroupVersion != null && apiGroupVersion.indexOf('/') > 0;
+  }
+
   @Override
   public Boolean isReady() {
     T i = get();
