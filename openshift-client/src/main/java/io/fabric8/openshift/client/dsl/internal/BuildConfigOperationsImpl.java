@@ -141,6 +141,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
   @Override
   public Build instantiate(BuildRequest request) {
     try {
+      updateApiVersion(request);
       URL instantiationUrl = new URL(URLUtils.join(getResourceUrl().toString(), "instantiate"));
       RequestBody requestBody = RequestBody.create(JSON, BaseOperation.JSON_MAPPER.writer().writeValueAsString(request));
       Request.Builder requestBuilder = new Request.Builder().post(requestBody).url(instantiationUrl);
