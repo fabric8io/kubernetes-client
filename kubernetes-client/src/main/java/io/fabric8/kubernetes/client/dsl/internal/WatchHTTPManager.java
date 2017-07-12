@@ -291,6 +291,10 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
     if (event != null) {
       object = event.getObject();;
     }
+    // when watching API Groups we don't get a WatchEvent resource
+    // so the object will be null
+    // so lets try parse the message as a KubernetesResource
+    // as it will probably be a list of resources like a BuildList
     if (object == null) {
       object = mapper.readValue(messageSource, KubernetesResource.class);
       if (event == null) {
