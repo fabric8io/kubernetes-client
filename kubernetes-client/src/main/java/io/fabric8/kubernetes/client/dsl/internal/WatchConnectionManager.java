@@ -34,12 +34,14 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static io.fabric8.kubernetes.client.dsl.internal.WatchHTTPManager.readWatchEvent;
 import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
 import static java.net.HttpURLConnection.HTTP_GONE;
 import static java.net.HttpURLConnection.HTTP_OK;
@@ -202,11 +204,11 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
       @Override
       public void onMessage(WebSocket webSocket, String message) {
         try {
-          WatchEvent event = mapper.readValue(message, WatchEvent.class);
-
-          if (event.getObject() instanceof HasMetadata) {
+          WatchEvent event = readWatchEvent(message);
+          Object object = event.getObject();
+          if (object instanceof HasMetadata) {
             @SuppressWarnings("unchecked")
-            T obj = (T) event.getObject();
+            T obj = (T) object;
             // Dirty cast - should always be valid though
             String currentResourceVersion = resourceVersion.get();
             String newResourceVersion = ((HasMetadata) obj).getMetadata().getResourceVersion();
@@ -215,8 +217,25 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
             }
             Watcher.Action action = Watcher.Action.valueOf(event.getType());
             watcher.eventReceived(action, obj);
-          } else if (event.getObject() instanceof Status) {
-            Status status = (Status) event.getObject();
+          } else if (object instanceof KubernetesResourceList) {
+            @SuppressWarnings("unchecked")
+
+            KubernetesResourceList list = (KubernetesResourceList) object;
+            // Dirty cast - should always be valid though
+            String currentResourceVersion = resourceVersion.get();
+            String newResourceVersion = list.getMetadata().getResourceVersion();
+            if (currentResourceVersion.compareTo(newResourceVersion) < 0) {
+              resourceVersion.compareAndSet(currentResourceVersion, newResourceVersion);
+            }
+            Watcher.Action action = Watcher.Action.valueOf(event.getType());
+            List<HasMetadata> items = list.getItems();
+            if (items != null) {
+              for (HasMetadata item : items) {
+                watcher.eventReceived(action, (T) item);
+              }
+            }
+          } else if (object instanceof Status) {
+            Status status = (Status) object;
 
             // The resource version no longer exists - this has to be handled by the caller.
             if (status.getCode() == HTTP_GONE) {
