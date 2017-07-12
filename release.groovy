@@ -68,7 +68,16 @@ def updateDownstreamDependencies(stagedProject) {
     propertyName = 'kubernetes-client.version'
     projects = [
             'fabric8io/fabric8',
-            'fabric8io/fabric8-platform'
+            'fabric8io/fabric8-platform',
+            'fabric8io/kubernetes-pipeline-plugin',
+            'jenkinsci/kubernetes-pipeline-plugin'
+    ]
+    version = stagedProject[1]
+  }
+  pushPomPropertyChangePR {
+    propertyName = 'openshift-client.version'
+    projects = [
+            'fabric8io/jenkins-sync-plugin'
     ]
     version = stagedProject[1]
   }

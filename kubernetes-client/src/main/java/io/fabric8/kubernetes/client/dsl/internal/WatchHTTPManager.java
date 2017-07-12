@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.WatchEvent;
@@ -35,6 +36,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -118,11 +120,18 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
 
     String fieldQueryString = baseOperation.getFieldQueryParam();
     String name = baseOperation.getName();
+
+    // for API groups we can use the name in the path rather than a fieldSelector
+    // which is more likely to work well for API Groups
     if (name != null && name.length() > 0) {
-      if (fieldQueryString.length() > 0) {
-        fieldQueryString += ",";
+      if (baseOperation.isApiGroup()) {
+        httpUrlBuilder.addPathSegment(name);
+      } else {
+        if (fieldQueryString.length() > 0) {
+          fieldQueryString += ",";
+        }
+        fieldQueryString += "metadata.name=" + name;
       }
-      fieldQueryString += "metadata.name=" + name;
     }
 
     if (isNotNullOrEmpty(fieldQueryString)) {
@@ -222,10 +231,11 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
 
   public void onMessage(String messageSource) throws IOException {
     try {
-      WatchEvent event = mapper.readValue(messageSource, WatchEvent.class);
-      if (event.getObject() instanceof HasMetadata) {
+      WatchEvent event = readWatchEvent(messageSource);
+      KubernetesResource object = event.getObject();
+      if (object instanceof HasMetadata) {
         @SuppressWarnings("unchecked")
-        T obj = (T) event.getObject();
+        T obj = (T) object;
         // Dirty cast - should always be valid though
         String currentResourceVersion = resourceVersion.get();
         String newResourceVersion = ((HasMetadata) obj).getMetadata().getResourceVersion();
@@ -234,8 +244,25 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
         }
         Watcher.Action action = Watcher.Action.valueOf(event.getType());
         watcher.eventReceived(action, obj);
-      } else if (event.getObject() instanceof Status) {
-        Status status = (Status) event.getObject();
+      } else if (object instanceof KubernetesResourceList) {
+          @SuppressWarnings("unchecked")
+          KubernetesResourceList list = (KubernetesResourceList) object;
+          // Dirty cast - should always be valid though
+          String currentResourceVersion = resourceVersion.get();
+          String newResourceVersion = list.getMetadata().getResourceVersion();
+          if (currentResourceVersion.compareTo(newResourceVersion) < 0) {
+            resourceVersion.compareAndSet(currentResourceVersion, newResourceVersion);
+          }
+          Watcher.Action action = Watcher.Action.valueOf(event.getType());
+          List<HasMetadata> items = list.getItems();
+          if (items != null) {
+            String name = baseOperation.getName();
+            for (HasMetadata item : items) {
+              watcher.eventReceived(action, (T) item);
+            }
+          }
+      } else if (object instanceof Status) {
+        Status status = (Status) object;
         // The resource version no longer exists - this has to be handled by the caller.
         if (status.getCode() == HTTP_GONE) {
           // exception
@@ -256,6 +283,30 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
     } catch (IllegalArgumentException e) {
       logger.error("Invalid event type", e);
     }
+  }
+
+  protected static WatchEvent readWatchEvent(String messageSource) throws IOException {
+    WatchEvent event = mapper.readValue(messageSource, WatchEvent.class);
+    KubernetesResource object = null;
+    if (event != null) {
+      object = event.getObject();;
+    }
+    // when watching API Groups we don't get a WatchEvent resource
+    // so the object will be null
+    // so lets try parse the message as a KubernetesResource
+    // as it will probably be a list of resources like a BuildList
+    if (object == null) {
+      object = mapper.readValue(messageSource, KubernetesResource.class);
+      if (event == null) {
+        event = new WatchEvent(object, "MODIFIED");
+      } else {
+        event.setObject(object);
+      }
+    }
+    if (event.getType() == null) {
+      event.setType("MODIFIED");
+    }
+    return event;
   }
 
   private long nextReconnectInterval() {

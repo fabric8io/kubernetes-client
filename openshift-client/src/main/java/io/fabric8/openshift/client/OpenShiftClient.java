@@ -21,6 +21,7 @@ import java.net.URL;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.AppsAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.AutoscalingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ParameterMixedOperation;
@@ -98,6 +99,8 @@ public interface OpenShiftClient extends KubernetesClient {
 
   AppsAPIGroupDSL apps();
 
+  AutoscalingAPIGroupDSL autoscaling();
+
   MixedOperation<Build, BuildList, DoneableBuild, BuildResource<Build, DoneableBuild, String, LogWatch>> builds();
 
   MixedOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build>> buildConfigs();
@@ -143,4 +146,9 @@ public interface OpenShiftClient extends KubernetesClient {
    * Returns the current logged in user details similar to the `oc whoami` command.
    */
   User currentUser();
+
+  /**
+   * Returns true if this cluster is a legacy openshift cluster or supports the given OpenShift API Group defined in {@link OpenShiftAPIGroups}
+   */
+  boolean supportsOpenShiftAPIGroup(String apiGroup);
 }

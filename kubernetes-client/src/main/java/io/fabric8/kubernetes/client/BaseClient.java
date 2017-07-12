@@ -28,6 +28,7 @@ import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.net.URL;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -137,5 +138,21 @@ public abstract class BaseClient implements Client, HttpClientAware {
   public RootPaths rootPaths() {
     return new BaseOperation(httpClient, configuration, null, null, "", null, null, false, null, null, false, RootPaths.class, null, null) {
     }.getRootPaths();
+  }
+
+  @Override
+  public boolean supportsApiPath(String apiPath) {
+    RootPaths rootPaths = rootPaths();
+    if (rootPaths != null) {
+      List<String> paths = rootPaths.getPaths();
+      if (paths != null) {
+        for (String path : paths) {
+          if (path.equals(apiPath)) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
   }
 }

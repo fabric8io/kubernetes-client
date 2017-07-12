@@ -36,6 +36,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
+import static io.fabric8.openshift.client.OpenShiftAPIGroups.AUTHORIZATION;
+
 public class SubjectAccessReviewOperationImpl extends OperationSupport implements SubjectAccessReviewOperation<CreateableSubjectAccessReview, CreateableLocalSubjectAccessReview> {
 
 
@@ -44,7 +46,7 @@ public class SubjectAccessReviewOperationImpl extends OperationSupport implement
   }
 
   public SubjectAccessReviewOperationImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace) {
-    super(client, config, null, apiVersion, "subjectaccessreviews", namespace, null);
+    super(client, OpenShiftOperation.withApiGroup(client, AUTHORIZATION, apiVersion, config), "subjectaccessreviews", namespace, null);
   }
 
   @Override

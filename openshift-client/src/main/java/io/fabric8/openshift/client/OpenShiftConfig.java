@@ -16,16 +16,17 @@
 
 package io.fabric8.openshift.client;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import okhttp3.TlsVersion;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
+import okhttp3.OkHttpClient;
+import okhttp3.TlsVersion;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -43,6 +44,7 @@ public class OpenShiftConfig extends Config {
 
   private String oapiVersion = "v1";
   private String openShiftUrl;
+  private boolean disableApiGroupCheck;
   private long buildTimeout = DEFAULT_BUILD_TIMEOUT;
 
   //This is not meant to be used. This constructor is used only by the generated builder.
@@ -53,6 +55,13 @@ public class OpenShiftConfig extends Config {
     this(kubernetesConfig,
       getDefaultOpenShiftUrl(kubernetesConfig), getDefaultOapiVersion(kubernetesConfig), DEFAULT_BUILD_TIMEOUT
     );
+  }
+
+  public OpenShiftConfig(Config kubernetesConfig, String openShiftUrl) {
+    this(kubernetesConfig,
+      getDefaultOpenShiftUrl(kubernetesConfig), getDefaultOapiVersion(kubernetesConfig), DEFAULT_BUILD_TIMEOUT
+    );
+    this.openShiftUrl = openShiftUrl;
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false, refs = {@BuildableReference(Config.class)})
@@ -101,6 +110,13 @@ public class OpenShiftConfig extends Config {
 
   public static OpenShiftConfig wrap(Config config) {
     return config instanceof OpenShiftConfig ? (OpenShiftConfig) config : new OpenShiftConfig(config);
+  }
+
+  public boolean isOpenShiftAPIGroups(OpenShiftClient openShiftClient) {
+    if (isDisableApiGroupCheck()) {
+      return false;
+    }
+    return OpenshiftAdapterSupport.isOpenShiftAPIGroups(openShiftClient);
   }
 
   private static String getDefaultOapiVersion(Config config) {
@@ -155,4 +171,13 @@ public class OpenShiftConfig extends Config {
   public void setBuildTimeout(long buildTimeout) {
     this.buildTimeout = buildTimeout;
   }
+
+  public boolean isDisableApiGroupCheck() {
+    return disableApiGroupCheck;
+  }
+
+  public void setDisableApiGroupCheck(boolean disableApiGroupCheck) {
+    this.disableApiGroupCheck = disableApiGroupCheck;
+  }
+
 }

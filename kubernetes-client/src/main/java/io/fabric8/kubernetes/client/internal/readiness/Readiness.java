@@ -29,6 +29,9 @@ import io.fabric8.kubernetes.api.model.extensions.DeploymentStatus;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetSpec;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetStatus;
+import io.fabric8.kubernetes.api.model.extensions.StatefulSet;
+import io.fabric8.kubernetes.api.model.extensions.StatefulSetSpec;
+import io.fabric8.kubernetes.api.model.extensions.StatefulSetStatus;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigSpec;
@@ -61,11 +64,31 @@ public class Readiness {
     } else if (item instanceof ReplicationController) {
       return isReplicationControllerReady((ReplicationController) item);
     } else if (item instanceof Endpoints) {
-      return isEndpointsReady((Endpoints)item);
+      return isEndpointsReady((Endpoints) item);
+    } else if (item instanceof StatefulSet) {
+      return isStatefulSetReady((StatefulSet) item);
     } else {
       throw new IllegalArgumentException("Item needs to be one of [Deployment, ReplicaSet, Pod, DeploymentConfig, ReplicationController], but was: [" + item.getKind() + "]");
     }
   }
+
+  public static boolean isStatefulSetReady(StatefulSet ss) {
+    Utils.checkNotNull(ss, "StatefulSet can't be null.");
+    StatefulSetSpec spec = ss.getSpec();
+    StatefulSetStatus status =ss.getStatus();
+
+    if (status == null || status.getReplicas() == null) {
+      return false;
+    }
+
+    //Can be true in testing, so handle it to make test writing easier.
+    if (spec == null || spec.getReplicas() == null) {
+      return false;
+    }
+
+    return spec.getReplicas().intValue() == status.getReplicas();
+  }
+
 
   public static boolean isDeploymentReady(Deployment d) {
     Utils.checkNotNull(d, "Deployment can't be null.");

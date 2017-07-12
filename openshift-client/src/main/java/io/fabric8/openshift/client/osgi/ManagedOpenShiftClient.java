@@ -67,10 +67,14 @@ import io.fabric8.kubernetes.api.model.SecurityContextConstraintsList;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
+import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionList;
+import io.fabric8.kubernetes.api.model.apiextensions.DoneableCustomResourceDefinition;
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.dsl.AppsAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.AutoscalingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.KubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
@@ -510,6 +514,11 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
+  public NonNamespaceOperation<CustomResourceDefinition, CustomResourceDefinitionList, DoneableCustomResourceDefinition, Resource<CustomResourceDefinition, DoneableCustomResourceDefinition>> customResourceDefinitions() {
+    return delegate.customResourceDefinitions();
+  }
+
+  @Override
   public <C> C adapt(Class<C> type) {
     return delegate.adapt(type);
   }
@@ -555,6 +564,11 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
+  public AutoscalingAPIGroupDSL autoscaling() {
+    return delegate.autoscaling();
+  }
+
+  @Override
   public NamespacedOpenShiftClient inAnyNamespace() {
     return delegate.inAnyNamespace();
   }
@@ -572,5 +586,10 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public User currentUser() {
     return delegate.currentUser();
+  }
+
+  @Override
+  public boolean supportsOpenShiftAPIGroup(String apiGroup) {
+    return delegate.supportsOpenShiftAPIGroup(apiGroup);
   }
 }
