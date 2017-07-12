@@ -143,6 +143,26 @@ Service myservice = client.services().inNamespace("default").createNew()
                      .done();
 ```
 
+### Following events
+
+Use `io.fabric8.kubernetes.api.model.Event` as T for Watcher:
+
+```java
+client.events().inAnyNamespace().watch(new Watcher<Event>() {
+
+  @Override
+  public void eventReceived(Action action, Event resource) {
+    System.out.println("event " + action.name() + " " + resource.toString());
+  }
+
+  @Override
+  public void onClose(KubernetesClientException cause) {
+    System.out.println("Watcher close due to " + cause);
+  }
+
+});
+```
+
 ### Working with extensions
 
 The kubernetes API defines a bunch of extensions like `daemonSets`, `jobs`, `ingresses` and so forth which are all usable in the `extensions()` DSL:
