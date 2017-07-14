@@ -15,6 +15,7 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
+import io.fabric8.openshift.client.OpenShiftConfigBuilder;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -37,7 +38,7 @@ public class LoadAsTemplateTest {
 
   @Test
   public void shouldLoadPodAsTemplate() throws Exception {
-    OpenShiftClient client = new DefaultOpenShiftClient();
+    OpenShiftClient client = createOpenShiftClientWithNoServer();
     KubernetesList list = client.templates().load(getClass().getResourceAsStream("/test-pod-create-from-load.yml")).processLocally();
     assertNotNull(list);
     assertNotNull(list.getItems());
@@ -46,7 +47,7 @@ public class LoadAsTemplateTest {
 
   @Test
   public void shouldProcessLocally() throws Exception {
-    OpenShiftClient client = new DefaultOpenShiftClient();
+    OpenShiftClient client = createOpenShiftClientWithNoServer();
     Map<String, String> map = new HashMap<>();
     map.put("USERNAME", "root");
     map.put("REQUIRED", "requiredValue");
@@ -57,10 +58,14 @@ public class LoadAsTemplateTest {
 
   @Test
   public void shouldProcessLocallyWithParametersInYaml() throws Exception {
-    OpenShiftClient client = new DefaultOpenShiftClient();
+    OpenShiftClient client = createOpenShiftClientWithNoServer();
 
     KubernetesList list = client.templates().load(getClass().getResourceAsStream("/template-with-params.yml")).processLocally(getClass().getResourceAsStream("/parameters.yml"));
     assertListIsProcessed(list);
+  }
+
+  protected DefaultOpenShiftClient createOpenShiftClientWithNoServer() {
+    return new DefaultOpenShiftClient(new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
   }
 
   //Check that the processed template is as expected

@@ -18,6 +18,7 @@ package io.fabric8.openshift.client.server.mock;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.mockwebserver.dsl.MockServerExpectation;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
+import io.fabric8.openshift.client.OpenshiftAdapterSupport;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.rules.ExternalResource;
 

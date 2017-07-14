@@ -25,6 +25,8 @@ import io.fabric8.openshift.client.OpenShiftConfig;
 import java.util.Map;
 import java.util.TreeMap;
 
+import static io.fabric8.openshift.client.OpenShiftAPIGroups.IMAGE;
+
 public class ImageStreamOperationsImpl extends OpenShiftOperation<ImageStream, ImageStreamList, DoneableImageStream,
   Resource<ImageStream, DoneableImageStream>> {
 
@@ -33,6 +35,6 @@ public class ImageStreamOperationsImpl extends OpenShiftOperation<ImageStream, I
   }
 
   public ImageStreamOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, ImageStream item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, config, null, apiVersion, "imagestreams", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+    super(client, OpenShiftOperation.withApiGroup(client, IMAGE, apiVersion, config), "imagestreams", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
   }
 }
