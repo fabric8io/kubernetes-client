@@ -114,14 +114,25 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
 
     String fieldQueryString = baseOperation.getFieldQueryParam();
     String name = baseOperation.getName();
+
+    // for API groups we can use the name in the path rather than a fieldSelector
+    // which is more likely to work well for API Groups
     if (name != null && name.length() > 0) {
-      if (fieldQueryString.length() > 0) {
-        fieldQueryString += ",";
+      if (baseOperation.isApiGroup()) {
+        httpUrlBuilder.addPathSegment(name);
+      } else {
+        if (fieldQueryString.length() > 0) {
+          fieldQueryString += ",";
+        }
+        fieldQueryString += "metadata.name=" + name;
       }
-      fieldQueryString += "metadata.name=" + name;
     }
     if (isNotNullOrEmpty(fieldQueryString)) {
-      httpUrlBuilder.addQueryParameter("fieldSelector", fieldQueryString);
+      if (baseOperation.isApiGroup()) {
+        logger.warn("Ignoring field selector " + fieldQueryString + " on watch URI " + requestUrl + " as fieldSelector is not yet supported on API Groups APIs");
+      } else {
+        httpUrlBuilder.addQueryParameter("fieldSelector", fieldQueryString);
+      }
     }
 
     httpUrlBuilder
