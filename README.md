@@ -76,7 +76,7 @@ System properties are preferred over environment variables. The following system
 Alternatively you can use the `ConfigBuilder` to create a config object for the Kubernetes client:
 
 ```java
-Config config = new ConfigBuilder().masterUrl("https://mymaster.com").build;
+Config config = new ConfigBuilder().withMasterUrl("https://mymaster.com").build;
 KubernetesClient client = new DefaultKubernetesClient(config);
 ```
 
