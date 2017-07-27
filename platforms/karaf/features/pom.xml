@@ -20,7 +20,7 @@
   <parent>
     <artifactId>karaf</artifactId>
     <groupId>io.fabric8.kubernetes</groupId>
-    <version>2.5-SNAPSHOT</version>
+    <version>2.5.0.fuse-000009</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
