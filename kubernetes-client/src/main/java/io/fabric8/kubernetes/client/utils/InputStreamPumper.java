@@ -50,14 +50,22 @@ public class InputStreamPumper implements Runnable, Closeable {
 
     @Override
     public void run() {
-        thread = Thread.currentThread();
+        synchronized (this) {
+          thread = Thread.currentThread();
+        }
         byte[] buffer = new byte[1024];
         try {
-            int length;
-            while (keepReading && !Thread.currentThread().isInterrupted() && (length = in.read(buffer)) != -1) {
+            while (keepReading && !Thread.currentThread().isInterrupted()) {
+              while (in.available() > 0 && keepReading && !Thread.currentThread().isInterrupted()) {
+                int length = in.read(buffer);
+                if (length < 0) {
+                  throw new IOException("EOF has been reached!");
+                }
                 byte[] actual = new byte[length];
                 System.arraycopy(buffer, 0, actual, 0, length);
                 callback.call(actual);
+              }
+              Thread.sleep(50); // Pause to avoid tight loop if external proc is too slow
             }
         } catch (IOException e) {
             if (!keepReading) {
@@ -66,12 +74,14 @@ public class InputStreamPumper implements Runnable, Closeable {
             if (!thread.isInterrupted()) {
                 LOGGER.error("Error while pumping stream.", e);
             } else {
-                LOGGER.debug("Interrupted while pumping stream.", e);
+                LOGGER.debug("Interrupted while pumping stream.");
             }
+        } catch (InterruptedException e) {
+          Thread.interrupted();
         }
     }
 
-    public void close() {
+    public synchronized void close() {
         keepReading = false;
         if (thread != null && !thread.isInterrupted()) {
             thread.interrupt();
