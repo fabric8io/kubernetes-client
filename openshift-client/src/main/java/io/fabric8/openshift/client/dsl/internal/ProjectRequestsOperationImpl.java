@@ -60,17 +60,22 @@ public class ProjectRequestsOperationImpl extends OperationSupport implements Pr
     }
   }
 
+  private ProjectRequest updateApiVersion(ProjectRequest p) {
+      p.setApiVersion(this.apiVersion);
+      return p;
+  }
+
   @Override
   public ProjectRequest create(ProjectRequest... resources) {
     try {
       if (resources.length > 1) {
         throw new IllegalArgumentException("Too many items to create.");
       } else if (resources.length == 1) {
-        return handleCreate(resources[0], ProjectRequest.class);
+        return handleCreate(updateApiVersion(resources[0]), ProjectRequest.class);
       } else if (getItem() == null) {
         throw new IllegalArgumentException("Nothing to create.");
       } else {
-        return handleCreate(getItem(), ProjectRequest.class);
+        return handleCreate(updateApiVersion(getItem()), ProjectRequest.class);
       }
     } catch (InterruptedException | ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
