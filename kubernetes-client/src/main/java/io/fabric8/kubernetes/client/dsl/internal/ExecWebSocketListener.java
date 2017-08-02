@@ -45,6 +45,18 @@ import java.util.concurrent.atomic.AtomicReference;
 import static io.fabric8.kubernetes.client.utils.Utils.closeQuietly;
 import static io.fabric8.kubernetes.client.utils.Utils.shutdownExecutorService;
 
+/**
+ * A {@link WebSocketListener} for exec operations.
+ *
+ * This listener, is only responsible for the resources it creates. Externally passed resource, will not get closed,
+ * by this listener.
+ *
+ * All other resources will be cleaned up once, ONLY when the close() method is called.
+ *
+ * ExecListener methods, onClose() and onFailure are mutually exclusive and are meant to be called once and only once.
+ * Failures that propagate after a close() operation will not be propagated.
+ *
+ */
 public class ExecWebSocketListener extends WebSocketListener implements ExecWatch, AutoCloseable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExecWebSocketListener.class);
@@ -66,13 +78,15 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
     private final ArrayBlockingQueue<Object> queue = new ArrayBlockingQueue<>(1);
     private final ExecListener listener;
 
-    private final AtomicBoolean cleanupOnClose = new AtomicBoolean(false);
-    private final AtomicBoolean closed = new AtomicBoolean(false);
+    private final AtomicBoolean explicitlyClosed = new AtomicBoolean(false);
 
-    private final AtomicBoolean webSocketClosed = new AtomicBoolean(false);
+    private final AtomicBoolean failed = new AtomicBoolean(false);
+    private final AtomicBoolean closed = new AtomicBoolean(false);
+    private final AtomicBoolean cleaned = new AtomicBoolean(false);
+
     private final Set<Closeable> toClose = new LinkedHashSet<>();
 
-  @Deprecated
+    @Deprecated
     public ExecWebSocketListener(InputStream in, OutputStream out, OutputStream err, PipedOutputStream inputPipe, PipedInputStream outputPipe, PipedInputStream errorPipe, ExecListener listener) {
         this(new Config(), in, out, err, inputPipe, outputPipe, errorPipe, listener);
     }
@@ -106,30 +120,29 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
     }
 
     public void close(int code, String reason) {
-        try {
-          cleanupOnClose.set(true);
-          closeWebSocket(code, reason);
-        } finally {
-          if (listener != null) {
-            listener.onClose(code, reason);
-          }
-        }
+      close(webSocketRef.get(), code, reason);
     }
+
+  private void close(WebSocket ws, int code, String reason) {
+    explicitlyClosed.set(true);
+    closeWebSocketOnce(code, reason);
+    onClosed(ws, code, reason);
+  }
 
   /**
    * Performs the cleanup tasks:
    * 1. closes the InputStream pumper
    * 2. closes all internally managed closeables (piped streams).
    *
-   * The order of these tasks can't change or its likely that the pumper will through errors,
+   * The order of these tasks can't change or its likely that the pumper will throw errors,
    * if the stream it uses closes before the pumper it self.
    */
-  private void cleanUp() {
-    try {
-      if (!closed.compareAndSet(false, true)) {
+  private void cleanUpOnce() {
+   if (!cleaned.compareAndSet(false, true)) {
         return;
-      }
+   }
 
+    try {
       closeQuietly(pumper);
       shutdownExecutorService(executorService);
     } finally {
@@ -137,14 +150,13 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
     }
   }
 
-    private void closeWebSocket(int code, String reason) {
-      if (!webSocketClosed.compareAndSet(false, true)) {
-        cleanUp();
+    private void closeWebSocketOnce(int code, String reason) {
+      if (closed.get()) {
         return;
       }
 
-      WebSocket ws = webSocketRef.get();
       try {
+        WebSocket ws = webSocketRef.get();
         if (ws != null) {
           ws.close(code, reason);
         }
@@ -185,11 +197,17 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
 
   @Override
   public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-      try {
-        //If we have closed the watch ignore everything
-        if (closed.get())  {
-          return;
+
+      //If we already called onClosed() or onFailed() before, we need to abort.
+      if (explicitlyClosed.get() || closed.get() || !failed.compareAndSet(false, true) ) {
+        //We are not going to notify the listener, sicne we've already called onClose(), so let's log a debug/warning.
+        if (LOGGER.isDebugEnabled()) {
+          LOGGER.warn("Received [" + t.getClass().getCanonicalName() + "], with message:[" + t.getMessage() + "] after ExecWebSocketListener is closed, Ignoring.");
         }
+        return;
+      }
+
+      try {
         Status status = OperationSupport.createStatus(response);
         LOGGER.error("Exec Failure: HTTP:" + status.getCode() + ". Message:" + status.getMessage(), t);
         //We only need to queue startup failures.
@@ -197,7 +215,7 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
           queue.add(new KubernetesClientException(status));
         }
 
-        cleanUp();
+        cleanUpOnce();
       } finally {
         if (listener != null) {
           listener.onFailure(t, response);
@@ -238,16 +256,19 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
 
   @Override
   public void onClosing(WebSocket webSocket, int code, String reason) {
-    webSocket.close(code, reason);
+    ExecWebSocketListener.this.close(webSocket, code, reason);
   }
 
   @Override
     public void onClosed(WebSocket webSocket, int code, String reason) {
-        webSocketClosed.set(true);
-        LOGGER.debug("Exec Web Socket: On Close with code:[{}], due to: [{}]", code, reason);
+       //If we already called onClosed() or onFailed() before, we need to abort.
+       if (!closed.compareAndSet(false, true) || failed.get()) {
+         return;
+       }
+       LOGGER.debug("Exec Web Socket: On Close with code:[{}], due to: [{}]", code, reason);
         try {
-            if (cleanupOnClose.get()) {
-              cleanUp();
+            if (explicitlyClosed.get()) {
+              cleanUpOnce();
             }
         } finally {
             if (listener != null) {
