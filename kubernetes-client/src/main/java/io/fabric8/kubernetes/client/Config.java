@@ -122,6 +122,8 @@ public class Config {
   private String trustStorePassphrase;
   private String keyStoreFile;
   private String keyStorePassphrase;
+  private int maxRetries = 5;
+  private int retryDelayInSeconds = 5;
 
   private RequestConfig requestConfig = new RequestConfig();
 
@@ -788,4 +790,21 @@ public class Config {
     return keyStoreFile;
   }
 
+  @JsonProperty("maxRetries")
+  public int getMaxRetries() {
+    return maxRetries;
+  }
+
+  public void setMaxRetries(int maxRetries) {
+    this.maxRetries = maxRetries;
+  }
+
+  @JsonProperty("retryDelayInSeconds")
+  public int getRetryDelayInSeconds() {
+    return retryDelayInSeconds;
+  }
+
+  public void setRetryDelayInSeconds(int retryDelayInSeconds) {
+    this.retryDelayInSeconds = retryDelayInSeconds;
+  }
 }
