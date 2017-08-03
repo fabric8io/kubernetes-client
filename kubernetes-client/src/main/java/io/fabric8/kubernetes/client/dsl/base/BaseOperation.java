@@ -935,7 +935,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   @Override
   public Boolean isReady() {
     T i = get();
-    return !(i instanceof HasMetadata) || Readiness.isReady((HasMetadata)i);
+    return i instanceof HasMetadata && Readiness.isReady((HasMetadata)i);
   }
 
   @Override
