@@ -115,6 +115,12 @@ public class HttpClientUtils {
               httpClientBuilder.pingInterval(config.getWebsocketPingInterval(), TimeUnit.MILLISECONDS);
             }
 
+            if (config.getMaxConcurrentRequestsPerHost() > 0) {
+              Dispatcher dispatcher = new Dispatcher();
+              dispatcher.setMaxRequestsPerHost(config.getMaxConcurrentRequestsPerHost());
+              httpClientBuilder.dispatcher(dispatcher);
+            }
+
             // Only check proxy if it's a full URL with protocol
             if (config.getMasterUrl().toLowerCase().startsWith(Config.HTTP_PROTOCOL_PREFIX) || config.getMasterUrl().startsWith(Config.HTTPS_PROTOCOL_PREFIX)) {
                 try {

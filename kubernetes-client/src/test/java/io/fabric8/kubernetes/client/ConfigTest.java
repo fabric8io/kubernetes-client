@@ -23,6 +23,8 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URLDecoder;
+
+import okhttp3.OkHttpClient;
 import okhttp3.TlsVersion;
 import org.junit.After;
 import org.junit.Assert;
@@ -308,6 +310,19 @@ public class ConfigTest {
     Assert.assertEquals(original.getConfiguration().getNamespace(), copy.getConfiguration().getNamespace());
     Assert.assertEquals(original.getConfiguration().getUsername(), copy.getConfiguration().getUsername());
     Assert.assertEquals(original.getConfiguration().getPassword(), copy.getConfiguration().getPassword());
+  }
+
+  @Test
+  public void shouldRespectMaxRequestsPerHost() {
+    Config config = new ConfigBuilder()
+      .withMaxConcurrentRequestsPerHost(20)
+      .build();
+
+    KubernetesClient client = new DefaultKubernetesClient();
+    assertEquals(10, client.adapt(OkHttpClient.class).dispatcher().getMaxRequestsPerHost());
+
+    client = new DefaultKubernetesClient(config);
+    assertEquals(20, client.adapt(OkHttpClient.class).dispatcher().getMaxRequestsPerHost());
   }
 
   private void assertConfig(Config config) {
