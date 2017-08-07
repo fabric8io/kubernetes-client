@@ -20,7 +20,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-client-project</artifactId>
-    <version>2.5-SNAPSHOT</version>
+    <version>2.6-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -75,6 +75,7 @@
             <KUBERNETES_WATCH_RECONNECTINTERVAL></KUBERNETES_WATCH_RECONNECTINTERVAL>
             <KUBERNETES_WATCH_RECONNECTLIMIT></KUBERNETES_WATCH_RECONNECTLIMIT>
             <KUBERNETES_REQUEST_TIMEOUT></KUBERNETES_REQUEST_TIMEOUT>
+            <KUBERNETES_MAX_CONCURRENT_REQUESTS_PER_HOST></KUBERNETES_MAX_CONCURRENT_REQUESTS_PER_HOST>
             <KUBERNETES_NAMESPACE></KUBERNETES_NAMESPACE>
             <KUBERNETES_TLS_VERSIONS></KUBERNETES_TLS_VERSIONS>
           </environmentVariables>

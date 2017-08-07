@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client;
 import io.sundr.builder.annotations.Buildable;
 
 import static io.fabric8.kubernetes.client.Config.DEFAULT_LOGGING_INTERVAL;
+import static io.fabric8.kubernetes.client.Config.DEFAULT_MAX_CONCURRENT_REQUESTS_PER_HOST;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_ROLLING_TIMEOUT;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_SCALE_TIMEOUT;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_WEBSOCKET_PING_INTERVAL;
@@ -37,6 +38,7 @@ public class RequestConfig {
   private int loggingInterval = DEFAULT_LOGGING_INTERVAL;
   private long websocketTimeout = DEFAULT_WEBSOCKET_TIMEOUT;
   private long websocketPingInterval = DEFAULT_WEBSOCKET_PING_INTERVAL;
+  private int maxConcurrentRequestsPerHost = DEFAULT_MAX_CONCURRENT_REQUESTS_PER_HOST;
 
   RequestConfig() {
   }
@@ -45,7 +47,8 @@ public class RequestConfig {
   public RequestConfig(String username, String password, String oauthToken,
                        int watchReconnectLimit, int watchReconnectInterval,
                        int connectionTimeout, long rollingTimeout, int requestTimeout, long scaleTimeout, int loggingInterval,
-                       long websocketTimeout, long websocketPingInterval) {
+                       long websocketTimeout, long websocketPingInterval,
+                       int maxConcurrentRequestsPerHost) {
     this.username = username;
     this.oauthToken = oauthToken;
     this.password = password;
@@ -58,6 +61,7 @@ public class RequestConfig {
     this.websocketTimeout = websocketTimeout;
     this.loggingInterval = loggingInterval;
     this.websocketPingInterval = websocketPingInterval;
+    this.maxConcurrentRequestsPerHost = maxConcurrentRequestsPerHost;
   }
 
   public String getUsername() {
@@ -154,5 +158,13 @@ public class RequestConfig {
 
   public void setWebsocketPingInterval(long websocketPingInterval) {
     this.websocketPingInterval = websocketPingInterval;
+  }
+
+  public int getMaxConcurrentRequestsPerHost() {
+    return maxConcurrentRequestsPerHost;
+  }
+
+  public void setMaxConcurrentRequestsPerHost(int maxConcurrentRequestsPerHost) {
+    this.maxConcurrentRequestsPerHost = maxConcurrentRequestsPerHost;
   }
 }
