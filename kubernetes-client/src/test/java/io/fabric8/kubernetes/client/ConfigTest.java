@@ -319,7 +319,7 @@ public class ConfigTest {
       .build();
 
     KubernetesClient client = new DefaultKubernetesClient();
-    assertEquals(10, client.adapt(OkHttpClient.class).dispatcher().getMaxRequestsPerHost());
+    assertEquals(5, client.adapt(OkHttpClient.class).dispatcher().getMaxRequestsPerHost());
 
     client = new DefaultKubernetesClient(config);
     assertEquals(20, client.adapt(OkHttpClient.class).dispatcher().getMaxRequestsPerHost());
