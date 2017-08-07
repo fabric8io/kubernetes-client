@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.kubernetes.client.dsl;
 
-public interface CascadingEditReplacePatchDeletable<I,D,T,B> extends
-  EditReplacePatchDeletable<I,D,T,B>,
-  Cascading<EditReplacePatchDeletable<I,D,T,B>>,
-  Lockable<Replaceable<I, I>> {
+public interface Lockable<T> {
+
+  T lockResourceVersion(String resourceVersion);
 }

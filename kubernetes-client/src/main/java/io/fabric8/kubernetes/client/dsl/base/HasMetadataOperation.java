@@ -70,6 +70,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
 
   @Override
   public T replace(T item) {
+    String fixedResourceVersion = getResourceVersion();
     Exception caught = null;
     int maxTries = 10;
     for (int i = 0; i < maxTries; i++) {
@@ -80,15 +81,27 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
             reaper.reap();
           }
         }
-        final T got = get();
-        if (got == null) {
-          return null;
+
+        final String resourceVersion;
+        if (fixedResourceVersion != null) {
+          resourceVersion = fixedResourceVersion;
+        } else {
+          T got = get();
+          if (got == null) {
+            return null;
+          }
+          if (got.getMetadata() != null) {
+            resourceVersion = got.getMetadata().getResourceVersion();
+          } else {
+            resourceVersion = null;
+          }
         }
+
         final Function<T, T> visitor = new Function<T, T>() {
           @Override
           public T apply(T resource) {
             try {
-              resource.getMetadata().setResourceVersion(got.getMetadata().getResourceVersion());
+              resource.getMetadata().setResourceVersion(resourceVersion);
               return handleReplace(resource);
             } catch (Exception e) {
               throw KubernetesClientException.launderThrowable(forOperationType("replace"), e);
@@ -99,8 +112,8 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
         return doneable.done();
       } catch (KubernetesClientException e) {
         caught = e;
-        // Only retry if there's a conflict - this is normally to do with resource version & server updates.
-        if (e.getCode() != 409) {
+        // Only retry if there's a conflict and using dynamic resource version - this is normally to do with resource version & server updates.
+        if (e.getCode() != 409 || fixedResourceVersion != null) {
           break;
         }
         if (i < maxTries - 1) {
