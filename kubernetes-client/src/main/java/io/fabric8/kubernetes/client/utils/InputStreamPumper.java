@@ -23,7 +23,6 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.InterruptedIOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class InputStreamPumper implements Runnable, Closeable {
@@ -53,19 +52,15 @@ public class InputStreamPumper implements Runnable, Closeable {
         synchronized (this) {
           thread = Thread.currentThread();
         }
+
         byte[] buffer = new byte[1024];
+        int length;
+
         try {
-            while (keepReading && !Thread.currentThread().isInterrupted()) {
-              while (in.available() > 0 && keepReading && !Thread.currentThread().isInterrupted()) {
-                int length = in.read(buffer);
-                if (length < 0) {
-                  throw new IOException("EOF has been reached!");
-                }
+            while (keepReading && !Thread.currentThread().isInterrupted() && (length = in.read(buffer)) != -1) {
                 byte[] actual = new byte[length];
                 System.arraycopy(buffer, 0, actual, 0, length);
                 callback.call(actual);
-              }
-              Thread.sleep(50); // Pause to avoid tight loop if external proc is too slow
             }
         } catch (IOException e) {
             if (!keepReading) {
@@ -76,8 +71,6 @@ public class InputStreamPumper implements Runnable, Closeable {
             } else {
                 LOGGER.debug("Interrupted while pumping stream.");
             }
-        } catch (InterruptedException e) {
-          Thread.interrupted();
         }
     }
 
