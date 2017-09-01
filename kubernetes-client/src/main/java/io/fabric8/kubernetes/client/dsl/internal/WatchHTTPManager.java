@@ -133,11 +133,11 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
       httpUrlBuilder.addQueryParameter("fieldSelector", fieldQueryString);
     }
 
-    httpUrlBuilder.addQueryParameter("watch", "true");
-
     if (this.resourceVersion.get() != null) {
       httpUrlBuilder.addQueryParameter("resourceVersion", this.resourceVersion.get());
     }
+
+    httpUrlBuilder.addQueryParameter("watch", "true");
 
     final Request request = new Request.Builder()
       .get()

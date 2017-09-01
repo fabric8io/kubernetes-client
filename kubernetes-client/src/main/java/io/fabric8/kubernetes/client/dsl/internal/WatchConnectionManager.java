@@ -130,11 +130,11 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
       }
     }
 
-    httpUrlBuilder.addQueryParameter("watch", "true");
-
     if (this.resourceVersion.get() != null) {
       httpUrlBuilder.addQueryParameter("resourceVersion", this.resourceVersion.get());
     }
+
+    httpUrlBuilder.addQueryParameter("watch", "true");
 
     Request request = new Request.Builder()
       .get()
