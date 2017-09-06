@@ -98,7 +98,7 @@ public class ResourceTest {
       server.expect().get().withPath("/api/v1/namespaces/test/pods").andReturn(200, pod1).once();
       server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(201, pod1).once();
 
-     server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
+     server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&watch=true").andUpgradeToWebSocket()
         .open()
           .waitFor(1000).andEmit(new WatchEvent(pod1, "DELETED"))
         .done()
@@ -149,7 +149,7 @@ public class ResourceTest {
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods").andReturn(200, noReady).once();
 
-    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&watch=true").andUpgradeToWebSocket()
       .open()
       .waitFor(1000).andEmit(new WatchEvent(ready, "MODIFIED"))
       .done()
@@ -187,7 +187,7 @@ public class ResourceTest {
     server.expect().get().withPath("/api/v1/namespaces/test/pods").andReturn(200, noReady).once();
     server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(201, noReady).once();
 
-    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&watch=true").andUpgradeToWebSocket()
       .open()
       .waitFor(1000).andEmit(new WatchEvent(ready, "MODIFIED"))
       .done()

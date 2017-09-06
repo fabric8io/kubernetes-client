@@ -82,12 +82,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   private OkHttpClient clonedClient;
 
   public WatchConnectionManager(final OkHttpClient client, final BaseOperation<T, L, ?, ?> baseOperation, final String version, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit, long websocketTimeout) throws MalformedURLException {
-    if (version == null) {
-      L currentList = baseOperation.list();
-      this.resourceVersion = new AtomicReference<>(currentList.getMetadata().getResourceVersion());
-    } else {
-      this.resourceVersion = new AtomicReference<>(version);
-    }
+    this.resourceVersion = new AtomicReference<>(version); // may be a reference to null
     this.baseOperation = baseOperation;
     this.watcher = watcher;
     this.reconnectInterval = reconnectInterval;
@@ -135,9 +130,11 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
       }
     }
 
-    httpUrlBuilder
-      .addQueryParameter("resourceVersion", this.resourceVersion.get())
-      .addQueryParameter("watch", "true");
+    if (this.resourceVersion.get() != null) {
+      httpUrlBuilder.addQueryParameter("resourceVersion", this.resourceVersion.get());
+    }
+
+    httpUrlBuilder.addQueryParameter("watch", "true");
 
     Request request = new Request.Builder()
       .get()
@@ -223,7 +220,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
             // Dirty cast - should always be valid though
             String currentResourceVersion = resourceVersion.get();
             String newResourceVersion = ((HasMetadata) obj).getMetadata().getResourceVersion();
-            if (currentResourceVersion.compareTo(newResourceVersion) < 0) {
+            if (currentResourceVersion == null || currentResourceVersion.compareTo(newResourceVersion) < 0) {
               resourceVersion.compareAndSet(currentResourceVersion, newResourceVersion);
             }
             Watcher.Action action = Watcher.Action.valueOf(event.getType());
@@ -235,7 +232,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
             // Dirty cast - should always be valid though
             String currentResourceVersion = resourceVersion.get();
             String newResourceVersion = list.getMetadata().getResourceVersion();
-            if (currentResourceVersion.compareTo(newResourceVersion) < 0) {
+            if (currentResourceVersion == null || currentResourceVersion.compareTo(newResourceVersion) < 0) {
               resourceVersion.compareAndSet(currentResourceVersion, newResourceVersion);
             }
             Watcher.Action action = Watcher.Action.valueOf(event.getType());
