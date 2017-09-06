@@ -83,7 +83,7 @@ def updateDownstreamDependencies(stagedProject) {
   }
   pushPomPropertyChangePR {
     parentPomLocation = 'parent/pom.xml'
-    propertyName = 'version = stagedProject[1]'
+    propertyName = 'version.kubernetes-client'
     projects = [
             'fabric8io/fabric8-maven-plugin'
     ]    
