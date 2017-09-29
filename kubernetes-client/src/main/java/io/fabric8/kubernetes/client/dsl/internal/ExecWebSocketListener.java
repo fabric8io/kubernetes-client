@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
+import io.fabric8.kubernetes.client.utils.NonBlockingInputStreamPumper;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.Response;
 import okhttp3.WebSocket;
@@ -101,7 +102,7 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
         this.input = inputPipe;
         this.output = outputPipe;
         this.error = errorPipe;
-        this.pumper = new InputStreamPumper(this.in, new Callback<byte[]>() {
+        this.pumper = new NonBlockingInputStreamPumper(this.in, new Callback<byte[]>() {
             @Override
             public void call(byte[] data) {
                 try {

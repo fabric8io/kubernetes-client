@@ -43,7 +43,7 @@ public class ExecLoopExample {
     String master = "https://localhost:8443/";
     String podName = null;
 
-    if (args.length == 2) {
+    if (args.length >= 2) {
       master = args[0];
       podName = args[1];
     }
