@@ -15,33 +15,36 @@
  */
 package io.fabric8.kubernetes.examples;
 
-import okhttp3.Response;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
-
-import java.io.IOException;
+import okhttp3.Response;
 
 public class ExecExample {
 
     public static void main(String[] args) throws InterruptedException {
-        String master = "https://localhost:8443/";
-        String podName = null;
+        if (args.length < 1) {
+            System.out.println("Usage: podName [master] [namespace]");
+            return;
+          }
 
-        if (args.length == 2) {
-            master = args[0];
-            podName = args[1];
-        }
-        if (args.length == 1) {
-            podName = args[0];
-        }
+        String podName = args[0];
+        String namespace = "default";
+        String master = "https://localhost:8443/";
+
+        if (args.length > 1) {
+            master = args[1];
+          }
+          if (args.length > 2) {
+            namespace = args[2];
+          }
 
         Config config = new ConfigBuilder().withMasterUrl(master).build();
         try (final KubernetesClient client = new DefaultKubernetesClient(config);
-             ExecWatch watch = client.pods().withName(podName)
+             ExecWatch watch = client.pods().inNamespace(namespace).withName(podName)
                 .readingInput(System.in)
                 .writingOutput(System.out)
                 .writingError(System.err)
