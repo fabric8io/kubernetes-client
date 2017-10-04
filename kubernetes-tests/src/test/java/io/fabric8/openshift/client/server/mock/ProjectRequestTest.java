@@ -46,7 +46,7 @@ public class ProjectRequestTest {
 
   @Test
   public void testCreate() {
-    ProjectRequest req1 = new ProjectRequestBuilder().withNewMetadata().withName("req1").and().build();
+    ProjectRequest req1 = new ProjectRequestBuilder().withApiVersion("v1").withNewMetadata().withName("req1").and().build();
 
    server.expect().withPath("/oapi/v1/projectrequests").andReturn(201, req1).once();
 
