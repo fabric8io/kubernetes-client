@@ -154,6 +154,36 @@
         </plugins>
       </build>
     </profile>
+    <profile>
+      <id>pod-log</id>
+      <build>
+        <defaultGoal>test-compile exec:java</defaultGoal>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <configuration>
+              <mainClass>io.fabric8.kubernetes.examples.PodLogExample</mainClass>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>exec-example</id>
+      <build>
+        <defaultGoal>test-compile exec:java</defaultGoal>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <configuration>
+              <mainClass>io.fabric8.kubernetes.examples.ExecExample</mainClass>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 
 </project>
