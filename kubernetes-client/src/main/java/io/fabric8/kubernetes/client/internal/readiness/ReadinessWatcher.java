@@ -26,7 +26,7 @@ import io.fabric8.kubernetes.client.Watcher;
 
 public class ReadinessWatcher<T extends HasMetadata> implements Watcher<T> {
 
-  private final BlockingQueue<T> queue = new ArrayBlockingQueue(1);
+  private final BlockingQueue<T> queue = new ArrayBlockingQueue<>(1);
 
   private final T resource;
 
