@@ -198,7 +198,6 @@ public class ConfigTest {
 
   @Test
   public void testWithKubeConfig() {
-
     System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_FILE);
     Config config = new Config();
     assertNotNull(config);
@@ -206,6 +205,19 @@ public class ConfigTest {
     assertEquals("https://172.28.128.4:8443/", config.getMasterUrl());
     assertEquals("testns", config.getNamespace());
     assertEquals("token", config.getOauthToken());
+    assertTrue(config.getCaCertFile().endsWith("testns/ca.pem"));
+    assertTrue(new File(config.getCaCertFile()).isAbsolute());
+  }
+
+  @Test
+  public void testWithKubeConfigAndOverrideContext() {
+    System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_FILE);
+    Config config = Config.autoConfigure("production/172-28-128-4:8443/root");
+    assertNotNull(config);
+
+    assertEquals("https://172.28.128.4:8443/", config.getMasterUrl());
+    assertEquals("production", config.getNamespace());
+    assertEquals("supertoken", config.getOauthToken());
     assertTrue(config.getCaCertFile().endsWith("testns/ca.pem"));
     assertTrue(new File(config.getCaCertFile()).isAbsolute());
   }

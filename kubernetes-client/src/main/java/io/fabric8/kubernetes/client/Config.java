@@ -163,16 +163,19 @@ public class Config {
   //This is a necessary change to allow us distinguish between auto configured values and builder values.
   @Deprecated
   public Config() {
-    autoConfigure(this);
+    autoConfigure(this, null);
   }
 
-  public static Config autoConfigure() {
+  /**
+   * @param context if null will use current-context
+   */
+  public static Config autoConfigure(String context) {
     Config config = new Config();
-    return autoConfigure(config);
+    return autoConfigure(config, context);
   }
 
-  private static Config autoConfigure(Config config) {
-    if (!tryKubeConfig(config)) {
+  private static Config autoConfigure(Config config, String context) {
+    if (!tryKubeConfig(config, context)) {
       tryServiceAccount(config);
       tryNamespaceFromPath(config);
     }
@@ -363,7 +366,7 @@ public class Config {
     return new File(relativeTo.getParentFile(), filename).getAbsolutePath();
   }
 
-  private static boolean tryKubeConfig(Config config) {
+  private static boolean tryKubeConfig(Config config, String context) {
     LOGGER.debug("Trying to configure client from Kubernetes config...");
     if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, true)) {
       File kubeConfigFile = new File(
@@ -373,6 +376,9 @@ public class Config {
         LOGGER.debug("Found for Kubernetes config at: ["+kubeConfigFile.getPath()+"].");
         try {
           io.fabric8.kubernetes.api.model.Config kubeConfig = KubeConfigUtils.parseConfig(kubeConfigFile);
+          if (context != null) {
+            kubeConfig.setCurrentContext(context);
+          }
           Context currentContext = KubeConfigUtils.getCurrentContext(kubeConfig);
           Cluster currentCluster = KubeConfigUtils.getCluster(kubeConfig, currentContext);
           if (currentCluster != null) {
