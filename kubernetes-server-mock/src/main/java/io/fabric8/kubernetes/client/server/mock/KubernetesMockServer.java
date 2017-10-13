@@ -25,6 +25,7 @@ import io.fabric8.mockwebserver.ContextBuilder;
 import io.fabric8.mockwebserver.DefaultMockServer;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
+import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockWebServer;
 
 import java.util.HashMap;
@@ -54,8 +55,11 @@ public class KubernetesMockServer extends DefaultMockServer {
         super(context, server, responses, useHttps);
     }
 
+  public KubernetesMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, Dispatcher dispatcher, boolean useHttps) {
+    super(context, server, responses, dispatcher, useHttps);
+  }
 
-    public void init() {
+  public void init() {
         start();
     }
 

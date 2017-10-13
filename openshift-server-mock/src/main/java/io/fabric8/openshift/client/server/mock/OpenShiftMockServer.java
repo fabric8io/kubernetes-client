@@ -17,10 +17,18 @@
 package io.fabric8.openshift.client.server.mock;
 
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
+import io.fabric8.mockwebserver.Context;
+import io.fabric8.mockwebserver.ServerRequest;
+import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
+import okhttp3.mockwebserver.Dispatcher;
+import okhttp3.mockwebserver.MockWebServer;
+
+import java.util.Map;
+import java.util.Queue;
 
 import static okhttp3.TlsVersion.TLS_1_0;
 
@@ -33,6 +41,10 @@ public class OpenShiftMockServer extends KubernetesMockServer {
 
   public OpenShiftMockServer(boolean useHttps) {
     super(useHttps);
+  }
+
+  public OpenShiftMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, Dispatcher dispatcher, boolean useHttps) {
+    super(context, server, responses, dispatcher, useHttps);
   }
 
   @Override

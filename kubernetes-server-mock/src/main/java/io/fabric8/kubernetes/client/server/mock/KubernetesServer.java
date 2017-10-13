@@ -16,25 +16,41 @@
 package io.fabric8.kubernetes.client.server.mock;
 
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
+import io.fabric8.mockwebserver.Context;
+import io.fabric8.mockwebserver.ServerRequest;
+import io.fabric8.mockwebserver.ServerResponse;
+import io.fabric8.mockwebserver.crud.CrudDispatcher;
 import io.fabric8.mockwebserver.dsl.MockServerExpectation;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.rules.ExternalResource;
 
+import java.util.HashMap;
+import java.util.Queue;
+
 public class KubernetesServer extends ExternalResource {
+
   private KubernetesMockServer mock;
   private NamespacedKubernetesClient client;
   private boolean https;
+  private boolean curdMode;
 
   public KubernetesServer() {
-    this(true);
+    this(true, false);
   }
 
   public KubernetesServer(boolean https) {
+    this(https, false);
+  }
+
+  public KubernetesServer(boolean https, boolean curdMode) {
     this.https = https;
+    this.curdMode = curdMode;
   }
 
   public void before() {
-    mock = new KubernetesMockServer(https);
+    mock = curdMode
+      ? new KubernetesMockServer(new Context(), new MockWebServer(), new HashMap<ServerRequest, Queue<ServerResponse>>(), new KubernetesCrudDispatcher(), true)
+      : new KubernetesMockServer(https);
     mock.init();
     client = mock.createClient();
   }
