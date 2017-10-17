@@ -91,7 +91,7 @@
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
 
     <slf4j.version>1.7.13</slf4j.version>
-    <snakeyaml.version>1.17</snakeyaml.version>
+    <snakeyaml.version>1.19</snakeyaml.version>
 
     <scr.annotations.version>1.9.12</scr.annotations.version>
     <sundrio.version>0.3.12</sundrio.version>
