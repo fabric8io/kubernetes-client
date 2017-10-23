@@ -23,7 +23,7 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
  * A base class for implementing a custom resource kind
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
-public abstract class CustomResourceSupport implements HasMetadata {
+public abstract class CustomResource implements HasMetadata {
   private String kind = "Dummy";
   private String apiVersion;
   private ObjectMeta metadata;

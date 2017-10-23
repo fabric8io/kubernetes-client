@@ -15,11 +15,11 @@
  */
 package io.fabric8.kubernetes.examples.crds;
 
-import io.fabric8.kubernetes.client.CustomResourceSupport;
+import io.fabric8.kubernetes.client.CustomResource;
 
 /**
  */
-public class Dummy extends CustomResourceSupport {
+public class Dummy extends CustomResource {
   private DummySpec spec;
 
   @Override
