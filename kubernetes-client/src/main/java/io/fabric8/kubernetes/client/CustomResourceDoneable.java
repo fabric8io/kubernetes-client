@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 
 /**
  */
-public class CustomResourceDoneable<T extends HasMetadata> implements Doneable<T> {
+public class CustomResourceDoneable<T extends CustomResource> implements Doneable<T> {
   private final T resource;
   private final Function<T,T> function;
 
