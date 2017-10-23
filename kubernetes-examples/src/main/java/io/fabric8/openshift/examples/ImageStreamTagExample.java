@@ -58,7 +58,7 @@ tag:
         .done()
       );
     }finally {
-      kubernetesClient.namespaces().withName("thisisatest").delete();
+      client.projects().withName("thisisatest").delete();
       client.close();
     }
   }
