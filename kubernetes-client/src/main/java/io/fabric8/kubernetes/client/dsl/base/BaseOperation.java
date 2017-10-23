@@ -658,9 +658,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
         updateApiVersionResource(item);
 
         try {
-          R op = (R) getClass()
-            .getConstructor(OkHttpClient.class, getConfigType(), String.class, String.class, String.class, Boolean.class, getType(), String.class, Boolean.class, long.class, Map.class, Map.class, Map.class, Map.class, Map.class)
-            .newInstance(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), item, getResourceVersion(), true, getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
+          R op = createItemOperation(item);
           deleted &= op.delete();
         } catch (KubernetesClientException e) {
           if (e.getCode() != 404) {
@@ -673,6 +671,12 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
       }
     }
     return deleted;
+  }
+
+  protected R createItemOperation(T item) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    return (R) getClass()
+              .getConstructor(OkHttpClient.class, getConfigType(), String.class, String.class, String.class, Boolean.class, getType(), String.class, Boolean.class, long.class, Map.class, Map.class, Map.class, Map.class, Map.class)
+              .newInstance(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), item, getResourceVersion(), true, getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
   }
 
   void deleteThis() throws KubernetesClientException {
