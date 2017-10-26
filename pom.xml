@@ -26,7 +26,7 @@
 
   <groupId>io.fabric8</groupId>
   <artifactId>kubernetes-client-project</artifactId>
-  <version>1.3.59-SNAPSHOT</version>
+  <version>1.3.26.redhat-086</version>
   <packaging>pom</packaging>
   <name>Fabric8 :: Kubernetes :: Project</name>
 
@@ -81,7 +81,7 @@
     <felix.scr.annotations.version>1.9.8</felix.scr.annotations.version>
     <jackson.version>2.6.3</jackson.version>
     <junit.version>4.12</junit.version>
-    <kubernetes.model.version>1.0.34</kubernetes.model.version>
+    <kubernetes.model.version>1.0.22.redhat-086</kubernetes.model.version>
     <log4j.version>2.3</log4j.version>
     <mockwebserver.version>20130706</mockwebserver.version>
     <slf4j.version>1.7.12</slf4j.version>
