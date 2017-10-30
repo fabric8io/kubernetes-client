@@ -27,9 +27,11 @@ import io.fabric8.openshift.api.model.RoleBindingList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import okhttp3.OkHttpClient;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.ExecutionException;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.AUTHORIZATION;
 
@@ -55,12 +57,8 @@ public class RoleBindingOperationsImpl extends OpenShiftOperation<RoleBinding, R
   }
 
   @Override
-  public RoleBinding create(RoleBinding... resources) throws KubernetesClientException {
-    RoleBinding[] enriched = new RoleBinding[resources.length];
-    for (int i = 0; i < resources.length; i++) {
-      enriched[i] = enrichRoleBinding(resources[i]);
-    }
-    return super.create(enriched);
+  protected RoleBinding handleCreate(RoleBinding resource) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+    return super.handleCreate(enrichRoleBinding(resource));
   }
 
   private RoleBinding enrichRoleBinding(RoleBinding binding) {

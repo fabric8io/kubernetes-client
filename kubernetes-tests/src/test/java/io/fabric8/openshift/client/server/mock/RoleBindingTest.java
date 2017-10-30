@@ -246,4 +246,23 @@ public class RoleBindingTest {
     );
   }
 
+  @Test
+  public void testCreateInline() throws Exception {
+    server.expect().post().withPath("/oapi/v1/namespaces/test/rolebindings").andReturn(201, expectedRoleBinding).once();
+
+    NamespacedOpenShiftClient client = server.getOpenshiftClient();
+
+    RoleBinding response = client.roleBindings().createNew()
+      .withNewMetadata().endMetadata()
+      .addNewSubject().withKind("User").withName("testuser1").endSubject()
+      .addNewSubject().withKind("User").withName("testuser2").endSubject()
+      .addNewSubject().withKind("ServiceAccount").withName("svcacct").endSubject()
+      .addNewSubject().withKind("Group").withName("testgroup").endSubject()
+      .done();
+    assertEquals(expectedRoleBinding, response);
+
+    RecordedRequest request = server.getMockServer().takeRequest();
+    assertEquals(expectedRoleBinding, new ObjectMapper().readerFor(RoleBinding.class).readValue(request.getBody().inputStream()));
+  }
+
 }
