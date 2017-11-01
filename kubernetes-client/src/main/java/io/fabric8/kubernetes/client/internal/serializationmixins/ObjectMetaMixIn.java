@@ -17,7 +17,6 @@ package io.fabric8.kubernetes.client.internal.serializationmixins;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.Time;
 
 public abstract class ObjectMetaMixIn extends ObjectMeta {
   @JsonIgnore
@@ -35,10 +34,10 @@ public abstract class ObjectMetaMixIn extends ObjectMeta {
 
   @Override
   @JsonIgnore
-  public abstract Time getCreationTimestamp();
+  public abstract String getCreationTimestamp();
   @Override
   @JsonIgnore
-  public abstract Time getDeletionTimestamp();
+  public abstract String getDeletionTimestamp();
   @Override
   @JsonIgnore
   public abstract Long getGeneration();
