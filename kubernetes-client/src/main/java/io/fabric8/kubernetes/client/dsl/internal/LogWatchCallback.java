@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
+import io.fabric8.kubernetes.client.utils.BlockingInputStreamPumper;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.Call;
@@ -143,7 +144,7 @@ public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
 
     @Override
     public void onResponse(Call call, final Response response) throws IOException {
-       pumper = new InputStreamPumper(response.body().byteStream(), new io.fabric8.kubernetes.client.Callback<byte[]>(){
+       pumper = new BlockingInputStreamPumper(response.body().byteStream(), new io.fabric8.kubernetes.client.Callback<byte[]>(){
             @Override
             public void call(byte[] input) {
                 try {

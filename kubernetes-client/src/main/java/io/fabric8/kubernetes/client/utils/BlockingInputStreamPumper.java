@@ -23,33 +23,22 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.InterruptedIOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-@Deprecated
-// This is going to be an abstract class in the future.
-// Use NonBlockingInputStreamPumper or BlockingInputStreamPumper instead.
-public class InputStreamPumper implements Runnable, Closeable {
+//DONT USE: when pumping streams, that do not respond to Thread.interrupt(). (e.g. System.in).
+public class BlockingInputStreamPumper extends InputStreamPumper {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InputStreamReader.class);
+    private Thread thread;
 
-    final InputStream in;
-    final Callback<byte[]> callback;
-    final Runnable onClose;
-    final AtomicBoolean closed = new AtomicBoolean(false);
-
-    volatile boolean keepReading = true;
-    Thread thread;
-
-    public InputStreamPumper(InputStream in, Callback<byte[]> callback) {
+    public BlockingInputStreamPumper(InputStream in, Callback<byte[]> callback) {
       this(in, callback, null);
     }
 
-    public InputStreamPumper(InputStream in, Callback<byte[]> callback, Runnable onClose) {
-        this.in = in;
-        this.callback = callback;
-        this.onClose = onClose;
+    public BlockingInputStreamPumper(InputStream in, Callback<byte[]> callback, Runnable onClose) {
+      super(in, callback, onClose);
     }
+
 
     @Override
     public void run() {
@@ -73,17 +62,6 @@ public class InputStreamPumper implements Runnable, Closeable {
           } else {
             LOGGER.debug("Interrupted while pumping stream.");
           }
-        }
-    }
-
-    public synchronized void close() {
-        keepReading = false;
-        if (thread != null && !thread.isInterrupted()) {
-            thread.interrupt();
-        }
-
-        if (closed.compareAndSet(false, true) && onClose != null) {
-          onClose.run();
         }
     }
 }
