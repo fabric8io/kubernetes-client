@@ -148,7 +148,7 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
       Request request = new Request.Builder().url(url).get().build();
       final LogWatchCallback callback = new LogWatchCallback(out);
       OkHttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
-      clone.newCall(request).enqueue(callback);
+      clone.newWebSocket(request,callback);
       callback.waitUntilReady();
       return callback;
     } catch (Throwable t) {

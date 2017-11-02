@@ -15,6 +15,20 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.model.DoneablePod;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.client.*;
+import io.fabric8.kubernetes.client.dsl.*;
+import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
+import io.fabric8.kubernetes.client.internal.readiness.Readiness;
+import io.fabric8.kubernetes.client.internal.readiness.ReadinessWatcher;
+import io.fabric8.kubernetes.client.utils.URLUtils;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
@@ -25,35 +39,6 @@ import java.nio.channels.WritableByteChannel;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
-
-import io.fabric8.kubernetes.api.model.DoneablePod;
-import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.PodList;
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.LocalPortForward;
-import io.fabric8.kubernetes.client.PortForward;
-import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.dsl.PodResource;
-import io.fabric8.kubernetes.client.dsl.ContainerResource;
-import io.fabric8.kubernetes.client.dsl.ExecListenable;
-import io.fabric8.kubernetes.client.dsl.ExecListener;
-import io.fabric8.kubernetes.client.dsl.ExecWatch;
-import io.fabric8.kubernetes.client.dsl.Execable;
-import io.fabric8.kubernetes.client.dsl.LogWatch;
-import io.fabric8.kubernetes.client.dsl.Loggable;
-import io.fabric8.kubernetes.client.dsl.PrettyLoggable;
-import io.fabric8.kubernetes.client.dsl.TailPrettyLoggable;
-import io.fabric8.kubernetes.client.dsl.TimeTailPrettyLoggable;
-import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
-import io.fabric8.kubernetes.client.dsl.TtyExecErrorable;
-import io.fabric8.kubernetes.client.dsl.TtyExecOutputErrorable;
-import io.fabric8.kubernetes.client.dsl.TtyExecable;
-import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
-import io.fabric8.kubernetes.client.internal.readiness.Readiness;
-import io.fabric8.kubernetes.client.internal.readiness.ReadinessWatcher;
-import io.fabric8.kubernetes.client.utils.URLUtils;
-import okhttp3.*;
 
 public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, DoneablePod, PodResource<Pod, DoneablePod>> implements PodResource<Pod, DoneablePod> {
 
@@ -163,7 +148,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
             Request request = new Request.Builder().url(url).get().build();
             final LogWatchCallback callback = new LogWatchCallback(out);
             OkHttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
-            clone.newCall(request).enqueue(callback);
+            clone.newWebSocket(request,callback);
             callback.waitUntilReady();
             return callback;
         } catch (Throwable t) {
@@ -204,7 +189,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
     }
 
     @Override
-    public ExecWatch exec(String... command) {
+    public ExecWatch exec(String...  command) {
         StringBuilder sb = new StringBuilder();
         String[] actualCommands = command.length >= 1 ? command : EMPTY_COMMAND;
 
