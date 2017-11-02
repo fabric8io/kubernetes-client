@@ -108,6 +108,8 @@ Waitable<List<HasMetadata>>, Readiable {
                 notReady.remove(meta);
               } catch (Throwable t) {
                 //consider all errors as not ready.
+                LOGGER.warn("Error while waiting for: [" + meta.getKind() + "] with name: [" + meta.getMetadata().getName() + "] in namespace: [" + meta.getMetadata().getNamespace() + "]: " + t.getMessage()+ ". The resource will be considered not ready.");
+                LOGGER.debug("The error stack trace:", t);
               } finally {
                 //We don't want to wait for items that will never become ready
                 latch.countDown();
