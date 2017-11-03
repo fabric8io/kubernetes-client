@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.client.CustomResource;
 public class Dummy extends CustomResource {
   private DummySpec spec;
 
+
   @Override
   public String toString() {
     return "Dummy{" +

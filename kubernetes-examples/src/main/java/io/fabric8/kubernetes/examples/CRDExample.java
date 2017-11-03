@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.client.CustomResourceList;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.examples.crds.DoneableDummy;
@@ -125,6 +126,24 @@ public class CRDExample {
       dummyClient.createOrReplace(dummy);
 
       System.out.println("Upserted " + dummy);
+
+      System.out.println("Watching for changes to Dummies");
+      dummyClient.watch(new Watcher<Dummy>() {
+        @Override
+        public void eventReceived(Action action, Dummy resource) {
+          System.out.println("==> " + action + " for " + resource);
+          if (resource.getSpec() == null) {
+            logger.error("No Spec for resource " + resource);
+          }
+        }
+
+        @Override
+        public void onClose(KubernetesClientException cause) {
+        }
+      });
+
+      System.in.read();
+      
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);
     } catch (Exception e) {
