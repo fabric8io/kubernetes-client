@@ -35,7 +35,8 @@
       *
     </osgi.import>
     <osgi.export>
-      io.fabric8.kubernetes.client*;-noimport:=true
+      io.fabric8.kubernetes.client*;-noimport:=true,
+      io.fabric8.kubernetes.internal;-noimport:=true,
     </osgi.export>
     <osgi.private>
       io.fabric8.kubernetes.client.internal,
