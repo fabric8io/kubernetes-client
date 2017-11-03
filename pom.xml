@@ -86,7 +86,7 @@
     <jackson.version>2.7.7</jackson.version>
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
     <junit.version>4.12</junit.version>
-    <kubernetes.model.version>2.0.2</kubernetes.model.version>
+    <kubernetes.model.version>2.0.4</kubernetes.model.version>
     <log4j.version>2.5</log4j.version>
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
 
