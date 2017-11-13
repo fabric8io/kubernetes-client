@@ -129,14 +129,14 @@ In the same spirit you can inline builders to create:
 
 ```java
 Namespace myns = client.namespaces().createNew()
-                   .editMetadata()
+                   .withNewMetadata()
                      .withName("myns")
                      .addToLabels("a", "label")
                    .endMetadata()
                    .done();
 
 Service myservice = client.services().inNamespace("default").createNew()
-                     .editMetadata()
+                     .withNewMetadata()
                        .withName("myservice")
                        .addToLabels("another", "label")
                      .endMetadata()
