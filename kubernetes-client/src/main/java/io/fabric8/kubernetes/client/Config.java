@@ -71,6 +71,7 @@ public class Config {
   public static final String KUBERNETES_SCALE_TIMEOUT_SYSTEM_PROPERTY = "kubernetes.scale.timeout";
   public static final String KUBERNETES_WEBSOCKET_TIMEOUT_SYSTEM_PROPERTY = "kubernetes.websocket.timeout";
   public static final String KUBERNETES_WEBSOCKET_PING_INTERVAL_SYSTEM_PROPERTY = "kubernetes.websocket.ping.interval";
+  public static final String KUBERNETES_MAX_CONCURRENT_REQUESTS ="kubernetes.max.concurrent.requests";
   public static final String KUBERNETES_MAX_CONCURRENT_REQUESTS_PER_HOST ="kubernetes.max.concurrent.requests.per.host";
 
   public static final String KUBERNETES_TRUSTSTORE_PASSPHRASE_PROPERTY = "kubernetes.truststore.passphrase";
@@ -102,6 +103,7 @@ public class Config {
   public static final Long DEFAULT_WEBSOCKET_TIMEOUT = 5 * 1000L;
   public static final Long DEFAULT_WEBSOCKET_PING_INTERVAL = 1 * 1000L;
 
+  public static final Integer DEFAULT_MAX_CONCURRENT_REQUESTS = 64;
   public static final Integer DEFAULT_MAX_CONCURRENT_REQUESTS_PER_HOST = 5;
 
   public static final String HTTP_PROTOCOL_PREFIX = "http://";
@@ -143,6 +145,7 @@ public class Config {
   private int loggingInterval = DEFAULT_LOGGING_INTERVAL;
   private long websocketTimeout = DEFAULT_WEBSOCKET_TIMEOUT;
   private long websocketPingInterval = DEFAULT_WEBSOCKET_PING_INTERVAL;
+  private int maxConcurrentRequests = DEFAULT_MAX_CONCURRENT_REQUESTS;
   private int maxConcurrentRequestsPerHost = DEFAULT_MAX_CONCURRENT_REQUESTS_PER_HOST;
   /**
    * end of fields not used but needed for builder generation.
@@ -206,7 +209,7 @@ public class Config {
     this.clientKeyAlgo = clientKeyAlgo;
     this.clientKeyPassphrase = clientKeyPassphrase;
 
-    this.requestConfig = new RequestConfig(username, password, oauthToken, watchReconnectLimit, watchReconnectInterval, connectionTimeout, rollingTimeout, requestTimeout, scaleTimeout, loggingInterval, websocketTimeout, websocketPingInterval, maxConcurrentRequestsPerHost);
+    this.requestConfig = new RequestConfig(username, password, oauthToken, watchReconnectLimit, watchReconnectInterval, connectionTimeout, rollingTimeout, requestTimeout, scaleTimeout, loggingInterval, websocketTimeout, websocketPingInterval, maxConcurrentRequests, maxConcurrentRequestsPerHost);
 
     this.httpProxy= httpProxy;
     this.httpsProxy= httpsProxy;
@@ -744,6 +747,14 @@ public class Config {
     this.requestConfig.setWebsocketPingInterval(websocketPingInterval);
   }
 
+  public int getMaxConcurrentRequests() {
+    return getRequestConfig().getMaxConcurrentRequests();
+  }
+
+  public void setMaxConcurrentRequests(int maxConcurrentRequests) {
+    this.requestConfig.setMaxConcurrentRequests(maxConcurrentRequests);
+  }
+  
   public int getMaxConcurrentRequestsPerHost() {
     return getRequestConfig().getMaxConcurrentRequestsPerHost();
   }
