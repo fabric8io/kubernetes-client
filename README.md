@@ -19,6 +19,7 @@ This client provides access to the full [Kubernetes](http://kubernetes.io/) &
     - [Passing a reference of a resource to the client](#passing-a-reference-of-a-resource-to-the-client)
     - [Adapting a client](#adaptin-a-client)
         - [Adapting and close](#adapting-and-close)
+- [Mocking Kubernetes](#kubernetes-mock)        
 
 ## Usage
 
@@ -227,3 +228,62 @@ if (client.isAdaptable(OpenShiftClient.class)) {
 Note that when using adapt() both the adaptee and the target will share the same resources (underlying http client, thread pools etc).
 This means that close() is not required to be used on every single instance created via adapt.
 Calling close() on any of the adapt() managed instances or the original instance, will properly clean up all the resources and thus none of the instances will be usable any longer.
+
+
+## Mocking Kubernetes
+
+Along with the client this project also provide a kubernetes mock server that you can use for testing purposes.
+The mock server is based on `https://github.com/square/okhttp/tree/master/mockwebserver` but is empowered by the DSL and features provided by `https://github.com/fabric8io/mockwebserver`.
+
+The Mock Web Server has two modes of operation:
+
+- Expectations mode
+- CRUD mode
+
+### Expectations mode
+
+It's the typical mode where you first set which are the expected http requests and which should be the responses for each request.
+More details on usage can be found at: https://github.com/fabric8io/mockwebserver
+
+This mode has been extensively used for testing the client itself. Make sure you check [kubernetes-test](kubernetes-tests/src/test/java/io/fabric8/kubernetes/client/mock).
+
+To add a Kubernetes server to your test:
+
+     @Rule
+     public KubernetesServer server = new KubernetesServer();
+
+### CRUD mode
+
+Defining every single request and response can become tiresome. Given that in most cases the mock webserver is used to perform simple crud based operations, a crud mode has been added.
+When using the crud mode, the mock web server will store, read, update and delete kubernetes resources using an in memory map and will appear as a real api server.
+
+To add a Kubernetes Server in crud mode to your test:
+
+     @Rule
+     public KubernetesServer server = new KubernetesServer(true, true);
+
+Then you can use the server like:
+
+    @Test
+    public void testInCrudMode() {
+    KubernetesClient client = server.getClient();
+      //CREATE
+      client.pods().inNamespace("ns1").create(new PodBuilder().withNewMetadata().withName("pod1").endMetadata().build());
+
+      //READ
+      podList = client.pods().inNamespace("ns1").list();
+      assertNotNull(podList);
+      assertEquals(1, podList.getItems().size());
+
+      //DELETE
+      client.pods().inNamespace("ns1").withName("pod1").delete();
+      
+      //READ AGAIN
+      podList = client.pods().inNamespace("ns1").list();
+      assertNotNull(podList);
+      assertEquals(0, podList.getItems().size());     
+    }
+
+
+
+
