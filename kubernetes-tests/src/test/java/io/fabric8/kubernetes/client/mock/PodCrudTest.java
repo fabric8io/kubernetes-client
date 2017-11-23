@@ -16,12 +16,15 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Rule;
 import org.junit.Test;
+
+import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -36,9 +39,13 @@ public class PodCrudTest {
   public void testCrud() {
     KubernetesClient client = server.getClient();
 
-    client.pods().inNamespace("ns1").create(new PodBuilder().withNewMetadata().withName("pod1").endMetadata().build());
-    client.pods().inNamespace("ns1").create(new PodBuilder().withNewMetadata().withName("pod2").endMetadata().build());
-    client.pods().inNamespace("ns2").create(new PodBuilder().withNewMetadata().withName("pod3").endMetadata().build());
+    Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").addToLabels("testKey", "testValue").endMetadata().build();
+    Pod pod2 = new PodBuilder().withNewMetadata().withName("pod2").addToLabels("testKey", "testValue").endMetadata().build();
+    Pod pod3 = new PodBuilder().withNewMetadata().withName("pod3").endMetadata().build();
+
+    client.pods().inNamespace("ns1").create(pod1);
+    client.pods().inNamespace("ns1").create(pod2);
+    client.pods().inNamespace("ns2").create(pod3);
 
     PodList podList = client.pods().list();
     assertNotNull(podList);
@@ -60,5 +67,16 @@ public class PodCrudTest {
     podList = client.pods().inAnyNamespace().list();
     assertNotNull(podList);
     assertEquals(2, podList.getItems().size());
+
+    // test listing with labels
+    podList = client.pods().inAnyNamespace().withLabels(Collections.singletonMap("testKey", "testValue")).list();
+    assertNotNull(podList);
+    assertEquals(2, podList.getItems().size());
+
+    // test update
+//    pod2 = client.pods().inNamespace("ns1").withName("pod2").edit()
+//      .editMetadata().withName("pod1234").endMetadata().done();
+//    assertNotNull(pod1);
+//    assertEquals(pod1.getMetadata().getName(), "pod1234");
   }
 }
