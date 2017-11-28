@@ -74,6 +74,9 @@
   </distributionManagement>
 
   <properties>
+    
+    <oldest.api.compatible.version>3.1.0</oldest.api.compatible.version>
+
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <mockwebserver.version>0.1.0</mockwebserver.version>
     <okhttp.version>3.9.1</okhttp.version>
