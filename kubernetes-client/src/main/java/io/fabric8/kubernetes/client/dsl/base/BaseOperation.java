@@ -954,8 +954,34 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     return i instanceof HasMetadata && Readiness.isReady((HasMetadata)i);
   }
 
+  protected T waitUntilExists(long timeoutInMillis) {
+    long end = System.currentTimeMillis() + timeoutInMillis;
+    while (System.currentTimeMillis() < end) {
+      T item = get();
+      if (item != null) {
+        return item;
+      }
+
+      // TODO is there a better way?
+      try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {
+        // TODO
+      }
+    }
+
+    T item = get();
+    if (item != null) {
+      return item;
+    }
+
+    throw new IllegalArgumentException(type.getSimpleName() + " with name:[" + name + "] in namespace:[" + namespace + "] not found!");
+  }
+
+
   @Override
   public T waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
-    return get();
+    // TODO do we really want this? pretty big behavioral change for resources that aren't readiness-capable
+    return waitUntilExists(timeUnit.toMillis(amount));
   }
 }

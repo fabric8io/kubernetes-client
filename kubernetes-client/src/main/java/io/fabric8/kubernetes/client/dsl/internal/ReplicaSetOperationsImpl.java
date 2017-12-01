@@ -115,16 +115,6 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
   }
 
   @Override
-  public ReplicaSet waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
-    ReplicaSet rs = get();
-    if (rs == null) {
-      throw new IllegalArgumentException("ReplicaSet with name:[" + name + "] in namespace:[" + namespace + "] not found!");
-    }
-
-    return periodicWatchUntilReady(10, System.currentTimeMillis(), Math.max(timeUnit.toMillis(amount) / 10, 1000L), amount);
-  }
-
-  @Override
   ReplicaSet withReplicas(int count) {
     return cascading(false).edit().editSpec().withReplicas(count).endSpec().done();
   }

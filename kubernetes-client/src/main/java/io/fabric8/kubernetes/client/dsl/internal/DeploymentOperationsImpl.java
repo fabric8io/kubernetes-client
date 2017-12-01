@@ -155,16 +155,6 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
     }
   }
 
-  @Override
-  public Deployment waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
-    Deployment deployment = get();
-    if (deployment == null) {
-      throw new IllegalArgumentException("Deployment with name:[" + name + "] in namespace:[" + namespace + "] not found!");
-    }
-
-    return periodicWatchUntilReady(10, System.currentTimeMillis(), Math.max(timeUnit.toMillis(amount) / 10, 1000L), amount);
-  }
-
   private static class DeploymentReaper implements Reaper {
     private DeploymentOperationsImpl oper;
 

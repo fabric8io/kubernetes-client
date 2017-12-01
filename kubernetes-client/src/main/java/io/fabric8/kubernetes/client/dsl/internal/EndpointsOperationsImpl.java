@@ -42,14 +42,4 @@ public class EndpointsOperationsImpl extends HasMetadataOperation<Endpoints, End
   public EndpointsOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Endpoints item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
     super(client, config, null, apiVersion, "endpoints", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
   }
-
-  @Override
-  public Endpoints waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
-    Endpoints endpoints = get();
-    if (endpoints == null) {
-      throw new IllegalArgumentException("Endpoints with name:[" + name + "] in namespace:[" + namespace + "] not found!");
-    }
-
-    return periodicWatchUntilReady(10, System.currentTimeMillis(), Math.max(timeUnit.toMillis(amount) / 10, 1000L), amount);
-  }
 }

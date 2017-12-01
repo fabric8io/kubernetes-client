@@ -351,22 +351,5 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
     public BytesLimitTerminateTimeTailPrettyLoggable<String, LogWatch> limitBytes(int limitBytes) {
         return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes);
     }
-
-  @Override
-  public Pod waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
-    Pod pod = get();
-    if (pod == null) {
-      throw new IllegalArgumentException("Pod with name:[" + name + "] in namespace:[" + namespace + "] not found!");
-    }
-
-    if (Readiness.isReady(pod)) {
-      return pod;
-    }
-
-    ReadinessWatcher<Pod> watcher = new ReadinessWatcher<>(pod);
-    try (Watch watch = watch(watcher)) {
-      return watcher.await(amount, timeUnit);
-    }
-  }
 }
 
