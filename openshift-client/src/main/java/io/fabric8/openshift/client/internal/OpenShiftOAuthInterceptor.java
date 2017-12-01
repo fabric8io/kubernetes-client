@@ -21,7 +21,6 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -58,8 +57,7 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
         builder.header("Accept", "application/json");
 
         String token = oauthToken.get();
-        // avoid overwriting basic auth token with stale bearer token
-        if (Utils.isNotNullOrEmpty(token) && Utils.isNullOrEmpty(request.header(AUTHORIZATION))) {
+        if (Utils.isNotNullOrEmpty(token)) {
             setAuthHeader(builder, token);
         }
 
@@ -71,8 +69,6 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
           return response;
         } else if (Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword())) {
           synchronized (client) {
-            // current token (if exists) is borked, don't resend
-            oauthToken.set(null);
             token = authorize();
             if (token != null) {
               oauthToken.set(token);
