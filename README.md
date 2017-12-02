@@ -19,7 +19,7 @@ This client provides access to the full [Kubernetes](http://kubernetes.io/) &
     - [Passing a reference of a resource to the client](#passing-a-reference-of-a-resource-to-the-client)
     - [Adapting a client](#adaptin-a-client)
         - [Adapting and close](#adapting-and-close)
-- [Mocking Kubernetes](#kubernetes-mock)        
+- [Mocking Kubernetes](#mocking-kubernetes)        
 
 ## Usage
 
