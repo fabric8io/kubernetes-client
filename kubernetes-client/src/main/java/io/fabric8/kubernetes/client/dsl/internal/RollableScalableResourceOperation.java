@@ -89,7 +89,7 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
       throw new IllegalArgumentException(getType().getSimpleName() + " with name:[" + name + "] in namespace:[" + namespace + "] not found!");
     }
 
-    return periodicWatchUntilReady(10, System.currentTimeMillis(), Math.max(timeUnit.toMillis(amount) / 10, 1000L), amount);
+    return periodicWatchUntilReady(10, System.currentTimeMillis(), Math.max(timeUnit.toMillis(amount) / 10, 1000L), timeUnit.toMillis(amount));
   }
 
   /**
