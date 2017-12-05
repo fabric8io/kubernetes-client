@@ -23,7 +23,6 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
-import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.Config;
@@ -36,8 +35,8 @@ import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.handlers.KubernetesListHandler;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
+import io.fabric8.kubernetes.client.internal.SerializationUtils;
 import io.fabric8.kubernetes.client.utils.ResourceCompare;
-import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.Parameter;
 import io.fabric8.openshift.api.model.Template;
@@ -46,7 +45,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -60,8 +58,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
 import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
@@ -72,7 +68,6 @@ Waitable<List<HasMetadata>>, Readiable {
     private static final Logger LOGGER = LoggerFactory.getLogger(NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl.class);
     private static final String EXPRESSION = "expression";
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    private static final String DOCUMENT_DELIMITER = "---";
 
     private final String fallbackNamespace;
     private final String explicitNamespace;
@@ -186,9 +181,7 @@ Waitable<List<HasMetadata>>, Readiable {
         if (item != null) {
           this.item = item;
         } else if (inputStream != null) {
-          String specFile = readSpecFileFromInputStream(inputStream);
-          this.item = (containsMultipleDocuments(specFile)) ? getKubernetesResourceList(parameters, specFile)
-            : Serialization.unmarshal(new ByteArrayInputStream(specFile.getBytes()), parameters);
+          this.item = SerializationUtils.unmarshal(inputStream, parameters);
         } else {
           throw new IllegalArgumentException("Need to either specify an Object or an InputStream.");
         }
@@ -198,46 +191,6 @@ Waitable<List<HasMetadata>>, Readiable {
         this.gracePeriodSeconds = gracePeriodSeconds;
         this.visitors.add(new ChangeNamespace(explicitNamespace, fallbackNamespace));
     }
-
-  private List<KubernetesResource> getKubernetesResourceList(Map<String, String> parameters, String specFile) {
-    List<KubernetesResource> documentList = new ArrayList<>();
-    String[] documents = specFile.split(DOCUMENT_DELIMITER);
-    for (String document : documents) {
-      ByteArrayInputStream documentInputStream = new ByteArrayInputStream(document.getBytes());
-      Object resource = Serialization.unmarshal(documentInputStream, parameters);
-      documentList.add((KubernetesResource) resource);
-    }
-    return documentList;
-  }
-
-  private boolean containsMultipleDocuments(String specFile) {
-    Pattern p = Pattern.compile(DOCUMENT_DELIMITER);
-    Matcher m = p.matcher(specFile);
-    int count = 0;
-    while (m.find()) {
-      count++;
-    }
-    if (count == 1) {
-      String[] documents = specFile.split(DOCUMENT_DELIMITER);
-      Matcher keyValueMatcher = Pattern.compile("(\\S+):\\s(\\S*)(?:\\b(?!:)|$)").matcher(documents[0]);
-      return !documents[0].isEmpty() && keyValueMatcher.find();
-    }
-    return count > 1;
-  }
-
-  private String readSpecFileFromInputStream(InputStream inputStream) {
-    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    byte[] buffer = new byte[1024];
-    int length;
-    try {
-      while ((length = inputStream.read(buffer)) != -1) {
-        outputStream.write(buffer, 0, length);
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    return outputStream.toString();
-  }
 
   @Override
   public List<HasMetadata> apply() {

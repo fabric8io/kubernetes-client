@@ -8,16 +8,12 @@ import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.openshift.examples.LoadExample;
 import io.fabric8.openshift.examples.TemplateExample;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
 
 public class LoadMultipleDocumentsFromFileExample {
-  private static final Logger logger = LoggerFactory.getLogger(LoadExample.class);
 
   public static void main(String[] args) throws InterruptedException {
     String master = "https://localhost:8443/";
@@ -58,9 +54,9 @@ public class LoadMultipleDocumentsFromFileExample {
       sb.append("Name:").append(item.getMetadata().getName());
     }
 
-    if (item.getMetadata().getLabels()!=null && !item.getMetadata().getLabels().isEmpty()) {
+    if (item.getMetadata().getLabels() != null && !item.getMetadata().getLabels().isEmpty()) {
       sb.append("Lables: [ ");
-      for (Map.Entry<String,String> entry : item.getMetadata().getLabels().entrySet()) {
+      for (Map.Entry<String, String> entry : item.getMetadata().getLabels().entrySet()) {
         sb.append(entry.getKey()).append(":").append(entry.getValue()).append(" ");
       }
       sb.append("]");
