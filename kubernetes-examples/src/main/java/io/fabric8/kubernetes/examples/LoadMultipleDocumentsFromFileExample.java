@@ -34,7 +34,6 @@ public class LoadMultipleDocumentsFromFileExample {
       System.out.println(display(meta));
     }
 
-
     list = client.load(TemplateExample.class.getResourceAsStream("/multiple-document-template.yml")).accept(new Visitor<ObjectMetaBuilder>() {
 
       @Override
@@ -68,6 +67,5 @@ public class LoadMultipleDocumentsFromFileExample {
     }
     sb.append(" ]");
     return sb.toString();
-
   }
 }
