@@ -34,10 +34,12 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.io.Reader;
 import java.net.URL;
 import java.util.Map;
 import java.util.TreeMap;
@@ -116,24 +118,39 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
     return sb.toString();
   }
 
-  public String getLog() {
+  protected ResponseBody doGetLog(){
     try {
       URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters()));
       Request.Builder requestBuilder = new Request.Builder().get().url(url);
       Request request = requestBuilder.build();
       Response response = client.newCall(request).execute();
-      try (ResponseBody body = response.body()) {
-        assertResponseCode(request, response);
-        return body.string();
-      }
+      ResponseBody body = response.body();
+      assertResponseCode(request, response);
+      return body;
     } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(forOperationType("getLog"), t);
+      throw KubernetesClientException.launderThrowable(forOperationType("doGetLog"), t);
+    }
+  }
+
+  @Override
+  public String getLog() {
+    try(ResponseBody body = doGetLog()) {
+      return body.string();
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(forOperationType("getLog"), e);
     }
   }
 
   @Override
   public String getLog(Boolean isPretty) {
     return new BuildOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), in,out,err,inPipe, outPipe, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, version, limitBytes).getLog();
+  }
+
+  @Override
+  public Reader getLogReader(){
+    try(ResponseBody body = doGetLog()) {
+      return body.charStream();
+    }
   }
 
   @Override
