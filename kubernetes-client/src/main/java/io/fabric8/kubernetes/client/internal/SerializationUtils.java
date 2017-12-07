@@ -38,8 +38,6 @@ import java.util.regex.Pattern;
 
 public class SerializationUtils {
 
-  private static final String DOCUMENT_DELIMITER = "---";
-
   private static ObjectMapper mapper;
 
   private static ObjectMapper statelessMapper;
@@ -68,57 +66,4 @@ public class SerializationUtils {
     return getStatelessMapper().writeValueAsString(obj);
   }
 
-  public static Object unmarshal(InputStream inputStream, Map<String, String> parameters) {
-    String specFile = readSpecFileFromInputStream(inputStream);
-    if (containsMultipleDocuments(specFile)) {
-      return getKubernetesResourceList(parameters, specFile);
-    }
-    return Serialization.unmarshal(new ByteArrayInputStream(specFile.getBytes()), parameters);
-  }
-
-  private static List<KubernetesResource> getKubernetesResourceList(Map<String, String> parameters, String specFile) {
-    List<KubernetesResource> documentList = new ArrayList<>();
-    String[] documents = specFile.split(DOCUMENT_DELIMITER);
-    for (String document : documents) {
-      if (validate(document)) {
-        ByteArrayInputStream documentInputStream = new ByteArrayInputStream(document.getBytes());
-        Object resource = Serialization.unmarshal(documentInputStream, parameters);
-        documentList.add((KubernetesResource) resource);
-      }
-    }
-    return documentList;
-  }
-
-  private static boolean containsMultipleDocuments(String specFile) {
-    Pattern p = Pattern.compile(DOCUMENT_DELIMITER);
-    Matcher m = p.matcher(specFile);
-    int count = 0;
-    while (m.find()) {
-      count++;
-    }
-    if (count == 1) {
-      String[] documents = specFile.split(DOCUMENT_DELIMITER);
-      return validate(documents[0]);
-    }
-    return count > 1;
-  }
-
-  private static boolean validate(String document) {
-    Matcher keyValueMatcher = Pattern.compile("(\\S+):\\s(\\S*)(?:\\b(?!:)|$)").matcher(document);
-    return !document.isEmpty() && keyValueMatcher.find();
-  }
-
-  private static String readSpecFileFromInputStream(InputStream inputStream) {
-    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    byte[] buffer = new byte[1024];
-    int length;
-    try {
-      while ((length = inputStream.read(buffer)) != -1) {
-        outputStream.write(buffer, 0, length);
-      }
-      return outputStream.toString();
-    } catch (IOException e) {
-      throw new RuntimeException("Unable to read InputStream." + e);
-    }
-  }
 }

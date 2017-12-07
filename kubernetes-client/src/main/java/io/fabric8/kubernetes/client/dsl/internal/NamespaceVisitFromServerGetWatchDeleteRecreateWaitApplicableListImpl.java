@@ -35,8 +35,8 @@ import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.handlers.KubernetesListHandler;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
-import io.fabric8.kubernetes.client.internal.SerializationUtils;
 import io.fabric8.kubernetes.client.utils.ResourceCompare;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.Parameter;
 import io.fabric8.openshift.api.model.Template;
@@ -181,7 +181,7 @@ Waitable<List<HasMetadata>>, Readiable {
         if (item != null) {
           this.item = item;
         } else if (inputStream != null) {
-          this.item = SerializationUtils.unmarshal(inputStream, parameters);
+          this.item = Serialization.unmarshal(inputStream, parameters);
         } else {
           throw new IllegalArgumentException("Need to either specify an Object or an InputStream.");
         }
