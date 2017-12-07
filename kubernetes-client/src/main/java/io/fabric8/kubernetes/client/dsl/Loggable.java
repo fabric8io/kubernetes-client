@@ -17,12 +17,15 @@
 package io.fabric8.kubernetes.client.dsl;
 
 import java.io.OutputStream;
+import java.io.Reader;
 
 public interface Loggable<S, W> {
 
   S getLog();
 
   S getLog(Boolean isPretty);
+
+  Reader getLogReader();
 
   W watchLog();
 
