@@ -19,6 +19,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -33,10 +35,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import io.fabric8.kubernetes.api.model.KubernetesResource;
-import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.internal.SerializationUtils;
 
 public class Serialization {
 
@@ -92,7 +90,7 @@ public class Serialization {
     if (containsMultipleDocuments(specFile)) {
       return (T) getKubernetesResourceList(parameters, specFile);
     }
-    return unmarshal(is, JSON_MAPPER, parameters);
+    return unmarshal(new ByteArrayInputStream(specFile.getBytes()), JSON_MAPPER, parameters);
   }
 
   /**
