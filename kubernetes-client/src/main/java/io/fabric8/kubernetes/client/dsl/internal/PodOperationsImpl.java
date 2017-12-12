@@ -155,11 +155,13 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
       }
     }
 
-    @Override
+  /**
+   * Returns an unclosed Reader. It's the caller responsibility to close it.
+   * @return Reader                                                                                                                                                             
+   */
+  @Override
     public Reader getLogReader() {
-      try(ResponseBody body = doGetLog()) {
-        return body.charStream();
-      }
+        return doGetLog().charStream();
     }
 
     @Override
