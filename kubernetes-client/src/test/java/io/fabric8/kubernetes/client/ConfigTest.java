@@ -325,6 +325,19 @@ public class ConfigTest {
   }
 
   @Test
+  public void shouldRespectMaxRequests() {
+    Config config = new ConfigBuilder()
+      .withMaxConcurrentRequests(120)
+      .build();
+
+    KubernetesClient client = new DefaultKubernetesClient();
+    assertEquals(64, client.adapt(OkHttpClient.class).dispatcher().getMaxRequests());
+
+    client = new DefaultKubernetesClient(config);
+    assertEquals(120, client.adapt(OkHttpClient.class).dispatcher().getMaxRequests());
+  }
+  
+  @Test
   public void shouldRespectMaxRequestsPerHost() {
     Config config = new ConfigBuilder()
       .withMaxConcurrentRequestsPerHost(20)

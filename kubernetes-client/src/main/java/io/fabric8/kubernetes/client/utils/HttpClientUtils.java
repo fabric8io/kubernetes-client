@@ -117,6 +117,7 @@ public class HttpClientUtils {
 
             if (config.getMaxConcurrentRequestsPerHost() > 0) {
               Dispatcher dispatcher = new Dispatcher();
+              dispatcher.setMaxRequests(config.getMaxConcurrentRequests());
               dispatcher.setMaxRequestsPerHost(config.getMaxConcurrentRequestsPerHost());
               httpClientBuilder.dispatcher(dispatcher);
             }
