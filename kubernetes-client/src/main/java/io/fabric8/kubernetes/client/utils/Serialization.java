@@ -19,24 +19,28 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
-
-import io.fabric8.kubernetes.api.model.KubernetesResource;
-import io.fabric8.kubernetes.client.KubernetesClientException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Serialization {
 
   private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
   private static final ObjectMapper YAML_MAPPER = new ObjectMapper(new YAMLFactory());
-
+  private static final String DOCUMENT_DELIMITER = "---";
 
   public static ObjectMapper jsonMapper() {
     return JSON_MAPPER;
@@ -82,7 +86,11 @@ public class Serialization {
    * @throws KubernetesClientException
    */
   public static <T> T unmarshal(InputStream is, Map<String, String> parameters) throws KubernetesClientException {
-    return unmarshal(is, JSON_MAPPER, parameters);
+    String specFile = readSpecFileFromInputStream(is);
+    if (containsMultipleDocuments(specFile)) {
+      return (T) getKubernetesResourceList(parameters, specFile);
+    }
+    return unmarshal(new ByteArrayInputStream(specFile.getBytes()), JSON_MAPPER, parameters);
   }
 
   /**
@@ -227,6 +235,53 @@ public class Serialization {
       return mapper.readValue(bis, type);
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+
+
+  private static List<KubernetesResource> getKubernetesResourceList(Map<String, String> parameters, String specFile) {
+    List<KubernetesResource> documentList = new ArrayList<>();
+    String[] documents = specFile.split(DOCUMENT_DELIMITER);
+    for (String document : documents) {
+      if (validate(document)) {
+        ByteArrayInputStream documentInputStream = new ByteArrayInputStream(document.getBytes());
+        Object resource = Serialization.unmarshal(documentInputStream, parameters);
+        documentList.add((KubernetesResource) resource);
+      }
+    }
+    return documentList;
+  }
+
+  private static boolean containsMultipleDocuments(String specFile) {
+    Pattern p = Pattern.compile(DOCUMENT_DELIMITER);
+    Matcher m = p.matcher(specFile);
+    int count = 0;
+    while (m.find()) {
+      count++;
+    }
+    if (count == 1) {
+      String[] documents = specFile.split(DOCUMENT_DELIMITER);
+      return validate(documents[0]);
+    }
+    return count > 1;
+  }
+
+  private static boolean validate(String document) {
+    Matcher keyValueMatcher = Pattern.compile("(\\S+):\\s(\\S*)(?:\\b(?!:)|$)").matcher(document);
+    return !document.isEmpty() && keyValueMatcher.find();
+  }
+
+  private static String readSpecFileFromInputStream(InputStream inputStream) {
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    byte[] buffer = new byte[1024];
+    int length;
+    try {
+      while ((length = inputStream.read(buffer)) != -1) {
+        outputStream.write(buffer, 0, length);
+      }
+      return outputStream.toString();
+    } catch (IOException e) {
+      throw new RuntimeException("Unable to read InputStream." + e);
     }
   }
 }
