@@ -135,7 +135,7 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
   @Override
   public String getLog() {
     try(ResponseBody body = doGetLog()) {
-      return body.string();
+      return doGetLog().string();
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("getLog"), e);
     }
@@ -146,11 +146,13 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
     return new BuildOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), in,out,err,inPipe, outPipe, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, version, limitBytes).getLog();
   }
 
+  /**
+   * Returns an unclosed Reader. It's the caller responsibility to close it.
+   * @return Reader
+   */
   @Override
   public Reader getLogReader(){
-    try(ResponseBody body = doGetLog()) {
-      return body.charStream();
-    }
+    return doGetLog().charStream();
   }
 
   @Override
