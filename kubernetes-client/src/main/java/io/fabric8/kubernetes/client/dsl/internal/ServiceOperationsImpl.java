@@ -71,8 +71,6 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
 
   @Override
   public Service waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
-    // TODO depends on if super.waitUntilReady stays intact
-
     long started = System.currentTimeMillis();
     super.waitUntilReady(amount, timeUnit);
     long alreadySpent = System.currentTimeMillis() - started;

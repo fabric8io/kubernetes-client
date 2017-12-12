@@ -219,8 +219,10 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
       waitUntilExists(timeUnit.toMillis(amount));
       long alreadySpent = System.currentTimeMillis() - started;
 
-      // if awaiting existence took very long, let's give at least 10 seconds to awaiting readiness
-      long remaining = Math.max(10_000, timeUnit.toMillis(amount) - alreadySpent);
+      long remaining = timeUnit.toMillis(amount) - alreadySpent;
+      if (remaining <= 0) {
+        return periodicWatchUntilReady(0, System.currentTimeMillis(), 0, 0);
+      }
 
       return periodicWatchUntilReady(10, System.currentTimeMillis(), Math.max(remaining / 10, 1000L), remaining);
     }
