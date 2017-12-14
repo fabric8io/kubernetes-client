@@ -285,5 +285,10 @@ Then you can use the server like:
     }
 
 
+## Compatability
 
+|                           | Kubernetes 1.4.9 | Kubernetes 1.6.2 | Kubernetes 1.7.10 | 
+|---------------------------|------------------|------------------|-------------------|
+| kubernetes-client 1.3.92  | +                | +                | -                 | 
+| kubernetes-client 3.0.3   | -                | -                | ✓                 |
 
