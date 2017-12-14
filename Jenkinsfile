@@ -15,23 +15,40 @@
  * limitations under the License.
  */
 @Library('github.com/fabric8io/fabric8-pipeline-library@master')
-def dummy
-clientsTemplate{
-  mavenNode {
-    ws{
-      checkout scm
-      sh "git remote set-url origin git@github.com:fabric8io/kubernetes-client.git"
+def utils = new io.fabric8.Utils()
+def ci = false
+def cd = false
+def pipeline
+node {
+  checkout scm
+  readTrusted 'release.groovy'
+  pipeline = load 'release.groovy'
+  if (utils.isCI()) {
+    ci = true
+  } else if (utils.isCD()){
+    cd = true
+  }
+}
 
-      def pipeline = load 'release.groovy'
+if (ci){
+  mavenNode{
+    checkout scm
+    mavenCI{}
+  }
+} else if (cd){
+  releaseNode {
+    checkout scm
+    sh "git remote set-url origin git@github.com:fabric8io/kubernetes-client.git"
 
-      stage 'Stage'
-      def stagedProject = pipeline.stage()
+    def pipeline = load 'release.groovy'
 
-      stage 'Promote'
-      pipeline.release(stagedProject)
-      
-      stage 'Update downstream dependencies'
-      pipeline.updateDownstreamDependencies(stagedProject)
-    }
+    stage 'Stage'
+    def stagedProject = pipeline.stage()
+
+    stage 'Promote'
+    pipeline.release(stagedProject)
+    
+    stage 'Update downstream dependencies'
+    pipeline.updateDownstreamDependencies(stagedProject)
   }
 }
