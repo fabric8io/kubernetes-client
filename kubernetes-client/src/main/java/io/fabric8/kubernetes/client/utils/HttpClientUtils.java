@@ -94,7 +94,7 @@ public class HttpClientUtils {
               }
               return chain.proceed(request);
             }
-          });
+          }).addInterceptor(new ImpersonatorInterceptor(config.getRequestConfig()));
 
             Logger reqLogger = LoggerFactory.getLogger(HttpLoggingInterceptor.class);
             if (reqLogger.isTraceEnabled()) {

@@ -49,6 +49,10 @@ public class Utils {
     return str == null || str.isEmpty();
   }
 
+  public static boolean isNotNullOrEmpty(Map map) {
+    return !(map == null || map.isEmpty());
+  }
+
   public static boolean isNotNullOrEmpty(String str) {
     return !isNullOrEmpty(str);
   }
