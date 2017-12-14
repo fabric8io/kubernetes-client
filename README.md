@@ -285,7 +285,7 @@ Then you can use the server like:
     }
 
 
-## Compatability
+## Compatibility
 
 |                           | Kubernetes 1.4.9 | Kubernetes 1.6.2 | Kubernetes 1.7.10 | 
 |---------------------------|------------------|------------------|-------------------|
