@@ -15,10 +15,12 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.io.Reader;
 import java.net.URL;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
@@ -130,20 +132,36 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
         return sb.toString();
     }
 
+    protected ResponseBody doGetLog(){
+      try {
+        URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters()));
+        Request.Builder requestBuilder = new Request.Builder().get().url(url);
+        Request request = requestBuilder.build();
+        Response response = client.newCall(request).execute();
+        ResponseBody body = response.body();
+        assertResponseCode(request, response);
+        return body;
+      } catch (Throwable t) {
+        throw KubernetesClientException.launderThrowable(forOperationType("doGetLog"), t);
+      }
+    }
+
     @Override
     public String getLog() {
-        try {
-            URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters()));
-            Request.Builder requestBuilder = new Request.Builder().get().url(url);
-            Request request = requestBuilder.build();
-            Response response = client.newCall(request).execute();
-            try (ResponseBody body = response.body()) {
-              assertResponseCode(request, response);
-              return body.string();
-            }
-        } catch (Throwable t) {
-            throw KubernetesClientException.launderThrowable(forOperationType("getLog"), t);
-        }
+      try(ResponseBody body = doGetLog()) {
+        return body.string();
+      } catch (IOException e) {
+        throw KubernetesClientException.launderThrowable(forOperationType("getLog"), e);
+      }
+    }
+
+  /**
+   * Returns an unclosed Reader. It's the caller responsibility to close it.
+   * @return Reader                                                                                                                                                             
+   */
+  @Override
+    public Reader getLogReader() {
+        return doGetLog().charStream();
     }
 
     @Override

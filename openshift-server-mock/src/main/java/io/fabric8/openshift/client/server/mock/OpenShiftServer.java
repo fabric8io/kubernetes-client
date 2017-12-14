@@ -16,25 +16,54 @@
 package io.fabric8.openshift.client.server.mock;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesCrudDispatcher;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
+import io.fabric8.mockwebserver.Context;
+import io.fabric8.mockwebserver.ServerRequest;
+import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.mockwebserver.dsl.MockServerExpectation;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import io.fabric8.openshift.client.OpenshiftAdapterSupport;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.rules.ExternalResource;
 
+import java.util.HashMap;
+import java.util.Queue;
+
 public class OpenShiftServer extends ExternalResource {
-  protected OpenShiftMockServer mock = new OpenShiftMockServer();
+
+  protected OpenShiftMockServer mock;
   private NamespacedOpenShiftClient client;
 
+  private boolean https;
+  private boolean curdMode;
+
+  public OpenShiftServer() {
+    this(true, false);
+  }
+
+  public OpenShiftServer(boolean https) {
+    this(https, false);
+  }
+
+  public OpenShiftServer(boolean https, boolean curdMode) {
+    this.https = https;
+    this.curdMode = curdMode;
+  }
+
   public void before() {
+    mock = curdMode
+      ? new OpenShiftMockServer(new Context(), new MockWebServer(), new HashMap<ServerRequest, Queue<ServerResponse>>(), new KubernetesCrudDispatcher(), true)
+      : new OpenShiftMockServer(https);
     mock.init();
     client = mock.createOpenShiftClient();
   }
 
   public void after() {
-    client.close();
     mock.destroy();
+    client.close();
   }
+
 
   public KubernetesClient getKubernetesClient() {
     return client;

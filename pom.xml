@@ -26,7 +26,7 @@
 
   <groupId>io.fabric8</groupId>
   <artifactId>kubernetes-client-project</artifactId>
-  <version>3.0-SNAPSHOT</version>
+  <version>3.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Fabric8 :: Kubernetes :: Project</name>
 
@@ -74,7 +74,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <mockwebserver.version>0.0.12</mockwebserver.version>
+    <mockwebserver.version>0.0.17</mockwebserver.version>
     <okhttp.version>3.9.0</okhttp.version>
     <okhttp.bundle.version>3.9.0_1</okhttp.bundle.version>
     <okio.version>1.13.0</okio.version>
