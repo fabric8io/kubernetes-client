@@ -130,6 +130,7 @@
     <module>kubernetes-examples</module>
     <module>platforms</module>
     <module>kubernetes-tests</module>
+    <module>kubernetes-regression-tests</module>
     <module>uberjar</module>
   </modules>
 
