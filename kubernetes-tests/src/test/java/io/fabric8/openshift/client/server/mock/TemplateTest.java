@@ -16,17 +16,9 @@
 
 package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.KubernetesList;
-import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
-import io.fabric8.kubernetes.api.model.Service;
-import io.fabric8.kubernetes.api.model.ServicePort;
-import io.fabric8.kubernetes.api.model.ServiceSpec;
+import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
-import io.fabric8.openshift.api.model.Template;
-import io.fabric8.openshift.api.model.TemplateBuilder;
-import io.fabric8.openshift.api.model.TemplateList;
-import io.fabric8.openshift.api.model.TemplateListBuilder;
+import io.fabric8.openshift.api.model.*;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
@@ -135,6 +127,24 @@ public class TemplateTest {
 
     deleted = client.templates().inNamespace("ns1").withName("tmpl2").delete();
     assertTrue(deleted);
+  }
+
+  @Test
+  public void testCreateWithHandler() {
+    Template template = new TemplateBuilder()
+      .editOrNewMetadata()
+      .withName("tmpl3")
+      .withNamespace("test")
+      .endMetadata()
+      .build();
+
+    server.expect().withPath("/oapi/v1/namespaces/test/templates").andReturn(200, template).once();
+    server.expect().withPath("/oapi/v1/namespaces/test/templates/tmpl3").andReturn(404, new StatusBuilder().withCode(404).build()).once();
+
+    OpenShiftClient client = server.getOpenshiftClient();
+
+    Template created = client.resource(template).createOrReplace();
+    assertNotNull(created);
   }
 
 
