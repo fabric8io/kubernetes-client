@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class SimplePodTest {
+public class PodTest {
   public static KubernetesClient client;
 
   public static String currentNamespace;
