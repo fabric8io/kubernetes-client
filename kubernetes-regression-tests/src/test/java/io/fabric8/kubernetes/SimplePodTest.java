@@ -16,16 +16,37 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.PodBuilder;
-import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.api.model.*;
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import org.apache.commons.lang.RandomStringUtils;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class SimplePodTest extends BaseResourceTest {
+public class SimplePodTest {
+  public static KubernetesClient client;
+
+  public static String currentNamespace;
+
+  @BeforeClass
+  public static void init() {
+    client = new DefaultKubernetesClient();
+    currentNamespace = "rt-" + RandomStringUtils.randomAlphanumeric(6).toLowerCase();
+    Namespace aNamespace = new NamespaceBuilder().withNewMetadata().withName(currentNamespace).and().build();
+    client.namespaces().create(aNamespace);
+  }
+
+  @AfterClass
+  public static void cleanup() {
+    client.namespaces().withName(currentNamespace).delete();
+    client.close();
+  }
+
   @Test
   public void testLoad() {
     Pod aPod = client.pods().inNamespace(currentNamespace).load(getClass().getResourceAsStream("/test-pod.yml")).get();
