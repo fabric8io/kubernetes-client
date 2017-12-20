@@ -15,27 +15,7 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.model.extensions.DaemonSet;
-import io.fabric8.kubernetes.api.model.extensions.DaemonSetList;
-import io.fabric8.kubernetes.api.model.extensions.Deployment;
-import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
-import io.fabric8.kubernetes.api.model.extensions.DoneableDaemonSet;
-import io.fabric8.kubernetes.api.model.extensions.DoneableDeployment;
-import io.fabric8.kubernetes.api.model.extensions.DoneableHorizontalPodAutoscaler;
-import io.fabric8.kubernetes.api.model.extensions.DoneableIngress;
-import io.fabric8.kubernetes.api.model.extensions.DoneableJob;
-import io.fabric8.kubernetes.api.model.extensions.DoneableReplicaSet;
-import io.fabric8.kubernetes.api.model.extensions.DoneableThirdPartyResource;
-import io.fabric8.kubernetes.api.model.extensions.HorizontalPodAutoscaler;
-import io.fabric8.kubernetes.api.model.extensions.HorizontalPodAutoscalerList;
-import io.fabric8.kubernetes.api.model.extensions.Ingress;
-import io.fabric8.kubernetes.api.model.extensions.IngressList;
-import io.fabric8.kubernetes.api.model.extensions.Job;
-import io.fabric8.kubernetes.api.model.extensions.JobList;
-import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
-import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
-import io.fabric8.kubernetes.api.model.extensions.ThirdPartyResource;
-import io.fabric8.kubernetes.api.model.extensions.ThirdPartyResourceList;
+import io.fabric8.kubernetes.api.model.extensions.*;
 import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;
@@ -43,12 +23,10 @@ import io.fabric8.kubernetes.client.dsl.ClientScaleableResource;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.internal.DaemonSetOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.DeploymentOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.HorizontalPodAutoscalerOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.IngressOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.JobOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ReplicaSetOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ThirdPartyResourceOperationsImpl;
-
 import okhttp3.OkHttpClient;
 
 public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAPIGroupDSL {
@@ -95,7 +73,4 @@ public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAP
     return new ReplicaSetOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
-  public ClientMixedOperation<HorizontalPodAutoscaler, HorizontalPodAutoscalerList, DoneableHorizontalPodAutoscaler, ClientResource<HorizontalPodAutoscaler, DoneableHorizontalPodAutoscaler>> horizontalPodAutoscalers() {
-    return new HorizontalPodAutoscalerOperationsImpl(httpClient, getConfiguration(), getNamespace());
-  }
 }

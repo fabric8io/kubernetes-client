@@ -228,4 +228,9 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   public ExtensionsAPIGroupDSL extensions() {
     return adapt(ExtensionsAPIGroupClient.class);
   }
+
+  @Override
+  public AutoscalingAPIGroupClient autoscaling() {
+    return adapt(AutoscalingAPIGroupClient.class);
+  }
 }

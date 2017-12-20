@@ -18,11 +18,11 @@ package io.fabric8.kubernetes.client.mock.impl.donable;
 
 import io.fabric8.kubernetes.api.builder.Function;
 import io.fabric8.kubernetes.api.model.Doneable;
-import io.fabric8.kubernetes.api.model.extensions.DoneableHorizontalPodAutoscaler;
-import io.fabric8.kubernetes.api.model.extensions.HorizontalPodAutoscaler;
-import io.fabric8.kubernetes.api.model.extensions.HorizontalPodAutoscalerBuilder;
-import io.fabric8.kubernetes.api.model.extensions.HorizontalPodAutoscalerFluent;
-import io.fabric8.kubernetes.api.model.extensions.HorizontalPodAutoscalerFluentImpl;
+import io.fabric8.kubernetes.api.model.DoneableHorizontalPodAutoscaler;
+import io.fabric8.kubernetes.api.model.HorizontalPodAutoscaler;
+import io.fabric8.kubernetes.api.model.HorizontalPodAutoscalerBuilder;
+import io.fabric8.kubernetes.api.model.HorizontalPodAutoscalerFluent;
+import io.fabric8.kubernetes.api.model.HorizontalPodAutoscalerFluentImpl;
 import io.fabric8.kubernetes.client.mock.MockDoneable;
 
 import org.easymock.EasyMock;

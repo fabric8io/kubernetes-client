@@ -16,74 +16,11 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.ComponentStatus;
-import io.fabric8.kubernetes.api.model.ComponentStatusList;
-import io.fabric8.kubernetes.api.model.ConfigMap;
-import io.fabric8.kubernetes.api.model.ConfigMapList;
-import io.fabric8.kubernetes.api.model.Endpoints;
-import io.fabric8.kubernetes.api.model.EndpointsList;
-import io.fabric8.kubernetes.api.model.Event;
-import io.fabric8.kubernetes.api.model.EventList;
-import io.fabric8.kubernetes.api.model.LimitRange;
-import io.fabric8.kubernetes.api.model.LimitRangeList;
-import io.fabric8.kubernetes.api.model.Namespace;
-import io.fabric8.kubernetes.api.model.NamespaceList;
-import io.fabric8.kubernetes.api.model.Node;
-import io.fabric8.kubernetes.api.model.NodeList;
-import io.fabric8.kubernetes.api.model.PersistentVolume;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaimList;
-import io.fabric8.kubernetes.api.model.PersistentVolumeList;
-import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.PodList;
-import io.fabric8.kubernetes.api.model.ReplicationController;
-import io.fabric8.kubernetes.api.model.ReplicationControllerList;
-import io.fabric8.kubernetes.api.model.ResourceQuota;
-import io.fabric8.kubernetes.api.model.ResourceQuotaList;
-import io.fabric8.kubernetes.api.model.RootPaths;
-import io.fabric8.kubernetes.api.model.Secret;
-import io.fabric8.kubernetes.api.model.SecretList;
-import io.fabric8.kubernetes.api.model.SecurityContextConstraints;
-import io.fabric8.kubernetes.api.model.SecurityContextConstraintsList;
-import io.fabric8.kubernetes.api.model.Service;
-import io.fabric8.kubernetes.api.model.ServiceAccount;
-import io.fabric8.kubernetes.api.model.ServiceAccountList;
-import io.fabric8.kubernetes.api.model.ServiceList;
+import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
-import io.fabric8.kubernetes.client.mock.impl.MockComponentStatus;
-import io.fabric8.kubernetes.client.mock.impl.MockConfigMap;
-import io.fabric8.kubernetes.client.mock.impl.MockEndpoints;
-import io.fabric8.kubernetes.client.mock.impl.MockEvent;
-import io.fabric8.kubernetes.client.mock.impl.MockKubernetesListOperationImpl;
-import io.fabric8.kubernetes.client.mock.impl.MockLimitRange;
-import io.fabric8.kubernetes.client.mock.impl.MockNamespace;
-import io.fabric8.kubernetes.client.mock.impl.MockNode;
-import io.fabric8.kubernetes.client.mock.impl.MockPersistentVolume;
-import io.fabric8.kubernetes.client.mock.impl.MockPersistentVolumeClaim;
-import io.fabric8.kubernetes.client.mock.impl.MockPod;
-import io.fabric8.kubernetes.client.mock.impl.MockReplicationController;
-import io.fabric8.kubernetes.client.mock.impl.MockResourceQuota;
-import io.fabric8.kubernetes.client.mock.impl.MockSecret;
-import io.fabric8.kubernetes.client.mock.impl.MockSecurityContextConstraints;
-import io.fabric8.kubernetes.client.mock.impl.MockService;
-import io.fabric8.kubernetes.client.mock.impl.MockServiceAccount;
-import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableComponentStatus;
-import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableConfigMap;
-import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableEndpoints;
-import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableEvent;
-import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableLimitRange;
-import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableNamespace;
-import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableNode;
-import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneablePersistentVolume;
-import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneablePersistentVolumeClaim;
-import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneablePod;
-import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableReplicationController;
-import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableResourceQuota;
-import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableSecret;
-import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableSecurityContextConstraints;
-import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableService;
-import io.fabric8.kubernetes.client.mock.impl.donable.MockDoneableServiceAccount;
+import io.fabric8.kubernetes.client.mock.impl.*;
+import io.fabric8.kubernetes.client.mock.impl.donable.*;
 import org.easymock.EasyMock;
 import org.easymock.IAnswer;
 import org.easymock.IArgumentMatcher;
@@ -122,6 +59,7 @@ public class KubernetesMockClient implements Replayable<NamespacedKubernetesClie
   private final MockLimitRange limitRanges = new MockLimitRange();
   private final MockKubernetesListOperationImpl kubernetesLists = new MockKubernetesListOperationImpl();
   private final ExtensionsAPIGroupMockClient extensions = new ExtensionsAPIGroupMockClient();
+  private final AutoscalingAPIGroupMockClient autoscaling = new AutoscalingAPIGroupMockClient();
 
 
   public KubernetesMockClient() {
@@ -144,6 +82,7 @@ public class KubernetesMockClient implements Replayable<NamespacedKubernetesClie
     expect(client.lists()).andReturn(kubernetesLists.getDelegate()).anyTimes();
 
     expect(client.extensions()).andReturn(extensions.getDelegate()).anyTimes();
+    expect(client.autoscaling()).andReturn(autoscaling.getDelegate()).anyTimes();
     client.close();
     EasyMock.expectLastCall().anyTimes();
   }
@@ -167,6 +106,7 @@ public class KubernetesMockClient implements Replayable<NamespacedKubernetesClie
     configMaps.replay();
     limitRanges.replay();
     extensions.replay();
+    autoscaling.replay();
     EasyMock.replay(client);
     return client;
   }
@@ -192,6 +132,7 @@ public class KubernetesMockClient implements Replayable<NamespacedKubernetesClie
     kubernetesLists.verify();
 
     extensions.verify();
+    autoscaling.verify();
     EasyMock.verify(client);
   }
 
@@ -278,6 +219,10 @@ public class KubernetesMockClient implements Replayable<NamespacedKubernetesClie
 
   public ExtensionsAPIGroupMockClient extensions() {
     return extensions;
+  }
+
+  public AutoscalingAPIGroupMockClient autoscaling() {
+    return autoscaling;
   }
 
   public KubernetesMockClient inNamespace(final String namespace) {
