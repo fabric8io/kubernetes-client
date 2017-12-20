@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class PodTest {
+public class ServiceAccountTest {
   public static KubernetesClient client;
 
   public static String currentNamespace;
@@ -49,42 +49,37 @@ public class PodTest {
 
   @Test
   public void testLoad() {
-    Pod aPod = client.pods().inNamespace(currentNamespace).load(getClass().getResourceAsStream("/test-pod.yml")).get();
-    assertThat(aPod).isNotNull();
-    assertEquals("nginx", aPod.getMetadata().getName());
+    ServiceAccount svcAccount = client.serviceAccounts().inNamespace(currentNamespace)
+      .load(getClass().getResourceAsStream("/test-serviceaccount.yml")).get();
+    assertThat(svcAccount).isNotNull();
+    assertThat(svcAccount.getMetadata().getUid()).isNotBlank();
   }
 
   @Test
   public void testCrud() {
-    Pod pod1 = new PodBuilder()
-      .withNewMetadata().withName("pod1").endMetadata()
-      .withNewSpec()
-      .addNewContainer().withName("nginx").withImage("nginx").endContainer()
-      .endSpec()
+    ServiceAccount serviceAccount1 = new ServiceAccountBuilder()
+      .withNewMetadata().withName("serviceaccount1").endMetadata()
       .build();
-    Pod pod2 = new PodBuilder()
-      .withNewMetadata().withName("pod2").endMetadata()
-      .withNewSpec()
-      .addNewContainer().withName("httpd").withImage("httpd").endContainer()
-      .endSpec()
+    ServiceAccount serviceAccount2 = new ServiceAccountBuilder()
+      .withNewMetadata().withName("serviceaccount2").endMetadata()
+      .withAutomountServiceAccountToken(false)
       .build();
 
-    // Create
-    client.pods().inNamespace(currentNamespace).create(pod1);
-    client.pods().inNamespace(currentNamespace).create(pod2);
+    client.serviceAccounts().inNamespace(currentNamespace).create(serviceAccount1);
+    client.serviceAccounts().inNamespace(currentNamespace).create(serviceAccount2);
 
-    // Read
-    PodList podList = client.pods().inNamespace(currentNamespace).list();
-    assertThat(podList).isNotNull();
-    assertEquals(2, podList.getItems().size());
+    ServiceAccountList svcAccountList = client.serviceAccounts().inNamespace(currentNamespace).list();
+    assertThat(svcAccountList).isNotNull();
+    // Every namespace has a default service account resource.
+    assertEquals(3, svcAccountList.getItems().size());
 
-    // Update
-    pod1 = client.pods().inNamespace(currentNamespace).withName("pod1").edit()
-      .editMetadata().addToLabels("foo", "bar").and().done();
-    assertEquals("bar", pod1.getMetadata().getLabels().get("foo"));
+    serviceAccount1 = client.serviceAccounts().inNamespace(currentNamespace).withName("serviceaccount1").edit()
+      .addNewSecret().withName("default-token-uudp").endSecret()
+      .addNewImagePullSecret().withName("myregistrykey").endImagePullSecret()
+      .done();
+    assertThat(serviceAccount1).isNotNull();
 
-    // Delete
-    boolean bDeleted = client.pods().inNamespace(currentNamespace).delete(pod1);
+    boolean bDeleted = client.serviceAccounts().inNamespace(currentNamespace).withName("serviceaccount1").delete();
     assertTrue(bDeleted);
   }
 }
