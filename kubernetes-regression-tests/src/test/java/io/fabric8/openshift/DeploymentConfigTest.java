@@ -16,11 +16,7 @@
 
 package io.fabric8.openshift;
 
-import io.fabric8.kubernetes.api.model.Namespace;
-import io.fabric8.kubernetes.api.model.NamespaceBuilder;
-import io.fabric8.openshift.api.model.DeploymentConfig;
-import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
-import io.fabric8.openshift.api.model.DeploymentConfigList;
+import io.fabric8.openshift.api.model.*;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.apache.commons.lang.RandomStringUtils;
@@ -41,13 +37,13 @@ public class DeploymentConfigTest {
   public static void init() {
     client = new DefaultOpenShiftClient();
     currentNamespace = "rt-" + RandomStringUtils.randomAlphanumeric(6).toLowerCase();
-    Namespace aNamespace = new NamespaceBuilder().withNewMetadata().withName(currentNamespace).and().build();
-    client.namespaces().create(aNamespace);
+    ProjectRequest proj = new ProjectRequestBuilder().withNewMetadata().withName(currentNamespace).endMetadata().build();
+    client.projectrequests().create(proj);
   }
 
   @AfterClass
   public static void cleanup() {
-    client.namespaces().withName(currentNamespace).delete();
+    client.projects().withName(currentNamespace).delete();
     client.close();
   }
 
