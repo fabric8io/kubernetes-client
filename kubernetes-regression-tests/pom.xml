@@ -52,30 +52,6 @@
 
     <dependency>
       <groupId>org.arquillian.cube</groupId>
-      <artifactId>arquillian-cube-docker</artifactId>
-      <version>1.9.1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.arquillian.test</groupId>
-      <artifactId>arquillian-test-impl-base</artifactId>
-      <version>1.1.14.Final</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.arquillian.core</groupId>
-      <artifactId>arquillian-core-impl-base</artifactId>
-      <version>1.1.14.Final</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.arquillian.cube</groupId>
-      <artifactId>arquillian-cube-requirement</artifactId>
-      <version>1.9.1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.arquillian.cube</groupId>
       <artifactId>arquillian-cube-kubernetes</artifactId>
       <version>1.9.1</version>
     </dependency>
@@ -87,15 +63,12 @@
       <scope>test</scope>
     </dependency>
 
-
      <dependency>
        <groupId>org.assertj</groupId>
        <artifactId>assertj-core</artifactId>
        <version>3.8.0</version>
        <scope>provided</scope>
      </dependency>
-
-
 
     <dependency>
       <groupId>io.fabric8</groupId>

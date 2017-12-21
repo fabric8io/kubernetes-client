@@ -47,7 +47,7 @@ public class ResourceTest {
   }
 
   @Test
-  public void testCrud() {
+  public void testCrud() throws InterruptedException {
     Pod pod1 = new PodBuilder()
       .withNewMetadata().withName("pod1").endMetadata()
       .withNewSpec()
@@ -61,6 +61,8 @@ public class ResourceTest {
       .endSpec()
       .build();
 
+    // Wait for service account token to be auto-generated.
+    Thread.sleep(6000);
     client.resource(pod1).inNamespace(currentNamespace).createOrReplace();
     client.resource(pod2).inNamespace(currentNamespace).createOrReplace();
 

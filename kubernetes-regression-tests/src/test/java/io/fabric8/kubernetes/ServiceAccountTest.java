@@ -71,7 +71,7 @@ public class ServiceAccountTest {
     ServiceAccountList svcAccountList = client.serviceAccounts().inNamespace(currentNamespace).list();
     assertThat(svcAccountList).isNotNull();
     // Every namespace has a default service account resource.
-    assertEquals(3, svcAccountList.getItems().size());
+    assertTrue(svcAccountList.getItems().size() > 2);
 
     serviceAccount1 = client.serviceAccounts().inNamespace(currentNamespace).withName("serviceaccount1").edit()
       .addNewSecret().withName("default-token-uudp").endSecret()

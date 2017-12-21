@@ -55,7 +55,7 @@ public class PodTest {
   }
 
   @Test
-  public void testCrud() {
+  public void testCrud() throws InterruptedException{
     Pod pod1 = new PodBuilder()
       .withNewMetadata().withName("pod1").endMetadata()
       .withNewSpec()
@@ -69,6 +69,8 @@ public class PodTest {
       .endSpec()
       .build();
 
+    // Wait for service account token to be generated.
+    Thread.sleep(6000);
     // Create
     client.pods().inNamespace(currentNamespace).create(pod1);
     client.pods().inNamespace(currentNamespace).create(pod2);
