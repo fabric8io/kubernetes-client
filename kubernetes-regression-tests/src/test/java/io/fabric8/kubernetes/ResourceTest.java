@@ -62,7 +62,7 @@ public class ResourceTest {
       .build();
 
     // Wait for service account token to be auto-generated.
-    Thread.sleep(6000);
+    Thread.sleep(3000);
     client.resource(pod1).inNamespace(currentNamespace).createOrReplace();
     client.resource(pod2).inNamespace(currentNamespace).createOrReplace();
 

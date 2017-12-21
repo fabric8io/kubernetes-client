@@ -70,7 +70,7 @@ public class PodTest {
       .build();
 
     // Wait for service account token to be generated.
-    Thread.sleep(6000);
+    Thread.sleep(3000);
     // Create
     client.pods().inNamespace(currentNamespace).create(pod1);
     client.pods().inNamespace(currentNamespace).create(pod2);
