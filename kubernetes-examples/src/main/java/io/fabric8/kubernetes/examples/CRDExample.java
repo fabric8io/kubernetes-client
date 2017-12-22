@@ -105,7 +105,7 @@ public class CRDExample {
 
 
       // lets create a client for the CRD
-      NonNamespaceOperation<Dummy, DummyList, DoneableDummy, Resource<Dummy, DoneableDummy>> dummyClient = client.customResource(dummyCRD, Dummy.class, DummyList.class, DoneableDummy.class).inNamespace(namespace);
+      NonNamespaceOperation<Dummy, DummyList, DoneableDummy, Resource<Dummy, DoneableDummy>> dummyClient = client.customResources(dummyCRD, Dummy.class, DummyList.class, DoneableDummy.class).inNamespace(namespace);
       CustomResourceList<Dummy> dummyList = dummyClient.list();
       List<Dummy> items = dummyList.getItems();
       System.out.println("  found " + items.size() + " dummies");
