@@ -43,37 +43,41 @@
       <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
-
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-client</artifactId>
       <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.arquillian.cube</groupId>
-      <artifactId>arquillian-cube-kubernetes</artifactId>
-      <version>1.9.1</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.jboss.arquillian.container</groupId>
-      <artifactId>arquillian-tomcat-remote-7</artifactId>
-      <version>1.0.0.CR7</version>
       <scope>test</scope>
     </dependency>
-
-     <dependency>
-       <groupId>org.assertj</groupId>
-       <artifactId>assertj-core</artifactId>
-       <version>3.8.0</version>
-       <scope>provided</scope>
-     </dependency>
-
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>openshift-client</artifactId>
       <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.arquillian.cube</groupId>
+      <artifactId>arquillian-cube-requirement</artifactId>
+      <version>${arquillian.cube.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.arquillian.junit</groupId>
+      <artifactId>arquillian-junit-standalone</artifactId>
+      <version>${arquillian.core.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.arquillian.cube</groupId>
+      <artifactId>arquillian-cube-kubernetes</artifactId>
+      <version>${arquillian.cube.version}</version>
+      <scope>test</scope>
+    </dependency>
+     <dependency>
+       <groupId>org.assertj</groupId>
+       <artifactId>assertj-core</artifactId>
+       <version>${assertj.core.version}</version>
+       <scope>test</scope>
+     </dependency>
   </dependencies>
 </project>

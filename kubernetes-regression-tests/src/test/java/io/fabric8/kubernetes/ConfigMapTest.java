@@ -25,7 +25,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertTrue;
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
