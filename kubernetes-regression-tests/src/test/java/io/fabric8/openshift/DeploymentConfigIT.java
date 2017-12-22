@@ -17,38 +17,30 @@
 package io.fabric8.openshift;
 
 import io.fabric8.openshift.api.model.*;
-import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.apache.commons.lang.RandomStringUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.arquillian.cube.kubernetes.api.Session;
+import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
+import org.arquillian.cube.requirement.ArquillianConditionalRunner;
+import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
-public class DeploymentConfigTest {
-  public static OpenShiftClient client;
+@RunWith(ArquillianConditionalRunner.class)
+@RequiresOpenshift
+public class DeploymentConfigIT {
+  @ArquillianResource
+  OpenShiftClient client;
 
-  public static String currentNamespace;
-
-  @BeforeClass
-  public static void init() {
-    client = new DefaultOpenShiftClient();
-    currentNamespace = "rt-" + RandomStringUtils.randomAlphanumeric(6).toLowerCase();
-    ProjectRequest proj = new ProjectRequestBuilder().withNewMetadata().withName(currentNamespace).endMetadata().build();
-    client.projectrequests().create(proj);
-  }
-
-  @AfterClass
-  public static void cleanup() {
-    client.projects().withName(currentNamespace).delete();
-    client.close();
-  }
+  @ArquillianResource
+  Session session;
 
   @Test
   public void testLoad() {
+    String currentNamespace = session.getNamespace();
     DeploymentConfig deploymentConfig = client.deploymentConfigs().inNamespace(currentNamespace)
       .load(getClass().getResourceAsStream("/test-deploymentconfig.yml")).get();
     assertThat(deploymentConfig).isNotNull();
@@ -57,6 +49,7 @@ public class DeploymentConfigTest {
 
   @Test
   public void testCrud() {
+    String currentNamespace = session.getNamespace();
     DeploymentConfig deploymentConfig1 = new DeploymentConfigBuilder()
       .withNewMetadata().withName("deploymentconfig1").endMetadata()
       .withNewSpec()

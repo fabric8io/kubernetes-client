@@ -17,49 +17,39 @@
 package io.fabric8.kubernetes;
 
 import io.fabric8.kubernetes.api.model.EnvVar;
-import io.fabric8.kubernetes.api.model.Namespace;
-import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetBuilder;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.lang.RandomStringUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.arquillian.cube.kubernetes.api.Session;
+import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
+import org.arquillian.cube.requirement.ArquillianConditionalRunner;
+import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class ReplicaSetTest {
-  public static KubernetesClient client;
+@RunWith(ArquillianConditionalRunner.class)
+@RequiresKubernetes
+public class ReplicaSetIT {
+  @ArquillianResource
+  KubernetesClient client;
 
-  public static String currentNamespace;
-
-  @BeforeClass
-  public static void init() {
-    client = new DefaultKubernetesClient();
-    currentNamespace = "rt-" + RandomStringUtils.randomAlphanumeric(6).toLowerCase();
-    Namespace aNamespace = new NamespaceBuilder().withNewMetadata().withName(currentNamespace).and().build();
-    client.namespaces().create(aNamespace);
-  }
-
-  @AfterClass
-  public static void cleanup() {
-    client.namespaces().withName(currentNamespace).delete();
-    client.close();
-  }
+  @ArquillianResource
+  Session session;
 
   @Test
   public void testLoad() {
+    String currentNamespace = session.getNamespace();
     ReplicaSet replicaSet = client.extensions().replicaSets().inNamespace(currentNamespace)
       .load(getClass().getResourceAsStream("/test-replicaset.yml")).get();
     assertThat(replicaSet).isNotNull();
@@ -68,6 +58,7 @@ public class ReplicaSetTest {
 
   @Test
   public void testCrud() {
+    String currentNamespace = session.getNamespace();
     Map<String, Quantity> requests = new HashMap<>();
     requests.put("cpu", new Quantity("100m"));
     requests.put("memory", new Quantity("100Mi"));
@@ -113,7 +104,7 @@ public class ReplicaSetTest {
 
     ReplicaSetList replicaSetList = client.extensions().replicaSets().inNamespace(currentNamespace).list();
     assertThat(replicaSetList).isNotNull();
-    assertEquals(1, replicaSetList.getItems().size());
+    assertTrue(replicaSetList.getItems().size() >= 1);
 
     replicaset1 = client.extensions().replicaSets().inNamespace(currentNamespace).withName("replicaset1").edit()
       .editSpec().withReplicas(5).endSpec().done();

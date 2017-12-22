@@ -16,18 +16,17 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.kubernetes.api.model.Namespace;
-import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.extensions.StatefulSet;
 import io.fabric8.kubernetes.api.model.extensions.StatefulSetBuilder;
 import io.fabric8.kubernetes.api.model.extensions.StatefulSetList;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.apache.commons.lang.RandomStringUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.arquillian.cube.kubernetes.api.Session;
+import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
+import org.arquillian.cube.requirement.ArquillianConditionalRunner;
+import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.Collections;
 
@@ -35,34 +34,27 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class StatefulSetTest {
-  public static KubernetesClient client;
+@RunWith(ArquillianConditionalRunner.class)
+@RequiresKubernetes
+public class StatefulSetIT {
+  @ArquillianResource
+  KubernetesClient client;
 
-  public static String currentNamespace;
-
-  @BeforeClass
-  public static void init() {
-    client = new DefaultKubernetesClient();
-    currentNamespace = "rt-" + RandomStringUtils.randomAlphanumeric(6).toLowerCase();
-    Namespace aNamespace = new NamespaceBuilder().withNewMetadata().withName(currentNamespace).and().build();
-    client.namespaces().create(aNamespace);
-  }
-
-  @AfterClass
-  public static void cleanup() {
-    client.namespaces().withName(currentNamespace).delete();
-    client.close();
-  }
+  @ArquillianResource
+  Session session;
 
   @Test
   public void testLoad() {
-    StatefulSet aStatefulSet = client.apps().statefulSets().load(getClass().getResourceAsStream("/test-statefulset.yml")).get();
+    String currentNamespace = session.getNamespace();
+    StatefulSet aStatefulSet = client.apps().statefulSets().inNamespace(currentNamespace)
+      .load(getClass().getResourceAsStream("/test-statefulset.yml")).get();
     assertThat(aStatefulSet).isNotNull();
     assertEquals("web", aStatefulSet.getMetadata().getName());
   }
 
   @Test
   public void testCrud() {
+    String currentNamespace = session.getNamespace();
     StatefulSet ss1 = new StatefulSetBuilder()
       .withNewMetadata().withName("ss1").endMetadata()
       .withNewSpec()

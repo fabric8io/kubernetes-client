@@ -17,38 +17,30 @@
 package io.fabric8.kubernetes;
 
 import io.fabric8.kubernetes.api.model.*;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.apache.commons.lang.RandomStringUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.arquillian.cube.kubernetes.api.Session;
+import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
+import org.arquillian.cube.requirement.ArquillianConditionalRunner;
+import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class SecretTest {
-  public static KubernetesClient client;
+@RunWith(ArquillianConditionalRunner.class)
+@RequiresKubernetes
+public class SecretIT {
+  @ArquillianResource
+  KubernetesClient client;
 
-  public static String currentNamespace;
-
-  @BeforeClass
-  public static void init() {
-    client = new DefaultKubernetesClient();
-    currentNamespace = "rt-" + RandomStringUtils.randomAlphanumeric(6).toLowerCase();
-    Namespace aNamespace = new NamespaceBuilder().withNewMetadata().withName(currentNamespace).and().build();
-    client.namespaces().create(aNamespace);
-  }
-
-  @AfterClass
-  public static void cleanup() {
-    client.namespaces().withName(currentNamespace).delete();
-    client.close();
-  }
+  @ArquillianResource
+  Session session;
 
   @Test
   public void testLoad() {
+    String currentNamespace = session.getNamespace();
     Secret aSecret = client.secrets().inNamespace(currentNamespace).load(getClass().getResourceAsStream("/test-secret.yml")).get();
     assertThat(aSecret).isNotNull();
     assertEquals("mysecret", aSecret.getMetadata().getName());
@@ -56,6 +48,7 @@ public class SecretTest {
 
   @Test
   public void testCrud() {
+    String currentNamespace = session.getNamespace();
     Secret secret1 = new SecretBuilder()
       .withNewMetadata().withName("secret1").endMetadata()
       .addToData("username", "guccifer")
@@ -81,6 +74,7 @@ public class SecretTest {
 
   @Test
   public void testLoadInPod() {
+    String currentNamespace = session.getNamespace();
     Secret aSecret = new SecretBuilder()
       .withNewMetadata().withName("secret1").endMetadata()
       .addToData("username", "guccifer")

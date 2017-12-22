@@ -16,50 +16,41 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.kubernetes.api.model.Namespace;
-import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.api.model.extensions.Deployment;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.apache.commons.lang.RandomStringUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.arquillian.cube.kubernetes.api.Session;
+import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
+import org.arquillian.cube.requirement.ArquillianConditionalRunner;
+import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
-public class DeploymentTest {
-  public static KubernetesClient client;
+@RunWith(ArquillianConditionalRunner.class)
+@RequiresKubernetes
+public class DeploymentIT {
+  @ArquillianResource
+  KubernetesClient client;
 
-  public static String currentNamespace;
-
-  @BeforeClass
-  public static void init() {
-    client = new DefaultKubernetesClient();
-    currentNamespace = "rt-" + RandomStringUtils.randomAlphanumeric(6).toLowerCase();
-    Namespace aNamespace = new NamespaceBuilder().withNewMetadata().withName(currentNamespace).and().build();
-    client.namespaces().create(aNamespace);
-  }
-
-  @AfterClass
-  public static void cleanup() {
-    client.namespaces().withName(currentNamespace).delete();
-    client.close();
-  }
+  @ArquillianResource
+  Session session;
 
   @Test
   public void testLoad() {
+    String currentNamespace = session.getNamespace();
     Deployment aDeployment = client.extensions().deployments().inNamespace(currentNamespace).load(getClass().getResourceAsStream("/test-deployments.yml")).get();
     assertThat(aDeployment).isNotNull();
     assertEquals("nginx-deployment", aDeployment.getMetadata().getName());
   }
 
   @Test
-  public void testCrud() {
+  public void testCrud() throws InterruptedException {
+    String currentNamespace = session.getNamespace();
     Deployment deployment1 = new DeploymentBuilder()
       .withNewMetadata().withName("deployment1").endMetadata()
       .withNewSpec()
@@ -110,7 +101,8 @@ public class DeploymentTest {
     assertThat(deployment1).isNotNull();
     assertEquals(3, deployment1.getSpec().getReplicas().intValue());
 
-    boolean bDeleted = client.extensions().deployments().inNamespace(currentNamespace).withName("deployment2").delete();
+    Thread.sleep(6000);
+    boolean bDeleted = client.extensions().deployments().inNamespace(currentNamespace).delete();
     assertTrue(bDeleted);
   }
 }

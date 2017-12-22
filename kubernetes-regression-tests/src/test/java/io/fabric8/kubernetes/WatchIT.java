@@ -16,15 +16,15 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.kubernetes.api.model.Namespace;
-import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.client.*;
-import org.apache.commons.lang.RandomStringUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.arquillian.cube.kubernetes.api.Session;
+import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
+import org.arquillian.cube.requirement.ArquillianConditionalRunner;
+import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,12 +35,17 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertTrue;
 
-public class WatchTest {
-  public static KubernetesClient client;
+@RunWith(ArquillianConditionalRunner.class)
+@RequiresKubernetes
+public class WatchIT {
 
-  public static String currentNamespace;
+  @ArquillianResource
+  KubernetesClient client;
 
-  private static final Logger logger = LoggerFactory.getLogger(WatchTest.class);
+  @ArquillianResource
+  Session session;
+
+  private static final Logger logger = LoggerFactory.getLogger(WatchIT.class);
 
   private boolean bKilled;
 
@@ -59,38 +64,23 @@ public class WatchTest {
         @Override
         public void run() {
           logger.info("killing pod  now ....");
-          bKilled = client.pods().inNamespace(currentNamespace).withName("pod1").delete();
+          bKilled = client.pods().inNamespace(currentNamespace).withName("sample-watch-pod").delete();
           logger.info("isPodKilled : {}", bKilled);
         }
       }, 15000);
     }
   }
 
-  @BeforeClass
-  public static void init() {
-    client = new DefaultKubernetesClient();
-    currentNamespace = "rt-" + RandomStringUtils.randomAlphanumeric(6).toLowerCase();
-    Namespace aNamespace = new NamespaceBuilder().withNewMetadata().withName(currentNamespace).and().build();
-    client.namespaces().create(aNamespace);
-  }
-
-  @AfterClass
-  public static void cleanup() {
-    client.namespaces().withName(currentNamespace).delete();
-    client.close();
-  }
-
   @Test
   public void testWatch() throws InterruptedException {
+    String currentNamespace = session.getNamespace();
     Pod pod1 = new PodBuilder()
-      .withNewMetadata().withName("pod1").endMetadata()
+      .withNewMetadata().withName("sample-watch-pod").endMetadata()
       .withNewSpec()
       .addNewContainer().withName("nginx").withImage("nginx").endContainer()
       .endSpec()
       .build();
 
-    // Wait for service account token to be generated.
-    Thread.sleep(3000);
     client.pods().inNamespace(currentNamespace).create(pod1);
 
     // Start the killer process
@@ -102,7 +92,7 @@ public class WatchTest {
     final CountDownLatch modifyLatch = new CountDownLatch(1);
     final CountDownLatch closeLatch = new CountDownLatch(1);
     final CountDownLatch deleteLatch = new CountDownLatch(1);
-    Watch watch = client.pods().inNamespace(currentNamespace).withName("pod1").watch(new Watcher<Pod>() {
+    Watch watch = client.pods().inNamespace(currentNamespace).withName("sample-watch-pod").watch(new Watcher<Pod>() {
       @Override
       public void eventReceived(Action action, Pod pod) {
         eventLatch.countDown();
@@ -121,7 +111,7 @@ public class WatchTest {
       }
     });
 
-    client.pods().inNamespace(currentNamespace).withName("pod1").edit()
+    client.pods().inNamespace(currentNamespace).withName("sample-watch-pod").edit()
       .editMetadata().addToLabels("foo", "bar")
       .endMetadata()
       .done();

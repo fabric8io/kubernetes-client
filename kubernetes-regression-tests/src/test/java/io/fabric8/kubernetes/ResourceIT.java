@@ -16,9 +16,7 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.PodBuilder;
-import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
@@ -28,13 +26,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(ArquillianConditionalRunner.class)
 @RequiresKubernetes
-public class ArquillianPodTest {
-
+public class ResourceIT {
   @ArquillianResource
   KubernetesClient client;
 
@@ -42,50 +38,59 @@ public class ArquillianPodTest {
   Session session;
 
   @Test
-  public void testLoad() {
-    String currentNamespace = session.getNamespace();
-    Pod aPod = client.pods().inNamespace(currentNamespace).load(getClass().getResourceAsStream("/test-pod.yml")).get();
-    assertThat(aPod).isNotNull();
-    assertEquals("nginx", aPod.getMetadata().getName());
-    // This should not pass
-    assertEquals("ngin1221x", aPod.getMetadata().getName());
-  }
-
-  @Test
-  public void testCrud() {
+  public void testCrud() throws InterruptedException {
     String currentNamespace = session.getNamespace();
     Pod pod1 = new PodBuilder()
-      .withNewMetadata().withName("pod1").endMetadata()
+      .withNewMetadata().withName("resource-pod1").endMetadata()
       .withNewSpec()
       .addNewContainer().withName("nginx").withImage("nginx").endContainer()
       .endSpec()
       .build();
     Pod pod2 = new PodBuilder()
-      .withNewMetadata().withName("pod2").endMetadata()
+      .withNewMetadata().withName("resource-pod2").endMetadata()
       .withNewSpec()
       .addNewContainer().withName("httpd").withImage("httpd").endContainer()
       .endSpec()
       .build();
 
-    // Create
-    client.pods().inNamespace(currentNamespace).create(pod1);
-    client.pods().inNamespace(currentNamespace).create(pod2);
+    client.resource(pod1).inNamespace(currentNamespace).createOrReplace();
+    client.resource(pod2).inNamespace(currentNamespace).createOrReplace();
 
-    // Read
-    PodList podList = client.pods().inNamespace(currentNamespace).list();
-    assertThat(podList).isNotNull();
-    assertEquals(2, podList.getItems().size());
-    // This should not pass
-    assertEquals(3, podList.getItems().size());
+    assertThat(client.pods().inNamespace(currentNamespace).withName("pod1")).isNotNull();
+    assertThat(client.pods().inNamespace(currentNamespace).withName("pod2")).isNotNull();
 
-    // Update
-    pod1 = client.pods().inNamespace(currentNamespace).withName("pod1").edit().editMetadata().withName("POD1").and().done();
-    assertEquals("POD1", pod1.getMetadata().getName());
-
-    // Delete
-    boolean bDeleted = client.pods().inNamespace(currentNamespace).delete();
-    podList = client.pods().inNamespace(currentNamespace).list();
+    boolean bDeleted = client.resource(pod1).inNamespace(currentNamespace).delete();
     assertTrue(bDeleted);
-    assertEquals(0, podList.getItems().size());
+    bDeleted = client.resource(pod2).inNamespace(currentNamespace).delete();
+    assertTrue(bDeleted);
+  }
+
+  @Test
+  public void testList() {
+    String currentNamespace = session.getNamespace();
+    Pod pod1 = new PodBuilder()
+      .withNewMetadata().withName("pod3").endMetadata()
+      .withNewSpec()
+      .addNewContainer().withName("nginx").withImage("nginx").endContainer()
+      .endSpec()
+      .build();
+    Pod pod2 = new PodBuilder()
+      .withNewMetadata().withName("pod4").endMetadata()
+      .withNewSpec()
+      .addNewContainer().withName("httpd").withImage("httpd").endContainer()
+      .endSpec()
+      .build();
+
+    client.resourceList(new PodListBuilder().withItems(pod1, pod2).build())
+      .inNamespace(currentNamespace)
+      .apply();
+
+    assertTrue(client.pods().inNamespace(currentNamespace).withName("pod3") != null);
+    assertTrue(client.pods().inNamespace(currentNamespace).withName("pod4") != null);
+
+    boolean bDeleted = client.resourceList(new PodListBuilder().withItems(pod1, pod2).build())
+      .inNamespace(currentNamespace)
+      .delete();
+    assertTrue(bDeleted);
   }
 }

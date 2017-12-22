@@ -1,38 +1,30 @@
 package io.fabric8.openshift;
 
 import io.fabric8.openshift.api.model.*;
-import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.apache.commons.lang.RandomStringUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.arquillian.cube.kubernetes.api.Session;
+import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
+import org.arquillian.cube.requirement.ArquillianConditionalRunner;
+import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
-public class RouteTest {
-  public static OpenShiftClient client;
+@RunWith(ArquillianConditionalRunner.class)
+@RequiresOpenshift
+public class RouteIT {
+  @ArquillianResource
+  OpenShiftClient client;
 
-  public static String currentNamespace;
-
-  @BeforeClass
-  public static void init() {
-    client = new DefaultOpenShiftClient();
-    currentNamespace = "rt-" + RandomStringUtils.randomAlphanumeric(6).toLowerCase();
-    ProjectRequest proj = new ProjectRequestBuilder().withNewMetadata().withName(currentNamespace).endMetadata().build();
-    client.projectrequests().create(proj);
-  }
-
-  @AfterClass
-  public static void cleanup() {
-    client.projects().withName(currentNamespace).delete();
-    client.close();
-  }
+  @ArquillianResource
+  Session session;
 
   @Test
   public void testLoad() {
+    String currentNamespace = session.getNamespace();
     Route aRoute = client.routes().inNamespace(currentNamespace).load(getClass().getResourceAsStream("/test-route.yml")).get();
     assertThat(aRoute).isNotNull();
     assertEquals("host-route", aRoute.getMetadata().getName());
@@ -40,6 +32,7 @@ public class RouteTest {
 
   @Test
   public void testCrud() {
+    String currentNamespace = session.getNamespace();
     Route route1 = new RouteBuilder()
       .withNewMetadata().withName("route1").endMetadata()
       .withNewSpec().withHost("www.example.com").withNewTo().withKind("Service").withName("service-name1").endTo().endSpec()

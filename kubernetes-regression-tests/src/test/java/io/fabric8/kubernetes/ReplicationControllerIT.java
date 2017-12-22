@@ -17,12 +17,13 @@
 package io.fabric8.kubernetes;
 
 import io.fabric8.kubernetes.api.model.*;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.apache.commons.lang.RandomStringUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.arquillian.cube.kubernetes.api.Session;
+import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
+import org.arquillian.cube.requirement.ArquillianConditionalRunner;
+import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.Collections;
 
@@ -30,27 +31,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class ReplicationControllerTest {
-  public static KubernetesClient client;
+@RunWith(ArquillianConditionalRunner.class)
+@RequiresKubernetes
+public class ReplicationControllerIT {
+  @ArquillianResource
+  KubernetesClient client;
 
-  public static String currentNamespace;
-
-  @BeforeClass
-  public static void init() {
-    client = new DefaultKubernetesClient();
-    currentNamespace = "rt-" + RandomStringUtils.randomAlphanumeric(6).toLowerCase();
-    Namespace aNamespace = new NamespaceBuilder().withNewMetadata().withName(currentNamespace).and().build();
-    client.namespaces().create(aNamespace);
-  }
-
-  @AfterClass
-  public static void cleanup() {
-    client.namespaces().withName(currentNamespace).delete();
-    client.close();
-  }
+  @ArquillianResource
+  Session session;
 
   @Test
   public void testLoad() {
+    String currentNamespace = session.getNamespace();
     ReplicationController aReplicationController = client.replicationControllers().inNamespace(currentNamespace)
       .load(getClass().getResourceAsStream("/test-replicationcontroller.yml")).get();
 
@@ -61,6 +53,7 @@ public class ReplicationControllerTest {
 
   @Test
   public void testCrud() {
+    String currentNamespace = session.getNamespace();
     ReplicationController rc1 = new ReplicationControllerBuilder()
       .withNewMetadata().withName("nginx-controller").addToLabels("server", "nginx").endMetadata()
       .withNewSpec().withReplicas(3)
@@ -101,6 +94,8 @@ public class ReplicationControllerTest {
     assertEquals(5, rc1.getSpec().getReplicas().intValue());
 
     boolean bDeleted = client.replicationControllers().inNamespace(currentNamespace).withName("nginx-controller").delete();
+    assertTrue(bDeleted);
+    bDeleted = client.replicationControllers().inNamespace(currentNamespace).withName("frontend").delete();
     assertTrue(bDeleted);
   }
 }
