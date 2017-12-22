@@ -24,7 +24,6 @@ import io.fabric8.kubernetes.client.Adapters;
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.CustomResourceList;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
 import io.fabric8.kubernetes.client.Handlers;
@@ -299,8 +298,13 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   @Override
+  public <T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResources(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass) {
+    return delegate.customResources(crd, resourceType, listClass, doneClass);
+  }
+
+  @Override
   public <T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResource(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass) {
-    return delegate.customResource(crd, resourceType, listClass, doneClass);
+    return customResources(crd, resourceType, listClass, doneClass);
   }
 
   @Override

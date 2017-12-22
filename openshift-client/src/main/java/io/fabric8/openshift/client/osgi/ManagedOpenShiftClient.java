@@ -17,7 +17,6 @@
 package io.fabric8.openshift.client.osgi;
 
 import io.fabric8.kubernetes.api.model.*;
-import io.fabric8.kubernetes.client.CustomResourceList;
 import io.fabric8.openshift.api.model.DoneableSecurityContextConstraints;
 import io.fabric8.openshift.api.model.SecurityContextConstraints;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsList;
@@ -468,8 +467,13 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
+  public <T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResources(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass) {
+    return delegate.customResources(crd, resourceType, listClass, doneClass);
+  }
+
+  @Override
   public <T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResource(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass) {
-    return delegate.customResource(crd, resourceType, listClass, doneClass);
+    return customResources(crd, resourceType, listClass, doneClass);
   }
 
   @Override
