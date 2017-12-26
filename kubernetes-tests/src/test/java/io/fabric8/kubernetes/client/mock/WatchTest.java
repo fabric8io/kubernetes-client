@@ -96,8 +96,8 @@ public class WatchTest {
     KubernetesClient client = server.getClient().inNamespace("test");
     // http error: history outdated
     server.expect()
-        .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true")
-        .andReturn(410, outdatedEvent).once();
+      .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true")
+      .andReturn(410, outdatedEvent).once();
     try (Watch watch = client.pods().withName("pod1").withResourceVersion("1").watch(new Watcher<Pod>() {
       @Override
       public void eventReceived(Action action, Pod resource) {
