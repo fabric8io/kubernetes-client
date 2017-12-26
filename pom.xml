@@ -106,7 +106,6 @@
     <maven.jar.plugin.version>3.0.1</maven.jar.plugin.version>
     <maven.resources.plugin.version>3.0.1</maven.resources.plugin.version>
     <maven.surefire.plugin.version>2.19.1</maven.surefire.plugin.version>
-    <maven.failsafe.plugin.version>2.20.1</maven.failsafe.plugin.version>
     <maven.scr.plugin.version>1.22.0</maven.scr.plugin.version>
 
     <maven.compiler.source>1.7</maven.compiler.source>
@@ -135,7 +134,6 @@
     <module>kubernetes-examples</module>
     <module>platforms</module>
     <module>kubernetes-tests</module>
-    <module>kubernetes-regression-tests</module>
     <module>uberjar</module>
   </modules>
 
@@ -171,27 +169,6 @@
             <ENV_VAR_EXISTS_BOOLEAN>true</ENV_VAR_EXISTS_BOOLEAN>
           </environmentVariables>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-failsafe-plugin</artifactId>
-        <version>${maven.failsafe.plugin.version}</version>
-        <executions>
-          <execution>
-            <id>integration-test</id>
-            <phase>integration-test</phase>
-            <goals>
-              <goal>integration-test</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>verify</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>verify</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
 
       <plugin>
@@ -379,6 +356,28 @@
       <properties>
         <javadoc.opts>-Xdoclint:none</javadoc.opts>
       </properties>
+    </profile>
+    <profile>
+      <id>regression-tests</id>
+      <modules>
+        <module>kubernetes-regression-tests</module>
+      </modules>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>integration-test</goal>
+                  <goal>verify</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
 </project>

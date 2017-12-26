@@ -45,4 +45,4 @@ before_script: mvn clean install -DskipTests
 
 script:
   # Profile jacoco switches on jacoco coverages, regession-test for running regreesion tests on fabric8/OpenShift.io quickstart projects
-  - mvn -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B install -pl kubernetes-regression-tests
+  - mvn -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B install -P regression-tests
