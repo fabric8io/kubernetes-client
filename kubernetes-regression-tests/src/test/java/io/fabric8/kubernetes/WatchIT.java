@@ -117,7 +117,7 @@ public class WatchIT {
       .done();
 
     assertTrue(eventLatch.await(10, TimeUnit.SECONDS));
-    assertTrue(deleteLatch.await(60, TimeUnit.SECONDS));
+    assertTrue(deleteLatch.await(120, TimeUnit.SECONDS));
     watch.close();
     assertTrue(closeLatch.await(30, TimeUnit.SECONDS));
   }
