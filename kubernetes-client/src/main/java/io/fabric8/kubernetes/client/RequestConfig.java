@@ -17,6 +17,10 @@ package io.fabric8.kubernetes.client;
 
 import io.sundr.builder.annotations.Buildable;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 import static io.fabric8.kubernetes.client.Config.DEFAULT_LOGGING_INTERVAL;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_MAX_CONCURRENT_REQUESTS;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_MAX_CONCURRENT_REQUESTS_PER_HOST;
@@ -30,6 +34,9 @@ public class RequestConfig {
   private String username;
   private String password;
   private String oauthToken;
+  private String impersonateUsername;
+  private String impersonateGroup;
+  private Map<String, String> impersonateExtras = new HashMap<>();
   private int watchReconnectInterval = 1000;
   private int watchReconnectLimit = -1;
   private int connectionTimeout = 10 * 1000;
@@ -177,5 +184,29 @@ public class RequestConfig {
 
   public void setMaxConcurrentRequestsPerHost(int maxConcurrentRequestsPerHost) {
     this.maxConcurrentRequestsPerHost = maxConcurrentRequestsPerHost;
+  }
+
+  public void setImpersonateUsername(String impersonateUsername) {
+    this.impersonateUsername = impersonateUsername;
+  }
+
+  public String getImpersonateUsername() {
+    return impersonateUsername;
+  }
+
+  public void setImpersonateGroup(String impersonateGroup) {
+    this.impersonateGroup = impersonateGroup;
+  }
+
+  public String getImpersonateGroup() {
+    return impersonateGroup;
+  }
+
+  public void setImpersonateExtras(Map<String, String> impersonateExtras) {
+    this.impersonateExtras = new HashMap<>(impersonateExtras);
+  }
+
+  public Map<String, String> getImpersonateExtras() {
+    return Collections.unmodifiableMap(impersonateExtras);
   }
 }
