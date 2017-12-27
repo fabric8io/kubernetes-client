@@ -147,7 +147,7 @@ public class ResourceTest {
       .endStatus()
       .build();
 
-    server.expect().get().withPath("/api/v1/namespaces/test/pods").andReturn(200, noReady).once();
+    server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, noReady).once();
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&watch=true").andUpgradeToWebSocket()
       .open()
@@ -157,6 +157,47 @@ public class ResourceTest {
 
     KubernetesClient client = server.getClient();
     Pod p = client.resource(noReady).waitUntilReady(5, TimeUnit.SECONDS);
+    Assert.assertTrue(Readiness.isPodReady(p));
+  }
+
+  @Test
+  public void testWaitUntilExistsThenReady() throws InterruptedException {
+    Pod pod1 = new PodBuilder().withNewMetadata()
+      .withName("pod1")
+      .withResourceVersion("1")
+      .withNamespace("test").and().build();
+
+
+    Pod noReady = new PodBuilder(pod1).withNewStatus()
+      .addNewCondition()
+          .withType("Ready")
+          .withStatus("False")
+        .endCondition()
+      .endStatus()
+      .build();
+
+    Pod ready = new PodBuilder(pod1).withNewStatus()
+        .addNewCondition()
+          .withType("Ready")
+          .withStatus("True")
+        .endCondition()
+      .endStatus()
+      .build();
+
+    // so that "waitUntilExists" actually has some waiting to do
+    server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(404, "").times(2);
+    // once so that "waitUntilExists" successfully ends
+    // and again so that "periodicWatchUntilReady" successfully begins
+    server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, noReady).times(2);
+
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&watch=true").andUpgradeToWebSocket()
+      .open()
+      .waitFor(1000).andEmit(new WatchEvent(ready, "MODIFIED"))
+      .done()
+      .always();
+
+    KubernetesClient client = server.getClient();
+    Pod p = client.pods().withName("pod1").waitUntilReady(5, TimeUnit.SECONDS);
     Assert.assertTrue(Readiness.isPodReady(p));
   }
 
@@ -184,7 +225,9 @@ public class ResourceTest {
       .endStatus()
       .build();
 
-    server.expect().get().withPath("/api/v1/namespaces/test/pods").andReturn(200, noReady).once();
+    // once so that "waitUntilExists" successfully ends
+    // and again so that "periodicWatchUntilReady" successfully begins
+    server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, noReady).times(2);
     server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(201, noReady).once();
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&watch=true").andUpgradeToWebSocket()

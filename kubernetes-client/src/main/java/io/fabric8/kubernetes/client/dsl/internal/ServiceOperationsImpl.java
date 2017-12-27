@@ -71,12 +71,16 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
 
   @Override
   public Service waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
-    Service service = get();
-    if (service == null) {
-      throw new IllegalArgumentException("Service with name:[" + name + "] in namespace:[" + namespace + "] not found!");
-    }
+    long started = System.currentTimeMillis();
+    super.waitUntilReady(amount, timeUnit);
+    long alreadySpent = System.currentTimeMillis() - started;
+
+    // if awaiting existence took very long, let's give at least 10 seconds to awaiting readiness
+    long remaining = Math.max(10_000, timeUnit.toMillis(amount) - alreadySpent);
+
     EndpointsOperationsImpl endpointsOperation = new EndpointsOperationsImpl(client, config, apiVersion, getNamespace(), getName(), isCascading(), null, null, isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
-    Endpoints endpoints = endpointsOperation.waitUntilReady(amount, timeUnit);
+    endpointsOperation.waitUntilReady(remaining, TimeUnit.MILLISECONDS);
+
     return get();
   }
 }

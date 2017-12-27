@@ -954,8 +954,28 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     return i instanceof HasMetadata && Readiness.isReady((HasMetadata)i);
   }
 
+  protected T waitUntilExists(long timeoutInMillis) throws InterruptedException {
+    long end = System.currentTimeMillis() + timeoutInMillis;
+    while (System.currentTimeMillis() < end) {
+      T item = get();
+      if (item != null) {
+        return item;
+      }
+
+      // in the future, should probably combine this simple waiting loop with a watcher
+      Thread.sleep(1000);
+    }
+
+    T item = get();
+    if (item != null) {
+      return item;
+    }
+
+    throw new IllegalArgumentException(type.getSimpleName() + " with name:[" + name + "] in namespace:[" + namespace + "] not found!");
+  }
+
   @Override
   public T waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
-    return get();
+    return waitUntilExists(timeUnit.toMillis(amount));
   }
 }

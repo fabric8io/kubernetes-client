@@ -211,4 +211,22 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
       return periodicWatchUntilReady(i - 1, started, next, amount);
     }
   }
+
+  @Override
+  public T waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
+    if (Readiness.isReadinessApplicable(getType())) {
+      long started = System.currentTimeMillis();
+      waitUntilExists(timeUnit.toMillis(amount));
+      long alreadySpent = System.currentTimeMillis() - started;
+
+      long remaining = timeUnit.toMillis(amount) - alreadySpent;
+      if (remaining <= 0) {
+        return periodicWatchUntilReady(0, System.currentTimeMillis(), 0, 0);
+      }
+
+      return periodicWatchUntilReady(10, System.currentTimeMillis(), Math.max(remaining / 10, 1000L), remaining);
+    }
+
+    return super.waitUntilReady(amount, timeUnit);
+  }
 }

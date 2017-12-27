@@ -172,15 +172,6 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
     return deployment;
   }
 
-  @Override
-  public DeploymentConfig waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
-    DeploymentConfig dc = get();
-    if (dc == null) {
-      throw new IllegalArgumentException("DeploymentConfig with name:[" + name + "] in namespace:[" + namespace + "] not found!");
-    }
-    return periodicWatchUntilReady(10, System.currentTimeMillis(), Math.max(timeUnit.toMillis(amount) / 10, 1000L), amount);
-  }
-
   /**
    * Lets wait until there are enough Ready pods of the given Deployment
    */

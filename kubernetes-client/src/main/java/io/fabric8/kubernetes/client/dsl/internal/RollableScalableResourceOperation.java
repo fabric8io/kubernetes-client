@@ -82,16 +82,6 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
     return res;
   }
 
-  @Override
-  public T waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
-    T t = get();
-    if (t == null) {
-      throw new IllegalArgumentException(getType().getSimpleName() + " with name:[" + name + "] in namespace:[" + namespace + "] not found!");
-    }
-
-    return periodicWatchUntilReady(10, System.currentTimeMillis(), Math.max(timeUnit.toMillis(amount) / 10, 1000L), timeUnit.toMillis(amount));
-  }
-
   /**
    * Let's wait until there are enough Ready pods.
    */
