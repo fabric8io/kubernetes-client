@@ -40,7 +40,7 @@ if (ci){
     checkout scm
     sh "git remote set-url origin git@github.com:fabric8io/kubernetes-client.git"
 
-    def pipeline = load 'release.groovy'
+    pipeline = load 'release.groovy'
 
     stage 'Stage'
     def stagedProject = pipeline.stage()
