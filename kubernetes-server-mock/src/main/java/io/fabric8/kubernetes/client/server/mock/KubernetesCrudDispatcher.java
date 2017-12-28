@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.server.mock;
 
+import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.crud.AttributeExtractor;
 import io.fabric8.mockwebserver.crud.AttributeSet;
 import io.fabric8.mockwebserver.crud.CrudDispatcher;
@@ -33,7 +35,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
   }
 
   public KubernetesCrudDispatcher(AttributeExtractor attributeExtractor, ResponseComposer responseComposer) {
-    super(attributeExtractor, responseComposer);
+    super(new Context(Serialization.jsonMapper()), attributeExtractor, responseComposer);
   }
 
 
@@ -56,7 +58,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
 
     if (query.containsKey(KubernetesAttributesExtractor.NAME)) {
       if (!items.isEmpty()) {
-        response.setBody(responseComposer.compose(items));
+        response.setBody(items.get(0));
         response.setResponseCode(200);
       } else {
         response.setResponseCode(404);

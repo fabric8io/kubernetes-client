@@ -15,16 +15,12 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.internal.readiness.Readiness;
-import io.fabric8.kubernetes.client.internal.readiness.ReadinessWatcher;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.extensions.Deployment;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
 import io.fabric8.kubernetes.api.model.extensions.DoneableDeployment;
 import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ScalableResource;
@@ -165,8 +161,15 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
     @Override
     public boolean reap() {
       Deployment deployment = oper.cascading(false).edit().editSpec().withReplicas(0).endSpec().done();
-      waitForObservedGeneration(deployment.getStatus().getObservedGeneration());
-      reapMatchingReplicaSets(deployment.getSpec().getSelector());
+
+      //TODO: These checks shouldn't be used as they are not realistic. We just use them to support mock/crud tests. Need to find a cleaner way to do so.
+      if (deployment.getStatus() != null) {
+        waitForObservedGeneration(deployment.getStatus().getObservedGeneration());
+      }
+
+      if (deployment.getSpec().getSelector() != null) {
+        reapMatchingReplicaSets(deployment.getSpec().getSelector());
+      }
       return false;
     }
 
