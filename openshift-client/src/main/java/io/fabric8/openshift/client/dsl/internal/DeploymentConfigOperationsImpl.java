@@ -116,7 +116,11 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
     @Override
     public boolean reap() {
       DeploymentConfig deployment = operation.cascading(false).edit().editSpec().withReplicas(0).endSpec().done();
-      waitForObservedGeneration(deployment.getStatus().getObservedGeneration());
+
+      //TODO: These checks shouldn't be used as they are not realistic. We just use them to support mock/crud tests. Need to find a cleaner way to do so.
+      if (deployment.getStatus() != null) {
+        waitForObservedGeneration(deployment.getStatus().getObservedGeneration());
+      }
 
       //We are deleting the DC before reaping the replication controller, because the RC's won't go otherwise.
       Boolean reaped = operation.cascading(false).delete();
