@@ -15,9 +15,9 @@
  */
 package io.fabric8.kubernetes.client.internal.readiness;
 
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -26,7 +26,9 @@ import io.fabric8.kubernetes.client.Watcher;
 
 public class ReadinessWatcher<T extends HasMetadata> implements Watcher<T> {
 
-  private final BlockingQueue<T> queue = new ArrayBlockingQueue<>(1);
+
+  private final CountDownLatch latch = new CountDownLatch(1);
+  private final AtomicReference<T> reference = new AtomicReference<>();
 
   private final T resource;
 
@@ -38,7 +40,8 @@ public class ReadinessWatcher<T extends HasMetadata> implements Watcher<T> {
     switch (action) {
       case MODIFIED:
         if (Readiness.isReady(resource)) {
-          queue.add(resource);
+          reference.set(resource);
+          latch.countDown();
         }
         break;
       default:
@@ -52,9 +55,8 @@ public class ReadinessWatcher<T extends HasMetadata> implements Watcher<T> {
 
   public T await(long amount, TimeUnit timeUnit) {
     try {
-      T item = queue.poll(amount, timeUnit);
-      if (item != null) {
-        return item;
+      if (latch.await(amount, timeUnit)) {
+        return reference.get();
       }
       throw new KubernetesClientTimeoutException(resource, amount, timeUnit);
     } catch (InterruptedException e) {
