@@ -151,7 +151,7 @@ public class ResourceTest {
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&watch=true").andUpgradeToWebSocket()
       .open()
-      .waitFor(1000).andEmit(new WatchEvent(ready, "MODIFIED"))
+      .waitFor(500).andEmit(new WatchEvent(ready, "MODIFIED"))
       .done()
       .always();
 
@@ -192,7 +192,7 @@ public class ResourceTest {
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&watch=true").andUpgradeToWebSocket()
       .open()
-      .waitFor(1000).andEmit(new WatchEvent(ready, "MODIFIED"))
+      .waitFor(100).andEmit(new WatchEvent(ready, "MODIFIED"))
       .done()
       .always();
 
@@ -232,12 +232,12 @@ public class ResourceTest {
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&watch=true").andUpgradeToWebSocket()
       .open()
-      .waitFor(1000).andEmit(new WatchEvent(ready, "MODIFIED"))
+      .waitFor(100).andEmit(new WatchEvent(ready, "MODIFIED"))
       .done()
       .always();
 
     KubernetesClient client = server.getClient();
-    Pod p = client.resource(noReady).createOrReplaceAnd().waitUntilReady(5, TimeUnit.SECONDS);
+    Pod p = client.resource(noReady).createOrReplaceAnd().waitUntilReady(10, TimeUnit.SECONDS);
     Assert.assertTrue(Readiness.isPodReady(p));
   }
 }
