@@ -28,6 +28,7 @@ import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class DeploymentCrudTest {
   @Rule
@@ -42,6 +43,8 @@ public class DeploymentCrudTest {
       .withNamespace("ns1")
       .addToLabels("testKey", "testValue")
       .endMetadata()
+      .withNewSpec()
+      .endSpec()
       .build();
 
     Deployment deployment2 = new DeploymentBuilder().withNewMetadata()
@@ -49,6 +52,8 @@ public class DeploymentCrudTest {
       .withNamespace("ns1")
       .addToLabels("testKey", "testValue")
       .endMetadata()
+      .withNewSpec()
+      .endSpec()
       .build();
 
     Deployment deployment3 = new DeploymentBuilder().withNewMetadata()
@@ -56,24 +61,21 @@ public class DeploymentCrudTest {
       .addToLabels("testKey", "testValue")
       .withNamespace("ns2")
       .endMetadata()
+      .withNewSpec()
+      .endSpec()
       .build();
 
     client.extensions().deployments().inNamespace("ns1").create(deployment1);
     client.extensions().deployments().inNamespace("ns1").create(deployment2);
     client.extensions().deployments().inNamespace("ns2").create(deployment3);
 
-    DeploymentList aDeploymentList = client.extensions().deployments().list();
-    assertNotNull(aDeploymentList);
-    assertEquals(3, aDeploymentList.getItems().size());
-
-    aDeploymentList = client.extensions().deployments().inAnyNamespace().list();
+    DeploymentList aDeploymentList = client.extensions().deployments().inAnyNamespace().list();
     assertNotNull(aDeploymentList);
     assertEquals(3, aDeploymentList.getItems().size());
 
     aDeploymentList = client.extensions().deployments().inNamespace("ns1").list();
     assertNotNull(aDeploymentList);
-    // Should give 2 but is giving 3
-    //assertEquals(2, aDeploymentList.getItems().size());
+    assertEquals(2, aDeploymentList.getItems().size());
 
     aDeploymentList = client.extensions()
       .deployments()
@@ -83,16 +85,16 @@ public class DeploymentCrudTest {
     assertNotNull(aDeploymentList);
     assertEquals(3, aDeploymentList.getItems().size());
 
-    // Not working!
-//    boolean bDeleted = client.extensions().deployments().inNamespace("ns2").withName("deployment3").delete();
-//    assertTrue(bDeleted);
 
-    // Not working!
-//    deployment2 = client.extensions().deployments()
-//      .inNamespace("ns1").withName("deployment2")
-//      .edit().editMetadata().withName("deployment-2").endMetadata().done();
-//    assertNotNull(deployment1);
-//    assertEquals("deployment-2", deployment1);
+    boolean bDeleted = client.extensions().deployments().inNamespace("ns2").withName("deployment3").delete();
+    assertTrue(bDeleted);
+
+
+    deployment2 = client.extensions().deployments()
+      .inNamespace("ns1").withName("deployment2").edit()
+      .editMetadata().addToLabels("key1", "value1").endMetadata().done();
+    assertNotNull(deployment2);
+    assertEquals("value1", deployment2.getMetadata().getLabels().get("key1"));
   }
 }
 

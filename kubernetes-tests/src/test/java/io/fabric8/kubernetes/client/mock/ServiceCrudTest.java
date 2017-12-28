@@ -37,9 +37,9 @@ public class ServiceCrudTest {
   public void testCrud() {
     KubernetesClient client = server.getClient();
 
-    Service service1 = new ServiceBuilder().withNewMetadata().withName("svc1").and().build();
-    Service service2 = new ServiceBuilder().withNewMetadata().withName("svc2").addToLabels("foo", "bar").and().build();
-    Service service3 = new ServiceBuilder().withNewMetadata().withName("svc3").addToLabels("foo", "bar").and().build();
+    Service service1 = new ServiceBuilder().withNewMetadata().withName("svc1").and().withNewSpec().and().build();
+    Service service2 = new ServiceBuilder().withNewMetadata().withName("svc2").addToLabels("foo", "bar").and().withNewSpec().and().build();
+    Service service3 = new ServiceBuilder().withNewMetadata().withName("svc3").addToLabels("foo", "bar").and().withNewSpec().and().build();
 
     client.services().inNamespace("ns1").create(service1);
     client.services().inNamespace("ns2").create(service2);
@@ -66,8 +66,10 @@ public class ServiceCrudTest {
     assertNotNull(aServiceList);
     assertEquals(2, aServiceList.getItems().size());
 
-    //service2 = client.services().inNamespace("ns2").withName("svc2").edit().editMetadata().withName("service2").endMetadata().done();
-    //assertNotNull(service2);
-    //assertEquals("service2", service2.getMetadata().getName());
+    service2 = client.services().inNamespace("ns2").withName("svc2").edit()
+      .editMetadata().addToLabels("key1", "value1").endMetadata().done();
+
+    assertNotNull(service2);
+    assertEquals("value1", service2.getMetadata().getLabels().get("key1"));
   }
 }

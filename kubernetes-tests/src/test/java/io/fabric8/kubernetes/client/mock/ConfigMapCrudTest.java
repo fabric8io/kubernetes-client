@@ -80,8 +80,8 @@ public class ConfigMapCrudTest {
     assertNotNull(aConfigMapList);
     assertEquals(2, aConfigMapList.getItems().size());
 
-    //configmap2 = client.configMaps().inNamespace("ns1").withName("configmap2").edit().addToData("II", "TWO").done();
-    //assertNotNull(configmap2);
-    //assertEquals("II", configmap2.getData().get("TWO"));
+    configmap2 = client.configMaps().inNamespace("ns1").withName("configmap2").edit().addToData("II", "TWO").done();
+    assertNotNull(configmap2);
+    assertEquals("TWO", configmap2.getData().get("II"));
   }
 }
