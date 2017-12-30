@@ -358,9 +358,9 @@
       </properties>
     </profile>
     <profile>
-      <id>regression-tests</id>
+      <id>itests</id>
       <modules>
-        <module>kubernetes-regression-tests</module>
+        <module>kubernetes-itests</module>
       </modules>
       <build>
         <plugins>

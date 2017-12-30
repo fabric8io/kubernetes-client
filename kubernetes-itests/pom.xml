@@ -24,7 +24,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>kubernetes-regression-tests</artifactId>
+  <artifactId>kubernetes-itests</artifactId>
   <name>Fabric8 :: Kubernetes :: Regression :: Tests</name>
   <packaging>jar</packaging>
 
