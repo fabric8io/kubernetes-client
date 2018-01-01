@@ -22,11 +22,14 @@ import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Collections;
 
+import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -40,8 +43,28 @@ public class ServiceIT {
   @ArquillianResource
   Session session;
 
+  private Service svc1, svc2;
+
+  private String currentNamespace;
+
+  @Before
+  public void init() {
+    currentNamespace = session.getNamespace();
+    svc1 = new ServiceBuilder()
+      .withNewMetadata().withName("svc1").endMetadata()
+      .withNewSpec().withSelector(Collections.singletonMap("app", "MyApp")).addNewPort().withName("http").withProtocol("TCP").withPort(80).withTargetPort(new IntOrString(9376)).endPort().endSpec()
+      .build();
+    svc2 = new ServiceBuilder()
+      .withNewMetadata().withName("svc2").endMetadata()
+      .withNewSpec().withType("ExternalName").withExternalName("my.database.example.com").endSpec()
+      .build();
+
+    client.services().inNamespace(currentNamespace).createOrReplace(svc1);
+    client.services().inNamespace(currentNamespace).createOrReplace(svc2);
+  }
+
   @Test
-  public void testLoad() {
+  public void create() {
     String currentNamespace = session.getNamespace();
     Service aService = client.services().inNamespace(currentNamespace).load(getClass().getResourceAsStream("/test-service.yml")).get();
     assertThat(aService).isNotNull();
@@ -49,31 +72,37 @@ public class ServiceIT {
   }
 
   @Test
-  public void testCrud() {
-    String currentNamespace = session.getNamespace();
-    Service svc1 = new ServiceBuilder()
-      .withNewMetadata().withName("svc1").endMetadata()
-      .withNewSpec().withSelector(Collections.singletonMap("app", "MyApp")).addNewPort().withName("http").withProtocol("TCP").withPort(80).withTargetPort(new IntOrString(9376)).endPort().endSpec()
-      .build();
-    Service svc2 = new ServiceBuilder()
-      .withNewMetadata().withName("svc2").endMetadata()
-      .withNewSpec().withType("ExternalName").withExternalName("my.database.example.com").endSpec()
-      .build();
+  public void get() {
+    svc1 = client.services().inNamespace(currentNamespace).withName("svc1").get();
+    assertNotNull(svc1);
+    svc2 = client.services().inNamespace(currentNamespace).withName("svc2").get();
+    assertNotNull(svc2);
+  }
 
-    client.services().inNamespace(currentNamespace).create(svc1);
-    client.services().inNamespace(currentNamespace).create(svc2);
-
+  @Test
+  public void list() {
     ServiceList aServiceList = client.services().inNamespace(currentNamespace).list();
     assertThat(aServiceList).isNotNull();
     assertEquals(2, aServiceList.getItems().size());
+  }
 
+  @Test
+  public void update() {
     svc1 = client.services().inNamespace(currentNamespace).withName("svc1").edit()
       .editSpec().addNewPort().withName("https").withProtocol("TCP").withPort(443).withTargetPort(new IntOrString(9377)).endPort().endSpec()
       .done();
     assertThat(svc1).isNotNull();
     assertEquals(2, svc1.getSpec().getPorts().size());
+  }
 
+  @Test
+  public void delete() {
     boolean bDeleted = client.services().inNamespace(currentNamespace).withName("svc2").delete();
     assertTrue(bDeleted);
+  }
+
+  @After
+  public void cleanup() {
+    client.services().inNamespace(currentNamespace).delete();
   }
 }

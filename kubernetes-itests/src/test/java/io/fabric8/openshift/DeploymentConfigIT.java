@@ -22,9 +22,12 @@ import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -38,19 +41,14 @@ public class DeploymentConfigIT {
   @ArquillianResource
   Session session;
 
-  @Test
-  public void testLoad() {
-    String currentNamespace = session.getNamespace();
-    DeploymentConfig deploymentConfig = client.deploymentConfigs().inNamespace(currentNamespace)
-      .load(getClass().getResourceAsStream("/test-deploymentconfig.yml")).get();
-    assertThat(deploymentConfig).isNotNull();
-    assertEquals("frontend", deploymentConfig.getMetadata().getName());
-  }
+  private DeploymentConfig deploymentConfig1, deploymentConfig2;
 
-  @Test
-  public void testCrud() {
-    String currentNamespace = session.getNamespace();
-    DeploymentConfig deploymentConfig1 = new DeploymentConfigBuilder()
+  private String currentNamespace;
+
+  @Before
+  public void init() {
+    currentNamespace = session.getNamespace();
+    deploymentConfig1 = new DeploymentConfigBuilder()
       .withNewMetadata().withName("deploymentconfig1").endMetadata()
       .withNewSpec()
       .withReplicas(2)
@@ -67,7 +65,7 @@ public class DeploymentConfigIT {
       .endTemplate()
       .endSpec()
       .build();
-    DeploymentConfig deploymentConfig2 = new DeploymentConfigBuilder()
+    deploymentConfig2 = new DeploymentConfigBuilder()
       .withNewMetadata().withName("deploymentconfig2").endMetadata()
       .withNewSpec()
       .withReplicas(1)
@@ -90,17 +88,47 @@ public class DeploymentConfigIT {
 
     client.deploymentConfigs().inNamespace(currentNamespace).create(deploymentConfig1);
     client.deploymentConfigs().inNamespace(currentNamespace).create(deploymentConfig2);
+  }
 
+  @Test
+  public void create() {
+    DeploymentConfig deploymentConfig = client.deploymentConfigs().inNamespace(currentNamespace)
+      .load(getClass().getResourceAsStream("/test-deploymentconfig.yml")).get();
+    assertThat(deploymentConfig).isNotNull();
+    assertEquals("frontend", deploymentConfig.getMetadata().getName());
+  }
+
+  @Test
+  public void get() {
+    assertNotNull(client.deploymentConfigs().inNamespace(currentNamespace).withName("deploymentconfig1").get());
+    assertNotNull(client.deploymentConfigs().inNamespace(currentNamespace).withName("deploymentconfig2").get());
+  }
+
+  @Test
+  public void list() {
     DeploymentConfigList aDeploymentConfigList = client.deploymentConfigs().inNamespace(currentNamespace).list();
     assertThat(aDeploymentConfigList).isNotNull();
     assertEquals(2, aDeploymentConfigList.getItems().size());
+  }
 
+  @Test
+  public void update() {
     deploymentConfig1 = client.deploymentConfigs().inNamespace(currentNamespace).withName("deploymentconfig1").edit()
       .editSpec().withReplicas(3).endSpec().done();
     assertThat(deploymentConfig1).isNotNull();
     assertEquals(3, deploymentConfig1.getSpec().getReplicas().intValue());
+  }
 
+  @Test
+  public void delete() throws InterruptedException {
+    Thread.sleep(6000);
     boolean bDeleted = client.deploymentConfigs().inNamespace(currentNamespace).withName("deploymentconfig2").delete();
     assertTrue(bDeleted);
+  }
+
+  @After
+  public void cleanup() throws InterruptedException {
+    Thread.sleep(6000);
+    client.deploymentConfigs().inNamespace(currentNamespace).delete();
   }
 }

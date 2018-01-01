@@ -22,9 +22,12 @@ import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -38,19 +41,14 @@ public class ImageStreamIT {
   @ArquillianResource
   Session session;
 
-  @Test
-  public void testLoad() {
-    String currentNamespace = session.getNamespace();
-    ImageStream aImageStream = client.imageStreams().inNamespace(currentNamespace)
-      .load(getClass().getResourceAsStream("/test-imagestream.yml")).get();
-    assertThat(aImageStream).isNotNull();
-    assertEquals("my-ruby", aImageStream.getMetadata().getName());
-  }
+  private ImageStream imageStream1, imageStream2;
 
-  @Test
-  public void testCrud() {
-    String currentNamespace = session.getNamespace();
-    ImageStream imageStream1 = new ImageStreamBuilder()
+  private String currentNamespace;
+
+  @Before
+  public void init() {
+    currentNamespace = session.getNamespace();
+    imageStream1 = new ImageStreamBuilder()
       .withNewMetadata()
       .withName("example-camel-cdi")
       .endMetadata()
@@ -63,7 +61,7 @@ public class ImageStreamIT {
       .withNewStatus().withDockerImageRepository("").endStatus()
       .build();
 
-    ImageStream imageStream2 = new ImageStreamBuilder()
+    imageStream2 = new ImageStreamBuilder()
       .withNewMetadata()
       .withName("java-sti")
       .endMetadata()
@@ -76,20 +74,48 @@ public class ImageStreamIT {
       .withNewStatus().withDockerImageRepository("").endStatus()
       .build();
 
-    client.imageStreams().inNamespace(currentNamespace).create(imageStream1);
-    client.imageStreams().inNamespace(currentNamespace).create(imageStream2);
+    client.imageStreams().inNamespace(currentNamespace).createOrReplace(imageStream1);
+    client.imageStreams().inNamespace(currentNamespace).createOrReplace(imageStream2);
+  }
 
+  @Test
+  public void create() {
+    ImageStream aImageStream = client.imageStreams().inNamespace(currentNamespace)
+      .load(getClass().getResourceAsStream("/test-imagestream.yml")).get();
+    assertThat(aImageStream).isNotNull();
+    assertEquals("my-ruby", aImageStream.getMetadata().getName());
+  }
+
+  @Test
+  public void get() {
+    assertNotNull(client.imageStreams().inNamespace(currentNamespace).withName("example-camel-cdi").get());
+    assertNotNull(client.imageStreams().inNamespace(currentNamespace).withName("java-sti").get());
+  }
+
+  @Test
+  public void list() {
     ImageStreamList aImageStreamList = client.imageStreams().inNamespace(currentNamespace).list();
     assertThat(aImageStreamList).isNotNull();
     assertEquals(2, aImageStreamList.getItems().size());
+  }
 
+  @Test
+  public void update() {
     imageStream1 = client.imageStreams().inNamespace(currentNamespace).withName("java-sti").edit()
       .editSpec().withDockerImageRepository("fabric8/s2i-java").endSpec()
       .done();
     assertThat(imageStream1).isNotNull();
     assertEquals("fabric8/s2i-java", imageStream1.getSpec().getDockerImageRepository());
+  }
 
+  @Test
+  public void delete() {
     boolean bDeleted = client.imageStreams().inNamespace(currentNamespace).withName("example-camel-cdi").delete();
     assertTrue(bDeleted);
+  }
+
+  @After
+  public void cleanup() {
+    client.imageStreams().inNamespace(currentNamespace).delete();
   }
 }

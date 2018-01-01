@@ -22,9 +22,12 @@ import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -38,19 +41,14 @@ public class BuildConfigIT {
   @ArquillianResource
   Session session;
 
-  @Test
-  public void testLoad() {
-    String currentNamespace = session.getNamespace();
-    BuildConfig aBuildConfig = client.buildConfigs().inNamespace(currentNamespace)
-      .load(getClass().getResourceAsStream("/test-buildconfig.yml")).get();
-    assertThat(aBuildConfig).isNotNull();
-    assertEquals("ruby-sample-build", aBuildConfig.getMetadata().getName());
-  }
+  private BuildConfig buildConfig1, buildConfig2;
 
-  @Test
-  public void testCrud() throws InterruptedException {
-    String currentNamespace = session.getNamespace();
-    BuildConfig buildConfig1 = new BuildConfigBuilder()
+  private String currentNamespace;
+
+  @Before
+  public void init() {
+    currentNamespace = session.getNamespace();
+    buildConfig1 = new BuildConfigBuilder()
       .withNewMetadata().withName("bc1").endMetadata()
       .withNewSpec()
       .addNewTrigger()
@@ -96,7 +94,7 @@ public class BuildConfigIT {
       .endSpec()
       .build();
 
-    BuildConfig buildConfig2 = new BuildConfigBuilder()
+    buildConfig2 = new BuildConfigBuilder()
       .withNewMetadata().withName("bc2").endMetadata()
       .withNewSpec()
       .withNewOutput()
@@ -138,18 +136,46 @@ public class BuildConfigIT {
       .endSpec()
       .build();
 
-    client.buildConfigs().inNamespace(currentNamespace).create(buildConfig1);
-    client.buildConfigs().inNamespace(currentNamespace).create(buildConfig2);
+    client.buildConfigs().inNamespace(currentNamespace).createOrReplace(buildConfig1);
+    client.buildConfigs().inNamespace(currentNamespace).createOrReplace(buildConfig2);
+  }
 
+  @Test
+  public void create() {
+    BuildConfig aBuildConfig = client.buildConfigs().inNamespace(currentNamespace)
+      .load(getClass().getResourceAsStream("/test-buildconfig.yml")).get();
+    assertThat(aBuildConfig).isNotNull();
+    assertEquals("ruby-sample-build", aBuildConfig.getMetadata().getName());
+  }
+
+  @Test
+  public void get() {
+    assertNotNull(client.buildConfigs().inNamespace(currentNamespace).withName("bc1").get());
+    assertNotNull(client.buildConfigs().inNamespace(currentNamespace).withName("bc2").get());
+  }
+
+  @Test
+  public void list() {
     BuildConfigList bcList = client.buildConfigs().inNamespace(currentNamespace).list();
     assertThat(bcList).isNotNull();
     assertEquals(2, bcList.getItems().size());
+  }
 
+  @Test
+  public void update() {
     buildConfig1 = client.buildConfigs().inNamespace(currentNamespace).withName("bc1").edit()
       .editSpec().withFailedBuildsHistoryLimit(5).endSpec().done();
     assertEquals(5, buildConfig1.getSpec().getFailedBuildsHistoryLimit().intValue());
+  }
 
+  @Test
+  public void delete() {
     boolean bDeleted = client.buildConfigs().inNamespace(currentNamespace).withName("bc2").delete();
     assertTrue(bDeleted);
+  }
+
+  @After
+  public void cleanup() {
+    client.buildConfigs().inNamespace(currentNamespace).delete();
   }
 }

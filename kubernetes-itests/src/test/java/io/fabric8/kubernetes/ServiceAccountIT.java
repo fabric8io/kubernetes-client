@@ -22,9 +22,12 @@ import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -37,40 +40,66 @@ public class ServiceAccountIT {
   @ArquillianResource
   Session session;
 
-  @Test
-  public void testLoad() {
-    String currentNamespace = session.getNamespace();ServiceAccount svcAccount = client.serviceAccounts().inNamespace(currentNamespace)
-      .load(getClass().getResourceAsStream("/test-serviceaccount.yml")).get();
-    assertThat(svcAccount).isNotNull();
-    assertThat(svcAccount.getMetadata().getUid()).isNotBlank();
-  }
+  private ServiceAccount serviceAccount1, serviceAccount2;
 
-  @Test
-  public void testCrud() {
-    String currentNamespace = session.getNamespace();
-    ServiceAccount serviceAccount1 = new ServiceAccountBuilder()
+  private String currentNamespace;
+
+  @Before
+  public void init() {
+    currentNamespace = session.getNamespace();
+    serviceAccount1 = new ServiceAccountBuilder()
       .withNewMetadata().withName("serviceaccount1").endMetadata()
       .build();
-    ServiceAccount serviceAccount2 = new ServiceAccountBuilder()
+    serviceAccount2 = new ServiceAccountBuilder()
       .withNewMetadata().withName("serviceaccount2").endMetadata()
       .withAutomountServiceAccountToken(false)
       .build();
 
     client.serviceAccounts().inNamespace(currentNamespace).create(serviceAccount1);
     client.serviceAccounts().inNamespace(currentNamespace).create(serviceAccount2);
+  }
 
+  @Test
+  public void create() {
+    ServiceAccount svcAccount = client.serviceAccounts().inNamespace(currentNamespace)
+      .load(getClass().getResourceAsStream("/test-serviceaccount.yml")).get();
+    assertThat(svcAccount).isNotNull();
+    assertThat(svcAccount.getMetadata().getUid()).isNotBlank();
+  }
+
+  @Test
+  public void get() {
+    serviceAccount1 = client.serviceAccounts().inNamespace(currentNamespace).withName("serviceaccount1").get();
+    assertNotNull(serviceAccount1);
+    serviceAccount2 = client.serviceAccounts().inNamespace(currentNamespace).withName("serviceaccount2").get();
+    assertNotNull(serviceAccount2);
+  }
+
+  @Test
+  public void list() {
     ServiceAccountList svcAccountList = client.serviceAccounts().inNamespace(currentNamespace).list();
     assertThat(svcAccountList).isNotNull();
     // Every namespace has a default service account resource.
-    assertTrue(svcAccountList.getItems().size() > 2);
+    assertTrue(svcAccountList.getItems().size() >= 2);
+  }
 
+  @Test
+  public void update() {
     serviceAccount1 = client.serviceAccounts().inNamespace(currentNamespace).withName("serviceaccount1").edit()
       .addNewSecret().withName("default-token-uudp").endSecret()
       .addNewImagePullSecret().withName("myregistrykey").endImagePullSecret()
       .done();
     assertThat(serviceAccount1).isNotNull();
+  }
 
+  @Test
+  public void delete() {
     boolean bDeleted = client.serviceAccounts().inNamespace(currentNamespace).withName("serviceaccount1").delete();
     assertTrue(bDeleted);
+  }
+
+  @After
+  public void cleanup() {
+    client.serviceAccounts().inNamespace(currentNamespace).delete();
   }
 }

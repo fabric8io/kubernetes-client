@@ -22,9 +22,12 @@ import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -38,39 +41,64 @@ public class RouteIT {
   @ArquillianResource
   Session session;
 
-  @Test
-  public void testLoad() {
-    String currentNamespace = session.getNamespace();
-    Route aRoute = client.routes().inNamespace(currentNamespace).load(getClass().getResourceAsStream("/test-route.yml")).get();
-    assertThat(aRoute).isNotNull();
-    assertEquals("host-route", aRoute.getMetadata().getName());
-  }
+  private Route route1, route2;
 
-  @Test
-  public void testCrud() {
-    String currentNamespace = session.getNamespace();
-    Route route1 = new RouteBuilder()
+  private String currentNamespace;
+
+  @Before
+  public void init() {
+    currentNamespace = session.getNamespace();
+    route1 = new RouteBuilder()
       .withNewMetadata().withName("route1").endMetadata()
       .withNewSpec().withHost("www.example.com").withNewTo().withKind("Service").withName("service-name1").endTo().endSpec()
       .build();
-    Route route2 = new RouteBuilder()
+    route2 = new RouteBuilder()
       .withNewMetadata().withName("route2").endMetadata()
       .withNewSpec().withNewTo().withKind("Service").withName("service-name2").endTo().endSpec()
       .build();
 
     client.routes().inNamespace(currentNamespace).create(route1);
     client.routes().inNamespace(currentNamespace).create(route2);
+  }
 
+  @Test
+  public void create() {
+    Route aRoute = client.routes().inNamespace(currentNamespace).load(getClass().getResourceAsStream("/test-route.yml")).get();
+    assertThat(aRoute).isNotNull();
+    assertEquals("host-route", aRoute.getMetadata().getName());
+  }
+
+  @Test
+  public void get() {
+    route1 = client.routes().inNamespace(currentNamespace).withName("route1").get();
+    assertNotNull(route1);
+    route2 = client.routes().inNamespace(currentNamespace).withName("route2").get();
+    assertNotNull(route2);
+  }
+
+  @Test
+  public void list() {
     RouteList aRouteList = client.routes().inNamespace(currentNamespace).list();
     assertThat(aRouteList).isNotNull();
     assertEquals(2, aRouteList.getItems().size());
+  }
 
+  @Test
+  public void update() {
     route1 = client.routes().inNamespace(currentNamespace).withName("route1").edit()
       .editSpec().withPath("/test").endSpec().done();
     assertThat(route1).isNotNull();
     assertEquals("/test", route1.getSpec().getPath());
+  }
 
+  @Test
+  public void delete() {
     boolean bDeleted = client.routes().inNamespace(currentNamespace).withName("route1").delete();
     assertTrue(bDeleted);
+  }
+
+  @After
+  public void cleanup() {
+    client.routes().inNamespace(currentNamespace).delete();
   }
 }

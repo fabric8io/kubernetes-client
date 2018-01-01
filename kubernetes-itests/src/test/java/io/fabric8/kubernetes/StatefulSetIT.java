@@ -25,11 +25,14 @@ import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Collections;
 
+import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -43,19 +46,14 @@ public class StatefulSetIT {
   @ArquillianResource
   Session session;
 
-  @Test
-  public void testLoad() {
-    String currentNamespace = session.getNamespace();
-    StatefulSet aStatefulSet = client.apps().statefulSets().inNamespace(currentNamespace)
-      .load(getClass().getResourceAsStream("/test-statefulset.yml")).get();
-    assertThat(aStatefulSet).isNotNull();
-    assertEquals("web", aStatefulSet.getMetadata().getName());
-  }
+  private StatefulSet ss1;
 
-  @Test
-  public void testCrud() {
-    String currentNamespace = session.getNamespace();
-    StatefulSet ss1 = new StatefulSetBuilder()
+  private String currentNamespace;
+
+  @Before
+  public void init() {
+    currentNamespace = session.getNamespace();
+    ss1 = new StatefulSetBuilder()
       .withNewMetadata().withName("ss1").endMetadata()
       .withNewSpec()
       .withReplicas(2)
@@ -94,15 +92,44 @@ public class StatefulSetIT {
       .build();
 
     client.apps().statefulSets().inNamespace(currentNamespace).create(ss1);
+  }
 
+  @Test
+  public void create() {
+    String currentNamespace = session.getNamespace();
+    StatefulSet aStatefulSet = client.apps().statefulSets().inNamespace(currentNamespace)
+      .load(getClass().getResourceAsStream("/test-statefulset.yml")).get();
+    assertThat(aStatefulSet).isNotNull();
+    assertEquals("web", aStatefulSet.getMetadata().getName());
+  }
+
+  @Test
+  public void get() {
+    ss1 = client.apps().statefulSets().inNamespace(currentNamespace).withName("ss1").get();
+    assertNotNull(ss1);
+  }
+
+  @Test
+  public void list() {
     StatefulSetList statefulSetList = client.apps().statefulSets().inNamespace(currentNamespace).list();
     assertThat(statefulSetList).isNotNull();
     assertEquals(1, statefulSetList.getItems().size());
+  }
 
+  @Test
+  public void update() {
     ss1 = client.apps().statefulSets().inNamespace(currentNamespace).withName("ss1").scale(5);
     assertEquals(5, ss1.getSpec().getReplicas().intValue());
+  }
 
+  @Test
+  public void delete() {
     boolean bDeleted = client.apps().statefulSets().inNamespace(currentNamespace).withName("ss1").delete();
     assertTrue(bDeleted);
+  }
+
+  @After
+  public void cleanup() {
+    client.apps().statefulSets().inNamespace(currentNamespace).delete();
   }
 }

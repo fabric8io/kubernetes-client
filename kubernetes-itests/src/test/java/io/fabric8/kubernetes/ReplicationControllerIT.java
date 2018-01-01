@@ -22,11 +22,14 @@ import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Collections;
 
+import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -40,21 +43,14 @@ public class ReplicationControllerIT {
   @ArquillianResource
   Session session;
 
-  @Test
-  public void testLoad() {
-    String currentNamespace = session.getNamespace();
-    ReplicationController aReplicationController = client.replicationControllers().inNamespace(currentNamespace)
-      .load(getClass().getResourceAsStream("/test-replicationcontroller.yml")).get();
+  private ReplicationController rc1, rc2;
 
-    assertThat(aReplicationController).isNotNull();
-    assertEquals("nginx", aReplicationController.getMetadata().getName());
-    assertEquals(3, aReplicationController.getSpec().getReplicas().intValue());
-  }
+  private String currentNamespace;
 
-  @Test
-  public void testCrud() {
-    String currentNamespace = session.getNamespace();
-    ReplicationController rc1 = new ReplicationControllerBuilder()
+  @Before
+  public void init() {
+    currentNamespace = session.getNamespace();
+    rc1 = new ReplicationControllerBuilder()
       .withNewMetadata().withName("nginx-controller").addToLabels("server", "nginx").endMetadata()
       .withNewSpec().withReplicas(3)
       .withNewTemplate()
@@ -66,7 +62,7 @@ public class ReplicationControllerIT {
       .endSpec()
       .endTemplate()
       .endSpec().build();
-    ReplicationController rc2 = new ReplicationControllerBuilder()
+    rc2 = new ReplicationControllerBuilder()
       .withNewMetadata().withName("frontend").endMetadata()
       .withNewSpec()
       .withReplicas(1)
@@ -83,19 +79,49 @@ public class ReplicationControllerIT {
       .endSpec()
       .build();
 
-    client.replicationControllers().inNamespace(currentNamespace).create(rc1);
-    client.replicationControllers().inNamespace(currentNamespace).create(rc2);
+    client.replicationControllers().inNamespace(currentNamespace).createOrReplace(rc1);
+    client.replicationControllers().inNamespace(currentNamespace).createOrReplace(rc2);
+  }
 
+  @Test
+  public void create() {
+    ReplicationController aReplicationController = client.replicationControllers().inNamespace(currentNamespace)
+      .load(getClass().getResourceAsStream("/test-replicationcontroller.yml")).get();
+
+    assertThat(aReplicationController).isNotNull();
+    assertEquals("nginx", aReplicationController.getMetadata().getName());
+    assertEquals(3, aReplicationController.getSpec().getReplicas().intValue());
+  }
+
+  @Test
+  public void get() {
+    rc1 = client.replicationControllers().inNamespace(currentNamespace).withName("nginx-controller").get();
+    assertNotNull(rc1);
+    rc2 = client.replicationControllers().inNamespace(currentNamespace).withName("frontend").get();
+    assertNotNull(rc2);
+  }
+
+  @Test
+  public void list() {
     ReplicationControllerList aRcList = client.replicationControllers().inNamespace(currentNamespace).list();
     assertThat(aRcList).isNotNull();
     assertEquals(2, aRcList.getItems().size());
+  }
 
+  @Test
+  public void update() {
     rc1 = client.replicationControllers().inNamespace(currentNamespace).withName("nginx-controller").scale(5);
     assertEquals(5, rc1.getSpec().getReplicas().intValue());
+  }
 
-    boolean bDeleted = client.replicationControllers().inNamespace(currentNamespace).withName("nginx-controller").delete();
-    assertTrue(bDeleted);
-    bDeleted = client.replicationControllers().inNamespace(currentNamespace).withName("frontend").delete();
-    assertTrue(bDeleted);
+  @Test
+  public void delete() {
+    assertTrue(client.replicationControllers().inNamespace(currentNamespace).withName("nginx-controller").delete());
+    assertTrue(client.replicationControllers().inNamespace(currentNamespace).withName("frontend").delete());
+  }
+
+  @After
+  public void cleanup() {
+    client.replicationControllers().inNamespace(currentNamespace).delete();
   }
 }

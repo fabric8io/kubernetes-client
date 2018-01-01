@@ -22,6 +22,8 @@ import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -39,38 +41,54 @@ public class ConfigMapIT {
   @ArquillianResource
   Session session;
 
-  @Test
-  public void testLoad() {
-    String currentNamespace = session.getNamespace();
-    ConfigMap aConfigMap = client.configMaps().inNamespace(currentNamespace).load(getClass().getResourceAsStream("/test-configmap.yml")).get();
-    assertThat(aConfigMap).isNotNull();
-    assertEquals("game-config", aConfigMap.getMetadata().getName());
-  }
+  private ConfigMap configMap1, configMap2;
 
-  @Test
-  public void testCrud() {
-    String currentNamespace = session.getNamespace();
-    ConfigMap configMap1 = new ConfigMapBuilder()
+  private String currentNamespace;
+
+  @Before
+  public void init() {
+    currentNamespace = session.getNamespace();
+    configMap1 = new ConfigMapBuilder()
       .withNewMetadata().withName("configmap1").endMetadata()
       .addToData("1", "one")
       .addToData("2", "two")
       .addToData("3", "three")
       .build();
-    ConfigMap configMap2 = new ConfigMapBuilder()
+    configMap2 = new ConfigMapBuilder()
       .withNewMetadata().withName("configmap2").endMetadata()
       .addToData("PostgreSQL", "Free Open Source Enterprise Database")
       .addToData("DB2", "Enterprise Database , It's expensive")
       .addToData("Oracle", "Enterprise Database , It's expensive")
       .addToData("MySQL", "Free Open SourceDatabase")
       .build();
-
     client.configMaps().inNamespace(currentNamespace).create(configMap1);
     client.configMaps().inNamespace(currentNamespace).create(configMap2);
+  }
 
+  @Test
+  public void create() {
+    ConfigMap aConfigMap = client.configMaps().inNamespace(currentNamespace).load(getClass().getResourceAsStream("/test-configmap.yml")).get();
+    assertThat(aConfigMap).isNotNull();
+    assertEquals("game-config", aConfigMap.getMetadata().getName());
+  }
+
+  @Test
+  public void get() {
+    configMap1 = client.configMaps().inNamespace(currentNamespace).withName("configmap1").get();
+    assertThat(configMap1).isNotNull();
+    configMap2 = client.configMaps().inNamespace(currentNamespace).withName("configmap2").get();
+    assertThat(configMap2).isNotNull();
+  }
+
+  @Test
+  public void list() {
     ConfigMapList aConfigMapList = client.configMaps().inNamespace(currentNamespace).list();
     assertNotNull(aConfigMapList);
     assertEquals(2, aConfigMapList.getItems().size());
+  }
 
+  @Test
+  public void update() {
     configMap1 = client.configMaps().inNamespace(currentNamespace).withName("configmap1").edit()
       .addToData("4", "four").done();
     configMap2 = client.configMaps().inNamespace(currentNamespace).withName("configmap2").edit()
@@ -79,9 +97,16 @@ public class ConfigMapIT {
     assertNotNull(configMap2);
     assertEquals("four", configMap1.getData().get("4"));
     assertEquals("Microsoft Database", configMap2.getData().get("MSSQL"));
-
-    boolean bDeleted = client.configMaps().inNamespace(currentNamespace).withName("configmap1").delete();
-    assertTrue(bDeleted);
   }
 
+  @Test
+  public void delete() {
+    assertTrue(client.configMaps().inNamespace(currentNamespace).withName("configmap1").delete());
+    assertTrue(client.configMaps().inNamespace(currentNamespace).withName("configmap2").delete());
+  }
+
+  @After
+  public void cleanup() {
+    client.configMaps().inNamespace(currentNamespace).delete();
+  }
 }

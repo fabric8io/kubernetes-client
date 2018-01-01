@@ -27,6 +27,8 @@ import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -34,6 +36,7 @@ import java.util.Collections;
 
 import static io.fabric8.kubernetes.client.utils.ReplaceValueStream.replaceValues;
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -46,19 +49,13 @@ public class TemplateIT {
   @ArquillianResource
   Session session;
 
-  @Test
-  public void testLoad() {
-    String currentNamespace = session.getNamespace();
-    Template template = client.templates().inNamespace(currentNamespace).load(replaceValues(
-      getClass().getResourceAsStream("/test-template.yml"), Collections.singletonMap("REDIS_PASSWORD", "secret"))
-    ).get();
-    assertThat(template).isNotNull();
-    assertEquals(1, template.getObjects().size());
-  }
+  private Template template1;
 
-  @Test
-  public void testCrud() {
-    String currentNamespace = session.getNamespace();
+  private String currentNamespace;
+
+  @Before
+  public void init() {
+    currentNamespace = session.getNamespace();
     Service aService = new ServiceBuilder()
       .withNewMetadata().withName("bar").endMetadata()
       .withNewSpec()
@@ -69,18 +66,44 @@ public class TemplateIT {
       .endSpec()
       .build();
 
-    Template template1 = new TemplateBuilder()
+    template1 = new TemplateBuilder()
       .withNewMetadata().withName("foo").endMetadata()
       .addToObjects(aService)
       .build();
 
     client.templates().inNamespace(currentNamespace).create(template1);
+  }
 
+  @Test
+  public void create() {
+    Template template = client.templates().inNamespace(currentNamespace).load(replaceValues(
+      getClass().getResourceAsStream("/test-template.yml"), Collections.singletonMap("REDIS_PASSWORD", "secret"))
+    ).get();
+    assertThat(template).isNotNull();
+    assertEquals(1, template.getObjects().size());
+  }
+
+  @Test
+  public void get() {
+    template1 = client.templates().inNamespace(currentNamespace).withName("foo").get();
+    assertNotNull(template1);
+  }
+
+  @Test
+  public void list() {
     TemplateList aList = client.templates().inNamespace(currentNamespace).list();
     assertThat(aList).isNotNull();
     assertEquals(1, aList.getItems().size());
+  }
 
+  @Test
+  public void delete() {
     boolean bDeleted = client.templates().inNamespace(currentNamespace).withName("foo").delete();
     assertTrue(bDeleted);
+  }
+
+  @After
+  public void cleanup() {
+    client.templates().inNamespace(currentNamespace).delete();
   }
 }

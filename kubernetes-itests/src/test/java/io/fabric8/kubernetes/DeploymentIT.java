@@ -24,9 +24,12 @@ import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -40,18 +43,14 @@ public class DeploymentIT {
   @ArquillianResource
   Session session;
 
-  @Test
-  public void testLoad() {
-    String currentNamespace = session.getNamespace();
-    Deployment aDeployment = client.extensions().deployments().inNamespace(currentNamespace).load(getClass().getResourceAsStream("/test-deployments.yml")).get();
-    assertThat(aDeployment).isNotNull();
-    assertEquals("nginx-deployment", aDeployment.getMetadata().getName());
-  }
+  private Deployment deployment1, deployment2;
 
-  @Test
-  public void testCrud() throws InterruptedException {
-    String currentNamespace = session.getNamespace();
-    Deployment deployment1 = new DeploymentBuilder()
+  private String currentNamespace;
+
+  @Before
+  public void init() {
+    currentNamespace = session.getNamespace();
+    deployment1 = new DeploymentBuilder()
       .withNewMetadata().withName("deployment1").endMetadata()
       .withNewSpec()
       .withReplicas(2)
@@ -68,7 +67,7 @@ public class DeploymentIT {
       .endTemplate()
       .endSpec()
       .build();
-    Deployment deployment2 = new DeploymentBuilder()
+    deployment2 = new DeploymentBuilder()
       .withNewMetadata().withName("deployment2").endMetadata()
       .withNewSpec()
       .withReplicas(1)
@@ -89,20 +88,52 @@ public class DeploymentIT {
       .endSpec()
       .build();
 
-    client.extensions().deployments().inNamespace(currentNamespace).create(deployment1);
-    client.extensions().deployments().inNamespace(currentNamespace).create(deployment2);
+    client.extensions().deployments().inNamespace(currentNamespace).createOrReplace(deployment1);
+    client.extensions().deployments().inNamespace(currentNamespace).createOrReplace(deployment2);
+  }
 
+  @Test
+  public void create() {
+    Deployment aDeployment = client.extensions().deployments().inNamespace(currentNamespace).load(getClass().getResourceAsStream("/test-deployments.yml")).get();
+    assertThat(aDeployment).isNotNull();
+    assertEquals("nginx-deployment", aDeployment.getMetadata().getName());
+  }
+
+  @Test
+  public void get() {
+    deployment1 = client.extensions().deployments().inNamespace(currentNamespace)
+      .withName("deployment1").get();
+    assertNotNull(deployment1);
+    deployment2 = client.extensions().deployments().inNamespace(currentNamespace)
+      .withName("deployment2").get();
+    assertNotNull(deployment2);
+  }
+
+  @Test
+  public void list() {
     DeploymentList aDeploymentList = client.extensions().deployments().inNamespace(currentNamespace).list();
     assertThat(aDeploymentList).isNotNull();
     assertEquals(2, aDeploymentList.getItems().size());
+  }
 
+  @Test
+  public void update() {
     deployment1 = client.extensions().deployments().inNamespace(currentNamespace).withName("deployment1").edit()
       .editSpec().withReplicas(3).and().done();
     assertThat(deployment1).isNotNull();
     assertEquals(3, deployment1.getSpec().getReplicas().intValue());
+  }
 
+  @Test
+  public void delete() throws InterruptedException {
+    // Usually creation, deletion of things like Deployments take some time. So let's wait for a while:
     Thread.sleep(6000);
-    boolean bDeleted = client.extensions().deployments().inNamespace(currentNamespace).delete();
-    assertTrue(bDeleted);
+    assertTrue(client.extensions().deployments().inNamespace(currentNamespace).delete());
+  }
+
+  @After
+  public void cleanup() throws InterruptedException {
+    Thread.sleep(6000);
+    client.extensions().deployments().inNamespace(currentNamespace).delete();
   }
 }

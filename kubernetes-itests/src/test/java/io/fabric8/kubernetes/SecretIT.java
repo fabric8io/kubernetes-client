@@ -22,9 +22,12 @@ import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -38,52 +41,73 @@ public class SecretIT {
   @ArquillianResource
   Session session;
 
+  private Secret secret1;
+
+  private String currentNamespace;
+
+  @Before
+  public void init() {
+    currentNamespace = session.getNamespace();
+    secret1 = new SecretBuilder()
+      .withNewMetadata().withName("secret1").endMetadata()
+      .addToData("username", "guccifer")
+      .addToData("password", "shadowgovernment")
+      .build();
+
+    client.secrets().inNamespace(currentNamespace).createOrReplace(secret1);
+  }
+
   @Test
-  public void testLoad() {
-    String currentNamespace = session.getNamespace();
+  public void create() {
     Secret aSecret = client.secrets().inNamespace(currentNamespace).load(getClass().getResourceAsStream("/test-secret.yml")).get();
     assertThat(aSecret).isNotNull();
     assertEquals("mysecret", aSecret.getMetadata().getName());
   }
 
   @Test
-  public void testCrud() {
-    String currentNamespace = session.getNamespace();
-    Secret secret1 = new SecretBuilder()
-      .withNewMetadata().withName("secret1").endMetadata()
-      .addToData("username", "guccifer")
-      .addToData("password", "shadowgovernment")
-      .build();
+  public void get() {
+    secret1 = client.secrets().inNamespace(currentNamespace).withName("secret1").get();
+    assertNotNull(secret1);
+  }
 
-    client.secrets().inNamespace(currentNamespace).create(secret1);
+  @Test
+  public void list() {
+    SecretList aSecretList = client.secrets().inNamespace(currentNamespace).list();
+    assertNotNull(aSecretList);
+    assertTrue(aSecretList.getItems().size() > 1);
+  }
 
-    /*
-     * Skipping listing tests here because Kubernetes/OpenShift create
-     * some secrets just after creating namespace the API. So here we
-     * won't be able to assert counts properly.
-     */
+  @Test
+  public void update() {
     secret1 = client.secrets().inNamespace(currentNamespace).withName("secret1").edit()
       .withType("Opaque")
       .done();
     assertThat(secret1).isNotNull();
     assertEquals("Opaque", secret1.getType());
+  }
 
-    boolean bDeleted = client.secrets().inNamespace(currentNamespace).withName("secret1").delete();
-    assertTrue(bDeleted);
+  @Test
+  public void delete() {
+    assertTrue(client.secrets().inNamespace(currentNamespace).withName("secret1").delete());
+  }
+
+  @After
+  public void cleanup() {
+    client.secrets().inNamespace(currentNamespace).withName("secret1").delete();
   }
 
   @Test
   public void testLoadInPod() {
     String currentNamespace = session.getNamespace();
     Secret aSecret = new SecretBuilder()
-      .withNewMetadata().withName("secret1").endMetadata()
+      .withNewMetadata().withName("secret2").endMetadata()
       .addToData("username", "guccifer")
       .addToData("password", "shadowgovernment")
       .build();
 
     client.secrets().inNamespace(currentNamespace).create(aSecret);
     SecretVolumeSource secretVolumeSource = new SecretVolumeSourceBuilder()
-      .withSecretName("secret1")
+      .withSecretName("secret2")
       .build();
 
     Pod pod1 = client.pods().inNamespace(currentNamespace).create(new PodBuilder()
