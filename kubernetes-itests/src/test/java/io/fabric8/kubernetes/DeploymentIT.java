@@ -16,10 +16,15 @@
 
 package io.fabric8.kubernetes;
 
+import io.fabric8.kubernetes.api.KubernetesHelper;
+import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.extensions.Deployment;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
@@ -28,6 +33,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
@@ -47,6 +57,8 @@ public class DeploymentIT {
 
   private String currentNamespace;
 
+  private static final Logger logger = LoggerFactory.getLogger(DeploymentIT.class);
+
   @Before
   public void init() {
     currentNamespace = session.getNamespace();
@@ -57,11 +69,31 @@ public class DeploymentIT {
       .withNewTemplate()
       .withNewMetadata()
       .addToLabels("app", "database")
+      .addToLabels("dbtype", "mysql")
       .endMetadata()
       .withNewSpec()
       .addNewContainer()
       .withName("mysql")
       .withImage("openshift/mysql-55-centos7")
+      .addNewPort()
+      .withContainerPort(3306)
+      .endPort()
+      .addNewEnv()
+      .withName("MYSQL_ROOT_PASSWORD")
+      .withValue("password")
+      .endEnv()
+      .addNewEnv()
+      .withName("MYSQL_DATABASE")
+      .withValue("foodb")
+      .endEnv()
+      .addNewEnv()
+      .withName("MYSQL_USER")
+      .withValue("luke")
+      .endEnv()
+      .addNewEnv()
+      .withName("MYSQL_PASSWORD")
+      .withValue("password")
+      .endEnv()
       .endContainer()
       .endSpec()
       .endTemplate()
@@ -70,18 +102,35 @@ public class DeploymentIT {
     deployment2 = new DeploymentBuilder()
       .withNewMetadata().withName("deployment2").endMetadata()
       .withNewSpec()
-      .withReplicas(1)
+      .withReplicas(2)
       .withNewTemplate()
       .withNewMetadata()
-      .addToLabels("name", "frontend")
+      .addToLabels("app", "database")
+      .addToLabels("dbtype", "postgres")
       .endMetadata()
       .withNewSpec()
       .addNewContainer()
-      .withName("helloworld")
-      .withImage("openshift/origin-ruby-sample")
+      .withName("postgres")
+      .withImage("centos/postgresql-96-centos7")
       .addNewPort()
-      .withContainerPort(8080)
+      .withContainerPort(5432)
       .endPort()
+      .addNewEnv()
+      .withName("POSTGRESQL_DATABASE")
+      .withValue("foodb")
+      .endEnv()
+      .addNewEnv()
+      .withName("POSTGRESQL_USER")
+      .withValue("luke")
+      .endEnv()
+      .addNewEnv()
+      .withName("POSTGRESQL_PASSWORD")
+      .withValue("password")
+      .endEnv()
+      .addNewEnv()
+      .withName("POSTGRESQL_ADMIN_PASSWORD")
+      .withValue("password")
+      .endEnv()
       .endContainer()
       .endSpec()
       .endTemplate()
@@ -129,6 +178,28 @@ public class DeploymentIT {
     // Usually creation, deletion of things like Deployments take some time. So let's wait for a while:
     Thread.sleep(6000);
     assertTrue(client.extensions().deployments().inNamespace(currentNamespace).delete());
+  }
+
+  @Test
+  public void waitTest() throws InterruptedException {
+    final CountDownLatch waitLatch = new CountDownLatch(1);
+    try (Watch watch = client.pods().withLabelIn("dbtype", "postgres").watch(new Watcher<Pod>() {
+      @Override
+      public void eventReceived(Action action, Pod aPod) {
+        if (KubernetesHelper.isPodRunning(aPod)) {
+          waitLatch.countDown();
+        }
+      }
+
+      @Override
+      public void onClose(KubernetesClientException e) {
+        // Ignore
+      }
+    })) {
+      waitLatch.await(10, TimeUnit.SECONDS);
+    } catch (KubernetesClientException | InterruptedException e) {
+      logger.error(e.getMessage(), e);
+    }
   }
 
   @After
