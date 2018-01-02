@@ -16,10 +16,15 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.PodBuilder;
-import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.api.KubernetesHelper;
+import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.dsl.ExecListener;
+import io.fabric8.kubernetes.client.dsl.ExecWatch;
+import okhttp3.Response;
 import org.apache.commons.lang.RandomStringUtils;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
@@ -29,6 +34,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.ByteArrayOutputStream;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -48,6 +59,8 @@ public class PodIT {
   private Pod pod1, pod2;
 
   private String currentNamespace;
+
+  private static final Logger logger = LoggerFactory.getLogger(PodIT.class);
 
   @Before
   public void init() {
@@ -107,5 +120,70 @@ public class PodIT {
   @After
   public void cleanup() {
     client.pods().inNamespace(currentNamespace).delete();
+  }
+
+  @Test
+  public void log() throws InterruptedException {
+    waitUntilPodIsReady(pod2.getMetadata().getName(), 60);
+    String log = client.pods().inNamespace(currentNamespace).withName(pod2.getMetadata().getName()).getLog();
+    assertNotNull(log);
+  }
+
+  @Test
+  public void exec() throws InterruptedException {
+    waitUntilPodIsReady(pod1.getMetadata().getName(), 60);
+    final CountDownLatch execLatch = new CountDownLatch(1);
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    ExecWatch execWatch = client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName())
+      .writingOutput(out).usingListener(new ExecListener() {
+        @Override
+        public void onOpen(Response response) {
+          logger.info("Shell was opened");
+        }
+
+        @Override
+        public void onFailure(Throwable throwable, Response response) {
+          logger.info("Shell barfed");
+          execLatch.countDown();
+        }
+
+        @Override
+        public void onClose(int i, String s) {
+          logger.info("Shell closed");
+          execLatch.countDown();
+        }
+      }).exec("date");
+
+    execLatch.await(10, TimeUnit.MINUTES);
+    assertNotNull(execWatch);
+    assertNotNull(out.toString());
+  }
+
+  /**
+   * A Simple utility function to watch over pod until it gets ready
+   *
+   * @param podName Name of the pod
+   * @param nAwaitTimeout Time in seconds upto which pod must be watched
+   * @throws InterruptedException
+   */
+  private void waitUntilPodIsReady(String podName, int nAwaitTimeout) throws InterruptedException {
+    final CountDownLatch readyLatch = new CountDownLatch(1);
+    try (Watch watch = client.pods().withName(podName).watch(new Watcher<Pod>() {
+      @Override
+      public void eventReceived(Action action, Pod aPod) {
+        if (KubernetesHelper.isPodReady(aPod)) {
+          readyLatch.countDown();
+        }
+      }
+
+      @Override
+      public void onClose(KubernetesClientException e) {
+        // Ignore
+      }
+    })) {
+      readyLatch.await(nAwaitTimeout, TimeUnit.SECONDS);
+    } catch (KubernetesClientException | InterruptedException e) {
+      logger.error(e.getMessage(), e);
+    }
   }
 }
