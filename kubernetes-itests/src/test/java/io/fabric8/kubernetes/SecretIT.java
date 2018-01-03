@@ -58,7 +58,7 @@ public class SecretIT {
   }
 
   @Test
-  public void create() {
+  public void load() {
     Secret aSecret = client.secrets().inNamespace(currentNamespace).load(getClass().getResourceAsStream("/test-secret.yml")).get();
     assertThat(aSecret).isNotNull();
     assertEquals("mysecret", aSecret.getMetadata().getName());

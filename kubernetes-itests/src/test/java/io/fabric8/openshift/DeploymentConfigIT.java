@@ -91,7 +91,7 @@ public class DeploymentConfigIT {
   }
 
   @Test
-  public void create() {
+  public void load() {
     DeploymentConfig deploymentConfig = client.deploymentConfigs().inNamespace(currentNamespace)
       .load(getClass().getResourceAsStream("/test-deploymentconfig.yml")).get();
     assertThat(deploymentConfig).isNotNull();

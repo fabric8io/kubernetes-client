@@ -79,7 +79,7 @@ public class ImageStreamIT {
   }
 
   @Test
-  public void create() {
+  public void load() {
     ImageStream aImageStream = client.imageStreams().inNamespace(currentNamespace)
       .load(getClass().getResourceAsStream("/test-imagestream.yml")).get();
     assertThat(aImageStream).isNotNull();

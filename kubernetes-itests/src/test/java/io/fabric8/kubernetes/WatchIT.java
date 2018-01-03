@@ -28,8 +28,6 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -47,30 +45,6 @@ public class WatchIT {
 
   private static final Logger logger = LoggerFactory.getLogger(WatchIT.class);
 
-  private boolean bKilled;
-
-  public class PodKillerRunnable implements Runnable {
-    private KubernetesClient client;
-    private String currentNamespace;
-    private Timer timer = new Timer();
-
-    public PodKillerRunnable(KubernetesClient aClient, String namespace) {
-      this.client = aClient;
-      this.currentNamespace = namespace;
-    }
-
-    public void run() {
-      timer.schedule(new TimerTask() {
-        @Override
-        public void run() {
-          logger.info("killing pod  now ....");
-          bKilled = client.pods().inNamespace(currentNamespace).withName("sample-watch-pod").delete();
-          logger.info("isPodKilled : {}", bKilled);
-        }
-      }, 15000);
-    }
-  }
-
   @Test
   public void testWatch() throws InterruptedException {
     String currentNamespace = session.getNamespace();
@@ -83,15 +57,9 @@ public class WatchIT {
 
     client.pods().inNamespace(currentNamespace).create(pod1);
 
-    // Start the killer process
-    PodKillerRunnable podKiller = new PodKillerRunnable(client, currentNamespace);
-    Thread aThread = new Thread(podKiller);
-    aThread.start();
-
     final CountDownLatch eventLatch = new CountDownLatch(1);
     final CountDownLatch modifyLatch = new CountDownLatch(1);
     final CountDownLatch closeLatch = new CountDownLatch(1);
-    final CountDownLatch deleteLatch = new CountDownLatch(1);
     Watch watch = client.pods().inNamespace(currentNamespace).withName("sample-watch-pod").watch(new Watcher<Pod>() {
       @Override
       public void eventReceived(Action action, Pod pod) {
@@ -99,8 +67,6 @@ public class WatchIT {
 
         if (action.equals(Action.MODIFIED))
           modifyLatch.countDown();
-        if (action.equals(Action.DELETED))
-          deleteLatch.countDown();
         logger.info("Action : {} Pod name : {}", action.name(), pod.getMetadata().getName());
       }
 
@@ -117,7 +83,6 @@ public class WatchIT {
       .done();
 
     assertTrue(eventLatch.await(10, TimeUnit.SECONDS));
-    //assertTrue(deleteLatch.await(10, TimeUnit.MINUTES));
     watch.close();
     assertTrue(closeLatch.await(30, TimeUnit.SECONDS));
   }

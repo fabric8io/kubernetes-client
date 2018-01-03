@@ -141,7 +141,7 @@ public class BuildConfigIT {
   }
 
   @Test
-  public void create() {
+  public void load() {
     BuildConfig aBuildConfig = client.buildConfigs().inNamespace(currentNamespace)
       .load(getClass().getResourceAsStream("/test-buildconfig.yml")).get();
     assertThat(aBuildConfig).isNotNull();

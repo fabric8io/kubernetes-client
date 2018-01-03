@@ -75,7 +75,7 @@ public class TemplateIT {
   }
 
   @Test
-  public void create() {
+  public void load() {
     Template template = client.templates().inNamespace(currentNamespace).load(replaceValues(
       getClass().getResourceAsStream("/test-template.yml"), Collections.singletonMap("REDIS_PASSWORD", "secret"))
     ).get();

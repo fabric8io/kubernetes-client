@@ -142,7 +142,7 @@ public class DeploymentIT {
   }
 
   @Test
-  public void create() {
+  public void load() {
     Deployment aDeployment = client.extensions().deployments().inNamespace(currentNamespace).load(getClass().getResourceAsStream("/test-deployments.yml")).get();
     assertThat(aDeployment).isNotNull();
     assertEquals("nginx-deployment", aDeployment.getMetadata().getName());

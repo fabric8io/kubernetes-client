@@ -95,7 +95,7 @@ public class StatefulSetIT {
   }
 
   @Test
-  public void create() {
+  public void load() {
     String currentNamespace = session.getNamespace();
     StatefulSet aStatefulSet = client.apps().statefulSets().inNamespace(currentNamespace)
       .load(getClass().getResourceAsStream("/test-statefulset.yml")).get();

@@ -84,7 +84,7 @@ public class ReplicationControllerIT {
   }
 
   @Test
-  public void create() {
+  public void load() {
     ReplicationController aReplicationController = client.replicationControllers().inNamespace(currentNamespace)
       .load(getClass().getResourceAsStream("/test-replicationcontroller.yml")).get();
 

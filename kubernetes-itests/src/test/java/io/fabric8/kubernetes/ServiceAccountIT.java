@@ -60,7 +60,7 @@ public class ServiceAccountIT {
   }
 
   @Test
-  public void create() {
+  public void load() {
     ServiceAccount svcAccount = client.serviceAccounts().inNamespace(currentNamespace)
       .load(getClass().getResourceAsStream("/test-serviceaccount.yml")).get();
     assertThat(svcAccount).isNotNull();

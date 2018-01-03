@@ -62,7 +62,7 @@ public class RouteIT {
   }
 
   @Test
-  public void create() {
+  public void load() {
     Route aRoute = client.routes().inNamespace(currentNamespace).load(getClass().getResourceAsStream("/test-route.yml")).get();
     assertThat(aRoute).isNotNull();
     assertEquals("host-route", aRoute.getMetadata().getName());

@@ -102,7 +102,7 @@ public class ReplicaSetIT {
   }
 
   @Test
-  public void create() {
+  public void load() {
     String currentNamespace = session.getNamespace();
     ReplicaSet replicaSet = client.extensions().replicaSets().inNamespace(currentNamespace)
       .load(getClass().getResourceAsStream("/test-replicaset.yml")).get();

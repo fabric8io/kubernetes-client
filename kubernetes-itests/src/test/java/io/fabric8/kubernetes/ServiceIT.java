@@ -64,7 +64,7 @@ public class ServiceIT {
   }
 
   @Test
-  public void create() {
+  public void load() {
     String currentNamespace = session.getNamespace();
     Service aService = client.services().inNamespace(currentNamespace).load(getClass().getResourceAsStream("/test-service.yml")).get();
     assertThat(aService).isNotNull();
