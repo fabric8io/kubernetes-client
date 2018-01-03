@@ -690,8 +690,9 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   public Watch watch(String resourceVersion, final Watcher<T> watcher) throws KubernetesClientException {
+    WatchConnectionManager watch = null;
     try {
-      WatchConnectionManager watch = new WatchConnectionManager(
+      watch = new WatchConnectionManager(
         client,
         this,
         resourceVersion,
@@ -705,6 +706,10 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     } catch (MalformedURLException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("watch"), e);
     } catch (KubernetesClientException ke) {
+      if(watch != null){
+        //release the watch
+        watch.close();
+      }
       if (ke.getCode() != 200) {
         throw ke;
       }

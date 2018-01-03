@@ -63,14 +63,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   private final AtomicInteger currentReconnectAttempt = new AtomicInteger(0);
   private final AtomicReference<WebSocket> webSocketRef = new AtomicReference<>();
   // single threaded serial executor
-  private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor(new ThreadFactory() {
-    @Override
-    public Thread newThread(Runnable r) {
-      Thread ret = new Thread(r, "Executor for Watch " + System.identityHashCode(WatchConnectionManager.this));
-      ret.setDaemon(true);
-      return ret;
-    }
-  });
+  private final ScheduledExecutorService executor;
   /** True if an onOpen callback was received on the first connect attempt, ie. the watch was successfully started. */
   private final AtomicBoolean started = new AtomicBoolean(false);
   private final AtomicBoolean reconnectPending = new AtomicBoolean(false);
@@ -93,7 +86,18 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
 
     // The URL is created, validated and saved once, so that reconnect attempts don't have to deal with
     // MalformedURLExceptions that would never occur
+
     requestUrl = baseOperation.getNamespacedUrl();
+    //create after the call above where MalformedURLException can be raised
+    //avoids having to call shutdown in case the exception is raised
+    executor = Executors.newSingleThreadScheduledExecutor(new ThreadFactory() {
+      @Override
+      public Thread newThread(Runnable r) {
+        Thread ret = new Thread(r, "Executor for Watch " + System.identityHashCode(WatchConnectionManager.this));
+        ret.setDaemon(true);
+        return ret;
+      }
+    });
     runWatch();
   }
 
