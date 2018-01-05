@@ -18,6 +18,7 @@ package io.fabric8.openshift.client;
 import io.fabric8.kubernetes.api.model.DoneableLimitRange;
 import io.fabric8.kubernetes.api.model.LimitRange;
 import io.fabric8.kubernetes.api.model.LimitRangeList;
+import io.fabric8.kubernetes.client.AutoscalingAPIGroupClient;
 import io.fabric8.kubernetes.client.dsl.ClientScaleableResource;
 import io.fabric8.openshift.api.model.*;
 import io.fabric8.openshift.client.dsl.internal.ImageStreamTagOperationsImpl;
@@ -372,5 +373,10 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public ExtensionsAPIGroupClient extensions() {
     return adapt(ExtensionsAPIGroupClient.class);
+  }
+
+  @Override
+  public AutoscalingAPIGroupClient autoscaling() {
+    return adapt(AutoscalingAPIGroupClient.class);
   }
 }

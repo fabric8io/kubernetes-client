@@ -16,9 +16,9 @@
 
 package io.fabric8.kubernetes.client.mock.impl;
 
-import io.fabric8.kubernetes.api.model.extensions.DoneableHorizontalPodAutoscaler;
-import io.fabric8.kubernetes.api.model.extensions.HorizontalPodAutoscaler;
-import io.fabric8.kubernetes.api.model.extensions.HorizontalPodAutoscalerList;
+import io.fabric8.kubernetes.api.model.DoneableHorizontalPodAutoscaler;
+import io.fabric8.kubernetes.api.model.HorizontalPodAutoscaler;
+import io.fabric8.kubernetes.api.model.HorizontalPodAutoscalerList;
 import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientResource;
 import io.fabric8.kubernetes.client.dsl.ClientRollableScallableResource;

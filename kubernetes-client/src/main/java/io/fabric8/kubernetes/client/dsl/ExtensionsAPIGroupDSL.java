@@ -16,27 +16,7 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.model.extensions.DaemonSet;
-import io.fabric8.kubernetes.api.model.extensions.DaemonSetList;
-import io.fabric8.kubernetes.api.model.extensions.Deployment;
-import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
-import io.fabric8.kubernetes.api.model.extensions.DoneableDaemonSet;
-import io.fabric8.kubernetes.api.model.extensions.DoneableDeployment;
-import io.fabric8.kubernetes.api.model.extensions.DoneableHorizontalPodAutoscaler;
-import io.fabric8.kubernetes.api.model.extensions.DoneableIngress;
-import io.fabric8.kubernetes.api.model.extensions.DoneableJob;
-import io.fabric8.kubernetes.api.model.extensions.DoneableReplicaSet;
-import io.fabric8.kubernetes.api.model.extensions.DoneableThirdPartyResource;
-import io.fabric8.kubernetes.api.model.extensions.HorizontalPodAutoscaler;
-import io.fabric8.kubernetes.api.model.extensions.HorizontalPodAutoscalerList;
-import io.fabric8.kubernetes.api.model.extensions.Ingress;
-import io.fabric8.kubernetes.api.model.extensions.IngressList;
-import io.fabric8.kubernetes.api.model.extensions.Job;
-import io.fabric8.kubernetes.api.model.extensions.JobList;
-import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
-import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
-import io.fabric8.kubernetes.api.model.extensions.ThirdPartyResource;
-import io.fabric8.kubernetes.api.model.extensions.ThirdPartyResourceList;
+import io.fabric8.kubernetes.api.model.extensions.*;
 import io.fabric8.kubernetes.client.Client;
 
 public interface ExtensionsAPIGroupDSL extends Client {
@@ -56,5 +36,4 @@ public interface ExtensionsAPIGroupDSL extends Client {
 
   ClientMixedOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, ClientRollableScallableResource<ReplicaSet, DoneableReplicaSet>> replicaSets();
 
-  ClientMixedOperation<HorizontalPodAutoscaler, HorizontalPodAutoscalerList, DoneableHorizontalPodAutoscaler, ClientResource<HorizontalPodAutoscaler, DoneableHorizontalPodAutoscaler>> horizontalPodAutoscalers();
 }

@@ -80,6 +80,7 @@ import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.ResourceHandler;
+import io.fabric8.kubernetes.client.dsl.AutoscalingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.ClientKubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ClientNonNamespaceOperation;
@@ -291,6 +292,11 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   @Override
   public ExtensionsAPIGroupDSL extensions() {
     return delegate.extensions();
+  }
+
+  @Override
+  public AutoscalingAPIGroupDSL autoscaling() {
+    return delegate.autoscaling();
   }
 
   @Override

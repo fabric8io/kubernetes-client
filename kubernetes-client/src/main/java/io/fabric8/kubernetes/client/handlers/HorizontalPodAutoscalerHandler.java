@@ -15,9 +15,10 @@
  */
 package io.fabric8.kubernetes.client.handlers;
 
+import io.fabric8.kubernetes.api.model.HorizontalPodAutoscaler;
+import io.fabric8.kubernetes.api.model.HorizontalPodAutoscalerBuilder;
 import okhttp3.OkHttpClient;
-import io.fabric8.kubernetes.api.model.extensions.HorizontalPodAutoscaler;
-import io.fabric8.kubernetes.api.model.extensions.HorizontalPodAutoscalerBuilder;
+
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.internal.HorizontalPodAutoscalerOperationsImpl;
