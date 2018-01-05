@@ -14,11 +14,9 @@
 # limitations under the License.
 #
 
-dependencies:
-  override:
-    - mvn install -DskipTests -U
-test:
-  post:
-   - mkdir -p $CIRCLE_TEST_REPORTS/junit/
-   - find . -type f -regex ".*/target/.*-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
-
+apiVersion: "v1"
+kind: "ImageStream"
+metadata:
+  name: "my-ruby"
+spec:
+  dockerImageRepository: "docker.io/openshift/ruby-20-centos7"

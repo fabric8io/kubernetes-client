@@ -14,11 +14,12 @@
 # limitations under the License.
 #
 
-dependencies:
-  override:
-    - mvn install -DskipTests -U
-test:
-  post:
-   - mkdir -p $CIRCLE_TEST_REPORTS/junit/
-   - find . -type f -regex ".*/target/.*-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
-
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  nodeName: awesome-node
+  containers:
+  - name: nginx
+    image: nginx
