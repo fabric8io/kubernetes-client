@@ -388,6 +388,11 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
+  public MixedOperation<StorageClass, StorageClassList, DoneableStorageClass, Resource<StorageClass, DoneableStorageClass>> storageClasses() {
+    return delegate.storageClasses();
+  }
+
+  @Override
   public NamespacedOpenShiftClient inNamespace(String namespace) {
     OpenShiftConfig updated = new OpenShiftConfigBuilder(new OpenShiftConfig(getConfiguration()))
       .withOpenShiftUrl(openShiftUrl.toString())

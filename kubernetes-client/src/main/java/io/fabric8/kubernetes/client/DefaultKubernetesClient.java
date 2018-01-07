@@ -54,6 +54,7 @@ import io.fabric8.kubernetes.client.dsl.internal.SecretOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.SecurityContextConstraintsOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ServiceAccountOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ServiceOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.StorageClassOperationsImpl;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.openshift.api.model.DoneableSecurityContextConstraints;
 import io.fabric8.openshift.api.model.SecurityContextConstraints;
@@ -215,6 +216,11 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   @Override
   public MixedOperation<LimitRange, LimitRangeList, DoneableLimitRange, Resource<LimitRange, DoneableLimitRange>> limitRanges() {
     return new LimitRangeOperationsImpl(httpClient, getConfiguration(), getNamespace());
+  }
+
+  @Override
+  public MixedOperation<StorageClass, StorageClassList, DoneableStorageClass, Resource<StorageClass, DoneableStorageClass>> storageClasses() {
+    return new StorageClassOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
