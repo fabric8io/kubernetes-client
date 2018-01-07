@@ -14,9 +14,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class CreateStorageClassExample {
+public class StorageClassExamples {
 
-  private static final Logger logger = LoggerFactory.getLogger(CreateStorageClassExample.class);
+  private static final Logger logger = LoggerFactory.getLogger(StorageClassExamples.class);
 
   public static void main(String[] args) {
 
@@ -36,14 +36,16 @@ public class CreateStorageClassExample {
 
       //create new storage class
 
+      String name = UUID.randomUUID().toString();
       ObjectMeta metadata = new ObjectMeta();
-      metadata.setName(UUID.randomUUID().toString());
+      metadata.setName(name);
 
       Map<String, String> parameters = new HashMap<>();
       parameters.put("resturl", "http://192.168.10.100:8080");
       parameters.put("restuser", "");
       parameters.put("secretNamespace", "");
       parameters.put("secretName", "");
+      parameters.put("key", "value1");
 
       StorageClass storageClass = new StorageClassBuilder().withApiVersion("storage.k8s.io/v1")
                                                             .withKind("StorageClass")
@@ -56,8 +58,20 @@ public class CreateStorageClassExample {
       logger.info("Newly created storage class details: {}", storageClass.toString());
 
       //list all storage classes
-      client.storageClasses().list();
+      storageClassList = client.storageClasses().list();
       logger.info("List of storage classes: {}", storageClassList.toString());
+
+      //update storage class. add label
+      storageClass = client.storageClasses().withName(name).edit().editMetadata().addToLabels("testLabel", "testLabelValue").endMetadata().done();
+
+      //list all storage classes
+      storageClassList = client.storageClasses().list();
+      logger.info("List of storage classes: {}", storageClassList.toString());
+
+
+      //delete storage class
+      boolean isDeleteSuccessful = client.storageClasses().delete(storageClass);
+      logger.info("Storage Class resource successfully deleted: {}", isDeleteSuccessful);
 
 
     } catch (KubernetesClientException e) {
