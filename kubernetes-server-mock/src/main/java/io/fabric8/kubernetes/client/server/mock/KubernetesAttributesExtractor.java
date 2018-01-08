@@ -28,7 +28,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class KubernetesAttributesExtractor implements AttributeExtractor<HasMetadata> {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(KubernetesAttributesExtractor.class);
 
   public static final String KIND = "kind";
   public static final String NAME = "name";
@@ -45,6 +50,8 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
   protected static final Pattern NAMESPACED_CREATE_PATH = Pattern.compile("/api[s]?/" + VERSION_GROUP + "/namespaces/" + NAMESPACE_GROUP + "/" + KIND_GROUP + "[^ ]*");
   protected static final Pattern NON_NAMESPACED_CREATE_PATH = Pattern.compile("/api[s]?/" + "/" + KIND_GROUP + "[^ ]*");
 
+  protected static final Pattern[] PATTERNS = { NAMESPACED_NAMED_PATH, NON_NAMESPACED_NAMED_PATH, NAMESPACED_CREATE_PATH, NON_NAMESPACED_CREATE_PATH };
+
   @Override
   public AttributeSet fromPath(String s) {
     if (s == null || s.isEmpty()) {
@@ -52,25 +59,13 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
     }
 
     //Get paths
-    Matcher m = NAMESPACED_NAMED_PATH.matcher(s);
-    if (m.matches()) {
-      return extract(m);
-    }
-
-    m = NON_NAMESPACED_NAMED_PATH.matcher(s);
-    if (m.matches()) {
-      return extract(m);
-    }
-
-    //Create paths
-    m = NAMESPACED_CREATE_PATH.matcher(s);
-    if (m.matches()) {
-      return extract(m);
-    }
-
-    m = NON_NAMESPACED_CREATE_PATH.matcher(s);
-    if (m.matches()) {
-      return extract(m);
+    for (Pattern pattern : PATTERNS) {
+      Matcher m = pattern.matcher(s);
+      if (m.matches()) {
+        AttributeSet set = extract(m);
+        LOGGER.debug("fromPath {} : {}", s, set);
+        return set;
+      }
     }
     return new AttributeSet();
   }
@@ -102,26 +97,15 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
     }
 
     //Get paths
-    Matcher m = NAMESPACED_NAMED_PATH.matcher(s);
-    if (m.matches()) {
-      return extract(m);
+    for (Pattern pattern : PATTERNS) {
+      Matcher m = pattern.matcher(s);
+      if (m.matches()) {
+        AttributeSet set = extract(m);
+        LOGGER.debug("extract {} : {}", s, set);
+        return set;
+      }
     }
-
-    m = NON_NAMESPACED_NAMED_PATH.matcher(s);
-    if (m.matches()) {
-      return extract(m);
-    }
-
-    //Create paths
-    m = NAMESPACED_CREATE_PATH.matcher(s);
-    if (m.matches()) {
-      return extract(m);
-    }
-
-    m = NON_NAMESPACED_CREATE_PATH.matcher(s);
-    if (m.matches()) {
-      return extract(m);
-    }
+    LOGGER.debug("extract {} : no attributes", s);
     return new AttributeSet();
   }
 

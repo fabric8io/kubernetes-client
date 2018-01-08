@@ -27,8 +27,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class KubernetesCrudDispatcher extends CrudDispatcher {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(KubernetesCrudDispatcher.class);
 
   public KubernetesCrudDispatcher() {
     this(new KubernetesAttributesExtractor(), new KubernetesResponseComposer());
@@ -52,6 +56,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
 
     for (Map.Entry<AttributeSet, String> entry : map.entrySet()) {
       if (entry.getKey().matches(query)) {
+        LOGGER.debug("Entry found for query {} : {}", query, entry);
         items.add(entry.getValue());
       }
     }
