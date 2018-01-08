@@ -35,6 +35,12 @@ public class NetworkPolicyExample {
                                         .endSpec()
                                   .build();
 
+
+    // create polict using NetworkPolicyBuilder object
+    networkPolicy = client.extensions()
+      .networkPolicies()
+      .create(networkPolicy);
+
     // crate policy using YAML reosurce
     networkPolicy = client.extensions()
                                     .networkPolicies()
@@ -42,9 +48,5 @@ public class NetworkPolicyExample {
                                     .load(NetworkPolicyExample.class.getResourceAsStream("/network-policy.yml"))
                                     .createOrReplace();
 
-    // create polict using build object
-    networkPolicy = client.extensions()
-            .networkPolicies()
-            .create(networkPolicy);
   }
 }
