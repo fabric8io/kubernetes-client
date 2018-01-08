@@ -70,9 +70,7 @@ public class KubernetesAttributesExtractorTest {
   @Test
   public void shouldHandleIngress() {
     KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-    Ingress ingress = new IngressBuilder().withNewMetadata().withName("myingress").withNamespace("myns").endMetadata().build();
-
-    AttributeSet attributes = extractor.extract(ingress);
+    AttributeSet attributes = extractor.extract("/apis/extensions/v1beta1/namespaces/myns/ingresses/myingress");
 
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("kind", "ingress"));

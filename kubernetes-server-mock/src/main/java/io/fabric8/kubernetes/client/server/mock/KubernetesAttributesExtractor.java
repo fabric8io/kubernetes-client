@@ -39,16 +39,17 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
   public static final String NAME = "name";
   public static final String NAMESPACE = "namespace";
 
+  private static final String API_GROUP = "/api[s]?/(extensions/)?";
   private static final String VERSION_GROUP = "(?<version>[a-zA-z0-9-_]+)";
   private static final String KIND_GROUP = "(?<kind>[^/]+)";
   private static final String NAME_GROUP = "(?<name>[^/]+)";
   private static final String NAMESPACE_GROUP = "(namespaces/(?<namespace>[^/]+)/)?";
 
-  protected static final Pattern NAMESPACED_NAMED_PATH = Pattern.compile("/api[s]?/" + VERSION_GROUP + "/" + NAMESPACE_GROUP + KIND_GROUP + "/" + NAME_GROUP + "[^ ]*");
-  protected static final Pattern NON_NAMESPACED_NAMED_PATH = Pattern.compile("/api[s]?/" + "/" + KIND_GROUP + "/" + NAME_GROUP + "[^ ]*");
+  protected static final Pattern NAMESPACED_NAMED_PATH = Pattern.compile(API_GROUP + VERSION_GROUP + "/" + NAMESPACE_GROUP + KIND_GROUP + "/" + NAME_GROUP + "[^ ]*");
+  protected static final Pattern NON_NAMESPACED_NAMED_PATH = Pattern.compile(API_GROUP + "/" + KIND_GROUP + "/" + NAME_GROUP + "[^ ]*");
 
-  protected static final Pattern NAMESPACED_CREATE_PATH = Pattern.compile("/api[s]?/" + VERSION_GROUP + "/" + NAMESPACE_GROUP + KIND_GROUP + "[^ ]*");
-  protected static final Pattern NON_NAMESPACED_CREATE_PATH = Pattern.compile("/api[s]?/" + "/" + KIND_GROUP + "[^ ]*");
+  protected static final Pattern NAMESPACED_CREATE_PATH = Pattern.compile(API_GROUP + VERSION_GROUP + "/" + NAMESPACE_GROUP + KIND_GROUP + "[^ ]*");
+  protected static final Pattern NON_NAMESPACED_CREATE_PATH = Pattern.compile(API_GROUP + "/" + KIND_GROUP + "[^ ]*");
 
   protected static final Pattern[] PATTERNS = { NAMESPACED_NAMED_PATH, NON_NAMESPACED_NAMED_PATH, NAMESPACED_CREATE_PATH, NON_NAMESPACED_CREATE_PATH };
 
