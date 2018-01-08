@@ -134,7 +134,9 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
       if (!Strings.isNullOrEmpty(kind)) {
 
         //Poor mans to singular.
-        if (kind.endsWith("s")) {
+        if (kind.endsWith("ses")) {
+          kind = kind.substring(0, kind.length() - 2);
+        } else if (kind.endsWith("s")) {
           kind = kind.substring(0, kind.length() - 1);
         }
         attributes = attributes.add(new Attribute(KIND, kind));
