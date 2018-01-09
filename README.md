@@ -19,7 +19,14 @@ This client provides access to the full [Kubernetes](http://kubernetes.io/) &
     - [Passing a reference of a resource to the client](#passing-a-reference-of-a-resource-to-the-client)
     - [Adapting a client](#adaptin-a-client)
         - [Adapting and close](#adapting-and-close)
-- [Mocking Kubernetes](#mocking-kubernetes)        
+- [Mocking Kubernetes](#mocking-kubernetes)
+
+## Compatibility Matrix for Kubernetes
+
+|                           | Kubernetes 1.4.9 | Kubernetes 1.6.2 | Kubernetes 1.7.10 | 
+|---------------------------|------------------|------------------|-------------------|
+| kubernetes-client 1.3.92  | +                | +                | -                 | 
+| kubernetes-client 3.0.3   | -                | -                | ✓                 |
 
 ## Usage
 
@@ -283,12 +290,4 @@ Then you can use the server like:
       assertNotNull(podList);
       assertEquals(0, podList.getItems().size());     
     }
-
-
-## Compatibility
-
-|                           | Kubernetes 1.4.9 | Kubernetes 1.6.2 | Kubernetes 1.7.10 | 
-|---------------------------|------------------|------------------|-------------------|
-| kubernetes-client 1.3.92  | +                | +                | -                 | 
-| kubernetes-client 3.0.3   | -                | -                | ✓                 |
 
