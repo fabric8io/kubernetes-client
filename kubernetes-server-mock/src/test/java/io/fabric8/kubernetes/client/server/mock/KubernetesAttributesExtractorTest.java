@@ -78,4 +78,15 @@ public class KubernetesAttributesExtractorTest {
     expected = expected.add(new Attribute("name", "myingress"));
     Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
   }
+
+  @Test
+  public void shouldHandleIngresses() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor.extract("/apis/extensions/v1beta1/namespaces/myns/ingresses");
+
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("kind", "ingress"));
+    expected = expected.add(new Attribute("namespace", "myns"));
+    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
+  }
 }
