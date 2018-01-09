@@ -17,8 +17,6 @@ package io.fabric8.kubernetes.client.server.mock;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
-import io.fabric8.kubernetes.api.model.extensions.Ingress;
-import io.fabric8.kubernetes.api.model.extensions.IngressBuilder;
 import io.fabric8.mockwebserver.crud.Attribute;
 import io.fabric8.mockwebserver.crud.AttributeSet;
 import org.junit.Assert;
@@ -84,6 +82,26 @@ public class KubernetesAttributesExtractorTest {
     expected = expected.add(new Attribute("name", "mypod"));
     Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
 
+  }
+
+  @Test
+  public void shouldHandleKindWithoutVersion() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor.extract("/api/pods");
+
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("kind", "pod"));
+    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
+  }
+
+  @Test
+  public void shouldHandleExtensions() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor.extract("/apis/extensions/v1beta1/deployments");
+
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("kind", "deployment"));
+    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
   }
 
   @Test
