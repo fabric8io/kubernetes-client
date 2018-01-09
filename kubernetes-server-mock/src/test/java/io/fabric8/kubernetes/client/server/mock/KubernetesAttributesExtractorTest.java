@@ -28,7 +28,7 @@ import org.junit.Test;
 public class KubernetesAttributesExtractorTest {
 
   @Test
-  public void shouldHandleNamespacedPath() {
+  public void shouldHandleNamespacedPathWithResource() {
     KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
     AttributeSet attributes = extractor.extract("/api/v1/namespaces/myns/pods/mypod");
 
@@ -36,6 +36,17 @@ public class KubernetesAttributesExtractorTest {
     expected = expected.add(new Attribute("kind", "pod"));
     expected = expected.add(new Attribute("namespace", "myns"));
     expected = expected.add(new Attribute("name", "mypod"));
+    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
+  }
+
+  @Test
+  public void shouldHandleNamespacedPath() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor.extract("/api/v1/namespaces/myns/pods");
+
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("kind", "pod"));
+    expected = expected.add(new Attribute("namespace", "myns"));
     Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
   }
 
@@ -50,7 +61,15 @@ public class KubernetesAttributesExtractorTest {
     Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
   }
 
+  @Test
+  public void shouldHandlePathWithParameters() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor.extract("/api/v1/pods?labelSelector=testKey%3DtestValue");
 
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("kind", "pod"));
+    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
+  }
 
   @Test
   public void shouldHandleResource() {
