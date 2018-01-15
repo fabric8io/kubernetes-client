@@ -92,8 +92,10 @@ public class SecretIT {
   }
 
   @After
-  public void cleanup() {
+  public void cleanup() throws InterruptedException {
     client.secrets().inNamespace(currentNamespace).withName("secret1").delete();
+    // Wait for resources to get destroyed
+    Thread.sleep(2000);
   }
 
   @Test

@@ -18,6 +18,7 @@ version: 2
 jobs:
   OPENSHIFT_3.6.0:
     machine: true
+    resource_class: large
     steps:
       - checkout
       - run:
@@ -45,9 +46,12 @@ jobs:
             oc login -u system:admin
             echo "Configured OpenShift cluster : v3.6.0"
 
-      - run: mvn -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B install -P itests
+      - run:
+          command: mvn -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B install -P itests
+          no_output_timeout: 3600
   OPENSHIFT_3.6.1:
     machine: true
+    resource_class: large
     steps:
       - checkout
       - run:
@@ -75,9 +79,12 @@ jobs:
             oc login -u system:admin
             echo "Configured OpenShift cluster : v3.6.1"
 
-      - run: mvn -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B install -P itests
+      - run:
+          command: mvn -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B install -P itests
+          no_output_timeout: 3600
   OPENSHIFT_3.7.0:
     machine: true
+    resource_class: large
     steps:
       - checkout
       - run:
@@ -105,7 +112,9 @@ jobs:
             oc login -u system:admin
             echo "Configured OpenShift cluster : v3.7.0"
 
-      - run: mvn -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B install -P itests
+      - run:
+          command: mvn -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B install -P itests
+          no_output_timeout: 3600
 workflows:
   version: 2
   build_and_test:

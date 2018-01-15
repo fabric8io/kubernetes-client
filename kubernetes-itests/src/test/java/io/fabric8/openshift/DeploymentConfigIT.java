@@ -41,7 +41,7 @@ public class DeploymentConfigIT {
   @ArquillianResource
   Session session;
 
-  private DeploymentConfig deploymentConfig1, deploymentConfig2;
+  private DeploymentConfig deploymentConfig1;
 
   private String currentNamespace;
 
@@ -65,29 +65,8 @@ public class DeploymentConfigIT {
       .endTemplate()
       .endSpec()
       .build();
-    deploymentConfig2 = new DeploymentConfigBuilder()
-      .withNewMetadata().withName("deploymentconfig2").endMetadata()
-      .withNewSpec()
-      .withReplicas(1)
-      .withNewTemplate()
-      .withNewMetadata()
-      .addToLabels("name", "frontend")
-      .endMetadata()
-      .withNewSpec()
-      .addNewContainer()
-      .withName("helloworld")
-      .withImage("openshift/origin-ruby-sample")
-      .addNewPort()
-      .withContainerPort(8080)
-      .endPort()
-      .endContainer()
-      .endSpec()
-      .endTemplate()
-      .endSpec()
-      .build();
 
     client.deploymentConfigs().inNamespace(currentNamespace).create(deploymentConfig1);
-    client.deploymentConfigs().inNamespace(currentNamespace).create(deploymentConfig2);
   }
 
   @Test
@@ -101,14 +80,13 @@ public class DeploymentConfigIT {
   @Test
   public void get() {
     assertNotNull(client.deploymentConfigs().inNamespace(currentNamespace).withName("deploymentconfig1").get());
-    assertNotNull(client.deploymentConfigs().inNamespace(currentNamespace).withName("deploymentconfig2").get());
   }
 
   @Test
   public void list() {
     DeploymentConfigList aDeploymentConfigList = client.deploymentConfigs().inNamespace(currentNamespace).list();
     assertThat(aDeploymentConfigList).isNotNull();
-    assertEquals(2, aDeploymentConfigList.getItems().size());
+    assertEquals(1, aDeploymentConfigList.getItems().size());
   }
 
   @Test
@@ -122,7 +100,7 @@ public class DeploymentConfigIT {
   @Test
   public void delete() throws InterruptedException {
     Thread.sleep(6000);
-    boolean bDeleted = client.deploymentConfigs().inNamespace(currentNamespace).withName("deploymentconfig2").delete();
+    boolean bDeleted = client.deploymentConfigs().inNamespace(currentNamespace).withName("deploymentconfig1").delete();
     assertTrue(bDeleted);
   }
 
@@ -130,5 +108,7 @@ public class DeploymentConfigIT {
   public void cleanup() throws InterruptedException {
     Thread.sleep(6000);
     client.deploymentConfigs().inNamespace(currentNamespace).delete();
+    // Wait for resources to get destroyed
+    Thread.sleep(2000);
   }
 }

@@ -92,7 +92,6 @@
     <arquillian.cube.version>1.11.0</arquillian.cube.version>
     <assertj.core.version>3.8.0</assertj.core.version>
     <arquillian.core.version>1.2.0.Final</arquillian.core.version>
-    <kubernetes.api.version>3.0.8</kubernetes.api.version>
 
     <slf4j.version>1.7.13</slf4j.version>
     <snakeyaml.version>1.19</snakeyaml.version>
