@@ -134,6 +134,40 @@
           </execution>
         </executions>
       </plugin>
+      
+      <!-- This plugin is used to check API compatibility.  -->
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.9.5</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.revapi</groupId>
+            <artifactId>revapi-java</artifactId>
+            <version>0.14.4</version>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <id>check</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <oldVersion>${oldest.api.compatible.version}</oldVersion>
+          <analysisConfiguration>
+            <revapi.filter>
+              <archives>
+                <include>
+                  <item>io\.fabric8:.*</item>
+                </include>
+              </archives>
+            </revapi.filter>
+          </analysisConfiguration>          
+        </configuration>
+      </plugin>      
     </plugins>
   </build>
 
