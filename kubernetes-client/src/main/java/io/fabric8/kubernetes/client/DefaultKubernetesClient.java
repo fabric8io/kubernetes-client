@@ -20,6 +20,9 @@ import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionList;
 import io.fabric8.kubernetes.api.model.apiextensions.DoneableCustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.extensions.DoneablePodSecurityPolicy;
+import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicy;
+import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicyList;
 import io.fabric8.kubernetes.client.dsl.AppsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.AutoscalingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
@@ -33,28 +36,7 @@ import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGet
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
-import io.fabric8.kubernetes.client.dsl.internal.ComponentStatusOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.ConfigMapOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.CustomResourceDefinitionOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.CustomResourceOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.EndpointsOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.EventOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.KubernetesListOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.LimitRangeOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.NamespaceOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl;
-import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
-import io.fabric8.kubernetes.client.dsl.internal.NodeOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.PersistentVolumeClaimOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.PersistentVolumeOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.PodOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.ReplicationControllerOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.ResourceQuotaOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.SecretOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.SecurityContextConstraintsOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.ServiceAccountOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.ServiceOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.StorageClassOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.*;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.openshift.api.model.DoneableSecurityContextConstraints;
 import io.fabric8.openshift.api.model.SecurityContextConstraints;
@@ -221,6 +203,11 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   @Override
   public MixedOperation<StorageClass, StorageClassList, DoneableStorageClass, Resource<StorageClass, DoneableStorageClass>> storageClasses() {
     return new StorageClassOperationsImpl(httpClient, getConfiguration());
+  }
+
+  @Override
+  public MixedOperation<PodSecurityPolicy, PodSecurityPolicyList, DoneablePodSecurityPolicy, Resource<PodSecurityPolicy, DoneablePodSecurityPolicy>> podSecurityPolicies() {
+    return new PodSecurityPolicyOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
   @Override

@@ -19,6 +19,9 @@ import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionList;
 import io.fabric8.kubernetes.api.model.apiextensions.DoneableCustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.extensions.DoneablePodSecurityPolicy;
+import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicy;
+import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicyList;
 import io.fabric8.kubernetes.client.AppsAPIGroupClient;
 import io.fabric8.kubernetes.client.AutoscalingAPIGroupClient;
 import io.fabric8.kubernetes.client.RequestConfig;
@@ -31,6 +34,7 @@ import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRec
 import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.internal.CustomResourceOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.PodSecurityPolicyOperationsImpl;
 import io.fabric8.kubernetes.client.utils.ImpersonatorInterceptor;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.openshift.api.model.*;
@@ -390,6 +394,11 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public MixedOperation<StorageClass, StorageClassList, DoneableStorageClass, Resource<StorageClass, DoneableStorageClass>> storageClasses() {
     return delegate.storageClasses();
+  }
+
+  @Override
+  public MixedOperation<PodSecurityPolicy, PodSecurityPolicyList, DoneablePodSecurityPolicy, Resource<PodSecurityPolicy, DoneablePodSecurityPolicy>> podSecurityPolicies() {
+    return new PodSecurityPolicyOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
   @Override

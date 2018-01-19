@@ -17,6 +17,9 @@
 package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.api.model.*;
+import io.fabric8.kubernetes.api.model.extensions.DoneablePodSecurityPolicy;
+import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicy;
+import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicyList;
 import io.fabric8.openshift.api.model.DoneableSecurityContextConstraints;
 import io.fabric8.openshift.api.model.SecurityContextConstraints;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsList;
@@ -105,5 +108,7 @@ public interface KubernetesClient extends Client {
   MixedOperation<LimitRange, LimitRangeList, DoneableLimitRange, Resource<LimitRange, DoneableLimitRange>> limitRanges();
 
   MixedOperation<StorageClass, StorageClassList, DoneableStorageClass, Resource<StorageClass, DoneableStorageClass>> storageClasses();
+
+  MixedOperation<PodSecurityPolicy, PodSecurityPolicyList, DoneablePodSecurityPolicy, Resource<PodSecurityPolicy, DoneablePodSecurityPolicy>> podSecurityPolicies();
   
 }

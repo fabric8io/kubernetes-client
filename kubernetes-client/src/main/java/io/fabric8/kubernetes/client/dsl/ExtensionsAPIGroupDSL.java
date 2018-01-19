@@ -16,27 +16,10 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.model.extensions.DaemonSet;
-import io.fabric8.kubernetes.api.model.extensions.DaemonSetList;
-import io.fabric8.kubernetes.api.model.extensions.Deployment;
-import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
-import io.fabric8.kubernetes.api.model.extensions.DoneableDaemonSet;
-import io.fabric8.kubernetes.api.model.extensions.DoneableDeployment;
-import io.fabric8.kubernetes.api.model.extensions.DoneableIngress;
-import io.fabric8.kubernetes.api.model.extensions.DoneableNetworkPolicy;
-import io.fabric8.kubernetes.api.model.extensions.NetworkPolicy;
-import io.fabric8.kubernetes.api.model.extensions.NetworkPolicyList;
+import io.fabric8.kubernetes.api.model.extensions.*;
 import io.fabric8.kubernetes.api.model.DoneableJob;
-import io.fabric8.kubernetes.api.model.extensions.DoneableReplicaSet;
-import io.fabric8.kubernetes.api.model.extensions.DoneableThirdPartyResource;
-import io.fabric8.kubernetes.api.model.extensions.Ingress;
-import io.fabric8.kubernetes.api.model.extensions.IngressList;
 import io.fabric8.kubernetes.api.model.Job;
 import io.fabric8.kubernetes.api.model.JobList;
-import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
-import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
-import io.fabric8.kubernetes.api.model.extensions.ThirdPartyResource;
-import io.fabric8.kubernetes.api.model.extensions.ThirdPartyResourceList;
 import io.fabric8.kubernetes.client.Client;
 
 public interface ExtensionsAPIGroupDSL extends Client {
@@ -53,6 +36,8 @@ public interface ExtensionsAPIGroupDSL extends Client {
   MixedOperation<NetworkPolicy, NetworkPolicyList, DoneableNetworkPolicy, Resource<NetworkPolicy, DoneableNetworkPolicy>> networkPolicies();
 
   MixedOperation<DaemonSet, DaemonSetList, DoneableDaemonSet, Resource<DaemonSet, DoneableDaemonSet>> daemonSets();
+
+  MixedOperation<PodSecurityPolicy, PodSecurityPolicyList, DoneablePodSecurityPolicy, Resource<PodSecurityPolicy, DoneablePodSecurityPolicy>> podSecurityPolicies();
 
   NonNamespaceOperation<ThirdPartyResource, ThirdPartyResourceList, DoneableThirdPartyResource, Resource<ThirdPartyResource, DoneableThirdPartyResource>> thirdPartyResources();
 

@@ -25,6 +25,9 @@ import io.fabric8.kubernetes.api.model.extensions.DoneableIngress;
 import io.fabric8.kubernetes.api.model.extensions.DoneableNetworkPolicy;
 import io.fabric8.kubernetes.api.model.extensions.NetworkPolicy;
 import io.fabric8.kubernetes.api.model.extensions.NetworkPolicyList;
+import io.fabric8.kubernetes.api.model.extensions.DoneablePodSecurityPolicy;
+import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicy;
+import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicyList;
 import io.fabric8.kubernetes.api.model.DoneableJob;
 import io.fabric8.kubernetes.api.model.extensions.DoneableReplicaSet;
 import io.fabric8.kubernetes.api.model.extensions.DoneableThirdPartyResource;
@@ -43,6 +46,7 @@ import io.fabric8.kubernetes.client.dsl.internal.IngressOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.JobOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.NetworkPolicyOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ReplicaSetOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.PodSecurityPolicyOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ThirdPartyResourceOperationsImpl;
 import okhttp3.OkHttpClient;
 
@@ -80,6 +84,11 @@ public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAP
   @Override
   public MixedOperation<NetworkPolicy, NetworkPolicyList, DoneableNetworkPolicy, Resource<NetworkPolicy, DoneableNetworkPolicy>> networkPolicies() {
 	  return new NetworkPolicyOperationsImpl(httpClient, getConfiguration(), getNamespace());
+  }
+
+  @Override
+  public MixedOperation<PodSecurityPolicy, PodSecurityPolicyList, DoneablePodSecurityPolicy, Resource<PodSecurityPolicy, DoneablePodSecurityPolicy>> podSecurityPolicies() {
+    return new PodSecurityPolicyOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
   @Override

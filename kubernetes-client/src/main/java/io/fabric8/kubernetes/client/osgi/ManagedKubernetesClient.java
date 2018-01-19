@@ -20,6 +20,9 @@ import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionList;
 import io.fabric8.kubernetes.api.model.apiextensions.DoneableCustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicy;
+import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicyList;
+import io.fabric8.kubernetes.api.model.extensions.DoneablePodSecurityPolicy;
 import io.fabric8.kubernetes.client.Adapters;
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
@@ -274,6 +277,10 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
 
   public MixedOperation<StorageClass, StorageClassList, DoneableStorageClass, Resource<StorageClass, DoneableStorageClass>> storageClasses() {
     return delegate.storageClasses();
+  }
+
+  public MixedOperation<PodSecurityPolicy, PodSecurityPolicyList, DoneablePodSecurityPolicy, Resource<PodSecurityPolicy, DoneablePodSecurityPolicy>> podSecurityPolicies() {
+    return delegate.podSecurityPolicies();
   }
 
   @Override
