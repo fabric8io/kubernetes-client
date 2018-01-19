@@ -35,4 +35,10 @@ public class PodSecurityPolicyOperationsImpl extends HasMetadataOperation<PodSec
   public PodSecurityPolicyOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading,PodSecurityPolicy item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
     super(client, config, "extensions", apiVersion, "podsecuritypolicies", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
   }
+
+  @Override
+  public boolean isResourceNamespaced() {
+    return false;
+  }
+
 }
