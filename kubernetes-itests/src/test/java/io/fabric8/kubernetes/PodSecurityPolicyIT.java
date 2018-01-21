@@ -16,10 +16,9 @@
 
 package io.fabric8.kubernetes;
 
-
-import io.fabric8.kubernetes.api.model.PodSecurityPolicy;
-import io.fabric8.kubernetes.api.model.PodSecurityPolicyBuilder;
-import io.fabric8.kubernetes.api.model.PodSecurityPolicyList;
+import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicy;
+import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicyBuilder;
+import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicyList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
@@ -30,6 +29,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -94,7 +94,6 @@ public class PodSecurityPolicyIT {
     assertNotNull(podSecurityPolicyList);
     assertEquals(1,podSecurityPolicyList.getItems().size());
     assertEquals("test-example",podSecurityPolicyList.getItems().get(0).getMetadata().getName());
-    assertFalse(podSecurityPolicyList.getItems().get(0).getSpec().getPrivileged());
     assertEquals("RunAsAny",podSecurityPolicyList.getItems().get(0).getSpec().getRunAsUser().getRule());
     assertEquals("RunAsAny",podSecurityPolicyList.getItems().get(0).getSpec().getFsGroup().getRule());
     assertEquals("RunAsAny",podSecurityPolicyList.getItems().get(0).getSpec().getSeLinux().getRule());
@@ -121,8 +120,12 @@ public class PodSecurityPolicyIT {
   public void delete(){
     boolean deleted = client.podSecurityPolicies().delete(podSecurityPolicy);
     assertTrue(deleted);
-    podSecurityPolicyList = client.podSecurityPolicies().list();
+    PodSecurityPolicyList podSecurityPolicyList = client.podSecurityPolicies().list();
     assertEquals(0,podSecurityPolicyList.getItems().size());
   }
 
+  @After
+  public void cleanup() {
+    client.podSecurityPolicies().delete();
+  }
 }
