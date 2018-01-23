@@ -20,7 +20,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-client-project</artifactId>
-    <version>2.6.3</version>
+    <version>2.6.3.fuse-000029</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
