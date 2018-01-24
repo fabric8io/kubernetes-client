@@ -144,6 +144,19 @@ Service myservice = client.services().inNamespace("default").createNew()
                      .done();
 ```
 
+You can also set the apiVersion of the resource like in the case of SecurityContextConstraints :
+
+```java
+SecuirtyContextConstraints scc = new SecurityContextConstraintsBuilder()
+		.withApiVersion("v1")
+		.withNewMetadata().withName("scc").endMetadata()
+		.withAllowPrivilegedContainer(true)
+		.withNewRunAsUser()
+		.withType("RunAsAny")
+		.endRunAsUser()
+		.build();
+```
+
 ### Following events
 
 Use `io.fabric8.kubernetes.api.model.Event` as T for Watcher:
