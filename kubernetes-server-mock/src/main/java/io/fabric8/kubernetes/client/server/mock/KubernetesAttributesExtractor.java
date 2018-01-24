@@ -21,15 +21,14 @@ import io.fabric8.mockwebserver.crud.Attribute;
 import io.fabric8.mockwebserver.crud.AttributeExtractor;
 import io.fabric8.mockwebserver.crud.AttributeSet;
 import io.fabric8.zjsonpatch.internal.guava.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class KubernetesAttributesExtractor implements AttributeExtractor<HasMetadata> {
 
@@ -126,9 +125,19 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
       if (!Strings.isNullOrEmpty(kind)) {
 
         //Poor mans to singular.
+        //Special Case for PodSecurityPolicies and NetworkPolicies because
+        //we need to return PodSecurityPolicy and NetworkPolicy respectively
+        //because it is returning PodSecurityPolicie and NetworkPolicie now
+        //Right now not adding generalised case of "ies" because it may break other resource not sure
+
         if (kind.endsWith("ses")) {
           kind = kind.substring(0, kind.length() - 2);
-        } else if (kind.endsWith("s")) {
+        }
+        else if (kind.equalsIgnoreCase("PodSecurityPolicies") ||
+          kind.equalsIgnoreCase("NetworkPolicies")){
+          kind = kind.substring(0,kind.length() - 3) + "y";
+        }
+        else if (kind.endsWith("s")) {
           kind = kind.substring(0, kind.length() - 1);
         }
         attributes = attributes.add(new Attribute(KIND, kind));

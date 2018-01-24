@@ -16,25 +16,21 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.PodBuilder;
-import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.StorageClass;
 import io.fabric8.kubernetes.api.model.StorageClassBuilder;
 import io.fabric8.kubernetes.api.model.StorageClassList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Rule;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 
 public class StorageSpaceCrudTest {
@@ -77,7 +73,9 @@ public class StorageSpaceCrudTest {
     assertEquals(0, storageClassList.getItems().get(0).getMetadata().getLabels().size());
 
     //test update
-    storageClass = client.storageClasses().withName(name).edit().editOrNewMetadata().addToLabels("key1", "value1").endMetadata().done();
+    storageClass = client.storageClasses().withName(name).edit().editOrNewMetadata()
+      .addToLabels("key1", "value1")
+      .endMetadata().done();
     logger.info("Updated Storage Class: {} ", storageClass.toString());
     assertNotNull(storageClass);
     assertEquals(1, storageClass.getMetadata().getLabels().size());

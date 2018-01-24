@@ -29,6 +29,7 @@ io.fabric8.kubernetes.client.handlers.NodeHandler
 io.fabric8.kubernetes.client.handlers.PersistentVolumeClaimHandler
 io.fabric8.kubernetes.client.handlers.PersistentVolumeHandler
 io.fabric8.kubernetes.client.handlers.PodHandler
+io.fabric8.kubernetes.client.handlers.PodSecurityPolicyHandler
 io.fabric8.kubernetes.client.handlers.ReplicaSetHandler
 io.fabric8.kubernetes.client.handlers.ReplicationControllerHandler
 io.fabric8.kubernetes.client.handlers.ResourceQuotaHandler
