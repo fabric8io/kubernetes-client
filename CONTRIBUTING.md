@@ -1,6 +1,6 @@
 # Contributing Guidelines
 
-## How to contribute code to Kubernetes-Client
+## How to contribute to Kubernetes-Client
 
 We'd love to accept your patches! Since we **♥︎♥︎ LOVE ♥︎♥︎** Contributors and Contributions :-)
 
@@ -9,7 +9,7 @@ You can start contributing to Kubernetes-Client by following the below guideline
 (We are assuming you know about git like resolving merge conflicts, squash, setting remote etc.)
 ### Getting Source Code
 
-* Get the source code by doing a fork and using the below command
+* Get the source code by doing a fork and then using the below command
 ```
 git clone https://github.com/your_github_username/kubernetes-client.git
 ```
@@ -22,7 +22,7 @@ mvn clean install
 ### Starting Development
 Now you can start your contribution work.
 #### * Finding the issue
-There are lots of issues on kubernetes-client's [issue page](https://github.com/fabric8io/kubernetes-client/issues). Please go through the issue and find a one which you want to fix/develop. If you want to implement something which is not there is the issues, please create a new issue there. Please assign that new issue to yourself otherwise it may happen that someone else can develop the same thing.
+There are lots of issues on kubernetes-client's [issue page](https://github.com/fabric8io/kubernetes-client/issues). Please go through the issues and find a one which you want to fix/develop. If you want to implement something which is not there in the issues, please create a new issue. Please assign that new issue or already existing issue to yourself otherwise it may happen that someone else will fix the same issue.
 
 #### * Creating a new branch
 Please create a new branch to start your development work. You can create the branch by any name but we will suggest you consider the naming convention like iss_issueNumber. Example - iss_989
@@ -40,7 +40,7 @@ Do all your development or fixing work here.
 After all your development/fixing work is done, do not forget to add `Unit Test` and `Regression Test` around that. It will be nice if you can add an example of the new feature you have added.
 
 #### * Other Requirements
- * If adding a new feature please update the [CHANGELOG.md](https://github.com/fabric8io/kubernetes-client/blob/master/CHANGELOG.md),
+ * If adding a new feature or fixing some bug please update the [CHANGELOG.md](https://github.com/fabric8io/kubernetes-client/blob/master/CHANGELOG.md),
  * Make sure you add the license headers at top of every new source file you add while implementing the feature.
 
 #### * Commit your work
@@ -51,7 +51,7 @@ git commit -am "Commit-Message"
 Please add a very elaborative commit message for the work you have done. It will help the reviewer to understand the things quickly.
 
 #### * Rebase the PR
-It may happen that during the development, someone else submitted a PATCH and that is merged. You need to rebase your branch with current upstream master.
+It may happen that during the development, someone else submitted other PATCH and that is merged. You need to rebase your branch with current upstream master.
 
 #### * Build the project
 Before sending the PR, check whether everything is working fine. To build the project and run test
