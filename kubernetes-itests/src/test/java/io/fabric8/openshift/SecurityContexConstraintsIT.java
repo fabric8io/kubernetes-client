@@ -29,6 +29,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Collections;
+
 import static org.junit.Assert.*;
 
 @RunWith(ArquillianConditionalRunner.class)
@@ -47,7 +49,9 @@ public class SecurityContexConstraintsIT {
   public void init(){
 
     scc = new SecurityContextConstraintsBuilder()
-      .withNewMetadata().withName("test-scc").endMetadata()
+      .withNewMetadata().withName("test-scc")
+      .addToLabels("foo","bar")
+      .endMetadata()
       .withAllowPrivilegedContainer(true)
       .withNewRunAsUser()
       .withType("RunAsAny")
@@ -106,7 +110,8 @@ public class SecurityContexConstraintsIT {
   @Test
   public void list() {
 
-    SecurityContextConstraintsList sccList = client.securityContextConstraints().list();
+    SecurityContextConstraintsList sccList = client.securityContextConstraints()
+      .withLabels(Collections.singletonMap("foo","bar")).list();
 
     assertNotNull(sccList);
     assertEquals(1,sccList.getItems().size());

@@ -33,6 +33,8 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Collections;
+
 @RunWith(ArquillianConditionalRunner.class)
 @RequiresKubernetes
 public class PodSecurityPolicyIT {
@@ -50,6 +52,7 @@ public class PodSecurityPolicyIT {
 
     podSecurityPolicy = new PodSecurityPolicyBuilder().withNewMetadata()
       .withName("test-example")
+      .addToLabels("foo","bar")
       .endMetadata()
       .withNewSpec()
       .withPrivileged(false)
@@ -90,7 +93,8 @@ public class PodSecurityPolicyIT {
   @Test
   public void list() {
 
-    PodSecurityPolicyList podSecurityPolicyList = client.podSecurityPolicies().list();
+    PodSecurityPolicyList podSecurityPolicyList = client.podSecurityPolicies()
+      .withLabels(Collections.singletonMap("foo","bar")).list();
     assertNotNull(podSecurityPolicyList);
     assertEquals(1,podSecurityPolicyList.getItems().size());
     assertEquals("test-example",podSecurityPolicyList.getItems().get(0).getMetadata().getName());
