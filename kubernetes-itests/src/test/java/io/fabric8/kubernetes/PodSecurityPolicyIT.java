@@ -126,6 +126,6 @@ public class PodSecurityPolicyIT {
 
   @After
   public void cleanup() {
-    client.podSecurityPolicies().delete();
+    client.podSecurityPolicies().withName("test-example").delete();
   }
 }

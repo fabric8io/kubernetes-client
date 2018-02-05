@@ -155,7 +155,7 @@ public class SecurityContexConstraintsIT {
   @After
   public void cleanup() {
 
-    client.securityContextConstraints().delete();
+    client.securityContextConstraints().withName("test-scc").delete();
   }
 
 }
