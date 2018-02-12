@@ -306,7 +306,7 @@ Then you can use the server like:
 | kubernetes-client 3.0.3   | -                | -                | ✓                 |
 
 ### Tests we run for every new Pull Request
-There are the links of the TravisCI and Jenkins for the tests which run for every new Pull Request. You can view all the recent builds also.
+There are the links of the CircleCI and Jenkins for the tests which run for every new Pull Request. You can view all the recent builds also.
 
 * [Regression Test](https://circleci.com/gh/fabric8io/kubernetes-client)
 * [Unit Test](https://ci.fabric8.io/job/kubernetes-client-pullreq/)
