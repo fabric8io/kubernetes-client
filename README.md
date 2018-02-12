@@ -19,7 +19,7 @@ This client provides access to the full [Kubernetes](http://kubernetes.io/) &
     - [Passing a reference of a resource to the client](#passing-a-reference-of-a-resource-to-the-client)
     - [Adapting a client](#adaptin-a-client)
         - [Adapting and close](#adapting-and-close)
-- [Mocking Kubernetes](#mocking-kubernetes)        
+- [Mocking Kubernetes](#mocking-kubernetes)
 
 ## Usage
 
@@ -200,10 +200,10 @@ Once the resource is loaded, you can treat it as you would, had you created it y
 
 For example lets read a pod, from a yml file and work with it:
 
-    Pod refreshed = client.load('/path/to/a/pod.yml').fromServer().get();    
+    Pod refreshed = client.load('/path/to/a/pod.yml').fromServer().get();
     Boolean deleted = client.load('/workspace/pod.yml').delete();
     LogWatch handle = client.load('/workspace/pod.yml').watchLog(System.out);
-    
+
 ### Passing a reference of a resource to the client
 
 In the same spirit you can use an object created externally (either a a reference or using its string representation.
@@ -290,18 +290,23 @@ Then you can use the server like:
 
       //DELETE
       client.pods().inNamespace("ns1").withName("pod1").delete();
-      
+
       //READ AGAIN
       podList = client.pods().inNamespace("ns1").list();
       assertNotNull(podList);
-      assertEquals(0, podList.getItems().size());     
+      assertEquals(0, podList.getItems().size());
     }
 
 
 ## Compatibility
 
-|                           | Kubernetes 1.4.9 | Kubernetes 1.6.2 | Kubernetes 1.7.10 | 
+|                           | Kubernetes 1.4.9 | Kubernetes 1.6.2 | Kubernetes 1.7.10 |
 |---------------------------|------------------|------------------|-------------------|
-| kubernetes-client 1.3.92  | +                | +                | -                 | 
+| kubernetes-client 1.3.92  | +                | +                | -                 |
 | kubernetes-client 3.0.3   | -                | -                | ✓                 |
 
+### Tests we run for every new Pull Request
+There are the links of the TravisCI and Jenkins for the tests which run for every new Pull Request. You can view all the recent builds also.
+
+* [Regression Test](https://circleci.com/gh/fabric8io/kubernetes-client)
+* [Unit Test](https://ci.fabric8.io/job/kubernetes-client-pullreq/)
