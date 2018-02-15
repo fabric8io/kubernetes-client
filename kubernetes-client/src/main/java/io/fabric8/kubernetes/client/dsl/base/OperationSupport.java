@@ -20,6 +20,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.fabric8.kubernetes.client.internal.VersionUsageUtils;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -373,6 +374,7 @@ public class OperationSupport {
    * @throws IOException
    */
   protected <T> T handleResponse(OkHttpClient client, Request.Builder requestBuilder, Class<T> type, Map<String, String> parameters) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+    VersionUsageUtils.log(this.resourceT, this.apiVersion);
     Request request = requestBuilder.build();
     Response response = client.newCall(request).execute();
     try (ResponseBody body = response.body()) {
