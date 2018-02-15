@@ -197,7 +197,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     }
 
     ReadinessWatcher<T> watcher = new ReadinessWatcher<>(item);
-    try (Watch watch = watch(watcher)) {
+    try (Watch watch = watch(item.getMetadata().getResourceVersion(), watcher)) {
       try {
         return watcher.await(interval, TimeUnit.MILLISECONDS);
       } catch (KubernetesClientTimeoutException e) {
