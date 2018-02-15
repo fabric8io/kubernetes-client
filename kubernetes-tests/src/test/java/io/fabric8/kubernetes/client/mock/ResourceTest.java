@@ -149,7 +149,7 @@ public class ResourceTest {
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, noReady).once();
 
-    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&watch=true").andUpgradeToWebSocket()
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
       .open()
       .waitFor(500).andEmit(new WatchEvent(ready, "MODIFIED"))
       .done()
@@ -190,7 +190,7 @@ public class ResourceTest {
     // and again so that "periodicWatchUntilReady" successfully begins
     server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, noReady).times(2);
 
-    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&watch=true").andUpgradeToWebSocket()
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
       .open()
       .waitFor(100).andEmit(new WatchEvent(ready, "MODIFIED"))
       .done()
@@ -230,7 +230,7 @@ public class ResourceTest {
     server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, noReady).times(2);
     server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(201, noReady).once();
 
-    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&watch=true").andUpgradeToWebSocket()
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
       .open()
       .waitFor(100).andEmit(new WatchEvent(ready, "MODIFIED"))
       .done()
