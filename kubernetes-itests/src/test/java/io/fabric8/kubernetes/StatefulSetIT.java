@@ -132,6 +132,6 @@ public class StatefulSetIT {
   public void cleanup() throws InterruptedException {
     client.apps().statefulSets().inNamespace(currentNamespace).delete();
     // Wait for resources to get destroyed
-    Thread.sleep(2000);
+    Thread.sleep(30000);
   }
 }

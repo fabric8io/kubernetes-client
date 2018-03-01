@@ -119,7 +119,7 @@ public class DeploymentIT {
 
   @Test
   public void waitTest() throws InterruptedException {
-    Deployment deploymentOne = client.resource(deployment1).waitUntilReady(5, TimeUnit.MINUTES);
+    Deployment deploymentOne = client.resource(deployment1).waitUntilReady(10, TimeUnit.MINUTES);
     assertTrue(Readiness.isDeploymentReady(deploymentOne));
   }
 
@@ -128,6 +128,6 @@ public class DeploymentIT {
     Thread.sleep(6000);
     client.extensions().deployments().inNamespace(currentNamespace).delete();
     // Wait for resources to get destroyed
-    Thread.sleep(2000);
+    Thread.sleep(30000);
   }
 }

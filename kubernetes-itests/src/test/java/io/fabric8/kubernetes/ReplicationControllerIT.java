@@ -104,6 +104,6 @@ public class ReplicationControllerIT {
   public void cleanup() throws InterruptedException {
     client.replicationControllers().inNamespace(currentNamespace).delete();
     // Wait for resources to get destroyed
-    Thread.sleep(2000);
+    Thread.sleep(30000);
   }
 }

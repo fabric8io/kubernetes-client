@@ -134,6 +134,6 @@ public class BuildConfigIT {
   public void cleanup() throws InterruptedException {
     client.buildConfigs().inNamespace(currentNamespace).delete();
     // Wait for resources to get destroyed
-    Thread.sleep(2000);
+    Thread.sleep(30000);
   }
 }

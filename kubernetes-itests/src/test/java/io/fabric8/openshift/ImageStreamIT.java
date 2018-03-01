@@ -118,6 +118,6 @@ public class ImageStreamIT {
   public void cleanup() throws InterruptedException {
     client.imageStreams().inNamespace(currentNamespace).delete();
     // Wait for resources to get destroyed
-    Thread.sleep(2000);
+    Thread.sleep(30000);
   }
 }

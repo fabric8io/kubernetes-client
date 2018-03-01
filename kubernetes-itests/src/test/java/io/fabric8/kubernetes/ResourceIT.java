@@ -92,6 +92,6 @@ public class ResourceIT {
   public void cleanup() throws InterruptedException {
     client.pods().inNamespace(currentNamespace).delete();
     // Wait for resources to get destroyed
-    Thread.sleep(2000);
+    Thread.sleep(30000);
   }
 }
