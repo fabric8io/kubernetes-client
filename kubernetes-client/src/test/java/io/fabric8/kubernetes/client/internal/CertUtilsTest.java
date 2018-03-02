@@ -146,14 +146,14 @@ public class CertUtilsTest {
     Certificate certificate = trustStore.getCertificate("fabric8-in-store");
     assertNotNull(certificate);
 
-    InputStream certificateFile = getClass().getResourceAsStream("/ssl/fabric8.crt");
+    InputStream certificateFile = CertUtils.getInputStreamFromDataOrFile(null, "src/test/resources/ssl/fabric8.crt");
     KeyStore storeWithCert = CertUtils.createTrustStore(certificateFile, null, "".toCharArray());
     String certificateAlias = storeWithCert.getCertificateAlias(certificate);
     assertNotNull(certificateAlias);
   }
 
-  private InputStream getMultipleCertsInputSteam() {
-    return getClass().getResourceAsStream("/ssl/multiple-certs.pem");
+  private InputStream getMultipleCertsInputSteam() throws IOException {
+    return CertUtils.getInputStreamFromDataOrFile(null, "src/test/resources/ssl/multiple-certs.pem");
   }
 
   private static String decodeUrl(String url) {
