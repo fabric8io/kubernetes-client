@@ -20,6 +20,9 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.ExecListener;
+import io.fabric8.kubernetes.client.dsl.ExecWatch;
+import okhttp3.Response;
 import org.apache.commons.lang.RandomStringUtils;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
@@ -31,6 +34,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.ByteArrayOutputStream;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -118,6 +125,43 @@ public class PodIT {
   @Test
   public void delete() {
     assertTrue(client.pods().inNamespace(currentNamespace).delete(pod1));
+  }
+
+  @Test
+  public void log() throws InterruptedException {
+    client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).waitUntilReady(10, TimeUnit.MINUTES);
+    String log = client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).getLog();
+    assertNotNull(log);
+  }
+
+  @Test
+  public void exec() throws InterruptedException {
+    client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).waitUntilReady(10, TimeUnit.MINUTES);
+    final CountDownLatch execLatch = new CountDownLatch(1);
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    ExecWatch execWatch = client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName())
+      .writingOutput(out).withTTY().usingListener(new ExecListener() {
+        @Override
+        public void onOpen(Response response) {
+          logger.info("Shell was opened");
+        }
+
+        @Override
+        public void onFailure(Throwable throwable, Response response) {
+          logger.info("Shell barfed");
+          execLatch.countDown();
+        }
+
+        @Override
+        public void onClose(int i, String s) {
+          logger.info("Shell closed");
+          execLatch.countDown();
+        }
+      }).exec("date");
+
+    execLatch.await(5, TimeUnit.MINUTES);
+    assertNotNull(execWatch);
+    assertNotNull(out.toString());
   }
 
   @After
