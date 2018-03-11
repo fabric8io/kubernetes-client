@@ -18,7 +18,6 @@ version: 2
 jobs:
   OPENSHIFT_3.6.0:
     machine: true
-    resource_class: large
     steps:
       - checkout
       - run:
@@ -51,7 +50,6 @@ jobs:
           no_output_timeout: 3600
   OPENSHIFT_3.6.1:
     machine: true
-    resource_class: large
     steps:
       - checkout
       - run:
@@ -84,7 +82,6 @@ jobs:
           no_output_timeout: 3600
   OPENSHIFT_3.7.0:
     machine: true
-    resource_class: large
     steps:
       - checkout
       - run:
@@ -93,6 +90,38 @@ jobs:
             curl -LO https://storage.googleapis.com/kubernetes-release/release/${kube_version}/bin/linux/amd64/kubectl && \
                 chmod +x kubectl && sudo mv kubectl /usr/local/bin/
             echo "Installed kubectl CLI tool"
+
+            echo "Installing nsenter"
+            if ! which nsenter > /dev/null; then
+              echo "Did not find nsenter. Installing it."
+              NSENTER_BUILD_DIR=$(mktemp -d /tmp/nsenter-build-XXXXXX)
+              pushd ${NSENTER_BUILD_DIR}
+              curl https://www.kernel.org/pub/linux/utils/util-linux/v2.31/util-linux-2.31.tar.gz | tar -zxf-
+              cd util-linux-2.31
+              ./configure --without-ncurses
+              make nsenter
+              sudo cp nsenter /usr/local/bin
+              rm -rf "${NSENTER_BUILD_DIR}"
+              popd
+            fi
+            if ! which systemd-run > /dev/null; then
+              echo "Did not find systemd-run. Hacking it to work around Kubernetes calling it."
+              echo '#!/bin/bash
+              echo "all arguments: "$@
+              while [[ $# -gt 0 ]]
+              do
+                key="$1"
+                if [[ "${key}" != "--" ]]; then
+                  shift
+                  continue
+                fi
+                shift
+                break
+              done
+              echo "remaining args: "$@
+              exec $@' | sudo tee /usr/bin/systemd-run >/dev/null
+              sudo chmod +x /usr/bin/systemd-run
+            fi
 
             oc_tool_version="openshift-origin-client-tools-v3.7.0-7ed6862-linux-64bit"
             curl -LO https://github.com/openshift/origin/releases/download/v3.7.0/${oc_tool_version}.tar.gz && \
