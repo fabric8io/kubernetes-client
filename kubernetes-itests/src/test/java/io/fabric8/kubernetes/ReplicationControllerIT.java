@@ -43,7 +43,7 @@ public class ReplicationControllerIT {
   @ArquillianResource
   Session session;
 
-  private ReplicationController rc1, rc2;
+  private ReplicationController rc1;
 
   private String currentNamespace;
 
@@ -62,25 +62,8 @@ public class ReplicationControllerIT {
       .endSpec()
       .endTemplate()
       .endSpec().build();
-    rc2 = new ReplicationControllerBuilder()
-      .withNewMetadata().withName("frontend").endMetadata()
-      .withNewSpec()
-      .withReplicas(1)
-      .withSelector(Collections.singletonMap("name", "frontend"))
-      .withNewTemplate()
-      .withNewMetadata().addToLabels("name", "frontend").endMetadata()
-      .withNewSpec()
-      .addNewContainer().withName("helloworld").withImage("openshift/hello-openshift")
-      .addNewPort().withContainerPort(8080).withProtocol("TCP").endPort()
-      .endContainer()
-      .withRestartPolicy("Always")
-      .endSpec()
-      .endTemplate()
-      .endSpec()
-      .build();
 
     client.replicationControllers().inNamespace(currentNamespace).createOrReplace(rc1);
-    client.replicationControllers().inNamespace(currentNamespace).createOrReplace(rc2);
   }
 
   @Test
@@ -97,15 +80,13 @@ public class ReplicationControllerIT {
   public void get() {
     rc1 = client.replicationControllers().inNamespace(currentNamespace).withName("nginx-controller").get();
     assertNotNull(rc1);
-    rc2 = client.replicationControllers().inNamespace(currentNamespace).withName("frontend").get();
-    assertNotNull(rc2);
   }
 
   @Test
   public void list() {
     ReplicationControllerList aRcList = client.replicationControllers().inNamespace(currentNamespace).list();
     assertThat(aRcList).isNotNull();
-    assertEquals(2, aRcList.getItems().size());
+    assertEquals(1, aRcList.getItems().size());
   }
 
   @Test
@@ -117,11 +98,12 @@ public class ReplicationControllerIT {
   @Test
   public void delete() {
     assertTrue(client.replicationControllers().inNamespace(currentNamespace).withName("nginx-controller").delete());
-    assertTrue(client.replicationControllers().inNamespace(currentNamespace).withName("frontend").delete());
   }
 
   @After
-  public void cleanup() {
+  public void cleanup() throws InterruptedException {
     client.replicationControllers().inNamespace(currentNamespace).delete();
+    // Wait for resources to get destroyed
+    Thread.sleep(30000);
   }
 }

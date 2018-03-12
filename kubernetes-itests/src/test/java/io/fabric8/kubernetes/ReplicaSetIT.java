@@ -138,7 +138,9 @@ public class ReplicaSetIT {
   }
 
   @After
-  public void cleanup() {
+  public void cleanup() throws InterruptedException {
     client.extensions().replicaSets().inNamespace(currentNamespace).delete();
+    // Wait for resources to get destroyed
+    Thread.sleep(30000);
   }
 }

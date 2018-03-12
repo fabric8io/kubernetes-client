@@ -45,11 +45,6 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-api</artifactId>
-      <version>${kubernetes.api.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-client</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>

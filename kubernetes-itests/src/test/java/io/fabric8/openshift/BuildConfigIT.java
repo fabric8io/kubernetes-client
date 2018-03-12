@@ -94,50 +94,7 @@ public class BuildConfigIT {
       .endSpec()
       .build();
 
-    buildConfig2 = new BuildConfigBuilder()
-      .withNewMetadata().withName("bc2").endMetadata()
-      .withNewSpec()
-      .withNewOutput()
-      .withNewTo()
-      .withKind("ImageStreamTag")
-      .withName("ruby-hello-world:latest")
-      .endTo()
-      .endOutput()
-      .withNewSource()
-      .withNewGit()
-      .withUri("https://github.com/openshift/ruby-hello-world")
-      .endGit()
-      .withType("Git")
-      .endSource()
-      .withNewStrategy()
-      .withType("Docker")
-      .withNewDockerStrategy()
-      .withNewFrom()
-      .withKind("ImageStreamTag")
-      .withName("ruby-22-centos7:latest")
-      .endFrom()
-      .endDockerStrategy()
-      .endStrategy()
-      .addNewTrigger()
-      .withType("Github")
-      .withNewGithub()
-      .withSecret("R4c5loDOcu7qJ1XZYDXE")
-      .endGithub()
-      .endTrigger()
-      .addNewTrigger()
-      .withType("Generic")
-      .withNewGeneric()
-      .withSecret("tx_Ppqs7ghQa0-sHC7Uq")
-      .endGeneric()
-      .endTrigger()
-      .addNewTrigger()
-      .withType("ImageChange")
-      .endTrigger()
-      .endSpec()
-      .build();
-
     client.buildConfigs().inNamespace(currentNamespace).createOrReplace(buildConfig1);
-    client.buildConfigs().inNamespace(currentNamespace).createOrReplace(buildConfig2);
   }
 
   @Test
@@ -151,14 +108,13 @@ public class BuildConfigIT {
   @Test
   public void get() {
     assertNotNull(client.buildConfigs().inNamespace(currentNamespace).withName("bc1").get());
-    assertNotNull(client.buildConfigs().inNamespace(currentNamespace).withName("bc2").get());
   }
 
   @Test
   public void list() {
     BuildConfigList bcList = client.buildConfigs().inNamespace(currentNamespace).list();
     assertThat(bcList).isNotNull();
-    assertEquals(2, bcList.getItems().size());
+    assertEquals(1, bcList.getItems().size());
   }
 
   @Test
@@ -170,12 +126,14 @@ public class BuildConfigIT {
 
   @Test
   public void delete() {
-    boolean bDeleted = client.buildConfigs().inNamespace(currentNamespace).withName("bc2").delete();
+    boolean bDeleted = client.buildConfigs().inNamespace(currentNamespace).withName("bc1").delete();
     assertTrue(bDeleted);
   }
 
   @After
-  public void cleanup() {
+  public void cleanup() throws InterruptedException {
     client.buildConfigs().inNamespace(currentNamespace).delete();
+    // Wait for resources to get destroyed
+    Thread.sleep(30000);
   }
 }

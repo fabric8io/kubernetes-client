@@ -102,7 +102,9 @@ public class ServiceIT {
   }
 
   @After
-  public void cleanup() {
+  public void cleanup() throws InterruptedException {
     client.services().inNamespace(currentNamespace).delete();
+    // Wait for resources to get destroyed
+    Thread.sleep(30000);
   }
 }

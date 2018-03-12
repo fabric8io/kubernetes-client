@@ -41,7 +41,7 @@ public class ResourceIT {
   @ArquillianResource
   Session session;
 
-  private Pod pod1, pod2;
+  private Pod pod1;
 
   private String currentNamespace;
 
@@ -54,21 +54,13 @@ public class ResourceIT {
       .addNewContainer().withName("nginx").withImage("nginx").endContainer()
       .endSpec()
       .build();
-    pod2 = new PodBuilder()
-      .withNewMetadata().withName("resource-pod-" + RandomStringUtils.randomAlphanumeric(6).toLowerCase()).endMetadata()
-      .withNewSpec()
-      .addNewContainer().withName("httpd").withImage("httpd").endContainer()
-      .endSpec()
-      .build();
 
     client.resource(pod1).inNamespace(currentNamespace).createOrReplace();
-    client.resource(pod2).inNamespace(currentNamespace).createOrReplace();
   }
 
   @Test
   public void get() {
     assertNotNull(client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).get());
-    assertNotNull(client.pods().inNamespace(currentNamespace).withName(pod2.getMetadata().getName()).get());
   }
 
   @Test
@@ -79,20 +71,13 @@ public class ResourceIT {
       .addNewContainer().withName("nginx").withImage("nginx").endContainer()
       .endSpec()
       .build();
-    Pod listPod2 = new PodBuilder()
-      .withNewMetadata().withName("pod4").endMetadata()
-      .withNewSpec()
-      .addNewContainer().withName("httpd").withImage("httpd").endContainer()
-      .endSpec()
-      .build();
-    client.resourceList(new PodListBuilder().withItems(listPod1, listPod2).build())
+    client.resourceList(new PodListBuilder().withItems(listPod1).build())
       .inNamespace(currentNamespace)
       .apply();
 
     assertTrue(client.pods().inNamespace(currentNamespace).withName("pod3") != null);
-    assertTrue(client.pods().inNamespace(currentNamespace).withName("pod4") != null);
 
-    boolean bDeleted = client.resourceList(new PodListBuilder().withItems(listPod1, listPod2).build())
+    boolean bDeleted = client.resourceList(new PodListBuilder().withItems(listPod1).build())
       .inNamespace(currentNamespace)
       .delete();
     assertTrue(bDeleted);
@@ -101,11 +86,12 @@ public class ResourceIT {
   @Test
   public void delete() {
     assertTrue(client.resource(pod1).inNamespace(currentNamespace).delete());
-    assertTrue(client.resource(pod2).inNamespace(currentNamespace).delete());
   }
 
   @After
-  public void cleanup() {
+  public void cleanup() throws InterruptedException {
     client.pods().inNamespace(currentNamespace).delete();
+    // Wait for resources to get destroyed
+    Thread.sleep(30000);
   }
 }

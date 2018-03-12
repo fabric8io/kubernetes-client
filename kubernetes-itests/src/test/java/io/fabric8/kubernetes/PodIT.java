@@ -121,7 +121,9 @@ public class PodIT {
   }
 
   @After
-  public void cleanup() {
+  public void cleanup() throws InterruptedException {
     client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).delete();
+    // Wait for resources to get destroyed
+    Thread.sleep(30000);
   }
 }
