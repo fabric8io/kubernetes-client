@@ -39,9 +39,31 @@ Do all your development or fixing work here.
 
 After all your development/fixing work is done, do not forget to add `Unit Test` and `Regression Test` around that. It will be nice if you can add an example of the new feature you have added.
 
+#### * Check your work after running all Unit and Regression Tests
+
+You should run all the unit tests by hitting the following command
+
+```
+mvn clean install
+```
+
+To run regression tests, you need to run a OpenShift/Kubernetes Cluster and after that
+
+For Kubernetes,
+
+```
+mvn clean verify -Pitests-kubernetes
+```
+
+For OpenShift (Login as Admin),
+
+```
+mvn clean verify -Pitests-openshift
+```
+
 #### * Other Requirements
  * If adding a new feature or fixing some bug please update the [CHANGELOG.md](https://github.com/fabric8io/kubernetes-client/blob/master/CHANGELOG.md),
- * Make sure you add the license headers at top of every new source file you add while implementing the feature.
+ * Make sure you add the license headers at top of every new source file you add while implementing the feature. You can do so by hitting `mvn -N license:format` command.
 
 #### * Commit your work
 After all your work is done, you need to commit the changes.
