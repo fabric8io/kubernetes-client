@@ -98,6 +98,7 @@ public class WatchTest {
     server.expect()
       .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true")
       .andReturn(410, outdatedEvent).once();
+    final boolean[] onCloseCalled = {false};
     try (Watch watch = client.pods().withName("pod1").withResourceVersion("1").watch(new Watcher<Pod>() {
       @Override
       public void eventReceived(Action action, Pod resource) {
@@ -106,11 +107,12 @@ public class WatchTest {
 
       @Override
       public void onClose(KubernetesClientException cause) {
-        throw new AssertionFailedError();
+        onCloseCalled[0] =true;
       }
     })) {
 
     }
+    assertTrue(onCloseCalled[0]);
   }
 
   @Test

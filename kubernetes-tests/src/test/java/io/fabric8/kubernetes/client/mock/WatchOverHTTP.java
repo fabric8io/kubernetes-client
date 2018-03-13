@@ -16,8 +16,6 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import static org.junit.Assert.assertTrue;
-
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.Status;
@@ -29,14 +27,17 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import java.net.HttpURLConnection;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import junit.framework.AssertionFailedError;
 import org.junit.Rule;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.net.HttpURLConnection;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import static org.junit.Assert.assertTrue;
 
 public class WatchOverHTTP {
   static final Pod pod1 = new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1")
@@ -97,6 +98,8 @@ public class WatchOverHTTP {
       .withPath(path)
       .andReturn(200, "Failed WebSocket Connection").once();
     server.expect().withPath(path).andReturnChunked(200, outdatedEvent, "\n").once();
+
+    final boolean[] onCloseCalled = {false};
     try (Watch watch = client.pods().withName("pod1").withResourceVersion("1").watch(new Watcher<Pod>() {
       @Override
       public void eventReceived(Action action, Pod resource) {
@@ -105,9 +108,10 @@ public class WatchOverHTTP {
 
       @Override
       public void onClose(KubernetesClientException cause) {
-        throw new AssertionFailedError();
+        onCloseCalled[0] = true;
       }
     })){};
+    assertTrue(onCloseCalled[0]);
   }
 
   @Test
