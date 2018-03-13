@@ -62,24 +62,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.jboss.arquillian.junit</groupId>
-      <artifactId>arquillian-junit-standalone</artifactId>
-      <version>${arquillian.core.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.arquillian.cube</groupId>
-      <artifactId>arquillian-cube-kubernetes</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>io.fabric8</groupId>
-          <artifactId>kubernetes-openshift-uberjar</artifactId>
-        </exclusion>
-      </exclusions>
-      <version>${arquillian.cube.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.arquillian.cube</groupId>
       <artifactId>arquillian-cube-openshift</artifactId>
       <version>${arquillian.cube.version}</version>
@@ -92,4 +74,5 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
 </project>

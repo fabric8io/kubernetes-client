@@ -16,7 +16,8 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.sonatype.oss</groupId>
@@ -89,7 +90,7 @@
     <kubernetes.model.version>2.0.8</kubernetes.model.version>
     <log4j.version>2.5</log4j.version>
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
-    <arquillian.cube.version>1.11.0</arquillian.cube.version>
+    <arquillian.cube.version>1.15.2</arquillian.cube.version>
     <assertj.core.version>3.8.0</assertj.core.version>
     <arquillian.core.version>1.2.0.Final</arquillian.core.version>
 
@@ -348,10 +349,49 @@
       </build>
     </profile>
     <profile>
-      <id>itests</id>
+      <id>itests-kubernetes</id>
       <modules>
         <module>kubernetes-itests</module>
       </modules>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>2.20.1</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>integration-test</goal>
+                  <goal>verify</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+      <dependencies>
+        <dependency>
+          <groupId>org.arquillian.cube</groupId>
+          <artifactId>arquillian-cube-kubernetes-starter</artifactId>
+          <version>${arquillian.cube.version}</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>itests-openshift</id>
+      <modules>
+        <module>kubernetes-itests</module>
+      </modules>
+      <dependencies>
+        <dependency>
+          <groupId>org.arquillian.cube</groupId>
+          <artifactId>arquillian-cube-openshift-starter</artifactId>
+          <version>${arquillian.cube.version}</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
       <build>
         <plugins>
           <plugin>
