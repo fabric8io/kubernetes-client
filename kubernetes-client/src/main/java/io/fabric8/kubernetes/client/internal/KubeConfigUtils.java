@@ -40,6 +40,11 @@ public class KubeConfigUtils {
     return mapper.readValue(file, Config.class);
   }
 
+  public static Config parseConfigFromString(String contents) throws IOException {
+    ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+    return mapper.readValue(contents, Config.class);
+  }
+
   /**
    * Returns the current context in the given config
    */
