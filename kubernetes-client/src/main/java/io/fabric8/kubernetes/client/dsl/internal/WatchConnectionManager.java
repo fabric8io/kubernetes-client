@@ -170,7 +170,8 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
         // We do not expect a 200 in response to the websocket connection. If it occurs, we throw
         // an exception and try the watch via a persistent HTTP Get.
         if (response != null && response.code() == HTTP_OK) {
-          queue.add(new KubernetesClientException("Received 200 on websocket",
+          queue.clear();
+          queue.offer(new KubernetesClientException("Received 200 on websocket",
             response.code(), null));
           response.body().close();
           return;
@@ -186,13 +187,13 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
               t);
           if (!started.get()) {
             queue.clear();
-            queue.add(new KubernetesClientException(status));
+            queue.offer(new KubernetesClientException(status));
           }
         } else {
           logger.warn("Exec Failure", t);
           if (!started.get()) {
             queue.clear();
-            queue.add(new KubernetesClientException("Failed to start websocket", t));
+            queue.offer(new KubernetesClientException("Failed to start websocket", t));
           }
         }
 
