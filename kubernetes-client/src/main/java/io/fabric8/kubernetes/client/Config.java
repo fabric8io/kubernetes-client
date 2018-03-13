@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -369,55 +370,94 @@ public class Config {
     return new File(relativeTo.getParentFile(), filename).getAbsolutePath();
   }
 
+  public static Config fromKubeconfig(String kubeconfigContents) {
+    return fromKubeconfig(null, kubeconfigContents, null);
+  }
+
+  // Note: kubeconfigPath is optional (see note on loadFromKubeConfig)
+  public static Config fromKubeconfig(String context, String kubeconfigContents, String kubeconfigPath) {
+    // we allow passing context along here, since downstream accepts it
+    Config config = new Config();
+    Config.loadFromKubeconfig(config, null, kubeconfigContents, kubeconfigPath);
+    return config;
+  }
+
   private static boolean tryKubeConfig(Config config, String context) {
     LOGGER.debug("Trying to configure client from Kubernetes config...");
     if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, true)) {
       File kubeConfigFile = new File(
           Utils.getSystemPropertyOrEnvVar(KUBERNETES_KUBECONFIG_FILE, new File(getHomeDir(), ".kube" + File.separator + "config").toString()));
       boolean kubeConfigFileExists = Files.isRegularFile(kubeConfigFile.toPath());
+
       if (kubeConfigFileExists) {
         LOGGER.debug("Found for Kubernetes config at: ["+kubeConfigFile.getPath()+"].");
+        String kubeconfigContents;
         try {
-          io.fabric8.kubernetes.api.model.Config kubeConfig = KubeConfigUtils.parseConfig(kubeConfigFile);
-          if (context != null) {
-            kubeConfig.setCurrentContext(context);
-          }
-          Context currentContext = KubeConfigUtils.getCurrentContext(kubeConfig);
-          Cluster currentCluster = KubeConfigUtils.getCluster(kubeConfig, currentContext);
-          if (currentCluster != null) {
-            config.setMasterUrl(currentCluster.getServer());
-            config.setNamespace(currentContext.getNamespace());
-            config.setTrustCerts(currentCluster.getInsecureSkipTlsVerify() != null && currentCluster.getInsecureSkipTlsVerify());
-            config.setCaCertFile(absolutify(kubeConfigFile, currentCluster.getCertificateAuthority()));
-            config.setCaCertData(currentCluster.getCertificateAuthorityData());
-            AuthInfo currentAuthInfo = KubeConfigUtils.getUserAuthInfo(kubeConfig, currentContext);
-            if (currentAuthInfo != null) {
-              config.setClientCertFile(absolutify(kubeConfigFile, currentAuthInfo.getClientCertificate()));
-              config.setClientCertData(currentAuthInfo.getClientCertificateData());
-              config.setClientKeyFile(absolutify(kubeConfigFile, currentAuthInfo.getClientKey()));
-              config.setClientKeyData(currentAuthInfo.getClientKeyData());
-              config.setOauthToken(currentAuthInfo.getToken());
-              config.setUsername(currentAuthInfo.getUsername());
-              config.setPassword(currentAuthInfo.getPassword());
-
-              if (Utils.isNullOrEmpty(config.getOauthToken()) && currentAuthInfo.getAuthProvider() != null && !Utils.isNullOrEmpty(currentAuthInfo.getAuthProvider().getConfig().get(ACCESS_TOKEN))) {
-                config.setOauthToken(currentAuthInfo.getAuthProvider().getConfig().get(ACCESS_TOKEN));
-              }
-
-              config.getErrorMessages().put(401, "Unauthorized! Token may have expired! Please log-in again.");
-              config.getErrorMessages().put(403, "Forbidden! User "+currentContext.getUser()+ " doesn't have permission.");
-            }
-            return true;
-          }
-        } catch (IOException e) {
+          kubeconfigContents = new String(Files.readAllBytes(kubeConfigFile.toPath()), StandardCharsets.UTF_8);
+        } catch(IOException e) {
           LOGGER.error("Could not load Kubernetes config file from {}", kubeConfigFile.getPath(), e);
+          return false;
         }
+        Config.loadFromKubeconfig(config, context, kubeconfigContents, kubeConfigFile.getPath());
+        return true;
       } else {
         LOGGER.debug("Did not find Kubernetes config at: ["+kubeConfigFile.getPath()+"]. Ignoring.");
       }
     }
     return false;
   }
+
+  // Note: kubeconfigPath is optional
+  // It is only used to rewrite relative tls asset paths inside kubeconfig when a file is passed, and in the case that
+  // the kubeconfig references some assets via relative paths.
+  private static boolean loadFromKubeconfig(Config config, String context, String kubeconfigContents, String kubeconfigPath) {
+    try {
+      io.fabric8.kubernetes.api.model.Config kubeConfig = KubeConfigUtils.parseConfigFromString(kubeconfigContents);
+      if (context != null) {
+        kubeConfig.setCurrentContext(context);
+      }
+      Context currentContext = KubeConfigUtils.getCurrentContext(kubeConfig);
+      Cluster currentCluster = KubeConfigUtils.getCluster(kubeConfig, currentContext);
+      if (currentCluster != null) {
+        config.setMasterUrl(currentCluster.getServer());
+        config.setNamespace(currentContext.getNamespace());
+        config.setTrustCerts(currentCluster.getInsecureSkipTlsVerify() != null && currentCluster.getInsecureSkipTlsVerify());
+        config.setCaCertData(currentCluster.getCertificateAuthorityData());
+        AuthInfo currentAuthInfo = KubeConfigUtils.getUserAuthInfo(kubeConfig, currentContext);
+        if (currentAuthInfo != null) {
+          // rewrite tls asset paths if needed
+          String caCertFile = currentCluster.getCertificateAuthority();
+          String clientCertFile = currentAuthInfo.getClientCertificate();
+          String clientKeyFile = currentAuthInfo.getClientKey();
+          if (kubeconfigPath != null && !kubeconfigPath.isEmpty()) {
+            caCertFile = absolutify(new File(kubeconfigPath), currentCluster.getCertificateAuthority());
+            clientCertFile = absolutify(new File(kubeconfigPath), currentAuthInfo.getClientCertificate());
+            clientKeyFile = absolutify(new File(kubeconfigPath), currentAuthInfo.getClientKey());
+          }
+          config.setCaCertFile(caCertFile);
+          config.setClientCertFile(clientCertFile);
+          config.setClientCertData(currentAuthInfo.getClientCertificateData());
+          config.setClientKeyFile(clientKeyFile);
+          config.setClientKeyData(currentAuthInfo.getClientKeyData());
+          config.setOauthToken(currentAuthInfo.getToken());
+          config.setUsername(currentAuthInfo.getUsername());
+          config.setPassword(currentAuthInfo.getPassword());
+
+          if (Utils.isNullOrEmpty(config.getOauthToken()) && currentAuthInfo.getAuthProvider() != null && !Utils.isNullOrEmpty(currentAuthInfo.getAuthProvider().getConfig().get(ACCESS_TOKEN))) {
+            config.setOauthToken(currentAuthInfo.getAuthProvider().getConfig().get(ACCESS_TOKEN));
+          }
+
+          config.getErrorMessages().put(401, "Unauthorized! Token may have expired! Please log-in again.");
+          config.getErrorMessages().put(403, "Forbidden! User "+currentContext.getUser()+ " doesn't have permission.");
+        }
+        return true;
+      }
+    } catch (IOException e) {
+      LOGGER.error("Failed to parse the kubeconfig.", e);
+    }
+
+    return false;
+}
 
   private static boolean tryNamespaceFromPath(Config config) {
     LOGGER.debug("Trying to configure client namespace from Kubernetes service account namespace path...");
