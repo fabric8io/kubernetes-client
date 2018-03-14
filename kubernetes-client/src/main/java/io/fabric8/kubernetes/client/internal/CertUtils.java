@@ -20,10 +20,11 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.KeyFactory;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -48,7 +49,7 @@ public class CertUtils {
   public static String KEY_STORE_SYSTEM_PROPERTY = "javax.net.ssl.keyStore";
   public static String KEY_STORE_PASSWORD_SYSTEM_PROPERTY = "javax.net.ssl.keyStorePassword";
 
-  public static InputStream getInputStreamFromDataOrFile(String data, String file) throws FileNotFoundException {
+  public static InputStream getInputStreamFromDataOrFile(String data, String file) throws IOException {
     if (data != null) {
       byte[] bytes = null;
       ByteString decoded = ByteString.decodeBase64(data);
@@ -61,7 +62,7 @@ public class CertUtils {
       return new ByteArrayInputStream(bytes);
     }
     if (file != null) {
-      return new FileInputStream(file);
+      return new ByteArrayInputStream(new String(Files.readAllBytes(Paths.get(file))).trim().getBytes());
     }
     return null;
   }
