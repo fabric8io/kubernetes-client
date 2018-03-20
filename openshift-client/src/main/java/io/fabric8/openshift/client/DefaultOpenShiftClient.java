@@ -147,7 +147,7 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
     OkHttpClient.Builder builder = httpClient.newBuilder();
     builder.interceptors().clear();
     return builder.addInterceptor(new OpenShiftOAuthInterceptor(httpClient, OpenShiftConfig.wrap(getConfiguration())))
-      .addInterceptor(new ImpersonatorInterceptor(getConfiguration().getRequestConfig()))
+      .addInterceptor(new ImpersonatorInterceptor(getConfiguration()))
       .build();
   }
 

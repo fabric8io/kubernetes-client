@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.RequestConfig;
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -26,14 +27,15 @@ import java.util.Map;
 import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
 
 public class ImpersonatorInterceptor implements Interceptor {
-  private final RequestConfig requestConfig;
-  public ImpersonatorInterceptor(RequestConfig requestConfig) {
-    this.requestConfig = requestConfig;
+  private final Config config;
+  public ImpersonatorInterceptor(Config config) {
+    this.config = config;
   }
 
   @Override
   public Response intercept(Chain chain) throws IOException {
     Request request = chain.request();
+    RequestConfig requestConfig = config.getRequestConfig();
     if (isNotNullOrEmpty(requestConfig.getImpersonateUsername())) {
       Request.Builder requestBuilder = chain.request().newBuilder();
 
