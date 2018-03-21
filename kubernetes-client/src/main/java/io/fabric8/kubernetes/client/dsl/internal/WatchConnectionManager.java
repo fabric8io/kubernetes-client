@@ -381,7 +381,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
     if (exponentOfTwo > maxIntervalExponent)
       exponentOfTwo = maxIntervalExponent;
     long ret = reconnectInterval * (1 << exponentOfTwo);
-    logger.info("Current reconnect backoff is " + ret + " milliseconds (T" + exponentOfTwo + ")");
+    logger.debug("Current reconnect backoff is " + ret + " milliseconds (T" + exponentOfTwo + ")");
     return ret;
   }
 
