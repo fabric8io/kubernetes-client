@@ -37,13 +37,27 @@ import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
 import static okhttp3.ConnectionSpec.CLEARTEXT;
 
 public class HttpClientUtils {
 
-    public static OkHttpClient createHttpClient(final Config config) {
+  private static Pattern VALID_IPV4_PATTERN = null;
+  public static final String ipv4Pattern = "(http:\\/\\/|https:\\/\\/)?(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])(\\/[0-9]\\d|1[0-9]\\d|2[0-9]\\d|3[0-2]\\d)?";
+
+  static {
+    try {
+      VALID_IPV4_PATTERN = Pattern.compile(ipv4Pattern, Pattern.CASE_INSENSITIVE);
+    } catch (PatternSyntaxException e) {
+      throw KubernetesClientException.launderThrowable("Unable to compile ipv4address pattern.", e);
+    }
+  }
+
+  public static OkHttpClient createHttpClient(final Config config) {
         try {
             OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
 
@@ -174,9 +188,15 @@ public class HttpClientUtils {
         String host = master.getHost();
         if (config.getNoProxy() != null) {
 	        for (String noProxy : config.getNoProxy()) {
-	            if (host.endsWith(noProxy)) {
-	                return null;
-	            }
+            if (isIpAddress(noProxy)) {
+              if (new IpAddressMatcher(noProxy).matches(host)) {
+                return null;
+              }
+            } else {
+              if (host.contains(noProxy)) {
+                return null;
+              }
+            }
 	        }
         }
         String proxy = config.getHttpsProxy();
@@ -187,5 +207,10 @@ public class HttpClientUtils {
             return new URL(proxy);
         }
         return null;
+    }
+
+     private static boolean isIpAddress(String ipAddress) {
+      Matcher ipMatcher = VALID_IPV4_PATTERN.matcher(ipAddress);
+      return ipMatcher.matches();
     }
 }
