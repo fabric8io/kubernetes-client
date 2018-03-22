@@ -58,7 +58,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
   private final int reconnectInterval;
 
   private final AtomicBoolean reconnectPending = new AtomicBoolean(false);
-  private final static int maxIntervalExponent = 5; // max 32x slowdown from base interval
+  private int maxIntervalExponent;
   private final URL requestUrl;
   private final AtomicInteger currentReconnectAttempt = new AtomicInteger(0);
   private OkHttpClient clonedClient;
@@ -77,12 +77,22 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
                           final String version, final Watcher<T> watcher, final int reconnectInterval,
                           final int reconnectLimit, long connectTimeout)
     throws MalformedURLException {
+    // Default max 32x slowdown from base interval
+    this(client, baseOperation, version, watcher, reconnectInterval, reconnectLimit, connectTimeout, 5);
+  }
+
+  public WatchHTTPManager(final OkHttpClient client,
+                          final BaseOperation<T, L, ?, ?> baseOperation,
+                          final String version, final Watcher<T> watcher, final int reconnectInterval,
+                          final int reconnectLimit, long connectTimeout, int maxIntervalExponent)
+    throws MalformedURLException {
 
     this.resourceVersion = new AtomicReference<>(version); // may be a reference to null
     this.baseOperation = baseOperation;
     this.watcher = watcher;
     this.reconnectInterval = reconnectInterval;
     this.reconnectLimit = reconnectLimit;
+    this.maxIntervalExponent = maxIntervalExponent;
 
     OkHttpClient clonedClient = client.newBuilder()
       .connectTimeout(connectTimeout, TimeUnit.MILLISECONDS)
