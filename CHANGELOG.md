@@ -5,6 +5,9 @@
   Bugs
    * Impersonation parameters not set in withRequestConfig - https://github.com/fabric8io/kubernetes-client/pull/1037
 
+  Improvements
+   * NO_PROXY setting now supports IP ranges so you can specify whole subnet to be excluded from proxy traffic eg. 192.168.0.1/8
+   
 #### 3.1.10 
 
   Bugs
