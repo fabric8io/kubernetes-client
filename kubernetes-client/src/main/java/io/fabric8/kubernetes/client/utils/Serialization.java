@@ -241,7 +241,7 @@ public class Serialization {
 
   private static List<KubernetesResource> getKubernetesResourceList(Map<String, String> parameters, String specFile) {
     List<KubernetesResource> documentList = new ArrayList<>();
-    String[] documents = specFile.split(DOCUMENT_DELIMITER);
+    String[] documents = splitSpecFile(specFile);
     for (String document : documents) {
       if (validate(document)) {
         ByteArrayInputStream documentInputStream = new ByteArrayInputStream(document.getBytes());
@@ -253,17 +253,37 @@ public class Serialization {
   }
 
   private static boolean containsMultipleDocuments(String specFile) {
-    Pattern p = Pattern.compile(DOCUMENT_DELIMITER);
-    Matcher m = p.matcher(specFile);
-    int count = 0;
-    while (m.find()) {
-      count++;
+    String[] documents = splitSpecFile(specFile);
+    int nValidDocuments = 0;
+    for(String document : documents) {
+      if(validate(document))
+        nValidDocuments++;
     }
-    if (count == 1) {
-      String[] documents = specFile.split(DOCUMENT_DELIMITER);
-      return validate(documents[0]);
+
+    return nValidDocuments > 1;
+  }
+
+  private static String[] splitSpecFile(String aSpecFile) {
+    List<String> documents = new ArrayList<>();
+    String[] lines = aSpecFile.split(System.lineSeparator());
+    int nLine = 0;
+    StringBuilder builder = new StringBuilder();
+
+    while(nLine < lines.length) {
+      if(lines[nLine].length() >= DOCUMENT_DELIMITER.length()
+          && !lines[nLine].substring(0, DOCUMENT_DELIMITER.length()).equals(DOCUMENT_DELIMITER)) {
+        builder.append(lines[nLine] + System.lineSeparator());
+      } else {
+        documents.add(builder.toString());
+        builder.setLength(0);
+      }
+
+      nLine++;
     }
-    return count > 1;
+
+    if(!builder.toString().isEmpty())
+      documents.add(builder.toString());
+    return documents.toArray(new String[documents.size()]);
   }
 
   private static boolean validate(String document) {
