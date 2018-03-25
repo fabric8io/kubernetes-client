@@ -50,11 +50,11 @@ public class ExecPipesExample {
                         .redirectingInput()
                         .redirectingOutput()
                         .exec();
-                InputStreamPumper pump = new InputStreamPumper(watch.getOutput(), new SystemOutCallback()))
+                InputStreamPumper pump = new InputStreamPumper(watch.getStdoutPipe(), new SystemOutCallback()))
         {
 
             executorService.submit(pump);
-            watch.getInput().write("ls -al\n".getBytes());
+            watch.getStdinPipe().write("ls -al\n".getBytes());
             Thread.sleep(5 * 1000);
         } catch (Exception e) {
             throw KubernetesClientException.launderThrowable(e);

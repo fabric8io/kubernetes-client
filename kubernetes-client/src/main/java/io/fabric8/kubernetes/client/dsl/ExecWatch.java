@@ -21,11 +21,22 @@ import java.io.OutputStream;
 
 public interface ExecWatch extends Closeable {
 
+  @Deprecated
   OutputStream getInput();
 
+  @Deprecated
   InputStream getOutput();
 
+  @Deprecated
   InputStream getError();
+
+  OutputStream getStdinPipe();
+
+  InputStream getStdoutPipe();
+
+  InputStream getStderrPipe();
+
+  InputStream getErrorPipe();
 
   /**
    * Close the Watch.
