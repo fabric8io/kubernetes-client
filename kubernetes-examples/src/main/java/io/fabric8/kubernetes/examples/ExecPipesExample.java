@@ -49,6 +49,8 @@ public class ExecPipesExample {
                 ExecWatch watch = client.pods().withName(podName)
                         .redirectingInput()
                         .redirectingOutput()
+                        .redirectingError()
+                        .redirectingErrorChannel()
                         .exec();
                 InputStreamPumper pump = new InputStreamPumper(watch.getStdoutPipe(), new SystemOutCallback()))
         {
