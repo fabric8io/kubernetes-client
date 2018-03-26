@@ -20,11 +20,10 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.WatchEvent;
-import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.*;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
+import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.*;
 import okio.ByteString;
@@ -71,7 +70,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   private final URL requestUrl;
 
   private WebSocket webSocket;
-  private OkHttpClient clonedClient;
+  private OkHttpClient okhttpClient;
 
   public WatchConnectionManager(final OkHttpClient client, final BaseOperation<T, L, ?, ?> baseOperation, final String version, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit, long websocketTimeout, int maxIntervalExponent) throws MalformedURLException {
     this.resourceVersion = new AtomicReference<>(version); // may be a reference to null
@@ -82,7 +81,8 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
     this.websocketTimeout = websocketTimeout;
     this.maxIntervalExponent = maxIntervalExponent;
 
-    this.clonedClient = client.newBuilder().readTimeout(this.websocketTimeout, TimeUnit.MILLISECONDS).build();
+    Config requestConfig = new ConfigBuilder(baseOperation.getConfig()).withRequestTimeout((int)this.websocketTimeout).build();
+    this.okhttpClient = HttpClientUtils.createHttpClient(requestConfig);
 
     // The URL is created, validated and saved once, so that reconnect attempts don't have to deal with
     // MalformedURLExceptions that would never occur
@@ -151,7 +151,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
       .addHeader("Origin", requestUrl.getProtocol() + "://" + requestUrl.getHost() + ":" + requestUrl.getPort())
       .build();
 
-    webSocket = clonedClient.newWebSocket(request, new WebSocketListener() {
+    webSocket = okhttpClient.newWebSocket(request, new WebSocketListener() {
       @Override
       public void onOpen(final WebSocket webSocket, Response response) {
         if (response != null && response.body() != null) {
