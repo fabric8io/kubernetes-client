@@ -261,7 +261,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
 
         try {
             URL url = new URL(URLUtils.join(getResourceUrl().toString(), sb.toString()));
-            Request.Builder r = new Request.Builder().url(url).get();
+            Request.Builder r = new Request.Builder().url(url).header("Sec-WebSocket-Protocol", "v4.channel.k8s.io").get();
             OkHttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
             final ExecWebSocketListener execWebSocketListener = new ExecWebSocketListener(new Config(), in, out, err, errChannel, inPipe, outPipe, errPipe, errChannelPipe, execListener);
             clone.newWebSocket(r.build(), execWebSocketListener);
