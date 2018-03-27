@@ -63,14 +63,14 @@ public class LoadMultipleDocumentsFromFileExample {
     StringBuilder sb = new StringBuilder();
     sb.append("[ ");
     if (Utils.isNotNullOrEmpty(item.getKind())) {
-      sb.append("Kind:").append(item.getKind());
+      sb.append(" Kind:").append(item.getKind());
     }
     if (Utils.isNotNullOrEmpty(item.getMetadata().getName())) {
-      sb.append("Name:").append(item.getMetadata().getName());
+      sb.append(" Name:").append(item.getMetadata().getName());
     }
 
     if (item.getMetadata().getLabels() != null && !item.getMetadata().getLabels().isEmpty()) {
-      sb.append("Lables: [ ");
+      sb.append(" Lables: [ ");
       for (Map.Entry<String, String> entry : item.getMetadata().getLabels().entrySet()) {
         sb.append(entry.getKey()).append(":").append(entry.getValue()).append(" ");
       }

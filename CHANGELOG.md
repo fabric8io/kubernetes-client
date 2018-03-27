@@ -3,6 +3,7 @@
 #### 3.1.11 (To be released)
   Bugs
   * Fix #1013 : Kubernetes connection is not getting closed.
+  * Fix #1004: Multiple document handling breaks if "---" found anywhere in the document
 
   Bugs
    * Impersonation parameters not set in withRequestConfig - https://github.com/fabric8io/kubernetes-client/pull/1037
