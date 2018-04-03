@@ -16,49 +16,42 @@
 
 package io.fabric8.openshift.examples;
 
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.openshift.api.model.ProjectRequest;
-import io.fabric8.openshift.api.model.ProjectRequestBuilder;
+import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ConfigBuilder;
+import io.fabric8.openshift.api.model.ImageStreamTag;
+import io.fabric8.openshift.api.model.ImageStreamTagBuilder;
+import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ImageStreamTagExample {
+
   private static final Logger logger = LoggerFactory.getLogger(ImageStreamTagExample.class);
 
   public static void main(String[] args) throws InterruptedException {
-    KubernetesClient kubernetesClient = new DefaultKubernetesClient();
-    OpenShiftClient client = kubernetesClient.adapt(OpenShiftClient.class);
+
+    String namespace = "myproject";
+    String master = "CLUSTER_URL";
+    Config config = new ConfigBuilder().withMasterUrl(master).build();
+    OpenShiftClient client = new DefaultOpenShiftClient(config);
 
     try {
-      // Create a namespace for all our stuff
-      ProjectRequest proj = new ProjectRequestBuilder().withNewMetadata().withName("thisisatest").addToLabels("this", "rocks").endMetadata().build();
-      log("Created project", client.projectrequests().create(proj));
 
-      /* ---
-apiVersion: "v1"
-kind: "ImageStreamTag"
-metadata:
-  name: "bar1:1.0.12"
-tag:
-  from:
-    kind: "ImageStreamImage"
-    name: "bar1@sha256:1e924a1281084eea8e882d1bd96ee020cd077b48d71fea201de85f8ab3f67874"
-    namespace: "default"
-  name: "1.0.12"
-  */
+      ImageStreamTag istag = new ImageStreamTagBuilder().withNewMetadata().withName("bar1:1.0.12").endMetadata()
+        .withNewTag().withNewFrom().withKind("DockerImage").withName("openshift/wildfly-81-centos7:latest").endFrom().endTag()
+        .build();
 
-      log("Created istag", client.imageStreamTags().createNew()
-        .withNewMetadata().withName("bar1:1.0.12")
-        .and()
-        .withNewTag().withNewFrom().withKind("DockerImage").withName("openshift/wildfly-81-centos7:latest")
-        .and()
-        .and()
-        .done()
-      );
+      log("Created istag", client.imageStreamTags().inNamespace(namespace).create(istag));
+
     }finally {
-      client.projects().withName("thisisatest").delete();
+
+      log("ImageStreamTags are :");
+      log(client.imageStreamTags().inNamespace(namespace).withName("bar1:1.0.12").get().toString());
+
+      log("ImageStreamTags using list are :");
+      log(client.imageStreamTags().list().getItems().get(0).toString());
+      log("Deleted istag",client.imageStreamTags().withName("bar1:1.0.12").delete());
       client.close();
     }
   }
