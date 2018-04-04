@@ -4,6 +4,7 @@
   Bugs
   * Fix #1013 : Kubernetes connection is not getting closed.
   * Fix #1004: Multiple document handling breaks if "---" found anywhere in the document
+  * Fix #1035 : RejectedExecutionException in WatchHTTPManager
 
   Bugs
    * Impersonation parameters not set in withRequestConfig - https://github.com/fabric8io/kubernetes-client/pull/1037
