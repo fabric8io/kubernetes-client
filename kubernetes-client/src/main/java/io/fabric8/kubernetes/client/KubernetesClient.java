@@ -20,24 +20,13 @@ import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.extensions.DoneablePodSecurityPolicy;
 import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicy;
 import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicyList;
+import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.openshift.api.model.DoneableSecurityContextConstraints;
 import io.fabric8.openshift.api.model.SecurityContextConstraints;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsList;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionList;
 import io.fabric8.kubernetes.api.model.apiextensions.DoneableCustomResourceDefinition;
-import io.fabric8.kubernetes.client.dsl.AppsAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.AutoscalingAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.KubernetesListMixedOperation;
-import io.fabric8.kubernetes.client.dsl.MixedOperation;
-import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
-import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
-import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
-import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
-import io.fabric8.kubernetes.client.dsl.PodResource;
-import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 
 import java.io.InputStream;
 import java.util.Collection;
@@ -54,6 +43,8 @@ public interface KubernetesClient extends Client {
   <T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResource(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass);
 
   ExtensionsAPIGroupDSL extensions();
+
+  VersionInfo getVersion();
 
   AppsAPIGroupDSL apps();
 
