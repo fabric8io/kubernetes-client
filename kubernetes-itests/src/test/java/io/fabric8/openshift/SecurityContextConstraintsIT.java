@@ -20,7 +20,6 @@ import io.fabric8.openshift.api.model.SecurityContextConstraints;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsBuilder;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsList;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -39,9 +38,6 @@ public class SecurityContextConstraintsIT {
 
   @ArquillianResource
   OpenShiftClient client;
-
-  @ArquillianResource
-  Session session;
 
   private SecurityContextConstraints scc;
 
