@@ -43,6 +43,8 @@ public class ImageStreamTagExample {
         .build();
 
       log("Created istag", client.imageStreamTags().inNamespace(namespace).create(istag));
+      
+      Thread.sleep(30000);
 
     }finally {
 
