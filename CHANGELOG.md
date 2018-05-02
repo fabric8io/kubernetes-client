@@ -1,12 +1,17 @@
 ### Change Log
 
-#### 3.1.11 (To be released)
+#### 3.1.12 (To be released)
   Bugs
-  * Fix #1013 : Kubernetes connection is not getting closed.
-  * Fix #1004: Multiple document handling breaks if "---" found anywhere in the document
-  * Fix #1035 : RejectedExecutionException in WatchHTTPManager
+  
+  
+  Improvements
+  
 
+#### 3.1.11
   Bugs
+   * Fix #1013 : Kubernetes connection is not getting closed.
+   * Fix #1004: Multiple document handling breaks if "---" found anywhere in the document
+   * Fix #1035 : RejectedExecutionException in WatchHTTPManager
    * Impersonation parameters not set in withRequestConfig - https://github.com/fabric8io/kubernetes-client/pull/1037
 
   Improvements
