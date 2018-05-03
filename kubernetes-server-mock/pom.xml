@@ -22,14 +22,14 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-client-project</artifactId>
-    <version>3.0.3</version>
+    <version>3.0.3.fuse-000039</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.fabric8</groupId>
   <artifactId>kubernetes-server-mock</artifactId>
-  <version>3.0.3</version>
+  <version>3.0.3.fuse-000039</version>
 
   <name>Fabric8 :: Kubernetes :: Server Mock</name>
   <packaging>jar</packaging>
