@@ -20,7 +20,7 @@
   <parent>
     <artifactId>platforms</artifactId>
     <groupId>io.fabric8.kubernetes</groupId>
-    <version>3.0.3</version>
+    <version>3.0.3.fuse-000044</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -30,7 +30,7 @@
   <name>Fabric8 :: Kubernetes :: Platforms :: Karaf</name>
 
   <properties>
-    <karaf.version>4.0.8</karaf.version>
+    <karaf.version>4.2.0.fuse-000237</karaf.version>
     <osgi.version>6.0.0</osgi.version>
     <pax.exam.version>4.9.2</pax.exam.version>
     <validation.api.version>1.1.0.Final</validation.api.version>
@@ -38,7 +38,6 @@
 
   <modules>
     <module>features</module>
-    <module>itests</module>
   </modules>
 
 </project>
