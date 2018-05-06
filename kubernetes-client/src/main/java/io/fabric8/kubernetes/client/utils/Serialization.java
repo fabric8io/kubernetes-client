@@ -270,8 +270,8 @@ public class Serialization {
     StringBuilder builder = new StringBuilder();
 
     while(nLine < lines.length) {
-      if(lines[nLine].length() >= DOCUMENT_DELIMITER.length()
-          && !lines[nLine].substring(0, DOCUMENT_DELIMITER.length()).equals(DOCUMENT_DELIMITER)) {
+      if((lines[nLine].length() >= DOCUMENT_DELIMITER.length()
+          && !lines[nLine].substring(0, DOCUMENT_DELIMITER.length()).equals(DOCUMENT_DELIMITER)) || (lines[nLine].length() < DOCUMENT_DELIMITER.length())) {
         builder.append(lines[nLine] + System.lineSeparator());
       } else {
         documents.add(builder.toString());
