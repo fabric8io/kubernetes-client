@@ -39,13 +39,13 @@ public class LoadMultipleDocumentsFromFileExample {
     Config config = new ConfigBuilder().build();
     KubernetesClient client = new DefaultKubernetesClient(config);
 
-    List<HasMetadata> list = client.load(TemplateExample.class.getResourceAsStream("/multiple-document-template.yml")).get();
+    List<HasMetadata> list = client.load(LoadMultipleDocumentsFromFileExample.class.getResourceAsStream("/multiple-document-template.yml")).get();
     System.out.println("Found in file:" + list.size() + " items.");
     for (HasMetadata meta : list) {
       System.out.println(display(meta));
     }
 
-    list = client.load(TemplateExample.class.getResourceAsStream("/multiple-document-template.yml")).accept(new Visitor<ObjectMetaBuilder>() {
+    list = client.load(LoadMultipleDocumentsFromFileExample.class.getResourceAsStream("/multiple-document-template.yml")).accept(new Visitor<ObjectMetaBuilder>() {
 
       @Override
       public void visit(ObjectMetaBuilder item) {
