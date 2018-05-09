@@ -74,7 +74,7 @@ public class ExecLoopExample {
               latch.countDown();
             }
           }).exec("date");
-          pump = new InputStreamPumper(watch.getStdoutPipe(), new SystemOutCallback());
+          pump = new InputStreamPumper(watch.getOutput(), new SystemOutCallback());
           executorService.submit(pump);
           Future<String> outPumpFuture = executorService.submit(pump, "Done");
           executorService.scheduleAtFixedRate(new FutureChecker("Pump " + (i + 1), outPumpFuture), 0, 2, TimeUnit.SECONDS);

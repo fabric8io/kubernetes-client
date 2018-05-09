@@ -63,15 +63,15 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
     private static final Logger LOGGER = LoggerFactory.getLogger(ExecWebSocketListener.class);
 
     private final Config config;
-    private final InputStream stdin;
-    private final OutputStream stdout;
-    private final OutputStream stderr;
-    private final OutputStream error;
+    private final InputStream in;
+    private final OutputStream out;
+    private final OutputStream err;
+    private final OutputStream errChannel;
 
-    private final PipedOutputStream stdinPipe;
-    private final PipedInputStream stdoutPipe;
-    private final PipedInputStream stderrPipe;
-    private final PipedInputStream errorPipe;
+    private final PipedOutputStream input;
+    private final PipedInputStream output;
+    private final PipedInputStream error;
+    private final PipedInputStream errorChannel;
 
     private final AtomicReference<WebSocket> webSocketRef = new AtomicReference<>();
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -90,28 +90,28 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
     private final Set<Closeable> toClose = new LinkedHashSet<>();
 
     @Deprecated
-    public ExecWebSocketListener(InputStream stdin, OutputStream stdout, OutputStream stderr, PipedOutputStream stdinPipe, PipedInputStream stdoutPipe, PipedInputStream stderrPipe, ExecListener listener) {
-        this(new Config(), stdin, stdout, stderr, stdinPipe, stdoutPipe, stderrPipe, listener);
+    public ExecWebSocketListener(InputStream in, OutputStream out, OutputStream err, PipedOutputStream inputPipe, PipedInputStream outputPipe, PipedInputStream errorPipe, ExecListener listener) {
+        this(new Config(), in, out, err, inputPipe, outputPipe, errorPipe, listener);
     }
 
     @Deprecated
-    public ExecWebSocketListener(Config config, InputStream stdin, OutputStream stdout, OutputStream stderr, PipedOutputStream stdinPipe, PipedInputStream stdoutPipe, PipedInputStream stderrPipe, ExecListener listener) {
-        this(config, stdin, stdout, stderr, null, stdinPipe, stdoutPipe, stderrPipe, null, listener);
+    public ExecWebSocketListener(Config config, InputStream in, OutputStream out, OutputStream err, PipedOutputStream inputPipe, PipedInputStream outputPipe, PipedInputStream errorPipe, ExecListener listener) {
+        this(config, in, out, err, null, inputPipe, outputPipe, errorPipe, null, listener);
     }
 
-    public ExecWebSocketListener(Config config, InputStream stdin, OutputStream stdout, OutputStream stderr, OutputStream error, PipedOutputStream stdinPipe, PipedInputStream stdoutPipe, PipedInputStream stderrPipe, PipedInputStream errorPipe, ExecListener listener) {
+    public ExecWebSocketListener(Config config, InputStream in, OutputStream out, OutputStream err, OutputStream errChannel, PipedOutputStream inputPipe, PipedInputStream outputPipe, PipedInputStream errorPipe, PipedInputStream errorChannelPipe, ExecListener listener) {
         this.config = config;
         this.listener = listener;
-        this.stdin = inputStreamOrPipe(stdin, stdinPipe, toClose);
-        this.stdout = outputStreamOrPipe(stdout, stdoutPipe, toClose);
-        this.stderr = outputStreamOrPipe(stderr, stderrPipe, toClose);
-        this.error = outputStreamOrPipe(error, errorPipe, toClose);
+        this.in = inputStreamOrPipe(in, inputPipe, toClose);
+        this.out = outputStreamOrPipe(out, outputPipe, toClose);
+        this.err = outputStreamOrPipe(err, errorPipe, toClose);
+        this.errChannel = outputStreamOrPipe(errChannel, errorChannelPipe, toClose);
 
-        this.stdinPipe = stdinPipe;
-        this.stdoutPipe = stdoutPipe;
-        this.stderrPipe = stderrPipe;
-        this.errorPipe = errorPipe;
-        this.pumper = new NonBlockingInputStreamPumper(this.stdin, new Callback<byte[]>() {
+        this.input = inputPipe;
+        this.output = outputPipe;
+        this.error = errorPipe;
+        this.errorChannel = errorChannelPipe;
+        this.pumper = new NonBlockingInputStreamPumper(this.in, new Callback<byte[]>() {
             @Override
             public void call(byte[] data) {
                 try {
@@ -182,17 +182,17 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
     @Override
     public void onOpen(WebSocket webSocket, Response response) {
         try {
-            if (stdin instanceof PipedInputStream && stdinPipe != null) {
-                stdinPipe.connect((PipedInputStream) stdin);
+            if (in instanceof PipedInputStream && input != null) {
+                input.connect((PipedInputStream) in);
             }
-            if (stdout instanceof PipedOutputStream && stdoutPipe != null) {
-                stdoutPipe.connect((PipedOutputStream) stdout);
+            if (out instanceof PipedOutputStream && output != null) {
+                output.connect((PipedOutputStream) out);
             }
-            if (stderr instanceof PipedOutputStream && stderrPipe != null) {
-                stderrPipe.connect((PipedOutputStream) stderr);
+            if (err instanceof PipedOutputStream && error != null) {
+                error.connect((PipedOutputStream) err);
             }
-            if (error instanceof PipedOutputStream && errorPipe != null) {
-                errorPipe.connect((PipedOutputStream) error);
+            if (errChannel instanceof PipedOutputStream && errorChannel != null) {
+                errorChannel.connect((PipedOutputStream) errChannel);
             }
 
             webSocketRef.set(webSocket);
@@ -244,18 +244,18 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
             if (byteString.size() > 0) {
                 switch (streamID) {
                     case 1:
-                        if (stdout != null) {
-                            stdout.write(byteString.toByteArray());
+                        if (out != null) {
+                            out.write(byteString.toByteArray());
                         }
                         break;
                     case 2:
-                        if (stderr != null) {
-                            stderr.write(byteString.toByteArray());
+                        if (err != null) {
+                            err.write(byteString.toByteArray());
                         }
                         break;
                     case 3:
-                        if (error != null) {
-                            error.write(byteString.toByteArray());
+                        if (errChannel != null) {
+                            errChannel.write(byteString.toByteArray());
                         }
                         break;
                     default:
@@ -290,35 +290,20 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
         }
     }
 
-    @Deprecated
     public OutputStream getInput() {
-        return this.getStdinPipe();
+        return input;
     }
 
-    @Deprecated
     public InputStream getOutput() {
-        return this.getStdoutPipe();
+        return output;
     }
 
-    @Deprecated
     public InputStream getError() {
-        return this.getStderrPipe();
+        return error;
     }
 
-    public OutputStream getStdinPipe() {
-        return stdinPipe;
-    }
-
-    public InputStream getStdoutPipe() {
-        return stdoutPipe;
-    }
-
-    public InputStream getStderrPipe() {
-        return stderrPipe;
-    }
-
-    public InputStream getErrorPipe() {
-        return errorPipe;
+    public InputStream getErrorChannel() {
+        return errorChannel;
     }
 
     private void send(byte[] bytes) throws IOException {
