@@ -231,7 +231,10 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
               }
             }, nextReconnectInterval(), TimeUnit.MILLISECONDS);
           } catch (RejectedExecutionException e) {
-            logger.error("Exception in reconnect", e);
+            // This is a standard exception if we close the scheduler. We should not print it
+            if (!forceClosed.get()) {
+              logger.error("Exception in reconnect", e);
+            }
             reconnectPending.set(false);
           }
         }

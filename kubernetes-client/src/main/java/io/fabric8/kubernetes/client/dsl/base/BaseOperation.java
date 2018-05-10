@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.client.dsl.internal.WatchHTTPManager;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
+import io.fabric8.kubernetes.client.utils.WatcherToggle;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -690,13 +691,14 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   public Watch watch(String resourceVersion, final Watcher<T> watcher) throws KubernetesClientException {
+    WatcherToggle<T> watcherToggle = new WatcherToggle<>(watcher, true);
     WatchConnectionManager watch = null;
     try {
       watch = new WatchConnectionManager(
         client,
         this,
         resourceVersion,
-        watcher,
+        watcherToggle,
         config.getWatchReconnectInterval(),
         config.getWatchReconnectLimit(),
         config.getWebsocketTimeout()
@@ -706,12 +708,20 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     } catch (MalformedURLException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("watch"), e);
     } catch (KubernetesClientException ke) {
-      if(watch != null){
-        //release the watch
-        watch.close();
-      }
+
       if (ke.getCode() != 200) {
+        if(watch != null){
+          //release the watch
+          watch.close();
+        }
+
         throw ke;
+      }
+
+      if(watch != null){
+        //release the watch after disabling the watcher (to avoid premature call to onClose)
+        watcherToggle.disable();
+        watch.close();
       }
 
       // If the HTTP return code is 200, we retry the watch again using a persistent hanging
