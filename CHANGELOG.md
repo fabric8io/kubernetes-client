@@ -1,11 +1,21 @@
 ### Change Log
 
-#### 3.1.12 (To be released)
+#### 3.1.13 (To be released)
+  Bugs
+  
+  New Feature
+  
+  Improvements
+
+#### 3.1.12
   Bugs
    * Fix #1070 : Error parsing openshift json template with the latest version
 
+  New Feature
+   * Fix #1048 : Add support for the k8s/openshift version
+   
   Improvements
-
+   * Fixes premature call to watcher onClose
 
 #### 3.1.11
   Bugs
