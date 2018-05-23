@@ -18,7 +18,6 @@
   import io.fabric8.kubernetes.client.Callback;
   import io.fabric8.kubernetes.client.Config;
   import io.fabric8.kubernetes.client.ConfigBuilder;
-  import io.fabric8.kubernetes.client.KubernetesClientException;
   import io.fabric8.kubernetes.client.dsl.ExecListener;
   import io.fabric8.kubernetes.client.dsl.ExecWatch;
   import io.fabric8.kubernetes.client.utils.InputStreamPumper;
@@ -28,7 +27,6 @@
 
   import java.io.IOException;
   import java.util.concurrent.CountDownLatch;
-  import java.util.concurrent.ExecutorService;
   import java.util.concurrent.Executors;
   import java.util.concurrent.Future;
   import java.util.concurrent.ScheduledExecutorService;

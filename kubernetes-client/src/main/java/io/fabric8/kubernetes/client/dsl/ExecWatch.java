@@ -27,6 +27,8 @@ public interface ExecWatch extends Closeable {
 
   InputStream getError();
 
+  InputStream getErrorChannel();
+
   /**
    * Close the Watch.
    */

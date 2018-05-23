@@ -40,17 +40,17 @@ public class PodHandler implements ResourceHandler<Pod, PodBuilder> {
 
   @Override
   public Pod create(OkHttpClient client, Config config, String namespace, Pod item) {
-    return new PodOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, null, false, false, false, null, null, null, false, null, null).create();
+    return new PodOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, null, null, null, false, false, false, null, null, null, false, null, null).create();
   }
 
   @Override
   public Pod replace(OkHttpClient client, Config config, String namespace, Pod item) {
-    return new PodOperationsImpl(client, config, null, namespace, null, true, item, null, true, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, null, false, false, false, null, null, null, false, null, null).replace(item);
+    return new PodOperationsImpl(client, config, null, namespace, null, true, item, null, true, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, null, null, null, false, false, false, null, null, null, false, null, null).replace(item);
   }
 
   @Override
   public Pod reload(OkHttpClient client, Config config, String namespace, Pod item) {
-    return new PodOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, null, false, false, false, null, null, null, false, null, null).fromServer().get();
+    return new PodOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, null, null, null, false, false, false, null, null, null, false, null, null).fromServer().get();
   }
 
   @Override
@@ -60,21 +60,21 @@ public class PodHandler implements ResourceHandler<Pod, PodBuilder> {
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, Pod item) {
-    return new PodOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, null, false, false, false, null, null, null, false, null, null).delete(item);
+    return new PodOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, null, null, null, false, false, false, null, null, null, false, null, null).delete(item);
   }
 
   @Override
   public Watch watch(OkHttpClient client, Config config, String namespace, Pod item, Watcher<Pod> watcher) {
-    return new PodOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, null, false, false, false, null, null, null, false, null, null).watch(watcher);
+    return new PodOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, null, null, null, false, false, false, null, null, null, false, null, null).watch(watcher);
   }
 
   @Override
   public Watch watch(OkHttpClient client, Config config, String namespace, Pod item, String resourceVersion, Watcher<Pod> watcher) {
-    return new PodOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, null, false, false, false, null, null, null, false, null, null).watch(resourceVersion, watcher);
+    return new PodOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, null, null, null, false, false, false, null, null, null, false, null, null).watch(resourceVersion, watcher);
   }
 
   @Override
   public Pod waitUntilReady(OkHttpClient client, Config config, String namespace, Pod item, long amount, TimeUnit timeUnit) throws InterruptedException {
-    return new PodOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, null, false, false, false, null, null, null, false, null, null).waitUntilReady(amount,timeUnit);
+    return new PodOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, null, null, null, false, false, false, null, null, null, false, null, null).waitUntilReady(amount,timeUnit);
   }
 }

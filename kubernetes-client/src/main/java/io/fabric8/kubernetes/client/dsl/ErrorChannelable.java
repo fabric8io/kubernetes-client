@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.fabric8.kubernetes.client.dsl;
 
-
 /**
- * @param <O>   Where to write err to.
- * @param <P>   Where to read err from.
+ * @param <O>   Where to write errorChannel to.
+ * @param <P>   Where to read errorChannel from.
  * @param <T>   The return type.
- * @param <X>   The exec input.
- * @param <T>   The exec output.
  */
-public interface TtyExecErrorable<X, O, P, T> extends
-        TtyExecErrorChannelable<X, O, P, T>,
-        Errorable<O, P, TtyExecErrorChannelable<X, O, P, T>> {
+public interface ErrorChannelable<O, P, T> {
 
+    T writingErrorChannel(O in);
+
+    T readingErrorChannel(P in);
+
+    T redirectingErrorChannel();
 }
