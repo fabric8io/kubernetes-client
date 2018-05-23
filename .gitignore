@@ -1,0 +1,11 @@
+.idea/
+.settings
+.project
+.classpath
+.meghanada
+.projectile
+target
+vendor
+
+generator/vendor
+generator/vendor/**
