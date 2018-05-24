@@ -126,4 +126,29 @@ public class KubernetesAttributesExtractorTest {
     expected = expected.add(new Attribute("namespace", "myns"));
     Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
   }
+
+  @Test
+  public void shouldHandleApiGroups() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor.extract("/apis/autoscaling/v1/namespaces/myns/horizontalpodautoscalers/myhpa");
+
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("kind", "horizontalpodautoscaler"));
+    expected = expected.add(new Attribute("namespace", "myns"));
+    expected = expected.add(new Attribute("name", "myhpa"));
+    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
+  }
+
+  @Test
+  public void shouldHandleCrds() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor.extract("/apis/test.com/v1/namespaces/myns/crds/mycrd");
+
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("kind", "crd"));
+    expected = expected.add(new Attribute("namespace", "myns"));
+    expected = expected.add(new Attribute("name", "mycrd"));
+    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
+  }
+
 }
