@@ -2,6 +2,7 @@
 
 #### 3.1.13 (To be released)
   Bugs
+   * Fix #1083 : Mock Kubernetes server only handles core and extensions API groups
   
   New Feature
   
