@@ -6,7 +6,8 @@
   New Feature
   
   Improvements
-
+   * Do not repeatly create Config instance in exec - https://github.com/fabric8io/kubernetes-client/pull/1081
+   
 #### 3.1.12
   Bugs
    * Fix #1070 : Error parsing openshift json template with the latest version
