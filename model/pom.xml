@@ -22,13 +22,14 @@
     <parent>
         <artifactId>servicecatalog-java-api-project</artifactId>
         <groupId>me.snowdrop</groupId>
-        <version>1.3.0</version>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>..</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.snowdrop</groupId>
     <artifactId>servicecatalog-model</artifactId>
-    <name>Snowdrop :: Service Catalog ::Model</name>
+    <name>Snowdrop :: Service Catalog :: Model</name>
     <packaging>bundle</packaging>
 
     <properties>
@@ -110,25 +111,6 @@
                         <version>${project.version}</version>
                     </dependency>
                 </dependencies>
-            </plugin>
-            <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.7</version>
-                <executions>
-                    <execution>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <target>
-                                <echo>removing the duplicate generated class</echo>
-                                <delete file="${basedir}/target/generated-sources/io/fabric8/docker/api/model/NetIPNet.java" verbose="true" />
-                                <delete file="${basedir}/target/generated-sources/io/fabric8/docker/api/model/LxcConfig.java" verbose="true" />
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>

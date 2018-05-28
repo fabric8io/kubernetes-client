@@ -31,7 +31,7 @@
     <artifactId>servicecatalog-java-api-project</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
-    <name>Snowdrop :: Service Catalog ::Project</name>
+    <name>Snowdrop :: Service Catalog :: Project</name>
 
     <url>http://fabric8.io/</url>
     <inceptionYear>2015</inceptionYear>
@@ -84,6 +84,7 @@
         <jsonschema2pojo.version>0.4.23</jsonschema2pojo.version>
         <junit.version>4.12</junit.version>
         <kubernetes-model.version>2.0.9</kubernetes-model.version>
+        <kubernetes-client.version>3.1.12</kubernetes-client.version>
         <lombok.version>1.16.4</lombok.version>
         <log4j.version>2.3</log4j.version>
         <mockwebserver.version>0.0.4</mockwebserver.version>
@@ -132,15 +133,26 @@
     <modules>
         <module>annotator</module>
         <module>model</module>
+        <module>client</module>
     </modules>
-
 
     <dependencyManagement>
         <dependencies>
+          <!-- Internal Dependencies -->
+          <dependency>
+            <groupId>me.snowdrop</groupId>
+            <artifactId>servicecatalog-model</artifactId>
+            <version>${project.version}</version>
+          </dependency>
             <dependency>
               <groupId>io.fabric8</groupId>
               <artifactId>kubernetes-model</artifactId>
               <version>${kubernetes-model.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>io.fabric8</groupId>
+              <artifactId>kubernetes-client</artifactId>
+              <version>${kubernetes-client.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.module</groupId>
