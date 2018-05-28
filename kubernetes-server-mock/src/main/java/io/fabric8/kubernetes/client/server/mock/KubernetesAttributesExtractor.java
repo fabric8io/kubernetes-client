@@ -38,8 +38,8 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
   public static final String NAME = "name";
   public static final String NAMESPACE = "namespace";
 
-  private static final String API_GROUP = "/api[s]?(/extensions)?";
-  private static final String VERSION_GROUP = "(/(?<version>[a-zA-z0-9-_]+))?";
+  private static final String API_GROUP = "/api(s/[a-zA-Z0-9-_.]+)?";
+  private static final String VERSION_GROUP = "(/(?<version>[a-zA-Z0-9-_]+))?";
   private static final String KIND_GROUP = "/(?<kind>[^/?]+)";
   private static final String NAME_GROUP = "(/(?<name>[^/?]+))?";
   private static final String NAMESPACE_GROUP = "(/namespaces/(?<namespace>[^/]+))?";
