@@ -19,14 +19,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog"
+	"github.com/snowdrop/service-catalog-java-api/generator/pkg/schemagen"
 	"log"
+	"os"
 	"reflect"
 	"strings"
 	"time"
-
-	"github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog"
-	"github.com/snowdrop/service-catalog-java-api/generator/pkg/schemagen"
-	"os"
 )
 
 //A Schema with the core types of the Service Catalog
