@@ -34,16 +34,20 @@ type Schema struct {
 	ClusterServiceBroker     servicecatalog.ClusterServiceBroker
 	ClusterServiceBrokerList servicecatalog.ClusterServiceBrokerList
 	ClusterServiceClass      servicecatalog.ClusterServiceClass
+	ClusterServiceClassList  servicecatalog.ClusterServiceClassList
 	ClusterServicePlan       servicecatalog.ClusterServicePlan
+	ClusterServicePlanList   servicecatalog.ClusterServicePlanList
 	ServiceInstance          servicecatalog.ServiceInstance
+	ServiceInstanceList      servicecatalog.ServiceInstanceList
 	ServiceBinding           servicecatalog.ServiceBinding
+	ServiceBindingList       servicecatalog.ServiceBindingList
 	ServiceBroker            servicecatalog.ServiceBroker
 	ServiceBrokerList        servicecatalog.ServiceBrokerList
 }
 
 func main() {
 	packages := []schemagen.PackageDescriptor{
-		{"github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog", "", "me.snowdrop.servicecatalog.api", "servicecatalog_"},
+		{"github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog", "", "me.snowdrop.servicecatalog.api.model", "servicecatalog_"},
 	}
 
 	typeMap := map[reflect.Type]reflect.Type{
