@@ -87,6 +87,8 @@ public class Config {
   public static final String KUBERNETES_NAMESPACE_FILE = "kubenamespace";
   public static final String KUBERNETES_NAMESPACE_SYSTEM_PROPERTY = "kubernetes.namespace";
   public static final String KUBERNETES_KUBECONFIG_FILE = "kubeconfig";
+  public static final String KUBERNETES_SERVICE_HOST_PROPERTY = "KUBERNETES_SERVICE_HOST";
+  public static final String KUBERNETES_SERVICE_PORT_PROPERTY = "KUBERNETES_SERVICE_PORT";
   public static final String KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH = "/var/run/secrets/kubernetes.io/serviceaccount/token";
   public static final String KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt";
   public static final String KUBERNETES_HTTP_PROXY = "http.proxy";
@@ -329,6 +331,13 @@ public class Config {
 
   private static boolean tryServiceAccount(Config config) {
     LOGGER.debug("Trying to configure client from service account...");
+    String masterHost = Utils.getSystemPropertyOrEnvVar(KUBERNETES_SERVICE_HOST_PROPERTY, (String) null);
+    String masterPort = Utils.getSystemPropertyOrEnvVar(KUBERNETES_SERVICE_PORT_PROPERTY, (String) null);
+    if (masterHost != null && masterPort != null) {
+      String hostPort = joinHostPort(masterHost, masterPort);
+      LOGGER.debug("Found service account host and port: " + hostPort);
+      config.setMasterUrl("https://" + hostPort);
+    }
     if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYSERVICEACCOUNT_SYSTEM_PROPERTY, true)) {
       boolean serviceAccountCaCertExists = Files.isRegularFile(new File(KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH).toPath());
       if (serviceAccountCaCertExists) {
@@ -355,6 +364,14 @@ public class Config {
       }
     }
     return false;
+  }
+
+  private static String joinHostPort(String host, String port) {
+    if (host.indexOf(':') >= 0) {
+       // Host is an IPv6
+      return "[" + host + "]:" + port;
+    }
+    return host + ":" + port;
   }
 
   private static String absolutify(File relativeTo, String filename) {

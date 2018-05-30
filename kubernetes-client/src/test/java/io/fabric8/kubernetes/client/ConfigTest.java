@@ -73,6 +73,8 @@ public class ConfigTest {
     System.getProperties().remove(Config.KUBERNETES_TRUSTSTORE_PASSPHRASE_PROPERTY);
     System.getProperties().remove(Config.KUBERNETES_KEYSTORE_FILE_PROPERTY);
     System.getProperties().remove(Config.KUBERNETES_KEYSTORE_PASSPHRASE_PROPERTY);
+    System.getProperties().remove(Config.KUBERNETES_SERVICE_HOST_PROPERTY);
+    System.getProperties().remove(Config.KUBERNETES_SERVICE_PORT_PROPERTY);
   }
 
   @After
@@ -194,6 +196,34 @@ public class ConfigTest {
     } catch (UnsupportedEncodingException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  @Test
+  public void testWithServiceAccount() {
+    System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, "/dev/null");
+    Config config = Config.autoConfigure(null);
+    assertNotNull(config);
+    assertEquals("https://kubernetes.default.svc/", config.getMasterUrl());
+  }
+
+  @Test
+  public void testMasterUrlWithServiceAccount() {
+    System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, "/dev/null");
+    System.setProperty(Config.KUBERNETES_SERVICE_HOST_PROPERTY, "10.0.0.1");
+    System.setProperty(Config.KUBERNETES_SERVICE_PORT_PROPERTY, "443");
+    Config config = Config.autoConfigure(null);
+    assertNotNull(config);
+    assertEquals("https://10.0.0.1:443/", config.getMasterUrl());
+  }
+
+  @Test
+  public void testMasterUrlWithServiceAccountIPv6() {
+    System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, "/dev/null");
+    System.setProperty(Config.KUBERNETES_SERVICE_HOST_PROPERTY, "2001:db8:1f70::999:de8:7648:6e8");
+    System.setProperty(Config.KUBERNETES_SERVICE_PORT_PROPERTY, "443");
+    Config config = Config.autoConfigure(null);
+    assertNotNull(config);
+    assertEquals("https://[2001:db8:1f70::999:de8:7648:6e8]:443/", config.getMasterUrl());
   }
 
   @Test

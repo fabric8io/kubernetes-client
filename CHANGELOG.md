@@ -7,7 +7,8 @@
   New Feature
   
   Improvements
-   * Do not repeatly create Config instance in exec - https://github.com/fabric8io/kubernetes-client/pull/1081
+   * Do not repeatedly create Config instance in exec - https://github.com/fabric8io/kubernetes-client/pull/1081
+   * Determine kubernetes service host and port from environment if available - https://github.com/fabric8io/kubernetes-client/pull/1086
    
 #### 3.1.12
   Bugs
