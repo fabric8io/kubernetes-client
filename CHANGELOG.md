@@ -7,7 +7,8 @@
   New Feature
   
   Improvements
-
+   * Determine kubernetes service host and port from environment if available - https://github.com/fabric8io/kubernetes-client/pull/1086
+   
 #### 3.1.12
   Bugs
    * Fix #1070 : Error parsing openshift json template with the latest version
