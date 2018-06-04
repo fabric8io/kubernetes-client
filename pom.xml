@@ -83,7 +83,7 @@
         <jsonassert.version>1.2.3</jsonassert.version>
         <jsonschema2pojo.version>0.4.23</jsonschema2pojo.version>
         <junit.version>4.12</junit.version>
-        <kubernetes-model.version>2.0.9</kubernetes-model.version>
+        <kubernetes-model.version>2.1-SNAPSHOT</kubernetes-model.version>
         <kubernetes-client.version>3.1.12</kubernetes-client.version>
         <lombok.version>1.16.4</lombok.version>
         <log4j.version>2.3</log4j.version>

@@ -404,6 +404,9 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 			continue
 		}
 		name := getFieldName(field)
+		if name == "TypeMeta" {
+			continue
+		}
 		// Skip unserialized fields
 		if name == "-" {
 			continue

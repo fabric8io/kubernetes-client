@@ -29,7 +29,7 @@
 
     <groupId>me.snowdrop</groupId>
     <artifactId>servicecatalog-model-annotator</artifactId>
-    <name>Snowdrop :: Service Catalog ::Model :: Annotator</name>
+    <name>Snowdrop :: Service Catalog :: Model :: Annotator</name>
     <packaging>jar</packaging>
 
     <dependencies>

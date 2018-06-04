@@ -1,0 +1,5 @@
+me.snowdrop.servicecatalog.api.handlers.ClusterServiceBrokerHandler
+me.snowdrop.servicecatalog.api.handlers.ClusterServiceClassHandler
+me.snowdrop.servicecatalog.api.handlers.ClusterServicePlanHandler
+me.snowdrop.servicecatalog.api.handlers.ServiceBindingHandler
+me.snowdrop.servicecatalog.api.handlers.ServiceInstanceHandler

@@ -554,10 +554,6 @@
         "status": {
           "$ref": "#/definitions/servicecatalog_ClusterServiceBrokerStatus",
           "javaType": "me.snowdrop.servicecatalog.api.model.ClusterServiceBrokerStatus"
-        },
-        "typeMeta": {
-          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_TypeMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.TypeMeta"
         }
       },
       "additionalProperties": true,
@@ -605,10 +601,6 @@
         "metadata": {
           "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_ListMeta",
           "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
-        },
-        "typeMeta": {
-          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_TypeMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.TypeMeta"
         }
       },
       "additionalProperties": true,
@@ -673,10 +665,6 @@
         "status": {
           "$ref": "#/definitions/servicecatalog_ClusterServiceClassStatus",
           "javaType": "me.snowdrop.servicecatalog.api.model.ClusterServiceClassStatus"
-        },
-        "typeMeta": {
-          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_TypeMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.TypeMeta"
         }
       },
       "additionalProperties": true,
@@ -704,10 +692,6 @@
         "metadata": {
           "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_ListMeta",
           "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
-        },
-        "typeMeta": {
-          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_TypeMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.TypeMeta"
         }
       },
       "additionalProperties": true,
@@ -772,10 +756,6 @@
         "status": {
           "$ref": "#/definitions/servicecatalog_ClusterServicePlanStatus",
           "javaType": "me.snowdrop.servicecatalog.api.model.ClusterServicePlanStatus"
-        },
-        "typeMeta": {
-          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_TypeMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.TypeMeta"
         }
       },
       "additionalProperties": true,
@@ -803,10 +783,6 @@
         "metadata": {
           "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_ListMeta",
           "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
-        },
-        "typeMeta": {
-          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_TypeMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.TypeMeta"
         }
       },
       "additionalProperties": true,
@@ -1261,10 +1237,6 @@
         "status": {
           "$ref": "#/definitions/servicecatalog_ServiceBindingStatus",
           "javaType": "me.snowdrop.servicecatalog.api.model.ServiceBindingStatus"
-        },
-        "typeMeta": {
-          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_TypeMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.TypeMeta"
         }
       },
       "additionalProperties": true,
@@ -1324,10 +1296,6 @@
         "metadata": {
           "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_ListMeta",
           "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
-        },
-        "typeMeta": {
-          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_TypeMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.TypeMeta"
         }
       },
       "additionalProperties": true,
@@ -1485,10 +1453,6 @@
         "status": {
           "$ref": "#/definitions/servicecatalog_ServiceBrokerStatus",
           "javaType": "me.snowdrop.servicecatalog.api.model.ServiceBrokerStatus"
-        },
-        "typeMeta": {
-          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_TypeMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.TypeMeta"
         }
       },
       "additionalProperties": true,
@@ -1568,10 +1532,6 @@
         "metadata": {
           "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_ListMeta",
           "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
-        },
-        "typeMeta": {
-          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_TypeMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.TypeMeta"
         }
       },
       "additionalProperties": true,
@@ -1636,10 +1596,6 @@
         "status": {
           "$ref": "#/definitions/servicecatalog_ServiceInstanceStatus",
           "javaType": "me.snowdrop.servicecatalog.api.model.ServiceInstanceStatus"
-        },
-        "typeMeta": {
-          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_TypeMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.TypeMeta"
         }
       },
       "additionalProperties": true,
@@ -1699,10 +1655,6 @@
         "metadata": {
           "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_ListMeta",
           "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
-        },
-        "typeMeta": {
-          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_TypeMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.TypeMeta"
         }
       },
       "additionalProperties": true,
