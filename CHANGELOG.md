@@ -3,6 +3,7 @@
 #### 3.1.13 (To be released)
   Bugs
    * Fix #1083 : Mock Kubernetes server only handles core and extensions API groups
+   * Fix #1087 : Mock server can't list custom resources
   
   New Feature
   
