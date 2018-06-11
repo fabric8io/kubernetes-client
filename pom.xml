@@ -83,7 +83,7 @@
         <jsonassert.version>1.2.3</jsonassert.version>
         <jsonschema2pojo.version>0.4.23</jsonschema2pojo.version>
         <junit.version>4.12</junit.version>
-        <kubernetes-model.version>2.1-SNAPSHOT</kubernetes-model.version>
+        <kubernetes-model.version>2.1.1</kubernetes-model.version>
         <kubernetes-client.version>3.1.12</kubernetes-client.version>
         <lombok.version>1.16.4</lombok.version>
         <log4j.version>2.3</log4j.version>
@@ -99,7 +99,7 @@
 
 
         <scr.annotations.version>1.9.2</scr.annotations.version>
-        <sundrio.version>0.4.2</sundrio.version>
+        <sundrio.version>0.8.1</sundrio.version>
 
         <maven.bundle.plugin.version>3.0.1</maven.bundle.plugin.version>
         <maven.buildhelper.plugin.version>1.9.1</maven.buildhelper.plugin.version>
