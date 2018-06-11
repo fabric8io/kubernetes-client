@@ -4,6 +4,7 @@
   Bugs
    * Fix #1083 : Mock Kubernetes server only handles core and extensions API groups
    * Fix #1087 : Mock server can't list custom resources
+   * fix(#1055): add OpenShiftOAuthInterceptor to httpClient for openshifClient
   
   New Feature
   
