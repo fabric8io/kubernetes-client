@@ -1,16 +1,24 @@
 ### Change Log
 
-#### 3.1.13 (To be released)
+#### 3.2.1 (To be released)
+
+#### 3.2.0
   Bugs
    * Fix #1083 : Mock Kubernetes server only handles core and extensions API groups
    * Fix #1087 : Mock server can't list custom resources
-   * fix(#1055): add OpenShiftOAuthInterceptor to httpClient for openshifClient
+   * Fix #1055 : Unable to log in to cluster when using username and password
   
   New Feature
+   * Support `error` websocket channel - https://github.com/fabric8io/kubernetes-client/pull/1045
   
   Improvements
    * Do not repeatedly create Config instance in exec - https://github.com/fabric8io/kubernetes-client/pull/1081
    * Determine kubernetes service host and port from environment if available - https://github.com/fabric8io/kubernetes-client/pull/1086
+   * Upgraded Kuberneted Model version to 2.1.1
+     Features and Fixes Available
+      * KubernetesDeserializer can now lookup for resource mappings via ServiceLoader - https://github.com/fabric8io/kubernetes-model/pull/307
+      * Add new package to OSGi exports - https://github.com/fabric8io/kubernetes-model/pull/310
+      * Add additional types that are needed to support extensions - https://github.com/fabric8io/kubernetes-model/pull/305
    
 #### 3.1.12
   Bugs
