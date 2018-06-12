@@ -199,14 +199,6 @@ public class ConfigTest {
   }
 
   @Test
-  public void testWithServiceAccount() {
-    System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, "/dev/null");
-    Config config = Config.autoConfigure(null);
-    assertNotNull(config);
-    assertEquals("https://kubernetes.default.svc/", config.getMasterUrl());
-  }
-
-  @Test
   public void testMasterUrlWithServiceAccount() {
     System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, "/dev/null");
     System.setProperty(Config.KUBERNETES_SERVICE_HOST_PROPERTY, "10.0.0.1");
