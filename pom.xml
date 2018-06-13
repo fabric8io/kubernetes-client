@@ -112,8 +112,8 @@
         <maven.surefire.plugin.version>2.18.1</maven.surefire.plugin.version>
         <maven.scr.plugin.version>1.21.0</maven.scr.plugin.version>
 
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
 
         <exec.master>https://localhost:8443</exec.master>
 
@@ -134,6 +134,7 @@
         <module>annotator</module>
         <module>model</module>
         <module>client</module>
+        <module>examples</module>
     </modules>
 
     <dependencyManagement>
@@ -148,11 +149,23 @@
               <groupId>io.fabric8</groupId>
               <artifactId>kubernetes-model</artifactId>
               <version>${kubernetes-model.version}</version>
+              <exclusions>
+                <exclusion>
+                  <groupId>io.sundr</groupId>
+                  <artifactId>*</artifactId>
+                </exclusion>
+              </exclusions>
             </dependency>
             <dependency>
               <groupId>io.fabric8</groupId>
               <artifactId>kubernetes-client</artifactId>
               <version>${kubernetes-client.version}</version>
+              <exclusions>
+                <exclusion>
+                  <groupId>io.sundr</groupId>
+                  <artifactId>*</artifactId>
+                </exclusion>
+              </exclusions>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.module</groupId>
@@ -222,8 +235,8 @@
                     <showDeprecation>true</showDeprecation>
                     <showWarnings>true</showWarnings>
                     <compilerArguments>
-                        <source>1.7</source>
-                        <target>1.7</target>
+                        <source>1.8</source>
+                        <target>1.8</target>
                     </compilerArguments>
                 </configuration>
             </plugin>

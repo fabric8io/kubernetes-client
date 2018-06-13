@@ -41,20 +41,29 @@ import me.snowdrop.servicecatalog.api.model.ServiceBindingList;
 import me.snowdrop.servicecatalog.api.model.ServiceInstance;
 import me.snowdrop.servicecatalog.api.model.ServiceInstanceList;
 import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 
 public class DefaultServiceCatalogClient extends BaseClient implements ServiceCatalogClient {
+
+    public DefaultServiceCatalogClient() {
+        super();
+    }
+
+    public DefaultServiceCatalogClient(Config configuration) {
+        super(configuration);
+    }
 
     public DefaultServiceCatalogClient(OkHttpClient httpClient, Config configuration) {
         super(httpClient, configuration);
     }
 
-   public MixedOperation<ClusterServiceBroker, ClusterServiceBrokerList, DoneableClusterServiceBroker, Resource<ClusterServiceBroker, DoneableClusterServiceBroker>> clusterServiceBrokers(){
+   public NonNamespaceOperation<ClusterServiceBroker, ClusterServiceBrokerList, DoneableClusterServiceBroker, Resource<ClusterServiceBroker, DoneableClusterServiceBroker>> clusterServiceBrokers(){
         return new ClusterServiceBrokerOperationImpl(this.getHttpClient(), this.getConfiguration());
     }
-    public MixedOperation<ClusterServiceClass, ClusterServiceClassList, DoneableClusterServiceClass, Resource<ClusterServiceClass, DoneableClusterServiceClass>> clusterServiceClasses() {
+    public NonNamespaceOperation<ClusterServiceClass, ClusterServiceClassList, DoneableClusterServiceClass, Resource<ClusterServiceClass, DoneableClusterServiceClass>> clusterServiceClasses() {
         return new ClusterServiceClassOperationImpl(this.getHttpClient(), this.getConfiguration());
     }
-    public MixedOperation<ClusterServicePlan, ClusterServicePlanList, DoneableClusterServicePlan, Resource<ClusterServicePlan, DoneableClusterServicePlan>> clusterServicePlans() {
+    public NonNamespaceOperation<ClusterServicePlan, ClusterServicePlanList, DoneableClusterServicePlan, Resource<ClusterServicePlan, DoneableClusterServicePlan>> clusterServicePlans() {
         return new ClusterServicePlanOperationImpl(this.getHttpClient(), this.getConfiguration());
     }
     public MixedOperation<ServiceInstance, ServiceInstanceList, DoneableServiceInstance, Resource<ServiceInstance, DoneableServiceInstance>> serviceInstnaces() {

@@ -34,12 +34,13 @@ import me.snowdrop.servicecatalog.api.model.ServiceBinding;
 import me.snowdrop.servicecatalog.api.model.ServiceBindingList;
 import me.snowdrop.servicecatalog.api.model.ServiceInstance;
 import me.snowdrop.servicecatalog.api.model.ServiceInstanceList;
+import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 
 public interface ServiceCatalogClient {
 
-    MixedOperation<ClusterServiceBroker, ClusterServiceBrokerList, DoneableClusterServiceBroker, Resource<ClusterServiceBroker, DoneableClusterServiceBroker>> clusterServiceBrokers();
-    MixedOperation<ClusterServiceClass, ClusterServiceClassList, DoneableClusterServiceClass, Resource<ClusterServiceClass, DoneableClusterServiceClass>> clusterServiceClasses();
-    MixedOperation<ClusterServicePlan, ClusterServicePlanList, DoneableClusterServicePlan, Resource<ClusterServicePlan, DoneableClusterServicePlan>> clusterServicePlans();
+    NonNamespaceOperation<ClusterServiceBroker, ClusterServiceBrokerList, DoneableClusterServiceBroker, Resource<ClusterServiceBroker, DoneableClusterServiceBroker>> clusterServiceBrokers();
+    NonNamespaceOperation<ClusterServiceClass, ClusterServiceClassList, DoneableClusterServiceClass, Resource<ClusterServiceClass, DoneableClusterServiceClass>> clusterServiceClasses();
+    NonNamespaceOperation<ClusterServicePlan, ClusterServicePlanList, DoneableClusterServicePlan, Resource<ClusterServicePlan, DoneableClusterServicePlan>> clusterServicePlans();
     MixedOperation<ServiceInstance, ServiceInstanceList, DoneableServiceInstance, Resource<ServiceInstance, DoneableServiceInstance>> serviceInstnaces();
     MixedOperation<ServiceBinding, ServiceBindingList, DoneableServiceBinding, Resource<ServiceBinding, DoneableServiceBinding>> serviceBindings();
 }
