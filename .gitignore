@@ -1,3 +1,4 @@
+# IDE
 .idea/
 .settings
 .project
@@ -5,7 +6,19 @@
 .meghanada
 .projectile
 target
+*.iml
+
+# Golang
 vendor
 
+# Java
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear  
+
+# Project specific #
 generator/vendor
 generator/vendor/**
