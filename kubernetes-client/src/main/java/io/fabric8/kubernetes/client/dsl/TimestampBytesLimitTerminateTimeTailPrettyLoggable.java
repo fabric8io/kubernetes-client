@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.fabric8.kubernetes.client.dsl;
 
-public interface ContainerResource<S,W, I, PI, O, PO, X, T>
-        extends TtyExecInputOutputErrorable<X, O, PO, I, PI, T>,
-  TimestampBytesLimitTerminateTimeTailPrettyLoggable<S, W> {
+public interface TimestampBytesLimitTerminateTimeTailPrettyLoggable<T, W> extends Timestampable<BytesLimitTerminateTimeTailPrettyLoggable<T, W>>, BytesLimitTerminateTimeTailPrettyLoggable<T, W> {
 }
