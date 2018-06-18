@@ -39,8 +39,7 @@ public class ServiceCatalogExtensionAdapter implements ExtensionAdapter<ServiceC
 
 	@Override
 	public Boolean isAdaptable(Client client) {
-        
-		return false;
+		return isServiceCatalogAvailable(client);
 	}
 
 	@Override
@@ -48,7 +47,7 @@ public class ServiceCatalogExtensionAdapter implements ExtensionAdapter<ServiceC
             return new DefaultServiceCatalogClient(client.adapt(OkHttpClient.class), client.getConfiguration());
 	}
 
-     static boolean isServiceCatalogAvailable(Client client) {
+	private boolean isServiceCatalogAvailable(Client client) {
         URL masterUrl = client.getMasterUrl();
         if (IS_SERVICE_CATALOG.containsKey(masterUrl)) {
             return IS_SERVICE_CATALOG.get(masterUrl);
@@ -61,12 +60,6 @@ public class ServiceCatalogExtensionAdapter implements ExtensionAdapter<ServiceC
                         // lets detect the new API Groups APIs for OpenShift
                         if (path.endsWith("servicecatalog.k8s.io") || path.contains("servicecatalog.k8s.io/")) {
                             USES_SERVICE_CATALOG_APIGROUPS.putIfAbsent(masterUrl, true);
-                            IS_SERVICE_CATALOG.putIfAbsent(masterUrl, true);
-                            return true;
-                        }
-                    }
-                    for (String path : paths) {
-                        if (java.util.Objects.equals("/oapi", path) || java.util.Objects.equals("oapi", path)) {
                             IS_SERVICE_CATALOG.putIfAbsent(masterUrl, true);
                             return true;
                         }
