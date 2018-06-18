@@ -28,6 +28,7 @@ import com.sun.codemodel.JEnumConstant;
 import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JMethod;
 import io.sundr.builder.annotations.Buildable;
+import io.sundr.builder.annotations.BuildableReference;
 import io.sundr.builder.annotations.Inline;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -43,29 +44,23 @@ public class ServiceCatalogTypeAnnotator extends Jackson2Annotator {
         clazz.annotate(ToString.class);
         clazz.annotate(EqualsAndHashCode.class);
         try {
-            JAnnotationArrayMember inlines = clazz.annotate(Buildable.class)
+            JAnnotationUse buildable = clazz.annotate(Buildable.class)
                     .param("editableEnabled", true)
                     .param("validationEnabled", true)
-                    .param("generateBuilderPackage", true)
-                    .param("builderPackage", "io.fabric8.kubernetes.api.builder")
-                    .paramArray("inline");
+                    .param("generateBuilderPackage", false)
+                    .param("builderPackage", "io.fabric8.kubernetes.api.builder");
 
-            inlines.annotate(Inline.class)
+            buildable.paramArray("inline").annotate(Inline.class)
                     .param("type", new JCodeModel()._class("io.fabric8.kubernetes.api.model.Doneable"))
                     .param("prefix", "Doneable")
                     .param("value", "done");
 
+            buildable.paramArray("refs").annotate(BuildableReference.class)
+                .param("value", new JCodeModel()._class("io.fabric8.kubernetes.api.model.ObjectMeta"));
+
         } catch (JClassAlreadyExistsException e) {
             e.printStackTrace();
         }
-    }
-
-    private void addInline(JAnnotationArrayMember inlines, String name, String returnType) throws JClassAlreadyExistsException {
-        inlines.annotate(Inline.class)
-                .param("type", new JCodeModel()._class("io.fabric8.kubernetes.api.model.Doneable"))
-                .param("returnType", new JCodeModel()._class(returnType))
-                .param("name", name)
-                .param("value", "done");
     }
 
     @Override
