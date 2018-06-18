@@ -18,11 +18,20 @@
 package me.snowdrop.servicecatalog.api.client;
 
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
 import okhttp3.OkHttpClient;
 
+import java.net.URL;
+import java.util.List;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class ServiceCatalogExtensionAdapter implements ExtensionAdapter<ServiceCatalogClient> {
 
+    static final ConcurrentMap<URL, Boolean> IS_SERVICE_CATALOG = new ConcurrentHashMap<>();
+    static final ConcurrentMap<URL, Boolean> USES_SERVICE_CATALOG_APIGROUPS = new ConcurrentHashMap<>();
+    
 	@Override
 	public Class<ServiceCatalogClient> getExtensionType() {
 		return ServiceCatalogClient.class;
@@ -30,7 +39,8 @@ public class ServiceCatalogExtensionAdapter implements ExtensionAdapter<ServiceC
 
 	@Override
 	public Boolean isAdaptable(Client client) {
-		return null;
+        
+		return false;
 	}
 
 	@Override
@@ -38,4 +48,33 @@ public class ServiceCatalogExtensionAdapter implements ExtensionAdapter<ServiceC
             return new DefaultServiceCatalogClient(client.adapt(OkHttpClient.class), client.getConfiguration());
 	}
 
+     static boolean isServiceCatalogAvailable(Client client) {
+        URL masterUrl = client.getMasterUrl();
+        if (IS_SERVICE_CATALOG.containsKey(masterUrl)) {
+            return IS_SERVICE_CATALOG.get(masterUrl);
+        } else {
+            RootPaths rootPaths = client.rootPaths();
+            if (rootPaths != null) {
+                List<String> paths = rootPaths.getPaths();
+                if (paths != null) {
+                    for (String path : paths) {
+                        // lets detect the new API Groups APIs for OpenShift
+                        if (path.endsWith("servicecatalog.k8s.io") || path.contains("servicecatalog.k8s.io/")) {
+                            USES_SERVICE_CATALOG_APIGROUPS.putIfAbsent(masterUrl, true);
+                            IS_SERVICE_CATALOG.putIfAbsent(masterUrl, true);
+                            return true;
+                        }
+                    }
+                    for (String path : paths) {
+                        if (java.util.Objects.equals("/oapi", path) || java.util.Objects.equals("oapi", path)) {
+                            IS_SERVICE_CATALOG.putIfAbsent(masterUrl, true);
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        IS_SERVICE_CATALOG.putIfAbsent(masterUrl, false);
+        return false;
+    }
 }

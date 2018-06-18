@@ -16,6 +16,10 @@
  **/
 package me.snowdrop.servicecatalog.api.client;
 
+import io.fabric8.kubernetes.client.ConfigBuilder;
+import io.fabric8.kubernetes.client.RequestConfig;
+import io.fabric8.kubernetes.client.WithRequestCallable;
+import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import me.snowdrop.servicecatalog.api.model.DoneableClusterServiceBroker;
 import me.snowdrop.servicecatalog.api.model.DoneableClusterServiceClass;
 import me.snowdrop.servicecatalog.api.model.DoneableClusterServicePlan;
@@ -43,7 +47,7 @@ import me.snowdrop.servicecatalog.api.model.ServiceInstanceList;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 
-public class DefaultServiceCatalogClient extends BaseClient implements ServiceCatalogClient {
+public class DefaultServiceCatalogClient extends BaseClient implements NamespacedServiceCatalogClient {
 
     public DefaultServiceCatalogClient() {
         super();
@@ -72,4 +76,22 @@ public class DefaultServiceCatalogClient extends BaseClient implements ServiceCa
     public MixedOperation<ServiceBinding, ServiceBindingList, DoneableServiceBinding, Resource<ServiceBinding, DoneableServiceBinding>> serviceBindings() {
         return new ServiceBindingOperationImpl(this.getHttpClient(), this.getConfiguration());
     }
+
+    @Override
+    public NamespacedServiceCatalogClient inAnyNamespace() {
+        return inNamespace(null);
+    }
+
+    @Override
+    public NamespacedServiceCatalogClient inNamespace(String namespace) {
+        Config updated = new ConfigBuilder(getConfiguration())
+                .withNamespace(namespace)
+                .build();
+
+        return new DefaultServiceCatalogClient(getHttpClient(), updated);
+    }
+  @Override
+  public FunctionCallable<NamespacedServiceCatalogClient> withRequestConfig(RequestConfig requestConfig) {
+    return new WithRequestCallable<NamespacedServiceCatalogClient>(this, requestConfig);
+  }
 }

@@ -17,6 +17,7 @@
 package me.snowdrop.servicecatalog.api.client;
 
 
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import me.snowdrop.servicecatalog.api.model.ClusterServiceBroker;
@@ -36,7 +37,7 @@ import me.snowdrop.servicecatalog.api.model.ServiceInstance;
 import me.snowdrop.servicecatalog.api.model.ServiceInstanceList;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 
-public interface ServiceCatalogClient {
+public interface ServiceCatalogClient extends Client {
 
     NonNamespaceOperation<ClusterServiceBroker, ClusterServiceBrokerList, DoneableClusterServiceBroker, Resource<ClusterServiceBroker, DoneableClusterServiceBroker>> clusterServiceBrokers();
     NonNamespaceOperation<ClusterServiceClass, ClusterServiceClassList, DoneableClusterServiceClass, Resource<ClusterServiceClass, DoneableClusterServiceClass>> clusterServiceClasses();
