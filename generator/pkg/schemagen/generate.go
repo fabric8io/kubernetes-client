@@ -268,7 +268,6 @@ func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error) {
 		s.Resources = make(map[string]*JSONObjectDescriptor)
 
 		for k, v := range g.types {
-
 			name := g.qualifiedName(k)
 			resource := g.resourceDetails(k)
 			value := JSONPropertyDescriptor{
@@ -404,6 +403,7 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 			continue
 		}
 		name := getFieldName(field)
+		//TypeMeta is the base clsas, so we skip that.
 		if name == "TypeMeta" {
 			continue
 		}
@@ -420,7 +420,7 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 		desc := getFieldDescription(field)
 		omitEmpty := isOmitEmpty(field)
 		prop := g.getPropertyDescriptor(field.Type, desc, omitEmpty)
-		if field.Anonymous && field.Type.Kind() == reflect.Struct && len(name) == 0 {
+		if field.Anonymous && field.Type.Kind() == reflect.Struct && (len(name) == 0 || strings.HasPrefix(name, "Common") || name == "PlanReference") {
 			var newProps map[string]JSONPropertyDescriptor
 			if prop.JSONReferenceDescriptor != nil {
 				pType := field.Type

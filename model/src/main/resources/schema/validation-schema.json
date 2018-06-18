@@ -622,9 +622,34 @@
           "$ref": "#/definitions/servicecatalog_ClusterServiceBrokerAuthInfo",
           "javaType": "me.snowdrop.servicecatalog.api.model.ClusterServiceBrokerAuthInfo"
         },
-        "commonServiceBrokerSpec": {
-          "$ref": "#/definitions/servicecatalog_CommonServiceBrokerSpec",
-          "javaType": "me.snowdrop.servicecatalog.api.model.CommonServiceBrokerSpec"
+        "cABundle": {
+          "type": "string",
+          "description": ""
+        },
+        "catalogRestrictions": {
+          "$ref": "#/definitions/servicecatalog_CatalogRestrictions",
+          "javaType": "me.snowdrop.servicecatalog.api.model.CatalogRestrictions"
+        },
+        "insecureSkipTLSVerify": {
+          "type": "boolean",
+          "description": ""
+        },
+        "relistBehavior": {
+          "type": "string",
+          "description": ""
+        },
+        "relistDuration": {
+          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_Duration",
+          "javaType": "java.lang.String"
+        },
+        "relistRequests": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "uRL": {
+          "type": "string",
+          "description": ""
         }
       },
       "additionalProperties": true,
@@ -638,9 +663,26 @@
       "type": "object",
       "description": "",
       "properties": {
-        "commonServiceBrokerStatus": {
-          "$ref": "#/definitions/servicecatalog_CommonServiceBrokerStatus",
-          "javaType": "me.snowdrop.servicecatalog.api.model.CommonServiceBrokerStatus"
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/servicecatalog_ServiceBrokerCondition",
+            "javaType": "me.snowdrop.servicecatalog.api.model.ServiceBrokerCondition"
+          }
+        },
+        "lastCatalogRetrievalTime": {
+          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_Time",
+          "javaType": "java.lang.String"
+        },
+        "operationStartTime": {
+          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_Time",
+          "javaType": "java.lang.String"
+        },
+        "reconciledGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
         }
       },
       "additionalProperties": true,
@@ -709,13 +751,53 @@
       "type": "object",
       "description": "",
       "properties": {
+        "bindable": {
+          "type": "boolean",
+          "description": ""
+        },
+        "bindingRetrievable": {
+          "type": "boolean",
+          "description": ""
+        },
         "clusterServiceBrokerName": {
           "type": "string",
           "description": ""
         },
-        "commonServiceClassSpec": {
-          "$ref": "#/definitions/servicecatalog_CommonServiceClassSpec",
-          "javaType": "me.snowdrop.servicecatalog.api.model.CommonServiceClassSpec"
+        "description": {
+          "type": "string",
+          "description": ""
+        },
+        "externalID": {
+          "type": "string",
+          "description": ""
+        },
+        "externalMetadata": {
+          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_runtime_RawExtension",
+          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+        },
+        "externalName": {
+          "type": "string",
+          "description": ""
+        },
+        "planUpdatable": {
+          "type": "boolean",
+          "description": ""
+        },
+        "requires": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "tags": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
         }
       },
       "additionalProperties": true,
@@ -729,9 +811,9 @@
       "type": "object",
       "description": "",
       "properties": {
-        "commonServiceClassStatus": {
-          "$ref": "#/definitions/servicecatalog_CommonServiceClassStatus",
-          "javaType": "me.snowdrop.servicecatalog.api.model.CommonServiceClassStatus"
+        "removedFromBrokerCatalog": {
+          "type": "boolean",
+          "description": ""
         }
       },
       "additionalProperties": true,
@@ -800,6 +882,10 @@
       "type": "object",
       "description": "",
       "properties": {
+        "bindable": {
+          "type": "boolean",
+          "description": ""
+        },
         "clusterServiceBrokerName": {
           "type": "string",
           "description": ""
@@ -808,9 +894,41 @@
           "$ref": "#/definitions/servicecatalog_ClusterObjectReference",
           "javaType": "me.snowdrop.servicecatalog.api.model.ClusterObjectReference"
         },
-        "commonServicePlanSpec": {
-          "$ref": "#/definitions/servicecatalog_CommonServicePlanSpec",
-          "javaType": "me.snowdrop.servicecatalog.api.model.CommonServicePlanSpec"
+        "description": {
+          "type": "string",
+          "description": ""
+        },
+        "externalID": {
+          "type": "string",
+          "description": ""
+        },
+        "externalMetadata": {
+          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_runtime_RawExtension",
+          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+        },
+        "externalName": {
+          "type": "string",
+          "description": ""
+        },
+        "free": {
+          "type": "boolean",
+          "description": ""
+        },
+        "serviceBindingCreateParameterSchema": {
+          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_runtime_RawExtension",
+          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+        },
+        "serviceBindingCreateResponseSchema": {
+          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_runtime_RawExtension",
+          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+        },
+        "serviceInstanceCreateParameterSchema": {
+          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_runtime_RawExtension",
+          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+        },
+        "serviceInstanceUpdateParameterSchema": {
+          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_runtime_RawExtension",
+          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         }
       },
       "additionalProperties": true,
@@ -824,9 +942,9 @@
       "type": "object",
       "description": "",
       "properties": {
-        "commonServicePlanStatus": {
-          "$ref": "#/definitions/servicecatalog_CommonServicePlanStatus",
-          "javaType": "me.snowdrop.servicecatalog.api.model.CommonServicePlanStatus"
+        "removedFromBrokerCatalog": {
+          "type": "boolean",
+          "description": ""
         }
       },
       "additionalProperties": true,
@@ -1553,9 +1671,34 @@
           "$ref": "#/definitions/servicecatalog_ServiceBrokerAuthInfo",
           "javaType": "me.snowdrop.servicecatalog.api.model.ServiceBrokerAuthInfo"
         },
-        "commonServiceBrokerSpec": {
-          "$ref": "#/definitions/servicecatalog_CommonServiceBrokerSpec",
-          "javaType": "me.snowdrop.servicecatalog.api.model.CommonServiceBrokerSpec"
+        "cABundle": {
+          "type": "string",
+          "description": ""
+        },
+        "catalogRestrictions": {
+          "$ref": "#/definitions/servicecatalog_CatalogRestrictions",
+          "javaType": "me.snowdrop.servicecatalog.api.model.CatalogRestrictions"
+        },
+        "insecureSkipTLSVerify": {
+          "type": "boolean",
+          "description": ""
+        },
+        "relistBehavior": {
+          "type": "string",
+          "description": ""
+        },
+        "relistDuration": {
+          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_Duration",
+          "javaType": "java.lang.String"
+        },
+        "relistRequests": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "uRL": {
+          "type": "string",
+          "description": ""
         }
       },
       "additionalProperties": true,
@@ -1569,9 +1712,26 @@
       "type": "object",
       "description": "",
       "properties": {
-        "commonServiceBrokerStatus": {
-          "$ref": "#/definitions/servicecatalog_CommonServiceBrokerStatus",
-          "javaType": "me.snowdrop.servicecatalog.api.model.CommonServiceBrokerStatus"
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/servicecatalog_ServiceBrokerCondition",
+            "javaType": "me.snowdrop.servicecatalog.api.model.ServiceBrokerCondition"
+          }
+        },
+        "lastCatalogRetrievalTime": {
+          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_Time",
+          "javaType": "java.lang.String"
+        },
+        "operationStartTime": {
+          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_Time",
+          "javaType": "java.lang.String"
+        },
+        "reconciledGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
         }
       },
       "additionalProperties": true,
@@ -1704,9 +1864,33 @@
       "type": "object",
       "description": "",
       "properties": {
+        "clusterServiceClassExternalID": {
+          "type": "string",
+          "description": ""
+        },
+        "clusterServiceClassExternalName": {
+          "type": "string",
+          "description": ""
+        },
+        "clusterServiceClassName": {
+          "type": "string",
+          "description": ""
+        },
         "clusterServiceClassRef": {
           "$ref": "#/definitions/servicecatalog_ClusterObjectReference",
           "javaType": "me.snowdrop.servicecatalog.api.model.ClusterObjectReference"
+        },
+        "clusterServicePlanExternalID": {
+          "type": "string",
+          "description": ""
+        },
+        "clusterServicePlanExternalName": {
+          "type": "string",
+          "description": ""
+        },
+        "clusterServicePlanName": {
+          "type": "string",
+          "description": ""
         },
         "clusterServicePlanRef": {
           "$ref": "#/definitions/servicecatalog_ClusterObjectReference",
@@ -1727,10 +1911,6 @@
             "$ref": "#/definitions/servicecatalog_ParametersFromSource",
             "javaType": "me.snowdrop.servicecatalog.api.model.ParametersFromSource"
           }
-        },
-        "planReference": {
-          "$ref": "#/definitions/servicecatalog_PlanReference",
-          "javaType": "me.snowdrop.servicecatalog.api.model.PlanReference"
         },
         "updateRequests": {
           "type": "integer",
@@ -2063,18 +2243,60 @@
           "$ref": "#/definitions/servicecatalog_ClusterServiceBrokerAuthInfo",
           "javaType": "me.snowdrop.servicecatalog.api.model.ClusterServiceBrokerAuthInfo"
         },
-        "commonServiceBrokerSpec": {
-          "$ref": "#/definitions/servicecatalog_CommonServiceBrokerSpec",
-          "javaType": "me.snowdrop.servicecatalog.api.model.CommonServiceBrokerSpec"
+        "cABundle": {
+          "type": "string",
+          "description": ""
+        },
+        "catalogRestrictions": {
+          "$ref": "#/definitions/servicecatalog_CatalogRestrictions",
+          "javaType": "me.snowdrop.servicecatalog.api.model.CatalogRestrictions"
+        },
+        "insecureSkipTLSVerify": {
+          "type": "boolean",
+          "description": ""
+        },
+        "relistBehavior": {
+          "type": "string",
+          "description": ""
+        },
+        "relistDuration": {
+          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_Duration",
+          "javaType": "java.lang.String"
+        },
+        "relistRequests": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "uRL": {
+          "type": "string",
+          "description": ""
         }
       },
       "additionalProperties": true
     },
     "clusterservicebrokerstatus": {
       "properties": {
-        "commonServiceBrokerStatus": {
-          "$ref": "#/definitions/servicecatalog_CommonServiceBrokerStatus",
-          "javaType": "me.snowdrop.servicecatalog.api.model.CommonServiceBrokerStatus"
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/servicecatalog_ServiceBrokerCondition",
+            "javaType": "me.snowdrop.servicecatalog.api.model.ServiceBrokerCondition"
+          }
+        },
+        "lastCatalogRetrievalTime": {
+          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_Time",
+          "javaType": "java.lang.String"
+        },
+        "operationStartTime": {
+          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_Time",
+          "javaType": "java.lang.String"
+        },
+        "reconciledGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
         }
       },
       "additionalProperties": true
@@ -2115,22 +2337,62 @@
     },
     "clusterserviceclassspec": {
       "properties": {
+        "bindable": {
+          "type": "boolean",
+          "description": ""
+        },
+        "bindingRetrievable": {
+          "type": "boolean",
+          "description": ""
+        },
         "clusterServiceBrokerName": {
           "type": "string",
           "description": ""
         },
-        "commonServiceClassSpec": {
-          "$ref": "#/definitions/servicecatalog_CommonServiceClassSpec",
-          "javaType": "me.snowdrop.servicecatalog.api.model.CommonServiceClassSpec"
+        "description": {
+          "type": "string",
+          "description": ""
+        },
+        "externalID": {
+          "type": "string",
+          "description": ""
+        },
+        "externalMetadata": {
+          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_runtime_RawExtension",
+          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+        },
+        "externalName": {
+          "type": "string",
+          "description": ""
+        },
+        "planUpdatable": {
+          "type": "boolean",
+          "description": ""
+        },
+        "requires": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "tags": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
         }
       },
       "additionalProperties": true
     },
     "clusterserviceclassstatus": {
       "properties": {
-        "commonServiceClassStatus": {
-          "$ref": "#/definitions/servicecatalog_CommonServiceClassStatus",
-          "javaType": "me.snowdrop.servicecatalog.api.model.CommonServiceClassStatus"
+        "removedFromBrokerCatalog": {
+          "type": "boolean",
+          "description": ""
         }
       },
       "additionalProperties": true
@@ -2171,6 +2433,10 @@
     },
     "clusterserviceplanspec": {
       "properties": {
+        "bindable": {
+          "type": "boolean",
+          "description": ""
+        },
         "clusterServiceBrokerName": {
           "type": "string",
           "description": ""
@@ -2179,18 +2445,50 @@
           "$ref": "#/definitions/servicecatalog_ClusterObjectReference",
           "javaType": "me.snowdrop.servicecatalog.api.model.ClusterObjectReference"
         },
-        "commonServicePlanSpec": {
-          "$ref": "#/definitions/servicecatalog_CommonServicePlanSpec",
-          "javaType": "me.snowdrop.servicecatalog.api.model.CommonServicePlanSpec"
+        "description": {
+          "type": "string",
+          "description": ""
+        },
+        "externalID": {
+          "type": "string",
+          "description": ""
+        },
+        "externalMetadata": {
+          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_runtime_RawExtension",
+          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+        },
+        "externalName": {
+          "type": "string",
+          "description": ""
+        },
+        "free": {
+          "type": "boolean",
+          "description": ""
+        },
+        "serviceBindingCreateParameterSchema": {
+          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_runtime_RawExtension",
+          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+        },
+        "serviceBindingCreateResponseSchema": {
+          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_runtime_RawExtension",
+          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+        },
+        "serviceInstanceCreateParameterSchema": {
+          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_runtime_RawExtension",
+          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+        },
+        "serviceInstanceUpdateParameterSchema": {
+          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_runtime_RawExtension",
+          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         }
       },
       "additionalProperties": true
     },
     "clusterserviceplanstatus": {
       "properties": {
-        "commonServicePlanStatus": {
-          "$ref": "#/definitions/servicecatalog_CommonServicePlanStatus",
-          "javaType": "me.snowdrop.servicecatalog.api.model.CommonServicePlanStatus"
+        "removedFromBrokerCatalog": {
+          "type": "boolean",
+          "description": ""
         }
       },
       "additionalProperties": true
@@ -2912,18 +3210,60 @@
           "$ref": "#/definitions/servicecatalog_ServiceBrokerAuthInfo",
           "javaType": "me.snowdrop.servicecatalog.api.model.ServiceBrokerAuthInfo"
         },
-        "commonServiceBrokerSpec": {
-          "$ref": "#/definitions/servicecatalog_CommonServiceBrokerSpec",
-          "javaType": "me.snowdrop.servicecatalog.api.model.CommonServiceBrokerSpec"
+        "cABundle": {
+          "type": "string",
+          "description": ""
+        },
+        "catalogRestrictions": {
+          "$ref": "#/definitions/servicecatalog_CatalogRestrictions",
+          "javaType": "me.snowdrop.servicecatalog.api.model.CatalogRestrictions"
+        },
+        "insecureSkipTLSVerify": {
+          "type": "boolean",
+          "description": ""
+        },
+        "relistBehavior": {
+          "type": "string",
+          "description": ""
+        },
+        "relistDuration": {
+          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_Duration",
+          "javaType": "java.lang.String"
+        },
+        "relistRequests": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "uRL": {
+          "type": "string",
+          "description": ""
         }
       },
       "additionalProperties": true
     },
     "servicebrokerstatus": {
       "properties": {
-        "commonServiceBrokerStatus": {
-          "$ref": "#/definitions/servicecatalog_CommonServiceBrokerStatus",
-          "javaType": "me.snowdrop.servicecatalog.api.model.CommonServiceBrokerStatus"
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/servicecatalog_ServiceBrokerCondition",
+            "javaType": "me.snowdrop.servicecatalog.api.model.ServiceBrokerCondition"
+          }
+        },
+        "lastCatalogRetrievalTime": {
+          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_Time",
+          "javaType": "java.lang.String"
+        },
+        "operationStartTime": {
+          "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_Time",
+          "javaType": "java.lang.String"
+        },
+        "reconciledGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
         }
       },
       "additionalProperties": true
@@ -3014,9 +3354,33 @@
     },
     "serviceinstancespec": {
       "properties": {
+        "clusterServiceClassExternalID": {
+          "type": "string",
+          "description": ""
+        },
+        "clusterServiceClassExternalName": {
+          "type": "string",
+          "description": ""
+        },
+        "clusterServiceClassName": {
+          "type": "string",
+          "description": ""
+        },
         "clusterServiceClassRef": {
           "$ref": "#/definitions/servicecatalog_ClusterObjectReference",
           "javaType": "me.snowdrop.servicecatalog.api.model.ClusterObjectReference"
+        },
+        "clusterServicePlanExternalID": {
+          "type": "string",
+          "description": ""
+        },
+        "clusterServicePlanExternalName": {
+          "type": "string",
+          "description": ""
+        },
+        "clusterServicePlanName": {
+          "type": "string",
+          "description": ""
         },
         "clusterServicePlanRef": {
           "$ref": "#/definitions/servicecatalog_ClusterObjectReference",
@@ -3037,10 +3401,6 @@
             "$ref": "#/definitions/servicecatalog_ParametersFromSource",
             "javaType": "me.snowdrop.servicecatalog.api.model.ParametersFromSource"
           }
-        },
-        "planReference": {
-          "$ref": "#/definitions/servicecatalog_PlanReference",
-          "javaType": "me.snowdrop.servicecatalog.api.model.PlanReference"
         },
         "updateRequests": {
           "type": "integer",

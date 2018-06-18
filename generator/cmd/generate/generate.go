@@ -46,7 +46,7 @@ type Schema struct {
 
 func main() {
 	packages := []schemagen.PackageDescriptor{
-		{"github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog", "", "me.snowdrop.servicecatalog.api.model", "servicecatalog_"},
+		{"github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog", "servicecatalog.k8s.io", "me.snowdrop.servicecatalog.api.model", "servicecatalog_"},
 	}
 
 	typeMap := map[reflect.Type]reflect.Type{
