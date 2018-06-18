@@ -42,4 +42,9 @@ public class ClusterServiceBrokerOperationImpl extends HasMetadataOperation<Clus
   public boolean isResourceNamespaced() {
     return false;
   }
+
+    @Override
+    public Resource<ClusterServiceBroker, DoneableClusterServiceBroker> withName(String name) {
+        return new ClusterServiceBrokerOperationImpl(client, config, apiGroup, apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
+    }
 }

@@ -16,6 +16,7 @@
  **/
 package me.snowdrop.servicecatalog.api.client.internal;
 
+import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.Config;
@@ -35,6 +36,17 @@ public class ServiceBindingOperationImpl extends HasMetadataOperation<ServiceBin
 
     public ServiceBindingOperationImpl(OkHttpClient client, Config config, String apiGroup, String apiVersion, String namespace, String name, Boolean cascading, ServiceBinding item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
     super(client, config, apiGroup, apiVersion, "servicebindings", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  }
+  
+  
+    @Override
+  public NonNamespaceOperation<ServiceBinding, ServiceBindingList, DoneableServiceBinding, Resource<ServiceBinding, DoneableServiceBinding>> inNamespace(String namespace) {
+      return new ServiceBindingOperationImpl(client, config, apiGroup, apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
+  }
+  
+  @Override
+  public Resource<ServiceBinding, DoneableServiceBinding> withName(String name) {
+      return new ServiceBindingOperationImpl(client, config, apiGroup, apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
   }
 
   @Override

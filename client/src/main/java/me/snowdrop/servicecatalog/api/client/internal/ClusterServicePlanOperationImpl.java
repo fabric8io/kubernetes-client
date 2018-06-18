@@ -42,4 +42,9 @@ public class ClusterServicePlanOperationImpl extends HasMetadataOperation<Cluste
     return false;
   }
 
+
+    @Override
+    public Resource<ClusterServicePlan, DoneableClusterServicePlan> withName(String name) {
+        return new ClusterServicePlanOperationImpl(client, config, apiGroup, apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
+    }
 }

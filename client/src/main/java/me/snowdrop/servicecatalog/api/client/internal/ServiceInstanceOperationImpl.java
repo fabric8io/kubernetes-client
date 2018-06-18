@@ -1,18 +1,18 @@
 /**
  * Copyright (C) 2018 Red Hat inc.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *         http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  **/
 package me.snowdrop.servicecatalog.api.client.internal;
 
@@ -42,6 +42,11 @@ public class ServiceInstanceOperationImpl extends HasMetadataOperation<ServiceIn
 
   @Override
   public NonNamespaceOperation<ServiceInstance, ServiceInstanceList, DoneableServiceInstance, Resource<ServiceInstance, DoneableServiceInstance>> inNamespace(String namespace) {
+      return new ServiceInstanceOperationImpl(client, config, apiGroup, apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
+  }
+
+  @Override
+  public Resource<ServiceInstance, DoneableServiceInstance> withName(String name) {
       return new ServiceInstanceOperationImpl(client, config, apiGroup, apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
   }
 
