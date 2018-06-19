@@ -1,9 +1,9 @@
 package me.snowdrop.servicecatalog.test;
 
 import me.snowdrop.servicecatalog.api.client.ServiceCatalogClient;
-import me.snowdrop.servicecatalog.api.model.ClusterServiceBroker;
-import me.snowdrop.servicecatalog.api.model.ClusterServiceBrokerBuilder;
-import me.snowdrop.servicecatalog.api.model.ClusterServiceBrokerList;
+import me.snowdrop.servicecatalog.api.model.ClusterServicePlan;
+import me.snowdrop.servicecatalog.api.model.ClusterServicePlanBuilder;
+import me.snowdrop.servicecatalog.api.model.ClusterServicePlanList;
 import me.snowdrop.servicecatalog.mock.ServiceCatalogServer;
 import org.junit.Rule;
 import org.junit.Test;
@@ -13,7 +13,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-public class ClusterServiceBrokerTest {
+public class ClusterServicePlanTest {
 
   @Rule
   public ServiceCatalogServer server = new ServiceCatalogServer(true, true);
@@ -23,54 +23,54 @@ public class ClusterServiceBrokerTest {
     ServiceCatalogClient client = server.getServiceCatalogClient();
 
 
-      ClusterServiceBroker broker1 = new ClusterServiceBrokerBuilder()
+      ClusterServicePlan plan1 = new ClusterServicePlanBuilder()
               .withNewMetadata()
-              .withName("broker1")
+              .withName("plan1")
               .addToLabels("key1", "value1")
               .endMetadata()
               .withNewSpec()
-              .withUrl("https://broker1.somewhere.com")
+              .withExternalName("plan1")
               .endSpec()
               .build();
 
-      ClusterServiceBroker broker2 = new ClusterServiceBrokerBuilder()
+      ClusterServicePlan plan2 = new ClusterServicePlanBuilder()
               .withNewMetadata()
-              .withName("broker2")
+              .withName("plan2")
               .addToLabels("key2", "value2")
               .endMetadata()
               .withNewSpec()
-              .withUrl("https://broker2.somewhere.com")
+              .withExternalName("plan1")
               .endSpec()
               .build();
 
-      ClusterServiceBroker broker3 = new ClusterServiceBrokerBuilder()
+      ClusterServicePlan plan3 = new ClusterServicePlanBuilder()
               .withNewMetadata()
-              .withName("broker3")
+              .withName("plan3")
               .addToLabels("key3", "value3")
               .endMetadata()
               .withNewSpec()
-              .withUrl("https://broker3.somewhere.com")
+              .withExternalName("plan1")
               .endSpec()
               .build();
 
 
 
       //Create
-      client.clusterServiceBrokers().create(broker1);
-      client.clusterServiceBrokers().create(broker2);
-      client.clusterServiceBrokers().create(broker3);
+      client.clusterServicePlans().create(plan1);
+      client.clusterServicePlans().create(plan2);
+      client.clusterServicePlans().create(plan3);
 
 
       //Read
-      ClusterServiceBrokerList brokers = client.clusterServiceBrokers().list();
-      assertNotNull(brokers);
-      assertEquals(3, brokers.getItems().size());
+      ClusterServicePlanList plans = client.clusterServicePlans().list();
+      assertNotNull(plans);
+      assertEquals(3, plans.getItems().size());
 
-      ClusterServiceBroker r1 = client.clusterServiceBrokers().withName("broker1").get();
+      ClusterServicePlan r1 = client.clusterServicePlans().withName("plan1").get();
       assertNotNull(r1);
 
       //Update
-      ClusterServiceBroker u1 = client.clusterServiceBrokers().withName("broker1").edit()
+      ClusterServicePlan u1 = client.clusterServicePlans().withName("plan1").edit()
               .editMetadata()
               .addToLabels("updated", "true")
               .endMetadata()
@@ -80,7 +80,7 @@ public class ClusterServiceBrokerTest {
       assertEquals("true", u1.getMetadata().getLabels().get("updated"));
 
       //Delete
-      assertTrue(client.clusterServiceBrokers().withName("broker1").delete());
-      assertNull(client.clusterServiceBrokers().withName("broker1").get());
+      assertTrue(client.clusterServicePlans().withName("plan1").delete());
+      assertNull(client.clusterServicePlans().withName("plan1").get());
   }
 }
