@@ -19,7 +19,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog"
+	"github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog/v1beta1"
 	"github.com/snowdrop/service-catalog-java-api/generator/pkg/schemagen"
 	"log"
 	"os"
@@ -30,23 +30,23 @@ import (
 
 //A Schema with the core types of the Service Catalog
 type Schema struct {
-	ClusterServiceBroker     servicecatalog.ClusterServiceBroker
-	ClusterServiceBrokerList servicecatalog.ClusterServiceBrokerList
-	ClusterServiceClass      servicecatalog.ClusterServiceClass
-	ClusterServiceClassList  servicecatalog.ClusterServiceClassList
-	ClusterServicePlan       servicecatalog.ClusterServicePlan
-	ClusterServicePlanList   servicecatalog.ClusterServicePlanList
-	ServiceInstance          servicecatalog.ServiceInstance
-	ServiceInstanceList      servicecatalog.ServiceInstanceList
-	ServiceBinding           servicecatalog.ServiceBinding
-	ServiceBindingList       servicecatalog.ServiceBindingList
-	ServiceBroker            servicecatalog.ServiceBroker
-	ServiceBrokerList        servicecatalog.ServiceBrokerList
+	ClusterServiceBroker     v1beta1.ClusterServiceBroker
+	ClusterServiceBrokerList v1beta1.ClusterServiceBrokerList
+	ClusterServiceClass      v1beta1.ClusterServiceClass
+	ClusterServiceClassList  v1beta1.ClusterServiceClassList
+	ClusterServicePlan       v1beta1.ClusterServicePlan
+	ClusterServicePlanList   v1beta1.ClusterServicePlanList
+	ServiceInstance          v1beta1.ServiceInstance
+	ServiceInstanceList      v1beta1.ServiceInstanceList
+	ServiceBinding           v1beta1.ServiceBinding
+	ServiceBindingList       v1beta1.ServiceBindingList
+	ServiceBroker            v1beta1.ServiceBroker
+	ServiceBrokerList        v1beta1.ServiceBrokerList
 }
 
 func main() {
 	packages := []schemagen.PackageDescriptor{
-		{"github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog", "servicecatalog.k8s.io", "me.snowdrop.servicecatalog.api.model", "servicecatalog_"},
+		{"github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog/v1beta1", "servicecatalog.k8s.io", "me.snowdrop.servicecatalog.api.model", "servicecatalog_"},
 	}
 
 	typeMap := map[reflect.Type]reflect.Type{

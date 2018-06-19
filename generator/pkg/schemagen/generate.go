@@ -281,7 +281,7 @@ func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error) {
 				JavaInterfacesDescriptor: &JavaInterfacesDescriptor{
 					JavaInterfaces: g.javaInterfaces(k),
 				},
-				JavaExtends: g.javaExtends(k),
+				//JavaExtends: g.javaExtends(k),
 			}
 			s.Definitions[name] = value
 			s.Resources[resource] = v
@@ -404,9 +404,10 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 		}
 		name := getFieldName(field)
 		//TypeMeta is the base clsas, so we skip that.
-		if name == "TypeMeta" {
-			continue
-		}
+		//if name == "TypeMeta" {
+		//continue
+		//}
+
 		// Skip unserialized fields
 		if name == "-" {
 			continue
@@ -420,7 +421,7 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 		desc := getFieldDescription(field)
 		omitEmpty := isOmitEmpty(field)
 		prop := g.getPropertyDescriptor(field.Type, desc, omitEmpty)
-		if field.Anonymous && field.Type.Kind() == reflect.Struct && (len(name) == 0 || strings.HasPrefix(name, "Common") || name == "PlanReference") {
+		if field.Anonymous && field.Type.Kind() == reflect.Struct && (len(name) == 0 || strings.HasPrefix(name, "Common") || name == "PlanReference" || name == "TypeMeta") {
 			var newProps map[string]JSONPropertyDescriptor
 			if prop.JSONReferenceDescriptor != nil {
 				pType := field.Type
@@ -443,9 +444,14 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 					}
 				case "apiVersion":
 					apiVersion := filepath.Base(path)
-					apiGroup := filepath.Base(strings.TrimSuffix(path, apiVersion))
 
+					//Tune version for service catalog
+					apiGroup := filepath.Base(strings.TrimSuffix(path, apiVersion))
 					pkgDesc, ok := g.packages[path]
+
+					if apiVersion == "servicecatalog/v1beta1" {
+						apiVersion = "servicecatalog.k8s.io/v1beta1"
+					}
 					if ok && pkgDesc.ApiGroup != "" {
 						apiGroup = pkgDesc.ApiGroup
 					}
