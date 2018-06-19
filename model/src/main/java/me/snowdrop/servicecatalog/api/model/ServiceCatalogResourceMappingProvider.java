@@ -26,12 +26,12 @@ public class ServiceCatalogResourceMappingProvider implements KubernetesResource
     public final Map<String, Class<? extends KubernetesResource>> mappings = new HashMap<>();
 
     public ServiceCatalogResourceMappingProvider () {
-        mappings.put("ClusterServiceBroker", ClusterServiceBroker.class); 
-        mappings.put("ClusterServiceClass", ClusterServiceClass.class); 
-        mappings.put("ClusterServicePlan", ClusterServicePlan.class); 
-        mappings.put("ServiceBroker", ServiceBroker.class); 
-        mappings.put("ServiceBinding", ServiceBinding.class); 
-        mappings.put("ServiceInstance", ServiceInstance.class); 
+        mappings.put("servicecatalog.k8s.io/v1beta1#ClusterServiceBroker", ClusterServiceBroker.class);
+        mappings.put("servicecatalog.k8s.io/v1beta1#ClusterServiceClass", ClusterServiceClass.class);
+        mappings.put("servicecatalog.k8s.io/v1beta1#ClusterServicePlan", ClusterServicePlan.class);
+        mappings.put("servicecatalog.k8s.io/v1beta1#ServiceBroker", ServiceBroker.class);
+        mappings.put("servicecatalog.k8s.io/v1beta1#ServiceBinding", ServiceBinding.class);
+        mappings.put("servicecatalog.k8s.io/v1beta1#ServiceInstance", ServiceInstance.class);
     }
      
     public Map<String, Class<? extends KubernetesResource>> getMappings() {
