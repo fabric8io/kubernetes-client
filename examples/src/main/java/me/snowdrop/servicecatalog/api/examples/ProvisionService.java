@@ -19,7 +19,6 @@ package me.snowdrop.servicecatalog.api.examples;
 
 import me.snowdrop.servicecatalog.api.model.ServiceInstance;
 import me.snowdrop.servicecatalog.api.client.ServiceCatalogClient;
-import io.fabric8.kubernetes.client.KubernetesClient;
 
 
 public class ProvisionService {
@@ -27,7 +26,7 @@ public class ProvisionService {
     public static void main(String[] args) {
         ServiceCatalogClient client = ClientFactory.newClient(args);
         System.out.println("Provisioning a service");
-        ServiceInstance instance = client.serviceInstnaces().inNamespace("iocanel").createNew()
+        ServiceInstance instance = client.serviceInstances().inNamespace("iocanel").createNew()
                 .withNewMetadata()
                 .withName("myserivce")
                 .endMetadata()

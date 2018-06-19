@@ -23,12 +23,12 @@ public class CreateBroker {
 
   public static void main(String[] args) {
       ServiceCatalogClient client = ClientFactory.newClient(args);
-      ClusterServiceBroker broker = client.clusterServiceBrokers().createNew()
+     ClusterServiceBroker broker = client.clusterServiceBrokers().createNew()
           .withNewMetadata()
-          .withName("my----broker")
+          .withName("mybroker")
           .endMetadata()
           .withNewSpec()
-          .withURL("http://url.to.service.broker")
+          .withUrl("http://url.to.service.broker")
           .endSpec()
           .done();
   }

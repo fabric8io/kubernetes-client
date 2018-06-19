@@ -17,14 +17,7 @@
 package me.snowdrop.servicecatalog.api.examples;
 
 import me.snowdrop.servicecatalog.api.client.ServiceCatalogClient;
-import me.snowdrop.servicecatalog.api.client.DefaultServiceCatalogClient;
-import me.snowdrop.servicecatalog.api.model.ClusterServiceBroker;
 import me.snowdrop.servicecatalog.api.model.ClusterServiceBrokerList;
-import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.api.model.RootPaths;
 
 public class ListBrokers {
 

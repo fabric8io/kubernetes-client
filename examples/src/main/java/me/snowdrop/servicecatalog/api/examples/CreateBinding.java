@@ -32,7 +32,7 @@ public class CreateBinding {
             .withName("mybinding")
             .endMetadata()
             .withNewSpec()
-            .withNewServiceInstanceRef("myservice")
+            .withNewInstanceRef("myservice")
             .withSecretName("mysercret")
             .endSpec()
             .done();
