@@ -37,7 +37,7 @@ public class ClusterServiceBrokerTest {
 
       ClusterServiceBroker broker2 = new ClusterServiceBrokerBuilder()
               .withNewMetadata()
-              .withName("broker1")
+              .withName("broker2")
               .addToLabels("key2", "value2")
               .endMetadata()
               .withNewSpec()
@@ -66,7 +66,7 @@ public class ClusterServiceBrokerTest {
       //Read
       ClusterServiceBrokerList brokers = client.clusterServiceBrokers().list();
       assertNotNull(brokers);
-      //assertEquals(3, brokers.getItems().size());
+      assertEquals(3, brokers.getItems().size());
 
       ClusterServiceBroker r1 = client.clusterServiceBrokers().withName("broker1").get();
       assertNotNull(r1);
