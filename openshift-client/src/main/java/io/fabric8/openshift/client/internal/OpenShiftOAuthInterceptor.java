@@ -55,8 +55,16 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
 
         //Build new request
         Request.Builder builder = request.newBuilder();
+        String token = null;
 
-        String token = oauthToken.get();
+        if (Utils.isNotNullOrEmpty(oauthToken.get()) && Utils.isNullOrEmpty(request.header(AUTHORIZATION))) {
+          token = oauthToken.get();
+        } else if (Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword())) {
+          token = authorize();
+        } else if (Utils.isNotNullOrEmpty(config.getOauthToken())) {
+           token = config.getOauthToken();
+        }
+
         // avoid overwriting basic auth token with stale bearer token
         if (Utils.isNotNullOrEmpty(token) && Utils.isNullOrEmpty(request.header(AUTHORIZATION))) {
             setAuthHeader(builder, token);
