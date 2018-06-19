@@ -17,8 +17,6 @@
 package me.snowdrop.servicecatalog.api.examples;
 
 import me.snowdrop.servicecatalog.api.client.ServiceCatalogClient;
-import me.snowdrop.servicecatalog.api.model.ServiceInstance;
-import me.snowdrop.servicecatalog.api.model.ServiceInstanceList;
 import me.snowdrop.servicecatalog.api.model.ServiceInstanceList;
 
 
@@ -26,7 +24,7 @@ public class ListServiceInstances {
 
   public static void main(String[] args) {
       ServiceCatalogClient client = ClientFactory.newClient(args);
-      ServiceInstanceList list = client.serviceInstnaces().inNamespace("iocanel").list();
+      ServiceInstanceList list = client.serviceInstances().inNamespace("iocanel").list();
 
       System.out.println("Listing Service Instances:");
       list.getItems().stream()

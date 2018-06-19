@@ -70,7 +70,7 @@ public class DefaultServiceCatalogClient extends BaseClient implements Namespace
     public NonNamespaceOperation<ClusterServicePlan, ClusterServicePlanList, DoneableClusterServicePlan, Resource<ClusterServicePlan, DoneableClusterServicePlan>> clusterServicePlans() {
         return new ClusterServicePlanOperationImpl(this.getHttpClient(), this.getConfiguration());
     }
-    public MixedOperation<ServiceInstance, ServiceInstanceList, DoneableServiceInstance, Resource<ServiceInstance, DoneableServiceInstance>> serviceInstnaces() {
+    public MixedOperation<ServiceInstance, ServiceInstanceList, DoneableServiceInstance, Resource<ServiceInstance, DoneableServiceInstance>> serviceInstances() {
         return new ServiceInstanceOperationImpl(this.getHttpClient(), this.getConfiguration());
     }
     public MixedOperation<ServiceBinding, ServiceBindingList, DoneableServiceBinding, Resource<ServiceBinding, DoneableServiceBinding>> serviceBindings() {

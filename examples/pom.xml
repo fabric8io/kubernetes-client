@@ -30,7 +30,6 @@
     <groupId>me.snowdrop</groupId>
     <artifactId>servicecatalog-examples</artifactId>
     <name>Snowdrop :: Service Catalog :: Examples</name>
-    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
