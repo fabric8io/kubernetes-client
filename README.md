@@ -147,7 +147,7 @@ Service myservice = client.services().inNamespace("default").createNew()
 You can also set the apiVersion of the resource like in the case of SecurityContextConstraints :
 
 ```java
-SecuirtyContextConstraints scc = new SecurityContextConstraintsBuilder()
+SecurityContextConstraints scc = new SecurityContextConstraintsBuilder()
 		.withApiVersion("v1")
 		.withNewMetadata().withName("scc").endMetadata()
 		.withAllowPrivilegedContainer(true)
