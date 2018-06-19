@@ -77,26 +77,19 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <easymock.version>3.2</easymock.version>
         <felix.scr.annotations.version>1.9.8</felix.scr.annotations.version>
         <jackson.version>2.6.3</jackson.version>
         <jsonassert.version>1.2.3</jsonassert.version>
         <jsonschema2pojo.version>0.4.23</jsonschema2pojo.version>
         <junit.version>4.12</junit.version>
         <kubernetes-model.version>2.1.1</kubernetes-model.version>
-        <kubernetes-client.version>3.1.12</kubernetes-client.version>
+        <kubernetes-client.version>3.2.0</kubernetes-client.version>
         <lombok.version>1.16.4</lombok.version>
         <log4j.version>2.3</log4j.version>
-        <mockwebserver.version>0.0.4</mockwebserver.version>
+        <mockwebserver.version>0.1.0</mockwebserver.version>
 
-        <okhttp.version>3.4.1</okhttp.version>
-        <okhttp.bundle.version>3.4.1_1</okhttp.bundle.version>
-        <okio.version>1.9.0</okio.version>
-        <okio.bundle.version>1.9.0_1</okio.bundle.version>
         <slf4j.version>1.7.12</slf4j.version>
-        <snakeyaml.version>1.16</snakeyaml.version>
         <validation-api.version>1.1.0.Final</validation-api.version>
-
 
         <scr.annotations.version>1.9.2</scr.annotations.version>
         <sundrio.version>0.8.1</sundrio.version>
@@ -113,6 +106,7 @@
         <maven.scr.plugin.version>1.21.0</maven.scr.plugin.version>
 
         <maven.compiler.source>1.8</maven.compiler.source>
+
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <exec.master>https://localhost:8443</exec.master>
@@ -134,7 +128,9 @@
         <module>annotator</module>
         <module>model</module>
         <module>client</module>
+        <module>mock</module>
         <module>examples</module>
+      <module>tests</module>
     </modules>
 
     <dependencyManagement>
@@ -145,7 +141,7 @@
             <artifactId>servicecatalog-model</artifactId>
             <version>${project.version}</version>
           </dependency>
-            <dependency>
+          <dependency>
               <groupId>io.fabric8</groupId>
               <artifactId>kubernetes-model</artifactId>
               <version>${kubernetes-model.version}</version>
@@ -159,6 +155,17 @@
             <dependency>
               <groupId>io.fabric8</groupId>
               <artifactId>kubernetes-client</artifactId>
+              <version>${kubernetes-client.version}</version>
+              <exclusions>
+                <exclusion>
+                  <groupId>io.sundr</groupId>
+                  <artifactId>*</artifactId>
+                </exclusion>
+              </exclusions>
+            </dependency>
+            <dependency>
+              <groupId>io.fabric8</groupId>
+              <artifactId>kubernetes-server-mock</artifactId>
               <version>${kubernetes-client.version}</version>
               <exclusions>
                 <exclusion>
@@ -215,7 +222,6 @@
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
-                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
