@@ -21,13 +21,16 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.Config;
 import me.snowdrop.servicecatalog.api.model.ClusterServiceClass;
 import me.snowdrop.servicecatalog.api.model.ClusterServiceClassList;
+import me.snowdrop.servicecatalog.api.model.ClusterServicePlanList;
 import me.snowdrop.servicecatalog.api.model.DoneableClusterServiceClass;
+import me.snowdrop.servicecatalog.api.model.ServiceInstance;
 import okhttp3.OkHttpClient;
 import java.util.TreeMap;
 import java.util.Map;
 
 
-public class ClusterServiceClassOperationImpl extends HasMetadataOperation<ClusterServiceClass, ClusterServiceClassList, DoneableClusterServiceClass, Resource<ClusterServiceClass, DoneableClusterServiceClass>> {
+public class ClusterServiceClassOperationImpl extends HasMetadataOperation<ClusterServiceClass, ClusterServiceClassList, DoneableClusterServiceClass, ClusterServiceClassResource> implements ClusterServiceClassResource {
+
 
   public ClusterServiceClassOperationImpl(OkHttpClient client, Config config) {
       this(client, config, "servicecatalog.k8s.io", "v1beta1", null, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
@@ -43,8 +46,30 @@ public class ClusterServiceClassOperationImpl extends HasMetadataOperation<Clust
   }
 
     @Override
-    public Resource<ClusterServiceClass, DoneableClusterServiceClass> withName(String name) {
+    public ClusterServiceClassResource withName(String name) {
         return new ClusterServiceClassOperationImpl(client, config, apiGroup, apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
     }
 
+    @Override
+    public ClusterServicePlanList listPlans() {
+        ClusterServiceClass item = get();
+        return new ClusterServicePlanOperationImpl(client, config, apiGroup, apiVersion, namespace, null, isCascading(), null, getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields())
+                .withField("spec.clusterServiceClassRef.name", item.getMetadata().getName())
+                .list();
+    }
+
+    @Override
+    public ServiceInstance instantiate(String instanceName, String plan) {
+      ClusterServiceClass item = get();
+      return new ServiceInstanceOperationImpl(client, config, apiGroup, apiVersion, namespace, null, isCascading(), null, null, isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields())
+                .createNew()
+                .withNewMetadata()
+                    .withName(instanceName)
+                .endMetadata()
+                .withNewSpec()
+                    .withClusterServiceClassExternalName(item.getMetadata().getName())
+                    .withClusterServicePlanExternalName(plan)
+                .endSpec()
+                .done();
+    }
 }

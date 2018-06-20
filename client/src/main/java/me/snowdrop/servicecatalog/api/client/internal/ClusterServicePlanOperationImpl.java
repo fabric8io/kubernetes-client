@@ -22,12 +22,14 @@ import io.fabric8.kubernetes.client.Config;
 import me.snowdrop.servicecatalog.api.model.ClusterServicePlan;
 import me.snowdrop.servicecatalog.api.model.ClusterServicePlanList;
 import me.snowdrop.servicecatalog.api.model.DoneableClusterServicePlan;
+import me.snowdrop.servicecatalog.api.model.ServiceInstance;
 import okhttp3.OkHttpClient;
 import java.util.TreeMap;
 import java.util.Map;
 
 
-public class ClusterServicePlanOperationImpl extends HasMetadataOperation<ClusterServicePlan, ClusterServicePlanList, DoneableClusterServicePlan, Resource<ClusterServicePlan, DoneableClusterServicePlan>> {
+public class ClusterServicePlanOperationImpl extends HasMetadataOperation<ClusterServicePlan, ClusterServicePlanList, DoneableClusterServicePlan, ClusterServicePlanResource>
+    implements ClusterServicePlanResource {
 
   public ClusterServicePlanOperationImpl(OkHttpClient client, Config config) {
       this(client, config, "servicecatalog.k8s.io", "v1beta1", null, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
@@ -44,7 +46,22 @@ public class ClusterServicePlanOperationImpl extends HasMetadataOperation<Cluste
 
 
     @Override
-    public Resource<ClusterServicePlan, DoneableClusterServicePlan> withName(String name) {
+    public ClusterServicePlanResource withName(String name) {
         return new ClusterServicePlanOperationImpl(client, config, apiGroup, apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
+    }
+
+    @Override
+    public ServiceInstance instantiate(String instanceName) {
+      ClusterServicePlan item = get();
+      return new ServiceInstanceOperationImpl(client, config, apiGroup, apiVersion, namespace, null, isCascading(), null, null, isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields())
+                .createNew()
+                .withNewMetadata()
+                    .withName(instanceName)
+                .endMetadata()
+                .withNewSpec()
+                    .withClusterServiceClassExternalName(item.getSpec().getClusterServiceClassRef().getName())
+                    .withClusterServicePlanExternalName(item.getSpec().getExternalName())
+                .endSpec()
+                .done();
     }
 }

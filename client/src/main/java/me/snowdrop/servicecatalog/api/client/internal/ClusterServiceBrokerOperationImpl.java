@@ -19,6 +19,8 @@ package me.snowdrop.servicecatalog.api.client.internal;
 import java.util.Map;
 import java.util.TreeMap;
 
+import me.snowdrop.servicecatalog.api.model.ClusterServiceClassList;
+import me.snowdrop.servicecatalog.api.model.ClusterServicePlanList;
 import me.snowdrop.servicecatalog.api.model.DoneableClusterServiceBroker;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -28,7 +30,7 @@ import me.snowdrop.servicecatalog.api.model.ClusterServiceBrokerList;
 import okhttp3.OkHttpClient;
 
 
-public class ClusterServiceBrokerOperationImpl extends HasMetadataOperation<ClusterServiceBroker, ClusterServiceBrokerList, DoneableClusterServiceBroker, Resource<ClusterServiceBroker, DoneableClusterServiceBroker>> {
+public class ClusterServiceBrokerOperationImpl extends HasMetadataOperation<ClusterServiceBroker, ClusterServiceBrokerList, DoneableClusterServiceBroker, ClusterServiceBrokerResource> implements ClusterServiceBrokerResource {
 
   public ClusterServiceBrokerOperationImpl(OkHttpClient client, Config config) {
       this(client, config, "servicecatalog.k8s.io", "v1beta1", null, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
@@ -44,7 +46,23 @@ public class ClusterServiceBrokerOperationImpl extends HasMetadataOperation<Clus
   }
 
     @Override
-    public Resource<ClusterServiceBroker, DoneableClusterServiceBroker> withName(String name) {
+    public ClusterServiceBrokerResource withName(String name) {
         return new ClusterServiceBrokerOperationImpl(client, config, apiGroup, apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
+    }
+
+    @Override
+    public ClusterServicePlanList listPlans() {
+        ClusterServiceBroker item = get();
+        return new ClusterServicePlanOperationImpl(client, config, apiGroup, apiVersion, namespace, null, isCascading(), null, getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields())
+                .withField("spec.clusterServiceBrokerName", item.getMetadata().getName())
+                .list();
+    }
+
+    @Override
+    public ClusterServiceClassList listClasses() {
+        ClusterServiceBroker item = get();
+        return new ClusterServiceClassOperationImpl(client, config, apiGroup, apiVersion, namespace, null, isCascading(), null, getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields())
+                .withField("spec.clusterServiceBrokerName", item.getMetadata().getName())
+                .list();
     }
 }
