@@ -3,7 +3,6 @@ package me.snowdrop.servicecatalog.test;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import me.snowdrop.servicecatalog.api.client.ServiceCatalogClient;
 import me.snowdrop.servicecatalog.mock.ServiceCatalogMockServer;
-import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 
 import org.junit.After;
