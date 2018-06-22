@@ -213,7 +213,7 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
 
       //If we already called onClosed() or onFailed() before, we need to abort.
       if (explicitlyClosed.get() || closed.get() || !failed.compareAndSet(false, true) ) {
-        //We are not going to notify the listener, sicne we've already called onClose(), so let's log a debug/warning.
+        //We are not going to notify the listener, since we've already called onClose(), so let's log a debug/warning.
         if (LOGGER.isDebugEnabled()) {
           LOGGER.warn("Received [" + t.getClass().getCanonicalName() + "], with message:[" + t.getMessage() + "] after ExecWebSocketListener is closed, Ignoring.");
         }
