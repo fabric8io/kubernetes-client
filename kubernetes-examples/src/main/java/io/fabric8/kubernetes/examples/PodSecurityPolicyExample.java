@@ -43,8 +43,8 @@ public class PodSecurityPolicyExample {
             //Creating PodSecurityPolicy from Yaml file
 
             logger.log(Level.INFO, "Loading File : " + sample);
-            PodSecurityPolicy podSecurityPolicy = client.podSecurityPolicies().load(new FileInputStream(sample)).get();
-            client.podSecurityPolicies().create(podSecurityPolicy);
+            PodSecurityPolicy podSecurityPolicy = client.extensions().podSecurityPolicies().load(new FileInputStream(sample)).get();
+            client.extensions().podSecurityPolicies().create(podSecurityPolicy);
             logger.log(Level.INFO, "PodSecurityPolicy created with Name : "
                   + podSecurityPolicy.getMetadata().getName());
 
@@ -64,7 +64,7 @@ public class PodSecurityPolicyExample {
                     .endSpec()
                     .build();
 
-            client.podSecurityPolicies().create(podSecurityPolicy1);
+            client.extensions().podSecurityPolicies().create(podSecurityPolicy1);
             logger.log(Level.INFO, "PodSecurityPolicy created with Name : "
                     + podSecurityPolicy1.getMetadata().getName());
 

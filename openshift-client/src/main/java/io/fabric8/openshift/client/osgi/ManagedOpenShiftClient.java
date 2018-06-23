@@ -17,9 +17,6 @@
 package io.fabric8.openshift.client.osgi;
 
 import io.fabric8.kubernetes.api.model.*;
-import io.fabric8.kubernetes.api.model.extensions.DoneablePodSecurityPolicy;
-import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicy;
-import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicyList;
 import io.fabric8.kubernetes.client.VersionInfo;
 import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.openshift.api.model.DoneableSecurityContextConstraints;
@@ -427,15 +424,6 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public MixedOperation<StorageClass, StorageClassList, DoneableStorageClass, Resource<StorageClass, DoneableStorageClass>> storageClasses() {
-    return delegate.storageClasses();
-  }
-
-  public MixedOperation<PodSecurityPolicy, PodSecurityPolicyList, DoneablePodSecurityPolicy, Resource<PodSecurityPolicy, DoneablePodSecurityPolicy>> podSecurityPolicies() {
-    return delegate.podSecurityPolicies();
-  }
-
-  @Override
   public MixedOperation<io.fabric8.kubernetes.api.model.Service, ServiceList, DoneableService, Resource<io.fabric8.kubernetes.api.model.Service, DoneableService>> services() {
     return delegate.services();
   }
@@ -534,6 +522,15 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   public AutoscalingAPIGroupDSL autoscaling() {
     return delegate.autoscaling();
   }
+
+  @Override
+  public NetworkAPIGroupDSL network() { return delegate.network(); }
+
+  @Override
+  public StorageAPIGroupDSL storage() { return delegate.storage(); }
+
+  @Override
+  public BatchAPIGroupDSL batch() { return delegate.batch(); }
 
   @Override
   public NamespacedOpenShiftClient inAnyNamespace() {

@@ -14,5 +14,6 @@ io.fabric8.openshift.client.handlers.ProjectRequestHandler
 io.fabric8.openshift.client.handlers.RoleHandler
 io.fabric8.openshift.client.handlers.RoleBindingHandler
 io.fabric8.openshift.client.handlers.RouteHandler
+io.fabric8.openshift.client.handlers.SecurityContextConstraintsHandler
 io.fabric8.openshift.client.handlers.TemplateHandler
 io.fabric8.openshift.client.handlers.UserHandler

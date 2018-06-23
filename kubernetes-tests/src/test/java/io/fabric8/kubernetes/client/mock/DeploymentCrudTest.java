@@ -16,9 +16,9 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.extensions.Deployment;
-import io.fabric8.kubernetes.api.model.extensions.DeploymentBuilder;
-import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
+import io.fabric8.kubernetes.api.model.apps.Deployment;
+import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
+import io.fabric8.kubernetes.api.model.apps.DeploymentList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Rule;
@@ -65,19 +65,19 @@ public class DeploymentCrudTest {
       .endSpec()
       .build();
 
-    client.extensions().deployments().inNamespace("ns1").create(deployment1);
-    client.extensions().deployments().inNamespace("ns1").create(deployment2);
-    client.extensions().deployments().inNamespace("ns2").create(deployment3);
+    client.apps().deployments().inNamespace("ns1").create(deployment1);
+    client.apps().deployments().inNamespace("ns1").create(deployment2);
+    client.apps().deployments().inNamespace("ns2").create(deployment3);
 
-    DeploymentList aDeploymentList = client.extensions().deployments().inAnyNamespace().list();
+    DeploymentList aDeploymentList = client.apps().deployments().inAnyNamespace().list();
     assertNotNull(aDeploymentList);
     assertEquals(3, aDeploymentList.getItems().size());
 
-    aDeploymentList = client.extensions().deployments().inNamespace("ns1").list();
+    aDeploymentList = client.apps().deployments().inNamespace("ns1").list();
     assertNotNull(aDeploymentList);
     assertEquals(2, aDeploymentList.getItems().size());
 
-    aDeploymentList = client.extensions()
+    aDeploymentList = client.apps()
       .deployments()
       .inAnyNamespace()
       .withLabels(Collections.singletonMap("testKey", "testValue"))
@@ -86,11 +86,11 @@ public class DeploymentCrudTest {
     assertEquals(3, aDeploymentList.getItems().size());
 
 
-    boolean bDeleted = client.extensions().deployments().inNamespace("ns2").withName("deployment3").delete();
+    boolean bDeleted = client.apps().deployments().inNamespace("ns2").withName("deployment3").delete();
     assertTrue(bDeleted);
 
 
-    deployment2 = client.extensions().deployments()
+    deployment2 = client.apps().deployments()
       .inNamespace("ns1").withName("deployment2").edit()
       .editMetadata().addToLabels("key1", "value1").endMetadata().done();
     assertNotNull(deployment2);

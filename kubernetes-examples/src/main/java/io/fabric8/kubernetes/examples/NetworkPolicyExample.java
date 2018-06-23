@@ -15,11 +15,10 @@
  */
 package io.fabric8.kubernetes.examples;
 
-import io.fabric8.kubernetes.api.model.extensions.NetworkPolicy;
-import io.fabric8.kubernetes.api.model.extensions.NetworkPolicyBuilder;
+import io.fabric8.kubernetes.api.model.networking.NetworkPolicy;
+import io.fabric8.kubernetes.api.model.networking.NetworkPolicyBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,12 +51,12 @@ public class NetworkPolicyExample {
 
 
     // create polict using NetworkPolicyBuilder object
-    networkPolicy = client.extensions()
+    networkPolicy = client.network()
       .networkPolicies()
       .create(networkPolicy);
 
     // crate policy using YAML reosurce
-    networkPolicy = client.extensions()
+    networkPolicy = client.network()
                                     .networkPolicies()
                                     .inNamespace(namespace)
                                     .load(NetworkPolicyExample.class.getResourceAsStream("/network-policy.yml"))

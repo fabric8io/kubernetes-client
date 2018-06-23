@@ -15,39 +15,17 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.model.extensions.DaemonSet;
-import io.fabric8.kubernetes.api.model.extensions.DaemonSetList;
-import io.fabric8.kubernetes.api.model.extensions.Deployment;
-import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
-import io.fabric8.kubernetes.api.model.extensions.DoneableDaemonSet;
-import io.fabric8.kubernetes.api.model.extensions.DoneableDeployment;
-import io.fabric8.kubernetes.api.model.extensions.DoneableIngress;
-import io.fabric8.kubernetes.api.model.extensions.DoneableNetworkPolicy;
-import io.fabric8.kubernetes.api.model.extensions.NetworkPolicy;
-import io.fabric8.kubernetes.api.model.extensions.NetworkPolicyList;
-import io.fabric8.kubernetes.api.model.extensions.DoneablePodSecurityPolicy;
-import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicy;
-import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicyList;
-import io.fabric8.kubernetes.api.model.DoneableJob;
-import io.fabric8.kubernetes.api.model.extensions.DoneableReplicaSet;
-import io.fabric8.kubernetes.api.model.extensions.DoneableThirdPartyResource;
 import io.fabric8.kubernetes.api.model.extensions.Ingress;
 import io.fabric8.kubernetes.api.model.extensions.IngressList;
-import io.fabric8.kubernetes.api.model.Job;
-import io.fabric8.kubernetes.api.model.JobList;
-import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
-import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
-import io.fabric8.kubernetes.api.model.extensions.ThirdPartyResource;
-import io.fabric8.kubernetes.api.model.extensions.ThirdPartyResourceList;
-import io.fabric8.kubernetes.client.dsl.*;
-import io.fabric8.kubernetes.client.dsl.internal.DaemonSetOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.DeploymentOperationsImpl;
+import io.fabric8.kubernetes.api.model.extensions.DoneableIngress;
+import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicy;
+import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicyList;
+import io.fabric8.kubernetes.api.model.extensions.DoneablePodSecurityPolicy;
+import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.internal.IngressOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.JobOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.NetworkPolicyOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.ReplicaSetOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.PodSecurityPolicyOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.ThirdPartyResourceOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAPIGroupDSL {
@@ -58,16 +36,6 @@ public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAP
 
   public ExtensionsAPIGroupClient(OkHttpClient httpClient, final Config config) throws KubernetesClientException {
     super(httpClient, config);
-  }
-
-  @Override
-  public MixedOperation<Job, JobList, DoneableJob, ScalableResource<Job, DoneableJob>> jobs() {
-    return new JobOperationsImpl(httpClient, getConfiguration(), getNamespace());
-  }
-
-  @Override
-  public MixedOperation<Deployment, DeploymentList, DoneableDeployment, ScalableResource<Deployment, DoneableDeployment>> deployments() {
-    return new DeploymentOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
   @Override
@@ -82,25 +50,8 @@ public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAP
   }
 
   @Override
-  public MixedOperation<NetworkPolicy, NetworkPolicyList, DoneableNetworkPolicy, Resource<NetworkPolicy, DoneableNetworkPolicy>> networkPolicies() {
-	  return new NetworkPolicyOperationsImpl(httpClient, getConfiguration(), getNamespace());
-  }
-
-  @Override
   public MixedOperation<PodSecurityPolicy, PodSecurityPolicyList, DoneablePodSecurityPolicy, Resource<PodSecurityPolicy, DoneablePodSecurityPolicy>> podSecurityPolicies() {
     return new PodSecurityPolicyOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
-  @Override
-  public MixedOperation<DaemonSet, DaemonSetList, DoneableDaemonSet, Resource<DaemonSet, DoneableDaemonSet>> daemonSets() {
-    return new DaemonSetOperationsImpl(httpClient, getConfiguration(), getNamespace());
-  }
-
-  public NonNamespaceOperation<ThirdPartyResource, ThirdPartyResourceList, DoneableThirdPartyResource, Resource<ThirdPartyResource, DoneableThirdPartyResource>> thirdPartyResources() {
-    return new ThirdPartyResourceOperationsImpl(httpClient, getConfiguration());
-  }
-
-  public MixedOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, RollableScalableResource<ReplicaSet, DoneableReplicaSet>> replicaSets() {
-    return new ReplicaSetOperationsImpl(httpClient, getConfiguration(), getNamespace());
-  }
 }

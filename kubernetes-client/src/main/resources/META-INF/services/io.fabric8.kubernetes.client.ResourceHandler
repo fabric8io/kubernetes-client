@@ -34,8 +34,6 @@ io.fabric8.kubernetes.client.handlers.ReplicaSetHandler
 io.fabric8.kubernetes.client.handlers.ReplicationControllerHandler
 io.fabric8.kubernetes.client.handlers.ResourceQuotaHandler
 io.fabric8.kubernetes.client.handlers.SecretHandler
-io.fabric8.kubernetes.client.handlers.SecurityContextConstraintsHandler
 io.fabric8.kubernetes.client.handlers.ServiceAccountHandler
 io.fabric8.kubernetes.client.handlers.ServiceHandler
 io.fabric8.kubernetes.client.handlers.StatefulSetHandler
-io.fabric8.kubernetes.client.handlers.ThirdPartyResourceHandler

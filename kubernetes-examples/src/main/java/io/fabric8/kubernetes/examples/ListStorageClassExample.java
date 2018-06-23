@@ -15,8 +15,7 @@
  */
 package io.fabric8.kubernetes.examples;
 
-import io.fabric8.kubernetes.api.model.*;
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.api.model.storage.StorageClassList;
 import io.fabric8.kubernetes.client.*;
 import org.slf4j.*;
 
@@ -36,7 +35,7 @@ public class ListStorageClassExample {
 
     try (final KubernetesClient client = new DefaultKubernetesClient(config)) {
 
-      StorageClassList storageClassList = client.storageClasses().list();
+      StorageClassList storageClassList = client.storage().storageClasses().list();
 
       logger.info(storageClassList.toString());
 

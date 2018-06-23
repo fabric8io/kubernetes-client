@@ -44,7 +44,7 @@ public class LoadTest {
     assertNotNull(result);
     assertEquals(6, result.size());
     HasMetadata deploymentResource = result.get(1);
-    assertEquals("extensions/v1beta1", deploymentResource.getApiVersion());
+    assertEquals("apps/v1", deploymentResource.getApiVersion());
     assertEquals("Deployment", deploymentResource.getKind());
     assertEquals("redis-master", deploymentResource.getMetadata().getName());
   }

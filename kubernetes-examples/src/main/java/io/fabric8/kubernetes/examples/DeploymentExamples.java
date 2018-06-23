@@ -23,8 +23,8 @@ import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountBuilder;
-import io.fabric8.kubernetes.api.model.extensions.Deployment;
-import io.fabric8.kubernetes.api.model.extensions.DeploymentBuilder;
+import io.fabric8.kubernetes.api.model.apps.Deployment;
+import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
@@ -71,12 +71,12 @@ public class DeploymentExamples {
           .build();
 
 
-        deployment = client.extensions().deployments().inNamespace("thisisatest").create(deployment);
+        deployment = client.apps().deployments().inNamespace("thisisatest").create(deployment);
         log("Created deployment", deployment);
 
         System.err.println("Scaling up:" + deployment.getMetadata().getName());
-        client.extensions().deployments().inNamespace("thisisatest").withName("nginx").scale(2, true);
-        log("Created replica sets:", client.extensions().replicaSets().inNamespace("thisisatest").list().getItems());
+        client.apps().deployments().inNamespace("thisisatest").withName("nginx").scale(2, true);
+        log("Created replica sets:", client.apps().replicaSets().inNamespace("thisisatest").list().getItems());
         System.err.println("Deleting:" + deployment.getMetadata().getName());
         client.resource(deployment).delete();
       }

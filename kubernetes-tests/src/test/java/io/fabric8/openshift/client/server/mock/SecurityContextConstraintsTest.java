@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client.mock;
+package io.fabric8.openshift.client.server.mock;
 
 import io.fabric8.openshift.api.model.SecurityContextConstraints;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsBuilder;
@@ -22,6 +22,7 @@ import io.fabric8.openshift.api.model.SecurityContextConstraintsList;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -32,16 +33,16 @@ import static org.junit.Assert.assertTrue;
 
 public class SecurityContextConstraintsTest {
   @Rule
-  public KubernetesServer server = new KubernetesServer();
+  public OpenShiftServer server = new OpenShiftServer();
 
   @Test
   public void testList() {
-   server.expect().withPath("/api/v1/securitycontextconstraints").andReturn(200, new SecurityContextConstraintsListBuilder()
+   server.expect().withPath("/oapi/v1/securitycontextconstraints").andReturn(200, new SecurityContextConstraintsListBuilder()
             .addNewItem().endItem()
             .build()).once();
 
 
-    KubernetesClient client = server.getClient();
+    OpenShiftClient client = server.getOpenshiftClient();
     SecurityContextConstraintsList sccList = client.securityContextConstraints().list();
     assertNotNull(sccList);
     assertEquals(1, sccList.getItems().size());
@@ -49,10 +50,10 @@ public class SecurityContextConstraintsTest {
 
   @Test
   public void testDelete() {
-   server.expect().withPath("/api/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().build()).once();
-   server.expect().withPath("/api/v1/securitycontextconstraints/scc2").andReturn(200, new SecurityContextConstraintsBuilder().build()).once();
+   server.expect().withPath("/oapi/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().build()).once();
+   server.expect().withPath("/oapi/v1/securitycontextconstraints/scc2").andReturn(200, new SecurityContextConstraintsBuilder().build()).once();
 
-    KubernetesClient client = server.getClient();
+    OpenShiftClient client = server.getOpenshiftClient();
 
     Boolean deleted = client.securityContextConstraints().withName("scc1").delete();
     assertNotNull(deleted);
@@ -66,10 +67,10 @@ public class SecurityContextConstraintsTest {
 
   @Test
   public void testEdit() {
-   server.expect().withPath("/api/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().withNewMetadata().withName("scc1").and().build()).times(2);
-   server.expect().withPath("/api/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().withNewMetadata().withName("scc1").and().addToAllowedCapabilities("allowed").build()).once();
+   server.expect().withPath("/oapi/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().withNewMetadata().withName("scc1").and().build()).times(2);
+   server.expect().withPath("/oapi/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().withNewMetadata().withName("scc1").and().addToAllowedCapabilities("allowed").build()).once();
 
-    KubernetesClient client = server.getClient();
+    OpenShiftClient client = server.getOpenshiftClient();
     SecurityContextConstraints scc = client.securityContextConstraints().withName("scc1").edit().addToAllowedCapabilities("allowed").done();
     assertNotNull(scc);
     assertEquals(1, scc.getAllowedCapabilities().size());

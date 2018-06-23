@@ -63,13 +63,13 @@ public class PodSecurityPolicyIT {
       .endSpec()
       .build();
 
-    client.podSecurityPolicies().create(podSecurityPolicy);
+    client.extensions().podSecurityPolicies().create(podSecurityPolicy);
   }
 
   @Test
   public void load() {
 
-    PodSecurityPolicy loadedPodSecurityPolicy = client.podSecurityPolicies()
+    PodSecurityPolicy loadedPodSecurityPolicy = client.extensions().podSecurityPolicies()
       .load(getClass().getResourceAsStream("/test-podsecuritypolicy.yml")).get();
 
     assertNotNull(loadedPodSecurityPolicy);
@@ -84,7 +84,7 @@ public class PodSecurityPolicyIT {
   @Test
   public void get() {
 
-    PodSecurityPolicy getPodSecurityPolicy = client.podSecurityPolicies()
+    PodSecurityPolicy getPodSecurityPolicy = client.extensions().podSecurityPolicies()
       .withName("test-example").get();
     assertNotNull(getPodSecurityPolicy);
     assertEquals("test-example", getPodSecurityPolicy.getMetadata().getName());
@@ -93,7 +93,7 @@ public class PodSecurityPolicyIT {
   @Test
   public void list() {
 
-    PodSecurityPolicyList podSecurityPolicyList = client.podSecurityPolicies()
+    PodSecurityPolicyList podSecurityPolicyList = client.extensions().podSecurityPolicies()
       .withLabels(Collections.singletonMap("foo","bar")).list();
     assertNotNull(podSecurityPolicyList);
     assertEquals(1,podSecurityPolicyList.getItems().size());
@@ -107,7 +107,7 @@ public class PodSecurityPolicyIT {
   @Test
   public void update(){
 
-    podSecurityPolicy = client.podSecurityPolicies().withName("test-example").edit()
+    podSecurityPolicy = client.extensions().podSecurityPolicies().withName("test-example").edit()
       .editSpec().withPrivileged(true).endSpec()
       .done();
 
@@ -122,14 +122,14 @@ public class PodSecurityPolicyIT {
 
   @Test
   public void delete(){
-    boolean deleted = client.podSecurityPolicies().delete(podSecurityPolicy);
+    boolean deleted = client.extensions().podSecurityPolicies().delete(podSecurityPolicy);
     assertTrue(deleted);
-    PodSecurityPolicyList podSecurityPolicyList = client.podSecurityPolicies().list();
+    PodSecurityPolicyList podSecurityPolicyList = client.extensions().podSecurityPolicies().list();
     assertEquals(0,podSecurityPolicyList.getItems().size());
   }
 
   @After
   public void cleanup() {
-    client.podSecurityPolicies().withName("test-example").delete();
+    client.extensions().podSecurityPolicies().withName("test-example").delete();
   }
 }

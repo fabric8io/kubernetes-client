@@ -13,19 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.handlers;
+package io.fabric8.openshift.client.handlers;
 
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import okhttp3.OkHttpClient;
 import io.fabric8.openshift.api.model.SecurityContextConstraints;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsBuilder;
+import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
-import io.fabric8.kubernetes.client.dsl.internal.SecurityContextConstraintsOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.SecurityContextConstraintsOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
+import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -38,17 +40,17 @@ public class SecurityContextConstraintsHandler implements ResourceHandler<Securi
 
   @Override
   public SecurityContextConstraints create(OkHttpClient client, Config config, String namespace, SecurityContextConstraints item) {
-    return new SecurityContextConstraintsOperationsImpl(client, config, null, namespace, null, true, item, null, false).create();
+    return new SecurityContextConstraintsOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).create();
   }
 
   @Override
   public SecurityContextConstraints replace(OkHttpClient client, Config config, String namespace, SecurityContextConstraints item) {
-    return new SecurityContextConstraintsOperationsImpl(client, config, null, namespace, null, true, item, null, true).replace(item);
+    return new SecurityContextConstraintsOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, true, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).replace(item);
   }
 
   @Override
   public SecurityContextConstraints reload(OkHttpClient client, Config config, String namespace, SecurityContextConstraints item) {
-    return new SecurityContextConstraintsOperationsImpl(client, config, null, namespace, null, true, item, null, false).fromServer().get();
+    return new SecurityContextConstraintsOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).fromServer().get();
   }
 
   @Override
@@ -58,21 +60,21 @@ public class SecurityContextConstraintsHandler implements ResourceHandler<Securi
 
   @Override
   public Boolean delete(OkHttpClient client, Config config, String namespace, SecurityContextConstraints item) {
-    return new SecurityContextConstraintsOperationsImpl(client, config, null, namespace, null, true, item, null, false).delete(item);
+    return new SecurityContextConstraintsOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).delete(item);
   }
 
   @Override
   public Watch watch(OkHttpClient client, Config config, String namespace, SecurityContextConstraints item, Watcher<SecurityContextConstraints> watcher) {
-    return new SecurityContextConstraintsOperationsImpl(client, config, null, namespace, null, true, item, null, false).watch(watcher);
+    return new SecurityContextConstraintsOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).watch(watcher);
   }
 
   @Override
   public Watch watch(OkHttpClient client, Config config, String namespace, SecurityContextConstraints item, String resourceVersion, Watcher<SecurityContextConstraints> watcher) {
-    return new SecurityContextConstraintsOperationsImpl(client, config, null, namespace, null, true, item, null, false).watch(resourceVersion, watcher);
+    return new SecurityContextConstraintsOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).watch(resourceVersion, watcher);
   }
 
   @Override
   public SecurityContextConstraints waitUntilReady(OkHttpClient client, Config config, String namespace, SecurityContextConstraints item, long amount, TimeUnit timeUnit) throws InterruptedException {
-    return new SecurityContextConstraintsOperationsImpl(client, config, null, namespace, null, true, item, null, false).waitUntilReady(amount, timeUnit);
+    return new SecurityContextConstraintsOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilReady(amount, timeUnit);
   }
 }
