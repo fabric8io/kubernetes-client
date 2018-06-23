@@ -24,6 +24,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
+
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -96,11 +98,28 @@ public class SecurityContextConstraintsCrudTest {
     assertEquals("admin-group", sccList.getItems().get(0).getGroups().get(0));
 
     //test of updation
-    scc = client.securityContextConstraints().withName("test-scc").edit()
+    SecurityContextConstraints scc2 = new SecurityContextConstraintsBuilder()
+      .withNewMetadata().withName("test-scc").endMetadata()
       .withAllowPrivilegedContainer(false)
-      .done();
+      .withNewRunAsUser()
+      .withType("RunAsAny")
+      .endRunAsUser()
+      .withNewSeLinuxContext()
+      .withType("RunAsAny")
+      .endSeLinuxContext()
+      .withNewFsGroup()
+      .withType("RunAsAny")
+      .endFsGroup()
+      .withNewSupplementalGroups()
+      .withType("RunAsAny")
+      .endSupplementalGroups()
+      .addToUsers("admin")
+      .addToGroups("admin-group")
+      .build();
 
-    logger.info("Updated PodSecurityPolicy : " + scc.toString());
+    scc = client.securityContextConstraints().withName("test-scc").patch(scc2);
+
+    logger.info("Updated SecurityContextConstraints : " + scc.toString());
 
     assertNotNull(scc);
     assertEquals("test-scc",scc.getMetadata().getName());

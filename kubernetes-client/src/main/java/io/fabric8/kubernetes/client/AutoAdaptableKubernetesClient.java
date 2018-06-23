@@ -32,8 +32,6 @@ import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.DoneableReplicationController;
 import io.fabric8.kubernetes.api.model.DoneableResourceQuota;
 import io.fabric8.kubernetes.api.model.DoneableSecret;
-import io.fabric8.kubernetes.client.dsl.*;
-import io.fabric8.openshift.api.model.DoneableSecurityContextConstraints;
 import io.fabric8.kubernetes.api.model.DoneableService;
 import io.fabric8.kubernetes.api.model.DoneableServiceAccount;
 import io.fabric8.kubernetes.api.model.Endpoints;
@@ -49,9 +47,9 @@ import io.fabric8.kubernetes.api.model.NamespaceList;
 import io.fabric8.kubernetes.api.model.Node;
 import io.fabric8.kubernetes.api.model.NodeList;
 import io.fabric8.kubernetes.api.model.PersistentVolume;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaimList;
 import io.fabric8.kubernetes.api.model.PersistentVolumeList;
+import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
+import io.fabric8.kubernetes.api.model.PersistentVolumeClaimList;;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.ReplicationController;
@@ -61,8 +59,7 @@ import io.fabric8.kubernetes.api.model.ResourceQuotaList;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.SecretList;
-import io.fabric8.openshift.api.model.SecurityContextConstraints;
-import io.fabric8.openshift.api.model.SecurityContextConstraintsList;
+import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
@@ -133,6 +130,15 @@ public class AutoAdaptableKubernetesClient extends DefaultKubernetesClient {
   public AutoscalingAPIGroupDSL autoscaling() {
     return delegate.autoscaling();
   }
+
+  @Override
+  public NetworkAPIGroupDSL network() { return delegate.network(); }
+
+  @Override
+  public StorageAPIGroupDSL storage() { return delegate.storage(); }
+
+  @Override
+  public BatchAPIGroupDSL batch() { return delegate.batch(); }
 
   @Override
   public MixedOperation<ComponentStatus, ComponentStatusList, DoneableComponentStatus, Resource<ComponentStatus, DoneableComponentStatus>> componentstatuses() {
@@ -227,11 +233,6 @@ public class AutoAdaptableKubernetesClient extends DefaultKubernetesClient {
   @Override
   public KubernetesListMixedOperation lists() {
     return delegate.lists();
-  }
-
-  @Override
-  public NonNamespaceOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, Resource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints() {
-    return delegate.securityContextConstraints();
   }
 
   @Override

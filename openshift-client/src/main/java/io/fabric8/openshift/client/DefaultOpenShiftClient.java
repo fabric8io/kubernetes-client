@@ -35,7 +35,6 @@ import io.fabric8.kubernetes.api.model.DoneableResourceQuota;
 import io.fabric8.kubernetes.api.model.DoneableSecret;
 import io.fabric8.kubernetes.api.model.DoneableService;
 import io.fabric8.kubernetes.api.model.DoneableServiceAccount;
-import io.fabric8.kubernetes.api.model.DoneableStorageClass;
 import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsList;
 import io.fabric8.kubernetes.api.model.Event;
@@ -66,44 +65,15 @@ import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
-import io.fabric8.kubernetes.api.model.StorageClass;
-import io.fabric8.kubernetes.api.model.StorageClassList;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionList;
 import io.fabric8.kubernetes.api.model.apiextensions.DoneableCustomResourceDefinition;
-import io.fabric8.kubernetes.api.model.extensions.DoneablePodSecurityPolicy;
-import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicy;
-import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicyList;
-import io.fabric8.kubernetes.client.AppsAPIGroupClient;
-import io.fabric8.kubernetes.client.AutoscalingAPIGroupClient;
-import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
-import io.fabric8.kubernetes.client.ExtensionsAPIGroupClient;
-import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
-import io.fabric8.kubernetes.client.RequestConfig;
-import io.fabric8.kubernetes.client.VersionInfo;
-import io.fabric8.kubernetes.client.WithRequestCallable;
-import io.fabric8.kubernetes.client.dsl.AppsAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.AutoscalingAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.FunctionCallable;
-import io.fabric8.kubernetes.client.dsl.KubernetesListMixedOperation;
-import io.fabric8.kubernetes.client.dsl.LogWatch;
-import io.fabric8.kubernetes.client.dsl.MixedOperation;
-import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
-import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
-import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
-import io.fabric8.kubernetes.client.dsl.ParameterMixedOperation;
-import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
-import io.fabric8.kubernetes.client.dsl.PodResource;
-import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
+import io.fabric8.kubernetes.client.*;
+import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.dsl.internal.ClusterOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ComponentStatusOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.CustomResourceDefinitionOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.CustomResourceOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.PodSecurityPolicyOperationsImpl;
 import io.fabric8.kubernetes.client.utils.ImpersonatorInterceptor;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.openshift.api.model.Build;
@@ -171,26 +141,7 @@ import io.fabric8.openshift.client.dsl.DeployableScalableResource;
 import io.fabric8.openshift.client.dsl.ProjectRequestOperation;
 import io.fabric8.openshift.client.dsl.SubjectAccessReviewOperation;
 import io.fabric8.openshift.client.dsl.TemplateResource;
-import io.fabric8.openshift.client.dsl.internal.BuildConfigOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.BuildOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.ClusterRoleBindingOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.DeploymentConfigOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.GroupOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.ImageStreamOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.ImageStreamTagOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.OAuthAccessTokenOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.OAuthAuthorizeTokenOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.OAuthClientOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.PolicyBindingOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.PolicyOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.ProjectOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.ProjectRequestsOperationImpl;
-import io.fabric8.openshift.client.dsl.internal.RoleBindingOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.RoleOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.RouteOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.SubjectAccessReviewOperationImpl;
-import io.fabric8.openshift.client.dsl.internal.TemplateOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.UserOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.*;
 import io.fabric8.openshift.client.internal.OpenShiftOAuthInterceptor;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -368,11 +319,6 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public NonNamespaceOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, Resource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints() {
-    return delegate.securityContextConstraints();
-  }
-
-  @Override
   public MixedOperation<ConfigMap, ConfigMapList, DoneableConfigMap, Resource<ConfigMap, DoneableConfigMap>> configMaps() {
     return delegate.configMaps();
   }
@@ -458,6 +404,11 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
+  public NonNamespaceOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, Resource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints() {
+    return new SecurityContextConstraintsOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+  }
+
+  @Override
   public ProjectRequestOperation projectrequests() {
     return new ProjectRequestsOperationImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
@@ -498,16 +449,6 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public MixedOperation<StorageClass, StorageClassList, DoneableStorageClass, Resource<StorageClass, DoneableStorageClass>> storageClasses() {
-    return delegate.storageClasses();
-  }
-
-  @Override
-  public MixedOperation<PodSecurityPolicy, PodSecurityPolicyList, DoneablePodSecurityPolicy, Resource<PodSecurityPolicy, DoneablePodSecurityPolicy>> podSecurityPolicies() {
-    return new PodSecurityPolicyOperationsImpl(httpClient, getConfiguration(), getNamespace());
-  }
-
-  @Override
   public NamespacedOpenShiftClient inNamespace(String namespace) {
     OpenShiftConfig updated = new OpenShiftConfigBuilder(new OpenShiftConfig(getConfiguration()))
       .withOpenShiftUrl(openShiftUrl.toString())
@@ -540,6 +481,15 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   public AutoscalingAPIGroupDSL autoscaling() {
     return adapt(AutoscalingAPIGroupClient.class);
   }
+
+  @Override
+  public NetworkAPIGroupDSL network() { return adapt(NetworkAPIGroupClient.class); }
+
+  @Override
+  public StorageAPIGroupDSL storage() { return adapt(StorageAPIGroupClient.class); }
+
+  @Override
+  public BatchAPIGroupDSL batch() { return adapt(BatchAPIGroupClient.class); }
 
   @Override
   public FunctionCallable<NamespacedOpenShiftClient> withRequestConfig(RequestConfig requestConfig) {

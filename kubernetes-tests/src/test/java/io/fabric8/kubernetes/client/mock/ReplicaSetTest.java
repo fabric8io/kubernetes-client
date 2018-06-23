@@ -17,10 +17,10 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
-import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
-import io.fabric8.kubernetes.api.model.extensions.ReplicaSetBuilder;
-import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
-import io.fabric8.kubernetes.api.model.extensions.ReplicaSetListBuilder;
+import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
+import io.fabric8.kubernetes.api.model.apps.ReplicaSetBuilder;
+import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
+import io.fabric8.kubernetes.api.model.apps.ReplicaSetListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Ignore;
@@ -42,18 +42,18 @@ public class ReplicaSetTest {
 
   @Test
   public void testList() {
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/replicasets").andReturn(200, new ReplicaSetListBuilder().build()).once();
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/replicasets").andReturn(200,  new ReplicaSetListBuilder()
+   server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets").andReturn(200, new ReplicaSetListBuilder().build()).once();
+   server.expect().withPath("/apis/apps/v1/namespaces/ns1/replicasets").andReturn(200,  new ReplicaSetListBuilder()
       .addNewItem().and()
       .addNewItem().and().build())
       .once();
 
     KubernetesClient client = server.getClient();
-    ReplicaSetList replicaSetList = client.extensions().replicaSets().list();
+    ReplicaSetList replicaSetList = client.apps().replicaSets().list();
     assertNotNull(replicaSetList);
     assertEquals(0, replicaSetList.getItems().size());
 
-    replicaSetList = client.extensions().replicaSets().inNamespace("ns1").list();
+    replicaSetList = client.apps().replicaSets().inNamespace("ns1").list();
     assertNotNull(replicaSetList);
     assertEquals(2, replicaSetList.getItems().size());
   }
@@ -61,25 +61,25 @@ public class ReplicaSetTest {
 
   @Test
   public void testGet() {
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/replicasets/repl1").andReturn(200, new ReplicaSetBuilder().build()).once();
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/replicasets/repl2").andReturn(200, new ReplicaSetBuilder().build()).once();
+   server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1").andReturn(200, new ReplicaSetBuilder().build()).once();
+   server.expect().withPath("/apis/apps/v1/namespaces/ns1/replicasets/repl2").andReturn(200, new ReplicaSetBuilder().build()).once();
 
     KubernetesClient client = server.getClient();
 
-    ReplicaSet repl1 = client.extensions().replicaSets().withName("repl1").get();
+    ReplicaSet repl1 = client.apps().replicaSets().withName("repl1").get();
     assertNotNull(repl1);
 
-    repl1 = client.extensions().replicaSets().withName("repl2").get();
+    repl1 = client.apps().replicaSets().withName("repl2").get();
     assertNull(repl1);
 
-    repl1 = client.extensions().replicaSets().inNamespace("ns1").withName("repl2").get();
+    repl1 = client.apps().replicaSets().inNamespace("ns1").withName("repl2").get();
     assertNotNull(repl1);
   }
 
 
   @Test
   public void testDelete() {
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/replicasets/repl1").andReturn(200, new ReplicaSetBuilder() .withNewMetadata()
+   server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1").andReturn(200, new ReplicaSetBuilder() .withNewMetadata()
       .withName("repl1")
       .withResourceVersion("1")
       .endMetadata()
@@ -91,7 +91,7 @@ public class ReplicaSetTest {
       .endStatus()
       .build()).once();
 
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/replicasets/repl1").andReturn(200, new ReplicaSetBuilder() .withNewMetadata()
+   server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1").andReturn(200, new ReplicaSetBuilder() .withNewMetadata()
       .withName("repl1")
       .withResourceVersion("1")
       .endMetadata()
@@ -103,7 +103,7 @@ public class ReplicaSetTest {
       .endStatus()
       .build()).times(5);
 
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/replicasets/repl2").andReturn(200, new ReplicaSetBuilder() .withNewMetadata()
+   server.expect().withPath("/apis/apps/v1/namespaces/ns1/replicasets/repl2").andReturn(200, new ReplicaSetBuilder() .withNewMetadata()
       .withName("repl2")
       .withResourceVersion("1")
       .endMetadata()
@@ -115,7 +115,7 @@ public class ReplicaSetTest {
       .endStatus()
       .build()).once();
 
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/ns1/replicasets/repl2").andReturn(200, new ReplicaSetBuilder() .withNewMetadata()
+   server.expect().withPath("/apis/apps/v1/namespaces/ns1/replicasets/repl2").andReturn(200, new ReplicaSetBuilder() .withNewMetadata()
       .withName("repl2")
       .withResourceVersion("1")
       .endMetadata()
@@ -129,19 +129,19 @@ public class ReplicaSetTest {
 
     KubernetesClient client = server.getClient();
 
-    Boolean deleted = client.extensions().replicaSets().withName("repl1").delete();
+    Boolean deleted = client.apps().replicaSets().withName("repl1").delete();
     assertNotNull(deleted);
 
-    deleted = client.extensions().replicaSets().withName("repl2").delete();
+    deleted = client.apps().replicaSets().withName("repl2").delete();
     assertFalse(deleted);
 
-    deleted = client.extensions().replicaSets().inNamespace("ns1").withName("repl2").delete();
+    deleted = client.apps().replicaSets().inNamespace("ns1").withName("repl2").delete();
     assertTrue(deleted);
   }
 
   @Test
   public void testScale() {
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/replicasets/repl1").andReturn(200, new ReplicaSetBuilder()
+   server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1").andReturn(200, new ReplicaSetBuilder()
       .withNewMetadata()
       .withName("repl1")
       .withResourceVersion("1")
@@ -155,7 +155,7 @@ public class ReplicaSetTest {
       .build()).always();
 
     KubernetesClient client = server.getClient();
-    ReplicaSet repl = client.extensions().replicaSets().withName("repl1").scale(5);
+    ReplicaSet repl = client.apps().replicaSets().withName("repl1").scale(5);
     assertNotNull(repl);
     assertNotNull(repl.getSpec());
     assertEquals(5, repl.getSpec().getReplicas().intValue());
@@ -164,7 +164,7 @@ public class ReplicaSetTest {
 
   @Test
   public void testScaleAndWait() {
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/replicasets/repl1").andReturn(200, new ReplicaSetBuilder()
+   server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1").andReturn(200, new ReplicaSetBuilder()
       .withNewMetadata()
       .withName("repl1")
       .withResourceVersion("1")
@@ -177,7 +177,7 @@ public class ReplicaSetTest {
       .endStatus()
       .build()).once();
 
-    server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/replicasets/repl1").andReturn(200, new ReplicaSetBuilder()
+    server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1").andReturn(200, new ReplicaSetBuilder()
         .withNewMetadata()
         .withName("repl1")
         .withResourceVersion("1")
@@ -191,7 +191,7 @@ public class ReplicaSetTest {
         .build()).always();
 
     KubernetesClient client = server.getClient();
-    ReplicaSet repl = client.extensions().replicaSets().withName("repl1").scale(5, true);
+    ReplicaSet repl = client.apps().replicaSets().withName("repl1").scale(5, true);
     assertNotNull(repl);
     assertNotNull(repl.getSpec());
     assertEquals(5, repl.getSpec().getReplicas().intValue());
@@ -220,14 +220,14 @@ public class ReplicaSetTest {
       .withNewStatus().withReplicas(1).endStatus()
       .build();
 
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/replicasets/repl1").andReturn(200, repl1).once();
-   server.expect().put().withPath("/apis/extensions/v1beta1/namespaces/test/replicasets/repl1").andReturn(200, repl1).once();
-   server.expect().get().withPath("/apis/extensions/v1beta1/namespaces/test/replicasets").andReturn(200, new ReplicaSetListBuilder().withItems(repl1).build()).once();
-   server.expect().post().withPath("/apis/extensions/v1beta1/namespaces/test/replicasets").andReturn(201, repl1).once();
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/pods").andReturn(200, new KubernetesListBuilder().build()).once();
+   server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1").andReturn(200, repl1).once();
+   server.expect().put().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1").andReturn(200, repl1).once();
+   server.expect().get().withPath("/apis/apps/v1/namespaces/test/replicasets").andReturn(200, new ReplicaSetListBuilder().withItems(repl1).build()).once();
+   server.expect().post().withPath("/apis/apps/v1/namespaces/test/replicasets").andReturn(201, repl1).once();
+   server.expect().withPath("/apis/apps/v1/namespaces/test/pods").andReturn(200, new KubernetesListBuilder().build()).once();
     KubernetesClient client = server.getClient();
 
-    repl1 = client.extensions().replicaSets().withName("repl1")
+    repl1 = client.apps().replicaSets().withName("repl1")
       .rolling()
       .withTimeout(5, TimeUnit.MINUTES)
       .updateImage("");

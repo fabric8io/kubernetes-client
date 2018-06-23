@@ -18,64 +18,13 @@ package io.fabric8.openshift.client;
 
 import java.net.URL;
 
+import io.fabric8.kubernetes.api.model.DoneableSecurityContext;
 import io.fabric8.kubernetes.api.model.KubernetesList;
+import io.fabric8.kubernetes.client.BatchAPIGroupClient;
 import io.fabric8.kubernetes.client.VersionInfo;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.*;
-import io.fabric8.openshift.api.model.Build;
-import io.fabric8.openshift.api.model.BuildConfig;
-import io.fabric8.openshift.api.model.BuildConfigList;
-import io.fabric8.openshift.api.model.BuildList;
-import io.fabric8.openshift.api.model.ClusterRoleBinding;
-import io.fabric8.openshift.api.model.ClusterRoleBindingList;
-import io.fabric8.openshift.api.model.DeploymentConfig;
-import io.fabric8.openshift.api.model.DeploymentConfigList;
-import io.fabric8.openshift.api.model.DoneableBuild;
-import io.fabric8.openshift.api.model.DoneableBuildConfig;
-import io.fabric8.openshift.api.model.DoneableClusterRoleBinding;
-import io.fabric8.openshift.api.model.DoneableDeploymentConfig;
-import io.fabric8.openshift.api.model.DoneableGroup;
-import io.fabric8.openshift.api.model.DoneableImageStream;
-import io.fabric8.openshift.api.model.DoneableImageStreamTag;
-import io.fabric8.openshift.api.model.DoneableOAuthAccessToken;
-import io.fabric8.openshift.api.model.DoneableOAuthAuthorizeToken;
-import io.fabric8.openshift.api.model.DoneableOAuthClient;
-import io.fabric8.openshift.api.model.DoneablePolicy;
-import io.fabric8.openshift.api.model.DoneablePolicyBinding;
-import io.fabric8.openshift.api.model.DoneableProject;
-import io.fabric8.openshift.api.model.DoneableRole;
-import io.fabric8.openshift.api.model.DoneableRoleBinding;
-import io.fabric8.openshift.api.model.DoneableRoute;
-import io.fabric8.openshift.api.model.DoneableTemplate;
-import io.fabric8.openshift.api.model.DoneableUser;
-import io.fabric8.openshift.api.model.Group;
-import io.fabric8.openshift.api.model.GroupList;
-import io.fabric8.openshift.api.model.ImageStream;
-import io.fabric8.openshift.api.model.ImageStreamList;
-import io.fabric8.openshift.api.model.ImageStreamTag;
-import io.fabric8.openshift.api.model.ImageStreamTagList;
-import io.fabric8.openshift.api.model.OAuthAccessToken;
-import io.fabric8.openshift.api.model.OAuthAccessTokenList;
-import io.fabric8.openshift.api.model.OAuthAuthorizeToken;
-import io.fabric8.openshift.api.model.OAuthAuthorizeTokenList;
-import io.fabric8.openshift.api.model.OAuthClient;
-import io.fabric8.openshift.api.model.OAuthClientList;
-import io.fabric8.openshift.api.model.Policy;
-import io.fabric8.openshift.api.model.PolicyBinding;
-import io.fabric8.openshift.api.model.PolicyBindingList;
-import io.fabric8.openshift.api.model.PolicyList;
-import io.fabric8.openshift.api.model.Project;
-import io.fabric8.openshift.api.model.ProjectList;
-import io.fabric8.openshift.api.model.Role;
-import io.fabric8.openshift.api.model.RoleBinding;
-import io.fabric8.openshift.api.model.RoleBindingList;
-import io.fabric8.openshift.api.model.RoleList;
-import io.fabric8.openshift.api.model.Route;
-import io.fabric8.openshift.api.model.RouteList;
-import io.fabric8.openshift.api.model.Template;
-import io.fabric8.openshift.api.model.TemplateList;
-import io.fabric8.openshift.api.model.User;
-import io.fabric8.openshift.api.model.UserList;
+import io.fabric8.openshift.api.model.*;
 import io.fabric8.openshift.client.dsl.BuildConfigResource;
 import io.fabric8.openshift.client.dsl.BuildResource;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
@@ -96,6 +45,12 @@ public interface OpenShiftClient extends KubernetesClient {
   AppsAPIGroupDSL apps();
 
   AutoscalingAPIGroupDSL autoscaling();
+
+  NetworkAPIGroupDSL network();
+
+  StorageAPIGroupDSL storage();
+
+  BatchAPIGroupDSL batch();
 
   MixedOperation<Build, BuildList, DoneableBuild, BuildResource<Build, DoneableBuild, String, LogWatch>> builds();
 
@@ -133,6 +88,8 @@ public interface OpenShiftClient extends KubernetesClient {
   ParameterMixedOperation<Template, TemplateList, DoneableTemplate, TemplateResource<Template, KubernetesList, DoneableTemplate>> templates();
 
   NonNamespaceOperation<User, UserList, DoneableUser, Resource<User, DoneableUser>> users();
+
+  NonNamespaceOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, Resource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints();
 
   SubjectAccessReviewOperation<CreateableSubjectAccessReview, CreateableLocalSubjectAccessReview> subjectAccessReviews();
 

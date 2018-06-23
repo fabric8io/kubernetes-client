@@ -13,27 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.fabric8.kubernetes.client;
 
-package io.fabric8.kubernetes;
+import okhttp3.OkHttpClient;
 
-import io.fabric8.kubernetes.client.KubernetesClient;
+public class BatchAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<BatchAPIGroupClient> {
 
-import java.util.concurrent.Callable;
-
-public class DeploymentReady implements Callable<Boolean> {
-
-  private KubernetesClient client;
-  private String name;
-  private String namespace;
-
-  public DeploymentReady(KubernetesClient client, String name, String namespace) {
-    this.client = client;
-    this.name = name;
-    this.namespace = namespace;
+  @Override
+  protected String getAPIGroupName() {
+    return "batch";
   }
 
   @Override
-  public Boolean call() throws Exception {
-    return this.client.apps().deployments().inNamespace(this.namespace).withName(this.name).isReady();
+  public Class<BatchAPIGroupClient> getExtensionType() {
+    return BatchAPIGroupClient.class;
+  }
+
+  @Override
+  protected BatchAPIGroupClient newInstance(Client client) {
+    return new BatchAPIGroupClient(client.adapt(OkHttpClient.class), client.getConfiguration());
   }
 }

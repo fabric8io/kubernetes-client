@@ -17,10 +17,10 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
-import io.fabric8.kubernetes.api.model.extensions.StatefulSet;
-import io.fabric8.kubernetes.api.model.extensions.StatefulSetBuilder;
-import io.fabric8.kubernetes.api.model.extensions.StatefulSetList;
-import io.fabric8.kubernetes.api.model.extensions.StatefulSetListBuilder;
+import io.fabric8.kubernetes.api.model.apps.StatefulSet;
+import io.fabric8.kubernetes.api.model.apps.StatefulSetBuilder;
+import io.fabric8.kubernetes.api.model.apps.StatefulSetList;
+import io.fabric8.kubernetes.api.model.apps.StatefulSetListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Ignore;
@@ -42,8 +42,8 @@ public class StatefulSetTest {
 
   @Test
   public void testList() {
-   server.expect().withPath("/apis/apps/v1beta1/namespaces/test/statefulsets").andReturn(200, new StatefulSetListBuilder().build()).once();
-   server.expect().withPath("/apis/apps/v1beta1/namespaces/ns1/statefulsets").andReturn(200,  new StatefulSetListBuilder()
+   server.expect().withPath("/apis/apps/v1/namespaces/test/statefulsets").andReturn(200, new StatefulSetListBuilder().build()).once();
+   server.expect().withPath("/apis/apps/v1/namespaces/ns1/statefulsets").andReturn(200,  new StatefulSetListBuilder()
       .addNewItem().and()
       .addNewItem().and().build())
       .once();
@@ -61,8 +61,8 @@ public class StatefulSetTest {
 
   @Test
   public void testGet() {
-   server.expect().withPath("/apis/apps/v1beta1/namespaces/test/statefulsets/repl1").andReturn(200, new StatefulSetBuilder().build()).once();
-   server.expect().withPath("/apis/apps/v1beta1/namespaces/ns1/statefulsets/repl2").andReturn(200, new StatefulSetBuilder().build()).once();
+   server.expect().withPath("/apis/apps/v1/namespaces/test/statefulsets/repl1").andReturn(200, new StatefulSetBuilder().build()).once();
+   server.expect().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/repl2").andReturn(200, new StatefulSetBuilder().build()).once();
 
     KubernetesClient client = server.getClient();
 
@@ -79,7 +79,7 @@ public class StatefulSetTest {
 
   @Test
   public void testDelete() {
-   server.expect().withPath("/apis/apps/v1beta1/namespaces/test/statefulsets/repl1").andReturn(200, new StatefulSetBuilder() .withNewMetadata()
+   server.expect().withPath("/apis/apps/v1/namespaces/test/statefulsets/repl1").andReturn(200, new StatefulSetBuilder() .withNewMetadata()
       .withName("repl1")
       .withResourceVersion("1")
       .endMetadata()
@@ -91,7 +91,7 @@ public class StatefulSetTest {
       .endStatus()
       .build()).once();
 
-   server.expect().withPath("/apis/apps/v1beta1/namespaces/test/statefulsets/repl1").andReturn(200, new StatefulSetBuilder() .withNewMetadata()
+   server.expect().withPath("/apis/apps/v1/namespaces/test/statefulsets/repl1").andReturn(200, new StatefulSetBuilder() .withNewMetadata()
       .withName("repl1")
       .withResourceVersion("1")
       .endMetadata()
@@ -103,7 +103,7 @@ public class StatefulSetTest {
       .endStatus()
       .build()).times(5);
 
-   server.expect().withPath("/apis/apps/v1beta1/namespaces/ns1/statefulsets/repl2").andReturn(200, new StatefulSetBuilder() .withNewMetadata()
+   server.expect().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/repl2").andReturn(200, new StatefulSetBuilder() .withNewMetadata()
       .withName("repl2")
       .withResourceVersion("1")
       .endMetadata()
@@ -115,7 +115,7 @@ public class StatefulSetTest {
       .endStatus()
       .build()).once();
 
-   server.expect().withPath("/apis/apps/v1beta1/namespaces/ns1/statefulsets/repl2").andReturn(200, new StatefulSetBuilder() .withNewMetadata()
+   server.expect().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/repl2").andReturn(200, new StatefulSetBuilder() .withNewMetadata()
       .withName("repl2")
       .withResourceVersion("1")
       .endMetadata()
@@ -141,7 +141,7 @@ public class StatefulSetTest {
 
   @Test
   public void testScale() {
-   server.expect().withPath("/apis/apps/v1beta1/namespaces/test/statefulsets/repl1").andReturn(200, new StatefulSetBuilder()
+   server.expect().withPath("/apis/apps/v1/namespaces/test/statefulsets/repl1").andReturn(200, new StatefulSetBuilder()
       .withNewMetadata()
       .withName("repl1")
       .withResourceVersion("1")
@@ -164,7 +164,7 @@ public class StatefulSetTest {
 
   @Test
   public void testScaleAndWait() {
-   server.expect().withPath("/apis/apps/v1beta1/namespaces/test/statefulsets/repl1").andReturn(200, new StatefulSetBuilder()
+   server.expect().withPath("/apis/apps/v1/namespaces/test/statefulsets/repl1").andReturn(200, new StatefulSetBuilder()
       .withNewMetadata()
       .withName("repl1")
       .withResourceVersion("1")
@@ -177,7 +177,7 @@ public class StatefulSetTest {
       .endStatus()
       .build()).once();
 
-    server.expect().withPath("/apis/apps/v1beta1/namespaces/test/statefulsets/repl1").andReturn(200, new StatefulSetBuilder()
+    server.expect().withPath("/apis/apps/v1/namespaces/test/statefulsets/repl1").andReturn(200, new StatefulSetBuilder()
         .withNewMetadata()
         .withName("repl1")
         .withResourceVersion("1")
@@ -220,11 +220,11 @@ public class StatefulSetTest {
       .withNewStatus().withReplicas(1).endStatus()
       .build();
 
-   server.expect().withPath("/apis/apps/v1beta1/namespaces/test/statefulsets/repl1").andReturn(200, repl1).once();
-   server.expect().put().withPath("/apis/apps/v1beta1/namespaces/test/statefulsets/repl1").andReturn(200, repl1).once();
-   server.expect().get().withPath("/apis/apps/v1beta1/namespaces/test/statefulsets").andReturn(200, new StatefulSetListBuilder().withItems(repl1).build()).once();
-   server.expect().post().withPath("/apis/apps/v1beta1/namespaces/test/statefulsets").andReturn(201, repl1).once();
-   server.expect().withPath("/apis/apps/v1beta1/namespaces/test/pods").andReturn(200, new KubernetesListBuilder().build()).once();
+   server.expect().withPath("/apis/apps/v1/namespaces/test/statefulsets/repl1").andReturn(200, repl1).once();
+   server.expect().put().withPath("/apis/apps/v1/namespaces/test/statefulsets/repl1").andReturn(200, repl1).once();
+   server.expect().get().withPath("/apis/apps/v1/namespaces/test/statefulsets").andReturn(200, new StatefulSetListBuilder().withItems(repl1).build()).once();
+   server.expect().post().withPath("/apis/apps/v1/namespaces/test/statefulsets").andReturn(201, repl1).once();
+   server.expect().withPath("/apis/apps/v1/namespaces/test/pods").andReturn(200, new KubernetesListBuilder().build()).once();
     KubernetesClient client = server.getClient();
 
     repl1 = client.apps().statefulSets().withName("repl1")

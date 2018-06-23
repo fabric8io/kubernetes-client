@@ -16,10 +16,10 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.Job;
-import io.fabric8.kubernetes.api.model.JobBuilder;
-import io.fabric8.kubernetes.api.model.JobList;
-import io.fabric8.kubernetes.api.model.JobListBuilder;
+import io.fabric8.kubernetes.api.model.batch.Job;
+import io.fabric8.kubernetes.api.model.batch.JobBuilder;
+import io.fabric8.kubernetes.api.model.batch.JobList;
+import io.fabric8.kubernetes.api.model.batch.JobListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
@@ -51,15 +51,15 @@ public class JobTest {
 
 
     KubernetesClient client = server.getClient();
-    JobList jobList = client.extensions().jobs().list();
+    JobList jobList = client.batch().jobs().list();
     assertNotNull(jobList);
     assertEquals(0, jobList.getItems().size());
 
-    jobList = client.extensions().jobs().inNamespace("ns1").list();
+    jobList = client.batch().jobs().inNamespace("ns1").list();
     assertNotNull(jobList);
     assertEquals(2, jobList.getItems().size());
 
-    jobList = client.extensions().jobs().inAnyNamespace().list();
+    jobList = client.batch().jobs().inAnyNamespace().list();
     assertNotNull(jobList);
     assertEquals(3, jobList.getItems().size());
   }
@@ -74,7 +74,7 @@ public class JobTest {
       .build()).once();
 
     KubernetesClient client = server.getClient();
-    JobList jobList = client.extensions().jobs()
+    JobList jobList = client.batch().jobs()
       .withLabel("key1", "value1")
       .withLabel("key2","value2")
       .withLabel("key3","value3")
@@ -84,7 +84,7 @@ public class JobTest {
     assertNotNull(jobList);
     assertEquals(0, jobList.getItems().size());
 
-    jobList = client.extensions().jobs()
+    jobList = client.batch().jobs()
       .withLabel("key1", "value1")
       .withLabel("key2","value2")
       .list();
@@ -101,13 +101,13 @@ public class JobTest {
 
     KubernetesClient client = server.getClient();
 
-    Job job = client.extensions().jobs().withName("job1").get();
+    Job job = client.batch().jobs().withName("job1").get();
     assertNotNull(job);
 
-    job = client.extensions().jobs().withName("job2").get();
+    job = client.batch().jobs().withName("job2").get();
     assertNull(job);
 
-    job = client.extensions().jobs().inNamespace("ns1").withName("job2").get();
+    job = client.batch().jobs().inNamespace("ns1").withName("job2").get();
     assertNotNull(job);
   }
 
@@ -162,10 +162,10 @@ public class JobTest {
 
     KubernetesClient client = server.getClient();
 
-    Boolean deleted = client.extensions().jobs().withName("job1").delete();
+    Boolean deleted = client.batch().jobs().withName("job1").delete();
     assertNotNull(deleted);
 
-    deleted = client.extensions().jobs().withName("job2").delete();
+    deleted = client.batch().jobs().withName("job2").delete();
     assertTrue(deleted);
   }
 
@@ -207,10 +207,10 @@ public class JobTest {
 
     KubernetesClient client = server.getClient();
 
-    Boolean deleted = client.extensions().jobs().inAnyNamespace().delete(job1, job2);
+    Boolean deleted = client.batch().jobs().inAnyNamespace().delete(job1, job2);
     assertNotNull(deleted);
 
-    deleted = client.extensions().jobs().inAnyNamespace().delete(job3);
+    deleted = client.batch().jobs().inAnyNamespace().delete(job3);
     assertFalse(deleted);
   }
 
@@ -220,7 +220,7 @@ public class JobTest {
     Job job2 = new JobBuilder().withNewMetadata().withName("job2").withNamespace("ns1").and().build();
     KubernetesClient client = server.getClient();
 
-    Boolean deleted = client.extensions().jobs().inNamespace("test1").delete(job1);
+    Boolean deleted = client.batch().jobs().inNamespace("test1").delete(job1);
     assertNotNull(deleted);
   }
 
@@ -230,7 +230,7 @@ public class JobTest {
     Job job2 = new JobBuilder().withNewMetadata().withName("job2").withNamespace("ns1").and().build();
     KubernetesClient client = server.getClient();
 
-    client.extensions().jobs().inNamespace("test1").withName("myjob1").create(job1);
+    client.batch().jobs().inNamespace("test1").withName("myjob1").create(job1);
   }
 
   /**

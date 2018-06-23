@@ -22,8 +22,8 @@ io.fabric8.kubernetes.client.handlers.EndpointsHandler
 io.fabric8.kubernetes.client.handlers.EventHandler
 io.fabric8.kubernetes.client.handlers.HorizontalPodAutoscalerHandler
 io.fabric8.kubernetes.client.handlers.IngressHandler
-io.fabric8.kubernetes.client.handlers.LimitRangeHandler
 io.fabric8.kubernetes.client.handlers.JobHandler
+io.fabric8.kubernetes.client.handlers.LimitRangeHandler
 io.fabric8.kubernetes.client.handlers.NamespaceHandler
 io.fabric8.kubernetes.client.handlers.NetworkPolicyHandler
 io.fabric8.kubernetes.client.handlers.NodeHandler
@@ -35,9 +35,8 @@ io.fabric8.kubernetes.client.handlers.ReplicaSetHandler
 io.fabric8.kubernetes.client.handlers.ReplicationControllerHandler
 io.fabric8.kubernetes.client.handlers.ResourceQuotaHandler
 io.fabric8.kubernetes.client.handlers.SecretHandler
-io.fabric8.kubernetes.client.handlers.SecurityContextConstraintsHandler
 io.fabric8.kubernetes.client.handlers.ServiceAccountHandler
 io.fabric8.kubernetes.client.handlers.ServiceHandler
 io.fabric8.kubernetes.client.handlers.StatefulSetHandler
 io.fabric8.kubernetes.client.handlers.StorageClassHandler
-io.fabric8.kubernetes.client.handlers.ThirdPartyResourceHandler
+
