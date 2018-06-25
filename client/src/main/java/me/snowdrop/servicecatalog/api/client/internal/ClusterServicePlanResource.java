@@ -23,5 +23,5 @@ import me.snowdrop.servicecatalog.api.model.ServiceInstance;
 
 public interface ClusterServicePlanResource extends Resource<ClusterServicePlan, DoneableClusterServicePlan> {
 
-    ServiceInstance instantiate(String instanceName);
+    ServiceInstance instantiate(String... args);
 }

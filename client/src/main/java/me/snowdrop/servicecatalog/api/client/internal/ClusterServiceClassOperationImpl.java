@@ -20,10 +20,14 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.Config;
 import me.snowdrop.servicecatalog.api.model.ClusterServiceClass;
 import me.snowdrop.servicecatalog.api.model.ClusterServiceClassList;
+import me.snowdrop.servicecatalog.api.model.ClusterServicePlan;
 import me.snowdrop.servicecatalog.api.model.ClusterServicePlanList;
 import me.snowdrop.servicecatalog.api.model.DoneableClusterServiceClass;
 import me.snowdrop.servicecatalog.api.model.ServiceInstance;
 import okhttp3.OkHttpClient;
+
+import java.util.HashMap;
+import java.util.List;
 import java.util.TreeMap;
 import java.util.Map;
 
@@ -52,9 +56,27 @@ public class ClusterServiceClassOperationImpl extends HasMetadataOperation<Clust
     @Override
     public ClusterServicePlanList listPlans() {
         ClusterServiceClass item = get();
-        return new ClusterServicePlanOperationImpl(client, config, apiGroup, apiVersion, namespace, null, isCascading(), null, getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields())
-                .withField("spec.clusterServiceClassRef.name", item.getMetadata().getName())
+        return new ClusterServicePlanOperationImpl(client, config, apiGroup, apiVersion, namespace, null, isCascading(), null, getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), new HashMap<>())
+            .withField("spec.clusterServiceClassRef.name", item != null ? item.getMetadata().getName() : null)
                 .list();
+    }
+
+    @Override
+    public ClusterServicePlanResource usePlan(String externalName) {
+        ClusterServiceClass item = get();
+        Map<String, String> fields = new HashMap<>();
+        fields.put("spec.clusterServiceClassRef.name", item.getMetadata().getName());
+        fields.put("spec.externalName", externalName);
+
+        List<ClusterServicePlan> list = new ClusterServicePlanOperationImpl(client, config, apiGroup, apiVersion, namespace, null, isCascading(), null, getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), fields)
+            .withFields(fields)
+            .list().getItems();
+
+        if (list.size() != 1) {
+            throw new IllegalArgumentException("No unique ClusterServicePlan with external name: " + externalName + " found for ClusterServiceBroker: " + item.getSpec().getClusterServiceBrokerName()+" and ClusterServiceClass: " + item.getSpec().getExternalName()+".");
+        }
+        ClusterServicePlan p = list.get(0);
+        return new ClusterServicePlanOperationImpl(client, config, apiGroup, apiVersion, namespace, p.getMetadata().getName(), isCascading(), null, getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
     }
 
     @Override

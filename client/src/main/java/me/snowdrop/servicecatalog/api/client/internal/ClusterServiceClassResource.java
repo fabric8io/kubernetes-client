@@ -26,5 +26,13 @@ public interface ClusterServiceClassResource extends Resource<ClusterServiceClas
 
     ClusterServicePlanList listPlans();
 
+    /**
+     * Switch to the {@link ClusterServicePlanResource} with the specified external name.
+     * @param externalName
+     * @return the resource.
+     * @throws IllegalArgumentException if no unique resource with externalName is found.
+     */
+    ClusterServicePlanResource usePlan(String externalName);
+
     ServiceInstance instantiate(String instanceName, String plan);
 }

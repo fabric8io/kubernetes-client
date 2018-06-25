@@ -38,4 +38,13 @@ public interface ClusterServiceBrokerResource extends Resource<ClusterServiceBro
      * @return The list of plans.
      */
     ClusterServiceClassList listClasses();
+
+
+    /**
+     * Switch to the {@link ClusterServiceClassResource} with the specified external name.
+     * @param externalName
+     * @return the resource.
+     * @throws IllegalArgumentException if no unique resource with externalName is found.
+     */
+    ClusterServiceClassResource useServiceClass(String externalName);
 }

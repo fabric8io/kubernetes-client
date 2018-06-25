@@ -30,18 +30,18 @@ import java.util.Map;
 public class ClusterServicePlanOperationImpl extends HasMetadataOperation<ClusterServicePlan, ClusterServicePlanList, DoneableClusterServicePlan, ClusterServicePlanResource>
     implements ClusterServicePlanResource {
 
-  public ClusterServicePlanOperationImpl(OkHttpClient client, Config config) {
-      this(client, config, "servicecatalog.k8s.io", "v1beta1", null, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
-  }
+    public ClusterServicePlanOperationImpl(OkHttpClient client, Config config) {
+        this(client, config, "servicecatalog.k8s.io", "v1beta1", null, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+    }
 
     public ClusterServicePlanOperationImpl(OkHttpClient client, Config config, String apiGroup, String apiVersion, String namespace, String name, Boolean cascading, ClusterServicePlan item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, config, apiGroup, apiVersion, "clusterserviceplans", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
-  }
+        super(client, config, apiGroup, apiVersion, "clusterserviceplans", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+    }
 
-  @Override
-  public boolean isResourceNamespaced() {
-    return false;
-  }
+    @Override
+    public boolean isResourceNamespaced() {
+        return false;
+    }
 
 
     @Override
@@ -50,16 +50,30 @@ public class ClusterServicePlanOperationImpl extends HasMetadataOperation<Cluste
     }
 
     @Override
-    public ServiceInstance instantiate(String instanceName) {
-      ClusterServicePlan item = get();
-      return new ServiceInstanceOperationImpl(client, config, apiGroup, apiVersion, namespace, null, isCascading(), null, null, isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields())
+    public ServiceInstance instantiate(String... args) {
+        String instanceName;
+        String instanceNamespace;
+
+        if (args.length == 1) {
+            instanceName = args[0];
+            instanceNamespace = config.getNamespace();
+        } else if (args.length == 2) {
+            instanceNamespace = args[0];
+            instanceName = args[1];
+        } else {
+            throw new IllegalArgumentException("Instantiate needs to be called with either <namespace> <instance name> or <instance name> arguments, but instead found: " + args.length +" arguments.");
+        }
+
+        ClusterServicePlan item = get();
+        return new ServiceInstanceOperationImpl(client, config, apiGroup, apiVersion, namespace, null, isCascading(), null, null, isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields())
                 .createNew()
                 .withNewMetadata()
-                    .withName(instanceName)
+                .withName(instanceName)
+                .withNamespace(instanceNamespace)
                 .endMetadata()
                 .withNewSpec()
-                    .withClusterServiceClassExternalName(item.getSpec().getClusterServiceClassRef().getName())
-                    .withClusterServicePlanExternalName(item.getSpec().getExternalName())
+                .withClusterServiceClassName(item.getSpec().getClusterServiceClassRef().getName())
+                .withClusterServicePlanName(item.getMetadata().getName())
                 .endSpec()
                 .done();
     }

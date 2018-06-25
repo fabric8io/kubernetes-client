@@ -15,9 +15,12 @@
  */
 package me.snowdrop.servicecatalog.api.client.internal;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import me.snowdrop.servicecatalog.api.model.ClusterServiceClass;
 import me.snowdrop.servicecatalog.api.model.ClusterServiceClassList;
 import me.snowdrop.servicecatalog.api.model.ClusterServicePlanList;
 import me.snowdrop.servicecatalog.api.model.DoneableClusterServiceBroker;
@@ -63,5 +66,23 @@ public class ClusterServiceBrokerOperationImpl extends HasMetadataOperation<Clus
         return new ClusterServiceClassOperationImpl(client, config, apiGroup, apiVersion, namespace, null, isCascading(), null, getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields())
                 .withField("spec.clusterServiceBrokerName", item.getMetadata().getName())
                 .list();
+    }
+
+
+    public ClusterServiceClassResource useServiceClass(String externalName) {
+        ClusterServiceBroker item = get();
+        Map<String, String> fields = new HashMap<>();
+        fields.put("spec.clusterServiceBrokerName", item.getMetadata().getName());
+        fields.put("spec.externalName", externalName);
+
+        List<ClusterServiceClass> list = new ClusterServiceClassOperationImpl(client, config, apiGroup, apiVersion, namespace, null, isCascading(), null, getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields())
+            .withFields(fields)
+            .list().getItems();
+
+        if (list.size() != 1) {
+            throw new IllegalArgumentException("No unique ClusterServiceClass with external name:" + externalName + "found for ClusterServiceBroker: " + item.getMetadata().getName());
+        }
+        ClusterServiceClass c = list.get(0);
+        return new ClusterServiceClassOperationImpl(client, config, apiGroup, apiVersion, namespace, c.getMetadata().getName(), isCascading(), null, getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
     }
 }
