@@ -42,5 +42,22 @@ public class URLUtilsTest {
 
   }
 
+  @Test
+  public void shouldJoinNoneUrl() {
+
+    // Given
+
+    String masterUrl = "images.openshift.io";
+
+    // When
+
+    final String fullUrl = URLUtils.join(masterUrl, "api");
+
+    // Then
+
+    assertThat(fullUrl, is("images.openshift.io/api"));
+
+  }
+
 
 }
