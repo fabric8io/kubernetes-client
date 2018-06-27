@@ -32,7 +32,10 @@ public class KubernetesServer extends ExternalResource {
   private KubernetesMockServer mock;
   private NamespacedKubernetesClient client;
   private boolean https;
-  private boolean curdMode;
+  // In this mode the mock web server will store, read, update and delete
+  // kubernetes resources using an in memory map and will appear as a real api
+  // server.
+  private boolean crudMode;
 
   public KubernetesServer() {
     this(true, false);
@@ -42,13 +45,13 @@ public class KubernetesServer extends ExternalResource {
     this(https, false);
   }
 
-  public KubernetesServer(boolean https, boolean curdMode) {
+  public KubernetesServer(boolean https, boolean crudMode) {
     this.https = https;
-    this.curdMode = curdMode;
+    this.crudMode = crudMode;
   }
 
   public void before() {
-    mock = curdMode
+    mock = crudMode
       ? new KubernetesMockServer(new Context(), new MockWebServer(), new HashMap<ServerRequest, Queue<ServerResponse>>(), new KubernetesCrudDispatcher(), true)
       : new KubernetesMockServer(https);
     mock.init();
