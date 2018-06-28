@@ -15,17 +15,39 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 public class URLUtils {
     private URLUtils() {}
 
     public static String join(String... parts) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < parts.length; i++) {
+
+        String queryParams = "";
+        if (parts.length > 0) {
+          String urlWithoutQuery = parts[0];
+          try {
+            URI uri = new URI(parts[0]);
+            if (uri.getQuery() != null) {
+              queryParams = "?" + uri.getQuery();
+              urlWithoutQuery = new URI(uri.getScheme(), uri.getAuthority(), uri.getPath(), null, uri.getFragment())
+                .toString();
+            }
+          } catch (URISyntaxException e) {
+            // Not all first parameters are URL
+          }
+          sb.append(urlWithoutQuery).append("/");
+        }
+
+        for (int i = 1; i < parts.length; i++) {
             sb.append(parts[i]);
             if (i < parts.length - 1) {
                 sb.append("/");
             }
         }
+
+        sb.append(queryParams);
         String joined = sb.toString();
 
         // And normalize it...
