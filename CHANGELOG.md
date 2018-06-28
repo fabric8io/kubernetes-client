@@ -2,6 +2,9 @@
 
 #### 3.2.1 (To be released)
 
+  Bugs
+    * Fix #1089 : Query parameters are not correctly processed if set in `masterUrl`
+
 #### 3.2.0
   Bugs
    * Fix #1083 : Mock Kubernetes server only handles core and extensions API groups
