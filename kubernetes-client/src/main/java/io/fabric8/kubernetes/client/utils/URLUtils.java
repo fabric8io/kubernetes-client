@@ -24,13 +24,13 @@ public class URLUtils {
     public static String join(String... parts) {
         StringBuilder sb = new StringBuilder();
 
-        String queryParams = "";
+        String urlQueryParams = "";
         if (parts.length > 0) {
           String urlWithoutQuery = parts[0];
           try {
             URI uri = new URI(parts[0]);
-            if (uri.getQuery() != null) {
-              queryParams = "?" + uri.getQuery();
+            if (containsQueryParam(uri)) {
+              urlQueryParams = uri.getQuery();
               urlWithoutQuery = new URI(uri.getScheme(), uri.getAuthority(), uri.getPath(), null, uri.getFragment())
                 .toString();
             }
@@ -40,14 +40,29 @@ public class URLUtils {
           sb.append(urlWithoutQuery).append("/");
         }
 
+        StringBuilder queryParams = new StringBuilder();
         for (int i = 1; i < parts.length; i++) {
-            sb.append(parts[i]);
-            if (i < parts.length - 1) {
-                sb.append("/");
+          try {
+            URI partUri = new URI(parts[i]);
+            if (containsQueryParam(partUri)) {
+              queryParams = getQueryParams(partUri, parts, i+1);
+              // If we start detecting query params then everything will be query params part
+              break;
             }
+
+            sb.append(parts[i]);
+
+          } catch (URISyntaxException e) {
+            sb.append(parts[i]);
+          }
+
+          if (i < parts.length - 1) {
+            sb.append("/");
+          }
+
         }
 
-        sb.append(queryParams);
+        appendQueryParametersFromOriginalUrl(sb, urlQueryParams, queryParams);
         String joined = sb.toString();
 
         // And normalize it...
@@ -57,5 +72,38 @@ public class URLUtils {
                 .replaceAll("/#", "#")
                 .replaceAll(":/", "://");
 
+    }
+
+  private static void appendQueryParametersFromOriginalUrl(StringBuilder sb, String urlQueryParams, StringBuilder queryParams) {
+    if (!urlQueryParams.isEmpty()) {
+      if (queryParams.length() == 0) {
+        queryParams.append("?");
+      } else {
+        queryParams.append("&");
+      }
+      queryParams.append(urlQueryParams);
+    }
+
+    sb.append(queryParams);
+  }
+
+  private static StringBuilder getQueryParams(URI firstPart, String[] parts, int index) {
+        StringBuilder queryParams = new StringBuilder();
+        queryParams.append(firstPart.toString());
+
+        for (int i = index; i < parts.length; i++) {
+            String param = parts[i];
+
+            if (!param.startsWith("&")) {
+                queryParams.append("&");
+            }
+            queryParams.append((param));
+        }
+
+        return queryParams;
+    }
+
+    private static boolean containsQueryParam(URI uri) {
+       return uri.getQuery() != null;
     }
 }
