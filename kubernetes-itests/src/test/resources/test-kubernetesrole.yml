@@ -14,10 +14,20 @@
 # limitations under the License.
 #
 
-io.fabric8.kubernetes.client.AppsAPIGroupExtensionAdapter
-io.fabric8.kubernetes.client.AutoscalingAPIGroupExtensionAdapter
-io.fabric8.kubernetes.client.ExtensionsAPIGroupExtensionAdapter
-io.fabric8.kubernetes.client.BatchAPIGroupExtensionAdapter
-io.fabric8.kubernetes.client.NetworkAPIGroupExtensionAdapter
-io.fabric8.kubernetes.client.StorageAPIGroupExtensionAdapter
-io.fabric8.kubernetes.client.RbacAPIGroupExtensionAdapter
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: job-reader
+rules:
+- apiGroups:
+  - batch
+  resources:
+  - jobs
+  resourceNames:
+  - my-job
+  nonResourceURLs:
+  - "/healthz"
+  verbs:
+  - get
+  - watch
+  - list

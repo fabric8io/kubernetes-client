@@ -327,6 +327,7 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   @Override
+
   public NetworkAPIGroupDSL network() { return delegate.network(); }
 
   @Override
@@ -334,6 +335,9 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public BatchAPIGroupDSL batch() { return delegate.batch(); }
+
+  @Override
+  public RbacAPIGroupDSL rbac() { return delegate.rbac(); }
 
   @Override
   public NonNamespaceOperation<CustomResourceDefinition, CustomResourceDefinitionList, DoneableCustomResourceDefinition, Resource<CustomResourceDefinition, DoneableCustomResourceDefinition>> customResourceDefinitions() {

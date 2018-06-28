@@ -533,6 +533,9 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   public BatchAPIGroupDSL batch() { return delegate.batch(); }
 
   @Override
+  public RbacAPIGroupDSL rbac() { return delegate.rbac(); }
+
+  @Override
   public NamespacedOpenShiftClient inAnyNamespace() {
     return delegate.inAnyNamespace();
   }
