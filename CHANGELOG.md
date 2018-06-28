@@ -1,8 +1,10 @@
 ### Change Log
 
 #### 3.1.13 (To be released)
+
   Bugs
    * Fix #1083 : Mock Kubernetes server only handles core and extensions API groups
+   * Fix #1089 : Query parameters are not correctly processed if set in `masterUrl`
    * Fix #1087 : Mock server can't list custom resources
    * fix(#1055): add OpenShiftOAuthInterceptor to httpClient for openshifClient
   
