@@ -150,6 +150,9 @@ public class Config {
   private long websocketPingInterval = DEFAULT_WEBSOCKET_PING_INTERVAL;
   private int maxConcurrentRequests = DEFAULT_MAX_CONCURRENT_REQUESTS;
   private int maxConcurrentRequestsPerHost = DEFAULT_MAX_CONCURRENT_REQUESTS_PER_HOST;
+  private String impersonateUsername;
+  private String impersonateGroup;
+  private Map<String, String> impersonateExtras;
   /**
    * end of fields not used but needed for builder generation.
    */
@@ -198,7 +201,7 @@ public class Config {
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
-  public Config(String masterUrl, String apiVersion, String namespace, boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, long scaleTimeout, int loggingInterval, int maxConcurrentRequestsPerHost, String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages, String userAgent, TlsVersion[] tlsVersions, long websocketTimeout, long websocketPingInterval, String proxyUsername, String proxyPassword, String trustStoreFile, String trustStorePassphrase, String keyStoreFile, String keyStorePassphrase) {
+  public Config(String masterUrl, String apiVersion, String namespace, boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, long scaleTimeout, int loggingInterval, int maxConcurrentRequestsPerHost, String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages, String userAgent, TlsVersion[] tlsVersions, long websocketTimeout, long websocketPingInterval, String proxyUsername, String proxyPassword, String trustStoreFile, String trustStorePassphrase, String keyStoreFile, String keyStorePassphrase, String impersonateUsername, String impersonateGroup, Map<String, String> impersonateExtras) {
     this.masterUrl = masterUrl;
     this.apiVersion = apiVersion;
     this.namespace = namespace;
@@ -213,6 +216,10 @@ public class Config {
     this.clientKeyPassphrase = clientKeyPassphrase;
 
     this.requestConfig = new RequestConfig(username, password, oauthToken, watchReconnectLimit, watchReconnectInterval, connectionTimeout, rollingTimeout, requestTimeout, scaleTimeout, loggingInterval, websocketTimeout, websocketPingInterval, maxConcurrentRequests, maxConcurrentRequestsPerHost);
+    this.requestConfig.setImpersonateUsername(impersonateUsername);
+    this.requestConfig.setImpersonateGroup(impersonateGroup);
+    this.requestConfig.setImpersonateExtras(impersonateExtras);
+
 
     this.httpProxy= httpProxy;
     this.httpsProxy= httpsProxy;
@@ -554,6 +561,33 @@ public class Config {
 
   public void setUsername(String username) {
     this.requestConfig.setUsername(username);
+  }
+
+  @JsonProperty("impersonateUsername")
+  public String getImpersonateUsername() {
+    return getRequestConfig().getImpersonateUsername();
+  }
+
+  public void setImpersonateUsername(String impersonateUsername) {
+    this.requestConfig.setImpersonateUsername(impersonateUsername);
+  }
+
+  @JsonProperty("impersonateGroup")
+  public String getImpersonateGroup() {
+    return getRequestConfig().getImpersonateGroup();
+  }
+
+  public void setImpersonateGroup(String impersonateGroup) {
+    this.requestConfig.setImpersonateGroup(impersonateGroup);
+  }
+
+  @JsonProperty("impersonateExtras")
+  public Map<String, String> getImpersonateExtras() {
+    return getRequestConfig().getImpersonateExtras();
+  }
+
+  public void setImpersonateExtras(Map<String, String> impersonateExtras) {
+    this.requestConfig.setImpersonateExtras(impersonateExtras);
   }
 
   @JsonProperty("clientKeyPassphrase")
