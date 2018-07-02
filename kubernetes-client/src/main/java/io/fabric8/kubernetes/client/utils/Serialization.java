@@ -86,11 +86,7 @@ public class Serialization {
    * @throws KubernetesClientException
    */
   public static <T> T unmarshal(InputStream is, Map<String, String> parameters) throws KubernetesClientException {
-    String specFile = readSpecFileFromInputStream(is);
-    if (containsMultipleDocuments(specFile)) {
-      return (T) getKubernetesResourceList(parameters, specFile);
-    }
-    return unmarshal(new ByteArrayInputStream(specFile.getBytes()), JSON_MAPPER, parameters);
+    return unmarshal(is, JSON_MAPPER, parameters);
   }
 
   /**
@@ -115,6 +111,14 @@ public class Serialization {
    * @throws KubernetesClientException
    */
   public static <T> T unmarshal(InputStream is, ObjectMapper mapper, Map<String, String> parameters) {
+    String specFile = readSpecFileFromInputStream(is);
+    if (containsMultipleDocuments(specFile)) {
+      return (T) getKubernetesResourceList(mapper, parameters, specFile);
+    }
+    return getKubernetesResource(is, mapper, parameters);
+  }
+
+  private static <T> T getKubernetesResource(InputStream is, ObjectMapper mapper, Map<String, String> parameters) {
     try (BufferedInputStream bis = new BufferedInputStream(is)) {
       bis.mark(-1);
       int intch;
@@ -238,15 +242,13 @@ public class Serialization {
     }
   }
 
-
-  private static List<KubernetesResource> getKubernetesResourceList(Map<String, String> parameters, String specFile) {
+  private static List<KubernetesResource> getKubernetesResourceList(ObjectMapper mapper, Map<String, String> parameters, String specFile) {
     List<KubernetesResource> documentList = new ArrayList<>();
     String[] documents = splitSpecFile(specFile);
     for (String document : documents) {
       if (validate(document)) {
         ByteArrayInputStream documentInputStream = new ByteArrayInputStream(document.getBytes());
-        Object resource = Serialization.unmarshal(documentInputStream, parameters);
-        documentList.add((KubernetesResource) resource);
+        documentList.add((KubernetesResource) getKubernetesResource(documentInputStream, mapper, parameters));
       }
     }
     return documentList;
