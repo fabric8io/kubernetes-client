@@ -74,6 +74,7 @@ import io.fabric8.kubernetes.client.dsl.internal.ClusterOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ComponentStatusOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.CustomResourceDefinitionOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.CustomResourceOperationsImpl;
+import io.fabric8.kubernetes.client.utils.BackwardsCompatibilityInterceptor;
 import io.fabric8.kubernetes.client.utils.ImpersonatorInterceptor;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.openshift.api.model.Build;
@@ -205,6 +206,7 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
     builder.interceptors().clear();
     return builder.addInterceptor(new OpenShiftOAuthInterceptor(httpClient, OpenShiftConfig.wrap(getConfiguration())))
       .addInterceptor(new ImpersonatorInterceptor(getConfiguration()))
+      .addInterceptor(new BackwardsCompatibilityInterceptor())
       .build();
   }
 
