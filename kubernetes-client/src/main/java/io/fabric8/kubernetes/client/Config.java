@@ -75,6 +75,10 @@ public class Config {
   public static final String KUBERNETES_MAX_CONCURRENT_REQUESTS ="kubernetes.max.concurrent.requests";
   public static final String KUBERNETES_MAX_CONCURRENT_REQUESTS_PER_HOST ="kubernetes.max.concurrent.requests.per.host";
 
+  public static final String KUBERNETES_IMPERSONATE_USERNAME = "kubernetes.impersonate.username";
+  public static final String KUBERNETES_IMPERSONATE_GROUP = "kubernetes.impersonate.group";
+
+
   public static final String KUBERNETES_TRUSTSTORE_PASSPHRASE_PROPERTY = "kubernetes.truststore.passphrase";
   public static final String KUBERNETES_TRUSTSTORE_FILE_PROPERTY = "kubernetes.truststore.file";
   public static final String KUBERNETES_KEYSTORE_PASSPHRASE_PROPERTY = "kubernetes.keystore.passphrase";
@@ -267,6 +271,10 @@ public class Config {
     config.setOauthToken(Utils.getSystemPropertyOrEnvVar(KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY, config.getOauthToken()));
     config.setUsername(Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_BASIC_USERNAME_SYSTEM_PROPERTY, config.getUsername()));
     config.setPassword(Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_BASIC_PASSWORD_SYSTEM_PROPERTY, config.getPassword()));
+
+    config.setImpersonateUsername(Utils.getSystemPropertyOrEnvVar(KUBERNETES_IMPERSONATE_USERNAME, config.getImpersonateUsername()));
+    config.setImpersonateGroup(Utils.getSystemPropertyOrEnvVar(KUBERNETES_IMPERSONATE_GROUP, config.getImpersonateGroup()));
+
     String configuredWatchReconnectInterval = Utils.getSystemPropertyOrEnvVar(KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY);
     if (configuredWatchReconnectInterval != null) {
       config.setWatchReconnectInterval(Integer.parseInt(configuredWatchReconnectInterval));
