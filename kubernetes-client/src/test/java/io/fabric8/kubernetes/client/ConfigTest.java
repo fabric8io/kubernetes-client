@@ -17,15 +17,12 @@
 package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.client.utils.Serialization;
-import io.fabric8.openshift.clnt.v3_1.DefaultOpenShiftClient;
-import io.fabric8.openshift.clnt.v3_1.OpenShiftClient;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URLDecoder;
-
 import java.util.HashMap;
 import java.util.Map;
 import okhttp3.OkHttpClient;
