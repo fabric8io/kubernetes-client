@@ -75,6 +75,10 @@ public class Config {
   public static final String KUBERNETES_MAX_CONCURRENT_REQUESTS ="kubernetes.max.concurrent.requests";
   public static final String KUBERNETES_MAX_CONCURRENT_REQUESTS_PER_HOST ="kubernetes.max.concurrent.requests.per.host";
 
+  public static final String KUBERNETES_IMPERSONATE_USERNAME = "kubernetes.impersonate.username";
+  public static final String KUBERNETES_IMPERSONATE_GROUP = "kubernetes.impersonate.group";
+
+
   public static final String KUBERNETES_TRUSTSTORE_PASSPHRASE_PROPERTY = "kubernetes.truststore.passphrase";
   public static final String KUBERNETES_TRUSTSTORE_FILE_PROPERTY = "kubernetes.truststore.file";
   public static final String KUBERNETES_KEYSTORE_PASSPHRASE_PROPERTY = "kubernetes.keystore.passphrase";
@@ -150,6 +154,9 @@ public class Config {
   private long websocketPingInterval = DEFAULT_WEBSOCKET_PING_INTERVAL;
   private int maxConcurrentRequests = DEFAULT_MAX_CONCURRENT_REQUESTS;
   private int maxConcurrentRequestsPerHost = DEFAULT_MAX_CONCURRENT_REQUESTS_PER_HOST;
+  private String impersonateUsername;
+  private String impersonateGroup;
+  private Map<String, String> impersonateExtras;
   /**
    * end of fields not used but needed for builder generation.
    */
@@ -198,7 +205,7 @@ public class Config {
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
-  public Config(String masterUrl, String apiVersion, String namespace, boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, long scaleTimeout, int loggingInterval, int maxConcurrentRequestsPerHost, String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages, String userAgent, TlsVersion[] tlsVersions, long websocketTimeout, long websocketPingInterval, String proxyUsername, String proxyPassword, String trustStoreFile, String trustStorePassphrase, String keyStoreFile, String keyStorePassphrase) {
+  public Config(String masterUrl, String apiVersion, String namespace, boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, long scaleTimeout, int loggingInterval, int maxConcurrentRequestsPerHost, String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages, String userAgent, TlsVersion[] tlsVersions, long websocketTimeout, long websocketPingInterval, String proxyUsername, String proxyPassword, String trustStoreFile, String trustStorePassphrase, String keyStoreFile, String keyStorePassphrase, String impersonateUsername, String impersonateGroup, Map<String, String> impersonateExtras) {
     this.masterUrl = masterUrl;
     this.apiVersion = apiVersion;
     this.namespace = namespace;
@@ -213,6 +220,10 @@ public class Config {
     this.clientKeyPassphrase = clientKeyPassphrase;
 
     this.requestConfig = new RequestConfig(username, password, oauthToken, watchReconnectLimit, watchReconnectInterval, connectionTimeout, rollingTimeout, requestTimeout, scaleTimeout, loggingInterval, websocketTimeout, websocketPingInterval, maxConcurrentRequests, maxConcurrentRequestsPerHost);
+    this.requestConfig.setImpersonateUsername(impersonateUsername);
+    this.requestConfig.setImpersonateGroup(impersonateGroup);
+    this.requestConfig.setImpersonateExtras(impersonateExtras);
+
 
     this.httpProxy= httpProxy;
     this.httpsProxy= httpsProxy;
@@ -260,6 +271,10 @@ public class Config {
     config.setOauthToken(Utils.getSystemPropertyOrEnvVar(KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY, config.getOauthToken()));
     config.setUsername(Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_BASIC_USERNAME_SYSTEM_PROPERTY, config.getUsername()));
     config.setPassword(Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_BASIC_PASSWORD_SYSTEM_PROPERTY, config.getPassword()));
+
+    config.setImpersonateUsername(Utils.getSystemPropertyOrEnvVar(KUBERNETES_IMPERSONATE_USERNAME, config.getImpersonateUsername()));
+    config.setImpersonateGroup(Utils.getSystemPropertyOrEnvVar(KUBERNETES_IMPERSONATE_GROUP, config.getImpersonateGroup()));
+
     String configuredWatchReconnectInterval = Utils.getSystemPropertyOrEnvVar(KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY);
     if (configuredWatchReconnectInterval != null) {
       config.setWatchReconnectInterval(Integer.parseInt(configuredWatchReconnectInterval));
@@ -554,6 +569,33 @@ public class Config {
 
   public void setUsername(String username) {
     this.requestConfig.setUsername(username);
+  }
+
+  @JsonProperty("impersonateUsername")
+  public String getImpersonateUsername() {
+    return getRequestConfig().getImpersonateUsername();
+  }
+
+  public void setImpersonateUsername(String impersonateUsername) {
+    this.requestConfig.setImpersonateUsername(impersonateUsername);
+  }
+
+  @JsonProperty("impersonateGroup")
+  public String getImpersonateGroup() {
+    return getRequestConfig().getImpersonateGroup();
+  }
+
+  public void setImpersonateGroup(String impersonateGroup) {
+    this.requestConfig.setImpersonateGroup(impersonateGroup);
+  }
+
+  @JsonProperty("impersonateExtras")
+  public Map<String, String> getImpersonateExtras() {
+    return getRequestConfig().getImpersonateExtras();
+  }
+
+  public void setImpersonateExtras(Map<String, String> impersonateExtras) {
+    this.requestConfig.setImpersonateExtras(impersonateExtras);
   }
 
   @JsonProperty("clientKeyPassphrase")
