@@ -2,11 +2,14 @@
 
 #### 3.1.13 (To be released)
 
+#### 3.1.13 (To be released)
+
   Bugs
    * Fix #1083 : Mock Kubernetes server only handles core and extensions API groups
    * Fix #1098 : Unable to create LimitRange from yaml
    * Fix #1089 : Query parameters are not correctly processed if set in `masterUrl`
    * Fix #1087 : Mock server can't list custom resources
+   * Fix #1085 : Impersonate parameters are not configurable for DefaultOpenShiftClient
    * fix(#1055): add OpenShiftOAuthInterceptor to httpClient for openshifClient
   
   New Feature
