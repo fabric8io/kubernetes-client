@@ -41,6 +41,7 @@ import java.util.concurrent.TimeUnit;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -61,7 +62,7 @@ public class PodIT {
   private static final Logger logger = LoggerFactory.getLogger(PodIT.class);
 
   @Before
-  public void init() throws InterruptedException {
+  public void init() {
     currentNamespace = session.getNamespace();
     pod1 = new PodBuilder()
       .withNewMetadata().withName("pod1-" + RandomStringUtils.randomAlphanumeric(6).toLowerCase()).endMetadata()
@@ -118,7 +119,7 @@ public class PodIT {
   @Test
   public void update() {
     pod1 = client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).edit()
-      .editMetadata().addToLabels("foo", "bar").and().done();
+      .editMetadata().addToLabels("foo", "bar").endMetadata().done();
     assertEquals("bar", pod1.getMetadata().getLabels().get("foo"));
   }
 
@@ -129,14 +130,18 @@ public class PodIT {
 
   @Test
   public void log() throws InterruptedException {
-    client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).waitUntilReady(10, TimeUnit.MINUTES);
+    // Wait for resources to get ready
+    PodReady podReady = new PodReady(client, pod1.getMetadata().getName(), currentNamespace);
+    await().atMost(30, TimeUnit.MINUTES).until(podReady);
     String log = client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).getLog();
     assertNotNull(log);
   }
 
   @Test
   public void exec() throws InterruptedException {
-    client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).waitUntilReady(10, TimeUnit.MINUTES);
+    // Wait for resources to get ready
+    PodReady podReady = new PodReady(client, pod1.getMetadata().getName(), currentNamespace);
+    await().atMost(30, TimeUnit.MINUTES).until(podReady);
     final CountDownLatch execLatch = new CountDownLatch(1);
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     ExecWatch execWatch = client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName())
@@ -165,9 +170,8 @@ public class PodIT {
   }
 
   @After
-  public void cleanup() throws InterruptedException {
+  public void cleanup() throws Exception {
     client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).delete();
-    // Wait for resources to get destroyed
-    Thread.sleep(30000);
   }
+
 }
