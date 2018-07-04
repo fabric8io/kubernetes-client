@@ -4,7 +4,7 @@
 
   Bugs
     * Fix #1089 : Query parameters are not correctly processed if set in `masterUrl`
-
+    * Fix #1085: Impersonate parameters are not configurable for DefaultOpenShiftClient
 #### 3.2.0
   Bugs
    * Fix #1083 : Mock Kubernetes server only handles core and extensions API groups
