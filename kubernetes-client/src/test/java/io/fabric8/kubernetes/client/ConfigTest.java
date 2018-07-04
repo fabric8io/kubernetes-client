@@ -23,7 +23,8 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URLDecoder;
-
+import java.util.HashMap;
+import java.util.Map;
 import okhttp3.OkHttpClient;
 import okhttp3.TlsVersion;
 import org.junit.After;
@@ -75,6 +76,8 @@ public class ConfigTest {
     System.getProperties().remove(Config.KUBERNETES_KEYSTORE_PASSPHRASE_PROPERTY);
     System.getProperties().remove(Config.KUBERNETES_SERVICE_HOST_PROPERTY);
     System.getProperties().remove(Config.KUBERNETES_SERVICE_PORT_PROPERTY);
+    System.getProperties().remove(Config.KUBERNETES_IMPERSONATE_USERNAME);
+    System.getProperties().remove(Config.KUBERNETES_IMPERSONATE_GROUP);
   }
 
   @After
@@ -323,6 +326,26 @@ public class ConfigTest {
   }
 
   @Test
+  public void shouldSetImpersonateUsernameAndGroupFromSystemProperty() {
+
+    System.setProperty(Config.KUBERNETES_IMPERSONATE_USERNAME, "username");
+    System.setProperty(Config.KUBERNETES_IMPERSONATE_GROUP, "group");
+
+    final Map<String, String> extras = new HashMap<>();
+    extras.put("c", "d");
+
+    final Config config = new ConfigBuilder()
+      .withImpersonateUsername("a")
+      .withImpersonateExtras(extras)
+      .build();
+
+    assertEquals("a", config.getImpersonateUsername());
+    assertEquals("group", config.getImpersonateGroup());
+    assertEquals("d", config.getImpersonateExtras().get("c"));
+
+  }
+
+  @Test
   public void shouldInstantiateClientUsingYaml() throws MalformedURLException {
     File configYml = new File(TEST_CONFIG_YML_FILE);
     try (InputStream is = new FileInputStream(configYml)){
@@ -370,6 +393,27 @@ public class ConfigTest {
 
     client = new DefaultKubernetesClient(config);
     assertEquals(20, client.adapt(OkHttpClient.class).dispatcher().getMaxRequestsPerHost());
+  }
+
+  @Test
+  public void shouldPropagateImpersonateSettings() {
+
+    final Map<String, String> extras = new HashMap<>();
+    extras.put("c", "d");
+
+    final Config config = new ConfigBuilder()
+      .withImpersonateUsername("a")
+      .withImpersonateGroup("b")
+      .withImpersonateExtras(extras)
+      .build();
+
+    final DefaultKubernetesClient client = new DefaultKubernetesClient(config);
+    final Config currentConfig = client.getConfiguration();
+
+    assertEquals("a", currentConfig.getImpersonateUsername());
+    assertEquals("b", currentConfig.getImpersonateGroup());
+    assertEquals("d", currentConfig.getImpersonateExtras().get("c"));
+
   }
 
   private void assertConfig(Config config) {
