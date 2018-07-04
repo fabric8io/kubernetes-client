@@ -27,32 +27,52 @@ public class URLUtilsTest {
   public void shouldJoinUrlWithoutQueryParams() {
 
     // Given
-
     String masterUrl = "https://oso-master-url:8888/kubernetes";
 
     // When
-
     final String fullUrl = URLUtils.join(masterUrl, "api");
 
     // Then
-
     assertThat(fullUrl, is("https://oso-master-url:8888/kubernetes/api"));
 
+  }
+
+  @Test
+  public void shouldAppendUrlWithQueryParams() {
+
+    // Given
+    String masterUrl = "https://oso-master-url:8888/kubernetes?param1=value";
+
+    // When
+    final String fullUrl = URLUtils.join(masterUrl, "port?port=port");
+
+    // Then
+    assertThat(fullUrl, is("https://oso-master-url:8888/kubernetes/port?port=port&param1=value"));
+  }
+
+  @Test
+  public void shouldAppendUrlWithMultipleQueryParams() {
+
+    // Given
+    String masterUrl = "https://oso-master-url:8888/kubernetes?param1=value";
+
+    // When
+    final String fullUrl = URLUtils.join(masterUrl, "port?port=port", "host=host");
+
+    // Then
+    assertThat(fullUrl, is("https://oso-master-url:8888/kubernetes/port?port=port&host=host&param1=value"));
   }
 
   @Test
   public void shouldJoinUrlWithQueryParams() {
 
     // Given
-
     String masterUrl = "https://oso-master-url:8888/kubernetes?key=value";
 
     // When
-
     final String fullUrl = URLUtils.join(masterUrl, "api");
 
     // Then
-
     assertThat(fullUrl, is("https://oso-master-url:8888/kubernetes/api?key=value"));
 
   }
@@ -61,15 +81,12 @@ public class URLUtilsTest {
   public void shouldJoinNoneUrl() {
 
     // Given
-
     String masterUrl = "images.openshift.io";
 
     // When
-
     final String fullUrl = URLUtils.join(masterUrl, "api");
 
     // Then
-
     assertThat(fullUrl, is("images.openshift.io/api"));
 
   }
