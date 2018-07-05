@@ -3,6 +3,7 @@
 #### 3.2.1 (To be released)
 
   Bugs
+    * Fix #1098 : Unable to create LimitRange from yaml
     * Fix #1089 : Query parameters are not correctly processed if set in `masterUrl`
     * Fix #1085 : Impersonate parameters are not configurable for DefaultOpenShiftClient
 #### 3.2.0
@@ -10,10 +11,10 @@
    * Fix #1083 : Mock Kubernetes server only handles core and extensions API groups
    * Fix #1087 : Mock server can't list custom resources
    * Fix #1055 : Unable to log in to cluster when using username and password
-  
+
   New Feature
    * Support `error` websocket channel - https://github.com/fabric8io/kubernetes-client/pull/1045
-  
+
   Improvements
    * Do not repeatedly create Config instance in exec - https://github.com/fabric8io/kubernetes-client/pull/1081
    * Determine kubernetes service host and port from environment if available - https://github.com/fabric8io/kubernetes-client/pull/1086
@@ -22,14 +23,14 @@
       * KubernetesDeserializer can now lookup for resource mappings via ServiceLoader - https://github.com/fabric8io/kubernetes-model/pull/307
       * Add new package to OSGi exports - https://github.com/fabric8io/kubernetes-model/pull/310
       * Add additional types that are needed to support extensions - https://github.com/fabric8io/kubernetes-model/pull/305
-   
+
 #### 3.1.12
   Bugs
    * Fix #1070 : Error parsing openshift json template with the latest version
 
   New Feature
    * Fix #1048 : Add support for the k8s/openshift version
-   
+
   Improvements
    * Fixes premature call to watcher onClose
 
