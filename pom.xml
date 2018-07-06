@@ -104,7 +104,7 @@
     <maven.buildhelper.plugin.version>1.10</maven.buildhelper.plugin.version>
     <maven.jar.plugin.version>3.0.1</maven.jar.plugin.version>
     <maven.resources.plugin.version>3.0.1</maven.resources.plugin.version>
-    <maven.surefire.plugin.version>2.19.1</maven.surefire.plugin.version>
+    <maven.surefire.plugin.version>2.20.1</maven.surefire.plugin.version>
     <maven.scr.plugin.version>1.22.0</maven.scr.plugin.version>
 
     <maven.compiler.source>1.7</maven.compiler.source>
@@ -161,7 +161,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <inherited>true</inherited>
-        <version>2.18.1</version>
+        <version>${maven.surefire.plugin.version}</version>
         <configuration>
           <environmentVariables>
             <ENV_VAR_EXISTS>value</ENV_VAR_EXISTS>
@@ -356,8 +356,16 @@
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>${maven.surefire.plugin.version}</version>
+            <configuration>
+              <skipTests>true</skipTests>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>2.20.1</version>
+            <version>${maven.surefire.plugin.version}</version>
             <executions>
               <execution>
                 <goals>
@@ -395,8 +403,16 @@
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>${maven.surefire.plugin.version}</version>
+            <configuration>
+              <skipTests>true</skipTests>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>2.20.1</version>
+            <version>${maven.surefire.plugin.version}</version>
             <executions>
               <execution>
                 <goals>
