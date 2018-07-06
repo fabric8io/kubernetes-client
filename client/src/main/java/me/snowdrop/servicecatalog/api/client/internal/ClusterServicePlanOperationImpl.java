@@ -77,4 +77,10 @@ public class ClusterServicePlanOperationImpl extends HasMetadataOperation<Cluste
                 .endSpec()
                 .done();
     }
+
+    @Override
+    public ServiceInstanceResource instantiateAnd(String... args) {
+        ServiceInstance item = instantiate(args);
+        return new ServiceInstanceOperationImpl(client, config, apiGroup, apiVersion, item.getMetadata().getNamespace(), item.getMetadata().getName(), isCascading(), item, null, isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
+    }
 }
