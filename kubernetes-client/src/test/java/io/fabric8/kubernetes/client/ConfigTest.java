@@ -17,20 +17,20 @@
 package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.client.utils.Serialization;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URLDecoder;
-import java.util.HashMap;
-import java.util.Map;
+import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.OkHttpClient;
 import okhttp3.TlsVersion;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static okhttp3.TlsVersion.TLS_1_1;
 import static okhttp3.TlsVersion.TLS_1_2;
@@ -41,10 +41,10 @@ import static org.junit.Assert.assertTrue;
 
 public class ConfigTest {
 
-  private static final String TEST_KUBECONFIG_FILE = decodeUrl(ConfigTest.class.getResource("/test-kubeconfig").getFile());
-  private static final String TEST_NAMESPACE_FILE = decodeUrl(ConfigTest.class.getResource("/test-namespace").getFile());
+  private static final String TEST_KUBECONFIG_FILE = Utils.filePath(ConfigTest.class.getResource("/test-kubeconfig"));
+  private static final String TEST_NAMESPACE_FILE = Utils.filePath(ConfigTest.class.getResource("/test-namespace"));
 
-  private static final String TEST_CONFIG_YML_FILE = decodeUrl(ConfigTest.class.getResource("/test-config.yml").getFile());
+  private static final String TEST_CONFIG_YML_FILE = Utils.filePath(ConfigTest.class.getResource("/test-config.yml"));
 
   @Before
   public void setUp() {
@@ -197,14 +197,6 @@ public class ConfigTest {
     assertConfig(config);
   }
 
-  private static String decodeUrl(String url) {
-    try {
-      return URLDecoder.decode(url, "UTF-8");
-    } catch (UnsupportedEncodingException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
   @Test
   public void testWithServiceAccount() {
     System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, "/dev/null");
@@ -242,7 +234,7 @@ public class ConfigTest {
     assertEquals("https://172.28.128.4:8443/", config.getMasterUrl());
     assertEquals("testns", config.getNamespace());
     assertEquals("token", config.getOauthToken());
-    assertTrue(config.getCaCertFile().endsWith("testns/ca.pem"));
+    assertTrue(config.getCaCertFile().endsWith("testns/ca.pem".replace("/", File.separator)));
     assertTrue(new File(config.getCaCertFile()).isAbsolute());
   }
 
@@ -255,7 +247,7 @@ public class ConfigTest {
     assertEquals("https://172.28.128.4:8443/", config.getMasterUrl());
     assertEquals("production", config.getNamespace());
     assertEquals("supertoken", config.getOauthToken());
-    assertTrue(config.getCaCertFile().endsWith("testns/ca.pem"));
+    assertTrue(config.getCaCertFile().endsWith("testns/ca.pem".replace("/", File.separator)));
     assertTrue(new File(config.getCaCertFile()).isAbsolute());
   }
 
