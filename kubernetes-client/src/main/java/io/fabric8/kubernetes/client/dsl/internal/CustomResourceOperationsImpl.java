@@ -21,11 +21,14 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Replaceable;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.Watchable;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 import okhttp3.OkHttpClient;
@@ -104,5 +107,10 @@ public class CustomResourceOperationsImpl<T extends HasMetadata, L extends Kuber
   @Override
   public Gettable<T> fromServer() {
     return new CustomResourceOperationsImpl<>(client, getConfig(), getAPIGroup(), getAPIVersion(), getResourceT(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), true, getType(), getListType(), getDoneableType());
+  }
+
+  @Override
+  public Watchable<Watch, Watcher<T>> withResourceVersion(String resourceVersion) {
+    return new CustomResourceOperationsImpl<>(client, getConfig(), getAPIGroup(), getAPIVersion(), getResourceT(), getNamespace(), getName(), isCascading(), getItem(), resourceVersion, isReloadingFromServer(), getType(), getListType(), getDoneableType());
   }
 }
