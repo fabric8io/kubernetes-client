@@ -123,12 +123,12 @@ public class CRDExample {
       dummySpec.setFoo("cheese: " + now);
       dummy.setSpec(dummySpec);
 
-      dummyClient.createOrReplace(dummy);
+      Dummy created = dummyClient.createOrReplace(dummy);
 
       System.out.println("Upserted " + dummy);
 
       System.out.println("Watching for changes to Dummies");
-      dummyClient.watch(new Watcher<Dummy>() {
+      dummyClient.withResourceVersion(created.getMetadata().getResourceVersion()).watch(new Watcher<Dummy>() {
         @Override
         public void eventReceived(Action action, Dummy resource) {
           System.out.println("==> " + action + " for " + resource);

@@ -19,10 +19,14 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.utils.Utils;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
+import java.net.URISyntaxException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -30,10 +34,6 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Properties;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -41,7 +41,7 @@ import static org.junit.Assert.assertTrue;
 
 public class CertUtilsTest {
 
-  private static String FABRIC8_STORE_PATH = decodeUrl(CertUtilsTest.class.getResource("/ssl/fabric8-store").getPath());
+  private static String FABRIC8_STORE_PATH = Utils.filePath(CertUtilsTest.class.getResource("/ssl/fabric8-store"));
   private static char[] FABRIC8_STORE_PASSPHRASE = "fabric8".toCharArray();
   private Properties systemProperties;
 
@@ -125,13 +125,13 @@ public class CertUtilsTest {
 
   @Test
   public void testLoadKeyStoreFromFileUsingSystemProperties()
-    throws InvalidKeySpecException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+    throws InvalidKeySpecException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException, URISyntaxException {
 
     System.setProperty(CertUtils.KEY_STORE_SYSTEM_PROPERTY, FABRIC8_STORE_PATH);
     System.setProperty(CertUtils.KEY_STORE_PASSWORD_SYSTEM_PROPERTY, String.valueOf(FABRIC8_STORE_PASSPHRASE));
 
-    String privateKeyPath = decodeUrl(getClass().getResource("/ssl/fabric8").getPath());
-    String multipleCertsPath = decodeUrl(getClass().getResource("/ssl/multiple-certs.pem").getPath());
+    String privateKeyPath = Utils.filePath(getClass().getResource("/ssl/fabric8"));
+    String multipleCertsPath = Utils.filePath(getClass().getResource("/ssl/multiple-certs.pem"));
 
     KeyStore trustStore =
       CertUtils.createKeyStore(null, multipleCertsPath, null, privateKeyPath, "RSA", "changeit", null, null);
@@ -156,11 +156,4 @@ public class CertUtilsTest {
     return CertUtils.getInputStreamFromDataOrFile(null, "src/test/resources/ssl/multiple-certs.pem");
   }
 
-  private static String decodeUrl(String url) {
-    try {
-      return URLDecoder.decode(url, "UTF-8");
-    } catch (UnsupportedEncodingException e) {
-      throw new RuntimeException(e);
-    }
-  }
 }
