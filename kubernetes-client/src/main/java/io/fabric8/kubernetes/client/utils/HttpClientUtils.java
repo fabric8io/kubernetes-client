@@ -65,7 +65,7 @@ public class HttpClientUtils {
             httpClientBuilder.followRedirects(true);
             httpClientBuilder.followSslRedirects(true);
 
-            if (config.isTrustCerts()) {
+            if (config.isTrustCerts() || config.isDisableHostnameVerification()) {
                 httpClientBuilder.hostnameVerifier(new HostnameVerifier() {
                     @Override
                     public boolean verify(String s, SSLSession sslSession) {

@@ -52,6 +52,7 @@ System properties are preferred over environment variables. The following system
 * `kubernetes.api.version` / `KUBERNETES_API_VERSION`
 * `kubernetes.oapi.version` / `KUBERNETES_OAPI_VERSION`
 * `kubernetes.trust.certificates` / `KUBERNETES_TRUST_CERTIFICATES`
+* `kubernetes.disable.hostname.verification` / `KUBERNETES_DISABLE_HOSTNAME_VERIFICATION`
 * `kubernetes.certs.ca.file` / `KUBERNETES_CERTS_CA_FILE`
 * `kubernetes.certs.ca.data` / `KUBERNETES_CERTS_CA_DATA`
 * `kubernetes.certs.client.file` / `KUBERNETES_CERTS_CLIENT_FILE`
