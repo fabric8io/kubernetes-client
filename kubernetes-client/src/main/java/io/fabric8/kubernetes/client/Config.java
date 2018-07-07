@@ -50,6 +50,7 @@ public class Config {
   public static final String KUBERNETES_MASTER_SYSTEM_PROPERTY = "kubernetes.master";
   public static final String KUBERNETES_API_VERSION_SYSTEM_PROPERTY = "kubernetes.api.version";
   public static final String KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY = "kubernetes.trust.certificates";
+  public static final String KUBERNETES_DISABLE_HOSTNAME_VERIFICATION_SYSTEM_PROPERTY = "kubernetes.disable.hostname.verification";
   public static final String KUBERNETES_CA_CERTIFICATE_FILE_SYSTEM_PROPERTY = "kubernetes.certs.ca.file";
   public static final String KUBERNETES_CA_CERTIFICATE_DATA_SYSTEM_PROPERTY = "kubernetes.certs.ca.data";
   public static final String KUBERNETES_CLIENT_CERTIFICATE_FILE_SYSTEM_PROPERTY = "kubernetes.certs.client.file";
@@ -119,6 +120,7 @@ public class Config {
   private static final String ACCESS_TOKEN = "access-token";
 
   private boolean trustCerts;
+  private boolean disableHostnameVerification;
   private String masterUrl = "https://kubernetes.default.svc";
   private String apiVersion = "v1";
   private String namespace;
@@ -205,11 +207,12 @@ public class Config {
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
-  public Config(String masterUrl, String apiVersion, String namespace, boolean trustCerts, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, long scaleTimeout, int loggingInterval, int maxConcurrentRequestsPerHost, String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages, String userAgent, TlsVersion[] tlsVersions, long websocketTimeout, long websocketPingInterval, String proxyUsername, String proxyPassword, String trustStoreFile, String trustStorePassphrase, String keyStoreFile, String keyStorePassphrase, String impersonateUsername, String impersonateGroup, Map<String, String> impersonateExtras) {
+  public Config(String masterUrl, String apiVersion, String namespace, boolean trustCerts, boolean disableHostnameVerification, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, long scaleTimeout, int loggingInterval, int maxConcurrentRequestsPerHost, String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages, String userAgent, TlsVersion[] tlsVersions, long websocketTimeout, long websocketPingInterval, String proxyUsername, String proxyPassword, String trustStoreFile, String trustStorePassphrase, String keyStoreFile, String keyStorePassphrase, String impersonateUsername, String impersonateGroup, Map<String, String> impersonateExtras) {
     this.masterUrl = masterUrl;
     this.apiVersion = apiVersion;
     this.namespace = namespace;
     this.trustCerts = trustCerts;
+    this.disableHostnameVerification = disableHostnameVerification;
     this.caCertFile = caCertFile;
     this.caCertData = caCertData;
     this.clientCertFile = clientCertFile;
@@ -250,6 +253,7 @@ public class Config {
 
   public static void configFromSysPropsOrEnvVars(Config config) {
     config.setTrustCerts(Utils.getSystemPropertyOrEnvVar(KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY, config.isTrustCerts()));
+    config.setDisableHostnameVerification(Utils.getSystemPropertyOrEnvVar(KUBERNETES_DISABLE_HOSTNAME_VERIFICATION_SYSTEM_PROPERTY, config.isDisableHostnameVerification()));
     config.setMasterUrl(Utils.getSystemPropertyOrEnvVar(KUBERNETES_MASTER_SYSTEM_PROPERTY, config.getMasterUrl()));
     config.setApiVersion(Utils.getSystemPropertyOrEnvVar(KUBERNETES_API_VERSION_SYSTEM_PROPERTY, config.getApiVersion()));
     config.setNamespace(Utils.getSystemPropertyOrEnvVar(KUBERNETES_NAMESPACE_SYSTEM_PROPERTY, config.getNamespace()));
@@ -454,6 +458,7 @@ public class Config {
         config.setMasterUrl(currentCluster.getServer());
         config.setNamespace(currentContext.getNamespace());
         config.setTrustCerts(currentCluster.getInsecureSkipTlsVerify() != null && currentCluster.getInsecureSkipTlsVerify());
+        config.setDisableHostnameVerification(currentCluster.getInsecureSkipTlsVerify() != null && currentCluster.getInsecureSkipTlsVerify());
         config.setCaCertData(currentCluster.getCertificateAuthorityData());
         AuthInfo currentAuthInfo = KubeConfigUtils.getUserAuthInfo(kubeConfig, currentContext);
         if (currentAuthInfo != null) {
@@ -695,6 +700,15 @@ public class Config {
 
   public void setTrustCerts(boolean trustCerts) {
     this.trustCerts = trustCerts;
+  }
+
+  @JsonProperty("disableHostnameVerification")
+  public boolean isDisableHostnameVerification() {
+    return disableHostnameVerification;
+  }
+
+  public void setDisableHostnameVerification(boolean disableHostnameVerification) {
+    this.disableHostnameVerification = disableHostnameVerification;
   }
 
   @JsonProperty("watchReconnectInterval")
