@@ -3,10 +3,15 @@
 #### 3.2.1 (To be released)
 
   Bugs
-    * Fix #1098 : Unable to create LimitRange from yaml
-    * Fix #1089 : Query parameters are not correctly processed if set in `masterUrl`
-    * Fix #1119 : Regression Tests Breaking intermittently
-    * Fix #1085 : Impersonate parameters are not configurable for DefaultOpenShiftClient
+   * Fix #1098 : Unable to create LimitRange from yaml
+   * Fix #1089 : Query parameters are not correctly processed if set in `masterUrl`
+   * Fix #1119 : Regression Tests Breaking intermittently
+   * Fix #1085 : Impersonate parameters are not configurable for DefaultOpenShiftClient
+    
+  New Feature
+   * Fix #1126 : Add new option `kubernetes.disable.hostname.verification` / `KUBERNETES_DISABLE_HOSTNAME_VERIFICATION` to disable hostname verification
+   
+
 #### 3.2.0
   Bugs
    * Fix #1083 : Mock Kubernetes server only handles core and extensions API groups
