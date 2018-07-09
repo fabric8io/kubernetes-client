@@ -64,6 +64,8 @@ public class PodIT {
   @Before
   public void init() {
     currentNamespace = session.getNamespace();
+    client.pods().inNamespace(currentNamespace).delete();
+
     pod1 = new PodBuilder()
       .withNewMetadata().withName("pod1-" + RandomStringUtils.randomAlphanumeric(6).toLowerCase()).endMetadata()
       .withNewSpec()

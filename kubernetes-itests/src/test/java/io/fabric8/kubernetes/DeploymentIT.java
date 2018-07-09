@@ -55,7 +55,12 @@ public class DeploymentIT {
 
   @Before
   public void init() {
+
     currentNamespace = session.getNamespace();
+
+    client.apps().deployments().inNamespace(currentNamespace).delete();
+    client.pods().inNamespace(currentNamespace).delete();
+
     deployment1 = new DeploymentBuilder()
       .withNewMetadata()
         .withName("deployment1")
