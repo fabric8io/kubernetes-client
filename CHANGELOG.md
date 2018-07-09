@@ -1,9 +1,8 @@
-### Change Log
+### CHANGELOG
 
 #### 4.0.1 (To be released)
 
 #### 4.0.0
-
   Bugs
     * Fix #1098 : Unable to create LimitRange from yaml
     * Fix #1089 : Query parameters are not correctly processed if set in `masterUrl`
@@ -13,16 +12,17 @@
 
   New Feature
     * Fix #1020 : Support for Kubernetes/Openshift v1.9/v3.9 respectively
-          * Resources according to Kubernetes/Openshift v1.9/v3.9
-          * Add support for RBAC Role, Role Binding and Netnamespace
-          * KubernetesDeserializer shouldn't pickup mappings from incompatible providers
-          * Add all packages in KubernetesDeserializer
 
   Improvements
     * Fix #1119 : Regression Test are more stable and takes less time to execute
 
-  Depedency Upgrade
+  Dependency Upgrade
     * Kubernetes Model upgraded to 3.0.0 with support for Kubernetes/Openshift v1.9/v3.9 respectively
+      Features and Fixes Available
+       * Resources according to Kubernetes/Openshift v1.9/v3.9
+       * Add support for RBAC Role, Role Binding and Netnamespace in Model
+       * KubernetesDeserializer shouldn't pickup mappings from incompatible providers
+       * Add all packages in KubernetesDeserializer
 
   Major Movements and Changes
     * SecurityContextConstraints has been moved to OpenShift client from Kubernetes Client
