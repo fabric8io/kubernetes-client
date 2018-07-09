@@ -1,12 +1,40 @@
 ### Change Log
 
-#### 3.2.1 (To be released)
+#### 4.0.1 (To be released)
+
+#### 4.0.0
 
   Bugs
     * Fix #1098 : Unable to create LimitRange from yaml
     * Fix #1089 : Query parameters are not correctly processed if set in `masterUrl`
-    * Fix #1119 : Regression Tests Breaking intermittently
+    * Fix #1112 : Append multiple query param in masterUrl
     * Fix #1085 : Impersonate parameters are not configurable for DefaultOpenShiftClient
+    * Fix #1106 : Fix typo in crud mode in mockserver
+
+  New Feature
+    * Fix #1020 : Support for Kubernetes/Openshift v1.9/v3.9 respectively
+          * Resources according to Kubernetes/Openshift v1.9/v3.9
+          * Add support for RBAC Role, Role Binding and Netnamespace
+          * KubernetesDeserializer shouldn't pickup mappings from incompatible providers
+          * Add all packages in KubernetesDeserializer
+
+  Improvements
+    * Fix #1119 : Regression Test are more stable and takes less time to execute
+
+  Depedency Upgrade
+    * Kubernetes Model upgraded to 3.0.0 with support for Kubernetes/Openshift v1.9/v3.9 respectively
+
+  Major Movements and Changes
+    * SecurityContextConstraints has been moved to OpenShift client from Kubernetes Client
+    * Job dsl is in both `batch` and `extensions`(Extensions is deprecated)
+    * DaemonSet dsl is in both `apps` and `extensions`(Extensions is deprecated)
+    * Deployment dsl is in both `apps` and `extensions`(Extensions is deprecated)
+    * ReplicaSet dsl is in both `apps` and `extensions`(Extensions is deprecated)
+    * NetworkPolicy dsl is in both `network` and `extensiosn`(Extensions is deprecated)
+    * Storage Class moved from `client base DSL` to `storage` DSL
+    * PodSecurityPolicies moved from `client base DSL` and `extensions` to only `extensions`
+    * ThirdPartyResource has been removed.
+
 #### 3.2.0
   Bugs
    * Fix #1083 : Mock Kubernetes server only handles core and extensions API groups

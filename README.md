@@ -312,14 +312,14 @@ Then you can use the server like:
 | Kubernetes-client 4.0.0   | -                | ✓                | ✓                 | ✓                 |
 
 ## Major Changes in Kubernetes Client 4.0.0
-All the resource objects usse here will be according to OpenShift 3.9.0  and Kubernetes 1.9.0. All the resource objects will jave all the fields according to OpenShift 3.9.0 and Kubernetes 1.9.0
+All the resource objects used here will be according to OpenShift 3.9.0  and Kubernetes 1.9.0. All the resource objects will give all the fields according to OpenShift 3.9.0 and Kubernetes 1.9.0
 
 * SecurityContextConstraints has been moved to OpenShift client from Kubernetes Client
 * Job dsl is in both `batch` and `extensions`(Extensions is deprecated)
-* DaemonSet dsl is in both `apps` and `extension`(Extensions is deprecated)
-* Deployment dsl is in both `apps` and `extension`(Extensions is deprecated)
-* ReplicaSet dsl is in both `apps` and `extension`(Extensions is deprecated)
-* NetworkPolicy dsl is in both `network` and `extension`(Extensions is deprecated)
+* DaemonSet dsl is in both `apps` and `extensions`(Extensions is deprecated)
+* Deployment dsl is in both `apps` and `extensions`(Extensions is deprecated)
+* ReplicaSet dsl is in both `apps` and `extensions`(Extensions is deprecated)
+* NetworkPolicy dsl is in both `network` and `extensiosn`(Extensions is deprecated)
 * Storage Class moved from `client base DSL` to `storage` DSL
 * PodSecurityPolicies moved from `client base DSL` and `extensions` to only `extensions`
 * ThirdPartyResource has been removed.
