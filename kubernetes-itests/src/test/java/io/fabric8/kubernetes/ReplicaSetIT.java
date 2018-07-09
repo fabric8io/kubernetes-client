@@ -72,7 +72,7 @@ public class ReplicaSetIT {
       .addToLabels("tier", "frontend")
       .endMetadata()
       .withNewSpec()
-      .withReplicas(3)
+      .withReplicas(1)
       .withNewSelector()
       .withMatchLabels(Collections.singletonMap("tier", "frontend"))
       .endSelector()
@@ -83,15 +83,13 @@ public class ReplicaSetIT {
       .endMetadata()
       .withNewSpec()
       .addNewContainer()
-      .withName("php-redis")
-      .withImage("kubernetes/example-guestbook-php-redis")
+      .withName("busybox")
+      .withImage("busybox")
+      .withCommand("sleep","36000")
       .withNewResources()
       .withRequests(requests)
       .endResources()
       .withEnv(envVarList)
-      .addNewPort()
-      .withContainerPort(80)
-      .endPort()
       .endContainer()
       .endSpec()
       .endTemplate()
@@ -126,9 +124,9 @@ public class ReplicaSetIT {
   @Test
   public void update() {
     replicaset1 = client.apps().replicaSets().inNamespace(currentNamespace).withName("replicaset1").edit()
-      .editSpec().withReplicas(5).endSpec().done();
+      .editSpec().withReplicas(2).endSpec().done();
     assertThat(replicaset1).isNotNull();
-    assertEquals(5, replicaset1.getSpec().getReplicas().intValue());
+    assertEquals(2, replicaset1.getSpec().getReplicas().intValue());
   }
 
   @Test
