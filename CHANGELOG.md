@@ -4,6 +4,7 @@
 
 #### 4.0.0
   Bugs
+  
     * Fix #1098 : Unable to create LimitRange from yaml
     * Fix #1089 : Query parameters are not correctly processed if set in `masterUrl`
     * Fix #1112 : Append multiple query param in masterUrl
@@ -11,12 +12,15 @@
     * Fix #1106 : Fix typo in crud mode in mockserver
 
   New Feature
+  
     * Fix #1020 : Support for Kubernetes/Openshift v1.9/v3.9 respectively
 
   Improvements
+  
     * Fix #1119 : Regression Test are more stable and takes less time to execute
 
   Dependency Upgrade
+  
     * Kubernetes Model upgraded to 3.0.0 with support for Kubernetes/Openshift v1.9/v3.9 respectively
       Features and Fixes Available
        * Resources according to Kubernetes/Openshift v1.9/v3.9
@@ -25,6 +29,7 @@
        * Add all packages in KubernetesDeserializer
 
   Major Movements and Changes
+  
     * SecurityContextConstraints has been moved to OpenShift client from Kubernetes Client
     * Job dsl is in both `batch` and `extensions`(Extensions is deprecated)
     * DaemonSet dsl is in both `apps` and `extensions`(Extensions is deprecated)
