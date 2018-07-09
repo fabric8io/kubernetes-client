@@ -23,7 +23,6 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.openshift.api.OpenShiftResource;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.*;
@@ -36,6 +35,7 @@ import java.util.concurrent.TimeUnit;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(ArquillianConditionalRunner.class)
@@ -78,12 +78,12 @@ public class DeploymentIT {
       .endSpec()
       .build();
 
-    client.extensions().deployments().inNamespace(currentNamespace).createOrReplace(deployment1);
+    client.extensions().deployments().inNamespace(currentNamespace).create(deployment1);
   }
 
   @Test
   public void load() {
-    Deployment aDeployment = client.extensions().deployments().inNamespace(currentNamespace).load(getClass().getResourceAsStream("/test-deployments.yml")).get();
+    Deployment aDeployment = client.extensions().deployments().load(getClass().getResourceAsStream("/test-deployments.yml")).get();
     assertThat(aDeployment).isNotNull();
     assertEquals("nginx-deployment", aDeployment.getMetadata().getName());
   }
@@ -105,7 +105,7 @@ public class DeploymentIT {
   @Test
   public void update() {
     deployment1 = client.extensions().deployments().inNamespace(currentNamespace).withName("deployment1").edit()
-      .editSpec().withReplicas(2).and().done();
+      .editSpec().withReplicas(2).endSpec().done();
     assertThat(deployment1).isNotNull();
     assertEquals(2, deployment1.getSpec().getReplicas().intValue());
   }
@@ -113,21 +113,34 @@ public class DeploymentIT {
   @Test
   public void delete() throws InterruptedException {
     // Usually creation, deletion of things like Deployments take some time. So let's wait for a while:
-    Thread.sleep(6000);
+    // Wait for resources to get ready
+    DeploymentReady deploymentReady = new DeploymentReady(client, "deployment1", currentNamespace);
+    await().atMost(30, TimeUnit.MINUTES).until(deploymentReady);
     assertTrue(client.extensions().deployments().inNamespace(currentNamespace).delete(deployment1));
   }
 
   @Test
   public void waitTest() throws InterruptedException {
-    Deployment deploymentOne = client.resource(deployment1).waitUntilReady(10, TimeUnit.MINUTES);
+    // Wait for resources to get ready
+    DeploymentReady deploymentReady = new DeploymentReady(client, "deployment1", currentNamespace);
+    await().atMost(30, TimeUnit.MINUTES).until(deploymentReady);
+    Deployment deploymentOne = client.extensions().deployments()
+      .inNamespace(currentNamespace).withName("deployment1").get();
     assertTrue(Readiness.isDeploymentReady(deploymentOne));
   }
 
   @After
   public void cleanup() throws InterruptedException {
-    Thread.sleep(6000);
-    client.extensions().deployments().inNamespace(currentNamespace).delete();
-    // Wait for resources to get destroyed
-    Thread.sleep(30000);
+    try {
+      if (client.extensions().deployments().inNamespace(currentNamespace).list().getItems().size() != 0) {
+        client.extensions().deployments().inNamespace(currentNamespace).delete();
+      }
+      // Wait for resources to get destroyed
+      DeploymentDelete deploymentDelete = new DeploymentDelete(client, "deployment1", currentNamespace);
+      await().atMost(30, TimeUnit.MINUTES).until(deploymentDelete);
+    } catch (NullPointerException exception){
+      cleanup();
+    }
   }
+
 }

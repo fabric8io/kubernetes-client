@@ -5,6 +5,7 @@
   Bugs
     * Fix #1098 : Unable to create LimitRange from yaml
     * Fix #1089 : Query parameters are not correctly processed if set in `masterUrl`
+    * Fix #1119 : Regression Tests Breaking intermittently
     * Fix #1085 : Impersonate parameters are not configurable for DefaultOpenShiftClient
 #### 3.2.0
   Bugs
