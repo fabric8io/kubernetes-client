@@ -97,7 +97,7 @@ public class KubernetesAttributesExtractorTest {
   @Test
   public void shouldHandleExtensions() {
     KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-    AttributeSet attributes = extractor.extract("/apis/extensions/v1beta1/deployments");
+    AttributeSet attributes = extractor.extract("/apis/apps/v1/deployments");
 
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("kind", "deployment"));

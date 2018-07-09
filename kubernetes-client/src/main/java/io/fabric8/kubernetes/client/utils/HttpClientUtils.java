@@ -108,7 +108,8 @@ public class HttpClientUtils {
               }
               return chain.proceed(request);
             }
-          }).addInterceptor(new ImpersonatorInterceptor(config));
+          }).addInterceptor(new ImpersonatorInterceptor(config))
+            .addInterceptor(new BackwardsCompatibilityInterceptor());
 
             Logger reqLogger = LoggerFactory.getLogger(HttpLoggingInterceptor.class);
             if (reqLogger.isTraceEnabled()) {

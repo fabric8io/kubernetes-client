@@ -34,6 +34,6 @@ public class DeploymentDelete implements Callable<Boolean> {
 
   @Override
   public Boolean call() throws Exception {
-    return this.client.extensions().deployments().inNamespace(this.namespace).list().getItems().size() == 0;
+    return this.client.apps().deployments().inNamespace(this.namespace).list().getItems().size() == 0;
   }
 }

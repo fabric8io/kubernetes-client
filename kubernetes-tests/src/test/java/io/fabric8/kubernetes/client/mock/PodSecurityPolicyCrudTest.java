@@ -54,7 +54,7 @@ public class PodSecurityPolicyCrudTest {
 
     //test of Creation
 
-    podSecurityPolicy = client.podSecurityPolicies().create(podSecurityPolicy);
+    podSecurityPolicy = client.extensions().podSecurityPolicies().create(podSecurityPolicy);
     assertNotNull(podSecurityPolicy);
     assertEquals("test-example",podSecurityPolicy.getMetadata().getName());
     assertFalse(podSecurityPolicy.getSpec().getPrivileged());
@@ -64,7 +64,7 @@ public class PodSecurityPolicyCrudTest {
     assertEquals("RunAsAny",podSecurityPolicy.getSpec().getSupplementalGroups().getRule());
 
     //test of list
-    PodSecurityPolicyList podSecurityPolicyList = client.podSecurityPolicies().list();
+    PodSecurityPolicyList podSecurityPolicyList = client.extensions().podSecurityPolicies().list();
     logger.info(podSecurityPolicyList.toString());
 
     assertNotNull(podSecurityPolicyList);
@@ -77,7 +77,7 @@ public class PodSecurityPolicyCrudTest {
     assertEquals("RunAsAny",podSecurityPolicyList.getItems().get(0).getSpec().getSupplementalGroups().getRule());
 
     //test of updation
-    podSecurityPolicy = client.podSecurityPolicies().withName("test-example").edit()
+    podSecurityPolicy = client.extensions().podSecurityPolicies().withName("test-example").edit()
         .editSpec().withPrivileged(true).endSpec()
         .done();
 
@@ -92,9 +92,9 @@ public class PodSecurityPolicyCrudTest {
     assertEquals("RunAsAny",podSecurityPolicy.getSpec().getSupplementalGroups().getRule());
 
     //test of deletion
-    boolean deleted = client.podSecurityPolicies().delete(podSecurityPolicy);
+    boolean deleted = client.extensions().podSecurityPolicies().delete(podSecurityPolicy);
     assertTrue(deleted);
-    podSecurityPolicyList = client.podSecurityPolicies().list();
+    podSecurityPolicyList = client.extensions().podSecurityPolicies().list();
     assertEquals(0,podSecurityPolicyList.getItems().size());
 
   }

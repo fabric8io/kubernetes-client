@@ -17,7 +17,12 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.extensions.*;
+import io.fabric8.kubernetes.api.model.networking.NetworkPolicy;
+import io.fabric8.kubernetes.api.model.networking.NetworkPolicyBuilder;
+import io.fabric8.kubernetes.api.model.networking.NetworkPolicyIngressRuleBuilder;
+import io.fabric8.kubernetes.api.model.networking.NetworkPolicyPeerBuilder;
+import io.fabric8.kubernetes.api.model.networking.NetworkPolicyPortBuilder;
+import io.fabric8.kubernetes.api.model.networking.NetworkPolicyList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Rule;
@@ -69,7 +74,7 @@ public class NetworkPolicyCrudTest {
       .build();
 
     //test of Creation
-    networkPolicy = client.extensions().networkPolicies().create(networkPolicy);
+    networkPolicy = client.network().networkPolicies().create(networkPolicy);
 
     assertNotNull(networkPolicy);
     assertEquals("networkpolicy", networkPolicy.getMetadata().getName());
@@ -83,7 +88,7 @@ public class NetworkPolicyCrudTest {
 
 
     //test of list
-    NetworkPolicyList networkPolicyList = client.extensions().networkPolicies()
+    NetworkPolicyList networkPolicyList = client.network().networkPolicies()
       .withLabels(Collections.singletonMap("foo","bar")).list();
 
     assertNotNull(networkPolicyList);
@@ -100,7 +105,7 @@ public class NetworkPolicyCrudTest {
 
 
     //test of updation
-    networkPolicy = client.extensions().networkPolicies()
+    networkPolicy = client.network().networkPolicies()
       .withName("networkpolicy").edit()
       .editSpec().editIngress(0).editFirstPort().withPort(new IntOrString(6679)).endPort().endIngress().endSpec()
       .done();
@@ -118,9 +123,9 @@ public class NetworkPolicyCrudTest {
 
 
     //test of deletion
-    boolean deleted = client.extensions().networkPolicies().delete();
+    boolean deleted = client.network().networkPolicies().delete();
     assertTrue(deleted);
-    networkPolicyList = client.extensions().networkPolicies().list();
+    networkPolicyList = client.network().networkPolicies().list();
     assertEquals(0,networkPolicyList.getItems().size());
 
   }

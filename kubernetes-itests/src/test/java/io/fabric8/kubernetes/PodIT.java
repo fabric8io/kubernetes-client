@@ -64,31 +64,15 @@ public class PodIT {
   @Before
   public void init() {
     currentNamespace = session.getNamespace();
+    client.pods().inNamespace(currentNamespace).delete();
+
     pod1 = new PodBuilder()
       .withNewMetadata().withName("pod1-" + RandomStringUtils.randomAlphanumeric(6).toLowerCase()).endMetadata()
       .withNewSpec()
       .addNewContainer()
-      .withName("mysql")
-      .withImage("openshift/mysql-55-centos7")
-      .addNewPort()
-      .withContainerPort(3306)
-      .endPort()
-      .addNewEnv()
-      .withName("MYSQL_ROOT_PASSWORD")
-      .withValue("password")
-      .endEnv()
-      .addNewEnv()
-      .withName("MYSQL_DATABASE")
-      .withValue("foodb")
-      .endEnv()
-      .addNewEnv()
-      .withName("MYSQL_USER")
-      .withValue("luke")
-      .endEnv()
-      .addNewEnv()
-      .withName("MYSQL_PASSWORD")
-      .withValue("password")
-      .endEnv()
+      .withName("busybox")
+      .withImage("busybox")
+      .withCommand("sleep","36000")
       .endContainer()
       .endSpec()
       .build();

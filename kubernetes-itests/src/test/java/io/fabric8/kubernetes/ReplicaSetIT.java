@@ -18,9 +18,9 @@ package io.fabric8.kubernetes;
 
 import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.Quantity;
-import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
-import io.fabric8.kubernetes.api.model.extensions.ReplicaSetBuilder;
-import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
+import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
+import io.fabric8.kubernetes.api.model.apps.ReplicaSetBuilder;
+import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -72,7 +72,7 @@ public class ReplicaSetIT {
       .addToLabels("tier", "frontend")
       .endMetadata()
       .withNewSpec()
-      .withReplicas(3)
+      .withReplicas(1)
       .withNewSelector()
       .withMatchLabels(Collections.singletonMap("tier", "frontend"))
       .endSelector()
@@ -83,28 +83,26 @@ public class ReplicaSetIT {
       .endMetadata()
       .withNewSpec()
       .addNewContainer()
-      .withName("php-redis")
-      .withImage("kubernetes/example-guestbook-php-redis")
+      .withName("busybox")
+      .withImage("busybox")
+      .withCommand("sleep","36000")
       .withNewResources()
       .withRequests(requests)
       .endResources()
       .withEnv(envVarList)
-      .addNewPort()
-      .withContainerPort(80)
-      .endPort()
       .endContainer()
       .endSpec()
       .endTemplate()
       .endSpec()
       .build();
 
-    client.extensions().replicaSets().inNamespace(currentNamespace).createOrReplace(replicaset1);
+    client.apps().replicaSets().inNamespace(currentNamespace).createOrReplace(replicaset1);
   }
 
   @Test
   public void load() {
     String currentNamespace = session.getNamespace();
-    ReplicaSet replicaSet = client.extensions().replicaSets().inNamespace(currentNamespace)
+    ReplicaSet replicaSet = client.apps().replicaSets().inNamespace(currentNamespace)
       .load(getClass().getResourceAsStream("/test-replicaset.yml")).get();
     assertThat(replicaSet).isNotNull();
     assertEquals("frontend", replicaSet.getMetadata().getName());
@@ -112,34 +110,34 @@ public class ReplicaSetIT {
 
   @Test
   public void get() {
-    replicaset1 = client.extensions().replicaSets().inNamespace(currentNamespace).withName("replicaset1").get();
+    replicaset1 = client.apps().replicaSets().inNamespace(currentNamespace).withName("replicaset1").get();
     assertNotNull(replicaset1);
   }
 
   @Test
   public void list() {
-    ReplicaSetList replicaSetList = client.extensions().replicaSets().inNamespace(currentNamespace).list();
+    ReplicaSetList replicaSetList = client.apps().replicaSets().inNamespace(currentNamespace).list();
     assertThat(replicaSetList).isNotNull();
     assertTrue(replicaSetList.getItems().size() >= 1);
   }
 
   @Test
   public void update() {
-    replicaset1 = client.extensions().replicaSets().inNamespace(currentNamespace).withName("replicaset1").edit()
-      .editSpec().withReplicas(5).endSpec().done();
+    replicaset1 = client.apps().replicaSets().inNamespace(currentNamespace).withName("replicaset1").edit()
+      .editSpec().withReplicas(2).endSpec().done();
     assertThat(replicaset1).isNotNull();
-    assertEquals(5, replicaset1.getSpec().getReplicas().intValue());
+    assertEquals(2, replicaset1.getSpec().getReplicas().intValue());
   }
 
   @Test
   public void delete() {
-    boolean bDeleted = client.extensions().replicaSets().inNamespace(currentNamespace).withName("replicaset1").delete();
+    boolean bDeleted = client.apps().replicaSets().inNamespace(currentNamespace).withName("replicaset1").delete();
     assertTrue(bDeleted);
   }
 
   @After
   public void cleanup() throws InterruptedException {
-    client.extensions().replicaSets().inNamespace(currentNamespace).delete();
+    client.apps().replicaSets().inNamespace(currentNamespace).delete();
     // Wait for resources to get destroyed
     Thread.sleep(30000);
   }

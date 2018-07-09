@@ -15,13 +15,28 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.model.extensions.DoneableStatefulSet;
-import io.fabric8.kubernetes.api.model.extensions.StatefulSet;
-import io.fabric8.kubernetes.api.model.extensions.StatefulSetList;
-import io.fabric8.kubernetes.client.dsl.AppsAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.api.model.apps.DaemonSet;
+import io.fabric8.kubernetes.api.model.apps.DaemonSetList;
+import io.fabric8.kubernetes.api.model.apps.DoneableDaemonSet;
+import io.fabric8.kubernetes.api.model.apps.Deployment;
+import io.fabric8.kubernetes.api.model.apps.DeploymentList;
+import io.fabric8.kubernetes.api.model.apps.DoneableDeployment;
+import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
+import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
+import io.fabric8.kubernetes.api.model.apps.DoneableReplicaSet;
+import io.fabric8.kubernetes.api.model.apps.StatefulSet;
+import io.fabric8.kubernetes.api.model.apps.StatefulSetList;
+import io.fabric8.kubernetes.api.model.apps.DoneableStatefulSet;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
+import io.fabric8.kubernetes.client.dsl.ScalableResource;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.AppsAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.internal.DaemonSetOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.DeploymentOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.ReplicaSetOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.StatefulSetOperationsImpl;
+
 import okhttp3.OkHttpClient;
 
 public class AppsAPIGroupClient extends BaseClient implements AppsAPIGroupDSL {
@@ -32,6 +47,21 @@ public class AppsAPIGroupClient extends BaseClient implements AppsAPIGroupDSL {
 
   public AppsAPIGroupClient(OkHttpClient httpClient, final Config config) throws KubernetesClientException {
     super(httpClient, config);
+  }
+
+  @Override
+  public MixedOperation<DaemonSet, DaemonSetList, DoneableDaemonSet, Resource<DaemonSet, DoneableDaemonSet>> daemonSets() {
+    return new DaemonSetOperationsImpl(httpClient, getConfiguration(), getNamespace());
+  }
+
+  @Override
+  public MixedOperation<Deployment, DeploymentList, DoneableDeployment, ScalableResource<Deployment, DoneableDeployment>> deployments() {
+    return new DeploymentOperationsImpl(httpClient, getConfiguration(), getNamespace());
+  }
+
+  @Override
+  public MixedOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, RollableScalableResource<ReplicaSet, DoneableReplicaSet>> replicaSets() {
+    return new ReplicaSetOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
   @Override

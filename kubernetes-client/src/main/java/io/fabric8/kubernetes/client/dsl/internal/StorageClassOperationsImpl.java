@@ -15,9 +15,9 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import io.fabric8.kubernetes.api.model.DoneableStorageClass;
-import io.fabric8.kubernetes.api.model.StorageClass;
-import io.fabric8.kubernetes.api.model.StorageClassList;
+import io.fabric8.kubernetes.api.model.storage.DoneableStorageClass;
+import io.fabric8.kubernetes.api.model.storage.StorageClass;
+import io.fabric8.kubernetes.api.model.storage.StorageClassList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
@@ -28,7 +28,7 @@ import java.util.TreeMap;
 
 public class StorageClassOperationsImpl extends HasMetadataOperation<StorageClass, StorageClassList, DoneableStorageClass, Resource<StorageClass, DoneableStorageClass>> {
   public StorageClassOperationsImpl(OkHttpClient client, Config config) {
-    this(client, config, null, null, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+    this(client, config, "v1", null, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
   }
 
   public StorageClassOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, StorageClass item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {

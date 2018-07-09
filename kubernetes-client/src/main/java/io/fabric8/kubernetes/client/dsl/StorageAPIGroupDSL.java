@@ -13,27 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.fabric8.kubernetes.client.dsl;
 
-package io.fabric8.kubernetes;
+import io.fabric8.kubernetes.api.model.storage.DoneableStorageClass;
+import io.fabric8.kubernetes.api.model.storage.StorageClass;
+import io.fabric8.kubernetes.api.model.storage.StorageClassList;
+import io.fabric8.kubernetes.client.Client;
 
-import io.fabric8.kubernetes.client.KubernetesClient;
+public interface StorageAPIGroupDSL extends Client{
 
-import java.util.concurrent.Callable;
+  MixedOperation<StorageClass, StorageClassList, DoneableStorageClass, Resource<StorageClass, DoneableStorageClass>> storageClasses();
 
-public class DeploymentReady implements Callable<Boolean> {
-
-  private KubernetesClient client;
-  private String name;
-  private String namespace;
-
-  public DeploymentReady(KubernetesClient client, String name, String namespace) {
-    this.client = client;
-    this.name = name;
-    this.namespace = namespace;
-  }
-
-  @Override
-  public Boolean call() throws Exception {
-    return this.client.apps().deployments().inNamespace(this.namespace).withName(this.name).isReady();
-  }
 }

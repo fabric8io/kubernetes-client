@@ -16,9 +16,9 @@
 package io.fabric8.kubernetes.examples;
 
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.StorageClass;
-import io.fabric8.kubernetes.api.model.StorageClassBuilder;
-import io.fabric8.kubernetes.api.model.StorageClassList;
+import io.fabric8.kubernetes.api.model.storage.StorageClass;
+import io.fabric8.kubernetes.api.model.storage.StorageClassBuilder;
+import io.fabric8.kubernetes.api.model.storage.StorageClassList;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -46,7 +46,7 @@ public class StorageClassExamples {
     try (final KubernetesClient client = new DefaultKubernetesClient(config)) {
 
       //list all storage classes
-      StorageClassList storageClassList = client.storageClasses().list();
+      StorageClassList storageClassList = client.storage().storageClasses().list();
       logger.info("List of storage classes: {}", storageClassList.toString());
 
       //create new storage class
@@ -69,23 +69,23 @@ public class StorageClassExamples {
                                                             .withProvisioner("k8s.io/minikube-hostpath")
                                                             .build();
 
-      storageClass = client.storageClasses().create(storageClass);
+      storageClass = client.storage().storageClasses().create(storageClass);
       logger.info("Newly created storage class details: {}", storageClass.toString());
 
       //list all storage classes
-      storageClassList = client.storageClasses().list();
+      storageClassList = client.storage().storageClasses().list();
       logger.info("List of storage classes: {}", storageClassList.toString());
 
       //update storage class. add label
-      storageClass = client.storageClasses().withName(name).edit().editMetadata().addToLabels("testLabel", "testLabelValue").endMetadata().done();
+      storageClass = client.storage().storageClasses().withName(name).edit().editMetadata().addToLabels("testLabel", "testLabelValue").endMetadata().done();
 
       //list all storage classes
-      storageClassList = client.storageClasses().list();
+      storageClassList = client.storage().storageClasses().list();
       logger.info("List of storage classes: {}", storageClassList.toString());
 
 
       //delete storage class
-      boolean isDeleteSuccessful = client.storageClasses().delete(storageClass);
+      boolean isDeleteSuccessful = client.storage().storageClasses().delete(storageClass);
       logger.info("Storage Class resource successfully deleted: {}", isDeleteSuccessful);
 
 

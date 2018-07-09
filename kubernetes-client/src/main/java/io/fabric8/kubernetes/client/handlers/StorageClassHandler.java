@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes.client.handlers;
 
-import io.fabric8.kubernetes.api.model.StorageClass;
-import io.fabric8.kubernetes.api.model.StorageClassBuilder;
+import io.fabric8.kubernetes.api.model.storage.StorageClass;
+import io.fabric8.kubernetes.api.model.storage.StorageClassBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.Watch;

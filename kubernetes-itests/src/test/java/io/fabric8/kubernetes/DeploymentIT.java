@@ -16,9 +16,9 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.kubernetes.api.model.extensions.Deployment;
-import io.fabric8.kubernetes.api.model.extensions.DeploymentBuilder;
-import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
+import io.fabric8.kubernetes.api.model.apps.Deployment;
+import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
+import io.fabric8.kubernetes.api.model.apps.DeploymentList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import org.arquillian.cube.kubernetes.api.Session;
@@ -55,56 +55,65 @@ public class DeploymentIT {
 
   @Before
   public void init() {
+
     currentNamespace = session.getNamespace();
+
+    client.apps().deployments().inNamespace(currentNamespace).delete();
+    client.pods().inNamespace(currentNamespace).delete();
+
     deployment1 = new DeploymentBuilder()
-      .withNewMetadata().withName("deployment1").endMetadata()
-      .withNewSpec()
-      .withReplicas(1)
-      .withNewTemplate()
       .withNewMetadata()
-      .addToLabels("app", "httpd")
+        .withName("deployment1")
+        .addToLabels("test", "deployment")
       .endMetadata()
       .withNewSpec()
-      .addNewContainer()
-      .withName("ruby-hello-world")
-      .withImage("openshift/ruby-hello-world")
-      .addNewPort()
-      .withContainerPort(8080)
-      .withProtocol("TCP")
-      .endPort()
-      .endContainer()
-      .endSpec()
-      .endTemplate()
+        .withReplicas(1)
+        .withNewTemplate()
+          .withNewMetadata()
+          .addToLabels("app", "httpd")
+          .endMetadata()
+          .withNewSpec()
+            .addNewContainer()
+              .withName("busybox")
+              .withImage("busybox")
+              .withCommand("sleep","36000")
+            .endContainer()
+          .endSpec()
+        .endTemplate()
+        .withNewSelector()
+          .addToMatchLabels("app","httpd")
+        .endSelector()
       .endSpec()
       .build();
 
-    client.extensions().deployments().inNamespace(currentNamespace).create(deployment1);
+    client.apps().deployments().inNamespace(currentNamespace).create(deployment1);
   }
 
   @Test
   public void load() {
-    Deployment aDeployment = client.extensions().deployments().load(getClass().getResourceAsStream("/test-deployments.yml")).get();
+
+    Deployment aDeployment = client.apps().deployments().inNamespace(currentNamespace).load(getClass().getResourceAsStream("/test-deployments.yml")).get();
     assertThat(aDeployment).isNotNull();
     assertEquals("nginx-deployment", aDeployment.getMetadata().getName());
   }
 
   @Test
   public void get() {
-    deployment1 = client.extensions().deployments().inNamespace(currentNamespace)
+    deployment1 = client.apps().deployments().inNamespace(currentNamespace)
       .withName("deployment1").get();
     assertNotNull(deployment1);
   }
 
   @Test
   public void list() {
-    DeploymentList aDeploymentList = client.extensions().deployments().inNamespace(currentNamespace).list();
+    DeploymentList aDeploymentList = client.apps().deployments().inNamespace(currentNamespace).list();
     assertThat(aDeploymentList).isNotNull();
     assertEquals(1, aDeploymentList.getItems().size());
   }
 
   @Test
   public void update() {
-    deployment1 = client.extensions().deployments().inNamespace(currentNamespace).withName("deployment1").edit()
+    deployment1 = client.apps().deployments().inNamespace(currentNamespace).withName("deployment1").edit()
       .editSpec().withReplicas(2).endSpec().done();
     assertThat(deployment1).isNotNull();
     assertEquals(2, deployment1.getSpec().getReplicas().intValue());
@@ -116,7 +125,7 @@ public class DeploymentIT {
     // Wait for resources to get ready
     DeploymentReady deploymentReady = new DeploymentReady(client, "deployment1", currentNamespace);
     await().atMost(30, TimeUnit.MINUTES).until(deploymentReady);
-    assertTrue(client.extensions().deployments().inNamespace(currentNamespace).delete(deployment1));
+    assertTrue(client.apps().deployments().inNamespace(currentNamespace).delete(deployment1));
   }
 
   @Test
@@ -124,7 +133,7 @@ public class DeploymentIT {
     // Wait for resources to get ready
     DeploymentReady deploymentReady = new DeploymentReady(client, "deployment1", currentNamespace);
     await().atMost(30, TimeUnit.MINUTES).until(deploymentReady);
-    Deployment deploymentOne = client.extensions().deployments()
+    Deployment deploymentOne = client.apps().deployments()
       .inNamespace(currentNamespace).withName("deployment1").get();
     assertTrue(Readiness.isDeploymentReady(deploymentOne));
   }
@@ -132,8 +141,8 @@ public class DeploymentIT {
   @After
   public void cleanup() throws InterruptedException {
     try {
-      if (client.extensions().deployments().inNamespace(currentNamespace).list().getItems().size() != 0) {
-        client.extensions().deployments().inNamespace(currentNamespace).delete();
+      if (client.apps().deployments().inNamespace(currentNamespace).list().getItems().size() != 0) {
+        client.apps().deployments().inNamespace(currentNamespace).delete();
       }
       // Wait for resources to get destroyed
       DeploymentDelete deploymentDelete = new DeploymentDelete(client, "deployment1", currentNamespace);

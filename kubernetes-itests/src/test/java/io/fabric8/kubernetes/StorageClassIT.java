@@ -16,9 +16,9 @@
 package io.fabric8.kubernetes;
 
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.StorageClass;
-import io.fabric8.kubernetes.api.model.StorageClassBuilder;
-import io.fabric8.kubernetes.api.model.StorageClassList;
+import io.fabric8.kubernetes.api.model.storage.StorageClass;
+import io.fabric8.kubernetes.api.model.storage.StorageClassBuilder;
+import io.fabric8.kubernetes.api.model.storage.StorageClassList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import static junit.framework.TestCase.assertNotNull;
 import org.arquillian.cube.kubernetes.api.Session;
@@ -64,39 +64,39 @@ public class StorageClassIT {
       .withProvisioner("k8s.io/minikube-hostpath")
       .build();
 
-    client.storageClasses().createOrReplace(storageClass);
+    client.storage().storageClasses().createOrReplace(storageClass);
   }
 
   @Test
   public void load() {
-    StorageClass storageClassLoaded = client.storageClasses().load(getClass().getResourceAsStream("/test-storageclass.yml")).get();
+    StorageClass storageClassLoaded = client.storage().storageClasses().load(getClass().getResourceAsStream("/test-storageclass.yml")).get();
     assertNotNull(storageClassLoaded);
     assertEquals("gluster-vol-default", storageClassLoaded.getMetadata().getName());
   }
 
   @Test
   public void get() {
-    storageClass = client.storageClasses().withName(name).get();
+    storageClass = client.storage().storageClasses().withName(name).get();
     assertNotNull(storageClass);
   }
 
   @Test
   public void list() {
-    StorageClassList storageClassList = client.storageClasses().list();
+    StorageClassList storageClassList = client.storage().storageClasses().list();
     assertNotNull(storageClassList);
     assertTrue(storageClassList.getItems().size() > 1);
   }
 
   @Test
   public void update() {
-    storageClass = client.storageClasses().withName(name).edit().editMetadata().addToLabels("testLabel", "testLabelValue").endMetadata().done();
+    storageClass = client.storage().storageClasses().withName(name).edit().editMetadata().addToLabels("testLabel", "testLabelValue").endMetadata().done();
     assertNotNull(storageClass);
     assertEquals("testLabelValue", storageClass.getMetadata().getLabels().get("testLabel"));
   }
 
   @Test
   public void delete() {
-    assertTrue(client.storageClasses().delete(storageClass));
+    assertTrue(client.storage().storageClasses().delete(storageClass));
   }
 
 }

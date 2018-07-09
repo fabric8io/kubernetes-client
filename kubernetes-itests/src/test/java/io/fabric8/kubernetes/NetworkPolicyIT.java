@@ -17,7 +17,12 @@
 package io.fabric8.kubernetes;
 
 import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.extensions.*;
+import io.fabric8.kubernetes.api.model.networking.NetworkPolicy;
+import io.fabric8.kubernetes.api.model.networking.NetworkPolicyBuilder;
+import io.fabric8.kubernetes.api.model.networking.NetworkPolicyIngressRuleBuilder;
+import io.fabric8.kubernetes.api.model.networking.NetworkPolicyPeerBuilder;
+import io.fabric8.kubernetes.api.model.networking.NetworkPolicyPortBuilder;
+import io.fabric8.kubernetes.api.model.networking.NetworkPolicyList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
@@ -74,13 +79,13 @@ public class NetworkPolicyIT {
       .endSpec()
       .build();
 
-    client.extensions().networkPolicies().create(networkPolicy);
+    client.network().networkPolicies().create(networkPolicy);
   }
 
   @Test
   public void load() {
 
-    NetworkPolicy loadedNetworkPolicy = client.extensions().networkPolicies()
+    NetworkPolicy loadedNetworkPolicy = client.network().networkPolicies()
       .load(getClass().getResourceAsStream("/test-networkpolicy.yml")).get();
 
     assertNotNull(loadedNetworkPolicy);
@@ -98,7 +103,7 @@ public class NetworkPolicyIT {
   @Test
   public void get() {
 
-    NetworkPolicy getNetworkPolicy = client.extensions().networkPolicies()
+    NetworkPolicy getNetworkPolicy = client.network().networkPolicies()
       .withName("networkpolicy").get();
     assertNotNull(getNetworkPolicy);
     assertEquals("networkpolicy", getNetworkPolicy.getMetadata().getName());
@@ -115,7 +120,7 @@ public class NetworkPolicyIT {
   @Test
   public void list() {
 
-    NetworkPolicyList networkPolicyList = client.extensions().networkPolicies()
+    NetworkPolicyList networkPolicyList = client.network().networkPolicies()
       .withLabels(Collections.singletonMap("foo","bar")).list();
     assertNotNull(networkPolicyList);
     assertEquals(1,networkPolicyList.getItems().size());
@@ -133,7 +138,7 @@ public class NetworkPolicyIT {
   @Test
   public void update(){
 
-    networkPolicy = client.extensions().networkPolicies()
+    networkPolicy = client.network().networkPolicies()
       .withName("networkpolicy").edit()
       .editMetadata().addToLabels("bar","foo").endMetadata()
       .done();
@@ -153,15 +158,15 @@ public class NetworkPolicyIT {
 
   @Test
   public void delete(){
-    boolean deleted = client.extensions().networkPolicies().delete(networkPolicy);
+    boolean deleted = client.network().networkPolicies().delete(networkPolicy);
     assertTrue(deleted);
-    NetworkPolicyList networkPolicyList = client.extensions().networkPolicies().list();
+    NetworkPolicyList networkPolicyList = client.network().networkPolicies().list();
     assertEquals(0,networkPolicyList.getItems().size());
   }
 
   @After
   public void cleanup() throws InterruptedException {
-    client.extensions().networkPolicies().delete();
+    client.network().networkPolicies().delete();
     // wait for graceful deletion
     Thread.sleep(6 * 1000);
   }
