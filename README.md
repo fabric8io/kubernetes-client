@@ -338,3 +338,5 @@ There are the links of the CircleCI and Jenkins for the tests which run for ever
 
 * [Regression Test](https://circleci.com/gh/fabric8io/kubernetes-client)
 * [Unit Test](https://ci.fabric8.io/job/kubernetes-client-pullreq/)
+
+To get the updates about the releases, you can join https://groups.google.com/forum/embed/?place=forum/fabric8-devclients
