@@ -298,10 +298,9 @@ Then you can use the server like:
     }
 
 
-## Compatibility
+## Compatibility Matrix
 
 |                           | Kubernetes 1.4.9 | Kubernetes 1.6.0 | Kubernetes 1.7.0  | Kubernetes 1.9.0  |
-|                           |                  | OpenShift  3.6.0 | OpenShift  3.7.0  | OpenShift  3.9.0  |
 |---------------------------|------------------|------------------|-------------------|-------------------|
 | kubernetes-client 1.3.92  | +                | +                | -                 | -                 |
 | kubernetes-client 3.0.3   | -                | -                | ✓                 | -                 |
@@ -309,7 +308,17 @@ Then you can use the server like:
 | kubernetes-client 3.0.11  | -                | ✓                | ✓                 | ✓                 |
 | kubernetes-client 3.1.12  | -                | ✓                | ✓                 | ✓                 |
 | kubernetes-client 3.2.0   | -                | ✓                | ✓                 | ✓                 |
-| Kubernetes-client 4.0.0   | -                | ✓                | ✓                 | ✓                 |
+| kubernetes-client 4.0.0   | -                | ✓                | ✓                 | ✓                 |
+
+|                           | OpenShift  3.6.0 | OpenShift  3.7.0  | OpenShift  3.9.0  |
+|---------------------------|------------------|-------------------|-------------------|
+| kubernetes-client 1.3.92  | +                | -                 | -                 |
+| kubernetes-client 3.0.3   | -                | ✓                 | -                 |
+| kubernetes-client 3.0.10  | ✓                | ✓                 | ✓                 |
+| kubernetes-client 3.0.11  | ✓                | ✓                 | ✓                 |
+| kubernetes-client 3.1.12  | ✓                | ✓                 | ✓                 |
+| kubernetes-client 3.2.0   | ✓                | ✓                 | ✓                 |
+| kubernetes-client 4.0.0   | ✓                | ✓                 | ✓                 |
 
 ## Major Changes in Kubernetes Client 4.0.0
 All the resource objects used here will be according to OpenShift 3.9.0  and Kubernetes 1.9.0. All the resource objects will give all the fields according to OpenShift 3.9.0 and Kubernetes 1.9.0
@@ -329,3 +338,5 @@ There are the links of the CircleCI and Jenkins for the tests which run for ever
 
 * [Regression Test](https://circleci.com/gh/fabric8io/kubernetes-client)
 * [Unit Test](https://ci.fabric8.io/job/kubernetes-client-pullreq/)
+
+To get the updates about the releases, you can join https://groups.google.com/forum/embed/?place=forum/fabric8-devclients
