@@ -308,7 +308,7 @@ Then you can use the server like:
 | kubernetes-client 3.0.11  | -                | ✓                | ✓                 | ✓                 |
 | kubernetes-client 3.1.12  | -                | ✓                | ✓                 | ✓                 |
 | kubernetes-client 3.2.0   | -                | ✓                | ✓                 | ✓                 |
-| Kubernetes-client 4.0.0   | -                | ✓                | ✓                 | ✓                 |
+| kubernetes-client 4.0.0   | -                | ✓                | ✓                 | ✓                 |
 
 |                           | OpenShift  3.6.0 | OpenShift  3.7.0  | OpenShift  3.9.0  |
 |---------------------------|------------------|-------------------|-------------------|
@@ -318,7 +318,7 @@ Then you can use the server like:
 | kubernetes-client 3.0.11  | ✓                | ✓                 | ✓                 |
 | kubernetes-client 3.1.12  | ✓                | ✓                 | ✓                 |
 | kubernetes-client 3.2.0   | ✓                | ✓                 | ✓                 |
-| Kubernetes-client 4.0.0   | ✓                | ✓                 | ✓                 |
+| kubernetes-client 4.0.0   | ✓                | ✓                 | ✓                 |
 
 ## Major Changes in Kubernetes Client 4.0.0
 All the resource objects used here will be according to OpenShift 3.9.0  and Kubernetes 1.9.0. All the resource objects will give all the fields according to OpenShift 3.9.0 and Kubernetes 1.9.0
