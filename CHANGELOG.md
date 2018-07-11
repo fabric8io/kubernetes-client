@@ -1,6 +1,16 @@
 ### CHANGELOG
 
 #### 4.0.1 (To be released)
+  Bugs
+
+  New Feature
+
+  Improvements
+    * Added Kubernetes/Openshift examples for client.getVersion()
+
+  Dependency Upgrade
+
+  Major Movements and Changes
 
 #### 4.0.0
   Bugs
