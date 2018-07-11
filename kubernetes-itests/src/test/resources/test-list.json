@@ -1,0 +1,70 @@
+{
+  "apiVersion": "v1",
+  "kind": "List",
+  "items": [
+    {
+      "apiVersion": "v1",
+      "kind": "Service",
+      "metadata": {
+        "name": "hello-world"
+      },
+      "spec": {
+        "ports": [
+          {
+            "port": 8080,
+            "protocol": "TCP",
+            "targetPort": 8080
+          }
+        ],
+        "selector": {
+          "app": "hello-world"
+        }
+      }
+    },
+    {
+      "apiVersion": "apps/v1",
+      "kind": "Deployment",
+      "metadata": {
+        "name": "hello-world"
+      },
+      "spec": {
+        "replicas": 1,
+        "selector": {
+          "matchLabels": {
+            "app": "hello-world"
+          }
+        },
+        "template": {
+          "metadata": {
+            "labels": {
+              "app": "hello-world"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "image": "openshift/hello-openshift:v3.6.0",
+                "imagePullPolicy": "IfNotPresent",
+                "name": "hello-world-container",
+                "ports": [
+                  {
+                    "name": "http",
+                    "protocol": "TCP",
+                    "containerPort": 8080
+                  }
+                ],
+                "readinessProbe": {
+                  "httpGet": {
+                    "path": "/",
+                    "port": 8080
+                  },
+                  "initialDelaySeconds": 1
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}
