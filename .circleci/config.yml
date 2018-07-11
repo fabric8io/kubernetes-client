@@ -82,7 +82,7 @@ jobs:
           command: mvn -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B install -P itests-openshift
           no_output_timeout: 3600
 
-  OPENSHIFT_3.7.0:
+  OPENSHIFT_3.7.2:
     machine: true
     steps:
       - checkout
@@ -125,8 +125,8 @@ jobs:
               sudo chmod +x /usr/bin/systemd-run
             fi
 
-            oc_tool_version="openshift-origin-client-tools-v3.7.0-7ed6862-linux-64bit"
-            curl -LO https://github.com/openshift/origin/releases/download/v3.7.0/${oc_tool_version}.tar.gz && \
+            oc_tool_version="openshift-origin-client-tools-v3.7.2-282e43f-linux-64bit"
+            curl -LO https://github.com/openshift/origin/releases/download/v3.7.2/${oc_tool_version}.tar.gz && \
                 tar -xvzf ${oc_tool_version}.tar.gz && chmod +x $PWD/${oc_tool_version}/oc && sudo mv $PWD/${oc_tool_version}/oc /usr/local/bin/ && \
                 rm -rf ${oc_tool_version}.tar.gz
             echo "Installed OC CLI tool"
@@ -138,10 +138,10 @@ jobs:
             sudo service docker restart
             echo "Configured Docker daemon with insecure-registry"
 
-            oc cluster up --version=v3.7.0
+            oc cluster up --version=v3.7.2
             sleep 10
             oc login -u system:admin
-            echo "Configured OpenShift cluster : v3.7.0"
+            echo "Configured OpenShift cluster : v3.7.2"
 
       - run:
           command: mvn -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B install -P itests-openshift
@@ -218,5 +218,5 @@ workflows:
     jobs:
       - OPENSHIFT_3.6.0
       - OPENSHIFT_3.6.1
-      - OPENSHIFT_3.7.0
+      - OPENSHIFT_3.7.2
       - OPENSHIFT_3.9.0
