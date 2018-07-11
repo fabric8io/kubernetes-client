@@ -1,6 +1,16 @@
 ### Change Log
 
 #### 3.2.1 (To be released)
+  Bugs
+
+  New Feature
+
+  Improvements
+   * Added Kubernetes/Openshift examples for client.getVersion()
+
+  Dependency Upgrade
+
+  Major Movements and Changes
 
   Bugs
     * Fix #1098 : Unable to create LimitRange from yaml
