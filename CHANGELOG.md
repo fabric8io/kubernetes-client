@@ -7,6 +7,7 @@
 
   Improvements
     * Added Kubernetes/Openshift examples for client.getVersion()
+    * Fix #1126 : Add new option `kubernetes.disable.hostname.verification` / `KUBERNETES_DISABLE_HOSTNAME_VERIFICATION` to disable hostname verification
 
   Dependency Upgrade
 
@@ -23,7 +24,7 @@
 
   New Feature
   
-    * Fix #1020 : Support for Kubernetes/Openshift v1.9/v3.9 respectively
+    * Fix #1020 : Support for Kubernetes/Openshift v1.9/v3.9 respectively    
 
   Improvements
   
