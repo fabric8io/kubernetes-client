@@ -15,6 +15,7 @@
   
   Improvements
    * Determine kubernetes service host and port from environment if available - https://github.com/fabric8io/kubernetes-client/pull/1086
+    * Added Kubernetes/Openshift examples for client.getVersion()
    
 #### 3.1.12
   Bugs
