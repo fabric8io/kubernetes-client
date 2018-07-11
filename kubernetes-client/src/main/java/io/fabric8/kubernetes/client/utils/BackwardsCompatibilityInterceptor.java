@@ -17,7 +17,6 @@ package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
-import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -41,7 +40,10 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
   private static final String NAME_REGEX = "[a-z0-9\\-\\.]+";
   private static final Pattern URL_PATTERN = Pattern.compile("[^ ]+/apis/(" + NAME_REGEX + ")/(" + NAME_REGEX + ")/(" + NAME_REGEX + ")[^ ]*");
   private static final Pattern NAMESPACED_URL_PATTERN = Pattern.compile("[^ ]+/apis/(" + NAME_REGEX + ")/(" + NAME_REGEX + ")/namespaces/" + NAME_REGEX + "/(" + NAME_REGEX + ")[^ ]*");
-  private static final Map<ResourceKey, ResourceKey> transformations = new HashMap<>();
+  private static final Map<ResourceKey, ResourceKey> notFoundTransformations = new HashMap<>();
+  private static final Map<ResourceKey, ResourceKey> badRequestTransformations = new HashMap<>();
+
+  private static final Map<Integer, Map<ResourceKey, ResourceKey>> responseCodeToTransformations = new HashMap<>();
 
   private static class ResourceKey {
     private final String kind;
@@ -90,23 +92,31 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
   }
 
   static {
-    transformations.put(new ResourceKey("Deployment", "deployments", "apps", "v1"), new ResourceKey("Deployment", "deployments", "extensions", "v1beta1"));
-    transformations.put(new ResourceKey("StatefulSet", "statefulsets", "apps", "v1"), new ResourceKey("StatefulSet", "statefulsets", "apps", "v1beta1"));
-    transformations.put(new ResourceKey("DaemonSets", "daemonsets", "apps", "v1"), new ResourceKey("DaemonSet", "daemonsets", "extensions", "v1beta1"));
-    transformations.put(new ResourceKey("ReplicaSets", "replicasets", "apps", "v1"), new ResourceKey("ReplicaSet", "replicasets", "extensions", "v1beta1"));
-    transformations.put(new ResourceKey("NetworkPolicy", "networkpolicies", "networking.k8s.io", "v1"), new ResourceKey("NetworkPolicy", "networkpolicies", "extensions", "v1beta1"));
-    transformations.put(new ResourceKey("StorageClass", "storageclasses", "storage.k8s.io", "v1"), new ResourceKey("StorageClass", "storageclasses", "extensions", "v1beta1"));
-    transformations.put(new ResourceKey("Job", "jobs", "batch", "v1"), new ResourceKey("Job", "jobs", "extensions", "v1beta1"));
+    notFoundTransformations.put(new ResourceKey("Deployment", "deployments", "apps", "v1"), new ResourceKey("Deployment", "deployments", "extensions", "v1beta1"));
+    notFoundTransformations.put(new ResourceKey("StatefulSet", "statefulsets", "apps", "v1"), new ResourceKey("StatefulSet", "statefulsets", "apps", "v1beta1"));
+    notFoundTransformations.put(new ResourceKey("DaemonSets", "daemonsets", "apps", "v1"), new ResourceKey("DaemonSet", "daemonsets", "extensions", "v1beta1"));
+    notFoundTransformations.put(new ResourceKey("ReplicaSets", "replicasets", "apps", "v1"), new ResourceKey("ReplicaSet", "replicasets", "extensions", "v1beta1"));
+    notFoundTransformations
+      .put(new ResourceKey("NetworkPolicy", "networkpolicies", "networking.k8s.io", "v1"), new ResourceKey("NetworkPolicy", "networkpolicies", "extensions", "v1beta1"));
+    notFoundTransformations
+      .put(new ResourceKey("StorageClass", "storageclasses", "storage.k8s.io", "v1"), new ResourceKey("StorageClass", "storageclasses", "extensions", "v1beta1"));
+    notFoundTransformations
+      .put(new ResourceKey("Job", "jobs", "batch", "v1"), new ResourceKey("Job", "jobs", "extensions", "v1beta1"));
+
+    badRequestTransformations.put(new ResourceKey("Deployment", "deployments", "apps", "v1beta1"), new ResourceKey("Deployment", "deployments", "extensions", "v1beta1"));
+
+    responseCodeToTransformations.put(400, badRequestTransformations);
+    responseCodeToTransformations.put(404, notFoundTransformations);
   }
 
   public Response intercept(Chain chain) throws IOException {
     Request request = chain.request();
     Response response = chain.proceed(request);
-    if (!response.isSuccessful() && response.code() == 404) {
+    if (!response.isSuccessful() && responseCodeToTransformations.keySet().contains(response.code())) {
       String url = request.url().toString();
       Matcher matcher = getMatcher(url);
       ResourceKey key = getKey(matcher);
-      ResourceKey target = transformations.get(key);
+      ResourceKey target = responseCodeToTransformations.get(response.code()).get(key);
       if (target != null) {
         String newUrl = new StringBuilder(url)
             .replace(matcher.start(API_VERSION), matcher.end(API_VERSION), target.version) // Order matters: We need to substitute right to left, so that former substitution don't affect the indexes of later.
