@@ -19,7 +19,7 @@ Throughout the usage section code samples will be provided. The code samples are
 
 There are two ways of creating an instance of the service catalog client.
 - adapting from an existing instance of `KubernetesClient`
-- manual configuration and instanctiation
+- manual configuration and instantiation
 
 #### Adapting
 
@@ -33,7 +33,7 @@ This approach is pretty easy, but it can only work if the topology requirements 
 
 #### Manual Configuration
 
-To manually instantiate the client, you just needs to create a configuration object, that specifies at least the url of the service catalog api server and a way to authenticate to it.
+To manually instantiate the client, you just need to create a configuration object, that specifies at least the url of the service catalog api server and a way to authenticate to it.
 These may be specified:
 
 
@@ -216,4 +216,4 @@ For more sophisticated tests, you can set expectations, by using an EasyMock/Moc
     server.expect().get().withPath("/apis/servicecatalog.k8s.io/v1beta1/clusterservicebrokers/broker1").andReturn(200, broker1).onace();
     assertEquals(client.clusterServiceBrokers().get("broker1"), broker1);
   
-For more details, please check the [iternal unit tests](https://github.com/snowdrop/service-catalog-java-api/tree/master/tests/src/test/java/me/snowdrop/servicecatalog/test).
+For more details, please check the [internal unit tests](https://github.com/snowdrop/service-catalog-java-api/tree/master/tests/src/test/java/me/snowdrop/servicecatalog/test).
