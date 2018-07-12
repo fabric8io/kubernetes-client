@@ -15,10 +15,12 @@
  */
 package me.snowdrop.servicecatalog.api.client.internal;
 
+import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.dsl.internal.SecretOperationsImpl;
 import me.snowdrop.servicecatalog.api.model.ServiceBinding;
 import me.snowdrop.servicecatalog.api.model.ServiceBindingList;
 import me.snowdrop.servicecatalog.api.model.DoneableServiceBinding;
@@ -27,7 +29,7 @@ import java.util.TreeMap;
 import java.util.Map;
 
 
-public class ServiceBindingOperationImpl extends HasMetadataOperation<ServiceBinding, ServiceBindingList, DoneableServiceBinding, Resource<ServiceBinding, DoneableServiceBinding>> {
+public class ServiceBindingOperationImpl extends HasMetadataOperation<ServiceBinding, ServiceBindingList, DoneableServiceBinding, ServiceBindingResource> implements ServiceBindingResource {
 
   public ServiceBindingOperationImpl(OkHttpClient client, Config config) {
       this(client, config, "servicecatalog.k8s.io", "v1beta1", null, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
@@ -39,12 +41,12 @@ public class ServiceBindingOperationImpl extends HasMetadataOperation<ServiceBin
   
   
     @Override
-  public NonNamespaceOperation<ServiceBinding, ServiceBindingList, DoneableServiceBinding, Resource<ServiceBinding, DoneableServiceBinding>> inNamespace(String namespace) {
+  public NonNamespaceOperation<ServiceBinding, ServiceBindingList, DoneableServiceBinding, ServiceBindingResource> inNamespace(String namespace) {
       return new ServiceBindingOperationImpl(client, config, apiGroup, apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
   }
   
   @Override
-  public Resource<ServiceBinding, DoneableServiceBinding> withName(String name) {
+  public ServiceBindingResource withName(String name) {
       return new ServiceBindingOperationImpl(client, config, apiGroup, apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
   }
 
@@ -53,4 +55,9 @@ public class ServiceBindingOperationImpl extends HasMetadataOperation<ServiceBin
     return true;
   }
 
+  @Override
+  public Secret getSecret() {
+      ServiceBinding instance = get();
+      return new SecretOperationsImpl(client, config, getNamespace()).withName(instance.getSpec().getSecretName()).get();
+  }
 }
