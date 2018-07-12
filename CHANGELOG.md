@@ -1,21 +1,17 @@
 ### CHANGELOG
 
-#### 4.0.1 (To be released)
+#### 4.0.4 (To be released)
   Bugs
 
-  New Feature
-
   Improvements
+  
     * Added Kubernetes/Openshift examples for client.getVersion()
     * Fix #1126 : Add new option `kubernetes.disable.hostname.verification` / `KUBERNETES_DISABLE_HOSTNAME_VERIFICATION` to disable hostname verification
 
   Dependency Upgrade
 
-  Major Movements and Changes
-
-  Bugs
-
   New Feature
+  
     * Fix #1066 : Add support for Kubernetes RBAC Role and Role Binding
 
 #### 4.0.0
