@@ -124,6 +124,7 @@
     <osgi.bundles />
     <osgi.activator />
     <osgi.export.service />
+    <karaf.itest.skip>false</karaf.itest.skip>
   </properties>
 
   <modules>
@@ -273,6 +274,9 @@
   <profiles>
     <profile>
       <id>release</id>
+      <properties>
+        <karaf.itest.skip>true</karaf.itest.skip>
+      </properties>
       <build>
         <plugins>
           <plugin>
