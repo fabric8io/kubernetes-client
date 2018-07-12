@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import me.snowdrop.servicecatalog.api.client.internal.ClusterServiceBrokerResource;
 import me.snowdrop.servicecatalog.api.client.internal.ClusterServiceClassResource;
 import me.snowdrop.servicecatalog.api.client.internal.ClusterServicePlanResource;
+import me.snowdrop.servicecatalog.api.client.internal.ServiceBindingResource;
 import me.snowdrop.servicecatalog.api.client.internal.ServiceInstanceResource;
 import me.snowdrop.servicecatalog.api.model.ClusterServiceBroker;
 import me.snowdrop.servicecatalog.api.model.ClusterServiceBrokerList;
@@ -50,5 +51,5 @@ public interface ServiceCatalogClient extends Client {
 
     MixedOperation<ServiceInstance, ServiceInstanceList, DoneableServiceInstance, ServiceInstanceResource> serviceInstances();
 
-    MixedOperation<ServiceBinding, ServiceBindingList, DoneableServiceBinding, Resource<ServiceBinding, DoneableServiceBinding>> serviceBindings();
+    MixedOperation<ServiceBinding, ServiceBindingList, DoneableServiceBinding, ServiceBindingResource> serviceBindings();
 }

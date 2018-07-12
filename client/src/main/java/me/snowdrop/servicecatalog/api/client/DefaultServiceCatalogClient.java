@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import me.snowdrop.servicecatalog.api.client.internal.ClusterServiceBrokerResource;
 import me.snowdrop.servicecatalog.api.client.internal.ClusterServiceClassResource;
 import me.snowdrop.servicecatalog.api.client.internal.ClusterServicePlanResource;
+import me.snowdrop.servicecatalog.api.client.internal.ServiceBindingResource;
 import me.snowdrop.servicecatalog.api.client.internal.ServiceInstanceResource;
 import me.snowdrop.servicecatalog.api.model.DoneableClusterServiceBroker;
 import me.snowdrop.servicecatalog.api.model.DoneableClusterServiceClass;
@@ -76,7 +77,7 @@ public class DefaultServiceCatalogClient extends BaseClient implements Namespace
     public MixedOperation<ServiceInstance, ServiceInstanceList, DoneableServiceInstance, ServiceInstanceResource> serviceInstances() {
         return new ServiceInstanceOperationImpl(this.getHttpClient(), this.getConfiguration());
     }
-    public MixedOperation<ServiceBinding, ServiceBindingList, DoneableServiceBinding, Resource<ServiceBinding, DoneableServiceBinding>> serviceBindings() {
+    public MixedOperation<ServiceBinding, ServiceBindingList, DoneableServiceBinding, ServiceBindingResource> serviceBindings() {
         return new ServiceBindingOperationImpl(this.getHttpClient(), this.getConfiguration());
     }
 
