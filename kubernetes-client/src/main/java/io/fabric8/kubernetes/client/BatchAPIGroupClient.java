@@ -15,12 +15,17 @@
  */
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.api.model.batch.CronJob;
 import io.fabric8.kubernetes.api.model.batch.DoneableJob;
 import io.fabric8.kubernetes.api.model.batch.Job;
 import io.fabric8.kubernetes.api.model.batch.JobList;
+import io.fabric8.kubernetes.api.model.batch.CronJobList;
+import io.fabric8.kubernetes.api.model.batch.DoneableCronJob;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.BatchAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.ScalableResource;
+import io.fabric8.kubernetes.client.dsl.internal.CronJobOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.JobOperationsImpl;
 import okhttp3.OkHttpClient;
 
@@ -37,5 +42,10 @@ public class BatchAPIGroupClient extends BaseClient implements BatchAPIGroupDSL 
   @Override
   public MixedOperation<Job, JobList, DoneableJob, ScalableResource<Job, DoneableJob>> jobs() {
     return new JobOperationsImpl(httpClient, getConfiguration(), getNamespace());
+  }
+
+  @Override
+  public MixedOperation<CronJob, CronJobList, DoneableCronJob, Resource<CronJob, DoneableCronJob>> cronjobs() {
+    return new CronJobOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 }
