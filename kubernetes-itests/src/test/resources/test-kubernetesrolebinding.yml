@@ -14,10 +14,16 @@
 # limitations under the License.
 #
 
-io.fabric8.kubernetes.client.AppsAPIGroupExtensionAdapter
-io.fabric8.kubernetes.client.AutoscalingAPIGroupExtensionAdapter
-io.fabric8.kubernetes.client.ExtensionsAPIGroupExtensionAdapter
-io.fabric8.kubernetes.client.BatchAPIGroupExtensionAdapter
-io.fabric8.kubernetes.client.NetworkAPIGroupExtensionAdapter
-io.fabric8.kubernetes.client.StorageAPIGroupExtensionAdapter
-io.fabric8.kubernetes.client.RbacAPIGroupExtensionAdapter
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: read-jobs
+subjects:
+- kind: User
+  name: jane
+  namespace: default
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: job-reader
+  apiGroup: rbac.authorization.k8s.io

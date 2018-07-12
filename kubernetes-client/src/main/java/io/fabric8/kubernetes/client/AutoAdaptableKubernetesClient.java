@@ -141,6 +141,9 @@ public class AutoAdaptableKubernetesClient extends DefaultKubernetesClient {
   public BatchAPIGroupDSL batch() { return delegate.batch(); }
 
   @Override
+  public RbacAPIGroupDSL rbac() { return delegate.rbac(); }
+
+  @Override
   public MixedOperation<ComponentStatus, ComponentStatusList, DoneableComponentStatus, Resource<ComponentStatus, DoneableComponentStatus>> componentstatuses() {
     return delegate.componentstatuses();
   }

@@ -97,6 +97,8 @@ public interface KubernetesClient extends Client {
 
   BatchAPIGroupDSL batch();
 
+  RbacAPIGroupDSL rbac();
+
   MixedOperation<ComponentStatus, ComponentStatusList, DoneableComponentStatus, Resource<ComponentStatus, DoneableComponentStatus>> componentstatuses();
 
   ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata,Boolean> load(InputStream is);

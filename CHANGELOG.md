@@ -13,6 +13,11 @@
 
   Major Movements and Changes
 
+  Bugs
+
+  New Feature
+    * Fix #1066 : Add support for Kubernetes RBAC Role and Role Binding
+
 #### 4.0.0
   Bugs
   

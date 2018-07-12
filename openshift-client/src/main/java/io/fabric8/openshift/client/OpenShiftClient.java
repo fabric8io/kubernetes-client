@@ -52,6 +52,8 @@ public interface OpenShiftClient extends KubernetesClient {
 
   BatchAPIGroupDSL batch();
 
+  RbacAPIGroupDSL rbac();
+
   MixedOperation<Build, BuildList, DoneableBuild, BuildResource<Build, DoneableBuild, String, LogWatch>> builds();
 
   MixedOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build>> buildConfigs();
