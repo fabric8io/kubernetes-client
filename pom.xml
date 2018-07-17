@@ -86,7 +86,7 @@
     <jackson.version>2.7.7</jackson.version>
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
     <junit.version>4.12</junit.version>
-    <kubernetes.model.version>3.0.0</kubernetes.model.version>
+    <kubernetes.model.version>3.0.1</kubernetes.model.version>
     <log4j.version>2.10.0</log4j.version>
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
     <arquillian.cube.version>1.15.2</arquillian.cube.version>
@@ -114,16 +114,16 @@
     <exec.master>https://localhost:8443</exec.master>
 
     <javadoc.include.deps>false</javadoc.include.deps>
-    <javadoc.source.includes />
-    <javadoc.package.excludes />
+    <javadoc.source.includes/>
+    <javadoc.package.excludes/>
 
-    <osgi.import />
-    <osgi.export />
-    <osgi.private />
-    <osgi.dynamic.import />
-    <osgi.bundles />
-    <osgi.activator />
-    <osgi.export.service />
+    <osgi.import/>
+    <osgi.export/>
+    <osgi.private/>
+    <osgi.dynamic.import/>
+    <osgi.bundles/>
+    <osgi.activator/>
+    <osgi.export.service/>
     <karaf.itest.skip>false</karaf.itest.skip>
   </properties>
 
