@@ -13,6 +13,7 @@
   New Feature
   
     * Fix #1066 : Add support for Kubernetes RBAC Role and Role Binding
+    * Fix #770: Added Support for CronJob
 
 #### 4.0.0
   Bugs
