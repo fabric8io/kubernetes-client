@@ -334,7 +334,46 @@ All the resource objects used here will be according to OpenShift 3.9.0  and Kub
 * PodSecurityPolicies moved from `client base DSL` and `extensions` to only `extensions`
 * ThirdPartyResource has been removed.
 
-### Tests we run for every new Pull Request
+## Who uses Kubernetes & OpenShift Java client? 
+  
+  Extensions:
+  - [Isitio API](https://github.com/snowdrop/istio-java-api)
+  - [Service Catalog API](https://github.com/snowdrop/service-catalog-java-api)  
+  
+  Frameworks/Libraries/Tools:
+  - [Arquillian Cube](http://arquillian.org/arquillian-cube/)
+  - [Apache Camel](https://github.com/apache/camel/blob/master/README.md)
+  - [Apache Spark](https://github.com/apache/spark/tree/master/resource-managers/kubernetes)
+  - [Jaeger Kubernetes](https://github.com/jaegertracing/jaeger-kubernetes)
+  - [Loom](https://github.com/datawire/loom)
+  - [Microsoft Azure Libraries for Java](https://github.com/Azure/azure-libraries-for-java)
+  - [Spinnaker Halyard](https://github.com/spinnaker/halyard) 
+  - [Spring Cloud Connectors for Kubernetes](https://github.com/spring-cloud/spring-cloud-kubernetes-connector)  
+  - [Spring Cloud Kubernetes](https://github.com/fabric8io/spring-cloud-kubernetes)
+
+  CI Plugins:
+  - [Deployment Pipeline Plugin (Jenkins)](https://github.com/pearsontechnology/deployment-pipeline-jenkins-plugin) 
+  - [Kubernetes Eleastic Agent (GoCD)](https://github.com/gocd/kubernetes-elastic-agents)
+  - [Kubernetes Plugin (Jenkins)](https://github.com/jenkinsci/kubernetes-plugin)
+  - [Kubernetes Pipeline Plugin (Jenkins)](https://github.com/jenkinsci/kubernetes-pipeline-plugin)
+  - [OpenShift Sync Plugin (Jenkins)](https://github.com/openshift/jenkins-sync-plugin)
+  - [Kubernetes Plugin (Teamcity from Jetbrains)](https://github.com/JetBrains/teamcity-kubernetes-plugin)
+  
+  Build Tools:
+  - [Fabric8 Maven Plugin](https://github.com/fabric8io/fabric8-maven-plugin)
+  - [Gradle Kubernetes Plugin](https://github.com/bmuschko/gradle-kubernetes-plugin)
+  
+  Platforms:
+  - [Apache Openwhisk](https://github.com/apache/incubator-openwhisk)
+  - [Eclipse che](https://www.eclipse.org/che/)
+  - [Openshift.io (Launcher service)](https://github.com/fabric8-launcher)
+  - [Spotify Styx](https://github.com/spotify/styx)
+  - [Strimzi](https://github.com/strimzi/)
+  - [Syndesis](https://syndesis.io/)
+  
+As our community grows, we would like to track keep track of our users. Please send a PR with your organization/community name.   
+
+## Tests we run for every new Pull Request
 There are the links of the CircleCI and Jenkins for the tests which run for every new Pull Request. You can view all the recent builds also.
 
 * [Regression Test](https://circleci.com/gh/fabric8io/kubernetes-client)
