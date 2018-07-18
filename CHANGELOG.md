@@ -2,6 +2,7 @@
 
 #### 3.2.1 (To be released)
   Bugs
+    * Fix #1144 : Get Request with OpenShift Mock Server Not Working
 
   New Feature
 
