@@ -8,6 +8,7 @@
    * Fix #1089 : Query parameters are not correctly processed if set in `masterUrl`
    * Fix #1087 : Mock server can't list custom resources
    * Fix #1085 : Impersonate parameters are not configurable for DefaultOpenShiftClient
+   * Fix #1144 : Get Request with OpenShift Mock Server Not Working
    * fix(#1055): add OpenShiftOAuthInterceptor to httpClient for openshifClient
    * Fix #1126 : Add option to disable hostname verification without disabling the certificate validation 
   
@@ -15,7 +16,7 @@
   
   Improvements
    * Determine kubernetes service host and port from environment if available - https://github.com/fabric8io/kubernetes-client/pull/1086
-    * Added Kubernetes/Openshift examples for client.getVersion()
+   * Added Kubernetes/Openshift examples for client.getVersion()
    
 #### 3.1.12
   Bugs

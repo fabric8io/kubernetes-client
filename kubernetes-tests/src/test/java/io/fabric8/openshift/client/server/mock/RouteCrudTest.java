@@ -53,7 +53,7 @@ public class RouteCrudTest {
 
     RouteList aRouteList = client.routes().list();
     assertNotNull(aRouteList);
-    assertEquals(3, aRouteList.getItems().size());
+    assertEquals(0, aRouteList.getItems().size());
 
     aRouteList = client.routes().inAnyNamespace().list();
     assertNotNull(aRouteList);
@@ -61,14 +61,14 @@ public class RouteCrudTest {
 
     aRouteList = client.routes().inNamespace("ns1").list();
     assertNotNull(aRouteList);
-    //assertEquals(2, aRouteList.getItems().size()); //! expected 2 but gives 3
+    assertEquals(2, aRouteList.getItems().size());
 
     aRouteList = client.routes().inAnyNamespace().withLabels(Collections.singletonMap("foo", "bar")).list();
     assertNotNull(aRouteList);
     assertEquals(3, aRouteList.getItems().size());
 
-    boolean bDeleted = client.routes().delete();
-    aRouteList = client.routes().list();
+    boolean bDeleted = client.routes().inNamespace("ns1").delete();
+    aRouteList = client.routes().inNamespace("ns1").list();
     assertTrue(bDeleted);
     assertEquals(0, aRouteList.getItems().size());
   }
