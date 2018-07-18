@@ -63,7 +63,7 @@ public class DeploymentConfigCrudTest {
 
     DeploymentConfigList aDeploymentConfigList = client.deploymentConfigs().list();
     assertNotNull(aDeploymentConfigList);
-    assertEquals(3, aDeploymentConfigList.getItems().size());
+    assertEquals(0, aDeploymentConfigList.getItems().size());
 
     aDeploymentConfigList = client.deploymentConfigs().inAnyNamespace().list();
     assertNotNull(aDeploymentConfigList);
@@ -71,22 +71,21 @@ public class DeploymentConfigCrudTest {
 
     aDeploymentConfigList = client.deploymentConfigs().inNamespace("ns1").list();
     assertNotNull(aDeploymentConfigList);
-    // ! Doesn't work expected 2, but gives 3.
-//    assertEquals(2, aDeploymentConfigList.getItems().size());
+    assertEquals(2, aDeploymentConfigList.getItems().size());
 
     aDeploymentConfigList = client.deploymentConfigs().inNamespace("ns1")
       .withLabels(Collections.singletonMap("testKey", "testValue")).list();
     assertNotNull(aDeploymentConfigList);
-    assertEquals(3, aDeploymentConfigList.getItems().size());
+    assertEquals(2, aDeploymentConfigList.getItems().size());
+
+    deploymentConfig3 = client.deploymentConfigs().inNamespace("ns2").withName("deploymentConfig3").edit()
+      .editMetadata().addToLabels("testkey1","testvalue2").endMetadata()
+      .done();
+    assertNotNull(deploymentConfig3);
+    assertEquals(2, deploymentConfig3.getMetadata().getLabels().size());
 
     // ! Doesn't work
-//    boolean bDeleted = client.deploymentConfigs().inNamespace("ns1").withName("deploymentConfig2").delete();
-//    assertTrue(bDeleted);
-
-//    deploymentConfig3 = client.deploymentConfigs().inNamespace("ns1").withName("deploymentConfig3").edit()
-//      .editMetadata().withName("DEPLOYMENTCONFIG3").endMetadata()
-//      .done();
-//    assertNotNull(deploymentConfig3);
-//    assertEquals("DEPLOYMENTCONFIG3", deploymentConfig3.getMetadata().getName());
+    // boolean bDeleted = client.deploymentConfigs().inNamespace("ns1").withName("deploymentConfig2").delete();
+    // assertTrue(bDeleted);
   }
 }
