@@ -3,6 +3,8 @@
 #### 4.0.4 (To be released)
   Bugs
 
+    * Fix #1147: Cluster context was being ignored when loading the Config from a kubeconfig file
+
   Improvements
   
     * Added Kubernetes/Openshift examples for client.getVersion()
