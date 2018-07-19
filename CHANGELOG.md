@@ -2,6 +2,7 @@
 
 #### 4.0.4 (To be released)
   Bugs
+    * Fix #1144 : Get Request with OpenShift Mock Server Not Working
 
   Improvements
   
