@@ -414,7 +414,7 @@ public class Config {
   public static Config fromKubeconfig(String context, String kubeconfigContents, String kubeconfigPath) {
     // we allow passing context along here, since downstream accepts it
     Config config = new Config();
-    Config.loadFromKubeconfig(config, null, kubeconfigContents, kubeconfigPath);
+    Config.loadFromKubeconfig(config, context, kubeconfigContents, kubeconfigPath);
     return config;
   }
 

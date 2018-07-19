@@ -11,6 +11,7 @@
    * Fix #1144 : Get Request with OpenShift Mock Server Not Working
    * fix(#1055): add OpenShiftOAuthInterceptor to httpClient for openshifClient
    * Fix #1126 : Add option to disable hostname verification without disabling the certificate validation 
+   * Fix #1147: Cluster context was being ignored when loading the Config from a kubeconfig file
   
   New Feature
   
