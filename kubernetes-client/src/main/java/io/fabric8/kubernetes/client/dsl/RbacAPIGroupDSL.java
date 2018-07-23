@@ -15,6 +15,12 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.api.model.rbac.DoneableKubernetesClusterRole;
+import io.fabric8.kubernetes.api.model.rbac.DoneableKubernetesClusterRoleBinding;
+import io.fabric8.kubernetes.api.model.rbac.KubernetesClusterRole;
+import io.fabric8.kubernetes.api.model.rbac.KubernetesClusterRoleBinding;
+import io.fabric8.kubernetes.api.model.rbac.KubernetesClusterRoleBindingList;
+import io.fabric8.kubernetes.api.model.rbac.KubernetesClusterRoleList;
 import io.fabric8.kubernetes.api.model.rbac.KubernetesRole;
 import io.fabric8.kubernetes.api.model.rbac.KubernetesRoleList;
 import io.fabric8.kubernetes.api.model.rbac.DoneableKubernetesRole;
@@ -28,5 +34,9 @@ public interface RbacAPIGroupDSL extends Client{
   MixedOperation<KubernetesRole, KubernetesRoleList, DoneableKubernetesRole, Resource<KubernetesRole, DoneableKubernetesRole>> kubernetesRoles();
 
   MixedOperation<KubernetesRoleBinding, KubernetesRoleBindingList, DoneableKubernetesRoleBinding, Resource<KubernetesRoleBinding, DoneableKubernetesRoleBinding>> kubernetesRoleBindings();
+
+  MixedOperation<KubernetesClusterRole, KubernetesClusterRoleList, DoneableKubernetesClusterRole, Resource<KubernetesClusterRole, DoneableKubernetesClusterRole>> kubernetesClusterRoles();
+
+  MixedOperation<KubernetesClusterRoleBinding, KubernetesClusterRoleBindingList, DoneableKubernetesClusterRoleBinding, Resource<KubernetesClusterRoleBinding, DoneableKubernetesClusterRoleBinding>> kubernetesClusterRoleBindings();
 
 }

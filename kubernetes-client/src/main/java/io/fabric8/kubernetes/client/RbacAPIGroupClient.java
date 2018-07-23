@@ -19,6 +19,8 @@ import io.fabric8.kubernetes.api.model.rbac.*;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.RbacAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.internal.KubernetesClusterRoleBindingOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.KubernetesClusterRoleOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.KubernetesRoleOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.KubernetesRoleBindingOperationsImpl;
 import okhttp3.OkHttpClient;
@@ -41,5 +43,15 @@ public class RbacAPIGroupClient extends BaseClient implements RbacAPIGroupDSL {
   @Override
   public MixedOperation<KubernetesRoleBinding, KubernetesRoleBindingList, DoneableKubernetesRoleBinding, Resource<KubernetesRoleBinding, DoneableKubernetesRoleBinding>> kubernetesRoleBindings() {
     return new KubernetesRoleBindingOperationsImpl(httpClient, getConfiguration(), getNamespace());
+  }
+
+  @Override
+  public MixedOperation<KubernetesClusterRole, KubernetesClusterRoleList, DoneableKubernetesClusterRole, Resource<KubernetesClusterRole, DoneableKubernetesClusterRole>> kubernetesClusterRoles() {
+    return new KubernetesClusterRoleOperationsImpl(httpClient, getConfiguration());
+  }
+
+  @Override
+  public MixedOperation<KubernetesClusterRoleBinding, KubernetesClusterRoleBindingList, DoneableKubernetesClusterRoleBinding, Resource<KubernetesClusterRoleBinding, DoneableKubernetesClusterRoleBinding>> kubernetesClusterRoleBindings() {
+    return new KubernetesClusterRoleBindingOperationsImpl(httpClient, getConfiguration());
   }
 }
