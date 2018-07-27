@@ -2,6 +2,9 @@
 
 #### 4.0.4 (To be released)
   Bugs
+
+    * Fix #1156 : Watcher does not have correct authentication information in Openshift environment.
+    
     * Fix #1144 : Get Request with OpenShift Mock Server Not Working
 
     * Fix #1147: Cluster context was being ignored when loading the Config from a kubeconfig file
