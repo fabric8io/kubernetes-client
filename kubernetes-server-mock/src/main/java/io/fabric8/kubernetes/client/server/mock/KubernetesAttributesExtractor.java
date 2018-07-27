@@ -21,6 +21,8 @@ import io.fabric8.mockwebserver.crud.Attribute;
 import io.fabric8.mockwebserver.crud.AttributeExtractor;
 import io.fabric8.mockwebserver.crud.AttributeSet;
 import io.fabric8.zjsonpatch.internal.guava.Strings;
+import java.util.Map;
+import okhttp3.HttpUrl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,9 +36,11 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
 
   private static final Logger LOGGER = LoggerFactory.getLogger(KubernetesAttributesExtractor.class);
 
+  public static final String KEY = "key";
   public static final String KIND = "kind";
   public static final String NAME = "name";
   public static final String NAMESPACE = "namespace";
+  public static final String VALUE = "value";
 
   private static final String API_GROUP = "/o?api(s/[a-zA-Z0-9-_.]+)?";
   private static final String VERSION_GROUP = "(/(?<version>[a-zA-Z0-9-_]+))?";
@@ -47,6 +51,17 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
 
   protected static final Pattern PATTERN = Pattern.compile(API_GROUP + VERSION_GROUP + NAMESPACE_GROUP + KIND_GROUP + NAME_GROUP + END_GROUP);
 
+  private static final String LABEL_KEY_PREFIX = "labels:";
+  private static final String KEY_GROUP = "(?<key>[a-zA-Z0-9-_./]+)";
+  // Matches a==b and a=b but not a!=b.
+  private static final String EQUALITY_GROUP = "(==|(?<!!)=)";
+  private static final String VALUE_GROUP = "(?<value>[a-zA-Z0-9-_.]+)";
+  private static final Pattern LABEL_REQUIREMENT_EQUALITY = Pattern.compile(KEY_GROUP + EQUALITY_GROUP + VALUE_GROUP);
+
+  private HttpUrl parseUrlFromPathAndQuery(String s) {
+    return HttpUrl.parse("http://localhost" + s);
+  }
+
   @Override
   public AttributeSet fromPath(String s) {
     if (s == null || s.isEmpty()) {
@@ -54,9 +69,11 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
     }
 
     //Get paths
-    Matcher m = PATTERN.matcher(s);
+    HttpUrl url = parseUrlFromPathAndQuery(s);
+    Matcher m = PATTERN.matcher(url.encodedPath());
     if (m.matches()) {
       AttributeSet set = extract(m);
+      set = AttributeSet.merge(set, extractQueryParameters(url));
       LOGGER.debug("fromPath {} : {}", s, set);
       return set;
     }
@@ -89,15 +106,7 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
       return extract(h);
     }
 
-    //Get paths
-    Matcher m = PATTERN.matcher(s);
-    if (m.matches()) {
-      AttributeSet set = extract(m);
-      LOGGER.debug("extract {} : {}", s, set);
-      return set;
-    }
-    LOGGER.debug("extract {} : no attributes", s);
-    return new AttributeSet();
+    return fromPath(s);
   }
 
 
@@ -114,6 +123,12 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
 
     if (!Strings.isNullOrEmpty(o.getMetadata().getNamespace())) {
       attributes = attributes.add(new Attribute(NAMESPACE, o.getMetadata().getNamespace()));
+    }
+
+    if (o.getMetadata().getLabels() != null) {
+      for (Map.Entry<String, String> label : o.getMetadata().getLabels().entrySet()) {
+        attributes = attributes.add(new Attribute(LABEL_KEY_PREFIX + label.getKey(), label.getValue()));
+      }
     }
     return attributes;
   }
@@ -160,6 +175,22 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
         }
       } catch (IllegalArgumentException e) {
         //group is missing, which is perfectly valid for create, update etc requests.
+      }
+    }
+    return attributes;
+  }
+
+  private static AttributeSet extractQueryParameters(HttpUrl url) {
+    AttributeSet attributes = new AttributeSet();
+    String labelSelector = url.queryParameter("labelSelector");
+    if (labelSelector != null) {
+      for (String requirement : labelSelector.split(",")) {
+        Matcher m = LABEL_REQUIREMENT_EQUALITY.matcher(requirement);
+        if (m.matches()) {
+          attributes = attributes.add(new Attribute(LABEL_KEY_PREFIX + m.group(KEY), m.group(VALUE)));
+        } else {
+          LOGGER.warn("Ignoring unsupported label requirement: {}", requirement);
+        }
       }
     }
     return attributes;
