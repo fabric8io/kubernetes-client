@@ -3,6 +3,7 @@
 #### 3.2.1 (To be released)
   Bugs
     * Fix #1144 : Get Request with OpenShift Mock Server Not Working
+    * Fix #1156 : Watcher does not have correct authentication information in Openshift environment.
 
   New Feature
 
