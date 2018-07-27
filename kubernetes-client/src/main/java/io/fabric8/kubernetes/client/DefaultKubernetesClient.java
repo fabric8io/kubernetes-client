@@ -201,7 +201,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   @Override
-  public MixedOperation<Service, ServiceList, DoneableService, Resource<Service, DoneableService>> services() {
+  public MixedOperation<Service, ServiceList, DoneableService, ServiceResource<Service, DoneableService>> services() {
     return new ServiceOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 

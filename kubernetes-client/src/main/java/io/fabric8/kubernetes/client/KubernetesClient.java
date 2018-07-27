@@ -135,7 +135,7 @@ public interface KubernetesClient extends Client {
 
   MixedOperation<Secret, SecretList, DoneableSecret, Resource<Secret, DoneableSecret>> secrets();
 
-  MixedOperation<Service, ServiceList, DoneableService, Resource<Service, DoneableService>> services();
+  MixedOperation<Service, ServiceList, DoneableService, ServiceResource<Service, DoneableService>> services();
 
   MixedOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, Resource<ServiceAccount, DoneableServiceAccount>> serviceAccounts();
 

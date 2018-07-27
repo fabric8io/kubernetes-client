@@ -306,7 +306,7 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public MixedOperation<Service, ServiceList, DoneableService, Resource<Service, DoneableService>> services() {
+  public MixedOperation<Service, ServiceList, DoneableService, ServiceResource<Service, DoneableService>> services() {
     return delegate.services();
   }
 

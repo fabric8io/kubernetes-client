@@ -15,8 +15,10 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 public class URLUtils {
     private URLUtils() {}
@@ -106,4 +108,47 @@ public class URLUtils {
     private static boolean containsQueryParam(URI uri) {
        return uri.getQuery() != null;
     }
+
+  /**
+   * Joins all the given strings, ignoring nulls so that they form a URL with / between the paths without a // if the previous path ends with / and the next path starts with / unless a path item is blank
+   *
+   * @returns the strings concatenated together with / while avoiding a double // between non blank strings.
+   */
+  public static String pathJoin(String... strings) {
+    StringBuilder buffer = new StringBuilder();
+    for (String string : strings) {
+      if (string == null) {
+        continue;
+      }
+      if (buffer.length() > 0) {
+        boolean bufferEndsWithSeparator = buffer.toString().endsWith("/");
+        boolean stringStartsWithSeparator = string.startsWith("/");
+        if (bufferEndsWithSeparator) {
+          if (stringStartsWithSeparator) {
+            string = string.substring(1);
+          }
+        } else {
+          if (!stringStartsWithSeparator) {
+            buffer.append("/");
+          }
+        }
+      }
+      buffer.append(string);
+    }
+    return buffer.toString();
+  }
+
+  public static boolean isValidURL(String url) {
+    if (url != null) {
+      try {
+        URI u = new URI(url);
+      } catch (URISyntaxException exception) {
+        return false;
+      }
+      return url.contains("null") ? false : true;
+    } else {
+      return false;
+    }
+  }
+
 }

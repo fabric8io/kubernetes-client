@@ -15,23 +15,19 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import io.fabric8.kubernetes.api.model.Endpoints;
-import io.fabric8.kubernetes.client.dsl.Resource;
-import okhttp3.OkHttpClient;
-import io.fabric8.kubernetes.api.model.DoneableService;
-import io.fabric8.kubernetes.api.model.Service;
-import io.fabric8.kubernetes.api.model.ServiceBuilder;
-import io.fabric8.kubernetes.api.model.ServiceList;
+import io.fabric8.kubernetes.api.model.*;
+import io.fabric8.kubernetes.client.*;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.ServiceResource;
+import io.fabric8.kubernetes.client.utils.URLUtils;
+import okhttp3.OkHttpClient;
 
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class ServiceOperationsImpl extends HasMetadataOperation<Service, ServiceList, DoneableService, Resource<Service, DoneableService>> {
+public class ServiceOperationsImpl extends HasMetadataOperation<Service, ServiceList, DoneableService, ServiceResource<Service, DoneableService>> implements ServiceResource<Service, DoneableService> {
 
   public ServiceOperationsImpl(OkHttpClient client, Config config, String namespace) {
     this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
@@ -82,5 +78,41 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
     endpointsOperation.waitUntilReady(remaining, TimeUnit.MILLISECONDS);
 
     return get();
+  }
+
+  public String getURL(String portName) {
+    String clusterIP =  getMandatory().getSpec().getClusterIP();
+    if("None".equals(clusterIP)) {
+      throw new IllegalStateException("Service: " + getMandatory().getMetadata().getName() + " in namespace " +
+        namespace + " is head-less. Search for endpoints instead");
+    }
+    return getUrlHelper(portName);
+  }
+
+  private String getUrlHelper(String portName) {
+    ServiceLoader<ServiceToURLProvider> urlProvider = ServiceLoader.load(ServiceToURLProvider.class, Thread.currentThread().getContextClassLoader());
+    Iterator<ServiceToURLProvider> iterator = urlProvider.iterator();
+    List<ServiceToURLProvider> servicesList = new ArrayList<>();
+
+    while(iterator.hasNext()) {
+      servicesList.add(iterator.next());
+    }
+
+    // Sort all loaded implementations according to priority
+    Collections.sort(servicesList, new ServiceToUrlSortComparator());
+    for(ServiceToURLProvider serviceToURLProvider : servicesList) {
+      String url = serviceToURLProvider.getURL(getMandatory(), portName, namespace, new DefaultKubernetesClient(client, getConfig()));
+      if(url != null && URLUtils.isValidURL(url)) {
+        return url;
+      }
+    }
+
+    return null;
+  }
+
+  public class ServiceToUrlSortComparator implements Comparator<ServiceToURLProvider> {
+    public int compare(ServiceToURLProvider first, ServiceToURLProvider second) {
+      return first.getPriority() - second.getPriority();
+    }
   }
 }

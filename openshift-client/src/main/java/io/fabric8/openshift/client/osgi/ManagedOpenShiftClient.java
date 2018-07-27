@@ -424,7 +424,7 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public MixedOperation<io.fabric8.kubernetes.api.model.Service, ServiceList, DoneableService, Resource<io.fabric8.kubernetes.api.model.Service, DoneableService>> services() {
+  public MixedOperation<io.fabric8.kubernetes.api.model.Service, ServiceList, DoneableService, ServiceResource<io.fabric8.kubernetes.api.model.Service, DoneableService>> services() {
     return delegate.services();
   }
 
