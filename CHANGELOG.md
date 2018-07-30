@@ -1,5 +1,4 @@
 ### Change Log
-
 #### 3.1.13 (To be released)
 
   Bugs
@@ -19,6 +18,9 @@
   Improvements
    * Determine kubernetes service host and port from environment if available - https://github.com/fabric8io/kubernetes-client/pull/1086
    * Added Kubernetes/Openshift examples for client.getVersion()
+  
+  Dependency Upgrade
+   * Fix #924 : Include kubernetes-model in client BOM with dependencies.
    
 #### 3.1.12
   Bugs
