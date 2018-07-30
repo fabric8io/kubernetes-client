@@ -58,8 +58,16 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
   private static final String VALUE_GROUP = "(?<value>[a-zA-Z0-9-_.]+)";
   private static final Pattern LABEL_REQUIREMENT_EQUALITY = Pattern.compile(KEY_GROUP + EQUALITY_GROUP + VALUE_GROUP);
 
+  // These elements are added to the path/query fragment so that it can be parsed by HttpUrl. Their
+  // values are not important, HttpUrl expects the scheme to be http or https.
+  private static final String SCHEME = "http";
+  private static final String HOST = "localhost";
+
   private HttpUrl parseUrlFromPathAndQuery(String s) {
-    return HttpUrl.parse("http://localhost" + s);
+    if (!s.startsWith("/")) {
+      s = "/" + s;
+    }
+    return HttpUrl.parse(String.format("%s://%s%s", SCHEME, HOST, s));
   }
 
   @Override
