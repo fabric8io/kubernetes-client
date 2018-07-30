@@ -4,23 +4,20 @@
   Bugs
     * Fix #1144 : Get Request with OpenShift Mock Server Not Working
     * Fix #1156 : Watcher does not have correct authentication information in Openshift environment.
+    * Fix #1098 : Unable to create LimitRange from yaml
+    * Fix #1089 : Query parameters are not correctly processed if set in `masterUrl`
+    * Fix #1119 : Regression Tests Breaking intermittently
+    * Fix #1085 : Impersonate parameters are not configurable for DefaultOpenShiftClient
 
   New Feature
-
     * Fix #1147: Cluster context was being ignored when loading the Config from a kubeconfig file
 
   Improvements
    * Added Kubernetes/Openshift examples for client.getVersion()
 
   Dependency Upgrade
+    * Fix #924 : Include kubernetes-model in client BOM with dependencies.
 
-  Major Movements and Changes
-
-  Bugs
-    * Fix #1098 : Unable to create LimitRange from yaml
-    * Fix #1089 : Query parameters are not correctly processed if set in `masterUrl`
-    * Fix #1119 : Regression Tests Breaking intermittently
-    * Fix #1085 : Impersonate parameters are not configurable for DefaultOpenShiftClient
 #### 3.2.0
   Bugs
    * Fix #1083 : Mock Kubernetes server only handles core and extensions API groups
