@@ -16,6 +16,8 @@
 
   Dependency Upgrade
 
+    * Fix #924 : Include kubernetes-model in client BOM with dependencies.
+
   New Feature
   
     * Fix #1066 : Add support for Kubernetes RBAC Role and Role Binding
