@@ -19,6 +19,8 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.mockwebserver.crud.Attribute;
 import io.fabric8.mockwebserver.crud.AttributeSet;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -85,6 +87,20 @@ public class KubernetesAttributesExtractorTest {
   }
 
   @Test
+  public void shouldHandleResourceWithLabel() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    Map<String, String> labels = new HashMap<>();
+    labels.put("name", "myname");
+    Pod pod = new PodBuilder().withNewMetadata().withLabels(labels).endMetadata().build();
+
+    AttributeSet attributes = extractor.extract(pod);
+
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("labels:name", "myname"));
+    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
+  }
+
+  @Test
   public void shouldHandleKindWithoutVersion() {
     KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
     AttributeSet attributes = extractor.extract("/api/pods");
@@ -148,6 +164,47 @@ public class KubernetesAttributesExtractorTest {
     expected = expected.add(new Attribute("kind", "crd"));
     expected = expected.add(new Attribute("namespace", "myns"));
     expected = expected.add(new Attribute("name", "mycrd"));
+    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
+  }
+
+  @Test
+  public void shouldHandleLabelSelectorsWithOneLabel() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor.extract("/api/v1/namespaces/myns/pods/mypod?labelSelector=name%3Dmyname");
+
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("labels:name", "myname"));
+    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
+  }
+
+  @Test
+  public void shouldHandleLabelSelectorsWithDoubleEquals() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor.extract("/api/v1/namespaces/myns/pods/mypod?labelSelector=name%3D%3Dmyname");
+
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("labels:name", "myname"));
+    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
+  }
+
+  @Test
+  public void shouldHandleLabelSelectorsWithTwoLabels() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor.extract("/api/v1/namespaces/myns/pods/mypod?labelSelector=name%3Dmyname,age%3D37");
+
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("labels:name", "myname"));
+    expected = expected.add(new Attribute("labels:age", "37"));
+    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
+  }
+
+  @Test
+  public void shouldHandleLabelSelectorsWithADomain() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor.extract("/api/v1/namespaces/myns/pods/mypod?labelSelector=example.com/name%3Dmyname");
+
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("labels:example.com/name", "myname"));
     Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
   }
 
