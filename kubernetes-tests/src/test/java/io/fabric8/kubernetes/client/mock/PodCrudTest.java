@@ -51,6 +51,11 @@ public class PodCrudTest {
     assertNotNull(podList);
     assertEquals(0, podList.getItems().size());
 
+    // test listing with labels
+    podList = client.pods().inAnyNamespace().withLabels(Collections.singletonMap("testKey", "testValue")).list();
+    assertNotNull(podList);
+    assertEquals(2, podList.getItems().size());
+
     podList = client.pods().inNamespace("ns1").list();
     assertNotNull(podList);
     assertEquals(2, podList.getItems().size());
@@ -65,11 +70,6 @@ public class PodCrudTest {
     assertEquals(1, podList.getItems().size());
 
     podList = client.pods().inAnyNamespace().list();
-    assertNotNull(podList);
-    assertEquals(2, podList.getItems().size());
-
-    // test listing with labels
-    podList = client.pods().inAnyNamespace().withLabels(Collections.singletonMap("testKey", "testValue")).list();
     assertNotNull(podList);
     assertEquals(2, podList.getItems().size());
 

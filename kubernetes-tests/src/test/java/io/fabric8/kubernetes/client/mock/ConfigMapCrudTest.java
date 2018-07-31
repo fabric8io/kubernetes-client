@@ -67,6 +67,10 @@ public class ConfigMapCrudTest {
     assertNotNull(aConfigMapList);
     assertEquals(3, aConfigMapList.getItems().size());
 
+    aConfigMapList = client.configMaps().inAnyNamespace().withLabels(Collections.singletonMap("foo", "bar")).list();
+    assertNotNull(aConfigMapList);
+    assertEquals(2, aConfigMapList.getItems().size());
+
     aConfigMapList = client.configMaps().inNamespace("ns1").list();
     assertNotNull(aConfigMapList);
     assertEquals(2, aConfigMapList.getItems().size());
@@ -75,10 +79,6 @@ public class ConfigMapCrudTest {
     aConfigMapList = client.configMaps().inNamespace("ns1").list();
     assertNotNull(aConfigMapList);
     assertEquals(1, aConfigMapList.getItems().size());
-
-    aConfigMapList = client.configMaps().inAnyNamespace().withLabels(Collections.singletonMap("foo", "bar")).list();
-    assertNotNull(aConfigMapList);
-    assertEquals(2, aConfigMapList.getItems().size());
 
     configmap2 = client.configMaps().inNamespace("ns1").withName("configmap2").edit().addToData("II", "TWO").done();
     assertNotNull(configmap2);

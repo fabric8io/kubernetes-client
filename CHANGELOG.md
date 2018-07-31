@@ -2,6 +2,9 @@
 
 #### 3.2.1 (To be released)
   Bugs
+
+    
+    * Fix #1125 : ConfigMap labels are ignored when using mock KubernetesServer
     * Fix #1144 : Get Request with OpenShift Mock Server Not Working
     * Fix #1156 : Watcher does not have correct authentication information in Openshift environment.
     * Fix #1098 : Unable to create LimitRange from yaml
