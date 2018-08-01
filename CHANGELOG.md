@@ -15,6 +15,7 @@
    * Fix #1125 : ConfigMap labels are ignored when using mock KubernetesServer
    * Fix #1147 : Cluster context was being ignored when loading the Config from a kubeconfig file
    * Fix #1162 : Deletion of DeploymentConfig now does not fail randomly because of issues related to owner references of the ReplicationController
+   * Fix #1165 : Null parameter values when processing a template are now handled properly
   
   New Feature
   
@@ -24,6 +25,7 @@
   
   Dependency Upgrade
    * Fix #924 : Include kubernetes-model in client BOM with dependencies.
+      
       
 #### 3.1.12
   Bugs
