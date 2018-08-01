@@ -13,6 +13,8 @@
    * Fix #1147: Cluster context was being ignored when loading the Config from a kubeconfig file
    * Fix #1156 : Watcher does not have correct authentication information in Openshift environment.
    * Fix #1125 : ConfigMap labels are ignored when using mock KubernetesServer
+   * Fix #1147 : Cluster context was being ignored when loading the Config from a kubeconfig file
+   * Fix #1162 : Deletion of DeploymentConfig now does not fail randomly because of issues related to owner references of the ReplicationController
   
   New Feature
   
@@ -22,7 +24,7 @@
   
   Dependency Upgrade
    * Fix #924 : Include kubernetes-model in client BOM with dependencies.
-   
+      
 #### 3.1.12
   Bugs
    * Fix #1070 : Error parsing openshift json template with the latest version
