@@ -121,6 +121,9 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
       //We are deleting the DC before reaping the replication controller, because the RC's won't go otherwise.
       Boolean reaped = operation.cascading(false).delete();
 
+      // Waiting for the DC to be completely deleted before removing the replication controller (error in Openshift 3.9)
+      waitForDeletion();
+
       Map<String, String> selector = new HashMap<>();
       selector.put(DEPLOYMENT_CONFIG_REF, deployment.getMetadata().getName());
       if (selector != null && !selector.isEmpty()) {
@@ -155,6 +158,31 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
         throw KubernetesClientException.launderThrowable(e);
       }
     }
+
+    private void waitForDeletion() {
+      final CountDownLatch countDownLatch = new CountDownLatch(1);
+
+      final Runnable deploymentPoller = new Runnable() {
+        public void run() {
+          DeploymentConfig deployment = operation.get();
+          if (deployment == null) {
+            countDownLatch.countDown();
+          }
+        }
+      };
+
+      ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+      ScheduledFuture poller = executor.scheduleWithFixedDelay(deploymentPoller, 0, 10, TimeUnit.MILLISECONDS);
+      try {
+        countDownLatch.await(1, TimeUnit.MINUTES);
+        executor.shutdown();
+      } catch (InterruptedException e) {
+        poller.cancel(true);
+        executor.shutdown();
+        throw KubernetesClientException.launderThrowable(e);
+      }
+    }
+
   }
 
   @Override
