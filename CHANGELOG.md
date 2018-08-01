@@ -3,10 +3,11 @@
 #### 3.2.1 (To be released)
   Bugs
 
-    
+    * Fix #1147 : Cluster context was being ignored when loading the Config from a kubeconfig file
+    * Fix #1162 : Deletion of DeploymentConfig now does not fail randomly because of issues related to 
+      owner references of the ReplicationController
     * Fix #1125 : ConfigMap labels are ignored when using mock KubernetesServer
     * Fix #1144 : Get Request with OpenShift Mock Server Not Working
-    * Fix #1156 : Watcher does not have correct authentication information in Openshift environment.
     * Fix #1098 : Unable to create LimitRange from yaml
     * Fix #1089 : Query parameters are not correctly processed if set in `masterUrl`
     * Fix #1119 : Regression Tests Breaking intermittently
