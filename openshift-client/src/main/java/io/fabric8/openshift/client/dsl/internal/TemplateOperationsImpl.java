@@ -38,6 +38,8 @@ import io.fabric8.openshift.client.dsl.TemplateResource;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -60,6 +62,7 @@ public class TemplateOperationsImpl
   extends OpenShiftOperation<Template, TemplateList, DoneableTemplate, TemplateResource<Template, KubernetesList, DoneableTemplate>>
   implements TemplateOperation {
 
+  private static final Logger logger = LoggerFactory.getLogger(TemplateOperationsImpl.class);
   private static final String EXPRESSION = "expression";
   private static final TypeReference<HashMap<String, String>> MAPS_REFERENCE = new TypeReference<HashMap<String, String>>() {
   };
@@ -201,6 +204,10 @@ public class TemplateOperationsImpl
               parameterValue = "";
             } else {
               throw new IllegalArgumentException("No value available for parameter name: " + parameterName);
+            }
+            if (parameterValue == null) {
+              logger.debug("Parameter {} has a null value", parameterName);
+              parameterValue = "";
             }
             json = json.replace(regex, parameterValue);
           }

@@ -13,12 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.kubernetes.api.model.*;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesList;
+import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
+import io.fabric8.kubernetes.api.model.Service;
+import io.fabric8.kubernetes.api.model.ServicePort;
+import io.fabric8.kubernetes.api.model.ServiceSpec;
+import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
-import io.fabric8.openshift.api.model.*;
+import io.fabric8.openshift.api.model.ParameterBuilder;
+import io.fabric8.openshift.api.model.Template;
+import io.fabric8.openshift.api.model.TemplateBuilder;
+import io.fabric8.openshift.api.model.TemplateList;
+import io.fabric8.openshift.api.model.TemplateListBuilder;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
@@ -26,12 +40,8 @@ import io.fabric8.openshift.client.ParameterValue;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import static io.fabric8.kubernetes.client.utils.ReplaceValueStream.replaceValues;
+import static java.util.Collections.singletonMap;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -44,12 +54,12 @@ public class TemplateTest {
 
   @Test
   public void testList() {
-   server.expect().withPath("/oapi/v1/namespaces/test/templates").andReturn(200, new TemplateListBuilder().build()).once();
-   server.expect().withPath("/oapi/v1/namespaces/ns1/templates").andReturn(200, new TemplateListBuilder()
+    server.expect().withPath("/oapi/v1/namespaces/test/templates").andReturn(200, new TemplateListBuilder().build()).once();
+    server.expect().withPath("/oapi/v1/namespaces/ns1/templates").andReturn(200, new TemplateListBuilder()
       .addNewItem().and()
       .addNewItem().and().build()).once();
 
-   server.expect().withPath("/oapi/v1/templates").andReturn(200, new TemplateListBuilder()
+    server.expect().withPath("/oapi/v1/templates").andReturn(200, new TemplateListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .addNewItem()
@@ -78,7 +88,7 @@ public class TemplateTest {
 
     OpenShiftClient client = server.getOpenshiftClient();
 
-    Map<String,String> map = new HashMap<>();
+    Map<String, String> map = new HashMap<>();
     map.put("PORT", "8080");
 
     TemplateList templateList = client.templates().withParameters(map).list();
@@ -89,11 +99,11 @@ public class TemplateTest {
 
   @Test
   public void testGet() {
-   server.expect().withPath("/oapi/v1/namespaces/test/templates/tmpl1").andReturn(200, new TemplateBuilder()
+    server.expect().withPath("/oapi/v1/namespaces/test/templates/tmpl1").andReturn(200, new TemplateBuilder()
       .withNewMetadata().withName("tmpl1").endMetadata()
       .build()).once();
 
-   server.expect().withPath("/oapi/v1/namespaces/ns1/templates/tmpl2").andReturn(200, new TemplateBuilder()
+    server.expect().withPath("/oapi/v1/namespaces/ns1/templates/tmpl2").andReturn(200, new TemplateBuilder()
       .withNewMetadata().withName("tmpl2").endMetadata()
       .build()).once();
 
@@ -114,8 +124,8 @@ public class TemplateTest {
 
   @Test
   public void testDelete() {
-   server.expect().withPath("/oapi/v1/namespaces/test/templates/tmpl1").andReturn(200, new TemplateBuilder().build()).once();
-   server.expect().withPath("/oapi/v1/namespaces/ns1/templates/tmpl2").andReturn(200, new TemplateBuilder().build()).once();
+    server.expect().withPath("/oapi/v1/namespaces/test/templates/tmpl1").andReturn(200, new TemplateBuilder().build()).once();
+    server.expect().withPath("/oapi/v1/namespaces/ns1/templates/tmpl2").andReturn(200, new TemplateBuilder().build()).once();
 
     OpenShiftClient client = server.getOpenshiftClient();
 
@@ -150,8 +160,8 @@ public class TemplateTest {
 
   @Test
   public void testProcess() {
-   server.expect().withPath("/oapi/v1/namespaces/test/templates/tmpl1").andReturn(200, new TemplateBuilder().build()).once();
-   server.expect().withPath("/oapi/v1/namespaces/test/processedtemplates").andReturn( 201, new KubernetesListBuilder().build()).once();
+    server.expect().withPath("/oapi/v1/namespaces/test/templates/tmpl1").andReturn(200, new TemplateBuilder().build()).once();
+    server.expect().withPath("/oapi/v1/namespaces/test/processedtemplates").andReturn(201, new KubernetesListBuilder().build()).once();
 
     OpenShiftClient client = server.getOpenshiftClient();
     KubernetesList list = client.templates().withName("tmpl1").process(new ParameterValue("name1", "value1"));
@@ -161,7 +171,7 @@ public class TemplateTest {
   @Test
   public void shouldLoadTemplateWithNumberParameters() throws Exception {
     OpenShiftClient client = new DefaultOpenShiftClient(new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
-    Map<String,String> map = new HashMap<>();
+    Map<String, String> map = new HashMap<>();
     map.put("PORT", "8080");
     KubernetesList list = client.templates().load(replaceValues(getClass().getResourceAsStream("/template-with-number-params.yml"), map)).processLocally(map);
     assertListIsServiceWithPort8080(list);
@@ -191,7 +201,7 @@ public class TemplateTest {
     String json = IOHelpers.readFully(getClass().getResourceAsStream("/template-with-number-params.json"));
     server.expect().withPath("/oapi/v1/namespaces/test/templates/tmpl1").andReturn(200, json).once();
 
-    Map<String,String> map = new HashMap<>();
+    Map<String, String> map = new HashMap<>();
     map.put("PORT", "8080");
 
     OpenShiftClient client = server.getOpenshiftClient();
@@ -205,11 +215,36 @@ public class TemplateTest {
     String json = IOHelpers.readFully(getClass().getResourceAsStream("/template-with-number-params.json"));
     server.expect().withPath("/oapi/v1/namespaces/test/templates/tmpl1").andReturn(200, json).once();
 
-    Map<String,String> map = new HashMap<>();
+    Map<String, String> map = new HashMap<>();
     map.put("PORT", "8080");
 
     OpenShiftClient client = server.getOpenshiftClient();
     KubernetesList list = client.templates().withName("tmpl1").processLocally(map);
     assertListIsServiceWithPort8080(list);
   }
+
+  @Test
+  public void testNullParameterMapValueShouldNotThrowNullPointerException() {
+    server.expect().withPath("/oapi/v1/namespaces/test/templates/tmpl1").andReturn(200, new TemplateBuilder()
+      .withNewMetadata().withName("tmpl1").endMetadata()
+      .withParameters(new ParameterBuilder().withName("key").build())
+      .build()).once();
+    OpenShiftClient client = server.getOpenshiftClient();
+    Map<String, String> nullValueMap = singletonMap("key", null);
+    KubernetesList list = client.templates().withName("tmpl1").processLocally(nullValueMap);
+    assertNotNull(list);
+  }
+
+  @Test
+  public void testEmptyParameterMapValueShouldNotThrowNullPointerException() {
+    server.expect().withPath("/oapi/v1/namespaces/test/templates/tmpl1").andReturn(200, new TemplateBuilder()
+      .withNewMetadata().withName("tmpl1").endMetadata()
+      .withParameters(new ParameterBuilder().withName("key").build())
+      .build()).once();
+    OpenShiftClient client = server.getOpenshiftClient();
+    Map<String, String> emptyValueMap = singletonMap("key", "");
+    KubernetesList list = client.templates().withName("tmpl1").processLocally(emptyValueMap);
+    assertNotNull(list);
+  }
+
 }

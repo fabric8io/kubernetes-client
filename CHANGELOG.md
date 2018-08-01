@@ -12,6 +12,8 @@
     * Fix #1147 : Cluster context was being ignored when loading the Config from a kubeconfig file
     
     * Fix #1162 : Deletion of DeploymentConfig now does not fail randomly because of issues related to owner references of the ReplicationController
+    
+    * Fix #1165 : Null parameter values when processing a template are now handled properly
 
   Improvements
   
