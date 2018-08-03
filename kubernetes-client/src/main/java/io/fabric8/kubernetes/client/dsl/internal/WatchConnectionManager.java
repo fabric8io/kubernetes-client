@@ -20,7 +20,9 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.WatchEvent;
-import io.fabric8.kubernetes.client.*;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -40,7 +42,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static io.fabric8.kubernetes.client.dsl.internal.WatchHTTPManager.readWatchEvent;
-import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
 import static java.net.HttpURLConnection.HTTP_GONE;
 import static java.net.HttpURLConnection.HTTP_OK;
 
@@ -110,7 +111,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
     HttpUrl.Builder httpUrlBuilder = HttpUrl.get(requestUrl).newBuilder();
 
     String labelQueryParam = baseOperation.getLabelQueryParam();
-    if (isNotNullOrEmpty(labelQueryParam)) {
+    if (Utils.isNotNullOrEmpty(labelQueryParam)) {
       httpUrlBuilder.addQueryParameter("labelSelector", labelQueryParam);
     }
 
@@ -129,7 +130,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
         fieldQueryString += "metadata.name=" + name;
       }
     }
-    if (isNotNullOrEmpty(fieldQueryString)) {
+    if (Utils.isNotNullOrEmpty(fieldQueryString)) {
       if (baseOperation.isApiGroup()) {
         logger.warn("Ignoring field selector " + fieldQueryString + " on watch URI " + requestUrl + " as fieldSelector is not yet supported on API Groups APIs");
       } else {

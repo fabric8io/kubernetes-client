@@ -41,7 +41,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
 import static okhttp3.ConnectionSpec.CLEARTEXT;
 
 public class HttpClientUtils {
@@ -99,10 +98,10 @@ public class HttpClientUtils {
             @Override
             public Response intercept(Chain chain) throws IOException {
               Request request = chain.request();
-              if (isNotNullOrEmpty(config.getUsername()) && isNotNullOrEmpty(config.getPassword())) {
+              if (Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword())) {
                 Request authReq = chain.request().newBuilder().addHeader("Authorization", Credentials.basic(config.getUsername(), config.getPassword())).build();
                 return chain.proceed(authReq);
-              } else if (isNotNullOrEmpty(config.getOauthToken())) {
+              } else if (Utils.isNotNullOrEmpty(config.getOauthToken())) {
                 Request authReq = chain.request().newBuilder().addHeader("Authorization", "Bearer " + config.getOauthToken()).build();
                 return chain.proceed(authReq);
               }

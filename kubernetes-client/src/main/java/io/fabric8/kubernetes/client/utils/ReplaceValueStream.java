@@ -22,8 +22,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
-import static io.fabric8.kubernetes.client.utils.Utils.replaceAllWithoutRegex;
-
 /**
  * Replaces template parameter values in the stream to avoid
  * parsing issues of templates with numeric expressions
@@ -57,7 +55,7 @@ public class ReplaceValueStream {
         for (Map.Entry<String, String> entry : valuesMap.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-            answer = replaceAllWithoutRegex(answer, "${" + key + "}", value);
+            answer = Utils.replaceAllWithoutRegex(answer, "${" + key + "}", value);
         }
         return answer;
     }

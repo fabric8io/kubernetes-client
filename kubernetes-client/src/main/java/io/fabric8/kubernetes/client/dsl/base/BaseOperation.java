@@ -16,10 +16,27 @@
 package io.fabric8.kubernetes.client.dsl.base;
 
 import io.fabric8.kubernetes.api.builder.Function;
-import io.fabric8.kubernetes.api.model.*;
+import io.fabric8.kubernetes.api.model.Doneable;
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
+import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.*;
-import io.fabric8.kubernetes.client.dsl.*;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.OperationInfo;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.dsl.Deletable;
+import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
+import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
+import io.fabric8.kubernetes.client.dsl.Gettable;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.Reaper;
+import io.fabric8.kubernetes.client.dsl.Replaceable;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.Watchable;
 import io.fabric8.kubernetes.client.dsl.internal.DefaultOperationInfo;
 import io.fabric8.kubernetes.client.dsl.internal.WatchConnectionManager;
 import io.fabric8.kubernetes.client.dsl.internal.WatchHTTPManager;
@@ -42,9 +59,6 @@ import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-
-import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
-import static io.fabric8.kubernetes.client.utils.Utils.join;
 
 public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
   extends OperationSupport
@@ -536,7 +550,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
           sb.append(",");
         }
         Map.Entry<String, String[]> entry = iter.next();
-        sb.append(entry.getKey()).append(" in ").append("(").append(join(entry.getValue())).append(")");
+        sb.append(entry.getKey()).append(" in ").append("(").append(Utils.join(entry.getValue())).append(")");
       }
     }
 
@@ -546,7 +560,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
           sb.append(",");
         }
         Map.Entry<String, String[]> entry = iter.next();
-        sb.append(entry.getKey()).append(" notin ").append("(").append(join(entry.getValue())).append(")");
+        sb.append(entry.getKey()).append(" notin ").append("(").append(Utils.join(entry.getValue())).append(")");
       }
     }
     return sb.toString();
@@ -571,12 +585,12 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
       HttpUrl.Builder requestUrlBuilder = HttpUrl.get(getNamespacedUrl()).newBuilder();
 
       String labelQueryParam = getLabelQueryParam();
-      if (isNotNullOrEmpty(labelQueryParam)) {
+      if (Utils.isNotNullOrEmpty(labelQueryParam)) {
         requestUrlBuilder.addQueryParameter("labelSelector", labelQueryParam);
       }
 
       String fieldQueryString = getFieldQueryParam();
-      if (isNotNullOrEmpty(fieldQueryString)) {
+      if (Utils.isNotNullOrEmpty(fieldQueryString)) {
         requestUrlBuilder.addQueryParameter("fieldSelector", fieldQueryString);
       }
 

@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,9 +54,6 @@ import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.ResourceCompare;
 import okhttp3.OkHttpClient;
 
-import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
-import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
-
 public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl extends OperationSupport implements NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean>,
 Waitable<HasMetadata>,
   Readiable {
@@ -90,9 +88,9 @@ Waitable<HasMetadata>,
 
     @Override
     public void visit(ObjectMetaBuilder builder) {
-      if (isNotNullOrEmpty(explicitNamespace)) {
+      if (Utils.isNotNullOrEmpty(explicitNamespace)) {
         builder.withNamespace(explicitNamespace);
-      } else if (isNullOrEmpty(builder.getNamespace())) {
+      } else if (Utils.isNullOrEmpty(builder.getNamespace())) {
         builder.withNamespace(fallbackNamespace);
       }
     }

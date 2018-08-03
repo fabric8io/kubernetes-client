@@ -23,7 +23,6 @@ import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.openshift.examples.TemplateExample;
 
 import java.util.List;
 import java.util.Map;
