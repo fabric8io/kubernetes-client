@@ -32,12 +32,12 @@ public class CronJobTest {
 
   @Test
   public void testList() {
-    server.expect().withPath("/apis/batch/v2alpha1/namespaces/test/cronjobs").andReturn(200, new CronJobListBuilder().build()).once();
-    server.expect().withPath("/apis/batch/v2alpha1/namespaces/ns1/cronjobs").andReturn(200, new CronJobListBuilder()
+    server.expect().withPath("/apis/batch/v1beta1/namespaces/test/cronjobs").andReturn(200, new CronJobListBuilder().build()).once();
+    server.expect().withPath("/apis/batch/v1beta1/namespaces/ns1/cronjobs").andReturn(200, new CronJobListBuilder()
       .addNewItem().and()
       .addNewItem().and().build()).once();
 
-    server.expect().withPath("/apis/batch/v2alpha1/cronjobs").andReturn(200, new CronJobListBuilder()
+    server.expect().withPath("/apis/batch/v1beta1/cronjobs").andReturn(200, new CronJobListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .addNewItem()
@@ -59,8 +59,8 @@ public class CronJobTest {
 
   @Test
   public void testListWithLables() {
-    server.expect().withPath("/apis/batch/v2alpha1/namespaces/test/cronjobs?labelSelector=" + toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new CronJobListBuilder().build()).always();
-    server.expect().withPath("/apis/batch/v2alpha1/namespaces/test/cronjobs?labelSelector=" + toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new CronJobListBuilder()
+    server.expect().withPath("/apis/batch/v1beta1/namespaces/test/cronjobs?labelSelector=" + toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new CronJobListBuilder().build()).always();
+    server.expect().withPath("/apis/batch/v1beta1/namespaces/test/cronjobs?labelSelector=" + toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new CronJobListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .addNewItem().and()
@@ -87,8 +87,8 @@ public class CronJobTest {
   }
   @Test
   public void testGet() {
-    server.expect().withPath("/apis/batch/v2alpha1/namespaces/test/cronjobs/cronjob1").andReturn(200, new CronJobBuilder().build()).once();
-    server.expect().withPath("/apis/batch/v2alpha1/namespaces/ns1/cronjobs/cronjob2").andReturn(200, new CronJobBuilder().build()).once();
+    server.expect().withPath("/apis/batch/v1beta1/namespaces/test/cronjobs/cronjob1").andReturn(200, new CronJobBuilder().build()).once();
+    server.expect().withPath("/apis/batch/v1beta1/namespaces/ns1/cronjobs/cronjob2").andReturn(200, new CronJobBuilder().build()).once();
 
     KubernetesClient client = server.getClient();
 
@@ -104,7 +104,7 @@ public class CronJobTest {
 
   @Test
   public void testDelete() {
-    server.expect().withPath("/apis/batch/v2alpha1/namespaces/test/cronjobs/cronJob1").andReturn(200, new CronJobBuilder().withNewMetadata()
+    server.expect().withPath("/apis/batch/v1beta1/namespaces/test/cronjobs/cronJob1").andReturn(200, new CronJobBuilder().withNewMetadata()
       .withName("cronJob1")
       .withResourceVersion("1")
       .endMetadata()
@@ -137,7 +137,7 @@ public class CronJobTest {
       .endSpec()
       .build()).once();
 
-    server.expect().withPath("/apis/batch/v2alpha1/namespaces/test/cronjobs/cronJob2").andReturn(200, new CronJobBuilder().withNewMetadata()
+    server.expect().withPath("/apis/batch/v1beta1/namespaces/test/cronjobs/cronJob2").andReturn(200, new CronJobBuilder().withNewMetadata()
       .withName("cronJob2")
       .withResourceVersion("1")
       .endMetadata()
@@ -201,11 +201,11 @@ public class CronJobTest {
       .build();
     CronJob cronjob3 = new CronJobBuilder().withNewMetadata().withName("cronjob3").withNamespace("any").and().build();
 
-    server.expect().withPath("/apis/batch/v2alpha1/namespaces/test/cronjobs/cronjob1").andReturn(200, cronjob1).once();
-    server.expect().withPath("/apis/batch/v2alpha1/namespaces/test/cronjobs/cronjob1").andReturn(200, new CronJobBuilder(cronjob1)
+    server.expect().withPath("/apis/batch/v1beta1/namespaces/test/cronjobs/cronjob1").andReturn(200, cronjob1).once();
+    server.expect().withPath("/apis/batch/v1beta1/namespaces/test/cronjobs/cronjob1").andReturn(200, new CronJobBuilder(cronjob1)
       .editStatus().endStatus().build()).times(5);
-    server.expect().withPath("/apis/batch/v2alpha1/namespaces/ns1/cronjobs/cronjob2").andReturn(200, cronjob2).once();
-    server.expect().withPath("/apis/batch/v2alpha1/namespaces/ns1/cronjobs/cronjob2").andReturn(200, new CronJobBuilder(cronjob2)
+    server.expect().withPath("/apis/batch/v1beta1/namespaces/ns1/cronjobs/cronjob2").andReturn(200, cronjob2).once();
+    server.expect().withPath("/apis/batch/v1beta1/namespaces/ns1/cronjobs/cronjob2").andReturn(200, new CronJobBuilder(cronjob2)
       .editStatus().endStatus().build()).times(5);
 
     KubernetesClient client = server.getClient();
