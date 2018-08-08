@@ -15,6 +15,8 @@
     
     * Fix #1165 : Null parameter values when processing a template are now handled properly
 
+    * Fix #1173 : Send response to Callback for exec commands that have no textual feedback
+
   Improvements
   
     * Added Kubernetes/Openshift examples for client.getVersion()
