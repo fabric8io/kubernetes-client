@@ -16,6 +16,7 @@
    * Fix #1147 : Cluster context was being ignored when loading the Config from a kubeconfig file
    * Fix #1162 : Deletion of DeploymentConfig now does not fail randomly because of issues related to owner references of the ReplicationController
    * Fix #1165 : Null parameter values when processing a template are now handled properly
+   * Fix #1173 : Send response to Callback for exec commands that have no textual feedback
   
   New Feature
   
@@ -25,8 +26,7 @@
   
   Dependency Upgrade
    * Fix #924 : Include kubernetes-model in client BOM with dependencies.
-      
-      
+            
 #### 3.1.12
   Bugs
    * Fix #1070 : Error parsing openshift json template with the latest version

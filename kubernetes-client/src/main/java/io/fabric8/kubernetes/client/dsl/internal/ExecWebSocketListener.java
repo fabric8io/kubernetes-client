@@ -237,8 +237,8 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
                         }
                         break;
                     case 2:
-                        if (err != null) {
-                            err.write(byteString.toByteArray());
+                        if (out != null) {
+                            out.write(byteString.toByteArray());
                         }
                         break;
                     case 3:
