@@ -3,6 +3,7 @@
 #### 3.2.1 (To be released)
   Bugs
 
+    * Fix #1173 : Send response to Callback for exec commands that have no textual feedback
     * Fix #1165 : Null parameter values when processing a template are now handled properly
     * Fix #1147 : Cluster context was being ignored when loading the Config from a kubeconfig file
     * Fix #1162 : Deletion of DeploymentConfig now does not fail randomly because of issues related to 
