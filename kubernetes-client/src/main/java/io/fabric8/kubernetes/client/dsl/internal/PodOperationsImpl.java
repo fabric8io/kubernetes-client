@@ -31,11 +31,7 @@ import java.util.concurrent.TimeUnit;
 import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.LocalPortForward;
-import io.fabric8.kubernetes.client.PortForward;
-import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.*;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.ContainerResource;
 import io.fabric8.kubernetes.client.dsl.ExecListenable;
@@ -53,8 +49,7 @@ import io.fabric8.kubernetes.client.dsl.TtyExecErrorable;
 import io.fabric8.kubernetes.client.dsl.TtyExecOutputErrorable;
 import io.fabric8.kubernetes.client.dsl.TtyExecable;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
-import io.fabric8.kubernetes.client.internal.readiness.Readiness;
-import io.fabric8.kubernetes.client.internal.readiness.ReadinessWatcher;
+import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import okhttp3.*;
 
@@ -262,9 +257,10 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
         try {
             URL url = new URL(URLUtils.join(getResourceUrl().toString(), sb.toString()));
             Request.Builder r = new Request.Builder().url(url).header("Sec-WebSocket-Protocol", "v4.channel.k8s.io").get();
-            OkHttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
             final ExecWebSocketListener execWebSocketListener = new ExecWebSocketListener(getConfig(), in, out, err, errChannel, inPipe, outPipe, errPipe, errChannelPipe, execListener);
-            clone.newWebSocket(r.build(), execWebSocketListener);
+            Config requestConfig = new ConfigBuilder(config).withRequestTimeout(0).build();
+            OkHttpClient okhttpClient = HttpClientUtils.createHttpClient(requestConfig);
+            okhttpClient.newWebSocket(r.build(), execWebSocketListener);
             execWebSocketListener.waitUntilReady();
             return execWebSocketListener;
         } catch (Throwable t) {
