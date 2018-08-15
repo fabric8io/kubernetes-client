@@ -3,6 +3,8 @@
 #### 4.0.4 (To be released)
   Bugs
 
+    * Fix #1180 : DeploymentExamples requires the definition of a selector with match labels
+
     * Fix #1156 : Watcher does not have correct authentication information in Openshift environment.
     
     * Fix #1125 : ConfigMap labels are ignored when using mock KubernetesServer
