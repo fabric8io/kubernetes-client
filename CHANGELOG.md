@@ -21,6 +21,7 @@
   
     * Added Kubernetes/Openshift examples for client.getVersion()
     * Fix #1126 : Add new option `kubernetes.disable.hostname.verification` / `KUBERNETES_DISABLE_HOSTNAME_VERIFICATION` to disable hostname verification
+    * Fix #1178 : Impersonate-Group may be specified multiple times
 
   Dependency Upgrade
 
