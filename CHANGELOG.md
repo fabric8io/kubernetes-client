@@ -18,6 +18,7 @@
    * Fix #1165 : Null parameter values when processing a template are now handled properly
    * Fix #1173 : Send response to Callback for exec commands that have no textual feedback
    * Fix #1180 : DeploymentExamples requires the definition of a selector with match labels
+   * Fix #1178 : Impersonate-Group may be specified multiple times
   
   New Feature
   

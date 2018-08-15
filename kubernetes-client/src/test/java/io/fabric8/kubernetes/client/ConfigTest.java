@@ -352,7 +352,7 @@ public class ConfigTest {
       .build();
 
     assertEquals("a", config.getImpersonateUsername());
-    assertEquals("group", config.getImpersonateGroup());
+    assertArrayEquals(new String[]{"group"}, config.getImpersonateGroups());
     assertEquals("d", config.getImpersonateExtras().get("c"));
 
   }
@@ -423,9 +423,8 @@ public class ConfigTest {
     final Config currentConfig = client.getConfiguration();
 
     assertEquals("a", currentConfig.getImpersonateUsername());
-    assertEquals("b", currentConfig.getImpersonateGroup());
+    assertArrayEquals(new String[]{"b"}, currentConfig.getImpersonateGroups());
     assertEquals("d", currentConfig.getImpersonateExtras().get("c"));
-
   }
 
   private void assertConfig(Config config) {
