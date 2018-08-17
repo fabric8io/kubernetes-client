@@ -65,6 +65,10 @@
   </scm>
 
   <distributionManagement>
+    <snapshotRepository>
+    <id>oss-sonatype-staging</id>
+    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+  </snapshotRepository>
     <repository>
       <id>oss-sonatype-staging</id>
       <name>Sonatype Staging Repository</name>
@@ -173,15 +177,6 @@
       </plugin>
 
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-gpg-plugin</artifactId>
-        <version>1.5</version>
-        <configuration>
-          <passphrase>${gpg.passphrase}</passphrase>
-          <useAgent>true</useAgent>
-        </configuration>
-      </plugin>
-      <plugin>
         <groupId>com.mycila</groupId>
         <artifactId>license-maven-plugin</artifactId>
         <version>2.11</version>
@@ -269,6 +264,17 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.6.7</version>
+        <extensions>true</extensions>
+        <configuration>
+          <serverId>oss-sonatype-staging</serverId>
+          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+          <autoReleaseAfterClose>true</autoReleaseAfterClose>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
@@ -277,12 +283,19 @@
       <id>release</id>
       <properties>
         <karaf.itest.skip>true</karaf.itest.skip>
+        <gpg.executable>gpg</gpg.executable>
+        <gpg.passphrase>${gpg.passphrase}</gpg.passphrase>
       </properties>
       <build>
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.5</version>
+            <configuration>
+              <passphrase>${gpg.passphrase}</passphrase>
+              <useAgent>true</useAgent>
+            </configuration>
             <executions>
               <execution>
                 <id>sign-artifacts</id>
@@ -441,4 +454,5 @@
       </properties>
     </profile>
   </profiles>
+
 </project>
