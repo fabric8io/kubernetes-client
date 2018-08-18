@@ -157,6 +157,10 @@ public class Config {
   private int maxConcurrentRequests = DEFAULT_MAX_CONCURRENT_REQUESTS;
   private int maxConcurrentRequestsPerHost = DEFAULT_MAX_CONCURRENT_REQUESTS_PER_HOST;
   private String impersonateUsername;
+  /**
+  * @deprecated use impersonateGroups instead
+  */
+  @Deprecated
   private String impersonateGroup;
   private String[] impersonateGroups;
   private Map<String, String> impersonateExtras;
