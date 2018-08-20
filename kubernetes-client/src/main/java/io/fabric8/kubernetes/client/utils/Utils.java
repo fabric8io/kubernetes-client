@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.fabric8.kubernetes.client.utils;
 
 import org.slf4j.Logger;
@@ -31,7 +32,6 @@ import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
 
@@ -46,31 +46,6 @@ public class Utils {
       throw new NullPointerException(message);
     }
     return ref;
-  }
-
-  public static boolean isNullOrEmpty(String str) {
-    return str == null || str.isEmpty();
-  }
-
-  public static boolean isNotNullOrEmpty(Map map) {
-    return !(map == null || map.isEmpty());
-  }
-
-  public static boolean isNotNullOrEmpty(String str) {
-    return !isNullOrEmpty(str);
-  }
-
-  public static String getProperty(Map<String, Object> properties, String propertyName, String defaultValue) {
-    String answer = (String)properties.get(propertyName);
-    if (!Utils.isNullOrEmpty(answer)) {
-      return answer;
-    }
-
-    return getSystemPropertyOrEnvVar(propertyName, defaultValue);
-  }
-
-  public static String getProperty(Map<String, Object> properties, String propertyName) {
-    return getProperty(properties, propertyName, null);
   }
 
   public static String getSystemPropertyOrEnvVar(String systemPropertyName, String envVarName, String defaultValue) {
@@ -144,7 +119,7 @@ public class Utils {
    * @param queue     The communication channel.
    * @param amount    The amount of time to wait.
    * @param timeUnit  The time unit.
-     */
+   */
   public static boolean waitUntilReady(BlockingQueue<Object> queue, long amount, TimeUnit timeUnit) {
     try {
       Object obj = queue.poll(amount, timeUnit);
@@ -162,7 +137,7 @@ public class Utils {
   /**
    * Closes the specified {@link ExecutorService}.
    * @param executorService   The executorService.
-   * @return                  True if shutdown is complete.
+   * @return True if shutdown is complete.
    */
   public static boolean shutdownExecutorService(ExecutorService executorService) {
     if (executorService == null) {
@@ -231,27 +206,13 @@ public class Utils {
     closeQuietly(Arrays.asList(closeables));
   }
 
-
-  /**
-   * Replaces all occurrencies of the from text with to text without any regular expressions
-   */
-  public static String replaceAllWithoutRegex(String text, String from, String to) {
-      if (text == null) {
-          return null;
+  public static String coalesce(String... items) {
+    for (String str : items) {
+      if (str != null) {
+        return str;
       }
-      int idx = 0;
-      while (true) {
-          idx = text.indexOf(from, idx);
-          if (idx >= 0) {
-              text = text.substring(0, idx) + to + text.substring(idx + from.length());
-
-              // lets start searching after the end of the `to` to avoid possible infinite recursion
-              idx += to.length();
-          } else {
-              break;
-          }
-      }
-      return text;
+    }
+    return null;
   }
 
   public static String randomString(int length) {
@@ -282,4 +243,50 @@ public class Utils {
     }
   }
 
+  /**
+   * Replaces all occurrences of the from text with to text without any regular expressions
+   */
+  public static String replaceAllWithoutRegex(String text, String from, String to) {
+    if (text == null) {
+      return null;
+    }
+    int idx = 0;
+    while (true) {
+      idx = text.indexOf(from, idx);
+      if (idx >= 0) {
+        text = text.substring(0, idx) + to + text.substring(idx + from.length());
+
+        // lets start searching after the end of the `to` to avoid possible infinite recursion
+        idx += to.length();
+      } else {
+        break;
+      }
+    }
+    return text;
+  }
+
+  public static boolean isNullOrEmpty(String str) {
+    return str == null || str.isEmpty();
+  }
+
+  public static boolean isNotNullOrEmpty(Map map) {
+    return !(map == null || map.isEmpty());
+  }
+
+  public static boolean isNotNullOrEmpty(String str) {
+    return !isNullOrEmpty(str);
+  }
+
+  public static String getProperty(Map<String, Object> properties, String propertyName, String defaultValue) {
+    String answer = (String) properties.get(propertyName);
+    if (!isNullOrEmpty(answer)) {
+      return answer;
+    }
+
+    return getSystemPropertyOrEnvVar(propertyName, defaultValue);
+  }
+
+  public static String getProperty(Map<String, Object> properties, String propertyName) {
+    return getProperty(properties, propertyName, null);
+  }
 }

@@ -27,6 +27,7 @@ import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
+import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.*;
 import okhttp3.logging.HttpLoggingInterceptor;
 import okio.BufferedSource;
@@ -42,7 +43,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
 import static java.net.HttpURLConnection.HTTP_GONE;
 
 public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourceList<T>> implements
@@ -119,7 +119,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
 
     HttpUrl.Builder httpUrlBuilder = HttpUrl.get(requestUrl).newBuilder();
     String labelQueryParam = baseOperation.getLabelQueryParam();
-    if (isNotNullOrEmpty(labelQueryParam)) {
+    if (Utils.isNotNullOrEmpty(labelQueryParam)) {
       httpUrlBuilder.addQueryParameter("labelSelector", labelQueryParam);
     }
 
@@ -139,7 +139,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
       }
     }
 
-    if (isNotNullOrEmpty(fieldQueryString)) {
+    if (Utils.isNotNullOrEmpty(fieldQueryString)) {
       httpUrlBuilder.addQueryParameter("fieldSelector", fieldQueryString);
     }
 

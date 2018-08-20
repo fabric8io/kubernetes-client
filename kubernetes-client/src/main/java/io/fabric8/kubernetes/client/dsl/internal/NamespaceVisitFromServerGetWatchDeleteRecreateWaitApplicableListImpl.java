@@ -59,9 +59,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
-import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
-
 public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl extends OperationSupport implements ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean>,
 Waitable<List<HasMetadata>>, Readiable {
 
@@ -158,9 +155,9 @@ Waitable<List<HasMetadata>>, Readiable {
 
         @Override
         public void visit(ObjectMetaBuilder builder) {
-            if (isNotNullOrEmpty(explicitNamespace)) {
+            if (Utils.isNotNullOrEmpty(explicitNamespace)) {
                 builder.withNamespace(explicitNamespace);
-            } else if (isNullOrEmpty(builder.getNamespace())) {
+            } else if (Utils.isNullOrEmpty(builder.getNamespace())) {
                 builder.withNamespace(fallbackNamespace);
             }
         }
