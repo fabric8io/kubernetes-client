@@ -45,6 +45,7 @@ public class CronJobExample {
       final String namespace = client.getNamespace();
 
       CronJob cronJob1 = new CronJobBuilder()
+        .withApiVersion("batch/v1beta1")
         .withNewMetadata()
         .withName("hello")
         .withLabels(Collections.singletonMap("foo", "bar"))

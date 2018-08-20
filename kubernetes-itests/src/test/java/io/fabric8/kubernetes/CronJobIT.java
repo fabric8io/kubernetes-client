@@ -53,7 +53,7 @@ public class CronJobIT {
   @Before
   public void init() {
     currentNamespace = session.getNamespace();
-    cronJob1 = new CronJobBuilder().withNewMetadata()
+    cronJob1 = new CronJobBuilder().withApiVersion("batch/v1beta1").withNewMetadata()
       .withName("cronjob1")
       .endMetadata()
       .withNewSpec()
@@ -74,7 +74,7 @@ public class CronJobIT {
       .endJobTemplate()
       .endSpec()
       .build();
-    cronJob2 = new CronJobBuilder().withNewMetadata()
+    cronJob2 = new CronJobBuilder().withApiVersion("batch/v1beta1").withNewMetadata()
       .withName("cronjob2")
       .endMetadata()
       .withNewSpec()

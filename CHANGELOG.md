@@ -19,6 +19,8 @@
 
     * Fix #1173 : Send response to Callback for exec commands that have no textual feedback
 
+    * Fix #1172 : Use v1beta1 for CronJob
+
   Improvements
   
     * Added Kubernetes/Openshift examples for client.getVersion()
