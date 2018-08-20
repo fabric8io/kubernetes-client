@@ -67,6 +67,9 @@ public class DeploymentExamples {
           .endContainer()
           .endSpec()
           .endTemplate()
+          .withNewSelector()
+          .addToMatchLabels("app", "nginx")
+          .endSelector()
           .endSpec()
           .build();
 
