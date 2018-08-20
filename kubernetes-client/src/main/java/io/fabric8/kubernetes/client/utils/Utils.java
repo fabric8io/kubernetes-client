@@ -21,6 +21,9 @@ import org.slf4j.LoggerFactory;
 import java.io.Closeable;
 import java.io.Flushable;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -270,4 +273,13 @@ public class Utils {
     }
     return sb.toString();
   }
+
+  public static String filePath(URL path) {
+    try {
+      return Paths.get(path.toURI()).toString();
+    } catch (URISyntaxException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
 }
