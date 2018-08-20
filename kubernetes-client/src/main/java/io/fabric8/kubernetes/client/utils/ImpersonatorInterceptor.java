@@ -41,8 +41,8 @@ public class ImpersonatorInterceptor implements Interceptor {
 
       requestBuilder.addHeader("Impersonate-User", requestConfig.getImpersonateUsername());
 
-      if (isNotNullOrEmpty(requestConfig.getImpersonateGroup())) {
-        requestBuilder.addHeader("Impersonate-Group", requestConfig.getImpersonateGroup());
+      for (String group : requestConfig.getImpersonateGroups()) {
+        requestBuilder.addHeader("Impersonate-Group", group);
       }
 
       if (isNotNullOrEmpty(requestConfig.getImpersonateExtras())) {

@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client;
 
 import io.sundr.builder.annotations.Buildable;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +36,9 @@ public class RequestConfig {
   private String password;
   private String oauthToken;
   private String impersonateUsername;
-  private String impersonateGroup;
+
+  private String[] impersonateGroups = new String[0];
+
   private Map<String, String> impersonateExtras = new HashMap<>();
   private int watchReconnectInterval = 1000;
   private int watchReconnectLimit = -1;
@@ -177,7 +180,7 @@ public class RequestConfig {
   public void setMaxConcurrentRequests(int maxConcurrentRequests) {
     this.maxConcurrentRequests = maxConcurrentRequests;
   }
-  
+
   public int getMaxConcurrentRequestsPerHost() {
     return maxConcurrentRequestsPerHost;
   }
@@ -194,12 +197,28 @@ public class RequestConfig {
     return impersonateUsername;
   }
 
+  /**
+   * @deprecated Use {@link #setImpersonateGroups(String...)} instead
+   */
+  @Deprecated
   public void setImpersonateGroup(String impersonateGroup) {
-    this.impersonateGroup = impersonateGroup;
+    setImpersonateGroups(impersonateGroup);
   }
 
+  /**
+   * @deprecated Use {@link #getImpersonateGroups()} instead
+   */
+  @Deprecated
   public String getImpersonateGroup() {
-    return impersonateGroup;
+    return (impersonateGroups == null || impersonateGroups.length == 0) ? null : impersonateGroups[0];
+  }
+
+  public void setImpersonateGroups(String... impersonateGroups) {
+    this.impersonateGroups = impersonateGroups == null ? new String[0] : Arrays.copyOf(impersonateGroups, impersonateGroups.length);
+  }
+
+  public String[] getImpersonateGroups() {
+    return impersonateGroups;
   }
 
   public void setImpersonateExtras(Map<String, String> impersonateExtras) {
