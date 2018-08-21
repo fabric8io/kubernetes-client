@@ -224,7 +224,7 @@ public class AutoAdaptableKubernetesClient extends DefaultKubernetesClient {
   }
 
   @Override
-  public MixedOperation<Service, ServiceList, DoneableService, Resource<Service, DoneableService>> services() {
+  public MixedOperation<Service, ServiceList, DoneableService, ServiceResource<Service, DoneableService>> services() {
     return delegate.services();
   }
 

@@ -95,6 +95,7 @@ import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.RbacAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
+import io.fabric8.kubernetes.client.dsl.ServiceResource;
 import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
@@ -263,7 +264,7 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
     return delegate.pods();
   }
 
-  public MixedOperation<io.fabric8.kubernetes.api.model.Service, ServiceList, DoneableService, Resource<io.fabric8.kubernetes.api.model.Service, DoneableService>> services() {
+  public MixedOperation<io.fabric8.kubernetes.api.model.Service, ServiceList, DoneableService, ServiceResource<io.fabric8.kubernetes.api.model.Service, DoneableService>> services() {
     return delegate.services();
   }
 
