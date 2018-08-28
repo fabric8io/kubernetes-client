@@ -1,6 +1,16 @@
 ### CHANGELOG
 
-#### 4.0.4 (To be released)
+#### 4.0.5
+  Bugs
+
+  Improvements
+    * Chore #1168 : Upgrade to Java 8
+
+  Dependency Upgrade
+
+  New Feature
+
+#### 4.0.4
   Bugs
 
     * Fix #1180 : DeploymentExamples requires the definition of a selector with match labels
