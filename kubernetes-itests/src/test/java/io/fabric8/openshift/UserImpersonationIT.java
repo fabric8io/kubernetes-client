@@ -31,6 +31,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
@@ -66,7 +68,7 @@ public class UserImpersonationIT {
       .endMetadata()
       .addToRules(new KubernetesPolicyRuleBuilder()
         .addToApiGroups("")
-        .addToResources("users", "groups", "serviceaccounts")
+        .addToResources("users", "groups", "userextras", "serviceaccounts")
         .addToVerbs("impersonate")
         .build()
       )
@@ -108,6 +110,7 @@ public class UserImpersonationIT {
     RequestConfig requestConfig = client.getConfiguration().getRequestConfig();
     requestConfig.setImpersonateUsername(SERVICE_ACCOUNT);
     requestConfig.setImpersonateGroups("system:authenticated", "system:authenticated:oauth");
+    requestConfig.setImpersonateExtras(Collections.singletonMap("scopes", Arrays.asList("cn=jane","ou=engineers","dc=example","dc=com")));
 
     User user = client.currentUser();
     assertThat(user.getMetadata().getName()).isEqualTo(SERVICE_ACCOUNT);
@@ -119,6 +122,7 @@ public class UserImpersonationIT {
     RequestConfig requestConfig = client.getConfiguration().getRequestConfig();
     requestConfig.setImpersonateUsername(SERVICE_ACCOUNT);
     requestConfig.setImpersonateGroups("system:authenticated", "system:authenticated:oauth");
+    requestConfig.setImpersonateExtras(Collections.singletonMap("scopes", Collections.singletonList("development")));
     // Create a project
     ProjectRequest projectRequest = client.projectrequests().createNew()
       .withNewMetadata()

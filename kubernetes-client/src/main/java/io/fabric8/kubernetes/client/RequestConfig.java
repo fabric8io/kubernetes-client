@@ -20,6 +20,7 @@ import io.sundr.builder.annotations.Buildable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static io.fabric8.kubernetes.client.Config.DEFAULT_LOGGING_INTERVAL;
@@ -39,7 +40,7 @@ public class RequestConfig {
 
   private String[] impersonateGroups = new String[0];
 
-  private Map<String, String> impersonateExtras = new HashMap<>();
+  private Map<String, List<String>> impersonateExtras = new HashMap<>();
   private int watchReconnectInterval = 1000;
   private int watchReconnectLimit = -1;
   private int connectionTimeout = 10 * 1000;
@@ -221,11 +222,11 @@ public class RequestConfig {
     return impersonateGroups;
   }
 
-  public void setImpersonateExtras(Map<String, String> impersonateExtras) {
-    this.impersonateExtras = new HashMap<>(impersonateExtras);
+  public void setImpersonateExtras(Map<String, List<String>> impersonateExtras) {
+    this.impersonateExtras = new HashMap<String, List<String>>(impersonateExtras);
   }
 
-  public Map<String, String> getImpersonateExtras() {
+  public Map<String, List<String>> getImpersonateExtras() {
     return Collections.unmodifiableMap(impersonateExtras);
   }
 }
