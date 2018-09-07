@@ -423,28 +423,33 @@ public class OperationSupport {
   }
 
 
-  public static Status createStatus(Response response) {
-    String statusMessage = "";
-    ResponseBody body = response != null ? response.body() : null;
-    int statusCode = response != null ? response.code() : 0;
-    try {
-      if (response == null) {
-        statusMessage = "No response";
-      } else if (body != null) {
-        statusMessage = body.string();
-      } else if (response.message() != null) {
-        statusMessage = response.message();
+  public static Status createStatus(final Response response) {
+    Status status = null;
+    if (response == null) {
+      status = createStatus(0, "No response");
+    } else {
+      String statusMessage = "";
+      try {
+        final ResponseBody body = response.body();
+        if (body == null) {
+          String responseMessage = response.message();
+          if (responseMessage != null) {
+            statusMessage = responseMessage;
+          }
+        } else {
+          statusMessage = body.string();
+          body.close();
+        }
+        status = JSON_MAPPER.readValue(statusMessage, Status.class);
+        if (status.getCode() == null) {
+          status = new StatusBuilder(status).withCode(response.code()).build();
+        }
+      } catch (final IOException ioException) {
+        status = createStatus(response.code(), statusMessage);
       }
-      Status status = JSON_MAPPER.readValue(statusMessage, Status.class);
-      if (status.getCode() == null) {
-        status = new StatusBuilder(status).withCode(statusCode).build();
-      }
-      return status;
-    } catch (JsonParseException e) {
-      return createStatus(statusCode, statusMessage);
-    } catch (IOException e) {
-      return createStatus(statusCode, statusMessage);
     }
+    assert status != null;
+    return status;
   }
 
   public static Status createStatus(int statusCode, String message) {
