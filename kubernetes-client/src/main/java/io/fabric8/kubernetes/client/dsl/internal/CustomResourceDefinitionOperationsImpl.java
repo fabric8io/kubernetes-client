@@ -22,6 +22,8 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -40,6 +42,16 @@ public class CustomResourceDefinitionOperationsImpl extends HasMetadataOperation
 
   public CustomResourceDefinitionOperationsImpl(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, CustomResourceDefinition item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
     super(client, config, notBlank(apiGroup, "apiextensions.k8s.io"), notBlank(apiVersion, "v1beta1"), notBlank(resourceT, "customresourcedefinitions"), namespace, name, cascading, item, notBlank(resourceVersion, "v1beta1"), reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  }
+
+  @Override
+  public Resource<CustomResourceDefinition, DoneableCustomResourceDefinition> withName(String name) {
+    return new CustomResourceDefinitionOperationsImpl(client, config, apiGroup, apiVersion, resourceT, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
+  }
+
+  @Override
+  public MixedOperation<CustomResourceDefinition, CustomResourceDefinitionList, DoneableCustomResourceDefinition, Resource<CustomResourceDefinition, DoneableCustomResourceDefinition>> inNamespace(String namespace) {
+    return new CustomResourceDefinitionOperationsImpl(client, config, apiGroup, apiVersion, resourceT, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
   }
 
   @Override
