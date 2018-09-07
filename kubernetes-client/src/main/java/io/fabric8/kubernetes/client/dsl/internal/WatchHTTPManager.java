@@ -165,6 +165,10 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
       @Override
       public void onResponse(Call call, Response response) throws IOException {
         if (!response.isSuccessful()) {
+          ResponseBody body = response.body();
+          if (body != null) {
+            body.close();
+          }
           throw OperationSupport.requestFailure(request,
             OperationSupport.createStatus(response.code(), response.message()));
         }
