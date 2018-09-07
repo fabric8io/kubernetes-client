@@ -38,6 +38,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -177,6 +178,8 @@ public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
               pumperTask.get(); // will block forever unless there's an error or we're closing
             } catch (final InterruptedException interruptedException) {
               Thread.currentThread().interrupt();
+            } catch (final CancellationException cancellationException) {
+              // OK; the task we're monitoring was already cancelled
             } catch (final ExecutionException executionException) {
               LOGGER.error("Error while pumping stream.", executionException);
             } finally {

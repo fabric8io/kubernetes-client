@@ -38,8 +38,11 @@ import java.io.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -75,9 +78,10 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
     private final PipedInputStream errorChannel;
 
     private final AtomicReference<WebSocket> webSocketRef = new AtomicReference<>();
-    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private final ExecutorService executorService = Executors.newFixedThreadPool(2);
     private final InputStreamPumper pumper;
-
+    private volatile Future<?> pumperTask;
+  
     private final AtomicBoolean started = new AtomicBoolean(false);
     private final ArrayBlockingQueue<Object> queue = new ArrayBlockingQueue<>(1);
     private final ExecListener listener;
@@ -197,7 +201,34 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
             }
 
             webSocketRef.set(webSocket);
-            executorService.submit(pumper);
+            Future<?> pumperTask = this.pumperTask;
+            if (pumperTask != null) {
+              // Should never happen but better safe than sorry; this
+              // is a public method after all
+              pumperTask.cancel(true);
+            }
+            this.pumperTask = executorService.submit(pumper);
+            executorService.execute(() -> {
+                final Future<?> pt = ExecWebSocketListener.this.pumperTask;
+                if (pt != null) {
+                  try {
+                    pt.get(); // will block forever
+                  } catch (final InterruptedException interruptedException) {
+                    Thread.currentThread().interrupt();
+                  } catch (final CancellationException cancellationException) {
+                    // OK; the task we're monitoring was already cancelled
+                  } catch (final ExecutionException executionException) {
+                    LOGGER.error("Error while pumping stream.", executionException);
+                  } finally {
+                    if (response != null) {
+                      ResponseBody body = response.body();
+                      if (body != null) {
+                        body.close();
+                      }
+                    }
+                  }
+                }
+              });
             started.set(true);
             queue.add(true);
         } catch (IOException e) {
