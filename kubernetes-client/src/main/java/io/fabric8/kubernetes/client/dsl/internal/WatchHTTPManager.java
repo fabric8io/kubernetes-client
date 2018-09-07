@@ -164,8 +164,8 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
 
       @Override
       public void onResponse(Call call, Response response) throws IOException {
+        final ResponseBody body = response.body();
         if (!response.isSuccessful()) {
-          ResponseBody body = response.body();
           if (body != null) {
             body.close();
           }
@@ -173,8 +173,10 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
             OperationSupport.createStatus(response.code(), response.message()));
         }
 
+        assert body != null;
+        
         try {
-          BufferedSource source = response.body().source();
+          BufferedSource source = body.source();
           while (!source.exhausted()) {
             String message = source.readUtf8LineStrict();
             onMessage(message);
@@ -182,12 +184,10 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
         } catch (Exception e) {
           logger.info("Watch terminated unexpectedly. reason: {}", e.getMessage());
         }
-
+        
         // if we get here, the source is exhausted, so, we have lost our "watch".
         // we must reconnect.
-        if (response != null) {
-          response.body().close();
-        }
+        body.close();
         scheduleReconnect();
       }
     });
