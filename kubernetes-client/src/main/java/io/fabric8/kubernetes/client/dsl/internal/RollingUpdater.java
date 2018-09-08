@@ -209,6 +209,7 @@ abstract class RollingUpdater<T extends HasMetadata, L, D extends Doneable<T>> {
       countDownLatch.await(rollingTimeoutMillis, TimeUnit.MILLISECONDS);
       executor.shutdown();
     } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
       poller.cancel(true);
       logger.cancel(true);
       executor.shutdown();
@@ -251,6 +252,7 @@ abstract class RollingUpdater<T extends HasMetadata, L, D extends Doneable<T>> {
       countDownLatch.await(DEFAULT_SERVER_GC_WAIT_TIMEOUT, TimeUnit.MILLISECONDS);
       executor.shutdown();
     } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
       poller.cancel(true);
       logger.cancel(true);
       executor.shutdown();

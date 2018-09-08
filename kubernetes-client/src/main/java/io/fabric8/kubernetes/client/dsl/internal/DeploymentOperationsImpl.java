@@ -190,7 +190,7 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
       try {
         countDownLatch.await(1, TimeUnit.MINUTES);
         executor.shutdown();
-      } catch (InterruptedException e) {
+      } catch (InterruptedException e) {        
         poller.cancel(true);
         executor.shutdown();
         throw KubernetesClientException.launderThrowable(e);

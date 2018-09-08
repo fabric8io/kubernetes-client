@@ -419,6 +419,7 @@ Waitable<List<HasMetadata>>, Readiable {
       }
       return false;
     } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
       return false;
     }
   }

@@ -58,9 +58,10 @@ public class KubernetesClientException extends RuntimeException {
       return ((RuntimeException) cause);
     } else if (cause instanceof Error) {
       throw ((Error) cause);
-    } else {
-      throw new KubernetesClientException(message, cause);
+    } else if (cause instanceof InterruptedException) {
+      Thread.currentThread().interrupt();
     }
+    throw new KubernetesClientException(message, cause);
   }
 
   public static RuntimeException launderThrowable(OperationInfo spec, Throwable cause) {
