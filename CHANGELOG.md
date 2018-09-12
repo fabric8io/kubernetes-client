@@ -1,6 +1,6 @@
 ### CHANGELOG
 
-#### 4.0.5
+#### 4.0.6
   Bugs
   
     * Fix #1214 : Watch resource versions not correctly tracked resulting in 410 errors on reconnect
@@ -11,6 +11,7 @@
     * Fix #1179 : Impersonate-Extra keys may be specified multiple times
     * Fix #1182 : Fixes flaky integration tests.
     * Fix #1200 : Support client authenticator commands like `aws-iam-authenticator`.
+    * Fix #1201 : Fix problems with swallowed InterruptedExceptions 
 
   Dependency Upgrade
 
