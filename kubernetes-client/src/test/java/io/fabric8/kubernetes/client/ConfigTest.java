@@ -29,7 +29,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static okhttp3.TlsVersion.TLS_1_1;
@@ -327,8 +330,8 @@ public class ConfigTest {
     System.setProperty(Config.KUBERNETES_IMPERSONATE_USERNAME, "username");
     System.setProperty(Config.KUBERNETES_IMPERSONATE_GROUP, "group");
 
-    final Map<String, String> extras = new HashMap<>();
-    extras.put("c", "d");
+    final Map<String, List<String>> extras = new HashMap<>();
+    extras.put("c", Collections.singletonList("d"));
 
     final Config config = new ConfigBuilder()
       .withImpersonateUsername("a")
@@ -337,7 +340,7 @@ public class ConfigTest {
 
     assertEquals("a", config.getImpersonateUsername());
     assertArrayEquals(new String[]{"group"}, config.getImpersonateGroups());
-    assertEquals("d", config.getImpersonateExtras().get("c"));
+    assertEquals(Arrays.asList("d"), config.getImpersonateExtras().get("c"));
 
   }
 
@@ -394,8 +397,8 @@ public class ConfigTest {
   @Test
   public void shouldPropagateImpersonateSettings() {
 
-    final Map<String, String> extras = new HashMap<>();
-    extras.put("c", "d");
+    final Map<String, List<String>> extras = new HashMap<>();
+    extras.put("c", Collections.singletonList("d"));
 
     final Config config = new ConfigBuilder()
       .withImpersonateUsername("a")
@@ -408,7 +411,7 @@ public class ConfigTest {
 
     assertEquals("a", currentConfig.getImpersonateUsername());
     assertArrayEquals(new String[]{"b"}, currentConfig.getImpersonateGroups());
-    assertEquals("d", currentConfig.getImpersonateExtras().get("c"));
+    assertEquals(Arrays.asList("d"), currentConfig.getImpersonateExtras().get("c"));
   }
 
   private void assertConfig(Config config) {

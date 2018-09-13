@@ -22,7 +22,10 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
 
@@ -45,9 +48,16 @@ public class ImpersonatorInterceptor implements Interceptor {
         requestBuilder.addHeader("Impersonate-Group", group);
       }
 
-      if (isNotNullOrEmpty(requestConfig.getImpersonateExtras())) {
-        for (Map.Entry<String, String> entry : requestConfig.getImpersonateExtras().entrySet()) {
-          requestBuilder.addHeader("Impersonate-Extra-" + entry.getKey(), entry.getValue());
+      Map<String, List<String>> impersonateExtras = requestConfig.getImpersonateExtras();
+      if (isNotNullOrEmpty(impersonateExtras)) {
+        Collection<?> keys = impersonateExtras.keySet();
+        for (Object key : keys) {
+          List<String> values = impersonateExtras.get(key);
+          if(values != null) {
+            for (String value : values) {
+              requestBuilder.addHeader("Impersonate-Extra-" + key, value);
+            }
+          }
         }
       }
 

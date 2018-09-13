@@ -5,6 +5,7 @@
 
   Improvements
     * Chore #1168 : Upgrade to Java 8
+    * Fix #1179 : Impersonate-Extra keys may be specified multiple times
 
   Dependency Upgrade
 

@@ -389,6 +389,10 @@ public class OperationSupport {
         throw e;
       }
       throw requestException(request, e);
+    } finally {
+      if(response != null && response.body() != null) {
+        response.body().close();
+      }
     }
   }
 
