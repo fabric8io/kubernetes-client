@@ -466,44 +466,6 @@
         <javadoc.opts>-Xdoclint:none</javadoc.opts>
       </properties>
     </profile>
-    <profile>
-      <id>nexus</id>
-      <properties>
-        <altDeploymentRepository>local-nexus::default::http://nexus/content/repositories/staging/</altDeploymentRepository>
-        <altReleaseDeploymentRepository>local-nexus::default::http://nexus/content/repositories/staging/</altReleaseDeploymentRepository>
-        <altSnapshotDeploymentRepository>local-nexus::default::http://nexus/content/repositories/staging/</altSnapshotDeploymentRepository>
-      </properties>
-
-      <repositories>
-        <repository>
-          <id>central</id>
-          <url>http://central</url>
-          <releases><enabled>true</enabled></releases>
-          <snapshots><enabled>true</enabled></snapshots>
-        </repository>
-      </repositories>
-     <pluginRepositories>
-        <pluginRepository>
-          <id>central</id>
-          <url>http://central</url>
-          <releases><enabled>true</enabled></releases>
-          <snapshots><enabled>true</enabled></snapshots>
-        </pluginRepository>
-      </pluginRepositories>
-    </profile>
-    <profile>
-      <id>repo.jenkins-ci.org</id>
-      <properties>
-        <altDeploymentRepository>repo.jenkins-ci.org::default::https://repo.jenkins-ci.org/releases/</altDeploymentRepository>
-        <altReleaseDeploymentRepository>repo.jenkins-ci.org::default::https://repo.jenkins-ci.org/releases/</altReleaseDeploymentRepository>
-        <altSnapshotDeploymentRepository>repo.jenkins-ci.org::default::https://repo.jenkins-ci.org/snapshots/</altSnapshotDeploymentRepository>
-      </properties>
-      <!-- <properties>
-        <altDeploymentRepository>repo.jenkins-ci.org::default::https://repo.jenkins-ci.org/content/repositories/releases/</altDeploymentRepository>
-        <altReleaseDeploymentRepository>repo.jenkins-ci.org::default::https://repo.jenkins-ci.org/content/repositories/releases/</altReleaseDeploymentRepository>
-        <altSnapshotDeploymentRepository>repo.jenkins-ci.org::default::https://repo.jenkins-ci.org/content/repositories/snapshots/</altSnapshotDeploymentRepository>
-      </properties> -->
-    </profile>   
   </profiles>
 
 </project>
