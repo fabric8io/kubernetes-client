@@ -22,6 +22,13 @@ set -e
 
 source ./cico_setup.sh
 
+check_if_tagged
+proceed=$?
+if [ $proceed -eq '0' ]
+then
+    exit
+fi
+
 setup
 
 # Build kubernetes-model image

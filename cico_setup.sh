@@ -53,3 +53,23 @@ function build() {
 function release() {
   docker exec -i $CID /bin/bash -c 'bash release.sh'
 }
+
+function check_if_tagged() {
+  # We need to disable selinux for now, XXX
+  /usr/sbin/setenforce 0 || :
+
+  # Get all the deps in
+  yum -y install git
+
+  head=$(git ls-remote https://github.com/fabric8io/kubernetes-client.git master | cut -c1-40)
+  latest_tagged=$(git ls-remote --tags https://github.com/fabric8io/kubernetes-client.git | tail -1 | cut -c1-40)
+
+  if [ $head -eq $latest_tagged ]
+  then
+    echo 'HEAD and latest tagged commit are equal. Proceeding the release pipeline'
+    return 1
+  else
+    echo 'HEAD and latest tagged commit are not equal. No need to run the release pipeline'
+    return 0
+  fi
+}
