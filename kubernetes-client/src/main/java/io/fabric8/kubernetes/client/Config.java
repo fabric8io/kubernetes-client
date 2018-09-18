@@ -106,6 +106,7 @@ public class Config {
 
   public static final String KUBERNETES_USER_AGENT = "fabric8-kubernetes-client/" + Version.clientVersion() ;
 
+  public static final String DEFAULT_MASTER_URL = "https://kubernetes.default.svc";
   public static final Long DEFAULT_ROLLING_TIMEOUT = 15 * 60 * 1000L;
   public static final Long DEFAULT_SCALE_TIMEOUT = 10 * 60 * 1000L;
   public static final int DEFAULT_LOGGING_INTERVAL = 20 * 1000;
@@ -122,7 +123,7 @@ public class Config {
 
   private boolean trustCerts;
   private boolean disableHostnameVerification;
-  private String masterUrl = "https://kubernetes.default.svc";
+  private String masterUrl = DEFAULT_MASTER_URL;
   private String apiVersion = "v1";
   private String namespace;
   private String caCertFile;

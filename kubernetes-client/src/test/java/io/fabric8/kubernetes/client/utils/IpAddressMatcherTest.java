@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
+import io.fabric8.kubernetes.client.Config;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -32,6 +33,7 @@ public class IpAddressMatcherTest {
     Assert.assertFalse(new IpAddressMatcher("192.168.1.0/24").matches("192.168.2.10"));
     Assert.assertFalse(new IpAddressMatcher("192.168.1.0/24").matches("192.168.2.10"));
     Assert.assertFalse(new IpAddressMatcher("192.168.1.0/8").matches("193.168.1.10"));
+    Assert.assertFalse(new IpAddressMatcher(Config.KUBERNETES_NO_PROXY).matches("kubernetes.default.svc"));
   }
 
   @Test
