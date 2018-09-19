@@ -20,7 +20,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-client-project</artifactId>
-    <version>4.0-SNAPSHOT</version>
+    <version>1.0.86</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -28,7 +28,7 @@
   <groupId>io.fabric8</groupId>
   <artifactId>openshift-server-mock</artifactId>
   <name>Fabric8 :: Openshift :: Server Mock</name>
-  <version>4.0-SNAPSHOT</version>
+  <version>1.0.86</version>
 
   <dependencies>
 
