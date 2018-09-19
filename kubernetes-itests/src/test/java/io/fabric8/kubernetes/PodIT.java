@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes;
 
+import io.fabric8.commons.ReadyEntity;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
@@ -115,8 +116,8 @@ public class PodIT {
   @Test
   public void log() throws InterruptedException {
     // Wait for resources to get ready
-    PodReady podReady = new PodReady(client, pod1.getMetadata().getName(), currentNamespace);
-    await().atMost(30, TimeUnit.MINUTES).until(podReady);
+    ReadyEntity<Pod> podReady = new ReadyEntity<Pod>(Pod.class, client, pod1.getMetadata().getName(), currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(podReady);
     String log = client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).getLog();
     assertNotNull(log);
   }
@@ -124,8 +125,8 @@ public class PodIT {
   @Test
   public void exec() throws InterruptedException {
     // Wait for resources to get ready
-    PodReady podReady = new PodReady(client, pod1.getMetadata().getName(), currentNamespace);
-    await().atMost(30, TimeUnit.MINUTES).until(podReady);
+    ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(), currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(podReady);
     final CountDownLatch execLatch = new CountDownLatch(1);
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     ExecWatch execWatch = client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName())
@@ -148,7 +149,7 @@ public class PodIT {
         }
       }).exec("date");
 
-    execLatch.await(5, TimeUnit.MINUTES);
+    execLatch.await(5, TimeUnit.SECONDS);
     assertNotNull(execWatch);
     assertNotNull(out.toString());
   }

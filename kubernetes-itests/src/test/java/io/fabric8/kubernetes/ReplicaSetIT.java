@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes;
 
+import io.fabric8.commons.DeleteEntity;
+import io.fabric8.commons.ReadyEntity;
 import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
@@ -27,6 +29,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
@@ -38,6 +42,7 @@ import org.junit.runner.RunWith;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -123,22 +128,29 @@ public class ReplicaSetIT {
 
   @Test
   public void update() {
+    ReadyEntity<ReplicaSet> replicaSetReady = new ReadyEntity<>(ReplicaSet.class, client, "replicaset1", currentNamespace);
     replicaset1 = client.apps().replicaSets().inNamespace(currentNamespace).withName("replicaset1").edit()
       .editSpec().withReplicas(2).endSpec().done();
+    await().atMost(30, TimeUnit.SECONDS).until(replicaSetReady);
     assertThat(replicaset1).isNotNull();
     assertEquals(2, replicaset1.getSpec().getReplicas().intValue());
   }
 
   @Test
   public void delete() {
+    ReadyEntity<ReplicaSet> replicaSetReady = new ReadyEntity<>(ReplicaSet.class, client, "replicaset1", currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(replicaSetReady);
     boolean bDeleted = client.apps().replicaSets().inNamespace(currentNamespace).withName("replicaset1").delete();
     assertTrue(bDeleted);
   }
 
   @After
   public void cleanup() throws InterruptedException {
-    client.apps().replicaSets().inNamespace(currentNamespace).delete();
+    if (client.apps().replicaSets().inNamespace(currentNamespace).list().getItems().size()!= 0) {
+      client.apps().replicaSets().inNamespace(currentNamespace).delete();
+    }
     // Wait for resources to get destroyed
-    Thread.sleep(30000);
+    DeleteEntity<ReplicaSet> replicaSetDelete = new DeleteEntity<>(ReplicaSet.class, client, "replicaset1", currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(replicaSetDelete);
   }
 }

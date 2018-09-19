@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes;
 
+import io.fabric8.commons.DeleteEntity;
+import io.fabric8.commons.ReadyEntity;
 import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.arquillian.cube.kubernetes.api.Session;
@@ -27,10 +29,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Collections;
+import java.util.concurrent.TimeUnit;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -91,19 +94,24 @@ public class ReplicationControllerIT {
 
   @Test
   public void update() {
+    ReadyEntity<ReplicationController> replicationControllerReady = new ReadyEntity<>(ReplicationController.class, client, "nginx-controller", currentNamespace);
     rc1 = client.replicationControllers().inNamespace(currentNamespace).withName("nginx-controller").scale(5);
     assertEquals(5, rc1.getSpec().getReplicas().intValue());
   }
 
   @Test
   public void delete() {
+    ReadyEntity<ReplicationController> replicationControllerReady = new ReadyEntity<>(ReplicationController.class, client, "nginx-controller", currentNamespace);
     assertTrue(client.replicationControllers().inNamespace(currentNamespace).withName("nginx-controller").delete());
   }
 
   @After
   public void cleanup() throws InterruptedException {
-    client.replicationControllers().inNamespace(currentNamespace).delete();
+    if (client.replicationControllers().inNamespace(currentNamespace).list().getItems().size()!= 0) {
+      client.replicationControllers().inNamespace(currentNamespace).delete();
+    }
     // Wait for resources to get destroyed
-    Thread.sleep(30000);
+    DeleteEntity<ReplicationController> replicationControllerDelete = new DeleteEntity<>(ReplicationController.class, client, "nginx-controller", currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(replicationControllerDelete);
   }
 }

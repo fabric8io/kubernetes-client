@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes;
 
+import io.fabric8.commons.DeleteEntity;
+import io.fabric8.commons.ReadyEntity;
 import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.apps.StatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetBuilder;
@@ -31,9 +33,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Collections;
+import java.util.concurrent.TimeUnit;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -118,20 +122,27 @@ public class StatefulSetIT {
 
   @Test
   public void update() {
+    ReadyEntity<StatefulSet> statefulSetReady = new ReadyEntity<>(StatefulSet.class, client, "ss1", currentNamespace);
     ss1 = client.apps().statefulSets().inNamespace(currentNamespace).withName("ss1").scale(5);
+    await().atMost(30, TimeUnit.SECONDS).until(statefulSetReady);
     assertEquals(5, ss1.getSpec().getReplicas().intValue());
   }
 
   @Test
   public void delete() {
+    ReadyEntity<StatefulSet> statefulSetReady = new ReadyEntity<>(StatefulSet.class, client, "ss1", currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(statefulSetReady);
     boolean bDeleted = client.apps().statefulSets().inNamespace(currentNamespace).withName("ss1").delete();
     assertTrue(bDeleted);
   }
 
   @After
   public void cleanup() throws InterruptedException {
-    client.apps().statefulSets().inNamespace(currentNamespace).delete();
+    if (client.apps().statefulSets().inNamespace(currentNamespace).list().getItems().size()!= 0) {
+      client.apps().statefulSets().inNamespace(currentNamespace).delete();
+    }
     // Wait for resources to get destroyed
-    Thread.sleep(30000);
+    DeleteEntity<StatefulSet> statefulSetDelete = new DeleteEntity<>(StatefulSet.class, client, "ss1", currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(statefulSetDelete);
   }
 }

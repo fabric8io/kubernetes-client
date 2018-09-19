@@ -16,6 +16,8 @@
 
 package io.fabric8.openshift;
 
+import io.fabric8.commons.DeleteEntity;
+import io.fabric8.commons.ReadyEntity;
 import io.fabric8.openshift.api.model.ImageStream;
 import io.fabric8.openshift.api.model.ImageStreamBuilder;
 import io.fabric8.openshift.api.model.ImageStreamList;
@@ -29,8 +31,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.concurrent.TimeUnit;
+
 import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -103,6 +108,8 @@ public class ImageStreamIT {
 
   @Test
   public void update() {
+    ReadyEntity<ImageStream> imageStreamReady = new ReadyEntity<>(ImageStream.class, client, "java-sti", this.currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(imageStreamReady);
     imageStream1 = client.imageStreams().inNamespace(currentNamespace).withName("java-sti").edit()
       .editSpec().withDockerImageRepository("fabric8/s2i-java").endSpec()
       .done();
@@ -112,14 +119,21 @@ public class ImageStreamIT {
 
   @Test
   public void delete() {
+    ReadyEntity<ImageStream> imageStreamReady = new ReadyEntity<>(ImageStream.class, client, "example-camel-cdi", this.currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(imageStreamReady);
     boolean bDeleted = client.imageStreams().inNamespace(currentNamespace).withName("example-camel-cdi").delete();
     assertTrue(bDeleted);
   }
 
   @After
   public void cleanup() throws InterruptedException {
-    client.imageStreams().inNamespace(currentNamespace).delete();
-    // Wait for resources to get destroyed
-    Thread.sleep(30000);
+    if (client.imageStreams().inNamespace(currentNamespace).list().getItems().size()!= 0) {
+      client.imageStreams().inNamespace(currentNamespace).delete();
+    }
+
+    DeleteEntity<ImageStream> imageStream1Delete = new DeleteEntity<>(ImageStream.class, client, "java-sti", this.currentNamespace);
+    DeleteEntity<ImageStream> imageStream2Delete = new DeleteEntity<>(ImageStream.class, client, "example-camel-cdi", this.currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(imageStream1Delete);
+    await().atMost(30, TimeUnit.SECONDS).until(imageStream2Delete);
   }
 }

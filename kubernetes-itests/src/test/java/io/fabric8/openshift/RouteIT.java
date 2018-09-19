@@ -16,6 +16,8 @@
 
 package io.fabric8.openshift;
 
+import io.fabric8.commons.DeleteEntity;
+import io.fabric8.commons.ReadyEntity;
 import io.fabric8.openshift.api.model.Route;
 import io.fabric8.openshift.api.model.RouteBuilder;
 import io.fabric8.openshift.api.model.RouteList;
@@ -29,10 +31,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.concurrent.TimeUnit;
+
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.awaitility.Awaitility.await;
 
 @RunWith(ArquillianConditionalRunner.class)
 @RequiresOpenshift
@@ -87,22 +92,33 @@ public class RouteIT {
 
   @Test
   public void update() {
+    ReadyEntity<Route> route1Ready = new ReadyEntity<>(Route.class, client, "route1", this.currentNamespace);
     route1 = client.routes().inNamespace(currentNamespace).withName("route1").edit()
       .editSpec().withPath("/test").endSpec().done();
+    await().atMost(30, TimeUnit.SECONDS).until(route1Ready);
     assertThat(route1).isNotNull();
     assertEquals("/test", route1.getSpec().getPath());
   }
 
   @Test
   public void delete() {
+    ReadyEntity<Route> route1Ready = new ReadyEntity<>(Route.class, client, "route1", this.currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(route1Ready);
     boolean bDeleted = client.routes().inNamespace(currentNamespace).withName("route1").delete();
     assertTrue(bDeleted);
+
   }
 
   @After
   public void cleanup() throws InterruptedException {
-    client.routes().inNamespace(currentNamespace).delete();
-    // Wait for resources to get destroyed
-    Thread.sleep(30000);
+    if(client.routes().inNamespace(currentNamespace).list().getItems().size() != 0) {
+      client.routes().inNamespace(currentNamespace).delete();
+    }
+
+    DeleteEntity<Route> route1Delete = new DeleteEntity<>(Route.class, client, "route1", currentNamespace);
+    DeleteEntity<Route> route2Delete = new DeleteEntity<>(Route.class, client, "route2", currentNamespace);
+
+    await().atMost(30, TimeUnit.SECONDS).until(route1Delete);
+    await().atMost(30, TimeUnit.SECONDS).until(route2Delete);
   }
 }

@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes;
 
+import io.fabric8.commons.DeleteEntity;
+import io.fabric8.commons.ReadyEntity;
 import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.arquillian.cube.kubernetes.api.Session;
@@ -27,8 +29,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.concurrent.TimeUnit;
+
 import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(ArquillianConditionalRunner.class)
@@ -38,6 +43,7 @@ public class ServiceAccountIT {
   KubernetesClient client;
 
   @ArquillianResource
+
   Session session;
 
   private ServiceAccount serviceAccount1, serviceAccount2;
@@ -85,15 +91,19 @@ public class ServiceAccountIT {
 
   @Test
   public void update() {
+    ReadyEntity<ServiceAccount> serviceAccountReady = new ReadyEntity<>(ServiceAccount.class, client, "serviceaccount1", currentNamespace);
     serviceAccount1 = client.serviceAccounts().inNamespace(currentNamespace).withName("serviceaccount1").edit()
       .addNewSecret().withName("default-token-uudp").endSecret()
       .addNewImagePullSecret().withName("myregistrykey").endImagePullSecret()
       .done();
+    await().atMost(30, TimeUnit.SECONDS).until(serviceAccountReady);
     assertThat(serviceAccount1).isNotNull();
   }
 
   @Test
   public void delete() {
+    ReadyEntity<ServiceAccount> serviceAccountReady = new ReadyEntity<>(ServiceAccount.class, client, "serviceaccount1", currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(serviceAccountReady);
     boolean bDeleted = client.serviceAccounts().inNamespace(currentNamespace).withName("serviceaccount1").delete();
     assertTrue(bDeleted);
   }
@@ -102,6 +112,10 @@ public class ServiceAccountIT {
   public void cleanup() throws InterruptedException {
     client.serviceAccounts().inNamespace(currentNamespace).delete();
     // Wait for resources to get destroyed
-    Thread.sleep(30000);
+    DeleteEntity<ServiceAccount> serviceAccount1Delete = new DeleteEntity<>(ServiceAccount.class, client, "serviceaccount1", currentNamespace);
+    DeleteEntity<ServiceAccount> serviceAccount2Delete = new DeleteEntity<>(ServiceAccount.class, client, "serviceaccount2", currentNamespace);
+
+    await().atMost(30, TimeUnit.SECONDS).until(serviceAccount1Delete);
+    await().atMost(30, TimeUnit.SECONDS).until(serviceAccount2Delete);
   }
 }
