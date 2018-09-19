@@ -32,7 +32,14 @@ fi
 setup
 
 # Build kubernetes-model image
-docker build -t kubernetes-client .
+docker build -t kubernetes-client --build-arg PUBRING=$PUBRING \
+    SEC_JENKINS=$SEC_JENKINS \
+    SECRING=$SECRING \
+    TRUSTDB=$TRUSTDB \
+    GPG_PASSPHRASE=$GPG_PASSPHRASE \
+    SONATYPE_USERNAME=$SONATYPE_USERNAME \
+    SONATYPE_PASSWORD=$SONATYPE_PASSWORD \
+    .
 
 CID=$(docker run --detach=true -t kubernetes-client)
 # CID=$(docker run --detach=true -t kubernetes-client fabric8/maven-builder)

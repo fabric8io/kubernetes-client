@@ -49,6 +49,22 @@ RUN curl --retry 999 --retry-max-time 0  -sSL https://bintray.com/artifact/downl
   rm -f helm.zip && \
   mv helm /usr/bin/
 
+ARG PUBRING \
+  SEC_JENKINS \
+  SECRING \
+  TRUSTDB \
+  GPG_PASSPHRASE \
+  SONATYPE_USERNAME \
+  SONATYPE_PASSWORD
+
+# put gpg keys in gpg home directory
+ENV GPG_HOME $HOME/.gnupg \
+  GPG_PASSPHRASE $GPG_PASSPRHASE
+RUN base64 --decode $PUBRING > pubring.gpg \
+  base64 --decode $SEC_JENKINS > sec_jenkins.gpg \
+  base64 --decode $SECRING > secring.gpg \
+  base64 --decode $TRUSTDB > trustdb.gpg
+
 # Maven
 RUN curl -L http://mirrors.ukfast.co.uk/sites/ftp.apache.org/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz | tar -C /opt -xzv
 
@@ -57,6 +73,8 @@ ENV maven.home $M2_HOME
 ENV M2 $M2_HOME/bin
 ENV PATH $M2:$PATH
 RUN mkdir --parents --mode 777 /root/.mvnrepository
+
+RUN curl https://raw.githubusercontent.com/fabric8io/cico-bash-library/master/settings.xml > $M2_HOME/settings.xml
 
 # Set JDK to be 32bit
 #COPY set_java $M2
