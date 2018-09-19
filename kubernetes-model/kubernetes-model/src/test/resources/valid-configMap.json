@@ -1,0 +1,14 @@
+{
+  "apiVersion": "v1",
+  "kind": "ConfigMap",
+  "data": {
+    "game.properties": "enemies=aliens\nlives=3\nsecret.code.lives=30",
+    "ui.properties": "color.good=purple\ncolor.bad=yellow\n",
+    "special.how": "test1",
+    "special.type": "test2",
+    "example.property.file": "property.1=value-1\nproperty.2=value-2\nproperty.3=value-3"
+  },
+  "metadata": {
+    "name": "game-config"
+  }
+}

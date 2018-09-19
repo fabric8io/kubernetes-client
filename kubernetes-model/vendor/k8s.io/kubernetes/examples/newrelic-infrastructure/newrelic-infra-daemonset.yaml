@@ -1,0 +1,74 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: newrelic-infra-agent
+  labels:
+    tier: monitoring
+    app: newrelic-infra-agent
+    version: v1
+spec:
+  template:
+    metadata:
+      labels:
+        name: newrelic
+    spec:
+      # Filter to specific nodes:
+      # nodeSelector:
+      #  app: newrelic
+      hostPID: true
+      hostIPC: true
+      hostNetwork: true
+      containers:
+        - resources:
+            requests:
+              cpu: 0.15
+          securityContext:
+            privileged: true
+          image: newrelic/infrastructure
+          name: newrelic
+          command: [ "bash", "-c", "source /etc/kube-nr-infra/config && /usr/bin/newrelic-infra" ]
+          volumeMounts:
+            - name: newrelic-config
+              mountPath: /etc/kube-nr-infra
+              readOnly: true
+            - name: dev
+              mountPath: /dev
+            - name: run
+              mountPath: /var/run/docker.sock
+            - name: log
+              mountPath: /var/log
+            - name: host-root
+              mountPath: /host
+              readOnly: true
+      volumes:
+        - name: newrelic-config
+          secret:
+            secretName: newrelic-config
+        - name: dev
+          hostPath:
+              path: /dev
+        - name: run
+          hostPath:
+              path: /var/run/docker.sock
+        - name: log
+          hostPath:
+              path: /var/log
+        - name: host-root
+          hostPath:
+              path: /

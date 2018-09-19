@@ -1,0 +1,105 @@
+/**
+ * Copyright (C) 2015 Red Hat, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package nodes
+
+import (
+	"fmt"
+	"reflect"
+
+	buildapi "github.com/openshift/origin/pkg/build/apis/build"
+	osgraph "github.com/openshift/origin/pkg/oc/graph/genericgraph"
+)
+
+var (
+	BuildConfigNodeKind = reflect.TypeOf(buildapi.BuildConfig{}).Name()
+	BuildNodeKind       = reflect.TypeOf(buildapi.Build{}).Name()
+
+	// non-api types
+	SourceRepositoryNodeKind = reflect.TypeOf(buildapi.BuildSource{}).Name()
+)
+
+func BuildConfigNodeName(o *buildapi.BuildConfig) osgraph.UniqueName {
+	return osgraph.GetUniqueRuntimeObjectNodeName(BuildConfigNodeKind, o)
+}
+
+type BuildConfigNode struct {
+	osgraph.Node
+	BuildConfig *buildapi.BuildConfig
+}
+
+func (n BuildConfigNode) Object() interface{} {
+	return n.BuildConfig
+}
+
+func (n BuildConfigNode) String() string {
+	return string(BuildConfigNodeName(n.BuildConfig))
+}
+
+func (n BuildConfigNode) UniqueName() osgraph.UniqueName {
+	return BuildConfigNodeName(n.BuildConfig)
+}
+
+func (*BuildConfigNode) Kind() string {
+	return BuildConfigNodeKind
+}
+
+func SourceRepositoryNodeName(source buildapi.BuildSource) osgraph.UniqueName {
+	switch {
+	case source.Git != nil:
+		sourceType, uri, ref := "git", source.Git.URI, source.Git.Ref
+		return osgraph.UniqueName(fmt.Sprintf("%s|%s|%s#%s", SourceRepositoryNodeKind, sourceType, uri, ref))
+	default:
+		panic(fmt.Sprintf("invalid build source: %v", source))
+	}
+}
+
+type SourceRepositoryNode struct {
+	osgraph.Node
+	Source buildapi.BuildSource
+}
+
+func (n SourceRepositoryNode) String() string {
+	return string(SourceRepositoryNodeName(n.Source))
+}
+
+func (SourceRepositoryNode) Kind() string {
+	return SourceRepositoryNodeKind
+}
+
+func BuildNodeName(o *buildapi.Build) osgraph.UniqueName {
+	return osgraph.GetUniqueRuntimeObjectNodeName(BuildNodeKind, o)
+}
+
+type BuildNode struct {
+	osgraph.Node
+	Build *buildapi.Build
+}
+
+func (n BuildNode) Object() interface{} {
+	return n.Build
+}
+
+func (n BuildNode) String() string {
+	return string(BuildNodeName(n.Build))
+}
+
+func (n BuildNode) UniqueName() osgraph.UniqueName {
+	return BuildNodeName(n.Build)
+}
+
+func (*BuildNode) Kind() string {
+	return BuildNodeKind
+}

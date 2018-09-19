@@ -1,0 +1,61 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+apiVersion: v1
+kind: Template
+labels:
+  template: gitserver
+metadata:
+  name: gitserver
+parameters:
+- name: SOURCE_URL
+  required: true
+- name: SOURCE_SECRET
+  required: true
+objects:
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: output
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    name: gitauthtest
+  spec:
+    source:
+      git:
+        uri: ${SOURCE_URL}
+      type: Git
+      sourceSecret:
+        name: ${SOURCE_SECRET}
+    strategy:
+      sourceStrategy:
+        env:
+        - name: BUILD_LOGLEVEL
+          value: "5"
+        from:
+          kind: ImageStreamTag
+          name: ruby:latest
+          namespace: openshift
+      type: Source
+    # this test specifically does a push, to help exercise the code that sets
+    # environment variables on build pods (i.e., by having a source secret and
+    # a push secret, multiple environment variables need to be set correctly for
+    # the build to succeed).
+    output:
+      to:
+        kind: ImageStreamTag
+        name: output:latest

@@ -1,0 +1,66 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: etcd-server
+  namespace: kube-system
+spec:
+  hostNetwork: true
+  containers:
+  - name: etcd-container
+    image: {{kube_docker_registry}}/etcd:{{etcd_image}}
+    imagePullPolicy: IfNotPresent
+    resources:
+      requests:
+        cpu: 200m
+    command:
+    - /bin/sh
+    - -c
+    - /usr/local/bin/etcd
+      {{params}}
+      1>>/var/log/etcd.log 2>&1
+    livenessProbe:
+      httpGet:
+        host: 127.0.0.1
+        path: /health
+        port: 2379
+        scheme: HTTP
+      initialDelaySeconds: 15
+      timeoutSeconds: 15
+    ports:
+    - name: serverport
+      containerPort: 2380
+      hostPort: 2380
+      protocol: TCP
+    - name: clientport
+      containerPort: 2379
+      hostPort: 2379
+      protocol: TCP
+    volumeMounts:
+    - name: varetcd
+      mountPath: /var/etcd
+    - name: varlogetcd
+      mountPath: /var/log/etcd.log
+  volumes:
+  - name: varetcd
+    hostPath:
+      path: /var/etcd
+  - name: varlogetcd
+    hostPath:
+      path: /var/log/etcd.log
+      type: FileOrCreate

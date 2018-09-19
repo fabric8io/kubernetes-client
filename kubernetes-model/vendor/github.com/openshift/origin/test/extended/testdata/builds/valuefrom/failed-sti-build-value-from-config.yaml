@@ -1,0 +1,65 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+apiVersion: v1
+kind: BuildConfig
+metadata:
+  name: mys2itest
+  labels:
+    name: test
+spec:
+  triggers: []
+  runPolicy: Serial
+  source:
+    type: Git
+    git:
+      uri: 'https://github.com/sclorg/s2i-php-container'
+    contextDir: 7.0/test/test-app
+  strategy:
+    type: Source
+    sourceStrategy:
+      from:
+        kind: DockerImage
+        name: centos/php-70-centos7
+      env:
+        - name: BUILD_LOGLEVEL
+          value: "5"
+        - name: FIELDREF_ENV
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.nofield
+        - name: CONFIGMAPKEYREF_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: myconfigmap
+              key: nokey
+        - name: SECRETKEYREF_ENV
+          valueFrom:
+            secretKeyRef:
+              name: mysecret
+              key: nousername
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'test:latest'
+    imageLabels:
+      - name: user-specified-label
+        value: arbitrary-value
+  resources: {}
+  postCommit: {}
+  nodeSelector: null
+status:
+  lastVersion: 0

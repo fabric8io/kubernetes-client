@@ -1,0 +1,35 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+kind: ImagePolicyConfig
+apiVersion: v1
+# To require that all images running on the platform be imported first, you may uncomment the
+# following rule. Any image that refers to a registry outside of OpenShift will be rejected unless it
+# unless it points directly to an image digest (myregistry.com/myrepo/image@sha256:ea83bcf...) and that
+# digest has been imported via the import-image flow.
+#resolveImages: Required
+executionRules:
+- name: execution-denied
+  # Reject all images that have the annotation images.openshift.io/deny-execution set to true.
+  # This annotation may be set by infrastructure that wishes to flag particular images as dangerous
+  onResources:
+  - resource: pods
+  - resource: builds
+  reject: true
+  matchImageAnnotations:
+  - key: images.openshift.io/deny-execution
+    value: "true"
+  skipOnResolutionFailure: true

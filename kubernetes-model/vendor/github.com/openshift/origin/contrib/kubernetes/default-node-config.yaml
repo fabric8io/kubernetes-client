@@ -1,0 +1,67 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+allowDisabledDocker: false
+apiVersion: v1
+authConfig:
+  authenticationCacheSize: 1000
+  authenticationCacheTTL: 5m
+  authorizationCacheSize: 1000
+  authorizationCacheTTL: 5m
+dnsDomain: cluster.local
+dnsIP: 0.0.0.0
+dnsBindAddress: 0.0.0.0:53
+dnsRecursiveResolvConf: ""
+dockerConfig:
+  dockerShimRootDirectory: /var/lib/dockershim
+  dockerShimSocket: /var/run/kubernetes/dockershim.sock
+  execHandlerName: native
+enableUnidling: true
+imageConfig:
+  format: openshift/origin-${component}:${version}
+  latest: false
+iptablesSyncPeriod: 30s
+kind: NodeConfig
+kubeletArguments:
+  cert-dir:
+  - ./certificates
+  feature-gates:
+  - RotateKubeletClientCertificate=true,RotateKubeletServerCertificate=true
+masterClientConnectionOverrides:
+  acceptContentTypes: application/vnd.kubernetes.protobuf,application/json
+  burst: 40
+  contentType: application/vnd.kubernetes.protobuf
+  qps: 20
+masterKubeConfig: node.kubeconfig
+networkConfig:
+  mtu: 1450
+  networkPluginName: redhat/openshift-ovs-multitenant
+nodeIP: ""
+proxyArguments:
+  healthz-bind-address: 
+  - 0.0.0.0
+  healthz-port:
+  - "10256"
+  metrics-bind-address:
+  - 0.0.0.0:10257
+servingInfo:
+  bindAddress: 0.0.0.0:10250
+  bindNetwork: tcp4
+  namedCertificates: null
+volumeConfig:
+  localQuota:
+    perFSGroup: null
+volumeDirectory: /var/lib/origin/volumes

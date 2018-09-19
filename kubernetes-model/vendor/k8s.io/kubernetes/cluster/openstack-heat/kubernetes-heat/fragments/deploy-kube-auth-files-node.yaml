@@ -1,0 +1,61 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+#cloud-config
+merge_how: dict(recurse_array)+list(append)
+bootcmd:
+  - mkdir -p /srv/salt-overlay/salt/kubelet
+  - mkdir -p /srv/salt-overlay/salt/kube-proxy
+write_files:
+  - path: /srv/salt-overlay/salt/kubelet/kubeconfig
+    permissions: "0600"
+    content: |
+      apiVersion: v1
+      kind: Config
+      users:
+        - name: kubelet
+          user:
+            token: $token_kubelet
+      clusters:
+        - name: local
+          cluster:
+            server: https://$MASTER_IP
+            insecure-skip-tls-verify: true
+      contexts:
+        - context:
+            cluster: local
+            user: kubelet
+          name: service-account-context
+      current-context: service-account-context
+  - path: /srv/salt-overlay/salt/kube-proxy/kubeconfig
+    permissions: "0600"
+    content: |
+      apiVersion: v1
+      kind: Config
+      users:
+        - name: kube-proxy
+          user:
+            token: $token_kube_proxy
+      clusters:
+        - name: local
+          cluster:
+            insecure-skip-tls-verify: true
+      contexts:
+        - context:
+            cluster: local
+            user: kube-proxy
+          name: service-account-context
+      current-context: service-account-context

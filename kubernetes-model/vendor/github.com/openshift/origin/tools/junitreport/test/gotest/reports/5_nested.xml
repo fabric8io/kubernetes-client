@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2015 Red Hat, Inc.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<testsuites>
+	<testsuite name="package" tests="4" skipped="0" failures="1" time="0.31">
+		<testsuite name="package/name1" tests="2" skipped="0" failures="0" time="0.16">
+			<testcase name="TestOne" time="0.06"></testcase>
+			<testcase name="TestTwo" time="0.1"></testcase>
+		</testsuite>
+		<testsuite name="package/name2" tests="2" skipped="0" failures="1" time="0.15">
+			<testcase name="TestOne" time="0.02">
+				<failure message="">=== RUN TestOne&#xA;--- FAIL: TestOne (0.02 seconds)&#xA;&#x9;file_test.go:11: Error message&#xA;&#x9;file_test.go:11: Longer&#xA;&#x9;&#x9;error&#xA;&#x9;&#x9;message.</failure>
+			</testcase>
+			<testcase name="TestTwo" time="0.13"></testcase>
+		</testsuite>
+	</testsuite>
+</testsuites>

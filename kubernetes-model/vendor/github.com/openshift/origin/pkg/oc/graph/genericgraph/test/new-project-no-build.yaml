@@ -1,0 +1,123 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    creationTimestamp: 2015-04-06T21:02:00Z
+    name: sinatra-example-2
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: sinatra-example-2:latest
+    resources: {}
+    source:
+      git:
+        uri: git://github.com/mfojtik/sinatra-example-2
+      type: Git
+    strategy:
+      sourceStrategy:
+        from:
+          kind: DockerImage
+          name: centos/ruby-22-centos7
+      type: Source
+    triggers:
+    - github:
+        secret: u5gRhTXiOJpOHxKSI1M6
+      type: github
+    - generic:
+        secret: IDO5sRS52tsUq5hczU6o
+      type: generic
+  status:
+    lastVersion: 0
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    creationTimestamp: 2015-04-06T21:02:00Z
+    name: sinatra-example-2
+  spec:
+    replicas: 1
+    selector:
+      deploymentconfig: sinatra-example-2
+    strategy:
+      resources: {}
+      type: Recreate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          deploymentconfig: sinatra-example-2
+      spec:
+        containers:
+        - capabilities: {}
+          image: library/sinatra-example-2:latest
+          imagePullPolicy: Always
+          name: sinatra-example-2
+          ports:
+          - containerPort: 8080
+            name: s-tcp-8080
+            protocol: TCP
+          resources: {}
+          securityContext:
+            capabilities: {}
+            privileged: false
+          terminationMessagePath: /dev/termination-log
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - sinatra-example-2
+        from:
+          kind: ImageStreamTag
+          name: sinatra-example-2:latest
+        lastTriggeredImage: ""
+      type: ImageChange
+  status: {}
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    creationTimestamp: 2015-04-06T21:18:56Z
+    name: sinatra-example-2
+  spec: {}
+  status:
+    dockerImageRepository: ""
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: 2015-04-06T21:02:00Z
+    name: sinatra-example-2
+  spec:
+    clusterIP: 172.30.17.48
+    ports:
+    - nodePort: 0
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      deploymentconfig: sinatra-example-2
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+kind: List
+metadata:
+  resourceVersion: "116"

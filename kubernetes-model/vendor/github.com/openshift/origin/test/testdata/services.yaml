@@ -1,0 +1,65 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+kind: List
+apiVersion: v1
+items:
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: clusterip
+  spec:
+    ports:
+    - name: http
+      protocol: TCP
+      port: 80
+- kind: Endpoints
+  apiVersion: v1
+  metadata:
+    name: clusterip
+    annotations:
+      "endpoints.beta.kubernetes.io/hostnames-map": '{"10.1.2.4":{"HostName": "test2"}}'
+  subsets:
+  - addresses:
+    - ip: 10.1.2.3
+    - ip: 10.1.2.4
+    ports:
+    - name: http
+      protocol: TCP
+      port: 80
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: headless
+  spec:
+    clusterIP: None
+    ports:
+    - name: http
+      protocol: TCP
+      port: 80
+- kind: Endpoints
+  apiVersion: v1
+  metadata:
+    name: headless
+  subsets:
+  - addresses:
+    - ip: 10.1.2.3
+    - ip: 10.1.2.4
+      hostname: test2
+    ports:
+    - name: http
+      protocol: TCP
+      port: 80

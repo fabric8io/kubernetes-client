@@ -1,0 +1,88 @@
+{  
+   "id":"model-generator-config",
+   "kind":"Config",
+   "apiVersion":"v1beta1",
+   "name":"model-generator-config",
+   "description":"Creates a model-generator Server",
+   "items":[  
+      {  
+         "apiVersion":"v1beta1",
+         "id":"model-generator-service",
+         "kind":"Service",
+         "port":8080,
+         "containerPort":8080,
+         "selector":{  
+            "name":"model-generator"
+         }
+      },
+      {
+         "id": "model-route",
+         "metadata": {
+            "name": "model-route"
+         },
+         "apiVersion": "v1beta1",
+         "kind": "Route",
+         "host": "model.local",
+         "serviceName": "model-generator-service"
+      },
+      {  
+         "kind":"ReplicationController",
+         "id":"model-generator",
+         "apiVersion":"v1beta1",
+         "desiredState":{  
+            "replicas":1,
+            "replicaSelector":{  
+               "name":"model-generator"
+            },
+            "podTemplate":{  
+               "desiredState":{  
+                  "manifest":{  
+                     "version":"v1beta1",
+                     "id":"model-generatorPod",
+                     "containers":[  
+                        {  
+                           "image":"fabric8/origin-schema-generator:latest",
+                           "name":"model-generator-container",
+                           "ports":[  
+                              {  
+                                 "containerPort":8080,
+                                 "protocol":"TCP"
+                              }
+                           ],
+                           "env":[  
+                              {  
+                                 "name":"GIT_REPO",
+                                 "value":"fabric8io"
+                              },
+                              {  
+                                 "name":"FABRIC8_GIT_BRANCH",
+                                 "value":"master"
+                              },
+                              {  
+                                 "name":"QUICKSTART_GIT_REPO",
+                                 "value":"fabric8io"
+                              },
+                              {  
+                                 "name":"KUBERNETES_TRUST_CERT",
+                                 "value":"true"
+                              },
+                              {  
+                                 "name":"KUBERNETES_MASTER",
+                                 "value":"https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT"
+                              }
+                           ]
+                        }
+                     ]
+                  }
+               },
+               "labels":{  
+                  "name":"model-generator"
+               }
+            }
+         },
+         "labels":{  
+            "name":"model-generator"
+         }
+      }
+   ]
+}

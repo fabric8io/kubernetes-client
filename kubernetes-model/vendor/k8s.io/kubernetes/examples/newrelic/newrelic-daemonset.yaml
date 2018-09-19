@@ -1,0 +1,77 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: newrelic-agent
+  labels:
+    tier: monitoring
+    app: newrelic-agent
+    version: v1
+spec:
+  template:
+    metadata:
+      labels:
+        name: newrelic
+    spec:
+      # Filter to specific nodes:
+      # nodeSelector:
+      #  app: newrelic
+      hostPID: true
+      hostIPC: true
+      hostNetwork: true
+      containers:
+        - resources:
+            requests:
+              cpu: 0.15
+          securityContext:
+            privileged: true
+          env:
+            - name: NRSYSMOND_logfile
+              value: "/var/log/nrsysmond.log"
+          image: newrelic/nrsysmond
+          name: newrelic
+          command: [ "bash", "-c", "source /etc/kube-newrelic/config && /usr/sbin/nrsysmond -E -F" ]
+          volumeMounts:
+            - name: newrelic-config
+              mountPath: /etc/kube-newrelic
+              readOnly: true
+            - name: dev
+              mountPath: /dev
+            - name: run
+              mountPath: /var/run/docker.sock
+            - name: sys
+              mountPath: /sys
+            - name: log
+              mountPath: /var/log
+      volumes:
+        - name: newrelic-config
+          secret:
+            secretName: newrelic-config
+        - name: dev
+          hostPath:
+              path: /dev
+        - name: run
+          hostPath:
+              path: /var/run/docker.sock
+              type: Socket
+        - name: sys
+          hostPath:
+              path: /sys
+        - name: log
+          hostPath:
+              path: /var/log

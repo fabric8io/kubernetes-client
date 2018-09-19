@@ -1,0 +1,187 @@
+/**
+ * Copyright (C) 2015 Red Hat, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package basicauthrequest
+
+import (
+	"net/http"
+	"testing"
+
+	"k8s.io/apiserver/pkg/authentication/user"
+)
+
+const (
+	Username          = "frightened_donut"
+	Password          = "don't eat me!"
+	ValidBase64String = "VGhpc0lzVmFsaWQK" // base64 -- ThisIsValid ctrl+d
+)
+
+type mockPasswordAuthenticator struct {
+	returnUser      user.Info
+	isAuthenticated bool
+	err             error
+	passedUser      string
+	passedPassword  string
+}
+
+func (mock *mockPasswordAuthenticator) AuthenticatePassword(username, password string) (user.Info, bool, error) {
+	mock.passedUser = username
+	mock.passedPassword = password
+
+	return mock.returnUser, mock.isAuthenticated, mock.err
+}
+
+func TestAuthenticateRequestValid(t *testing.T) {
+	passwordAuthenticator := &mockPasswordAuthenticator{}
+	authRequestHandler := NewBasicAuthAuthentication("example", passwordAuthenticator, true)
+	req, _ := http.NewRequest("GET", "http://example.org", nil)
+	req.SetBasicAuth(Username, Password)
+
+	_, _, _ = authRequestHandler.AuthenticateRequest(req)
+	if passwordAuthenticator.passedUser != Username {
+		t.Errorf("Expected %v, got %v", Username, passwordAuthenticator.passedUser)
+	}
+	if passwordAuthenticator.passedPassword != Password {
+		t.Errorf("Expected %v, got %v", Password, passwordAuthenticator.passedPassword)
+	}
+}
+
+func TestAuthenticateRequestInvalid(t *testing.T) {
+	const (
+		ExpectedError = "No valid base64 data in basic auth scheme found"
+	)
+	passwordAuthenticator := &mockPasswordAuthenticator{isAuthenticated: true}
+	authRequestHandler := NewBasicAuthAuthentication("example", passwordAuthenticator, true)
+	req, _ := http.NewRequest("GET", "http://example.org", nil)
+	req.Header.Add("Authorization", "Basic invalid:string")
+
+	userInfo, authenticated, err := authRequestHandler.AuthenticateRequest(req)
+	if err == nil {
+		t.Errorf("Expected error: %v", ExpectedError)
+	}
+	if err.Error() != ExpectedError {
+		t.Errorf("Expected %v, got %v", ExpectedError, err)
+	}
+	if userInfo != nil {
+		t.Errorf("Unexpected user: %v", userInfo)
+	}
+	if authenticated {
+		t.Errorf("Unexpectedly authenticated: %v", authenticated)
+	}
+}
+
+func TestGetBasicAuthInfo(t *testing.T) {
+	req, _ := http.NewRequest("GET", "http://example.org", nil)
+	req.SetBasicAuth(Username, Password)
+
+	username, password, hasBasicAuth, err := getBasicAuthInfo(req)
+	if err != nil {
+		t.Errorf("Unexpected error: %v", err)
+	}
+	if !hasBasicAuth {
+		t.Errorf("Expected hasBasicAuth")
+	}
+	if username != Username {
+		t.Errorf("Expected %v, got %v", Username, username)
+	}
+	if password != Password {
+		t.Errorf("Expected %v, got %v", Password, password)
+	}
+}
+
+func TestGetBasicAuthInfoNoHeader(t *testing.T) {
+	req, _ := http.NewRequest("GET", "http://example.org", nil)
+
+	username, password, hasBasicAuth, err := getBasicAuthInfo(req)
+	if err != nil {
+		t.Errorf("Unexpected error: %v", err)
+	}
+	if hasBasicAuth {
+		t.Errorf("Expected hasBasicAuth to be false")
+	}
+	if len(username) != 0 {
+		t.Errorf("Unexpected username: %v", username)
+	}
+	if len(password) != 0 {
+		t.Errorf("Unexpected password: %v", password)
+	}
+}
+
+func TestGetBasicAuthInfoNotBasicHeader(t *testing.T) {
+	req, _ := http.NewRequest("GET", "http://example.org", nil)
+	req.Header.Add("Authorization", "notbasic")
+
+	username, password, hasBasicAuth, err := getBasicAuthInfo(req)
+	if err != nil {
+		t.Errorf("Unexpected error: %v", err)
+	}
+	if hasBasicAuth {
+		t.Errorf("Expected hasBasicAuth to be false")
+	}
+	if len(username) != 0 {
+		t.Errorf("Unexpected username: %v", username)
+	}
+	if len(password) != 0 {
+		t.Errorf("Unexpected password: %v", password)
+	}
+}
+func TestGetBasicAuthInfoNotBase64Encoded(t *testing.T) {
+	const (
+		ExpectedError = "No valid base64 data in basic auth scheme found"
+	)
+	req, _ := http.NewRequest("GET", "http://example.org", nil)
+	req.Header.Add("Authorization", "Basic invalid:string")
+
+	username, password, hasBasicAuth, err := getBasicAuthInfo(req)
+	if err == nil {
+		t.Errorf("Expected error: %v", ExpectedError)
+	}
+	if hasBasicAuth {
+		t.Errorf("Expected hasBasicAuth to be false")
+	}
+	if err.Error() != ExpectedError {
+		t.Errorf("Expected %v, got %v", ExpectedError, err)
+	}
+	if len(username) != 0 {
+		t.Errorf("Unexpected username: %v", username)
+	}
+	if len(password) != 0 {
+		t.Errorf("Unexpected password: %v", password)
+	}
+}
+func TestGetBasicAuthInfoNotCredentials(t *testing.T) {
+	const (
+		ExpectedError = "Invalid Authorization header"
+	)
+	req, _ := http.NewRequest("GET", "http://example.org", nil)
+	req.Header.Add("Authorization", "Basic "+ValidBase64String)
+
+	username, password, hasBasicAuth, err := getBasicAuthInfo(req)
+	if err == nil {
+		t.Errorf("Expected error: %v", ExpectedError)
+	}
+	if hasBasicAuth {
+		t.Errorf("Expected hasBasicAuth to be false")
+	}
+	if err.Error() != ExpectedError {
+		t.Errorf("Expected %v, got %v", ExpectedError, err)
+	}
+	if len(username) != 0 {
+		t.Errorf("Unexpected username: %v", username)
+	}
+	if len(password) != 0 {
+		t.Errorf("Unexpected password: %v", password)
+	}
+}

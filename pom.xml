@@ -128,6 +128,7 @@
   </properties>
 
   <modules>
+    <module>kubernetes-model</module>
     <module>kubernetes-client</module>
     <module>kubernetes-server-mock</module>
     <module>openshift-client</module>
@@ -195,7 +196,16 @@
             <exclude>.editorconfig</exclude>
             <exclude>license.txt</exclude>
             <exclude>**/test-kubeconfig</exclude>
+            <exclude>kubernetes-model/vendor/**/*</exclude>
+            <exclude>kubernetes-model/generate</exclude>
+            <exclude>kubernetes-model/.openshift-version</exclude>
+            <exclude>kubernetes-model/glide.*</exclude>
           </excludes>
+          <mapping>
+            <go>JAVADOC_STYLE</go>
+            <svg>XML_STYLE</svg>
+            <Makefile>SCRIPT_STYLE</Makefile>
+          </mapping>
         </configuration>
       </plugin>
       <plugin>

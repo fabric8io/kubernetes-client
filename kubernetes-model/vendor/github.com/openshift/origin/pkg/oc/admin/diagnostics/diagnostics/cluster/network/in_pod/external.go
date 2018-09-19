@@ -1,0 +1,64 @@
+/**
+ * Copyright (C) 2015 Red Hat, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package in_pod
+
+import (
+	"fmt"
+
+	kexec "k8s.io/utils/exec"
+
+	"github.com/openshift/origin/pkg/oc/admin/diagnostics/diagnostics/types"
+)
+
+const (
+	CheckExternalNetworkName = "CheckExternalNetwork"
+)
+
+// CheckExternalNetwork is a Diagnostic to check accessibility of external network within a pod
+type CheckExternalNetwork struct {
+}
+
+// Name is part of the Diagnostic interface and just returns name.
+func (d CheckExternalNetwork) Name() string {
+	return CheckExternalNetworkName
+}
+
+// Description is part of the Diagnostic interface and just returns the diagnostic description.
+func (d CheckExternalNetwork) Description() string {
+	return "Check that external network is accessible within a pod"
+}
+
+func (d CheckExternalNetwork) Requirements() (client bool, host bool) {
+	return true, false
+}
+
+// CanRun is part of the Diagnostic interface; it determines if the conditions are right to run this diagnostic.
+func (d CheckExternalNetwork) CanRun() (bool, error) {
+	return true, nil
+}
+
+// Check is part of the Diagnostic interface; it runs the actual diagnostic logic
+func (d CheckExternalNetwork) Check() types.DiagnosticResult {
+	r := types.NewDiagnosticResult(CheckExternalNetworkName)
+
+	externalAddress := "www.redhat.com"
+	kexecer := kexec.New()
+	if _, err := kexecer.Command("ping", "-c1", "-W2", externalAddress).CombinedOutput(); err != nil {
+		// Admin may intentionally block access to the external network. If this check fails it doesn't necessarily mean that something is wrong. So just warn in this case.
+		r.Warn("DExtNet1001", nil, fmt.Sprintf("Pinging external address %q failed. Check if the admin intentionally blocked access to the external network. Error: %s", externalAddress, err))
+	}
+	return r
+}

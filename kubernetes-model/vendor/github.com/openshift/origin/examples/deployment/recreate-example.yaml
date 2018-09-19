@@ -1,0 +1,75 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+apiVersion: v1
+kind: List
+items:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: recreate-example
+  spec:
+    ports:
+    - port: 8080
+      targetPort: 8080
+    selector:
+      deploymentconfig: recreate-example
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    name: recreate-example
+  spec:
+    replicas: 2
+    selector:
+      deploymentconfig: recreate-example
+    strategy:
+      # We set the type of strategy to Recreate, which means that it will be scaled down prior to being scaled up
+      type: Recreate
+    template:
+      metadata:
+        labels:
+          deploymentconfig: recreate-example
+      spec:
+        containers:
+        - image: openshift/deployment-example:v1
+          name: deployment-example
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - deployment-example
+        from:
+          kind: ImageStreamTag
+          name: recreate-example:latest
+      type: ImageChange
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: recreate-example
+  spec:
+    dockerImageRepository: openshift/deployment-example
+- apiVersion: v1
+  kind: Route
+  metadata:
+    name: recreate-example
+  spec:
+    to:
+      kind: Service
+      name: recreate-example

@@ -1,0 +1,28 @@
+{
+  "kind": "ClusterRole",
+  "apiVersion": "rbac.authorization.k8s.io/v1",
+  "metadata": {
+    "name": "node-reader"
+  },
+  "rules": [
+    {
+      "apiGroups": [
+        ""
+      ],
+      "resources": [
+        "nodes"
+      ],
+      "resourceNames": [
+        "my-node"
+      ],
+      "nonResourceURLs": [
+        "/healthz"
+      ],
+      "verbs": [
+        "get",
+        "watch",
+        "list"
+      ]
+    }
+  ]
+}

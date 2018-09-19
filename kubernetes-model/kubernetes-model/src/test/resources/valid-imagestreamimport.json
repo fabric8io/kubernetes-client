@@ -1,0 +1,49 @@
+{
+  "apiVersion": "image.openshift.io/v1",
+  "kind": "ImageStreamImport",
+  "metadata": {
+    "annotations": {
+    },
+    "labels": {
+      "key": "value"
+    },
+    "name": "test-isi",
+    "namespace": "myproject"
+  },
+  "spec": {
+    "images": [
+      {
+        "from": {
+          "kind": "DockerImage",
+          "name": "dockerImageName"
+        },
+        "importPolicy": {
+          "insecure": true,
+          "scheduled": true
+        },
+        "includeManifest": true,
+        "referencePolicy": {
+          "type": "Source"
+        },
+        "to": {
+          "name": "default"
+        }
+      }
+    ],
+    "import": true,
+    "repository": {
+      "from": {
+        "kind": "DockerImage",
+        "name": "docker.io/openshift/jenkins-slave-maven-centos7:latest"
+      },
+      "importPolicy": {
+        "insecure": true,
+        "scheduled": true
+      },
+      "includeManifest": true,
+      "referencePolicy": {
+        "type": "Source"
+      }
+    }
+  }
+}

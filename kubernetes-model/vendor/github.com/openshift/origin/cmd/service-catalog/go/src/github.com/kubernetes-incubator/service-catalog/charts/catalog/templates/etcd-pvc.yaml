@@ -1,0 +1,40 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+{{- if and (eq .Values.apiserver.storage.type "etcd") .Values.apiserver.storage.etcd.useEmbedded .Values.apiserver.storage.etcd.persistence.enabled (not .Values.apiserver.storage.etcd.persistence.existingClaim) }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ template "fullname" . }}-etcd
+  labels:
+    app: {{ template "fullname" . }}-etcd
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  accessModes:
+    - {{ .Values.apiserver.storage.etcd.persistence.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.apiserver.storage.etcd.persistence.size | quote }}
+{{- if .Values.apiserver.storage.etcd.persistence.storageClass }}
+{{- if (eq "-" .Values.apiserver.storage.etcd.persistence.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.apiserver.storage.etcd.persistence.storageClass }}"
+{{- end }}
+{{- end }}
+{{- end }}
