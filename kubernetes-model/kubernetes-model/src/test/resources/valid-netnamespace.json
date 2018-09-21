@@ -1,0 +1,14 @@
+{
+  "kind": "NetNamespace",
+  "apiVersion": "network.openshift.io/v1",
+  "metadata": {
+    "name": "test-netnamespace",
+    "namespace": "default"
+  },
+  "egressIPs": [
+    "192.168.17.9",
+    "192.169.18.4"
+  ],
+  "netid": 1066587,
+  "netname": "test"
+}

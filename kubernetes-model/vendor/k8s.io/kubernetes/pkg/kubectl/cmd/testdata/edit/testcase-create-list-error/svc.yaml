@@ -1,0 +1,70 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: 2017-02-03T06:44:47Z
+    labels:
+      app: svc1
+    name: svc1
+    namespace: edit-test
+    resourceVersion: "2942"
+    selfLink: /api/v1/namespaces/edit-test/services/svc1
+    uid: 4149f70e-e9dc-11e6-8c3b-acbc32c1ca87
+  spec:
+    clusterIP: 10.0.0.118
+    ports:
+    - name: "81"
+      port: 81
+      protocol: TCP
+      targetPort: 81
+    selector:
+      app: svc1
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: 2017-02-03T06:44:43Z
+    labels:
+      app: svc2
+    name: svc2
+    namespace: edit-test
+    resourceVersion: "2936"
+    selfLink: /api/v1/namespaces/edit-test/services/svc2
+    uid: 3e9b10db-e9dc-11e6-8c3b-acbc32c1ca87
+  spec:
+    clusterIP: 10.0.0.182
+    ports:
+    - name: "80"
+      port: 80
+      protocol: TCP
+      targetPort: 80
+    selector:
+      app: svc2
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+kind: List
+metadata: {}
+resourceVersion: ""
+selfLink: ""

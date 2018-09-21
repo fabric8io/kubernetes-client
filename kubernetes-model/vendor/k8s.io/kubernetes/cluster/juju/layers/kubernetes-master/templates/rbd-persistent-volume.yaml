@@ -1,0 +1,41 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# JUJU Internal Template used to enlist RBD volumes from the
+# `create-rbd-pv` action. This is a temporary file on disk to enlist resources.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ RBD_NAME }}
+spec:
+  capacity:
+    storage: {{ RBD_SIZE }}M
+  accessModes:
+    - {{ PV_MODE }}
+  storageClassName: "rbd"
+  rbd:
+    monitors:
+      {% for host in monitors %}
+      - {{ host }}
+      {% endfor %}
+    pool: rbd
+    image: {{ RBD_NAME }}
+    user: admin
+    secretRef:
+      name: ceph-secret
+    fsType: {{ RBD_FS }}
+    readOnly: false
+    # persistentVolumeReclaimPolicy: Recycle

@@ -1,0 +1,64 @@
+{
+  "kind": "List",
+  "apiVersion": "v1",
+  "items": [
+    {
+      "apiVersion": "v1",
+      "kind": "Pod",
+      "metadata": {
+        "name": "simple-pod"
+      },
+      "labels": {
+        "name": "simple-pod"
+      },
+      "spec": {
+        "containers": [
+          {
+            "name": "simple-container",
+            "image": "simple-image",
+            "resources": {
+              "limits": {
+                "cpu": "1",
+                "memory": "5Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Service",
+      "metadata": {
+        "annotations": {},
+        "labels": {
+          "component": "simple",
+          "provider": "simple",
+          "group": "simple"
+        },
+        "name": "simple-service"
+      },
+      "spec": {
+        "ports": [
+          {
+            "port": 8080,
+            "protocol": "TCP",
+            "targetPort": 8181
+          }
+        ],
+        "publicIPs": [],
+        "selector": {
+          "component": "simple",
+          "provider": "simple",
+          "group": "simple"
+        }
+      }
+    }
+  ]
+}
+
+
+
+
+
+

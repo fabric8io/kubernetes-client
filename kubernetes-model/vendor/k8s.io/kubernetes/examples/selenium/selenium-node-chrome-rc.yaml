@@ -1,0 +1,45 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: selenium-node-chrome 
+  labels:
+    app: selenium-node-chrome
+spec:
+  replicas: 2
+  selector:
+    app: selenium-node-chrome
+  template:
+    metadata:
+      labels:
+        app: selenium-node-chrome
+    spec:
+      containers:
+      - name: selenium-node-chrome
+        image: selenium/node-chrome-debug:2.53.0
+        ports:
+          - containerPort: 5900 
+        env:
+          - name: HUB_PORT_4444_TCP_ADDR 
+            value: "selenium-hub"
+          - name: HUB_PORT_4444_TCP_PORT 
+            value: "4444"
+        resources:
+          limits:
+            memory: "1000Mi"
+            cpu: ".5"

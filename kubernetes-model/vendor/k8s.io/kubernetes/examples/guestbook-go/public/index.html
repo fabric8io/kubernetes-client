@@ -1,0 +1,51 @@
+<!--
+
+    Copyright (C) 2015 Red Hat, Inc.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <meta charset="utf-8">
+    <meta content="width=device-width" name="viewport">
+    <link href="style.css" rel="stylesheet">
+    <title>Guestbook</title>
+  </head>
+  <body>
+    <div id="header">
+      <h1>Guestbook</h1>
+    </div>
+
+    <div id="guestbook-entries">
+      <p>Waiting for database connection...</p>
+    </div>
+
+    <div>
+      <form id="guestbook-form">
+        <input autocomplete="off" id="guestbook-entry-content" type="text">
+        <a href="#" id="guestbook-submit">Submit</a>
+      </form>
+    </div>
+
+    <div>
+      <p><h2 id="guestbook-host-address"></h2></p>
+      <p><a href="env">/env</a>
+      <a href="info">/info</a></p>
+    </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

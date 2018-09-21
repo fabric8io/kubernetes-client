@@ -1,0 +1,7 @@
+{
+  "kind": "ReplicationControllerList",
+  "apiVersion": "v1",
+  "metadata": {
+    "selfLink": "/api/v1/replicationcontrollers"
+  }
+}

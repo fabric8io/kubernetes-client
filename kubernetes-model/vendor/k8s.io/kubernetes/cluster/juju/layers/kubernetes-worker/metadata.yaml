@@ -1,0 +1,71 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+name: kubernetes-worker
+summary: The workload bearing units of a kubernetes cluster
+maintainers:
+  - Tim Van Steenburgh <tim.van.steenburgh@canonical.com>
+  - George Kraft <george.kraft@canonical.com>
+  - Rye Terrell <rye.terrell@canonical.com>
+  - Konstantinos Tsakalozos <kos.tsakalozos@canonical.com>
+  - Charles Butler <Chuck@dasroot.net>
+  - Matthew Bruzek <mbruzek@ubuntu.com>
+description: |
+  Kubernetes is an open-source platform for deploying, scaling, and operations
+  of application containers across a cluster of hosts. Kubernetes is portable
+  in that it works with public, private, and hybrid clouds. Extensible through
+  a pluggable infrastructure. Self healing in that it will automatically
+  restart and place containers on healthy nodes if a node ever goes away.
+tags:
+  - misc
+series:
+  - xenial
+subordinate: false
+requires:
+  kube-api-endpoint:
+    interface: http
+  kube-dns:
+    # kube-dns is deprecated. Its functionality has been rolled into the
+    # kube-control interface. The kube-dns relation will be removed in
+    # a future release.
+    interface: kube-dns
+  kube-control:
+    interface: kube-control
+provides:
+  cni:
+    interface: kubernetes-cni
+    scope: container
+resources:
+  cni-amd64:
+    type: file
+    filename: cni.tgz
+    description: CNI plugins for amd64
+  cni-s390x:
+    type: file
+    filename: cni.tgz
+    description: CNI plugins for s390x
+  kubectl:
+    type: file
+    filename: kubectl.snap
+    description: kubectl snap
+  kubelet:
+    type: file
+    filename: kubelet.snap
+    description: kubelet snap
+  kube-proxy:
+    type: file
+    filename: kube-proxy.snap
+    description: kube-proxy snap

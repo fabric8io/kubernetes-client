@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2015 Red Hat, Inc.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<testsuites>
+	<testsuite name="github.com/openshift/origin/test/integration/runner" tests="4" skipped="0" failures="1" time="764.718">
+		<testcase name="TestIntegration" time="0.05"></testcase>
+		<testcase name="TestIntegration/TestUserInitialization" time="133.72"></testcase>
+		<testcase name="TestIntegration/TestRegistryClientRegistryNotFound" time="0.55">
+			<failure message="">runner_test.go:175: blah&#xA;</failure>
+			<system-out>&#xA;more</system-out>
+		</testcase>
+		<testcase name="TestIntegration/TestRestrictUsers" time="13.19"></testcase>
+	</testsuite>
+</testsuites>

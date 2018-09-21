@@ -1,0 +1,85 @@
+/**
+ * Copyright (C) 2015 Red Hat, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+// Copyright 2017 The Go Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+package socket
+
+import (
+	"errors"
+	"syscall"
+	"unsafe"
+)
+
+func probeProtocolStack() int {
+	var p uintptr
+	return int(unsafe.Sizeof(p))
+}
+
+const (
+	sysAF_UNSPEC = 0x0
+	sysAF_INET   = 0x2
+	sysAF_INET6  = 0x17
+
+	sysSOCK_RAW = 0x3
+)
+
+type sockaddrInet struct {
+	Family uint16
+	Port   uint16
+	Addr   [4]byte /* in_addr */
+	Zero   [8]uint8
+}
+
+type sockaddrInet6 struct {
+	Family   uint16
+	Port     uint16
+	Flowinfo uint32
+	Addr     [16]byte /* in6_addr */
+	Scope_id uint32
+}
+
+const (
+	sizeofSockaddrInet  = 0x10
+	sizeofSockaddrInet6 = 0x1c
+)
+
+func getsockopt(s uintptr, level, name int, b []byte) (int, error) {
+	l := uint32(len(b))
+	err := syscall.Getsockopt(syscall.Handle(s), int32(level), int32(name), (*byte)(unsafe.Pointer(&b[0])), (*int32)(unsafe.Pointer(&l)))
+	return int(l), err
+}
+
+func setsockopt(s uintptr, level, name int, b []byte) error {
+	return syscall.Setsockopt(syscall.Handle(s), int32(level), int32(name), (*byte)(unsafe.Pointer(&b[0])), int32(len(b)))
+}
+
+func recvmsg(s uintptr, h *msghdr, flags int) (int, error) {
+	return 0, errors.New("not implemented")
+}
+
+func sendmsg(s uintptr, h *msghdr, flags int) (int, error) {
+	return 0, errors.New("not implemented")
+}
+
+func recvmmsg(s uintptr, hs []mmsghdr, flags int) (int, error) {
+	return 0, errors.New("not implemented")
+}
+
+func sendmmsg(s uintptr, hs []mmsghdr, flags int) (int, error) {
+	return 0, errors.New("not implemented")
+}

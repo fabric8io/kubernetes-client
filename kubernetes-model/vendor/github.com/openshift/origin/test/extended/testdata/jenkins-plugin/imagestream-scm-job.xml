@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+
+    Copyright (C) 2015 Red Hat, Inc.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <io.fabric8.jenkins.openshiftsync.BuildConfigProjectProperty plugin="openshift-sync@0.0.13">
+      <uid></uid>
+      <namespace></namespace>
+      <name></name>
+      <resourceVersion></resourceVersion>
+      <contextDir></contextDir>
+    </io.fabric8.jenkins.openshiftsync.BuildConfigProjectProperty>
+  </properties>
+  <scm class="com.openshift.jenkins.plugins.pipeline.OpenShiftImageStreams" plugin="openshift-pipeline@1.0.23">
+    <imageStreamName>testimage</imageStreamName>
+    <tag>v1</tag>
+    <apiURL></apiURL>
+    <namespace>${PROJECT_NAME}</namespace>
+    <authToken></authToken>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers>
+    <hudson.triggers.SCMTrigger>
+      <spec>* * * * *</spec>
+      <ignorePostCommitHooks>false</ignorePostCommitHooks>
+    </hudson.triggers.SCMTrigger>
+  </triggers>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <com.openshift.jenkins.plugins.pipeline.OpenShiftImageTagger plugin="openshift-pipeline@1.0.23">
+      <apiURL></apiURL>
+      <namespace>openshift</namespace>
+      <authToken></authToken>
+      <verbose>false</verbose>
+      <testTag>latest</testTag>
+      <prodTag>develop</prodTag>
+      <testStream>jenkins</testStream>
+      <prodStream>localjenkins</prodStream>
+      <destinationNamespace>${PROJECT_NAME}</destinationNamespace>
+      <destinationAuthToken></destinationAuthToken>
+      <alias>false</alias>
+    </com.openshift.jenkins.plugins.pipeline.OpenShiftImageTagger>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>

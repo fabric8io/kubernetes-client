@@ -1,0 +1,89 @@
+/**
+ * Copyright (C) 2015 Red Hat, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package util
+
+import (
+	"fmt"
+	"io"
+	"time"
+
+	"github.com/golang/glog"
+	"k8s.io/kubernetes/pkg/api/legacyscheme"
+
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
+	kapiref "k8s.io/kubernetes/pkg/api/ref"
+	kapi "k8s.io/kubernetes/pkg/apis/core"
+	kcoreclient "k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/typed/core/internalversion"
+
+	appsutil "github.com/openshift/origin/pkg/apps/util"
+)
+
+// RecordConfigEvent records an event for the deployment config referenced by the
+// deployment.
+func RecordConfigEvent(client kcoreclient.EventsGetter, deployment *kapi.ReplicationController, decoder runtime.Decoder, eventType, reason, msg string) {
+	t := metav1.Time{Time: time.Now()}
+	var obj runtime.Object = deployment
+	if config, err := appsutil.DecodeDeploymentConfig(deployment, decoder); err == nil {
+		obj = config
+	} else {
+		glog.Errorf("Unable to decode deployment config from %s/%s: %v", deployment.Namespace, deployment.Name, err)
+	}
+	ref, err := kapiref.GetReference(legacyscheme.Scheme, obj)
+	if err != nil {
+		glog.Errorf("Unable to get reference for %#v: %v", obj, err)
+		return
+	}
+	event := &kapi.Event{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      fmt.Sprintf("%v.%x", ref.Name, t.UnixNano()),
+			Namespace: ref.Namespace,
+		},
+		InvolvedObject: *ref,
+		Reason:         reason,
+		Message:        msg,
+		Source: kapi.EventSource{
+			Component: appsutil.DeployerPodNameFor(deployment),
+		},
+		FirstTimestamp: t,
+		LastTimestamp:  t,
+		Count:          1,
+		Type:           eventType,
+	}
+	if _, err := client.Events(ref.Namespace).Create(event); err != nil {
+		glog.Errorf("Could not create event '%#v': %v", event, err)
+	}
+}
+
+// RecordConfigWarnings records all warning events from the replication controller to the
+// associated deployment config.
+func RecordConfigWarnings(client kcoreclient.EventsGetter, rc *kapi.ReplicationController, decoder runtime.Decoder, out io.Writer) {
+	if rc == nil {
+		return
+	}
+	events, err := client.Events(rc.Namespace).Search(legacyscheme.Scheme, rc)
+	if err != nil {
+		fmt.Fprintf(out, "--> Error listing events for replication controller %s: %v\n", rc.Name, err)
+		return
+	}
+	// TODO: Do we need to sort the events?
+	for _, e := range events.Items {
+		if e.Type == kapi.EventTypeWarning {
+			fmt.Fprintf(out, "-->  %s: %s %s\n", e.Reason, rc.Name, e.Message)
+			RecordConfigEvent(client, rc, decoder, e.Type, e.Reason, e.Message)
+		}
+	}
+}

@@ -1,0 +1,47 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kube-scheduler
+spec:
+  hostNetwork: true
+  containers:
+  - name: kube-scheduler
+    image: gcr.io/google_containers/kube-scheduler:34d0b8f8b31e27937327961528739bc9
+    command:
+    - /bin/sh
+    - -c
+    - /usr/local/bin/kube-scheduler --master=127.0.0.1:8080 --v=2 --leader-elect 1>>/var/log/kube-scheduler.log
+      2>&1
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 10251
+      initialDelaySeconds: 15
+      timeoutSeconds: 1
+    volumeMounts:
+    - mountPath: /var/log/kube-scheduler.log
+      name: logfile
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: default-token-s8ejd
+      readOnly: true
+  volumes:
+  - hostPath:
+      path: /var/log/kube-scheduler.log
+      type: FileOrCreate
+    name: logfile

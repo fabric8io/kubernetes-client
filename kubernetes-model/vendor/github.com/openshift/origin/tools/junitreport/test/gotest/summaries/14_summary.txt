@@ -1,0 +1,25 @@
+====
+    Copyright (C) 2015 Red Hat, Inc.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+====
+
+Of 4 tests executed in 0.019s, 2 succeeded, 2 failed, and 0 were skipped.
+
+In suite "parser/gotest", test case "TestSubTestWithFailures" failed:
+
+
+In suite "parser/gotest", test case "TestSubTestWithFailures/subtest-fail-1" failed:
+data_parser_test.go:14: log line
+data_parser_test.go:14: failed
+

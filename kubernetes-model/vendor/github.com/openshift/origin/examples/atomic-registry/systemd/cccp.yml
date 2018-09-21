@@ -1,0 +1,40 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# This is for the purpose of containers on the CentOS Community Container Pipeline. 
+# The containers are built, tested and delivered to registry.centos.org and lifecycled
+# as well. A corresponding entry must exist in the container index itself, located at
+# https://github.com/CentOS/container-index/tree/master/index.d
+#  You can know more at the following links:
+# * https://github.com/CentOS/container-pipeline-service/blob/master/README.md
+# * https://github.com/CentOS/container-pipeline-service/blob/master/README.md
+# * https://wiki.centos.org/ContainerPipeline
+job-id: atomic-registry-install 
+
+#the following are optional, can be left blank
+#defaults, where applicable are filled in
+#nulecule-file   : nulecule
+#test-skip       : True
+#test-script     :
+#build-script    :
+#delivery-script :
+#docker-index    : True
+#custom-delivery : False
+#local-delivery  : True
+#Upstreams       :
+#        - ref           :
+#          url           :
+#desired-tag     : null

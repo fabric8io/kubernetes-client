@@ -1,0 +1,68 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: etcd
+spec:
+  strategy:
+    type: Recreate
+  replicas: 3
+  selector:
+    matchLabels:
+      name: etcd
+  template:
+    metadata:
+      labels:
+        name: etcd
+    spec:
+      containers:
+      - name: member
+        image: openshift/etcd-20-centos7
+        ports:
+        - containerPort: 2379
+          protocol: TCP
+        - containerPort: 2380
+          protocol: TCP
+        env:
+          # ETCD_NUM_MEMBERS is the maximum number of members to launch (have to match with # of replicas)
+        - name: ETCD_NUM_MEMBERS
+          value: "3"
+        - name: ETCD_INITIAL_CLUSTER_STATE
+          value: "new"
+          # ETCD_INITIAL_CLUSTER_TOKEN is a token etcd uses to generate unique cluster ID and member ID. Conforms to [a-z0-9]{40}
+        - name: ETCD_INITIAL_CLUSTER_TOKEN
+          value: INSERT_ETCD_INITIAL_CLUSTER_TOKEN
+          # ETCD_DISCOVERY_TOKEN is a unique token used by the discovery service. Conforms to etcd-cluster-[a-z0-9]{5}
+        - name: ETCD_DISCOVERY_TOKEN
+          value: INSERT_ETCD_DISCOVERY_TOKEN
+          # ETCD_DISCOVERY_URL connects etcd instances together by storing a list of peer addresses, 
+          # metadata and the initial size of the cluster under a unique address
+        - name: ETCD_DISCOVERY_URL
+          value: "http://etcd-discovery:2379"
+        - name: ETCDCTL_PEERS
+          value: "http://etcd:2379"
+        resources: {}
+        terminationMessagePath: "/dev/termination-log"
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          capabilities: {}
+          privileged: false
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
+      serviceAccount: ''
+status: {}

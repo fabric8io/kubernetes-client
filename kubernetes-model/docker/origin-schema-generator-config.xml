@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+
+    Copyright (C) 2015 Red Hat, Inc.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<project>
+  <actions/>
+  <description>JSON Schema Generator for OpenShift v3 Origin API Objects</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.10">
+      <projectUrl>https://github.com/openshift/origin/</projectUrl>
+    </com.coravy.hudson.plugins.github.GithubProjectProperty>
+  </properties>
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@2.3.4">
+    <configVersion>2</configVersion>
+    <userRemoteConfigs>
+      <hudson.plugins.git.UserRemoteConfig>
+        <url>https://github.com/openshift/origin.git</url>
+      </hudson.plugins.git.UserRemoteConfig>
+    </userRemoteConfigs>
+    <branches>
+      <hudson.plugins.git.BranchSpec>
+        <name>*/master</name>
+      </hudson.plugins.git.BranchSpec>
+    </branches>
+    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+    <submoduleCfg class="list"/>
+    <extensions>
+      <hudson.plugins.git.extensions.impl.CleanBeforeCheckout/>
+      <hudson.plugins.git.extensions.impl.WipeWorkspace/>
+    </extensions>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers>
+    <hudson.triggers.SCMTrigger>
+      <spec>* * * * *</spec>
+      <ignorePostCommitHooks>false</ignorePostCommitHooks>
+    </hudson.triggers.SCMTrigger>
+  </triggers>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>git clone https://github.com/$GIT_REPO/origin-schema-generator.git
+
+mkdir -p $GOPATH/src/github.com/fabric8io
+ln -s $JENKINS_HOME/jobs/origin-schema-generator/workspace/origin-schema-generator $GOPATH/src/github.com/fabric8io/origin-schema-generator
+
+cd origin-schema-generator
+
+python updateGoDeps.py
+
+cat ./Godeps/Godeps.json
+
+godep restore
+godep update ...
+
+godep go build ./cmd/generate/generate.go
+
+./generate &gt; kube-schema-temp.json
+
+cat kube-schema-temp.json | python -mjson.tool &gt; kube-schema.json
+
+if diff kube-schema.json kubernetes-model/src/main/resources/schema/kube-schema.json &gt;/dev/null ; then
+  echo &quot;Same, skipping build&quot;
+else
+  echo &quot;Different, building model and running tests&quot;
+
+  cat kube-schema.json
+
+  mv kube-schema.json kubernetes-model/src/main/resources/schema/kube-schema.json
+
+  mvn clean install -pl !model-generator-app
+
+  cd ${WORKSPACE}
+
+  git clone -b $FABRIC8_GIT_BRANCH https://github.com/$GIT_REPO/fabric8.git
+  cd fabric8
+
+  sed -i &apos;s/kubernetes-model.version&gt;0.0.1&lt;/kubernetes-model.version&gt;0.0.1-SNAPSHOT&lt;/g&apos; pom.xml
+  mvn clean install
+
+fi</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers>
+    <hudson.plugins.ircbot.IrcPublisher plugin="ircbot@2.25">
+      <targets>
+        <hudson.plugins.im.GroupChatIMMessageTarget plugin="instant-messaging@1.32">
+          <name>#fabric8-cd</name>
+          <notificationOnly>false</notificationOnly>
+        </hudson.plugins.im.GroupChatIMMessageTarget>
+      </targets>
+      <strategy>ALL</strategy>
+      <notifyOnBuildStart>true</notifyOnBuildStart>
+      <notifySuspects>false</notifySuspects>
+      <notifyCulprits>false</notifyCulprits>
+      <notifyFixers>false</notifyFixers>
+      <notifyUpstreamCommitters>false</notifyUpstreamCommitters>
+      <buildToChatNotifier class="hudson.plugins.im.build_notify.DefaultBuildToChatNotifier" plugin="instant-messaging@1.32"/>
+      <matrixMultiplier>ONLY_CONFIGURATIONS</matrixMultiplier>
+      <channels/>
+    </hudson.plugins.ircbot.IrcPublisher>
+  </publishers>
+  <buildWrappers/>
+</project>

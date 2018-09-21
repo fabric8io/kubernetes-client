@@ -1,0 +1,239 @@
+{
+  "kind": "ServiceList",
+  "apiVersion": "v1",
+  "metadata": {
+    "selfLink": "/api/v1/services",
+    "resourceVersion": "443"
+  },
+  "items": [
+    {
+      "metadata": {
+        "name": "app-library",
+        "namespace": "default",
+        "selfLink": "/api/v1/namespaces/default/services/app-library",
+        "uid": "d2907fce-02e4-11e5-8091-08002719a237",
+        "resourceVersion": "79",
+        "creationTimestamp": "2015-05-25T13:49:11Z",
+        "labels": {
+          "component": "AppLibrary",
+          "provider": "fabric8"
+        }
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "",
+            "protocol": "TCP",
+            "port": 80,
+            "targetPort": 8080
+          }
+        ],
+        "selector": {
+          "component": "AppLibrary",
+          "provider": "fabric8"
+        },
+        "portalIP": "172.30.17.111",
+        "sessionAffinity": "None"
+      },
+      "status": {}
+    },
+    {
+      "metadata": {
+        "name": "app-library-jolokia",
+        "namespace": "default",
+        "selfLink": "/api/v1/namespaces/default/services/app-library-jolokia",
+        "uid": "d2a01536-02e4-11e5-8091-08002719a237",
+        "resourceVersion": "81",
+        "creationTimestamp": "2015-05-25T13:49:11Z"
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "",
+            "protocol": "TCP",
+            "port": 8778,
+            "targetPort": 8778
+          }
+        ],
+        "selector": {
+          "component": "AppLibrary",
+          "provider": "fabric8"
+        },
+        "portalIP": "172.30.17.8",
+        "sessionAffinity": "None"
+      },
+      "status": {}
+    },
+    {
+      "metadata": {
+        "name": "docker-registry",
+        "namespace": "default",
+        "selfLink": "/api/v1/namespaces/default/services/docker-registry",
+        "uid": "d1058b17-02e4-11e5-8091-08002719a237",
+        "resourceVersion": "58",
+        "creationTimestamp": "2015-05-25T13:49:08Z",
+        "labels": {
+          "docker-registry": "default"
+        }
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "",
+            "protocol": "TCP",
+            "port": 5000,
+            "targetPort": 5000
+          }
+        ],
+        "selector": {
+          "docker-registry": "default"
+        },
+        "portalIP": "172.30.17.117",
+        "sessionAffinity": "None"
+      },
+      "status": {}
+    },
+    {
+      "metadata": {
+        "name": "fabric8-console-service",
+        "namespace": "default",
+        "selfLink": "/api/v1/namespaces/default/services/fabric8-console-service",
+        "uid": "d3ec3762-02e4-11e5-8091-08002719a237",
+        "resourceVersion": "93",
+        "creationTimestamp": "2015-05-25T13:49:13Z"
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "",
+            "protocol": "TCP",
+            "port": 80,
+            "targetPort": 9090
+          }
+        ],
+        "selector": {
+          "component": "fabric8Console"
+        },
+        "portalIP": "172.30.17.249",
+        "sessionAffinity": "None"
+      },
+      "status": {}
+    },
+    {
+      "metadata": {
+        "name": "fabric8-forge",
+        "namespace": "default",
+        "selfLink": "/api/v1/namespaces/default/services/fabric8-forge",
+        "uid": "d3615083-02e4-11e5-8091-08002719a237",
+        "resourceVersion": "88",
+        "creationTimestamp": "2015-05-25T13:49:12Z",
+        "labels": {
+          "component": "fabric8Forge",
+          "provider": "fabric8"
+        }
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "",
+            "protocol": "TCP",
+            "port": 80,
+            "targetPort": 8080
+          }
+        ],
+        "selector": {
+          "component": "fabric8Forge",
+          "provider": "fabric8"
+        },
+        "portalIP": "172.30.17.159",
+        "sessionAffinity": "None"
+      },
+      "status": {}
+    },
+    {
+      "metadata": {
+        "name": "kubernetes",
+        "namespace": "default",
+        "selfLink": "/api/v1/namespaces/default/services/kubernetes",
+        "uid": "bc84b6f4-02e4-11e5-8091-08002719a237",
+        "resourceVersion": "5",
+        "creationTimestamp": "2015-05-25T13:48:34Z",
+        "labels": {
+          "component": "apiserver",
+          "provider": "kubernetes"
+        }
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "",
+            "protocol": "TCP",
+            "port": 443,
+            "targetPort": 443
+          }
+        ],
+        "selector": null,
+        "portalIP": "172.30.17.2",
+        "sessionAffinity": "None"
+      },
+      "status": {}
+    },
+    {
+      "metadata": {
+        "name": "kubernetes-ro",
+        "namespace": "default",
+        "selfLink": "/api/v1/namespaces/default/services/kubernetes-ro",
+        "uid": "bc85c655-02e4-11e5-8091-08002719a237",
+        "resourceVersion": "4",
+        "creationTimestamp": "2015-05-25T13:48:34Z",
+        "labels": {
+          "component": "apiserver",
+          "provider": "kubernetes"
+        }
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "",
+            "protocol": "TCP",
+            "port": 80,
+            "targetPort": 80
+          }
+        ],
+        "selector": null,
+        "portalIP": "172.30.17.1",
+        "sessionAffinity": "None"
+      },
+      "status": {}
+    },
+    {
+      "metadata": {
+        "name": "router",
+        "namespace": "default",
+        "selfLink": "/api/v1/namespaces/default/services/router",
+        "uid": "d0391be9-02e4-11e5-8091-08002719a237",
+        "resourceVersion": "52",
+        "creationTimestamp": "2015-05-25T13:49:07Z",
+        "labels": {
+          "router": "router"
+        }
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "",
+            "protocol": "TCP",
+            "port": 80,
+            "targetPort": 80
+          }
+        ],
+        "selector": {
+          "router": "router"
+        },
+        "portalIP": "172.30.17.219",
+        "sessionAffinity": "None"
+      },
+      "status": {}
+    }
+  ]
+}

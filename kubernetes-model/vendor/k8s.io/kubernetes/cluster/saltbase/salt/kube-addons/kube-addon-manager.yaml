@@ -1,0 +1,54 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kube-addon-manager
+  namespace: kube-system
+  annotations:
+    scheduler.alpha.kubernetes.io/critical-pod: ''
+  labels:
+    component: kube-addon-manager
+spec:
+  hostNetwork: true
+  containers:
+  - name: kube-addon-manager
+    # When updating version also bump it in:
+    # - test/kubemark/resources/manifests/kube-addon-manager.yaml
+    image: gcr.io/google-containers/kube-addon-manager:v6.5
+    command:
+    - /bin/bash
+    - -c
+    - /opt/kube-addons.sh 1>>/var/log/kube-addon-manager.log 2>&1
+    resources:
+      requests:
+        cpu: 5m
+        memory: 50Mi
+    volumeMounts:
+    - mountPath: /etc/kubernetes/
+      name: addons
+      readOnly: true
+    - mountPath: /var/log
+      name: varlog
+      readOnly: false
+  volumes:
+  - hostPath:
+      path: /etc/kubernetes/
+    name: addons
+  - hostPath:
+      path: /var/log
+    name: varlog

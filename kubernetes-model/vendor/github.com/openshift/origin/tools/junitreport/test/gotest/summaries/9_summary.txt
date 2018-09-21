@@ -1,0 +1,27 @@
+====
+    Copyright (C) 2015 Red Hat, Inc.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+====
+
+Of 6 tests executed in 0.400s, 4 succeeded, 1 failed, and 1 was skipped.
+
+In suite "package/name/nested", test case "TestOne" failed:
+file_test.go:11: Error message
+file_test.go:11: Longer
+error
+message.
+
+In suite "package/name/nested", test case "TestTwo" was skipped:
+file_test.go:11: Skip message
+

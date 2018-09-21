@@ -1,0 +1,108 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: template-service-broker-rbac
+parameters:
+- name: NAMESPACE
+  value: openshift-template-service-broker
+- name: KUBE_SYSTEM
+  value: kube-system
+objects:
+
+# Grant the service account permission to call the TSB
+- apiVersion: rbac.authorization.k8s.io/v1beta1
+  kind: ClusterRoleBinding
+  metadata:
+    name: templateservicebroker-client
+  roleRef:
+    kind: ClusterRole
+    name: system:openshift:templateservicebroker-client
+  subjects:
+  - kind: ServiceAccount
+    namespace: ${NAMESPACE}
+    name: templateservicebroker-client
+
+# to delegate authentication and authorization
+- apiVersion: rbac.authorization.k8s.io/v1beta1
+  kind: ClusterRoleBinding
+  metadata:
+    name: auth-delegator-${NAMESPACE}
+  roleRef:
+    kind: ClusterRole
+    name: system:auth-delegator
+  subjects:
+  - kind: ServiceAccount
+    namespace: ${NAMESPACE}
+    name: apiserver
+
+# to have the template service broker powers
+- apiVersion: rbac.authorization.k8s.io/v1beta1
+  kind: ClusterRoleBinding
+  metadata:
+    name: tsb-${NAMESPACE}
+  roleRef:
+    kind: ClusterRole
+    name: system:openshift:controller:template-service-broker
+  subjects:
+  - kind: ServiceAccount
+    namespace: ${NAMESPACE}
+    name: apiserver
+
+# to read the config for terminating authentication
+- apiVersion: rbac.authorization.k8s.io/v1beta1
+  kind: RoleBinding
+  metadata:
+    namespace: ${KUBE_SYSTEM}
+    name: extension-apiserver-authentication-reader-${NAMESPACE}
+  roleRef:
+    kind: Role
+    name: extension-apiserver-authentication-reader
+  subjects:
+  - kind: ServiceAccount
+    namespace: ${NAMESPACE}
+    name: apiserver
+
+# allow the kube service catalog's SA to read the static secret defined
+# above, which will contain the token for the SA that can call the TSB.
+- apiVersion: rbac.authorization.k8s.io/v1beta1
+  kind: Role
+  metadata:
+    name: templateservicebroker-auth-reader
+    namespace: ${NAMESPACE}
+  rules:
+  - apiGroups:
+    - ""
+    resourceNames:
+    - templateservicebroker-client
+    resources:
+    - secrets
+    verbs:
+    - get
+- apiVersion: rbac.authorization.k8s.io/v1beta1
+  kind: RoleBinding
+  metadata:
+    namespace: ${NAMESPACE}
+    name: templateservicebroker-auth-reader
+  roleRef:
+    kind: Role
+    name: templateservicebroker-auth-reader
+  subjects:
+  - kind: ServiceAccount
+    namespace: kube-service-catalog
+    name: service-catalog-controller

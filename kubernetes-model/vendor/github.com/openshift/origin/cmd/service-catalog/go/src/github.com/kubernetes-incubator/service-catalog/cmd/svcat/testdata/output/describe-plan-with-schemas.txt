@@ -1,0 +1,43 @@
+====
+    Copyright (C) 2015 Red Hat, Inc.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+====
+
+  Name:          premium                               
+  Description:   Premium plan                          
+  UUID:          cc0d7529-18e8-416d-8946-6f7456acd589  
+  Status:        Active                                
+  Free:          false                                 
+  Class:         user-provided-service                 
+
+Instances:
+No instances defined
+
+Instance Create Parameter Schema:
+  properties:
+    testInstanceProperty:
+      description: A test instance property.
+      type: string
+  required:
+  - testInstanceProperty
+  type: object
+
+Binding Create Parameter Schema:
+  properties:
+    testBindingProperty:
+      description: A test binding property.
+      type: string
+  required:
+  - testBindingProperty
+  type: object

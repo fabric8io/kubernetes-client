@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2015 Red Hat, Inc.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>io.fabric8</groupId>
+    <artifactId>kubernetes-model-generator</artifactId>
+    <version>4.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>kubernetes-model</artifactId>
+  <packaging>bundle</packaging>
+
+  <name>Fabric8 :: Kubernetes Model</name>
+
+  <properties>
+    <clone-kube>true</clone-kube>
+    <kube.dir>${basedir}/src/main/resources</kube.dir>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.sundr</groupId>
+      <artifactId>builder-annotations</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.module</groupId>
+      <artifactId>jackson-module-jaxb-annotations</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>5.2.4.Final</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.el</groupId>
+      <artifactId>javax.el-api</artifactId>
+      <version>2.2.4</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.web</groupId>
+      <artifactId>javax.el</artifactId>
+      <version>2.2.4</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.javacrumbs.json-unit</groupId>
+      <artifactId>json-unit-fluent</artifactId>
+      <version>1.25.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.jsonschema2pojo</groupId>
+        <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+        <version>${jsonschema2pojo.version}</version>
+        <configuration>
+          <sourcePaths>
+            <sourcePath>${kube.dir}/schema/kube-schema.json</sourcePath>
+          </sourcePaths>
+          <targetPackage>io.fabric8.kubernetes.api.model</targetPackage>
+          <includeConstructors>true</includeConstructors>
+          <includeJsr303Annotations>true</includeJsr303Annotations>
+          <includeToString>false</includeToString>
+          <includeHashcodeAndEquals>false</includeHashcodeAndEquals>
+          <outputDirectory>${basedir}/target/generated-sources</outputDirectory>
+          <customAnnotator>io.fabric8.kubernetes.annotator.KubernetesTypeAnnotator</customAnnotator>
+          <annotationStyle>none</annotationStyle>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-model-annotator</artifactId>
+            <version>${project.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.7</version>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <configuration>
+              <target>
+                <echo>removing the duplicate generated calss</echo>
+                <delete file="${basedir}/target/generated-sources/io/fabric8/kubernetes/api/model/IntOrString.java" verbose="true" />
+                <delete file="${basedir}/target/generated-sources/io/fabric8/kubernetes/api/model/Quantity.java" verbose="true" />
+                <delete file="${basedir}/target/generated-sources/io/fabric8/openshift/api/model/Template.java" verbose="true" />
+                <delete file="${basedir}/target/generated-sources/io/fabric8/kubernetes/api/model/HasMetadata.java" verbose="true" />
+                <delete file="${basedir}/target/generated-sources/io/fabric8/kubernetes/api/model/WatchEvent.java" verbose="true" />
+                <delete verbose="true">
+                  <fileset dir="${basedir}/target/generated-sources">
+                    <include name="*.java"/>
+                  </fileset>
+                </delete>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <extensions>true</extensions>
+        <version>2.3.7</version>
+        <configuration>
+          <instructions>
+            <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+            <Export-Package>
+              io.fabric8.kubernetes.api,
+              io.fabric8.kubernetes.api.builder,
+              io.fabric8.kubernetes.api.model,
+              io.fabric8.kubernetes.api.model.apiextensions,
+              io.fabric8.kubernetes.api.model.apps,
+              io.fabric8.kubernetes.api.model.authentication,
+              io.fabric8.kubernetes.api.model.authorization,
+              io.fabric8.kubernetes.api.model.batch,
+              io.fabric8.kubernetes.api.model.extensions,
+              io.fabric8.kubernetes.api.model.networking,
+              io.fabric8.kubernetes.api.model.policy,
+              io.fabric8.kubernetes.api.model.rbac,
+              io.fabric8.kubernetes.api.model.storage,
+              io.fabric8.kubernetes.api.model.validators,
+              io.fabric8.openshift.api.model
+            </Export-Package>
+          </instructions>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.9.1</version>
+        <executions>
+          <execution>
+            <id>attach-artifacts</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attach-artifact</goal>
+            </goals>
+            <configuration>
+              <artifacts>
+                <artifact>
+                  <file>${project.build.outputDirectory}/schema/kube-schema.json</file>
+                  <type>json</type>
+                  <classifier>schema</classifier>
+                </artifact>
+              </artifacts>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.5</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>1.5</version>
+        <configuration>
+          <passphrase>${gpg.passphrase}</passphrase>
+          <useAgent>true</useAgent>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

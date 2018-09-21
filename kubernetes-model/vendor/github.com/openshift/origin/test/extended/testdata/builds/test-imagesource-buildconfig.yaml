@@ -1,0 +1,195 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+apiVersion: v1
+kind: List
+metadata: {}
+items:
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      build: inputimage
+    name: inputimage
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: inputimage:latest
+    source:
+      dockerfile: "FROM foo"
+    strategy:
+      dockerStrategy:
+        from: 
+          kind: ImageStreamTag
+          name: ruby:2.3
+          namespace: openshift
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      build: imagesourcebuild
+    name: imagesourcebuildconfig
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: imagesourceapp:latest
+    source:
+      git:
+        uri: https://github.com/openshift/ruby-hello-world.git
+      images:
+      - from:
+          kind: ImageStreamTag
+          name: inputimage:latest
+        paths:
+        - destinationDir: injected/dir
+          sourcePath: /opt/rh/rh-ruby23/root/usr/bin/ruby
+    strategy:
+      sourceStrategy:
+        forcePull: true
+        from:
+          kind: ImageStreamTag
+          name: ruby:latest
+          namespace: openshift
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      build: imagedockerbuild
+    name: imagedockerbuildconfig
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: imagedockerapp:latest
+    source:
+      git:
+        uri: https://github.com/openshift/ruby-hello-world.git
+      images:
+      - from:
+          kind: ImageStreamTag
+          name: inputimage:latest
+        paths:
+        - destinationDir: injected/dir
+          sourcePath: /opt/rh/rh-ruby23/root/usr/bin/ruby
+    strategy:
+      dockerStrategy:
+        forcePull: true
+
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: inputimage
+  spec: {}
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: imagesourceapp
+  spec: {}
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: imagedockerapp
+  spec: {}
+
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    name: imagesourceapp
+  spec:
+    replicas: 1
+    selector:
+      app: imagesourceapp
+      deploymentconfig: imagesourceapp
+    strategy:
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          app: imagesourceapp
+          deploymentconfig: imagesourceapp
+      spec:
+        containers:
+        - image:
+          imagePullPolicy: Always
+          readinessProbe:
+            httpGet:
+              port: 8080
+          name: imagesourceapp
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          - containerPort: 8888
+            protocol: TCP
+          terminationMessagePath: /dev/termination-log
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+    triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - imagesourceapp
+        from:
+          kind: ImageStreamTag
+          name: imagesourceapp:latest
+      type: ImageChange
+    - type: ConfigChange
+
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    name: imagedockerapp
+  spec:
+    replicas: 1
+    selector:
+      app: imagedockerapp
+      deploymentconfig: imagedockerapp
+    strategy:
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          app: imagedockerapp
+          deploymentconfig: imagedockerapp
+      spec:
+        containers:
+        - image:
+          imagePullPolicy: Always
+          readinessProbe:
+            httpGet:
+              port: 8080
+          name: imagedockerapp
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          - containerPort: 8888
+            protocol: TCP
+          terminationMessagePath: /dev/termination-log
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+    triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - imagedockerapp
+        from:
+          kind: ImageStreamTag
+          name: imagedockerapp:latest
+      type: ImageChange
+    - type: ConfigChange
