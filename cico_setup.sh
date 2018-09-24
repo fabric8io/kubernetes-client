@@ -77,15 +77,15 @@ function check_if_tagged() {
   # Get all the deps in
   yum -y install git
 
-  head=$(git ls-remote https://github.com/fabric8io/kubernetes-client.git master | cut -c1-40)
-  latest_tagged=$(git ls-remote --tags https://github.com/fabric8io/kubernetes-client.git | tail -1 | cut -c1-40)
+  head=$(git ls-remote https://github.com/fabric8io/kubernetes-client.git test_cico | cut -c1-40)
+  latest_tagged=$(git ls-remote --tags https://github.com/fabric8io/kubernetes-client.git | grep $head)
 
-  if [ $head -eq $latest_tagged ]
+  if [ -z "$latest_tagged" ]
   then
-    echo 'HEAD and latest tagged commit are equal. Proceeding the release pipeline'
-    return 1
-  else
-    echo 'HEAD and latest tagged commit are not equal. No need to run the release pipeline'
+    echo 'Latest tagged commit is not tagged. No need to run the release pipeline'
     return 0
+  else
+    echo 'Latest commit is tagged. Proceeding the release pipeline'
+    return 1
   fi
 }
