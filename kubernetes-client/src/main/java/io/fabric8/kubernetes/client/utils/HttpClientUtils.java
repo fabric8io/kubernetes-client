@@ -47,6 +47,7 @@ public class HttpClientUtils {
 
   private static Pattern VALID_IPV4_PATTERN = null;
   public static final String ipv4Pattern = "(http:\\/\\/|https:\\/\\/)?(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])(\\/[0-9]\\d|1[0-9]\\d|2[0-9]\\d|3[0-2]\\d)?";
+  private static final Logger logger = LoggerFactory.getLogger(HttpClientUtils.class);
 
   static {
     try {
@@ -209,8 +210,8 @@ public class HttpClientUtils {
         return null;
     }
 
-     private static boolean isIpAddress(String ipAddress) {
-      Matcher ipMatcher = VALID_IPV4_PATTERN.matcher(ipAddress);
-      return ipMatcher.matches();
+    private static boolean isIpAddress(String ipAddress) {
+        Matcher ipMatcher = VALID_IPV4_PATTERN.matcher(ipAddress);
+        return ipMatcher.matches();
     }
 }
