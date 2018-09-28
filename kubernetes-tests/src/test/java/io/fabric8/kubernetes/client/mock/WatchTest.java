@@ -173,4 +173,51 @@ public class WatchTest {
     assertTrue(closeLatch.await(10, TimeUnit.SECONDS));
   }
 
+  @Test
+  public void testReconnectsWithLastResourceVersion() throws InterruptedException {
+    logger.info("testOnCloseEvent");
+    final CountDownLatch eventLatch = new CountDownLatch(3);
+    KubernetesClient client = server.getClient().inNamespace("test");
+
+
+    final Pod pod1initial = new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1")
+      .withResourceVersion("9").endMetadata().build();
+
+
+    final Pod pod1update = new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1")
+      .withResourceVersion("10").endMetadata().build();
+
+    final String path = "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true";
+
+    server.expect()
+      .withPath(path)
+      .andUpgradeToWebSocket().open()
+      .waitFor(2000).andEmit(new WatchEvent(pod1initial, "MODIFIED"))
+      .waitFor(2000).andEmit(new WatchEvent(pod1update, "MODIFIED"))
+      .done().once();
+
+    final String reconnectPath = "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=10&watch=true";
+
+    server.expect()
+      .withPath(reconnectPath)
+      .andUpgradeToWebSocket().open()
+      .waitFor(2000).andEmit(new WatchEvent(pod1update, "MODIFIED"))
+      .done().once();
+
+
+    Watch watch = client.pods().withName("pod1").withResourceVersion("1").watch(new Watcher<Pod>() {
+      @Override
+      public void eventReceived(Action action, Pod resource) {
+        eventLatch.countDown();
+      }
+
+      @Override
+      public void onClose(KubernetesClientException cause) {
+      }
+    });
+
+    assertTrue(eventLatch.await(10, TimeUnit.SECONDS));
+    watch.close();
+  }
+
 }

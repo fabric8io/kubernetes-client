@@ -2,6 +2,8 @@
 
 #### 4.0.5
   Bugs
+  
+    * Fix #1214 : Watch resource versions not correctly tracked resulting in 410 errors on reconnect
 
   Improvements
     * Chore #1168 : Upgrade to Java 8

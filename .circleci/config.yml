@@ -16,11 +16,6 @@
 
 version: 2
 jobs:
-  TEST:
-    machine: true
-    steps:
-      - checkout
-      - run: mvn clean install
   OPENSHIFT_3.6.0:
     machine: true
     steps:
@@ -221,7 +216,6 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - TEST
       - OPENSHIFT_3.6.0
       - OPENSHIFT_3.6.1
       - OPENSHIFT_3.7.0
