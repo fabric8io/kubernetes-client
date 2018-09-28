@@ -2,31 +2,7 @@
 
 #### 3.2.1 (To be released)
   Bugs
-
-    * Fix #1178 : Impersonate-Group may be specified multiple times
-    * Fix #1173 : Send response to Callback for exec commands that have no textual feedback
-    * Fix #1165 : Null parameter values when processing a template are now handled properly
-    * Fix #1147 : Cluster context was being ignored when loading the Config from a kubeconfig file
-    * Fix #1162 : Deletion of DeploymentConfig now does not fail randomly because of issues related to 
-      owner references of the ReplicationController
-    * Fix #1180 : DeploymentExamples requires the definition of a selector with match labels
-    * Fix #1099 : CustomResourceDefinitions: withResourceVersion() causes NoSuchMethodError
-    * Fix #1156 : Watcher does not have correct authentication information in Openshift environment.
-    * Fix #1125 : ConfigMap labels are ignored when using mock KubernetesServer
-    * Fix #1144 : Get Request with OpenShift Mock Server Not Working
-    * Fix #1098 : Unable to create LimitRange from yaml
-    * Fix #1089 : Query parameters are not correctly processed if set in `masterUrl`
-    * Fix #1119 : Regression Tests Breaking intermittently
-    * Fix #1085 : Impersonate parameters are not configurable for DefaultOpenShiftClient
-
-  New Feature
-    * Fix #1147: Cluster context was being ignored when loading the Config from a kubeconfig file
-
-  Improvements
-   * Added Kubernetes/Openshift examples for client.getVersion()
-
-  Dependency Upgrade
-    * Fix #924 : Include kubernetes-model in client BOM with dependencies.
+    * Fix #1214 : Watch resource versions not correctly tracked resulting in 410 errors on reconnect
 
 #### 3.2.0
   Bugs
