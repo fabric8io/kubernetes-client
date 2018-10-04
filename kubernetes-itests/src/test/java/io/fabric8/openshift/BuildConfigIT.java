@@ -16,6 +16,8 @@
 
 package io.fabric8.openshift;
 
+import io.fabric8.commons.DeleteEntity;
+import io.fabric8.commons.ReadyEntity;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigBuilder;
 import io.fabric8.openshift.api.model.BuildConfigList;
@@ -29,8 +31,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.concurrent.TimeUnit;
+
 import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -121,21 +126,28 @@ public class BuildConfigIT {
 
   @Test
   public void update() {
+    ReadyEntity<BuildConfig> buildConfigReady = new ReadyEntity<>(BuildConfig.class, client, "bc1", currentNamespace);
     buildConfig1 = client.buildConfigs().inNamespace(currentNamespace).withName("bc1").edit()
       .editSpec().withFailedBuildsHistoryLimit(5).endSpec().done();
+    await().atMost(30, TimeUnit.SECONDS).until(buildConfigReady);
     assertEquals(5, buildConfig1.getSpec().getFailedBuildsHistoryLimit().intValue());
   }
 
   @Test
   public void delete() {
+    ReadyEntity<BuildConfig> buildConfigReady = new ReadyEntity<>(BuildConfig.class, client, "bc1", currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(buildConfigReady);
     boolean bDeleted = client.buildConfigs().inNamespace(currentNamespace).withName("bc1").delete();
     assertTrue(bDeleted);
   }
 
   @After
   public void cleanup() throws InterruptedException {
-    client.buildConfigs().inNamespace(currentNamespace).delete();
-    // Wait for resources to get destroyed
-    Thread.sleep(30000);
+    if (client.buildConfigs().list().getItems().size() != 0) {
+      client.buildConfigs().inNamespace(currentNamespace).delete();
+    }
+
+    DeleteEntity<BuildConfig> buildConfigDelete = new DeleteEntity<>(BuildConfig.class, client, "bc1", currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(buildConfigDelete);
   }
 }

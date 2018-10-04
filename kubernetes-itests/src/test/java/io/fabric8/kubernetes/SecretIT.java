@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes;
 
+import io.fabric8.commons.DeleteEntity;
+import io.fabric8.commons.ReadyEntity;
 import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.arquillian.cube.kubernetes.api.Session;
@@ -27,8 +29,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.concurrent.TimeUnit;
+
 import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -79,23 +84,31 @@ public class SecretIT {
 
   @Test
   public void update() {
+    ReadyEntity<Secret> secretReady = new ReadyEntity<>(Secret.class, client, "secret1", currentNamespace);
     secret1 = client.secrets().inNamespace(currentNamespace).withName("secret1").edit()
       .withType("Opaque")
       .done();
+    await().atMost(30, TimeUnit.SECONDS).until(secretReady);
     assertThat(secret1).isNotNull();
     assertEquals("Opaque", secret1.getType());
   }
 
   @Test
-  public void delete() {
+  public void delete()
+  {
+    ReadyEntity<Secret> secretReady = new ReadyEntity<>(Secret.class, client, "secret1", currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(secretReady);
     assertTrue(client.secrets().inNamespace(currentNamespace).withName("secret1").delete());
   }
 
   @After
   public void cleanup() throws InterruptedException {
-    client.secrets().inNamespace(currentNamespace).withName("secret1").delete();
+    if (client.secrets().inNamespace(currentNamespace).list().getItems().size()!= 0) {
+      client.secrets().inNamespace(currentNamespace).withName("secret1").delete();
+    }
     // Wait for resources to get destroyed
-    Thread.sleep(30000);
+    DeleteEntity<Secret> secretDelete = new DeleteEntity<>(Secret.class, client, "secret1", currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(secretDelete);
   }
 
   @Test

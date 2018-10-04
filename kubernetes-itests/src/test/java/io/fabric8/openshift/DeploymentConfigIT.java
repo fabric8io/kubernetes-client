@@ -16,6 +16,8 @@
 
 package io.fabric8.openshift;
 
+import io.fabric8.commons.DeleteEntity;
+import io.fabric8.commons.ReadyEntity;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
@@ -29,9 +31,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.concurrent.TimeUnit;
+
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(ArquillianConditionalRunner.class)
@@ -93,24 +98,27 @@ public class DeploymentConfigIT {
 
   @Test
   public void update() {
+    ReadyEntity<DeploymentConfig> deploymentConfigReady = new ReadyEntity<>(DeploymentConfig.class, client, "deploymentconfig1", currentNamespace);
     deploymentConfig1 = client.deploymentConfigs().inNamespace(currentNamespace).withName("deploymentconfig1").edit()
       .editSpec().withReplicas(3).endSpec().done();
+    await().atMost(60, TimeUnit.SECONDS).until(deploymentConfigReady);
     assertThat(deploymentConfig1).isNotNull();
     assertEquals(3, deploymentConfig1.getSpec().getReplicas().intValue());
   }
 
   @Test
   public void delete() throws InterruptedException {
-    Thread.sleep(6000);
+    ReadyEntity<DeploymentConfig> deploymentConfigReady = new ReadyEntity<>(DeploymentConfig.class, client, "deploymentconfig1", currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(deploymentConfigReady);
     boolean bDeleted = client.deploymentConfigs().inNamespace(currentNamespace).withName("deploymentconfig1").delete();
     assertTrue(bDeleted);
   }
 
   @After
   public void cleanup() throws InterruptedException {
-    Thread.sleep(6000);
     client.deploymentConfigs().inNamespace(currentNamespace).delete();
-    // Wait for resources to get destroyed
-    Thread.sleep(30000);
+
+    DeleteEntity<DeploymentConfig> deploymentConfigDelete = new DeleteEntity<>(DeploymentConfig.class, client, "deploymentconfig1", currentNamespace);
+    await().atMost(90, TimeUnit.SECONDS).until(deploymentConfigDelete);
   }
 }

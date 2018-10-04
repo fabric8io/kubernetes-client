@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.openshift.client.OpenShiftClient;
 import org.apache.commons.lang.RandomStringUtils;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
@@ -29,7 +30,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
+
 import static junit.framework.TestCase.assertNotNull;
+import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(ArquillianConditionalRunner.class)
@@ -85,6 +90,7 @@ public class ResourceIT {
 
   @Test
   public void delete() {
+    await().atMost(30, TimeUnit.SECONDS).until(resourceIsReady());
     assertTrue(client.resource(pod1).inNamespace(currentNamespace).delete());
   }
 
@@ -94,4 +100,14 @@ public class ResourceIT {
     // Wait for resources to get destroyed
     Thread.sleep(30000);
   }
+
+  private Callable<Boolean> resourceIsReady() {
+    return new Callable<Boolean>() {
+      @Override
+      public Boolean call() {
+        return client.resource(pod1).inNamespace(currentNamespace).get()!= null;
+      }
+    };
+  }
+
 }

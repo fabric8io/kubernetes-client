@@ -143,19 +143,19 @@ public class UserImpersonationIT {
     requestConfig.setImpersonateUsername(null);
     requestConfig.setImpersonateGroups(null);
 
-    // Delete Cluster Role
+    // DeleteEntity Cluster Role
     client.rbac().kubernetesClusterRoles().inNamespace(currentNamespace).delete(impersonatorRole);
     await().atMost(30, TimeUnit.SECONDS).until(kubernetesClusterRoleIsDeleted());
 
-    // Delete Cluster Role binding
+    // DeleteEntity Cluster Role binding
     client.rbac().kubernetesClusterRoleBindings().inNamespace(currentNamespace).delete(impersonatorRoleBinding);
     await().atMost(30, TimeUnit.SECONDS).until(kubernetesClusterRoleBindingIsDeleted());
 
-    // Delete project
+    // DeleteEntity project
     client.projects().withName(NEW_PROJECT).delete();
     await().atMost(30, TimeUnit.SECONDS).until(projectIsDeleted());
 
-    // Delete ServiceAccounts
+    // DeleteEntity ServiceAccounts
     client.serviceAccounts().inNamespace(currentNamespace).delete(serviceAccount1);
     await().atMost(30, TimeUnit.SECONDS).until(serviceAccountIsDeleted());
   }

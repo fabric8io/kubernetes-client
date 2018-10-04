@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes;
 
+import io.fabric8.commons.DeleteEntity;
+import io.fabric8.commons.ReadyEntity;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.networking.NetworkPolicy;
 import io.fabric8.kubernetes.api.model.networking.NetworkPolicyBuilder;
@@ -34,7 +36,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Collections;
+import java.util.concurrent.TimeUnit;
 
+import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -51,9 +55,11 @@ public class NetworkPolicyIT {
 
   private NetworkPolicy networkPolicy;
 
+  private String currentNamespace;
+
   @Before
   public void init(){
-
+    currentNamespace = session.getNamespace();
     networkPolicy = new NetworkPolicyBuilder()
       .withNewMetadata()
       .withName("networkpolicy")
@@ -137,12 +143,13 @@ public class NetworkPolicyIT {
 
   @Test
   public void update(){
-
+    ReadyEntity<NetworkPolicy> networkPolicyReady = new ReadyEntity<>(NetworkPolicy.class, client, "networkpolicy", currentNamespace);
     networkPolicy = client.network().networkPolicies()
       .withName("networkpolicy").edit()
       .editMetadata().addToLabels("bar","foo").endMetadata()
       .done();
 
+    await().atMost(30, TimeUnit.SECONDS).until(networkPolicyReady);
     assertNotNull(networkPolicy);
     assertEquals("networkpolicy",networkPolicy.getMetadata().getName());
     assertEquals(2,networkPolicy.getMetadata().getLabels().size());
@@ -158,7 +165,10 @@ public class NetworkPolicyIT {
 
   @Test
   public void delete(){
+    ReadyEntity<NetworkPolicy> networkPolicyReady = new ReadyEntity<>(NetworkPolicy.class, client, "networkpolicy", currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(networkPolicyReady);
     boolean deleted = client.network().networkPolicies().delete(networkPolicy);
+
     assertTrue(deleted);
     NetworkPolicyList networkPolicyList = client.network().networkPolicies().list();
     assertEquals(0,networkPolicyList.getItems().size());
@@ -166,8 +176,10 @@ public class NetworkPolicyIT {
 
   @After
   public void cleanup() throws InterruptedException {
-    client.network().networkPolicies().delete();
-    // wait for graceful deletion
-    Thread.sleep(6 * 1000);
+    if (client.network().networkPolicies().list().getItems().size()!= 0) {
+      client.network().networkPolicies().delete();
+    }
+    DeleteEntity<NetworkPolicy> networkPolicyDelete = new DeleteEntity<>(NetworkPolicy.class, client, "networkpolicy", currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(networkPolicyDelete);
   }
 }

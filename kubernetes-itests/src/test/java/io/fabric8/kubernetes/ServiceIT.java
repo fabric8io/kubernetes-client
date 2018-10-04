@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes;
 
+import io.fabric8.commons.DeleteEntity;
+import io.fabric8.commons.ReadyEntity;
 import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.extensions.Ingress;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -23,7 +25,6 @@ import io.fabric8.openshift.api.model.RouteBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.openshift.impl.enricher.external.OpenshiftClientResourceProvider;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.After;
@@ -32,10 +33,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Collections;
+import java.util.concurrent.TimeUnit;
 
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(ArquillianConditionalRunner.class)
@@ -119,15 +122,19 @@ public class ServiceIT {
 
   @Test
   public void update() {
+    ReadyEntity<Service> serviceReady = new ReadyEntity<>(Service.class, client, "svc1", currentNamespace);
     svc1 = client.services().inNamespace(currentNamespace).withName("svc1").edit()
       .editSpec().addNewPort().withName("https").withProtocol("TCP").withPort(443).withTargetPort(new IntOrString(9377)).endPort().endSpec()
       .done();
+    await().atMost(30, TimeUnit.SECONDS).until(serviceReady);
     assertThat(svc1).isNotNull();
     assertEquals(2, svc1.getSpec().getPorts().size());
   }
 
   @Test
   public void delete() {
+    ReadyEntity<Service> serviceReady = new ReadyEntity<>(Service.class, client, "svc2", currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(serviceReady);
     boolean bDeleted = client.services().inNamespace(currentNamespace).withName("svc2").delete();
     assertTrue(bDeleted);
   }
@@ -168,8 +175,15 @@ public class ServiceIT {
 
   @After
   public void cleanup() throws InterruptedException {
-    client.services().inNamespace(currentNamespace).delete();
+    if (client.services().inNamespace(currentNamespace).list().getItems().size()!= 0) {
+      client.services().inNamespace(currentNamespace).delete();
+    }
+
     // Wait for resources to get destroyed
-    Thread.sleep(30000);
+    DeleteEntity<Service> service1Delete = new DeleteEntity<>(Service.class, client, "svc1", currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(service1Delete);
+
+    DeleteEntity<Service> service2Delete = new DeleteEntity<>(Service.class, client, "svc2", currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(service2Delete);
   }
 }

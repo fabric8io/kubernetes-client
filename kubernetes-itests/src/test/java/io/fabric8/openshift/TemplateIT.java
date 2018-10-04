@@ -16,6 +16,8 @@
 
 package io.fabric8.openshift;
 
+import io.fabric8.commons.DeleteEntity;
+import io.fabric8.commons.ReadyEntity;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.openshift.api.model.Template;
@@ -32,11 +34,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Collections;
+import java.util.concurrent.TimeUnit;
+
 
 import static io.fabric8.kubernetes.client.utils.ReplaceValueStream.replaceValues;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(ArquillianConditionalRunner.class)
@@ -97,14 +102,19 @@ public class TemplateIT {
 
   @Test
   public void delete() {
+    ReadyEntity<Template> template1Ready = new ReadyEntity<>(Template.class, client, "foo", this.currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(template1Ready);
     boolean bDeleted = client.templates().inNamespace(currentNamespace).withName("foo").delete();
     assertTrue(bDeleted);
   }
 
   @After
   public void cleanup() throws InterruptedException {
-    client.templates().inNamespace(currentNamespace).delete();
-    // Wait for resources to get destroyed
-    Thread.sleep(30000);
+    if (client.templates().inNamespace(currentNamespace).list().getItems().size()!= 0) {
+      client.templates().inNamespace(currentNamespace).delete();
+    }
+
+    DeleteEntity<Template> templateDelete = new DeleteEntity<>(Template.class, client, "foo", currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(templateDelete);
   }
 }
