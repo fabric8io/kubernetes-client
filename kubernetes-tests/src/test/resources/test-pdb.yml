@@ -14,11 +14,12 @@
 # limitations under the License.
 #
 
-io.fabric8.kubernetes.client.AppsAPIGroupExtensionAdapter
-io.fabric8.kubernetes.client.AutoscalingAPIGroupExtensionAdapter
-io.fabric8.kubernetes.client.ExtensionsAPIGroupExtensionAdapter
-io.fabric8.kubernetes.client.BatchAPIGroupExtensionAdapter
-io.fabric8.kubernetes.client.NetworkAPIGroupExtensionAdapter
-io.fabric8.kubernetes.client.StorageAPIGroupExtensionAdapter
-io.fabric8.kubernetes.client.PolicyAPIGroupExtensionAdapter
-io.fabric8.kubernetes.client.RbacAPIGroupExtensionAdapter
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: zk-pdb
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: zookeeper
