@@ -38,6 +38,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -504,16 +505,18 @@ public class Config {
               String apiVersion = (String) exec.get("apiVersion");
               if ("client.authentication.k8s.io/v1alpha1".equals(apiVersion)) {
                 List<String> argv = new ArrayList<String>();
-                argv.add((String) exec.get("command"));
+                String command = (String) exec.get("command");
+                if (command.contains("/") && !command.startsWith("/") && kubeconfigPath != null && !kubeconfigPath.isEmpty()) {
+                  // Appears to be a relative path; normalize. Spec is vague about how to detect this situation.
+                  command = Paths.get(kubeconfigPath).resolveSibling(command).normalize().toString();
+                }
+                argv.add(command);
                 @SuppressWarnings("unchecked")
                 List<String> args = (List) exec.get("args");
                 if (args != null) {
                   argv.addAll(args);
                 }
                 ProcessBuilder pb = new ProcessBuilder(argv);
-                if (kubeconfigPath != null && !kubeconfigPath.isEmpty()) {
-                  pb.directory(new File(kubeconfigPath).getParentFile()); // TODO does this suffice to handle relative paths in command?
-                }
                 @SuppressWarnings("unchecked")
                 List<Map<String, String>> env = (List<Map<String, String>>) exec.get("env");
                 if (env != null) {
