@@ -98,7 +98,7 @@
     <maven.compiler.target>1.7</maven.compiler.target>
     <maven.enforcer.plugin.version>1.4.1</maven.enforcer.plugin.version>
 
-    <sundrio.version>0.7.1</sundrio.version>
+    <sundrio.version>0.10.1</sundrio.version>
     <exec-maven-plugin.version>1.5.0</exec-maven-plugin.version>
     <jackson2.version>2.7.5</jackson2.version>
     <jsonschema2pojo.version>0.4.23</jsonschema2pojo.version>
