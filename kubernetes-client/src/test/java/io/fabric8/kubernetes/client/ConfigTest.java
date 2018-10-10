@@ -29,6 +29,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -48,6 +51,9 @@ public class ConfigTest {
   private static final String TEST_NAMESPACE_FILE = Utils.filePath(ConfigTest.class.getResource("/test-namespace"));
 
   private static final String TEST_CONFIG_YML_FILE = Utils.filePath(ConfigTest.class.getResource("/test-config.yml"));
+
+  private static final String TEST_KUBECONFIG_EXEC_FILE = Utils.filePath(ConfigTest.class.getResource("/test-kubeconfig-exec"));
+  private static final String TEST_TOKEN_GENERATOR_FILE = Utils.filePath(ConfigTest.class.getResource("/token-generator"));
 
   @Before
   public void setUp() {
@@ -412,6 +418,15 @@ public class ConfigTest {
     assertEquals("a", currentConfig.getImpersonateUsername());
     assertArrayEquals(new String[]{"b"}, currentConfig.getImpersonateGroups());
     assertEquals(Arrays.asList("d"), currentConfig.getImpersonateExtras().get("c"));
+  }
+
+  @Test
+  public void honorClientAuthenticatorCommands() throws Exception {
+    Files.setPosixFilePermissions(Paths.get(TEST_TOKEN_GENERATOR_FILE), PosixFilePermissions.fromString("rwxrwxr-x"));
+    System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_EXEC_FILE);
+    Config config = Config.autoConfigure(null);
+    assertNotNull(config);
+    assertEquals("HELLO WORLD", config.getOauthToken());
   }
 
   private void assertConfig(Config config) {

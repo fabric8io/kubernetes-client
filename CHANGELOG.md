@@ -10,6 +10,7 @@
     * Chore #1168 : Upgrade to Java 8
     * Fix #1179 : Impersonate-Extra keys may be specified multiple times
     * Fix #1182 : Fixes flaky integration tests.
+    * Fix #1200 : Support client authenticator commands like `aws-iam-authenticator`.
 
   Dependency Upgrade
 

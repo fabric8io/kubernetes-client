@@ -27,6 +27,8 @@ import io.fabric8.kubernetes.api.model.Cluster;
 import io.fabric8.kubernetes.api.model.Context;
 import io.fabric8.kubernetes.client.internal.KubeConfigUtils;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
+import io.fabric8.kubernetes.client.utils.IOHelpers;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.sundr.builder.annotations.Buildable;
 import org.slf4j.Logger;
@@ -36,6 +38,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -493,6 +497,50 @@ public class Config {
 
           if (Utils.isNullOrEmpty(config.getOauthToken()) && currentAuthInfo.getAuthProvider() != null && !Utils.isNullOrEmpty(currentAuthInfo.getAuthProvider().getConfig().get(ACCESS_TOKEN))) {
             config.setOauthToken(currentAuthInfo.getAuthProvider().getConfig().get(ACCESS_TOKEN));
+          } else { // https://kubernetes.io/docs/reference/access-authn-authz/authentication/#client-go-credential-plugins
+            Object _exec = currentAuthInfo.getAdditionalProperties().get("exec");
+            if (_exec instanceof Map) {
+              @SuppressWarnings("unchecked")
+              Map<String, Object> exec = (Map) _exec;
+              String apiVersion = (String) exec.get("apiVersion");
+              if ("client.authentication.k8s.io/v1alpha1".equals(apiVersion)) {
+                List<String> argv = new ArrayList<String>();
+                String command = (String) exec.get("command");
+                if (command.contains("/") && !command.startsWith("/") && kubeconfigPath != null && !kubeconfigPath.isEmpty()) {
+                  // Appears to be a relative path; normalize. Spec is vague about how to detect this situation.
+                  command = Paths.get(kubeconfigPath).resolveSibling(command).normalize().toString();
+                }
+                argv.add(command);
+                @SuppressWarnings("unchecked")
+                List<String> args = (List) exec.get("args");
+                if (args != null) {
+                  argv.addAll(args);
+                }
+                ProcessBuilder pb = new ProcessBuilder(argv);
+                @SuppressWarnings("unchecked")
+                List<Map<String, String>> env = (List<Map<String, String>>) exec.get("env");
+                if (env != null) {
+                  Map<String, String> environment = pb.environment();
+                  env.forEach(pair -> environment.put(pair.get("name"), pair.get("value")));
+                }
+                // TODO check behavior of tty & stdin
+                Process p = pb.start();
+                if (p.waitFor() != 0) {
+                  LOGGER.warn(IOHelpers.readFully(p.getErrorStream()));
+                }
+                ExecCredential ec = Serialization.unmarshal(p.getInputStream(), ExecCredential.class);
+                if (!apiVersion.equals(ec.apiVersion)) {
+                  LOGGER.warn("Wrong apiVersion {} vs. {}", ec.apiVersion, apiVersion);
+                }
+                if (ec.status != null && ec.status.token != null) {
+                  config.setOauthToken(ec.status.token);
+                } else {
+                  LOGGER.warn("No token returned");
+                }
+              } else { // TODO v1beta1?
+                LOGGER.warn("Unsupported apiVersion: {}", apiVersion);
+              }
+            }
           }
 
           config.getErrorMessages().put(401, "Unauthorized! Token may have expired! Please log-in again.");
@@ -500,12 +548,23 @@ public class Config {
         }
         return true;
       }
-    } catch (IOException e) {
+    } catch (Exception e) {
       LOGGER.error("Failed to parse the kubeconfig.", e);
     }
 
     return false;
-}
+  }
+  private static final class ExecCredential {
+    public String kind;
+    public String apiVersion;
+    public ExecCredentialSpec spec;
+    public ExecCredentialStatus status;
+  }
+  private static final class ExecCredentialSpec {}
+  private static final class ExecCredentialStatus {
+    public String token;
+    // TODO clientCertificateData, clientKeyData, expirationTimestamp
+  }
 
   private static boolean tryNamespaceFromPath(Config config) {
     LOGGER.debug("Trying to configure client namespace from Kubernetes service account namespace path...");
