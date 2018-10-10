@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.handlers;
 
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.extensions.Ingress;
 import io.fabric8.kubernetes.api.model.extensions.IngressBuilder;
@@ -76,5 +77,10 @@ public class IngressHandler implements ResourceHandler<Ingress, IngressBuilder> 
   @Override
   public Ingress waitUntilReady(OkHttpClient client, Config config, String namespace, Ingress item, long amount, TimeUnit timeUnit) throws InterruptedException {
     return new IngressOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilReady(amount, timeUnit);
+  }
+
+  @Override
+  public Ingress waitUntilCondition(OkHttpClient client, Config config, String namespace, Ingress item, Predicate<Ingress> condition, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new IngressOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilCondition(condition, amount, timeUnit);
   }
 }

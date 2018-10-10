@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.handlers;
 
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetBuilder;
@@ -76,5 +77,10 @@ public class ReplicaSetHandler implements ResourceHandler<ReplicaSet, ReplicaSet
   @Override
   public ReplicaSet waitUntilReady(OkHttpClient client, Config config, String namespace, ReplicaSet item, long amount, TimeUnit timeUnit) throws InterruptedException {
     return new ReplicaSetOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).waitUntilReady(amount, timeUnit);
+  }
+
+  @Override
+  public ReplicaSet waitUntilCondition(OkHttpClient client, Config config, String namespace, ReplicaSet item, Predicate<ReplicaSet> condition, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new ReplicaSetOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).waitUntilCondition(condition, amount, timeUnit);
   }
 }

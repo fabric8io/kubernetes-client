@@ -16,9 +16,11 @@
 package io.fabric8.kubernetes.client.dsl;
 
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 
-public interface Waitable<T> {
+public interface Waitable<T, P> {
 
     T waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException;
 
+    T waitUntilCondition(Predicate<P> condition, long amount, TimeUnit timeUnit) throws InterruptedException;
 }

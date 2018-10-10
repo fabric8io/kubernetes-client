@@ -23,6 +23,7 @@ import io.fabric8.openshift.api.model.Role;
 import io.fabric8.openshift.api.model.RoleBuilder;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.internal.RoleOperationsImpl;
+import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
@@ -77,5 +78,10 @@ public class RoleHandler implements ResourceHandler<Role, RoleBuilder> {
   @Override
   public Role waitUntilReady(OkHttpClient client, Config config, String namespace, Role item, long amount, TimeUnit timeUnit) throws InterruptedException {
     return new RoleOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilReady(amount, timeUnit);
+  }
+
+  @Override
+  public Role waitUntilCondition(OkHttpClient client, Config config, String namespace, Role item, Predicate<Role> condition, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new RoleOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilCondition(condition, amount, timeUnit);
   }
 }

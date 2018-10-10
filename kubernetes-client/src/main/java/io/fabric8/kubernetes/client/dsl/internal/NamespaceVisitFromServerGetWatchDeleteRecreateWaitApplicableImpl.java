@@ -16,6 +16,8 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.utils.Utils;
+import java.util.function.Predicate;
+import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,7 +57,7 @@ import io.fabric8.kubernetes.client.utils.ResourceCompare;
 import okhttp3.OkHttpClient;
 
 public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl extends OperationSupport implements NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean>,
-Waitable<HasMetadata>,
+Waitable<HasMetadata, HasMetadata>,
   Readiable {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl.class);
@@ -146,7 +148,7 @@ Waitable<HasMetadata>,
   }
 
   @Override
-  public Waitable<HasMetadata> createOrReplaceAnd() {
+  public Waitable<HasMetadata, HasMetadata> createOrReplaceAnd() {
     return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, deletingExisting, visitors, createOrReplace(), gracePeriodSeconds, cascading);
   }
 
@@ -235,6 +237,14 @@ Waitable<HasMetadata>,
     HasMetadata meta = acceptVisitors(asHasMetadata(get()), visitors);
     ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
     return h.waitUntilReady(client, config, meta.getMetadata().getNamespace(), meta, amount, timeUnit);
+  }
+
+  @Override
+  public HasMetadata waitUntilCondition(Predicate<HasMetadata> condition, long amount,
+    TimeUnit timeUnit) throws InterruptedException {
+    HasMetadata meta = acceptVisitors(asHasMetadata(get()), visitors);
+    ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
+    return h.waitUntilCondition(client, config, meta.getMetadata().getNamespace(), meta, condition, amount, timeUnit);
   }
 
 

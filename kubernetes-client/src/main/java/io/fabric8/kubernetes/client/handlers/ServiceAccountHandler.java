@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.handlers;
 
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountBuilder;
@@ -75,5 +76,10 @@ public class ServiceAccountHandler implements ResourceHandler<ServiceAccount, Se
   @Override
   public ServiceAccount waitUntilReady(OkHttpClient client, Config config, String namespace, ServiceAccount item, long amount, TimeUnit timeUnit) throws InterruptedException {
     return new ServiceAccountOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilReady(amount, timeUnit);
+  }
+
+  @Override
+  public ServiceAccount waitUntilCondition(OkHttpClient client, Config config, String namespace, ServiceAccount item, Predicate<ServiceAccount> condition, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new ServiceAccountOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilCondition(condition, amount, timeUnit);
   }
 }

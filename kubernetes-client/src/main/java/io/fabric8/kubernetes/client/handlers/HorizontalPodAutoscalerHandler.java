@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.handlers;
 
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.HorizontalPodAutoscaler;
 import io.fabric8.kubernetes.api.model.HorizontalPodAutoscalerBuilder;
@@ -76,5 +77,10 @@ public class HorizontalPodAutoscalerHandler implements ResourceHandler<Horizonta
   @Override
   public HorizontalPodAutoscaler waitUntilReady(OkHttpClient client, Config config, String namespace, HorizontalPodAutoscaler item, long amount, TimeUnit timeUnit) throws InterruptedException {
     return new HorizontalPodAutoscalerOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilReady(amount, timeUnit);
+  }
+
+  @Override
+  public HorizontalPodAutoscaler waitUntilCondition(OkHttpClient client, Config config, String namespace, HorizontalPodAutoscaler item, Predicate<HorizontalPodAutoscaler> condition, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new HorizontalPodAutoscalerOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilCondition(condition, amount, timeUnit);
   }
 }

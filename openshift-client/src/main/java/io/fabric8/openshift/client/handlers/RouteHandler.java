@@ -17,6 +17,7 @@ package io.fabric8.openshift.client.handlers;
 
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
@@ -77,5 +78,10 @@ public class RouteHandler implements ResourceHandler<Route, RouteBuilder> {
   @Override
   public Route waitUntilReady(OkHttpClient client, Config config, String namespace, Route item, long amount, TimeUnit timeUnit) throws InterruptedException {
     return new RouteOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilReady(amount, timeUnit);
+  }
+
+  @Override
+  public Route waitUntilCondition(OkHttpClient client, Config config, String namespace, Route item, Predicate<Route> condition, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new RouteOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilCondition(condition, amount, timeUnit);
   }
 }

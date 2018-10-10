@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.handlers;
 
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
@@ -76,5 +77,10 @@ public class PodHandler implements ResourceHandler<Pod, PodBuilder> {
   @Override
   public Pod waitUntilReady(OkHttpClient client, Config config, String namespace, Pod item, long amount, TimeUnit timeUnit) throws InterruptedException {
     return new PodOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, null, null, null, false, false, false, null, null, null, false, null, null).waitUntilReady(amount,timeUnit);
+  }
+
+  @Override
+  public Pod waitUntilCondition(OkHttpClient client, Config config, String namespace, Pod item, Predicate<Pod> condition, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new PodOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, null, null, null, false, false, false, null, null, null, false, null, null).waitUntilCondition(condition, amount,timeUnit);
   }
 }

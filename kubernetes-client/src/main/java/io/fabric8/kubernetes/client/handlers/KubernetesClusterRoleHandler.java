@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.internal.KubernetesClusterRoleOperationsImpl;
+import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
@@ -76,5 +77,10 @@ public class KubernetesClusterRoleHandler implements ResourceHandler<KubernetesC
   @Override
   public KubernetesClusterRole waitUntilReady(OkHttpClient client, Config config, String namespace, KubernetesClusterRole item, long amount, TimeUnit timeUnit) throws InterruptedException {
     return new KubernetesClusterRoleOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilReady(amount, timeUnit);
+  }
+
+  @Override
+  public KubernetesClusterRole waitUntilCondition(OkHttpClient client, Config config, String namespace, KubernetesClusterRole item, Predicate<KubernetesClusterRole> condition, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new KubernetesClusterRoleOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilCondition(condition, amount, timeUnit);
   }
 }

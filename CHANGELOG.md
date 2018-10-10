@@ -13,6 +13,7 @@
 
   Improvements
     * Fix #1226 : Extend and move integrations tests
+    * Fix #989  : Add support for waitForCondition
 
   Dependency Upgrade
     * Fix #1223: jackson-dataformat-yaml dependency (2.7.7) ageing

@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.handlers;
 
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
@@ -76,5 +77,10 @@ public class ReplicationControllerHandler implements ResourceHandler<Replication
   @Override
   public ReplicationController waitUntilReady(OkHttpClient client, Config config, String namespace, ReplicationController item, long amount, TimeUnit timeUnit) throws InterruptedException {
     return new ReplicationControllerOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).waitUntilReady(amount, timeUnit);
+  }
+
+  @Override
+  public ReplicationController waitUntilCondition(OkHttpClient client, Config config, String namespace, ReplicationController item, Predicate<ReplicationController> condition, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new ReplicationControllerOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), false, config.getRollingTimeout(), TimeUnit.MILLISECONDS).waitUntilCondition(condition, amount, timeUnit);
   }
 }

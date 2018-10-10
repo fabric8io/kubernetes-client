@@ -40,6 +40,8 @@ import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.Parameter;
 import io.fabric8.openshift.api.model.Template;
+import java.util.Objects;
+import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +62,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl extends OperationSupport implements ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean>,
-Waitable<List<HasMetadata>>, Readiable {
+Waitable<List<HasMetadata>, HasMetadata>, Readiable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl.class);
     private static final String EXPRESSION = "expression";
@@ -80,47 +82,51 @@ Waitable<List<HasMetadata>>, Readiable {
 
   @Override
   public List<HasMetadata> waitUntilReady(final long amount, final TimeUnit timeUnit) throws InterruptedException {
+    return waitUntilCondition(Objects::nonNull, amount, timeUnit);
+  }
+  
+  @Override
+  public List<HasMetadata> waitUntilCondition(Predicate<HasMetadata> condition, long amount,
+    TimeUnit timeUnit) throws InterruptedException {
     List<HasMetadata> items = acceptVisitors(asHasMetadata(item, true), visitors);
     if (items.size() == 0) {
       return Collections.emptyList();
     }
 
     final List<HasMetadata> result = new ArrayList<>();
-    final List<HasMetadata> notReady = new ArrayList<>(items);
+    final List<HasMetadata> itemsWithConditionNotMatched = new ArrayList<>(items);
     final int size = items.size();
-    final AtomicInteger ready = new AtomicInteger(0);
-    ExecutorService executor = Executors.newFixedThreadPool(size);
+    final AtomicInteger conditionMatched = new AtomicInteger(0);
+    final ExecutorService executor = Executors.newFixedThreadPool(size);
 
-      try {
-        final CountDownLatch latch = new CountDownLatch(size);
-        for (final HasMetadata meta : items) {
-          final ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
-          executor.submit(new Runnable() {
-            @Override
-            public void run() {
-              try {
-                result.add(h.waitUntilReady(client, config, meta.getMetadata().getNamespace(), meta, amount, timeUnit));
-                ready.incrementAndGet();
-                notReady.remove(meta);
-              } catch (Throwable t) {
-                //consider all errors as not ready.
-                LOGGER.warn("Error while waiting for: [" + meta.getKind() + "] with name: [" + meta.getMetadata().getName() + "] in namespace: [" + meta.getMetadata().getNamespace() + "]: " + t.getMessage()+ ". The resource will be considered not ready.");
-                LOGGER.debug("The error stack trace:", t);
-              } finally {
-                //We don't want to wait for items that will never become ready
-                latch.countDown();
-              }
-            }
-          });
-        }
-        if(checkReady(latch, size, ready, amount, timeUnit)) {
-          return result;
-        } else {
-          throw new KubernetesClientTimeoutException(notReady, amount, timeUnit);
-        }
-      } finally {
-        executor.shutdown();
+    try {
+      final CountDownLatch latch = new CountDownLatch(size);
+      for (final HasMetadata meta : items) {
+        final ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
+        executor.submit(() -> {
+          try {
+            result.add(h.waitUntilCondition(client, config, meta.getMetadata().getNamespace(), meta, condition, amount, timeUnit));
+            conditionMatched.incrementAndGet();
+            itemsWithConditionNotMatched.remove(meta);
+          } catch (Throwable t) {
+            //consider all errors as not ready.
+            LOGGER.warn("Error while waiting for: [" + meta.getKind() + "] with name: [" + meta.getMetadata().getName() + "] in namespace: [" + meta.getMetadata().getNamespace() + "]: " + t.getMessage()+ ". The resource will be considered not ready.");
+            LOGGER.debug("The error stack trace:", t);
+          } finally {
+            //We don't want to wait for items that will never become ready
+            latch.countDown();
+          }
+        });
       }
+      if(checkConditionMetForAll(latch, size, conditionMatched, amount, timeUnit)) {
+        return result;
+      } else {
+        throw new KubernetesClientTimeoutException(itemsWithConditionNotMatched, amount, timeUnit);
+      }
+    } finally {
+      executor.shutdown();
+    }
+
   }
 
   @Override
@@ -230,7 +236,7 @@ Waitable<List<HasMetadata>>, Readiable {
   }
 
   @Override
-  public Waitable<List<HasMetadata>> createOrReplaceAnd() {
+  public Waitable<List<HasMetadata>, HasMetadata> createOrReplaceAnd() {
     return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, deletingExisting, visitors, createOrReplace(), inputStream, null, gracePeriodSeconds, cascading);
   }
 
@@ -412,7 +418,7 @@ Waitable<List<HasMetadata>>, Readiable {
    * @param timeUnit    The timeUnit.
    * @return
    */
-  private static boolean checkReady(CountDownLatch latch, int expected, AtomicInteger actual, long amount, TimeUnit timeUnit) {
+  private static boolean checkConditionMetForAll(CountDownLatch latch, int expected, AtomicInteger actual, long amount, TimeUnit timeUnit) {
     try {
       if (latch.await(amount, timeUnit)) {
         return actual.intValue() == expected;
