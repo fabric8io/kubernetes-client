@@ -60,6 +60,7 @@ public class ReadinessWatcher<T extends HasMetadata> implements Watcher<T> {
       }
       throw new KubernetesClientTimeoutException(resource, amount, timeUnit);
     } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
       throw new KubernetesClientTimeoutException(resource, amount, timeUnit);
     }
   }

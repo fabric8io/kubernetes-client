@@ -125,6 +125,8 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
             TimeUnit.SECONDS.sleep(1);
           } catch (InterruptedException e1) {
             // Ignore this... would only hide the proper exception
+            // ...but make sure to preserve the interrupted status
+            Thread.currentThread().interrupt();
           }
         }
       } catch (Exception e) {
@@ -172,6 +174,8 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
             TimeUnit.SECONDS.sleep(1);
           } catch (InterruptedException e1) {
             // Ignore this... would only hide the proper exception
+            // ...but make sure to preserve the interrupted status
+            Thread.currentThread().interrupt();
           }
         }
       } catch (Exception e) {

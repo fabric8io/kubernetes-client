@@ -117,6 +117,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
       countDownLatch.await(getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS);
       executor.shutdown();
     } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
       poller.cancel(true);
       executor.shutdown();
       LOG.error("Only {}/{} pod(s) ready for Job: {} in namespace: {} - giving up",
