@@ -23,6 +23,7 @@
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-model-generator</artifactId>
     <version>4.0-SNAPSHOT</version>
+    <relativePath>../</relativePath>
   </parent>
 
   <artifactId>kubernetes-model</artifactId>

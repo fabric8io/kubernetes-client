@@ -120,7 +120,7 @@
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model</artifactId>
-      <version>${kubernetes.model.version}</version>
+      <version>${project.version}</version>
     </dependency>
 
     <dependency>
