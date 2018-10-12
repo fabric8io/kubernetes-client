@@ -20,65 +20,15 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.sonatype.oss</groupId>
-    <artifactId>oss-parent</artifactId>
-    <version>9</version>
+    <groupId>io.fabric8</groupId>
+    <artifactId>kubernetes-client-project</artifactId>
+    <version>4.0-SNAPSHOT</version>
   </parent>
-
-  <groupId>io.fabric8</groupId>
-  <version>4.0-SNAPSHOT</version>
 
   <artifactId>kubernetes-model-generator</artifactId>
   <packaging>pom</packaging>
 
   <name>Fabric8 :: Kubernetes Model Parent</name>
-
-  <url>http://fabric8.io/</url>
-  <inceptionYear>2011</inceptionYear>
-
-  <organization>
-    <name>Red Hat</name>
-    <url>http://redhat.com</url>
-  </organization>
-
-  <licenses>
-    <license>
-      <name>Apache License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-
-  <!-- including A developer as it's required by the maven poms going into
-    central -->
-  <developers>
-    <developer>
-      <id>geeks</id>
-      <name>Fabric8 Development Team</name>
-      <organization>fabric8</organization>
-      <organizationUrl>http://fabric8.io/</organizationUrl>
-    </developer>
-  </developers>
-
-  <scm>
-      <connection>scm:git:git@github.com:fabric8io/kubernetes-model.git</connection>
-      <developerConnection>scm:git:git@github.com:fabric8io/kubernetes-model.git</developerConnection>
-      <url>http://github.com/fabric8io/kubernetes-model/</url>
-      <tag>kubernetes-model-generator-1.0.15</tag>
-  </scm>
-
-  <distributionManagement>
-    <repository>
-      <id>oss-sonatype-staging</id>
-      <name>Sonatype Staging Repository</name>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-    </repository>
-    <snapshotRepository>
-      <id>oss-sonatype-snapshots</id>
-      <name>OSS Sonatype Nexus Snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
-  </distributionManagement>
 
   <properties>
 
@@ -98,7 +48,6 @@
     <maven.compiler.target>1.7</maven.compiler.target>
     <maven.enforcer.plugin.version>1.4.1</maven.enforcer.plugin.version>
 
-    <sundrio.version>0.7.1</sundrio.version>
     <exec-maven-plugin.version>1.5.0</exec-maven-plugin.version>
     <jackson2.version>2.7.5</jackson2.version>
     <jsonschema2pojo.version>0.4.23</jsonschema2pojo.version>

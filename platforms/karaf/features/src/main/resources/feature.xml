@@ -29,7 +29,7 @@
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.okio/${okio.bundle.version}</bundle>
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.okhttp/${okhttp.bundle.version}</bundle>
     <bundle>mvn:io.fabric8/zjsonpatch/${zjsonpatch.version}</bundle>
-    <bundle>mvn:io.fabric8/kubernetes-model/${kubernetes.model.version}</bundle>
+    <bundle>mvn:io.fabric8/kubernetes-model/${project.version}</bundle>
     <bundle>mvn:io.fabric8/kubernetes-client/${project.version}/jar/bundle</bundle>
   </feature>
 

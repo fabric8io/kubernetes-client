@@ -86,7 +86,6 @@
     <jackson.version>2.7.7</jackson.version>
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
     <junit.version>4.12</junit.version>
-    <kubernetes.model.version>3.0.3</kubernetes.model.version>
     <log4j.version>2.10.0</log4j.version>
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
     <arquillian.cube.version>1.15.2</arquillian.cube.version>
@@ -98,7 +97,7 @@
     <snakeyaml.version>1.23</snakeyaml.version>
 
     <scr.annotations.version>1.9.12</scr.annotations.version>
-    <sundrio.version>0.11.2</sundrio.version>
+    <sundrio.version>0.13.1</sundrio.version>
     <validation.api.version>1.1.0.Final</validation.api.version>
 
     <maven.bundle.plugin.version>2.5.4</maven.bundle.plugin.version>

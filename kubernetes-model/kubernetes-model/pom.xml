@@ -23,6 +23,7 @@
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-model-generator</artifactId>
     <version>4.0-SNAPSHOT</version>
+    <relativePath>../</relativePath>
   </parent>
 
   <artifactId>kubernetes-model</artifactId>
@@ -153,22 +154,13 @@
         <configuration>
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+            <Import-Package>*</Import-Package>
+            <Private-Package>io.fabric8.kubernetes.internal</Private-Package>
             <Export-Package>
               io.fabric8.kubernetes.api,
               io.fabric8.kubernetes.api.builder,
-              io.fabric8.kubernetes.api.model,
-              io.fabric8.kubernetes.api.model.apiextensions,
-              io.fabric8.kubernetes.api.model.apps,
-              io.fabric8.kubernetes.api.model.authentication,
-              io.fabric8.kubernetes.api.model.authorization,
-              io.fabric8.kubernetes.api.model.batch,
-              io.fabric8.kubernetes.api.model.extensions,
-              io.fabric8.kubernetes.api.model.networking,
-              io.fabric8.kubernetes.api.model.policy,
-              io.fabric8.kubernetes.api.model.rbac,
-              io.fabric8.kubernetes.api.model.storage,
-              io.fabric8.kubernetes.api.model.validators,
-              io.fabric8.openshift.api.model
+              io.fabric8.kubernetes.api.model**,
+              io.fabric8.openshift.api.model**
             </Export-Package>
           </instructions>
         </configuration>
