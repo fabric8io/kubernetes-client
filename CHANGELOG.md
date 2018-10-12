@@ -7,30 +7,27 @@
     * Fix #1266: Not setting optional Impersonate-Group results in NPE in ImpersonatorInterceptor
 
   Improvements
+    * Fix #1226 : Extend and move integrations tests
 
   Dependency Upgrade
-
     * Fix #1223: jackson-dataformat-yaml dependency (2.7.7) ageing
     * Upgrade maven-surefire-plugin to 3.0.0-M1
 
   New Feature
     * Fix #1142: Pagination Support
 
-#### 4.0.6
+#### 4.0.7
   Bugs
   
     * Fix #1214 : Watch resource versions not correctly tracked resulting in 410 errors on reconnect
-
-  Improvements
-
-    * Chore #1168 : Upgrade to Java 8
-    * fix #1197 : Broken withName() method  for CustomResourceDefinition.
 
   Improvements
     * Fix #1179 : Impersonate-Extra keys may be specified multiple times
     * Fix #1182 : Fixes flaky integration tests.
     * Fix #1200 : Support client authenticator commands like `aws-iam-authenticator`.
     * Fix #1201 : Fix problems with swallowed InterruptedExceptions 
+    * Chore #1168 : Upgrade to Java 8
+    * fix #1197 : Broken withName() method  for CustomResourceDefinition.
 
   Dependency Upgrade
 
