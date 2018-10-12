@@ -23,18 +23,18 @@ import io.fabric8.kubernetes.client.internal.patchmixins.ObjectMetaMixIn;
 import io.fabric8.openshift.api.model.Build;
 
 public class PatchUtils {
+  private static class SingletonHolder {
+    public static final ObjectMapper patchMapper;
 
-  private static ObjectMapper patchMapper;
-
-  public static ObjectMapper patchMapper() {
-    if (patchMapper == null) {
+    static {
       patchMapper = new ObjectMapper();
-      patchMapper.addMixInAnnotations(ObjectMeta.class, ObjectMetaMixIn.class);
-      patchMapper.addMixInAnnotations(Build.class, BuildMixIn.class);
-      patchMapper.setConfig(patchMapper().getSerializationConfig().without(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS));
+      patchMapper.addMixIn(ObjectMeta.class, ObjectMetaMixIn.class);
+      patchMapper.addMixIn(Build.class, BuildMixIn.class);
+      patchMapper.setConfig(patchMapper.getSerializationConfig().without(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS));
     }
-    return patchMapper;
   }
 
-
+  public static ObjectMapper patchMapper() {
+    return SingletonHolder.patchMapper;
+  }
 }
