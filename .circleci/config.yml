@@ -26,25 +26,21 @@ jobs:
             curl -LO https://storage.googleapis.com/kubernetes-release/release/${kube_version}/bin/linux/amd64/kubectl && \
                 chmod +x kubectl && sudo mv kubectl /usr/local/bin/
             echo "Installed kubectl CLI tool"
-
             oc_tool_version="openshift-origin-client-tools-v3.6.0-c4dd4cf-linux-64bit"
             curl -LO https://github.com/openshift/origin/releases/download/v3.6.0/${oc_tool_version}.tar.gz && \
                 tar -xvzf ${oc_tool_version}.tar.gz && chmod +x $PWD/${oc_tool_version}/oc && sudo mv $PWD/${oc_tool_version}/oc /usr/local/bin/ && \
                 rm -rf ${oc_tool_version}.tar.gz
             echo "Installed OC CLI tool"
-
             tmp=`mktemp`
             echo 'DOCKER_OPTS="$DOCKER_OPTS --insecure-registry 172.30.0.0/16"' > ${tmp}
             sudo mv ${tmp} /etc/default/docker
             sudo mount --make-shared /
             sudo service docker restart
             echo "Configured Docker daemon with insecure-registry"
-
             oc cluster up --version=v3.6.0
             sleep 10
             oc login -u system:admin
             echo "Configured OpenShift cluster : v3.6.0"
-
       - run:
           command: mvn -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B install -P itests-openshift
           no_output_timeout: 3600
@@ -59,25 +55,21 @@ jobs:
             curl -LO https://storage.googleapis.com/kubernetes-release/release/${kube_version}/bin/linux/amd64/kubectl && \
                 chmod +x kubectl && sudo mv kubectl /usr/local/bin/
             echo "Installed kubectl CLI tool"
-
             oc_tool_version="openshift-origin-client-tools-v3.6.1-008f2d5-linux-64bit"
             curl -LO https://github.com/openshift/origin/releases/download/v3.6.1/${oc_tool_version}.tar.gz && \
                 tar -xvzf ${oc_tool_version}.tar.gz && chmod +x $PWD/${oc_tool_version}/oc && sudo mv $PWD/${oc_tool_version}/oc /usr/local/bin/ && \
                 rm -rf ${oc_tool_version}.tar.gz
             echo "Installed OC CLI tool"
-
             tmp=`mktemp`
             echo 'DOCKER_OPTS="$DOCKER_OPTS --insecure-registry 172.30.0.0/16"' > ${tmp}
             sudo mv ${tmp} /etc/default/docker
             sudo mount --make-shared /
             sudo service docker restart
             echo "Configured Docker daemon with insecure-registry"
-
             oc cluster up --version=v3.6.1
             sleep 10
             oc login -u system:admin
             echo "Configured OpenShift cluster : v3.6.1"
-
       - run:
           command: mvn -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B install -P itests-openshift
           no_output_timeout: 3600
@@ -92,7 +84,6 @@ jobs:
             curl -LO https://storage.googleapis.com/kubernetes-release/release/${kube_version}/bin/linux/amd64/kubectl && \
                 chmod +x kubectl && sudo mv kubectl /usr/local/bin/
             echo "Installed kubectl CLI tool"
-
             echo "Installing nsenter"
             if ! which nsenter > /dev/null; then
               echo "Did not find nsenter. Installing it."
@@ -124,25 +115,21 @@ jobs:
               exec $@' | sudo tee /usr/bin/systemd-run >/dev/null
               sudo chmod +x /usr/bin/systemd-run
             fi
-
             oc_tool_version="openshift-origin-client-tools-v3.7.0-7ed6862-linux-64bit"
             curl -LO https://github.com/openshift/origin/releases/download/v3.7.0/${oc_tool_version}.tar.gz && \
                 tar -xvzf ${oc_tool_version}.tar.gz && chmod +x $PWD/${oc_tool_version}/oc && sudo mv $PWD/${oc_tool_version}/oc /usr/local/bin/ && \
                 rm -rf ${oc_tool_version}.tar.gz
             echo "Installed OC CLI tool"
-
             tmp=`mktemp`
             echo 'DOCKER_OPTS="$DOCKER_OPTS --insecure-registry 172.30.0.0/16"' > ${tmp}
             sudo mv ${tmp} /etc/default/docker
             sudo mount --make-shared /
             sudo service docker restart
             echo "Configured Docker daemon with insecure-registry"
-
             oc cluster up --version=v3.7.0
             sleep 10
             oc login -u system:admin
             echo "Configured OpenShift cluster : v3.7.0"
-
       - run:
           command: mvn -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B install -P itests-openshift
           no_output_timeout: 3600
@@ -157,7 +144,6 @@ jobs:
             curl -LO https://storage.googleapis.com/kubernetes-release/release/${kube_version}/bin/linux/amd64/kubectl && \
                 chmod +x kubectl && sudo mv kubectl /usr/local/bin/
             echo "Installed kubectl CLI tool"
-
             echo "Installing nsenter"
             if ! which nsenter > /dev/null; then
               echo "Did not find nsenter. Installing it."
@@ -189,29 +175,33 @@ jobs:
               exec $@' | sudo tee /usr/bin/systemd-run >/dev/null
               sudo chmod +x /usr/bin/systemd-run
             fi
-
             oc_tool_version="openshift-origin-client-tools-v3.9.0-191fece-linux-64bit"
             curl -LO https://github.com/openshift/origin/releases/download/v3.9.0/${oc_tool_version}.tar.gz && \
                 tar -xvzf ${oc_tool_version}.tar.gz && chmod +x $PWD/${oc_tool_version}/oc && sudo mv $PWD/${oc_tool_version}/oc /usr/local/bin/ && \
                 rm -rf ${oc_tool_version}.tar.gz
             echo "Installed OC CLI tool"
-
             tmp=`mktemp`
             echo 'DOCKER_OPTS="$DOCKER_OPTS --insecure-registry 172.30.0.0/16"' > ${tmp}
             sudo mv ${tmp} /etc/default/docker
             sudo mount --make-shared /
             sudo service docker restart
             echo "Configured Docker daemon with insecure-registry"
-
             oc cluster up --version=v3.9.0
             sleep 10
             oc login -u system:admin
             echo "Configured OpenShift cluster : v3.9.0"
-
       - run:
           command: mvn -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B install -P itests-openshift
           no_output_timeout: 3600
 
+  RELEASE:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          command: |
+            bash ./scripts/prepare-environment.sh
+            bash ./scripts/release.sh
 workflows:
   version: 2
   build_and_test:
@@ -220,3 +210,7 @@ workflows:
       - OPENSHIFT_3.6.1
       - OPENSHIFT_3.7.0
       - OPENSHIFT_3.9.0
+      - RELEASE:
+          filters:
+            branches:
+              only: release-project
