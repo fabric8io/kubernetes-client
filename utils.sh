@@ -101,7 +101,7 @@ function stage_project() {
     git remote set-url origin https://${GH_USER}:${GH_TOKEN}@github.com/${project}.git
     current_project_version=$(get_project_version)
     #version=$(setup_workspace_for_release)
-    version=4.0.7
+    version=4.1.0
     mvn versions:set -DnewVersion=$version
     cd kubernetes-model/
     mvn versions:set -DnewVersion=$version
