@@ -1,5 +1,16 @@
 ### CHANGELOG
 
+#### 4.1.1
+  Bugs
+
+  Improvements
+
+  Dependency Upgrade
+
+    * Fix #1223: jackson-dataformat-yaml dependency (2.7.7) ageing
+
+  New Feature
+
 #### 4.0.6
   Bugs
   
