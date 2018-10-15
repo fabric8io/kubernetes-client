@@ -494,6 +494,9 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   public BatchAPIGroupDSL batch() { return adapt(BatchAPIGroupClient.class); }
 
   @Override
+  public PolicyAPIGroupDSL policy() { return adapt(PolicyAPIGroupClient.class); }
+
+  @Override
   public RbacAPIGroupDSL rbac() { return adapt(RbacAPIGroupClient.class); }
 
   @Override
