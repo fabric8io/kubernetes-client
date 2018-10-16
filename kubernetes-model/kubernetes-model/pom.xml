@@ -193,15 +193,6 @@
         <artifactId>maven-release-plugin</artifactId>
         <version>2.5</version>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-gpg-plugin</artifactId>
-        <version>1.5</version>
-        <configuration>
-          <passphrase>${gpg.passphrase}</passphrase>
-          <useAgent>true</useAgent>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 </project>
