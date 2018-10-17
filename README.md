@@ -370,6 +370,8 @@ All the resource objects used here will be according to OpenShift 3.9.0  and Kub
   - [Spotify Styx](https://github.com/spotify/styx)
   - [Strimzi](https://github.com/strimzi/)
   - [Syndesis](https://syndesis.io/)
+  
+  Proprietary Platforms:
   - [vCommander](https://www.embotics.com/hybrid-cloud-management-platform)
   
 As our community grows, we would like to track keep track of our users. Please send a PR with your organization/community name.   
