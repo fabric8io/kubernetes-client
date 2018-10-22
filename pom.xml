@@ -79,8 +79,7 @@
         <jsonassert.version>1.2.3</jsonassert.version>
         <jsonschema2pojo.version>0.4.23</jsonschema2pojo.version>
         <junit.version>4.12</junit.version>
-        <kubernetes-model.version>2.1.1</kubernetes-model.version>
-        <kubernetes-client.version>3.2.0</kubernetes-client.version>
+        <kubernetes-client.version>4.1.0</kubernetes-client.version>
         <lombok.version>1.16.4</lombok.version>
         <log4j.version>2.3</log4j.version>
         <mockwebserver.version>0.1.0</mockwebserver.version>
@@ -141,7 +140,7 @@
           <dependency>
               <groupId>io.fabric8</groupId>
               <artifactId>kubernetes-model</artifactId>
-              <version>${kubernetes-model.version}</version>
+              <version>${kubernetes-client.version}</version>
               <exclusions>
                 <exclusion>
                   <groupId>io.sundr</groupId>
