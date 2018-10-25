@@ -367,7 +367,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.HasMetadata",
+      "javaType": "java.util.Map\u003cString, Object\u003e",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -781,7 +781,7 @@
         },
         "externalMetadata": {
           "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "javaType": "java.util.Map\u003cString, Object\u003e"
         },
         "externalName": {
           "type": "string",
@@ -928,7 +928,7 @@
         },
         "externalMetadata": {
           "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "javaType": "java.util.Map\u003cString, Object\u003e"
         },
         "externalName": {
           "type": "string",
@@ -940,19 +940,19 @@
         },
         "instanceCreateParameterSchema": {
           "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "javaType": "java.util.Map\u003cString, Object\u003e"
         },
         "instanceUpdateParameterSchema": {
           "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "javaType": "java.util.Map\u003cString, Object\u003e"
         },
         "serviceBindingCreateParameterSchema": {
           "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "javaType": "java.util.Map\u003cString, Object\u003e"
         },
         "serviceBindingCreateResponseSchema": {
           "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "javaType": "java.util.Map\u003cString, Object\u003e"
         }
       },
       "additionalProperties": true,
@@ -1070,7 +1070,7 @@
         },
         "externalMetadata": {
           "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "javaType": "java.util.Map\u003cString, Object\u003e"
         },
         "externalName": {
           "type": "string",
@@ -1138,7 +1138,7 @@
         },
         "externalMetadata": {
           "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "javaType": "java.util.Map\u003cString, Object\u003e"
         },
         "externalName": {
           "type": "string",
@@ -1150,19 +1150,19 @@
         },
         "instanceCreateParameterSchema": {
           "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "javaType": "java.util.Map\u003cString, Object\u003e"
         },
         "instanceUpdateParameterSchema": {
           "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "javaType": "java.util.Map\u003cString, Object\u003e"
         },
         "serviceBindingCreateParameterSchema": {
           "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "javaType": "java.util.Map\u003cString, Object\u003e"
         },
         "serviceBindingCreateResponseSchema": {
           "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "javaType": "java.util.Map\u003cString, Object\u003e"
         }
       },
       "additionalProperties": true,
@@ -1462,7 +1462,7 @@
         },
         "parameters": {
           "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "javaType": "java.util.Map\u003cString, Object\u003e"
         },
         "userInfo": {
           "$ref": "#/definitions/servicecatalog_UserInfo",
@@ -1489,7 +1489,7 @@
         },
         "parameters": {
           "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "javaType": "java.util.Map\u003cString, Object\u003e"
         },
         "parametersFrom": {
           "type": "array",
@@ -1897,7 +1897,7 @@
         },
         "parameters": {
           "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "javaType": "java.util.Map\u003cString, Object\u003e"
         },
         "userInfo": {
           "$ref": "#/definitions/servicecatalog_UserInfo",
@@ -1952,7 +1952,7 @@
         },
         "parameters": {
           "$ref": "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "javaType": "java.util.Map\u003cString, Object\u003e"
         },
         "parametersFrom": {
           "type": "array",

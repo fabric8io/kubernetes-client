@@ -159,7 +159,7 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 			case "Duration":
 				return "String"
 			case "RawExtension":
-				return "io.fabric8.kubernetes.api.model.HasMetadata"
+			    return "java.util.Map<String, Object>"
 			case "List":
 				return pkgDesc.JavaPackage + ".BaseKubernetesList"
 			default:
@@ -193,7 +193,7 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 				return "java.lang.String"
 			}
 			if t.Name() == "RawExtension" {
-				return "io.fabric8.kubernetes.api.model.HasMetadata"
+			    return "java.util.Map<String, Object>"
 			}
 			if t.Name() == "ObjectMeta" {
 				return "io.fabric8.kubernetes.api.model.ObjectMeta"
