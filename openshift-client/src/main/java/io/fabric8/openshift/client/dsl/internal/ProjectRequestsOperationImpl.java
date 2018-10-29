@@ -15,6 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.client.utils.URLUtils;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import io.fabric8.kubernetes.api.builder.Function;
@@ -105,6 +106,23 @@ public class ProjectRequestsOperationImpl extends OperationSupport implements Pr
     } catch (InterruptedException | ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
+  }
+
+  @Override
+  public Status list(Integer limitVal, String continueVal) {
+    try {
+      URL requestUrl = getNamespacedUrl();
+      if(limitVal != null) {
+        requestUrl = new URL(URLUtils.join(requestUrl.toString(), "?limit=" + limitVal.toString()));
+      } else if(continueVal != null) {
+        requestUrl = new URL(URLUtils.join(requestUrl.toString(), "?limit=" + limitVal.toString() + "&continue=" + continueVal));
+      }
+      Request.Builder requestBuilder = new Request.Builder().get().url(requestUrl);
+      return handleResponse(requestBuilder, Status.class);
+    } catch (InterruptedException | ExecutionException | IOException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+
   }
 
   public ProjectRequest getItem() {

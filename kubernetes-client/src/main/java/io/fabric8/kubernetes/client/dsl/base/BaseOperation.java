@@ -171,6 +171,34 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     }
   }
 
+  /**
+   * Helper method for list() and list(limit, continue) methods
+   *
+   * @param url
+   * @return list of corresponding Kubernetes Resources
+   */
+  private L listRequestHelper(URL url) {
+    try {
+      HttpUrl.Builder requestUrlBuilder = HttpUrl.get(url).newBuilder();
+
+      addQueryStringParam(requestUrlBuilder, "labelSelector", getLabelQueryParam());
+      addQueryStringParam(requestUrlBuilder, "fieldSelector", getFieldQueryParam());
+
+      Request.Builder requestBuilder = new Request.Builder().get().url(requestUrlBuilder.build());
+      L answer = handleResponse(requestBuilder, listType);
+      updateApiVersion(answer);
+      return answer;
+    } catch (InterruptedException | ExecutionException | IOException e) {
+      throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
+    }
+  }
+
+  private void addQueryStringParam(HttpUrl.Builder requestUrlBuilder, String name, String value) {
+    if(Utils.isNotNullOrEmpty(value)) {
+      requestUrlBuilder.addQueryParameter(name, value);
+    }
+  }
+
   @Override
   public T get() {
     try {
@@ -582,23 +610,22 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   public L list() throws KubernetesClientException {
     try {
-      HttpUrl.Builder requestUrlBuilder = HttpUrl.get(getNamespacedUrl()).newBuilder();
+      return listRequestHelper(getNamespacedUrl());
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
+    }
+  }
 
-      String labelQueryParam = getLabelQueryParam();
-      if (Utils.isNotNullOrEmpty(labelQueryParam)) {
-        requestUrlBuilder.addQueryParameter("labelSelector", labelQueryParam);
+  public L list(Integer limitVal, String continueVal) throws KubernetesClientException {
+    try {
+      URL url = getNamespacedUrl();
+      if(limitVal != null && continueVal == null) {
+        url = new URL(URLUtils.join(url.toString(), "?limit=" + limitVal.toString()));
+      } else if(continueVal != null) {
+        url = new URL(URLUtils.join(url.toString(), "?continue=" + continueVal + "&limit=" + limitVal.toString() ));
       }
-
-      String fieldQueryString = getFieldQueryParam();
-      if (Utils.isNotNullOrEmpty(fieldQueryString)) {
-        requestUrlBuilder.addQueryParameter("fieldSelector", fieldQueryString);
-      }
-
-      Request.Builder requestBuilder = new Request.Builder().get().url(requestUrlBuilder.build());
-      L answer = handleResponse(requestBuilder, listType);
-      updateApiVersion(answer);
-      return answer;
-    } catch (InterruptedException | ExecutionException | IOException e) {
+      return listRequestHelper(url);
+    } catch (MalformedURLException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
     }
   }

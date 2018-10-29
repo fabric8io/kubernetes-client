@@ -10,6 +10,7 @@
     * Fix #1223: jackson-dataformat-yaml dependency (2.7.7) ageing
 
   New Feature
+    * Fix #1142: Pagination Support
 
 #### 4.0.6
   Bugs
