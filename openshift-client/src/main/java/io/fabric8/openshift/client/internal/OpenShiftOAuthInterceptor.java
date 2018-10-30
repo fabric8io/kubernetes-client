@@ -60,9 +60,10 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
         if (Utils.isNotNullOrEmpty(oauthToken.get()) && Utils.isNullOrEmpty(request.header(AUTHORIZATION))) {
           token = oauthToken.get();
         } else if (Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword())) {
-          token = authorize();
+          token = acquireNewToken();
         } else if (Utils.isNotNullOrEmpty(config.getOauthToken())) {
-           token = config.getOauthToken();
+          token = config.getOauthToken();
+          oauthToken.set(token);
         }
 
         // avoid overwriting basic auth token with stale bearer token
@@ -77,14 +78,7 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
         if (response.code() != 401 && response.code() != 403) {
           return response;
         } else if (Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword())) {
-          synchronized (client) {
-            // current token (if exists) is borked, don't resend
-            oauthToken.set(null);
-            token = authorize();
-            if (token != null) {
-              oauthToken.set(token);
-            }
-          }
+          token = acquireNewToken();
         } else if (Utils.isNotNullOrEmpty(config.getOauthToken())) {
           token = config.getOauthToken();
           oauthToken.set(token);
@@ -110,7 +104,19 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
         }
     }
 
-    private  String authorize() {
+    private String acquireNewToken() {
+      synchronized (client) {
+        // current token (if exists) is broken, don't resend
+        oauthToken.set(null);
+        String token = authorize();
+        if (token != null) {
+          oauthToken.set(token);
+        }
+      }
+      return oauthToken.get();
+    }
+
+    private String authorize() {
         try {
             OkHttpClient.Builder builder = client.newBuilder();
             builder.interceptors().remove(this);
