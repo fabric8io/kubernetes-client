@@ -17,4 +17,5 @@ package io.fabric8.kubernetes.client.dsl;
 
 public interface Listable<T> {
   T list();
+  T list(Integer limitVal, String continueVal);
 }
