@@ -2,6 +2,8 @@
 
 #### 4.1.1
   Bugs
+  
+    * Fix #1239: Fix one case of OkHttp connection leaks
 
   Improvements
 
