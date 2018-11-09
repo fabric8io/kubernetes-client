@@ -23,6 +23,7 @@ import okhttp3.TlsVersion;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -421,6 +422,7 @@ public class ConfigTest {
   }
 
   @Test
+  @Ignore
   public void honorClientAuthenticatorCommands() throws Exception {
     Files.setPosixFilePermissions(Paths.get(TEST_TOKEN_GENERATOR_FILE), PosixFilePermissions.fromString("rwxrwxr-x"));
     System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_EXEC_FILE);
