@@ -123,6 +123,7 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
       ResourceKey key = getKey(matcher);
       ResourceKey target = responseCodeToTransformations.get(response.code()).get(key);
       if (target != null) {
+        response.close(); // At this point, we know we won't reuse or return the response; so close it to avoid a connection leak.
         String newUrl = new StringBuilder(url)
             .replace(matcher.start(API_VERSION), matcher.end(API_VERSION), target.version) // Order matters: We need to substitute right to left, so that former substitution don't affect the indexes of later.
             .replace(matcher.start(API_GROUP), matcher.end(API_GROUP), target.group)

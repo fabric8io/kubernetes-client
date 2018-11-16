@@ -1,0 +1,62 @@
+# Gopkg.toml example
+#
+# Refer to https://golang.github.io/dep/docs/Gopkg.toml.html
+# for detailed Gopkg.toml documentation.
+#
+# required = ["github.com/user/thing/cmd/thing"]
+# ignored = ["github.com/user/project/pkgX", "bitbucket.org/user/project/pkgA/pkgY"]
+#
+# [[constraint]]
+#   name = "github.com/user/project"
+#   version = "1.0.0"
+#
+# [[constraint]]
+#   name = "github.com/user/project2"
+#   branch = "dev"
+#   source = "github.com/myfork/project2"
+#
+# [[override]]
+#   name = "github.com/x/y"
+#   version = "2.4.0"
+#
+# [prune]
+#   non-go = false
+#   go-tests = true
+#   unused-packages = true
+
+ignored = [
+  "k8s.io/api",
+  "k8s.io/apiextensions-apiserver",
+  "k8s.io/apimachinery",
+  "k8s.io/apiserver",
+  "k8s.io/client-go"
+]
+
+[[constraint]]
+  name = "github.com/openshift/api"
+  version = "3.9.0"
+
+[[constraint]]
+  name = "k8s.io/api"
+  version = "kubernetes-1.9.1"
+
+[[constraint]]
+  branch = "master"
+  name = "k8s.io/apiextensions-apiserver"
+
+[[constraint]]
+  branch = "master"
+  name = "k8s.io/apimachinery"
+
+[[constraint]]
+  name = "k8s.io/client-go"
+  version = "9.0.0"
+
+[[constraint]]
+  branch = "release-1.9.1"
+  name = "k8s.io/kubernetes"
+  source = "https://github.com/openshift/kubernetes.git"
+
+[prune]
+  go-tests = true
+  unused-packages = true

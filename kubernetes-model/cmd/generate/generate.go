@@ -56,7 +56,7 @@ import (
 
 	"os"
 
-	"github.com/fabric8io/kubernetes-model/pkg/schemagen"
+	"github.com/fabric8io/kubernetes-client/kubernetes-model/pkg/schemagen"
 )
 
 type Schema struct {

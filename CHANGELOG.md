@@ -2,17 +2,21 @@
 
 #### 4.1.1
   Bugs
-  
+
   Improvements
   
-      Fix #1238: Renamed files with invalid Windows characters
-	  Fix #1260: Added Windows support in ConfigTest.honorClientAuthenticatorCommands
+    * Fix #1239: Fix one case of OkHttp connection leaks
+    * Fix #1266: Not setting optional Impersonate-Group results in NPE in ImpersonatorInterceptor
+    * Fix #1238: Renamed files with invalid Windows characters
+	  * Fix #1260: Added Windows support in ConfigTest.honorClientAuthenticatorCommands
 
   Dependency Upgrade
 
     * Fix #1223: jackson-dataformat-yaml dependency (2.7.7) ageing
+    * Upgrade maven-surefire-plugin to 3.0.0-M1
 
   New Feature
+    * Fix #1142: Pagination Support
 
 #### 4.0.6
   Bugs
