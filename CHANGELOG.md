@@ -4,6 +4,7 @@
   Bugs
   
     * Fix #1239: Fix one case of OkHttp connection leaks
+    * Fix #1266: Not setting optional Impersonate-Group results in NPE in ImpersonatorInterceptor
 
   Improvements
 

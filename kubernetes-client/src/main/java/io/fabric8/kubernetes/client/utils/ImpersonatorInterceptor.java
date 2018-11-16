@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
 
@@ -44,8 +43,11 @@ public class ImpersonatorInterceptor implements Interceptor {
 
       requestBuilder.addHeader("Impersonate-User", requestConfig.getImpersonateUsername());
 
-      for (String group : requestConfig.getImpersonateGroups()) {
-        requestBuilder.addHeader("Impersonate-Group", group);
+      String[] impersonateGroups = requestConfig.getImpersonateGroups();
+      if (isNotNullOrEmpty(impersonateGroups)) {
+        for (String group : impersonateGroups) {
+          requestBuilder.addHeader("Impersonate-Group", group);
+        }
       }
 
       Map<String, List<String>> impersonateExtras = requestConfig.getImpersonateExtras();
