@@ -9,6 +9,7 @@
     * Fix #1266: Not setting optional Impersonate-Group results in NPE in ImpersonatorInterceptor
     * Fix #1238: Renamed files with invalid Windows characters
 	  * Fix #1260: Added Windows support in ConfigTest.honorClientAuthenticatorCommands
+    * Fix #1246: Fix bug causing stderr to be written to the stdout stream in ExecWebSocketListener
 
   Improvements
     * Fix #1226 : Extend and move integrations tests
