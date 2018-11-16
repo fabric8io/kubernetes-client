@@ -2,8 +2,11 @@
 
 #### 4.1.1
   Bugs
-
+  
   Improvements
+  
+      Fix #1238: Renamed files with invalid Windows characters
+	  Fix #1260: Added Windows support in ConfigTest.honorClientAuthenticatorCommands
 
   Dependency Upgrade
 
