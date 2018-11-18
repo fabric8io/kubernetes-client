@@ -7,8 +7,6 @@ io.fabric8.openshift.client.handlers.ImageStreamTagHandler
 io.fabric8.openshift.client.handlers.OAuthAccessTokenHandler
 io.fabric8.openshift.client.handlers.OAuthAuthorizeTokenHandler
 io.fabric8.openshift.client.handlers.OAuthClientHandler
-io.fabric8.openshift.client.handlers.PolicyBindingHandler
-io.fabric8.openshift.client.handlers.PolicyHandler
 io.fabric8.openshift.client.handlers.ProjectHandler
 io.fabric8.openshift.client.handlers.ProjectRequestHandler
 io.fabric8.openshift.client.handlers.RoleHandler
