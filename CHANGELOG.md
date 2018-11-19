@@ -2,9 +2,13 @@
 
 #### 4.1.1
   Bugs
+
+  Improvements
   
     * Fix #1239: Fix one case of OkHttp connection leaks
     * Fix #1266: Not setting optional Impersonate-Group results in NPE in ImpersonatorInterceptor
+    * Fix #1238: Renamed files with invalid Windows characters
+	  * Fix #1260: Added Windows support in ConfigTest.honorClientAuthenticatorCommands
 
   Improvements
     * Fix #1226 : Extend and move integrations tests
