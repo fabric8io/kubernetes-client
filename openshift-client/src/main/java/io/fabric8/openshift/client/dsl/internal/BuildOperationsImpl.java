@@ -115,6 +115,9 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
     if (limitBytes != null) {
       sb.append("&limitBytes=").append(limitBytes);
     }
+    if (withTimestamps) {
+      sb.append("&timestamps=true");
+    }
     return sb.toString();
   }
 
@@ -204,5 +207,10 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
   @Override
   public BytesLimitTerminateTimeTailPrettyLoggable<String, LogWatch> limitBytes(int limitBytes) {
     return new BuildOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), in,out,err,inPipe, outPipe, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, version, limitBytes);
+  }
+
+  @Override
+  public BytesLimitTerminateTimeTailPrettyLoggable<String, LogWatch> usingTimestamps() {
+    return new BuildOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), in,out,err,inPipe, outPipe, errPipe, withTTY, withTerminatedStatus, true, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, version, limitBytes);
   }
 }
