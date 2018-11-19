@@ -30,6 +30,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Collections;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -54,13 +56,10 @@ public class KubernetesRoleBindingIT {
 
     currentNamespace = session.getNamespace();
 
-    // Do not run tests on opeshift 3.6.0 and 3.6.1
-    assumeFalse(client.getVersion().getMajor().equalsIgnoreCase("1")
-      && client.getVersion().getMinor().startsWith("6"));
-
     kubernetesRoleBinding = new KubernetesRoleBindingBuilder()
       .withNewMetadata()
       .withName("read-jobs")
+      .withLabels(Collections.singletonMap("type", "io.fabric8.kubernetesRoleBindingIT"))
       .endMetadata()
       .addToSubjects(0, new KubernetesSubjectBuilder()
         .withApiGroup("rbac.authorization.k8s.io")
@@ -125,7 +124,7 @@ public class KubernetesRoleBindingIT {
   @Test
   public void list() {
 
-    KubernetesRoleBindingList kubernetesRoleBindingList = client.rbac().kubernetesRoleBindings().inNamespace(currentNamespace).list();
+    KubernetesRoleBindingList kubernetesRoleBindingList = client.rbac().kubernetesRoleBindings().inNamespace(currentNamespace).withLabels(Collections.singletonMap("type", "io.fabric8.kubernetesRoleBindingIT")).list();
 
     assertNotNull(kubernetesRoleBindingList);
     assertNotNull(kubernetesRoleBindingList.getItems());
