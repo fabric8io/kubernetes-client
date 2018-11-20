@@ -95,7 +95,7 @@
     <arquillian.cube.version>1.15.2</arquillian.cube.version>
     <assertj.core.version>3.8.0</assertj.core.version>
     <arquillian.core.version>1.2.0.Final</arquillian.core.version>
-    <awaitility.version>3.1.2</awaitility.version>
+    <awaitility.version>3.1.3</awaitility.version>
 
     <slf4j.version>1.7.13</slf4j.version>
     <snakeyaml.version>1.23</snakeyaml.version>
