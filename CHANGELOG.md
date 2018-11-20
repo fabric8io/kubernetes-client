@@ -16,6 +16,7 @@
   Dependency Upgrade
     * Fix #1223: jackson-dataformat-yaml dependency (2.7.7) ageing
     * Upgrade maven-surefire-plugin to 3.0.0-M1
+    * Upgrade Awaitility to version 3.1.3
 
   New Feature
     * Fix #1142: Pagination Support
