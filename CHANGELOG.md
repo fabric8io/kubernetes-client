@@ -4,7 +4,8 @@
   Bugs
 
   Improvements
-  
+    
+    * Fix #1273: customResources can't be used with Cluster scoped CRDs
     * Fix #1239: Fix one case of OkHttp connection leaks
     * Fix #1266: Not setting optional Impersonate-Group results in NPE in ImpersonatorInterceptor
     * Fix #1238: Renamed files with invalid Windows characters
