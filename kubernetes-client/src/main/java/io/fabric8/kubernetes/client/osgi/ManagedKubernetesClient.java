@@ -96,6 +96,7 @@ import io.fabric8.kubernetes.client.dsl.PolicyAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.RbacAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
+import io.fabric8.kubernetes.client.dsl.SchedulingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.ServiceResource;
 import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
 import org.apache.felix.scr.annotations.Activate;
@@ -343,6 +344,9 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   public AutoscalingAPIGroupDSL autoscaling() {
     return delegate.autoscaling();
   }
+
+  @Override
+  public SchedulingAPIGroupDSL scheduling() { return delegate.scheduling(); }
 
   @Override
 

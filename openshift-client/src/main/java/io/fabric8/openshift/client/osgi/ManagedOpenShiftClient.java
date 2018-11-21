@@ -523,6 +523,9 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   public RbacAPIGroupDSL rbac() { return delegate.rbac(); }
 
   @Override
+  public SchedulingAPIGroupDSL scheduling() { return delegate.scheduling(); }
+
+  @Override
   public NamespacedOpenShiftClient inAnyNamespace() {
     return delegate.inAnyNamespace();
   }
