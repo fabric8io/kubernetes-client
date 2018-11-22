@@ -7,6 +7,7 @@
   * Fix #1238: Renamed files with invalid Windows characters
   * Fix #1260: Added Windows support in ConfigTest.honorClientAuthenticatorCommands
   * Fix #579: Add Timestampable interface to PodOperationsImpl/BuildOperationsImpl and set timestamps parameter
+  * Fix #1228: Closed InputStream in OperationSupport's handleResponse to avoid leak
 
   Improvements
   * Fix #1226 : Extend and move integrations tests
