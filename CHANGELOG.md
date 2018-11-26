@@ -8,6 +8,7 @@
   * Fix #1260: Added Windows support in ConfigTest.honorClientAuthenticatorCommands
   * Fix #579: Add Timestampable interface to PodOperationsImpl/BuildOperationsImpl and set timestamps parameter
   * Fix #1273: customResources can't be used with Cluster scoped CRDs
+  * Fix #1228: Closed InputStream in OperationSupport's handleResponse to avoid leak
 
   Improvements
     * Fix #1226 : Extend and move integrations tests
