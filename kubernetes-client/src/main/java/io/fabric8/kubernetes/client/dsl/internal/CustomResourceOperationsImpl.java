@@ -41,12 +41,15 @@ import java.lang.reflect.InvocationTargetException;
 public class CustomResourceOperationsImpl<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>> extends HasMetadataOperation<T, L, D,
     Resource<T, D>> implements MixedOperation<T, L, D, Resource<T, D>> {
 
+  private final boolean resourceNamespaced;
+
   public CustomResourceOperationsImpl(OkHttpClient httpClient, Config configuration, CustomResourceDefinition crd, Class<T> resourceType, Class<L> resourceListType, Class<D> doneType) {
-    this(httpClient, configuration, apiGroup(crd), apiVersion(crd), resourceT(crd), null, null, false, null, null, false, resourceType, resourceListType, doneType);
+    this(httpClient, configuration, apiGroup(crd), apiVersion(crd), resourceT(crd), resourceNamespaced(crd), null, null, false, null, null, false, resourceType, resourceListType, doneType);
   }
 
-  public CustomResourceOperationsImpl(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, Class<T> type, Class<L> listType, Class<D> doneableType) {
+  public CustomResourceOperationsImpl(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, boolean resouceNamespaced, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, Class<T> type, Class<L> listType, Class<D> doneableType) {
     super(client, config, apiGroup, apiVersion, resourceT, namespace, name, cascading, item, resourceVersion, reloadingFromServer, type, listType, doneableType);
+    this.resourceNamespaced = resouceNamespaced;
     this.apiGroupVersion = getAPIGroup() + "/" + getAPIVersion();
 
     KubernetesDeserializer.registerCustomKind(type.getSimpleName(), type);
@@ -71,6 +74,10 @@ public class CustomResourceOperationsImpl<T extends HasMetadata, L extends Kuber
     return crd.getMetadata().getName();
   }
 
+  protected static boolean resourceNamespaced(CustomResourceDefinition crd) {
+    return "Namespaced".equals(crd.getSpec().getScope());
+  }
+
   @Override
   public NonNamespaceOperation<T, L, D, Resource<T, D>> inAnyNamespace() {
     return inNamespace(null);
@@ -78,7 +85,12 @@ public class CustomResourceOperationsImpl<T extends HasMetadata, L extends Kuber
 
   @Override
   public NonNamespaceOperation<T, L, D, Resource<T, D>> inNamespace(String namespace) {
-    return new CustomResourceOperationsImpl<>(client, getConfig(), getAPIGroup(), getAPIVersion(), getResourceT(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getType(), getListType(), getDoneableType());
+    return new CustomResourceOperationsImpl<>(client, getConfig(), getAPIGroup(), getAPIVersion(), getResourceT(), resourceNamespaced, namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getType(), getListType(), getDoneableType());
+  }
+
+  @Override
+  public boolean isResourceNamespaced() {
+    return resourceNamespaced;
   }
 
   @Override
@@ -86,31 +98,31 @@ public class CustomResourceOperationsImpl<T extends HasMetadata, L extends Kuber
     if (name == null || name.length() == 0) {
       throw new IllegalArgumentException("Name must be provided.");
     }
-    return new CustomResourceOperationsImpl<>(client, getConfig(), getAPIGroup(), getAPIVersion(), getResourceT(), getNamespace(), name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getType(), getListType(), getDoneableType());
+    return new CustomResourceOperationsImpl<>(client, getConfig(), getAPIGroup(), getAPIVersion(), getResourceT(), resourceNamespaced, getNamespace(), name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getType(), getListType(), getDoneableType());
   }
 
   @Override
   public Replaceable<T, T> lockResourceVersion(String resourceVersion) {
-    return new CustomResourceOperationsImpl<>(client, getConfig(), getAPIGroup(), getAPIVersion(), getResourceT(), getNamespace(), getName(), isCascading(), getItem(), resourceVersion, isReloadingFromServer(), getType(), getListType(), getDoneableType());
+    return new CustomResourceOperationsImpl<>(client, getConfig(), getAPIGroup(), getAPIVersion(), getResourceT(), resourceNamespaced, getNamespace(), getName(), isCascading(), getItem(), resourceVersion, isReloadingFromServer(), getType(), getListType(), getDoneableType());
   }
 
   @Override
   protected Resource<T, D> createItemOperation(T item) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-    return new CustomResourceOperationsImpl<>(client, getConfig(), getAPIGroup(), getAPIVersion(), getResourceT(), getNamespace(), getName(), isCascading(), item, getResourceVersion(), isReloadingFromServer(), getType(), getListType(), getDoneableType());
+    return new CustomResourceOperationsImpl<>(client, getConfig(), getAPIGroup(), getAPIVersion(), getResourceT(), resourceNamespaced, getNamespace(), getName(), isCascading(), item, getResourceVersion(), isReloadingFromServer(), getType(), getListType(), getDoneableType());
   }
 
   @Override
   public Resource<T, D> load(InputStream is) {
-    return new CustomResourceOperationsImpl<>(client, getConfig(), getAPIGroup(), getAPIVersion(), getResourceT(), getNamespace(), getName(), isCascading(), unmarshal(is, getType()), getResourceVersion(), isReloadingFromServer(), getType(), getListType(), getDoneableType());
+    return new CustomResourceOperationsImpl<>(client, getConfig(), getAPIGroup(), getAPIVersion(), getResourceT(), resourceNamespaced, getNamespace(), getName(), isCascading(), unmarshal(is, getType()), getResourceVersion(), isReloadingFromServer(), getType(), getListType(), getDoneableType());
   }
 
   @Override
   public Gettable<T> fromServer() {
-    return new CustomResourceOperationsImpl<>(client, getConfig(), getAPIGroup(), getAPIVersion(), getResourceT(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), true, getType(), getListType(), getDoneableType());
+    return new CustomResourceOperationsImpl<>(client, getConfig(), getAPIGroup(), getAPIVersion(), getResourceT(), resourceNamespaced, getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), true, getType(), getListType(), getDoneableType());
   }
 
   @Override
   public Watchable<Watch, Watcher<T>> withResourceVersion(String resourceVersion) {
-    return new CustomResourceOperationsImpl<>(client, getConfig(), getAPIGroup(), getAPIVersion(), getResourceT(), getNamespace(), getName(), isCascading(), getItem(), resourceVersion, isReloadingFromServer(), getType(), getListType(), getDoneableType());
+    return new CustomResourceOperationsImpl<>(client, getConfig(), getAPIGroup(), getAPIVersion(), getResourceT(), resourceNamespaced, getNamespace(), getName(), isCascading(), getItem(), resourceVersion, isReloadingFromServer(), getType(), getListType(), getDoneableType());
   }
 }

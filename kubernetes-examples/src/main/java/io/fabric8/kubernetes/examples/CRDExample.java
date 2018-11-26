@@ -25,12 +25,14 @@ import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.examples.crds.DoneableDummy;
 import io.fabric8.kubernetes.examples.crds.Dummy;
 import io.fabric8.kubernetes.examples.crds.DummyList;
 import io.fabric8.kubernetes.examples.crds.DummySpec;
+import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,21 +48,44 @@ public class CRDExample {
 
   private static boolean logRootPaths = false;
 
+  private static String resourceScope(boolean resourceNamespaced) {
+    if (resourceNamespaced) {
+      return "Namespaced";
+    }
+    return "Cluster";
+  }
+
+  /**
+   * Example of Cluster and Namespaced scoped K8S Custom Resources.
+   * To test Cluster scoped resource use "--cluster" as first argument.
+   * To test Namespaced resource provide namespace as first argument (namespace must exists in K8S).
+   *
+   * @param args Either "--cluster" or namespace name.
+   */
   public static void main(String[] args) {
+    boolean resourceNamespaced = true;
     String namespace = null;
     if (args.length > 0) {
-      namespace = args[0];
+      if ("--cluster".equals(args[0])) {
+        resourceNamespaced = false;
+      } else {
+        namespace = args[0];
+      }
     }
     try (final KubernetesClient client = new DefaultKubernetesClient()) {
-      if (namespace == null) {
-        namespace = client.getNamespace();
-      }
-      if (namespace == null) {
-        System.err.println("No namespace specified and no default defined!");
-        return;
-      }
+      if (resourceNamespaced) {
+        if (namespace == null) {
+          namespace = client.getNamespace();
+        }
+        if (namespace == null) {
+          System.err.println("No namespace specified and no default defined!");
+          return;
+        }
 
-      System.out.println("Using namespace: " + namespace);
+        System.out.println("Using namespace: " + namespace);
+      } else {
+        System.out.println("Creating cluster scoped resource");
+      }
 
       if (logRootPaths) {
         RootPaths rootPaths = client.rootPaths();
@@ -75,6 +100,7 @@ public class CRDExample {
           }
         }
       }
+
       CustomResourceDefinitionList crds = client.customResourceDefinitions().list();
       List<CustomResourceDefinition> crdsItems = crds.getItems();
       System.out.println("Found " + crdsItems.size() + " CRD(s)");
@@ -95,7 +121,7 @@ public class CRDExample {
         dummyCRD = new CustomResourceDefinitionBuilder().
             withApiVersion("apiextensions.k8s.io/v1beta1").
             withNewMetadata().withName(DUMMY_CRD_NAME).endMetadata().
-            withNewSpec().withGroup(DUMMY_CRD_GROUP).withVersion("v1").withScope("Namespaced").
+            withNewSpec().withGroup(DUMMY_CRD_GROUP).withVersion("v1").withScope(resourceScope(resourceNamespaced)).
               withNewNames().withKind("Dummy").withShortNames("dummy").withPlural("dummies").endNames().endSpec().
             build();
 
@@ -103,9 +129,13 @@ public class CRDExample {
         System.out.println("Created CRD " + dummyCRD.getMetadata().getName());
       }
 
+      KubernetesDeserializer.registerCustomKind(DUMMY_CRD_GROUP + "/v1", "Dummy", Dummy.class);
 
       // lets create a client for the CRD
-      NonNamespaceOperation<Dummy, DummyList, DoneableDummy, Resource<Dummy, DoneableDummy>> dummyClient = client.customResources(dummyCRD, Dummy.class, DummyList.class, DoneableDummy.class).inNamespace(namespace);
+      NonNamespaceOperation<Dummy, DummyList, DoneableDummy, Resource<Dummy, DoneableDummy>> dummyClient = client.customResources(dummyCRD, Dummy.class, DummyList.class, DoneableDummy.class);
+      if (resourceNamespaced) {
+        dummyClient = ((MixedOperation<Dummy, DummyList, DoneableDummy, Resource<Dummy, DoneableDummy>>) dummyClient).inNamespace(namespace);
+      }
       CustomResourceList<Dummy> dummyList = dummyClient.list();
       List<Dummy> items = dummyList.getItems();
       System.out.println("  found " + items.size() + " dummies");
@@ -126,6 +156,10 @@ public class CRDExample {
       Dummy created = dummyClient.createOrReplace(dummy);
 
       System.out.println("Upserted " + dummy);
+
+      created.getSpec().setBar("otherBar");
+
+      dummyClient.createOrReplace(created);
 
       System.out.println("Watching for changes to Dummies");
       dummyClient.withResourceVersion(created.getMetadata().getResourceVersion()).watch(new Watcher<Dummy>() {
