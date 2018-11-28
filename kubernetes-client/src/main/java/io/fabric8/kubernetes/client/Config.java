@@ -554,13 +554,16 @@ public class Config {
 
     return false;
   }
+  @JsonIgnoreProperties(ignoreUnknown = true)
   private static final class ExecCredential {
     public String kind;
     public String apiVersion;
     public ExecCredentialSpec spec;
     public ExecCredentialStatus status;
   }
+  @JsonIgnoreProperties(ignoreUnknown = true)
   private static final class ExecCredentialSpec {}
+  @JsonIgnoreProperties(ignoreUnknown = true)
   private static final class ExecCredentialStatus {
     public String token;
     // TODO clientCertificateData, clientKeyData, expirationTimestamp
