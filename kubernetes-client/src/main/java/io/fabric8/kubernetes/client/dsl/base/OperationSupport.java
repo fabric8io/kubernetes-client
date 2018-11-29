@@ -380,7 +380,9 @@ public class OperationSupport {
     try (ResponseBody body = response.body()) {
       assertResponseCode(request, response);
       if (type != null) {
-        return Serialization.unmarshal(body.byteStream(), type, parameters);
+        try (InputStream bodyInputStream = body.byteStream()) {
+          return Serialization.unmarshal(bodyInputStream, type, parameters);
+        }
       } else {
         return null;
       }
