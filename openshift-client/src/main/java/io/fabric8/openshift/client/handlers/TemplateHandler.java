@@ -17,6 +17,7 @@ package io.fabric8.openshift.client.handlers;
 
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
@@ -78,5 +79,10 @@ public class TemplateHandler implements ResourceHandler<Template, TemplateBuilde
   @Override
   public Template waitUntilReady(OkHttpClient client, Config config, String namespace, Template item, long amount, TimeUnit timeUnit) throws InterruptedException {
     return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, "templates", namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null).waitUntilReady(amount, timeUnit);
+  }
+
+  @Override
+  public Template waitUntilCondition(OkHttpClient client, Config config, String namespace, Template item, Predicate<Template> condition, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, "templates", namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null).waitUntilCondition(condition, amount, timeUnit);
   }
 }

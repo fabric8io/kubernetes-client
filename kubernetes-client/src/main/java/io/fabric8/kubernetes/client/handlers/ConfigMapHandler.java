@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.handlers;
 
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
@@ -76,6 +77,11 @@ public class ConfigMapHandler implements ResourceHandler<ConfigMap, ConfigMapBui
   @Override
   public ConfigMap waitUntilReady(OkHttpClient client, Config config, String namespace, ConfigMap item, long amount, TimeUnit timeUnit) throws InterruptedException {
     return new ConfigMapOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilReady(amount, timeUnit);
+  }
+
+  @Override
+  public ConfigMap waitUntilCondition(OkHttpClient client, Config config, String namespace, ConfigMap item, Predicate<ConfigMap> condition, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new ConfigMapOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilCondition(condition, amount, timeUnit);
   }
 
 }

@@ -44,10 +44,6 @@ import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.client.utils.WatcherToggle;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -56,9 +52,18 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 
 public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
   extends OperationSupport
@@ -988,28 +993,37 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     return i instanceof HasMetadata && Readiness.isReady((HasMetadata)i);
   }
 
-  protected T waitUntilExists(long timeoutInMillis) throws InterruptedException {
-    long end = System.currentTimeMillis() + timeoutInMillis;
-    while (System.currentTimeMillis() < end) {
-      T item = get();
-      if (item != null) {
-        return item;
-      }
-
-      // in the future, should probably combine this simple waiting loop with a watcher
-      Thread.sleep(1000);
-    }
-
-    T item = get();
-    if (item != null) {
-      return item;
-    }
-
-    throw new IllegalArgumentException(type.getSimpleName() + " with name:[" + name + "] in namespace:[" + namespace + "] not found!");
+  protected T waitUntilExists(long amount, TimeUnit timeUnit) throws InterruptedException {
+    return waitUntilCondition(Objects::nonNull, amount, timeUnit);
   }
 
   @Override
   public T waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
-    return waitUntilExists(timeUnit.toMillis(amount));
+    return waitUntilExists(amount, timeUnit);
+  }
+
+  @Override
+  public T waitUntilCondition(Predicate<T> condition, long amount, TimeUnit timeUnit)
+    throws InterruptedException {
+
+    long timeoutInMillis = timeUnit.toMillis(amount);
+
+    long end = System.currentTimeMillis() + timeoutInMillis;
+    while (System.currentTimeMillis() < end) {
+      T item = get();
+      if (condition.test(item)) {
+        return item;
+      }
+
+      // in the future, this should probably be more intelligent
+      Thread.sleep(1000);
+    }
+
+    T item = get();
+    if (condition.test(item)) {
+      return item;
+    }
+
+    throw new IllegalArgumentException(type.getSimpleName() + " with name:[" + name + "] in namespace:[" + namespace + "] not found!");
   }
 }

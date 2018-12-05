@@ -16,23 +16,22 @@
 
 package io.fabric8.kubernetes.client.dsl.base;
 
+import io.fabric8.kubernetes.api.builder.Function;
+import io.fabric8.kubernetes.api.model.Doneable;
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ReplicationController;
+import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.client.internal.readiness.ReadinessWatcher;
-import okhttp3.OkHttpClient;
-import io.fabric8.kubernetes.api.builder.Function;
-import io.fabric8.kubernetes.api.model.Doneable;
-import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.KubernetesClientException;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import okhttp3.OkHttpClient;
 
 public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
   extends BaseOperation< T, L, D, R> {
@@ -220,7 +219,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   public T waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
     if (Readiness.isReadinessApplicable(getType())) {
       long started = System.currentTimeMillis();
-      waitUntilExists(timeUnit.toMillis(amount));
+      waitUntilExists(amount, timeUnit);
       long alreadySpent = System.currentTimeMillis() - started;
 
       long remaining = timeUnit.toMillis(amount) - alreadySpent;

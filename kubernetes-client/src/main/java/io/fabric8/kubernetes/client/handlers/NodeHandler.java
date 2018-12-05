@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.handlers;
 
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.Node;
 import io.fabric8.kubernetes.api.model.NodeBuilder;
@@ -75,5 +76,10 @@ public class NodeHandler implements ResourceHandler<Node, NodeBuilder> {
   @Override
   public Node waitUntilReady(OkHttpClient client, Config config, String namespace, Node item, long amount, TimeUnit timeUnit) throws InterruptedException {
     return new NodeOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilReady(amount, timeUnit);
+  }
+
+  @Override
+  public Node waitUntilCondition(OkHttpClient client, Config config, String namespace, Node item, Predicate<Node> condition, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new NodeOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilCondition(condition, amount, timeUnit);
   }
 }

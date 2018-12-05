@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.handlers;
 
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
@@ -103,6 +104,11 @@ public class KubernetesListHandler implements ResourceHandler<KubernetesList, Ku
 
   @Override
   public KubernetesList waitUntilReady(OkHttpClient client, Config config, String namespace, KubernetesList item, long amount, TimeUnit timeUnit) throws InterruptedException {
+    throw new UnsupportedOperationException("Watch is not supported on KubernetesList.");
+  }
+
+  @Override
+  public KubernetesList waitUntilCondition(OkHttpClient client, Config config, String namespace, KubernetesList item, Predicate<KubernetesList> condition, long amount, TimeUnit timeUnit) throws InterruptedException {
     throw new UnsupportedOperationException("Watch is not supported on KubernetesList.");
   }
 }

@@ -24,6 +24,7 @@ import io.fabric8.openshift.api.model.ImageStreamTag;
 import io.fabric8.openshift.api.model.ImageStreamTagBuilder;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.internal.ImageStreamTagOperationsImpl;
+import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
@@ -78,5 +79,10 @@ public class ImageStreamTagHandler implements ResourceHandler<ImageStreamTag, Im
   @Override
   public ImageStreamTag waitUntilReady(OkHttpClient client, Config config, String namespace, ImageStreamTag item, long amount, TimeUnit timeUnit) throws InterruptedException {
     return new ImageStreamTagOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilReady(amount, timeUnit);
+  }
+
+  @Override
+  public ImageStreamTag waitUntilCondition(OkHttpClient client, Config config, String namespace, ImageStreamTag item, Predicate<ImageStreamTag> condition, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new ImageStreamTagOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilCondition(condition, amount, timeUnit);
   }
 }

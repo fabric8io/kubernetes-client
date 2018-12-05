@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.handlers;
 
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceBuilder;
@@ -76,5 +77,10 @@ public class NamespaceHandler implements ResourceHandler<Namespace, NamespaceBui
   @Override
   public Namespace waitUntilReady(OkHttpClient client, Config config, String namespace, Namespace item, long amount, TimeUnit timeUnit) throws InterruptedException {
     return new NamespaceOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilReady(amount, timeUnit);
+  }
+
+  @Override
+  public Namespace waitUntilCondition(OkHttpClient client, Config config, String namespace, Namespace item, Predicate<Namespace> condition, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new NamespaceOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilCondition(condition, amount, timeUnit);
   }
 }

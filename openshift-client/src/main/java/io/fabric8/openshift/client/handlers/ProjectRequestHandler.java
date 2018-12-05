@@ -18,6 +18,7 @@ package io.fabric8.openshift.client.handlers;
 
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.client.Config;
@@ -78,6 +79,11 @@ public class ProjectRequestHandler implements ResourceHandler<ProjectRequest, Pr
 
   @Override
   public ProjectRequest waitUntilReady(OkHttpClient client, Config config, String namespace, ProjectRequest item, long amount, TimeUnit timeUnit) throws InterruptedException {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public ProjectRequest waitUntilCondition(OkHttpClient client, Config config, String namespace, ProjectRequest item, Predicate<ProjectRequest> condition, long amount, TimeUnit timeUnit) throws InterruptedException {
     throw new UnsupportedOperationException();
   }
 }
