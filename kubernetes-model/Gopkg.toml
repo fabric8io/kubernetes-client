@@ -32,13 +32,13 @@ ignored = [
   "k8s.io/client-go"
 ]
 
-[[constraint]]
-  name = "github.com/openshift/api"
-  version = "3.9.0"
+required = [
+  "github.com/openshift/origin"
+]
 
 [[constraint]]
-  name = "k8s.io/api"
-  version = "kubernetes-1.9.1"
+  name = "github.com/openshift/origin"
+  version = "v3.11.0"
 
 [[constraint]]
   branch = "master"
@@ -51,11 +51,6 @@ ignored = [
 [[constraint]]
   name = "k8s.io/client-go"
   version = "9.0.0"
-
-[[constraint]]
-  branch = "release-1.9.1"
-  name = "k8s.io/kubernetes"
-  source = "https://github.com/openshift/kubernetes.git"
 
 [prune]
   go-tests = true

@@ -22,7 +22,7 @@ build: gobuild
 	mvn clean install
 
 gobuild:
-	dep ensure
+	dep ensure -v
 	CGO_ENABLED=0 GO15VENDOREXPERIMENT=1 go build -a ./cmd/generate/generate.go
 	./generate > kubernetes-model/src/main/resources/schema/kube-schema.json
 	./generate validation > kubernetes-model/src/main/resources/schema/validation-schema.json
