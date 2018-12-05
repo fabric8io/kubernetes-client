@@ -23,6 +23,7 @@
 
   New Feature
     * Fix #1142: Pagination Support
+    * Fix #1234: VolumeNodeAffinity support
 
 #### 4.0.7
   Bugs
