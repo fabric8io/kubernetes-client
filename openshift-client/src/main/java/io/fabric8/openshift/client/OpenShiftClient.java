@@ -46,6 +46,8 @@ public interface OpenShiftClient extends KubernetesClient {
   RbacAPIGroupDSL rbac();
 
   SchedulingAPIGroupDSL scheduling();
+  
+  SettingsAPIGroupDSL settings();
 
   MixedOperation<Build, BuildList, DoneableBuild, BuildResource<Build, DoneableBuild, String, LogWatch>> builds();
 
