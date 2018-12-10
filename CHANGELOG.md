@@ -25,6 +25,7 @@
     * Fix #1142: Pagination Support
     * Fix #1234: VolumeNodeAffinity support
     * Fix #1244: Pod Priority Support
+    * Fix #1186: Added Support for creating HPA based on custom metrics
 
 #### 4.0.7
   Bugs
