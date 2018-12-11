@@ -484,6 +484,9 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   public RbacAPIGroupDSL rbac() { return adapt(RbacAPIGroupClient.class); }
 
   @Override
+  public SchedulingAPIGroupDSL scheduling() { return adapt(SchedulingAPIGroupClient.class); }
+
+  @Override
   public FunctionCallable<NamespacedOpenShiftClient> withRequestConfig(RequestConfig requestConfig) {
     return new WithRequestCallable<NamespacedOpenShiftClient>(this, requestConfig);
   }

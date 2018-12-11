@@ -101,6 +101,8 @@ public interface KubernetesClient extends Client {
 
   RbacAPIGroupDSL rbac();
 
+  SchedulingAPIGroupDSL scheduling();
+
   MixedOperation<ComponentStatus, ComponentStatusList, DoneableComponentStatus, Resource<ComponentStatus, DoneableComponentStatus>> componentstatuses();
 
   ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata,Boolean> load(InputStream is);

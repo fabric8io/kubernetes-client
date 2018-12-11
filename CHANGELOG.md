@@ -24,6 +24,7 @@
   New Feature
     * Fix #1142: Pagination Support
     * Fix #1234: VolumeNodeAffinity support
+    * Fix #1244: Pod Priority Support
 
 #### 4.0.7
   Bugs
