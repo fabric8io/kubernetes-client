@@ -337,7 +337,7 @@ All the resource objects used here will be according to OpenShift 3.9.0  and Kub
 ## Who uses Kubernetes & OpenShift Java client? 
   
   Extensions:
-  - [Isitio API](https://github.com/snowdrop/istio-java-api)
+  - [Istio API](https://github.com/snowdrop/istio-java-api)
   - [Service Catalog API](https://github.com/snowdrop/service-catalog-java-api)  
   
   Frameworks/Libraries/Tools:
