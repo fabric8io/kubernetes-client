@@ -22,8 +22,10 @@ import org.slf4j.LoggerFactory;
 import java.io.Closeable;
 import java.io.Flushable;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
@@ -292,5 +294,20 @@ public class Utils {
 
   public static String getProperty(Map<String, Object> properties, String propertyName) {
     return getProperty(properties, propertyName, null);
+  }
+
+  /**
+   * Converts string to URL encoded string.
+   *
+   * @param str
+   * @return
+   */
+  public static final String toUrlEncoded(String str) {
+    try {
+      return URLEncoder.encode(str, "UTF-8");
+    } catch (UnsupportedEncodingException exception) {
+      // Ignore
+    }
+    return null;
   }
 }

@@ -19,15 +19,17 @@
 
   <feature name="kubernetes-client" description="Fabric8 Kubernetes Client" version="${project.version}">
     <bundle dependency='true'>mvn:javax.validation/validation-api/${validation.api.version}</bundle>
-    <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-core/${jackson.bundle.version}</bundle>
+    <bundle dependency='true'>mvn:com.google.code.findbugs/jsr305/${jsr305.version}</bundle>
+    <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-core/${jackson.version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-annotations/${jackson.bundle.version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-databind/${jackson.bundle.version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/${jackson.bundle.version}</bundle>
     <bundle dependency='true'>mvn:org.yaml/snakeyaml/${snakeyaml.version}</bundle>
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.generex/${generex.bundle.version}</bundle>
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.automaton/${automaton.bundle.version}</bundle>
-    <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.okio/${okio.bundle.version}</bundle>
+    <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.conscrypt-openjdk/${conscrypt-openjdk-uber.bundle.version}</bundle>
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.okhttp/${okhttp.bundle.version}</bundle>
+    <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.okio/${okio.bundle.version}</bundle>
     <bundle>mvn:io.fabric8/zjsonpatch/${zjsonpatch.version}</bundle>
     <bundle>mvn:io.fabric8/kubernetes-model/${project.version}</bundle>
     <bundle>mvn:io.fabric8/kubernetes-client/${project.version}/jar/bundle</bundle>
