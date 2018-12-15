@@ -1,5 +1,15 @@
 ### CHANGELOG
 
+#### 4.1-SNAPSHOT
+  Bugs
+
+  Improvements
+
+  Dependency Upgrade
+
+  New Feature
+
+
 #### 4.1.1
   Bugs
     * Fix #1239: Fix one case of OkHttp connection leaks
@@ -18,8 +28,8 @@
 
   Dependency Upgrade
     * Fix #1223: jackson-dataformat-yaml dependency (2.7.7) ageing
-    * Upgrade maven-surefire-plugin to 3.0.0-M1
-    * Upgrade Awaitility to version 3.1.3
+    * Fix #1262: Upgrade maven-surefire-plugin to 3.0.0-M1
+    * Fix #1272: Upgrade Awaitility to version 3.1.3
     * Fix #1235: Upgrade kubernetes-model to latest kubernetes/Openshift versions
 
   New Feature
