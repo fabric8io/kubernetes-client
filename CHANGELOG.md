@@ -1,6 +1,6 @@
 ### CHANGELOG
 
-#### 4.1-SNAPSHOT
+#### 4.1.2
   Bugs
 
   Improvements
@@ -11,31 +11,51 @@
 
 
 #### 4.1.1
+
   Bugs
+  
     * Fix #1239: Fix one case of OkHttp connection leaks
+    
     * Fix #1266: Not setting optional Impersonate-Group results in NPE in ImpersonatorInterceptor
+    
     * Fix #1238: Renamed files with invalid Windows characters
+    
     * Fix #1260: Added Windows support in ConfigTest.honorClientAuthenticatorCommands
+    
     * Fix #579: Add Timestampable interface to PodOperationsImpl/BuildOperationsImpl and set timestamps parameter
+    
     * Fix #1273: customResources can't be used with Cluster scoped CRDs
+    
     * Fix #1228: Closed InputStream in OperationSupport's handleResponse to avoid leak
+    
     * Fix ExecCredential deserialization in kubeconfig auth
 
   Improvements
+  
     * Fix #1226 : Extend and move integrations tests
+    
     * Fix #989  : Add support for waitForCondition
+    
     * Fix #1293 : OpenShiftOAuthInterceptor.authorize() should only throw IOException
 
   Dependency Upgrade
+  
     * Fix #1223: jackson-dataformat-yaml dependency (2.7.7) ageing
+    
     * Fix #1262: Upgrade maven-surefire-plugin to 3.0.0-M1
+    
     * Fix #1272: Upgrade Awaitility to version 3.1.3
+    
     * Fix #1235: Upgrade kubernetes-model to latest kubernetes/Openshift versions
 
   New Feature
+  
     * Fix #1142: Pagination Support
+    
     * Fix #1234: VolumeNodeAffinity support
+    
     * Fix #1244: Pod Priority Support
+    
     * Fix #1186: Added Support for creating HPA based on custom metrics
 
 #### 4.0.7
