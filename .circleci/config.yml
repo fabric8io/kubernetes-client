@@ -195,6 +195,14 @@ jobs:
       - run:
           command: mvn -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B install -P itests-openshift
           no_output_timeout: 3600
+  RELEASE:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          command: |
+            sh ./scripts/prepare-environment.sh
+            sh ./scripts/release.sh
 workflows:
   version: 2
   build_and_test:
@@ -202,3 +210,7 @@ workflows:
       - OPENSHIFT_3.9.0
       - OPENSHIFT_3.10.0
       - OPENSHIFT_3.11.0
+      - RELEASE:
+          filters:
+            branches:
+              only: release-project
