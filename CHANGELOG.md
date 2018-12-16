@@ -3,6 +3,8 @@
 #### 4.1.2
   Bugs
 
+    * Fix #1271: Issue deploying ReplicaSet to extensions/v1beta1
+
   Improvements
 
   Dependency Upgrade

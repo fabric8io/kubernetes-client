@@ -93,7 +93,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   protected String apiGroupVersion;
 
   protected BaseOperation(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields)  {
-    super(client, config, apiGroup, apiVersion(item, apiVersion), resourceT, namespace, name(item, name));
+    super(client, config, apiGroup(item, apiGroup), apiVersion(item, apiVersion), resourceT, namespace, name(item, name));
     this.cascading = cascading;
     this.item = item;
     this.reloadingFromServer = reloadingFromServer;
@@ -111,7 +111,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   protected BaseOperation(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, Class<T> type, Class<L> listType, Class<D> doneableType) {
-    super(client, config, apiGroup, apiVersion(item, apiVersion), resourceT, namespace, name(item, name));
+    super(client, config, apiGroup(item, apiGroup), apiVersion(item, apiVersion), resourceT, namespace, name(item, name));
     this.cascading = cascading;
     this.item = item;
     this.resourceVersion = resourceVersion;
@@ -174,6 +174,23 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
       String[] versionParts = apiVersion.split("/");
       return versionParts[versionParts.length - 1];
     }
+  }
+
+  /**
+   * Extracts apiGroup from apiVersion when in resource for apiGroup/apiVersion combination
+   * @param item      resource which is being used
+   * @param apiGroup  apiGroup present if any
+   * @return          Just the apiGroup part without apiVersion
+   */
+  private static <T> String apiGroup(T item, String apiGroup) {
+    if(item instanceof HasMetadata) {
+      String apiVersionFromResource = ((HasMetadata)item).getApiVersion();
+      if(apiVersionFromResource.contains("/")) {
+        String[] versionParts = apiVersionFromResource.split("/");
+        return versionParts[0];
+      }
+    }
+    return apiGroup;
   }
 
   /**
