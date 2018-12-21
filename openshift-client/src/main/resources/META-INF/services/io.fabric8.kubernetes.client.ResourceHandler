@@ -9,8 +9,8 @@ io.fabric8.openshift.client.handlers.OAuthAuthorizeTokenHandler
 io.fabric8.openshift.client.handlers.OAuthClientHandler
 io.fabric8.openshift.client.handlers.ProjectHandler
 io.fabric8.openshift.client.handlers.ProjectRequestHandler
-io.fabric8.openshift.client.handlers.RoleHandler
-io.fabric8.openshift.client.handlers.RoleBindingHandler
+io.fabric8.openshift.client.handlers.OpenshiftRoleHandler
+io.fabric8.openshift.client.handlers.OpenshiftRoleBindingHandler
 io.fabric8.openshift.client.handlers.RouteHandler
 io.fabric8.openshift.client.handlers.SecurityContextConstraintsHandler
 io.fabric8.openshift.client.handlers.TemplateHandler

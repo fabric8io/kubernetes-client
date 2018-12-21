@@ -16,8 +16,8 @@
 package io.fabric8.openshift.client.server.mock;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fabric8.openshift.api.model.RoleBinding;
-import io.fabric8.openshift.api.model.RoleBindingBuilder;
+import io.fabric8.openshift.api.model.OpenshiftRoleBinding;
+import io.fabric8.openshift.api.model.OpenshiftRoleBindingBuilder;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Rule;
@@ -25,11 +25,11 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class RoleBindingTest {
+public class OpenshiftRoleBindingTest {
   @Rule
   public OpenShiftServer server = new OpenShiftServer();
 
-  private RoleBinding expectedRoleBinding = new RoleBindingBuilder()
+  private OpenshiftRoleBinding expectedOpenshiftRoleBinding = new OpenshiftRoleBindingBuilder()
     .withNewMetadata().endMetadata()
     .addToUserNames("testuser1", "testuser2", "system:serviceaccount:test:svcacct")
     .addToGroupNames("testgroup")
@@ -41,12 +41,12 @@ public class RoleBindingTest {
 
   @Test
   public void testCreateWithOnlySubjects() throws Exception {
-    server.expect().post().withPath("/oapi/v1/namespaces/test/rolebindings").andReturn(201, expectedRoleBinding).once();
+    server.expect().post().withPath("/oapi/v1/namespaces/test/rolebindings").andReturn(201, expectedOpenshiftRoleBinding).once();
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
-    RoleBinding response = client.roleBindings().create(
-      new RoleBindingBuilder()
+    OpenshiftRoleBinding response = client.roleBindings().create(
+      new OpenshiftRoleBindingBuilder()
         .withNewMetadata().endMetadata()
         .addNewSubject().withKind("User").withName("testuser1").endSubject()
         .addNewSubject().withKind("User").withName("testuser2").endSubject()
@@ -54,60 +54,60 @@ public class RoleBindingTest {
         .addNewSubject().withKind("Group").withName("testgroup").endSubject()
       .build()
     );
-    assertEquals(expectedRoleBinding, response);
+    assertEquals(expectedOpenshiftRoleBinding, response);
 
     RecordedRequest request = server.getMockServer().takeRequest();
-    assertEquals(expectedRoleBinding, new ObjectMapper().readerFor(RoleBinding.class).readValue(request.getBody().inputStream()));
+    assertEquals(expectedOpenshiftRoleBinding, new ObjectMapper().readerFor(OpenshiftRoleBinding.class).readValue(request.getBody().inputStream()));
   }
 
   @Test
   public void testCreateWithUserNamesAndGroupsAndNoSubjects() throws Exception {
-    server.expect().post().withPath("/oapi/v1/namespaces/test/rolebindings").andReturn(201, expectedRoleBinding).once();
+    server.expect().post().withPath("/oapi/v1/namespaces/test/rolebindings").andReturn(201, expectedOpenshiftRoleBinding).once();
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
-    RoleBinding response = client.roleBindings().create(
-      new RoleBindingBuilder()
+    OpenshiftRoleBinding response = client.roleBindings().create(
+      new OpenshiftRoleBindingBuilder()
         .withNewMetadata().endMetadata()
         .addToUserNames("testuser1", "testuser2", "system:serviceaccount:test:svcacct")
         .addToGroupNames("testgroup")
       .build()
     );
-    assertEquals(expectedRoleBinding, response);
+    assertEquals(expectedOpenshiftRoleBinding, response);
 
     RecordedRequest request = server.getMockServer().takeRequest();
-    assertEquals(expectedRoleBinding, new ObjectMapper().readerFor(RoleBinding.class).readValue(request.getBody().inputStream()));
+    assertEquals(expectedOpenshiftRoleBinding, new ObjectMapper().readerFor(OpenshiftRoleBinding.class).readValue(request.getBody().inputStream()));
   }
 
   @Test
   public void testCreateWithUserNamesAndGroupsAndOverwriteSubjects() throws Exception {
-    server.expect().post().withPath("/oapi/v1/namespaces/test/rolebindings").andReturn(201, expectedRoleBinding).once();
+    server.expect().post().withPath("/oapi/v1/namespaces/test/rolebindings").andReturn(201, expectedOpenshiftRoleBinding).once();
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
-    RoleBinding response = client.roleBindings().create(
-      new RoleBindingBuilder()
+    OpenshiftRoleBinding response = client.roleBindings().create(
+      new OpenshiftRoleBindingBuilder()
         .withNewMetadata().endMetadata()
         .addToUserNames("testuser1", "testuser2", "system:serviceaccount:test:svcacct")
         .addToGroupNames("testgroup")
         .addNewSubject().withKind("User").withName("unexpected").endSubject()
       .build()
     );
-    assertEquals(expectedRoleBinding, response);
+    assertEquals(expectedOpenshiftRoleBinding, response);
 
     RecordedRequest request = server.getMockServer().takeRequest();
-    assertEquals(expectedRoleBinding, new ObjectMapper().readerFor(RoleBinding.class).readValue(request.getBody().inputStream()));
+    assertEquals(expectedOpenshiftRoleBinding, new ObjectMapper().readerFor(OpenshiftRoleBinding.class).readValue(request.getBody().inputStream()));
   }
 
   @Test
   public void testReplaceWithOnlySubjects() throws Exception {
-    server.expect().get().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedRoleBinding).once();
-    server.expect().put().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedRoleBinding).once();
+    server.expect().get().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedOpenshiftRoleBinding).once();
+    server.expect().put().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedOpenshiftRoleBinding).once();
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
-    RoleBinding response = client.roleBindings().withName("testrb").replace(
-      new RoleBindingBuilder()
+    OpenshiftRoleBinding response = client.roleBindings().withName("testrb").replace(
+      new OpenshiftRoleBindingBuilder()
         .withNewMetadata().endMetadata()
         .addNewSubject().withKind("User").withName("testuser1").endSubject()
         .addNewSubject().withKind("User").withName("testuser2").endSubject()
@@ -115,68 +115,68 @@ public class RoleBindingTest {
         .addNewSubject().withKind("Group").withName("testgroup").endSubject()
         .build()
     );
-    assertEquals(expectedRoleBinding, response);
+    assertEquals(expectedOpenshiftRoleBinding, response);
 
     // Initial GET
     server.getMockServer().takeRequest();
     RecordedRequest request = server.getMockServer().takeRequest();
-    assertEquals(expectedRoleBinding, new ObjectMapper().readerFor(RoleBinding.class).readValue(request.getBody().inputStream()));
+    assertEquals(expectedOpenshiftRoleBinding, new ObjectMapper().readerFor(OpenshiftRoleBinding.class).readValue(request.getBody().inputStream()));
   }
 
   @Test
   public void testReplaceWithUserNamesAndGroupsAndNoSubjects() throws Exception {
-    server.expect().get().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedRoleBinding).once();
-    server.expect().put().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedRoleBinding).once();
+    server.expect().get().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedOpenshiftRoleBinding).once();
+    server.expect().put().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedOpenshiftRoleBinding).once();
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
-    RoleBinding response = client.roleBindings().withName("testrb").replace(
-      new RoleBindingBuilder()
+    OpenshiftRoleBinding response = client.roleBindings().withName("testrb").replace(
+      new OpenshiftRoleBindingBuilder()
         .withNewMetadata().endMetadata()
         .addToUserNames("testuser1", "testuser2", "system:serviceaccount:test:svcacct")
         .addToGroupNames("testgroup")
         .build()
     );
-    assertEquals(expectedRoleBinding, response);
+    assertEquals(expectedOpenshiftRoleBinding, response);
 
     // Initial GET
     server.getMockServer().takeRequest();
     RecordedRequest request = server.getMockServer().takeRequest();
-    assertEquals(expectedRoleBinding, new ObjectMapper().readerFor(RoleBinding.class).readValue(request.getBody().inputStream()));
+    assertEquals(expectedOpenshiftRoleBinding, new ObjectMapper().readerFor(OpenshiftRoleBinding.class).readValue(request.getBody().inputStream()));
   }
 
   @Test
   public void testReplaceWithUserNamesAndGroupsAndOverwriteSubjects() throws Exception {
-    server.expect().get().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedRoleBinding).once();
-    server.expect().put().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedRoleBinding).once();
+    server.expect().get().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedOpenshiftRoleBinding).once();
+    server.expect().put().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedOpenshiftRoleBinding).once();
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
-    RoleBinding response = client.roleBindings().withName("testrb").replace(
-      new RoleBindingBuilder()
+    OpenshiftRoleBinding response = client.roleBindings().withName("testrb").replace(
+      new OpenshiftRoleBindingBuilder()
         .withNewMetadata().endMetadata()
         .addToUserNames("testuser1", "testuser2", "system:serviceaccount:test:svcacct")
         .addToGroupNames("testgroup")
         .addNewSubject().withKind("User").withName("unexpected").endSubject()
       .build()
     );
-    assertEquals(expectedRoleBinding, response);
+    assertEquals(expectedOpenshiftRoleBinding, response);
 
     // Initial GET
     server.getMockServer().takeRequest();
     RecordedRequest request = server.getMockServer().takeRequest();
-    assertEquals(expectedRoleBinding, new ObjectMapper().readerFor(RoleBinding.class).readValue(request.getBody().inputStream()));
+    assertEquals(expectedOpenshiftRoleBinding, new ObjectMapper().readerFor(OpenshiftRoleBinding.class).readValue(request.getBody().inputStream()));
   }
 
   @Test
   public void testPatchWithOnlySubjects() throws Exception {
-    server.expect().get().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, new RoleBindingBuilder().addToUserNames("unexpected").build()).once();
-    server.expect().patch().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedRoleBinding).once();
+    server.expect().get().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, new OpenshiftRoleBindingBuilder().addToUserNames("unexpected").build()).once();
+    server.expect().patch().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedOpenshiftRoleBinding).once();
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
-    RoleBinding response = client.roleBindings().withName("testrb").patch(
-      new RoleBindingBuilder()
+    OpenshiftRoleBinding response = client.roleBindings().withName("testrb").patch(
+      new OpenshiftRoleBindingBuilder()
         .withNewMetadata().endMetadata()
         .addNewSubject().withKind("User").withName("testuser1").endSubject()
         .addNewSubject().withKind("User").withName("testuser2").endSubject()
@@ -184,7 +184,7 @@ public class RoleBindingTest {
         .addNewSubject().withKind("Group").withName("testgroup").endSubject()
         .build()
     );
-    assertEquals(expectedRoleBinding, response);
+    assertEquals(expectedOpenshiftRoleBinding, response);
 
     // Initial GET
     server.getMockServer().takeRequest();
@@ -197,19 +197,19 @@ public class RoleBindingTest {
 
   @Test
   public void testPatchWithUserNamesAndGroupsAndNoSubjects() throws Exception {
-    server.expect().get().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, new RoleBindingBuilder().addToUserNames("unexpected").build()).once();
-    server.expect().patch().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedRoleBinding).once();
+    server.expect().get().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, new OpenshiftRoleBindingBuilder().addToUserNames("unexpected").build()).once();
+    server.expect().patch().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedOpenshiftRoleBinding).once();
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
-    RoleBinding response = client.roleBindings().withName("testrb").patch(
-      new RoleBindingBuilder()
+    OpenshiftRoleBinding response = client.roleBindings().withName("testrb").patch(
+      new OpenshiftRoleBindingBuilder()
         .withNewMetadata().endMetadata()
         .addToUserNames("testuser1", "testuser2", "system:serviceaccount:test:svcacct")
         .addToGroupNames("testgroup")
         .build()
     );
-    assertEquals(expectedRoleBinding, response);
+    assertEquals(expectedOpenshiftRoleBinding, response);
 
     // Initial GET
     server.getMockServer().takeRequest();
@@ -222,20 +222,20 @@ public class RoleBindingTest {
 
   @Test
   public void testPatchWithUserNamesAndGroupsAndOverwriteSubjects() throws Exception {
-    server.expect().get().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, new RoleBindingBuilder().addToUserNames("unexpected").build()).once();
-    server.expect().patch().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedRoleBinding).once();
+    server.expect().get().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, new OpenshiftRoleBindingBuilder().addToUserNames("unexpected").build()).once();
+    server.expect().patch().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedOpenshiftRoleBinding).once();
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
-    RoleBinding response = client.roleBindings().withName("testrb").patch(
-      new RoleBindingBuilder()
+    OpenshiftRoleBinding response = client.roleBindings().withName("testrb").patch(
+      new OpenshiftRoleBindingBuilder()
         .withNewMetadata().endMetadata()
         .addToUserNames("testuser1", "testuser2", "system:serviceaccount:test:svcacct")
         .addToGroupNames("testgroup")
         .addNewSubject().withKind("User").withName("unexpected").endSubject()
       .build()
     );
-    assertEquals(expectedRoleBinding, response);
+    assertEquals(expectedOpenshiftRoleBinding, response);
 
     // Initial GET
     server.getMockServer().takeRequest();
@@ -248,21 +248,21 @@ public class RoleBindingTest {
 
   @Test
   public void testCreateInline() throws Exception {
-    server.expect().post().withPath("/oapi/v1/namespaces/test/rolebindings").andReturn(201, expectedRoleBinding).once();
+    server.expect().post().withPath("/oapi/v1/namespaces/test/rolebindings").andReturn(201, expectedOpenshiftRoleBinding).once();
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
-    RoleBinding response = client.roleBindings().createNew()
+    OpenshiftRoleBinding response = client.roleBindings().createNew()
       .withNewMetadata().endMetadata()
       .addNewSubject().withKind("User").withName("testuser1").endSubject()
       .addNewSubject().withKind("User").withName("testuser2").endSubject()
       .addNewSubject().withKind("ServiceAccount").withName("svcacct").endSubject()
       .addNewSubject().withKind("Group").withName("testgroup").endSubject()
       .done();
-    assertEquals(expectedRoleBinding, response);
+    assertEquals(expectedOpenshiftRoleBinding, response);
 
     RecordedRequest request = server.getMockServer().takeRequest();
-    assertEquals(expectedRoleBinding, new ObjectMapper().readerFor(RoleBinding.class).readValue(request.getBody().inputStream()));
+    assertEquals(expectedOpenshiftRoleBinding, new ObjectMapper().readerFor(OpenshiftRoleBinding.class).readValue(request.getBody().inputStream()));
   }
 
 }

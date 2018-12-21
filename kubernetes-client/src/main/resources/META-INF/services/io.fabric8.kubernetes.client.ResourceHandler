@@ -23,10 +23,10 @@ io.fabric8.kubernetes.client.handlers.EndpointsHandler
 io.fabric8.kubernetes.client.handlers.EventHandler
 io.fabric8.kubernetes.client.handlers.HorizontalPodAutoscalerHandler
 io.fabric8.kubernetes.client.handlers.IngressHandler
-io.fabric8.kubernetes.client.handlers.KubernetesClusterRoleBindingHandler
-io.fabric8.kubernetes.client.handlers.KubernetesClusterRoleHandler
-io.fabric8.kubernetes.client.handlers.KubernetesRoleBindingHandler
-io.fabric8.kubernetes.client.handlers.KubernetesRoleHandler
+io.fabric8.kubernetes.client.handlers.ClusterRoleBindingHandler
+io.fabric8.kubernetes.client.handlers.ClusterRoleHandler
+io.fabric8.kubernetes.client.handlers.RoleBindingHandler
+io.fabric8.kubernetes.client.handlers.RoleHandler
 io.fabric8.kubernetes.client.handlers.JobHandler
 io.fabric8.kubernetes.client.handlers.LimitRangeHandler
 io.fabric8.kubernetes.client.handlers.NamespaceHandler

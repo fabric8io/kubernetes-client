@@ -16,10 +16,10 @@
 package io.fabric8.kubernetes.api.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fabric8.kubernetes.api.model.rbac.KubernetesClusterRole;
-import io.fabric8.kubernetes.api.model.rbac.KubernetesClusterRoleBuilder;
-import io.fabric8.kubernetes.api.model.rbac.KubernetesPolicyRuleBuilder;
-
+import io.fabric8.kubernetes.api.model.rbac.RoleBinding;
+import io.fabric8.kubernetes.api.model.rbac.SubjectBuilder;
+import io.fabric8.kubernetes.api.model.rbac.RoleRefBuilder;
+import io.fabric8.kubernetes.api.model.rbac.RoleBindingBuilder;
 import org.junit.Test;
 
 import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
@@ -27,18 +27,18 @@ import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
 import static net.javacrumbs.jsonunit.core.Option.TREATING_NULL_AS_ABSENT;
 import static net.javacrumbs.jsonunit.fluent.JsonFluentAssert.assertThatJson;
 
-public class KubernetesClusterRoleTest {
+public class RoleBindingTest {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Test
-    public void kubernetesClusterRoleTest() throws Exception {
+    public void kubernetesRoleBindingTest() throws Exception {
         // given
-        final String originalJson = Helper.loadJson("/valid-kubernetesClusterRole.json");
+        final String originalJson = Helper.loadJson("/valid-roleBinding.json");
 
         // when
-        final KubernetesClusterRole kubernetesClusterRole = mapper.readValue(originalJson, KubernetesClusterRole.class);
-        final String serializedJson = mapper.writeValueAsString(kubernetesClusterRole);
+        final RoleBinding kubernetesRoleBinding = mapper.readValue(originalJson, RoleBinding.class);
+        final String serializedJson = mapper.writeValueAsString(kubernetesRoleBinding);
 
         // then
         assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
@@ -46,33 +46,37 @@ public class KubernetesClusterRoleTest {
     }
 
     @Test
-    public void kubernetesClusterRoleBuilderTest() throws Exception {
+    public void kubernetesRoleBuilderTest() throws Exception {
 
         // given
-        final String originalJson = Helper.loadJson("/valid-kubernetesClusterRole.json");
+        final String originalJson = Helper.loadJson("/valid-roleBinding.json");
 
         // when
-        KubernetesClusterRole kubernetesClusterRole = new KubernetesClusterRoleBuilder()
+        RoleBinding kubernetesRoleBinding = new RoleBindingBuilder()
                 .withNewMetadata()
-                    .withName("node-reader")
+                    .withName("read-jobs")
+                    .withNamespace("default")
                 .endMetadata()
-                .addToRules(0, new KubernetesPolicyRuleBuilder()
-                        .addToApiGroups(0,"")
-                        .addToNonResourceURLs(0,"/healthz")
-                        .addToResourceNames(0,"my-node")
-                        .addToResources(0,"nodes")
-                        .addToVerbs(0, "get")
-                        .addToVerbs(1, "watch")
-                        .addToVerbs(2, "list")
+                .addToSubjects(0, new SubjectBuilder()
+                        .withApiGroup("rbac.authorization.k8s.io")
+                        .withKind("User")
+                        .withName("jane")
+                        .withNamespace("default")
                         .build()
-                    )
+                )
+                .withRoleRef(new RoleRefBuilder()
+                        .withApiGroup("rbac.authorization.k8s.io")
+                        .withKind("Role")
+                        .withName("job-reader")
+                        .build()
+                )
                 .build();
 
-        final String serializedJson = mapper.writeValueAsString(kubernetesClusterRole);
+        final String serializedJson = mapper.writeValueAsString(kubernetesRoleBinding);
 
         // then
         assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
-                .isEqualTo(originalJson);
+                 .isEqualTo(originalJson);
 
     }
 }

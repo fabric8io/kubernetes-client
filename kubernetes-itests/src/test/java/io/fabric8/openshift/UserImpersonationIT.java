@@ -53,8 +53,8 @@ public class UserImpersonationIT {
   Session session;
 
   private ServiceAccount serviceAccount1;
-  private KubernetesClusterRole impersonatorRole;
-  private KubernetesClusterRoleBinding impersonatorRoleBinding;
+  private ClusterRole impersonatorRole;
+  private ClusterRoleBinding impersonatorRoleBinding;
 
   private String currentNamespace;
 
@@ -62,18 +62,18 @@ public class UserImpersonationIT {
   public void init() {
     currentNamespace = session.getNamespace();
     // Create impersonator cluster role
-    impersonatorRole = new KubernetesClusterRoleBuilder()
+    impersonatorRole = new ClusterRoleBuilder()
       .withNewMetadata()
       .withName("impersonator")
       .endMetadata()
-      .addToRules(new KubernetesPolicyRuleBuilder()
+      .addToRules(new PolicyRuleBuilder()
         .addToApiGroups("")
         .addToResources("users", "groups", "userextras", "serviceaccounts")
         .addToVerbs("impersonate")
         .build()
       )
       .build();
-    client.rbac().kubernetesClusterRoles().inNamespace(currentNamespace).createOrReplace(impersonatorRole);
+    client.rbac().clusterRoles().inNamespace(currentNamespace).createOrReplace(impersonatorRole);
 
     // Create Service Account
     serviceAccount1 = new ServiceAccountBuilder()
@@ -82,18 +82,18 @@ public class UserImpersonationIT {
     client.serviceAccounts().inNamespace(currentNamespace).create(serviceAccount1);
 
     // Bind Impersonator Role to current user
-    impersonatorRoleBinding = new KubernetesClusterRoleBindingBuilder()
+    impersonatorRoleBinding = new ClusterRoleBindingBuilder()
       .withNewMetadata()
       .withName("impersonate-role")
       .endMetadata()
-      .addToSubjects(new KubernetesSubjectBuilder()
+      .addToSubjects(new SubjectBuilder()
         .withApiGroup("rbac.authorization.k8s.io")
         .withKind("User")
         .withName(client.currentUser().getMetadata().getName())
         .withNamespace(currentNamespace)
         .build()
       )
-      .withRoleRef(new KubernetesRoleRefBuilder()
+      .withRoleRef(new RoleRefBuilder()
         .withApiGroup("rbac.authorization.k8s.io")
         .withKind("ClusterRole")
         .withName("impersonator")
@@ -101,7 +101,7 @@ public class UserImpersonationIT {
       )
       .build();
 
-    client.rbac().kubernetesClusterRoleBindings().inNamespace(currentNamespace).createOrReplace(impersonatorRoleBinding);
+    client.rbac().clusterRoleBindings().inNamespace(currentNamespace).createOrReplace(impersonatorRoleBinding);
   }
 
 
@@ -144,11 +144,11 @@ public class UserImpersonationIT {
     requestConfig.setImpersonateGroups(null);
 
     // DeleteEntity Cluster Role
-    client.rbac().kubernetesClusterRoles().inNamespace(currentNamespace).delete(impersonatorRole);
+    client.rbac().clusterRoles().inNamespace(currentNamespace).delete(impersonatorRole);
     await().atMost(30, TimeUnit.SECONDS).until(kubernetesClusterRoleIsDeleted());
 
     // DeleteEntity Cluster Role binding
-    client.rbac().kubernetesClusterRoleBindings().inNamespace(currentNamespace).delete(impersonatorRoleBinding);
+    client.rbac().clusterRoleBindings().inNamespace(currentNamespace).delete(impersonatorRoleBinding);
     await().atMost(30, TimeUnit.SECONDS).until(kubernetesClusterRoleBindingIsDeleted());
 
     // DeleteEntity project
@@ -182,7 +182,7 @@ public class UserImpersonationIT {
     return new Callable<Boolean>() {
       @Override
       public Boolean call() {
-        return client.rbac().kubernetesClusterRoleBindings().inNamespace(currentNamespace).withName("impersonator-role").get() == null;
+        return client.rbac().clusterRoleBindings().inNamespace(currentNamespace).withName("impersonator-role").get() == null;
       }
     };
   }
@@ -191,7 +191,7 @@ public class UserImpersonationIT {
     return new Callable<Boolean>() {
       @Override
       public Boolean call() {
-        return client.rbac().kubernetesClusterRoles().inNamespace(currentNamespace).withName("impersonator").get() == null;
+        return client.rbac().clusterRoles().inNamespace(currentNamespace).withName("impersonator").get() == null;
       }
     };
   }

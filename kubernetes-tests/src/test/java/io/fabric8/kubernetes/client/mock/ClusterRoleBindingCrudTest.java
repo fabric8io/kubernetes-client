@@ -15,11 +15,11 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.rbac.KubernetesClusterRoleBinding;
-import io.fabric8.kubernetes.api.model.rbac.KubernetesClusterRoleBindingBuilder;
-import io.fabric8.kubernetes.api.model.rbac.KubernetesClusterRoleBindingList;
-import io.fabric8.kubernetes.api.model.rbac.KubernetesRoleRefBuilder;
-import io.fabric8.kubernetes.api.model.rbac.KubernetesSubjectBuilder;
+import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBinding;
+import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBindingBuilder;
+import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBindingList;
+import io.fabric8.kubernetes.api.model.rbac.RoleRefBuilder;
+import io.fabric8.kubernetes.api.model.rbac.SubjectBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Rule;
@@ -31,9 +31,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class KubernetesClusterRoleBindingCrudTest {
+public class ClusterRoleBindingCrudTest {
 
-  private static final Logger logger = LoggerFactory.getLogger(KubernetesClusterRoleBindingCrudTest.class);
+  private static final Logger logger = LoggerFactory.getLogger(ClusterRoleBindingCrudTest.class);
 
   @Rule
   public KubernetesServer kubernetesServer = new KubernetesServer(true,true);
@@ -43,18 +43,18 @@ public class KubernetesClusterRoleBindingCrudTest {
 
     KubernetesClient client = kubernetesServer.getClient();
 
-    KubernetesClusterRoleBinding kubernetesClusterRoleBinding = new KubernetesClusterRoleBindingBuilder()
+    ClusterRoleBinding kubernetesClusterRoleBinding = new ClusterRoleBindingBuilder()
       .withNewMetadata()
         .withName("read-nodes")
       .endMetadata()
-      .addToSubjects(0, new KubernetesSubjectBuilder()
+      .addToSubjects(0, new SubjectBuilder()
         .withApiGroup("rbac.authorization.k8s.io")
         .withKind("User")
         .withName("jane")
         .withNamespace("default")
         .build()
       )
-      .withRoleRef(new KubernetesRoleRefBuilder()
+      .withRoleRef(new RoleRefBuilder()
         .withApiGroup("rbac.authorization.k8s.io")
         .withKind("ClusterRole")
         .withName("node-reader")
@@ -63,7 +63,7 @@ public class KubernetesClusterRoleBindingCrudTest {
       .build();
 
     //test of creation
-    kubernetesClusterRoleBinding = client.rbac().kubernetesClusterRoleBindings().create(kubernetesClusterRoleBinding);
+    kubernetesClusterRoleBinding = client.rbac().clusterRoleBindings().create(kubernetesClusterRoleBinding);
 
     assertNotNull(kubernetesClusterRoleBinding);
     assertEquals("ClusterRoleBinding", kubernetesClusterRoleBinding.getKind());
@@ -82,7 +82,7 @@ public class KubernetesClusterRoleBindingCrudTest {
     assertEquals("rbac.authorization.k8s.io", kubernetesClusterRoleBinding.getRoleRef().getApiGroup());
 
     //test of list
-    KubernetesClusterRoleBindingList kubernetesClusterRoleBindingList = client.rbac().kubernetesClusterRoleBindings().list();
+    ClusterRoleBindingList kubernetesClusterRoleBindingList = client.rbac().clusterRoleBindings().list();
 
     assertNotNull(kubernetesClusterRoleBindingList);
     assertNotNull(kubernetesClusterRoleBindingList.getItems());
@@ -104,7 +104,7 @@ public class KubernetesClusterRoleBindingCrudTest {
     assertEquals("rbac.authorization.k8s.io", kubernetesClusterRoleBindingList.getItems().get(0).getRoleRef().getApiGroup());
 
     //test of updation
-    kubernetesClusterRoleBinding = client.rbac().kubernetesClusterRoleBindings().withName("read-nodes").edit()
+    kubernetesClusterRoleBinding = client.rbac().clusterRoleBindings().withName("read-nodes").edit()
       .editSubject(0).withName("jane-new").endSubject().done();
 
     assertNotNull(kubernetesClusterRoleBinding);
@@ -124,10 +124,10 @@ public class KubernetesClusterRoleBindingCrudTest {
     assertEquals("rbac.authorization.k8s.io", kubernetesClusterRoleBinding.getRoleRef().getApiGroup());
 
     //test of deletion
-    boolean deleted = client.rbac().kubernetesClusterRoleBindings().delete();
+    boolean deleted = client.rbac().clusterRoleBindings().delete();
 
     assertTrue(deleted);
-    kubernetesClusterRoleBindingList = client.rbac().kubernetesClusterRoleBindings().list();
+    kubernetesClusterRoleBindingList = client.rbac().clusterRoleBindings().list();
     assertEquals(0,kubernetesClusterRoleBindingList.getItems().size());
 
   }

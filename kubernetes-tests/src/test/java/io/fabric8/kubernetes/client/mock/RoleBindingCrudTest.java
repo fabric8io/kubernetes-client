@@ -23,13 +23,13 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
-public class KubernetesRoleBindingCrudTest {
+public class RoleBindingCrudTest {
 
-  private static final Logger logger = LoggerFactory.getLogger(KubernetesRoleBindingCrudTest.class);
+  private static final Logger logger = LoggerFactory.getLogger(RoleBindingCrudTest.class);
 
   @Rule
   public KubernetesServer kubernetesServer = new KubernetesServer(true,true);
@@ -39,18 +39,18 @@ public class KubernetesRoleBindingCrudTest {
 
     KubernetesClient client = kubernetesServer.getClient();
 
-    KubernetesRoleBinding kubernetesRoleBinding = new KubernetesRoleBindingBuilder()
+    RoleBinding roleBinding = new RoleBindingBuilder()
       .withNewMetadata()
         .withName("read-jobs")
       .endMetadata()
-      .addToSubjects(0, new KubernetesSubjectBuilder()
+      .addToSubjects(0, new SubjectBuilder()
         .withApiGroup("rbac.authorization.k8s.io")
         .withKind("User")
         .withName("jane")
         .withNamespace("default")
         .build()
       )
-      .withRoleRef(new KubernetesRoleRefBuilder()
+      .withRoleRef(new RoleRefBuilder()
         .withApiGroup("rbac.authorization.k8s.io")
         .withKind("Role")
         .withName("job-reader")
@@ -59,26 +59,26 @@ public class KubernetesRoleBindingCrudTest {
       .build();
 
     //test of creation
-    kubernetesRoleBinding = client.rbac().kubernetesRoleBindings().create(kubernetesRoleBinding);
+    roleBinding = client.rbac().roleBindings().create(roleBinding);
 
-    assertNotNull(kubernetesRoleBinding);
-    assertEquals("RoleBinding", kubernetesRoleBinding.getKind());
-    assertEquals("rbac.authorization.k8s.io/v1", kubernetesRoleBinding.getApiVersion());
-    assertNotNull(kubernetesRoleBinding.getMetadata());
-    assertEquals("read-jobs", kubernetesRoleBinding.getMetadata().getName());
-    assertNotNull(kubernetesRoleBinding.getSubjects());
-    assertEquals(1, kubernetesRoleBinding.getSubjects().size());
-    assertEquals("rbac.authorization.k8s.io", kubernetesRoleBinding.getSubjects().get(0).getApiGroup());
-    assertEquals("User", kubernetesRoleBinding.getSubjects().get(0).getKind());
-    assertEquals("jane", kubernetesRoleBinding.getSubjects().get(0).getName());
-    assertEquals("default", kubernetesRoleBinding.getSubjects().get(0).getNamespace());
-    assertNotNull(kubernetesRoleBinding.getRoleRef());
-    assertEquals("Role", kubernetesRoleBinding.getRoleRef().getKind());
-    assertEquals("job-reader", kubernetesRoleBinding.getRoleRef().getName());
-    assertEquals("rbac.authorization.k8s.io", kubernetesRoleBinding.getRoleRef().getApiGroup());
+    assertNotNull(roleBinding);
+    assertEquals("RoleBinding", roleBinding.getKind());
+    assertEquals("rbac.authorization.k8s.io/v1", roleBinding.getApiVersion());
+    assertNotNull(roleBinding.getMetadata());
+    assertEquals("read-jobs", roleBinding.getMetadata().getName());
+    assertNotNull(roleBinding.getSubjects());
+    assertEquals(1, roleBinding.getSubjects().size());
+    assertEquals("rbac.authorization.k8s.io", roleBinding.getSubjects().get(0).getApiGroup());
+    assertEquals("User", roleBinding.getSubjects().get(0).getKind());
+    assertEquals("jane", roleBinding.getSubjects().get(0).getName());
+    assertEquals("default", roleBinding.getSubjects().get(0).getNamespace());
+    assertNotNull(roleBinding.getRoleRef());
+    assertEquals("Role", roleBinding.getRoleRef().getKind());
+    assertEquals("job-reader", roleBinding.getRoleRef().getName());
+    assertEquals("rbac.authorization.k8s.io", roleBinding.getRoleRef().getApiGroup());
 
     //test of list
-    KubernetesRoleBindingList kubernetesRoleBindingList = client.rbac().kubernetesRoleBindings().list();
+    RoleBindingList kubernetesRoleBindingList = client.rbac().roleBindings().list();
 
     assertNotNull(kubernetesRoleBindingList);
     assertNotNull(kubernetesRoleBindingList.getItems());
@@ -100,30 +100,30 @@ public class KubernetesRoleBindingCrudTest {
     assertEquals("rbac.authorization.k8s.io", kubernetesRoleBindingList.getItems().get(0).getRoleRef().getApiGroup());
 
     //test of updation
-    kubernetesRoleBinding = client.rbac().kubernetesRoleBindings().withName("read-jobs").edit()
+    roleBinding = client.rbac().roleBindings().withName("read-jobs").edit()
       .editSubject(0).withName("jane-new").endSubject().done();
 
-    assertNotNull(kubernetesRoleBinding);
-    assertEquals("RoleBinding", kubernetesRoleBinding.getKind());
-    assertEquals("rbac.authorization.k8s.io/v1", kubernetesRoleBinding.getApiVersion());
-    assertNotNull(kubernetesRoleBinding.getMetadata());
-    assertEquals("read-jobs", kubernetesRoleBinding.getMetadata().getName());
-    assertNotNull(kubernetesRoleBinding.getSubjects());
-    assertEquals(1, kubernetesRoleBinding.getSubjects().size());
-    assertEquals("rbac.authorization.k8s.io", kubernetesRoleBinding.getSubjects().get(0).getApiGroup());
-    assertEquals("User", kubernetesRoleBinding.getSubjects().get(0).getKind());
-    assertEquals("jane-new", kubernetesRoleBinding.getSubjects().get(0).getName());
-    assertEquals("default", kubernetesRoleBinding.getSubjects().get(0).getNamespace());
-    assertNotNull(kubernetesRoleBinding.getRoleRef());
-    assertEquals("Role", kubernetesRoleBinding.getRoleRef().getKind());
-    assertEquals("job-reader", kubernetesRoleBinding.getRoleRef().getName());
-    assertEquals("rbac.authorization.k8s.io", kubernetesRoleBinding.getRoleRef().getApiGroup());
+    assertNotNull(roleBinding);
+    assertEquals("RoleBinding", roleBinding.getKind());
+    assertEquals("rbac.authorization.k8s.io/v1", roleBinding.getApiVersion());
+    assertNotNull(roleBinding.getMetadata());
+    assertEquals("read-jobs", roleBinding.getMetadata().getName());
+    assertNotNull(roleBinding.getSubjects());
+    assertEquals(1, roleBinding.getSubjects().size());
+    assertEquals("rbac.authorization.k8s.io", roleBinding.getSubjects().get(0).getApiGroup());
+    assertEquals("User", roleBinding.getSubjects().get(0).getKind());
+    assertEquals("jane-new", roleBinding.getSubjects().get(0).getName());
+    assertEquals("default", roleBinding.getSubjects().get(0).getNamespace());
+    assertNotNull(roleBinding.getRoleRef());
+    assertEquals("Role", roleBinding.getRoleRef().getKind());
+    assertEquals("job-reader", roleBinding.getRoleRef().getName());
+    assertEquals("rbac.authorization.k8s.io", roleBinding.getRoleRef().getApiGroup());
 
     //test of deletion
-    boolean deleted = client.rbac().kubernetesRoleBindings().delete();
+    boolean deleted = client.rbac().roleBindings().delete();
 
     assertTrue(deleted);
-    kubernetesRoleBindingList = client.rbac().kubernetesRoleBindings().list();
+    kubernetesRoleBindingList = client.rbac().roleBindings().list();
     assertEquals(0,kubernetesRoleBindingList.getItems().size());
 
   }
