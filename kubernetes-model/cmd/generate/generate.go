@@ -128,14 +128,14 @@ type Schema struct {
 	TokenReview                           authenticationapi.TokenReview
 	K8sSubjectAccessReview                k8sauthapi.SubjectAccessReview
 	K8sLocalSubjectAccessReview           k8sauthapi.LocalSubjectAccessReview
-	Role                                  authapi.Role
-	RoleList                              authapi.RoleList
-	RoleBinding                           authapi.RoleBinding
-	RoleBindingList                       authapi.RoleBindingList
-	RoleBindingRestriction                authapi.RoleBindingRestriction
+	OpenshiftRole                         authapi.Role
+	OpenshiftRoleList                     authapi.RoleList
+	OpenshiftRoleBinding                  authapi.RoleBinding
+	OpenshiftRoleBindingList              authapi.RoleBindingList
+	OpenshiftRoleBindingRestriction       authapi.RoleBindingRestriction
 	LocalSubjectAccessReview              authapi.LocalSubjectAccessReview
 	SubjectAccessReview                   authapi.SubjectAccessReview
-  SubjectAccessReviewResponse          authapi.SubjectAccessReviewResponse
+  SubjectAccessReviewResponse           authapi.SubjectAccessReviewResponse
 	OpenshiftClusterRole                  authapi.ClusterRole
 	OpenshiftClusterRoleBinding           authapi.ClusterRoleBinding
 	OpenshiftClusterRoleBindingList       authapi.ClusterRoleBindingList
