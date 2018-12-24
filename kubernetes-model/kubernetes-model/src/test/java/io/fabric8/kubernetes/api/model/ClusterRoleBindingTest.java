@@ -16,10 +16,10 @@
 package io.fabric8.kubernetes.api.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fabric8.kubernetes.api.model.rbac.KubernetesClusterRoleBinding;
-import io.fabric8.kubernetes.api.model.rbac.KubernetesClusterRoleBindingBuilder;
-import io.fabric8.kubernetes.api.model.rbac.KubernetesRoleRefBuilder;
-import io.fabric8.kubernetes.api.model.rbac.KubernetesSubjectBuilder;
+import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBinding;
+import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBindingBuilder;
+import io.fabric8.kubernetes.api.model.rbac.RoleRefBuilder;
+import io.fabric8.kubernetes.api.model.rbac.SubjectBuilder;
 
 import org.junit.Test;
 
@@ -28,18 +28,18 @@ import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
 import static net.javacrumbs.jsonunit.core.Option.TREATING_NULL_AS_ABSENT;
 import static net.javacrumbs.jsonunit.fluent.JsonFluentAssert.assertThatJson;
 
-public class KubernetesClusterRoleBindingTest {
+public class ClusterRoleBindingTest {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Test
-    public void kubernetesClusterRoleBindingTest() throws Exception {
+    public void clusterRoleBindingTest() throws Exception {
         // given
-        final String originalJson = Helper.loadJson("/valid-kubernetesClusterRoleBinding.json");
+        final String originalJson = Helper.loadJson("/valid-clusterRoleBinding.json");
 
         // when
-        final KubernetesClusterRoleBinding kubernetesClusterRoleBinding = mapper.readValue(originalJson, KubernetesClusterRoleBinding.class);
-        final String serializedJson = mapper.writeValueAsString(kubernetesClusterRoleBinding);
+        final ClusterRoleBinding clusterRoleBinding = mapper.readValue(originalJson, ClusterRoleBinding.class);
+        final String serializedJson = mapper.writeValueAsString(clusterRoleBinding);
 
         // then
         assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
@@ -47,25 +47,25 @@ public class KubernetesClusterRoleBindingTest {
     }
 
     @Test
-    public void kubernetesClusterRoleBindingBuilderTest() throws Exception {
+    public void clusterRoleBindingBuilderTest() throws Exception {
 
         // given
-        final String originalJson = Helper.loadJson("/valid-kubernetesClusterRoleBinding.json");
+        final String originalJson = Helper.loadJson("/valid-clusterRoleBinding.json");
 
         // when
-        KubernetesClusterRoleBinding kubernetesClusterRoleBinding = new KubernetesClusterRoleBindingBuilder()
+        ClusterRoleBinding clusterRoleBinding = new ClusterRoleBindingBuilder()
                 .withNewMetadata()
                     .withName("read-nodes")
                     .withNamespace("default")
                 .endMetadata()
-                .addToSubjects(0, new KubernetesSubjectBuilder()
+                .addToSubjects(0, new SubjectBuilder()
                         .withApiGroup("rbac.authorization.k8s.io")
                         .withKind("ServiceAccount")
                         .withName("node-reader")
                         .withNamespace("default")
                         .build()
                 )
-                .withRoleRef(new KubernetesRoleRefBuilder()
+                .withRoleRef(new RoleRefBuilder()
                         .withApiGroup("rbac.authorization.k8s.io")
                         .withKind("ClusterRole")
                         .withName("node-reader")
@@ -73,7 +73,7 @@ public class KubernetesClusterRoleBindingTest {
                 )
                 .build();
 
-        final String serializedJson = mapper.writeValueAsString(kubernetesClusterRoleBinding);
+        final String serializedJson = mapper.writeValueAsString(clusterRoleBinding);
 
         // then
         assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)

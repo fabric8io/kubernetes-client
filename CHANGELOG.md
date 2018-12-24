@@ -4,6 +4,7 @@
   Bugs
 
     * Fix #1271: Issue deploying ReplicaSet to extensions/v1beta1
+    * Fix #1152: Renamed Kubernetes RBAC resources to use non-prefixed names and renamed Openshift RBAC resources to prefix with Openshift
 
   Improvements
 

@@ -16,10 +16,9 @@
 package io.fabric8.kubernetes.api.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fabric8.kubernetes.api.model.rbac.KubernetesRoleBinding;
-import io.fabric8.kubernetes.api.model.rbac.KubernetesSubjectBuilder;
-import io.fabric8.kubernetes.api.model.rbac.KubernetesRoleRefBuilder;
-import io.fabric8.kubernetes.api.model.rbac.KubernetesRoleBindingBuilder;
+import io.fabric8.kubernetes.api.model.rbac.PolicyRuleBuilder;
+import io.fabric8.kubernetes.api.model.rbac.Role;
+import io.fabric8.kubernetes.api.model.rbac.RoleBuilder;
 import org.junit.Test;
 
 import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
@@ -27,18 +26,18 @@ import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
 import static net.javacrumbs.jsonunit.core.Option.TREATING_NULL_AS_ABSENT;
 import static net.javacrumbs.jsonunit.fluent.JsonFluentAssert.assertThatJson;
 
-public class KubernetesRoleBindingTest {
+public class RoleTest {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Test
-    public void kubernetesRoleBindingTest() throws Exception {
+    public void kubernetesRoleTest() throws Exception {
         // given
-        final String originalJson = Helper.loadJson("/valid-kubernetesRoleBinding.json");
+        final String originalJson = Helper.loadJson("/valid-role.json");
 
         // when
-        final KubernetesRoleBinding kubernetesRoleBinding = mapper.readValue(originalJson, KubernetesRoleBinding.class);
-        final String serializedJson = mapper.writeValueAsString(kubernetesRoleBinding);
+        final Role kubernetesRole = mapper.readValue(originalJson, Role.class);
+        final String serializedJson = mapper.writeValueAsString(kubernetesRole);
 
         // then
         assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
@@ -49,34 +48,31 @@ public class KubernetesRoleBindingTest {
     public void kubernetesRoleBuilderTest() throws Exception {
 
         // given
-        final String originalJson = Helper.loadJson("/valid-kubernetesRoleBinding.json");
+        final String originalJson = Helper.loadJson("/valid-role.json");
 
         // when
-        KubernetesRoleBinding kubernetesRoleBinding = new KubernetesRoleBindingBuilder()
+        Role kubernetesRole = new RoleBuilder()
                 .withNewMetadata()
-                    .withName("read-jobs")
+                    .withName("job-reader")
                     .withNamespace("default")
                 .endMetadata()
-                .addToSubjects(0, new KubernetesSubjectBuilder()
-                        .withApiGroup("rbac.authorization.k8s.io")
-                        .withKind("User")
-                        .withName("jane")
-                        .withNamespace("default")
+                .addToRules(0, new PolicyRuleBuilder()
+                        .addToApiGroups(0,"batch")
+                        .addToNonResourceURLs(0,"/healthz")
+                        .addToResourceNames(0,"my-job")
+                        .addToResources(0,"jobs")
+                        .addToVerbs(0, "get")
+                        .addToVerbs(1, "watch")
+                        .addToVerbs(2, "list")
                         .build()
-                )
-                .withRoleRef(new KubernetesRoleRefBuilder()
-                        .withApiGroup("rbac.authorization.k8s.io")
-                        .withKind("Role")
-                        .withName("job-reader")
-                        .build()
-                )
+                    )
                 .build();
 
-        final String serializedJson = mapper.writeValueAsString(kubernetesRoleBinding);
+        final String serializedJson = mapper.writeValueAsString(kubernetesRole);
 
         // then
         assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
-                 .isEqualTo(originalJson);
+                .isEqualTo(originalJson);
 
     }
 }

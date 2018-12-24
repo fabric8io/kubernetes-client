@@ -18,22 +18,22 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import java.util.Map;
 import java.util.TreeMap;
 
-import io.fabric8.kubernetes.api.model.rbac.DoneableKubernetesClusterRole;
-import io.fabric8.kubernetes.api.model.rbac.KubernetesClusterRole;
-import io.fabric8.kubernetes.api.model.rbac.KubernetesClusterRoleList;
+import io.fabric8.kubernetes.api.model.rbac.DoneableClusterRoleBinding;
+import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBinding;
+import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBindingList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import okhttp3.OkHttpClient;
 
-public class KubernetesClusterRoleOperationsImpl extends HasMetadataOperation<KubernetesClusterRole, KubernetesClusterRoleList, DoneableKubernetesClusterRole, Resource<KubernetesClusterRole, DoneableKubernetesClusterRole>> {
+public class ClusterRoleBindingOperationsImpl extends HasMetadataOperation<ClusterRoleBinding, ClusterRoleBindingList, DoneableClusterRoleBinding, Resource<ClusterRoleBinding, DoneableClusterRoleBinding>> {
 
-  public KubernetesClusterRoleOperationsImpl(OkHttpClient client, Config config) {
+  public ClusterRoleBindingOperationsImpl(OkHttpClient client, Config config) {
     this(client, config, "v1", null, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
   }
 
-  public KubernetesClusterRoleOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, KubernetesClusterRole item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, config, "rbac.authorization.k8s.io", apiVersion, "clusterroles", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  public ClusterRoleBindingOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, ClusterRoleBinding item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
+    super(client, config, "rbac.authorization.k8s.io", apiVersion, "clusterrolebindings", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
   }
 
   @Override

@@ -20,10 +20,10 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectReferenceBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.openshift.api.model.DoneableRoleBinding;
-import io.fabric8.openshift.api.model.RoleBinding;
-import io.fabric8.openshift.api.model.RoleBindingBuilder;
-import io.fabric8.openshift.api.model.RoleBindingList;
+import io.fabric8.openshift.api.model.DoneableOpenshiftRoleBinding;
+import io.fabric8.openshift.api.model.OpenshiftRoleBinding;
+import io.fabric8.openshift.api.model.OpenshiftRoleBindingBuilder;
+import io.fabric8.openshift.api.model.OpenshiftRoleBindingList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import okhttp3.OkHttpClient;
 
@@ -35,34 +35,34 @@ import java.util.concurrent.ExecutionException;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.AUTHORIZATION;
 
-public class RoleBindingOperationsImpl extends OpenShiftOperation<RoleBinding, RoleBindingList, DoneableRoleBinding, Resource<RoleBinding, DoneableRoleBinding>> {
-  public RoleBindingOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
+public class OpenshiftRoleBindingOperationsImpl extends OpenShiftOperation<OpenshiftRoleBinding, OpenshiftRoleBindingList, DoneableOpenshiftRoleBinding, Resource<OpenshiftRoleBinding, DoneableOpenshiftRoleBinding>> {
+  public OpenshiftRoleBindingOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
     this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
   }
 
-  public RoleBindingOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, RoleBinding item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
+  public OpenshiftRoleBindingOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, OpenshiftRoleBinding item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
     super(client, OpenShiftOperation.withApiGroup(client, AUTHORIZATION, apiVersion, config), "rolebindings", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
   }
 
   @Override
-  public RoleBinding replace(RoleBinding item) {
-    RoleBinding enriched = enrichRoleBinding(item);
+  public OpenshiftRoleBinding replace(OpenshiftRoleBinding item) {
+    OpenshiftRoleBinding enriched = enrichRoleBinding(item);
     return super.replace(enriched);
   }
 
   @Override
-  public RoleBinding patch(RoleBinding item) {
-    RoleBinding enriched = enrichRoleBinding(item);
+  public OpenshiftRoleBinding patch(OpenshiftRoleBinding item) {
+    OpenshiftRoleBinding enriched = enrichRoleBinding(item);
     return super.patch(enriched);
   }
 
   @Override
-  protected RoleBinding handleCreate(RoleBinding resource) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+  protected OpenshiftRoleBinding handleCreate(OpenshiftRoleBinding resource) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     return super.handleCreate(enrichRoleBinding(resource));
   }
 
-  private RoleBinding enrichRoleBinding(RoleBinding binding) {
-    RoleBindingBuilder builder = new RoleBindingBuilder(binding);
+  private OpenshiftRoleBinding enrichRoleBinding(OpenshiftRoleBinding binding) {
+    OpenshiftRoleBindingBuilder builder = new OpenshiftRoleBindingBuilder(binding);
 
     if ((binding.getUserNames() != null && !binding.getUserNames().isEmpty()) ||
       (binding.getGroupNames() != null && !binding.getGroupNames().isEmpty())) {
@@ -75,7 +75,7 @@ public class RoleBindingOperationsImpl extends OpenShiftOperation<RoleBinding, R
     return builder.build();
   }
 
-  private void enrichSubjectsNamespace(RoleBindingBuilder builder) {
+  private void enrichSubjectsNamespace(OpenshiftRoleBindingBuilder builder) {
     builder.accept(new TypedVisitor<ObjectReferenceBuilder>() {
       @Override
       public void visit(ObjectReferenceBuilder o) {
@@ -86,7 +86,7 @@ public class RoleBindingOperationsImpl extends OpenShiftOperation<RoleBinding, R
     });
   }
 
-  private void enrichFromUsersAndGroups(RoleBindingBuilder builder, List<String> userNames, List<String> groupNames) {
+  private void enrichFromUsersAndGroups(OpenshiftRoleBindingBuilder builder, List<String> userNames, List<String> groupNames) {
     builder.withSubjects();
 
     if (userNames != null) {
@@ -110,7 +110,7 @@ public class RoleBindingOperationsImpl extends OpenShiftOperation<RoleBinding, R
     }
   }
 
-  private void enrichFromSubjects(RoleBindingBuilder builder, List<ObjectReference> subjects) {
+  private void enrichFromSubjects(OpenshiftRoleBindingBuilder builder, List<ObjectReference> subjects) {
     for (ObjectReference ref : subjects) {
       switch (ref.getKind()) {
         case "User":

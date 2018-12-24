@@ -13,56 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes;
+package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.rbac.KubernetesRole;
-import io.fabric8.kubernetes.api.model.rbac.KubernetesRoleList;
-import io.fabric8.kubernetes.api.model.rbac.KubernetesRoleBuilder;
-import io.fabric8.kubernetes.api.model.rbac.KubernetesPolicyRuleBuilder;
+import io.fabric8.kubernetes.api.model.rbac.PolicyRuleBuilder;
+import io.fabric8.kubernetes.api.model.rbac.Role;
+import io.fabric8.kubernetes.api.model.rbac.RoleBuilder;
+import io.fabric8.kubernetes.api.model.rbac.RoleList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.arquillian.cube.kubernetes.api.Session;
-import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
-import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.runner.RunWith;
-import org.junit.Before;
+import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.After;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeFalse;
 
-@RunWith(ArquillianConditionalRunner.class)
-@RequiresKubernetes
-public class KubernetesRoleIT {
+public class RoleCrudTest {
 
-  @ArquillianResource
-  KubernetesClient client;
+  private static final Logger logger = LoggerFactory.getLogger(RoleCrudTest.class);
 
-  @ArquillianResource
-  Session session;
+  @Rule
+  public KubernetesServer kubernetesServer = new KubernetesServer(true,true);
 
-  private KubernetesRole kubernetesRole;
+  @Test
+  public void crudTest(){
 
-  private String currentNamespace;
+    KubernetesClient client = kubernetesServer.getClient();
 
-  @Before
-  public void init() {
-
-    currentNamespace = session.getNamespace();
-
-    // Do not run tests on opeshift 3.6.0 and 3.6.1
-    assumeFalse(client.getVersion().getMajor().equalsIgnoreCase("1")
-      && client.getVersion().getMinor().startsWith("6"));
-
-    KubernetesRole kubernetesRole = new KubernetesRoleBuilder()
+    Role kubernetesRole = new RoleBuilder()
       .withNewMetadata()
-      .withName("job-reader")
+        .withName("job-reader")
       .endMetadata()
-      .addToRules(0, new KubernetesPolicyRuleBuilder()
+      .addToRules(0, new PolicyRuleBuilder()
         .addToApiGroups(0,"batch")
+        .addToNonResourceURLs(0,"/healthz")
         .addToResourceNames(0,"my-job")
         .addToResources(0,"jobs")
         .addToVerbs(0, "get")
@@ -72,16 +58,12 @@ public class KubernetesRoleIT {
       )
       .build();
 
-    client.rbac().kubernetesRoles().inNamespace(currentNamespace).createOrReplace(kubernetesRole);
-  }
-
-  @Test
-  public void get() {
-
-    kubernetesRole = client.rbac().kubernetesRoles().inNamespace(currentNamespace).withName("job-reader").get();
+    //test of creation
+    kubernetesRole = client.rbac().roles().create(kubernetesRole);
 
     assertNotNull(kubernetesRole);
     assertEquals("Role", kubernetesRole.getKind());
+    assertEquals("rbac.authorization.k8s.io/v1", kubernetesRole.getApiVersion());
     assertNotNull(kubernetesRole.getMetadata());
     assertEquals("job-reader", kubernetesRole.getMetadata().getName());
     assertNotNull(kubernetesRole.getRules());
@@ -89,6 +71,9 @@ public class KubernetesRoleIT {
     assertNotNull(kubernetesRole.getRules().get(0).getApiGroups());
     assertEquals(1, kubernetesRole.getRules().get(0).getApiGroups().size());
     assertEquals("batch", kubernetesRole.getRules().get(0).getApiGroups().get(0));
+    assertNotNull(kubernetesRole.getRules().get(0).getNonResourceURLs());
+    assertEquals(1, kubernetesRole.getRules().get(0).getNonResourceURLs().size());
+    assertEquals("/healthz", kubernetesRole.getRules().get(0).getNonResourceURLs().get(0));
     assertNotNull(kubernetesRole.getRules().get(0).getResourceNames());
     assertEquals(1, kubernetesRole.getRules().get(0).getResourceNames().size());
     assertEquals("my-job", kubernetesRole.getRules().get(0).getResourceNames().get(0));
@@ -100,49 +85,16 @@ public class KubernetesRoleIT {
     assertEquals("get", kubernetesRole.getRules().get(0).getVerbs().get(0));
     assertEquals("watch", kubernetesRole.getRules().get(0).getVerbs().get(1));
     assertEquals("list", kubernetesRole.getRules().get(0).getVerbs().get(2));
-  }
 
-  @Test
-  public void load() {
-
-    KubernetesRole aKubernetesRole = client.rbac().kubernetesRoles().inNamespace(currentNamespace)
-      .load(getClass().getResourceAsStream("/test-kubernetesrole.yml")).get();
-
-    assertNotNull(aKubernetesRole);
-    assertEquals("Role", aKubernetesRole.getKind());
-    assertNotNull(aKubernetesRole.getMetadata());
-    assertEquals("job-reader", aKubernetesRole.getMetadata().getName());
-    assertNotNull(aKubernetesRole.getRules());
-    assertEquals(1, aKubernetesRole.getRules().size());
-    assertNotNull(aKubernetesRole.getRules().get(0).getApiGroups());
-    assertEquals(1, aKubernetesRole.getRules().get(0).getApiGroups().size());
-    assertEquals("batch", aKubernetesRole.getRules().get(0).getApiGroups().get(0));
-    assertNotNull(aKubernetesRole.getRules().get(0).getNonResourceURLs());
-    assertEquals(1, aKubernetesRole.getRules().get(0).getNonResourceURLs().size());
-    assertEquals("/healthz", aKubernetesRole.getRules().get(0).getNonResourceURLs().get(0));
-    assertNotNull(aKubernetesRole.getRules().get(0).getResourceNames());
-    assertEquals(1, aKubernetesRole.getRules().get(0).getResourceNames().size());
-    assertEquals("my-job", aKubernetesRole.getRules().get(0).getResourceNames().get(0));
-    assertNotNull(aKubernetesRole.getRules().get(0).getResources());
-    assertEquals(1, aKubernetesRole.getRules().get(0).getResources().size());
-    assertEquals("jobs", aKubernetesRole.getRules().get(0).getResources().get(0));
-    assertNotNull(aKubernetesRole.getRules().get(0).getVerbs());
-    assertEquals(3, aKubernetesRole.getRules().get(0).getVerbs().size());
-    assertEquals("get", aKubernetesRole.getRules().get(0).getVerbs().get(0));
-    assertEquals("watch", aKubernetesRole.getRules().get(0).getVerbs().get(1));
-    assertEquals("list", aKubernetesRole.getRules().get(0).getVerbs().get(2));
-  }
-
-  @Test
-  public void list() {
-
-    KubernetesRoleList kubernetesRoleList = client.rbac().kubernetesRoles().inNamespace(currentNamespace).list();
+    //test of list
+    RoleList kubernetesRoleList = client.rbac().roles().list();
 
     assertNotNull(kubernetesRoleList);
     assertNotNull(kubernetesRoleList.getItems());
     assertEquals(1, kubernetesRoleList.getItems().size());
     assertNotNull(kubernetesRoleList.getItems().get(0));
     assertEquals("Role", kubernetesRoleList.getItems().get(0).getKind());
+    assertEquals("rbac.authorization.k8s.io/v1", kubernetesRoleList.getItems().get(0).getApiVersion());
     assertNotNull(kubernetesRoleList.getItems().get(0).getMetadata());
     assertEquals("job-reader", kubernetesRoleList.getItems().get(0).getMetadata().getName());
     assertNotNull(kubernetesRoleList.getItems().get(0).getRules());
@@ -150,6 +102,9 @@ public class KubernetesRoleIT {
     assertNotNull(kubernetesRoleList.getItems().get(0).getRules().get(0).getApiGroups());
     assertEquals(1, kubernetesRoleList.getItems().get(0).getRules().get(0).getApiGroups().size());
     assertEquals("batch", kubernetesRoleList.getItems().get(0).getRules().get(0).getApiGroups().get(0));
+    assertNotNull(kubernetesRoleList.getItems().get(0).getRules().get(0).getNonResourceURLs());
+    assertEquals(1, kubernetesRoleList.getItems().get(0).getRules().get(0).getNonResourceURLs().size());
+    assertEquals("/healthz", kubernetesRoleList.getItems().get(0).getRules().get(0).getNonResourceURLs().get(0));
     assertNotNull(kubernetesRoleList.getItems().get(0).getRules().get(0).getResourceNames());
     assertEquals(1, kubernetesRoleList.getItems().get(0).getRules().get(0).getResourceNames().size());
     assertEquals("my-job", kubernetesRoleList.getItems().get(0).getRules().get(0).getResourceNames().get(0));
@@ -162,16 +117,14 @@ public class KubernetesRoleIT {
     assertEquals("watch", kubernetesRoleList.getItems().get(0).getRules().get(0).getVerbs().get(1));
     assertEquals("list", kubernetesRoleList.getItems().get(0).getRules().get(0).getVerbs().get(2));
 
-  }
+    //test of updation
 
-  @Test
-  public void update() {
-
-    kubernetesRole = client.rbac().kubernetesRoles().inNamespace(currentNamespace).withName("job-reader").edit()
+    kubernetesRole = client.rbac().roles().withName("job-reader").edit()
       .editRule(0).addToApiGroups(1, "extensions").endRule().done();
 
     assertNotNull(kubernetesRole);
     assertEquals("Role", kubernetesRole.getKind());
+    assertEquals("rbac.authorization.k8s.io/v1", kubernetesRole.getApiVersion());
     assertNotNull(kubernetesRole.getMetadata());
     assertEquals("job-reader", kubernetesRole.getMetadata().getName());
     assertNotNull(kubernetesRole.getRules());
@@ -180,6 +133,9 @@ public class KubernetesRoleIT {
     assertEquals(2, kubernetesRole.getRules().get(0).getApiGroups().size());
     assertEquals("batch", kubernetesRole.getRules().get(0).getApiGroups().get(0));
     assertEquals("extensions", kubernetesRole.getRules().get(0).getApiGroups().get(1));
+    assertNotNull(kubernetesRole.getRules().get(0).getNonResourceURLs());
+    assertEquals(1, kubernetesRole.getRules().get(0).getNonResourceURLs().size());
+    assertEquals("/healthz", kubernetesRole.getRules().get(0).getNonResourceURLs().get(0));
     assertNotNull(kubernetesRole.getRules().get(0).getResourceNames());
     assertEquals(1, kubernetesRole.getRules().get(0).getResourceNames().size());
     assertEquals("my-job", kubernetesRole.getRules().get(0).getResourceNames().get(0));
@@ -191,21 +147,12 @@ public class KubernetesRoleIT {
     assertEquals("get", kubernetesRole.getRules().get(0).getVerbs().get(0));
     assertEquals("watch", kubernetesRole.getRules().get(0).getVerbs().get(1));
     assertEquals("list", kubernetesRole.getRules().get(0).getVerbs().get(2));
-  }
 
-  @Test
-  public void delete() {
-
-    boolean deleted = client.rbac().kubernetesRoles().inNamespace(currentNamespace).delete();
+    //test of deletion
+    boolean deleted = client.rbac().roles().delete();
 
     assertTrue(deleted);
-    KubernetesRoleList kubernetesRoleList = client.rbac().kubernetesRoles().inNamespace(currentNamespace).list();
+    kubernetesRoleList = client.rbac().roles().list();
     assertEquals(0,kubernetesRoleList.getItems().size());
   }
-
-  @After
-  public void cleanup() {
-    client.rbac().kubernetesRoles().inNamespace(currentNamespace).delete();
-  }
-
 }

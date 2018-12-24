@@ -128,17 +128,17 @@ type Schema struct {
 	TokenReview                           authenticationapi.TokenReview
 	K8sSubjectAccessReview                k8sauthapi.SubjectAccessReview
 	K8sLocalSubjectAccessReview           k8sauthapi.LocalSubjectAccessReview
-	Role                                  authapi.Role
-	RoleList                              authapi.RoleList
-	RoleBinding                           authapi.RoleBinding
-	RoleBindingList                       authapi.RoleBindingList
-	RoleBindingRestriction                authapi.RoleBindingRestriction
+	OpenshiftRole                         authapi.Role
+	OpenshiftRoleList                     authapi.RoleList
+	OpenshiftRoleBinding                  authapi.RoleBinding
+	OpenshiftRoleBindingList              authapi.RoleBindingList
+	OpenshiftRoleBindingRestriction       authapi.RoleBindingRestriction
 	LocalSubjectAccessReview              authapi.LocalSubjectAccessReview
 	SubjectAccessReview                   authapi.SubjectAccessReview
-        SubjectAccessReviewResponse           authapi.SubjectAccessReviewResponse
-	ClusterRole                           authapi.ClusterRole
-	ClusterRoleBinding                    authapi.ClusterRoleBinding
-	ClusterRoleBindingList                authapi.ClusterRoleBindingList
+  SubjectAccessReviewResponse           authapi.SubjectAccessReviewResponse
+	OpenshiftClusterRole                  authapi.ClusterRole
+	OpenshiftClusterRoleBinding           authapi.ClusterRoleBinding
+	OpenshiftClusterRoleBindingList       authapi.ClusterRoleBindingList
 	User                                  userapi.User
 	UserList                              userapi.UserList
 	Group                                 userapi.Group
@@ -190,41 +190,41 @@ type Schema struct {
 	StorageClass                          storageclassapi.StorageClass
 	StorageClassList                      storageclassapi.StorageClassList
 	AggregationRule                       rbac.AggregationRule
-	K8sRole                               rbac.Role
-	K8sRoleList                           rbac.RoleList
-	K8sRoleBinding                        rbac.RoleBinding
-	K8sRoleBindingList                    rbac.RoleBindingList
+	Role                                  rbac.Role
+	RoleList                              rbac.RoleList
+	RoleBinding                           rbac.RoleBinding
+	RoleBindingList                       rbac.RoleBindingList
 	NetNameSpace                          networkapi.NetNamespace
 	NetNameSpaceList                      networkapi.NetNamespaceList
-	K8sClusterRole                        rbac.ClusterRole
-	K8sClusterRoleList                    rbac.ClusterRoleList
-	K8sClusterRoleBinding                 rbac.ClusterRoleBinding
-	K8sClusterRoleBindingList             rbac.ClusterRoleBindingList
-        PodPreset                             settings.PodPreset
-        PodPresetSpec                         settings.PodPresetSpec
-        PodPresetList                         settings.PodPresetList
-        PriorityClass                         scheduling.PriorityClass
-        PriorityClassList                     scheduling.PriorityClassList
-        Event                                 events.Event
-        EventSeries                           events.EventSeries
-        EventSeriesState                      events.EventSeriesState
-        AdmissionReview                       admission.AdmissionReview
-        AdmissionRequest                      admission.AdmissionRequest
-        AdmissionResponse                     admission.AdmissionResponse
-        PatchType                             admission.PatchType
-        Operation                             admission.Operation
-        Rule                                  admissionregistration.Rule
-        ValidatingWebhookConfiguration        admissionregistration.ValidatingWebhookConfiguration
-        ValidatingWebhookConfigurationList    admissionregistration.ValidatingWebhookConfigurationList
-        MutatingWebhookConfiguration          admissionregistration.MutatingWebhookConfiguration
-        MutatingWebhookConfigurationList      admissionregistration.MutatingWebhookConfigurationList
-        AdmissionWebhook                      admissionregistration.Webhook
-        RuleWithOperations                    admissionregistration.RuleWithOperations
-        CertificateSigningRequest             certificates.CertificateSigningRequest
-        CertificateSigningRequestSpec         certificates.CertificateSigningRequestSpec
-        CertificateSigningRequestStatus       certificates.CertificateSigningRequestStatus
-        CertificateSigningRequestCondition    certificates.CertificateSigningRequestCondition
-        CertificateSigningRequestList         certificates.CertificateSigningRequestList
+	ClusterRole                           rbac.ClusterRole
+	ClusterRoleList                       rbac.ClusterRoleList
+	ClusterRoleBinding                    rbac.ClusterRoleBinding
+	ClusterRoleBindingList                rbac.ClusterRoleBindingList
+  PodPreset                             settings.PodPreset
+  PodPresetSpec                         settings.PodPresetSpec
+  PodPresetList                         settings.PodPresetList
+  PriorityClass                         scheduling.PriorityClass
+  PriorityClassList                     scheduling.PriorityClassList
+  Event                                 events.Event
+  EventSeries                           events.EventSeries
+  EventSeriesState                      events.EventSeriesState
+  AdmissionReview                       admission.AdmissionReview
+  AdmissionRequest                      admission.AdmissionRequest
+  AdmissionResponse                     admission.AdmissionResponse
+  PatchType                             admission.PatchType
+  Operation                             admission.Operation
+  Rule                                  admissionregistration.Rule
+  ValidatingWebhookConfiguration        admissionregistration.ValidatingWebhookConfiguration
+  ValidatingWebhookConfigurationList    admissionregistration.ValidatingWebhookConfigurationList
+  MutatingWebhookConfiguration          admissionregistration.MutatingWebhookConfiguration
+  MutatingWebhookConfigurationList      admissionregistration.MutatingWebhookConfigurationList
+  AdmissionWebhook                      admissionregistration.Webhook
+  RuleWithOperations                    admissionregistration.RuleWithOperations
+  CertificateSigningRequest             certificates.CertificateSigningRequest
+  CertificateSigningRequestSpec         certificates.CertificateSigningRequestSpec
+  CertificateSigningRequestStatus       certificates.CertificateSigningRequestStatus
+  CertificateSigningRequestCondition    certificates.CertificateSigningRequestCondition
+  CertificateSigningRequestList         certificates.CertificateSigningRequestList
 }
 
 func main() {

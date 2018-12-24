@@ -15,10 +15,10 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.rbac.KubernetesClusterRole;
-import io.fabric8.kubernetes.api.model.rbac.KubernetesClusterRoleBuilder;
-import io.fabric8.kubernetes.api.model.rbac.KubernetesClusterRoleList;
-import io.fabric8.kubernetes.api.model.rbac.KubernetesPolicyRuleBuilder;
+import io.fabric8.kubernetes.api.model.rbac.ClusterRole;
+import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBuilder;
+import io.fabric8.kubernetes.api.model.rbac.ClusterRoleList;
+import io.fabric8.kubernetes.api.model.rbac.PolicyRuleBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Rule;
@@ -26,13 +26,11 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-public class KubernetesClusterRoleCrudTest {
+public class ClusterRoleCrudTest {
 
-  private static final Logger logger = LoggerFactory.getLogger(KubernetesClusterRoleCrudTest.class);
+  private static final Logger logger = LoggerFactory.getLogger(ClusterRoleCrudTest.class);
 
   @Rule
   public KubernetesServer kubernetesServer = new KubernetesServer(true,true);
@@ -42,11 +40,11 @@ public class KubernetesClusterRoleCrudTest {
 
     KubernetesClient client = kubernetesServer.getClient();
 
-    KubernetesClusterRole kubernetesClusterRole = new KubernetesClusterRoleBuilder()
+    ClusterRole kubernetesClusterRole = new ClusterRoleBuilder()
       .withNewMetadata()
         .withName("node-reader")
       .endMetadata()
-      .addToRules(0, new KubernetesPolicyRuleBuilder()
+      .addToRules(0, new PolicyRuleBuilder()
         .addToApiGroups(0,"")
         .addToNonResourceURLs(0,"/healthz")
         .addToResourceNames(0,"my-node")
@@ -59,7 +57,7 @@ public class KubernetesClusterRoleCrudTest {
       .build();
 
     //test of creation
-    kubernetesClusterRole = client.rbac().kubernetesClusterRoles().create(kubernetesClusterRole);
+    kubernetesClusterRole = client.rbac().clusterRoles().create(kubernetesClusterRole);
 
     assertNotNull(kubernetesClusterRole);
     assertEquals("ClusterRole", kubernetesClusterRole.getKind());
@@ -87,7 +85,7 @@ public class KubernetesClusterRoleCrudTest {
     assertEquals("list", kubernetesClusterRole.getRules().get(0).getVerbs().get(2));
 
     //test of list
-    KubernetesClusterRoleList kubernetesClusterRoleList = client.rbac().kubernetesClusterRoles().list();
+    ClusterRoleList kubernetesClusterRoleList = client.rbac().clusterRoles().list();
 
     assertNotNull(kubernetesClusterRoleList);
     assertNotNull(kubernetesClusterRoleList.getItems());
@@ -119,7 +117,7 @@ public class KubernetesClusterRoleCrudTest {
 
     //test of updation
 
-    kubernetesClusterRole = client.rbac().kubernetesClusterRoles().withName("node-reader").edit()
+    kubernetesClusterRole = client.rbac().clusterRoles().withName("node-reader").edit()
       .editRule(0).addToApiGroups(1, "extensions").endRule().done();
 
     assertNotNull(kubernetesClusterRole);
@@ -149,10 +147,16 @@ public class KubernetesClusterRoleCrudTest {
     assertEquals("list", kubernetesClusterRole.getRules().get(0).getVerbs().get(2));
 
     //test of deletion
-    boolean deleted = client.rbac().kubernetesClusterRoles().delete();
+    boolean deleted = client.rbac().clusterRoles().delete();
 
     assertTrue(deleted);
-    kubernetesClusterRoleList = client.rbac().kubernetesClusterRoles().list();
+    kubernetesClusterRoleList = client.rbac().clusterRoles().list();
     assertEquals(0,kubernetesClusterRoleList.getItems().size());
+  }
+
+  @Test
+  public void testLoadFromFile() {
+    KubernetesClient client = kubernetesServer.getClient();
+    assertNotNull(client.rbac().clusterRoles().load(getClass().getResourceAsStream("/test-clusterrole.yml")).get());
   }
 }

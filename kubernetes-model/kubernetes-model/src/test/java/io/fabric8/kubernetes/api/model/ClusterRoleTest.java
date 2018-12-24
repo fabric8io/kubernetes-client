@@ -16,28 +16,26 @@
 package io.fabric8.kubernetes.api.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fabric8.kubernetes.api.model.rbac.KubernetesPolicyRuleBuilder;
-import io.fabric8.kubernetes.api.model.rbac.KubernetesRole;
-import io.fabric8.kubernetes.api.model.rbac.KubernetesRoleBuilder;
+import io.fabric8.kubernetes.api.model.rbac.ClusterRole;
+import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBuilder;
+import io.fabric8.kubernetes.api.model.rbac.PolicyRuleBuilder;
 import org.junit.Test;
 
-import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
-import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
-import static net.javacrumbs.jsonunit.core.Option.TREATING_NULL_AS_ABSENT;
+import static net.javacrumbs.jsonunit.core.Option.*;
 import static net.javacrumbs.jsonunit.fluent.JsonFluentAssert.assertThatJson;
 
-public class KubernetesRoleTest {
+public class ClusterRoleTest {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Test
-    public void kubernetesRoleTest() throws Exception {
+    public void kubernetesClusterRoleTest() throws Exception {
         // given
-        final String originalJson = Helper.loadJson("/valid-kubernetesRole.json");
+        final String originalJson = Helper.loadJson("/valid-clusterRole.json");
 
         // when
-        final KubernetesRole kubernetesRole = mapper.readValue(originalJson, KubernetesRole.class);
-        final String serializedJson = mapper.writeValueAsString(kubernetesRole);
+        final ClusterRole clusterRole = mapper.readValue(originalJson, ClusterRole.class);
+        final String serializedJson = mapper.writeValueAsString(clusterRole);
 
         // then
         assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
@@ -45,22 +43,21 @@ public class KubernetesRoleTest {
     }
 
     @Test
-    public void kubernetesRoleBuilderTest() throws Exception {
+    public void kubernetesClusterRoleBuilderTest() throws Exception {
 
         // given
-        final String originalJson = Helper.loadJson("/valid-kubernetesRole.json");
+        final String originalJson = Helper.loadJson("/valid-clusterRole.json");
 
         // when
-        KubernetesRole kubernetesRole = new KubernetesRoleBuilder()
+        ClusterRole clusterRole = new ClusterRoleBuilder()
                 .withNewMetadata()
-                    .withName("job-reader")
-                    .withNamespace("default")
+                    .withName("node-reader")
                 .endMetadata()
-                .addToRules(0, new KubernetesPolicyRuleBuilder()
-                        .addToApiGroups(0,"batch")
+                .addToRules(0, new PolicyRuleBuilder()
+                        .addToApiGroups(0,"")
                         .addToNonResourceURLs(0,"/healthz")
-                        .addToResourceNames(0,"my-job")
-                        .addToResources(0,"jobs")
+                        .addToResourceNames(0,"my-node")
+                        .addToResources(0,"nodes")
                         .addToVerbs(0, "get")
                         .addToVerbs(1, "watch")
                         .addToVerbs(2, "list")
@@ -68,7 +65,7 @@ public class KubernetesRoleTest {
                     )
                 .build();
 
-        final String serializedJson = mapper.writeValueAsString(kubernetesRole);
+        final String serializedJson = mapper.writeValueAsString(clusterRole);
 
         // then
         assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)

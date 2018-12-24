@@ -19,10 +19,14 @@ import io.fabric8.kubernetes.api.model.rbac.*;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.RbacAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.internal.KubernetesClusterRoleBindingOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.KubernetesClusterRoleOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.KubernetesRoleOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.KubernetesRoleBindingOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.ClusterRoleBindingOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.ClusterRoleOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.RoleBindingOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.RoleOperationsImpl;
+import io.fabric8.kubernetes.api.model.rbac.DoneableRole;
+import io.fabric8.kubernetes.api.model.rbac.DoneableRoleBinding;
+import io.fabric8.kubernetes.api.model.rbac.DoneableClusterRole;
+import io.fabric8.kubernetes.api.model.rbac.DoneableClusterRoleBinding;
 import okhttp3.OkHttpClient;
 
 public class RbacAPIGroupClient extends BaseClient implements RbacAPIGroupDSL {
@@ -36,22 +40,22 @@ public class RbacAPIGroupClient extends BaseClient implements RbacAPIGroupDSL {
   }
 
   @Override
-  public MixedOperation<KubernetesRole, KubernetesRoleList, DoneableKubernetesRole, Resource<KubernetesRole, DoneableKubernetesRole>> kubernetesRoles() {
-    return new KubernetesRoleOperationsImpl(httpClient, getConfiguration(), getNamespace());
+  public MixedOperation<Role, RoleList, DoneableRole, Resource<Role, DoneableRole>> roles() {
+    return new RoleOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
   @Override
-  public MixedOperation<KubernetesRoleBinding, KubernetesRoleBindingList, DoneableKubernetesRoleBinding, Resource<KubernetesRoleBinding, DoneableKubernetesRoleBinding>> kubernetesRoleBindings() {
-    return new KubernetesRoleBindingOperationsImpl(httpClient, getConfiguration(), getNamespace());
+  public MixedOperation<RoleBinding, RoleBindingList, DoneableRoleBinding, Resource<RoleBinding, DoneableRoleBinding>> roleBindings() {
+    return new RoleBindingOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
   @Override
-  public MixedOperation<KubernetesClusterRole, KubernetesClusterRoleList, DoneableKubernetesClusterRole, Resource<KubernetesClusterRole, DoneableKubernetesClusterRole>> kubernetesClusterRoles() {
-    return new KubernetesClusterRoleOperationsImpl(httpClient, getConfiguration());
+  public MixedOperation<ClusterRole, ClusterRoleList, DoneableClusterRole, Resource<ClusterRole, DoneableClusterRole>> clusterRoles() {
+    return new ClusterRoleOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
-  public MixedOperation<KubernetesClusterRoleBinding, KubernetesClusterRoleBindingList, DoneableKubernetesClusterRoleBinding, Resource<KubernetesClusterRoleBinding, DoneableKubernetesClusterRoleBinding>> kubernetesClusterRoleBindings() {
-    return new KubernetesClusterRoleBindingOperationsImpl(httpClient, getConfiguration());
+  public MixedOperation<ClusterRoleBinding, ClusterRoleBindingList, DoneableClusterRoleBinding, Resource<ClusterRoleBinding, DoneableClusterRoleBinding>> clusterRoleBindings() {
+    return new ClusterRoleBindingOperationsImpl(httpClient, getConfiguration());
   }
 }
