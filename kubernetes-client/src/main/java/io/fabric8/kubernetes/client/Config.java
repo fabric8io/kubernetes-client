@@ -436,8 +436,14 @@ public class Config {
   private static boolean tryKubeConfig(Config config, String context) {
     LOGGER.debug("Trying to configure client from Kubernetes config...");
     if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, true)) {
-      File kubeConfigFile = new File(
-          Utils.getSystemPropertyOrEnvVar(KUBERNETES_KUBECONFIG_FILE, new File(getHomeDir(), ".kube" + File.separator + "config").toString()));
+      String fileName = Utils.getSystemPropertyOrEnvVar(KUBERNETES_KUBECONFIG_FILE, new File(getHomeDir(), ".kube" + File.separator + "config").toString());
+      // if system property/env var contains multiple files take the first one
+      String[] fileNames = fileName.split(":");
+      if (fileNames.length > 1) {
+          LOGGER.debug("Found multiple Kubernetes config files ["+fileNames+"] using the first one: ["+fileNames[0]+"].");
+          fileName = fileNames[0];
+      }
+      File kubeConfigFile = new File(fileName);
       boolean kubeConfigFileExists = Files.isRegularFile(kubeConfigFile.toPath());
 
       if (kubeConfigFileExists) {
