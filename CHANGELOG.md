@@ -12,6 +12,8 @@
 
     * Fix #1306: Support `KUBECONFIG` env var with multiple paths
 
+    * Fix #1290: Added github stale bot.
+
   Dependency Upgrade
 
   New Feature
