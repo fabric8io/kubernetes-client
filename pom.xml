@@ -194,6 +194,9 @@
             <exclude>kubernetes-model/generate</exclude>
             <exclude>kubernetes-model/.openshift-version</exclude>
             <exclude>kubernetes-model/glide.*</exclude>
+            <exclude>kubernetes-model/Gopkg.*</exclude>
+            <exclude>kubernetes-client/src/test/resources/*</exclude>
+            <exclude>Jenkinsfile</exclude>
           </excludes>
           <mapping>
             <go>JAVADOC_STYLE</go>
