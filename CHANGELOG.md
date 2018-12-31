@@ -8,6 +8,8 @@
 
   Improvements
 
+    * Fix #1306: Support `KUBECONFIG` env var with multiple paths
+
   Dependency Upgrade
 
   New Feature
