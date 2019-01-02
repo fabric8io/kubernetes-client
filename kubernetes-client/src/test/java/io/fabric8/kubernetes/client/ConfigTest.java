@@ -256,6 +256,19 @@ public class ConfigTest {
   }
 
   @Test
+  public void testWithMultipleKubeConfigAndOverrideContext() {
+    System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_FILE + ":some-other-file");
+    Config config = Config.autoConfigure("production/172-28-128-4:8443/root");
+    assertNotNull(config);
+
+    assertEquals("https://172.28.128.4:8443/", config.getMasterUrl());
+    assertEquals("production", config.getNamespace());
+    assertEquals("supertoken", config.getOauthToken());
+    assertTrue(config.getCaCertFile().endsWith("testns/ca.pem".replace("/", File.separator)));
+    assertTrue(new File(config.getCaCertFile()).isAbsolute());
+  }
+
+  @Test
   public void testWithKubeConfigAndSystemProperties() {
     System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_FILE);
     System.setProperty(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY, "http://somehost:80");

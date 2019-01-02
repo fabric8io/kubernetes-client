@@ -10,6 +10,8 @@
     
     * Updated compatability matrix after model upgrade in README.md 
 
+    * Fix #1306: Support `KUBECONFIG` env var with multiple paths
+
   Dependency Upgrade
 
   New Feature
