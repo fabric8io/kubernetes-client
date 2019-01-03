@@ -20,7 +20,7 @@
   <parent>
     <artifactId>platforms</artifactId>
     <groupId>io.fabric8.kubernetes</groupId>
-    <version>1.4.14.redhat-SNAPSHOT</version>
+    <version>1.4.14.fuse-000058</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -30,12 +30,12 @@
   <name>Fabric8 :: Kubernetes :: Platforms :: Karaf</name>
 
   <properties>
-    <karaf.version>2.4.0</karaf.version>
-    <karaf.plugin.version>4.0.5</karaf.plugin.version>
+    <karaf.version>2.4.0.redhat-630371</karaf.version>
+    <karaf.plugin.version>4.0.8.fuse-000043</karaf.plugin.version>
     <osgi.version>6.0.0</osgi.version>
     <pax.exam.version>4.9.1</pax.exam.version>
-    <servlet.api.version>3.1.0</servlet.api.version>
-    <validation.api.version>1.1.0.Final</validation.api.version>
+    <servlet.api.version>3.1.0.redhat-1</servlet.api.version>
+    <validation.api.version>1.1.0.Final-redhat-1</validation.api.version>
   </properties>
 
   <modules>
