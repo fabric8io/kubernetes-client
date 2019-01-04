@@ -257,7 +257,8 @@ public class ConfigTest {
 
   @Test
   public void testWithMultipleKubeConfigAndOverrideContext() {
-    System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_FILE + ":some-other-file");
+    System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_FILE + File.pathSeparator + "some-other-file");
+
     Config config = Config.autoConfigure("production/172-28-128-4:8443/root");
     assertNotNull(config);
 
