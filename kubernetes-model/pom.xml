@@ -79,6 +79,12 @@
         <scope>provided</scope>
       </dependency>
       <dependency>
+        <groupId>io.sundr</groupId>
+        <artifactId>transform-annotations</artifactId>
+        <version>${sundrio.version}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>${junit.version}</version>

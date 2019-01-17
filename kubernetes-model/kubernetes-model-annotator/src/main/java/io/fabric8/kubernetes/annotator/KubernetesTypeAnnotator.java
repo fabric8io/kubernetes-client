@@ -23,10 +23,13 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.sun.codemodel.*;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.Inline;
+import io.sundr.transform.annotations.VelocityTransformation;
+import io.sundr.transform.annotations.VelocityTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.jsonschema2pojo.Jackson2Annotator;
 
+import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -73,6 +76,20 @@ public class KubernetesTypeAnnotator extends Jackson2Annotator {
             annotateMetatadataValidator(clazz);
         } catch (JClassAlreadyExistsException e) {
             e.printStackTrace();
+        }
+
+          if (clazz.fields().containsKey("kind") && clazz.fields().containsKey("metadata")) {
+          if (clazz.getPackage().name().startsWith("io.fabric8.kubernetes")) {
+            JAnnotationArrayMember arrayMember = clazz.annotate(VelocityTransformations.class)
+              .paramArray("value");
+            arrayMember.annotate(VelocityTransformation.class).param("value", "/manifest.vm")
+              .param("outputPath", "kubernetes.manifest").param("gather", true);
+          } else if (clazz.getPackage().name().startsWith("io.fabric8.openshift")) {
+            JAnnotationArrayMember arrayMember = clazz.annotate(VelocityTransformations.class)
+              .paramArray("value");
+            arrayMember.annotate(VelocityTransformation.class).param("value", "/manifest.vm")
+              .param("outputPath", "openshift.manifest").param("gather", true);
+          }
         }
     }
 
