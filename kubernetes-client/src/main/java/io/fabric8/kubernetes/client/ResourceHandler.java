@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client;
 
 
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 
@@ -109,4 +110,6 @@ public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
    * @throws              InterruptedException
    */
   T waitUntilReady(OkHttpClient client, Config config, String namespace, T item, long amount, TimeUnit timeUnit) throws InterruptedException;
+
+  T waitUntilCondition(OkHttpClient client, Config config, String namespace, T item, Predicate<T> condition, long amount, TimeUnit timeUnit) throws InterruptedException;
 }

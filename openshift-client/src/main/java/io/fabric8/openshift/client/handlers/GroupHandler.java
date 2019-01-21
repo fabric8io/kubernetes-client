@@ -17,6 +17,7 @@ package io.fabric8.openshift.client.handlers;
 
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
@@ -76,5 +77,10 @@ public class GroupHandler implements ResourceHandler<Group, GroupBuilder> {
   @Override
   public Group waitUntilReady(OkHttpClient client, Config config, String namespace, Group item, long amount, TimeUnit timeUnit) throws InterruptedException {
     return new GroupOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilReady(amount, timeUnit);
+  }
+
+  @Override
+  public Group waitUntilCondition(OkHttpClient client, Config config, String namespace, Group item, Predicate<Group> condition, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new GroupOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilCondition(condition, amount, timeUnit);
   }
 }

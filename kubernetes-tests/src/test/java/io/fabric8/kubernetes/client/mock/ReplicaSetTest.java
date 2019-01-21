@@ -234,4 +234,32 @@ public class ReplicaSetTest {
     assertNotNull(repl1);
   }
 
+  @Test
+  public void testDeprecatedApiVersion() {
+    ReplicaSet repl1 = new ReplicaSetBuilder()
+      .withApiVersion("extensions/v1beta1")
+      .withNewMetadata()
+      .withName("repl1")
+      .withNamespace("test")
+      .endMetadata()
+      .withNewSpec()
+      .withReplicas(1)
+      .withNewTemplate()
+      .withNewMetadata().withLabels(new HashMap<String, String>()).endMetadata()
+      .withNewSpec()
+      .addNewContainer()
+      .withImage("img1")
+      .endContainer()
+      .endSpec()
+      .endTemplate()
+      .endSpec()
+      .withNewStatus().withReplicas(1).endStatus()
+      .build();
+
+    server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/replicasets").andReturn(200, repl1).once();
+
+    KubernetesClient client = server.getClient();
+    client.resource(repl1).inNamespace("test").createOrReplace();
+  }
+
 }

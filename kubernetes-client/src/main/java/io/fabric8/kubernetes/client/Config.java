@@ -19,11 +19,9 @@ package io.fabric8.kubernetes.client;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import io.fabric8.kubernetes.api.model.ConfigBuilder;
-import okhttp3.TlsVersion;
 import io.fabric8.kubernetes.api.model.AuthInfo;
 import io.fabric8.kubernetes.api.model.Cluster;
+import io.fabric8.kubernetes.api.model.ConfigBuilder;
 import io.fabric8.kubernetes.api.model.Context;
 import io.fabric8.kubernetes.client.internal.KubeConfigUtils;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
@@ -31,13 +29,15 @@ import io.fabric8.kubernetes.client.utils.IOHelpers;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.sundr.builder.annotations.Buildable;
+import okhttp3.TlsVersion;
+import org.apache.commons.lang.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -436,8 +436,18 @@ public class Config {
   private static boolean tryKubeConfig(Config config, String context) {
     LOGGER.debug("Trying to configure client from Kubernetes config...");
     if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, true)) {
-      File kubeConfigFile = new File(
-          Utils.getSystemPropertyOrEnvVar(KUBERNETES_KUBECONFIG_FILE, new File(getHomeDir(), ".kube" + File.separator + "config").toString()));
+      String fileName = Utils.getSystemPropertyOrEnvVar(KUBERNETES_KUBECONFIG_FILE, new File(getHomeDir(), ".kube" + File.separator + "config").toString());
+
+      // if system property/env var contains multiple files take the first one based on the environment
+      // we are running in (eg. : for Linux, ; for Windows)
+      String[] fileNames = fileName.split(File.pathSeparator);
+
+      if (fileNames.length > 1) {
+        LOGGER.debug("Found multiple Kubernetes config files [{}], using the first one: [{}].", fileNames, fileNames[0]);
+        fileName = fileNames[0];
+      }
+
+      File kubeConfigFile = new File(fileName);
       boolean kubeConfigFileExists = Files.isRegularFile(kubeConfigFile.toPath());
 
       if (kubeConfigFileExists) {
@@ -554,13 +564,16 @@ public class Config {
 
     return false;
   }
+  @JsonIgnoreProperties(ignoreUnknown = true)
   private static final class ExecCredential {
     public String kind;
     public String apiVersion;
     public ExecCredentialSpec spec;
     public ExecCredentialStatus status;
   }
+  @JsonIgnoreProperties(ignoreUnknown = true)
   private static final class ExecCredentialSpec {}
+  @JsonIgnoreProperties(ignoreUnknown = true)
   private static final class ExecCredentialStatus {
     public String token;
     // TODO clientCertificateData, clientKeyData, expirationTimestamp

@@ -30,7 +30,7 @@ import java.util.TreeMap;
 public class HorizontalPodAutoscalerOperationsImpl extends HasMetadataOperation<HorizontalPodAutoscaler, HorizontalPodAutoscalerList, DoneableHorizontalPodAutoscaler, Resource<HorizontalPodAutoscaler, DoneableHorizontalPodAutoscaler>>{
 
   public HorizontalPodAutoscalerOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(client, config, "v1", namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+    this(client, config, "v2beta1", namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
   }
 
   public HorizontalPodAutoscalerOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, HorizontalPodAutoscaler item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {

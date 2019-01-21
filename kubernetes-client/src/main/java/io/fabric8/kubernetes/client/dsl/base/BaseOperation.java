@@ -44,10 +44,6 @@ import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.client.utils.WatcherToggle;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -56,9 +52,18 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 
 public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
   extends OperationSupport
@@ -88,7 +93,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   protected String apiGroupVersion;
 
   protected BaseOperation(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields)  {
-    super(client, config, apiGroup, apiVersion(item, apiVersion), resourceT, namespace, name(item, name));
+    super(client, config, apiGroup(item, apiGroup), apiVersion(item, apiVersion), resourceT, namespace, name(item, name));
     this.cascading = cascading;
     this.item = item;
     this.reloadingFromServer = reloadingFromServer;
@@ -106,7 +111,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   protected BaseOperation(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, Class<T> type, Class<L> listType, Class<D> doneableType) {
-    super(client, config, apiGroup, apiVersion(item, apiVersion), resourceT, namespace, name(item, name));
+    super(client, config, apiGroup(item, apiGroup), apiVersion(item, apiVersion), resourceT, namespace, name(item, name));
     this.cascading = cascading;
     this.item = item;
     this.resourceVersion = resourceVersion;
@@ -169,6 +174,23 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
       String[] versionParts = apiVersion.split("/");
       return versionParts[versionParts.length - 1];
     }
+  }
+
+  /**
+   * Extracts apiGroup from apiVersion when in resource for apiGroup/apiVersion combination
+   * @param item      resource which is being used
+   * @param apiGroup  apiGroup present if any
+   * @return          Just the apiGroup part without apiVersion
+   */
+  private static <T> String apiGroup(T item, String apiGroup) {
+    if(item instanceof HasMetadata) {
+      String apiVersionFromResource = ((HasMetadata)item).getApiVersion();
+      if(apiVersionFromResource.contains("/")) {
+        String[] versionParts = apiVersionFromResource.split("/");
+        return versionParts[0];
+      }
+    }
+    return apiGroup;
   }
 
   /**
@@ -988,28 +1010,37 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     return i instanceof HasMetadata && Readiness.isReady((HasMetadata)i);
   }
 
-  protected T waitUntilExists(long timeoutInMillis) throws InterruptedException {
-    long end = System.currentTimeMillis() + timeoutInMillis;
-    while (System.currentTimeMillis() < end) {
-      T item = get();
-      if (item != null) {
-        return item;
-      }
-
-      // in the future, should probably combine this simple waiting loop with a watcher
-      Thread.sleep(1000);
-    }
-
-    T item = get();
-    if (item != null) {
-      return item;
-    }
-
-    throw new IllegalArgumentException(type.getSimpleName() + " with name:[" + name + "] in namespace:[" + namespace + "] not found!");
+  protected T waitUntilExists(long amount, TimeUnit timeUnit) throws InterruptedException {
+    return waitUntilCondition(Objects::nonNull, amount, timeUnit);
   }
 
   @Override
   public T waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
-    return waitUntilExists(timeUnit.toMillis(amount));
+    return waitUntilExists(amount, timeUnit);
+  }
+
+  @Override
+  public T waitUntilCondition(Predicate<T> condition, long amount, TimeUnit timeUnit)
+    throws InterruptedException {
+
+    long timeoutInMillis = timeUnit.toMillis(amount);
+
+    long end = System.currentTimeMillis() + timeoutInMillis;
+    while (System.currentTimeMillis() < end) {
+      T item = get();
+      if (condition.test(item)) {
+        return item;
+      }
+
+      // in the future, this should probably be more intelligent
+      Thread.sleep(1000);
+    }
+
+    T item = get();
+    if (condition.test(item)) {
+      return item;
+    }
+
+    throw new IllegalArgumentException(type.getSimpleName() + " with name:[" + name + "] in namespace:[" + namespace + "] not found!");
   }
 }

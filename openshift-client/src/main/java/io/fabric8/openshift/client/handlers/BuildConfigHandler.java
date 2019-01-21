@@ -17,6 +17,7 @@ package io.fabric8.openshift.client.handlers;
 
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
@@ -84,5 +85,11 @@ public class BuildConfigHandler implements ResourceHandler<BuildConfig, BuildCon
   public BuildConfig waitUntilReady(OkHttpClient client, Config config, String namespace, BuildConfig item, long amount, TimeUnit timeUnit) throws InterruptedException {
     OpenShiftConfig osConfig = OpenShiftConfig.wrap(config);
     return new BuildConfigOperationsImpl(client, osConfig, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, null, null, null, osConfig.getBuildTimeout(), TimeUnit.MILLISECONDS).waitUntilReady(amount, timeUnit);
+  }
+
+  @Override
+  public BuildConfig waitUntilCondition(OkHttpClient client, Config config, String namespace, BuildConfig item, Predicate<BuildConfig> condition, long amount, TimeUnit timeUnit) throws InterruptedException {
+    OpenShiftConfig osConfig = OpenShiftConfig.wrap(config);
+    return new BuildConfigOperationsImpl(client, osConfig, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, null, null, null, osConfig.getBuildTimeout(), TimeUnit.MILLISECONDS).waitUntilCondition(condition, amount, timeUnit);
   }
 }

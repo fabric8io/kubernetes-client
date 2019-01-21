@@ -17,8 +17,8 @@
 package io.fabric8.openshift.client.dsl;
 
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
+import io.fabric8.kubernetes.client.dsl.TimestampBytesLimitTerminateTimeTailPrettyLoggable;
 
 public interface BuildResource<T, D, S, W> extends Resource<T, D>,
-  BytesLimitTerminateTimeTailPrettyLoggable<S, W> {
+  TimestampBytesLimitTerminateTimeTailPrettyLoggable<S, W> {
 }

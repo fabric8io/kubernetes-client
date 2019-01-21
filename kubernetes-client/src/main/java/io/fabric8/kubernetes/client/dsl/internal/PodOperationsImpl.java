@@ -134,6 +134,9 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
         if (limitBytes != null) {
           sb.append("&limitBytes=").append(limitBytes);
         }
+        if (withTimestamps) {
+          sb.append("&timestamps=true");
+        }
         return sb.toString();
     }
 
@@ -374,5 +377,10 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
     public BytesLimitTerminateTimeTailPrettyLoggable<String, LogWatch> limitBytes(int limitBytes) {
         return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes);
     }
+
+  @Override
+  public BytesLimitTerminateTimeTailPrettyLoggable<String, LogWatch> usingTimestamps() {
+    return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, true, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes);
+  }
 }
 

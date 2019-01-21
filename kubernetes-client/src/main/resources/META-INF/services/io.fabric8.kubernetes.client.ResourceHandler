@@ -14,19 +14,17 @@
 # limitations under the License.
 #
 
+io.fabric8.kubernetes.client.handlers.ClusterRoleBindingHandler
+io.fabric8.kubernetes.client.handlers.ClusterRoleHandler
 io.fabric8.kubernetes.client.handlers.ConfigMapHandler
-io.fabric8.kubernetes.client.handlers.CustomResourceDefinitionHandler
 io.fabric8.kubernetes.client.handlers.CronJobHandler
+io.fabric8.kubernetes.client.handlers.CustomResourceDefinitionHandler
 io.fabric8.kubernetes.client.handlers.DaemonSetHandler
 io.fabric8.kubernetes.client.handlers.DeploymentHandler
 io.fabric8.kubernetes.client.handlers.EndpointsHandler
 io.fabric8.kubernetes.client.handlers.EventHandler
 io.fabric8.kubernetes.client.handlers.HorizontalPodAutoscalerHandler
 io.fabric8.kubernetes.client.handlers.IngressHandler
-io.fabric8.kubernetes.client.handlers.KubernetesClusterRoleBindingHandler
-io.fabric8.kubernetes.client.handlers.KubernetesClusterRoleHandler
-io.fabric8.kubernetes.client.handlers.KubernetesRoleBindingHandler
-io.fabric8.kubernetes.client.handlers.KubernetesRoleHandler
 io.fabric8.kubernetes.client.handlers.JobHandler
 io.fabric8.kubernetes.client.handlers.LimitRangeHandler
 io.fabric8.kubernetes.client.handlers.NamespaceHandler
@@ -39,6 +37,8 @@ io.fabric8.kubernetes.client.handlers.PodSecurityPolicyHandler
 io.fabric8.kubernetes.client.handlers.ReplicaSetHandler
 io.fabric8.kubernetes.client.handlers.ReplicationControllerHandler
 io.fabric8.kubernetes.client.handlers.ResourceQuotaHandler
+io.fabric8.kubernetes.client.handlers.RoleBindingHandler
+io.fabric8.kubernetes.client.handlers.RoleHandler
 io.fabric8.kubernetes.client.handlers.SecretHandler
 io.fabric8.kubernetes.client.handlers.ServiceAccountHandler
 io.fabric8.kubernetes.client.handlers.ServiceHandler

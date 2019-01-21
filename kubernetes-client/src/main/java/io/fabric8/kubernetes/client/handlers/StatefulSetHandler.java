@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.internal.StatefulSetOperationsImpl;
 
+import java.util.function.Predicate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
@@ -78,5 +79,10 @@ public class StatefulSetHandler implements ResourceHandler<StatefulSet, Stateful
   @Override
   public StatefulSet waitUntilReady(OkHttpClient client, Config config, String namespace, StatefulSet item, long amount, TimeUnit timeUnit) throws InterruptedException {
     return new StatefulSetOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilReady(amount, timeUnit);
+  }
+
+  @Override
+  public StatefulSet waitUntilCondition(OkHttpClient client, Config config, String namespace, StatefulSet item, Predicate<StatefulSet> condition, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new StatefulSetOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilCondition(condition, amount, timeUnit);
   }
 }

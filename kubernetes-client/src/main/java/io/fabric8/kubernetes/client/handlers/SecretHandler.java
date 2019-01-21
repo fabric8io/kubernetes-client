@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.handlers;
 
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.SecretBuilder;
@@ -75,6 +76,11 @@ public class SecretHandler implements ResourceHandler<Secret, SecretBuilder> {
   @Override
   public Secret waitUntilReady(OkHttpClient client, Config config, String namespace, Secret item, long amount, TimeUnit timeUnit) throws InterruptedException {
     return new SecretOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilReady(amount, timeUnit);
+  }
+
+  @Override
+  public Secret waitUntilCondition(OkHttpClient client, Config config, String namespace, Secret item, Predicate<Secret> condition, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new SecretOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilCondition(condition, amount, timeUnit);
   }
 
 }

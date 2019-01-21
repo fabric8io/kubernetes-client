@@ -277,6 +277,10 @@ public class Utils {
     return !isNullOrEmpty(str);
   }
 
+  public static boolean isNotNullOrEmpty(String[] array) {
+    return !(array == null || array.length == 0);
+  }
+
   public static String getProperty(Map<String, Object> properties, String propertyName, String defaultValue) {
     String answer = (String) properties.get(propertyName);
     if (!isNullOrEmpty(answer)) {

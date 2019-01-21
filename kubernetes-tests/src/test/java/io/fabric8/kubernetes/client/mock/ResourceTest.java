@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -34,6 +35,8 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 
+import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.tuple;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -199,6 +202,79 @@ public class ResourceTest {
     KubernetesClient client = server.getClient();
     Pod p = client.pods().withName("pod1").waitUntilReady(5, TimeUnit.SECONDS);
     Assert.assertTrue(Readiness.isPodReady(p));
+  }
+
+  @Test
+  public void testWaitUntilCondition() throws InterruptedException {
+    Pod pod1 = new PodBuilder().withNewMetadata()
+      .withName("pod1")
+      .withResourceVersion("1")
+      .withNamespace("test").and().build();
+
+
+    Pod noReady = new PodBuilder(pod1).withNewStatus()
+      .addNewCondition()
+      .withType("Ready")
+      .withStatus("False")
+      .endCondition()
+      .endStatus()
+      .build();
+
+    Pod ready = new PodBuilder(pod1).withNewStatus()
+      .addNewCondition()
+      .withType("Ready")
+      .withStatus("True")
+      .endCondition()
+      .endStatus()
+      .build();
+
+    Pod withConditionBeingFalse = new PodBuilder(pod1).withNewStatus()
+      .addNewCondition()
+      .withType("Ready")
+      .withStatus("True")
+      .endCondition()
+      .addNewCondition()
+      .withType("dummy")
+      .withStatus("False")
+      .endCondition()
+      .endStatus()
+      .build();
+
+    Pod withConditionBeingTrue = new PodBuilder(pod1).withNewStatus()
+      .addNewCondition()
+      .withType("Ready")
+      .withStatus("True")
+      .endCondition()
+      .addNewCondition()
+      .withType("Dummy")
+      .withStatus("True")
+      .endCondition()
+      .endStatus()
+      .build();
+
+    // at first the pod is non-ready
+    server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, noReady).times(2);
+
+    // then the pod becomes ready
+    server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, ready).times(2);
+
+    // then the has the condition but not with the correct status
+    server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, withConditionBeingFalse).times(1);
+
+    // finally the pod is in the desired state
+    server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, withConditionBeingTrue).always();
+
+    KubernetesClient client = server.getClient();
+    Pod p = client.pods().withName("pod1").waitUntilCondition(
+      r -> r.getStatus().getConditions()
+            .stream()
+            .anyMatch(c -> "Dummy".equals(c.getType()) && "True".equals(c.getStatus())),
+      8, TimeUnit.SECONDS
+    );
+
+    assertThat(p.getStatus().getConditions())
+      .extracting("type", "status")
+      .containsExactly(tuple("Ready", "True"), tuple("Dummy", "True"));
   }
 
   @Test

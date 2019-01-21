@@ -15,60 +15,12 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.api.model.ComponentStatus;
-import io.fabric8.kubernetes.api.model.ComponentStatusList;
-import io.fabric8.kubernetes.api.model.ConfigMap;
-import io.fabric8.kubernetes.api.model.ConfigMapList;
-import io.fabric8.kubernetes.api.model.Doneable;
-import io.fabric8.kubernetes.api.model.DoneableComponentStatus;
-import io.fabric8.kubernetes.api.model.DoneableConfigMap;
-import io.fabric8.kubernetes.api.model.DoneableEndpoints;
-import io.fabric8.kubernetes.api.model.DoneableEvent;
-import io.fabric8.kubernetes.api.model.DoneableLimitRange;
-import io.fabric8.kubernetes.api.model.DoneableNamespace;
-import io.fabric8.kubernetes.api.model.DoneableNode;
-import io.fabric8.kubernetes.api.model.DoneablePersistentVolume;
-import io.fabric8.kubernetes.api.model.DoneablePersistentVolumeClaim;
-import io.fabric8.kubernetes.api.model.DoneablePod;
-import io.fabric8.kubernetes.api.model.DoneableReplicationController;
-import io.fabric8.kubernetes.api.model.DoneableResourceQuota;
-import io.fabric8.kubernetes.api.model.DoneableSecret;
-import io.fabric8.kubernetes.api.model.DoneableService;
-import io.fabric8.kubernetes.api.model.DoneableServiceAccount;
-import io.fabric8.kubernetes.api.model.Endpoints;
-import io.fabric8.kubernetes.api.model.EndpointsList;
-import io.fabric8.kubernetes.api.model.Event;
-import io.fabric8.kubernetes.api.model.EventList;
-import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.KubernetesList;
-import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.api.model.LimitRange;
-import io.fabric8.kubernetes.api.model.LimitRangeList;
-import io.fabric8.kubernetes.api.model.Namespace;
-import io.fabric8.kubernetes.api.model.NamespaceList;
-import io.fabric8.kubernetes.api.model.Node;
-import io.fabric8.kubernetes.api.model.NodeList;
-import io.fabric8.kubernetes.api.model.PersistentVolume;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaimList;
-import io.fabric8.kubernetes.api.model.PersistentVolumeList;
-import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.PodList;
-import io.fabric8.kubernetes.api.model.ReplicationController;
-import io.fabric8.kubernetes.api.model.ReplicationControllerList;
-import io.fabric8.kubernetes.api.model.ResourceQuota;
-import io.fabric8.kubernetes.api.model.ResourceQuotaList;
-import io.fabric8.kubernetes.api.model.RootPaths;
-import io.fabric8.kubernetes.api.model.Secret;
-import io.fabric8.kubernetes.api.model.SecretList;
-import io.fabric8.kubernetes.api.model.Service;
-import io.fabric8.kubernetes.api.model.ServiceAccount;
-import io.fabric8.kubernetes.api.model.ServiceAccountList;
-import io.fabric8.kubernetes.api.model.ServiceList;
+import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionList;
 import io.fabric8.kubernetes.api.model.apiextensions.DoneableCustomResourceDefinition;
 import io.fabric8.kubernetes.client.*;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.dsl.internal.ClusterOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ComponentStatusOperationsImpl;
@@ -77,81 +29,19 @@ import io.fabric8.kubernetes.client.dsl.internal.CustomResourceOperationsImpl;
 import io.fabric8.kubernetes.client.utils.BackwardsCompatibilityInterceptor;
 import io.fabric8.kubernetes.client.utils.ImpersonatorInterceptor;
 import io.fabric8.kubernetes.client.utils.Serialization;
-import io.fabric8.openshift.api.model.Build;
-import io.fabric8.openshift.api.model.BuildConfig;
-import io.fabric8.openshift.api.model.BuildConfigList;
-import io.fabric8.openshift.api.model.BuildList;
-import io.fabric8.openshift.api.model.ClusterRoleBinding;
-import io.fabric8.openshift.api.model.ClusterRoleBindingList;
-import io.fabric8.openshift.api.model.DeploymentConfig;
-import io.fabric8.openshift.api.model.DeploymentConfigList;
-import io.fabric8.openshift.api.model.DoneableBuild;
-import io.fabric8.openshift.api.model.DoneableBuildConfig;
-import io.fabric8.openshift.api.model.DoneableClusterRoleBinding;
-import io.fabric8.openshift.api.model.DoneableDeploymentConfig;
-import io.fabric8.openshift.api.model.DoneableGroup;
-import io.fabric8.openshift.api.model.DoneableImageStream;
-import io.fabric8.openshift.api.model.DoneableImageStreamTag;
-import io.fabric8.openshift.api.model.DoneableOAuthAccessToken;
-import io.fabric8.openshift.api.model.DoneableOAuthAuthorizeToken;
-import io.fabric8.openshift.api.model.DoneableOAuthClient;
-import io.fabric8.openshift.api.model.DoneablePolicy;
-import io.fabric8.openshift.api.model.DoneablePolicyBinding;
-import io.fabric8.openshift.api.model.DoneableProject;
-import io.fabric8.openshift.api.model.DoneableRole;
-import io.fabric8.openshift.api.model.DoneableRoleBinding;
-import io.fabric8.openshift.api.model.DoneableRoute;
-import io.fabric8.openshift.api.model.DoneableSecurityContextConstraints;
-import io.fabric8.openshift.api.model.DoneableTemplate;
-import io.fabric8.openshift.api.model.DoneableUser;
-import io.fabric8.openshift.api.model.Group;
-import io.fabric8.openshift.api.model.GroupList;
-import io.fabric8.openshift.api.model.ImageStream;
-import io.fabric8.openshift.api.model.ImageStreamList;
-import io.fabric8.openshift.api.model.ImageStreamTag;
-import io.fabric8.openshift.api.model.ImageStreamTagList;
-import io.fabric8.openshift.api.model.OAuthAccessToken;
-import io.fabric8.openshift.api.model.OAuthAccessTokenList;
-import io.fabric8.openshift.api.model.OAuthAuthorizeToken;
-import io.fabric8.openshift.api.model.OAuthAuthorizeTokenList;
-import io.fabric8.openshift.api.model.OAuthClient;
-import io.fabric8.openshift.api.model.OAuthClientList;
-import io.fabric8.openshift.api.model.Policy;
-import io.fabric8.openshift.api.model.PolicyBinding;
-import io.fabric8.openshift.api.model.PolicyBindingList;
-import io.fabric8.openshift.api.model.PolicyList;
-import io.fabric8.openshift.api.model.Project;
-import io.fabric8.openshift.api.model.ProjectList;
-import io.fabric8.openshift.api.model.Role;
-import io.fabric8.openshift.api.model.RoleBinding;
-import io.fabric8.openshift.api.model.RoleBindingList;
-import io.fabric8.openshift.api.model.RoleList;
-import io.fabric8.openshift.api.model.Route;
-import io.fabric8.openshift.api.model.RouteList;
-import io.fabric8.openshift.api.model.SecurityContextConstraints;
-import io.fabric8.openshift.api.model.SecurityContextConstraintsList;
-import io.fabric8.openshift.api.model.Template;
-import io.fabric8.openshift.api.model.TemplateList;
-import io.fabric8.openshift.api.model.User;
-import io.fabric8.openshift.api.model.UserList;
-import io.fabric8.openshift.client.dsl.BuildConfigResource;
-import io.fabric8.openshift.client.dsl.BuildResource;
-import io.fabric8.openshift.client.dsl.CreateableLocalSubjectAccessReview;
-import io.fabric8.openshift.client.dsl.CreateableSubjectAccessReview;
-import io.fabric8.openshift.client.dsl.DeployableScalableResource;
-import io.fabric8.openshift.client.dsl.ProjectRequestOperation;
-import io.fabric8.openshift.client.dsl.SubjectAccessReviewOperation;
-import io.fabric8.openshift.client.dsl.TemplateResource;
+import io.fabric8.openshift.api.model.*;
+import io.fabric8.openshift.client.dsl.*;
 import io.fabric8.openshift.client.dsl.internal.*;
 import io.fabric8.openshift.client.internal.OpenShiftOAuthInterceptor;
+import okhttp3.Authenticator;
+import okhttp3.OkHttpClient;
+
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import okhttp3.Authenticator;
-import okhttp3.OkHttpClient;
 
 public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpenShiftClient {
 
@@ -391,16 +281,6 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public MixedOperation<Policy, PolicyList, DoneablePolicy, Resource<Policy, DoneablePolicy>> policies() {
-    return new PolicyOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()), getNamespace());
-  }
-
-  @Override
-  public MixedOperation<PolicyBinding, PolicyBindingList, DoneablePolicyBinding, Resource<PolicyBinding, DoneablePolicyBinding>> policyBindings() {
-    return new PolicyBindingOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()), getNamespace());
-  }
-
-  @Override
   public NonNamespaceOperation<Project, ProjectList, DoneableProject, Resource<Project, DoneableProject>> projects() {
     return new ProjectOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
@@ -416,13 +296,13 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public MixedOperation<Role, RoleList, DoneableRole, Resource<Role, DoneableRole>> roles() {
-    return new RoleOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()), getNamespace());
+  public MixedOperation<OpenshiftRole, OpenshiftRoleList, DoneableOpenshiftRole, Resource<OpenshiftRole, DoneableOpenshiftRole>> roles() {
+    return new OpenshiftRoleOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override
-  public MixedOperation<RoleBinding, RoleBindingList, DoneableRoleBinding, Resource<RoleBinding, DoneableRoleBinding>> roleBindings() {
-    return new RoleBindingOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()), getNamespace());
+  public MixedOperation<OpenshiftRoleBinding, OpenshiftRoleBindingList, DoneableOpenshiftRoleBinding, Resource<OpenshiftRoleBinding, DoneableOpenshiftRoleBinding>> roleBindings() {
+    return new OpenshiftRoleBindingOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override
@@ -446,8 +326,8 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public MixedOperation<ClusterRoleBinding, ClusterRoleBindingList, DoneableClusterRoleBinding, Resource<ClusterRoleBinding, DoneableClusterRoleBinding>> clusterRoleBindings() {
-    return new ClusterRoleBindingOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()), getNamespace());
+  public MixedOperation<OpenshiftClusterRoleBinding, OpenshiftClusterRoleBindingList, DoneableOpenshiftClusterRoleBinding, Resource<OpenshiftClusterRoleBinding, DoneableOpenshiftClusterRoleBinding>> clusterRoleBindings() {
+    return new OpenshiftClusterRoleBindingOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()), getNamespace());
   }
 
   @Override
@@ -498,6 +378,9 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
 
   @Override
   public RbacAPIGroupDSL rbac() { return adapt(RbacAPIGroupClient.class); }
+
+  @Override
+  public SchedulingAPIGroupDSL scheduling() { return adapt(SchedulingAPIGroupClient.class); }
 
   @Override
   public FunctionCallable<NamespacedOpenShiftClient> withRequestConfig(RequestConfig requestConfig) {

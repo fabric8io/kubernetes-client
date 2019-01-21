@@ -16,12 +16,16 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.batch.*;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
@@ -238,6 +242,15 @@ public class CronJobTest {
   public void testLoadFromFile() {
     KubernetesClient client = server.getClient();
     assertNotNull(client.batch().cronjobs().load(getClass().getResourceAsStream("/test-cronjob.yml")).get());
+  }
+  @Test
+  public void testHandlersLoadFromFile() {
+    KubernetesClient client = server.getClient();
+    List<HasMetadata> hasMetadata = client.load(getClass().getResourceAsStream("/test-cronjob.yml")).get();
+
+    assertNotNull("Handlers did not return a valid resource", hasMetadata);
+    assertTrue("Handler did not return expected single resource", 1==hasMetadata.size());
+    assertEquals("hasMetadata found did not match the expected name of the test input", "pi", hasMetadata.get(0).getMetadata().getName());
   }
 
   /**

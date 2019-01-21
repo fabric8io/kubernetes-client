@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.handlers;
 
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.networking.NetworkPolicy;
 import io.fabric8.kubernetes.api.model.networking.NetworkPolicyBuilder;
@@ -76,5 +77,10 @@ public class NetworkPolicyHandler implements ResourceHandler<NetworkPolicy, Netw
   @Override
   public NetworkPolicy waitUntilReady(OkHttpClient client, Config config, String namespace, NetworkPolicy item, long amount, TimeUnit timeUnit) throws InterruptedException {
     return new NetworkPolicyOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilReady(amount, timeUnit);
+  }
+
+  @Override
+  public NetworkPolicy waitUntilCondition(OkHttpClient client, Config config, String namespace, NetworkPolicy item, Predicate<NetworkPolicy> condition, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new NetworkPolicyOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilCondition(condition, amount, timeUnit);
   }
 }

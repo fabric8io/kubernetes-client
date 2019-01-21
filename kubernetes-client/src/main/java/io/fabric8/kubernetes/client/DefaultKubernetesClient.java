@@ -196,6 +196,11 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   @Override
+  public SchedulingAPIGroupDSL scheduling() {
+    return adapt(SchedulingAPIGroupClient.class);
+  }
+
+  @Override
   public MixedOperation<Secret, SecretList, DoneableSecret, Resource<Secret, DoneableSecret>> secrets() {
     return new SecretOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }

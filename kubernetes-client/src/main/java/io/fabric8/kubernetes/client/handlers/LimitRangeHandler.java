@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.LimitRangeBuilder;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.internal.LimitRangeOperationsImpl;
+import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
@@ -75,5 +76,10 @@ public class LimitRangeHandler implements ResourceHandler<LimitRange, LimitRange
   @Override
   public LimitRange waitUntilReady(OkHttpClient client, Config config, String namespace, LimitRange item, long amount, TimeUnit timeUnit) throws InterruptedException {
     return new LimitRangeOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilReady(amount, timeUnit);
+  }
+
+  @Override
+  public LimitRange waitUntilCondition(OkHttpClient client, Config config, String namespace, LimitRange item, Predicate<LimitRange> condition, long amount, TimeUnit timeUnit) throws InterruptedException {
+    return new LimitRangeOperationsImpl(client, config, null, namespace, null, true, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>()).waitUntilCondition(condition, amount, timeUnit);
   }
 }

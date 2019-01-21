@@ -2,72 +2,22 @@
 
 
 [[projects]]
-  name = "github.com/PuerkitoBio/purell"
-  packages = ["."]
-  revision = "8a290539e2e8629dbc4e6bad948158f790ec31f4"
-  version = "v1.0.0"
-
-[[projects]]
-  name = "github.com/PuerkitoBio/urlesc"
-  packages = ["."]
-  revision = "5bd2802263f21d8788851d5305584c82a5c75d7e"
-
-[[projects]]
-  name = "github.com/emicklei/go-restful"
-  packages = [
-    ".",
-    "log"
-  ]
-  revision = "ff4f55a206334ef123e4f79bbf348980da81ca46"
-
-[[projects]]
-  name = "github.com/go-openapi/jsonpointer"
-  packages = ["."]
-  revision = "46af16f9f7b149af66e5d1bd010e3574dc06de98"
-
-[[projects]]
-  name = "github.com/go-openapi/jsonreference"
-  packages = ["."]
-  revision = "13c6e3589ad90f49bd3e3bbe2c2cb3d7a4142272"
-
-[[projects]]
-  name = "github.com/go-openapi/spec"
-  packages = ["."]
-  revision = "7abd5745472fff5eb3685386d5fb8bf38683154d"
-
-[[projects]]
-  name = "github.com/go-openapi/swag"
-  packages = ["."]
-  revision = "f3f9494671f93fcff853e3c6e9e948b3eb71e590"
-
-[[projects]]
   name = "github.com/gogo/protobuf"
   packages = [
     "proto",
     "sortkeys"
   ]
-  revision = "c0656edd0d9eab7c66d1eb0c568f9039345796f7"
+  revision = "636bf0302bc95575d69441b25a2603156ffdddf1"
+  version = "v1.1.1"
 
 [[projects]]
-  name = "github.com/golang/glog"
-  packages = ["."]
-  revision = "44145f04b68cf362d9c4df2182967c2275eaefed"
-
-[[projects]]
+  branch = "master"
   name = "github.com/google/gofuzz"
   packages = ["."]
-  revision = "44d81051d367757e1c7c6a5a86423ece9afcf63c"
+  revision = "24818f796faf91cd76ec7bddd72458fbced7a6c1"
 
 [[projects]]
-  name = "github.com/mailru/easyjson"
-  packages = [
-    "buffer",
-    "jlexer",
-    "jwriter"
-  ]
-  revision = "2f5df55504ebc322e4d52d34df6a1f5b503bf26d"
-
-[[projects]]
+  branch = "master"
   name = "github.com/openshift/api"
   packages = [
     "apps/v1",
@@ -85,71 +35,77 @@
     "template/v1",
     "user/v1"
   ]
-  revision = "0d921e363e951d89f583292c60d013c318df64dc"
-  version = "v3.9.0"
+  revision = "8a3880e9178ebf7a6655469c7dd213ea9a378c33"
 
 [[projects]]
+  name = "github.com/openshift/origin"
+  packages = ["."]
+  revision = "0cbc58b117403b9d9169dbafdfac59ef104bb997"
+  version = "v3.11.0"
+
+[[projects]]
+  branch = "master"
   name = "golang.org/x/net"
   packages = [
+    "http/httpguts",
     "http2",
     "http2/hpack",
-    "idna",
-    "lex/httplex"
+    "idna"
   ]
-  revision = "1c05540f6879653db88113bc4a2b70aec4bd491f"
+  revision = "88d92db4c548972d942ac2a3531a8a9a34c82ca6"
 
 [[projects]]
   name = "golang.org/x/text"
   packages = [
-    "cases",
-    "internal",
+    "collate",
+    "collate/build",
+    "internal/colltab",
     "internal/gen",
     "internal/tag",
     "internal/triegen",
     "internal/ucd",
     "language",
-    "runes",
     "secure/bidirule",
-    "secure/precis",
     "transform",
     "unicode/bidi",
     "unicode/cldr",
     "unicode/norm",
-    "unicode/rangetable",
-    "width"
+    "unicode/rangetable"
   ]
-  revision = "b19bf474d317b857955b12035d2c5acb57ce8b01"
+  revision = "f21a4dfb5e38f5895301dc265a8def02365cc3d0"
+  version = "v0.3.0"
 
 [[projects]]
   name = "gopkg.in/inf.v0"
   packages = ["."]
-  revision = "3887ee99ecf07df5b447e9b00d9c0b2adaa9f3e4"
-  version = "v0.9.0"
+  revision = "d2d2541c53f18d2a059457998ce2876cc8e67cbf"
+  version = "v0.9.1"
 
 [[projects]]
-  name = "gopkg.in/yaml.v2"
-  packages = ["."]
-  revision = "53feefa2559fb8dfa8d81baad31be332c97d6c77"
-
-[[projects]]
+  branch = "master"
   name = "k8s.io/api"
   packages = [
+    "admission/v1beta1",
+    "admissionregistration/v1beta1",
     "apps/v1",
     "apps/v1beta1",
     "authentication/v1",
     "authorization/v1",
-    "autoscaling/v1",
+    "autoscaling/v2beta1",
     "batch/v1",
     "batch/v1beta1",
+    "certificates/v1beta1",
     "core/v1",
+    "events/v1beta1",
     "extensions/v1beta1",
     "networking/v1",
     "policy/v1beta1",
     "rbac/v1",
+    "scheduling/v1beta1",
+    "settings/v1alpha1",
     "storage/v1"
   ]
-  revision = "006a217681ae70cbacdd66a5e2fca1a61a8ff28e"
-  version = "kubernetes-1.9.1"
+  revision = "46ad728b8d13de6dffe4396623b098473f626e9e"
 
 [[projects]]
   branch = "master"
@@ -158,7 +114,7 @@
     "pkg/apis/apiextensions",
     "pkg/apis/apiextensions/v1beta1"
   ]
-  revision = "1d09762a4cd6cc21e71c9c97ece981b7d474fd5c"
+  revision = "2c43ee60e25b6e421b37db431bad60e7416a6fd4"
 
 [[projects]]
   branch = "master"
@@ -188,7 +144,7 @@
     "pkg/watch",
     "third_party/forked/golang/reflect"
   ]
-  revision = "90473842928c717082a393d6adceee99889fe8cc"
+  revision = "2a7c9300402896b3c073f2f47df85527c94f83a0"
 
 [[projects]]
   name = "k8s.io/client-go"
@@ -200,23 +156,20 @@
   version = "v9.0.0"
 
 [[projects]]
-  name = "k8s.io/kube-openapi"
-  packages = ["pkg/common"]
-  revision = "39a7bf85c140f972372c2a0d1ee40adbf0c8bfe1"
+  name = "k8s.io/klog"
+  packages = ["."]
+  revision = "a5bc97fbc634d635061f3146511332c7e313a55a"
+  version = "v0.1.0"
 
 [[projects]]
-  branch = "release-1.9.1"
   name = "k8s.io/kubernetes"
-  packages = [
-    "pkg/api/unversioned",
-    "pkg/watch/json"
-  ]
-  revision = "f31875c5a8a05bb281cb6900e86033ba6f65856c"
-  source = "https://github.com/openshift/kubernetes.git"
+  packages = ["pkg/watch/json"]
+  revision = "17c77c7898218073f14c8d573582e8d2313dc740"
+  version = "v1.12.2"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "34dc2200c2295d3e82d3bd00c4922784bc2def4fe228d7a9f1f68ff0681cb9f8"
+  inputs-digest = "6a267eb5f766c92218649ef80a2b2355ff85317beef402416abe9f3699645190"
   solver-name = "gps-cdcl"
   solver-version = 1
