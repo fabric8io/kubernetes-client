@@ -32,6 +32,11 @@
     <packaging>jar</packaging>
 
     <dependencies>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-model-common</artifactId>
+        <version>${project.version}</version>
+      </dependency>
         <dependency>
             <groupId>org.jsonschema2pojo</groupId>
             <artifactId>jsonschema2pojo-core</artifactId>

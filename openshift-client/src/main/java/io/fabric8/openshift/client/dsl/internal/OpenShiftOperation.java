@@ -89,17 +89,6 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
   }
 
   @Override
-  public OpenShiftOperation<T, L, D, R> inNamespace(String namespace) {
-    try {
-      return getClass()
-        .getConstructor(OkHttpClient.class, OpenShiftConfig.class, String.class, String.class, String.class, Boolean.class, getType(), String.class, Boolean.class, long.class, Map.class, Map.class, Map.class, Map.class, Map.class)
-        .newInstance(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(t);
-    }
-  }
-
-  @Override
   public OpenShiftConfig getConfig() {
     return OpenShiftConfig.wrap(super.getConfig());
   }

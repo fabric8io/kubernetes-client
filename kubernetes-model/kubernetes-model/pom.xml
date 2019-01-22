@@ -52,6 +52,11 @@
       <artifactId>transform-annotations</artifactId>
     </dependency>
     <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-model-common</artifactId>
+        <version>${project.version}</version>
+    </dependency>
+    <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-jaxb-annotations</artifactId>
     </dependency>
@@ -172,6 +177,10 @@
               io.fabric8.kubernetes.api.model**,
               io.fabric8.openshift.api.model**
             </Export-Package>
+            <Include-Resource>
+              /kubernetes.properties=target/classes/kubernetes.properties,
+              /openshift.properties=target/classes/openshift.properties
+            </Include-Resource>
           </instructions>
         </configuration>
       </plugin>
