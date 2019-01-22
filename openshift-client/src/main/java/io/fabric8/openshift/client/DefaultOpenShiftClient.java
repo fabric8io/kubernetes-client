@@ -371,6 +371,9 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   public StorageAPIGroupDSL storage() { return adapt(StorageAPIGroupClient.class); }
 
   @Override
+  public SettingsAPIGroupDSL settings() { return adapt(SettingsAPIGroupClient.class); }
+
+  @Override
   public BatchAPIGroupDSL batch() { return adapt(BatchAPIGroupClient.class); }
 
   @Override

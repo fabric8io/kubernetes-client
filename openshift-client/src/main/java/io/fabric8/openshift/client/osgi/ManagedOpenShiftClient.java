@@ -464,6 +464,9 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   public SchedulingAPIGroupDSL scheduling() { return delegate.scheduling(); }
 
   @Override
+  public SettingsAPIGroupDSL settings() { return delegate.settings(); }
+
+  @Override
   public NamespacedOpenShiftClient inAnyNamespace() {
     return delegate.inAnyNamespace();
   }

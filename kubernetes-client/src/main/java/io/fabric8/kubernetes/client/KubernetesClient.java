@@ -95,6 +95,8 @@ public interface KubernetesClient extends Client {
 
   StorageAPIGroupDSL storage();
 
+  SettingsAPIGroupDSL settings();
+
   BatchAPIGroupDSL batch();
 
   PolicyAPIGroupDSL policy();

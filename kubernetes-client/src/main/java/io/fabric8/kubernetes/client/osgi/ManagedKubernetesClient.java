@@ -98,6 +98,7 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.SchedulingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.ServiceResource;
+import io.fabric8.kubernetes.client.dsl.SettingsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
@@ -354,6 +355,9 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public StorageAPIGroupDSL storage() { return delegate.storage(); }
+
+  @Override
+  public SettingsAPIGroupDSL settings() { return delegate.settings(); }
 
   @Override
   public BatchAPIGroupDSL batch() { return delegate.batch(); }
