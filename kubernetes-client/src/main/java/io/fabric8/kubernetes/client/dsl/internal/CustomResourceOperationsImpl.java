@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
@@ -124,5 +125,10 @@ public class CustomResourceOperationsImpl<T extends HasMetadata, L extends Kuber
   @Override
   public Watchable<Watch, Watcher<T>> withResourceVersion(String resourceVersion) {
     return new CustomResourceOperationsImpl<>(client, getConfig(), getAPIGroup(), getAPIVersion(), getResourceT(), resourceNamespaced, getNamespace(), getName(), isCascading(), getItem(), resourceVersion, isReloadingFromServer(), getType(), getListType(), getDoneableType());
+  }
+
+  @Override
+  public EditReplacePatchDeletable<T, T, D, Boolean> cascading(boolean cascading) {
+    return new CustomResourceOperationsImpl<>(client, getConfig(), getAPIGroup(), getAPIVersion(), getResourceT(), resourceNamespaced, getNamespace(), getName(), cascading, getItem(), getResourceVersion(), isReloadingFromServer(), getType(), getListType(), getDoneableType());
   }
 }
