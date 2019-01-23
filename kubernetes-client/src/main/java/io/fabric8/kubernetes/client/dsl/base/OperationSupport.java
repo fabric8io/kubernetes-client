@@ -115,7 +115,7 @@ public class OperationSupport {
 
   public URL getRootUrl() {
     try {
-      if (apiGroup != null) {
+      if (!Utils.isNullOrEmpty(apiGroup)) {
         return new URL(URLUtils.join(config.getMasterUrl().toString(), "apis", apiGroup, apiVersion));
       }
       return new URL(URLUtils.join(config.getMasterUrl().toString(), "api", apiVersion));

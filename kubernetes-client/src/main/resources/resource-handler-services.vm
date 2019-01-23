@@ -1,7 +1,3 @@
-#set ($pkg = $model.getPackageName())
-#set ($parts = $pkg.split('\.'))
-#set ($module = $parts[2])
-
 #foreach ($m in ${model.values()})
-io.fabric8.${module}.client.handlers.${m.name}Handler
+io.fabric8.kubernetes.client.handlers.${m.name}Handler
 #end

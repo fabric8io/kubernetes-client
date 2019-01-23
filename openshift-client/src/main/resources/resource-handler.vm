@@ -15,9 +15,6 @@
  */
 
 #set ($version = "unknown")
-#set ($pkg = $model.getPackageName())
-#set ($parts = $pkg.split('\.'))
-#set ($module = $parts[2])
 #set ($annotations = $model.annotations)
 #foreach ($annotation in $annotations)
   #if ($annotation.getClassRef().getName().equals("ApiVersion"))
@@ -28,7 +25,8 @@
   #end
 #end
 
-package io.fabric8.${module}.client.handlers;
+
+package io.fabric8.openshift.client.handlers;
 
 import java.util.function.Predicate;
 
@@ -37,7 +35,7 @@ import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.${module}.client.dsl.internal.${model.name}OperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.${model.name}OperationsImpl;
 
 import okhttp3.OkHttpClient;
 

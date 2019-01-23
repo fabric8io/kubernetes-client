@@ -17,10 +17,10 @@ package io.fabric8.kubernetes.client.server.mock;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.mockwebserver.crud.Attribute;
 import io.fabric8.mockwebserver.crud.AttributeExtractor;
 import io.fabric8.mockwebserver.crud.AttributeSet;
-import io.fabric8.zjsonpatch.internal.guava.Strings;
 import java.util.Map;
 import okhttp3.HttpUrl;
 import org.slf4j.Logger;
@@ -121,15 +121,15 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
   @Override
   public AttributeSet extract(HasMetadata o) {
     AttributeSet attributes = new AttributeSet();
-    if (!Strings.isNullOrEmpty(o.getKind())) {
+    if (!Utils.isNullOrEmpty(o.getKind())) {
       attributes = attributes.add(new Attribute(KIND, o.getKind().toLowerCase()));
     }
 
-    if (!Strings.isNullOrEmpty(o.getMetadata().getName())) {
+    if (!Utils.isNullOrEmpty(o.getMetadata().getName())) {
       attributes = attributes.add(new Attribute(NAME, o.getMetadata().getName()));
     }
 
-    if (!Strings.isNullOrEmpty(o.getMetadata().getNamespace())) {
+    if (!Utils.isNullOrEmpty(o.getMetadata().getNamespace())) {
       attributes = attributes.add(new Attribute(NAMESPACE, o.getMetadata().getNamespace()));
     }
 
@@ -145,7 +145,7 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
     AttributeSet attributes = new AttributeSet();
     if (m.matches()) {
       String kind = m.group(KIND);
-      if (!Strings.isNullOrEmpty(kind)) {
+      if (!Utils.isNullOrEmpty(kind)) {
 
         //Poor mans to singular.
         //Special Case for PodSecurityPolicies and NetworkPolicies because
@@ -172,13 +172,13 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
       }
 
       String namespace = m.group(NAMESPACE);
-      if (!Strings.isNullOrEmpty(namespace)) {
+      if (!Utils.isNullOrEmpty(namespace)) {
         attributes = attributes.add(new Attribute(NAMESPACE, namespace));
       }
 
       try {
         String name = m.group(NAME);
-        if (!Strings.isNullOrEmpty(name)) {
+        if (!Utils.isNullOrEmpty(name)) {
           attributes = attributes.add(new Attribute(NAME, name));
         }
       } catch (IllegalArgumentException e) {
