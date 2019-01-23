@@ -27,6 +27,7 @@ import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 import io.fabric8.kubernetes.client.utils.NonBlockingInputStreamPumper;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 import okio.ByteString;
@@ -37,8 +38,11 @@ import java.io.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -74,9 +78,10 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
     private final PipedInputStream errorChannel;
 
     private final AtomicReference<WebSocket> webSocketRef = new AtomicReference<>();
-    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private final ExecutorService executorService = Executors.newFixedThreadPool(2);
     private final InputStreamPumper pumper;
-
+    private volatile Future<?> pumperTask;
+  
     private final AtomicBoolean started = new AtomicBoolean(false);
     private final ArrayBlockingQueue<Object> queue = new ArrayBlockingQueue<>(1);
     private final ExecListener listener;
@@ -196,14 +201,50 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
             }
 
             webSocketRef.set(webSocket);
-            executorService.submit(pumper);
+            Future<?> pumperTask = this.pumperTask;
+            if (pumperTask != null) {
+              // Should never happen but better safe than sorry; this
+              // is a public method after all
+              pumperTask.cancel(true);
+            }
+            this.pumperTask = executorService.submit(pumper);
+            executorService.execute(() -> {
+                final Future<?> pt = ExecWebSocketListener.this.pumperTask;
+                if (pt != null) {
+                  try {
+                    pt.get(); // will block forever
+                  } catch (final InterruptedException interruptedException) {
+                    Thread.currentThread().interrupt();
+                  } catch (final CancellationException cancellationException) {
+                    // OK; the task we're monitoring was already cancelled
+                  } catch (final ExecutionException executionException) {
+                    LOGGER.error("Error while pumping stream.", executionException);
+                  } finally {
+                    if (response != null) {
+                      ResponseBody body = response.body();
+                      if (body != null) {
+                        body.close();
+                      }
+                    }
+                  }
+                }
+              });
             started.set(true);
             queue.add(true);
         } catch (IOException e) {
             queue.add(new KubernetesClientException(OperationSupport.createStatus(response)));
         } finally {
-            if (listener != null) {
-                listener.onOpen(response);
+            try {
+                if (listener != null) {
+                    listener.onOpen(response);
+                }
+            } finally {
+                if (response != null) {
+                    ResponseBody body = response.body();
+                    if (body != null) {
+                        body.close();
+                    }
+                }
             }
         }
     }
@@ -213,7 +254,13 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
 
       //If we already called onClosed() or onFailed() before, we need to abort.
       if (explicitlyClosed.get() || closed.get() || !failed.compareAndSet(false, true) ) {
-        //We are not going to notify the listener, sicne we've already called onClose(), so let's log a debug/warning.
+        if (response != null) {
+          ResponseBody body = response.body();
+          if (body != null) {
+            body.close(); // TODO: if this fails...?
+          }
+        }
+        //We are not going to notify the listener, since we've already called onClose(), so let's log a debug/warning.
         if (LOGGER.isDebugEnabled()) {
           LOGGER.warn("Received [" + t.getClass().getCanonicalName() + "], with message:[" + t.getMessage() + "] after ExecWebSocketListener is closed, Ignoring.");
         }
@@ -232,6 +279,12 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
       } finally {
         if (listener != null) {
           listener.onFailure(t, response);
+        }
+        if (response != null) {
+          ResponseBody body = response.body();
+          if (body != null) {
+            body.close(); // TODO: if this fails...?
+          }
         }
       }
     }
