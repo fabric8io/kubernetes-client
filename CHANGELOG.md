@@ -4,6 +4,7 @@
   Bugs
 
     * Fix #1271: Issue deploying ReplicaSet to extensions/v1beta1
+    
     * Fix #1152: Renamed Kubernetes RBAC resources to use non-prefixed names and renamed Openshift RBAC resources to prefix with Openshift
 
   Improvements
@@ -17,7 +18,12 @@
   Dependency Upgrade
 
   New Feature
+    
+    * Fix #1286: Pod Preset Support
 
+  Misc
+
+    * Appended some files to licence check exclusion list.
 
 #### 4.1.1
 
@@ -36,8 +42,8 @@
     * Fix #1273: customResources can't be used with Cluster scoped CRDs
     
     * Fix #1228: Closed InputStream in OperationSupport's handleResponse to avoid leak
-    
-    * Fix ExecCredential deserialization in kubeconfig auth
+
+    * Fix #1280: Fix ExecCredential deserialization in kubeconfig auth
 
   Improvements
   
@@ -57,8 +63,8 @@
     
     * Fix #1235: Upgrade kubernetes-model to latest kubernetes/Openshift versions
 
+
   New Feature
-  
     * Fix #1142: Pagination Support
     
     * Fix #1234: VolumeNodeAffinity support
