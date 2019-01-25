@@ -7,6 +7,8 @@
     
     * Fix #1152: Renamed Kubernetes RBAC resources to use non-prefixed names and renamed Openshift RBAC resources to prefix with Openshift
 
+    * Fix #1218: CustomResourceDefinitions: cascading() causes NoSuchMethodError
+
   Improvements
     
     * Updated compatability matrix after model upgrade in README.md 
