@@ -52,7 +52,7 @@
     <jsonschema2pojo.version>0.4.23</jsonschema2pojo.version>
     <junit.version>4.12</junit.version>
     <validation-api.version>1.1.0.Final</validation-api.version>
-    <lombok.version>1.16.10</lombok.version>
+    <lombok.version>1.16.22</lombok.version>
   </properties>
 
   <modules>

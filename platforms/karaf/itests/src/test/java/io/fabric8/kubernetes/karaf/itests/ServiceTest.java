@@ -31,8 +31,10 @@ import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.ProbeBuilder;
 import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.karaf.container.internal.JavaVersionUtil;
 import org.ops4j.pax.exam.karaf.options.LogLevelOption;
 import org.ops4j.pax.exam.options.MavenArtifactUrlReference;
+import org.ops4j.pax.exam.options.extra.VMOption;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.osgi.framework.BundleContext;
@@ -87,7 +89,46 @@ public class ServiceTest extends TestBase {
     @Configuration
     public Option[] config() throws URISyntaxException, MalformedURLException {
         MavenArtifactUrlReference karafUrl = maven().groupId("org.apache.karaf").artifactId("apache-karaf-minimal").versionAsInProject().type("tar.gz");
-        return new Option[]{
+        if (JavaVersionUtil.getMajorVersion() >= 9) { 
+            return new Option[]{
+                                karafDistributionConfiguration().frameworkUrl(karafUrl).name("Apache Karaf").unpackDirectory(new File("target/exam")),
+                                configureSecurity().disableKarafMBeanServerBuilder(),
+                                features(getFeaturesFile().toURI().toString(), "scr", "openshift-client"),
+                                editConfigurationFileExtend(
+                                    "etc/org.ops4j.pax.url.mvn.cfg",
+                                    "org.ops4j.pax.url.mvn.repositories",
+                                    "file:"+System.getProperty("features.repo")+"@id=local@snapshots@releases"),
+                                keepRuntimeFolder(),
+                                logLevel(LogLevelOption.LogLevel.INFO),
+                                new VMOption("--add-exports=java.base/"
+                                    + "org.apache.karaf.specs.locator=java.xml,ALL-UNNAMED"),
+                                new VMOption("--patch-module"),
+                                new VMOption("java.base=lib/endorsed/org.apache.karaf.specs.locator-" 
+                                + System.getProperty("karaf.version", "4.2.2-SNAPSHOT") + ".jar"),
+                                new VMOption("--patch-module"),
+                                new VMOption("java.xml=lib/endorsed/org.apache.karaf.specs.java.xml-" 
+                                + System.getProperty("karaf.version", "4.2.2-SNAPSHOT") + ".jar"),
+                                new VMOption("--add-opens"),
+                                new VMOption("java.base/java.security=ALL-UNNAMED"),
+                                new VMOption("--add-opens"),
+                                new VMOption("java.base/java.net=ALL-UNNAMED"),
+                                new VMOption("--add-opens"),
+                                new VMOption("java.base/java.lang=ALL-UNNAMED"),
+                                new VMOption("--add-opens"),
+                                new VMOption("java.base/java.util=ALL-UNNAMED"),
+                                new VMOption("--add-opens"),
+                                new VMOption("java.naming/javax.naming.spi=ALL-UNNAMED"),
+                                new VMOption("--add-opens"),
+                                new VMOption("java.rmi/sun.rmi.transport.tcp=ALL-UNNAMED"),
+                                new VMOption("--add-exports=java.base/sun.net.www.protocol.http=ALL-UNNAMED"),
+                                new VMOption("--add-exports=java.base/sun.net.www.protocol.https=ALL-UNNAMED"),
+                                new VMOption("--add-exports=java.base/sun.net.www.protocol.jar=ALL-UNNAMED"),
+                                new VMOption("--add-exports=jdk.naming.rmi/com.sun.jndi.url.rmi=ALL-UNNAMED"),
+                                new VMOption("-classpath"),
+                                new VMOption("lib/jdk9plus/*" + File.pathSeparator + "lib/boot/*")
+                            };
+        } else {
+            return new Option[]{
                 karafDistributionConfiguration().frameworkUrl(karafUrl).name("Apache Karaf").unpackDirectory(new File("target/exam")),
                 configureSecurity().disableKarafMBeanServerBuilder(),
                 features(getFeaturesFile().toURI().toString(), "scr", "openshift-client"),
@@ -97,6 +138,7 @@ public class ServiceTest extends TestBase {
                     "file:"+System.getProperty("features.repo")+"@id=local@snapshots@releases"),
                 keepRuntimeFolder(),
                 logLevel(LogLevelOption.LogLevel.INFO),
-        };
+            };
+        }
     }
 }
