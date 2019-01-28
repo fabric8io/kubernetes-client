@@ -37,8 +37,8 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
   extends HasMetadataOperation<T, L, D, R> {
 
   protected OpenShiftOperation(OkHttpClient client, ConfigAndApiGroupsInfo config, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, config.getConfig(), config.getApiGroup(), config.getApiGroupVersion(), resourceT, namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
-    this.apiGroupVersion = config.getApiGroupVersion();
+    super(client, config.getConfig(), config.getApiGroupName(), config.getApiGroupVersion(), resourceT, namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+    this.apiVersion = config.getApiGroupVersion();
   }
 
   /**

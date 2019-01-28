@@ -21,12 +21,12 @@ import io.fabric8.kubernetes.client.Config;
  */
 public class ConfigAndApiGroupsInfo {
   private final Config config;
-  private final String apiGroup;
+  private final String apiGroupName;
   private final String apiGroupVersion;
 
-  public ConfigAndApiGroupsInfo(Config config, String apiGroup, String apiGroupVersion) {
+  public ConfigAndApiGroupsInfo(Config config, String apiGroupName, String apiGroupVersion) {
     this.config = config;
-    this.apiGroup = apiGroup;
+    this.apiGroupName = apiGroupName;
     this.apiGroupVersion = apiGroupVersion;
   }
 
@@ -34,8 +34,8 @@ public class ConfigAndApiGroupsInfo {
     return config;
   }
 
-  public String getApiGroup() {
-    return apiGroup;
+  public String getApiGroupName() {
+    return apiGroupName;
   }
 
   public String getApiGroupVersion() {

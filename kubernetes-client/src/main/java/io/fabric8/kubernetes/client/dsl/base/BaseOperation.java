@@ -65,6 +65,8 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
+import static io.fabric8.kubernetes.client.utils.ApiVersionUtil.*;
+
 public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
   extends OperationSupport
   implements
@@ -90,10 +92,10 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   private boolean reaping;
   protected Reaper reaper;
-  protected String apiGroupVersion;
+  protected String apiVersion;
 
-  protected BaseOperation(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields)  {
-    super(client, config, apiGroup(item, apiGroup), apiVersion(item, apiVersion), resourceT, namespace, name(item, name));
+  protected BaseOperation(OkHttpClient client, Config config, String apiGroupName, String apiVersionNumber, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields)  {
+    super(client, config, apiGroup(item, apiGroupName), apiVersion(item, apiVersionNumber), resourceT, namespace, name(item, name));
     this.cascading = cascading;
     this.item = item;
     this.reloadingFromServer = reloadingFromServer;
@@ -110,8 +112,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     this.fields = fields;
   }
 
-  protected BaseOperation(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, Class<T> type, Class<L> listType, Class<D> doneableType) {
-    super(client, config, apiGroup(item, apiGroup), apiVersion(item, apiVersion), resourceT, namespace, name(item, name));
+  protected BaseOperation(OkHttpClient client, Config config, String apiGroupName, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, Class<T> type, Class<L> listType, Class<D> doneableType) {
+    super(client, config, apiGroup(item, apiGroupName), apiVersion(item, apiVersion), resourceT, namespace, name(item, name));
     this.cascading = cascading;
     this.item = item;
     this.resourceVersion = resourceVersion;
@@ -146,52 +148,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     return null;
   }
 
-  /**
-   * Returns the api version falling back to the items apiVersion if not null.
-   * @param <T>
-   * @param item
-   * @param apiVersion
-   * @return
-   */
-  private static <T> String apiVersion(T item, String apiVersion) {
-    if (apiVersion != null && !apiVersion.isEmpty()) {
-      return trimVersion(apiVersion);
-    } else if (item instanceof HasMetadata) {
-      return trimVersion(((HasMetadata)item).getApiVersion());
-    }
-    return null;
-  }
 
-  /**
-   * Separates apiVersion for apiGroup/apiVersion combination.
-   * @param apiVersion  The apiVersion or apiGroup/apiVersion combo.
-   * @return            Just the apiVersion part without the apiGroup.
-     */
-  private static String trimVersion(String apiVersion) {
-    if (apiVersion == null) {
-      return null;
-    } else {
-      String[] versionParts = apiVersion.split("/");
-      return versionParts[versionParts.length - 1];
-    }
-  }
 
-  /**
-   * Extracts apiGroup from apiVersion when in resource for apiGroup/apiVersion combination
-   * @param item      resource which is being used
-   * @param apiGroup  apiGroup present if any
-   * @return          Just the apiGroup part without apiVersion
-   */
-  private static <T> String apiGroup(T item, String apiGroup) {
-    if(item instanceof HasMetadata) {
-      String apiVersionFromResource = ((HasMetadata)item).getApiVersion();
-      if(apiVersionFromResource.contains("/")) {
-        String[] versionParts = apiVersionFromResource.split("/");
-        return versionParts[0];
-      }
-    }
-    return apiGroup;
-  }
 
   /**
    * Helper method for list() and list(limit, continue) methods
@@ -946,7 +904,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   /**
-   * Updates the list or single item if it has a missing or incorrect apiVersion
+   * Updates the list or single item if it has a missing or incorrect apiGroupVersion
    */
   protected void updateApiVersionResource(Object resource) {
     if (resource instanceof HasMetadata) {
@@ -959,11 +917,11 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   /**
-   * Updates the list items if they have missing or default apiVersion values and the resource is currently
+   * Updates the list items if they have missing or default apiGroupVersion values and the resource is currently
    * using API Groups with custom version strings
    */
   protected void updateApiVersion(KubernetesResourceList list) {
-    String version = getApiGroupVersion();
+    String version = getApiVersion();
     if (list != null && version != null && version.length() > 0) {
       List items = list.getItems();
       if (items != null) {
@@ -978,11 +936,11 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
 
   /**
-   * Updates the resource if it has missing or default apiVersion values and the resource is currently
+   * Updates the resource if it has missing or default apiGroupVersion values and the resource is currently
    * using API Groups with custom version strings
    */
   protected void updateApiVersion(HasMetadata hasMetadata) {
-    String version = getApiGroupVersion();
+    String version = getApiVersion();
     if (hasMetadata != null && version != null && version.length() > 0) {
       String current = hasMetadata.getApiVersion();
       // lets overwrite the api version if its currently missing, the resource uses an API Group with '/'
@@ -993,15 +951,15 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     }
   }
 
-  public String getApiGroupVersion() {
-    return apiGroupVersion;
+  public String getApiVersion() {
+    return apiVersion;
   }
 
   /**
    * Return true if this is an API Group where the versions include a slash in them
    */
   public boolean isApiGroup() {
-    return apiGroupVersion != null && apiGroupVersion.indexOf('/') > 0;
+    return apiVersion != null && apiVersion.indexOf('/') > 0;
   }
 
   @Override

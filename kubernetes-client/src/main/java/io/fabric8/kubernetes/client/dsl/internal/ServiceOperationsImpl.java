@@ -15,6 +15,10 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.model.DoneableService;
+import io.fabric8.kubernetes.api.model.Service;
+import io.fabric8.kubernetes.api.model.ServiceBuilder;
+import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.DoneableService;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
@@ -76,7 +80,7 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
     // if awaiting existence took very long, let's give at least 10 seconds to awaiting readiness
     long remaining = Math.max(10_000, timeUnit.toMillis(amount) - alreadySpent);
 
-    EndpointsOperationsImpl endpointsOperation = new EndpointsOperationsImpl(client, config, apiVersion, getNamespace(), getName(), isCascading(), null, null, isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
+    EndpointsOperationsImpl endpointsOperation = new EndpointsOperationsImpl(client, config, apiGroupVersion, getNamespace(), getName(), isCascading(), null, null, isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
     endpointsOperation.waitUntilReady(remaining, TimeUnit.MILLISECONDS);
 
     return get();

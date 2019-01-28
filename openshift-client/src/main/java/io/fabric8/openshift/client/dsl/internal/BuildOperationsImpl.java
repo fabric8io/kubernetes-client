@@ -146,7 +146,7 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
 
   @Override
   public String getLog(Boolean isPretty) {
-    return new BuildOperationsImpl(client, getConfig(), apiGroup, apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), in,out,err,inPipe, outPipe, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, version, limitBytes).getLog();
+    return new BuildOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), in,out,err,inPipe, outPipe, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, version, limitBytes).getLog();
   }
 
   /**
@@ -181,36 +181,36 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
 
   @Override
   public Loggable<String, LogWatch> withPrettyOutput() {
-    return new BuildOperationsImpl(client, getConfig(), apiGroup, apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), in,out,err,inPipe, outPipe, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, true, version, limitBytes);
+    return new BuildOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), in,out,err,inPipe, outPipe, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, true, version, limitBytes);
   }
 
   @Override
   public PrettyLoggable<String, LogWatch> tailingLines(int withTailingLines) {
-    return new BuildOperationsImpl(client, getConfig(), apiGroup, apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), in,out,err,inPipe, outPipe, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, version, limitBytes);
+    return new BuildOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), in,out,err,inPipe, outPipe, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, version, limitBytes);
   }
 
   @Override
   public TimeTailPrettyLoggable<String, LogWatch> terminated() {
-    return new BuildOperationsImpl(client, getConfig(), apiGroup, apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), in,out,err,inPipe, outPipe, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, version, limitBytes);
+    return new BuildOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), in,out,err,inPipe, outPipe, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, version, limitBytes);
   }
 
   @Override
   public TailPrettyLoggable<String, LogWatch> sinceTime(String sinceTimestamp) {
-    return new BuildOperationsImpl(client, getConfig(), apiGroup, apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), in,out,err,inPipe, outPipe, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, version, limitBytes);
+    return new BuildOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), in,out,err,inPipe, outPipe, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, version, limitBytes);
   }
 
   @Override
   public TailPrettyLoggable<String, LogWatch> sinceSeconds(int sinceSeconds) {
-    return new BuildOperationsImpl(client, getConfig(), apiGroup, apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), in,out,err,inPipe, outPipe, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, version, limitBytes);
+    return new BuildOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), in,out,err,inPipe, outPipe, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, version, limitBytes);
   }
 
   @Override
   public BytesLimitTerminateTimeTailPrettyLoggable<String, LogWatch> limitBytes(int limitBytes) {
-    return new BuildOperationsImpl(client, getConfig(), apiGroup, apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), in,out,err,inPipe, outPipe, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, version, limitBytes);
+    return new BuildOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), in,out,err,inPipe, outPipe, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, version, limitBytes);
   }
 
   @Override
   public BytesLimitTerminateTimeTailPrettyLoggable<String, LogWatch> usingTimestamps() {
-    return new BuildOperationsImpl(client, getConfig(), apiGroup, apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), in,out,err,inPipe, outPipe, errPipe, withTTY, withTerminatedStatus, true, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, version, limitBytes);
+    return new BuildOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), in,out,err,inPipe, outPipe, errPipe, withTTY, withTerminatedStatus, true, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, version, limitBytes);
   }
 }

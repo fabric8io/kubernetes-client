@@ -145,7 +145,7 @@ Service myservice = client.services().inNamespace("default").createNew()
                      .done();
 ```
 
-You can also set the apiVersion of the resource like in the case of SecurityContextConstraints :
+You can also set the apiGroupVersion of the resource like in the case of SecurityContextConstraints :
 
 ```java
 SecurityContextConstraints scc = new SecurityContextConstraintsBuilder()

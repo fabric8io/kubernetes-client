@@ -62,7 +62,7 @@ public class ProjectRequestsOperationImpl extends OperationSupport implements Pr
   }
 
   private ProjectRequest updateApiVersion(ProjectRequest p) {
-      p.setApiVersion(this.apiVersion);
+      p.setApiVersion(this.apiGroupVersion);
       return p;
   }
 
