@@ -62,39 +62,39 @@ public class OperationSupport {
   protected final String resourceT;
   protected final String namespace;
   protected final String name;
-  protected final String apiGroup;
-  protected final String apiVersion;
+  protected final String apiGroupName;
+  protected final String apiGroupVersion;
 
   public OperationSupport() {
     this(null, null, null, null, null, null, null);
   }
 
   public OperationSupport(OkHttpClient client, ConfigAndApiGroupsInfo configAndApiGroupsInfo, String resourceT, String namespace, String name) {
-    this(client, configAndApiGroupsInfo.getConfig(), configAndApiGroupsInfo.getApiGroup(), configAndApiGroupsInfo.getApiGroupVersion(), resourceT, namespace ,name);
+    this(client, configAndApiGroupsInfo.getConfig(), configAndApiGroupsInfo.getApiGroupName(), configAndApiGroupsInfo.getApiGroupVersion(), resourceT, namespace ,name);
   }
 
-  public OperationSupport(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name) {
+  public OperationSupport(OkHttpClient client, Config config, String apiGroupName, String apiGroupVersion, String resourceT, String namespace, String name) {
     this.client = client;
     this.config = config;
     this.resourceT = resourceT;
     this.namespace = namespace;
     this.name = name;
-    this.apiGroup = apiGroup;
-    if (apiVersion != null) {
-      this.apiVersion = apiVersion;
+    this.apiGroupName = apiGroupName;
+    if (apiGroupVersion != null) {
+      this.apiGroupVersion = apiGroupVersion;
     } else if (config != null) {
-      this.apiVersion = config.getApiVersion();
+      this.apiGroupVersion = config.getApiVersion();
     } else {
-      this.apiVersion = "v1";
+      this.apiGroupVersion = "v1";
     }
   }
 
   public String getAPIGroup() {
-    return apiGroup;
+    return apiGroupName;
   }
 
   public String getAPIVersion() {
-    return apiVersion;
+    return apiGroupVersion;
   }
 
   public String getResourceT() {
@@ -115,10 +115,10 @@ public class OperationSupport {
 
   public URL getRootUrl() {
     try {
-      if (apiGroup != null) {
-        return new URL(URLUtils.join(config.getMasterUrl().toString(), "apis", apiGroup, apiVersion));
+      if (!Utils.isNullOrEmpty(apiGroupName)) {
+        return new URL(URLUtils.join(config.getMasterUrl().toString(), "apis", apiGroupName, apiGroupVersion));
       }
-      return new URL(URLUtils.join(config.getMasterUrl().toString(), "api", apiVersion));
+      return new URL(URLUtils.join(config.getMasterUrl().toString(), "api", apiGroupVersion));
     } catch (MalformedURLException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
@@ -374,7 +374,7 @@ public class OperationSupport {
    * @throws IOException
    */
   protected <T> T handleResponse(OkHttpClient client, Request.Builder requestBuilder, Class<T> type, Map<String, String> parameters) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    VersionUsageUtils.log(this.resourceT, this.apiVersion);
+    VersionUsageUtils.log(this.resourceT, this.apiGroupVersion);
     Request request = requestBuilder.build();
     Response response = client.newCall(request).execute();
     try (ResponseBody body = response.body()) {

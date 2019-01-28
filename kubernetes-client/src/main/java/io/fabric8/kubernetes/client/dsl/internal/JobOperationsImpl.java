@@ -44,11 +44,11 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
   static final transient Logger LOG = LoggerFactory.getLogger(JobOperationsImpl.class);
 
   public JobOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(client, config, "v1", namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+    this(client, config, "batch","v1", namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
   }
 
-  public JobOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Job item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, config, "batch", apiVersion, "jobs", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  public JobOperationsImpl(OkHttpClient client, Config config, String apiGroup, String apiVersion, String namespace, String name, Boolean cascading, Job item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
+    super(client, config, apiGroup, apiVersion, "jobs", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
     reaper = new JobReaper(this);
   }
 
@@ -56,7 +56,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
   public ScalableResource<Job, DoneableJob> load(InputStream is) {
     try {
       Job item = unmarshal(is, Job.class);
-      return new JobOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), item, getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
+      return new JobOperationsImpl(client, getConfig(), getAPIGroup(), getAPIVersion(), getNamespace(), getName(), isCascading(), item, getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -64,7 +64,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
 
   @Override
   public ScalableResource<Job, DoneableJob> fromServer() {
-    return new JobOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), true, getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
+    return new JobOperationsImpl(client, getConfig(), getAPIGroup(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), true, getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
   }
 
   @Override

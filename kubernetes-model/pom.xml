@@ -56,6 +56,7 @@
   </properties>
 
   <modules>
+    <module>kubernetes-model-common</module>
     <module>kubernetes-model-annotator</module>
     <module>kubernetes-model</module>
   </modules>
@@ -75,6 +76,12 @@
       <dependency>
         <groupId>io.sundr</groupId>
         <artifactId>builder-annotations</artifactId>
+        <version>${sundrio.version}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>io.sundr</groupId>
+        <artifactId>transform-annotations</artifactId>
         <version>${sundrio.version}</version>
         <scope>provided</scope>
       </dependency>

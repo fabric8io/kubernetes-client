@@ -512,7 +512,7 @@ public class Config {
             if (_exec instanceof Map) {
               @SuppressWarnings("unchecked")
               Map<String, Object> exec = (Map) _exec;
-              String apiVersion = (String) exec.get("apiVersion");
+              String apiVersion = (String) exec.get("apiGroupVersion");
               if ("client.authentication.k8s.io/v1alpha1".equals(apiVersion)) {
                 List<String> argv = new ArrayList<String>();
                 String command = (String) exec.get("command");
@@ -540,7 +540,7 @@ public class Config {
                 }
                 ExecCredential ec = Serialization.unmarshal(p.getInputStream(), ExecCredential.class);
                 if (!apiVersion.equals(ec.apiVersion)) {
-                  LOGGER.warn("Wrong apiVersion {} vs. {}", ec.apiVersion, apiVersion);
+                  LOGGER.warn("Wrong apiGroupVersion {} vs. {}", ec.apiVersion, apiVersion);
                 }
                 if (ec.status != null && ec.status.token != null) {
                   config.setOauthToken(ec.status.token);
@@ -548,7 +548,7 @@ public class Config {
                   LOGGER.warn("No token returned");
                 }
               } else { // TODO v1beta1?
-                LOGGER.warn("Unsupported apiVersion: {}", apiVersion);
+                LOGGER.warn("Unsupported apiGroupVersion: {}", apiVersion);
               }
             }
           }
@@ -775,7 +775,7 @@ public class Config {
     this.caCertFile = caCertFile;
   }
 
-  @JsonProperty("apiVersion")
+  @JsonProperty("apiGroupVersion")
   public String getApiVersion() {
     return apiVersion;
   }

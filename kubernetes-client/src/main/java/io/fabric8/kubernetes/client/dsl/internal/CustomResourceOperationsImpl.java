@@ -51,7 +51,7 @@ public class CustomResourceOperationsImpl<T extends HasMetadata, L extends Kuber
   public CustomResourceOperationsImpl(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, boolean resouceNamespaced, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, Class<T> type, Class<L> listType, Class<D> doneableType) {
     super(client, config, apiGroup, apiVersion, resourceT, namespace, name, cascading, item, resourceVersion, reloadingFromServer, type, listType, doneableType);
     this.resourceNamespaced = resouceNamespaced;
-    this.apiGroupVersion = getAPIGroup() + "/" + getAPIVersion();
+    this.apiVersion = getAPIGroup() + "/" + getAPIVersion();
 
     KubernetesDeserializer.registerCustomKind(type.getSimpleName(), type);
     if (KubernetesResource.class.isAssignableFrom(listType)) {

@@ -30,13 +30,13 @@ import java.util.TreeMap;
 public class ComponentStatusOperationsImpl extends HasMetadataOperation<ComponentStatus, ComponentStatusList, DoneableComponentStatus,
   Resource<ComponentStatus, DoneableComponentStatus>> {
 
-	public ComponentStatusOperationsImpl(OkHttpClient client, Config config) {
-		this(client, config, null, null, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+	public ComponentStatusOperationsImpl(OkHttpClient client, Config config, String namespace) {
+		this(client, config, null, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
 	}
 
 
-	public ComponentStatusOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, ComponentStatus item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-		super(client, config, null, apiVersion, "componentstatuses", null, name, cascading, item, resourceVersion, reloadingFromServer, -1, labels, labelsNot, labelsIn, labelsNotIn, fields);
+	public ComponentStatusOperationsImpl(OkHttpClient client, Config config, String apiGroup, String apiVersion, String namespace, String name, Boolean cascading, ComponentStatus item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
+		super(client, config, apiGroup, apiVersion, "componentstatuses", null, name, cascading, item, resourceVersion, reloadingFromServer, -1, labels, labelsNot, labelsIn, labelsNotIn, fields);
 	}
 
 	@Override

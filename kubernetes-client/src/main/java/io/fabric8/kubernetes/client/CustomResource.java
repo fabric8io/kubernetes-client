@@ -43,7 +43,7 @@ public abstract class CustomResource implements HasMetadata {
   public String toString() {
     return "CustomResourceSupport{" +
         "kind='" + kind + '\'' +
-        ", apiVersion='" + apiVersion + '\'' +
+        ", apiGroupVersion='" + apiVersion + '\'' +
         ", metadata=" + metadata +
         '}';
   }

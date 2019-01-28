@@ -87,15 +87,15 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
   private final TimeUnit timeoutUnit;
 
   public BuildConfigOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
-    this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, null, null, null, config.getBuildTimeout(), TimeUnit.MILLISECONDS);
+    this(client, config,  BUILD, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, null, null, null, config.getBuildTimeout(), TimeUnit.MILLISECONDS);
   }
 
-  public BuildConfigOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, BuildConfig item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    this(client, config, apiVersion, namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields, null, null, null, null, null, null, null, null, null, config.getBuildTimeout(), TimeUnit.MILLISECONDS);
+  public BuildConfigOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiGroup, String apiVersion, String namespace, String name, Boolean cascading, BuildConfig item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
+    this(client, config, apiGroup, apiVersion, namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields, null, null, null, null, null, null, null, null, null, config.getBuildTimeout(), TimeUnit.MILLISECONDS);
   }
 
-  public BuildConfigOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, BuildConfig item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, String secret, String triggerType, String authorName, String authorEmail, String committerName, String committerEmail, String commit, String message, String asFile, long timeout, TimeUnit timeoutUnit) {
-    super(client, OpenShiftOperation.withApiGroup(client, BUILD, apiVersion, config), "buildconfigs", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  public BuildConfigOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiGroup, String apiVersion, String namespace, String name, Boolean cascading, BuildConfig item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, String secret, String triggerType, String authorName, String authorEmail, String committerName, String committerEmail, String commit, String message, String asFile, long timeout, TimeUnit timeoutUnit) {
+    super(client, OpenShiftOperation.withApiGroup(client, apiGroup, apiVersion, config), "buildconfigs", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
     this.triggerType = triggerType;
     this.secret = secret;
     this.authorName = authorName;
@@ -115,27 +115,27 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
     if (name == null || name.length() == 0) {
       throw new IllegalArgumentException("Name must be provided.");
     }
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationsImpl(client, getConfig(), getAPIGroup(), getAPIVersion(), getNamespace(), name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
   }
 
   @Override
   public OpenShiftOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build>> inNamespace(String namespace) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationsImpl(client, getConfig(), getAPIGroup(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
   }
 
   @Override
   public Gettable<BuildConfig> fromServer() {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), true, getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationsImpl(client, getConfig(), getAPIGroup(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), true, getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
   }
 
   @Override
   public Typeable<Triggerable<WebHookTrigger, Void>> withSecret(String secret) {
-    return new BuildConfigOperationsImpl(client,getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationsImpl(client,getConfig(), getAPIGroup(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
   }
 
   @Override
   public BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build> load(InputStream is) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), unmarshal(is, getType()), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationsImpl(client, getConfig(), getAPIGroup(), getAPIVersion(), getNamespace(), getName(), isCascading(), unmarshal(is, getType()), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
   }
 
   @Override
@@ -153,7 +153,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
 
   @Override
   public CommitterAuthorMessageAsFileTimeoutInputStreamable<Build> instantiateBinary() {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationsImpl(client, getConfig(), getAPIGroup(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
   }
 
 
@@ -176,12 +176,12 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
 
   @Override
   public Triggerable<WebHookTrigger, Void> withType(String type) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, type, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationsImpl(client, getConfig(), getAPIGroup(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, type, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
   }
 
   @Override
   public Watchable<Watch, Watcher<BuildConfig>> withResourceVersion(String resourceVersion) {
-    BuildConfigOperationsImpl buildConfigOperations = new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), resourceVersion, isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
+    BuildConfigOperationsImpl buildConfigOperations = new BuildConfigOperationsImpl(client, getConfig(), getAPIGroup(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), resourceVersion, isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
 
     return buildConfigOperations;
   }
@@ -314,42 +314,42 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
 
   @Override
   public TimeoutInputStreamable<Build> asFile(String fileName) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, fileName, timeout, timeoutUnit);
+    return new BuildConfigOperationsImpl(client, getConfig(), getAPIGroup(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, fileName, timeout, timeoutUnit);
   }
 
   @Override
   public MessageAsFileTimeoutInputStreamable<Build> withAuthorEmail(String email) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, email, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationsImpl(client, getConfig(), getAPIGroup(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, email, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
   }
 
   @Override
   public AuthorMessageAsFileTimeoutInputStreamable<Build> withCommitterEmail(String committerEmail) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationsImpl(client, getConfig(), getAPIGroup(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
   }
 
   @Override
   public AsFileTimeoutInputStreamable<Build> withMessage(String message) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationsImpl(client, getConfig(), getAPIGroup(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
   }
 
   @Override
   public AuthorEmailable<MessageAsFileTimeoutInputStreamable<Build>> withAuthorName(String authorName) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationsImpl(client, getConfig(), getAPIGroup(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
   }
 
   @Override
   public CommitterEmailable<AuthorMessageAsFileTimeoutInputStreamable<Build>> withCommitterName(String committerName) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationsImpl(client, getConfig(), getAPIGroup(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
   }
 
   @Override
   public InputStreamable<Build> withTimeout(long timeout, TimeUnit unit) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, unit);
+    return new BuildConfigOperationsImpl(client, getConfig(), getAPIGroup(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, unit);
   }
 
   @Override
   public InputStreamable<Build> withTimeoutInMillis(long timeoutInMillis) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeoutInMillis, TimeUnit.MILLISECONDS);
+    return new BuildConfigOperationsImpl(client, getConfig(), getAPIGroup(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeoutInMillis, TimeUnit.MILLISECONDS);
   }
 
   private static class BuildConfigReaper implements Reaper {

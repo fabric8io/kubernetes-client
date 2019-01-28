@@ -25,17 +25,18 @@ import io.fabric8.openshift.client.OpenShiftConfig;
 import java.util.Map;
 import java.util.TreeMap;
 
+import static io.fabric8.openshift.client.OpenShiftAPIGroups.AUTHORIZATION;
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.OAUTH;
 
 public class OAuthAuthorizeTokenOperationsImpl extends OpenShiftOperation<OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken,
   Resource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken>> {
 
   public OAuthAuthorizeTokenOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
-    this(client, config, null, null, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+    this(client, config, AUTHORIZATION, null, null, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
   }
 
-  public OAuthAuthorizeTokenOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, OAuthAuthorizeToken item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, OpenShiftOperation.withApiGroup(client, OAUTH, apiVersion, config), "oauthauthorizetokens", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  public OAuthAuthorizeTokenOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiGroup, String apiVersion, String namespace, String name, Boolean cascading, OAuthAuthorizeToken item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
+    super(client, OpenShiftOperation.withApiGroup(client, apiGroup, apiVersion, config), "oauthauthorizetokens", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
   }
 
   @Override

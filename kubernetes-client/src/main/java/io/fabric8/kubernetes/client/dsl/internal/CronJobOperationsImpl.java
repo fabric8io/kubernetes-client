@@ -31,17 +31,17 @@ import java.util.TreeMap;
 
 public class CronJobOperationsImpl extends HasMetadataOperation<CronJob, CronJobList, DoneableCronJob, Resource<CronJob, DoneableCronJob>> {
   public CronJobOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(client, config, "v1beta1", namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+    this(client, config, "batch", "v1beta1", namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
   }
 
-  public CronJobOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, CronJob item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, config, "batch", apiVersion, "cronjobs", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  public CronJobOperationsImpl(OkHttpClient client, Config config, String apiGroup, String apiVersion, String namespace, String name, Boolean cascading, CronJob item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
+    super(client, config, apiGroup, apiVersion, "cronjobs", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
   }
   @Override
   public Resource<CronJob, DoneableCronJob> load(InputStream is) {
     try {
       CronJob item = unmarshal(is, CronJob.class);
-      return new CronJobOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), item, getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
+      return new CronJobOperationsImpl(client, getConfig(), getAPIGroup(), getAPIVersion(), getNamespace(), getName(), isCascading(), item, getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }

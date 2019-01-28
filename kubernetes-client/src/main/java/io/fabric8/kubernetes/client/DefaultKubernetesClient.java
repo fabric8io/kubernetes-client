@@ -106,7 +106,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public MixedOperation<ComponentStatus, ComponentStatusList, DoneableComponentStatus, Resource<ComponentStatus, DoneableComponentStatus>> componentstatuses() {
-    return new ComponentStatusOperationsImpl(httpClient, getConfiguration());
+    return new ComponentStatusOperationsImpl(httpClient, getConfiguration(), null);
   }
 
   @Override

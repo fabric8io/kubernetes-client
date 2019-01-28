@@ -27,8 +27,12 @@ import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.internal.HasMetadataComparator;
+import io.fabric8.kubernetes.model.annotation.ApiGroup;
+import io.fabric8.kubernetes.model.annotation.ApiVersion;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.Inline;
+import io.sundr.transform.annotations.VelocityTransformation;
+import io.sundr.transform.annotations.VelocityTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -61,6 +65,11 @@ import java.util.Map;
 @EqualsAndHashCode
 @ToString
 @Buildable(editableEnabled = false, validationEnabled = true, generateBuilderPackage=true, builderPackage = "io.fabric8.kubernetes.api.builder", inline = @Inline(type = Doneable.class, prefix = "Doneable", value = "done"))
+@ApiVersion("v1")
+@ApiGroup("")
+@VelocityTransformations({
+    @VelocityTransformation(value = "/manifest.vm", outputPath = "openshift.properties", gather = true)
+})
 public class Template implements HasMetadata {
 
     /**

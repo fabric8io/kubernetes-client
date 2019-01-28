@@ -128,6 +128,9 @@
                 <Require-Bundle>${osgi.bundles}</Require-Bundle>
                 <Bundle-Activator>${osgi.activator}</Bundle-Activator>
                 <Export-Service>${osgi.export.service}</Export-Service>
+                <Include-Resource>
+                  /META-INF/services/io.fabric8.kubernetes.client.ResourceHandler=target/classes/META-INF/services/io.fabric8.kubernetes.client.ResourceHandler
+                </Include-Resource>
               </instructions>
               <classifier>bundle</classifier>
             </configuration>
@@ -157,6 +160,14 @@
           <artifactId>tools</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>io.sundr</groupId>
+      <artifactId>transform-annotations</artifactId>
+      <version>${sundrio.version}</version>
+      <scope>compile</scope>
+      <optional>true</optional>
     </dependency>
 
     <dependency>
