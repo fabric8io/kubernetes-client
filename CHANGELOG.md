@@ -10,6 +10,8 @@
     * Fix #1218: CustomResourceDefinitions: cascading() causes NoSuchMethodError
     
     * Fix #1309: Can't get VersionInfo correctly
+    
+    * Fix #1332: Unable to use ExecCredentials
 
   Improvements
     

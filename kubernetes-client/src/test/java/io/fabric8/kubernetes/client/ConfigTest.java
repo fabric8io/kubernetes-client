@@ -24,7 +24,6 @@ import org.apache.commons.lang.SystemUtils;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -438,7 +437,6 @@ public class ConfigTest {
   }
 
   @Test
-  @Ignore
   public void honorClientAuthenticatorCommands() throws Exception {
     if (SystemUtils.IS_OS_WINDOWS) {
       System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_EXEC_WIN_FILE);

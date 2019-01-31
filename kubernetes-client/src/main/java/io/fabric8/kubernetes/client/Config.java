@@ -23,6 +23,8 @@ import io.fabric8.kubernetes.api.model.AuthInfo;
 import io.fabric8.kubernetes.api.model.Cluster;
 import io.fabric8.kubernetes.api.model.ConfigBuilder;
 import io.fabric8.kubernetes.api.model.Context;
+import io.fabric8.kubernetes.api.model.ExecConfig;
+import io.fabric8.kubernetes.api.model.ExecEnvVar;
 import io.fabric8.kubernetes.client.internal.KubeConfigUtils;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
@@ -508,30 +510,26 @@ public class Config {
           if (Utils.isNullOrEmpty(config.getOauthToken()) && currentAuthInfo.getAuthProvider() != null && !Utils.isNullOrEmpty(currentAuthInfo.getAuthProvider().getConfig().get(ACCESS_TOKEN))) {
             config.setOauthToken(currentAuthInfo.getAuthProvider().getConfig().get(ACCESS_TOKEN));
           } else { // https://kubernetes.io/docs/reference/access-authn-authz/authentication/#client-go-credential-plugins
-            Object _exec = currentAuthInfo.getAdditionalProperties().get("exec");
-            if (_exec instanceof Map) {
-              @SuppressWarnings("unchecked")
-              Map<String, Object> exec = (Map) _exec;
-              String apiVersion = (String) exec.get("apiGroupVersion");
+            ExecConfig exec = currentAuthInfo.getExec();
+            if (exec != null) {
+              String apiVersion = exec.getApiVersion();
               if ("client.authentication.k8s.io/v1alpha1".equals(apiVersion)) {
                 List<String> argv = new ArrayList<String>();
-                String command = (String) exec.get("command");
+                String command = exec.getCommand();
                 if (command.contains("/") && !command.startsWith("/") && kubeconfigPath != null && !kubeconfigPath.isEmpty()) {
                   // Appears to be a relative path; normalize. Spec is vague about how to detect this situation.
                   command = Paths.get(kubeconfigPath).resolveSibling(command).normalize().toString();
                 }
                 argv.add(command);
-                @SuppressWarnings("unchecked")
-                List<String> args = (List) exec.get("args");
+                List<String> args = exec.getArgs();
                 if (args != null) {
                   argv.addAll(args);
                 }
                 ProcessBuilder pb = new ProcessBuilder(argv);
-                @SuppressWarnings("unchecked")
-                List<Map<String, String>> env = (List<Map<String, String>>) exec.get("env");
+                List<ExecEnvVar> env = exec.getEnv();
                 if (env != null) {
                   Map<String, String> environment = pb.environment();
-                  env.forEach(pair -> environment.put(pair.get("name"), pair.get("value")));
+                  env.forEach(var -> environment.put(var.getName(), var.getValue()));
                 }
                 // TODO check behavior of tty & stdin
                 Process p = pb.start();
