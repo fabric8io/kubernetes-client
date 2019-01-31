@@ -20,6 +20,8 @@
     * Fix #1306: Support `KUBECONFIG` env var with multiple paths
  
   Dependency Upgrade
+    
+    * Updated jackson to 2.9.8
 
   New Feature
     
