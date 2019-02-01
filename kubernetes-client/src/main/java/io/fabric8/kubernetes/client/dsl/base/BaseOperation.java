@@ -22,11 +22,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
 import io.fabric8.kubernetes.api.model.RootPaths;
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.OperationInfo;
-import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.*;
 import io.fabric8.kubernetes.client.dsl.Deletable;
 import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
@@ -196,6 +192,29 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
         throw e;
       }
       return null;
+    }
+  }
+
+  @Override
+  public T require() throws ResourceNotFoundException {
+    try {
+      T answer = getMandatory();
+      if (answer == null) {
+        throw new ResourceNotFoundException("The resource you request doesn't exist or couldn't be fetched.");
+      }
+      if (answer instanceof HasMetadata) {
+        HasMetadata hasMetadata = (HasMetadata) answer;
+        updateApiVersion(hasMetadata);
+      } else if (answer instanceof KubernetesResourceList) {
+        KubernetesResourceList list = (KubernetesResourceList) answer;
+        updateApiVersion(list);
+      }
+      return answer;
+    } catch (KubernetesClientException e) {
+      if (e.getCode() != 404) {
+        throw e;
+      }
+      throw new ResourceNotFoundException("Resource not found : " + e.getMessage());
     }
   }
 
