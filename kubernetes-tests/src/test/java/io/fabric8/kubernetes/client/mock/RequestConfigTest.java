@@ -17,6 +17,7 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.client.OAuthTokenProvider;
+import io.fabric8.kubernetes.client.RequestConfig;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -29,12 +30,16 @@ import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import okhttp3.mockwebserver.RecordedRequest;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class RequestConfigTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
+
+  TestableOAuthTokenProvider tokenProvider = new TestableOAuthTokenProvider();
 
   @Test
   public void testList() throws InterruptedException {
@@ -73,31 +78,54 @@ public class RequestConfigTest {
 
   @Test
   public void testOauthTokenSuppliedByProvider() throws InterruptedException {
-    server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, new PodBuilder()
-      .withNewMetadata()
-      .withName("testPod")
-      .endMetadata()
-      .build()).always();
+    server.expect().withPath("/api/v1/namespaces/test/pods/podName").andReturn(200, new PodBuilder()
+                   .withNewMetadata()
+                   .withName("testPodX")
+                   .endMetadata()
+                   .build()).always();
 
-    OAuthTokenProvider tokenProvider = new OAuthTokenProvider() {
-      @Override
-      public String getToken() {
-        return "PROVIDER_TOKEN";
-      }
-    };
+    RequestConfig requestConfig = new RequestConfigBuilder().withOauthTokenProvider(tokenProvider)
+                                                            .build();
 
-    NamespacedKubernetesClient client = server.getClient();
+    tokenProvider.updateToken("token1");
+    sendRequest(requestConfig);
+    assertAuthorizationHeader("Bearer token1");
 
-    Pod pod1 = client.withRequestConfig(new RequestConfigBuilder().withOauthTokenProvider(tokenProvider).build()).call(new Function<NamespacedKubernetesClient, Pod>() {
-      @Override
-      public Pod apply(NamespacedKubernetesClient c) {
-        return c.pods().inNamespace("test").withName("pod1").get();
-      }
-    });
-
-    RecordedRequest request1 = server.getMockServer().takeRequest();
-    String authHeader1 = request1.getHeader("Authorization");
-    Assert.assertEquals("Bearer PROVIDER_TOKEN", authHeader1);
+    tokenProvider.updateToken("token2");
+    sendRequest(requestConfig);
+    assertAuthorizationHeader("Bearer token2");
   }
+
+
+  private void sendRequest(RequestConfig requestConfig) {
+    NamespacedKubernetesClient client = server.getClient();
+    client.withRequestConfig(requestConfig)
+          .call(new Function<NamespacedKubernetesClient, Pod>() {
+            @Override
+            public Pod apply(NamespacedKubernetesClient c) {
+              return c.pods().inNamespace("test").withName("podName").get();
+            }
+          });
+  }
+
+  private void assertAuthorizationHeader(String expectedValue) throws InterruptedException {
+    RecordedRequest request = server.getMockServer().takeRequest();
+    String acutalValue = request.getHeader("Authorization");
+    Assert.assertEquals(expectedValue, acutalValue);
+  }
+
+  private static class TestableOAuthTokenProvider implements OAuthTokenProvider {
+
+    private final AtomicReference<String> token = new AtomicReference<>();
+
+    @Override
+    public String getToken() {
+        return token.get();
+    }
+
+    public void updateToken(String newToken) {
+      this.token.set(newToken);
+    }
+  };
 
 }
