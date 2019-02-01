@@ -96,7 +96,6 @@ public class RequestConfigTest {
     assertAuthorizationHeader("Bearer token2");
   }
 
-
   private void sendRequest(RequestConfig requestConfig) {
     NamespacedKubernetesClient client = server.getClient();
     client.withRequestConfig(requestConfig)

@@ -450,7 +450,6 @@ public class ConfigTest {
     assertEquals("HELLO WORLD", config.getOauthToken());
   }
 
-
   @Test
   public void shouldBeUsedTokenSuppliedByProvider() throws Exception {
 
