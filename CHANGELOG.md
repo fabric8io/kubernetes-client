@@ -1,11 +1,5 @@
 ### CHANGELOG
 
-#### 4.2.0
-
-  New Feature
-    
-    * Fix #1339: oAuth token rotation support
-    
 #### 4.1.2
   Bugs
 
@@ -30,6 +24,8 @@
   New Feature
     
     * Fix #1286: Pod Preset Support
+
+    * Fix #1339: oAuth token rotation support
 
   Misc
 
