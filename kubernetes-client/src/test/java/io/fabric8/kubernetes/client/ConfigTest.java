@@ -450,6 +450,22 @@ public class ConfigTest {
     assertEquals("HELLO WORLD", config.getOauthToken());
   }
 
+
+  @Test
+  public void shouldBeUsedTokenSuppliedByProvider() throws Exception {
+
+    Config config = new ConfigBuilder().withOauthToken("oauthToken")
+                                       .withOauthTokenProvider(new OAuthTokenProvider() {
+                                          @Override
+                                          public String getToken() {
+                                            return "PROVIDER_TOKEN";
+                                          }
+                                       })
+                                       .build();
+
+    assertEquals("PROVIDER_TOKEN", config.getOauthToken());
+  }
+
   private void assertConfig(Config config) {
     assertNotNull(config);
     assertTrue(config.isTrustCerts());

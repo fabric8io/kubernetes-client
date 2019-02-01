@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.client.OAuthTokenProvider;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -39,7 +40,7 @@ public class RequestConfigTest {
   public void testList() throws InterruptedException {
    server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, new PodBuilder()
      .withNewMetadata()
-        .withName("testPod")
+     .withName("testPod")
      .endMetadata()
      .build()).always();
 
@@ -68,6 +69,35 @@ public class RequestConfigTest {
     RecordedRequest request2 = server.getMockServer().takeRequest();
     String authHeader2 = request2.getHeader("Authorization");
     Assert.assertNotEquals("Bearer TOKEN", authHeader2);
+  }
+
+  @Test
+  public void testOauthTokenSuppliedByProvider() throws InterruptedException {
+    server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, new PodBuilder()
+      .withNewMetadata()
+      .withName("testPod")
+      .endMetadata()
+      .build()).always();
+
+    OAuthTokenProvider tokenProvider = new OAuthTokenProvider() {
+      @Override
+      public String getToken() {
+        return "PROVIDER_TOKEN";
+      }
+    };
+
+    NamespacedKubernetesClient client = server.getClient();
+
+    Pod pod1 = client.withRequestConfig(new RequestConfigBuilder().withOauthTokenProvider(tokenProvider).build()).call(new Function<NamespacedKubernetesClient, Pod>() {
+      @Override
+      public Pod apply(NamespacedKubernetesClient c) {
+        return c.pods().inNamespace("test").withName("pod1").get();
+      }
+    });
+
+    RecordedRequest request1 = server.getMockServer().takeRequest();
+    String authHeader1 = request1.getHeader("Authorization");
+    Assert.assertEquals("Bearer PROVIDER_TOKEN", authHeader1);
   }
 
 }
