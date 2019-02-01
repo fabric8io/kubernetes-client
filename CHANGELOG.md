@@ -1,5 +1,11 @@
 ### CHANGELOG
 
+#### 4.2.0
+
+  New Feature
+    
+    * Fix #1339: oAuth token rotation support
+    
 #### 4.1.2
   Bugs
 
