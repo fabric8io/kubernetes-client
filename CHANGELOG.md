@@ -18,6 +18,8 @@
     * Updated compatability matrix after model upgrade in README.md 
 
     * Fix #1306: Support `KUBECONFIG` env var with multiple paths
+
+    * Classes implementing KubernetesResourceList has now generic type set.
  
   Dependency Upgrade
 
