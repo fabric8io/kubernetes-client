@@ -79,6 +79,8 @@
 
     * Fix #1339: oAuth token rotation support
 
+    * Fix #1314: Support for EC Private Keys
+
   Misc
 
     * Appended some files to licence check exclusion list.
