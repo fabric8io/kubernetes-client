@@ -23,6 +23,8 @@
 
     * Fix #1348: support `v1beta1` version for `ExecCredentials`
 
+    * Fix #1326: Make CustomResource @Buildable
+
   Dependency Upgrade
     
     * Updated jackson to 2.9.8
