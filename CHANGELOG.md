@@ -1,5 +1,16 @@
 ### CHANGELOG
 
+#### 4.1-SNAPSHOT
+  Bugs
+  
+  Improvements
+  
+    * Fix #1362: store exceptions thrown in port forwarder websocket
+  
+  Dependency Upgrade
+  
+  New Feature
+
 #### 4.1.2
   Bugs
 
