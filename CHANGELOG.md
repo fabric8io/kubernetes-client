@@ -25,6 +25,8 @@
     
     * Fix #1286: Pod Preset Support
 
+    * Fix #1339: oAuth token rotation support
+
   Misc
 
     * Appended some files to licence check exclusion list.
