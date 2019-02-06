@@ -12,6 +12,8 @@
     * Fix #1309: Can't get VersionInfo correctly
     
     * Fix #1332: Unable to use ExecCredentials
+ 
+    * Fix #1351: NPE IpAddressMatcherTest
 
   Improvements
     
