@@ -39,6 +39,10 @@ public final class VersionUsageUtils {
       return;
     }
 
+    if (type.equals("customresourcedefinitions") && version.equals("v1beta1")) {
+      return;
+    }
+
     if (isUnstable(version)) {
       if (LOG_EACH_USAGE || UNSTABLE_TYPES.putIfAbsent(type + "-" + version, true) == null) {
         alert(type, version);
