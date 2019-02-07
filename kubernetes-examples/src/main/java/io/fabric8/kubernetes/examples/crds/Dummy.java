@@ -26,7 +26,7 @@ public class Dummy extends CustomResource {
   @Override
   public String toString() {
     return "Dummy{" +
-        "apiGroupVersion='" + getApiVersion() + '\'' +
+        "apiVersion='" + getApiVersion() + '\'' +
         ", metadata=" + getMetadata() +
         ", spec=" + spec +
         '}';
