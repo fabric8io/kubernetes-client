@@ -521,7 +521,7 @@ public class Config {
             ExecConfig exec = currentAuthInfo.getExec();
             if (exec != null) {
               String apiVersion = exec.getApiVersion();
-              if ("client.authentication.k8s.io/v1alpha1".equals(apiVersion)) {
+              if ("client.authentication.k8s.io/v1alpha1".equals(apiVersion) || "client.authentication.k8s.io/v1beta1".equals(apiVersion)) {
                 List<String> argv = new ArrayList<String>();
                 String command = exec.getCommand();
                 if (command.contains("/") && !command.startsWith("/") && kubeconfigPath != null && !kubeconfigPath.isEmpty()) {

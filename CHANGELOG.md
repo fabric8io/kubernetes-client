@@ -20,7 +20,9 @@
     * Updated compatability matrix after model upgrade in README.md 
 
     * Fix #1306: Support `KUBECONFIG` env var with multiple paths
- 
+
+    * Fix #1348: support `v1beta1` version for `ExecCredentials`
+
   Dependency Upgrade
     
     * Updated jackson to 2.9.8
