@@ -64,6 +64,11 @@ public final class IpAddressMatcher {
     if(checkAddress == null) {
       return false;
     }
+
+    if (ipAddress == null) {
+      return false;
+    }
+
     if (!ipAddress.getClass().equals(checkAddress.getClass())) {
       return false;
     }
