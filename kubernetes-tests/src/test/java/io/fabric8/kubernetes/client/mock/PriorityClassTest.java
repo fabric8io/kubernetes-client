@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.api.model.scheduling.PriorityClassListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -51,8 +52,8 @@ public class PriorityClassTest {
 
   @Test
   public void testListWithLables() {
-    server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses?labelSelector=" + toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new PriorityClassListBuilder().build()).always();
-    server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses?labelSelector=" + toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new PriorityClassListBuilder()
+    server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new PriorityClassListBuilder().build()).always();
+    server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new PriorityClassListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .addNewItem().and()
@@ -145,15 +146,5 @@ public class PriorityClassTest {
   public void testLoadFromFile() {
     KubernetesClient client = server.getClient();
     assertNotNull(client.scheduling().priorityClass().load(getClass().getResourceAsStream("/test-priorityclass.yml")).get());
-  }
-
-  /**
-   * Converts string to URL encoded string.
-   * It's not a full blown converter, it serves just the purpose of this test.
-   * @param str
-   * @return
-   */
-  private static final String toUrlEncoded(String str) {
-    return str.replaceAll("=", "%3D");
   }
 }

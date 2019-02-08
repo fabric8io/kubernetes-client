@@ -27,6 +27,8 @@
     
     * Updated jackson to 2.9.8
 
+    * Upgrade okhttp to 3.12.0
+
   New Feature
     
     * Fix #1286: Pod Preset Support
