@@ -167,9 +167,9 @@ public class BuildConfigTest {
   @Test
   public void testDelete() {
    server.expect().withPath("/oapi/v1/namespaces/test/buildconfigs/bc1").andReturn(200, new BuildConfigBuilder().withNewMetadata().withName("bc1").and().build()).once();
-   server.expect().withPath("/oapi/v1/namespaces/test/builds?labelSelector=openshift.io/build-config.name%3Dbc1").andReturn( 200, new BuildListBuilder().build()).once();
+   server.expect().withPath("/oapi/v1/namespaces/test/builds?labelSelector=openshift.io%2Fbuild-config.name%3Dbc1").andReturn( 200, new BuildListBuilder().build()).once();
    server.expect().withPath("/oapi/v1/namespaces/ns1/buildconfigs/bc2").andReturn( 200, new BuildConfigBuilder().withNewMetadata().withName("bc2").and().build()).once();
-   server.expect().withPath("/oapi/v1/namespaces/ns1/builds?labelSelector=openshift.io/build-config.name%3Dbc2").andReturn( 200, new BuildListBuilder().build()).once();
+   server.expect().withPath("/oapi/v1/namespaces/ns1/builds?labelSelector=openshift.io%2Fbuild-config.name%3Dbc2").andReturn( 200, new BuildListBuilder().build()).once();
 
     OpenShiftClient client = server.getOpenshiftClient();
 
