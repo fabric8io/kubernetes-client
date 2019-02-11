@@ -52,7 +52,12 @@ public final class VersionUsageUtils {
   }
 
   private static void alert(String type, String version) {
-    LOG.warn("The client is using resource type '{}' with unstable version '{}'", type, version);
+    String message = "The client is using resource type '{}' with unstable version '{}'";
+    if (type.equals("customresourcedefinitions") && version.equals("v1beta1")) {
+      LOG.debug(message, type, version);
+    } else {
+      LOG.warn(message, type, version);
+    }
   }
 
 }

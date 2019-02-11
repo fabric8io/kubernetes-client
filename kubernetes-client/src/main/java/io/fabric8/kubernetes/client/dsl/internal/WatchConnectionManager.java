@@ -81,7 +81,10 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
     this.websocketTimeout = websocketTimeout;
     this.maxIntervalExponent = maxIntervalExponent;
 
-    this.clonedClient = client.newBuilder().readTimeout(this.websocketTimeout, TimeUnit.MILLISECONDS).build();
+    this.clonedClient = client.newBuilder()
+      .pingInterval(30, TimeUnit.SECONDS)
+      .readTimeout(this.websocketTimeout, TimeUnit.MILLISECONDS)
+      .build();
 
     // The URL is created, validated and saved once, so that reconnect attempts don't have to deal with
     // MalformedURLExceptions that would never occur

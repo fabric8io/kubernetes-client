@@ -23,9 +23,13 @@
 
     * Fix #1348: support `v1beta1` version for `ExecCredentials`
 
+    * Fix #1354: suppress log warnings that `CustomResourceDefinition`s are still in beta
+
   Dependency Upgrade
     
     * Updated jackson to 2.9.8
+
+    * Upgrade okhttp to 3.12.0
 
   New Feature
     
