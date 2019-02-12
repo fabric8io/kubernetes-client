@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.client;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -32,7 +33,6 @@ import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.sundr.builder.annotations.Buildable;
 import okhttp3.TlsVersion;
-import org.apache.commons.lang.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -165,6 +165,8 @@ public class Config {
   private int maxConcurrentRequests = DEFAULT_MAX_CONCURRENT_REQUESTS;
   private int maxConcurrentRequestsPerHost = DEFAULT_MAX_CONCURRENT_REQUESTS_PER_HOST;
   private String impersonateUsername;
+  private OAuthTokenProvider oauthTokenProvider;
+
   /**
   * @deprecated use impersonateGroups instead
   */
@@ -219,8 +221,13 @@ public class Config {
     return config;
   }
 
-  @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
+  @Deprecated
   public Config(String masterUrl, String apiVersion, String namespace, boolean trustCerts, boolean disableHostnameVerification, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, long scaleTimeout, int loggingInterval, int maxConcurrentRequestsPerHost, String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages, String userAgent, TlsVersion[] tlsVersions, long websocketTimeout, long websocketPingInterval, String proxyUsername, String proxyPassword, String trustStoreFile, String trustStorePassphrase, String keyStoreFile, String keyStorePassphrase, String impersonateUsername, String[] impersonateGroups, Map<String, List<String>> impersonateExtras) {
+    this(masterUrl, apiVersion, namespace, trustCerts, disableHostnameVerification, caCertFile, caCertData, clientCertFile, clientCertData, clientKeyFile, clientKeyData, clientKeyAlgo, clientKeyPassphrase, username, password, oauthToken, watchReconnectInterval, watchReconnectLimit, connectionTimeout, requestTimeout, rollingTimeout, scaleTimeout, loggingInterval, maxConcurrentRequestsPerHost, httpProxy, httpsProxy, noProxy, errorMessages, userAgent, tlsVersions,  websocketTimeout, websocketPingInterval, proxyUsername, proxyPassword, trustStoreFile, trustStorePassphrase, keyStoreFile, keyStorePassphrase, impersonateUsername, impersonateGroups, impersonateExtras, null);
+  }
+
+  @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
+  public Config(String masterUrl, String apiVersion, String namespace, boolean trustCerts, boolean disableHostnameVerification, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, long scaleTimeout, int loggingInterval, int maxConcurrentRequestsPerHost, String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages, String userAgent, TlsVersion[] tlsVersions, long websocketTimeout, long websocketPingInterval, String proxyUsername, String proxyPassword, String trustStoreFile, String trustStorePassphrase, String keyStoreFile, String keyStorePassphrase, String impersonateUsername, String[] impersonateGroups, Map<String, List<String>> impersonateExtras, OAuthTokenProvider oauthTokenProvider) {
     this.masterUrl = masterUrl;
     this.apiVersion = apiVersion;
     this.namespace = namespace;
@@ -235,7 +242,7 @@ public class Config {
     this.clientKeyAlgo = clientKeyAlgo;
     this.clientKeyPassphrase = clientKeyPassphrase;
 
-    this.requestConfig = new RequestConfig(username, password, oauthToken, watchReconnectLimit, watchReconnectInterval, connectionTimeout, rollingTimeout, requestTimeout, scaleTimeout, loggingInterval, websocketTimeout, websocketPingInterval, maxConcurrentRequests, maxConcurrentRequestsPerHost);
+    this.requestConfig = new RequestConfig(username, password, oauthToken, watchReconnectLimit, watchReconnectInterval, connectionTimeout, rollingTimeout, requestTimeout, scaleTimeout, loggingInterval, websocketTimeout, websocketPingInterval, maxConcurrentRequests, maxConcurrentRequestsPerHost, oauthTokenProvider);
     this.requestConfig.setImpersonateUsername(impersonateUsername);
     this.requestConfig.setImpersonateGroups(impersonateGroups);
     this.requestConfig.setImpersonateExtras(impersonateExtras);
@@ -262,6 +269,7 @@ public class Config {
     this.trustStorePassphrase = trustStorePassphrase;
     this.keyStoreFile = keyStoreFile;
     this.keyStorePassphrase = keyStorePassphrase;
+    this.oauthTokenProvider = oauthTokenProvider;
   }
 
   public static void configFromSysPropsOrEnvVars(Config config) {
@@ -509,11 +517,11 @@ public class Config {
 
           if (Utils.isNullOrEmpty(config.getOauthToken()) && currentAuthInfo.getAuthProvider() != null && !Utils.isNullOrEmpty(currentAuthInfo.getAuthProvider().getConfig().get(ACCESS_TOKEN))) {
             config.setOauthToken(currentAuthInfo.getAuthProvider().getConfig().get(ACCESS_TOKEN));
-          } else { // https://kubernetes.io/docs/reference/access-authn-authz/authentication/#client-go-credential-plugins
+          } else if (config.getOauthTokenProvider() == null) {  // https://kubernetes.io/docs/reference/access-authn-authz/authentication/#client-go-credential-plugins
             ExecConfig exec = currentAuthInfo.getExec();
             if (exec != null) {
               String apiVersion = exec.getApiVersion();
-              if ("client.authentication.k8s.io/v1alpha1".equals(apiVersion)) {
+              if ("client.authentication.k8s.io/v1alpha1".equals(apiVersion) || "client.authentication.k8s.io/v1beta1".equals(apiVersion)) {
                 List<String> argv = new ArrayList<String>();
                 String command = exec.getCommand();
                 if (command.contains("/") && !command.startsWith("/") && kubeconfigPath != null && !kubeconfigPath.isEmpty()) {
@@ -1033,4 +1041,12 @@ public class Config {
     return keyStoreFile;
   }
 
+  @JsonIgnore
+  public OAuthTokenProvider getOauthTokenProvider() {
+    return oauthTokenProvider;
+  }
+
+  public void setOauthTokenProvider(OAuthTokenProvider oauthTokenProvider) {
+    this.oauthTokenProvider = oauthTokenProvider;
+  }
 }

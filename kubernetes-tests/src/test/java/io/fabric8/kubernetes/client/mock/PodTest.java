@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -92,8 +93,8 @@ public class PodTest {
 
   @Test
   public void testListWithLables() {
-   server.expect().withPath("/api/v1/namespaces/test/pods?labelSelector=" + toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new PodListBuilder().build()).always();
-   server.expect().withPath("/api/v1/namespaces/test/pods?labelSelector=" + toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new PodListBuilder()
+   server.expect().withPath("/api/v1/namespaces/test/pods?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new PodListBuilder().build()).always();
+   server.expect().withPath("/api/v1/namespaces/test/pods?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new PodListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .addNewItem().and()
@@ -426,16 +427,6 @@ public class PodTest {
 
     String got = new String(out.toByteArray(), "UTF-8");
     assertEquals("Hello World!", got);
-  }
-
-  /**
-   * Converts string to URL encoded string.
-   * It's not a fullblown converter, it serves just the purpose of this test.
-   * @param str
-   * @return
-   */
-  private static final String toUrlEncoded(String str) {
-    return str.replaceAll("=", "%3D");
   }
 
   private static String portForwardEncode(boolean dataChannel, String str) {

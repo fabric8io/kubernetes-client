@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.api.model.batch.JobListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -66,8 +67,8 @@ public class JobTest {
 
   @Test
   public void testListWithLables() {
-   server.expect().withPath("/apis/batch/v1/namespaces/test/jobs?labelSelector=" + toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new JobListBuilder().build()).always();
-   server.expect().withPath("/apis/batch/v1/namespaces/test/jobs?labelSelector=" + toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new JobListBuilder()
+   server.expect().withPath("/apis/batch/v1/namespaces/test/jobs?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new JobListBuilder().build()).always();
+   server.expect().withPath("/apis/batch/v1/namespaces/test/jobs?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new JobListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .addNewItem().and()
@@ -231,15 +232,5 @@ public class JobTest {
     KubernetesClient client = server.getClient();
 
     client.batch().jobs().inNamespace("test1").withName("myjob1").create(job1);
-  }
-
-  /**
-   * Converts string to URL encoded string.
-   * It's not a fullblown converter, it serves just the purpose of this test.
-   * @param str
-   * @return
-   */
-  private static final String toUrlEncoded(String str) {
-    return str.replaceAll("=", "%3D");
   }
 }
