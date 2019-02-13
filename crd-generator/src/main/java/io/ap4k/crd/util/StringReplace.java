@@ -23,13 +23,11 @@ import java.util.regex.Pattern;
 
 public class StringReplace implements Function<String, String> {
 
-    private final String target;
     private final String replacement;
     private final Pattern pattern;
 
 
     public StringReplace(String target, String replacement) {
-        this.target = target;
         this.replacement = replacement;
         this.pattern = Pattern.compile(target, Pattern.CASE_INSENSITIVE);
     }

@@ -71,9 +71,7 @@ public class JsonSchema {
       JSONSchemaProps schema = from(property.getTypeRef());
       if (property.getAnnotations()
         .stream()
-        .filter(a -> a.getClassRef().getFullyQualifiedName().equals("javax.validation.constraints.NotNull"))
-        .findAny()
-        .isPresent()) {
+        .anyMatch(a -> a.getClassRef().getFullyQualifiedName().equals("javax.validation.constraints.NotNull"))) {
         required.add(property.getName());
       }
 

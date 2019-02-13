@@ -75,7 +75,7 @@ public @interface CustomResource {
   String version() default "";
 
   /**
-   * The resouece scope.
+   * The resource scope.
    * @return The scope, defaults to Namespaced.
    */
   Scope scope() default Scope.Namespaced;
