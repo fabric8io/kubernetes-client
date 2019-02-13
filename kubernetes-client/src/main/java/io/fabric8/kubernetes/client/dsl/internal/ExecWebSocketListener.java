@@ -322,7 +322,7 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
         if (stream != null) {
             return stream;
         } else if (out != null) {
-            PipedInputStream pis = new PipedInputStream();
+            PipedInputStream pis = new PipedInputStream(2 * 1024);
             toClose.add(out);
             toClose.add(pis);
             return pis;
