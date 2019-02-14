@@ -114,6 +114,30 @@
               </filters>
             </configuration>
           </execution>
+          <execution>
+            <id>noapt</id>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <shadedArtifactAttached>true</shadedArtifactAttached>
+              <shadedClassifierName>noapt</shadedClassifierName>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <includes>
+                    <include>io/ap4k/crd/adapter/**</include>
+                    <include>io/ap4k/crd/config/**</include>
+                    <include>io/ap4k/crd/configurator/**</include>
+                    <include>io/ap4k/crd/generator/**</include>
+                    <include>io/ap4k/crd/handler/**</include>
+                    <include>io/ap4k/crd/util/**</include>
+                  </includes>
+                </filter>
+              </filters>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
     </plugins>
