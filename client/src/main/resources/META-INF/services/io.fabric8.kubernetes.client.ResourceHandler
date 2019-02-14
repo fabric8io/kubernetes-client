@@ -14,8 +14,8 @@
 # limitations under the License.
 #
 
-me.snowdrop.servicecatalog.api.handlers.ClusterServiceBrokerHandler
-me.snowdrop.servicecatalog.api.handlers.ClusterServiceClassHandler
-me.snowdrop.servicecatalog.api.handlers.ClusterServicePlanHandler
-me.snowdrop.servicecatalog.api.handlers.ServiceBindingHandler
-me.snowdrop.servicecatalog.api.handlers.ServiceInstanceHandler
+me.snowdrop.servicecatalog.api.client.handlers.ClusterServiceBrokerHandler
+me.snowdrop.servicecatalog.api.client.handlers.ClusterServiceClassHandler
+me.snowdrop.servicecatalog.api.client.handlers.ClusterServicePlanHandler
+me.snowdrop.servicecatalog.api.client.handlers.ServiceBindingHandler
+me.snowdrop.servicecatalog.api.client.handlers.ServiceInstanceHandler
