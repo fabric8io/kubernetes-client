@@ -21,6 +21,8 @@
 
     * Fix #1306: Support `KUBECONFIG` env var with multiple paths
 
+    * Classes implementing KubernetesResourceList has now generic type set.
+ 
     * Fix #1348: support `v1beta1` version for `ExecCredentials`
 
     * Fix #1354: suppress log warnings that `CustomResourceDefinition`s are still in beta

@@ -152,8 +152,12 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 	//as the name of Resources are same in both places.
 
 	if t.Kind() == reflect.Struct && ok {
-		if g.qualifiedName(t) == "kubernetes_extensions_RunAsUserStrategyOptions" || strings.HasPrefix(g.qualifiedName(t), "kubernetes_rbac_") {
+		if g.qualifiedName(t) == "kubernetes_extensions_RunAsUserStrategyOptions" {
 			return pkgDesc.JavaPackage + "." + "Kubernetes" + t.Name()
+		}
+		if g.qualifiedName(t) == "os_oauth_ClusterRoleScopeRestriction" ||
+			(strings.HasPrefix(g.qualifiedName(t), "os_authorization_") && strings.Contains(g.qualifiedName(t), "Role")) {
+			return pkgDesc.JavaPackage + "." + "Openshift" + t.Name()
 		}
 		switch t.Name() {
 		case "Time":
@@ -195,15 +199,19 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 	}
 }
 
+func (g *schemaGenerator) resourceListWithGeneric(t reflect.Type) string {
+	return "io.fabric8.kubernetes.api.model.KubernetesResourceList<" + g.javaType(t.Elem()) + ">"
+}
+
 func (g *schemaGenerator) javaInterfaces(t reflect.Type) []string {
 	if _, ok := t.FieldByName("ObjectMeta"); t.Name() != "JobTemplateSpec" && t.Name() != "PodTemplateSpec" && ok {
 		return []string{"io.fabric8.kubernetes.api.model.HasMetadata"}
 	}
 
-	_, hasItems := t.FieldByName("Items")
+	itemsField, hasItems := t.FieldByName("Items")
 	_, hasListMeta := t.FieldByName("ListMeta")
 	if hasItems && hasListMeta {
-		return []string{"io.fabric8.kubernetes.api.model.KubernetesResource", "io.fabric8.kubernetes.api.model.KubernetesResourceList"}
+		return []string{"io.fabric8.kubernetes.api.model.KubernetesResource", g.resourceListWithGeneric(itemsField.Type)}
 	}
 	return []string{"io.fabric8.kubernetes.api.model.KubernetesResource"}
 }
@@ -444,11 +452,11 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 						apiGroup = pkgDesc.ApiGroup
 					}
 
-                                        /*
-                                         * Skip appending apiGroup in apiVersion for case of core and meta resources since 
-                                         * they have been moved to core/v1 and meta/v1 packages respectively but their apiVersion 
-                                         * is still v1.
-                                         */
+					/*
+					 * Skip appending apiGroup in apiVersion for case of core and meta resources since
+					 * they have been moved to core/v1 and meta/v1 packages respectively but their apiVersion
+					 * is still v1.
+					 */
 					if !(apiGroup == "core" || apiGroup == "meta") {
 						groupPostfix := ""
 						if strings.HasPrefix(path, "github.com/openshift/") {
