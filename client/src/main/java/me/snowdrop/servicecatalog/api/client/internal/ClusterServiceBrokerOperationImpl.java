@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import me.snowdrop.servicecatalog.api.client.util.ApiVersionUtil;
 import me.snowdrop.servicecatalog.api.model.ClusterServiceClass;
 import me.snowdrop.servicecatalog.api.model.ClusterServiceClassList;
 import me.snowdrop.servicecatalog.api.model.ClusterServicePlanList;
@@ -34,13 +35,18 @@ import okhttp3.OkHttpClient;
 
 public class ClusterServiceBrokerOperationImpl extends HasMetadataOperation<ClusterServiceBroker, ClusterServiceBrokerList, DoneableClusterServiceBroker, ClusterServiceBrokerResource> implements ClusterServiceBrokerResource {
 
-  public ClusterServiceBrokerOperationImpl(OkHttpClient client, Config config) {
-      this(client, config, "servicecatalog.k8s.io", "v1beta1", null, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
-  }
+    public ClusterServiceBrokerOperationImpl(OkHttpClient client, Config config) {
+        this(client, config, "servicecatalog.k8s.io", "v1beta1", null, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+    }
 
     public ClusterServiceBrokerOperationImpl(OkHttpClient client, Config config, String apiGroup, String apiVersion, String namespace, String name, Boolean cascading, ClusterServiceBroker item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, config, apiGroup, apiVersion, "clusterservicebrokers", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
-  }
+        super(client, config, apiGroup, apiVersion, "clusterservicebrokers", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+    }
+
+    //Added for compatibility
+    public ClusterServiceBrokerOperationImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, ClusterServiceBroker item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
+        super(client, config, ApiVersionUtil.apiGroup(item, apiVersion), ApiVersionUtil.apiVersion(item, apiVersion), "applications", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+    }
 
   @Override
   public boolean isResourceNamespaced() {

@@ -18,6 +18,7 @@ package me.snowdrop.servicecatalog.api.client.internal;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.Config;
+import me.snowdrop.servicecatalog.api.client.util.ApiVersionUtil;
 import me.snowdrop.servicecatalog.api.model.ClusterServicePlan;
 import me.snowdrop.servicecatalog.api.model.ClusterServicePlanList;
 import me.snowdrop.servicecatalog.api.model.DoneableClusterServicePlan;
@@ -37,7 +38,10 @@ public class ClusterServicePlanOperationImpl extends HasMetadataOperation<Cluste
     public ClusterServicePlanOperationImpl(OkHttpClient client, Config config, String apiGroup, String apiVersion, String namespace, String name, Boolean cascading, ClusterServicePlan item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
         super(client, config, apiGroup, apiVersion, "clusterserviceplans", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
     }
-
+    //Added for compatibility
+    public ClusterServicePlanOperationImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, ClusterServicePlan item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
+        super(client, config, ApiVersionUtil.apiGroup(item, apiVersion), ApiVersionUtil.apiVersion(item, apiVersion), "applications", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+    }
     @Override
     public boolean isResourceNamespaced() {
         return false;

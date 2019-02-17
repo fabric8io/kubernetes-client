@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
+import me.snowdrop.servicecatalog.api.client.util.ApiVersionUtil;
 import me.snowdrop.servicecatalog.api.model.DoneableServiceInstance;
 import me.snowdrop.servicecatalog.api.model.ServiceBinding;
 import me.snowdrop.servicecatalog.api.model.ServiceInstance;
@@ -43,7 +44,10 @@ public class ServiceInstanceOperationImpl extends HasMetadataOperation<ServiceIn
     public NonNamespaceOperation<ServiceInstance, ServiceInstanceList, DoneableServiceInstance, ServiceInstanceResource> inNamespace(String namespace) {
         return new ServiceInstanceOperationImpl(client, config, apiGroup, apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
     }
-
+    //Added for compatibility
+    public ServiceInstanceOperationImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, ServiceInstance item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
+        super(client, config, ApiVersionUtil.apiGroup(item, apiVersion), ApiVersionUtil.apiVersion(item, apiVersion), "applications", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+    }
     @Override
     public ServiceInstanceResource withName(String name) {
         return new ServiceInstanceOperationImpl(client, config, apiGroup, apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());

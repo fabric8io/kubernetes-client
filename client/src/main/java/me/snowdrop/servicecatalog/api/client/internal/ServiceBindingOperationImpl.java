@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.internal.SecretOperationsImpl;
+import me.snowdrop.servicecatalog.api.client.util.ApiVersionUtil;
 import me.snowdrop.servicecatalog.api.model.ServiceBinding;
 import me.snowdrop.servicecatalog.api.model.ServiceBindingList;
 import me.snowdrop.servicecatalog.api.model.DoneableServiceBinding;
@@ -38,7 +39,10 @@ public class ServiceBindingOperationImpl extends HasMetadataOperation<ServiceBin
     public ServiceBindingOperationImpl(OkHttpClient client, Config config, String apiGroup, String apiVersion, String namespace, String name, Boolean cascading, ServiceBinding item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
     super(client, config, apiGroup, apiVersion, "servicebindings", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
   }
-  
+    //Added for compatibility
+    public ServiceBindingOperationImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, ServiceBinding item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
+        super(client, config, ApiVersionUtil.apiGroup(item, apiVersion), ApiVersionUtil.apiVersion(item, apiVersion), "applications", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+    }
   
     @Override
   public NonNamespaceOperation<ServiceBinding, ServiceBindingList, DoneableServiceBinding, ServiceBindingResource> inNamespace(String namespace) {
