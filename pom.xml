@@ -27,7 +27,7 @@
     <groupId>me.snowdrop</groupId>
     <artifactId>servicecatalog-java-api-project</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.7</version>
+    <version>1.0.8-SNAPSHOT</version>
     <name>Snowdrop :: Service Catalog :: Project</name>
 
     <url>http://fabric8.io/</url>
