@@ -96,13 +96,18 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
 
     @Deprecated
     public ExecWebSocketListener(Config config, InputStream in, OutputStream out, OutputStream err, PipedOutputStream inputPipe, PipedInputStream outputPipe, PipedInputStream errorPipe, ExecListener listener) {
-        this(config, in, out, err, null, inputPipe, outputPipe, errorPipe, null, listener);
+        this(config, in, out, err, null, inputPipe, outputPipe, errorPipe, null, listener, null);
     }
 
+    @Deprecated
     public ExecWebSocketListener(Config config, InputStream in, OutputStream out, OutputStream err, OutputStream errChannel, PipedOutputStream inputPipe, PipedInputStream outputPipe, PipedInputStream errorPipe, PipedInputStream errorChannelPipe, ExecListener listener) {
+        this(config, in, out, err, errChannel, inputPipe, outputPipe, errorPipe, errorChannelPipe, listener, null);
+    }
+
+    public ExecWebSocketListener(Config config, InputStream in, OutputStream out, OutputStream err, OutputStream errChannel, PipedOutputStream inputPipe, PipedInputStream outputPipe, PipedInputStream errorPipe, PipedInputStream errorChannelPipe, ExecListener listener, Integer bufferSize) {
         this.config = config;
         this.listener = listener;
-        this.in = inputStreamOrPipe(in, inputPipe, toClose);
+        this.in = inputStreamOrPipe(in, inputPipe, toClose, bufferSize);
         this.out = outputStreamOrPipe(out, outputPipe, toClose);
         this.err = outputStreamOrPipe(err, errorPipe, toClose);
         this.errChannel = outputStreamOrPipe(errChannel, errorChannelPipe, toClose);
@@ -318,11 +323,11 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
         }
     }
 
-    private static InputStream inputStreamOrPipe(InputStream stream, PipedOutputStream out, Set<Closeable> toClose) {
+    private static InputStream inputStreamOrPipe(InputStream stream, PipedOutputStream out, Set<Closeable> toClose, Integer bufferSize) {
         if (stream != null) {
             return stream;
         } else if (out != null) {
-            PipedInputStream pis = new PipedInputStream();
+            PipedInputStream pis = bufferSize == null ? new PipedInputStream() : new PipedInputStream(bufferSize.intValue());
             toClose.add(out);
             toClose.add(pis);
             return pis;

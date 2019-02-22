@@ -2,6 +2,8 @@
 
 #### 4.1-SNAPSHOT
   Bugs
+   
+   * Fix #1008: Use a reasonable buffer size for exec stdin
   
   Improvements
   
