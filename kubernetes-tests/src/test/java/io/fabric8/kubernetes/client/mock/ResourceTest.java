@@ -16,11 +16,12 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import org.assertj.core.api.Assertions;
+import io.fabric8.kubernetes.client.ResourceNotFoundException;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.net.HttpURLConnection;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -69,6 +70,16 @@ public class ResourceTest {
         KubernetesClient client = server.getClient();
         HasMetadata response = client.resource(pod1).inNamespace("ns1").apply();
         assertEquals(pod1, response);
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testRequire() {
+        Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test1").and().build();
+
+        server.expect().get().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(HttpURLConnection.HTTP_NOT_FOUND, "").once();
+
+        KubernetesClient client = server.getClient();
+        client.pods().inNamespace("ns1").withName("pod1").require();
     }
 
   @Test

@@ -1,5 +1,3 @@
-package io.fabric8.kubernetes.client;
-
 /**
  * Copyright (C) 2015 Red Hat, Inc.
  *
@@ -15,6 +13,8 @@ package io.fabric8.kubernetes.client;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.fabric8.kubernetes.client;
+
 public class ResourceNotFoundException extends RuntimeException {
 
   public ResourceNotFoundException(String s) {

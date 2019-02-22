@@ -46,6 +46,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
@@ -188,7 +189,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
       }
       return answer;
     } catch (KubernetesClientException e) {
-      if (e.getCode() != 404) {
+      if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
         throw e;
       }
       return null;
@@ -211,7 +212,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
       }
       return answer;
     } catch (KubernetesClientException e) {
-      if (e.getCode() != 404) {
+      if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
         throw e;
       }
       throw new ResourceNotFoundException("Resource not found : " + e.getMessage());
@@ -237,12 +238,12 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
       return handleGet(requestUrl);
     } catch (KubernetesClientException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("get"), e);
-      //if (e.getCode() != 404) {
+      //if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
      //   throw e;
       //} else {
       //  String resourceType = type != null ? type.getSimpleName() : "Resource";
       //  String msg = resourceType + " with name: [" + getName() + "]  not found in namespace: [" + (Utils.isNotNullOrEmpty(getNamespace()) ? getName() : getConfig().getNamespace()) + "]";
-     //   throw new KubernetesClientException(msg, 404, new StatusBuilder().withCode(404).withMessage(msg).build());
+     //   throw new KubernetesClientException(msg, HttpURLConnection.HTTP_NOT_FOUND, new StatusBuilder().withCode(HttpURLConnection.HTTP_NOT_FOUND).withMessage(msg).build());
      // }
     } catch (InterruptedException | ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("get"), e);
@@ -255,7 +256,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
       Request.Builder req = new Request.Builder().get().url(requestUrl);
       return handleResponse(req, RootPaths.class);
     } catch (KubernetesClientException e) {
-      if (e.getCode() != 404) {
+      if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
         throw e;
       }
       return null;
@@ -645,7 +646,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
         deleteThis();
         return true;
       } catch (KubernetesClientException e) {
-        if (e.getCode() != 404) {
+        if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
           throw e;
         }
         return false;
@@ -655,7 +656,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
         deleteList();
         return true;
       } catch (KubernetesClientException e) {
-        if (e.getCode() != 404) {
+        if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
           throw e;
         }
         return false;
@@ -680,7 +681,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
           R op = createItemOperation(item);
           deleted &= op.delete();
         } catch (KubernetesClientException e) {
-          if (e.getCode() != 404) {
+          if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
             throw e;
           }
           return false;
