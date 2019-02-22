@@ -10,6 +10,7 @@
   Dependency Upgrade
   
   New Feature
+    * Feature 213: Added require( ) method to Resource object class.
 
 #### 4.1.2
   Bugs
