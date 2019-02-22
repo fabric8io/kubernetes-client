@@ -187,12 +187,10 @@ public class KubernetesTypeAnnotator extends Jackson2Annotator {
     private void envNameValidator(JDefinedClass clazz) {
         for (Map.Entry<String, JFieldVar> f : clazz.fields().entrySet()) {
             if (f.getKey().equals("name") && f.getValue().type().name().equals("String") && clazz.name().equals("EnvVar")) {
-                try {
-                    JAnnotationUse annotation = f.getValue().annotate(new JCodeModel()._class("javax.validation.constraints.Pattern"));
-
-                    annotation.param("regexp", "^" + envNamePattern + "$");
-                } catch (JClassAlreadyExistsException e) {
-                    e.printStackTrace();
+                for (JAnnotationUse annotation: f.getValue().annotations()) {
+                    if (annotation.getAnnotationClass().name().equals("Pattern")) {
+                        annotation.param("regexp", "^" + envNamePattern + "$");
+                    }
                 }
                 return;
             }
