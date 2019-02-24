@@ -116,14 +116,11 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
         this.output = outputPipe;
         this.error = errorPipe;
         this.errorChannel = errorChannelPipe;
-        this.pumper = new NonBlockingInputStreamPumper(this.in, new Callback<byte[]>() {
-            @Override
-            public void call(byte[] data) {
-                try {
-                    send(data);
-                } catch (Exception e) {
-                    //
-                }
+        this.pumper = new NonBlockingInputStreamPumper(this.in, data -> {
+            try {
+                send(data);
+            } catch (Exception e) {
+                //
             }
         });
     }

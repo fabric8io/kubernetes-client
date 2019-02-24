@@ -66,12 +66,7 @@ public class HttpClientUtils {
             httpClientBuilder.followSslRedirects(true);
 
             if (config.isTrustCerts() || config.isDisableHostnameVerification()) {
-                httpClientBuilder.hostnameVerifier(new HostnameVerifier() {
-                    @Override
-                    public boolean verify(String s, SSLSession sslSession) {
-                        return true;
-                    }
-                });
+                httpClientBuilder.hostnameVerifier((s, sslSession) -> true);
             }
 
             TrustManager[] trustManagers = SSLUtils.trustManagers(config);
@@ -95,19 +90,16 @@ public class HttpClientUtils {
               httpClientBuilder.sslSocketFactory(context.getSocketFactory(), (X509TrustManager) trustManagers[0]);
             }
 
-          httpClientBuilder.addInterceptor(new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-              Request request = chain.request();
-              if (Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword())) {
-                Request authReq = chain.request().newBuilder().addHeader("Authorization", Credentials.basic(config.getUsername(), config.getPassword())).build();
-                return chain.proceed(authReq);
-              } else if (Utils.isNotNullOrEmpty(config.getOauthToken())) {
-                Request authReq = chain.request().newBuilder().addHeader("Authorization", "Bearer " + config.getOauthToken()).build();
-                return chain.proceed(authReq);
-              }
-              return chain.proceed(request);
+          httpClientBuilder.addInterceptor(chain -> {
+            Request request = chain.request();
+            if (Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword())) {
+              Request authReq = chain.request().newBuilder().addHeader("Authorization", Credentials.basic(config.getUsername(), config.getPassword())).build();
+              return chain.proceed(authReq);
+            } else if (Utils.isNotNullOrEmpty(config.getOauthToken())) {
+              Request authReq = chain.request().newBuilder().addHeader("Authorization", "Bearer " + config.getOauthToken()).build();
+              return chain.proceed(authReq);
             }
+            return chain.proceed(request);
           }).addInterceptor(new ImpersonatorInterceptor(config))
             .addInterceptor(new BackwardsCompatibilityInterceptor());
 
@@ -145,13 +137,10 @@ public class HttpClientUtils {
                         httpClientBuilder.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyUrl.getHost(), proxyUrl.getPort())));
 
                         if (config.getProxyUsername() != null) {
-                          httpClientBuilder.proxyAuthenticator(new Authenticator() {
-                            @Override
-                            public Request authenticate(Route route, Response response) throws IOException {
+                          httpClientBuilder.proxyAuthenticator((route, response) -> {
 
-                              String credential = Credentials.basic(config.getProxyUsername(), config.getProxyPassword());
-                              return response.request().newBuilder().header("Proxy-Authorization", credential).build();
-                            }
+                            String credential = Credentials.basic(config.getProxyUsername(), config.getProxyPassword());
+                            return response.request().newBuilder().header("Proxy-Authorization", credential).build();
                           });
                         }
                     }
@@ -162,12 +151,9 @@ public class HttpClientUtils {
             }
 
             if (config.getUserAgent() != null && !config.getUserAgent().isEmpty()) {
-                httpClientBuilder.addNetworkInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        Request agent = chain.request().newBuilder().header("User-Agent", config.getUserAgent()).build();
-                        return chain.proceed(agent);
-                    }
+                httpClientBuilder.addNetworkInterceptor(chain -> {
+                    Request agent = chain.request().newBuilder().header("User-Agent", config.getUserAgent()).build();
+                    return chain.proceed(agent);
                 });
             }
 

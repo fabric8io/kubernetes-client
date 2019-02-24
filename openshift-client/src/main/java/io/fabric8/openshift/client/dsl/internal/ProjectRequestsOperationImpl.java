@@ -85,14 +85,11 @@ public class ProjectRequestsOperationImpl extends OperationSupport implements Pr
 
   @Override
   public DoneableProjectRequest createNew() {
-    return new DoneableProjectRequest(new Function<ProjectRequest, ProjectRequest>() {
-      @Override
-      public ProjectRequest apply(ProjectRequest item) {
-        try {
-          return create(item);
-        } catch (Exception e) {
-          throw KubernetesClientException.launderThrowable(e);
-        }
+    return new DoneableProjectRequest(item -> {
+      try {
+        return create(item);
+      } catch (Exception e) {
+        throw KubernetesClientException.launderThrowable(e);
       }
     });
   }

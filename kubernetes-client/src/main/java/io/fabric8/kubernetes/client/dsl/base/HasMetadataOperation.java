@@ -46,20 +46,17 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
 
   @Override
   public D edit() throws KubernetesClientException {
-    final Function<T, T> visitor = new Function<T, T>() {
-      @Override
-      public T apply(T resource) {
-        try {
-          if (isCascading() && !isReaping()) {
-            if (reaper != null) {
-              setReaping(true);
-              reaper.reap();
-            }
+    final Function<T, T> visitor = resource -> {
+      try {
+        if (isCascading() && !isReaping()) {
+          if (reaper != null) {
+            setReaping(true);
+            reaper.reap();
           }
-          return patch(resource);
-        } catch (Exception e) {
-          throw KubernetesClientException.launderThrowable(forOperationType("edit"), e);
         }
+        return patch(resource);
+      } catch (Exception e) {
+        throw KubernetesClientException.launderThrowable(forOperationType("edit"), e);
       }
     };
 
@@ -100,15 +97,12 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
           }
         }
 
-        final Function<T, T> visitor = new Function<T, T>() {
-          @Override
-          public T apply(T resource) {
-            try {
-              resource.getMetadata().setResourceVersion(resourceVersion);
-              return handleReplace(resource);
-            } catch (Exception e) {
-              throw KubernetesClientException.launderThrowable(forOperationType("replace"), e);
-            }
+        final Function<T, T> visitor = resource -> {
+          try {
+            resource.getMetadata().setResourceVersion(resourceVersion);
+            return handleReplace(resource);
+          } catch (Exception e) {
+            throw KubernetesClientException.launderThrowable(forOperationType("replace"), e);
           }
         };
         D doneable = (D) getDoneableType().getDeclaredConstructor(getType(), Function.class).newInstance(item, visitor);
@@ -150,14 +144,11 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
         if (got == null) {
           return null;
         }
-        final Function<T, T> visitor = new Function<T, T>() {
-          @Override
-          public T apply(T resource) {
-            try {
-              return handlePatch(got, resource);
-            } catch (Exception e) {
-              throw KubernetesClientException.launderThrowable(forOperationType("patch"), e);
-            }
+        final Function<T, T> visitor = resource -> {
+          try {
+            return handlePatch(got, resource);
+          } catch (Exception e) {
+            throw KubernetesClientException.launderThrowable(forOperationType("patch"), e);
           }
         };
         D doneable = (D) getDoneableType().getDeclaredConstructor(getType(), Function.class).newInstance(item, visitor);

@@ -10,8 +10,8 @@
   
     * Fix #1362: store exceptions thrown in port forwarder websocket
     * Generate Jandex index file for faster lookup performance
-    
     * Fix #1361: Relax restrictions on environment variable names
+    * Refactor: Use lambdas wherever possible across project
   
   Dependency Upgrade
   

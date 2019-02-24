@@ -90,24 +90,22 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
 
     final AtomicReference<Job> atomicJob = new AtomicReference<>();
 
-    final Runnable jobPoller = new Runnable() {
-      public void run() {
-        try {
-          Job job = getMandatory();
-          atomicJob.set(job);
-          Integer activeJobs = job.getStatus().getActive();
-          if (activeJobs == null) {
-            activeJobs = 0;
-          }
-          if (Objects.equals(job.getSpec().getParallelism(), activeJobs)) {
-            countDownLatch.countDown();
-          } else {
-            LOG.debug("Only {}/{} pods scheduled for Job: {} in namespace: {} seconds so waiting...",
-              job.getStatus().getActive(), job.getSpec().getParallelism(), job.getMetadata().getName(), namespace);
-          }
-        } catch (Throwable t) {
-          LOG.error("Error while waiting for Job to be scaled.", t);
+    final Runnable jobPoller = () -> {
+      try {
+        Job job = getMandatory();
+        atomicJob.set(job);
+        Integer activeJobs = job.getStatus().getActive();
+        if (activeJobs == null) {
+          activeJobs = 0;
         }
+        if (Objects.equals(job.getSpec().getParallelism(), activeJobs)) {
+          countDownLatch.countDown();
+        } else {
+          LOG.debug("Only {}/{} pods scheduled for Job: {} in namespace: {} seconds so waiting...",
+            job.getStatus().getActive(), job.getSpec().getParallelism(), job.getMetadata().getName(), namespace);
+        }
+      } catch (Throwable t) {
+        LOG.error("Error while waiting for Job to be scaled.", t);
       }
     };
 

@@ -104,34 +104,32 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
     final String name = checkName(getItem());
     final String namespace = checkNamespace(getItem());
 
-    final Runnable deploymentPoller = new Runnable() {
-      public void run() {
-        try {
-          Deployment deployment = get();
-          //If the deployment is gone, we shouldn't wait.
-          if (deployment == null) {
-            if (count == 0) {
-              queue.put(true);
-              return;
-            } else {
-              queue.put(new IllegalStateException("Can't wait for Deployment: " + checkName(getItem()) + " in namespace: " + checkName(getItem()) + " to scale. Resource is no longer available."));
-              return;
-            }
-          }
-
-          replicasRef.set(deployment.getStatus().getReplicas());
-          int currentReplicas = deployment.getStatus().getReplicas() != null ? deployment.getStatus().getReplicas() : 0;
-          long generation = deployment.getMetadata().getGeneration() != null ? deployment.getMetadata().getGeneration() : 0;
-          long observedGeneration = deployment.getStatus() != null && deployment.getStatus().getObservedGeneration() != null ? deployment.getStatus().getObservedGeneration() : -1;
-          if (observedGeneration >= generation && Objects.equals(deployment.getSpec().getReplicas(), currentReplicas)) {
+    final Runnable deploymentPoller = () -> {
+      try {
+        Deployment deployment = get();
+        //If the deployment is gone, we shouldn't wait.
+        if (deployment == null) {
+          if (count == 0) {
             queue.put(true);
+            return;
           } else {
-            LOG.debug("Only {}/{} pods scheduled for Deployment: {} in namespace: {} seconds so waiting...",
-              deployment.getStatus().getReplicas(), deployment.getSpec().getReplicas(), deployment.getMetadata().getName(), namespace);
+            queue.put(new IllegalStateException("Can't wait for Deployment: " + checkName(getItem()) + " in namespace: " + checkName(getItem()) + " to scale. Resource is no longer available."));
+            return;
           }
-        } catch (Throwable t) {
-          LOG.error("Error while waiting for Deployment to be scaled.", t);
         }
+
+        replicasRef.set(deployment.getStatus().getReplicas());
+        int currentReplicas = deployment.getStatus().getReplicas() != null ? deployment.getStatus().getReplicas() : 0;
+        long generation = deployment.getMetadata().getGeneration() != null ? deployment.getMetadata().getGeneration() : 0;
+        long observedGeneration = deployment.getStatus() != null && deployment.getStatus().getObservedGeneration() != null ? deployment.getStatus().getObservedGeneration() : -1;
+        if (observedGeneration >= generation && Objects.equals(deployment.getSpec().getReplicas(), currentReplicas)) {
+          queue.put(true);
+        } else {
+          LOG.debug("Only {}/{} pods scheduled for Deployment: {} in namespace: {} seconds so waiting...",
+            deployment.getStatus().getReplicas(), deployment.getSpec().getReplicas(), deployment.getMetadata().getName(), namespace);
+        }
+      } catch (Throwable t) {
+        LOG.error("Error while waiting for Deployment to be scaled.", t);
       }
     };
 
@@ -176,12 +174,10 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
     private void waitForObservedGeneration(final long observedGeneration) {
       final CountDownLatch countDownLatch = new CountDownLatch(1);
 
-      final Runnable deploymentPoller = new Runnable() {
-        public void run() {
-          Deployment deployment = oper.getMandatory();
-          if (observedGeneration <= deployment.getStatus().getObservedGeneration()) {
-            countDownLatch.countDown();
-          }
+      final Runnable deploymentPoller = () -> {
+        Deployment deployment = oper.getMandatory();
+        if (observedGeneration <= deployment.getStatus().getObservedGeneration()) {
+          countDownLatch.countDown();
         }
       };
 

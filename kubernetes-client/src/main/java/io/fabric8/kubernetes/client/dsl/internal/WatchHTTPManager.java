@@ -63,13 +63,10 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
   private final AtomicInteger currentReconnectAttempt = new AtomicInteger(0);
   private OkHttpClient clonedClient;
 
-  private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor(new ThreadFactory() {
-    @Override
-    public Thread newThread(Runnable r) {
-      Thread ret = new Thread(r, "Executor for Watch " + System.identityHashCode(WatchHTTPManager.this));
-      ret.setDaemon(true);
-      return ret;
-    }
+  private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor(r -> {
+    Thread ret = new Thread(r, "Executor for Watch " + System.identityHashCode(WatchHTTPManager.this));
+    ret.setDaemon(true);
+    return ret;
   });
 
   public WatchHTTPManager(final OkHttpClient client,
@@ -205,38 +202,32 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
     if(!executor.isShutdown()) {
       // make sure that whichever thread calls this method, the tasks are
       // performed serially in the executor.
-      executor.submit(new Runnable() {
-        @Override
-        public void run() {
-          if (!reconnectPending.compareAndSet(false, true)) {
-            logger.debug("Reconnect already scheduled");
-            return;
-          }
-          try {
-            // actual reconnect only after the back-off time has passed, without
-            // blocking the thread
-            logger.debug("Scheduling reconnect task");
-            executor.schedule(new Runnable() {
-              @Override
-              public void run() {
-                try {
-                  WatchHTTPManager.this.runWatch();
-                  reconnectPending.set(false);
-                } catch (Exception e) {
-                  // An unexpected error occurred and we didn't even get an onFailure callback.
-                  logger.error("Exception in reconnect", e);
-                  close();
-                  watcher.onClose(new KubernetesClientException("Unhandled exception in reconnect attempt", e));
-                }
-              }
-            }, nextReconnectInterval(), TimeUnit.MILLISECONDS);
-          } catch (RejectedExecutionException e) {
-            // This is a standard exception if we close the scheduler. We should not print it
-            if (!forceClosed.get()) {
+      executor.submit(() -> {
+        if (!reconnectPending.compareAndSet(false, true)) {
+          logger.debug("Reconnect already scheduled");
+          return;
+        }
+        try {
+          // actual reconnect only after the back-off time has passed, without
+          // blocking the thread
+          logger.debug("Scheduling reconnect task");
+          executor.schedule(() -> {
+            try {
+              WatchHTTPManager.this.runWatch();
+              reconnectPending.set(false);
+            } catch (Exception e) {
+              // An unexpected error occurred and we didn't even get an onFailure callback.
               logger.error("Exception in reconnect", e);
+              close();
+              watcher.onClose(new KubernetesClientException("Unhandled exception in reconnect attempt", e));
             }
-            reconnectPending.set(false);
+          }, nextReconnectInterval(), TimeUnit.MILLISECONDS);
+        } catch (RejectedExecutionException e) {
+          // This is a standard exception if we close the scheduler. We should not print it
+          if (!forceClosed.get()) {
+            logger.error("Exception in reconnect", e);
           }
+          reconnectPending.set(false);
         }
       });
     }

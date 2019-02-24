@@ -387,14 +387,11 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   @Override
   public D createNew() throws KubernetesClientException {
-    final Function<T, T> visitor = new Function<T, T>() {
-      @Override
-      public T apply(T resource) {
-        try {
-          return create(resource);
-        } catch (Exception e) {
-          throw KubernetesClientException.launderThrowable(forOperationType("create"), e);
-        }
+    final Function<T, T> visitor = resource -> {
+      try {
+        return create(resource);
+      } catch (Exception e) {
+        throw KubernetesClientException.launderThrowable(forOperationType("create"), e);
       }
     };
 
@@ -408,14 +405,11 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   @Override
   public D createOrReplaceWithNew() throws KubernetesClientException {
-    final Function<T, T> visitor = new Function<T, T>() {
-      @Override
-      public T apply(T resource) {
-        try {
-          return createOrReplace(resource);
-        } catch (Exception e) {
-          throw KubernetesClientException.launderThrowable(forOperationType("create or replace"), e);
-        }
+    final Function<T, T> visitor = resource -> {
+      try {
+        return createOrReplace(resource);
+      } catch (Exception e) {
+        throw KubernetesClientException.launderThrowable(forOperationType("create or replace"), e);
       }
     };
 
