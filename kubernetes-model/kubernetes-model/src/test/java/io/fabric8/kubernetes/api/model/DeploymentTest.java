@@ -129,6 +129,23 @@ public class DeploymentTest {
                 .endFieldRef()
                 .endValueFrom()
                 .endEnv()
+
+                // test env name pattern "[-._a-zA-Z][-._a-zA-Z0-9]*"
+                .addNewEnv()
+                .withName("KUBERNETES-NAME")
+                .withNewValueFrom()
+                .withNewFieldRef()
+                .endFieldRef()
+                .endValueFrom()
+                .endEnv()
+                .addNewEnv()
+                .withName("KUBERNETES.CLUSTERNAME")
+                .withNewValueFrom()
+                .withNewFieldRef()
+                .endFieldRef()
+                .endValueFrom()
+                .endEnv()
+
                 .withImage("fabric8/fabric8-maven-sample-zero-config:snapshot-171129-120114-0102")
                 .withImagePullPolicy("IfNotPresent")
                 .withName("spring-boot")
@@ -285,8 +302,10 @@ public class DeploymentTest {
         Assert.assertEquals(1, deployment.getSpec().getTemplate().getSpec().getContainers().size());
         Assert.assertArrayEquals(new Object[] {"printenv"}, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getCommand().toArray());
         Assert.assertArrayEquals(new Object[] {"HOSTNAME", "KUBERNETES_PORT"}, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getArgs().toArray());
-        Assert.assertEquals(1, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getEnv().size());
+        Assert.assertEquals(3, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getEnv().size());
         Assert.assertEquals("KUBERNETES_NAMESPACE", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getEnv().get(0).getName());
+        Assert.assertEquals("KUBERNETES-NAME", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getEnv().get(1).getName());
+        Assert.assertEquals("KUBERNETES.CLUSTERNAME", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getEnv().get(2).getName());
         Assert.assertEquals("fabric8/fabric8-maven-sample-zero-config:snapshot-171129-120114-0102", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
         Assert.assertEquals("IfNotPresent", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getImagePullPolicy());
         Assert.assertEquals("spring-boot", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getName());
@@ -451,6 +470,25 @@ public class DeploymentTest {
                 .endFieldRef()
                 .endValueFrom()
                 .endEnv()
+
+                // test env name pattern "[-._a-zA-Z][-._a-zA-Z0-9]*"
+                .addNewEnv()
+                .withName("KUBERNETES-NAME")
+                .withNewValueFrom()
+                .withNewFieldRef()
+                .withFieldPath("metadata.name")
+                .endFieldRef()
+                .endValueFrom()
+                .endEnv()
+                .addNewEnv()
+                .withName("KUBERNETES.CLUSTERNAME")
+                .withNewValueFrom()
+                .withNewFieldRef()
+                .withFieldPath("metadata.clusterName")
+                .endFieldRef()
+                .endValueFrom()
+                .endEnv()
+
                 .withImage("fabric8/fabric8-maven-sample-zero-config:snapshot-171129-120114-0102")
                 .withImagePullPolicy("IfNotPresent")
                 .withName("spring-boot")
@@ -616,8 +654,10 @@ public class DeploymentTest {
         Assert.assertEquals(1, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().size());
         Assert.assertArrayEquals(new Object[] {"printenv"}, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getCommand().toArray());
         Assert.assertArrayEquals(new Object[] {"HOSTNAME", "KUBERNETES_PORT"}, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getArgs().toArray());
-        Assert.assertEquals(1, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getEnv().size());
+        Assert.assertEquals(3, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getEnv().size());
         Assert.assertEquals("KUBERNETES_NAMESPACE", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getEnv().get(0).getName());
+        Assert.assertEquals("KUBERNETES-NAME", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getEnv().get(1).getName());
+        Assert.assertEquals("KUBERNETES.CLUSTERNAME", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getEnv().get(2).getName());
         Assert.assertEquals("fabric8/fabric8-maven-sample-zero-config:snapshot-171129-120114-0102", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
         Assert.assertEquals("IfNotPresent", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getImagePullPolicy());
         Assert.assertEquals("spring-boot", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getName());
