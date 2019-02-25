@@ -38,6 +38,9 @@ import java.util.regex.Pattern;
 
 public class KubernetesTypeAnnotator extends Jackson2Annotator {
 
+    // see: https://github.com/kubernetes/kubernetes/blob/6902f3112d98eb6bd0894886ff9cd3fbd03a7f79/staging/src/k8s.io/apimachinery/pkg/util/validation/validation.go#L315
+    private final String envNamePattern = "[-._a-zA-Z][-._a-zA-Z0-9]*";
+
     private final String nameIsDNS952LabelPattern = "[a-z]([-a-z0-9]*[a-z0-9])?";
 
     private final String nameIsDNS1123LabelPattern = "[a-z0-9]([-a-z0-9]*[a-z0-9])?";
@@ -80,6 +83,7 @@ public class KubernetesTypeAnnotator extends Jackson2Annotator {
                     .param("value", "done");
 
             annotateMetatadataValidator(clazz);
+            envNameValidator(clazz);
         } catch (JClassAlreadyExistsException e) {
             e.printStackTrace();
         }
@@ -174,6 +178,19 @@ public class KubernetesTypeAnnotator extends Jackson2Annotator {
                     }
                 } catch (JClassAlreadyExistsException e) {
                     e.printStackTrace();
+                }
+                return;
+            }
+        }
+    }
+
+    private void envNameValidator(JDefinedClass clazz) {
+        for (Map.Entry<String, JFieldVar> f : clazz.fields().entrySet()) {
+            if (f.getKey().equals("name") && f.getValue().type().name().equals("String") && clazz.name().equals("EnvVar")) {
+                for (JAnnotationUse annotation: f.getValue().annotations()) {
+                    if (annotation.getAnnotationClass().name().equals("Pattern")) {
+                        annotation.param("regexp", "^" + envNamePattern + "$");
+                    }
                 }
                 return;
             }
