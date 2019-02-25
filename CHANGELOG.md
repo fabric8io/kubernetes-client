@@ -1,5 +1,10 @@
 ### CHANGELOG
 
+#### 4.1-SNAPSHOT
+  Improvements
+  
+    * Fix #1361: Relax restrictions on environment variable names
+
 #### 4.1.2
   Bugs
 
