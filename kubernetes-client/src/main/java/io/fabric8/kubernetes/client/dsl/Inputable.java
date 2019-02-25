@@ -23,4 +23,6 @@ public interface Inputable<I, P, T> {
     T writingInput(P in);
 
     T redirectingInput();
+
+    T redirectingInput(Integer bufferSize);
 }

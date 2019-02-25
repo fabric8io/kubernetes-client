@@ -15,20 +15,10 @@
  */
 package io.fabric8.kubernetes.client;
 
-import java.io.Closeable;
-import java.util.Collection;
+public class ResourceNotFoundException extends RuntimeException {
 
-/**
- * A handle that allows closing a port forward operation and checking its status.
- */
-public interface PortForward extends Closeable {
-
-  boolean isAlive();
-
-  boolean errorOccurred();
-
-  Collection<Throwable> getClientThrowables();
-
-  Collection<Throwable> getServerThrowables();
+  public ResourceNotFoundException(String s) {
+    super(s);
+  }
 
 }

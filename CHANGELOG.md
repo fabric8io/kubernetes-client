@@ -1,9 +1,22 @@
 ### CHANGELOG
 
 #### 4.1-SNAPSHOT
+
+  Bugs
+   
+   * Fix #1008: Use a reasonable buffer size for exec stdin
+  
   Improvements
   
+    * Fix #1362: store exceptions thrown in port forwarder websocket
+    * Generate Jandex index file for faster lookup performance
+    
     * Fix #1361: Relax restrictions on environment variable names
+  
+  Dependency Upgrade
+  
+  New Feature
+    * Feature 213: Added require( ) method to Resource object class.
 
 #### 4.1.2
   Bugs
