@@ -161,39 +161,19 @@ public class UserImpersonationIT {
   }
 
   private Callable<Boolean> serviceAccountIsDeleted() {
-    return new Callable<Boolean>() {
-      @Override
-      public Boolean call() {
-        return client.serviceAccounts().inNamespace(currentNamespace).withName(serviceAccount1.getMetadata().getName()).get() == null;
-      }
-    };
+    return () -> client.serviceAccounts().inNamespace(currentNamespace).withName(serviceAccount1.getMetadata().getName()).get() == null;
   }
 
   private Callable<Boolean> projectIsDeleted() {
-    return new Callable<Boolean>() {
-      @Override
-      public Boolean call() {
-        return client.projects().withName(NEW_PROJECT).get() == null;
-      }
-    };
+    return () -> client.projects().withName(NEW_PROJECT).get() == null;
   }
 
   private Callable<Boolean> kubernetesClusterRoleBindingIsDeleted() {
-    return new Callable<Boolean>() {
-      @Override
-      public Boolean call() {
-        return client.rbac().clusterRoleBindings().inNamespace(currentNamespace).withName("impersonator-role").get() == null;
-      }
-    };
+    return () -> client.rbac().clusterRoleBindings().inNamespace(currentNamespace).withName("impersonator-role").get() == null;
   }
 
   private Callable<Boolean> kubernetesClusterRoleIsDeleted() {
-    return new Callable<Boolean>() {
-      @Override
-      public Boolean call() {
-        return client.rbac().clusterRoles().inNamespace(currentNamespace).withName("impersonator").get() == null;
-      }
-    };
+    return () -> client.rbac().clusterRoles().inNamespace(currentNamespace).withName("impersonator").get() == null;
   }
 
 

@@ -154,20 +154,17 @@ public class PortForwarderWebsocket implements PortForwarder {
 
       // Start listening on localhost for new connections.
       // Every new connection will open its own stream on the remote resource.
-      executorService.execute(new Runnable() {
-        @Override
-        public void run() {
-          // accept cycle
-          while (alive.get()) {
-            try {
-              SocketChannel socket = server.accept();
-              handles.add(forward(resourceBaseUrl, port, socket, socket));
-            } catch (IOException e) {
-              if (alive.get()) {
-                LOG.error("Error while listening for connections", e);
-              }
-              closeQuietly(localPortForwardHandle);
+      executorService.execute(() -> {
+        // accept cycle
+        while (alive.get()) {
+          try {
+            SocketChannel socket = server.accept();
+            handles.add(forward(resourceBaseUrl, port, socket, socket));
+          } catch (IOException e) {
+            if (alive.get()) {
+              LOG.error("Error while listening for connections", e);
             }
+            closeQuietly(localPortForwardHandle);
           }
         }
       });
@@ -202,29 +199,26 @@ public class PortForwarderWebsocket implements PortForwarder {
         LOG.debug("{}: onOpen", logPrefix);
 
         if (in != null) {
-          pumperService.execute(new Runnable() {
-            @Override
-            public void run() {
-              ByteBuffer buffer = ByteBuffer.allocate(4096);
-              int read;
-              try {
-                do {
-                  buffer.clear();
-                  buffer.put((byte) 0); // channel byte
-                  read = in.read(buffer);
-                  if (read > 0) {
-                    buffer.flip();
-                    ByteString data = ByteString.of(buffer);
-                    webSocket.send(data);
-                  }
-                } while (alive.get() && read >= 0);
-
-              } catch (IOException e) {
-                if (alive.get()) {
-                  clientThrowables.add(e);
-                  LOG.error("Error while writing client data");
-                  closeBothWays(webSocket, 1001, "Client error");
+          pumperService.execute(() -> {
+            ByteBuffer buffer = ByteBuffer.allocate(4096);
+            int read;
+            try {
+              do {
+                buffer.clear();
+                buffer.put((byte) 0); // channel byte
+                read = in.read(buffer);
+                if (read > 0) {
+                  buffer.flip();
+                  ByteString data = ByteString.of(buffer);
+                  webSocket.send(data);
                 }
+              } while (alive.get() && read >= 0);
+
+            } catch (IOException e) {
+              if (alive.get()) {
+                clientThrowables.add(e);
+                LOG.error("Error while writing client data");
+                closeBothWays(webSocket, 1001, "Client error");
               }
             }
           });
