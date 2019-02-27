@@ -12,6 +12,7 @@
     * Generate Jandex index file for faster lookup performance
     * Fix #1361: Relax restrictions on environment variable names
     * Refactor: Use lambdas wherever possible across project
+    * Fix #1371: Add an example for Job Controller
   
   Dependency Upgrade
   
