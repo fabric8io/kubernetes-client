@@ -115,7 +115,8 @@ public class Serialization {
    * @throws KubernetesClientException
    */
   public static <T> T unmarshal(InputStream is, ObjectMapper mapper, Map<String, String> parameters) {
-    try (BufferedInputStream bis = new BufferedInputStream(is)) {
+    InputStream wrapped = parameters != null && !parameters.isEmpty() ? new ReplaceValueStream(parameters).createInputStream(is) : is;
+    try (BufferedInputStream bis = new BufferedInputStream(wrapped)) {
       bis.mark(-1);
       int intch;
       do {
