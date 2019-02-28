@@ -15,6 +15,9 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.ContainerBuilder;
+import io.fabric8.kubernetes.api.model.ContainerPortBuilder;
+import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.apps.DeploymentList;
@@ -29,6 +32,10 @@ import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.Rule;
 import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -271,5 +278,51 @@ public class DeploymentTest {
     KubernetesClient client = server.getClient();
 
     client.apps().deployments().inNamespace("test1").withName("mydeployment1").create(deployment1);
+  }
+
+  @Test
+  public void testRollingUpdate() {
+    Deployment deployment = new DeploymentBuilder()
+      .withNewMetadata()
+      .withName("deployment1")
+      .withNamespace("ns1")
+      .endMetadata()
+      .withNewSpec()
+      .withReplicas(1)
+      .withNewSelector()
+      .withMatchLabels(Collections.singletonMap("service", "http-server"))
+      .endSelector()
+      .withNewStrategy()
+      .withType("RollingUpdate")
+      .withNewRollingUpdate()
+      .withNewMaxSurge().withIntVal(1).endMaxSurge()
+      .withNewMaxUnavailable().withIntVal(1).endMaxUnavailable()
+      .endRollingUpdate()
+      .endStrategy()
+      .withMinReadySeconds(5)
+      .withNewTemplate()
+      .withNewMetadata().withLabels(Collections.singletonMap("service", "http-server")).endMetadata()
+      .withNewSpec()
+      .addToContainers(new ContainerBuilder()
+        .withName("nginx")
+        .withImage("nginx:1.10.2")
+        .withImagePullPolicy("IfNotPresent")
+        .withPorts(Arrays.asList(new ContainerPortBuilder().withContainerPort(80).build()))
+        .build())
+      .endSpec()
+      .endTemplate()
+      .endSpec()
+      .build();
+
+    server.expect().withPath("/apis/apps/v1/namespaces/ns1/deployments/deployment1").andReturn(200, deployment).always();
+    server.expect().withPath("/api/v1/namespaces/ns1/pods?labelSelector=service%3Dhttp-server").andReturn(200, new KubernetesListBuilder().build()).once();
+    server.expect().post().withPath("/apis/apps/v1/namespaces/ns1/deployments").andReturn(201, deployment).times(2);
+    KubernetesClient client = server.getClient();
+
+    client.apps().deployments().inNamespace("ns1")
+      .withName("deployment1")
+      .rolling()
+      .withTimeout(5, TimeUnit.MINUTES)
+      .updateImage("");
   }
 }

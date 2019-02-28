@@ -19,7 +19,8 @@
   
   New Feature
     * Feature 213: Added require( ) method to Resource object class.
-
+    * Fix #1064: Make Deployments rollable
+    
 #### 4.1.2
   Bugs
 

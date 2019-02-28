@@ -68,7 +68,7 @@ public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAP
 
   @Override
   @Deprecated
-  public MixedOperation<Deployment, DeploymentList, DoneableDeployment, ScalableResource<Deployment, DoneableDeployment>> deployments() {
+  public MixedOperation<Deployment, DeploymentList, DoneableDeployment, RollableScalableResource<Deployment, DoneableDeployment>> deployments() {
     return new DeploymentOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
