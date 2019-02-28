@@ -113,7 +113,7 @@
     <maven.resources.plugin.version>3.0.1</maven.resources.plugin.version>
     <maven.surefire.plugin.version>3.0.0-M1</maven.surefire.plugin.version>
     <maven.scr.plugin.version>1.22.0</maven.scr.plugin.version>
-
+    <jandex.plugin.version>1.0.5</jandex.plugin.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
 
@@ -147,6 +147,21 @@
 
   <build>
     <plugins>
+      <!-- Create jandex index for faster performance in environments that use it -->
+      <plugin>
+        <groupId>org.jboss.jandex</groupId>
+        <artifactId>jandex-maven-plugin</artifactId>
+        <version>${jandex.plugin.version}</version>
+        <executions>
+          <execution>
+            <id>make-index</id>
+            <goals>
+              <goal>jandex</goal>
+            </goals>
+            <inherited>true</inherited>
+          </execution>
+        </executions>
+      </plugin>      
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>

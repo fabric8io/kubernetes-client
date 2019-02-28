@@ -144,21 +144,13 @@ public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
 
     @Override
     public void onResponse(Call call, final Response response) throws IOException {
-       pumper = new BlockingInputStreamPumper(response.body().byteStream(), new io.fabric8.kubernetes.client.Callback<byte[]>(){
-            @Override
-            public void call(byte[] input) {
-                try {
-                    out.write(input);
-                } catch (IOException e) {
-                    throw KubernetesClientException.launderThrowable(e);
-                }
-            }
-        }, new Runnable() {
-            @Override
-            public void run() {
-                response.close();
-            }
-        });
+       pumper = new BlockingInputStreamPumper(response.body().byteStream(), input -> {
+           try {
+               out.write(input);
+           } catch (IOException e) {
+               throw KubernetesClientException.launderThrowable(e);
+           }
+       }, () -> response.close());
         executorService.submit(pumper);
         started.set(true);
         queue.add(true);

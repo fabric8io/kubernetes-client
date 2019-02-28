@@ -92,13 +92,10 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
     requestUrl = baseOperation.getNamespacedUrl();
     //create after the call above where MalformedURLException can be raised
     //avoids having to call shutdown in case the exception is raised
-    executor = Executors.newSingleThreadScheduledExecutor(new ThreadFactory() {
-      @Override
-      public Thread newThread(Runnable r) {
-        Thread ret = new Thread(r, "Executor for Watch " + System.identityHashCode(WatchConnectionManager.this));
-        ret.setDaemon(true);
-        return ret;
-      }
+    executor = Executors.newSingleThreadScheduledExecutor(r -> {
+      Thread ret = new Thread(r, "Executor for Watch " + System.identityHashCode(WatchConnectionManager.this));
+      ret.setDaemon(true);
+      return ret;
     });
     runWatch();
   }

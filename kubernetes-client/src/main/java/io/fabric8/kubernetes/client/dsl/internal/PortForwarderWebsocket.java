@@ -25,6 +25,9 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.WritableByteChannel;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -103,6 +106,16 @@ public class PortForwarderWebsocket implements PortForwarder {
         }
 
         @Override
+        public boolean errorOccurred() {
+          for (PortForward handle : handles) {
+            if (handle.errorOccurred()) {
+              return true;
+            }
+          }
+          return false;
+        }
+
+        @Override
         public InetAddress getLocalAddress() {
           try {
             return ((InetSocketAddress) server.getLocalAddress()).getAddress();
@@ -119,24 +132,39 @@ public class PortForwarderWebsocket implements PortForwarder {
             throw new IllegalStateException("Cannot determine local address", e);
           }
         }
+
+        @Override
+        public Collection<Throwable> getClientThrowables() {
+          Collection<Throwable> clientThrowables = new ArrayList<>();
+          for (PortForward handle : handles) {
+            clientThrowables.addAll(handle.getClientThrowables());
+          }
+          return clientThrowables;
+        }
+
+        @Override
+        public Collection<Throwable> getServerThrowables() {
+          Collection<Throwable> serverThrowables = new ArrayList<>();
+          for (PortForward handle : handles) {
+            serverThrowables.addAll(handle.getServerThrowables());
+          }
+          return serverThrowables;
+        }
       };
 
       // Start listening on localhost for new connections.
       // Every new connection will open its own stream on the remote resource.
-      executorService.execute(new Runnable() {
-        @Override
-        public void run() {
-          // accept cycle
-          while (alive.get()) {
-            try {
-              SocketChannel socket = server.accept();
-              handles.add(forward(resourceBaseUrl, port, socket, socket));
-            } catch (IOException e) {
-              if (alive.get()) {
-                LOG.error("Error while listening for connections", e);
-              }
-              closeQuietly(localPortForwardHandle);
+      executorService.execute(() -> {
+        // accept cycle
+        while (alive.get()) {
+          try {
+            SocketChannel socket = server.accept();
+            handles.add(forward(resourceBaseUrl, port, socket, socket));
+          } catch (IOException e) {
+            if (alive.get()) {
+              LOG.error("Error while listening for connections", e);
             }
+            closeQuietly(localPortForwardHandle);
           }
         }
       });
@@ -150,6 +178,9 @@ public class PortForwarderWebsocket implements PortForwarder {
   @Override
   public PortForward forward(URL resourceBaseUrl, int port, final ReadableByteChannel in, final WritableByteChannel out) {
     final AtomicBoolean alive = new AtomicBoolean(true);
+    final AtomicBoolean errorOccurred = new AtomicBoolean(false);
+    final Collection<Throwable> clientThrowables = Collections.synchronizedCollection(new ArrayList<>());
+    final Collection<Throwable> serverThrowables = Collections.synchronizedCollection(new ArrayList<>());
     final String logPrefix = "FWD";
 
     Request request = new Request.Builder()
@@ -168,28 +199,26 @@ public class PortForwarderWebsocket implements PortForwarder {
         LOG.debug("{}: onOpen", logPrefix);
 
         if (in != null) {
-          pumperService.execute(new Runnable() {
-            @Override
-            public void run() {
-              ByteBuffer buffer = ByteBuffer.allocate(4096);
-              int read;
-              try {
-                do {
-                  buffer.clear();
-                  buffer.put((byte) 0); // channel byte
-                  read = in.read(buffer);
-                  if (read > 0) {
-                    buffer.flip();
-                    ByteString data = ByteString.of(buffer);
-                    webSocket.send(data);
-                  }
-                } while (alive.get() && read >= 0);
-
-              } catch (IOException e) {
-                if (alive.get()) {
-                  LOG.error("Error while writing client data");
-                  closeBothWays(webSocket, 1001, "Client error");
+          pumperService.execute(() -> {
+            ByteBuffer buffer = ByteBuffer.allocate(4096);
+            int read;
+            try {
+              do {
+                buffer.clear();
+                buffer.put((byte) 0); // channel byte
+                read = in.read(buffer);
+                if (read > 0) {
+                  buffer.flip();
+                  ByteString data = ByteString.of(buffer);
+                  webSocket.send(data);
                 }
+              } while (alive.get() && read >= 0);
+
+            } catch (IOException e) {
+              if (alive.get()) {
+                clientThrowables.add(e);
+                LOG.error("Error while writing client data");
+                closeBothWays(webSocket, 1001, "Client error");
               }
             }
           });
@@ -202,6 +231,7 @@ public class PortForwarderWebsocket implements PortForwarder {
         try {
           onMessage(webSocket, ByteBuffer.wrap(text.getBytes("UTF-8")));
         } catch (IOException e) {
+          serverThrowables.add(e);
           LOG.error("Error while converting string to byte buffer", e);
           closeBothWays(webSocket, 1002, "Protocol error");
         }
@@ -221,16 +251,19 @@ public class PortForwarderWebsocket implements PortForwarder {
         }
 
         if (!buffer.hasRemaining()) {
+          errorOccurred.set(true);
           LOG.error("Received an empty message");
           closeBothWays(webSocket, 1002, "Protocol error");
         }
 
         byte channel = buffer.get();
         if (channel < 0 || channel > 1) {
+          errorOccurred.set(true);
           LOG.error("Received a wrong channel from the remote socket: {}", channel);
           closeBothWays(webSocket, 1002, "Protocol error");
         } else if (channel == 1) {
           // Error channel
+          errorOccurred.set(true);
           LOG.error("Received an error from the remote socket");
           closeForwarder();
         } else {
@@ -240,6 +273,7 @@ public class PortForwarderWebsocket implements PortForwarder {
               out.write(buffer); // channel byte already skipped
             } catch (IOException e) {
               if (alive.get()) {
+                clientThrowables.add(e);
                 LOG.error("Error while forwarding data to the client", e);
                 closeBothWays(webSocket, 1002, "Protocol error");
               }
@@ -268,6 +302,7 @@ public class PortForwarderWebsocket implements PortForwarder {
       public void onFailure(WebSocket webSocket, Throwable t, Response response) {
         LOG.debug("{}: onFailure", logPrefix);
         if (alive.get()) {
+          serverThrowables.add(t);
           LOG.error(logPrefix + ": Throwable received from websocket", t);
           closeForwarder();
         }
@@ -279,6 +314,7 @@ public class PortForwarderWebsocket implements PortForwarder {
         try {
           webSocket.close(code, message);
         } catch (Exception e) {
+          serverThrowables.add(e);
           LOG.error("Error while closing the websocket", e);
         }
         closeForwarder();
@@ -314,6 +350,21 @@ public class PortForwarderWebsocket implements PortForwarder {
       @Override
       public boolean isAlive() {
         return alive.get();
+      }
+
+      @Override
+      public boolean errorOccurred() {
+        return errorOccurred.get() || !clientThrowables.isEmpty() || !serverThrowables.isEmpty();
+      }
+
+      @Override
+      public Collection<Throwable> getClientThrowables() {
+        return clientThrowables;
+      }
+
+      @Override
+      public Collection<Throwable> getServerThrowables() {
+        return serverThrowables;
       }
     };
   }

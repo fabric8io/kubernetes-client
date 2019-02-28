@@ -40,7 +40,6 @@ import io.fabric8.openshift.client.ParameterValue;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static io.fabric8.kubernetes.client.utils.ReplaceValueStream.replaceValues;
 import static java.util.Collections.singletonMap;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -173,7 +172,7 @@ public class TemplateTest {
     OpenShiftClient client = new DefaultOpenShiftClient(new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
     Map<String, String> map = new HashMap<>();
     map.put("PORT", "8080");
-    KubernetesList list = client.templates().load(replaceValues(getClass().getResourceAsStream("/template-with-number-params.yml"), map)).processLocally(map);
+    KubernetesList list = client.templates().withParameters(map).load(getClass().getResourceAsStream("/template-with-number-params.yml")).processLocally(map);
     assertListIsServiceWithPort8080(list);
   }
 

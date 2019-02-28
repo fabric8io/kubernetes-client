@@ -22,11 +22,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
 import io.fabric8.kubernetes.api.model.RootPaths;
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.OperationInfo;
-import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.*;
 import io.fabric8.kubernetes.client.dsl.Deletable;
 import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
@@ -50,6 +46,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
@@ -192,10 +189,33 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
       }
       return answer;
     } catch (KubernetesClientException e) {
-      if (e.getCode() != 404) {
+      if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
         throw e;
       }
       return null;
+    }
+  }
+
+  @Override
+  public T require() throws ResourceNotFoundException {
+    try {
+      T answer = getMandatory();
+      if (answer == null) {
+        throw new ResourceNotFoundException("The resource you request doesn't exist or couldn't be fetched.");
+      }
+      if (answer instanceof HasMetadata) {
+        HasMetadata hasMetadata = (HasMetadata) answer;
+        updateApiVersion(hasMetadata);
+      } else if (answer instanceof KubernetesResourceList) {
+        KubernetesResourceList list = (KubernetesResourceList) answer;
+        updateApiVersion(list);
+      }
+      return answer;
+    } catch (KubernetesClientException e) {
+      if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
+        throw e;
+      }
+      throw new ResourceNotFoundException("Resource not found : " + e.getMessage());
     }
   }
 
@@ -218,12 +238,12 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
       return handleGet(requestUrl);
     } catch (KubernetesClientException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("get"), e);
-      //if (e.getCode() != 404) {
+      //if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
      //   throw e;
       //} else {
       //  String resourceType = type != null ? type.getSimpleName() : "Resource";
       //  String msg = resourceType + " with name: [" + getName() + "]  not found in namespace: [" + (Utils.isNotNullOrEmpty(getNamespace()) ? getName() : getConfig().getNamespace()) + "]";
-     //   throw new KubernetesClientException(msg, 404, new StatusBuilder().withCode(404).withMessage(msg).build());
+     //   throw new KubernetesClientException(msg, HttpURLConnection.HTTP_NOT_FOUND, new StatusBuilder().withCode(HttpURLConnection.HTTP_NOT_FOUND).withMessage(msg).build());
      // }
     } catch (InterruptedException | ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("get"), e);
@@ -236,7 +256,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
       Request.Builder req = new Request.Builder().get().url(requestUrl);
       return handleResponse(req, RootPaths.class);
     } catch (KubernetesClientException e) {
-      if (e.getCode() != 404) {
+      if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
         throw e;
       }
       return null;
@@ -367,14 +387,11 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   @Override
   public D createNew() throws KubernetesClientException {
-    final Function<T, T> visitor = new Function<T, T>() {
-      @Override
-      public T apply(T resource) {
-        try {
-          return create(resource);
-        } catch (Exception e) {
-          throw KubernetesClientException.launderThrowable(forOperationType("create"), e);
-        }
+    final Function<T, T> visitor = resource -> {
+      try {
+        return create(resource);
+      } catch (Exception e) {
+        throw KubernetesClientException.launderThrowable(forOperationType("create"), e);
       }
     };
 
@@ -388,14 +405,11 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   @Override
   public D createOrReplaceWithNew() throws KubernetesClientException {
-    final Function<T, T> visitor = new Function<T, T>() {
-      @Override
-      public T apply(T resource) {
-        try {
-          return createOrReplace(resource);
-        } catch (Exception e) {
-          throw KubernetesClientException.launderThrowable(forOperationType("create or replace"), e);
-        }
+    final Function<T, T> visitor = resource -> {
+      try {
+        return createOrReplace(resource);
+      } catch (Exception e) {
+        throw KubernetesClientException.launderThrowable(forOperationType("create or replace"), e);
       }
     };
 
@@ -626,7 +640,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
         deleteThis();
         return true;
       } catch (KubernetesClientException e) {
-        if (e.getCode() != 404) {
+        if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
           throw e;
         }
         return false;
@@ -636,7 +650,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
         deleteList();
         return true;
       } catch (KubernetesClientException e) {
-        if (e.getCode() != 404) {
+        if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
           throw e;
         }
         return false;
@@ -661,7 +675,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
           R op = createItemOperation(item);
           deleted &= op.delete();
         } catch (KubernetesClientException e) {
-          if (e.getCode() != 404) {
+          if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
             throw e;
           }
           return false;

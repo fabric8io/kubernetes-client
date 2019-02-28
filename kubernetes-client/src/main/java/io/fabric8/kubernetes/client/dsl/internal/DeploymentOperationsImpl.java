@@ -15,7 +15,12 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.ContainerBuilder;
+import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
+import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.utils.Utils;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentList;
@@ -23,12 +28,14 @@ import io.fabric8.kubernetes.api.model.apps.DoneableDeployment;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.ScalableResource;
-import io.fabric8.kubernetes.client.dsl.Reaper;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
+import okhttp3.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
@@ -41,17 +48,22 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, DeploymentList, DoneableDeployment, ScalableResource<Deployment, DoneableDeployment>>
-  implements ScalableResource<Deployment, DoneableDeployment> {
+public class DeploymentOperationsImpl extends RollableScalableResourceOperation<Deployment, DeploymentList, DoneableDeployment, RollableScalableResource<Deployment, DoneableDeployment>>
+  implements TimeoutImageEditReplacePatchable<Deployment, Deployment, DoneableDeployment>  {
 
   static final transient Logger LOG = LoggerFactory.getLogger(DeploymentOperationsImpl.class);
 
   public DeploymentOperationsImpl(OkHttpClient client, Config config, String namespace) {
-      this(client, config, "apps", "v1", namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+      this(client, config, "apps", "v1", namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), config.getRollingTimeout(), TimeUnit.SECONDS);
   }
 
   public DeploymentOperationsImpl(OkHttpClient client, Config config, String apiGroup, String apiVersion, String namespace, String name, Boolean cascading, Deployment item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, config, apiGroup, apiVersion, "deployments", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+    super(client, config, apiGroup, apiVersion, "deployments", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields,false, config.getRollingTimeout(), TimeUnit.SECONDS);
+    reaper = new DeploymentReaper(this);
+  }
+
+  public DeploymentOperationsImpl(OkHttpClient client, Config config, String apiGroup, String apiVersion, String namespace, String name, Boolean cascading, Deployment item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, Long rollingTimeout, TimeUnit rollingTimeUnit) {
+    super(client, config, apiGroup, apiVersion, "deployments", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields,false, rollingTimeout, rollingTimeUnit);
     reaper = new DeploymentReaper(this);
   }
 
@@ -94,6 +106,71 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
     return super.patch(item);
   }
 
+  @Override
+  public DeploymentOperationsImpl rolling() {
+    return new DeploymentOperationsImpl(client, getConfig(), getAPIGroup(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rollingTimeout, rollingTimeUnit);
+  }
+
+  @Override
+  RollingUpdater<Deployment, DeploymentList, DoneableDeployment> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit) {
+    return new DeploymentRollingUpdater(client, config, getNamespace(), rollingTimeUnit.toMillis(rollingTimeout), config.getLoggingInterval());
+  }
+
+  @Override
+  Deployment withReplicas(int count) {
+    return cascading(false).edit().editSpec().withReplicas(count).endSpec().done();
+  }
+
+  @Override
+  int getCurrentReplicas(Deployment current) {
+    return current.getStatus().getReplicas();
+  }
+
+  @Override
+  int getDesiredReplicas(Deployment item) {
+    return item.getSpec().getReplicas();
+  }
+
+  @Override
+  long getObservedGeneration(Deployment current) {
+    return (current != null && current.getStatus() != null
+      && current.getStatus().getObservedGeneration() != null)? current.getStatus().getObservedGeneration() : -1;
+  }
+
+  @Override
+  public Deployment updateImage(String image) {
+    Deployment oldRC = get();
+
+    if (oldRC == null) {
+      throw new KubernetesClientException("Existing replica set doesn't exist");
+    }
+    if (oldRC.getSpec().getTemplate().getSpec().getContainers().size() > 1) {
+      throw new KubernetesClientException("Image update is not supported for multicontainer pods");
+    }
+    if (oldRC.getSpec().getTemplate().getSpec().getContainers().size() == 0) {
+      throw new KubernetesClientException("Pod has no containers!");
+    }
+
+    Container updatedContainer = new ContainerBuilder(oldRC.getSpec().getTemplate().getSpec().getContainers().iterator().next()).withImage(image).build();
+
+    DeploymentBuilder newRCBuilder = new DeploymentBuilder(oldRC);
+    newRCBuilder.editMetadata().withResourceVersion(null).endMetadata()
+      .editSpec().editTemplate().editSpec().withContainers(Collections.singletonList(updatedContainer))
+      .endSpec().endTemplate().endSpec();
+
+    return new DeploymentRollingUpdater(client, config, namespace).rollUpdate(oldRC, newRCBuilder.build());
+  }
+
+  @Override
+  public ImageEditReplacePatchable<Deployment, Deployment, DoneableDeployment> withTimeoutInMillis(long timeoutInMillis) {
+    return new DeploymentOperationsImpl(client, getConfig(), getAPIGroup(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), timeoutInMillis, TimeUnit.MILLISECONDS);
+  }
+
+  @Override
+  public ImageEditReplacePatchable<Deployment, Deployment, DoneableDeployment> withTimeout(long timeout, TimeUnit unit) {
+    return new DeploymentOperationsImpl(client, getConfig(), getAPIGroup(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), timeout, unit);
+  }
+
   /**
    * Lets wait until there are enough Ready pods of the given Deployment
    */
@@ -104,34 +181,32 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
     final String name = checkName(getItem());
     final String namespace = checkNamespace(getItem());
 
-    final Runnable deploymentPoller = new Runnable() {
-      public void run() {
-        try {
-          Deployment deployment = get();
-          //If the deployment is gone, we shouldn't wait.
-          if (deployment == null) {
-            if (count == 0) {
-              queue.put(true);
-              return;
-            } else {
-              queue.put(new IllegalStateException("Can't wait for Deployment: " + checkName(getItem()) + " in namespace: " + checkName(getItem()) + " to scale. Resource is no longer available."));
-              return;
-            }
-          }
-
-          replicasRef.set(deployment.getStatus().getReplicas());
-          int currentReplicas = deployment.getStatus().getReplicas() != null ? deployment.getStatus().getReplicas() : 0;
-          long generation = deployment.getMetadata().getGeneration() != null ? deployment.getMetadata().getGeneration() : 0;
-          long observedGeneration = deployment.getStatus() != null && deployment.getStatus().getObservedGeneration() != null ? deployment.getStatus().getObservedGeneration() : -1;
-          if (observedGeneration >= generation && Objects.equals(deployment.getSpec().getReplicas(), currentReplicas)) {
+    final Runnable deploymentPoller = () -> {
+      try {
+        Deployment deployment = get();
+        //If the deployment is gone, we shouldn't wait.
+        if (deployment == null) {
+          if (count == 0) {
             queue.put(true);
+            return;
           } else {
-            LOG.debug("Only {}/{} pods scheduled for Deployment: {} in namespace: {} seconds so waiting...",
-              deployment.getStatus().getReplicas(), deployment.getSpec().getReplicas(), deployment.getMetadata().getName(), namespace);
+            queue.put(new IllegalStateException("Can't wait for Deployment: " + checkName(getItem()) + " in namespace: " + checkName(getItem()) + " to scale. Resource is no longer available."));
+            return;
           }
-        } catch (Throwable t) {
-          LOG.error("Error while waiting for Deployment to be scaled.", t);
         }
+
+        replicasRef.set(deployment.getStatus().getReplicas());
+        int currentReplicas = deployment.getStatus().getReplicas() != null ? deployment.getStatus().getReplicas() : 0;
+        long generation = deployment.getMetadata().getGeneration() != null ? deployment.getMetadata().getGeneration() : 0;
+        long observedGeneration = deployment.getStatus() != null && deployment.getStatus().getObservedGeneration() != null ? deployment.getStatus().getObservedGeneration() : -1;
+        if (observedGeneration >= generation && Objects.equals(deployment.getSpec().getReplicas(), currentReplicas)) {
+          queue.put(true);
+        } else {
+          LOG.debug("Only {}/{} pods scheduled for Deployment: {} in namespace: {} seconds so waiting...",
+            deployment.getStatus().getReplicas(), deployment.getSpec().getReplicas(), deployment.getMetadata().getName(), namespace);
+        }
+      } catch (Throwable t) {
+        LOG.error("Error while waiting for Deployment to be scaled.", t);
       }
     };
 
@@ -176,12 +251,10 @@ public class DeploymentOperationsImpl extends HasMetadataOperation<Deployment, D
     private void waitForObservedGeneration(final long observedGeneration) {
       final CountDownLatch countDownLatch = new CountDownLatch(1);
 
-      final Runnable deploymentPoller = new Runnable() {
-        public void run() {
-          Deployment deployment = oper.getMandatory();
-          if (observedGeneration <= deployment.getStatus().getObservedGeneration()) {
-            countDownLatch.countDown();
-          }
+      final Runnable deploymentPoller = () -> {
+        Deployment deployment = oper.getMandatory();
+        if (observedGeneration <= deployment.getStatus().getObservedGeneration()) {
+          countDownLatch.countDown();
         }
       };
 

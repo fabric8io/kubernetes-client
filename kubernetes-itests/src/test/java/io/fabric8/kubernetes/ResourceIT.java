@@ -102,12 +102,7 @@ public class ResourceIT {
   }
 
   private Callable<Boolean> resourceIsReady() {
-    return new Callable<Boolean>() {
-      @Override
-      public Boolean call() {
-        return client.resource(pod1).inNamespace(currentNamespace).get()!= null;
-      }
-    };
+    return () -> client.resource(pod1).inNamespace(currentNamespace).get()!= null;
   }
 
 }

@@ -394,6 +394,9 @@ public class PodTest {
       buffer.flip();
       String data = ByteString.of(buffer).utf8();
       assertEquals("Hello World", data);
+      assertFalse("Expected no errors on port forward websocket", portForward.errorOccurred());
+      assertEquals("Expected no exceptions on port forward websocket", 0, portForward.getClientThrowables().size());
+      assertEquals("Expected no exceptions on port forward websocket", 0, portForward.getServerThrowables().size());
     }
 
   }

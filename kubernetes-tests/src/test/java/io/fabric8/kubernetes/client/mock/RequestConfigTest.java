@@ -57,12 +57,7 @@ public class RequestConfigTest {
 
     NamespacedKubernetesClient client = server.getClient();
 
-    Pod pod1 = client.withRequestConfig(new RequestConfigBuilder().withOauthToken("TOKEN").build()).call(new Function<NamespacedKubernetesClient, Pod>() {
-      @Override
-      public Pod apply(NamespacedKubernetesClient c) {
-        return c.pods().inNamespace("test").withName("pod1").get();
-      }
-    });
+    Pod pod1 = client.withRequestConfig(new RequestConfigBuilder().withOauthToken("TOKEN").build()).call(c -> c.pods().inNamespace("test").withName("pod1").get());
 
     //Let's check that request config actually works
     RecordedRequest request1 = server.getMockServer().takeRequest();
@@ -99,12 +94,7 @@ public class RequestConfigTest {
   private void sendRequest(RequestConfig requestConfig) {
     NamespacedKubernetesClient client = server.getClient();
     client.withRequestConfig(requestConfig)
-          .call(new Function<NamespacedKubernetesClient, Pod>() {
-            @Override
-            public Pod apply(NamespacedKubernetesClient c) {
-              return c.pods().inNamespace("test").withName("podName").get();
-            }
-          });
+          .call(c -> c.pods().inNamespace("test").withName("podName").get());
   }
 
   private void assertAuthorizationHeader(String expectedValue) throws InterruptedException {

@@ -13,22 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client;
+package io.fabric8.kubernetes.client.dsl;
 
-import java.io.Closeable;
-import java.util.Collection;
+import io.fabric8.kubernetes.client.ResourceNotFoundException;
 
-/**
- * A handle that allows closing a port forward operation and checking its status.
- */
-public interface PortForward extends Closeable {
+public interface Requirable<T> {
 
-  boolean isAlive();
-
-  boolean errorOccurred();
-
-  Collection<Throwable> getClientThrowables();
-
-  Collection<Throwable> getServerThrowables();
+  /**
+   * @return the item or throws an exception if the item doesn't exist.
+   * @throws io.fabric8.kubernetes.client.KubernetesClientException if an error occurs
+   * @throws io.fabric8.kubernetes.client.ResourceNotFoundException if resource is absent
+   */
+  T require() throws ResourceNotFoundException;
 
 }

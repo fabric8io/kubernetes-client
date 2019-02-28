@@ -55,7 +55,7 @@ public class AppsAPIGroupClient extends BaseClient implements AppsAPIGroupDSL {
   }
 
   @Override
-  public MixedOperation<Deployment, DeploymentList, DoneableDeployment, ScalableResource<Deployment, DoneableDeployment>> deployments() {
+  public MixedOperation<Deployment, DeploymentList, DoneableDeployment, RollableScalableResource<Deployment, DoneableDeployment>> deployments() {
     return new DeploymentOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 

@@ -454,12 +454,7 @@ public class ConfigTest {
   public void shouldBeUsedTokenSuppliedByProvider() throws Exception {
 
     Config config = new ConfigBuilder().withOauthToken("oauthToken")
-                                       .withOauthTokenProvider(new OAuthTokenProvider() {
-                                          @Override
-                                          public String getToken() {
-                                            return "PROVIDER_TOKEN";
-                                          }
-                                       })
+                                       .withOauthTokenProvider(() -> "PROVIDER_TOKEN")
                                        .build();
 
     assertEquals("PROVIDER_TOKEN", config.getOauthToken());

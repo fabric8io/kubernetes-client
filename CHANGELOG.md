@@ -1,5 +1,26 @@
 ### CHANGELOG
 
+#### 4.1-SNAPSHOT
+
+  Bugs
+   
+   * Fix #1008: Use a reasonable buffer size for exec stdin
+   * Fix #1005: Loading a template from file and processing it locally by passing parameters map is broken
+  
+  Improvements
+  
+    * Fix #1362: store exceptions thrown in port forwarder websocket
+    * Generate Jandex index file for faster lookup performance
+    * Fix #1361: Relax restrictions on environment variable names
+    * Refactor: Use lambdas wherever possible across project
+    * Fix #1371: Add an example for Job Controller
+  
+  Dependency Upgrade
+  
+  New Feature
+    * Feature 213: Added require( ) method to Resource object class.
+    * Fix #1064: Make Deployments rollable
+    
 #### 4.1.2
   Bugs
 
@@ -21,9 +42,13 @@
 
     * Fix #1306: Support `KUBECONFIG` env var with multiple paths
 
+    * Classes implementing KubernetesResourceList has now generic type set.
+ 
     * Fix #1348: support `v1beta1` version for `ExecCredentials`
 
     * Fix #1326: Make CustomResource @Buildable
+
+    * Fix #1354: suppress log warnings that `CustomResourceDefinition`s are still in beta
 
   Dependency Upgrade
     

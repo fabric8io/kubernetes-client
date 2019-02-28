@@ -142,12 +142,10 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
     private void waitForObservedGeneration(final long observedGeneration) {
       final CountDownLatch countDownLatch = new CountDownLatch(1);
 
-      final Runnable deploymentPoller = new Runnable() {
-        public void run() {
-          DeploymentConfig deployment = operation.getMandatory();
-          if (observedGeneration <= deployment.getStatus().getObservedGeneration()) {
-            countDownLatch.countDown();
-          }
+      final Runnable deploymentPoller = () -> {
+        DeploymentConfig deployment = operation.getMandatory();
+        if (observedGeneration <= deployment.getStatus().getObservedGeneration()) {
+          countDownLatch.countDown();
         }
       };
 
@@ -166,12 +164,10 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
     private void waitForDeletion() {
       final CountDownLatch countDownLatch = new CountDownLatch(1);
 
-      final Runnable deploymentPoller = new Runnable() {
-        public void run() {
-          DeploymentConfig deployment = operation.get();
-          if (deployment == null) {
-            countDownLatch.countDown();
-          }
+      final Runnable deploymentPoller = () -> {
+        DeploymentConfig deployment = operation.get();
+        if (deployment == null) {
+          countDownLatch.countDown();
         }
       };
 
@@ -214,31 +210,29 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
     final String name = checkName(getItem());
     final String namespace = checkNamespace(getItem());
 
-    final Runnable deploymentPoller = new Runnable() {
-      public void run() {
-        try {
-          DeploymentConfig deploymentConfig = get();
-          //If the rs is gone, we shouldn't wait.
-          if (deploymentConfig == null) {
-            if (count == 0) {
-              queue.put(true);
-              return;
-            } else {
-              queue.put(new IllegalStateException("Can't wait for DeploymentConfig: " + checkName(getItem()) + " in namespace: " + checkName(getItem()) + " to scale. Resource is no longer available."));
-              return;
-            }
-          }
-          replicasRef.set(deploymentConfig.getStatus().getReplicas());
-          int currentReplicas = deploymentConfig.getStatus().getReplicas() != null ? deploymentConfig.getStatus().getReplicas() : 0;
-          if (deploymentConfig.getStatus().getObservedGeneration() >= deploymentConfig.getMetadata().getGeneration() && Objects.equals(deploymentConfig.getSpec().getReplicas(), currentReplicas)) {
+    final Runnable deploymentPoller = () -> {
+      try {
+        DeploymentConfig deploymentConfig = get();
+        //If the rs is gone, we shouldn't wait.
+        if (deploymentConfig == null) {
+          if (count == 0) {
             queue.put(true);
+            return;
           } else {
-            LOG.debug("Only {}/{} pods scheduled for DeploymentConfig: {} in namespace: {} seconds so waiting...",
-              deploymentConfig.getStatus().getReplicas(), deploymentConfig.getSpec().getReplicas(), deploymentConfig.getMetadata().getName(), namespace);
+            queue.put(new IllegalStateException("Can't wait for DeploymentConfig: " + checkName(getItem()) + " in namespace: " + checkName(getItem()) + " to scale. Resource is no longer available."));
+            return;
           }
-        } catch (Throwable t) {
-          LOG.error("Error while waiting for Deployment to be scaled.", t);
         }
+        replicasRef.set(deploymentConfig.getStatus().getReplicas());
+        int currentReplicas = deploymentConfig.getStatus().getReplicas() != null ? deploymentConfig.getStatus().getReplicas() : 0;
+        if (deploymentConfig.getStatus().getObservedGeneration() >= deploymentConfig.getMetadata().getGeneration() && Objects.equals(deploymentConfig.getSpec().getReplicas(), currentReplicas)) {
+          queue.put(true);
+        } else {
+          LOG.debug("Only {}/{} pods scheduled for DeploymentConfig: {} in namespace: {} seconds so waiting...",
+            deploymentConfig.getStatus().getReplicas(), deploymentConfig.getSpec().getReplicas(), deploymentConfig.getMetadata().getName(), namespace);
+        }
+      } catch (Throwable t) {
+        LOG.error("Error while waiting for Deployment to be scaled.", t);
       }
     };
 

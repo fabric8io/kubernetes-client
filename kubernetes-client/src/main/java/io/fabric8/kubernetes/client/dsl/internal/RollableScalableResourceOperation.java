@@ -93,32 +93,30 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
     final String name = checkName(getItem());
     final String namespace = checkNamespace(getItem());
 
-    final Runnable tPoller = new Runnable() {
-      public void run() {
-        try {
-          T t = get();
-          //If the resource is gone, we shouldn't wait.
-          if (t == null) {
-            if (count == 0) {
-              queue.put(true);
-            } else {
-              queue.put(new IllegalStateException("Can't wait for " + getType().getSimpleName() + ": " +name + " in namespace: " + namespace + " to scale. Resource is no longer available."));
-            }
-            return;
-          }
-          int currentReplicas = getCurrentReplicas(t);
-          int desiredReplicas = getDesiredReplicas(t);
-          replicasRef.set(currentReplicas);
-          long generation = t.getMetadata().getGeneration() != null ? t.getMetadata().getGeneration() : -1;
-          long observedGeneration = getObservedGeneration(t);
-          if (observedGeneration >= generation && Objects.equals(desiredReplicas, currentReplicas)) {
+    final Runnable tPoller = () -> {
+      try {
+        T t = get();
+        //If the resource is gone, we shouldn't wait.
+        if (t == null) {
+          if (count == 0) {
             queue.put(true);
+          } else {
+            queue.put(new IllegalStateException("Can't wait for " + getType().getSimpleName() + ": " +name + " in namespace: " + namespace + " to scale. Resource is no longer available."));
           }
-          Log.debug("Only {}/{} replicas scheduled for {}: {} in namespace: {} seconds so waiting...",
-            currentReplicas, desiredReplicas, t.getKind(), t.getMetadata().getName(), namespace);
-        } catch (Throwable t) {
-          Log.error("Error while waiting for resource to be scaled.", t);
+          return;
         }
+        int currentReplicas = getCurrentReplicas(t);
+        int desiredReplicas = getDesiredReplicas(t);
+        replicasRef.set(currentReplicas);
+        long generation = t.getMetadata().getGeneration() != null ? t.getMetadata().getGeneration() : -1;
+        long observedGeneration = getObservedGeneration(t);
+        if (observedGeneration >= generation && Objects.equals(desiredReplicas, currentReplicas)) {
+          queue.put(true);
+        }
+        Log.debug("Only {}/{} replicas scheduled for {}: {} in namespace: {} seconds so waiting...",
+          currentReplicas, desiredReplicas, t.getKind(), t.getMetadata().getName(), namespace);
+      } catch (Throwable t) {
+        Log.error("Error while waiting for resource to be scaled.", t);
       }
     };
 
@@ -144,14 +142,11 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
       return super.edit();
     }
 
-    final Visitor<T> visitor = new Visitor<T>() {
-      @Override
-      public void visit(T t) {
-        try {
-          getRollingUpdater(rollingTimeout, rollingTimeUnit).rollUpdate(getMandatory(), t);
-        } catch (Exception e) {
-          throw KubernetesClientException.launderThrowable(e);
-        }
+    final Visitor<T> visitor = t -> {
+      try {
+        getRollingUpdater(rollingTimeout, rollingTimeUnit).rollUpdate(getMandatory(), t);
+      } catch (Exception e) {
+        throw KubernetesClientException.launderThrowable(e);
       }
     };
 

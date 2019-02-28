@@ -91,14 +91,11 @@ public class KubernetesListOperationsImpl
 
   @Override
   public DoneableKubernetesList createNew() {
-    return new DoneableKubernetesList(new Function<KubernetesList, KubernetesList>() {
-      @Override
-      public KubernetesList apply(KubernetesList item) {
-        try {
-          return create(item);
-        } catch (Exception e) {
-          throw KubernetesClientException.launderThrowable(e);
-        }
+    return new DoneableKubernetesList(item -> {
+      try {
+        return create(item);
+      } catch (Exception e) {
+        throw KubernetesClientException.launderThrowable(e);
       }
     });
   }
