@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.sundr.builder.annotations.Buildable;
 
 /**
  * A base class for implementing a custom resource kind
@@ -26,6 +27,7 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 @JsonDeserialize(
     using = JsonDeserializer.None.class
 )
+@Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
 public abstract class CustomResource implements HasMetadata {
   private String kind;
   private String apiVersion;

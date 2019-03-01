@@ -46,6 +46,8 @@
  
     * Fix #1348: support `v1beta1` version for `ExecCredentials`
 
+    * Fix #1326: Make CustomResource @Buildable
+
     * Fix #1354: suppress log warnings that `CustomResourceDefinition`s are still in beta
 
   Dependency Upgrade
