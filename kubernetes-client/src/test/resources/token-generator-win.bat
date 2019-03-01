@@ -20,7 +20,7 @@ CALL :upper token
 
 echo {
 echo   "kind": "ExecCredential",
-echo   "apiGroupVersion": "client.authentication.k8s.io/v1alpha1",
+echo   "apiVersion": "client.authentication.k8s.io/v1alpha1",
 echo   "spec": {},
 echo   "status": {
 echo     "token": "%token%"

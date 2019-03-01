@@ -546,7 +546,7 @@ public class Config {
                 }
                 ExecCredential ec = Serialization.unmarshal(p.getInputStream(), ExecCredential.class);
                 if (!apiVersion.equals(ec.apiVersion)) {
-                  LOGGER.warn("Wrong apiGroupVersion {} vs. {}", ec.apiVersion, apiVersion);
+                  LOGGER.warn("Wrong apiVersion {} vs. {}", ec.apiVersion, apiVersion);
                 }
                 if (ec.status != null && ec.status.token != null) {
                   config.setOauthToken(ec.status.token);
@@ -554,7 +554,7 @@ public class Config {
                   LOGGER.warn("No token returned");
                 }
               } else { // TODO v1beta1?
-                LOGGER.warn("Unsupported apiGroupVersion: {}", apiVersion);
+                LOGGER.warn("Unsupported apiVersion: {}", apiVersion);
               }
             }
           }
@@ -781,7 +781,7 @@ public class Config {
     this.caCertFile = caCertFile;
   }
 
-  @JsonProperty("apiGroupVersion")
+  @JsonProperty("apiVersion")
   public String getApiVersion() {
     return apiVersion;
   }

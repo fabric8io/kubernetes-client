@@ -33,7 +33,7 @@ import java.util.List;
 public class CustomResourceList<T extends HasMetadata> implements KubernetesResource, KubernetesResourceList {
 
   @NotNull
-  @JsonProperty("apiGroupVersion")
+  @JsonProperty("apiVersion")
   private String apiVersion;
   @JsonProperty("items")
   @Valid

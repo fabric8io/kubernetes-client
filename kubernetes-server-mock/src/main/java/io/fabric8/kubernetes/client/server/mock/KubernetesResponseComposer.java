@@ -39,7 +39,7 @@ public class KubernetesResponseComposer implements ResponseComposer {
   @Override
   public String compose(Collection<String> collection) {
     return String.format(
-        "{\"apiGroupVersion\":\"v1\",\"kind\":\"List\", \"items\": [%s]}",
+        "{\"apiVersion\":\"v1\",\"kind\":\"List\", \"items\": [%s]}",
         join(",", collection));
   }
 }
