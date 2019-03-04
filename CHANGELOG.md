@@ -16,6 +16,7 @@
     * Fix #1371: Add an example for Job Controller
   
   Dependency Upgrade
+    * Bump Snakeyaml to version 1.24
   
   New Feature
     * Feature 213: Added require( ) method to Resource object class.
