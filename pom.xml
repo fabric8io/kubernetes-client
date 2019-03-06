@@ -197,7 +197,7 @@
       <plugin>
         <groupId>com.mycila</groupId>
         <artifactId>license-maven-plugin</artifactId>
-        <version>2.11</version>
+        <version>3.0</version>
         <configuration>
           <aggregate>true</aggregate>
           <header>header.txt</header>
