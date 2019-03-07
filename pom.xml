@@ -107,7 +107,7 @@
     <scr.annotations.version>1.9.12</scr.annotations.version>
     <sundrio.version>0.16.5</sundrio.version>
     <validation.api.version>2.0.1.Final</validation.api.version>
-    <maven.bundle.plugin.version>2.5.4</maven.bundle.plugin.version>
+    <maven.bundle.plugin.version>4.1.0</maven.bundle.plugin.version>
     <maven.buildhelper.plugin.version>3.0.0</maven.buildhelper.plugin.version>
     <maven.jar.plugin.version>3.0.1</maven.jar.plugin.version>
     <maven.resources.plugin.version>3.0.1</maven.resources.plugin.version>
