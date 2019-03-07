@@ -39,7 +39,7 @@
     <testExclusionPattern>**/*KubernetesTest.java</testExclusionPattern>
 
     <buildnumber.plugin.version>1.4</buildnumber.plugin.version>
-    <compiler.plugin.version>3.5.1</compiler.plugin.version>
+    <compiler.plugin.version>3.8.0</compiler.plugin.version>
     <jar.plugin.version>3.0.1</jar.plugin.version>
     <deploy.plugin.version>2.8.2</deploy.plugin.version>
     <maven.compiler.argument.target>${maven.compiler.target}</maven.compiler.argument.target>
