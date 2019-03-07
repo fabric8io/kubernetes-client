@@ -110,7 +110,7 @@
     <maven.bundle.plugin.version>2.5.4</maven.bundle.plugin.version>
     <maven.buildhelper.plugin.version>3.0.0</maven.buildhelper.plugin.version>
     <maven.jar.plugin.version>3.1.1</maven.jar.plugin.version>
-    <maven.resources.plugin.version>3.0.1</maven.resources.plugin.version>
+    <maven.resources.plugin.version>3.1.0</maven.resources.plugin.version>
     <maven.surefire.plugin.version>3.0.0-M1</maven.surefire.plugin.version>
     <maven.scr.plugin.version>1.26.0</maven.scr.plugin.version>
     <jandex.plugin.version>1.0.5</jandex.plugin.version>
