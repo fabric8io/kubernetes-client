@@ -6,6 +6,8 @@
   Bugs
    
   Improvements
+
+    * Fix #1425: Preserve labels and fields when using CRD's withResourceVersion()
   
   Dependency Upgrade
     * Upgrade Sundrio to 0.16.5
