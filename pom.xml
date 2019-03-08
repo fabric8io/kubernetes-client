@@ -101,7 +101,7 @@
     <arquillian.core.version>1.2.0.Final</arquillian.core.version>
     <awaitility.version>3.1.3</awaitility.version>
 
-    <slf4j.version>1.7.13</slf4j.version>
+    <slf4j.version>1.7.26</slf4j.version>
     <snakeyaml.version>1.24</snakeyaml.version>
 
     <scr.annotations.version>1.12.0</scr.annotations.version>
