@@ -4,6 +4,7 @@
 #### 4.1-SNAPSHOT
 
   Bugs
+    * Fix #1387: ValidatingWebhookConfigurationOperationsImpl should be a NonNamespaceOperation
    
   Improvements
   
