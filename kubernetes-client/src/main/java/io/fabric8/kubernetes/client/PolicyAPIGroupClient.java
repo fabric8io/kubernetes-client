@@ -35,6 +35,6 @@ public class PolicyAPIGroupClient extends BaseClient implements PolicyAPIGroupDS
 
   @Override
   public MixedOperation<PodDisruptionBudget, PodDisruptionBudgetList, DoneablePodDisruptionBudget, Resource<PodDisruptionBudget, DoneablePodDisruptionBudget>> podDisruptionBudget() {
-    return new PodDisruptionBudgetOperationsImpl(httpClient, getConfiguration(), getNamespace());
+    return new PodDisruptionBudgetOperationsImpl(httpClient, getConfiguration());
   }
 }

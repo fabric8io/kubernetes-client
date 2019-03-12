@@ -31,6 +31,6 @@ public class SchedulingAPIGroupClient extends BaseClient implements SchedulingAP
 
   @Override
   public MixedOperation<PriorityClass, PriorityClassList, DoneablePriorityClass, Resource<PriorityClass, DoneablePriorityClass>> priorityClass() {
-    return new PriorityClassOperationsImpl(httpClient, getConfiguration(), null);
+    return new PriorityClassOperationsImpl(httpClient, getConfiguration());
   }
 }

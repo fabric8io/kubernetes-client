@@ -16,6 +16,7 @@
 package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
 import io.fabric8.openshift.api.model.DoneableOAuthAuthorizeToken;
 import io.fabric8.openshift.api.model.OAuthAuthorizeToken;
@@ -32,11 +33,17 @@ public class OAuthAuthorizeTokenOperationsImpl extends OpenShiftOperation<OAuthA
   Resource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken>> {
 
   public OAuthAuthorizeTokenOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
-    this(client, config, AUTHORIZATION, null, null, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+    this(new OperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public OAuthAuthorizeTokenOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiGroup, String apiVersion, String namespace, String name, Boolean cascading, OAuthAuthorizeToken item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, OpenShiftOperation.withApiGroup(client, apiGroup, apiVersion, config), "oauthauthorizetokens", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  public OAuthAuthorizeTokenOperationsImpl(OperationContext context) {
+    super(context.withApiGroupName(OAUTH)
+      .withPlural("oauthauthorizetokens"));
+  }
+
+  @Override
+  public OAuthAuthorizeTokenOperationsImpl newInstance(OperationContext context) {
+    return new OAuthAuthorizeTokenOperationsImpl(context);
   }
 
   @Override

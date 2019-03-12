@@ -268,7 +268,7 @@ public class DeploymentTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.apps().deployments().inNamespace("test1").delete(deployment1);
-    assertNotNull(deleted);
+    assertFalse(deleted);
   }
 
   @Test(expected = KubernetesClientException.class)

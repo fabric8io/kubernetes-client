@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectReferenceBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.openshift.api.model.DoneableOpenshiftRoleBinding;
 import io.fabric8.openshift.api.model.OpenshiftRoleBinding;
 import io.fabric8.openshift.api.model.OpenshiftRoleBindingBuilder;
@@ -36,12 +37,19 @@ import java.util.concurrent.ExecutionException;
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.AUTHORIZATION;
 
 public class OpenshiftRoleBindingOperationsImpl extends OpenShiftOperation<OpenshiftRoleBinding, OpenshiftRoleBindingList, DoneableOpenshiftRoleBinding, Resource<OpenshiftRoleBinding, DoneableOpenshiftRoleBinding>> {
-  public OpenshiftRoleBindingOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
-    this(client, config, AUTHORIZATION, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+
+  public OpenshiftRoleBindingOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public OpenshiftRoleBindingOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiGroup, String apiVersion, String namespace, String name, Boolean cascading, OpenshiftRoleBinding item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, OpenShiftOperation.withApiGroup(client, apiGroup, apiVersion, config), "rolebindings", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  public OpenshiftRoleBindingOperationsImpl(OperationContext context) {
+    super(context.withApiGroupName(AUTHORIZATION)
+      .withPlural("rolebindings"));
+  }
+
+  @Override
+  public OpenshiftRoleBindingOperationsImpl newInstance(OperationContext context) {
+    return new OpenshiftRoleBindingOperationsImpl(context);
   }
 
   @Override

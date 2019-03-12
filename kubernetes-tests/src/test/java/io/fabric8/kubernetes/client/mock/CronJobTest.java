@@ -228,7 +228,7 @@ public class CronJobTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.batch().cronjobs().inNamespace("test1").delete(cronjob1);
-    assertNotNull(deleted);
+    assertFalse(deleted);
   }
 
   @Test(expected = KubernetesClientException.class)

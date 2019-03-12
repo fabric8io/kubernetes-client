@@ -256,7 +256,7 @@ abstract class RollingUpdater<T extends HasMetadata, L, D extends Doneable<T>> {
   protected abstract Operation<T, L, D, RollableScalableResource<T, D>> resources();
 
   protected Operation<Pod, PodList, DoneablePod, PodResource<Pod, DoneablePod>> pods() {
-    return new PodOperationsImpl(client, config, namespace);
+    return new PodOperationsImpl(client, config);
   }
 
 }

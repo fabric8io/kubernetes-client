@@ -103,7 +103,7 @@ Waitable<HasMetadata, HasMetadata>,
   }
 
   public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item, long gracePeriodSeconds, Boolean cascading) {
-    super(client, config, null, null, null, null, null);
+    super(client, config);
     this.fallbackNamespace = namespace;
     this.explicitNamespace = explicitNamespace;
     this.fromServer = fromServer;

@@ -110,6 +110,6 @@ class ReplicaSetRollingUpdater extends RollingUpdater<ReplicaSet, ReplicaSetList
 
   @Override
   protected Operation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, RollableScalableResource<ReplicaSet, DoneableReplicaSet>> resources() {
-    return new ReplicaSetOperationsImpl(client, config, namespace);
+    return new ReplicaSetOperationsImpl(client, config);
   }
 }

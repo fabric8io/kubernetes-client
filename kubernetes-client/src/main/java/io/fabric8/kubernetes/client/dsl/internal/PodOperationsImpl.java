@@ -24,8 +24,6 @@ import java.io.Reader;
 import java.net.URL;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 import io.fabric8.kubernetes.api.model.DoneablePod;
@@ -52,6 +50,7 @@ import io.fabric8.kubernetes.client.dsl.TtyExecErrorable;
 import io.fabric8.kubernetes.client.dsl.TtyExecOutputErrorable;
 import io.fabric8.kubernetes.client.dsl.TtyExecable;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import okhttp3.*;
 
@@ -80,44 +79,41 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
     private final Integer limitBytes;
     private final Integer bufferSize;
 
+  public PodOperationsImpl(OkHttpClient client, Config config) {
+    this(new PodOperationContext().withOkhttpClient(client).withConfig(config));
+  }
 
-  public PodOperationsImpl(OkHttpClient client, Config config, String namespace) {
-        this(client, config, null, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
-    }
+  public PodOperationsImpl(PodOperationContext context) {
+    super(context.withPlural("pods"));
+    this.containerId = context.getContainerId();
+    this.in = context.getIn();
+    this.inPipe = context.getInPipe();
+    this.out = context.getOut();
+    this.outPipe = context.getOutPipe();
+    this.err = context.getErr();
+    this.errPipe = context.getErrPipe();
+    this.errChannel = context.getErrChannel();
+    this.errChannelPipe = context.getErrChannelPipe();
+    this.withTTY = context.isTty();
+    this.withTerminatedStatus = context.isTerminatedStatus();
+    this.withTimestamps = context.isTimestamps();
+    this.sinceTimestamp = context.getSinceTimestamp();
+    this.sinceSeconds = context.getSinceSeconds();
+    this.withTailingLines = context.getTailingLines();
+    this.withPrettyOutput = context.isPrettyOutput();
+    this.execListener = context.getExecListener();
+    this.limitBytes = context.getLimitBytes();
+    this.bufferSize = context.getBufferSize();
+  }
 
-    public PodOperationsImpl(OkHttpClient client, Config config, String apiGroup, String apiVersion, String namespace, String name, Boolean cascading, Pod item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-        this(client, config, apiGroup, apiVersion, namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields,
-             null, null, null, null, null, null, null, null, null, false, false, false, null, null, null, false, null, null, null);
-    }
+  @Override
+  public PodOperationsImpl newInstance(OperationContext context) {
+    return new PodOperationsImpl((PodOperationContext) context);
+  }
 
-    @Deprecated
-    public PodOperationsImpl(OkHttpClient client, Config config, String apiGroup, String apiVersion, String namespace, String name, Boolean cascading, Pod item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, String containerId, InputStream in, PipedOutputStream inPipe, OutputStream out, PipedInputStream outPipe, OutputStream err, PipedInputStream errPipe, OutputStream errChannel, PipedInputStream errChannelPipe, boolean withTTY, boolean withTerminatedStatus, boolean withTimestamps, String sinceTimestamp, Integer sinceSeconds, Integer withTailingLines, boolean withPrettyOutput, ExecListener execListener, Integer limitBytes) {
-        this(client, config, apiGroup, apiVersion, namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields, containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes, null);
-    }
-
-    public PodOperationsImpl(OkHttpClient client, Config config, String apiGroup, String apiVersion, String namespace, String name, Boolean cascading, Pod item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, String containerId, InputStream in, PipedOutputStream inPipe, OutputStream out, PipedInputStream outPipe, OutputStream err, PipedInputStream errPipe, OutputStream errChannel, PipedInputStream errChannelPipe, boolean withTTY, boolean withTerminatedStatus, boolean withTimestamps, String sinceTimestamp, Integer sinceSeconds, Integer withTailingLines, boolean withPrettyOutput, ExecListener execListener, Integer limitBytes, Integer bufferSize) {
-        super(client, config, apiGroup, apiVersion, "pods", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
-        this.containerId = containerId;
-        this.in = in;
-        this.inPipe = inPipe;
-        this.out = out;
-        this.outPipe = outPipe;
-        this.err = err;
-        this.errPipe = errPipe;
-        this.errChannel = errChannel;
-        this.errChannelPipe = errChannelPipe;
-        this.withTTY = withTTY;
-        this.withTerminatedStatus = withTerminatedStatus;
-        this.withTimestamps = withTimestamps;
-        this.sinceTimestamp = sinceTimestamp;
-        this.sinceSeconds = sinceSeconds;
-        this.withTailingLines = withTailingLines;
-        this.withPrettyOutput = withPrettyOutput;
-        this.execListener = execListener;
-        this.limitBytes = limitBytes;
-        this.bufferSize = bufferSize;
-    }
-
+ public PodOperationContext getContext() {
+    return (PodOperationContext) context;
+ }
     protected String getLogParameters() {
         StringBuilder sb = new StringBuilder();
         sb.append("log?pretty=").append(withPrettyOutput);
@@ -178,7 +174,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
 
     @Override
     public String getLog(Boolean isPretty) {
-        return new PodOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, isPretty, execListener, limitBytes, bufferSize).getLog();
+        return new PodOperationsImpl(getContext().withPrettyOutput(isPretty)).getLog();
     }
 
     @Override
@@ -230,7 +226,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
 
   @Override
     public ContainerResource<String, LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch> inContainer(String containerId) {
-        return new PodOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes, bufferSize);
+        return new PodOperationsImpl(getContext().withContainerId(containerId));
     }
 
     @Override
@@ -281,12 +277,12 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
 
     @Override
     public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, ExecWatch> readingInput(InputStream in) {
-        return new PodOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes, bufferSize);
+        return new PodOperationsImpl(getContext().withIn(in));
     }
 
     @Override
     public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, ExecWatch> writingInput(PipedOutputStream inPipe) {
-        return new PodOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes, bufferSize);
+        return new PodOperationsImpl(getContext().withInPipe(inPipe));
     }
 
     @Override
@@ -296,17 +292,17 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
 
     @Override
     public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, ExecWatch> redirectingInput(Integer bufferSize) {
-        return new PodOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, new PipedOutputStream(), out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes, bufferSize);
+        return new PodOperationsImpl(getContext().withBufferSize(bufferSize));
     }
 
     @Override
     public TtyExecErrorable<String, OutputStream, PipedInputStream, ExecWatch> writingOutput(OutputStream out) {
-        return new PodOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes, bufferSize);
+        return new PodOperationsImpl(getContext().withOut(out));
     }
 
     @Override
     public TtyExecErrorable<String, OutputStream, PipedInputStream, ExecWatch> readingOutput(PipedInputStream outPipe) {
-        return new PodOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes, bufferSize);
+        return new PodOperationsImpl(getContext().withOutPipe(outPipe));
     }
 
     @Override
@@ -316,12 +312,12 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
 
     @Override
     public TtyExecErrorChannelable<String, OutputStream, PipedInputStream, ExecWatch> writingError(OutputStream err) {
-        return new PodOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes, bufferSize);
+        return new PodOperationsImpl(getContext().withErr(err));
     }
 
     @Override
     public TtyExecErrorChannelable<String, OutputStream, PipedInputStream, ExecWatch> readingError(PipedInputStream errPipe) {
-        return new PodOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes, bufferSize);
+        return new PodOperationsImpl(getContext().withErrPipe(errPipe));
     }
 
     @Override
@@ -331,12 +327,12 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
 
     @Override
     public TtyExecable<String, ExecWatch> writingErrorChannel(OutputStream errChannel) {
-        return new PodOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes, bufferSize);
+        return new PodOperationsImpl(getContext().withErrChannel(errChannel));
     }
 
     @Override
     public TtyExecable<String, ExecWatch> readingErrorChannel(PipedInputStream errChannelPipe) {
-        return new PodOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes, bufferSize);
+        return new PodOperationsImpl(getContext().withErrChannelPipe(errChannelPipe));
     }
 
     @Override
@@ -348,48 +344,48 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
 
     @Override
     public ExecListenable<String, ExecWatch> withTTY() {
-        return new PodOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, true, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes, bufferSize);
+        return new PodOperationsImpl(getContext().withTty(true));
     }
 
     @Override
     public Loggable<String, LogWatch> withPrettyOutput() {
-        return new PodOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, true, execListener, limitBytes, bufferSize);
+        return new PodOperationsImpl(getContext().withPrettyOutput(true));
     }
 
 
     @Override
     public PrettyLoggable<String, LogWatch> tailingLines(int withTailingLines) {
-        return new PodOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes, bufferSize);
+        return new PodOperationsImpl(getContext().withTailingLines(withTailingLines));
     }
 
     @Override
     public TailPrettyLoggable<String, LogWatch> sinceTime(String sinceTimestamp) {
-        return new PodOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes, bufferSize);
+        return new PodOperationsImpl(getContext().withSinceTimestamp(sinceTimestamp));
     }
 
     @Override
     public TailPrettyLoggable<String, LogWatch> sinceSeconds(int sinceSeconds) {
-        return new PodOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes, bufferSize);
+        return new PodOperationsImpl(getContext().withSinceSeconds(sinceSeconds));
     }
 
     @Override
     public TimeTailPrettyLoggable<String, LogWatch> terminated() {
-        return new PodOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, true, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes, bufferSize);
+        return new PodOperationsImpl(getContext().withTerminatedStatus(true));
     }
 
     @Override
     public Execable<String, ExecWatch> usingListener(ExecListener execListener) {
-        return new PodOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes, bufferSize);
+        return new PodOperationsImpl(getContext().withExecListener(execListener));
     }
 
     @Override
     public BytesLimitTerminateTimeTailPrettyLoggable<String, LogWatch> limitBytes(int limitBytes) {
-        return new PodOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes, bufferSize);
+        return new PodOperationsImpl(getContext().withLimitBytes(limitBytes));
     }
 
   @Override
   public BytesLimitTerminateTimeTailPrettyLoggable<String, LogWatch> usingTimestamps() {
-    return new PodOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, true, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes, bufferSize);
+    return new PodOperationsImpl(getContext().withTimestamps(true));
   }
 }
 

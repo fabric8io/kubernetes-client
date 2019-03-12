@@ -41,11 +41,11 @@ public class BatchAPIGroupClient extends BaseClient implements BatchAPIGroupDSL 
 
   @Override
   public MixedOperation<Job, JobList, DoneableJob, ScalableResource<Job, DoneableJob>> jobs() {
-    return new JobOperationsImpl(httpClient, getConfiguration(), getNamespace());
+    return new JobOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
   public MixedOperation<CronJob, CronJobList, DoneableCronJob, Resource<CronJob, DoneableCronJob>> cronjobs() {
-    return new CronJobOperationsImpl(httpClient, getConfiguration(), getNamespace());
+    return new CronJobOperationsImpl(httpClient, getConfiguration());
   }
 }

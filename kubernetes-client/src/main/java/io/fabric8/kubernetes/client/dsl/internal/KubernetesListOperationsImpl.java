@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.client.dsl.KubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.KubernetesListOperation;
 import io.fabric8.kubernetes.client.dsl.Loadable;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.builder.Function;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
@@ -60,7 +61,7 @@ public class KubernetesListOperationsImpl
   }
 
   public KubernetesListOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, Boolean fromServer, Boolean deletingExisting, KubernetesList item, String resourceVersion) {
-    super(client, config, null, null, null, namespace, null);
+    super(client, config, namespace);
     this.fromServer = fromServer;
     this.deletingExisting = deletingExisting;
     this.item = item;

@@ -19,19 +19,15 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
-import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Utils;
-import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executors;
@@ -48,15 +44,15 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
 
   private final Logger Log = LoggerFactory.getLogger(this.getClass());
 
-  final Boolean rolling;
+  final boolean rolling;
   final long rollingTimeout;
   final TimeUnit rollingTimeUnit;
 
-  public RollableScalableResourceOperation(OkHttpClient client, Config config, String apiVersionGroup, String apiVersionNumber, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, Boolean rolling, long rollingTimeout, TimeUnit rollingTimeUnit) {
-    super(client, config, ApiVersionUtil.apiGroup(item, apiVersionGroup), ApiVersionUtil.apiVersion(item, apiVersionNumber), resourceT, namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
-    this.rolling = rolling;
-    this.rollingTimeout = rollingTimeout;
-    this.rollingTimeUnit = rollingTimeUnit;
+  public RollableScalableResourceOperation(RollingOperationContext context) {
+    super(context);
+    this.rolling = context.getRolling();
+    this.rollingTimeout = context.getRollingTimeout();
+    this.rollingTimeUnit = context.getRollingTimeUnit();
     reaper = new ScalableReaper(this);
   }
 

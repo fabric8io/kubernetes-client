@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.batch.DoneableJob;
 import io.fabric8.kubernetes.api.model.batch.Job;
@@ -28,9 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
-import java.util.Map;
 import java.util.Objects;
-import java.util.TreeMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -43,20 +42,26 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
 
   static final transient Logger LOG = LoggerFactory.getLogger(JobOperationsImpl.class);
 
-  public JobOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(client, config, "batch","v1", namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+  public JobOperationsImpl(OkHttpClient client, Config config) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public JobOperationsImpl(OkHttpClient client, Config config, String apiGroup, String apiVersion, String namespace, String name, Boolean cascading, Job item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, config, apiGroup, apiVersion, "jobs", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
-    reaper = new JobReaper(this);
+  public JobOperationsImpl(OperationContext context) {
+    super(context.withApiGroupName("batch")
+      .withApiGroupVersion("v1")
+      .withPlural("jobs"));
+  }
+
+  @Override
+  public JobOperationsImpl newInstance(OperationContext context) {
+    return new JobOperationsImpl(context);
   }
 
   @Override
   public ScalableResource<Job, DoneableJob> load(InputStream is) {
     try {
       Job item = unmarshal(is, Job.class);
-      return new JobOperationsImpl(client, getConfig(), getAPIGroup(), getAPIVersion(), getNamespace(), getName(), isCascading(), item, getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
+      return new JobOperationsImpl(context.withItem(item));
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -64,7 +69,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
 
   @Override
   public ScalableResource<Job, DoneableJob> fromServer() {
-    return new JobOperationsImpl(client, getConfig(), getAPIGroup(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), true, getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
+    return new JobOperationsImpl(context.withReloadingFromServer(true));
   }
 
   @Override

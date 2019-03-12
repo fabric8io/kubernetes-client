@@ -15,13 +15,16 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.TreeMap;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
@@ -38,11 +41,8 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.api.model.DoneableDeploymentConfig;
-import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
 import okhttp3.OkHttpClient;
-
-import static io.fabric8.openshift.client.OpenShiftAPIGroups.APPS;
 
 public class DeploymentConfigOperationsImpl extends OpenShiftOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig,
   DeployableScalableResource<DeploymentConfig, DoneableDeploymentConfig>> implements DeployableScalableResource<DeploymentConfig, DoneableDeploymentConfig> {
@@ -50,14 +50,18 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
   private static final Logger LOG = LoggerFactory.getLogger(DeploymentConfigOperationsImpl.class);
   private static final String DEPLOYMENT_CONFIG_REF = "openshift.io/deployment-config.name";
 
-
-  public DeploymentConfigOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
-    this(client, config, APPS, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+  public DeploymentConfigOperationsImpl(OkHttpClient client, Config config) {
+    this(new RollingOperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public DeploymentConfigOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiGroup, String apiVersion, String namespace, String name, Boolean cascading, DeploymentConfig item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, OpenShiftOperation.withApiGroup(client, apiGroup, apiVersion, config), "deploymentconfigs", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  public DeploymentConfigOperationsImpl(RollingOperationContext context) {
+    super(context.withPlural("deploymentconfigs"));
     reaper = new DeploymentConfigReaper(this, client);
+  }
+
+  @Override
+  public DeploymentConfigOperationsImpl newInstance(OperationContext context) {
+    return new DeploymentConfigOperationsImpl((RollingOperationContext) context);
   }
 
   @Override
@@ -131,7 +135,8 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
       Map<String, String> selector = new HashMap<>();
       selector.put(DEPLOYMENT_CONFIG_REF, deployment.getMetadata().getName());
       if (selector != null && !selector.isEmpty()) {
-        Boolean deleted = new ReplicationControllerOperationsImpl(client, operation.getConfig(), operation.getNamespace())
+        Boolean deleted = new ReplicationControllerOperationsImpl(client, operation.getConfig())
+          .inNamespace(operation.namespace)
           .withLabels(selector)
           .delete();
       }

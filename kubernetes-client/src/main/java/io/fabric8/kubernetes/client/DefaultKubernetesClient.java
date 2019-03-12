@@ -106,7 +106,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public MixedOperation<ComponentStatus, ComponentStatusList, DoneableComponentStatus, Resource<ComponentStatus, DoneableComponentStatus>> componentstatuses() {
-    return new ComponentStatusOperationsImpl(httpClient, getConfiguration(), null);
+    return new ComponentStatusOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
@@ -152,12 +152,12 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public MixedOperation<Endpoints, EndpointsList, DoneableEndpoints, Resource<Endpoints, DoneableEndpoints>> endpoints() {
-    return new EndpointsOperationsImpl(httpClient, getConfiguration(), getNamespace());
+    return new EndpointsOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
   public MixedOperation<Event, EventList, DoneableEvent, Resource<Event, DoneableEvent>> events() {
-    return new EventOperationsImpl(httpClient, getConfiguration(), getNamespace());
+    return new EventOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
@@ -177,22 +177,22 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public MixedOperation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, Resource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> persistentVolumeClaims() {
-    return new PersistentVolumeClaimOperationsImpl(httpClient, getConfiguration(), getNamespace());
+    return new PersistentVolumeClaimOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
   public MixedOperation<Pod, PodList, DoneablePod, PodResource<Pod, DoneablePod>> pods() {
-    return new PodOperationsImpl(httpClient, getConfiguration(), getNamespace());
+    return new PodOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
   public MixedOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, RollableScalableResource<ReplicationController, DoneableReplicationController>> replicationControllers() {
-    return new ReplicationControllerOperationsImpl(httpClient, getConfiguration(), getNamespace());
+    return new ReplicationControllerOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
   public MixedOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota, Resource<ResourceQuota, DoneableResourceQuota>> resourceQuotas() {
-    return new ResourceQuotaOperationsImpl(httpClient, getConfiguration(), getNamespace());
+    return new ResourceQuotaOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
@@ -202,17 +202,17 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public MixedOperation<Secret, SecretList, DoneableSecret, Resource<Secret, DoneableSecret>> secrets() {
-    return new SecretOperationsImpl(httpClient, getConfiguration(), getNamespace());
+    return new SecretOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
   public MixedOperation<Service, ServiceList, DoneableService, ServiceResource<Service, DoneableService>> services() {
-    return new ServiceOperationsImpl(httpClient, getConfiguration(), getNamespace());
+    return new ServiceOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
   public MixedOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, Resource<ServiceAccount, DoneableServiceAccount>> serviceAccounts() {
-    return new ServiceAccountOperationsImpl(httpClient, getConfiguration(), getNamespace());
+    return new ServiceAccountOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
@@ -222,12 +222,12 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public MixedOperation<ConfigMap, ConfigMapList, DoneableConfigMap, Resource<ConfigMap, DoneableConfigMap>> configMaps() {
-    return new ConfigMapOperationsImpl(httpClient, getConfiguration(), getNamespace());
+    return new ConfigMapOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
   public MixedOperation<LimitRange, LimitRangeList, DoneableLimitRange, Resource<LimitRange, DoneableLimitRange>> limitRanges() {
-    return new LimitRangeOperationsImpl(httpClient, getConfiguration(), getNamespace());
+    return new LimitRangeOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
@@ -237,7 +237,11 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public <T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResources(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass) {
-    return new CustomResourceOperationsImpl<T,L,D>(httpClient, getConfiguration(), crd, resourceType, listClass, doneClass);
+    return new CustomResourceOperationsImpl<T,L,D>(new CustomResourceOperationContext().withOkhttpClient(httpClient).withConfig(getConfiguration())
+      .withCrd(crd)
+      .withType(resourceType)
+      .withListType(listClass)
+      .withDoneableType(doneClass));
   }
 
   @Override

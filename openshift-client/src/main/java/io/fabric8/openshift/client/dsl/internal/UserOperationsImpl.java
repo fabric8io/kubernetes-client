@@ -16,24 +16,29 @@
 package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
 import io.fabric8.openshift.api.model.DoneableUser;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.api.model.UserList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
-import java.util.Map;
-import java.util.TreeMap;
-
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.USER;
 
 public class UserOperationsImpl extends OpenShiftOperation<User, UserList, DoneableUser, Resource<User, DoneableUser>> {
-  public UserOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
-    this(client, config, USER, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+
+  public UserOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public UserOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiGroup, String apiVersion, String namespace, String name, Boolean cascading, User item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, OpenShiftOperation.withApiGroup(client, apiGroup, apiVersion, config), "users", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  public UserOperationsImpl(OperationContext context) {
+    super(context.withApiGroupName(USER)
+      .withPlural("users"));
+  }
+
+  @Override
+  public UserOperationsImpl newInstance(OperationContext context) {
+    return new UserOperationsImpl(context);
   }
 
   @Override

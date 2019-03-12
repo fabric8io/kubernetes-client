@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.ConfigAndApiGroupsInfo;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -36,9 +37,8 @@ import java.util.Map;
 public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
   extends HasMetadataOperation<T, L, D, R> {
 
-  protected OpenShiftOperation(OkHttpClient client, ConfigAndApiGroupsInfo config, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, config.getConfig(), config.getApiGroupName(), config.getApiGroupVersion(), resourceT, namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
-    this.apiVersion = config.getApiGroupVersion();
+  public OpenShiftOperation(OperationContext ctx) {
+    super(ctx);
   }
 
   /**

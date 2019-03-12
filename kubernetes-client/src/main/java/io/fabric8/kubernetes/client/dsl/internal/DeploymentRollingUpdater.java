@@ -110,6 +110,6 @@ class DeploymentRollingUpdater extends RollingUpdater<Deployment, DeploymentList
 
   @Override
   protected Operation<Deployment, DeploymentList, DoneableDeployment, RollableScalableResource<Deployment, DoneableDeployment>> resources() {
-    return new DeploymentOperationsImpl(client, config, namespace);
+    return new DeploymentOperationsImpl(client, config);
   }
 }

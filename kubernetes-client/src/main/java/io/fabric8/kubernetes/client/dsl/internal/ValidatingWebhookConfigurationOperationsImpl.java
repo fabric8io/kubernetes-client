@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 
 import okhttp3.OkHttpClient;
@@ -34,26 +35,18 @@ import java.util.TreeMap;
 
 public class ValidatingWebhookConfigurationOperationsImpl extends HasMetadataOperation<ValidatingWebhookConfiguration, ValidatingWebhookConfigurationList, DoneableValidatingWebhookConfiguration, Resource<ValidatingWebhookConfiguration, DoneableValidatingWebhookConfiguration>> {
 
-  public ValidatingWebhookConfigurationOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(client, config, "admissionregistration.k8s.io", "v1beta1", namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+  public ValidatingWebhookConfigurationOperationsImpl(OkHttpClient client, Config config) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public ValidatingWebhookConfigurationOperationsImpl(OkHttpClient client, Config config, String apiGroupVersion, String namespace, String name, Boolean cascading, ValidatingWebhookConfiguration item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, config, "admissionregistration.k8s.io", apiGroupVersion, "validatingwebhookconfigurations", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  public ValidatingWebhookConfigurationOperationsImpl(OperationContext context) {
+    super(context.withApiGroupName("admissionregistration.k8s.io")
+      .withApiGroupVersion("v1beta1")
+      .withPlural("validatingwebhookconfigurations"));
   }
-
-  public ValidatingWebhookConfigurationOperationsImpl(OkHttpClient client, Config config, String apiGroupName, String apiGroupVersion, String namespace, String name, Boolean cascading, ValidatingWebhookConfiguration item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, config, apiGroupName, apiGroupVersion, "validatingwebhookconfigurations", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
-  }
-
   @Override
-  public NonNamespaceOperation<ValidatingWebhookConfiguration, ValidatingWebhookConfigurationList, DoneableValidatingWebhookConfiguration, Resource<ValidatingWebhookConfiguration, DoneableValidatingWebhookConfiguration>> inNamespace(String namespace) {
-    return new ValidatingWebhookConfigurationOperationsImpl(client, config, apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
-  }
-
-  @Override
-  public Resource<ValidatingWebhookConfiguration, DoneableValidatingWebhookConfiguration> withName(String name) {
-    return new ValidatingWebhookConfigurationOperationsImpl(client, config, apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
+  public ValidatingWebhookConfigurationOperationsImpl newInstance(OperationContext context) {
+    return new ValidatingWebhookConfigurationOperationsImpl(context);
   }
 
   @Override
