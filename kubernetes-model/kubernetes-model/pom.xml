@@ -178,6 +178,7 @@
               io.fabric8.openshift.api.model**
             </Export-Package>
             <Include-Resource>
+              {maven-resources},
               /kubernetes.properties=target/classes/kubernetes.properties,
               /openshift.properties=target/classes/openshift.properties
             </Include-Resource>
