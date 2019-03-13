@@ -179,6 +179,7 @@
             </Export-Package>
             <Include-Resource>
               {maven-resources},
+              /META-INF/jandex.idx=target/classes/META-INF/jandex.idx,
               /kubernetes.properties=target/classes/kubernetes.properties,
               /openshift.properties=target/classes/openshift.properties
             </Include-Resource>
