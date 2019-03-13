@@ -5,6 +5,7 @@
 
   Bugs
     * Fix #1387: ValidatingWebhookConfigurationOperationsImpl should be a NonNamespaceOperation
+    * Fix #1429: Fixes JsonMappingException: No resource type found for:v1#List when reading a Kubernetes List YAML
    
   Improvements
   
