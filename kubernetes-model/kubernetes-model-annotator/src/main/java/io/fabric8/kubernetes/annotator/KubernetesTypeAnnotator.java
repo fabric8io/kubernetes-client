@@ -29,6 +29,7 @@ import io.sundr.transform.annotations.VelocityTransformation;
 import io.sundr.transform.annotations.VelocityTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.jsonschema2pojo.GenerationConfig;
 import org.jsonschema2pojo.Jackson2Annotator;
 
 import java.util.HashMap;
@@ -51,6 +52,10 @@ public class KubernetesTypeAnnotator extends Jackson2Annotator {
 
     private final Map<String, JDefinedClass> pendingResources = new HashMap<>();
     private final Map<String, JDefinedClass> pendingLists = new HashMap<>();
+
+    public KubernetesTypeAnnotator(GenerationConfig generationConfig) {
+      super(generationConfig);
+    }
 
     @Override
     public void propertyOrder(JDefinedClass clazz, JsonNode propertiesNode) {
