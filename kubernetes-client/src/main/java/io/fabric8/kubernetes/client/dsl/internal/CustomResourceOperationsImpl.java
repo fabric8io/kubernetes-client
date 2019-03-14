@@ -36,6 +36,7 @@ import okhttp3.OkHttpClient;
 
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
 
 /**
  */
@@ -50,6 +51,17 @@ public class CustomResourceOperationsImpl<T extends HasMetadata, L extends Kuber
 
   public CustomResourceOperationsImpl(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, boolean resouceNamespaced, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, Class<T> type, Class<L> listType, Class<D> doneableType) {
     super(client, config, apiGroup, apiVersion, resourceT, namespace, name, cascading, item, resourceVersion, reloadingFromServer, type, listType, doneableType);
+    this.resourceNamespaced = resouceNamespaced;
+    this.apiVersion = getAPIGroup() + "/" + getAPIVersion();
+
+    KubernetesDeserializer.registerCustomKind(type.getSimpleName(), type);
+    if (KubernetesResource.class.isAssignableFrom(listType)) {
+      KubernetesDeserializer.registerCustomKind(listType.getSimpleName(), (Class<? extends KubernetesResource>) listType);
+    }
+  }
+
+  protected CustomResourceOperationsImpl(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, boolean resouceNamespaced, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, Class<T> type, Class<L> listType, Class<D> doneableType) {
+    super(client, config, apiGroup, apiVersion, resourceT, namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields, type, listType, doneableType);
     this.resourceNamespaced = resouceNamespaced;
     this.apiVersion = getAPIGroup() + "/" + getAPIVersion();
 
@@ -124,7 +136,7 @@ public class CustomResourceOperationsImpl<T extends HasMetadata, L extends Kuber
 
   @Override
   public Watchable<Watch, Watcher<T>> withResourceVersion(String resourceVersion) {
-    return new CustomResourceOperationsImpl<>(client, getConfig(), getAPIGroup(), getAPIVersion(), getResourceT(), resourceNamespaced, getNamespace(), getName(), isCascading(), getItem(), resourceVersion, isReloadingFromServer(), getType(), getListType(), getDoneableType());
+    return new CustomResourceOperationsImpl<>(client, getConfig(), getAPIGroup(), getAPIVersion(), getResourceT(), resourceNamespaced, getNamespace(), getName(), isCascading(), getItem(), resourceVersion, isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), getType(), getListType(), getDoneableType());
   }
 
   @Override

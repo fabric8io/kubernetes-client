@@ -109,8 +109,26 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     this.fields = fields;
   }
 
-  protected BaseOperation(OkHttpClient client, Config config, String apiGroupName, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, Class<T> type, Class<L> listType, Class<D> doneableType) {
-    super(client, config, apiGroup(item, apiGroupName), apiVersion(item, apiVersion), resourceT, namespace, name(item, name));
+  protected BaseOperation(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, Class<T> type, Class<L> listType, Class<D> doneableType) {
+    super(client, config, apiGroup, apiVersion(item, apiVersion), resourceT, namespace, name(item, name));
+    this.cascading = cascading;
+    this.item = item;
+    this.resourceVersion = resourceVersion;
+    this.reloadingFromServer = reloadingFromServer;
+    this.type = type;
+    this.listType = listType;
+    this.doneableType = doneableType;
+    this.reaper = null;
+    this.gracePeriodSeconds = gracePeriodSeconds;
+    this.labels = labels;
+    this.labelsNot = labelsNot;
+    this.labelsIn = labelsIn;
+    this.labelsNotIn = labelsNotIn;
+    this.fields = fields;
+  }
+
+  protected BaseOperation(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, Class<T> type, Class<L> listType, Class<D> doneableType) {
+    super(client, config, apiGroup, apiVersion(item, apiVersion), resourceT, namespace, name(item, name));
     this.cascading = cascading;
     this.item = item;
     this.resourceVersion = resourceVersion;

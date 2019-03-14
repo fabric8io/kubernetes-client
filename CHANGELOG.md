@@ -8,6 +8,8 @@
     * Fix #1429: Fixes JsonMappingException: No resource type found for:v1#List when reading a Kubernetes List YAML
    
   Improvements
+
+    * Fix #1425: Preserve labels and fields when using CRD's withResourceVersion()
   
   Dependency Upgrade
     * Upgrade Sundrio to 0.16.5
