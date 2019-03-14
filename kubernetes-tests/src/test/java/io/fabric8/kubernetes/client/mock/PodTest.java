@@ -31,6 +31,7 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.WritableByteChannel;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -39,6 +40,7 @@ import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.api.model.WatchEvent;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.LocalPortForward;
@@ -432,6 +434,50 @@ public class PodTest {
     assertEquals("Hello World!", got);
   }
 
+  @Test
+  public void testListFromServer() {
+    PodBuilder podBuilder = new PodBuilder()
+      .withNewMetadata()
+        .withNamespace("test")
+        .withName("pod1")
+      .endMetadata();
+
+    Pod clientPod = podBuilder.build();
+    Pod serverPod = podBuilder
+      .editMetadata()
+        .withResourceVersion("1")
+      .endMetadata()
+      .withNewStatus()
+        .addNewCondition()
+          .withType("Ready")
+          .withStatus("True")
+        .endCondition()
+      .endStatus()
+      .build();
+
+    server.expect().get()
+      .withPath("/api/v1/namespaces/test/pods/pod1")
+      .andReturn(200, serverPod).once();
+
+    KubernetesClient client = server.getClient();
+
+    List<HasMetadata> resources = client.resourceList(clientPod).fromServer().get();
+
+    assertNotNull(resources);
+    assertEquals(1, resources.size());
+    assertNotNull(resources.get(0));
+    assertTrue(resources.get(0) instanceof Pod);
+
+    Pod fromServerPod = (Pod) resources.get(0);
+    assertNotNull(fromServerPod.getMetadata());
+    assertEquals("1", fromServerPod.getMetadata().getResourceVersion());
+    assertNotNull(fromServerPod.getStatus());
+    assertNotNull(fromServerPod.getStatus().getConditions());
+    assertEquals(1, fromServerPod.getStatus().getConditions().size());
+    assertEquals("Ready", fromServerPod.getStatus().getConditions().get(0).getType());
+    assertEquals("True", fromServerPod.getStatus().getConditions().get(0).getStatus());
+  }
+
   private static String portForwardEncode(boolean dataChannel, String str) {
     try {
       byte[] data = str.getBytes("UTF-8");
@@ -443,5 +489,4 @@ public class PodTest {
       throw new IllegalStateException(e);
     }
   }
-
 }

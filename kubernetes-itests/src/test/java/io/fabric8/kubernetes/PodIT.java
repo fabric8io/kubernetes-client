@@ -17,6 +17,7 @@
 package io.fabric8.kubernetes;
 
 import io.fabric8.commons.ReadyEntity;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
@@ -37,6 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -152,6 +154,25 @@ public class PodIT {
     execLatch.await(5, TimeUnit.SECONDS);
     assertNotNull(execWatch);
     assertNotNull(out.toString());
+  }
+
+  @Test
+  public void listFromServer() {
+    // Wait for resources to get ready
+    ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(), currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(podReady);
+
+    List<HasMetadata> resources = client.resourceList(pod1).inNamespace(currentNamespace).fromServer().get();
+
+    assertNotNull(resources);
+    assertEquals(1, resources.size());
+    assertNotNull(resources.get(0));
+
+    HasMetadata fromServerPod = resources.get(0);
+
+    assertEquals(pod1.getKind(), fromServerPod.getKind());
+    assertEquals(currentNamespace, fromServerPod.getMetadata().getNamespace());
+    assertEquals(pod1.getMetadata().getName(), fromServerPod.getMetadata().getName());
   }
 
   @After
