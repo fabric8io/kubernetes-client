@@ -63,20 +63,6 @@ public class CustomResourceOperationsImpl<T extends HasMetadata, L extends Kuber
     }
   }
 
-  protected CustomResourceOperationsImpl(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, boolean resouceNamespaced, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, Class<T> type, Class<L> listType, Class<D> doneableType) {
-    super(client, config, apiGroup, apiVersion, resourceT, namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields, type, listType, doneableType);
-    this.resourceNamespaced = resouceNamespaced;
-    this.apiVersion = getAPIGroup() + "/" + getAPIVersion();
-
-    KubernetesDeserializer.registerCustomKind(type.getSimpleName(), type);
-    if (KubernetesResource.class.isAssignableFrom(listType)) {
-      KubernetesDeserializer.registerCustomKind(listType.getSimpleName(), (Class<? extends KubernetesResource>) listType);
-    }
-    this.type = context.getType();
-    this.listType = context.getListType();
-    this.doneableType = context.getDoneableType();
-  }
-
   @Override
   public CustomResourceOperationsImpl newInstance(OperationContext context) {
     return new CustomResourceOperationsImpl((CustomResourceOperationContext) context);
