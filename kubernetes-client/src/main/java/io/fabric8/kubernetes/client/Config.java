@@ -653,7 +653,6 @@ public class Config {
           algorithm = "RSA";
         }
       }
-      //bufferedReader.close();
       return algorithm;
   }
 
@@ -670,7 +669,10 @@ public class Config {
         return getKeyAlgorithm(keyInputStream);
       }
     } catch(IOException exception) {
-      LOGGER.error("Failure in determining private key type: ", exception.getMessage());
+      LOGGER.info("Failure in determining private key algorithm type, defaulting to RSA ", exception.getMessage());
+    } catch(NoClassDefFoundError noClassDefFoundError) {
+      throw new IllegalStateException("Please make sure org.bouncycastle:bcprov-ext-jdk15on " +
+        "and org.bouncycastle:bcpkix-jdk15on are included in your project's classpath. ", noClassDefFoundError);
     }
     return null;
   }
