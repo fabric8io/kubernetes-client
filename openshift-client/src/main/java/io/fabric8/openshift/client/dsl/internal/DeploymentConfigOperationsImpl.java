@@ -44,6 +44,8 @@ import io.fabric8.openshift.api.model.DoneableDeploymentConfig;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
 import okhttp3.OkHttpClient;
 
+import static io.fabric8.openshift.client.OpenShiftAPIGroups.APPS;
+
 public class DeploymentConfigOperationsImpl extends OpenShiftOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig,
   DeployableScalableResource<DeploymentConfig, DoneableDeploymentConfig>> implements DeployableScalableResource<DeploymentConfig, DoneableDeploymentConfig> {
 
@@ -55,7 +57,7 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
   }
 
   public DeploymentConfigOperationsImpl(RollingOperationContext context) {
-    super(context.withPlural("deploymentconfigs"));
+    super(context.withApiGroupName(APPS).withPlural("deploymentconfigs"));
     this.type = DeploymentConfig.class;
     this.listType = DeploymentConfigList.class;
     this.doneableType = DoneableDeploymentConfig.class;

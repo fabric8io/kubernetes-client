@@ -22,62 +22,34 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
-import io.fabric8.kubernetes.client.dsl.base.ConfigAndApiGroupsInfo;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfig;
-import okhttp3.OkHttpClient;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Map;
 
 public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
   extends HasMetadataOperation<T, L, D, R> {
 
   public OpenShiftOperation(OperationContext ctx) {
-    super(ctx);
+    super(wrap(ctx));
   }
 
-  /**
-   * If the current client supports the new API Group REST API at <code>/apis/*.openshift.io/v1</code>
-   * then lets use that URL otherwise lets stick to the legacy <code>/oapi/v1</code> API
-   *
-   * @param openShiftClient the OpenShift client to use
-   * @param apiGroupName the API Group name like <code>apps.openshift.io</code> or <code>build.openshift.io</code>
-   * @param config the current configuration
-   * @return the current configuration if API groups are not supported otherwise the new configuration
-   */
-  public static ConfigAndApiGroupsInfo withApiGroup(OpenShiftClient openShiftClient, String apiGroupName, String apiVersion, OpenShiftConfig config) {
+  public static OperationContext wrap(OperationContext context) {
+    OpenShiftConfig config = OpenShiftConfig.wrap(context.getConfig());
     String oapiVersion = config.getOapiVersion();
-    if (config.isOpenShiftAPIGroups(openShiftClient)) {
-      String apiGroupUrl = URLUtils.join(config.getMasterUrl(), "apis", apiGroupName, oapiVersion);
-      String apiGroupVersion = URLUtils.join(apiGroupName, oapiVersion);
-      return new ConfigAndApiGroupsInfo(new OpenShiftConfig(config, apiGroupUrl), apiGroupName, apiGroupVersion);
+    OpenShiftClient oc = new DefaultOpenShiftClient(context.getClient(), config);
+    if (config.isOpenShiftAPIGroups(oc)) {
+      String apiGroupUrl = URLUtils.join(config.getMasterUrl(), "apis", context.getApiGroupName(), oapiVersion);
+      String apiGroupVersion = URLUtils.join(context.getApiGroupName(), oapiVersion);
+      return context.withConfig(new OpenShiftConfig(config, apiGroupUrl)).withApiGroupName(context.getApiGroupName()).withApiGroupVersion(apiGroupVersion);
     } else {
-      if (apiVersion == null) {
-        apiVersion = oapiVersion;
-      }
-      return new ConfigAndApiGroupsInfo(config, apiGroupName, apiVersion);
+      return context.withApiGroupVersion(oapiVersion);
     }
   }
-
-  /**
-   * If the current client supports the new API Group REST API at <code>/apis/*.openshift.io/v1</code>
-   * then lets use that URL otherwise lets stick to the legacy <code>/oapi/v1</code> API
-   *
-   * @param httpClient the HTTP client to use
-   * @param apiGroupName the API Group name like <code>apps.openshift.io</code> or <code>build.openshift.io</code>
-   * @param config the current configuration
-   * @return the current configuration if API groups are not supported otherwise the new configuration
-   */
-  public static ConfigAndApiGroupsInfo withApiGroup(OkHttpClient httpClient, String apiGroupName, String apiVersion, OpenShiftConfig config) {
-    OpenShiftClient openShiftClient = new DefaultOpenShiftClient(httpClient, config);
-    return withApiGroup(openShiftClient, apiGroupName, apiVersion, config);
-  }
-
 
   @Override
   public URL getRootUrl() {
