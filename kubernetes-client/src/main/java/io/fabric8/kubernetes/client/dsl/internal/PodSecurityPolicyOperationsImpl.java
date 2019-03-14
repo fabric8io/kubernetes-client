@@ -20,13 +20,9 @@ import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicy;
 import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicyList;
 import io.fabric8.kubernetes.api.model.extensions.DoneablePodSecurityPolicy;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
-
-import java.util.Map;
-import java.util.TreeMap;
 
 public class PodSecurityPolicyOperationsImpl extends HasMetadataOperation<PodSecurityPolicy, PodSecurityPolicyList, DoneablePodSecurityPolicy, Resource<PodSecurityPolicy, DoneablePodSecurityPolicy>>{
 
@@ -38,6 +34,9 @@ public class PodSecurityPolicyOperationsImpl extends HasMetadataOperation<PodSec
     super(context.withApiGroupName("extensions")
       .withApiGroupVersion("v1beta1")
       .withPlural("podsecuritypolicies"));
+    this.type = PodSecurityPolicy.class;
+    this.listType = PodSecurityPolicyList.class;
+    this.doneableType = DoneablePodSecurityPolicy.class;
   }
 
   @Override

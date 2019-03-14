@@ -42,6 +42,9 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
 
   public ServiceOperationsImpl(OperationContext context) {
     super(context.withPlural("services"));
+    this.type = Service.class;
+    this.listType = ServiceList.class;
+    this.doneableType = DoneableService.class;
   }
 
   @Override

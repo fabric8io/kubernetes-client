@@ -43,6 +43,9 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
     super(context.withApiGroupName("apps")
       .withApiGroupVersion("v1")
       .withPlural("statefulsets"));
+    this.type = StatefulSet.class;
+    this.listType = StatefulSetList.class;
+    this.doneableType = DoneableStatefulSet.class;
   }
 
   @Override

@@ -55,6 +55,10 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
     super(context.withApiGroupName("apps")
       .withApiGroupVersion("v1")
       .withPlural("deployments"));
+    this.type = Deployment .class;
+    this.listType = DeploymentList.class;
+    this.doneableType = DoneableDeployment.class;
+
     reaper = new DeploymentReaper(this);
   }
 

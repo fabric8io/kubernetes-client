@@ -95,6 +95,11 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
   public BuildConfigOperationsImpl(BuildConfigOperationContext context) {
     super(context.withApiGroupName(BUILD)
       .withPlural("buildconfigs"));
+
+    this.type = BuildConfig.class;
+    this.listType = BuildConfigList.class;
+    this.doneableType = DoneableBuildConfig.class;
+
     this.triggerType = context.getTriggerType();
     this.secret = context.getSecret();
     this.authorName = context.getAuthorName();

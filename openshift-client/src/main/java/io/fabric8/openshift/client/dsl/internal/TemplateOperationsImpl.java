@@ -78,6 +78,9 @@ public class TemplateOperationsImpl
     super(context.withApiGroupName(TEMPLATE)
       .withPlural("templates"));
     this.parameters = context.getParameters();
+    this.type = Template.class;
+    this.listType = TemplateList.class;
+    this.doneableType = DoneableTemplate.class;
   }
   @Override
   public TemplateOperationsImpl newInstance(OperationContext context) {

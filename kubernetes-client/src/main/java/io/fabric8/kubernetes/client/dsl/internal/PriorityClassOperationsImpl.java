@@ -24,8 +24,6 @@ import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
 
-import java.util.Map;
-import java.util.TreeMap;
 
 public class PriorityClassOperationsImpl extends HasMetadataOperation<PriorityClass, PriorityClassList, DoneablePriorityClass, Resource<PriorityClass, DoneablePriorityClass>> {
 
@@ -37,6 +35,10 @@ public class PriorityClassOperationsImpl extends HasMetadataOperation<PriorityCl
     super(context.withApiGroupName("scheduling.k8s.io")
       .withApiGroupVersion("v1beta1")
       .withPlural("priorityclasses"));
+
+    this.type = PriorityClass.class;
+    this.listType = PriorityClassList.class;
+    this.doneableType = DoneablePriorityClass.class;
   }
 
   @Override

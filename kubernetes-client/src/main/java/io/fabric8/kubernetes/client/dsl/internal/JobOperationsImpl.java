@@ -50,6 +50,10 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
     super(context.withApiGroupName("batch")
       .withApiGroupVersion("v1")
       .withPlural("jobs"));
+
+    this.type = Job.class;
+    this.listType = JobList.class;
+    this.doneableType = DoneableJob.class;
   }
 
   @Override

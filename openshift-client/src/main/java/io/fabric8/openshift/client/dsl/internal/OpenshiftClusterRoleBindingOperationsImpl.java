@@ -23,9 +23,6 @@ import io.fabric8.openshift.api.model.OpenshiftClusterRoleBindingList;
 import io.fabric8.openshift.api.model.DoneableOpenshiftClusterRoleBinding;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
-import java.util.Map;
-import java.util.TreeMap;
-
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.AUTHORIZATION;
 
 public class OpenshiftClusterRoleBindingOperationsImpl extends OpenShiftOperation<OpenshiftClusterRoleBinding, OpenshiftClusterRoleBindingList, DoneableOpenshiftClusterRoleBinding, Resource<OpenshiftClusterRoleBinding, DoneableOpenshiftClusterRoleBinding>> {
@@ -37,6 +34,9 @@ public class OpenshiftClusterRoleBindingOperationsImpl extends OpenShiftOperatio
   public OpenshiftClusterRoleBindingOperationsImpl(OperationContext context) {
     super(context.withApiGroupName(AUTHORIZATION)
       .withPlural("clusterrolebindings"));
+    this.type = OpenshiftClusterRoleBinding.class;
+    this.listType = OpenshiftClusterRoleBindingList.class;
+    this.doneableType = DoneableOpenshiftClusterRoleBinding.class;
   }
 
   @Override

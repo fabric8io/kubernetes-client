@@ -78,6 +78,9 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
   public BuildOperationsImpl(BuildOperationContext context) {
     super(context.withApiGroupName(BUILD)
       .withPlural("builds"));
+    this.type = Build.class;
+    this.listType = BuildList.class;
+    this.doneableType = DoneableBuild.class;
 
     this.in = context.getIn();
     this.out = context.getOut();

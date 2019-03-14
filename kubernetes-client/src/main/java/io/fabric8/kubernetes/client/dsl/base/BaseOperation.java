@@ -103,12 +103,6 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     this.labelsNotIn = ctx.getLabelsNotIn();
     this.fields = ctx.getFields();
     this.reaper = null;
-
-    if (getClass().getGenericSuperclass() instanceof ParameterizedType) {
-      this.type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-      this.listType = (Class<L>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-      this.doneableType = (Class<D>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[2];
-    }
   }
 
   /**

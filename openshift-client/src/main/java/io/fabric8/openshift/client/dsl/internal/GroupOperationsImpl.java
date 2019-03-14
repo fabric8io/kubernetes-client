@@ -37,6 +37,9 @@ public class GroupOperationsImpl extends OpenShiftOperation<Group, GroupList, Do
   public GroupOperationsImpl(OperationContext context) {
     super(context.withApiGroupName(USER)
       .withPlural("groups"));
+    this.type = Group.class;
+    this.listType = GroupList.class;
+    this.doneableType = DoneableGroup.class;
   }
 
   @Override

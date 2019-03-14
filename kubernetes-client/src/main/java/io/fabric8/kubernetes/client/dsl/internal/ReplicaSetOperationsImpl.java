@@ -43,6 +43,9 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
     super(context.withApiGroupName("apps")
       .withApiGroupVersion("v1")
       .withPlural("replicasets"));
+    this.type = ReplicaSet.class;
+    this.listType = ReplicaSetList.class;
+    this.doneableType = DoneableReplicaSet.class;
   }
 
   @Override

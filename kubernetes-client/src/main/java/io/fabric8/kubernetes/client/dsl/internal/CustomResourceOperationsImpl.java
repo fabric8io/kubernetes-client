@@ -54,6 +54,11 @@ public class CustomResourceOperationsImpl<T extends HasMetadata, L extends Kuber
     super(context.withApiGroupName(apiGroup((CustomResourceDefinition) context.getCrd()))
       .withApiGroupVersion(apiVersion((CustomResourceDefinition) context.getCrd()))
       .withPlural(resourceT((CustomResourceDefinition) context.getCrd())));
+
+    this.type = context.getType();
+    this.listType = context.getListType();
+    this.doneableType = context.getDoneableType();
+
     this.resourceNamespaced = resourceNamespaced((CustomResourceDefinition) context.getCrd());
     this.apiVersion = getAPIGroup() + "/" + getAPIVersion();
 

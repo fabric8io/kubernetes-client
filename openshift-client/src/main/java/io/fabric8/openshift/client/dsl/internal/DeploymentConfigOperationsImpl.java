@@ -56,6 +56,9 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
 
   public DeploymentConfigOperationsImpl(RollingOperationContext context) {
     super(context.withPlural("deploymentconfigs"));
+    this.type = DeploymentConfig.class;
+    this.listType = DeploymentConfigList.class;
+    this.doneableType = DoneableDeploymentConfig.class;
     reaper = new DeploymentConfigReaper(this, client);
   }
 

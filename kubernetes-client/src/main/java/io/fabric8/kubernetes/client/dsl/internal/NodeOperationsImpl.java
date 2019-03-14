@@ -32,6 +32,9 @@ public class NodeOperationsImpl extends HasMetadataOperation<Node, NodeList, Don
 
   public NodeOperationsImpl(OperationContext context) {
     super(context.withPlural("nodes"));
+    this.type = Node.class;
+    this.listType = NodeList.class;
+    this.doneableType = DoneableNode.class;
   }
 
   @Override

@@ -34,6 +34,9 @@ public class StorageClassOperationsImpl extends HasMetadataOperation<StorageClas
     super(context.withApiGroupName("storage.k8s.io")
       .withApiGroupVersion("v1")
       .withPlural("storageclasses"));
+    this.type = StorageClass.class;
+    this.listType = StorageClassList.class;
+    this.doneableType = DoneableStorageClass.class;
   }
 
   @Override

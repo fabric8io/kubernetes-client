@@ -42,6 +42,9 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
 
   public ReplicationControllerOperationsImpl(RollingOperationContext context) {
     super(context.withPlural("replicationcontrollers"));
+    this.type = ReplicationController.class;
+    this.listType = ReplicationControllerList.class;
+    this.doneableType = DoneableReplicationController.class;
   }
 
   @Override

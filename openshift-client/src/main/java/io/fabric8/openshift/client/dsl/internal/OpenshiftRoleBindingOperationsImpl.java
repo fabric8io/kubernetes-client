@@ -45,6 +45,9 @@ public class OpenshiftRoleBindingOperationsImpl extends OpenShiftOperation<Opens
   public OpenshiftRoleBindingOperationsImpl(OperationContext context) {
     super(context.withApiGroupName(AUTHORIZATION)
       .withPlural("rolebindings"));
+    this.type = OpenshiftRoleBinding.class;
+    this.listType = OpenshiftRoleBindingList.class;
+    this.doneableType = DoneableOpenshiftRoleBinding.class;
   }
 
   @Override

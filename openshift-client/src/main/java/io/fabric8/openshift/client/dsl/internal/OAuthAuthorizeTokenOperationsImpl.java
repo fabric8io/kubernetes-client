@@ -17,6 +17,7 @@ package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.openshift.api.model.OAuthAccessToken;
 import okhttp3.OkHttpClient;
 import io.fabric8.openshift.api.model.DoneableOAuthAuthorizeToken;
 import io.fabric8.openshift.api.model.OAuthAuthorizeToken;
@@ -39,6 +40,9 @@ public class OAuthAuthorizeTokenOperationsImpl extends OpenShiftOperation<OAuthA
   public OAuthAuthorizeTokenOperationsImpl(OperationContext context) {
     super(context.withApiGroupName(OAUTH)
       .withPlural("oauthauthorizetokens"));
+    this.type = OAuthAuthorizeToken.class;
+    this.listType = OAuthAuthorizeTokenList.class;
+    this.doneableType = DoneableOAuthAuthorizeToken.class;
   }
 
   @Override

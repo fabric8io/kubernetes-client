@@ -34,6 +34,9 @@ public class ClusterRoleBindingOperationsImpl extends HasMetadataOperation<Clust
     super(context.withApiGroupName("rbac.authorization.k8s.io")
       .withApiGroupVersion("v1")
       .withPlural("clusterrolebindings"));
+    this.type = ClusterRoleBinding.class;
+    this.listType = ClusterRoleBindingList.class;
+    this.doneableType = DoneableClusterRoleBinding.class;
   }
 
   @Override

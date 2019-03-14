@@ -24,7 +24,6 @@ import io.fabric8.kubernetes.api.model.PersistentVolumeList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 
-
 public class PersistentVolumeOperationsImpl
   extends HasMetadataOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, Resource<PersistentVolume, DoneablePersistentVolume>> {
 
@@ -34,6 +33,9 @@ public class PersistentVolumeOperationsImpl
 
   public PersistentVolumeOperationsImpl(OperationContext context) {
     super(context.withPlural("persistentvolumes"));
+    this.type = PersistentVolume.class;
+    this.listType = PersistentVolumeList.class;
+    this.doneableType = DoneablePersistentVolume.class;
   }
 
   @Override

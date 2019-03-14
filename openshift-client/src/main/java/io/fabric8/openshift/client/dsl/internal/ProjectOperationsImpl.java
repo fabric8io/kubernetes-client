@@ -38,6 +38,9 @@ public class ProjectOperationsImpl extends OpenShiftOperation<Project, ProjectLi
   public ProjectOperationsImpl(OperationContext context) {
     super(context.withApiGroupName(PROJECT)
       .withPlural("projects"));
+    this.type = Project.class;
+    this.listType = ProjectList.class;
+    this.doneableType = DoneableProject.class;
   }
   @Override
   public ProjectOperationsImpl newInstance(OperationContext context) {

@@ -42,6 +42,9 @@ public class CustomResourceDefinitionOperationsImpl extends HasMetadataOperation
     super(context.withApiGroupName("apiextensions.k8s.io")
       .withApiGroupVersion("v1beta1")
       .withPlural("customresourcedefinitions"));
+    this.type = CustomResourceDefinition.class;
+    this.listType = CustomResourceDefinitionList.class;
+    this.doneableType = DoneableCustomResourceDefinition.class;
   }
   @Override
   public CustomResourceDefinitionOperationsImpl newInstance(OperationContext context) {

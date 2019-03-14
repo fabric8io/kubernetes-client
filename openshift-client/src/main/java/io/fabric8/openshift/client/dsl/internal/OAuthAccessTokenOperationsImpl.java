@@ -36,6 +36,9 @@ public class OAuthAccessTokenOperationsImpl extends OpenShiftOperation<OAuthAcce
   public OAuthAccessTokenOperationsImpl(OperationContext context) {
     super(context.withApiGroupName(OAUTH)
       .withPlural("oauthaccesstokens"));
+    this.type = OAuthAccessToken.class;
+    this.listType = OAuthAccessTokenList.class;
+    this.doneableType = DoneableOAuthAccessToken.class;
   }
 
   @Override

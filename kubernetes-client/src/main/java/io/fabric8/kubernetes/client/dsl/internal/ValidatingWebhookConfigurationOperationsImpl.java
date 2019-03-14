@@ -43,6 +43,9 @@ public class ValidatingWebhookConfigurationOperationsImpl extends HasMetadataOpe
     super(context.withApiGroupName("admissionregistration.k8s.io")
       .withApiGroupVersion("v1beta1")
       .withPlural("validatingwebhookconfigurations"));
+    this.type = ValidatingWebhookConfiguration.class;
+    this.listType = ValidatingWebhookConfigurationList.class;
+    this.doneableType = DoneableValidatingWebhookConfiguration.class;
   }
   @Override
   public ValidatingWebhookConfigurationOperationsImpl newInstance(OperationContext context) {

@@ -32,6 +32,9 @@ public class NamespaceOperationsImpl  extends HasMetadataOperation<Namespace, Na
 
   public NamespaceOperationsImpl(OperationContext context) {
     super(context.withPlural("namespaces"));
+    this.type = Namespace.class;
+    this.listType = NamespaceList.class;
+    this.doneableType = DoneableNamespace.class;
   }
 
   @Override
