@@ -79,7 +79,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <mockwebserver.version>0.1.1</mockwebserver.version>
-    <okhttp.version>3.12.0</okhttp.version>
+    <okhttp.version>3.14.0</okhttp.version>
     <okhttp.bundle.version>3.12.0_1</okhttp.bundle.version>
     <okio.version>1.15.0</okio.version>
     <okio.bundle.version>1.15.0_1</okio.bundle.version>
