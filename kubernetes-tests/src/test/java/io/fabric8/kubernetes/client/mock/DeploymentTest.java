@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ContainerBuilder;
 import io.fabric8.kubernetes.api.model.ContainerPortBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
@@ -35,6 +36,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
@@ -324,5 +326,49 @@ public class DeploymentTest {
       .rolling()
       .withTimeout(5, TimeUnit.MINUTES)
       .updateImage("");
+  }
+
+  @Test
+  public void testListFromServer() {
+    DeploymentBuilder deploymentBuilder = new DeploymentBuilder()
+      .withNewMetadata()
+        .withNamespace("test")
+        .withName("deployment1")
+      .endMetadata();
+
+    Deployment clientDeployment = deploymentBuilder.build();
+    Deployment serverDeployment = deploymentBuilder
+      .editMetadata()
+        .withResourceVersion("1")
+      .endMetadata()
+      .withNewStatus()
+        .addNewCondition()
+          .withType("Ready")
+          .withStatus("True")
+        .endCondition()
+      .endStatus()
+      .build();
+
+    server.expect()
+      .withPath("/apis/apps/v1/namespaces/test/deployments/deployment1")
+      .andReturn(200, serverDeployment).once();
+
+    KubernetesClient client = server.getClient();
+
+    List<HasMetadata> resources = client.resourceList(clientDeployment).fromServer().get();
+
+    assertNotNull(resources);
+    assertEquals(1, resources.size());
+    assertNotNull(resources.get(0));
+    assertTrue(resources.get(0) instanceof Deployment);
+
+    Deployment fromServerDeployment = (Deployment) resources.get(0);
+    assertNotNull(fromServerDeployment.getMetadata());
+    assertEquals("1", fromServerDeployment.getMetadata().getResourceVersion());
+    assertNotNull(fromServerDeployment.getStatus());
+    assertNotNull(fromServerDeployment.getStatus().getConditions());
+    assertEquals(1, fromServerDeployment.getStatus().getConditions().size());
+    assertEquals("Ready", fromServerDeployment.getStatus().getConditions().get(0).getType());
+    assertEquals("True", fromServerDeployment.getStatus().getConditions().get(0).getStatus());
   }
 }

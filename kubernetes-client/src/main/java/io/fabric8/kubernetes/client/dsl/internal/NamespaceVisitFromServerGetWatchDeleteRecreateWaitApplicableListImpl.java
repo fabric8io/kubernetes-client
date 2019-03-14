@@ -265,7 +265,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
         if (fromServer) {
             List<HasMetadata> result = new ArrayList<>();
             for (HasMetadata meta : acceptVisitors(asHasMetadata(item, true), visitors)) {
-                ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
+                ResourceHandler<HasMetadata, ? extends VisitableBuilder> h = handlerOf(meta);
                 HasMetadata reloaded = h.reload(client, config, meta.getMetadata().getNamespace(), meta);
                 if (reloaded != null) {
                     HasMetadata edited = reloaded;
