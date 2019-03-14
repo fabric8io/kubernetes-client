@@ -65,22 +65,21 @@
       <artifactId>validation-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.hibernate</groupId>
+      <groupId>org.hibernate.validator</groupId>
       <artifactId>hibernate-validator</artifactId>
-      <version>5.2.4.Final</version>
+      <version>6.0.15.Final</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>javax.el</groupId>
       <artifactId>javax.el-api</artifactId>
-      <version>2.2.4</version>
+      <version>3.0.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.glassfish.web</groupId>
+      <groupId>org.glassfish</groupId>
       <artifactId>javax.el</artifactId>
-      <version>2.2.6</version>
-      <scope>test</scope>
+      <version>3.0.1-b11</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
