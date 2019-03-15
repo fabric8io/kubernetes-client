@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.api.model.ConfigBuilder;
 import io.fabric8.kubernetes.api.model.Context;
 import io.fabric8.kubernetes.api.model.ExecConfig;
 import io.fabric8.kubernetes.api.model.ExecEnvVar;
+import io.fabric8.kubernetes.client.internal.CertUtils;
 import io.fabric8.kubernetes.client.internal.KubeConfigUtils;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
@@ -36,8 +37,11 @@ import okhttp3.TlsVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -284,7 +288,7 @@ public class Config {
     config.setClientCertData(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_CERTIFICATE_DATA_SYSTEM_PROPERTY, config.getClientCertData()));
     config.setClientKeyFile(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_FILE_SYSTEM_PROPERTY, config.getClientKeyFile()));
     config.setClientKeyData(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_DATA_SYSTEM_PROPERTY, config.getClientKeyData()));
-    config.setClientKeyAlgo(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_ALGO_SYSTEM_PROPERTY, config.getClientKeyAlgo()));
+    config.setClientKeyAlgo(getKeyAlgorithm(config.getClientKeyFile(), config.getClientKeyData()));
     config.setClientKeyPassphrase(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_PASSPHRASE_SYSTEM_PROPERTY, new String(config.getClientKeyPassphrase())));
     config.setUserAgent(Utils.getSystemPropertyOrEnvVar(KUBERNETES_USER_AGENT, config.getUserAgent()));
 
@@ -431,7 +435,7 @@ public class Config {
     return new File(relativeTo.getParentFile(), filename).getAbsolutePath();
   }
 
-  public static Config fromKubeconfig(String kubeconfigContents) {
+  public static Config fromKubeconfig(String kubeconfigContents) throws IOException {
     return fromKubeconfig(null, kubeconfigContents, null);
   }
 
@@ -636,6 +640,41 @@ public class Config {
 
     //Fall back to user.home should never really get here
     return System.getProperty("user.home", ".");
+  }
+
+  public static String getKeyAlgorithm(InputStream inputStream) throws IOException {
+      BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+      String line, algorithm = null;
+
+      while ((line = bufferedReader.readLine()) != null) {
+        if (line.contains("BEGIN EC PRIVATE KEY"))
+          algorithm = "EC";
+        else if (line.contains("BEGIN RSA PRIVATE KEY")) {
+          algorithm = "RSA";
+        }
+      }
+      return algorithm;
+  }
+
+  public static String getKeyAlgorithm(String clientKeyFile, String clientKeyData) {
+    // Check if any system property is set
+    if(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_ALGO_SYSTEM_PROPERTY) != null) {
+      return Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_ALGO_SYSTEM_PROPERTY);
+    }
+
+    // Detect algorithm
+    try {
+      InputStream keyInputStream = CertUtils.getInputStreamFromDataOrFile(clientKeyFile, clientKeyData);
+      if(keyInputStream != null) {
+        return getKeyAlgorithm(keyInputStream);
+      }
+    } catch(IOException exception) {
+      LOGGER.info("Failure in determining private key algorithm type, defaulting to RSA ", exception.getMessage());
+    } catch(NoClassDefFoundError noClassDefFoundError) {
+      throw new IllegalStateException("Please make sure org.bouncycastle:bcprov-ext-jdk15on " +
+        "and org.bouncycastle:bcpkix-jdk15on are included in your project's classpath. ", noClassDefFoundError);
+    }
+    return null;
   }
 
   @JsonProperty("oauthToken")
