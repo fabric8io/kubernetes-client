@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes;
 
+import io.fabric8.commons.DeleteEntity;
 import io.fabric8.kubernetes.api.model.rbac.Role;
 import io.fabric8.kubernetes.api.model.rbac.RoleList;
 import io.fabric8.kubernetes.api.model.rbac.RoleBuilder;
@@ -29,6 +30,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.After;
 
+import java.util.concurrent.TimeUnit;
+
+import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -196,11 +200,16 @@ public class RoleIT {
   @Test
   public void delete() {
 
+    Integer countBeforeDeletion = client.rbac().roles().inNamespace(currentNamespace).list().getItems().size();
     boolean deleted = client.rbac().roles().inNamespace(currentNamespace).delete();
 
     assertTrue(deleted);
+
+    DeleteEntity<Role> deleteEntity = new DeleteEntity<>(Role.class, client, "job-reader", currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(deleteEntity);
+
     RoleList roleList = client.rbac().roles().inNamespace(currentNamespace).list();
-    assertEquals(0,roleList.getItems().size());
+    assertEquals(countBeforeDeletion - 1,roleList.getItems().size());
   }
 
   @After

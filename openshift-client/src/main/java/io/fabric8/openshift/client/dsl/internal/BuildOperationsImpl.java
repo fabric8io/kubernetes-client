@@ -22,6 +22,8 @@ import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.PrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TimeTailPrettyLoggable;
+import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.LogWatchCallback;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.openshift.client.dsl.BuildResource;
@@ -68,31 +70,42 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
   private final String version;
   private final Integer limitBytes;
 
-  public BuildOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
-    this(client, config, BUILD, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, false, false, false, null, null, null, false, null, null);
+
+  public BuildOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
+    this(new BuildOperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public BuildOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiGroup, String apiVersion, String namespace, String name, Boolean cascading, Build item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    this(client, config, apiGroup, apiVersion, namespace, name, cascading, item, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, false, false, false, null, null, null, false, null, null);
+  public BuildOperationsImpl(BuildOperationContext context) {
+    super(context.withApiGroupName(BUILD)
+      .withPlural("builds"));
+    this.type = Build.class;
+    this.listType = BuildList.class;
+    this.doneableType = DoneableBuild.class;
+
+    this.in = context.getIn();
+    this.out = context.getOut();
+    this.err = context.getErr();
+    this.inPipe = context.getInPipe();
+    this.outPipe = context.getOutPipe();
+    this.errPipe = context.getErrPipe();
+    this.withTTY = context.isTty();
+    this.withTerminatedStatus = context.isTerminatedStatus();
+    this.withTimestamps = context.isTimestamps();
+    this.sinceTimestamp = context.getSinceTimestamp();
+    this.sinceSeconds = context.getSinceSeconds();
+    this.withTailingLines = context.getTailingLines();
+    this.withPrettyOutput = context.isPrettyOutput();
+    this.version = context.getVersion();
+    this.limitBytes = context.getLimitBytes();
   }
 
-  public BuildOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiGroup, String apiVersion, String namespace, String name, Boolean cascading, Build item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, InputStream in, OutputStream out, OutputStream err, PipedOutputStream inPipe, PipedInputStream outPipe, PipedInputStream errPipe, boolean withTTY, boolean withTerminatedStatus, boolean withTimestamps, String sinceTimestamp, Integer sinceSeconds, Integer withTailingLines, boolean withPrettyOutput, String version, Integer limitBytes) {
-    super(client, OpenShiftOperation.withApiGroup(client, apiGroup, apiVersion, config), "builds", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
-    this.in = in;
-    this.out = out;
-    this.err = err;
-    this.inPipe = inPipe;
-    this.outPipe = outPipe;
-    this.errPipe = errPipe;
-    this.withTTY = withTTY;
-    this.withTerminatedStatus = withTerminatedStatus;
-    this.withTimestamps = withTimestamps;
-    this.sinceTimestamp = sinceTimestamp;
-    this.sinceSeconds = sinceSeconds;
-    this.withTailingLines = withTailingLines;
-    this.withPrettyOutput = withPrettyOutput;
-    this.version = version;
-    this.limitBytes = limitBytes;
+  @Override
+  public BuildOperationsImpl newInstance(OperationContext context) {
+    return new BuildOperationsImpl((BuildOperationContext) context);
+  }
+
+  BuildOperationContext getContext() {
+    return (BuildOperationContext) context;
   }
 
   protected String getLogParameters() {
@@ -146,7 +159,7 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
 
   @Override
   public String getLog(Boolean isPretty) {
-    return new BuildOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), in,out,err,inPipe, outPipe, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, version, limitBytes).getLog();
+    return new BuildOperationsImpl(getContext().withPrettyOutput(isPretty)).getLog();
   }
 
   /**
@@ -181,36 +194,36 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
 
   @Override
   public Loggable<String, LogWatch> withPrettyOutput() {
-    return new BuildOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), in,out,err,inPipe, outPipe, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, true, version, limitBytes);
+    return new BuildOperationsImpl(getContext().withPrettyOutput(true));
   }
 
   @Override
-  public PrettyLoggable<String, LogWatch> tailingLines(int withTailingLines) {
-    return new BuildOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), in,out,err,inPipe, outPipe, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, version, limitBytes);
+  public PrettyLoggable<String, LogWatch> tailingLines(int tailingLines) {
+    return new BuildOperationsImpl(getContext().withTailingLines(tailingLines));
   }
 
   @Override
   public TimeTailPrettyLoggable<String, LogWatch> terminated() {
-    return new BuildOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), in,out,err,inPipe, outPipe, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, version, limitBytes);
+    return new BuildOperationsImpl(getContext().withTerminatedStatus(true));
   }
 
   @Override
   public TailPrettyLoggable<String, LogWatch> sinceTime(String sinceTimestamp) {
-    return new BuildOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), in,out,err,inPipe, outPipe, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, version, limitBytes);
+    return new BuildOperationsImpl(getContext().withSinceTimestamp(sinceTimestamp));
   }
 
   @Override
   public TailPrettyLoggable<String, LogWatch> sinceSeconds(int sinceSeconds) {
-    return new BuildOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), in,out,err,inPipe, outPipe, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, version, limitBytes);
+    return new BuildOperationsImpl(getContext().withSinceSeconds(sinceSeconds));
   }
 
   @Override
   public BytesLimitTerminateTimeTailPrettyLoggable<String, LogWatch> limitBytes(int limitBytes) {
-    return new BuildOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), in,out,err,inPipe, outPipe, errPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, version, limitBytes);
+    return new BuildOperationsImpl(getContext().withLimitBytes(limitBytes));
   }
 
   @Override
   public BytesLimitTerminateTimeTailPrettyLoggable<String, LogWatch> usingTimestamps() {
-    return new BuildOperationsImpl(client, getConfig(), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), in,out,err,inPipe, outPipe, errPipe, withTTY, withTerminatedStatus, true, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, version, limitBytes);
+    return new BuildOperationsImpl(getContext().withTimestamps(true));
   }
 }

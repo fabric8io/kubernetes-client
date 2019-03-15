@@ -174,7 +174,7 @@ public class PodTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.pods().inNamespace("test1").delete(pod1);
-    assertNotNull(deleted);
+    assertFalse(deleted);
   }
 
   @Test(expected = KubernetesClientException.class)

@@ -19,8 +19,8 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerBuilder;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.client.dsl.*;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.utils.Utils;
-import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentList;
@@ -28,17 +28,11 @@ import io.fabric8.kubernetes.api.model.apps.DoneableDeployment;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
-import okhttp3.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Collections;
-import java.util.Map;
 import java.util.Objects;
-import java.util.TreeMap;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
@@ -53,18 +47,24 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
 
   static final transient Logger LOG = LoggerFactory.getLogger(DeploymentOperationsImpl.class);
 
-  public DeploymentOperationsImpl(OkHttpClient client, Config config, String namespace) {
-      this(client, config, "apps", "v1", namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), config.getRollingTimeout(), TimeUnit.SECONDS);
+  public DeploymentOperationsImpl(OkHttpClient client, Config config) {
+    this(new RollingOperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public DeploymentOperationsImpl(OkHttpClient client, Config config, String apiGroup, String apiVersion, String namespace, String name, Boolean cascading, Deployment item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, config, apiGroup, apiVersion, "deployments", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields,false, config.getRollingTimeout(), TimeUnit.SECONDS);
+  public DeploymentOperationsImpl(RollingOperationContext context) {
+    super(context.withApiGroupName("apps")
+      .withApiGroupVersion("v1")
+      .withPlural("deployments"));
+    this.type = Deployment .class;
+    this.listType = DeploymentList.class;
+    this.doneableType = DoneableDeployment.class;
+
     reaper = new DeploymentReaper(this);
   }
 
-  public DeploymentOperationsImpl(OkHttpClient client, Config config, String apiGroup, String apiVersion, String namespace, String name, Boolean cascading, Deployment item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, Long rollingTimeout, TimeUnit rollingTimeUnit) {
-    super(client, config, apiGroup, apiVersion, "deployments", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields,false, rollingTimeout, rollingTimeUnit);
-    reaper = new DeploymentReaper(this);
+  @Override
+  public DeploymentOperationsImpl newInstance(OperationContext context) {
+    return new DeploymentOperationsImpl((RollingOperationContext) context);
   }
 
   @Override
@@ -108,7 +108,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
 
   @Override
   public DeploymentOperationsImpl rolling() {
-    return new DeploymentOperationsImpl(client, getConfig(), getAPIGroup(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rollingTimeout, rollingTimeUnit);
+    return new DeploymentOperationsImpl(((RollingOperationContext)context).withRolling(true));
   }
 
   @Override
@@ -163,12 +163,12 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
 
   @Override
   public ImageEditReplacePatchable<Deployment, Deployment, DoneableDeployment> withTimeoutInMillis(long timeoutInMillis) {
-    return new DeploymentOperationsImpl(client, getConfig(), getAPIGroup(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), timeoutInMillis, TimeUnit.MILLISECONDS);
+    return new DeploymentOperationsImpl(((RollingOperationContext)context).withRollingTimeout(timeoutInMillis));
   }
 
   @Override
   public ImageEditReplacePatchable<Deployment, Deployment, DoneableDeployment> withTimeout(long timeout, TimeUnit unit) {
-    return new DeploymentOperationsImpl(client, getConfig(), getAPIGroup(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), timeout, unit);
+    return new DeploymentOperationsImpl(((RollingOperationContext)context).withRollingTimeUnit(unit));
   }
 
   /**
@@ -274,7 +274,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
       if (selector == null || (selector.getMatchLabels() == null && selector.getMatchExpressions() == null)) {
         return;
       }
-      ReplicaSetOperationsImpl rsOper = new ReplicaSetOperationsImpl(oper.client, oper.getConfig(), oper.getNamespace());
+      ReplicaSetOperationsImpl rsOper = new ReplicaSetOperationsImpl((RollingOperationContext) oper.context);
       rsOper.inNamespace(oper.getNamespace()).withLabelSelector(selector).delete();
     }
   }

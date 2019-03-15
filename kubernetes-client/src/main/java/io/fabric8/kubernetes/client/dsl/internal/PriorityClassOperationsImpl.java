@@ -21,18 +21,29 @@ import io.fabric8.kubernetes.api.model.scheduling.PriorityClassList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
 
-import java.util.Map;
-import java.util.TreeMap;
 
 public class PriorityClassOperationsImpl extends HasMetadataOperation<PriorityClass, PriorityClassList, DoneablePriorityClass, Resource<PriorityClass, DoneablePriorityClass>> {
-  public PriorityClassOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(client, config, "scheduling.k8s.io","v1beta1", namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+
+  public PriorityClassOperationsImpl(OkHttpClient client, Config config) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public PriorityClassOperationsImpl(OkHttpClient client, Config config, String apiGroup, String apiVersion, String namespace, String name, Boolean cascading, PriorityClass item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, config, apiGroup, apiVersion, "priorityclasses", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  public PriorityClassOperationsImpl(OperationContext context) {
+    super(context.withApiGroupName("scheduling.k8s.io")
+      .withApiGroupVersion("v1beta1")
+      .withPlural("priorityclasses"));
+
+    this.type = PriorityClass.class;
+    this.listType = PriorityClassList.class;
+    this.doneableType = DoneablePriorityClass.class;
+  }
+
+  @Override
+  public PriorityClassOperationsImpl newInstance(OperationContext context) {
+    return new PriorityClassOperationsImpl(context);
   }
 
   @Override

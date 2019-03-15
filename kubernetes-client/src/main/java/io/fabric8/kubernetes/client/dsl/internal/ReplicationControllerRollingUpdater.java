@@ -82,6 +82,6 @@ class ReplicationControllerRollingUpdater extends RollingUpdater<ReplicationCont
 
   @Override
   protected Operation<ReplicationController, ReplicationControllerList, DoneableReplicationController, RollableScalableResource<ReplicationController, DoneableReplicationController>> resources() {
-    return new ReplicationControllerOperationsImpl(client, config, namespace);
+    return new ReplicationControllerOperationsImpl(client, config);
   }
 }

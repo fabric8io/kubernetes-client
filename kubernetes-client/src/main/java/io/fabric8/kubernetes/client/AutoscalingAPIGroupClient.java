@@ -33,6 +33,6 @@ public class AutoscalingAPIGroupClient extends BaseClient implements Autoscaling
   }
 
   public MixedOperation<HorizontalPodAutoscaler, HorizontalPodAutoscalerList, DoneableHorizontalPodAutoscaler, Resource<HorizontalPodAutoscaler, DoneableHorizontalPodAutoscaler>> horizontalPodAutoscalers() {
-    return new HorizontalPodAutoscalerOperationsImpl(httpClient, getConfiguration(), getNamespace());
+    return new HorizontalPodAutoscalerOperationsImpl(httpClient, getConfiguration());
   }
 }

@@ -36,6 +36,6 @@ public class NetworkAPIGroupClient extends BaseClient implements NetworkAPIGroup
 
   @Override
   public MixedOperation<NetworkPolicy, NetworkPolicyList, DoneableNetworkPolicy, Resource<NetworkPolicy, DoneableNetworkPolicy>> networkPolicies() {
-    return new NetworkPolicyOperationsImpl(httpClient, getConfiguration(), getNamespace());
+    return new NetworkPolicyOperationsImpl(httpClient, getConfiguration());
   }
 }

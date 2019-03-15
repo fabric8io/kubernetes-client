@@ -16,6 +16,7 @@
 
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -40,18 +41,18 @@ import static io.fabric8.openshift.client.OpenShiftAPIGroups.AUTHORIZATION;
 
 public class SubjectAccessReviewOperationImpl extends OperationSupport implements SubjectAccessReviewOperation<CreateableSubjectAccessReview, CreateableLocalSubjectAccessReview> {
 
-
   public SubjectAccessReviewOperationImpl(OkHttpClient client, OpenShiftConfig config) {
-    this(client, config, null, null);
+    this(new OperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public SubjectAccessReviewOperationImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace) {
-    super(client, OpenShiftOperation.withApiGroup(client, AUTHORIZATION, apiVersion, config), "subjectaccessreviews", namespace, null);
+  public SubjectAccessReviewOperationImpl(OperationContext context) {
+    super(context.withApiGroupName(AUTHORIZATION)
+      .withPlural("subjectaccessreviews"));
   }
 
   @Override
   public CreateableLocalSubjectAccessReview inNamespace(String namespace) {
-    return new SubjectAccessReviewOperationImpl(client, OpenShiftConfig.wrap(getConfig()), null, namespace).local();
+    return new SubjectAccessReviewOperationImpl(client, OpenShiftConfig.wrap(getConfig())).local();
   }
 
   @Override

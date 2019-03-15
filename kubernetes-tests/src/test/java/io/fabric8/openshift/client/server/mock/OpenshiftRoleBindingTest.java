@@ -56,8 +56,8 @@ public class OpenshiftRoleBindingTest {
     );
     assertEquals(expectedOpenshiftRoleBinding, response);
 
-    RecordedRequest request = server.getMockServer().takeRequest();
-    assertEquals(expectedOpenshiftRoleBinding, new ObjectMapper().readerFor(OpenshiftRoleBinding.class).readValue(request.getBody().inputStream()));
+    RecordedRequest request = server.getLastRequest();
+    assertEquals(expectedOpenshiftRoleBinding, new ObjectMapper().readerFor(OpenshiftRoleBinding.class).readValue(request.getBody().readByteArray()));
   }
 
   @Test
@@ -75,7 +75,7 @@ public class OpenshiftRoleBindingTest {
     );
     assertEquals(expectedOpenshiftRoleBinding, response);
 
-    RecordedRequest request = server.getMockServer().takeRequest();
+    RecordedRequest request = server.getLastRequest();
     assertEquals(expectedOpenshiftRoleBinding, new ObjectMapper().readerFor(OpenshiftRoleBinding.class).readValue(request.getBody().inputStream()));
   }
 
@@ -95,7 +95,7 @@ public class OpenshiftRoleBindingTest {
     );
     assertEquals(expectedOpenshiftRoleBinding, response);
 
-    RecordedRequest request = server.getMockServer().takeRequest();
+    RecordedRequest request = server.getLastRequest();
     assertEquals(expectedOpenshiftRoleBinding, new ObjectMapper().readerFor(OpenshiftRoleBinding.class).readValue(request.getBody().inputStream()));
   }
 
@@ -117,9 +117,7 @@ public class OpenshiftRoleBindingTest {
     );
     assertEquals(expectedOpenshiftRoleBinding, response);
 
-    // Initial GET
-    server.getMockServer().takeRequest();
-    RecordedRequest request = server.getMockServer().takeRequest();
+    RecordedRequest request = server.getLastRequest();
     assertEquals(expectedOpenshiftRoleBinding, new ObjectMapper().readerFor(OpenshiftRoleBinding.class).readValue(request.getBody().inputStream()));
   }
 
@@ -139,9 +137,8 @@ public class OpenshiftRoleBindingTest {
     );
     assertEquals(expectedOpenshiftRoleBinding, response);
 
-    // Initial GET
-    server.getMockServer().takeRequest();
-    RecordedRequest request = server.getMockServer().takeRequest();
+
+    RecordedRequest request = server.getLastRequest();
     assertEquals(expectedOpenshiftRoleBinding, new ObjectMapper().readerFor(OpenshiftRoleBinding.class).readValue(request.getBody().inputStream()));
   }
 
@@ -162,9 +159,7 @@ public class OpenshiftRoleBindingTest {
     );
     assertEquals(expectedOpenshiftRoleBinding, response);
 
-    // Initial GET
-    server.getMockServer().takeRequest();
-    RecordedRequest request = server.getMockServer().takeRequest();
+    RecordedRequest request = server.getLastRequest();
     assertEquals(expectedOpenshiftRoleBinding, new ObjectMapper().readerFor(OpenshiftRoleBinding.class).readValue(request.getBody().inputStream()));
   }
 
@@ -186,9 +181,7 @@ public class OpenshiftRoleBindingTest {
     );
     assertEquals(expectedOpenshiftRoleBinding, response);
 
-    // Initial GET
-    server.getMockServer().takeRequest();
-    RecordedRequest request = server.getMockServer().takeRequest();
+    RecordedRequest request = server.getLastRequest();
     assertEquals(
       "[{\"op\":\"replace\",\"path\":\"/userNames/0\",\"value\":\"testuser1\"},{\"op\":\"add\",\"path\":\"/userNames/1\",\"value\":\"testuser2\"},{\"op\":\"add\",\"path\":\"/userNames/2\",\"value\":\"system:serviceaccount:test:svcacct\"},{\"op\":\"add\",\"path\":\"/metadata\",\"value\":{}},{\"op\":\"add\",\"path\":\"/groupNames\",\"value\":[\"testgroup\"]},{\"op\":\"add\",\"path\":\"/subjects\",\"value\":[{\"kind\":\"User\",\"name\":\"testuser1\"},{\"kind\":\"User\",\"name\":\"testuser2\"},{\"kind\":\"ServiceAccount\",\"name\":\"svcacct\",\"namespace\":\"test\"},{\"kind\":\"Group\",\"name\":\"testgroup\"}]}]",
       request.getBody().readUtf8()
@@ -211,9 +204,7 @@ public class OpenshiftRoleBindingTest {
     );
     assertEquals(expectedOpenshiftRoleBinding, response);
 
-    // Initial GET
-    server.getMockServer().takeRequest();
-    RecordedRequest request = server.getMockServer().takeRequest();
+    RecordedRequest request = server.getLastRequest();
     assertEquals(
       "[{\"op\":\"replace\",\"path\":\"/userNames/0\",\"value\":\"testuser1\"},{\"op\":\"add\",\"path\":\"/userNames/1\",\"value\":\"testuser2\"},{\"op\":\"add\",\"path\":\"/userNames/2\",\"value\":\"system:serviceaccount:test:svcacct\"},{\"op\":\"add\",\"path\":\"/metadata\",\"value\":{}},{\"op\":\"add\",\"path\":\"/groupNames\",\"value\":[\"testgroup\"]},{\"op\":\"add\",\"path\":\"/subjects\",\"value\":[{\"kind\":\"User\",\"name\":\"testuser1\"},{\"kind\":\"User\",\"name\":\"testuser2\"},{\"kind\":\"ServiceAccount\",\"name\":\"svcacct\",\"namespace\":\"test\"},{\"kind\":\"Group\",\"name\":\"testgroup\"}]}]",
       request.getBody().readUtf8()
@@ -237,9 +228,7 @@ public class OpenshiftRoleBindingTest {
     );
     assertEquals(expectedOpenshiftRoleBinding, response);
 
-    // Initial GET
-    server.getMockServer().takeRequest();
-    RecordedRequest request = server.getMockServer().takeRequest();
+    RecordedRequest request = server.getLastRequest();
     assertEquals(
       "[{\"op\":\"replace\",\"path\":\"/userNames/0\",\"value\":\"testuser1\"},{\"op\":\"add\",\"path\":\"/userNames/1\",\"value\":\"testuser2\"},{\"op\":\"add\",\"path\":\"/userNames/2\",\"value\":\"system:serviceaccount:test:svcacct\"},{\"op\":\"add\",\"path\":\"/metadata\",\"value\":{}},{\"op\":\"add\",\"path\":\"/groupNames\",\"value\":[\"testgroup\"]},{\"op\":\"add\",\"path\":\"/subjects\",\"value\":[{\"kind\":\"User\",\"name\":\"testuser1\"},{\"kind\":\"User\",\"name\":\"testuser2\"},{\"kind\":\"ServiceAccount\",\"name\":\"svcacct\",\"namespace\":\"test\"},{\"kind\":\"Group\",\"name\":\"testgroup\"}]}]",
       request.getBody().readUtf8()
@@ -261,7 +250,7 @@ public class OpenshiftRoleBindingTest {
       .done();
     assertEquals(expectedOpenshiftRoleBinding, response);
 
-    RecordedRequest request = server.getMockServer().takeRequest();
+    RecordedRequest request = server.getLastRequest();
     assertEquals(expectedOpenshiftRoleBinding, new ObjectMapper().readerFor(OpenshiftRoleBinding.class).readValue(request.getBody().inputStream()));
   }
 

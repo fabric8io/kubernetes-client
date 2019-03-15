@@ -218,7 +218,6 @@ public class JobTest {
   @Test(expected = KubernetesClientException.class)
   public void testDeleteWithNamespaceMismatch() {
     Job job1 = new JobBuilder().withNewMetadata().withName("job1").withNamespace("test").and().build();
-    Job job2 = new JobBuilder().withNewMetadata().withName("job2").withNamespace("ns1").and().build();
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.batch().jobs().inNamespace("test1").delete(job1);

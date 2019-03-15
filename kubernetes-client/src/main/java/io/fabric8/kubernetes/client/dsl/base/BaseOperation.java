@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.client.*;
 import io.fabric8.kubernetes.client.dsl.Deletable;
@@ -54,15 +55,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-
-import static io.fabric8.kubernetes.client.utils.ApiVersionUtil.*;
 
 public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
   extends OperationSupport
@@ -80,9 +78,6 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   private final Map<String, String[]> labelsNotIn;
   private final Map<String, String> fields;
 
-  private final Class<T> type;
-  private final Class<L> listType;
-  private final Class<D> doneableType;
   private final String resourceVersion;
   private final Boolean reloadingFromServer;
   private final long gracePeriodSeconds;
@@ -91,60 +86,24 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   protected Reaper reaper;
   protected String apiVersion;
 
-  protected BaseOperation(OkHttpClient client, Config config, String apiGroupName, String apiVersionNumber, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields)  {
-    super(client, config, apiGroup(item, apiGroupName), apiVersion(item, apiVersionNumber), resourceT, namespace, name(item, name));
-    this.cascading = cascading;
-    this.item = item;
-    this.reloadingFromServer = reloadingFromServer;
-    this.type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-    this.listType = (Class<L>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-    this.doneableType = (Class<D>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[2];
-    this.reaper = null;
-    this.resourceVersion = resourceVersion;
-    this.gracePeriodSeconds = gracePeriodSeconds;
-    this.labels = labels;
-    this.labelsNot = labelsNot;
-    this.labelsIn = labelsIn;
-    this.labelsNotIn = labelsNotIn;
-    this.fields = fields;
-  }
+  protected Class<T> type;
+  protected Class<L> listType;
+  protected Class<D> doneableType;
 
-  protected BaseOperation(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, Class<T> type, Class<L> listType, Class<D> doneableType) {
-    super(client, config, apiGroup, apiVersion(item, apiVersion), resourceT, namespace, name(item, name));
-    this.cascading = cascading;
-    this.item = item;
-    this.resourceVersion = resourceVersion;
-    this.reloadingFromServer = reloadingFromServer;
-    this.type = type;
-    this.listType = listType;
-    this.doneableType = doneableType;
+  protected BaseOperation(OperationContext ctx) {
+    super(ctx);
+    this.cascading = ctx.getCascading();
+    this.item = (T) ctx.getItem();
+    this.reloadingFromServer = ctx.getReloadingFromServer();
+    this.resourceVersion = ctx.getResourceVersion();
+    this.gracePeriodSeconds = ctx.getGracePeriodSeconds();
+    this.labels = ctx.getLabels();
+    this.labelsNot = ctx.getLabelsNot();
+    this.labelsIn = ctx.getLabelsIn();
+    this.labelsNotIn = ctx.getLabelsNotIn();
+    this.fields = ctx.getFields();
     this.reaper = null;
-    this.gracePeriodSeconds = gracePeriodSeconds;
-    this.labels = labels;
-    this.labelsNot = labelsNot;
-    this.labelsIn = labelsIn;
-    this.labelsNotIn = labelsNotIn;
-    this.fields = fields;
   }
-
-  protected BaseOperation(OkHttpClient client, Config config, String apiGroup, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, T item, String resourceVersion, Boolean reloadingFromServer, Class<T> type, Class<L> listType, Class<D> doneableType) {
-    super(client, config, apiGroup, apiVersion(item, apiVersion), resourceT, namespace, name(item, name));
-    this.cascading = cascading;
-    this.item = item;
-    this.resourceVersion = resourceVersion;
-    this.reloadingFromServer = reloadingFromServer;
-    this.type = type;
-    this.listType = listType;
-    this.doneableType = doneableType;
-    this.reaper = null;
-    this.gracePeriodSeconds = -1;
-    this.labels = new TreeMap<>();
-    this.labelsNot = new TreeMap<>();
-    this.labelsIn = new TreeMap<>();
-    this.labelsNotIn = new TreeMap<>();
-    this.fields = new TreeMap<>();
-  }
-
 
   /**
    * Returns the name and falls back to the item name.
@@ -164,7 +123,9 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
 
-
+  public BaseOperation<T,L,D,R> newInstance(OperationContext context) {
+    return new BaseOperation<T, L, D, R>(context);
+  }
 
   /**
    * Helper method for list() and list(limit, continue) methods
@@ -293,63 +254,34 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     if (name == null || name.length() == 0) {
       throw new IllegalArgumentException("Name must be provided.");
     }
-    try {
-      return (R) getClass()
-        .getConstructor(OkHttpClient.class, getConfigType(), String.class, String.class, String.class, String.class, Boolean.class, getType(), String.class, Boolean.class, long.class, Map.class, Map.class, Map.class, Map.class, Map.class)
-        .newInstance(client, getConfig(), getAPIGroup(), getAPIVersion(), getNamespace(), name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(t);
-    }
+    return (R) newInstance(context.withName(name));
   }
 
   @Override
   public Replaceable<T, T> lockResourceVersion(String resourceVersion) {
-    try {
-      return getClass()
-        .getConstructor(OkHttpClient.class, getConfigType(), String.class, String.class, String.class, String.class, Boolean.class, getType(), String.class, Boolean.class, long.class, Map.class, Map.class, Map.class, Map.class, Map.class)
-        .newInstance(client, getConfig(), getAPIGroup(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), resourceVersion, isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(t);
-    }
+    return newInstance(context.withResourceVersion(resourceVersion));
   }
 
   @Override
   public NonNamespaceOperation<T, L, D, R> inNamespace(String namespace) {
-    try {
-      return getClass()
-        .getConstructor(OkHttpClient.class, getConfigType(), String.class, String.class, String.class, String.class, Boolean.class, getType(), String.class, Boolean.class, long.class, Map.class, Map.class, Map.class, Map.class, Map.class)
-        .newInstance(client, getConfig(), getAPIGroup(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(t);
-    }
+    return newInstance(context.withNamespace(namespace));
   }
 
   @Override
   public NonNamespaceOperation<T, L, D, R> inAnyNamespace() {
-    return inNamespace(null);
+    Config updated = new ConfigBuilder(config).withNamespace(null).build();
+    return newInstance(context.withConfig(updated).withNamespace(null));
   }
 
 
   @Override
   public EditReplacePatchDeletable<T, T, D, Boolean> cascading(boolean cascading) {
-    try {
-      return getClass()
-        .getConstructor(OkHttpClient.class, getConfigType(), String.class, String.class, String.class, String.class, Boolean.class, getType(), String.class, Boolean.class, long.class, Map.class, Map.class, Map.class, Map.class, Map.class)
-        .newInstance(client, getConfig(), getAPIGroup(), getAPIVersion(), getNamespace(), getName(), cascading, getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(t);
-    }
+    return newInstance(context.withCascading(cascading));
   }
 
   @Override
   public R load(InputStream is) {
-    try {
-      return (R) getClass()
-        .getConstructor(OkHttpClient.class, getConfigType(), String.class, String.class, String.class, String.class, Boolean.class, getType(), String.class, Boolean.class, long.class, Map.class, Map.class, Map.class, Map.class, Map.class)
-        .newInstance(client, getConfig(), getAPIGroup(), getAPIVersion(), getNamespace(), getName(), isCascading(), unmarshal(is, type), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(t);
-    }
+    return (R) newInstance(context.withItem(unmarshal(is, type)));
   }
 
   @Override
@@ -377,13 +309,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   @Override
   public Gettable<T> fromServer() {
-    try {
-      return (R) getClass()
-        .getConstructor(OkHttpClient.class, getConfigType(), String.class, String.class, String.class, String.class, Boolean.class, getType(), String.class, Boolean.class, long.class, Map.class, Map.class, Map.class, Map.class, Map.class)
-        .newInstance(client, getConfig(), getAPIGroup(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), true, getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(t);
-    }
+    return newInstance(context.withReloadingFromServer(true));
   }
 
   @Override
@@ -392,7 +318,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
       if (resources.length > 1) {
         throw new IllegalArgumentException("Too many items to create.");
       } else if (resources.length == 1) {
-        return handleCreate(resources[0]);
+        return withItem(resources[0]).create();
       } else if (getItem() == null) {
         throw new IllegalArgumentException("Nothing to create.");
       } else {
@@ -690,25 +616,21 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
         updateApiVersionResource(item);
 
         try {
-          R op = createItemOperation(item);
+          R op = (R) withItem(item);
           deleted &= op.delete();
         } catch (KubernetesClientException e) {
           if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
             throw e;
           }
           return false;
-        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-          throw KubernetesClientException.launderThrowable(forOperationType("delete"), e);
         }
       }
     }
     return deleted;
   }
 
-  protected R createItemOperation(T item) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-    return (R) getClass()
-              .getConstructor(OkHttpClient.class, getConfigType(), String.class, String.class, String.class, String.class, Boolean.class, getType(), String.class, Boolean.class, long.class, Map.class, Map.class, Map.class, Map.class, Map.class)
-              .newInstance(client, getConfig(), getAPIGroup(), getAPIVersion(), getNamespace(), getName(), isCascading(), item, getResourceVersion(), true, getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
+  public BaseOperation<T,L,D,R> withItem(T item) {
+    return newInstance(context.withItem(item));
   }
 
   void deleteThis() throws KubernetesClientException {
@@ -730,13 +652,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   @Override
   public Watchable<Watch, Watcher<T>> withResourceVersion(String resourceVersion) {
-    try {
-      return getClass()
-        .getConstructor(OkHttpClient.class, getConfigType(), String.class, String.class, String.class, String.class, Boolean.class, getType(), String.class, Boolean.class, long.class, Map.class, Map.class, Map.class, Map.class, Map.class)
-        .newInstance(client, getConfig(), getAPIGroup(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), resourceVersion, isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(t);
-    }
+    return newInstance(context.withResourceVersion(resourceVersion));
   }
 
   public Watch watch(final Watcher<T> watcher) throws KubernetesClientException {
@@ -922,13 +838,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   @Override
   public Deletable<Boolean> withGracePeriod(long gracePeriodSeconds)
   {
-    try {
-      return getClass()
-        .getConstructor(OkHttpClient.class, getConfigType(), String.class, String.class, String.class, String.class, Boolean.class, getType(), String.class, Boolean.class, long.class, Map.class, Map.class, Map.class, Map.class, Map.class)
-        .newInstance(client, getConfig(), getAPIGroup(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), gracePeriodSeconds, getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(t);
-    }
+    return newInstance(context.withGracePeriodSeconds(gracePeriodSeconds));
   }
 
   protected Class<? extends Config> getConfigType() {

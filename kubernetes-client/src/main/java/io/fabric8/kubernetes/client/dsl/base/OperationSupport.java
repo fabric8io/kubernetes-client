@@ -57,33 +57,39 @@ public class OperationSupport {
   protected static final ObjectMapper YAML_MAPPER = Serialization.yamlMapper();
   private static final String CLIENT_STATUS_FLAG = "CLIENT_STATUS_FLAG";
 
+  protected OperationContext context;
   protected final OkHttpClient client;
   protected final Config config;
   protected final String resourceT;
-  protected final String namespace;
-  protected final String name;
-  protected final String apiGroupName;
-  protected final String apiGroupVersion;
+  protected String namespace;
+  protected String name;
+  protected String apiGroupName;
+  protected String apiGroupVersion;
 
   public OperationSupport() {
-    this(null, null, null, null, null, null, null);
+    this (new OperationContext());
   }
 
-  public OperationSupport(OkHttpClient client, ConfigAndApiGroupsInfo configAndApiGroupsInfo, String resourceT, String namespace, String name) {
-    this(client, configAndApiGroupsInfo.getConfig(), configAndApiGroupsInfo.getApiGroupName(), configAndApiGroupsInfo.getApiGroupVersion(), resourceT, namespace ,name);
+  public OperationSupport(OkHttpClient client, Config config) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public OperationSupport(OkHttpClient client, Config config, String apiGroupName, String apiGroupVersion, String resourceT, String namespace, String name) {
-    this.client = client;
-    this.config = config;
-    this.resourceT = resourceT;
-    this.namespace = namespace;
-    this.name = name;
-    this.apiGroupName = apiGroupName;
-    if (apiGroupVersion != null) {
-      this.apiGroupVersion = apiGroupVersion;
-    } else if (config != null) {
-      this.apiGroupVersion = config.getApiVersion();
+  public OperationSupport(OkHttpClient client, Config config, String namespace) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace));
+  }
+
+  public OperationSupport(OperationContext ctx) {
+    this.context = ctx;
+    this.client = ctx.getClient();
+    this.config = ctx.getConfig();
+    this.resourceT = ctx.getPlural();
+    this.namespace = ctx.getNamespace();
+    this.name = ctx.getName() ;
+    this.apiGroupName = ctx.getApiGroupName();
+    if (ctx.getApiGroupVersion() != null) {
+      this.apiGroupVersion = ctx.getApiGroupVersion();
+    } else if (ctx.getConfig() != null) {
+      this.apiGroupVersion = ctx.getConfig().getApiVersion();
     } else {
       this.apiGroupVersion = "v1";
     }

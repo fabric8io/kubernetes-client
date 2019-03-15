@@ -49,6 +49,8 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.openshift.client.OpenShiftConfig;
 
 import okhttp3.OkHttpClient;
 
@@ -63,21 +65,20 @@ import java.util.TreeMap;
 
 public class ${model.name}OperationsImpl extends OpenShiftOperation<${model.name}, ${model.name}List, Doneable${model.name}, Resource<${model.name}, Doneable${model.name}>> {
 
-  public ${model.name}OperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
-    this(client, config, "$apiGroupName", "$apiGroupVersion", namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+  public ${model.name}OperationsImpl(OkHttpClient client, OpenShiftConfig config) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public ${model.name}OperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiGroupName, String apiGroupVersion, String namespace, String name, Boolean cascading, ${model.name} item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, OpenShiftOperation.withApiGroup(client, apiGroupName, apiGroupVersion, config), "#pluralize ($model.name.toLowerCase())", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  public ${model.name}OperationsImpl(OperationContext context) {
+    super(context.withApiGroupName("$apiGroupName")
+    .withApiGroupVersion("$apiGroupVersion")
+    .withPlural("#pluralize ($model.name.toLowerCase())"));
+    this.type = ${model.name}.class;
+    this.listType = ${model.name}List.class;
+    this.doneableType = Doneable${model.name}.class;
   }
 
-  @Override
-  public NonNamespaceOperation<${model.name}, ${model.name}List, Doneable${model.name}, Resource<${model.name}, Doneable${model.name}>> inNamespace(String namespace) {
-    return new ${model.name}OperationsImpl(client, OpenShiftConfig.wrap(config), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
-  }
-
-  @Override
-  public Resource<${model.name}, Doneable${model.name}> withName(String name) {
-    return new ${model.name}OperationsImpl(client, OpenShiftConfig.wrap(config), apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
+  public ${model.name}OperationsImpl newInstance(OperationContext context) {
+    return new ${model.name}OperationsImpl(context);
   }
 }

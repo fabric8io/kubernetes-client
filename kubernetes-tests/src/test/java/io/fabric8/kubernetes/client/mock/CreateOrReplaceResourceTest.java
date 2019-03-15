@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import okhttp3.mockwebserver.RecordedRequest;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -35,6 +36,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class CreateOrReplaceResourceTest {
+
   @Rule
   public KubernetesServer server = new KubernetesServer();
 
@@ -47,13 +49,9 @@ public class CreateOrReplaceResourceTest {
       .withNewMetadata().withResourceVersion("12345").and().build()).once();
 
     KubernetesClient client = server.getClient();
-    assertNotNull(client.resource(new PodBuilder().withNewMetadata().withName("pod123").and().withNewSpec().and().build()).createOrReplace());
-
-    server.getMockServer().takeRequest();
-    server.getMockServer().takeRequest();
-    RecordedRequest request = server.getMockServer().takeRequest();
-    Pod requestPod = new ObjectMapper().readerFor(Pod.class).readValue(request.getBody().inputStream());
-    assertEquals("12345", requestPod.getMetadata().getResourceVersion());
+    Pod pod = client.resource(new PodBuilder().withNewMetadata().withName("pod123").and().withNewSpec().and().build()).createOrReplace();
+    assertNotNull(pod);
+    assertEquals("12345", pod.getMetadata().getResourceVersion());
   }
 
   @Test
@@ -131,11 +129,8 @@ public class CreateOrReplaceResourceTest {
     Pod pod = (Pod) result.get(0);
     assertEquals("12345", pod.getMetadata().getResourceVersion());
 
-    RecordedRequest request = server.getMockServer().takeRequest();
+    RecordedRequest request = server.getLastRequest();
     assertEquals("/api/v1/namespaces/test/pods/nginx", request.getPath());
-    server.getMockServer().takeRequest();
-
-    request = server.getMockServer().takeRequest();
     Pod requestPod = new ObjectMapper().readerFor(Pod.class).readValue(request.getBody().inputStream());
     assertEquals("nginx", requestPod.getMetadata().getName());
   }
@@ -152,10 +147,7 @@ public class CreateOrReplaceResourceTest {
     assertNotNull(pod);
     assertEquals("12345", pod.getMetadata().getResourceVersion());
 
-    RecordedRequest request = server.getMockServer().takeRequest();
-    assertEquals("/api/v1/namespaces/test/pods/nginx", request.getPath());
-
-    request = server.getMockServer().takeRequest();
+    RecordedRequest request = server.getLastRequest();
     Pod requestPod = new ObjectMapper().readerFor(Pod.class).readValue(request.getBody().inputStream());
     assertEquals("nginx", requestPod.getMetadata().getName());
   }
@@ -172,10 +164,9 @@ public class CreateOrReplaceResourceTest {
     assertNotNull(pod);
     assertEquals("12345", pod.getMetadata().getResourceVersion());
 
-    RecordedRequest request = server.getMockServer().takeRequest();
-    assertEquals("/api/v1/namespaces/test/pods/nginx", request.getPath());
 
-    request = server.getMockServer().takeRequest();
+    RecordedRequest request = server.getLastRequest();
+    assertEquals("/api/v1/namespaces/test/pods/nginx", request.getPath());
     Pod requestPod = new ObjectMapper().readerFor(Pod.class).readValue(request.getBody().inputStream());
     assertEquals("nginx", requestPod.getMetadata().getName());
   }
@@ -194,8 +185,7 @@ public class CreateOrReplaceResourceTest {
     assertNotNull(map);
     assertEquals("1001", map.getMetadata().getResourceVersion());
 
-    server.getMockServer().takeRequest(); // ignore the first request
-    RecordedRequest request = server.getMockServer().takeRequest();
+    RecordedRequest request = server.getLastRequest();
     ConfigMap replacedMap = new ObjectMapper().readerFor(ConfigMap.class).readValue(request.getBody().inputStream());
     assertEquals("1000", replacedMap.getMetadata().getResourceVersion());
   }
@@ -212,7 +202,7 @@ public class CreateOrReplaceResourceTest {
     assertNotNull(map);
     assertEquals("1001", map.getMetadata().getResourceVersion());
 
-    RecordedRequest request = server.getMockServer().takeRequest();
+    RecordedRequest request = server.getLastRequest();
     ConfigMap replacedMap = new ObjectMapper().readerFor(ConfigMap.class).readValue(request.getBody().inputStream());
     assertEquals("900", replacedMap.getMetadata().getResourceVersion());
   }
