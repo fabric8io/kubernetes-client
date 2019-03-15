@@ -22,6 +22,7 @@ import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.mockwebserver.crud.CrudDispatcher;
 import io.fabric8.mockwebserver.dsl.MockServerExpectation;
 import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.rules.ExternalResource;
 
 import java.util.HashMap;
@@ -90,5 +91,14 @@ public class KubernetesServer extends ExternalResource {
 
   public MockWebServer getMockServer() {
     return mock.getServer();
+  }
+
+  public RecordedRequest getLastRequest() throws InterruptedException {
+    int count = mock.getServer().getRequestCount();
+    RecordedRequest request = null;
+    while (count-- > 0) {
+      request = mock.getServer().takeRequest();
+    }
+    return request;
   }
 }
