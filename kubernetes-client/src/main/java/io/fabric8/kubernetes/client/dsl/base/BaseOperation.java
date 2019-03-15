@@ -318,7 +318,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
       if (resources.length > 1) {
         throw new IllegalArgumentException("Too many items to create.");
       } else if (resources.length == 1) {
-        return handleCreate(resources[0]);
+        return withItem(resources[0]).create();
       } else if (getItem() == null) {
         throw new IllegalArgumentException("Nothing to create.");
       } else {

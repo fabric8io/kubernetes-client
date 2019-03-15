@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl.base;
 
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -68,7 +67,7 @@ public class OperationContext {
     this.reloadingFromServer = reloadingFromServer;
     this.gracePeriodSeconds = gracePeriodSeconds;
     this.item = item;
-    this.apiGroupName = Utils.isNullOrEmpty(apiGroupName) ? ApiVersionUtil.apiGroup(item, apiGroupName) : apiGroupName;
+    this.apiGroupName =  ApiVersionUtil.apiGroup(item, apiGroupName);
     this.apiGroupVersion = ApiVersionUtil.apiVersion(item, apiGroupVersion);
   }
 

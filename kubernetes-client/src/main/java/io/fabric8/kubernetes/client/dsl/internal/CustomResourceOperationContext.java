@@ -125,18 +125,6 @@ public class CustomResourceOperationContext extends OperationContext {
     return new CustomResourceOperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, resourceVersion, reloadingFromServer, gracePeriodSeconds, crd, type, listType, doneableType);
   }
 
-  public CustomResourceOperationContext withRolling(boolean rolling) {
-    return new CustomResourceOperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, resourceVersion, reloadingFromServer, gracePeriodSeconds, crd, type, listType, doneableType);
-  }
-
-  public CustomResourceOperationContext withRollingTimeout(long rollingTimeout) {
-    return new CustomResourceOperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, resourceVersion, reloadingFromServer, gracePeriodSeconds, crd, type, listType, doneableType);
-  }
-
-  public CustomResourceOperationContext withRollingTimeUnit(TimeUnit rollingTimeUnit) {
-    return new CustomResourceOperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, resourceVersion, reloadingFromServer, gracePeriodSeconds, crd, type, listType, doneableType);
-  }
-
   public CustomResourceOperationContext withCrd(Object crd) {
     return new CustomResourceOperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, resourceVersion, reloadingFromServer, gracePeriodSeconds, crd, type, listType, doneableType);
   }
