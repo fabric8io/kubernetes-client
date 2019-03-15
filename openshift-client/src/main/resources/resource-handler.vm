@@ -71,6 +71,15 @@ public class ${model.name}Handler implements ResourceHandler<${model.name}, ${mo
   }
 
   @Override
+  public String getApiVersion() {
+  #if (${apiGroup} != "")
+    return "${apiGroup}/${apiVersion}";
+  #else
+    return "${apiVersion}";
+  #end
+  }
+
+  @Override
   public ${model.name} create(OkHttpClient client, Config config, String namespace, ${model.name} item) {
     return new ${model.name}OperationsImpl(client, OpenShiftConfig.wrap(config)).withItem(item).inNamespace(namespace).create();
   }

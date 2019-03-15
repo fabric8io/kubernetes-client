@@ -289,7 +289,7 @@ Waitable<HasMetadata, HasMetadata>,
 
   private static <T> ResourceHandler handlerOf(T item) {
     if (item instanceof HasMetadata) {
-      return Handlers.<HasMetadata, HasMetadataVisitiableBuilder>get(((HasMetadata) item).getKind());
+      return Handlers.<HasMetadata, HasMetadataVisitiableBuilder>get(((HasMetadata) item).getKind(), ((HasMetadata) item).getApiVersion());
     } else if (item instanceof KubernetesList) {
       return new KubernetesListHandler();
     } else {
