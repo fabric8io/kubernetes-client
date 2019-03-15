@@ -170,12 +170,16 @@ public class NetworkPolicyIT {
     boolean deleted = client.network().networkPolicies().delete(networkPolicy);
 
     assertTrue(deleted);
+
+    DeleteEntity<NetworkPolicy> deleteEntity = new DeleteEntity<>(NetworkPolicy.class, client, "networkpolicy", currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(deleteEntity);
+
     NetworkPolicyList networkPolicyList = client.network().networkPolicies().list();
     assertEquals(0,networkPolicyList.getItems().size());
   }
 
   @After
-  public void cleanup() throws InterruptedException {
+  public void cleanup() {
     if (client.network().networkPolicies().list().getItems().size()!= 0) {
       client.network().networkPolicies().delete();
     }

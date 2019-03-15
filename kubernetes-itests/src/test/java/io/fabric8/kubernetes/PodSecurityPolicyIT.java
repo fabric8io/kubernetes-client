@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes;
 
+import io.fabric8.commons.DeleteEntity;
 import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicy;
 import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicyBuilder;
 import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicyList;
@@ -24,6 +25,8 @@ import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
+
+import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
@@ -34,6 +37,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Collections;
+import java.util.concurrent.TimeUnit;
 
 @RunWith(ArquillianConditionalRunner.class)
 @RequiresKubernetes
@@ -124,6 +128,9 @@ public class PodSecurityPolicyIT {
   public void delete(){
     boolean deleted = client.extensions().podSecurityPolicies().delete(podSecurityPolicy);
     assertTrue(deleted);
+
+    DeleteEntity<PodSecurityPolicy> deleteEntity = new DeleteEntity<>(PodSecurityPolicy.class, client, "test-example", null);
+    await().atMost(30, TimeUnit.SECONDS).until(deleteEntity);
     PodSecurityPolicyList podSecurityPolicyList = client.extensions().podSecurityPolicies().list();
     assertEquals(0,podSecurityPolicyList.getItems().size());
   }
@@ -131,5 +138,7 @@ public class PodSecurityPolicyIT {
   @After
   public void cleanup() {
     client.extensions().podSecurityPolicies().withName("test-example").delete();
+    DeleteEntity<PodSecurityPolicy> deleteEntity = new DeleteEntity<>(PodSecurityPolicy.class, client, "test-example", null);
+    await().atMost(30, TimeUnit.SECONDS).until(deleteEntity);
   }
 }
