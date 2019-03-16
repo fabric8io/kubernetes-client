@@ -61,9 +61,19 @@ import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 public class ${model.name}Handler implements ResourceHandler<${model.name}, ${model.name}Builder> {
+
   @Override
   public String getKind() {
     return ${model.name}.class.getSimpleName();
+  }
+
+  @Override
+  public String getApiVersion() {
+    #if (${apiGroup} != "")
+    return "${apiGroup}/${apiVersion}";
+    #else
+    return "${apiVersion}";
+    #end
   }
 
   @Override

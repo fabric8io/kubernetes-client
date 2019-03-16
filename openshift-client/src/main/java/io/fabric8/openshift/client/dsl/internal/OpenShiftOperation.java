@@ -28,6 +28,7 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfig;
+import io.fabric8.openshift.client.OpenShiftConfigBuilder;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -46,10 +47,10 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
     if (Utils.isNotNullOrEmpty(context.getApiGroupName()) && config.isOpenShiftAPIGroups(oc)) {
       String apiGroupUrl = URLUtils.join(config.getMasterUrl(), "apis", context.getApiGroupName(), oapiVersion);
       String apiGroupVersion = URLUtils.join(context.getApiGroupName(), oapiVersion);
-      return context.withConfig(new OpenShiftConfig(config, apiGroupUrl)).withApiGroupName(context.getApiGroupName()).withApiGroupVersion(apiGroupVersion);
+      return context.withConfig(new OpenShiftConfigBuilder(config).withOpenShiftUrl(apiGroupUrl).build()).withApiGroupName(context.getApiGroupName()).withApiGroupVersion(apiGroupVersion);
     } else {
       String apiGroupUrl = URLUtils.join(config.getMasterUrl(), "oapi", oapiVersion);
-      return context.withConfig(new OpenShiftConfig(config, apiGroupUrl)).withApiGroupName(context.getApiGroupName()).withApiGroupVersion(oapiVersion);
+      return context.withConfig(new OpenShiftConfigBuilder(config).withOpenShiftUrl(apiGroupUrl).build()).withApiGroupName(context.getApiGroupName()).withApiGroupVersion(oapiVersion);
     }
   }
 

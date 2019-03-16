@@ -24,7 +24,27 @@ import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 
 public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
 
+  class Key {
+    private final String kind;
+    private final String apiVersion;
+
+    public Key(String kind, String apiVersion) {
+      this.kind = kind;
+      this.apiVersion = apiVersion;
+    }
+
+    public String getKind() {
+      return kind;
+    }
+
+    public String getApiVersion() {
+      return apiVersion;
+    }
+  }
+
   String getKind();
+
+  String getApiVersion();
 
   /**
    * Create the specified resource.
