@@ -55,8 +55,15 @@ public final class Handlers {
     if (RESOURCE_HANDLER_MAP.containsKey(key)) {
       return RESOURCE_HANDLER_MAP.get(key);
     } else {
+      //1st pass: match kind and apiVersion
       for (ResourceHandler handler : ServiceLoader.load(ResourceHandler.class, Thread.currentThread().getContextClassLoader())) {
         if (handler.getKind().toLowerCase().equals(key.getKind()) && handler.getApiVersion().equals(key.getApiVersion())) {
+          return handler;
+        }
+      }
+      //2nd pass: match kind.
+      for (ResourceHandler handler : ServiceLoader.load(ResourceHandler.class, Thread.currentThread().getContextClassLoader())) {
+        if (handler.getKind().toLowerCase().equals(key.getKind())) {
           return handler;
         }
       }
