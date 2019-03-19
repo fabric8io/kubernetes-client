@@ -26,7 +26,7 @@ import java.io.InputStreamReader;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 //DONT USE: when pumping streams, that do not respond to Thread.interrupt(). (e.g. System.in).
-public class BlockingInputStreamPumper extends InputStreamPumper {
+public class BlockingInputStreamPumper extends InputStreampumper {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InputStreamReader.class);
     private Thread thread;

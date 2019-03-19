@@ -15,6 +15,9 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -24,11 +27,19 @@ import java.io.Reader;
 import java.net.URL;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
+import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
+
+import io.fabric8.kubernetes.client.dsl.CopyOrReadable;
+import io.fabric8.kubernetes.client.utils.Utils;
+import org.apache.commons.codec.binary.Base64InputStream;
+import org.apache.commons.compress.archivers.ArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 
 import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.client.Callback;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.LocalPortForward;
@@ -51,10 +62,11 @@ import io.fabric8.kubernetes.client.dsl.TtyExecOutputErrorable;
 import io.fabric8.kubernetes.client.dsl.TtyExecable;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.utils.BlockingInputStreamPumper;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import okhttp3.*;
 
-public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, DoneablePod, PodResource<Pod, DoneablePod>> implements PodResource<Pod, DoneablePod> {
+public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, DoneablePod, PodResource<Pod, DoneablePod>> implements PodResource<Pod, DoneablePod>,CopyOrReadable<Boolean,InputStream> {
 
     private static final String[] EMPTY_COMMAND = {"/bin/sh", "-i"};
 
@@ -229,7 +241,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
   }
 
   @Override
-    public ContainerResource<String, LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch> inContainer(String containerId) {
+    public ContainerResource<String, LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch, Boolean, InputStream> inContainer(String containerId) {
         return new PodOperationsImpl(getContext().withContainerId(containerId));
     }
 
@@ -279,7 +291,129 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
         }
     }
 
+
+
     @Override
+    public CopyOrReadable<Boolean, InputStream> file(String file) {
+      return new PodOperationsImpl(getContext().withFile(file));
+    }
+
+    @Override
+    public CopyOrReadable<Boolean, InputStream> dir(String dir) {
+      return new PodOperationsImpl(getContext().withDir(dir));
+    }
+
+   @Override
+   public Boolean copy(Path destination) {
+    try {
+      if (Utils.isNotNullOrEmpty(getContext().getFile())) {
+        copyFile(getContext().getFile(), destination.toFile());
+        return true;
+      } else if (Utils.isNotNullOrEmpty(getContext().getDir())) {
+        copyDir(getContext().getFile(), destination.toFile());
+        return true;
+      }
+      throw new IllegalStateException("No file or dir has been specified");
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+   }
+
+  @Override
+  public InputStream read() {
+    if (Utils.isNotNullOrEmpty(getContext().getFile())) {
+      return readFile(getContext().getFile());
+    } else if (Utils.isNotNullOrEmpty(getContext().getDir())) {
+      return readTar(getContext().getFile());
+    }
+    throw new IllegalStateException("No file or dir has been specified");
+  }
+  private InputStream readFile(String source) {
+    ExecWatch watch = exec("sh", "-c", "cat " + source + " | base64");
+    return new Base64InputStream(watch.getOutput());
+  }
+
+  private void copyFile(String source, File destination) throws IOException {
+    ExecWatch watch = exec("sh", "-c", "cat " + source + " | base64");
+    if (!destination.exists() && !destination.getParentFile().exists() && !destination.getParentFile().mkdirs()) {
+      throw new IOException("Failed to create directory: " + destination.getParentFile());
+    } if (destination.isDirectory()) {
+      String[] parts = source.split("\\/|\\\\");
+      String filename = parts[parts.length - 1];
+      destination = destination.toPath().resolve(filename).toFile();
+    }
+    try (InputStream is = new Base64InputStream(watch.getOutput());
+         OutputStream os = new FileOutputStream(destination)) {
+      BlockingInputStreamPumper pumper = new BlockingInputStreamPumper(is, new Callback<byte[]>(){
+        @Override
+        public void call(byte[] input) {
+          try {
+            os.write(input);
+          } catch (IOException e) {
+            throw KubernetesClientException.launderThrowable(e);
+          }
+        }
+      }, () -> {
+        try {
+          os.flush();
+        } catch (IOException e) {
+          throw KubernetesClientException.launderThrowable(e);
+        }
+      });
+    }
+  }
+
+  public InputStream readTar(String source) {
+    ExecWatch watch = exec("sh", "-c", "tar -cf - " + source + " | base64");
+    return new Base64InputStream(watch.getOutput());
+  }
+
+  private void copyDir(String source, File destination) throws IOException {
+    ExecWatch watch = exec("sh", "-c", "cat " + source + " | base64");
+    if (!destination.isDirectory() && !destination.mkdirs()) {
+      throw new IOException("Failed to create directory: " + destination);
+    }
+    try (InputStream is = new Base64InputStream(new BufferedInputStream(watch.getOutput()));
+         OutputStream os = new FileOutputStream(destination);
+         TarArchiveInputStream tis = new TarArchiveInputStream(is)) {
+      for (ArchiveEntry entry = tis.getNextTarEntry(); entry != null; entry = tis.getNextEntry()) {
+        if (tis.canReadEntryData(entry)) {
+          File f = new File(destination, entry.getName());
+          if (entry.isDirectory()) {
+            if (!f.isDirectory() && !f.mkdirs()) {
+              throw new IOException("Failed to create directory: " + f);
+            }
+          } else {
+            File parent = f.getParentFile();
+            if (!parent.isDirectory() && !parent.mkdirs()) {
+              throw new IOException("Failed to create directory: " + f);
+            }
+            try (OutputStream fs = new FileOutputStream(f)) {
+              System.out.println("Writing: " + f.getCanonicalPath());
+              BlockingInputStreamPumper pumper = new BlockingInputStreamPumper(tis, new Callback<byte[]>(){
+                @Override
+                public void call(byte[] input) {
+                  try {
+                    fs.write(input);
+                  } catch (IOException e) {
+                    throw KubernetesClientException.launderThrowable(e);
+                  }
+                }
+              }, () -> {
+                try {
+                  fs.close();
+                } catch (IOException e) {
+                  throw KubernetesClientException.launderThrowable(e);
+                }
+              });
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @Override
     public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, ExecWatch> readingInput(InputStream in) {
         return new PodOperationsImpl(getContext().withIn(in));
     }
@@ -391,5 +525,6 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
   public BytesLimitTerminateTimeTailPrettyLoggable<String, LogWatch> usingTimestamps() {
     return new PodOperationsImpl(getContext().withTimestamps(true));
   }
+
 }
 
