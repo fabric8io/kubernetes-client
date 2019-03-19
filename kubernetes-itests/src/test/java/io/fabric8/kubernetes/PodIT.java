@@ -37,15 +37,21 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(ArquillianConditionalRunner.class)
@@ -154,6 +160,27 @@ public class PodIT {
     execLatch.await(5, TimeUnit.SECONDS);
     assertNotNull(execWatch);
     assertNotNull(out.toString());
+  }
+
+  @Test
+  public void copy() throws IOException {
+    // Wait for resources to get ready
+    ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(), currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(podReady);
+    ExecWatch watch = client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).writingOutput(System.out).exec("sh", "-c", "echo 'hello' > /msg");
+    client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).writingOutput(System.out).exec("sh", "-c", "ls -al", "/");
+    client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).writingOutput(System.out).writingError(System.out).exec("sh", "-c", "cat", "/msg");
+    try (InputStream is = client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).file("/msg").read())  {
+
+      ByteArrayOutputStream result = new ByteArrayOutputStream();
+      byte[] buffer = new byte[1024];
+      int length;
+      while ((length = is.read(buffer)) != -1) {
+        result.write(buffer, 0, length);
+      }
+     // String result = new BufferedReader(new InputStreamReader(is)).lines().collect(Collectors.joining("\n"));
+      assertEquals("hello", result.toString());
+    }
   }
 
   @Test

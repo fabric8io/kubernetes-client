@@ -19,14 +19,12 @@ import io.fabric8.kubernetes.client.Callback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 //DONT USE: when pumping streams, that do not respond to Thread.interrupt(). (e.g. System.in).
-public class BlockingInputStreamPumper extends InputStreampumper {
+public class BlockingInputStreamPumper extends InputStreamPumper {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InputStreamReader.class);
     private Thread thread;

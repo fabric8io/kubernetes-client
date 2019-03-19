@@ -328,13 +328,20 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
     }
     throw new IllegalStateException("No file or dir has been specified");
   }
+
   private InputStream readFile(String source) {
-    ExecWatch watch = exec("sh", "-c", "cat " + source + " | base64");
+    ExecWatch watch = redirectingOutput().exec("sh", "-c", "cat " + source + " | base64");
     return new Base64InputStream(watch.getOutput());
   }
 
+  //
+  //
+  // The copy and read utilities below have been inspired by Brendan Burns copy utilities on the offical kubernetes-client.
+  // More specifically: https://github.com/fabric8io/kubernetes-client/pull/1444
+  //
+
   private void copyFile(String source, File destination) throws IOException {
-    ExecWatch watch = exec("sh", "-c", "cat " + source + " | base64");
+    ExecWatch watch = redirectingOutput().exec("sh", "-c", "cat " + source + " | base64");
     if (!destination.exists() && !destination.getParentFile().exists() && !destination.getParentFile().mkdirs()) {
       throw new IOException("Failed to create directory: " + destination.getParentFile());
     } if (destination.isDirectory()) {
@@ -364,12 +371,12 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
   }
 
   public InputStream readTar(String source) {
-    ExecWatch watch = exec("sh", "-c", "tar -cf - " + source + " | base64");
+    ExecWatch watch = redirectingOutput().exec("sh", "-c", "tar -cf - " + source + " | base64");
     return new Base64InputStream(watch.getOutput());
   }
 
   private void copyDir(String source, File destination) throws IOException {
-    ExecWatch watch = exec("sh", "-c", "cat " + source + " | base64");
+    ExecWatch watch = redirectingOutput().exec("sh", "-c", "cat " + source + " | base64");
     if (!destination.isDirectory() && !destination.mkdirs()) {
       throw new IOException("Failed to create directory: " + destination);
     }
