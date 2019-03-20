@@ -643,17 +643,18 @@ public class Config {
   }
 
   public static String getKeyAlgorithm(InputStream inputStream) throws IOException {
-      BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-      String line, algorithm = null;
+      try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
+        String line, algorithm = null;
 
-      while ((line = bufferedReader.readLine()) != null) {
-        if (line.contains("BEGIN EC PRIVATE KEY"))
-          algorithm = "EC";
-        else if (line.contains("BEGIN RSA PRIVATE KEY")) {
-          algorithm = "RSA";
+        while ((line = bufferedReader.readLine()) != null) {
+          if (line.contains("BEGIN EC PRIVATE KEY"))
+            algorithm = "EC";
+          else if (line.contains("BEGIN RSA PRIVATE KEY")) {
+            algorithm = "RSA";
+          }
         }
+        return algorithm;
       }
-      return algorithm;
   }
 
   public static String getKeyAlgorithm(String clientKeyFile, String clientKeyData) {
