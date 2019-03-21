@@ -169,7 +169,7 @@ public class PodIT {
     await().atMost(30, TimeUnit.SECONDS).until(podReady);
     ExecWatch watch = client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).writingOutput(System.out).exec("sh", "-c", "echo 'hello' > /msg");
     client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).writingOutput(System.out).exec("sh", "-c", "ls -al", "/");
-    client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).writingOutput(System.out).writingError(System.out).exec("sh", "-c", "cat", "/msg");
+    client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).writingOutput(System.out).exec("cat", "/msg");
     try (InputStream is = client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).file("/msg").read())  {
 
       ByteArrayOutputStream result = new ByteArrayOutputStream();

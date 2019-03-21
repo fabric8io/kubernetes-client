@@ -31,6 +31,7 @@ import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 
 import io.fabric8.kubernetes.client.dsl.CopyOrReadable;
+import io.fabric8.kubernetes.client.utils.NonBlockingInputStreamPumper;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.apache.commons.codec.binary.Base64InputStream;
 import org.apache.commons.compress.archivers.ArchiveEntry;
@@ -330,8 +331,12 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
   }
 
   private InputStream readFile(String source) {
-    ExecWatch watch = redirectingOutput().exec("sh", "-c", "cat " + source + " | base64");
+    try {
+    ExecWatch watch = redirectingOutput().exec("cat" , source + " | base64");
     return new Base64InputStream(watch.getOutput());
+    } catch (Exception e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
   }
 
   //
