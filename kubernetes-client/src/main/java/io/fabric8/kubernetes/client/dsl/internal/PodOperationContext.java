@@ -76,6 +76,7 @@ public class PodOperationContext extends OperationContext {
     this.limitBytes = limitBytes;
     this.bufferSize = bufferSize;
     this.file = file;
+    this.dir = dir;
   }
 
   public String getContainerId() {

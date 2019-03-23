@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes;
 
+import com.google.common.io.Files;
 import io.fabric8.commons.ReadyEntity;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
@@ -39,6 +40,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -163,23 +166,31 @@ public class PodIT {
   }
 
   @Test
-  public void copy() throws IOException {
+  public void readFile() throws IOException {
     // Wait for resources to get ready
     ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(), currentNamespace);
     await().atMost(30, TimeUnit.SECONDS).until(podReady);
     ExecWatch watch = client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).writingOutput(System.out).exec("sh", "-c", "echo 'hello' > /msg");
-    client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).writingOutput(System.out).exec("sh", "-c", "ls -al", "/");
-    client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).writingOutput(System.out).exec("cat", "/msg");
     try (InputStream is = client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).file("/msg").read())  {
+      String result = new BufferedReader(new InputStreamReader(is)).lines().collect(Collectors.joining("\n"));
+      assertEquals("hello", result);
+    }
+  }
 
-      ByteArrayOutputStream result = new ByteArrayOutputStream();
-      byte[] buffer = new byte[1024];
-      int length;
-      while ((length = is.read(buffer)) != -1) {
-        result.write(buffer, 0, length);
-      }
-     // String result = new BufferedReader(new InputStreamReader(is)).lines().collect(Collectors.joining("\n"));
-      assertEquals("hello", result.toString());
+  @Test
+  public void copyFile() throws IOException {
+    // Wait for resources to get ready
+    ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(), currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(podReady);
+
+    File tmpDir = Files.createTempDir();
+    ExecWatch watch = client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).writingOutput(System.out).exec("sh", "-c", "echo 'hello' > /msg");
+    client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).file("/msg").copy(tmpDir.toPath());
+    File msg = tmpDir.toPath().resolve("msg").toFile();
+    assertTrue(msg.exists());
+    try (InputStream is = new FileInputStream(msg))  {
+      String result = new BufferedReader(new InputStreamReader(is)).lines().collect(Collectors.joining("\n"));
+      assertEquals("hello", result);
     }
   }
 
