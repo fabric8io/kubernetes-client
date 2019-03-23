@@ -28,9 +28,12 @@ import io.fabric8.kubernetes.client.dsl.ServiceResource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.utils.URLUtils;
+import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.OkHttpClient;
 
 
+import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.WritableByteChannel;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -123,6 +126,33 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
     }
 
     return null;
+  }
+
+
+  private Pod matchingPod() {
+    Service item = fromServer().get();
+    Map<String, String> labels = item.getSpec().getSelector();
+    PodList list = new PodOperationsImpl(client, config).withLabels(labels).list();
+    return list.getItems().stream().findFirst().orElseThrow(() -> new IllegalStateException("Could not find matching pod for service:" + item + "."));
+  }
+
+  @Override
+  public PortForward portForward(int port, ReadableByteChannel in, WritableByteChannel out) {
+    Pod m = matchingPod();
+    return  new PodOperationsImpl(client, config).inNamespace(m.getMetadata().getNamespace()).withName(m.getMetadata().getName()).portForward(port, in, out);
+  }
+
+
+  @Override
+  public LocalPortForward portForward(int port, int localPort) {
+    Pod m = matchingPod();
+    return  new PodOperationsImpl(client, config).inNamespace(m.getMetadata().getNamespace()).withName(m.getMetadata().getName()).portForward(port, localPort);
+  }
+
+  @Override
+  public LocalPortForward portForward(int port) {
+    Pod m = matchingPod();
+    return  new PodOperationsImpl(client, config).inNamespace(m.getMetadata().getNamespace()).withName(m.getMetadata().getName()).portForward(port);
   }
 
   public class ServiceToUrlSortComparator implements Comparator<ServiceToURLProvider> {

@@ -12,6 +12,7 @@
   Improvements
 
     * Fix #1425: Preserve labels and fields when using CRD's withResourceVersion()
+    * Service DSL now includes methods for port forwarding
   
   Dependency Upgrade
     * Upgrade Sundrio to 0.16.5
