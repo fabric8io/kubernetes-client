@@ -925,8 +925,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
     long timeoutInMillis = timeUnit.toMillis(amount);
 
-    long end = System.currentTimeMillis() + timeoutInMillis;
-    while (System.currentTimeMillis() < end) {
+    long end = System.nanoTime() + timeoutInMillis;
+    while (System.nanoTime() < end) {
       T item = get();
       if (condition.test(item)) {
         return item;
