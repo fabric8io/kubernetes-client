@@ -104,7 +104,7 @@
     <snakeyaml.version>1.24</snakeyaml.version>
     <bouncycastle.version>1.61</bouncycastle.version>
     <scr.annotations.version>1.9.12</scr.annotations.version>
-    <sundrio.version>0.14.6</sundrio.version>
+    <sundrio.version>0.17.0</sundrio.version>
     <validation.api.version>1.1.0.Final</validation.api.version>
     <maven.bundle.plugin.version>2.5.4</maven.bundle.plugin.version>
     <maven.buildhelper.plugin.version>1.10</maven.buildhelper.plugin.version>
@@ -113,7 +113,6 @@
     <maven.surefire.plugin.version>3.0.0-M1</maven.surefire.plugin.version>
     <maven.scr.plugin.version>1.22.0</maven.scr.plugin.version>
     <scr.annotations.version>1.12.0</scr.annotations.version>
-    <sundrio.version>0.16.5</sundrio.version>
     <validation.api.version>2.0.1.Final</validation.api.version>
     <maven.bundle.plugin.version>4.1.0</maven.bundle.plugin.version>
     <maven.buildhelper.plugin.version>3.0.0</maven.buildhelper.plugin.version>
