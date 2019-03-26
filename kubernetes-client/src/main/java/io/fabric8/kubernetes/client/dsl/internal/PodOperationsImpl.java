@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -331,12 +330,12 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
     }
   }
 
-  private InputStream readFile(String source) throws Exception {
+  private InputStream readFile(String source) {
     //Let's wrap the code to a callable inner class to avoid NoClassDef when loading this class.
     try {
       return new Callable<InputStream>() {
         @Override
-        public InputStream call() throws Exception {
+        public InputStream call() {
           try {
             PipedOutputStream out = new PipedOutputStream();
             PipedInputStream in = new PipedInputStream(out, 1024);
@@ -374,8 +373,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
 
   //
   //
-  // The copy and read utilities below have been inspired by Brendan Burns copy utilities on the offical kubernetes-client.
-  // More specifically: https://github.com/fabric8io/kubernetes-client/pull/1444
+  // The copy and read utilities below have been inspired by Brendan Burns copy utilities on the official kubernetes-client.
+  // More specifically: https://github.com/kubernetes-client/java/pull/375
   //
 
   private void copyFile(String source, File target)  {
