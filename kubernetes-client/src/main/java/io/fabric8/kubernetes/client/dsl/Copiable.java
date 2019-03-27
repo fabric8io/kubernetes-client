@@ -15,9 +15,9 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import java.nio.file.Path;
 
-public interface ContainerResource<S,W, I, PI, O, PO, X, T, B, IS>
-        extends TtyExecInputOutputErrorable<X, O, PO, I, PI, T>,
-                FileSelector<CopyOrReadable<B, IS>>,
-  TimestampBytesLimitTerminateTimeTailPrettyLoggable<S, W> {
+public interface Copiable<T> {
+  
+  T copy(Path destination);
 }

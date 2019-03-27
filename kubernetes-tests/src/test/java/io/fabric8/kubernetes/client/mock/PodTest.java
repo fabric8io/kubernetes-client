@@ -17,6 +17,7 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.client.utils.Utils;
+import org.assertj.core.util.Files;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -434,6 +435,18 @@ public class PodTest {
     assertEquals("Hello World!", got);
   }
 
+
+  @Test(expected = KubernetesClientException.class)
+  public void testOptionalCopy() {
+    KubernetesClient client = server.getClient();
+    client.pods().inNamespace("ns1").withName("pod2").file("/etc/hosts").copy(Files.temporaryFolder().toPath());
+  }
+
+  @Test(expected = KubernetesClientException.class)
+  public void testOptionalCopyDir() {
+    KubernetesClient client = server.getClient();
+    client.pods().inNamespace("ns1").withName("pod2").dir("/etc/hosts").copy(Files.temporaryFolder().toPath());
+  }
   @Test
   public void testListFromServer() {
     PodBuilder podBuilder = new PodBuilder()
