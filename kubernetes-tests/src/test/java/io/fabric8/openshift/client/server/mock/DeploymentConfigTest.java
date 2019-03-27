@@ -22,6 +22,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import io.fabric8.kubernetes.api.builder.TypedVisitor;
+import io.fabric8.kubernetes.api.model.ContainerFluent;
+import io.fabric8.openshift.api.model.DeploymentConfigSpecFluent;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -30,6 +33,8 @@ import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.api.model.DeploymentConfigListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DeploymentConfigTest {
   @Rule
@@ -179,5 +184,60 @@ public class DeploymentConfigTest {
     DeploymentConfig deploymentConfig = client.deploymentConfigs().withName("dc1").deployLatest();
     assertNotNull(deploymentConfig);
     assertEquals(new Long(1), deploymentConfig.getStatus().getLatestVersion());
+  }
+
+  //This is a test that verifies a recent fix (sundrio #135).
+  //According to this issue when editing a list of buildables using predicates, the object visitors get overwrriten.
+  @Test
+  public void testDeploymentConfigVisitor() {
+   AtomicBoolean visitedContainer = new AtomicBoolean();
+
+   DeploymentConfig dc1 = new DeploymentConfigBuilder()
+      .withNewMetadata()
+        .withName("dc1")
+      .endMetadata()
+      .withNewSpec()
+        .withReplicas(1)
+        .addToSelector("name", "dc1")
+        .addNewTrigger()
+        .withType("ImageChange")
+        .withNewImageChangeParams()
+        .withAutomatic(true)
+        .withContainerNames("container")
+        .withNewFrom()
+        .withKind("ImageStreamTag")
+        .withName("image:1.0")
+        .endFrom()
+        .endImageChangeParams()
+        .endTrigger()
+        .withNewTemplate()
+          .withNewSpec()
+            .addNewContainer()
+              .withName("container")
+              .withImage("image")
+            .endContainer()
+          .endSpec()
+        .endTemplate()
+      .endSpec()
+      .build();
+
+   DeploymentConfig dc2 = new DeploymentConfigBuilder(dc1)
+     .accept(new TypedVisitor<DeploymentConfigSpecFluent<?>>() {
+       @Override
+       public void visit(DeploymentConfigSpecFluent<?> spec) {
+         spec.editMatchingTrigger(b -> b.buildImageChangeParams().getContainerNames().contains("container"))
+           .withType("ImageChange")
+           .endTrigger();
+       }
+     })
+     .accept(new TypedVisitor<ContainerFluent<?>>() {
+       @Override
+       public void visit(ContainerFluent<?> container) {
+         container.addNewEnv().withName("FOO").withValue("BAR").endEnv();
+         visitedContainer.set(true);
+
+       }
+     }).build();
+   assertTrue(visitedContainer.get());
   }
 }
