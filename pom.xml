@@ -106,7 +106,7 @@
     <commons-codec.version>1.10</commons-codec.version>
     <commons-compress.version>1.18</commons-compress.version>
     <scr.annotations.version>1.9.12</scr.annotations.version>
-    <sundrio.version>0.17.0</sundrio.version>
+    <sundrio.version>0.17.1</sundrio.version>
     <validation.api.version>1.1.0.Final</validation.api.version>
     <maven.bundle.plugin.version>2.5.4</maven.bundle.plugin.version>
     <maven.buildhelper.plugin.version>1.10</maven.buildhelper.plugin.version>
