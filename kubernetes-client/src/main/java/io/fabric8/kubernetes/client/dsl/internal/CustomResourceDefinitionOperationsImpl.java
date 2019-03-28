@@ -23,10 +23,6 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
-import io.fabric8.kubernetes.client.dsl.MixedOperation;
-
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  */
@@ -46,6 +42,7 @@ public class CustomResourceDefinitionOperationsImpl extends HasMetadataOperation
     this.listType = CustomResourceDefinitionList.class;
     this.doneableType = DoneableCustomResourceDefinition.class;
   }
+
   @Override
   public CustomResourceDefinitionOperationsImpl newInstance(OperationContext context) {
     return new CustomResourceDefinitionOperationsImpl(context);
