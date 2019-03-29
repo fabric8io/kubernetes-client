@@ -1,4 +1,4 @@
-/**
+  /**
  * Copyright (C) 2015 Red Hat, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -59,18 +59,19 @@ public class Quantity  implements Serializable {
     }
 
     /**
+     * Single argument constructor for setting amount.
      *
-     * @param Format
-     * @param Amount
+     * @param amount amount of quantity specified.
      */
     public Quantity(String amount) {
         this.amount = amount;
     }
 
     /**
+     * Double argument constructor for setting amount along with format.
      *
-     * @param Format
-     * @param Amount
+     * @param amount amount of quantity specified
+     * @param format format for the amount.
      */
     public Quantity(String amount, String format) {
         this.amount = amount;
