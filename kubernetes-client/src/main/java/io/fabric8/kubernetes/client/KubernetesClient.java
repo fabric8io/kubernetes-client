@@ -151,4 +151,6 @@ public interface KubernetesClient extends Client {
 
   MixedOperation<LimitRange, LimitRangeList, DoneableLimitRange, Resource<LimitRange, DoneableLimitRange>> limitRanges();
 
+  SubjectAccessReviewDSL subjectAccessReviewAuth();
+
 }
