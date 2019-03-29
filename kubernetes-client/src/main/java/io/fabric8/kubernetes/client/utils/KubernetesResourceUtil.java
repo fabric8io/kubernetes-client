@@ -179,8 +179,8 @@ public class KubernetesResourceUtil {
   /**
    * Returns an identifier from the given string that can be used as resource name.
    *
-   * @Param String which needs to be sanitized
-   * @return
+   * @param name which needs to be sanitized
+   * @return sanitized name
    */
   public static String sanitizeName(String name) {
     if(name != null) {
