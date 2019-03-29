@@ -16,7 +16,7 @@
     * Introduce file and dir read / copy from pods
   
   Dependency Upgrade
-    * Upgrade Sundrio to 0.17.0
+    * Upgrade Sundrio to 0.17.2
     * Upgrade to Bean Validation 2.0
 
   New Feature
