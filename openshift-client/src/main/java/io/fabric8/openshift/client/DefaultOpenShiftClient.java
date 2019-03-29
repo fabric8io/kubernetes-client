@@ -37,6 +37,7 @@ import io.fabric8.kubernetes.api.model.apiextensions.DoneableCustomResourceDefin
 import io.fabric8.kubernetes.client.*;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.*;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.*;
 import io.fabric8.kubernetes.client.utils.BackwardsCompatibilityInterceptor;
 import io.fabric8.kubernetes.client.utils.ImpersonatorInterceptor;
@@ -262,6 +263,10 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public NonNamespaceOperation<CustomResourceDefinition, CustomResourceDefinitionList, DoneableCustomResourceDefinition, Resource<CustomResourceDefinition, DoneableCustomResourceDefinition>> customResourceDefinitions() {
     return new CustomResourceDefinitionOperationsImpl(httpClient, getConfiguration());
+  }
+
+  public RawCustomResourceOperationsImpl customResource(CustomResourceDefinitionContext customResourceDefinition) {
+    return new RawCustomResourceOperationsImpl(httpClient, getConfiguration(), customResourceDefinition);
   }
 
   @Override

@@ -15,6 +15,12 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -53,5 +59,28 @@ public class IOHelpers {
             }
         }
     }
+
+  public static boolean isJSONValid(String test) {
+    try {
+      new JSONObject(test);
+    } catch (JSONException ex) {
+      // edited, to include @Arthur's comment
+      // e.g. in case JSONArray is valid as well...
+      try {
+        new JSONArray(test);
+      } catch (JSONException ex1) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  public static String convertYamlToJson(String yaml) throws IOException {
+    ObjectMapper yamlReader = new ObjectMapper(new YAMLFactory());
+    Object obj = yamlReader.readValue(yaml, Object.class);
+
+    ObjectMapper jsonWriter = new ObjectMapper();
+    return jsonWriter.writeValueAsString(obj);
+  }
 
 }

@@ -22,10 +22,12 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+
 public class CRDLoadExample {
   private static Logger logger = LoggerFactory.getLogger(CRDLoadExample.class);
 
-  public static void main(String args[]) {
+  public static void main(String args[]) throws IOException {
     try (final KubernetesClient client = new DefaultKubernetesClient()) {
       // List all Custom resources.
       log("Listing all current Custom Resource Definitions :");
@@ -34,11 +36,12 @@ public class CRDLoadExample {
 
       // Creating a custom resource from yaml
       CustomResourceDefinition aCustomResourceDefinition = client.customResourceDefinitions().load(CRDLoadExample.class.getResourceAsStream("/crd.yml")).get();
+      log("Creating CRD...");
       client.customResourceDefinitions().create(aCustomResourceDefinition);
 
-      log("Created CRD");
       log("Updated Custom Resource Definitions: ");
       client.customResourceDefinitions().list().getItems().forEach(crd -> log(crd.getMetadata().getName()));
+
     }
   }
 
