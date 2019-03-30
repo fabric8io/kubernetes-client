@@ -257,7 +257,13 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
             } else {
                 sb.append("&command=");
             }
-            cmd = URLEncoder.encode(cmd, "UTF-8");
+          
+            try {
+              cmd = URLEncoder.encode(cmd, "UTF-8");
+            } catch(UnsupportedEncodingException encodEx) {
+              // Do nothing to fail gracefully as before.
+            }
+            
             sb.append(cmd);
         }
 
