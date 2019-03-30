@@ -24,6 +24,7 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.Reader;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.file.Path;
@@ -256,6 +257,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
             } else {
                 sb.append("&command=");
             }
+            cmd = URLEncoder.encode(cmd, "UTF-8");
             sb.append(cmd);
         }
 
