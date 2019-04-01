@@ -260,11 +260,11 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
             }
           
             try {
-              cmd = URLEncoder.encode(cmd, "UTF-8");
-            } catch(UnsupportedEncodingException encodEx) {
-              // Do nothing to fail gracefully as before.
-            }
-            
+            	cmd = URLUtils.encodeCommand(cmd);
+            } catch (UnsupportedEncodingException encodEx) {
+            	// Do nothing to fail gracefully as before.
+			}
+
             sb.append(cmd);
         }
 

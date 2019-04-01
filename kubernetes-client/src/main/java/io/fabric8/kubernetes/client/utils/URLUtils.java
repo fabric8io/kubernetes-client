@@ -15,8 +15,10 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 
 public class URLUtils {
     private URLUtils() {}
@@ -150,4 +152,7 @@ public class URLUtils {
     }
   }
 
+  public static String encodeCommand(String cmd) throws UnsupportedEncodingException {
+	  return URLEncoder.encode(cmd, "UTF-8");
+  }
 }
