@@ -16,10 +16,6 @@ jobs:
 
     working_directory: ~/repo
 
-    environment:
-      # Customize the JVM maximum heap limit
-      MAVEN_OPTS: -Xmx3200m
-
     steps:
       - checkout
 
@@ -30,7 +26,7 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
-      - run: mvn dependency:go-offline
+      - run: mvn dependency:go-offline --projects 'me.snowdrop:servicecatalog-model,me.snowdrop:servicecatalog-model-annotator'
 
       - save_cache:
           paths:
