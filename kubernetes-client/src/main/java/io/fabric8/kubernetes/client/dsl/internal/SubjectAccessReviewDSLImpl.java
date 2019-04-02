@@ -63,7 +63,7 @@ public class SubjectAccessReviewDSLImpl extends OperationSupport implements Subj
   }
 
   @Override
-  public io.fabric8.kubernetes.api.model.authorization.DoneableSubjectAccessReview createNew() {
+  public DoneableSubjectAccessReview createNew() {
     return new CreatableSubjectAccessReview().createNew();
   }
 
