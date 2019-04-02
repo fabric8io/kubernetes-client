@@ -49,7 +49,7 @@ public class ClusterServiceClassTest {
 
         ClusterServiceClass class2 = new ClusterServiceClassBuilder()
                 .withNewMetadata()
-                .withName("class2")
+               .withName("class2")
                 .addToLabels("key2", "value2")
                 .endMetadata()
                 .withNewSpec()

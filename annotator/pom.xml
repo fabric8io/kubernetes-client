@@ -36,6 +36,11 @@
             <version>${jsonschema2pojo.version}</version>
         </dependency>
         <dependency>
+          <groupId>io.fabric8</groupId>
+          <artifactId>kubernetes-model-common</artifactId>
+          <version>${kubernetes-client.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
@@ -47,6 +52,11 @@
         <dependency>
             <groupId>io.sundr</groupId>
             <artifactId>builder-annotations</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.sundr</groupId>
+            <artifactId>transform-annotations</artifactId>
             <scope>compile</scope>
         </dependency>
     </dependencies>

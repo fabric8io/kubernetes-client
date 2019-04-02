@@ -15,6 +15,10 @@
  */
 package me.snowdrop.servicecatalog;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
+
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -26,14 +30,21 @@ import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JEnumConstant;
 import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JMethod;
+import io.fabric8.kubernetes.model.annotation.ApiGroup;
+import io.fabric8.kubernetes.model.annotation.ApiVersion;
 import io.sundr.builder.annotations.Buildable;
-import io.sundr.builder.annotations.BuildableReference;
 import io.sundr.builder.annotations.Inline;
+import io.sundr.transform.annotations.VelocityTransformation;
+import io.sundr.transform.annotations.VelocityTransformations;
+import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.jsonschema2pojo.Jackson2Annotator;
 
 public class ServiceCatalogTypeAnnotator extends Jackson2Annotator {
+
+    private final Map<String, JDefinedClass> pendingResources = new HashMap<>();
+    private final Map<String, JDefinedClass> pendingLists = new HashMap<>();
 
     @Override
     public void propertyOrder(JDefinedClass clazz, JsonNode propertiesNode) {
@@ -60,6 +71,42 @@ public class ServiceCatalogTypeAnnotator extends Jackson2Annotator {
         } catch (JClassAlreadyExistsException e) {
             e.printStackTrace();
         }
+
+       if (clazz.fields().containsKey("kind") && clazz.fields().containsKey("metadata")) {
+        String resourceName;
+
+        if (clazz.name().endsWith("List")) {
+          resourceName = clazz.name().substring(0, clazz.name().length() - 4);
+          pendingLists.put(resourceName, clazz);
+        } else {
+          resourceName = clazz.name();
+          pendingResources.put(clazz.name(), clazz);
+        }
+
+        if (pendingResources.containsKey(resourceName) && pendingLists.containsKey(resourceName)) {
+          JDefinedClass resourceClass = pendingResources.get(resourceName);
+          JDefinedClass resourceListClass = pendingLists.get(resourceName);
+
+          String apiVersion =  propertiesNode.get("apiVersion").get("default").toString().replaceAll(Pattern.quote("\""), "");
+          String apiGroup = "";
+          if (apiVersion.contains("/")) {
+            apiGroup = apiVersion.substring(0, apiVersion.lastIndexOf("/"));
+            apiVersion = apiVersion.substring(apiGroup.length() + 1);
+          }
+          resourceClass.annotate(ApiVersion.class).param("value", apiVersion);
+          resourceClass.annotate(ApiGroup.class).param("value", apiGroup);
+          resourceListClass.annotate(ApiVersion.class).param("value", apiVersion);
+          resourceListClass.annotate(ApiGroup.class).param("value", apiGroup);
+
+            JAnnotationArrayMember arrayMember = resourceClass.annotate(VelocityTransformations.class)
+              .paramArray("value");
+            arrayMember.annotate(VelocityTransformation.class).param("value", "/manifest.vm")
+              .param("outputPath", "servicecatalog.properties").param("gather", true);
+
+          pendingLists.remove(resourceName);
+          pendingResources.remove(resourceName);
+        }
+      }
     }
 
     @Override
