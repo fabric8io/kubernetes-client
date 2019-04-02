@@ -98,7 +98,7 @@
         <maven.enforcer.plugin.version>1.3.1</maven.enforcer.plugin.version>
         <maven.jar.plugin.version>2.6</maven.jar.plugin.version>
         <maven.resources.plugin.version>2.7</maven.resources.plugin.version>
-        <maven.surefire.plugin.version>2.18.1</maven.surefire.plugin.version>
+        <maven.surefire.plugin.version>2.22.1</maven.surefire.plugin.version>
         <maven.scr.plugin.version>1.21.0</maven.scr.plugin.version>
 
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -224,6 +224,15 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.plugin.version}</version>
+                <!-- see: https://discuss.circleci.com/t/the-forked-vm-terminated-without-properly-saying-goodbye-while-running-tests/26246/9 -->
+                <configuration>
+                    <useSystemClassLoader>false</useSystemClassLoader>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
