@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.DeleteEntity;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionList;
@@ -25,16 +24,13 @@ import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Collections;
-import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
 
 @RunWith(ArquillianConditionalRunner.class)
 @RequiresKubernetes
@@ -56,6 +52,7 @@ public class CustomResourceDefinitionIT {
       .endMetadata()
       .withNewSpec()
       .withGroup("examples.fabric8.io")
+      .withVersion("v1")
       .addAllToVersions(Collections.singletonList(new CustomResourceDefinitionVersionBuilder()
         .withName("v1")
         .withServed(true)
@@ -75,43 +72,26 @@ public class CustomResourceDefinitionIT {
   }
 
   @Test
-  public void load() {
+  public void testCrdOperations() {
+    // Load
     CustomResourceDefinition aCustomResourceDefinition = client.customResourceDefinitions().load(getClass().getResourceAsStream("/test-crd.yml")).get();
     assertThat(aCustomResourceDefinition).isNotNull();
-  }
 
-  @Test
-  public void get() {
+    // Get
     crd1 = client.customResourceDefinitions().withName(crd1.getMetadata().getName()).get();
     assertThat(crd1).isNotNull();
-  }
 
-  @Test
-  public void list() {
+    // List
     CustomResourceDefinitionList crdList = client.customResourceDefinitions().list();
     assertThat(crdList).isNotNull();
     assertThat(crdList.getItems().size()).isGreaterThan(0);
-  }
 
-  @Test
-  public void update() {
+    // Update
     CustomResourceDefinition updatedCrd = client.customResourceDefinitions().withName(crd1.getMetadata().getName()).edit().editSpec().editOrNewNames().addNewShortName("its").endNames().endSpec().done();
     assertThat(updatedCrd.getSpec().getNames().getShortNames().size()).isEqualTo(2);
-  }
 
-  @Test
-  public void delete() {
+    // Delete
     boolean bDeleted = client.customResourceDefinitions().withName(crd1.getMetadata().getName()).delete();
     assertThat(bDeleted).isTrue();
-  }
-
-  @After
-  public void cleanup() {
-    if(client.customResourceDefinitions().withName(crd1.getMetadata().getName()).get() != null) {
-      client.customResourceDefinitions().withName(crd1.getMetadata().getName()).delete();
-    }
-
-    DeleteEntity<CustomResourceDefinition> configMapDelete = new DeleteEntity<>(CustomResourceDefinition.class, client, "configmap1", null);
-    await().atMost(30, TimeUnit.SECONDS).until(configMapDelete);
   }
 }

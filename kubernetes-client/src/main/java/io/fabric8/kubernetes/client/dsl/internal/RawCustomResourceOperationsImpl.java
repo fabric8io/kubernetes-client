@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionVersion;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
@@ -26,11 +26,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,59 +47,59 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
     this.customResourceDefinition = customResourceDefinition;
   }
 
-  public JSONObject create(String objectAsString) throws IOException {
+  public Map<String, Object> create(String objectAsString) throws IOException {
     return validateAndSubmitRequest(null, null, objectAsString, HttpCallMethod.POST);
   }
 
-  public JSONObject create(String namespace, String objectAsString) throws KubernetesClientException, IOException {
+  public Map<String, Object> create(String namespace, String objectAsString) throws KubernetesClientException, IOException {
     return validateAndSubmitRequest(namespace, null, objectAsString, HttpCallMethod.POST);
   }
 
-  public JSONObject create(InputStream objectAsStream) throws KubernetesClientException, IOException {
+  public Map<String, Object> create(InputStream objectAsStream) throws KubernetesClientException, IOException {
     return validateAndSubmitRequest(null, null, IOHelpers.readFully(objectAsStream), HttpCallMethod.POST);
   }
 
-  public JSONObject create(String namespace, InputStream objectAsStream) throws KubernetesClientException, IOException {
+  public Map<String, Object> create(String namespace, InputStream objectAsStream) throws KubernetesClientException, IOException {
     return validateAndSubmitRequest(namespace, null, IOHelpers.readFully(objectAsStream), HttpCallMethod.POST);
   }
 
-  public JSONObject edit(String name, String objectAsString) throws IOException {
+  public Map<String, Object> edit(String name, String objectAsString) throws IOException {
     return validateAndSubmitRequest(null, name, objectAsString, HttpCallMethod.PUT);
   }
 
-  public JSONObject edit(String namespace, String name, String objectAsString) throws IOException {
+  public Map<String, Object> edit(String namespace, String name, String objectAsString) throws IOException {
     return validateAndSubmitRequest(namespace, name, objectAsString, HttpCallMethod.PUT);
   }
 
-  public JSONObject edit(String namespace, String name, InputStream objectAsStream) throws IOException, KubernetesClientException {
+  public Map<String, Object> edit(String namespace, String name, InputStream objectAsStream) throws IOException, KubernetesClientException {
     return validateAndSubmitRequest(namespace, name, IOHelpers.readFully(objectAsStream), HttpCallMethod.PUT);
   }
 
-  public JSONObject get(String name) {
+  public Map<String, Object> get(String name) {
     return makeCall(fetchUrl(null, null) + name, null, HttpCallMethod.GET);
   }
 
-  public JSONObject get(String namespace, String name) {
+  public Map<String, Object> get(String namespace, String name) {
       return makeCall(fetchUrl(namespace, null) + name, null, HttpCallMethod.GET);
   }
 
-  public JSONObject list() {
+  public Map<String, Object> list() {
     return makeCall(fetchUrl(null, null), null, HttpCallMethod.GET);
   }
 
-  public JSONObject list(String namespace) {
+  public Map<String, Object> list(String namespace) {
     return makeCall(fetchUrl(namespace, null), null, HttpCallMethod.GET);
   }
 
-  public JSONObject list(String namespace, Map<String, String> labels) {
+  public Map<String, Object> list(String namespace, Map<String, String> labels) {
     return makeCall(fetchUrl(namespace, labels), null, HttpCallMethod.GET);
   }
 
-  public JSONObject delete(String namespace) {
+  public Map<String, Object> delete(String namespace) {
     return makeCall(fetchUrl(namespace, null), null, HttpCallMethod.DELETE);
   }
 
-  public JSONObject delete(String namespace, String name) {
+  public Map<String, Object> delete(String namespace, String name) {
     return makeCall(fetchUrl(namespace, null) + name, null, HttpCallMethod.DELETE);
   }
 
@@ -132,7 +132,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
     return labelQueryBuilder.toString();
   }
 
-  private JSONObject makeCall(String url, String body, HttpCallMethod callMethod) throws RuntimeException {
+  private Map<String, Object> makeCall(String url, String body, HttpCallMethod callMethod) throws RuntimeException {
     try {
       Response response;
       if(body == null) {
@@ -144,7 +144,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
       if(response.code() != HttpURLConnection.HTTP_NOT_FOUND &&
          response.code() != HttpURLConnection.HTTP_SERVER_ERROR &&
          response.code() != HttpURLConnection.HTTP_BAD_REQUEST) {
-        return new JSONObject(response.body().string());
+        return new ObjectMapper().readValue(response.body().string(), HashMap.class);
       } else {
         response.close();
         throw new IllegalStateException(response.message());
@@ -154,7 +154,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
     }
   }
 
-  private JSONObject validateAndSubmitRequest(String namespace, String name, String objectAsString, HttpCallMethod httpCallMethod) throws IOException {
+  private Map<String, Object> validateAndSubmitRequest(String namespace, String name, String objectAsString, HttpCallMethod httpCallMethod) throws IOException {
     if (IOHelpers.isJSONValid(objectAsString)) {
       return makeCall(fetchUrl(namespace, null) + (name != null ? name : ""), objectAsString, httpCallMethod);
     } else {
