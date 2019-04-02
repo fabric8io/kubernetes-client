@@ -79,7 +79,7 @@
         <jsonassert.version>1.2.3</jsonassert.version>
         <jsonschema2pojo.version>0.4.23</jsonschema2pojo.version>
         <junit.version>4.12</junit.version>
-        <kubernetes-client.version>4.1.0</kubernetes-client.version>
+        <kubernetes-client.version>4.2.0</kubernetes-client.version>
         <lombok.version>1.16.4</lombok.version>
         <log4j.version>2.3</log4j.version>
         <mockwebserver.version>0.1.0</mockwebserver.version>
@@ -88,7 +88,7 @@
         <validation-api.version>1.1.0.Final</validation-api.version>
 
         <scr.annotations.version>1.9.2</scr.annotations.version>
-        <sundrio.version>0.16.3</sundrio.version>
+        <sundrio.version>0.17.2</sundrio.version>
 
         <maven.bundle.plugin.version>3.0.1</maven.bundle.plugin.version>
         <maven.buildhelper.plugin.version>1.9.1</maven.buildhelper.plugin.version>
@@ -118,6 +118,7 @@
         <osgi.bundles />
         <osgi.activator />
         <osgi.export.service />
+        <osgi.include.resources>{maven-resources}</osgi.include.resources>
     </properties>
 
     <modules>
@@ -183,6 +184,13 @@
             <dependency>
                 <groupId>io.sundr</groupId>
                 <artifactId>builder-annotations</artifactId>
+                <version>${sundrio.version}</version>
+                <scope>compile</scope>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
+                <groupId>io.sundr</groupId>
+                <artifactId>transform-annotations</artifactId>
                 <version>${sundrio.version}</version>
                 <scope>compile</scope>
                 <optional>true</optional>
@@ -384,6 +392,7 @@
                         <Require-Bundle>${osgi.bundles}</Require-Bundle>
                         <Bundle-Activator>${osgi.activator}</Bundle-Activator>
                         <Export-Service>${osgi.export.service}</Export-Service>
+                      <Include-Resource>${osgi.include.resources}</Include-Resource>
                     </instructions>
                 </configuration>
             </plugin>
