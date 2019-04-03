@@ -19,7 +19,7 @@
     <parent>
         <artifactId>servicecatalog-java-api-project</artifactId>
         <groupId>me.snowdrop</groupId>
-        <version>1.0.9-SNAPSHOT</version>
+        <version>1.1.0</version>
         <relativePath>../</relativePath>
     </parent>
 
