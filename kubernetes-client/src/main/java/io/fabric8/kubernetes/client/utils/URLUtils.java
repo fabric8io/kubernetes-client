@@ -21,9 +21,8 @@ import java.net.URISyntaxException;
 import java.net.URLEncoder;
 
 public class URLUtils {
-    private URLUtils() {}
 
-    public static String join(String... parts) {
+  public static String join(String... parts) {
         StringBuilder sb = new StringBuilder();
 
         String urlQueryParams = "";
