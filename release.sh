@@ -7,4 +7,4 @@
 
 source $(grab github.com/shellib/maven as maven)
 
-maven::release
+maven::release $*
