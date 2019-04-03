@@ -23,7 +23,9 @@ import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.file.Path;
@@ -256,6 +258,13 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
             } else {
                 sb.append("&command=");
             }
+          
+            try {
+            	cmd = URLUtils.encodeToUTF(cmd);
+            } catch (UnsupportedEncodingException encodEx) {
+            	// Do nothing to fail gracefully as before.
+			}
+
             sb.append(cmd);
         }
 

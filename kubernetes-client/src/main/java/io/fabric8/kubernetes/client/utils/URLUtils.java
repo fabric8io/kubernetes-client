@@ -15,13 +15,14 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 
 public class URLUtils {
-    private URLUtils() {}
 
-    public static String join(String... parts) {
+  public static String join(String... parts) {
         StringBuilder sb = new StringBuilder();
 
         String urlQueryParams = "";
@@ -150,4 +151,7 @@ public class URLUtils {
     }
   }
 
+  public static String encodeToUTF(String url) throws UnsupportedEncodingException {
+	  return URLEncoder.encode(url, "UTF-8");
+  }
 }
