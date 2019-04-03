@@ -152,7 +152,7 @@ public class URLUtils {
     }
   }
 
-  public static String encodeCommand(String cmd) throws UnsupportedEncodingException {
-	  return URLEncoder.encode(cmd, "UTF-8");
+  public static String encodeToUTF(String url) throws UnsupportedEncodingException {
+	  return URLEncoder.encode(url, "UTF-8");
   }
 }
