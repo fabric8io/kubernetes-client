@@ -5,6 +5,7 @@
   Bugs
     
     * Fix #1297: wrong result produced when exec in used and params contains '&'. Url string not encoded properly.
+    * Fix #1473: Use correct plural form in OpenshiftRole
 
 #### 4.1-SNAPSHOT
 

@@ -1,0 +1,45 @@
+/**
+ * Copyright (C) 2015 Red Hat, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.fabric8.openshift.client.dsl.internal;
+
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.openshift.api.model.DoneableOpenshiftRole;
+import io.fabric8.openshift.api.model.OpenshiftRole;
+import io.fabric8.openshift.api.model.OpenshiftRoleList;
+import io.fabric8.openshift.client.OpenShiftConfig;
+import okhttp3.OkHttpClient;
+
+import static io.fabric8.openshift.client.OpenShiftAPIGroups.AUTHORIZATION;
+
+public class OpenshiftRoleOperationsImpl extends OpenShiftOperation<OpenshiftRole, OpenshiftRoleList, DoneableOpenshiftRole, Resource<OpenshiftRole, DoneableOpenshiftRole>> {
+
+  public OpenshiftRoleOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
+    this((new OperationContext()).withOkhttpClient(client).withConfig(config));
+  }
+
+  public OpenshiftRoleOperationsImpl(OperationContext context) {
+    super(context.withApiGroupName(AUTHORIZATION).withApiGroupVersion("v1").withPlural("roles"));
+    this.type = OpenshiftRole.class;
+    this.listType = OpenshiftRoleList.class;
+    this.doneableType = DoneableOpenshiftRole.class;
+  }
+
+  public OpenshiftRoleOperationsImpl newInstance(OperationContext context) {
+    return new OpenshiftRoleOperationsImpl(context);
+  }
+
+}
