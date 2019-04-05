@@ -5,8 +5,16 @@
   Bugs
     
     * Fix #1297: wrong result produced when exec in used and params contains '&'. Url string not encoded properly.
+  
+  Improvements
 
-#### 4.1-SNAPSHOT
+  
+  Dependency Upgrade
+  
+
+  New Feature
+
+#### 4.2.0
 
   Bugs
   
