@@ -7,6 +7,7 @@
     * Fix #1297: wrong result produced when exec in used and params contains '&'. Url string not encoded properly.
   
   Improvements
+    * Fix #1455: Use SubjectAccessReview and LocalSubjectAccessReview in kubernetes client using subjectAccessReviewAuth()
 
   
   Dependency Upgrade
@@ -19,7 +20,6 @@
 #### 4.1-SNAPSHOT
 
   Bugs
-  
     * Fix #1387: ValidatingWebhookConfigurationOperationsImpl should be a NonNamespaceOperation
     * Fix #1429: Fixes JsonMappingException: No resource type found for:v1#List when reading a Kubernetes List YAML
     * Fix #760: Api get pod from yaml issue

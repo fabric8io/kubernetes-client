@@ -311,4 +311,9 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   @Override
   public SettingsAPIGroupDSL settings() { return adapt(SettingsAPIGroupClient.class); }
 
+  @Override
+  public SubjectAccessReviewDSL subjectAccessReviewAuth() {
+    return new SubjectAccessReviewDSLImpl(httpClient, getConfiguration());
+  }
+
 }
