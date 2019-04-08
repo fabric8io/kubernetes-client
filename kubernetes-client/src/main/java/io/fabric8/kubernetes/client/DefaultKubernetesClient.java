@@ -69,6 +69,7 @@ import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.DoneableServiceAccount;
 import io.fabric8.kubernetes.client.dsl.*;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.*;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import okhttp3.OkHttpClient;
@@ -242,6 +243,11 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
       .withType(resourceType)
       .withListType(listClass)
       .withDoneableType(doneClass));
+  }
+
+  @Override
+  public RawCustomResourceOperationsImpl customResource(CustomResourceDefinitionContext customResourceDefinition) {
+    return new RawCustomResourceOperationsImpl(httpClient, getConfiguration(), customResourceDefinition);
   }
 
   @Override
