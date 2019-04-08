@@ -5,10 +5,10 @@
   Bugs
     
     * Fix #1297: wrong result produced when exec in used and params contains '&'. Url string not encoded properly.
+    * Fix #1480: The kubernetes-client is not optionally depending on bouncycastle.
   
   Improvements
     * Fix #1455: Use SubjectAccessReview and LocalSubjectAccessReview in kubernetes client using subjectAccessReviewAuth()
-
   
   Dependency Upgrade
   
