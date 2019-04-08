@@ -13,8 +13,10 @@
   
 
   New Feature
+    * First Draft of Custom Resource Improvements (#1472)
 
-#### 4.2.0
+
+#### 4.1-SNAPSHOT
 
   Bugs
   
