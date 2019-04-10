@@ -5,6 +5,7 @@
   Bugs
     
     * Fix #1297: wrong result produced when exec in used and params contains '&'. Url string not encoded properly.
+    * Fix #1473: Use correct plural form in OpenshiftRole
     * Fix #1480: The kubernetes-client is not optionally depending on bouncycastle.
   
   Improvements
