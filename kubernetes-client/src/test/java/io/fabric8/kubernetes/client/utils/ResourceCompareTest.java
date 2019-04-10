@@ -29,6 +29,8 @@ import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Collections;
+
 public class ResourceCompareTest {
 
   private Pod pod;
@@ -37,14 +39,14 @@ public class ResourceCompareTest {
 
   @Before
   public void setup() {
-    pod = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
+    pod = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").withLabels(Collections.singletonMap("label", "value")).and().build();
     service = new ServiceBuilder()
-        .withNewMetadata().withName("service1").withNamespace("test").and()
-        .build();
+      .withNewMetadata().withName("service1").withNamespace("test").and()
+      .build();
     final ReplicationController rc = new ReplicationControllerBuilder()
-        .withNewMetadata().withName("repl1").withNamespace("test").endMetadata()
-        .withNewSpec().withReplicas(1).endSpec()
-        .build();
+      .withNewMetadata().withName("repl1").withNamespace("test").endMetadata()
+      .withNewSpec().withReplicas(1).endSpec()
+      .build();
 
     kubeList = new KubernetesListBuilder().withItems(pod, service, rc).build();
   }
@@ -57,11 +59,29 @@ public class ResourceCompareTest {
   @Test
   public void testResourceCompareEqualsFalse() throws Exception {
     final ReplicationController rc = new ReplicationControllerBuilder()
-        .withNewMetadata().withName("repl1").withNamespace("test").endMetadata()
-        .withNewSpec().withReplicas(2).endSpec()
-        .build();
+      .withNewMetadata().withName("repl1").withNamespace("test").endMetadata()
+      .withNewSpec().withReplicas(2).endSpec()
+      .build();
     final KubernetesList kubeList2 =
-        new KubernetesListBuilder(kubeList).withItems(pod, service, rc).build();
+      new KubernetesListBuilder(kubeList).withItems(pod, service, rc).build();
     assertThat(ResourceCompare.equals(kubeList, kubeList2), is(false));
+  }
+
+  @Test
+  public void testPodResourceCompareEqualsFalseNoLabels() throws Exception {
+    Pod podNoLabels = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
+    assertThat(ResourceCompare.equals(pod, podNoLabels), is(false));
+  }
+
+  @Test
+  public void testPodResourceCompareEqualsTrueMatchingLabels() throws Exception {
+    Pod podWithLabels = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").withLabels(Collections.singletonMap("label", "value")).and().build();
+    assertThat(ResourceCompare.equals(pod, podWithLabels), is(true));
+  }
+
+  @Test
+  public void testPodResourceCompareEqualsFalseDifferentLabels() throws Exception {
+    Pod podWithLabels = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").withLabels(Collections.singletonMap("label", "another value")).and().build();
+    assertThat(ResourceCompare.equals(pod, podWithLabels), is(false));
   }
 }
