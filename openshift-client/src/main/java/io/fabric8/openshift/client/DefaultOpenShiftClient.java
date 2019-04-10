@@ -37,6 +37,7 @@ import io.fabric8.kubernetes.api.model.apiextensions.DoneableCustomResourceDefin
 import io.fabric8.kubernetes.client.*;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.*;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.*;
 import io.fabric8.kubernetes.client.utils.BackwardsCompatibilityInterceptor;
 import io.fabric8.kubernetes.client.utils.ImpersonatorInterceptor;
@@ -250,6 +251,11 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
+  public SubjectAccessReviewDSL subjectAccessReviewAuth() {
+    return delegate.subjectAccessReviewAuth();
+  }
+
+  @Override
   public <T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResources(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass) {
     return new CustomResourceOperationsImpl<T,L,D>(new CustomResourceOperationContext().withOkhttpClient(httpClient).withConfig(getConfiguration()).withCrd(crd).withType(resourceType).withListType(listClass).withDoneableType(doneClass));
   }
@@ -262,6 +268,10 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public NonNamespaceOperation<CustomResourceDefinition, CustomResourceDefinitionList, DoneableCustomResourceDefinition, Resource<CustomResourceDefinition, DoneableCustomResourceDefinition>> customResourceDefinitions() {
     return new CustomResourceDefinitionOperationsImpl(httpClient, getConfiguration());
+  }
+
+  public RawCustomResourceOperationsImpl customResource(CustomResourceDefinitionContext customResourceDefinition) {
+    return new RawCustomResourceOperationsImpl(httpClient, getConfiguration(), customResourceDefinition);
   }
 
   @Override

@@ -247,6 +247,11 @@ public class AutoAdaptableKubernetesClient extends DefaultKubernetesClient {
   }
 
   @Override
+  public SubjectAccessReviewDSL subjectAccessReviewAuth() {
+    return delegate.subjectAccessReviewAuth();
+  }
+
+  @Override
   public MixedOperation<LimitRange, LimitRangeList, DoneableLimitRange, Resource<LimitRange, DoneableLimitRange>> limitRanges() {
     return delegate.limitRanges();
   }

@@ -68,6 +68,8 @@ import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionList;
 import io.fabric8.kubernetes.api.model.apiextensions.DoneableCustomResourceDefinition;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
 
 import java.io.InputStream;
 import java.util.Collection;
@@ -86,6 +88,8 @@ public interface KubernetesClient extends Client {
   ExtensionsAPIGroupDSL extensions();
 
   VersionInfo getVersion();
+
+  RawCustomResourceOperationsImpl customResource(CustomResourceDefinitionContext customResourceDefinition);
 
   AppsAPIGroupDSL apps();
 
@@ -150,5 +154,7 @@ public interface KubernetesClient extends Client {
   MixedOperation<ConfigMap, ConfigMapList, DoneableConfigMap, Resource<ConfigMap, DoneableConfigMap>> configMaps();
 
   MixedOperation<LimitRange, LimitRangeList, DoneableLimitRange, Resource<LimitRange, DoneableLimitRange>> limitRanges();
+
+  SubjectAccessReviewDSL subjectAccessReviewAuth();
 
 }
