@@ -1,0 +1,55 @@
+
+#set ($attributes = $model.attributes)
+#foreach ($key in $attributes.keySet())
+  #if ($key.getName().equals("CUSTOM_RESOURCE_CONFIG"))
+    #set ($config = $attributes.get($key))
+    #set ($group = $config.group)
+    #set ($version = $config.version)
+    #set ($kind = $config.kind)
+    #set ($modelPackage = $config.modelPackage)
+  #end
+#end
+
+package ${model.packageName}.operation;
+
+import io.ap4k.deps.kubernetes.client.Config;
+import io.ap4k.deps.kubernetes.client.dsl.Resource;
+import io.ap4k.deps.kubernetes.client.dsl.base.HasMetadataOperation;
+import io.ap4k.deps.kubernetes.client.dsl.NonNamespaceOperation;
+import io.ap4k.deps.kubernetes.client.utils.ApiVersionUtil;
+
+import io.ap4k.deps.okhttp3.OkHttpClient;
+
+import ${model.packageName}.Doneable${kind};
+import ${model.packageName}.${kind};
+import ${model.packageName}.${kind}List;
+import ${model.packageName}.Doneable${kind};
+
+import java.util.Map;
+import java.util.TreeMap;
+
+
+public class ${kind}OperationsImpl extends HasMetadataOperation<${kind}, ${kind}List, Doneable${kind}, Resource<${kind}, Doneable${kind}>> {
+
+  public ${kind}OperationsImpl(OkHttpClient client, Config config, String namespace) {
+    this(client, config, "$apiGroupName", "$apiGroupVersion", namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+  }
+
+  public ${kind}OperationsImpl(OkHttpClient client, Config config, String apiGroupVersion, String namespace, String name, Boolean cascading, ${kind} item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
+    super(client, config, "$apiGroupName", apiGroupVersion, "#pluralize ($model.name.toLowerCase())", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  }
+
+  public ${kind}OperationsImpl(OkHttpClient client, Config config, String apiGroupName, String apiGroupVersion, String namespace, String name, Boolean cascading, ${kind} item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
+    super(client, config, apiGroupName, apiGroupVersion, "#pluralize ($model.name.toLowerCase())", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  }
+
+  @Override
+  public NonNamespaceOperation<${kind}, ${kind}List, Doneable${kind}, Resource<${kind}, Doneable${kind}>> inNamespace(String namespace) {
+    return new ${kind}OperationsImpl(client, config, apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
+  }
+
+  @Override
+  public Resource<${kind}, Doneable${kind}> withName(String name) {
+    return new ${kind}OperationsImpl(client, config, apiGroupName, apiGroupVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
+  }
+}
