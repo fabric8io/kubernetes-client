@@ -17,6 +17,7 @@
 package io.fabric8.kubernetes.client;
 
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
@@ -27,10 +28,12 @@ public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
   class Key {
     private final String kind;
     private final String apiVersion;
+    private final String repr;
 
     public Key(String kind, String apiVersion) {
       this.kind = kind;
       this.apiVersion = apiVersion;
+      this.repr = String.format("Key[kind=`%s`, apiVersion=`%s`]", this.kind, this.apiVersion);
     }
 
     public String getKind() {
@@ -39,6 +42,32 @@ public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
 
     public String getApiVersion() {
       return apiVersion;
+    }
+
+    @Override
+    public String toString() {
+      return this.repr;
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(this.kind, this.apiVersion);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (obj == null) {
+        return false;
+      }
+
+      if (!(obj instanceof Key)) {
+        return false;
+      }
+
+      Key other = (Key) obj;
+
+      return this.getKind().equals(other.getKind())
+        && this.getApiVersion().equals(other.getApiVersion());
     }
   }
 

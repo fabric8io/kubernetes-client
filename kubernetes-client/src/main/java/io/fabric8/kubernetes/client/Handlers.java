@@ -44,25 +44,33 @@ public final class Handlers {
   }
 
   public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> void unregister(ResourceHandler<T,V> handler) {
-    RESOURCE_HANDLER_MAP.remove(handler.getKind().toLowerCase());
+    RESOURCE_HANDLER_MAP.remove(new ResourceHandler.Key(handler.getKind().toLowerCase(), handler.getApiVersion()));
   }
 
   public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> get(String kind, String apiVersion) {
-   return get(new ResourceHandler.Key(kind.toLowerCase(), apiVersion));
+    return get(kind, apiVersion, Thread.currentThread().getContextClassLoader());
+  }
+
+  public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> get(String kind, String apiVersion, ClassLoader classLoader) {
+   return get(new ResourceHandler.Key(kind.toLowerCase(), apiVersion), classLoader);
   }
 
   public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> get(ResourceHandler.Key key) {
+    return get(key, Thread.currentThread().getContextClassLoader());
+  }
+
+  public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> get(ResourceHandler.Key key, ClassLoader classLoader) {
     if (RESOURCE_HANDLER_MAP.containsKey(key)) {
       return RESOURCE_HANDLER_MAP.get(key);
     } else {
       //1st pass: match kind and apiVersion
-      for (ResourceHandler handler : ServiceLoader.load(ResourceHandler.class, Thread.currentThread().getContextClassLoader())) {
+      for (ResourceHandler handler : ServiceLoader.load(ResourceHandler.class, classLoader)) {
         if (handler.getKind().toLowerCase().equals(key.getKind()) && handler.getApiVersion().equals(key.getApiVersion())) {
           return handler;
         }
       }
       //2nd pass: match kind.
-      for (ResourceHandler handler : ServiceLoader.load(ResourceHandler.class, Thread.currentThread().getContextClassLoader())) {
+      for (ResourceHandler handler : ServiceLoader.load(ResourceHandler.class, classLoader)) {
         if (handler.getKind().toLowerCase().equals(key.getKind())) {
           return handler;
         }

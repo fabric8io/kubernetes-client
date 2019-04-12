@@ -7,20 +7,24 @@
     * Fix #1297: wrong result produced when exec in used and params contains '&'. Url string not encoded properly.
     * Fix #1473: Use correct plural form in OpenshiftRole
     * Fix #1480: The kubernetes-client is not optionally depending on bouncycastle.
+    * Fix #1490: Resource could not be loaded 
   
   Improvements
+  
     * Fix #1455: Use SubjectAccessReview and LocalSubjectAccessReview in kubernetes client using subjectAccessReviewAuth()
   
   Dependency Upgrade
   
 
   New Feature
+  
     * First Draft of Custom Resource Improvements (#1472)
 
 
 #### 4.1-SNAPSHOT
 
   Bugs
+  
     * Fix #1387: ValidatingWebhookConfigurationOperationsImpl should be a NonNamespaceOperation
     * Fix #1429: Fixes JsonMappingException: No resource type found for:v1#List when reading a Kubernetes List YAML
     * Fix #760: Api get pod from yaml issue
