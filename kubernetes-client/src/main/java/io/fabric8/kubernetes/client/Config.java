@@ -201,7 +201,10 @@ public class Config {
   }
 
   /**
+   * Does auto detection with some opinionated defaults.
+   *
    * @param context if null will use current-context
+   * @return Config object
    */
   public static Config autoConfigure(String context) {
     Config config = new Config();
@@ -722,6 +725,7 @@ public class Config {
 
   /**
    * @deprecated Use {@link #getImpersonateGroups()} instead
+   * @return returns string of impersonate group
    */
   @Deprecated
   @JsonProperty("impersonateGroup")
@@ -730,6 +734,7 @@ public class Config {
   }
 
   /**
+   * @param impersonateGroup ImpersonateGroup string
    * @deprecated Use {@link #setImpersonateGroups(String...)} instead
    */
   @Deprecated

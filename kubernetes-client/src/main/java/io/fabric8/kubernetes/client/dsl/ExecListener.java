@@ -21,14 +21,17 @@ import java.io.IOException;
 
 public interface ExecListener {
 
-    /**
-     * Called when the request has successfully been upgraded to a web socket.
-     */
-    void onOpen( Response response);
+  /**
+   * Called when the request has successfully been upgraded to a web socket.
+   *
+   * @param response OkHttp response object
+   */
+  void onOpen( Response response);
 
     /**
      * Called when the transport or protocol layer of this web socket errors during communication.
      *
+     * @param t Throwable
      * @param response Present when the failure is a direct result of the response (e.g., failed
      * upgrade, non-101 response code, etc.). {@code null} otherwise.
      */

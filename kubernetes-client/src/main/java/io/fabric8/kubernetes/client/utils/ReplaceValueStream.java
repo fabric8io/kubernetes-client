@@ -29,9 +29,13 @@ import java.util.Map;
 public class ReplaceValueStream {
     private final Map<String, String> valuesMap;
 
-    /**
-     * Returns a stream with the template parameter expressions replaced
-     */
+  /**
+   * Returns a stream with the template parameter expressions replaced
+   *
+   * @param is {@link InputStream} inputstream for
+   * @param valuesMap a hashmap containing parameters
+   * @return returns stream with template parameter expressions replaced
+   */
     public static InputStream replaceValues(InputStream is, Map<String, String> valuesMap) {
         return new ReplaceValueStream(valuesMap).createInputStream(is);
     }

@@ -216,16 +216,18 @@ public class OperationSupport {
 
   /**
    * Create a resource.
-   * @param resource
-   * @param outputType
-   * @param <T>
-   * @param <I>
-   * @return
-   * @throws ExecutionException
-   * @throws InterruptedException
-   * @throws KubernetesClientException
-     * @throws IOException
-     */
+   *
+   * @param resource resource provided
+   * @param outputType resource type you want as output
+   * @param <T> template argument for output type
+   * @param <I> template argument for resource
+   *
+   * @return returns de-serialized version of apiserver response in form of type provided
+   * @throws ExecutionException Execution Exception
+   * @throws InterruptedException Interrupted Exception
+   * @throws KubernetesClientException KubernetesClientException
+   * @throws IOException IOException
+   */
   protected <T, I> T handleCreate(I resource, Class<T> outputType) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     RequestBody body = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(resource));
     Request.Builder requestBuilder = new Request.Builder().post(body).url(getNamespacedUrl(checkNamespace(resource)));
@@ -235,14 +237,16 @@ public class OperationSupport {
 
   /**
    * Replace a resource.
-   * @param updated
-   * @param type
-   * @param <T>
-   * @return
-   * @throws ExecutionException
-   * @throws InterruptedException
-   * @throws KubernetesClientException
-   * @throws IOException
+   *
+   * @param updated updated object
+   * @param type type of the object provided
+   * @param <T> template argument provided
+   *
+   * @return returns de-serialized version of api server response
+   * @throws ExecutionException Execution Exception
+   * @throws InterruptedException Interrupted Exception
+   * @throws KubernetesClientException KubernetesClientException
+   * @throws IOException IOException
    */
   protected <T> T handleReplace(T updated, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     return handleReplace(updated, type, Collections.<String, String>emptyMap());
@@ -250,16 +254,18 @@ public class OperationSupport {
 
   /**
    * Replace a resource, optionally performing placeholder substitution to the response.
-   * @param updated
-   * @param type
-   * @param parameters
-   * @param <T>
-   * @return
-   * @throws ExecutionException
-   * @throws InterruptedException
-   * @throws KubernetesClientException
-     * @throws IOException
-     */
+   *
+   * @param updated updated object
+   * @param type type of object provided
+   * @param parameters a HashMap containing parameters for processing object
+   * @param <T> template argument provided
+   *
+   * @return returns de-serialized version of api server response.
+   * @throws ExecutionException Execution Exception
+   * @throws InterruptedException Interrupted Exception
+   * @throws KubernetesClientException KubernetesClientException
+   * @throws IOException IOException
+   */
   protected <T> T handleReplace(T updated, Class<T> type, Map<String, String> parameters) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     RequestBody body = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(updated));
     Request.Builder requestBuilder = new Request.Builder().put(body).url(getResourceUrl(checkNamespace(updated), checkName(updated)));
@@ -268,16 +274,18 @@ public class OperationSupport {
 
   /**
    * Send an http patch and handle the response.
-   * @param current
-   * @param updated
-   * @param type
-   * @param <T>
-   * @return
-   * @throws ExecutionException
-   * @throws InterruptedException
-   * @throws KubernetesClientException
-     * @throws IOException
-     */
+   *
+   * @param current current object
+   * @param updated updated object
+   * @param type type of object
+   * @param <T> template argument provided
+   *
+   * @return returns de-serialized version of api server response
+   * @throws ExecutionException Execution Exception
+   * @throws InterruptedException Interrupted Exception
+   * @throws KubernetesClientException KubernetesClientException
+   * @throws IOException IOException
+   */
   protected <T> T handlePatch(T current, T updated, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     JsonNode diff = JsonDiff.asJson(patchMapper().valueToTree(current), patchMapper().valueToTree(updated));
     RequestBody body = RequestBody.create(JSON_PATCH, JSON_MAPPER.writeValueAsString(diff));
@@ -288,14 +296,16 @@ public class OperationSupport {
 
   /**
    * Send an http get.
-   * @param resourceUrl
-   * @param type
-   * @param <T>
-   * @return
-   * @throws ExecutionException
-   * @throws InterruptedException
-   * @throws KubernetesClientException
-   * @throws IOException
+   *
+   * @param resourceUrl resource URL to be processed
+   * @param type type of resource
+   * @param <T> template argument provided
+   *
+   * @return returns a deserialized object as api server response of provided type.
+   * @throws ExecutionException Execution Exception
+   * @throws InterruptedException Interrupted Exception
+   * @throws KubernetesClientException KubernetesClientException
+   * @throws IOException IOException
    */
   protected <T> T handleGet(URL resourceUrl, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     return handleGet(resourceUrl, type, Collections.<String, String>emptyMap());
@@ -303,16 +313,18 @@ public class OperationSupport {
 
   /**
    * Send an http, optionally performing placeholder substitution to the response.
-   * @param resourceUrl
-   * @param type
-   * @param parameters
-   * @param <T>
-   * @return
-   * @throws ExecutionException
-   * @throws InterruptedException
-   * @throws KubernetesClientException
-     * @throws IOException
-     */
+   *
+   * @param resourceUrl resource URL to be processed
+   * @param type type of resource
+   * @param parameters A HashMap of strings containing parameters to be passed in request
+   * @param <T> template argument provided
+   *
+   * @return Returns a deserialized object as api server response of provided type.
+   * @throws ExecutionException Execution Exception
+   * @throws InterruptedException Interrupted Exception
+   * @throws KubernetesClientException KubernetesClientException
+   * @throws IOException IOException
+   */
   protected <T> T handleGet(URL resourceUrl, Class<T> type, Map<String, String> parameters) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     Request.Builder requestBuilder = new Request.Builder().get().url(resourceUrl);
     return handleResponse(requestBuilder, type, parameters);
@@ -320,14 +332,16 @@ public class OperationSupport {
 
   /**
    * Send an http request and handle the response.
-   * @param requestBuilder
-   * @param type
-   * @param <T>
-   * @return
-   * @throws ExecutionException
-   * @throws InterruptedException
-   * @throws KubernetesClientException
-   * @throws IOException
+   *
+   * @param requestBuilder Request Builder object
+   * @param type type of resource
+   * @param <T> template argument provided
+   *
+   * @return Returns a de-serialized object as api server response of provided type.
+   * @throws ExecutionException Execution Exception
+   * @throws InterruptedException Interrupted Exception
+   * @throws KubernetesClientException KubernetesClientException
+   * @throws IOException IOException
    */
   protected <T> T handleResponse(Request.Builder requestBuilder, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     return handleResponse(requestBuilder, type, Collections.<String, String>emptyMap());
@@ -335,15 +349,17 @@ public class OperationSupport {
 
   /**
    * Send an http request and handle the response, optionally performing placeholder substitution to the response.
-   * @param requestBuilder
-   * @param type
-   * @param parameters
-   * @param <T>
-   * @return
-   * @throws ExecutionException
-   * @throws InterruptedException
-   * @throws KubernetesClientException
-   * @throws IOException
+   *
+   * @param requestBuilder request builder
+   * @param type type of object
+   * @param parameters a hashmap containing parameters
+   * @param <T> template argument provided
+   *
+   * @return Returns a de-serialized object as api server response of provided type.
+   * @throws ExecutionException Execution Exception
+   * @throws InterruptedException Interrupted Exception
+   * @throws KubernetesClientException KubernetesClientException
+   * @throws IOException IOException
    */
   protected <T> T handleResponse(Request.Builder requestBuilder, Class<T> type, Map<String, String> parameters) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     return handleResponse(client, requestBuilder, type, parameters);
@@ -351,15 +367,17 @@ public class OperationSupport {
 
   /**
    * Send an http request and handle the response.
-   * @param client
-   * @param requestBuilder
-   * @param type
-   * @param <T>
-   * @return
-   * @throws ExecutionException
-   * @throws InterruptedException
-   * @throws KubernetesClientException
-   * @throws IOException
+   *
+   * @param client OkHttp client object
+   * @param requestBuilder request builder
+   * @param type type of object
+   * @param <T> template argument provided
+   *
+   * @return Returns a de-serialized object as api server response of provided type.
+   * @throws ExecutionException Execution Exception
+   * @throws InterruptedException Interrupted Exception
+   * @throws KubernetesClientException KubernetesClientException
+   * @throws IOException IOException
    */
   protected <T> T handleResponse(OkHttpClient client, Request.Builder requestBuilder, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     return handleResponse(client, requestBuilder, type, Collections.<String, String>emptyMap());
@@ -367,16 +385,18 @@ public class OperationSupport {
 
   /**
    * Send an http request and handle the response, optionally performing placeholder substitution to the response.
-   * @param client
-   * @param requestBuilder
-   * @param type
-   * @param parameters
-   * @param <T>
-   * @return
-   * @throws ExecutionException
-   * @throws InterruptedException
-   * @throws KubernetesClientException
-   * @throws IOException
+   *
+   * @param client               OkHttp client provided
+   * @param requestBuilder       Request builder
+   * @param type                 Type of object provided
+   * @param parameters           A hashmap containing parameters
+   * @param <T>                  Template argument provided
+   *
+   * @return                      Returns a de-serialized object as api server response of provided type.
+   * @throws ExecutionException   Execution Exception
+   * @throws InterruptedException Interrupted Exception
+   * @throws KubernetesClientException KubernetesClientException
+   * @throws IOException IOException
    */
   protected <T> T handleResponse(OkHttpClient client, Request.Builder requestBuilder, Class<T> type, Map<String, String> parameters) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     VersionUsageUtils.log(this.resourceT, this.apiGroupVersion);
