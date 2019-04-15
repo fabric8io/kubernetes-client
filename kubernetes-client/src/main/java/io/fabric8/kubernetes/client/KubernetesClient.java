@@ -81,7 +81,16 @@ public interface KubernetesClient extends Client {
   <T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResources(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass);
 
   /**
+   *
    * @deprecated Use {@link #customResources(CustomResourceDefinition, Class, Class, Class)} instead.
+   * @param crd Custom Resource Definition
+   * @param resourceType resource type Pojo
+   * @param listClass list class Pojo
+   * @param doneClass Done class Pojo
+   * @param <T> template argument for resource
+   * @param <L> template argument for list
+   * @param <D> template argument for doneable resource
+   * @return Kubernetes client object for manipulating custom resource.
    */
   <T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResource(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass);
 

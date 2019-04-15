@@ -108,12 +108,13 @@ public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
 
   /**
    * Watches the specified resource for changes.
-   * @param client        An instance of the http client.
-   * @param config        The client config.
-   * @param namespace     The target namespace.
-   * @param item          The resource to delete.
-   * @param watcher       The {@link Watcher} to use.
-   * @return              The true if the resource was successfully deleted.
+   * @param client          An instance of the http client.
+   * @param config          The client config.
+   * @param namespace       The target namespace.
+   * @param item            The resource to delete.
+   * @param resourceVersion The resourceVersion of object
+   * @param watcher         The {@link Watcher} to use.
+   * @return                The true if the resource was successfully deleted.
    */
   Watch watch(OkHttpClient client, Config config, String namespace, T item, String resourceVersion, Watcher<T> watcher);
 
@@ -127,7 +128,7 @@ public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
    * @param amount        The amount of time to wait
    * @param timeUnit      The wait {@link TimeUnit}.
    * @return              The true if the resource was successfully deleted.
-   * @throws              InterruptedException
+   * @throws              InterruptedException Interrupted Exception
    */
   T waitUntilReady(OkHttpClient client, Config config, String namespace, T item, long amount, TimeUnit timeUnit) throws InterruptedException;
 

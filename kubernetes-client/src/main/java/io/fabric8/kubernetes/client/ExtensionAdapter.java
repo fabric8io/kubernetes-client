@@ -18,7 +18,7 @@ package io.fabric8.kubernetes.client;
 
 
 /**
- * An Adapter that can be used to adapt an instance of the {@link NamespacedKubernetesClient} to an {@link io.fabric8.kubernetes.client.Extension}.
+ * An Adapter that can be used to adapt an instance of the {@link NamespacedKubernetesClient} .
  *
  * @param <C> The Client.
  */

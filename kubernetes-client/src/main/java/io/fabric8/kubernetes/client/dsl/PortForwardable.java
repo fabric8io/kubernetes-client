@@ -19,17 +19,29 @@ public interface PortForwardable<H, L, I, O> {
 
   /**
    * Connects directly the remote port to the given input and output channels.
+   *
+   * @param port port as integer
+   * @param in input channel
+   * @param out output channel
+   * @return returns port forward interface
    */
   H portForward(int port, I in, O out);
 
   /**
    * Create a server socket on a specified local port. Every connection to the local port will be forwarded to the remote port on the resource.
+   *
+   * @param port port in integer
+   * @param localPort local port in integer
+   * @return returns local port forward interface
    */
   L portForward(int port, int localPort);
 
   /**
    * Create a server socket on a random local port. Every connection to the local port will be forwarded to the remote port on the resource.
    * The random local port can be retrieved from the returned object.
+   *
+   * @param port port as integer
+   * @return returns local port
    */
   L portForward(int port);
 
