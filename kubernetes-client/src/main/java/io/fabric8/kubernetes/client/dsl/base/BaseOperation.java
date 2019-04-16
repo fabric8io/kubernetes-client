@@ -923,9 +923,9 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   public T waitUntilCondition(Predicate<T> condition, long amount, TimeUnit timeUnit)
     throws InterruptedException {
 
-    long timeoutInNanos = timeUnit.toNanos(amount);
+    long timeoutInMillis = timeUnit.toNanos(amount);
 
-    long end = System.nanoTime() + timeoutInNanos;
+    long end = System.nanoTime() + timeoutInMillis;
     while (System.nanoTime() < end) {
       T item = get();
       if (condition.test(item)) {
