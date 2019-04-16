@@ -18,8 +18,8 @@ package io.fabric8.kubernetes.client.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.collections.MapUtils;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,7 +55,7 @@ public class ResourceCompare {
 
     private static Map<String, Object> fetchLabels(Map<String, Object> map){
         if (!map.containsKey(METADATA) || !((Map<Object, Object>)map.get(METADATA)).containsKey(LABELS)){
-            return MapUtils.EMPTY_MAP;
+            return Collections.emptyMap();
         }
         return (Map<String, Object>) ((Map<Object, Object>)map.get(METADATA)).get(LABELS);
     }
