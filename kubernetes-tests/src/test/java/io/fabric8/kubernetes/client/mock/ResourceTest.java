@@ -327,5 +327,21 @@ public class ResourceTest {
     Pod p = client.resource(noReady).createOrReplaceAnd().waitUntilReady(10, TimeUnit.SECONDS);
     Assert.assertTrue(Readiness.isPodReady(p));
   }
+
+  @Test
+  public void testFromServerGet() {
+    Pod pod = new PodBuilder().withNewMetadata()
+      .withName("pod1")
+      .withNamespace("test")
+      .withResourceVersion("1")
+      .and()
+      .build();
+
+    server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, pod).once();
+
+    KubernetesClient client = server.getClient();
+    HasMetadata response = client.resource(pod).fromServer().get();
+    assertEquals(pod, response);
+  }
 }
 
