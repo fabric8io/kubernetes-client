@@ -3,6 +3,12 @@
 #### 4.2-SNAPSHOT
 
   Bugs
+
+    * Fix #1495: avoid runtime dependency on Commons Collections
+
+#### 4.2.1
+
+  Bugs
     
     * Fix #1297: wrong result produced when exec in used and params contains '&'. Url string not encoded properly.
     * Fix #1473: Use correct plural form in OpenshiftRole
@@ -22,7 +28,7 @@
     * First Draft of Custom Resource Improvements (#1472)
 
 
-#### 4.1-SNAPSHOT
+#### 4.2.0
 
   Bugs
   
