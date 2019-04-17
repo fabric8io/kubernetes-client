@@ -85,12 +85,12 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
 
   @Override
   public Service waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
-    long started = System.currentTimeMillis();
+    long started = System.nanoTime();
     super.waitUntilReady(amount, timeUnit);
-    long alreadySpent = System.currentTimeMillis() - started;
+    long alreadySpent = System.nanoTime() - started;
 
     // if awaiting existence took very long, let's give at least 10 seconds to awaiting readiness
-    long remaining = Math.max(10_000, timeUnit.toMillis(amount) - alreadySpent);
+    long remaining = Math.max(10_000, timeUnit.toNanos(amount) - alreadySpent);
 
     EndpointsOperationsImpl endpointsOperation = new EndpointsOperationsImpl(context);
     endpointsOperation.waitUntilReady(remaining, TimeUnit.MILLISECONDS);
