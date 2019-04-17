@@ -59,7 +59,22 @@ public class RequestConfig {
 
   /**
    * For backward compatibility
-   * Use {@link RequestConfigBuilder} instead
+   * Use RequestConfigBuilder instead
+   *
+   * @param username user name
+   * @param password password
+   * @param oauthToken oauthToken
+   * @param watchReconnectLimit watch reconnect limit
+   * @param watchReconnectInterval watch reconnect interval
+   * @param connectionTimeout connection timeout
+   * @param rollingTimeout rolling timeout
+   * @param requestTimeout request timeout
+   * @param scaleTimeout scale timeout
+   * @param loggingInterval logging interval
+   * @param websocketTimeout web socket timeout
+   * @param websocketPingInterval web socket ping interval
+   * @param maxConcurrentRequests max concurrent requests
+   * @param maxConcurrentRequestsPerHost max concurrent requests per host
    */
   @Deprecated
   public RequestConfig(String username, String password, String oauthToken,
@@ -226,6 +241,9 @@ public class RequestConfig {
   }
 
   /**
+   * Method to set Impersonate Group
+   *
+   * @param impersonateGroup impersonate group string
    * @deprecated Use {@link #setImpersonateGroups(String...)} instead
    */
   @Deprecated
@@ -234,6 +252,9 @@ public class RequestConfig {
   }
 
   /**
+   * Method for getting Impersonate Groups
+   *
+   * @return Impersonate group string
    * @deprecated Use {@link #getImpersonateGroups()} instead
    */
   @Deprecated

@@ -201,7 +201,10 @@ public class Config {
   }
 
   /**
+   * Does auto detection with some opinionated defaults.
+   *
    * @param context if null will use current-context
+   * @return Config object
    */
   public static Config autoConfigure(String context) {
     Config config = new Config();
@@ -670,10 +673,7 @@ public class Config {
         return getKeyAlgorithm(keyInputStream);
       }
     } catch(IOException exception) {
-      LOGGER.info("Failure in determining private key algorithm type, defaulting to RSA ", exception.getMessage());
-    } catch(NoClassDefFoundError noClassDefFoundError) {
-      throw new IllegalStateException("Please make sure org.bouncycastle:bcprov-ext-jdk15on " +
-        "and org.bouncycastle:bcpkix-jdk15on are included in your project's classpath. ", noClassDefFoundError);
+      LOGGER.debug("Failure in determining private key algorithm type, defaulting to RSA ", exception.getMessage());
     }
     return null;
   }
@@ -725,6 +725,7 @@ public class Config {
 
   /**
    * @deprecated Use {@link #getImpersonateGroups()} instead
+   * @return returns string of impersonate group
    */
   @Deprecated
   @JsonProperty("impersonateGroup")
@@ -733,6 +734,7 @@ public class Config {
   }
 
   /**
+   * @param impersonateGroup ImpersonateGroup string
    * @deprecated Use {@link #setImpersonateGroups(String...)} instead
    */
   @Deprecated

@@ -121,6 +121,8 @@ public class Utils {
    * @param queue     The communication channel.
    * @param amount    The amount of time to wait.
    * @param timeUnit  The time unit.
+   *
+   * @return a boolean value indicating resource is ready or not.
    */
   public static boolean waitUntilReady(BlockingQueue<Object> queue, long amount, TimeUnit timeUnit) {
     try {
@@ -246,7 +248,14 @@ public class Utils {
   }
 
   /**
+   */
+  /**
    * Replaces all occurrences of the from text with to text without any regular expressions
+   *
+   * @param text text string
+   * @param from from string
+   * @param to   to string
+   * @return returns processed string
    */
   public static String replaceAllWithoutRegex(String text, String from, String to) {
     if (text == null) {
@@ -299,8 +308,8 @@ public class Utils {
   /**
    * Converts string to URL encoded string.
    *
-   * @param str
-   * @return
+   * @param str Url as string
+   * @return returns encoded string
    */
   public static final String toUrlEncoded(String str) {
     try {

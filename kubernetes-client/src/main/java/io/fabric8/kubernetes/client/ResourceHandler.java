@@ -17,6 +17,7 @@
 package io.fabric8.kubernetes.client;
 
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
@@ -27,10 +28,12 @@ public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
   class Key {
     private final String kind;
     private final String apiVersion;
+    private final String repr;
 
     public Key(String kind, String apiVersion) {
       this.kind = kind;
       this.apiVersion = apiVersion;
+      this.repr = String.format("Key[kind=`%s`, apiVersion=`%s`]", this.kind, this.apiVersion);
     }
 
     public String getKind() {
@@ -39,6 +42,32 @@ public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
 
     public String getApiVersion() {
       return apiVersion;
+    }
+
+    @Override
+    public String toString() {
+      return this.repr;
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(this.kind, this.apiVersion);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (obj == null) {
+        return false;
+      }
+
+      if (!(obj instanceof Key)) {
+        return false;
+      }
+
+      Key other = (Key) obj;
+
+      return this.getKind().equals(other.getKind())
+        && this.getApiVersion().equals(other.getApiVersion());
     }
   }
 
@@ -108,12 +137,13 @@ public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
 
   /**
    * Watches the specified resource for changes.
-   * @param client        An instance of the http client.
-   * @param config        The client config.
-   * @param namespace     The target namespace.
-   * @param item          The resource to delete.
-   * @param watcher       The {@link Watcher} to use.
-   * @return              The true if the resource was successfully deleted.
+   * @param client          An instance of the http client.
+   * @param config          The client config.
+   * @param namespace       The target namespace.
+   * @param item            The resource to delete.
+   * @param resourceVersion The resourceVersion of object
+   * @param watcher         The {@link Watcher} to use.
+   * @return                The true if the resource was successfully deleted.
    */
   Watch watch(OkHttpClient client, Config config, String namespace, T item, String resourceVersion, Watcher<T> watcher);
 
@@ -127,7 +157,7 @@ public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
    * @param amount        The amount of time to wait
    * @param timeUnit      The wait {@link TimeUnit}.
    * @return              The true if the resource was successfully deleted.
-   * @throws              InterruptedException
+   * @throws              InterruptedException Interrupted Exception
    */
   T waitUntilReady(OkHttpClient client, Config config, String namespace, T item, long amount, TimeUnit timeUnit) throws InterruptedException;
 

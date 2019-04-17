@@ -19,8 +19,9 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 
 public class ApiVersionUtil {
 
-    /**
+  /**
    * Extracts apiGroupName from apiGroupVersion when in resource for apiGroupName/apiGroupVersion combination
+   * @param <T>       Template argument provided
    * @param item      resource which is being used
    * @param apiGroup  apiGroupName present if any
    * @return          Just the apiGroupName part without apiGroupVersion
@@ -36,10 +37,10 @@ public class ApiVersionUtil {
 
   /**
    * Returns the api version falling back to the items apiGroupVersion if not null.
-   * @param <T>
-   * @param item
-   * @param apiVersion
-   * @return
+   * @param <T> type of parameter
+   * @param item item to be processed
+   * @param apiVersion apiVersion string
+   * @return returns api version
    */
   public static <T> String apiVersion(T item, String apiVersion) {
     if (item instanceof HasMetadata && Utils.isNotNullOrEmpty(((HasMetadata) item).getApiVersion())) {

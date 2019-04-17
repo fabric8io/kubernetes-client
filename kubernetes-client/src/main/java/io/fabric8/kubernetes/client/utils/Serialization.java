@@ -1,4 +1,4 @@
-/**
+    /**
  * Copyright (C) 2015 Red Hat, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -68,10 +68,12 @@ public class Serialization {
 
   /**
    * Unmarshals a stream.
+   *
    * @param is    The {@link InputStream}.
    * @param <T>   The target type.
-   * @return
-   * @throws KubernetesClientException
+   *
+   * @return returns de-serialized object
+   * @throws KubernetesClientException KubernetesClientException
    */
   public static <T> T unmarshal(InputStream is) throws KubernetesClientException {
     return unmarshal(is, JSON_MAPPER);
@@ -82,8 +84,8 @@ public class Serialization {
    * @param is    The {@link InputStream}.
    * @param parameters  A {@link Map} with parameters for placeholder substitution.
    * @param <T>   The target type.
-   * @return
-   * @throws KubernetesClientException
+   * @return returns returns de-serialized object
+   * @throws KubernetesClientException KubernetesClientException
    */
   public static <T> T unmarshal(InputStream is, Map<String, String> parameters) throws KubernetesClientException {
     String specFile = readSpecFileFromInputStream(is);
@@ -98,8 +100,8 @@ public class Serialization {
    * @param is      The {@link InputStream}.
    * @param mapper  The {@link ObjectMapper} to use.
    * @param <T>     The target type.
-   * @return
-   * @throws KubernetesClientException
+   * @return returns de-serialized object
+   * @throws KubernetesClientException KubernetesClientException
    */
   public static <T> T unmarshal(InputStream is, ObjectMapper mapper) {
    return unmarshal(is, mapper, Collections.<String, String>emptyMap());
@@ -111,8 +113,8 @@ public class Serialization {
    * @param mapper      The {@link ObjectMapper} to use.
    * @param parameters  A {@link Map} with parameters for placeholder substitution.
    * @param <T>         The target type.
-   * @return
-   * @throws KubernetesClientException
+   * @return returns de-serialized object
+   * @throws KubernetesClientException KubernetesClientException
    */
   public static <T> T unmarshal(InputStream is, ObjectMapper mapper, Map<String, String> parameters) {
     InputStream wrapped = parameters != null && !parameters.isEmpty() ? new ReplaceValueStream(parameters).createInputStream(is) : is;
@@ -137,22 +139,24 @@ public class Serialization {
    * Unmarshals a {@link String}
    * @param str   The {@link String}.
    * @param type  The target type.
-   * @param <T>
-   * @return
-   * @throws KubernetesClientException
+   * @param <T>   template argument denoting type
+   * @return returns de-serialized object
+   * @throws KubernetesClientException KubernetesClientException
    */
-  public static <T> T unmarshal(String str, final Class<T> type) throws KubernetesClientException {
+  public static<T> T unmarshal(String str, final Class<T> type) throws KubernetesClientException {
     return unmarshal(str, type, Collections.<String, String>emptyMap());
   }
 
   /**
    * Unmarshals a {@link String} optionally performing placeholder substitution to the String.
-   * @param str   The {@link String}.
-   * @param type  The target type.
-   * @param <T>
-   * @return
-   * @throws KubernetesClientException
-     */
+   * @param str         The {@link String}.
+   * @param type        The target type.
+   * @param <T>         Template argument denoting type
+   * @param parameters  A hashmap containing parameters
+   *
+   * @return returns de-serialized object
+   * @throws KubernetesClientException KubernetesClientException
+   */
   public static <T> T unmarshal(String str, final Class<T> type, Map<String, String> parameters) throws KubernetesClientException {
     try (InputStream is = new ByteArrayInputStream(str.getBytes(StandardCharsets.UTF_8));) {
       return unmarshal(is, new TypeReference<T>() {
@@ -170,9 +174,9 @@ public class Serialization {
    * Unmarshals an {@link InputStream}.
    * @param is              The {@link InputStream}.
    * @param type            The type.
-   * @param <T>
-   * @return
-   * @throws KubernetesClientException
+   * @param <T>           Template argument denoting type
+   * @return returns de-serialized object
+   * @throws KubernetesClientException KubernetesClientException
    */
   public static <T> T unmarshal(InputStream is, final Class<T> type) throws KubernetesClientException {
     return unmarshal(is, type, Collections.<String, String>emptyMap());
@@ -183,9 +187,9 @@ public class Serialization {
    * @param is              The {@link InputStream}.
    * @param type            The type.
    * @param parameters      A {@link Map} with parameters for placeholder substitution.
-   * @param <T>
-   * @return
-   * @throws KubernetesClientException
+   * @param <T>             Template argument denoting type
+   * @return returns de-serialized object
+   * @throws KubernetesClientException KubernetesClientException
    */
   public static <T> T unmarshal(InputStream is, final Class<T> type, Map<String, String> parameters) throws KubernetesClientException {
     return unmarshal(is, new TypeReference<T>() {
@@ -201,9 +205,9 @@ public class Serialization {
    * Unmarshals an {@link InputStream}.
    * @param is            The {@link InputStream}.
    * @param type          The {@link TypeReference}.
-   * @param <T>
-   * @return
-   * @throws KubernetesClientException
+   * @param <T>           Template argument denoting type
+   * @return returns de-serialized object
+   * @throws KubernetesClientException KubernetesClientException
    */
   public static <T> T unmarshal(InputStream is, TypeReference<T> type) throws KubernetesClientException {
    return unmarshal(is, type, Collections.<String, String>emptyMap());
@@ -215,9 +219,10 @@ public class Serialization {
    * @param is            The {@link InputStream}.
    * @param type          The {@link TypeReference}.
    * @param parameters    A {@link Map} with parameters for placeholder substitution.
-   * @param <T>
-   * @return
-   * @throws KubernetesClientException
+   * @param <T>           Template argument denoting type
+   *
+   * @return returns de-serialized object
+   * @throws KubernetesClientException KubernetesClientException
    */
   public static <T> T unmarshal(InputStream is, TypeReference<T> type, Map<String, String> parameters) throws KubernetesClientException {
     InputStream wrapped = parameters != null && !parameters.isEmpty() ? new ReplaceValueStream(parameters).createInputStream(is) : is;

@@ -71,6 +71,8 @@ public class DeleteEntity<T> implements Callable<Boolean> {
         return this.client.rbac().clusterRoleBindings().withName(this.name).get() == null;
       case "ClusterRole":
         return this.client.rbac().clusterRoles().withName(this.name).get() == null;
+      case "CustomResourceDefinition":
+        return this.client.customResourceDefinitions().withName(this.name).get() == null;
       case "RoleBinding":
         return this.client.rbac().roleBindings().inNamespace(this.namespace).withName(this.name).get() == null;
       case "Role":

@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.internal;
 
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.Utils;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -38,6 +39,8 @@ import java.security.cert.X509Certificate;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.RSAPrivateCrtKeySpec;
+import java.util.concurrent.Callable;
+
 import okio.ByteString;
 import org.bouncycastle.openssl.PEMKeyPair;
 import org.bouncycastle.openssl.PEMParser;
@@ -135,9 +138,27 @@ public class CertUtils {
   }
 
   private static PrivateKey handleECKey(InputStream keyInputStream) throws IOException {
-    Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
-    PEMKeyPair keys = (PEMKeyPair) new PEMParser(new InputStreamReader(keyInputStream)).readObject();
-    return new JcaPEMKeyConverter().getKeyPair(keys).getPrivate();
+    // Let's wrap the code to a callable inner class to avoid NoClassDef when loading this class.
+    try {
+      return new Callable<PrivateKey>() {
+        @Override
+        public PrivateKey call() {
+          try {
+            Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+            PEMKeyPair keys = (PEMKeyPair) new PEMParser(new InputStreamReader(keyInputStream)).readObject();
+            return new
+              JcaPEMKeyConverter().
+              getKeyPair(keys).
+              getPrivate();
+          } catch (IOException exception) {
+            exception.printStackTrace();
+          }
+          return null;
+        }
+      }.call();
+    } catch (NoClassDefFoundError e) {
+      throw new KubernetesClientException("JcaPEMKeyConverter is provided by BouncyCastle, an optional dependency. To use support for EC Keys you must explicitly add this dependency to classpath.");
+    }
   }
 
   private static PrivateKey handleOtherKeys(InputStream keyInputStream, String clientKeyAlgo) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {

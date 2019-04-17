@@ -847,6 +847,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   /**
    * Updates the list or single item if it has a missing or incorrect apiGroupVersion
+   *
+   * @param resource resource object
    */
   protected void updateApiVersionResource(Object resource) {
     if (resource instanceof HasMetadata) {
@@ -861,6 +863,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   /**
    * Updates the list items if they have missing or default apiGroupVersion values and the resource is currently
    * using API Groups with custom version strings
+   *
+   * @param list Kubernetes resource list
    */
   protected void updateApiVersion(KubernetesResourceList list) {
     String version = getApiVersion();
@@ -880,6 +884,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   /**
    * Updates the resource if it has missing or default apiGroupVersion values and the resource is currently
    * using API Groups with custom version strings
+   *
+   * @param hasMetadata object whose api version needs to be updated
    */
   protected void updateApiVersion(HasMetadata hasMetadata) {
     String version = getApiVersion();
@@ -899,6 +905,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   /**
    * Return true if this is an API Group where the versions include a slash in them
+   *
+   * @return boolean value indicating whether API group or not
    */
   public boolean isApiGroup() {
     return apiVersion != null && apiVersion.indexOf('/') > 0;

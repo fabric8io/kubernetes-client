@@ -47,6 +47,9 @@ public class KubeConfigUtils {
 
   /**
    * Returns the current context in the given config
+   *
+   * @param config Config object
+   * @return returns context in config if found, otherwise null
    */
   public static Context getCurrentContext(Config config) {
     String contextName = config.getCurrentContext();
@@ -64,7 +67,13 @@ public class KubeConfigUtils {
   }
 
   /**
+   */
+  /**
    * Returns the current user token for the config and current context
+   *
+   * @param config Config object
+   * @param context Context object
+   * @return returns current user based upon provided parameters.
    */
   public static String getUserToken(Config config, Context context) {
     AuthInfo authInfo = getUserAuthInfo(config, context);
@@ -76,6 +85,10 @@ public class KubeConfigUtils {
 
   /**
    * Returns the current {@link AuthInfo} for the current context and user
+   *
+   * @param config Config object
+   * @param context Context object
+   * @return {@link AuthInfo} for current context
    */
   public static AuthInfo getUserAuthInfo(Config config, Context context) {
     AuthInfo authInfo = null;
@@ -97,6 +110,10 @@ public class KubeConfigUtils {
 
   /**
    * Returns the current {@link Cluster} for the current context
+   *
+   * @param config     {@link Config} config object
+   * @param context    {@link Context} context object
+   * @return current {@link Cluster} for current context
    */
   public static Cluster getCluster(Config config, Context context) {
     Cluster cluster = null;

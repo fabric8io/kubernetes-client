@@ -19,6 +19,7 @@ package io.fabric8.kubernetes.client.utils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,12 +30,20 @@ public class ResourceCompare {
 
     private static final String METADATA = "metadata";
     private static final String STATUS = "status";
+    private static final String LABELS = "labels";
 
 
     public static <T>  boolean equals(T left, T right) {
-        HashMap<String, Object> leftMap = trim((Map<String, Object>) JSON_MAPPER.convertValue(left, TYPE_REF));
-        HashMap<String, Object> rightMap = trim((Map<String, Object>) JSON_MAPPER.convertValue(right, TYPE_REF));
-        return leftMap.equals(rightMap);
+        Map<String, Object> leftJson = (Map<String, Object>) JSON_MAPPER.convertValue(left, TYPE_REF);
+        Map<String, Object> rightJson = (Map<String, Object>) JSON_MAPPER.convertValue(right, TYPE_REF);
+
+        Map<String, Object> leftLabels = fetchLabels(leftJson);
+        Map<String, Object> rightLabels = fetchLabels(rightJson);
+
+        HashMap<String, Object> leftMap = trim(leftJson);
+        HashMap<String, Object> rightMap = trim(rightJson);
+
+        return leftMap.equals(rightMap) && leftLabels.equals(rightLabels);
     }
 
     private static HashMap<String, Object> trim(Map<String, Object> map) {
@@ -42,5 +51,12 @@ public class ResourceCompare {
         result.remove(STATUS);
         result.remove(METADATA);
         return result;
+    }
+
+    private static Map<String, Object> fetchLabels(Map<String, Object> map){
+        if (!map.containsKey(METADATA) || !((Map<Object, Object>)map.get(METADATA)).containsKey(LABELS)){
+            return Collections.emptyMap();
+        }
+        return (Map<String, Object>) ((Map<Object, Object>)map.get(METADATA)).get(LABELS);
     }
 }
