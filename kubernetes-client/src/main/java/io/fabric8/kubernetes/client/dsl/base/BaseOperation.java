@@ -58,6 +58,7 @@ import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
+import java.util.Random;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -153,6 +154,16 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     if(Utils.isNotNullOrEmpty(value)) {
       requestUrlBuilder.addQueryParameter(name, value);
     }
+  }
+
+  private static String generateRandomString(int size) {
+    StringBuffer stringBuffer = new StringBuffer(size);
+    Random random = new Random();
+    for (int i = 0; i < size; i++) {
+      int randomChar = 97 + (int)(random.nextFloat() * 26);
+      stringBuffer.append((char)randomChar);
+    }
+    return stringBuffer.toString();
   }
 
   @Override
@@ -252,7 +263,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   @Override
   public R withName(String name) {
     if (name == null || name.length() == 0) {
-      throw new IllegalArgumentException("Name must be provided.");
+      name = generateRandomString(3) + "-" + generateRandomString(3) + "-pod";
     }
     return (R) newInstance(context.withName(name));
   }
