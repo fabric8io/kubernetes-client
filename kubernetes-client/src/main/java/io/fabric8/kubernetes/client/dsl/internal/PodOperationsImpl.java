@@ -549,7 +549,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
 
     @Override
     public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, ExecWatch> redirectingInput(Integer bufferSize) {
-        return new PodOperationsImpl(getContext().withBufferSize(bufferSize));
+        return new PodOperationsImpl(getContext().withInPipe(new PipedOutputStream()).withBufferSize(bufferSize));
     }
 
     @Override
