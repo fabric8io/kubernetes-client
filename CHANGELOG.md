@@ -4,11 +4,27 @@
 
   Bugs
 
+  Improvements
+
+  Dependency Upgrade
+
+  New Feature
+
+#### 4.2.2 (17-04-2019)
+
+  Bugs
+
     * Fix #1297: wrong result produced when exec in used and params contains '&'. Url string not encoded properly.
     * Fix #1449: System.currentTimeMillis() replaced with System.nanoTime()
     * Fix #1495: avoid runtime dependency on Commons Collections
 
-#### 4.2.1
+  Improvements
+
+  Dependency Upgrade
+
+  New Feature
+
+#### 4.2.1 (15-04-2019)
 
   Bugs
     
@@ -29,7 +45,7 @@
   
     * First Draft of Custom Resource Improvements (#1472)
 
-#### 4.2.0
+#### 4.2.0 (29-03-2019)
 
   Bugs
 
@@ -51,7 +67,7 @@
 
   New Feature
 
-#### 4.1.3
+#### 4.1.3 (02-03-2019)
 
   Bugs
 
