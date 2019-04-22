@@ -7,6 +7,8 @@
     * Fix #1500: exec `redirectingInput` was not correctly setting the input pipe (since 4.2.0).
 
   Improvements
+  
+    * Added example for raw custom resources.
 
   Dependency Upgrade
 
