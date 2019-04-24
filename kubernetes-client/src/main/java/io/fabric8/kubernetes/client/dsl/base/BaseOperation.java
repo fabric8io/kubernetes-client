@@ -251,9 +251,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   @Override
   public R withName(String name) {
-    HasMetadata h = (HasMetadata) item;
-    String value = h.getMetadata() != null ? h.getMetadata().getName() : null;
-    if(value != null || !value.isEmpty()){
+    String value = name(item, name);
+    if(value != null && !value.isEmpty()){
       return (R) newInstance(context.withName(name));
     }
     if (name == null || name.isEmpty()) {
