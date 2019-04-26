@@ -122,6 +122,13 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     return null;
   }
 
+  private static <T> String generateName(T item) {
+    if(item instanceof HasMetadata) {
+      HasMetadata h = (HasMetadata) item;
+      return h.getMetadata() != null ? h.getMetadata().getGenerateName() : null;
+    }
+    return null;
+  }
 
   public BaseOperation<T,L,D,R> newInstance(OperationContext context) {
     return new BaseOperation<T, L, D, R>(context);
@@ -251,11 +258,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   @Override
   public R withName(String name) {
-    String value = name(item, name);
-    if(value != null && !value.isEmpty()){
-      return (R) newInstance(context.withName(name));
-    }
-    if (name == null || name.isEmpty()) {
+    String generateName = generateName(item);
+    if (generateName == null && name == null || name.isEmpty()) {
       throw new IllegalArgumentException("Name must be provided.");
     }
     return (R) newInstance(context.withName(name));
