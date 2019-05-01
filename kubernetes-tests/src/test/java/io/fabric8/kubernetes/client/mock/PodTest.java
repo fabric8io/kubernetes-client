@@ -452,7 +452,7 @@ public class PodTest {
   public void testCreateOrReplace() {
     KubernetesClient client = server.getClient();
     Pod pod = client.pods().inNamespace("ns1").load(getClass().getResourceAsStream("/test-pod-generateName.yml")).get();
-    client.pods().inNamespace("ns1").createOrReplace(pod);
+    client.pods().inNamespace("ns1").withName("pod2").createOrReplace(pod);
   }
 
   @Test
