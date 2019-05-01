@@ -17,6 +17,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
+  generateName: zep-ag-pod
   name: nginx
 spec:
   nodeName: awesome-node
