@@ -448,10 +448,10 @@ public class PodTest {
     client.pods().inNamespace("ns1").withName("pod2").dir("/etc/hosts").copy(Files.temporaryFolder().toPath());
   }
 
-  @Test(expected = KubernetesClientException.class)
+  @Test
   public void testCreateOrReplace() {
     KubernetesClient client = server.getClient();
-    Pod pod = client.pods().inNamespace("ns1").load(getClass().getResourceAsStream("/test-pod.yml")).get();
+    Pod pod = client.pods().inNamespace("ns1").load(getClass().getResourceAsStream("/test-pod-generateName.yml")).get();
     client.pods().inNamespace("ns1").createOrReplace(pod);
   }
 
