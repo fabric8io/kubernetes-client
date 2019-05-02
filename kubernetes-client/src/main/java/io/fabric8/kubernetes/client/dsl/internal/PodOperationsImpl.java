@@ -316,7 +316,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
         copyFile(getContext().getFile(), destination.toFile());
         return true;
       } else if (Utils.isNotNullOrEmpty(getContext().getDir())) {
-        copyDir(getContext().getFile(), destination.toFile());
+        copyDir(getContext().getDir(), destination.toFile());
         return true;
       }
       throw new IllegalStateException("No file or dir has been specified");
@@ -331,7 +331,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
       if (Utils.isNotNullOrEmpty(getContext().getFile())) {
         return readFile(getContext().getFile());
       } else if (Utils.isNotNullOrEmpty(getContext().getDir())) {
-        return readTar(getContext().getFile());
+        return readTar(getContext().getDir());
       }
       throw new IllegalStateException("No file or dir has been specified");
     } catch (Exception e) {
@@ -483,7 +483,6 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
         }
         try (
           InputStream is = readTar(source);
-          OutputStream os = new FileOutputStream(destination);
           org.apache.commons.compress.archivers.tar.TarArchiveInputStream tis = new org.apache.commons.compress.archivers.tar.TarArchiveInputStream(is))
 
         {
