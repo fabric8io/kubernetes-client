@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
+import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -31,13 +32,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class RawCustomResourceOperationsImpl extends OperationSupport {
   private OkHttpClient client;
   private Config config;
   private CustomResourceDefinitionContext customResourceDefinition;
+  private ObjectMapper objectMapper;
 
   private enum HttpCallMethod { GET, POST, PUT, DELETE };
 
@@ -45,10 +46,26 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
     this.client = client;
     this.config = config;
     this.customResourceDefinition = customResourceDefinition;
+    this.objectMapper = new ObjectMapper();
+  }
+
+  public Map<String, Object> load(InputStream fileInputStream) throws IOException {
+    String objectAsString = IOHelpers.readFully(fileInputStream);
+    HashMap<String, Object> retVal = null;
+    if (IOHelpers.isJSONValid(objectAsString)) {
+      retVal =  objectMapper.readValue(objectAsString, HashMap.class);
+    } else {
+      retVal = objectMapper.readValue(IOHelpers.convertYamlToJson(objectAsString), HashMap.class);
+    }
+    return retVal;
   }
 
   public Map<String, Object> create(String objectAsString) throws IOException {
     return validateAndSubmitRequest(null, null, objectAsString, HttpCallMethod.POST);
+  }
+
+  public Map<String, Object> create(Map<String, Object> object) throws KubernetesClientException, IOException {
+    return validateAndSubmitRequest(null, null, objectMapper.writeValueAsString(object), HttpCallMethod.POST);
   }
 
   public Map<String, Object> create(String namespace, String objectAsString) throws KubernetesClientException, IOException {
@@ -63,12 +80,28 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
     return validateAndSubmitRequest(namespace, null, IOHelpers.readFully(objectAsStream), HttpCallMethod.POST);
   }
 
+  public Map<String, Object> create(String namespace, Map<String, Object> object) throws KubernetesClientException, IOException {
+    return validateAndSubmitRequest(namespace, null, objectMapper.writeValueAsString(object), HttpCallMethod.POST);
+  }
+
+  public Map<String, Object> edit(String name, Map<String, Object> object) throws IOException {
+    return validateAndSubmitRequest(null, name, objectMapper.writeValueAsString(object), HttpCallMethod.PUT);
+  }
+
   public Map<String, Object> edit(String name, String objectAsString) throws IOException {
     return validateAndSubmitRequest(null, name, objectAsString, HttpCallMethod.PUT);
   }
 
+  public Map<String, Object> edit(String namespace, String name, Map<String, Object> object) throws IOException {
+    return validateAndSubmitRequest(namespace, name, objectMapper.writeValueAsString(object), HttpCallMethod.PUT);
+  }
+
   public Map<String, Object> edit(String namespace, String name, String objectAsString) throws IOException {
     return validateAndSubmitRequest(namespace, name, objectAsString, HttpCallMethod.PUT);
+  }
+
+  public Map<String, Object> edit(String name, InputStream objectAsStream) throws IOException, KubernetesClientException {
+    return validateAndSubmitRequest(null, name, IOHelpers.readFully(objectAsStream), HttpCallMethod.PUT);
   }
 
   public Map<String, Object> edit(String namespace, String name, InputStream objectAsStream) throws IOException, KubernetesClientException {
@@ -116,6 +149,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
     }
     urlBuilder.append(customResourceDefinition.getPlural()).append("/");
     if(labels != null) {
+      urlBuilder.deleteCharAt(urlBuilder.lastIndexOf("/"));
       urlBuilder.append("?labelSelector").append("=").append(getLabelsQueryParam(labels));
     }
     return urlBuilder.toString();
@@ -127,7 +161,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
       if(labelQueryBuilder.length() > 0) {
         labelQueryBuilder.append(",");
       }
-      labelQueryBuilder.append(entry.getKey()).append("=").append(entry.getValue());
+      labelQueryBuilder.append(entry.getKey()).append(Utils.toUrlEncoded("=")).append(entry.getValue());
     }
     return labelQueryBuilder.toString();
   }
@@ -144,10 +178,14 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
       if(response.code() != HttpURLConnection.HTTP_NOT_FOUND &&
          response.code() != HttpURLConnection.HTTP_SERVER_ERROR &&
          response.code() != HttpURLConnection.HTTP_BAD_REQUEST) {
-        return new ObjectMapper().readValue(response.body().string(), HashMap.class);
+        return objectMapper.readValue(response.body().string(), HashMap.class);
       } else {
-        response.close();
-        throw new IllegalStateException(response.message());
+        if(response.body() != null) {
+          throw new KubernetesClientException(response.body().string());
+        } else {
+          response.close();
+          throw new KubernetesClientException(response.message());
+        }
       }
     } catch(Exception e) {
       throw KubernetesClientException.launderThrowable(e);

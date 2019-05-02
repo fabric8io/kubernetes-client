@@ -8,6 +8,8 @@
     * Fix #1507: remove unnecessary OutputStream copying a directory and return the directory object instead the file object when a directory is copied or read
 
   Improvements
+  
+    * Added example for raw custom resources.
 
   Dependency Upgrade
 
