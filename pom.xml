@@ -113,7 +113,7 @@
     <maven.jar.plugin.version>3.0.1</maven.jar.plugin.version>
     <maven.resources.plugin.version>3.0.1</maven.resources.plugin.version>
     <maven.surefire.plugin.version>3.0.0-M1</maven.surefire.plugin.version>
-    <maven.scr.plugin.version>1.22.0</maven.scr.plugin.version>
+    <maven.scr.plugin.version>1.26.2</maven.scr.plugin.version>
     <scr.annotations.version>1.12.0</scr.annotations.version>
     <validation.api.version>2.0.1.Final</validation.api.version>
     <maven.bundle.plugin.version>4.1.0</maven.bundle.plugin.version>
