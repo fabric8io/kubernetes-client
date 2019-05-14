@@ -120,7 +120,7 @@ public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
    * @param item          The resource to delete.
    * @return              The true if the resource was successfully deleted.
    */
-  Boolean delete(OkHttpClient client, Config config, String namespace, T item);
+  Boolean delete(OkHttpClient client, Config config, String namespace, Boolean cascading, T item);
 
 
     /**

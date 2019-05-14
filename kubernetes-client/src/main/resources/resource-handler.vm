@@ -97,8 +97,12 @@ public class ${model.name}Handler implements ResourceHandler<${model.name}, ${mo
   }
 
   @Override
-  public Boolean delete(OkHttpClient client, Config config, String namespace, ${model.name} item) {
-    return new ${model.name}OperationsImpl(client, config).withItem(item).inNamespace(namespace).delete(item);
+  public Boolean delete(OkHttpClient client, Config config, String namespace, Boolean cascading, ${model.name} item) {
+    if(cascading) {
+      return new ${model.name}OperationsImpl(client, config).withItem(item).cascading(cascading).delete();
+    } else {
+      return new ${model.name}OperationsImpl(client, config).withItem(item).inNamespace(namespace).delete(item);
+    }
   }
 
   @Override

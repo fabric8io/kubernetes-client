@@ -152,7 +152,7 @@ public class KubernetesListOperationsImpl
     for (KubernetesList list : lists) {
       for (HasMetadata item : list.getItems()) {
         ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> handler = Handlers.get(item.getKind(), item.getApiVersion());
-        if (!handler.delete(client, config, namespace, item)) {
+        if (!handler.delete(client, config, namespace, false, item)) {
           return false;
         }
       }

@@ -214,7 +214,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
           result.add(created);
         }
       } else if(deletingExisting) {
-        Boolean deleted = h.delete(client, config, namespaceToUse, meta);
+        Boolean deleted = h.delete(client, config, namespaceToUse, cascading, meta);
         if (!deleted) {
           throw new KubernetesClientException("Failed to delete existing item:" + meta);
         }
@@ -253,7 +253,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
         //Second pass do delete
         for (HasMetadata meta :  acceptVisitors(asHasMetadata(item, true), visitors)) {
             ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
-            if (!h.delete(client, config, meta.getMetadata().getNamespace(), meta)) {
+            if (!h.delete(client, config, meta.getMetadata().getNamespace(), cascading, meta)) {
                 return false;
             }
         }
