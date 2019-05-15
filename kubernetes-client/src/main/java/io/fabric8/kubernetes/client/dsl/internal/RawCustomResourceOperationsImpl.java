@@ -50,14 +50,11 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
   }
 
   public Map<String, Object> load(InputStream fileInputStream) throws IOException {
-    String objectAsString = IOHelpers.readFully(fileInputStream);
-    HashMap<String, Object> retVal = null;
-    if (IOHelpers.isJSONValid(objectAsString)) {
-      retVal =  objectMapper.readValue(objectAsString, HashMap.class);
-    } else {
-      retVal = objectMapper.readValue(IOHelpers.convertYamlToJson(objectAsString), HashMap.class);
-    }
-    return retVal;
+    return convertJsonStringToMap(IOHelpers.readFully(fileInputStream));
+  }
+
+  public Map<String, Object> load(String objectAsJsonString) throws IOException {
+    return convertJsonStringToMap(objectAsJsonString);
   }
 
   public Map<String, Object> create(String objectAsString) throws IOException {
@@ -82,6 +79,30 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
 
   public Map<String, Object> create(String namespace, Map<String, Object> object) throws KubernetesClientException, IOException {
     return validateAndSubmitRequest(namespace, null, objectMapper.writeValueAsString(object), HttpCallMethod.POST);
+  }
+
+  public Map<String, Object> createOrReplace(String objectAsString) throws IOException {
+    return createOrReplaceJsonStringObject(null, objectAsString);
+  }
+
+  public Map<String, Object> createOrReplace(Map<String, Object> customResourceObject) throws IOException {
+    return createOrReplace(objectMapper.writeValueAsString(customResourceObject));
+  }
+
+  public Map<String, Object> createOrReplace(InputStream inputStream) throws IOException {
+    return createOrReplace(IOHelpers.readFully(inputStream));
+  }
+
+  public Map<String, Object> createOrReplace(String namespace, String objectAsString) throws IOException {
+    return createOrReplaceJsonStringObject(namespace, objectAsString);
+  }
+
+  public Map<String, Object> createOrReplace(String namespace, Map<String, Object> customResourceObject) throws IOException {
+    return createOrReplace(namespace, objectMapper.writeValueAsString(customResourceObject));
+  }
+
+  public Map<String, Object> createOrReplace(String namespace, InputStream objectAsString) throws IOException {
+    return createOrReplace(namespace, IOHelpers.readFully(objectAsString));
   }
 
   public Map<String, Object> edit(String name, Map<String, Object> object) throws IOException {
@@ -134,6 +155,37 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
 
   public Map<String, Object> delete(String namespace, String name) {
     return makeCall(fetchUrl(namespace, null) + name, null, HttpCallMethod.DELETE);
+  }
+
+  private Map<String, Object> createOrReplaceJsonStringObject(String namespace, String objectAsString) throws IOException {
+    Map<String, Object> ret;
+    try {
+      if(namespace != null) {
+        ret = create(namespace, objectAsString);
+      } else {
+        ret = create(objectAsString);
+      }
+    } catch (KubernetesClientException exception) {
+      try {
+        Map<String, Object> objectMap = load(objectAsString);
+        String name = ((Map<String, Object>) objectMap.get("metadata")).get("name").toString();
+        ret =  namespace != null ?
+          edit(namespace, name, objectAsString) : edit(name, objectAsString);
+      } catch (NullPointerException nullPointerException) {
+        throw KubernetesClientException.launderThrowable(new IllegalStateException("Invalid json string provided."));
+      }
+    }
+    return ret;
+  }
+
+  private Map<String, Object> convertJsonStringToMap(String objectAsString) throws IOException {
+    HashMap<String, Object> retVal = null;
+    if (IOHelpers.isJSONValid(objectAsString)) {
+      retVal =  objectMapper.readValue(objectAsString, HashMap.class);
+    } else {
+      retVal = objectMapper.readValue(IOHelpers.convertYamlToJson(objectAsString), HashMap.class);
+    }
+    return retVal;
   }
 
   private String fetchUrl(String namespace, Map<String, String> labels) {
