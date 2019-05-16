@@ -34,4 +34,6 @@ public interface ExecWatch extends Closeable {
    */
   void close();
 
+  void resize(int cols, int rows);
+
 }
