@@ -49,6 +49,9 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
 
   public DeploymentOperationsImpl(OkHttpClient client, Config config) {
     this(new RollingOperationContext().withOkhttpClient(client).withConfig(config));
+    if (config.getNamespace() != null) {
+      this.namespace = config.getNamespace();
+    }
   }
 
   public DeploymentOperationsImpl(RollingOperationContext context) {
@@ -261,7 +264,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
       ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
       ScheduledFuture poller = executor.scheduleWithFixedDelay(deploymentPoller, 0, 10, TimeUnit.MILLISECONDS);
       try {
-        countDownLatch.await(1, TimeUnit.MINUTES);
+        countDownLatch.await(30, TimeUnit.SECONDS);
         executor.shutdown();
       } catch (InterruptedException e) {        
         poller.cancel(true);
@@ -274,7 +277,10 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
       if (selector == null || (selector.getMatchLabels() == null && selector.getMatchExpressions() == null)) {
         return;
       }
-      ReplicaSetOperationsImpl rsOper = new ReplicaSetOperationsImpl((RollingOperationContext) oper.context);
+      ReplicaSetOperationsImpl rsOper = new ReplicaSetOperationsImpl(new RollingOperationContext()
+        .withOkhttpClient(oper.client)
+        .withConfig(oper.config)
+        .withNamespace(oper.getNamespace()));
       rsOper.inNamespace(oper.getNamespace()).withLabelSelector(selector).delete();
     }
   }

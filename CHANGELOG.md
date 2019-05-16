@@ -6,6 +6,7 @@
 
     * Fix #1500: exec `redirectingInput` was not correctly setting the input pipe (since 4.2.0).
     * Fix #1507: remove unnecessary OutputStream copying a directory and return the directory object instead the file object when a directory is copied or read
+    * Fix #758: Deleting Deployments with `.cascading(true)` creates a new Replica Set
 
   Improvements
   
