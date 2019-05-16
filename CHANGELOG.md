@@ -14,6 +14,7 @@
   Dependency Upgrade
 
   New Feature
+   * Fix #1523: Added createOrReplace() method to RawCustomResourceOperations dsl
 
 #### 4.2.2 (17-04-2019)
 
