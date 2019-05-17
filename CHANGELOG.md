@@ -17,6 +17,7 @@
 
   New Feature
    * Fix #1523: Added createOrReplace() method to RawCustomResourceOperations dsl
+   * Feature #1374 Add support for resizeChannel in ExecWebSocketListener
 
 #### 4.2.2 (17-04-2019)
 
