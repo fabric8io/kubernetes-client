@@ -189,7 +189,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     ReadinessWatcher<T> watcher = new ReadinessWatcher<>(item);
     try (Watch watch = watch(item.getMetadata().getResourceVersion(), watcher)) {
       try {
-        return watcher.await(interval, TimeUnit.MILLISECONDS);
+        return watcher.await(interval, TimeUnit.NANOSECONDS);
       } catch (KubernetesClientTimeoutException e) {
         if (i <= 0) {
           throw e;
@@ -207,7 +207,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     if (Readiness.isReadinessApplicable(getType())) {
       long started = System.nanoTime();
       waitUntilExists(amount, timeUnit);
-      long alreadySpent = System.nanoTime() - started;
+      long alreadySpent = System.nanoTime() - timeUnit.toNanos(started);
 
       long remaining = timeUnit.toNanos(amount) - alreadySpent;
       if (remaining <= 0) {
