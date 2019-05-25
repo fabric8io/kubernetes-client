@@ -8,6 +8,7 @@
     * Fix #1507: remove unnecessary OutputStream copying a directory and return the directory object instead the file object when a directory is copied or read
     * Fix #758: Deleting Deployments with `.cascading(true)` creates a new Replica Set
     * Fix #1515: HasMetadataOperation.periodicWatchUntilReady is broken
+    * Fix #1550: MutatingWebhookConfigurationOperationsImpl should be a NonNamespaceOperation
 
   Improvements
   
