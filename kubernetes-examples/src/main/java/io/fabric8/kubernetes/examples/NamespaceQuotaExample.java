@@ -1,9 +1,16 @@
 package io.fabric8.kubernetes.examples;
 
-import io.fabric8.kubernetes.api.model.*;
+import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceBuilder;
-import io.fabric8.kubernetes.client.*;
+import io.fabric8.kubernetes.api.model.Quantity;
+import io.fabric8.kubernetes.api.model.ResourceQuota;
+import io.fabric8.kubernetes.api.model.ResourceQuotaBuilder;
+import io.fabric8.kubernetes.client.APIGroupNotAvailableException;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ConfigBuilder;
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
