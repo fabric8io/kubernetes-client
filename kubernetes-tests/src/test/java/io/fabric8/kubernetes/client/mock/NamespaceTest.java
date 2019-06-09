@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.api.model.NamespaceList;
 import io.fabric8.kubernetes.api.model.NamespaceListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.Rule;
@@ -72,6 +73,14 @@ public class NamespaceTest {
       .withLabel("key3", "value3")
       .list();
     assertEquals(0, namespaceList.getItems().size());
+  }
+
+  @Test(expected = KubernetesClientException.class)
+  public void testEditMissing() {
+    server.expect().withPath("/api/v1/namespaces/namespace1").andReturn(404, "error message from kubernetes").always();
+    KubernetesClient client = server.getClient();
+
+    client.namespaces().withName("namespace1").edit();
   }
 
   @Test
