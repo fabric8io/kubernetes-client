@@ -16,20 +16,22 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.*;
-import io.fabric8.kubernetes.api.model.NamespaceBuilder;
+import io.fabric8.kubernetes.api.model.Quantity;
+import io.fabric8.kubernetes.api.model.ResourceQuota;
 import io.fabric8.kubernetes.api.model.ResourceQuotaBuilder;
+import io.fabric8.kubernetes.api.model.ResourceQuotaList;
 import io.fabric8.kubernetes.api.model.ResourceQuotaListBuilder;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 public class ResourceQuotaTest {
 
@@ -131,39 +133,6 @@ public class ResourceQuotaTest {
 
     deployment = client.apps().deployments().inNamespace("myspace").withName("deployment").get();
     assertNotNull(deployment);
-  }
-
-  @Test
-  public void testResources() {
-    Config config = new ConfigBuilder().build();
-    try (final KubernetesClient client = new DefaultKubernetesClient(config)) {
-      try {
-        Namespace ns = new NamespaceBuilder().withNewMetadata().withName("myspace").addToLabels("hello", "world").endMetadata().build();
-        client.namespaces().create(ns);
-        assertNotNull(ns);
-
-        ResourceQuota resourceQuota = client.resourceQuotas().load(getClass().getResourceAsStream("/test-resourcequota.yml")).get();
-        client.resourceQuotas().inNamespace("myspace").create(resourceQuota);
-        assertNotNull(resourceQuota);
-
-        Deployment deployment = client.apps().deployments().load(getClass().getResourceAsStream("/test-resourcequota-deployment.yml")).get();
-        client.apps().deployments().inNamespace("myspace").create(deployment);
-        assertNotNull(deployment);
-
-        client.apps().deployments().inNamespace("myspace").withName("deployment").scale(10, false);
-
-        PodList podList = client.pods().inNamespace("myspace").list();
-        assertEquals(2, podList.getItems().size());
-
-      }finally {
-        Boolean deleted = client.namespaces().withName("myspace").delete();
-        assertTrue(deleted);
-        deleted = client.resourceQuotas().inNamespace("myspace").withName("compute-quota").delete();
-        assertTrue(deleted);
-        deleted = client.apps().deployments().inNamespace("myspace").withName("deployment").delete();
-        assertTrue(deleted);
-      }
-    }
   }
 
 }
