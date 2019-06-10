@@ -16,11 +16,14 @@
 
 package io.fabric8.kubernetes.examples;
 
-import io.fabric8.kubernetes.api.model.*;
+import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.NodeSelectorRequirementBuilder;
+import io.fabric8.kubernetes.api.model.PersistentVolume;
 import io.fabric8.kubernetes.api.model.PersistentVolumeBuilder;
+import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaimBuilder;
 import io.fabric8.kubernetes.api.model.storage.StorageClass;
+import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
@@ -96,7 +99,7 @@ public class PersistentVolumeClaimExample {
         log("Successfully created PersistentVolumeClaim object");
 
         log("Creating pod");
-        Pod pod = client.pods().load(PersistentVolumeClaimExample.class.getResourceAsStream("/test-pvpod.yml")).get();
+        Pod pod = client.pods().load(PersistentVolumeClaimExample.class.getResourceAsStream("/test-pv-pod.yml")).get();
         client.pods().create(pod);
         log("Successfully created pod");
       } finally {
