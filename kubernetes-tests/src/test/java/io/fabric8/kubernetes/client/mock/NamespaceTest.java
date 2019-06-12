@@ -34,12 +34,11 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class NamespaceTest {
-
   @Rule
   public KubernetesServer server = new KubernetesServer();
 
   @Test
-  public void testList(){
+  public void testList() {
     server.expect().withPath("/api/v1/namespaces").andReturn(200, new NamespaceListBuilder()
       .addNewItem().and()
       .addNewItem().and()
@@ -52,7 +51,7 @@ public class NamespaceTest {
   }
 
   @Test
-  public void testListWithLables(){
+  public void testListWithLables() {
     server.expect().withPath("/api/v1/namespaces?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new NamespaceListBuilder().build()).always();
     server.expect().withPath("/api/v1/namespaces?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new NamespaceListBuilder().addNewItem().and()
       .addNewItem().and()
@@ -84,7 +83,7 @@ public class NamespaceTest {
   }
 
   @Test
-  public void testGet(){
+  public void testGet() {
     server.expect().withPath("/api/v1/namespaces/namespace1").andReturn(200, new NamespaceBuilder().build()).once();
     server.expect().withPath("/api/v1/namespaces/namespace2").andReturn(200, new NamespaceBuilder().build()).once();
 
@@ -100,23 +99,15 @@ public class NamespaceTest {
   }
 
   @Test
-  public void testDelete(){
+  public void testDelete() {
     server.expect().withPath("/api/v1/namespaces/namespace1").andReturn(200, new NamespaceBuilder().build()).once();
-    server.expect().withPath("/api/v1/namespaces/namespace2").andReturn(200, new NamespaceBuilder().build()).once();
-
     KubernetesClient client = server.getClient();
     Boolean deleted = client.namespaces().withName("namespace1").delete();
     assertTrue(deleted);
-
-    deleted = client.namespaces().withName("namespace2").delete();
-    assertTrue(deleted);
-
-    deleted = client.namespaces().withName("namespace2").delete();
-    assertFalse(deleted);
   }
 
   @Test
-  public void testDeleteMulti(){
+  public void testDeleteMulti() {
     Namespace namespace1 = new NamespaceBuilder().withNewMetadata().withName("namespace1").and().build();
     Namespace namespace2 = new NamespaceBuilder().withNewMetadata().withName("namespace2").and().build();
     Namespace namespace3 = new NamespaceBuilder().withNewMetadata().withName("namespace3").and().build();
@@ -133,9 +124,10 @@ public class NamespaceTest {
   }
 
   @Test
-  public void testLoadFromFile(){
+  public void testLoadFromFile() {
     KubernetesClient client = server.getClient();
     Namespace namespace = client.namespaces().load(getClass().getResourceAsStream("/test-namespace.yml")).get();
     assertEquals("namespace-test", namespace.getMetadata().getName());
   }
+
 }
