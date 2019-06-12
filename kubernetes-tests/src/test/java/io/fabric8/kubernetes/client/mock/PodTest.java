@@ -140,7 +140,7 @@ public class PodTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.pods().withName("pod1").delete();
-    assertNotNull(deleted);
+    assertTrue(deleted);
 
     deleted = client.pods().withName("pod2").delete();
     assertFalse(deleted);
@@ -162,7 +162,7 @@ public class PodTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.pods().inAnyNamespace().delete(pod1, pod2);
-    assertNotNull(deleted);
+    assertTrue(deleted);
 
     deleted = client.pods().inAnyNamespace().delete(pod3);
     assertFalse(deleted);
