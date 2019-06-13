@@ -5,6 +5,9 @@
 
   Improvements
 
+    * Added test coverage for PersistentVolume
+
+
   Dependency Upgrade
 
   New Feature
