@@ -4,6 +4,8 @@
   Bugs
 
   Improvements
+  
+    * Added test coverage for ResourceQuota.
 
   Dependency Upgrade
 
@@ -22,7 +24,7 @@
   Improvements
   
     * Added example for raw custom resources.
-
+    
   Dependency Upgrade
 
   New Feature
