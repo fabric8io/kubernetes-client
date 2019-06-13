@@ -4,7 +4,9 @@
   Bugs
 
   Improvements
-
+  
+    * Example added for Endpoints.
+    
   Dependency Upgrade
 
   New Feature
