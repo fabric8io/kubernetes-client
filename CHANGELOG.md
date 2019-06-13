@@ -4,6 +4,8 @@
   Bugs
 
   Improvements
+  
+    * Added example for PersistentVolumeClaim
 
   Dependency Upgrade
 
