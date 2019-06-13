@@ -147,16 +147,6 @@ public class EndpointsTest {
   }
 
   @Test(expected = KubernetesClientException.class)
-  public void testDeleteWithNamespaceMismatch() {
-    Endpoints endpoint1 = new EndpointsBuilder().withNewMetadata().withName("endpoint1").withNamespace("test").endMetadata().build();
-    Endpoints endpoint2 = new EndpointsBuilder().withNewMetadata().withName("endpoint2").withNamespace("ns1").endMetadata().build();
-
-    KubernetesClient client = server.getClient();
-    Boolean deleted = client.endpoints().inNamespace("test1").delete(endpoint1);
-    assertFalse(deleted);
-  }
-
-  @Test(expected = KubernetesClientException.class)
   public void testCreateWithNameMismatch() {
     Endpoints endpoint1 = new EndpointsBuilder().withNewMetadata().withName("endpoint1").withNamespace("test").endMetadata().build();
     Endpoints endpoint2 = new EndpointsBuilder().withNewMetadata().withName("endpoint2").withNamespace("ns1").endMetadata().build();
