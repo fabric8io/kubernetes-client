@@ -4,6 +4,8 @@
   Bugs
 
   Improvements
+  
+    * Test coverage for Endpoints.
 
   Dependency Upgrade
 
