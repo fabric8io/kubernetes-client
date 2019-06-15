@@ -4,6 +4,7 @@
   Bugs
 
   Improvements
+   * Fix #1589: Move HorizontalPodAutoscaler to autoscaling/v1
 
   Dependency Upgrade
 

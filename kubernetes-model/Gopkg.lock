@@ -91,7 +91,7 @@
     "apps/v1beta1",
     "authentication/v1",
     "authorization/v1",
-    "autoscaling/v2beta1",
+    "autoscaling/v1",
     "batch/v1",
     "batch/v1beta1",
     "certificates/v1beta1",
@@ -170,6 +170,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "6a267eb5f766c92218649ef80a2b2355ff85317beef402416abe9f3699645190"
+  inputs-digest = "5a8a0a899e206973c43ee92c24a126bafa67f9fb86c7e58568a2b70081331ddd"
   solver-name = "gps-cdcl"
   solver-version = 1
