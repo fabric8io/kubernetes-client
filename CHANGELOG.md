@@ -2,8 +2,10 @@
 
 ### 4.3-SNAPSHOT
   Bugs
-
+  
   Improvements
+
+    * assertNotNull replaced with assertTrue for boolean statements in unit tests
 
   Dependency Upgrade
 
