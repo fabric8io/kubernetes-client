@@ -1,6 +1,15 @@
 ### CHANGELOG
 
-#### 4.2-SNAPSHOT
+### 4.3-SNAPSHOT
+  Bugs
+
+  Improvements
+
+  Dependency Upgrade
+
+  New Feature
+
+#### 4.3.0 (10-06-2019)
 
   Bugs
 
