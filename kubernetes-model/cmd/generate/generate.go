@@ -33,7 +33,7 @@ import (
 	k8sappsapi "k8s.io/api/apps/v1"
 	authenticationapi "k8s.io/api/authentication/v1"
 	k8sauthapi "k8s.io/api/authorization/v1"
-        autoscalingapiv2beta1 "k8s.io/api/autoscaling/v2beta1"
+	autoscalingapi "k8s.io/api/autoscaling/v1"
 	batchapiv1 "k8s.io/api/batch/v1"
 	batchapiv1beta1 "k8s.io/api/batch/v1beta1"
 	kapi "k8s.io/api/core/v1"
@@ -156,8 +156,8 @@ type Schema struct {
 	CronJob                               batchapiv1beta1.CronJob
 	CronJobList                           batchapiv1beta1.CronJobList
 	Scale                                 extensions.Scale
-	HorizontalPodAutoscaler               autoscalingapiv2beta1.HorizontalPodAutoscaler
-	HorizontalPodAutoscalerList           autoscalingapiv2beta1.HorizontalPodAutoscalerList
+	HorizontalPodAutoscaler               autoscalingapi.HorizontalPodAutoscaler
+	HorizontalPodAutoscalerList           autoscalingapi.HorizontalPodAutoscalerList
 	Deployment                            k8sappsapi.Deployment
 	DeploymentList                        k8sappsapi.DeploymentList
 	DeploymentRollback                    extensions.DeploymentRollback
@@ -257,7 +257,7 @@ func main() {
 		{"k8s.io/api/apps/v1", "", "io.fabric8.kubernetes.api.model.apps", "kubernetes_apps_"},
 		{"k8s.io/api/batch/v1beta1", "", "io.fabric8.kubernetes.api.model.batch", "kubernetes_batch_"},
 		{"k8s.io/api/batch/v1", "", "io.fabric8.kubernetes.api.model.batch", "kubernetes_batch_"},
-		{"k8s.io/api/autoscaling/v2beta1", "", "io.fabric8.kubernetes.api.model", "kubernetes_autoscaling_"},
+		{"k8s.io/api/autoscaling/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_autoscaling_"},
 		{"k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1", "", "io.fabric8.kubernetes.api.model.apiextensions", "kubernetes_apiextensions_"},
 		{"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_"},
 		{"k8s.io/api/networking/v1", "networking.k8s.io", "io.fabric8.kubernetes.api.model.networking", "kubernetes_networking_"},
