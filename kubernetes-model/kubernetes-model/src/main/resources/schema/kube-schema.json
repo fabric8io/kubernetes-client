@@ -230,6 +230,10 @@
             "type": "string",
             "description": ""
           }
+        },
+        "scope": {
+          "type": "string",
+          "description": ""
         }
       },
       "additionalProperties": true,
@@ -277,6 +281,10 @@
             "type": "string",
             "description": ""
           }
+        },
+        "scope": {
+          "type": "string",
+          "description": ""
         }
       },
       "additionalProperties": true,
@@ -384,6 +392,15 @@
       "type": "object",
       "description": "",
       "properties": {
+        "admissionReviewVersions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
         "clientConfig": {
           "$ref": "#/definitions/kubernetes_admissionregistration_WebhookClientConfig",
           "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.WebhookClientConfig"
@@ -411,6 +428,10 @@
         },
         "sideEffects": {
           "type": "string",
+          "description": ""
+        },
+        "timeoutSeconds": {
+          "type": "integer",
           "description": ""
         }
       },
@@ -4693,6 +4714,42 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_core_CSIVolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "driver": {
+          "type": "string",
+          "description": ""
+        },
+        "fsType": {
+          "type": "string",
+          "description": ""
+        },
+        "nodePublishSecretRef": {
+          "$ref": "#/definitions/kubernetes_core_LocalObjectReference",
+          "javaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
+        },
+        "readOnly": {
+          "type": "boolean",
+          "description": ""
+        },
+        "volumeAttributes": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "string",
+            "description": ""
+          },
+          "javaType": "java.util.Map\u003cString,String\u003e"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.CSIVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_core_Capabilities": {
       "type": "object",
       "description": "",
@@ -8756,6 +8813,10 @@
           "type": "string",
           "description": ""
         },
+        "tenant": {
+          "type": "string",
+          "description": ""
+        },
         "user": {
           "type": "string",
           "description": ""
@@ -10236,6 +10297,10 @@
           "$ref": "#/definitions/kubernetes_core_ConfigMapVolumeSource",
           "javaType": "io.fabric8.kubernetes.api.model.ConfigMapVolumeSource"
         },
+        "csi": {
+          "$ref": "#/definitions/kubernetes_core_CSIVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.CSIVolumeSource"
+        },
         "downwardAPI": {
           "$ref": "#/definitions/kubernetes_core_DownwardAPIVolumeSource",
           "javaType": "io.fabric8.kubernetes.api.model.DownwardAPIVolumeSource"
@@ -10375,6 +10440,10 @@
         "subPath": {
           "type": "string",
           "description": ""
+        },
+        "subPathExpr": {
+          "type": "string",
+          "description": ""
         }
       },
       "additionalProperties": true,
@@ -10452,6 +10521,10 @@
         "configMap": {
           "$ref": "#/definitions/kubernetes_core_ConfigMapVolumeSource",
           "javaType": "io.fabric8.kubernetes.api.model.ConfigMapVolumeSource"
+        },
+        "csi": {
+          "$ref": "#/definitions/kubernetes_core_CSIVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.CSIVolumeSource"
         },
         "downwardAPI": {
           "$ref": "#/definitions/kubernetes_core_DownwardAPIVolumeSource",
@@ -10692,6 +10765,21 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.events.EventSeries",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_extensions_AllowedCSIDriver": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.extensions.AllowedCSIDriver",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -11142,6 +11230,15 @@
         "allowPrivilegeEscalation": {
           "type": "boolean",
           "description": ""
+        },
+        "allowedCSIDrivers": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_extensions_AllowedCSIDriver",
+            "javaType": "io.fabric8.kubernetes.api.model.extensions.AllowedCSIDriver"
+          }
         },
         "allowedCapabilities": {
           "type": "array",
