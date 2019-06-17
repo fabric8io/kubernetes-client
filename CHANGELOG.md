@@ -4,6 +4,8 @@
   Bugs
 
   Improvements
+  
+    * Example added for NamespaceQuota
 
   Dependency Upgrade
 
