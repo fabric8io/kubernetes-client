@@ -16,12 +16,8 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Rule;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -29,8 +25,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import org.junit.Rule;
+import org.junit.Test;
+
+import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionList;
+import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionListBuilder;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.utils.Utils;
 
 public class CustomResourceTest {
   @Rule
@@ -109,6 +114,29 @@ public class CustomResourceTest {
     List<Map<String, Object>> items = (List<Map<String, Object>>)list.get("items");
     assertNotNull(items);
     assertEquals(1, items.size());
+  }
+
+  @Test
+  public void testListWithFields() {
+    final CustomResourceDefinitionList customResourceDefinitionList = new CustomResourceDefinitionListBuilder()
+      .addNewItem().and()
+      .addNewItem().and()
+      .build();
+
+    server.expect().get().withPath("/apis/apiextensions.k8s.io/v1beta1/customresourcedefinitions?fieldSelector=" + Utils
+        .toUrlEncoded("key1=value1,key2=value2,key3!=value3,key3!=value4")).andReturn(HttpURLConnection.HTTP_CREATED, customResourceDefinitionList).once();
+    KubernetesClient client = server.getClient();
+
+    CustomResourceDefinitionList list = client.customResourceDefinitions()
+      .withField("key1", "value1")
+      .withField("key2","value2")
+      .withoutField("key3","value3")
+      .withoutField("key3", "value4")
+      .list();
+
+    List<CustomResourceDefinition> items = list.getItems();
+    assertNotNull(items);
+    assertEquals(2, items.size());
   }
 
   @Test
