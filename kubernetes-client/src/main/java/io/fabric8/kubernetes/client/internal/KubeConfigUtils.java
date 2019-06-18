@@ -15,8 +15,6 @@
  */
 package io.fabric8.kubernetes.client.internal;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import io.fabric8.kubernetes.api.model.AuthInfo;
 import io.fabric8.kubernetes.api.model.Cluster;
 import io.fabric8.kubernetes.api.model.Config;
@@ -24,25 +22,31 @@ import io.fabric8.kubernetes.api.model.Context;
 import io.fabric8.kubernetes.api.model.NamedAuthInfo;
 import io.fabric8.kubernetes.api.model.NamedCluster;
 import io.fabric8.kubernetes.api.model.NamedContext;
+import io.fabric8.kubernetes.client.internal.mappers.ConfigMapper;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 
 /**
  * Helper class for working with the YAML config file thats located in
  * <code>~/.kube/config</code> which is updated when you use commands
- * like <code>osc login</code> and <code>osc project myproject</code>
+ * like <code>oc login</code> and <code>oc project myproject</code>
  */
 public class KubeConfigUtils {
+    
   public static Config parseConfig(File file) throws IOException {
-    ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-    return mapper.readValue(file, Config.class);
+    final Yaml yamlMapper = new Yaml();
+    final ConfigMapper configMapper = new ConfigMapper();  
+    return configMapper.map(yamlMapper.load(new FileInputStream(file)));
   }
 
   public static Config parseConfigFromString(String contents) throws IOException {
-    ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-    return mapper.readValue(contents, Config.class);
+    final Yaml yamlMapper = new Yaml();
+    final ConfigMapper configMapper = new ConfigMapper();
+    return configMapper.map(yamlMapper.load(contents));
   }
 
   /**
