@@ -2,10 +2,12 @@
 
 ### 4.3-SNAPSHOT
   Bugs
-
+  
   Improvements
    * Fix #1589: Move HorizontalPodAutoscaler to autoscaling/v1
    * Fix #1553: Allow to explicitly set non-matching field selectors using `withoutField`
+
+    * assertNotNull replaced with assertTrue for boolean statements in unit tests
 
   Dependency Upgrade
 

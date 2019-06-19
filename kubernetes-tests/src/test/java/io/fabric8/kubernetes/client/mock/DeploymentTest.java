@@ -195,7 +195,7 @@ public class DeploymentTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.apps().deployments().withName("deployment1").delete();
-    assertNotNull(deleted);
+    assertTrue(deleted);
 
     deleted = client.apps().deployments().withName("deployment2").delete();
     assertFalse(deleted);
