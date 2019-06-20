@@ -130,7 +130,7 @@ public class ReplicationControllerTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.replicationControllers().withName("repl1").delete();
-    assertNotNull(deleted);
+    assertTrue(deleted);
 
     deleted = client.replicationControllers().withName("repl2").delete();
     assertFalse(deleted);

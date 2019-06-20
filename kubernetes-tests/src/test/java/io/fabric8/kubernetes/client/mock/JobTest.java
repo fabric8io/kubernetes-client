@@ -164,7 +164,7 @@ public class JobTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.batch().jobs().withName("job1").delete();
-    assertNotNull(deleted);
+    assertTrue(deleted);
 
     deleted = client.batch().jobs().withName("job2").delete();
     assertTrue(deleted);
@@ -209,7 +209,7 @@ public class JobTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.batch().jobs().inAnyNamespace().delete(job1, job2);
-    assertNotNull(deleted);
+    assertTrue(deleted);
 
     deleted = client.batch().jobs().inAnyNamespace().delete(job3);
     assertFalse(deleted);
@@ -221,7 +221,7 @@ public class JobTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.batch().jobs().inNamespace("test1").delete(job1);
-    assertNotNull(deleted);
+    assertTrue(deleted);
   }
 
   @Test(expected = KubernetesClientException.class)
