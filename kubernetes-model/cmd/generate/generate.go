@@ -296,6 +296,11 @@ func main() {
 	}
 	result := string(b)
 	result = strings.Replace(result, "\"additionalProperty\":", "\"additionalProperties\":", -1)
+
+	// Hack to fix https://github.com/fabric8io/kubernetes-client/issues/1565
+	result = strings.Replace(result, "\"enum\":{\"type\":\"array\",\"description\":\"\",\"javaOmitEmpty\":true,\"items\":{\"$ref\":\"#/definitions/kubernetes_apiextensions_JSON\",\"javaType\":\"io.fabric8.kubernetes.api.model.apiextensions.JSON\"}},",
+	"\"enum\":{\"type\":\"array\",\"description\":\"\",\"javaOmitEmpty\":true,\"items\":{\"type\": \"string\"}},", -1)
+
 	var out bytes.Buffer
 	err = json.Indent(&out, []byte(result), "", "  ")
 	if err != nil {
