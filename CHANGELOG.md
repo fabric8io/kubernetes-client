@@ -8,6 +8,7 @@
    * Fix #1553: Allow to explicitly set non-matching field selectors using `withoutField`
 
     * assertNotNull replaced with assertTrue for boolean statements in unit tests
+    * Test coverage for PodPreset
 
   Dependency Upgrade
 
