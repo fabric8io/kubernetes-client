@@ -89,7 +89,7 @@
     <dependency>
       <groupId>net.javacrumbs.json-unit</groupId>
       <artifactId>json-unit-fluent</artifactId>
-      <version>2.6.3</version>
+      <version>2.7.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
