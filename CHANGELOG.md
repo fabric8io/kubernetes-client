@@ -2,6 +2,8 @@
 
 ### 4.3-SNAPSHOT
   Bugs
+   * Fix #1592: Corrected type returned by Config.builder() 
+
   
   Improvements
    * Fix #1589: Move HorizontalPodAutoscaler to autoscaling/v1
