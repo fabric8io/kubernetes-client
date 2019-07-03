@@ -9343,6 +9343,120 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "os_authorization_SelfSubjectAccessReview": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "authorization/v1",
+          "required": true
+        },
+        "content": {
+          "$ref": "#/definitions/k8s_io_apimachinery_pkg_runtime_RawExtension",
+          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+        },
+        "groups": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "isNonResourceURL": {
+          "type": "boolean",
+          "description": ""
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "SelfSubjectAccessReview",
+          "required": true
+        },
+        "namespace": {
+          "type": "string",
+          "description": ""
+        },
+        "path": {
+          "type": "string",
+          "description": ""
+        },
+        "resource": {
+          "type": "string",
+          "description": ""
+        },
+        "resourceAPIGroup": {
+          "type": "string",
+          "description": ""
+        },
+        "resourceAPIVersion": {
+          "type": "string",
+          "description": ""
+        },
+        "resourceName": {
+          "type": "string",
+          "description": ""
+        },
+        "scopes": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "verb": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.SelfSubjectAccessReview",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_authorization_SelfSubjectAccessReviewResponse": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "allowed": {
+          "type": "boolean",
+          "description": ""
+        },
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "authorization/v1",
+          "required": true
+        },
+        "evaluationError": {
+          "type": "string",
+          "description": ""
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "SelfSubjectAccessReviewResponse",
+          "required": true
+        },
+        "namespace": {
+          "type": "string",
+          "description": ""
+        },
+        "reason": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.SelfSubjectAccessReviewResponse",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_authorization_UserRestriction": {
       "type": "object",
       "description": "",
@@ -13944,6 +14058,14 @@
     "SubjectAccessReviewResponse": {
       "$ref": "#/definitions/os_authorization_SubjectAccessReviewResponse",
       "javaType": "io.fabric8.openshift.api.model.SubjectAccessReviewResponse"
+    },
+    "SelfSubjectAccessReview": {
+      "$ref": "#/definitions/os_authorization_SelfSubjectAccessReview",
+      "javaType": "io.fabric8.openshift.api.model.SelfSubjectAccessReview"
+    },
+    "SelfSubjectAccessReviewResponse": {
+      "$ref": "#/definitions/os_authorization_SelfSubjectAccessReviewResponse",
+      "javaType": "io.fabric8.openshift.api.model.SelfSubjectAccessReviewResponse"
     },
     "TagEvent": {
       "$ref": "#/definitions/os_image_TagEvent",
@@ -23994,6 +24116,100 @@
           "type": "string",
           "description": "",
           "default": "SubjectAccessReviewResponse",
+          "required": true
+        },
+        "namespace": {
+          "type": "string",
+          "description": ""
+        },
+        "reason": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true
+    },
+    "selfsubjectaccessreview": {
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "authorization/v1",
+          "required": true
+        },
+        "content": {
+          "$ref": "#/definitions/k8s_io_apimachinery_pkg_runtime_RawExtension",
+          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+        },
+        "isNonResourceURL": {
+          "type": "boolean",
+          "description": ""
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "SelfSubjectAccessReview",
+          "required": true
+        },
+        "namespace": {
+          "type": "string",
+          "description": ""
+        },
+        "path": {
+          "type": "string",
+          "description": ""
+        },
+        "resource": {
+          "type": "string",
+          "description": ""
+        },
+        "resourceAPIGroup": {
+          "type": "string",
+          "description": ""
+        },
+        "resourceAPIVersion": {
+          "type": "string",
+          "description": ""
+        },
+        "resourceName": {
+          "type": "string",
+          "description": ""
+        },
+        "scopes": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "verb": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true
+    },
+    "selfsubjectaccessreviewresponse": {
+      "properties": {
+        "allowed": {
+          "type": "boolean",
+          "description": ""
+        },
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "authorization/v1",
+          "required": true
+        },
+        "evaluationError": {
+          "type": "string",
+          "description": ""
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "SelfSubjectAccessReviewResponse",
           "required": true
         },
         "namespace": {
