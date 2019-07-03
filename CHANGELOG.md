@@ -14,6 +14,7 @@
     * assertNotNull replaced with assertTrue for boolean statements in unit tests
     * Test coverage for PodPreset
     * Added test coverage for PersistentVolume
+    * Add type parameter to make CustomResourceList.getItems() return a typed List.
 
   Dependency Upgrade
 
