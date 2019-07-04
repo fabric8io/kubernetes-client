@@ -103,7 +103,7 @@ Waitable<HasMetadata, HasMetadata>,
   }
 
   public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item, long gracePeriodSeconds, Boolean cascading) {
-    super(client, config, null, null, null, null, null);
+    super(client, config);
     this.fallbackNamespace = namespace;
     this.explicitNamespace = explicitNamespace;
     this.fromServer = fromServer;
@@ -134,7 +134,7 @@ Waitable<HasMetadata, HasMetadata>,
     if (r == null) {
       return h.create(client, config, namespaceToUse, meta);
     } else if (deletingExisting) {
-      Boolean deleted = h.delete(client, config, namespaceToUse, meta);
+      Boolean deleted = h.delete(client, config, namespaceToUse, cascading, meta);
       if (!deleted) {
         throw new KubernetesClientException("Failed to delete existing item:" + meta);
       }
@@ -157,14 +157,14 @@ Waitable<HasMetadata, HasMetadata>,
     //First pass check before deleting
     HasMetadata meta = acceptVisitors(asHasMetadata(item), visitors);
     ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
-    return h.delete(client, config, meta.getMetadata().getNamespace(), meta);
+    return h.delete(client, config, meta.getMetadata().getNamespace(), cascading, meta);
   }
 
   @Override
   public HasMetadata get() {
     if (fromServer) {
       HasMetadata meta = acceptVisitors(asHasMetadata(item), visitors);
-      ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
+      ResourceHandler<HasMetadata, ? extends VisitableBuilder> h = handlerOf(meta);
       HasMetadata reloaded = h.reload(client, config, meta.getMetadata().getNamespace(), meta);
       if (reloaded != null) {
         HasMetadata edited = reloaded;
@@ -289,7 +289,7 @@ Waitable<HasMetadata, HasMetadata>,
 
   private static <T> ResourceHandler handlerOf(T item) {
     if (item instanceof HasMetadata) {
-      return Handlers.<HasMetadata, HasMetadataVisitiableBuilder>get(((HasMetadata) item).getKind());
+      return Handlers.<HasMetadata, HasMetadataVisitiableBuilder>get(((HasMetadata) item).getKind(), ((HasMetadata) item).getApiVersion());
     } else if (item instanceof KubernetesList) {
       return new KubernetesListHandler();
     } else {

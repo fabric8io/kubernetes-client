@@ -15,6 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -36,15 +37,13 @@ import static io.fabric8.openshift.client.OpenShiftAPIGroups.PROJECT;
 
 public class ProjectRequestsOperationImpl extends OperationSupport implements ProjectRequestOperation {
 
-  private final ProjectRequest item;
-
   public ProjectRequestsOperationImpl(OkHttpClient client, OpenShiftConfig config) {
-    this(client, config, null, null);
+    this(new OperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public ProjectRequestsOperationImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, ProjectRequest item) {
-    super(client, OpenShiftOperation.withApiGroup(client, PROJECT, apiVersion, config), "projectrequests", null, null);
-    this.item = item;
+  public ProjectRequestsOperationImpl(OperationContext context) {
+    super(context.withApiGroupName(PROJECT)
+      .withPlural("projectrequests"));
   }
 
   @Override
@@ -62,7 +61,7 @@ public class ProjectRequestsOperationImpl extends OperationSupport implements Pr
   }
 
   private ProjectRequest updateApiVersion(ProjectRequest p) {
-      p.setApiVersion(this.apiVersion);
+      p.setApiVersion(this.apiGroupVersion);
       return p;
   }
 
@@ -85,14 +84,11 @@ public class ProjectRequestsOperationImpl extends OperationSupport implements Pr
 
   @Override
   public DoneableProjectRequest createNew() {
-    return new DoneableProjectRequest(new Function<ProjectRequest, ProjectRequest>() {
-      @Override
-      public ProjectRequest apply(ProjectRequest item) {
-        try {
-          return create(item);
-        } catch (Exception e) {
-          throw KubernetesClientException.launderThrowable(e);
-        }
+    return new DoneableProjectRequest(item -> {
+      try {
+        return create(item);
+      } catch (Exception e) {
+        throw KubernetesClientException.launderThrowable(e);
       }
     });
   }
@@ -126,6 +122,6 @@ public class ProjectRequestsOperationImpl extends OperationSupport implements Pr
   }
 
   public ProjectRequest getItem() {
-    return item;
+    return (ProjectRequest) context.getItem();
   }
 }

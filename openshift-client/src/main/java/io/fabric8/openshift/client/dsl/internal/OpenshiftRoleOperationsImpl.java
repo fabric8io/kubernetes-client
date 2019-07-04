@@ -16,23 +16,30 @@
 package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.openshift.client.OpenShiftConfig;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.openshift.api.model.DoneableOpenshiftRole;
 import io.fabric8.openshift.api.model.OpenshiftRole;
 import io.fabric8.openshift.api.model.OpenshiftRoleList;
-import io.fabric8.openshift.api.model.DoneableOpenshiftRole;
-
-import java.util.Map;
-import java.util.TreeMap;
+import io.fabric8.openshift.client.OpenShiftConfig;
+import okhttp3.OkHttpClient;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.AUTHORIZATION;
 
 public class OpenshiftRoleOperationsImpl extends OpenShiftOperation<OpenshiftRole, OpenshiftRoleList, DoneableOpenshiftRole, Resource<OpenshiftRole, DoneableOpenshiftRole>> {
-  public OpenshiftRoleOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
-    this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+
+  public OpenshiftRoleOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
+    this((new OperationContext()).withOkhttpClient(client).withConfig(config));
   }
 
-  public OpenshiftRoleOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, OpenshiftRole item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, OpenShiftOperation.withApiGroup(client, AUTHORIZATION, apiVersion, config), "roles", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  public OpenshiftRoleOperationsImpl(OperationContext context) {
+    super(context.withApiGroupName(AUTHORIZATION).withApiGroupVersion("v1").withPlural("roles"));
+    this.type = OpenshiftRole.class;
+    this.listType = OpenshiftRoleList.class;
+    this.doneableType = DoneableOpenshiftRole.class;
   }
+
+  public OpenshiftRoleOperationsImpl newInstance(OperationContext context) {
+    return new OpenshiftRoleOperationsImpl(context);
+  }
+
 }

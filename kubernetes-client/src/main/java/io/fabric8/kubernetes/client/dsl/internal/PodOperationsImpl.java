@@ -15,27 +15,34 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
-import java.util.Map;
-import java.util.TreeMap;
+import java.nio.file.Path;
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
+
+import io.fabric8.kubernetes.client.dsl.CopyOrReadable;
+import io.fabric8.kubernetes.client.utils.Utils;
 
 import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.client.Callback;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.LocalPortForward;
 import io.fabric8.kubernetes.client.PortForward;
-import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.ContainerResource;
 import io.fabric8.kubernetes.client.dsl.ExecListenable;
@@ -53,12 +60,12 @@ import io.fabric8.kubernetes.client.dsl.TtyExecErrorable;
 import io.fabric8.kubernetes.client.dsl.TtyExecOutputErrorable;
 import io.fabric8.kubernetes.client.dsl.TtyExecable;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
-import io.fabric8.kubernetes.client.internal.readiness.Readiness;
-import io.fabric8.kubernetes.client.internal.readiness.ReadinessWatcher;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.utils.BlockingInputStreamPumper;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import okhttp3.*;
 
-public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, DoneablePod, PodResource<Pod, DoneablePod>> implements PodResource<Pod, DoneablePod> {
+public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, DoneablePod, PodResource<Pod, DoneablePod>> implements PodResource<Pod, DoneablePod>,CopyOrReadable<Boolean,InputStream> {
 
     private static final String[] EMPTY_COMMAND = {"/bin/sh", "-i"};
 
@@ -81,39 +88,47 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
     private final boolean withPrettyOutput;
     private final ExecListener execListener;
     private final Integer limitBytes;
+    private final Integer bufferSize;
 
+  public PodOperationsImpl(OkHttpClient client, Config config) {
+    this(new PodOperationContext().withOkhttpClient(client).withConfig(config));
+  }
 
-  public PodOperationsImpl(OkHttpClient client, Config config, String namespace) {
-        this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
-    }
+  public PodOperationsImpl(PodOperationContext context) {
+    super(context.withPlural("pods"));
+    this.type = Pod.class;
+    this.listType = PodList.class;
+    this.doneableType = DoneablePod.class;
 
-    public PodOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Pod item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-        this(client, config, apiVersion, namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields,
-             null, null, null, null, null, null, null, null, null, false, false, false, null, null, null, false, null, null);
-    }
+    this.containerId = context.getContainerId();
+    this.in = context.getIn();
+    this.inPipe = context.getInPipe();
+    this.out = context.getOut();
+    this.outPipe = context.getOutPipe();
+    this.err = context.getErr();
+    this.errPipe = context.getErrPipe();
+    this.errChannel = context.getErrChannel();
+    this.errChannelPipe = context.getErrChannelPipe();
+    this.withTTY = context.isTty();
+    this.withTerminatedStatus = context.isTerminatedStatus();
+    this.withTimestamps = context.isTimestamps();
+    this.sinceTimestamp = context.getSinceTimestamp();
+    this.sinceSeconds = context.getSinceSeconds();
+    this.withTailingLines = context.getTailingLines();
+    this.withPrettyOutput = context.isPrettyOutput();
+    this.execListener = context.getExecListener();
+    this.limitBytes = context.getLimitBytes();
+    this.bufferSize = context.getBufferSize();
+  }
 
-    public PodOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Pod item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, String containerId, InputStream in, PipedOutputStream inPipe, OutputStream out, PipedInputStream outPipe, OutputStream err, PipedInputStream errPipe, OutputStream errChannel, PipedInputStream errChannelPipe, boolean withTTY, boolean withTerminatedStatus, boolean withTimestamps, String sinceTimestamp, Integer sinceSeconds, Integer withTailingLines, boolean withPrettyOutput, ExecListener execListener, Integer limitBytes) {
-        super(client, config, null, apiVersion, "pods", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
-        this.containerId = containerId;
-        this.in = in;
-        this.inPipe = inPipe;
-        this.out = out;
-        this.outPipe = outPipe;
-        this.err = err;
-        this.errPipe = errPipe;
-        this.errChannel = errChannel;
-        this.errChannelPipe = errChannelPipe;
-        this.withTTY = withTTY;
-        this.withTerminatedStatus = withTerminatedStatus;
-        this.withTimestamps = withTimestamps;
-        this.sinceTimestamp = sinceTimestamp;
-        this.sinceSeconds = sinceSeconds;
-        this.withTailingLines = withTailingLines;
-        this.withPrettyOutput = withPrettyOutput;
-        this.execListener = execListener;
-        this.limitBytes =limitBytes;
-    }
+  @Override
+  public PodOperationsImpl newInstance(OperationContext context) {
+    return new PodOperationsImpl((PodOperationContext) context);
+  }
 
+ public PodOperationContext getContext() {
+    return (PodOperationContext) context;
+ }
     protected String getLogParameters() {
         StringBuilder sb = new StringBuilder();
         sb.append("log?pretty=").append(withPrettyOutput);
@@ -174,7 +189,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
 
     @Override
     public String getLog(Boolean isPretty) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, isPretty, execListener, limitBytes).getLog();
+        return new PodOperationsImpl(getContext().withPrettyOutput(isPretty)).getLog();
     }
 
     @Override
@@ -225,8 +240,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
   }
 
   @Override
-    public ContainerResource<String, LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch> inContainer(String containerId) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes);
+    public ContainerResource<String, LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch, Boolean, InputStream> inContainer(String containerId) {
+        return new PodOperationsImpl(getContext().withContainerId(containerId));
     }
 
     @Override
@@ -243,6 +258,13 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
             } else {
                 sb.append("&command=");
             }
+          
+            try {
+            	cmd = URLUtils.encodeToUTF(cmd);
+            } catch (UnsupportedEncodingException encodEx) {
+            	// Do nothing to fail gracefully as before.
+			}
+
             sb.append(cmd);
         }
 
@@ -266,7 +288,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
             URL url = new URL(URLUtils.join(getResourceUrl().toString(), sb.toString()));
             Request.Builder r = new Request.Builder().url(url).header("Sec-WebSocket-Protocol", "v4.channel.k8s.io").get();
             OkHttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
-            final ExecWebSocketListener execWebSocketListener = new ExecWebSocketListener(getConfig(), in, out, err, errChannel, inPipe, outPipe, errPipe, errChannelPipe, execListener);
+            final ExecWebSocketListener execWebSocketListener = new ExecWebSocketListener(getConfig(), in, out, err, errChannel, inPipe, outPipe, errPipe, errChannelPipe, execListener, bufferSize);
             clone.newWebSocket(r.build(), execWebSocketListener);
             execWebSocketListener.waitUntilReady();
             return execWebSocketListener;
@@ -275,29 +297,268 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
         }
     }
 
+
+
     @Override
+    public CopyOrReadable<Boolean, InputStream> file(String file) {
+      return new PodOperationsImpl(getContext().withFile(file));
+    }
+
+    @Override
+    public CopyOrReadable<Boolean, InputStream> dir(String dir) {
+      return new PodOperationsImpl(getContext().withDir(dir));
+    }
+
+   @Override
+   public Boolean copy(Path destination) {
+    try {
+      if (Utils.isNotNullOrEmpty(getContext().getFile())) {
+        copyFile(getContext().getFile(), destination.toFile());
+        return true;
+      } else if (Utils.isNotNullOrEmpty(getContext().getDir())) {
+        copyDir(getContext().getDir(), destination.toFile());
+        return true;
+      }
+      throw new IllegalStateException("No file or dir has been specified");
+    } catch (Exception e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+   }
+
+  @Override
+  public InputStream read() {
+    try {
+      if (Utils.isNotNullOrEmpty(getContext().getFile())) {
+        return readFile(getContext().getFile());
+      } else if (Utils.isNotNullOrEmpty(getContext().getDir())) {
+        return readTar(getContext().getDir());
+      }
+      throw new IllegalStateException("No file or dir has been specified");
+    } catch (Exception e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+
+  private InputStream readFile(String source) {
+    //Let's wrap the code to a callable inner class to avoid NoClassDef when loading this class.
+    try {
+      return new Callable<InputStream>() {
+        @Override
+        public InputStream call() {
+          try {
+            PipedOutputStream out = new PipedOutputStream();
+            PipedInputStream in = new PipedInputStream(out, 1024);
+            ExecWatch watch = writingOutput(out).usingListener(new ExecListener() {
+              @Override
+              public void onOpen(Response response) {
+
+              }
+
+              @Override
+              public void onFailure(Throwable t, Response response) {
+
+              }
+
+              @Override
+              public void onClose(int code, String reason) {
+                try {
+                  out.flush();
+                  out.close();
+                } catch (IOException e) {
+                  e.printStackTrace();
+                }
+              }
+            }).exec("sh", "-c", "cat " + source + "|" + "base64");
+            return new org.apache.commons.codec.binary.Base64InputStream(in);
+          } catch (Exception e) {
+            throw KubernetesClientException.launderThrowable(e);
+          }
+        }
+      }.call();
+    } catch (NoClassDefFoundError e) {
+      throw new KubernetesClientException("Base64InputStream class is provided by commons-codec, an optional dependency. To use the read/copy functionality you must explicitly add this dependency to the classpath.");
+    }
+  }
+
+  //
+  //
+  // The copy and read utilities below have been inspired by Brendan Burns copy utilities on the official kubernetes-client.
+  // More specifically: https://github.com/kubernetes-client/java/pull/375
+  //
+
+  private void copyFile(String source, File target)  {
+    //Let's wrap the code to a runnable inner class to avoid NoClassDef on Option classes.
+    try {
+    new Runnable() {
+      @Override
+      public void run() {
+        File destination = target;
+        if (!destination.exists() && !destination.getParentFile().exists() && !destination.getParentFile().mkdirs()) {
+            throw KubernetesClientException.launderThrowable(new IOException("Failed to create directory: " + destination.getParentFile()));
+        }
+        if (destination.isDirectory()) {
+            String[] parts = source.split("\\/|\\\\");
+            String filename = parts[parts.length - 1];
+            destination = destination.toPath().resolve(filename).toFile();
+        }
+        try (InputStream is = readFile(source);
+             OutputStream os = new FileOutputStream(destination)) {
+          BlockingInputStreamPumper pumper = new BlockingInputStreamPumper(is, input -> {
+            try {
+              os.write(input);
+            } catch (IOException e) {
+              throw KubernetesClientException.launderThrowable(e);
+            }
+          }, () -> {
+            try {
+              os.flush();
+            } catch (Exception e) {
+              throw KubernetesClientException.launderThrowable(e);
+            }
+          });
+          pumper.run();
+        } catch (Exception e) {
+          throw KubernetesClientException.launderThrowable(e);
+        }
+      }
+    }.run();
+    } catch (NoClassDefFoundError e) {
+      throw new KubernetesClientException("Base64InputStream class is provided by commons-codec, an optional dependency. To use the read/copy functionality you must explicitly add this dependency to the classpath.");
+    }
+  }
+
+  public InputStream readTar(String source) throws Exception {
+    //Let's wrap the code to a callable inner class to avoid NoClassDef on Option classes.
+    try {
+      return new Callable<InputStream>() {
+        @Override
+        public InputStream call() throws Exception {
+          try {
+            PipedOutputStream out = new PipedOutputStream();
+            PipedInputStream in = new PipedInputStream(out, 1024);
+            ExecWatch watch = writingOutput(out).usingListener(new ExecListener() {
+              @Override
+              public void onOpen(Response response) {
+
+              }
+
+              @Override
+              public void onFailure(Throwable t, Response response) {
+
+              }
+
+              @Override
+              public void onClose(int code, String reason) {
+                try {
+                  out.flush();
+                  out.close();
+                } catch (IOException e) {
+                  e.printStackTrace();
+                }
+              }
+            }).exec("sh", "-c", "tar -cf - " + source + "|" + "base64");
+            return new org.apache.commons.codec.binary.Base64InputStream(in);
+          } catch (Exception e) {
+            throw KubernetesClientException.launderThrowable(e);
+          } catch (NoClassDefFoundError n) {
+            throw KubernetesClientException.launderThrowable(n);
+          }
+        }
+      }.call();
+    }  catch (NoClassDefFoundError e) {
+      throw new KubernetesClientException("Base64InputStream class is provided by commons-codec, an optional dependency. To use the read/copy functionality you must explicitly add this dependency to the classpath.");
+    }
+  }
+
+  private void copyDir(String source, File target) throws Exception {
+    //Let's wrap the code to a runnable inner class to avoid NoClassDef on Option classes.
+    try {
+    new Runnable() {
+      public void  run() {
+        File destination = target;
+        if (!destination.isDirectory() && !destination.mkdirs())
+
+        {
+          throw KubernetesClientException.launderThrowable(new IOException("Failed to create directory: " + destination));
+        }
+        try (
+          InputStream is = readTar(source);
+          org.apache.commons.compress.archivers.tar.TarArchiveInputStream tis = new org.apache.commons.compress.archivers.tar.TarArchiveInputStream(is))
+
+        {
+          for (org.apache.commons.compress.archivers.ArchiveEntry entry = tis.getNextTarEntry(); entry != null; entry = tis.getNextEntry()) {
+            if (tis.canReadEntryData(entry)) {
+              File f = new File(destination, entry.getName());
+              if (entry.isDirectory()) {
+                if (!f.isDirectory() && !f.mkdirs()) {
+                  throw new IOException("Failed to create directory: " + f);
+                }
+              } else {
+                File parent = f.getParentFile();
+                if (!parent.isDirectory() && !parent.mkdirs()) {
+                  throw new IOException("Failed to create directory: " + f);
+                }
+                try (OutputStream fs = new FileOutputStream(f)) {
+                  System.out.println("Writing: " + f.getCanonicalPath());
+                  BlockingInputStreamPumper pumper = new BlockingInputStreamPumper(tis, new Callback<byte[]>() {
+                    @Override
+                    public void call(byte[] input) {
+                      try {
+                        fs.write(input);
+                      } catch (IOException e) {
+                        throw KubernetesClientException.launderThrowable(e);
+                      }
+                    }
+                  }, () -> {
+                    try {
+                      fs.close();
+                    } catch (IOException e) {
+                      throw KubernetesClientException.launderThrowable(e);
+                    }
+                  });
+                  pumper.run();
+                }
+              }
+            }
+          }
+        } catch (Exception e) {
+          throw KubernetesClientException.launderThrowable(e);
+        }
+      }
+    }.run();
+     } catch (NoClassDefFoundError e) {
+      throw new KubernetesClientException("TarArchiveInputStream class is provided by commons-codec, an optional dependency. To use the read/copy functionality you must explicitly add this dependency to the classpath.");
+    }
+  }
+
+  @Override
     public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, ExecWatch> readingInput(InputStream in) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes);
+        return new PodOperationsImpl(getContext().withIn(in));
     }
 
     @Override
     public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, ExecWatch> writingInput(PipedOutputStream inPipe) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes);
+        return new PodOperationsImpl(getContext().withInPipe(inPipe));
     }
 
     @Override
     public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, ExecWatch> redirectingInput() {
-        return writingInput(new PipedOutputStream());
+        return redirectingInput(null);
+    }
+
+    @Override
+    public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, ExecWatch> redirectingInput(Integer bufferSize) {
+        return new PodOperationsImpl(getContext().withInPipe(new PipedOutputStream()).withBufferSize(bufferSize));
     }
 
     @Override
     public TtyExecErrorable<String, OutputStream, PipedInputStream, ExecWatch> writingOutput(OutputStream out) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes);
+        return new PodOperationsImpl(getContext().withOut(out));
     }
 
     @Override
     public TtyExecErrorable<String, OutputStream, PipedInputStream, ExecWatch> readingOutput(PipedInputStream outPipe) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes);
+        return new PodOperationsImpl(getContext().withOutPipe(outPipe));
     }
 
     @Override
@@ -307,12 +568,12 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
 
     @Override
     public TtyExecErrorChannelable<String, OutputStream, PipedInputStream, ExecWatch> writingError(OutputStream err) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes);
+        return new PodOperationsImpl(getContext().withErr(err));
     }
 
     @Override
     public TtyExecErrorChannelable<String, OutputStream, PipedInputStream, ExecWatch> readingError(PipedInputStream errPipe) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes);
+        return new PodOperationsImpl(getContext().withErrPipe(errPipe));
     }
 
     @Override
@@ -322,12 +583,12 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
 
     @Override
     public TtyExecable<String, ExecWatch> writingErrorChannel(OutputStream errChannel) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes);
+        return new PodOperationsImpl(getContext().withErrChannel(errChannel));
     }
 
     @Override
     public TtyExecable<String, ExecWatch> readingErrorChannel(PipedInputStream errChannelPipe) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes);
+        return new PodOperationsImpl(getContext().withErrChannelPipe(errChannelPipe));
     }
 
     @Override
@@ -339,48 +600,49 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
 
     @Override
     public ExecListenable<String, ExecWatch> withTTY() {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, true, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes);
+        return new PodOperationsImpl(getContext().withTty(true));
     }
 
     @Override
     public Loggable<String, LogWatch> withPrettyOutput() {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, true, execListener, limitBytes);
+        return new PodOperationsImpl(getContext().withPrettyOutput(true));
     }
 
 
     @Override
     public PrettyLoggable<String, LogWatch> tailingLines(int withTailingLines) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes);
+        return new PodOperationsImpl(getContext().withTailingLines(withTailingLines));
     }
 
     @Override
     public TailPrettyLoggable<String, LogWatch> sinceTime(String sinceTimestamp) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes);
+        return new PodOperationsImpl(getContext().withSinceTimestamp(sinceTimestamp));
     }
 
     @Override
     public TailPrettyLoggable<String, LogWatch> sinceSeconds(int sinceSeconds) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes);
+        return new PodOperationsImpl(getContext().withSinceSeconds(sinceSeconds));
     }
 
     @Override
     public TimeTailPrettyLoggable<String, LogWatch> terminated() {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, true, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes);
+        return new PodOperationsImpl(getContext().withTerminatedStatus(true));
     }
 
     @Override
     public Execable<String, ExecWatch> usingListener(ExecListener execListener) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes);
+        return new PodOperationsImpl(getContext().withExecListener(execListener));
     }
 
     @Override
     public BytesLimitTerminateTimeTailPrettyLoggable<String, LogWatch> limitBytes(int limitBytes) {
-        return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, withTimestamps, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes);
+        return new PodOperationsImpl(getContext().withLimitBytes(limitBytes));
     }
 
   @Override
   public BytesLimitTerminateTimeTailPrettyLoggable<String, LogWatch> usingTimestamps() {
-    return new PodOperationsImpl(client, getConfig(), apiVersion, namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), containerId, in, inPipe, out, outPipe, err, errPipe, errChannel, errChannelPipe, withTTY, withTerminatedStatus, true, sinceTimestamp, sinceSeconds, withTailingLines, withPrettyOutput, execListener, limitBytes);
+    return new PodOperationsImpl(getContext().withTimestamps(true));
   }
+
 }
 

@@ -15,6 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.openshift.api.model.DoneableSecurityContextConstraints;
 import io.fabric8.openshift.api.model.SecurityContextConstraints;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsList;
@@ -28,13 +29,22 @@ import java.util.TreeMap;
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.SECURITY;
 
 public class SecurityContextConstraintsOperationsImpl  extends OpenShiftOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, Resource<SecurityContextConstraints, DoneableSecurityContextConstraints>> {
-  public SecurityContextConstraintsOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
-    this(client, config, null, null, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
 
+  public SecurityContextConstraintsOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public SecurityContextConstraintsOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, SecurityContextConstraints item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, OpenShiftOperation.withApiGroup(client, SECURITY, apiVersion, config), "securitycontextconstraints", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  public SecurityContextConstraintsOperationsImpl(OperationContext context) {
+    super(context.withApiGroupName(SECURITY)
+      .withPlural("securitycontextconstraints"));
+    this.type = SecurityContextConstraints.class;
+    this.listType = SecurityContextConstraintsList.class;
+    this.doneableType = DoneableSecurityContextConstraints.class;
+  }
+
+  @Override
+  public SecurityContextConstraintsOperationsImpl newInstance(OperationContext context) {
+    return new SecurityContextConstraintsOperationsImpl(context);
   }
 
   @Override

@@ -33,7 +33,7 @@
   import java.util.concurrent.TimeUnit;
 
 /**
- * @Author: Angel Misevski (https://github.com/amisevsk).
+ * @author Angel Misevski (https://github.com/amisevsk).
  */
 public class ExecLoopExample {
 

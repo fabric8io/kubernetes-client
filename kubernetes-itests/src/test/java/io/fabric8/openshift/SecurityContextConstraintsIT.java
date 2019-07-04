@@ -16,6 +16,7 @@
 package io.fabric8.openshift;
 
 
+import io.fabric8.commons.DeleteEntity;
 import io.fabric8.openshift.api.model.SecurityContextConstraints;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsBuilder;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsList;
@@ -29,7 +30,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Collections;
+import java.util.concurrent.TimeUnit;
 
+import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.*;
 
 @RunWith(ArquillianConditionalRunner.class)
@@ -152,11 +155,14 @@ public class SecurityContextConstraintsIT {
     assertFalse(sccList.getItems().contains(scc));
   }
 
-
   @After
   public void cleanup() {
+    if (client.securityContextConstraints().list().getItems().size()!= 0) {
+      client.securityContextConstraints().withName("test-scc").delete();
+    }
 
-    client.securityContextConstraints().withName("test-scc").delete();
+    DeleteEntity<SecurityContextConstraints> sccDelete = new DeleteEntity<>(SecurityContextConstraints.class, client, "test-scc", null);
+    await().atMost(30, TimeUnit.SECONDS).until(sccDelete);
   }
 
 }

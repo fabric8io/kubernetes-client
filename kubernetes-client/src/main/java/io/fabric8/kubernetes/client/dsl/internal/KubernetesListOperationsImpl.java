@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.client.dsl.KubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.KubernetesListOperation;
 import io.fabric8.kubernetes.client.dsl.Loadable;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.builder.Function;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
@@ -60,7 +61,7 @@ public class KubernetesListOperationsImpl
   }
 
   public KubernetesListOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, Boolean fromServer, Boolean deletingExisting, KubernetesList item, String resourceVersion) {
-    super(client, config, null, null, null, namespace, null);
+    super(client, config, namespace);
     this.fromServer = fromServer;
     this.deletingExisting = deletingExisting;
     this.item = item;
@@ -91,14 +92,11 @@ public class KubernetesListOperationsImpl
 
   @Override
   public DoneableKubernetesList createNew() {
-    return new DoneableKubernetesList(new Function<KubernetesList, KubernetesList>() {
-      @Override
-      public KubernetesList apply(KubernetesList item) {
-        try {
-          return create(item);
-        } catch (Exception e) {
-          throw KubernetesClientException.launderThrowable(e);
-        }
+    return new DoneableKubernetesList(item -> {
+      try {
+        return create(item);
+      } catch (Exception e) {
+        throw KubernetesClientException.launderThrowable(e);
       }
     });
   }
@@ -137,7 +135,7 @@ public class KubernetesListOperationsImpl
   }
 
   private <T extends HasMetadata, V extends VisitableBuilder<T, V>> T create(T resource) {
-    ResourceHandler<T, V> handler = Handlers.get(resource.getKind());
+    ResourceHandler<T, V> handler = Handlers.get(resource.getKind(), resource.getApiVersion());
     if (handler != null) {
       return handler.create(client, config, namespace, resource);
     }
@@ -153,8 +151,8 @@ public class KubernetesListOperationsImpl
   public Boolean delete(List<KubernetesList> lists) {
     for (KubernetesList list : lists) {
       for (HasMetadata item : list.getItems()) {
-        ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> handler = Handlers.get(item.getKind());
-        if (!handler.delete(client, config, namespace, item)) {
+        ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> handler = Handlers.get(item.getKind(), item.getApiVersion());
+        if (!handler.delete(client, config, namespace, false, item)) {
           return false;
         }
       }

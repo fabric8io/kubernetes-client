@@ -21,18 +21,27 @@ import io.fabric8.kubernetes.api.model.storage.StorageClassList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
 
-import java.util.Map;
-import java.util.TreeMap;
-
 public class StorageClassOperationsImpl extends HasMetadataOperation<StorageClass, StorageClassList, DoneableStorageClass, Resource<StorageClass, DoneableStorageClass>> {
+
   public StorageClassOperationsImpl(OkHttpClient client, Config config) {
-    this(client, config, "v1", null, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+    this(new OperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public StorageClassOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, StorageClass item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, config, "storage.k8s.io", apiVersion, "storageclasses", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  public StorageClassOperationsImpl(OperationContext context) {
+    super(context.withApiGroupName("storage.k8s.io")
+      .withApiGroupVersion("v1")
+      .withPlural("storageclasses"));
+    this.type = StorageClass.class;
+    this.listType = StorageClassList.class;
+    this.doneableType = DoneableStorageClass.class;
+  }
+
+  @Override
+  public StorageClassOperationsImpl newInstance(OperationContext context) {
+    return new StorageClassOperationsImpl(context);
   }
 
   @Override

@@ -33,6 +33,9 @@ public class KubernetesResourceUtil {
 
   /**
    * Returns the resource version for the entity or null if it does not have one
+   *
+   * @param entity entity provided
+   * @return returns resource version of provided entity
    */
   public static String getResourceVersion(HasMetadata entity) {
     if (entity != null) {
@@ -49,6 +52,9 @@ public class KubernetesResourceUtil {
 
   /**
    * Returns the kind of the entity
+   *
+   * @param entity provided entity
+   * @return returns kind of entity provided
    */
   public static String getKind(HasMetadata entity) {
     if (entity != null) {
@@ -67,7 +73,7 @@ public class KubernetesResourceUtil {
    * Returns Qualified name for the specified Kubernetes Resource
    *
    * @param entity Kubernetes resource
-   * @return
+   * @return returns qualified name
    */
   public static String getQualifiedName(HasMetadata entity) {
     if (entity != null) {
@@ -81,7 +87,7 @@ public class KubernetesResourceUtil {
    * Returns name of the resource from it's Metadata
    *
    * @param entity Kubernetes resource
-   * @return
+   * @return returns name of resource
    */
   public static String getName(HasMetadata entity) {
     if (entity != null) {
@@ -93,6 +99,9 @@ public class KubernetesResourceUtil {
 
   /**
    * Returns true if this entity has a valid non blank resourceVersion in its metadata
+   *
+   * @param entity entity provided
+   * @return returns a boolean value indicating whether it has a valid non blank resourceVersion
    */
   public static boolean hasResourceVersion(HasMetadata entity) {
     return getResourceVersion(entity) != null;
@@ -102,7 +111,7 @@ public class KubernetesResourceUtil {
    * Returns name of the resource from it's Metadata
    *
    * @param entity MetaData of kubernetes resource
-   * @return
+   * @return returns name of resource
    */
   public static String getName(ObjectMeta entity) {
     if (entity != null) {
@@ -117,9 +126,9 @@ public class KubernetesResourceUtil {
   /**
    * Used to get additional properties from Object's metadata
    *
-   * @param additionalProperties
-   * @param name
-   * @return
+   * @param additionalProperties additional properties
+   * @param name name of resource
+   * @return returns additional property text
    */
   protected static String getAdditionalPropertyText(Map<String, Object> additionalProperties, String name) {
     if (additionalProperties != null) {
@@ -135,7 +144,7 @@ public class KubernetesResourceUtil {
    * Null safe get operation for getting namespace from Kubernetes Resource's MetaData
    *
    * @param entity Kubernetes Resource
-   * @return
+   * @return returns namespace as plain string
    */
   public static String getNamespace(ObjectMeta entity) {
     if (entity != null) {
@@ -149,7 +158,7 @@ public class KubernetesResourceUtil {
    * Getting namespace from Kubernetes Resource
    *
    * @param entity Kubernetes Resource
-   * @return
+   * @return returns namespace as plain string
    */
   public static String getNamespace(HasMetadata entity) {
     if (entity != null) {
@@ -163,7 +172,7 @@ public class KubernetesResourceUtil {
    * Null safe get for fetching annotations from MetaData of Kubernetes Resource
    *
    * @param entity Kubernetes resource
-   * @return
+   * @return returns a hashmap containing annotations
    */
   public static Map<String, String> getOrCreateAnnotations(HasMetadata entity) {
     ObjectMeta metadata = getOrCreateMetadata(entity);
@@ -179,8 +188,8 @@ public class KubernetesResourceUtil {
   /**
    * Returns an identifier from the given string that can be used as resource name.
    *
-   * @Param String which needs to be sanitized
-   * @return
+   * @param name which needs to be sanitized
+   * @return sanitized name
    */
   public static String sanitizeName(String name) {
     if(name != null) {
@@ -193,7 +202,7 @@ public class KubernetesResourceUtil {
    * Null safe get method for getting Labels of a Kubernetes Resource
    *
    * @param entity Kubernetes Resource
-   * @return
+   * @return returns a hashmap containing labels
    */
   public static Map<String, String> getOrCreateLabels(HasMetadata entity) {
     ObjectMeta metadata = getOrCreateMetadata(entity);
@@ -208,7 +217,11 @@ public class KubernetesResourceUtil {
 
   /**
    * Returns the labels of the given metadata object or an empty map if the metadata or labels are null
+   *
+   * @param metadata ObjectMeta for resource's metadata
+   * @return returns labels as a hashmap
    */
+
   @SuppressWarnings("unchecked")
   public static Map<String, String> getLabels(ObjectMeta metadata) {
     if (metadata != null) {
@@ -224,7 +237,7 @@ public class KubernetesResourceUtil {
    * Null safe operation for getting Metadata of a Kubernetes resource
    *
    * @param entity Kubernetes Resource
-   * @return
+   * @return returns ObjectMeta as metadata
    */
   public static ObjectMeta getOrCreateMetadata(HasMetadata entity) {
     ObjectMeta metadata = entity.getMetadata();
@@ -239,7 +252,7 @@ public class KubernetesResourceUtil {
    * Validates name of Kubernetes Resource name, label or annotation based on Kubernetes regex
    *
    * @param name Name of resource/label/annotation
-   * @return
+   * @return returns a boolean value indicating whether it's valid or not
    */
   public static boolean isValidName(String name) {
     return Utils.isNotNullOrEmpty(name) &&
@@ -252,7 +265,7 @@ public class KubernetesResourceUtil {
    * Validates labels/annotations of Kubernetes resources
    *
    * @param map Label/Annotation of resource
-   * @return
+   * @return returns a boolean value inidicating whether it's valid or not
    */
   public static boolean isValidLabelOrAnnotation(Map<String, String> map) {
     for(Map.Entry<String, String> entry : map.entrySet()) {

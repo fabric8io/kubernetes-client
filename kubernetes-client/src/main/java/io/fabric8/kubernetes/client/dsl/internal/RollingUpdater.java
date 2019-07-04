@@ -177,34 +177,27 @@ abstract class RollingUpdater<T extends HasMetadata, L, D extends Doneable<T>> {
     final CountDownLatch countDownLatch = new CountDownLatch(1);
     final AtomicInteger podCount = new AtomicInteger(0);
 
-    final Runnable readyPodsPoller = new Runnable() {
-      public void run() {
-        PodList podList = listSelectedPods(obj);
-        int count = 0;
-        List<Pod> items = podList.getItems();
-        for (Pod item : items) {
-          for (PodCondition c : item.getStatus().getConditions()) {
-            if (c.getType().equals("Ready") && c.getStatus().equals("True")) {
-              count++;
-            }
+    final Runnable readyPodsPoller = () -> {
+      PodList podList = listSelectedPods(obj);
+      int count = 0;
+      List<Pod> items = podList.getItems();
+      for (Pod item : items) {
+        for (PodCondition c : item.getStatus().getConditions()) {
+          if (c.getType().equals("Ready") && c.getStatus().equals("True")) {
+            count++;
           }
         }
-        podCount.set(count);
-        if (count == requiredPodCount) {
-          countDownLatch.countDown();
-        }
+      }
+      podCount.set(count);
+      if (count == requiredPodCount) {
+        countDownLatch.countDown();
       }
     };
 
     ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     ScheduledFuture poller = executor.scheduleWithFixedDelay(readyPodsPoller, 0, 1, TimeUnit.SECONDS);
-    ScheduledFuture logger = executor.scheduleWithFixedDelay(new Runnable() {
-      @Override
-      public void run() {
-        LOG.debug("Only {}/{} pod(s) ready for {}: {} in namespace: {} seconds so waiting...",
-            podCount.get(), requiredPodCount, obj.getKind(), obj.getMetadata().getName(), namespace);
-      }
-    }, 0, loggingIntervalMillis, TimeUnit.MILLISECONDS);
+    ScheduledFuture logger = executor.scheduleWithFixedDelay(() -> LOG.debug("Only {}/{} pod(s) ready for {}: {} in namespace: {} seconds so waiting...",
+        podCount.get(), requiredPodCount, obj.getKind(), obj.getMetadata().getName(), namespace), 0, loggingIntervalMillis, TimeUnit.MILLISECONDS);
     try {
       countDownLatch.await(rollingTimeoutMillis, TimeUnit.MILLISECONDS);
       executor.shutdown();
@@ -225,29 +218,22 @@ abstract class RollingUpdater<T extends HasMetadata, L, D extends Doneable<T>> {
   private void waitUntilDeleted(final String namespace, final String name) {
     final CountDownLatch countDownLatch = new CountDownLatch(1);
 
-    final Runnable waitTillDeletedPoller = new Runnable() {
-      public void run() {
-        try {
-          T res = resources().inNamespace(namespace).withName(name).get();
-          if (res == null) {
-            countDownLatch.countDown();
-          }
-        } catch (KubernetesClientException e) {
-          if (e.getCode() == 404) {
-            countDownLatch.countDown();
-          }
+    final Runnable waitTillDeletedPoller = () -> {
+      try {
+        T res = resources().inNamespace(namespace).withName(name).get();
+        if (res == null) {
+          countDownLatch.countDown();
+        }
+      } catch (KubernetesClientException e) {
+        if (e.getCode() == 404) {
+          countDownLatch.countDown();
         }
       }
     };
 
     ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     ScheduledFuture poller = executor.scheduleWithFixedDelay(waitTillDeletedPoller, 0, 5, TimeUnit.SECONDS);
-    ScheduledFuture logger = executor.scheduleWithFixedDelay(new Runnable() {
-      @Override
-      public void run() {
-        LOG.debug("Found resource {}/{} not yet deleted on server, so waiting...", namespace, name);
-      }
-    }, 0, loggingIntervalMillis, TimeUnit.MILLISECONDS);
+    ScheduledFuture logger = executor.scheduleWithFixedDelay(() -> LOG.debug("Found resource {}/{} not yet deleted on server, so waiting...", namespace, name), 0, loggingIntervalMillis, TimeUnit.MILLISECONDS);
     try {
       countDownLatch.await(DEFAULT_SERVER_GC_WAIT_TIMEOUT, TimeUnit.MILLISECONDS);
       executor.shutdown();
@@ -270,7 +256,7 @@ abstract class RollingUpdater<T extends HasMetadata, L, D extends Doneable<T>> {
   protected abstract Operation<T, L, D, RollableScalableResource<T, D>> resources();
 
   protected Operation<Pod, PodList, DoneablePod, PodResource<Pod, DoneablePod>> pods() {
-    return new PodOperationsImpl(client, config, namespace);
+    return new PodOperationsImpl(client, config);
   }
 
 }

@@ -110,6 +110,6 @@ class StatefulSetRollingUpdater extends RollingUpdater<StatefulSet, StatefulSetL
 
   @Override
   protected Operation<StatefulSet, StatefulSetList, DoneableStatefulSet, RollableScalableResource<StatefulSet, DoneableStatefulSet>> resources() {
-    return new StatefulSetOperationsImpl(client, config, namespace);
+    return new StatefulSetOperationsImpl(client, config);
   }
 }

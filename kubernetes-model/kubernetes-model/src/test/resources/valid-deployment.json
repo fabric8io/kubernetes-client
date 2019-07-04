@@ -94,6 +94,22 @@
                     "fieldPath": "metadata.namespace"
                   }
                 }
+              },
+              {
+                "name": "KUBERNETES-NAME",
+                "valueFrom": {
+                  "fieldRef": {
+                    "fieldPath": "metadata.name"
+                  }
+                }
+              },
+              {
+                "name": "KUBERNETES.CLUSTERNAME",
+                "valueFrom": {
+                  "fieldRef": {
+                    "fieldPath": "metadata.clusterName"
+                  }
+                }
               }
             ],
             "image": "fabric8/fabric8-maven-sample-zero-config:snapshot-171129-120114-0102",

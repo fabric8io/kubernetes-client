@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -136,7 +137,7 @@ public abstract class BaseClient implements Client, HttpClientAware {
 
   @Override
   public RootPaths rootPaths() {
-    return new BaseOperation(httpClient, configuration, null, null, "", null, null, false, null, null, false, RootPaths.class, null, null) {
+    return new BaseOperation(new OperationContext().withOkhttpClient(httpClient).withConfig(configuration)) {
     }.getRootPaths();
   }
 

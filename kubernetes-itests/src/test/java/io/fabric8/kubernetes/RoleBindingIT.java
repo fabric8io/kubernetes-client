@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes;
 
+import io.fabric8.commons.DeleteEntity;
 import io.fabric8.kubernetes.api.model.rbac.RoleBinding;
 import io.fabric8.kubernetes.api.model.rbac.RoleBindingList;
 import io.fabric8.kubernetes.api.model.rbac.RoleBindingBuilder;
@@ -31,7 +32,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Collections;
+import java.util.concurrent.TimeUnit;
 
+import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -170,11 +173,16 @@ public class RoleBindingIT {
   @Test
   public void delete() {
 
-    boolean deleted = client.rbac().roleBindings().inNamespace(currentNamespace).delete();
+    Integer initialCountBeforeDeletion = client.rbac().roleBindings().inNamespace(currentNamespace).list().getItems().size();
+    boolean deleted = client.rbac().roleBindings().inNamespace(currentNamespace).withName("read-jobs").delete();
 
     assertTrue(deleted);
+
+    DeleteEntity<RoleBinding> deleteEntity = new DeleteEntity<>(RoleBinding.class, client, "read-jobs", currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(deleteEntity);
+
     RoleBindingList roleBindingList = client.rbac().roleBindings().inNamespace(currentNamespace).list();
-    assertEquals(0,roleBindingList.getItems().size());
+    assertEquals(initialCountBeforeDeletion - 1,roleBindingList.getItems().size());
   }
 
   @After

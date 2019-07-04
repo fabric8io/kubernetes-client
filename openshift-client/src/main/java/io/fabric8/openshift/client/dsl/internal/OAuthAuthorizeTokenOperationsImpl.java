@@ -16,6 +16,8 @@
 package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.openshift.api.model.OAuthAccessToken;
 import okhttp3.OkHttpClient;
 import io.fabric8.openshift.api.model.DoneableOAuthAuthorizeToken;
 import io.fabric8.openshift.api.model.OAuthAuthorizeToken;
@@ -25,17 +27,27 @@ import io.fabric8.openshift.client.OpenShiftConfig;
 import java.util.Map;
 import java.util.TreeMap;
 
+import static io.fabric8.openshift.client.OpenShiftAPIGroups.AUTHORIZATION;
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.OAUTH;
 
 public class OAuthAuthorizeTokenOperationsImpl extends OpenShiftOperation<OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken,
   Resource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken>> {
 
   public OAuthAuthorizeTokenOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
-    this(client, config, null, null, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+    this(new OperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public OAuthAuthorizeTokenOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, OAuthAuthorizeToken item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, OpenShiftOperation.withApiGroup(client, OAUTH, apiVersion, config), "oauthauthorizetokens", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  public OAuthAuthorizeTokenOperationsImpl(OperationContext context) {
+    super(context.withApiGroupName(OAUTH)
+      .withPlural("oauthauthorizetokens"));
+    this.type = OAuthAuthorizeToken.class;
+    this.listType = OAuthAuthorizeTokenList.class;
+    this.doneableType = DoneableOAuthAuthorizeToken.class;
+  }
+
+  @Override
+  public OAuthAuthorizeTokenOperationsImpl newInstance(OperationContext context) {
+    return new OAuthAuthorizeTokenOperationsImpl(context);
   }
 
   @Override

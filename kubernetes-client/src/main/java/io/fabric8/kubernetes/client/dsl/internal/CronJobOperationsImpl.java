@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
 
 import java.io.InputStream;
@@ -30,18 +31,31 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class CronJobOperationsImpl extends HasMetadataOperation<CronJob, CronJobList, DoneableCronJob, Resource<CronJob, DoneableCronJob>> {
-  public CronJobOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(client, config, "v1beta1", namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+
+  public CronJobOperationsImpl(OkHttpClient client, Config config) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public CronJobOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, CronJob item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, config, "batch", apiVersion, "cronjobs", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  public CronJobOperationsImpl(OperationContext context) {
+    super(context.withApiGroupName("batch")
+      .withApiGroupVersion("v1beta1")
+      .withPlural("cronjobs"));
+    this.type = CronJob.class;
+    this.listType = CronJobList.class;
+    this.doneableType = DoneableCronJob.class;
   }
+
+
+  @Override
+  public CronJobOperationsImpl newInstance(OperationContext context) {
+    return new CronJobOperationsImpl(context);
+  }
+
   @Override
   public Resource<CronJob, DoneableCronJob> load(InputStream is) {
     try {
       CronJob item = unmarshal(is, CronJob.class);
-      return new CronJobOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), item, getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
+      return new CronJobOperationsImpl(context.withItem(item));
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }

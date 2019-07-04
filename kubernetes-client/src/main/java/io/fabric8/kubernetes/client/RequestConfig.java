@@ -36,6 +36,7 @@ public class RequestConfig {
   private String username;
   private String password;
   private String oauthToken;
+  private OAuthTokenProvider oauthTokenProvider;
   private String impersonateUsername;
 
   private String[] impersonateGroups = new String[0];
@@ -56,12 +57,41 @@ public class RequestConfig {
   RequestConfig() {
   }
 
-  @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
+  /**
+   * For backward compatibility
+   * Use RequestConfigBuilder instead
+   *
+   * @param username user name
+   * @param password password
+   * @param oauthToken oauthToken
+   * @param watchReconnectLimit watch reconnect limit
+   * @param watchReconnectInterval watch reconnect interval
+   * @param connectionTimeout connection timeout
+   * @param rollingTimeout rolling timeout
+   * @param requestTimeout request timeout
+   * @param scaleTimeout scale timeout
+   * @param loggingInterval logging interval
+   * @param websocketTimeout web socket timeout
+   * @param websocketPingInterval web socket ping interval
+   * @param maxConcurrentRequests max concurrent requests
+   * @param maxConcurrentRequestsPerHost max concurrent requests per host
+   */
+  @Deprecated
   public RequestConfig(String username, String password, String oauthToken,
                        int watchReconnectLimit, int watchReconnectInterval,
                        int connectionTimeout, long rollingTimeout, int requestTimeout, long scaleTimeout, int loggingInterval,
                        long websocketTimeout, long websocketPingInterval,
                        int maxConcurrentRequests, int maxConcurrentRequestsPerHost) {
+    this(username, password, oauthToken, watchReconnectLimit, watchReconnectInterval, connectionTimeout, rollingTimeout, requestTimeout, scaleTimeout, loggingInterval,
+         websocketTimeout,  websocketPingInterval,maxConcurrentRequests, maxConcurrentRequestsPerHost, null);
+  }
+
+  @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
+  public RequestConfig(String username, String password, String oauthToken,
+                       int watchReconnectLimit, int watchReconnectInterval,
+                       int connectionTimeout, long rollingTimeout, int requestTimeout, long scaleTimeout, int loggingInterval,
+                       long websocketTimeout, long websocketPingInterval,
+                       int maxConcurrentRequests, int maxConcurrentRequestsPerHost, OAuthTokenProvider oauthTokenProvider) {
     this.username = username;
     this.oauthToken = oauthToken;
     this.password = password;
@@ -76,6 +106,7 @@ public class RequestConfig {
     this.websocketPingInterval = websocketPingInterval;
     this.maxConcurrentRequests = maxConcurrentRequests;
     this.maxConcurrentRequestsPerHost = maxConcurrentRequestsPerHost;
+    this.oauthTokenProvider = oauthTokenProvider;
   }
 
   public String getUsername() {
@@ -103,11 +134,22 @@ public class RequestConfig {
   }
 
   public String getOauthToken() {
+    if (oauthTokenProvider != null) {
+      return oauthTokenProvider.getToken();
+    }
     return oauthToken;
   }
 
   public void setOauthToken(String oauthToken) {
     this.oauthToken = oauthToken;
+  }
+
+  public OAuthTokenProvider getOauthTokenProvider() {
+    return oauthTokenProvider;
+  }
+
+  public void setOauthTokenProvider(OAuthTokenProvider oauthTokenProvider) {
+    this.oauthTokenProvider = oauthTokenProvider;
   }
 
   public int getWatchReconnectLimit() {
@@ -199,6 +241,9 @@ public class RequestConfig {
   }
 
   /**
+   * Method to set Impersonate Group
+   *
+   * @param impersonateGroup impersonate group string
    * @deprecated Use {@link #setImpersonateGroups(String...)} instead
    */
   @Deprecated
@@ -207,6 +252,9 @@ public class RequestConfig {
   }
 
   /**
+   * Method for getting Impersonate Groups
+   *
+   * @return Impersonate group string
    * @deprecated Use {@link #getImpersonateGroups()} instead
    */
   @Deprecated

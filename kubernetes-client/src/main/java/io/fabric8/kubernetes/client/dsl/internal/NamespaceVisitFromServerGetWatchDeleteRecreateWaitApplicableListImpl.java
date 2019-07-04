@@ -174,7 +174,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
     }
 
     public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item, InputStream inputStream, Map<String, String> parameters, long gracePeriodSeconds, Boolean cascading) {
-        super(client, config, null, null, null, null, null);
+        super(client, config);
         this.fallbackNamespace = namespace;
         this.explicitNamespace = explicitNamespace;
         this.fromServer = fromServer;
@@ -214,7 +214,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
           result.add(created);
         }
       } else if(deletingExisting) {
-        Boolean deleted = h.delete(client, config, namespaceToUse, meta);
+        Boolean deleted = h.delete(client, config, namespaceToUse, cascading, meta);
         if (!deleted) {
           throw new KubernetesClientException("Failed to delete existing item:" + meta);
         }
@@ -253,7 +253,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
         //Second pass do delete
         for (HasMetadata meta :  acceptVisitors(asHasMetadata(item, true), visitors)) {
             ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
-            if (!h.delete(client, config, meta.getMetadata().getNamespace(), meta)) {
+            if (!h.delete(client, config, meta.getMetadata().getNamespace(), cascading, meta)) {
                 return false;
             }
         }
@@ -265,7 +265,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
         if (fromServer) {
             List<HasMetadata> result = new ArrayList<>();
             for (HasMetadata meta : acceptVisitors(asHasMetadata(item, true), visitors)) {
-                ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
+                ResourceHandler<HasMetadata, ? extends VisitableBuilder> h = handlerOf(meta);
                 HasMetadata reloaded = h.reload(client, config, meta.getMetadata().getNamespace(), meta);
                 if (reloaded != null) {
                     HasMetadata edited = reloaded;
@@ -364,7 +364,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
 
   private static <T> ResourceHandler handlerOf(T item) {
     if (item instanceof HasMetadata) {
-      return Handlers.<HasMetadata, HasMetadataVisitiableBuilder>get(((HasMetadata) item).getKind());
+      return Handlers.<HasMetadata, HasMetadataVisitiableBuilder>get(((HasMetadata) item).getKind(), ((HasMetadata) item).getApiVersion());
     } else if (item instanceof KubernetesList) {
       return new KubernetesListHandler();
     }  else {

@@ -15,13 +15,16 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.TreeMap;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
@@ -38,7 +41,6 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.api.model.DoneableDeploymentConfig;
-import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
 import okhttp3.OkHttpClient;
 
@@ -50,14 +52,21 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
   private static final Logger LOG = LoggerFactory.getLogger(DeploymentConfigOperationsImpl.class);
   private static final String DEPLOYMENT_CONFIG_REF = "openshift.io/deployment-config.name";
 
-
-  public DeploymentConfigOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
-    this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+  public DeploymentConfigOperationsImpl(OkHttpClient client, Config config) {
+    this(new RollingOperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public DeploymentConfigOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, DeploymentConfig item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, OpenShiftOperation.withApiGroup(client, APPS, apiVersion, config), "deploymentconfigs", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  public DeploymentConfigOperationsImpl(RollingOperationContext context) {
+    super(context.withApiGroupName(APPS).withPlural("deploymentconfigs"));
+    this.type = DeploymentConfig.class;
+    this.listType = DeploymentConfigList.class;
+    this.doneableType = DoneableDeploymentConfig.class;
     reaper = new DeploymentConfigReaper(this, client);
+  }
+
+  @Override
+  public DeploymentConfigOperationsImpl newInstance(OperationContext context) {
+    return new DeploymentConfigOperationsImpl((RollingOperationContext) context);
   }
 
   @Override
@@ -131,7 +140,8 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
       Map<String, String> selector = new HashMap<>();
       selector.put(DEPLOYMENT_CONFIG_REF, deployment.getMetadata().getName());
       if (selector != null && !selector.isEmpty()) {
-        Boolean deleted = new ReplicationControllerOperationsImpl(client, operation.getConfig(), operation.getNamespace())
+        Boolean deleted = new ReplicationControllerOperationsImpl(client, operation.getConfig())
+          .inNamespace(operation.namespace)
           .withLabels(selector)
           .delete();
       }
@@ -142,12 +152,10 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
     private void waitForObservedGeneration(final long observedGeneration) {
       final CountDownLatch countDownLatch = new CountDownLatch(1);
 
-      final Runnable deploymentPoller = new Runnable() {
-        public void run() {
-          DeploymentConfig deployment = operation.getMandatory();
-          if (observedGeneration <= deployment.getStatus().getObservedGeneration()) {
-            countDownLatch.countDown();
-          }
+      final Runnable deploymentPoller = () -> {
+        DeploymentConfig deployment = operation.getMandatory();
+        if (observedGeneration <= deployment.getStatus().getObservedGeneration()) {
+          countDownLatch.countDown();
         }
       };
 
@@ -166,12 +174,10 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
     private void waitForDeletion() {
       final CountDownLatch countDownLatch = new CountDownLatch(1);
 
-      final Runnable deploymentPoller = new Runnable() {
-        public void run() {
-          DeploymentConfig deployment = operation.get();
-          if (deployment == null) {
-            countDownLatch.countDown();
-          }
+      final Runnable deploymentPoller = () -> {
+        DeploymentConfig deployment = operation.get();
+        if (deployment == null) {
+          countDownLatch.countDown();
         }
       };
 
@@ -214,31 +220,29 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
     final String name = checkName(getItem());
     final String namespace = checkNamespace(getItem());
 
-    final Runnable deploymentPoller = new Runnable() {
-      public void run() {
-        try {
-          DeploymentConfig deploymentConfig = get();
-          //If the rs is gone, we shouldn't wait.
-          if (deploymentConfig == null) {
-            if (count == 0) {
-              queue.put(true);
-              return;
-            } else {
-              queue.put(new IllegalStateException("Can't wait for DeploymentConfig: " + checkName(getItem()) + " in namespace: " + checkName(getItem()) + " to scale. Resource is no longer available."));
-              return;
-            }
-          }
-          replicasRef.set(deploymentConfig.getStatus().getReplicas());
-          int currentReplicas = deploymentConfig.getStatus().getReplicas() != null ? deploymentConfig.getStatus().getReplicas() : 0;
-          if (deploymentConfig.getStatus().getObservedGeneration() >= deploymentConfig.getMetadata().getGeneration() && Objects.equals(deploymentConfig.getSpec().getReplicas(), currentReplicas)) {
+    final Runnable deploymentPoller = () -> {
+      try {
+        DeploymentConfig deploymentConfig = get();
+        //If the rs is gone, we shouldn't wait.
+        if (deploymentConfig == null) {
+          if (count == 0) {
             queue.put(true);
+            return;
           } else {
-            LOG.debug("Only {}/{} pods scheduled for DeploymentConfig: {} in namespace: {} seconds so waiting...",
-              deploymentConfig.getStatus().getReplicas(), deploymentConfig.getSpec().getReplicas(), deploymentConfig.getMetadata().getName(), namespace);
+            queue.put(new IllegalStateException("Can't wait for DeploymentConfig: " + checkName(getItem()) + " in namespace: " + checkName(getItem()) + " to scale. Resource is no longer available."));
+            return;
           }
-        } catch (Throwable t) {
-          LOG.error("Error while waiting for Deployment to be scaled.", t);
         }
+        replicasRef.set(deploymentConfig.getStatus().getReplicas());
+        int currentReplicas = deploymentConfig.getStatus().getReplicas() != null ? deploymentConfig.getStatus().getReplicas() : 0;
+        if (deploymentConfig.getStatus().getObservedGeneration() >= deploymentConfig.getMetadata().getGeneration() && Objects.equals(deploymentConfig.getSpec().getReplicas(), currentReplicas)) {
+          queue.put(true);
+        } else {
+          LOG.debug("Only {}/{} pods scheduled for DeploymentConfig: {} in namespace: {} seconds so waiting...",
+            deploymentConfig.getStatus().getReplicas(), deploymentConfig.getSpec().getReplicas(), deploymentConfig.getMetadata().getName(), namespace);
+        }
+      } catch (Throwable t) {
+        LOG.error("Error while waiting for Deployment to be scaled.", t);
       }
     };
 

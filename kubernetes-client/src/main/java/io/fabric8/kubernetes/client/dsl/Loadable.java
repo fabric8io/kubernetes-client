@@ -25,28 +25,28 @@ public interface Loadable<T> {
   /**
    * Load from an {@link InputStream}.
    * @param is  The input stream.
-   * @return
+   * @return returns de-serialized object
    */
   T load(InputStream is);
 
   /**
    * Load from a {@link URL}.
    * @param url  The url.
-   * @return
+   * @return returns de-serialized object
    */
   T load(URL url);
 
   /**
    * Load from a {@link File}.
    * @param file  The file.
-   * @return
+   * @return returns de-serialized object
    */
   T load(File file);
 
   /**
    * Load from path.
    * @param path  The path.
-   * @return
+   * @return returns de-serialized object
    */
   T load(String path);
 }

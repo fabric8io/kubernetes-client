@@ -48,6 +48,11 @@ public class KubernetesListHandler implements ResourceHandler<KubernetesList, Ku
   }
 
   @Override
+  public String getApiVersion() {
+    return "v1";
+  }
+
+  @Override
   public KubernetesList create(OkHttpClient client, Config config, String namespace, KubernetesList item) {
     return new KubernetesListOperationsImpl(client, config, namespace, null, true, false, false, item, null).create();
   }
@@ -57,7 +62,7 @@ public class KubernetesListHandler implements ResourceHandler<KubernetesList, Ku
     List<HasMetadata> replacedItems = new ArrayList<>();
 
     for (HasMetadata metadata : item.getItems()) {
-      ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> handler = Handlers.get(item.getKind());
+      ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> handler = Handlers.get(item.getKind(), item.getApiVersion());
       if (handler == null) {
         LOGGER.warn("No handler found for:" + item.getKind() + ". Ignoring");
       } else {
@@ -72,7 +77,7 @@ public class KubernetesListHandler implements ResourceHandler<KubernetesList, Ku
     List<HasMetadata> replacedItems = new ArrayList<>();
 
     for (HasMetadata metadata : item.getItems()) {
-      ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> handler = Handlers.get(item.getKind());
+      ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> handler = Handlers.get(item.getKind(), item.getApiVersion());
       if (handler == null) {
         LOGGER.warn("No handler found for:" + item.getKind() + ". Ignoring");
       } else {
@@ -88,8 +93,8 @@ public class KubernetesListHandler implements ResourceHandler<KubernetesList, Ku
   }
 
   @Override
-  public Boolean delete(OkHttpClient client, Config config, String namespace, KubernetesList item) {
-    return new KubernetesListOperationsImpl(client, config, namespace, null, true, false, false, item, null).delete(item);
+  public Boolean delete(OkHttpClient client, Config config, String namespace, Boolean cascading, KubernetesList item) {
+    return new KubernetesListOperationsImpl(client, config, namespace, null, cascading, false, false, item, null).delete(item);
   }
 
   @Override

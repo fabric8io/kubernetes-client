@@ -27,5 +27,5 @@ import io.fabric8.kubernetes.client.Watcher;
 public interface Resource<T, D> extends CreateOrReplaceable<T, T, D>, CreateFromServerGettable<T, T, D>,
   CascadingEditReplacePatchDeletable<T, T, D, Boolean>,
   VersionWatchable<Watch, Watcher<T>>,
-  Waitable<T, T>, Readiable {
+  Waitable<T, T>, Requirable<T>, Readiable {
 }

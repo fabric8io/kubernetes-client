@@ -16,7 +16,9 @@
 
 package io.fabric8.kubernetes;
 
+import com.google.common.io.Files;
 import io.fabric8.commons.ReadyEntity;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
@@ -36,9 +38,17 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -152,6 +162,54 @@ public class PodIT {
     execLatch.await(5, TimeUnit.SECONDS);
     assertNotNull(execWatch);
     assertNotNull(out.toString());
+  }
+
+  @Test
+  public void readFile() throws IOException {
+    // Wait for resources to get ready
+    ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(), currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(podReady);
+    ExecWatch watch = client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).writingOutput(System.out).exec("sh", "-c", "echo 'hello' > /msg");
+    try (InputStream is = client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).file("/msg").read())  {
+      String result = new BufferedReader(new InputStreamReader(is)).lines().collect(Collectors.joining("\n"));
+      assertEquals("hello", result);
+    }
+  }
+
+  @Test
+  public void copyFile() throws IOException {
+    // Wait for resources to get ready
+    ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(), currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(podReady);
+
+    File tmpDir = Files.createTempDir();
+    ExecWatch watch = client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).writingOutput(System.out).exec("sh", "-c", "echo 'hello' > /msg");
+    client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).file("/msg").copy(tmpDir.toPath());
+    File msg = tmpDir.toPath().resolve("msg").toFile();
+    assertTrue(msg.exists());
+    try (InputStream is = new FileInputStream(msg))  {
+      String result = new BufferedReader(new InputStreamReader(is)).lines().collect(Collectors.joining("\n"));
+      assertEquals("hello", result);
+    }
+  }
+
+  @Test
+  public void listFromServer() {
+    // Wait for resources to get ready
+    ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(), currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(podReady);
+
+    List<HasMetadata> resources = client.resourceList(pod1).inNamespace(currentNamespace).fromServer().get();
+
+    assertNotNull(resources);
+    assertEquals(1, resources.size());
+    assertNotNull(resources.get(0));
+
+    HasMetadata fromServerPod = resources.get(0);
+
+    assertEquals(pod1.getKind(), fromServerPod.getKind());
+    assertEquals(currentNamespace, fromServerPod.getMetadata().getNamespace());
+    assertEquals(pod1.getMetadata().getName(), fromServerPod.getMetadata().getName());
   }
 
   @After

@@ -23,44 +23,34 @@ import io.fabric8.kubernetes.api.model.apps.StatefulSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
 import io.fabric8.kubernetes.client.dsl.ImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
-import io.fabric8.kubernetes.client.dsl.Watchable;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
 
 import java.util.Collections;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 public class StatefulSetOperationsImpl extends RollableScalableResourceOperation<StatefulSet, StatefulSetList, DoneableStatefulSet, RollableScalableResource<StatefulSet, DoneableStatefulSet>>
   implements TimeoutImageEditReplacePatchable<StatefulSet, StatefulSet, DoneableStatefulSet>
 {
-
-  public StatefulSetOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(client, config, "v1", namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), false, config.getRollingTimeout(), TimeUnit.MILLISECONDS);
+  public StatefulSetOperationsImpl(OkHttpClient client, Config config) {
+    this(new RollingOperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public StatefulSetOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, StatefulSet item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    this(client, config, apiVersion, namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields, false, config.getRollingTimeout(), TimeUnit.MILLISECONDS);
-  }
-
-  public StatefulSetOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, StatefulSet item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, Boolean rolling, long rollingTimeout, TimeUnit rollingTimeUnit) {
-    super(client, config, "apps", apiVersion, "statefulsets", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields, rolling, rollingTimeout, rollingTimeUnit);
-  }
-
-  @Override
-  public ImageEditReplacePatchable<StatefulSet, StatefulSet, DoneableStatefulSet> withTimeout(long timeout, TimeUnit unit) {
-    return new StatefulSetOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rolling, timeout, unit);
+  public StatefulSetOperationsImpl(RollingOperationContext context) {
+    super(context.withApiGroupName("apps")
+      .withApiGroupVersion("v1")
+      .withPlural("statefulsets"));
+    this.type = StatefulSet.class;
+    this.listType = StatefulSetList.class;
+    this.doneableType = DoneableStatefulSet.class;
   }
 
   @Override
-  public ImageEditReplacePatchable<StatefulSet, StatefulSet, DoneableStatefulSet> withTimeoutInMillis(long timeoutInMillis) {
-    return new StatefulSetOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rolling, timeoutInMillis, TimeUnit.MILLISECONDS);
+  public StatefulSetOperationsImpl newInstance(OperationContext context) {
+    return new StatefulSetOperationsImpl((RollingOperationContext) context);
   }
 
   @Override
@@ -89,32 +79,10 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
       ? current.getStatus().getObservedGeneration() : -1;
   }
 
-  @Override
-  public RollableScalableResource<StatefulSet, DoneableStatefulSet> withName(String name) {
-    if (name == null || name.length() == 0) {
-      throw new IllegalArgumentException("Name must be provided.");
-    }
-    return new StatefulSetOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rolling, rollingTimeout, rollingTimeUnit);
-  }
-
-  @Override
-  public RollableScalableResource<StatefulSet, DoneableStatefulSet> fromServer() {
-    return new StatefulSetOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), true, getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rolling, rollingTimeout, rollingTimeUnit);
-  }
-
-  @Override
-  public Watchable<Watch, Watcher<StatefulSet>> withResourceVersion(String resourceVersion) {
-    return new StatefulSetOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), resourceVersion, isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rolling, rollingTimeout, rollingTimeUnit);
-  }
-
-  @Override
-  public EditReplacePatchDeletable<StatefulSet, StatefulSet, DoneableStatefulSet, Boolean> cascading(boolean enabled) {
-    return new StatefulSetOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), enabled, getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), rolling, rollingTimeout, rollingTimeUnit);
-  }
 
   @Override
   public StatefulSetOperationsImpl rolling() {
-    return new StatefulSetOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), true, rollingTimeout, rollingTimeUnit);
+    return new StatefulSetOperationsImpl(((RollingOperationContext)context).withRolling(true));
   }
 
   @Override
@@ -141,4 +109,13 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
     return new StatefulSetRollingUpdater(client, config, namespace).rollUpdate(oldRC, newRCBuilder.build());
   }
 
+  @Override
+  public ImageEditReplacePatchable<StatefulSet, StatefulSet, DoneableStatefulSet> withTimeout(long timeout, TimeUnit unit) {
+    return new StatefulSetOperationsImpl(((RollingOperationContext)context).withRollingTimeout(unit.toMillis(timeout)).withRollingTimeUnit(TimeUnit.MILLISECONDS));
+  }
+
+  @Override
+  public ImageEditReplacePatchable<StatefulSet, StatefulSet, DoneableStatefulSet> withTimeoutInMillis(long timeoutInMillis) {
+    return new StatefulSetOperationsImpl(((RollingOperationContext)context).withRollingTimeout(timeoutInMillis));
+  }
 }

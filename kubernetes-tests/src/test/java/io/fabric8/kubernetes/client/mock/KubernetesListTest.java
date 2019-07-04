@@ -33,6 +33,7 @@ import org.junit.Test;
 import java.io.InputStream;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -102,6 +103,6 @@ public class KubernetesListTest {
     KubernetesClient client = server.getClient();
     Boolean result = client.lists().inNamespace("test1").delete(list);
 
-    assertTrue(result);
+    assertFalse(result);
   }
 }

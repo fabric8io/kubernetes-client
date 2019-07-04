@@ -140,6 +140,7 @@ public class CertUtilsTest {
     verifyFabric8InStore(trustStore);
   }
 
+
   private void verifyFabric8InStore(KeyStore trustStore)
     throws KeyStoreException, CertificateException, NoSuchAlgorithmException, IOException {
 

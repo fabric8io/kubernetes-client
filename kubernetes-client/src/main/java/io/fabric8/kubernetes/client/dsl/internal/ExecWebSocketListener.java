@@ -16,8 +16,8 @@
 
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.Status;
-import io.fabric8.kubernetes.client.Callback;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
@@ -34,7 +34,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -61,6 +63,8 @@ import static io.fabric8.kubernetes.client.utils.Utils.shutdownExecutorService;
 public class ExecWebSocketListener extends WebSocketListener implements ExecWatch, AutoCloseable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExecWebSocketListener.class);
+    private static final String HEIGHT = "Height";
+    private static final String WIDTH = "Width";
 
     private final Config config;
     private final InputStream in;
@@ -89,6 +93,8 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
 
     private final Set<Closeable> toClose = new LinkedHashSet<>();
 
+    private ObjectMapper objectMapper;
+
     @Deprecated
     public ExecWebSocketListener(InputStream in, OutputStream out, OutputStream err, PipedOutputStream inputPipe, PipedInputStream outputPipe, PipedInputStream errorPipe, ExecListener listener) {
         this(new Config(), in, out, err, inputPipe, outputPipe, errorPipe, listener);
@@ -96,13 +102,18 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
 
     @Deprecated
     public ExecWebSocketListener(Config config, InputStream in, OutputStream out, OutputStream err, PipedOutputStream inputPipe, PipedInputStream outputPipe, PipedInputStream errorPipe, ExecListener listener) {
-        this(config, in, out, err, null, inputPipe, outputPipe, errorPipe, null, listener);
+        this(config, in, out, err, null, inputPipe, outputPipe, errorPipe, null, listener, null);
     }
 
+    @Deprecated
     public ExecWebSocketListener(Config config, InputStream in, OutputStream out, OutputStream err, OutputStream errChannel, PipedOutputStream inputPipe, PipedInputStream outputPipe, PipedInputStream errorPipe, PipedInputStream errorChannelPipe, ExecListener listener) {
+        this(config, in, out, err, errChannel, inputPipe, outputPipe, errorPipe, errorChannelPipe, listener, null);
+    }
+
+    public ExecWebSocketListener(Config config, InputStream in, OutputStream out, OutputStream err, OutputStream errChannel, PipedOutputStream inputPipe, PipedInputStream outputPipe, PipedInputStream errorPipe, PipedInputStream errorChannelPipe, ExecListener listener, Integer bufferSize) {
         this.config = config;
         this.listener = listener;
-        this.in = inputStreamOrPipe(in, inputPipe, toClose);
+        this.in = inputStreamOrPipe(in, inputPipe, toClose, bufferSize);
         this.out = outputStreamOrPipe(out, outputPipe, toClose);
         this.err = outputStreamOrPipe(err, errorPipe, toClose);
         this.errChannel = outputStreamOrPipe(errChannel, errorChannelPipe, toClose);
@@ -111,16 +122,14 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
         this.output = outputPipe;
         this.error = errorPipe;
         this.errorChannel = errorChannelPipe;
-        this.pumper = new NonBlockingInputStreamPumper(this.in, new Callback<byte[]>() {
-            @Override
-            public void call(byte[] data) {
-                try {
-                    send(data);
-                } catch (Exception e) {
-                    //
-                }
+        this.pumper = new NonBlockingInputStreamPumper(this.in, data -> {
+            try {
+                send(data);
+            } catch (Exception e) {
+                //
             }
         });
+        this.objectMapper = new ObjectMapper();
     }
 
 
@@ -306,23 +315,43 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
         return errorChannel;
     }
 
-    private void send(byte[] bytes) throws IOException {
+    public void resize(int cols, int rows) {
+      if (cols < 0 || rows < 0) {
+        return;
+      }
+      try {
+        Map<String, Integer> map = new HashMap<>(4);
+        map.put(HEIGHT, rows);
+        map.put(WIDTH, cols);
+        byte[] bytes = objectMapper.writeValueAsBytes(map);
+        send(bytes, (byte) 4);
+      } catch (Exception e) {
+        throw KubernetesClientException.launderThrowable(e);
+      }
+    }
+
+    private void send(byte[] bytes,byte flag) throws IOException {
         if (bytes.length > 0) {
             WebSocket ws = webSocketRef.get();
             if (ws != null) {
                 byte[] toSend = new byte[bytes.length + 1];
-                toSend[0] = 0;
+                toSend[0] = flag;
                 System.arraycopy(bytes, 0, toSend, 1, bytes.length);
                 ws.send(ByteString.of(toSend));
             }
         }
     }
 
-    private static InputStream inputStreamOrPipe(InputStream stream, PipedOutputStream out, Set<Closeable> toClose) {
+    private void send(byte[] bytes) throws IOException {
+       send(bytes,(byte)0);
+    }
+
+
+    private static InputStream inputStreamOrPipe(InputStream stream, PipedOutputStream out, Set<Closeable> toClose, Integer bufferSize) {
         if (stream != null) {
             return stream;
         } else if (out != null) {
-            PipedInputStream pis = new PipedInputStream();
+            PipedInputStream pis = bufferSize == null ? new PipedInputStream() : new PipedInputStream(bufferSize.intValue());
             toClose.add(out);
             toClose.add(pis);
             return pis;

@@ -16,14 +16,13 @@
 package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
 import io.fabric8.openshift.api.model.DoneableOAuthAccessToken;
 import io.fabric8.openshift.api.model.OAuthAccessToken;
 import io.fabric8.openshift.api.model.OAuthAccessTokenList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
-import java.util.Map;
-import java.util.TreeMap;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.OAUTH;
 
@@ -31,11 +30,20 @@ public class OAuthAccessTokenOperationsImpl extends OpenShiftOperation<OAuthAcce
   Resource<OAuthAccessToken, DoneableOAuthAccessToken>> {
 
   public OAuthAccessTokenOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
-    this(client, config, null, null, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+    this(new OperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public OAuthAccessTokenOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, OAuthAccessToken item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, OpenShiftOperation.withApiGroup(client, OAUTH, apiVersion, config), "oauthaccesstokens", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  public OAuthAccessTokenOperationsImpl(OperationContext context) {
+    super(context.withApiGroupName(OAUTH)
+      .withPlural("oauthaccesstokens"));
+    this.type = OAuthAccessToken.class;
+    this.listType = OAuthAccessTokenList.class;
+    this.doneableType = DoneableOAuthAccessToken.class;
+  }
+
+  @Override
+  public OAuthAccessTokenOperationsImpl newInstance(OperationContext context) {
+    return new OAuthAccessTokenOperationsImpl(context);
   }
 
   @Override

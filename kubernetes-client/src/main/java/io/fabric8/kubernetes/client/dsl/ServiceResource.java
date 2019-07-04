@@ -15,6 +15,15 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface ServiceResource<T, D> extends Resource<T, D> {
+import io.fabric8.kubernetes.client.LocalPortForward;
+import io.fabric8.kubernetes.client.PortForward;
+
+import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.WritableByteChannel;
+
+public interface ServiceResource<T, D> extends Resource<T, D> ,
+  PortForwardable<PortForward, LocalPortForward, ReadableByteChannel, WritableByteChannel> {
+
   String getURL(String portName);
+
 }

@@ -16,7 +16,9 @@
 package io.fabric8.kubernetes;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
+import io.fabric8.commons.DeleteEntity;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRole;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleList;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBuilder;
@@ -31,6 +33,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.After;
 
+import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -202,8 +205,11 @@ public class ClusterRoleIT {
     ClusterRoleList clusterRoleListBefore = client.rbac().clusterRoles().list();
 
     boolean deleted = client.rbac().clusterRoles().withName("node-reader").delete();
-
     assertTrue(deleted);
+
+    DeleteEntity<ClusterRole> deleteEntity = new DeleteEntity<>(ClusterRole.class, client, "node-reader", null);
+    await().atMost(30, TimeUnit.SECONDS).until(deleteEntity);
+
     ClusterRoleList clusterRoleListAfter = client.rbac().clusterRoles().list();
     assertEquals(clusterRoleListBefore.getItems().size()-1,clusterRoleListAfter.getItems().size());
   }
@@ -211,6 +217,8 @@ public class ClusterRoleIT {
   @After
   public void cleanup() {
     client.rbac().clusterRoles().withName("node-reader").delete();
+    DeleteEntity<ClusterRole> deleteEntity = new DeleteEntity<>(ClusterRole.class, client, "node-reader", null);
+    await().atMost(30, TimeUnit.SECONDS).until(deleteEntity);
   }
 
 }

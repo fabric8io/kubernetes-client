@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.client.utils.Utils;
+import org.assertj.core.util.Files;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,6 +32,7 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.WritableByteChannel;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -38,6 +41,7 @@ import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.api.model.WatchEvent;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.LocalPortForward;
@@ -92,8 +96,8 @@ public class PodTest {
 
   @Test
   public void testListWithLables() {
-   server.expect().withPath("/api/v1/namespaces/test/pods?labelSelector=" + toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new PodListBuilder().build()).always();
-   server.expect().withPath("/api/v1/namespaces/test/pods?labelSelector=" + toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new PodListBuilder()
+   server.expect().withPath("/api/v1/namespaces/test/pods?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new PodListBuilder().build()).always();
+   server.expect().withPath("/api/v1/namespaces/test/pods?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new PodListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .addNewItem().and()
@@ -119,6 +123,26 @@ public class PodTest {
     assertEquals(3, podList.getItems().size());
   }
 
+  @Test
+  public void testListWithFields() {
+   server.expect().withPath("/api/v1/namespaces/test/pods?fieldSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3!=value3,key3!=value4")).andReturn(200, new PodListBuilder()
+      .addNewItem().and()
+      .addNewItem().and()
+      .build()).once();
+
+    KubernetesClient client = server.getClient();
+    PodList podList = client.pods()
+      .withField("key1", "value1")
+      .withField("key2","value2")
+      .withoutField("key3","value3")
+      .withoutField("key3", "value4")
+      .list();
+
+
+    assertNotNull(podList);
+    assertEquals(2, podList.getItems().size());
+  }
+
 
   @Test(expected = KubernetesClientException.class)
   public void testEditMissing() {
@@ -136,7 +160,7 @@ public class PodTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.pods().withName("pod1").delete();
-    assertNotNull(deleted);
+    assertTrue(deleted);
 
     deleted = client.pods().withName("pod2").delete();
     assertFalse(deleted);
@@ -158,7 +182,7 @@ public class PodTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.pods().inAnyNamespace().delete(pod1, pod2);
-    assertNotNull(deleted);
+    assertTrue(deleted);
 
     deleted = client.pods().inAnyNamespace().delete(pod3);
     assertFalse(deleted);
@@ -171,7 +195,7 @@ public class PodTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.pods().inNamespace("test1").delete(pod1);
-    assertNotNull(deleted);
+    assertFalse(deleted);
   }
 
   @Test(expected = KubernetesClientException.class)
@@ -393,6 +417,9 @@ public class PodTest {
       buffer.flip();
       String data = ByteString.of(buffer).utf8();
       assertEquals("Hello World", data);
+      assertFalse("Expected no errors on port forward websocket", portForward.errorOccurred());
+      assertEquals("Expected no exceptions on port forward websocket", 0, portForward.getClientThrowables().size());
+      assertEquals("Expected no exceptions on port forward websocket", 0, portForward.getServerThrowables().size());
     }
 
   }
@@ -428,14 +455,60 @@ public class PodTest {
     assertEquals("Hello World!", got);
   }
 
-  /**
-   * Converts string to URL encoded string.
-   * It's not a fullblown converter, it serves just the purpose of this test.
-   * @param str
-   * @return
-   */
-  private static final String toUrlEncoded(String str) {
-    return str.replaceAll("=", "%3D");
+
+  @Test(expected = KubernetesClientException.class)
+  public void testOptionalCopy() {
+    KubernetesClient client = server.getClient();
+    client.pods().inNamespace("ns1").withName("pod2").file("/etc/hosts").copy(Files.temporaryFolder().toPath());
+  }
+
+  @Test(expected = KubernetesClientException.class)
+  public void testOptionalCopyDir() {
+    KubernetesClient client = server.getClient();
+    client.pods().inNamespace("ns1").withName("pod2").dir("/etc/hosts").copy(Files.temporaryFolder().toPath());
+  }
+  @Test
+  public void testListFromServer() {
+    PodBuilder podBuilder = new PodBuilder()
+      .withNewMetadata()
+        .withNamespace("test")
+        .withName("pod1")
+      .endMetadata();
+
+    Pod clientPod = podBuilder.build();
+    Pod serverPod = podBuilder
+      .editMetadata()
+        .withResourceVersion("1")
+      .endMetadata()
+      .withNewStatus()
+        .addNewCondition()
+          .withType("Ready")
+          .withStatus("True")
+        .endCondition()
+      .endStatus()
+      .build();
+
+    server.expect().get()
+      .withPath("/api/v1/namespaces/test/pods/pod1")
+      .andReturn(200, serverPod).once();
+
+    KubernetesClient client = server.getClient();
+
+    List<HasMetadata> resources = client.resourceList(clientPod).fromServer().get();
+
+    assertNotNull(resources);
+    assertEquals(1, resources.size());
+    assertNotNull(resources.get(0));
+    assertTrue(resources.get(0) instanceof Pod);
+
+    Pod fromServerPod = (Pod) resources.get(0);
+    assertNotNull(fromServerPod.getMetadata());
+    assertEquals("1", fromServerPod.getMetadata().getResourceVersion());
+    assertNotNull(fromServerPod.getStatus());
+    assertNotNull(fromServerPod.getStatus().getConditions());
+    assertEquals(1, fromServerPod.getStatus().getConditions().size());
+    assertEquals("Ready", fromServerPod.getStatus().getConditions().get(0).getType());
+    assertEquals("True", fromServerPod.getStatus().getConditions().get(0).getStatus());
   }
 
   private static String portForwardEncode(boolean dataChannel, String str) {
@@ -449,5 +522,4 @@ public class PodTest {
       throw new IllegalStateException(e);
     }
   }
-
 }

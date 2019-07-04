@@ -20,7 +20,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.client.VersionInfo;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
+import io.fabric8.kubernetes.client.utils.URLUtils;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -32,7 +34,7 @@ public class ClusterOperationsImpl extends OperationSupport {
   private String versionEndpoint;
 
   public ClusterOperationsImpl(OkHttpClient client, Config config, String item) {
-    super(client, config, null, null, null, null, null);
+    super(new OperationContext().withOkhttpClient(client).withConfig(config));
     this.versionEndpoint = item;
   }
 
@@ -40,7 +42,7 @@ public class ClusterOperationsImpl extends OperationSupport {
     try {
       Request.Builder requestBuilder = new Request.Builder()
         .get()
-        .url(config.getMasterUrl() + versionEndpoint);
+        .url(URLUtils.join(config.getMasterUrl(), versionEndpoint));
       Response response = client.newCall(requestBuilder.build()).execute();
       ObjectMapper objectMapper = new ObjectMapper();
       Map<String, String> myMap = objectMapper.readValue(response.body().string(), HashMap.class);

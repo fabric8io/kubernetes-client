@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.client.dsl.Triggerable;
 import io.fabric8.kubernetes.client.dsl.Typeable;
 import io.fabric8.kubernetes.client.dsl.Watchable;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.Build;
@@ -64,6 +65,7 @@ import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.BUILD;
+import static io.fabric8.openshift.client.OpenShiftAPIGroups.USER;
 
 public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, BuildConfigList, DoneableBuildConfig,
   BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build>>
@@ -86,56 +88,40 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
   private final long timeout;
   private final TimeUnit timeoutUnit;
 
-  public BuildConfigOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
-    this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>(), null, null, null, null, null, null, null, null, null, config.getBuildTimeout(), TimeUnit.MILLISECONDS);
+  public BuildConfigOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
+    this(new BuildConfigOperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public BuildConfigOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, BuildConfig item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    this(client, config, apiVersion, namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields, null, null, null, null, null, null, null, null, null, config.getBuildTimeout(), TimeUnit.MILLISECONDS);
-  }
+  public BuildConfigOperationsImpl(BuildConfigOperationContext context) {
+    super(context.withApiGroupName(BUILD)
+      .withPlural("buildconfigs"));
 
-  public BuildConfigOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, BuildConfig item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, String secret, String triggerType, String authorName, String authorEmail, String committerName, String committerEmail, String commit, String message, String asFile, long timeout, TimeUnit timeoutUnit) {
-    super(client, OpenShiftOperation.withApiGroup(client, BUILD, apiVersion, config), "buildconfigs", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
-    this.triggerType = triggerType;
-    this.secret = secret;
-    this.authorName = authorName;
-    this.authorEmail = authorEmail;
-    this.committerName = committerName;
-    this.committerEmail = committerEmail;
-    this.commit = commit;
-    this.message = message;
-    this.asFile = asFile;
+    this.type = BuildConfig.class;
+    this.listType = BuildConfigList.class;
+    this.doneableType = DoneableBuildConfig.class;
+
+    this.triggerType = context.getTriggerType();
+    this.secret = context.getSecret();
+    this.authorName = context.getAuthorName();
+    this.authorEmail = context.getAuthorEmail() ;
+    this.committerName = context.getCommitterName();
+    this.committerEmail = context.getCommitterEmail();
+    this.commit = context.getCommit();
+    this.message = context.getMessage();
+    this.asFile = context.getAsFile();
+    this.timeout = context.getTimeout();
+    this.timeoutUnit = context.getTimeoutUnit();
+
     reaper = new BuildConfigReaper(this);
-    this.timeout = timeout;
-    this.timeoutUnit = timeoutUnit;
   }
 
   @Override
-  public BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build> withName(String name) {
-    if (name == null || name.length() == 0) {
-      throw new IllegalArgumentException("Name must be provided.");
-    }
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
+  public BuildConfigOperationsImpl newInstance(OperationContext context) {
+    return new BuildConfigOperationsImpl((BuildConfigOperationContext) context);
   }
 
-  @Override
-  public OpenShiftOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build>> inNamespace(String namespace) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
-  }
-
-  @Override
-  public Gettable<BuildConfig> fromServer() {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), true, getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
-  }
-
-  @Override
-  public Typeable<Triggerable<WebHookTrigger, Void>> withSecret(String secret) {
-    return new BuildConfigOperationsImpl(client,getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
-  }
-
-  @Override
-  public BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build> load(InputStream is) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), unmarshal(is, getType()), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
+  public  BuildConfigOperationContext getContext() {
+    return (BuildConfigOperationContext) context;
   }
 
   @Override
@@ -153,7 +139,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
 
   @Override
   public CommitterAuthorMessageAsFileTimeoutInputStreamable<Build> instantiateBinary() {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationsImpl(getContext());
   }
 
 
@@ -175,15 +161,13 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
   }
 
   @Override
-  public Triggerable<WebHookTrigger, Void> withType(String type) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, type, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
+  public Triggerable<WebHookTrigger, Void> withType(String triggerType) {
+    return new BuildConfigOperationsImpl(getContext().withTriggerType(triggerType));
   }
 
   @Override
   public Watchable<Watch, Watcher<BuildConfig>> withResourceVersion(String resourceVersion) {
-    BuildConfigOperationsImpl buildConfigOperations = new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), namespace, getName(), isCascading(), getItem(), resourceVersion, isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
-
-    return buildConfigOperations;
+    return new BuildConfigOperationsImpl(getContext().withResourceVersion(resourceVersion));
   }
 
   /*
@@ -196,7 +180,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
         return;
     }
     String buildConfigLabelValue = getName().substring(0, Math.min(getName().length(), 63));
-    BuildList matchingBuilds = new BuildOperationsImpl(client, (OpenShiftConfig) config, namespace).inNamespace(namespace).withLabel(BUILD_CONFIG_LABEL, buildConfigLabelValue).list();
+    BuildList matchingBuilds = new BuildOperationsImpl(client, (OpenShiftConfig) config).inNamespace(namespace).withLabel(BUILD_CONFIG_LABEL, buildConfigLabelValue).list();
 
     if (matchingBuilds.getItems() != null) {
 
@@ -206,7 +190,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
           matchingBuild.getMetadata().getAnnotations() != null &&
           getName().equals(matchingBuild.getMetadata().getAnnotations().get(BUILD_CONFIG_ANNOTATION))) {
 
-          new BuildOperationsImpl(client, (OpenShiftConfig) config, namespace).inNamespace(matchingBuild.getMetadata().getNamespace()).withName(matchingBuild.getMetadata().getName()).delete();
+          new BuildOperationsImpl(client, (OpenShiftConfig) config).inNamespace(matchingBuild.getMetadata().getNamespace()).withName(matchingBuild.getMetadata().getName()).delete();
 
         }
 
@@ -314,42 +298,47 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
 
   @Override
   public TimeoutInputStreamable<Build> asFile(String fileName) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, fileName, timeout, timeoutUnit);
+    return new BuildConfigOperationsImpl(getContext().withAsFile(fileName));
   }
 
   @Override
   public MessageAsFileTimeoutInputStreamable<Build> withAuthorEmail(String email) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, email, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationsImpl(getContext().withAuthorEmail(email));
   }
 
   @Override
   public AuthorMessageAsFileTimeoutInputStreamable<Build> withCommitterEmail(String committerEmail) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationsImpl(getContext().withCommitterEmail(committerEmail));
   }
 
   @Override
   public AsFileTimeoutInputStreamable<Build> withMessage(String message) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationsImpl(getContext().withMessage(message));
   }
 
   @Override
   public AuthorEmailable<MessageAsFileTimeoutInputStreamable<Build>> withAuthorName(String authorName) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationsImpl(getContext().withAuthorName(authorName));
   }
 
   @Override
   public CommitterEmailable<AuthorMessageAsFileTimeoutInputStreamable<Build>> withCommitterName(String committerName) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, timeoutUnit);
+    return new BuildConfigOperationsImpl(getContext().withCommitterName(committerName));
   }
 
   @Override
   public InputStreamable<Build> withTimeout(long timeout, TimeUnit unit) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeout, unit);
+    return new BuildConfigOperationsImpl(getContext().withTimeout(timeout).withTimeoutUnit(unit));
   }
 
   @Override
   public InputStreamable<Build> withTimeoutInMillis(long timeoutInMillis) {
-    return new BuildConfigOperationsImpl(client, getConfig(), getAPIVersion(), getNamespace(), getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), secret, triggerType, authorName, authorEmail, committerName, committerEmail, commit, message, asFile, timeoutInMillis, TimeUnit.MILLISECONDS);
+    return withTimeout(timeoutInMillis, TimeUnit.MILLISECONDS);
+  }
+
+  @Override
+  public Typeable<Triggerable<WebHookTrigger, Void>> withSecret(String secret) {
+    return new BuildConfigOperationsImpl(getContext().withSecret(secret));
   }
 
   private static class BuildConfigReaper implements Reaper {

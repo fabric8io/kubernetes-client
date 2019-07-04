@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -66,26 +67,29 @@ public class TemplateOperationsImpl
   private static final String EXPRESSION = "expression";
   private static final TypeReference<HashMap<String, String>> MAPS_REFERENCE = new TypeReference<HashMap<String, String>>() {
   };
+
   private final Map<String, String> parameters;
 
-  public TemplateOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
-    this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+  public TemplateOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
+    this(new TemplateOperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public TemplateOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, Template item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    this(client, config, apiVersion, "templates", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields, null);
+  public TemplateOperationsImpl(TemplateOperationContext context) {
+    super(context.withApiGroupName(TEMPLATE)
+      .withPlural("templates"));
+    this.parameters = context.getParameters();
+    this.type = Template.class;
+    this.listType = TemplateList.class;
+    this.doneableType = DoneableTemplate.class;
+  }
+  @Override
+  public TemplateOperationsImpl newInstance(OperationContext context) {
+    return new TemplateOperationsImpl((TemplateOperationContext) context);
   }
 
-  public TemplateOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion,  String namespace, String name, Boolean cascading, Template item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, Map<String, String> parameters) {
-    this(client, config, apiVersion, "templates", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields, parameters);
+  public TemplateOperationContext getContext() {
+    return (TemplateOperationContext) context;
   }
-
-
-  public TemplateOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String resourceT, String namespace, String name, Boolean cascading, Template item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, Map<String, String> parameters) {
-    super(client, OpenShiftOperation.withApiGroup(client, TEMPLATE, apiVersion, config), resourceT, namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
-    this.parameters = parameters;
-  }
-
 
   @Override
   public KubernetesList process(File f) {
@@ -162,8 +166,7 @@ public class TemplateOperationsImpl
 
   @Override
   public MixedOperation<Template, TemplateList, DoneableTemplate, TemplateResource<Template, KubernetesList, DoneableTemplate>> withParameters(Map<String, String> parameters) {
-    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), getAPIVersion(), namespace, getName(), isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(),
-      getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), parameters);
+    return new TemplateOperationsImpl(getContext().withParameters(parameters));
   }
 
   public KubernetesList processLocally(Map<String, String> valuesMap)  {
@@ -273,23 +276,7 @@ public class TemplateOperationsImpl
         .withObjects(items.toArray(new HasMetadata[items.size()])).build();
     }
 
-    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), null, namespace, null, false, template, null, false, 0L,
-      null, null, null, null, null, null);
-  }
-
-  @Override
-  public TemplateResource<Template, KubernetesList, DoneableTemplate> withName(String name) {
-    if (name == null || name.length() == 0) {
-      throw new IllegalArgumentException("Name must be provided.");
-    }
-    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), getAPIVersion(), namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(),
-      getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), parameters);
-  }
-
-  @Override
-  public OpenShiftOperation<Template, TemplateList, DoneableTemplate, TemplateResource<Template, KubernetesList, DoneableTemplate>> inNamespace(String namespace) {
-    return new TemplateOperationsImpl(client, OpenShiftConfig.wrap(config), getAPIVersion(), namespace, name, isCascading(), getItem(), getResourceVersion(), isReloadingFromServer(), getGracePeriodSeconds(),
-      getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields(), parameters);
+    return new TemplateOperationsImpl(getContext().withItem(template));
   }
 
   @Override

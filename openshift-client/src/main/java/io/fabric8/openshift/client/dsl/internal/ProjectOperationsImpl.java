@@ -16,6 +16,7 @@
 package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
 import io.fabric8.openshift.api.model.DoneableProject;
 import io.fabric8.openshift.api.model.Project;
@@ -31,13 +32,20 @@ public class ProjectOperationsImpl extends OpenShiftOperation<Project, ProjectLi
   Resource<Project, DoneableProject>> {
 
   public ProjectOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
-    this(client, config, null, null, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+    this(new OperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public ProjectOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, Project item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, OpenShiftOperation.withApiGroup(client, PROJECT, apiVersion, config), "projects", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  public ProjectOperationsImpl(OperationContext context) {
+    super(context.withApiGroupName(PROJECT)
+      .withPlural("projects"));
+    this.type = Project.class;
+    this.listType = ProjectList.class;
+    this.doneableType = DoneableProject.class;
   }
-
+  @Override
+  public ProjectOperationsImpl newInstance(OperationContext context) {
+    return new ProjectOperationsImpl(context);
+  }
 
   @Override
   public boolean isResourceNamespaced() {

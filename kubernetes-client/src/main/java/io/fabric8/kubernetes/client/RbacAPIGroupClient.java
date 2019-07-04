@@ -41,12 +41,12 @@ public class RbacAPIGroupClient extends BaseClient implements RbacAPIGroupDSL {
 
   @Override
   public MixedOperation<Role, RoleList, DoneableRole, Resource<Role, DoneableRole>> roles() {
-    return new RoleOperationsImpl(httpClient, getConfiguration(), getNamespace());
+    return new RoleOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
   public MixedOperation<RoleBinding, RoleBindingList, DoneableRoleBinding, Resource<RoleBinding, DoneableRoleBinding>> roleBindings() {
-    return new RoleBindingOperationsImpl(httpClient, getConfiguration(), getNamespace());
+    return new RoleBindingOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override

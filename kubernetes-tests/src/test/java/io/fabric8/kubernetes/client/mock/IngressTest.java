@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.api.model.extensions.IngressListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -66,8 +67,8 @@ public class IngressTest {
 
   @Test
   public void testListWithLables() {
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/ingresses?labelSelector=" + toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new IngressListBuilder().build()).always();
-   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/ingresses?labelSelector=" + toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new IngressListBuilder()
+   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/ingresses?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new IngressListBuilder().build()).always();
+   server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/ingresses?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new IngressListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .addNewItem().and()
@@ -120,7 +121,7 @@ public class IngressTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.extensions().ingress().withName("ingress1").delete();
-    assertNotNull(deleted);
+    assertTrue(deleted);
 
     deleted = client.extensions().ingress().withName("ingress2").delete();
     assertFalse(deleted);
@@ -142,7 +143,7 @@ public class IngressTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.extensions().ingress().inAnyNamespace().delete(ingress1, ingress2);
-    assertNotNull(deleted);
+    assertTrue(deleted);
 
     deleted = client.extensions().ingress().inAnyNamespace().delete(ingress3);
     assertFalse(deleted);
@@ -155,7 +156,7 @@ public class IngressTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.extensions().ingress().inNamespace("test1").delete(ingress1);
-    assertNotNull(deleted);
+    assertTrue(deleted);
   }
 
   @Test(expected = KubernetesClientException.class)
@@ -165,16 +166,6 @@ public class IngressTest {
     KubernetesClient client = server.getClient();
 
     client.extensions().ingress().inNamespace("test1").withName("myingress1").create(ingress1);
-  }
-
-  /**
-   * Converts string to URL encoded string.
-   * It's not a fullblown converter, it serves just the purpose of this test.
-   * @param str
-   * @return
-   */
-  private static final String toUrlEncoded(String str) {
-    return str.replaceAll("=", "%3D");
   }
 
 }

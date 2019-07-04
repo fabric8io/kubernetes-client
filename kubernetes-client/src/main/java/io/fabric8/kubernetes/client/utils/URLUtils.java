@@ -15,15 +15,14 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
-import java.net.MalformedURLException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
+import java.net.URLEncoder;
 
 public class URLUtils {
-    private URLUtils() {}
 
-    public static String join(String... parts) {
+  public static String join(String... parts) {
         StringBuilder sb = new StringBuilder();
 
         String urlQueryParams = "";
@@ -112,7 +111,8 @@ public class URLUtils {
   /**
    * Joins all the given strings, ignoring nulls so that they form a URL with / between the paths without a // if the previous path ends with / and the next path starts with / unless a path item is blank
    *
-   * @returns the strings concatenated together with / while avoiding a double // between non blank strings.
+   * @param strings A list of strings which you need to concatenate.
+   * @return the strings concatenated together with / while avoiding a double // between non blank strings.
    */
   public static String pathJoin(String... strings) {
     StringBuilder buffer = new StringBuilder();
@@ -151,4 +151,7 @@ public class URLUtils {
     }
   }
 
+  public static String encodeToUTF(String url) throws UnsupportedEncodingException {
+	  return URLEncoder.encode(url, "UTF-8");
+  }
 }

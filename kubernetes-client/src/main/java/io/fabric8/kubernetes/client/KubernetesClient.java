@@ -68,6 +68,8 @@ import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionList;
 import io.fabric8.kubernetes.api.model.apiextensions.DoneableCustomResourceDefinition;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
 
 import java.io.InputStream;
 import java.util.Collection;
@@ -79,13 +81,24 @@ public interface KubernetesClient extends Client {
   <T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResources(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass);
 
   /**
+   *
    * @deprecated Use {@link #customResources(CustomResourceDefinition, Class, Class, Class)} instead.
+   * @param crd Custom Resource Definition
+   * @param resourceType resource type Pojo
+   * @param listClass list class Pojo
+   * @param doneClass Done class Pojo
+   * @param <T> template argument for resource
+   * @param <L> template argument for list
+   * @param <D> template argument for doneable resource
+   * @return Kubernetes client object for manipulating custom resource.
    */
   <T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResource(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass);
 
   ExtensionsAPIGroupDSL extensions();
 
   VersionInfo getVersion();
+
+  RawCustomResourceOperationsImpl customResource(CustomResourceDefinitionContext customResourceDefinition);
 
   AppsAPIGroupDSL apps();
 
@@ -150,5 +163,7 @@ public interface KubernetesClient extends Client {
   MixedOperation<ConfigMap, ConfigMapList, DoneableConfigMap, Resource<ConfigMap, DoneableConfigMap>> configMaps();
 
   MixedOperation<LimitRange, LimitRangeList, DoneableLimitRange, Resource<LimitRange, DoneableLimitRange>> limitRanges();
+
+  SubjectAccessReviewDSL subjectAccessReviewAuth();
 
 }

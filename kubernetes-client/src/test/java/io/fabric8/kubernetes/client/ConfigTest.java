@@ -24,7 +24,6 @@ import org.apache.commons.lang.SystemUtils;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -133,6 +132,9 @@ public class ConfigTest {
     assertConfig(config);
 
     config = new ConfigBuilder().build();
+    assertConfig(config);
+
+    config = Config.builder().build();
     assertConfig(config);
   }
 
@@ -438,7 +440,6 @@ public class ConfigTest {
   }
 
   @Test
-  @Ignore
   public void honorClientAuthenticatorCommands() throws Exception {
     if (SystemUtils.IS_OS_WINDOWS) {
       System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_EXEC_WIN_FILE);
@@ -450,6 +451,16 @@ public class ConfigTest {
     Config config = Config.autoConfigure(null);
     assertNotNull(config);
     assertEquals("HELLO WORLD", config.getOauthToken());
+  }
+
+  @Test
+  public void shouldBeUsedTokenSuppliedByProvider() throws Exception {
+
+    Config config = new ConfigBuilder().withOauthToken("oauthToken")
+                                       .withOauthTokenProvider(() -> "PROVIDER_TOKEN")
+                                       .build();
+
+    assertEquals("PROVIDER_TOKEN", config.getOauthToken());
   }
 
   private void assertConfig(Config config) {

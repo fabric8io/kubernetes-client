@@ -51,21 +51,21 @@ public class AppsAPIGroupClient extends BaseClient implements AppsAPIGroupDSL {
 
   @Override
   public MixedOperation<DaemonSet, DaemonSetList, DoneableDaemonSet, Resource<DaemonSet, DoneableDaemonSet>> daemonSets() {
-    return new DaemonSetOperationsImpl(httpClient, getConfiguration(), getNamespace());
+    return new DaemonSetOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
-  public MixedOperation<Deployment, DeploymentList, DoneableDeployment, ScalableResource<Deployment, DoneableDeployment>> deployments() {
-    return new DeploymentOperationsImpl(httpClient, getConfiguration(), getNamespace());
+  public MixedOperation<Deployment, DeploymentList, DoneableDeployment, RollableScalableResource<Deployment, DoneableDeployment>> deployments() {
+    return new DeploymentOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
   public MixedOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, RollableScalableResource<ReplicaSet, DoneableReplicaSet>> replicaSets() {
-    return new ReplicaSetOperationsImpl(httpClient, getConfiguration(), getNamespace());
+    return new ReplicaSetOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
   public MixedOperation<StatefulSet, StatefulSetList, DoneableStatefulSet, RollableScalableResource<StatefulSet, DoneableStatefulSet>> statefulSets() {
-    return new StatefulSetOperationsImpl(httpClient, getConfiguration(), getNamespace());
+    return new StatefulSetOperationsImpl(httpClient, getConfiguration());
   }
 }

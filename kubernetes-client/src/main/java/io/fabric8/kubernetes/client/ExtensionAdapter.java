@@ -18,7 +18,7 @@ package io.fabric8.kubernetes.client;
 
 
 /**
- * An Adapter that can be used to adapt an instance of the {@link NamespacedKubernetesClient} to an {@link io.fabric8.kubernetes.client.Extension}.
+ * An Adapter that can be used to adapt an instance of the {@link NamespacedKubernetesClient} .
  *
  * @param <C> The Client.
  */
@@ -33,7 +33,7 @@ public interface ExtensionAdapter<C> {
    * Checks if it is possible to adapt.
    * It checks that the requirements of the target client are meet. (e.g. checks that openshift is available).
    * @param client The instance of {@link NamespacedKubernetesClient} to adapt.
-   * @return
+   * @return boolean value indicating whether client is adaptable or not.
    */
   Boolean isAdaptable(Client client);
 

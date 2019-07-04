@@ -20,14 +20,14 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-client-project</artifactId>
-    <version>4.1-SNAPSHOT</version>
+    <version>4.3-SNAPSHOT</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.fabric8</groupId>
   <artifactId>kubernetes-server-mock</artifactId>
-  <version>4.1-SNAPSHOT</version>
+  <version>4.3-SNAPSHOT</version>
 
   <name>Fabric8 :: Kubernetes :: Server Mock</name>
   <packaging>jar</packaging>
@@ -43,6 +43,12 @@
       <groupId>io.fabric8</groupId>
       <artifactId>mockwebserver</artifactId>
       <version>${mockwebserver.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.sun</groupId>
+          <artifactId>tools</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
@@ -57,6 +63,7 @@
       <version>${slf4j.version}</version>
       <scope>test</scope>
     </dependency>
+
   </dependencies>
 
 </project>

@@ -15,26 +15,44 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.model.DoneableService;
+import io.fabric8.kubernetes.api.model.Service;
+import io.fabric8.kubernetes.api.model.ServiceBuilder;
+import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.api.model.*;
+import io.fabric8.kubernetes.api.model.DoneableService;
+import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.client.*;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.ServiceResource;
+import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.utils.URLUtils;
+import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.OkHttpClient;
 
-import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 
+import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.WritableByteChannel;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class ServiceOperationsImpl extends HasMetadataOperation<Service, ServiceList, DoneableService, ServiceResource<Service, DoneableService>> implements ServiceResource<Service, DoneableService> {
 
-  public ServiceOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+  public ServiceOperationsImpl(OkHttpClient client, Config config) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public ServiceOperationsImpl(OkHttpClient client, Config config, String apiVersion, String namespace, String name, Boolean cascading, Service item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, config, null, apiVersion, "services", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  public ServiceOperationsImpl(OperationContext context) {
+    super(context.withPlural("services"));
+    this.type = Service.class;
+    this.listType = ServiceList.class;
+    this.doneableType = DoneableService.class;
+  }
+
+  @Override
+  public ServiceOperationsImpl newInstance(OperationContext context) {
+    return new ServiceOperationsImpl(context);
   }
 
   @Override
@@ -67,14 +85,14 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
 
   @Override
   public Service waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
-    long started = System.currentTimeMillis();
+    long started = System.nanoTime();
     super.waitUntilReady(amount, timeUnit);
-    long alreadySpent = System.currentTimeMillis() - started;
+    long alreadySpent = System.nanoTime() - started;
 
     // if awaiting existence took very long, let's give at least 10 seconds to awaiting readiness
-    long remaining = Math.max(10_000, timeUnit.toMillis(amount) - alreadySpent);
+    long remaining = Math.max(10_000, timeUnit.toNanos(amount) - alreadySpent);
 
-    EndpointsOperationsImpl endpointsOperation = new EndpointsOperationsImpl(client, config, apiVersion, getNamespace(), getName(), isCascading(), null, null, isReloadingFromServer(), getGracePeriodSeconds(), getLabels(), getLabelsNot(), getLabelsIn(), getLabelsNotIn(), getFields());
+    EndpointsOperationsImpl endpointsOperation = new EndpointsOperationsImpl(context);
     endpointsOperation.waitUntilReady(remaining, TimeUnit.MILLISECONDS);
 
     return get();
@@ -108,6 +126,33 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
     }
 
     return null;
+  }
+
+
+  private Pod matchingPod() {
+    Service item = fromServer().get();
+    Map<String, String> labels = item.getSpec().getSelector();
+    PodList list = new PodOperationsImpl(client, config).withLabels(labels).list();
+    return list.getItems().stream().findFirst().orElseThrow(() -> new IllegalStateException("Could not find matching pod for service:" + item + "."));
+  }
+
+  @Override
+  public PortForward portForward(int port, ReadableByteChannel in, WritableByteChannel out) {
+    Pod m = matchingPod();
+    return  new PodOperationsImpl(client, config).inNamespace(m.getMetadata().getNamespace()).withName(m.getMetadata().getName()).portForward(port, in, out);
+  }
+
+
+  @Override
+  public LocalPortForward portForward(int port, int localPort) {
+    Pod m = matchingPod();
+    return  new PodOperationsImpl(client, config).inNamespace(m.getMetadata().getNamespace()).withName(m.getMetadata().getName()).portForward(port, localPort);
+  }
+
+  @Override
+  public LocalPortForward portForward(int port) {
+    Pod m = matchingPod();
+    return  new PodOperationsImpl(client, config).inNamespace(m.getMetadata().getNamespace()).withName(m.getMetadata().getName()).portForward(port);
   }
 
   public class ServiceToUrlSortComparator implements Comparator<ServiceToURLProvider> {

@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.api.model.policy.PodDisruptionBudgetListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -30,6 +31,7 @@ import java.util.Collections;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -66,8 +68,8 @@ public class PodDisruptionBudgetTest {
 
   @Test
   public void testListWithLabels() {
-    server.expect().withPath("/apis/policy/v1beta1/namespaces/test/poddisruptionbudgets?labelSelector=" + toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new PodDisruptionBudgetListBuilder().build()).always();
-    server.expect().withPath("/apis/policy/v1beta1/namespaces/test/poddisruptionbudgets?labelSelector=" + toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new PodDisruptionBudgetListBuilder()
+    server.expect().withPath("/apis/policy/v1beta1/namespaces/test/poddisruptionbudgets?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new PodDisruptionBudgetListBuilder().build()).always();
+    server.expect().withPath("/apis/policy/v1beta1/namespaces/test/poddisruptionbudgets?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new PodDisruptionBudgetListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .addNewItem().and()
@@ -135,7 +137,7 @@ public class PodDisruptionBudgetTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.policy().podDisruptionBudget().inNamespace("test1").delete(podDisruptionBudget1);
-    assertNotNull(deleted);
+    assertFalse(deleted);
   }
 
   @Test(expected = KubernetesClientException.class)
@@ -150,16 +152,5 @@ public class PodDisruptionBudgetTest {
   public void testLoadFromFile() {
     KubernetesClient client = server.getClient();
     assertNotNull(client.policy().podDisruptionBudget().load(getClass().getResourceAsStream("/test-pdb.yml")).get());
-  }
-
-  /**
-   * Converts string to URL encoded string.
-   * It's not a full blown converter, it serves just the purpose of this test.
-   *
-   * @param str
-   * @return
-   */
-  private static final String toUrlEncoded(String str) {
-    return str.replaceAll("=", "%3D");
   }
 }

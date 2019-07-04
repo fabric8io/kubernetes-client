@@ -70,7 +70,7 @@ public class ServiceAccountIT {
     ServiceAccount svcAccount = client.serviceAccounts().inNamespace(currentNamespace)
       .load(getClass().getResourceAsStream("/test-serviceaccount.yml")).get();
     assertThat(svcAccount).isNotNull();
-    assertThat(svcAccount.getMetadata().getUid()).isNotBlank();
+    assertThat(svcAccount.getMetadata().getName()).isNotNull();
   }
 
   @Test

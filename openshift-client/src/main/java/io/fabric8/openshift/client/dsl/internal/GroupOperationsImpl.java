@@ -16,6 +16,7 @@
 package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
 import io.fabric8.openshift.api.model.DoneableGroup;
 import io.fabric8.openshift.api.model.Group;
@@ -28,12 +29,22 @@ import java.util.TreeMap;
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.USER;
 
 public class GroupOperationsImpl extends OpenShiftOperation<Group, GroupList, DoneableGroup, Resource<Group, DoneableGroup>> {
-  public GroupOperationsImpl(OkHttpClient client, OpenShiftConfig config, String namespace) {
-    this(client, config, null, namespace, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+
+  public GroupOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public GroupOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, Group item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, OpenShiftOperation.withApiGroup(client, USER, apiVersion, config), "groups", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  public GroupOperationsImpl(OperationContext context) {
+    super(context.withApiGroupName(USER)
+      .withPlural("groups"));
+    this.type = Group.class;
+    this.listType = GroupList.class;
+    this.doneableType = DoneableGroup.class;
+  }
+
+  @Override
+  public GroupOperationsImpl newInstance(OperationContext context) {
+    return new GroupOperationsImpl(context);
   }
 
   @Override

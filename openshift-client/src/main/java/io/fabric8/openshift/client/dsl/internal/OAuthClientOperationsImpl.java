@@ -16,6 +16,7 @@
 package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
 import io.fabric8.openshift.api.model.DoneableOAuthClient;
 import io.fabric8.openshift.api.model.OAuthClient;
@@ -31,11 +32,20 @@ public class OAuthClientOperationsImpl extends OpenShiftOperation<OAuthClient, O
   Resource<OAuthClient, DoneableOAuthClient>> {
 
   public OAuthClientOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
-    this(client, config, null, null, null, true, null, null, false, -1, new TreeMap<String, String>(), new TreeMap<String, String>(), new TreeMap<String, String[]>(), new TreeMap<String, String[]>(), new TreeMap<String, String>());
+    this(new OperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public OAuthClientOperationsImpl(OkHttpClient client, OpenShiftConfig config, String apiVersion, String namespace, String name, Boolean cascading, OAuthClient item, String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, Map<String, String> labels, Map<String, String> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields) {
-    super(client, OpenShiftOperation.withApiGroup(client, OAUTH, apiVersion, config), "oauthclients", namespace, name, cascading, item, resourceVersion, reloadingFromServer, gracePeriodSeconds, labels, labelsNot, labelsIn, labelsNotIn, fields);
+  public OAuthClientOperationsImpl(OperationContext context) {
+    super(context.withApiGroupName(OAUTH)
+      .withPlural("oauthclients"));
+    this.type = OAuthClient.class;
+    this.listType = OAuthClientList.class;
+    this.doneableType = DoneableOAuthClient.class;
+  }
+
+  @Override
+  public OAuthClientOperationsImpl newInstance(OperationContext context) {
+    return new OAuthClientOperationsImpl(context);
   }
 
   @Override

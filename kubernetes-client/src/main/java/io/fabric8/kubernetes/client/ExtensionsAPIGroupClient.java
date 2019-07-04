@@ -63,13 +63,13 @@ public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAP
   @Override
   @Deprecated
   public MixedOperation<DaemonSet, DaemonSetList, DoneableDaemonSet, Resource<DaemonSet, DoneableDaemonSet>> daemonSets() {
-    return new DaemonSetOperationsImpl(httpClient, getConfiguration(), getNamespace());
+    return new DaemonSetOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
   @Deprecated
-  public MixedOperation<Deployment, DeploymentList, DoneableDeployment, ScalableResource<Deployment, DoneableDeployment>> deployments() {
-    return new DeploymentOperationsImpl(httpClient, getConfiguration(), getNamespace());
+  public MixedOperation<Deployment, DeploymentList, DoneableDeployment, RollableScalableResource<Deployment, DoneableDeployment>> deployments() {
+    return new DeploymentOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
@@ -80,30 +80,30 @@ public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAP
 
   @Override
   public MixedOperation<Ingress, IngressList, DoneableIngress, Resource<Ingress, DoneableIngress>> ingresses() {
-    return new IngressOperationsImpl(httpClient, getConfiguration(), getNamespace());
+    return new IngressOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
   @Deprecated
   public MixedOperation<Job, JobList, DoneableJob, ScalableResource<Job, DoneableJob>> jobs() {
-    return new JobOperationsImpl(httpClient, getConfiguration(), getNamespace());
+    return new JobOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
   @Deprecated
   public MixedOperation<NetworkPolicy, NetworkPolicyList, DoneableNetworkPolicy, Resource<NetworkPolicy, DoneableNetworkPolicy>> networkPolicies() {
-    return new NetworkPolicyOperationsImpl(httpClient, getConfiguration(), getNamespace());
+    return new NetworkPolicyOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
   public MixedOperation<PodSecurityPolicy, PodSecurityPolicyList, DoneablePodSecurityPolicy, Resource<PodSecurityPolicy, DoneablePodSecurityPolicy>> podSecurityPolicies() {
-    return new PodSecurityPolicyOperationsImpl(httpClient, getConfiguration(), getNamespace());
+    return new PodSecurityPolicyOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
   @Deprecated
   public MixedOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, RollableScalableResource<ReplicaSet, DoneableReplicaSet>> replicaSets() {
-    return new ReplicaSetOperationsImpl(httpClient, getConfiguration(), getNamespace());
+    return new ReplicaSetOperationsImpl(httpClient, getConfiguration());
   }
 
 }
