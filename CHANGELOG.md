@@ -5,6 +5,7 @@
    * Fix #1592: Corrected type returned by Config.builder() 
    
   Improvements
+    * Test coverage for Namespace.
     * Example added for NamespaceQuota
     * Example added for Endpoints.
     * Test coverage for Endpoints.
