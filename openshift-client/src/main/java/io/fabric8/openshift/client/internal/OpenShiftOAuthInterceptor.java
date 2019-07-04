@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.client.OpenShiftConfig;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
@@ -35,7 +36,8 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
 
     private static final String AUTHORIZATION = "Authorization";
     private static final String LOCATION = "Location";
-    private static final String AUTHORIZE_PATH = "oauth/authorize?response_type=token&client_id=openshift-challenging-client";
+    private static final String AUTHORIZATION_SERVER_PATH = ".well-known/oauth-authorization-server";
+    private static final String AUTHORIZE_QUERY = "?response_type=token&client_id=openshift-challenging-client";
 
     private static final String BEFORE_TOKEN = "access_token=";
     private static final String AFTER_TOKEN = "&expires";
@@ -108,9 +110,22 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
             builder.interceptors().remove(this);
             OkHttpClient clone = builder.build();
 
+            URL url = new URL(URLUtils.join(config.getMasterUrl(), AUTHORIZATION_SERVER_PATH));
+            Response response = clone.newCall(new Request.Builder().get().url(url).build()).execute();
+
+            if (!response.isSuccessful() || response.body() == null) {
+                throw new KubernetesClientException("Unexpected response (" + response.code() + " " + response.message() + ")");
+            }
+
+            String body = response.body().string();
+            JSONObject jsonResponse = new JSONObject(body);
+            String authorizationServer = jsonResponse.getString("authorization_endpoint");
+            response.body().close();
+
+            url = new URL(authorizationServer + AUTHORIZE_QUERY);
+
             String credential = Credentials.basic(config.getUsername(), new String(config.getPassword()));
-            URL url = new URL(URLUtils.join(config.getMasterUrl(), AUTHORIZE_PATH));
-            Response response = clone.newCall(new Request.Builder().get().url(url).header(AUTHORIZATION, credential).build()).execute();
+            response = clone.newCall(new Request.Builder().get().url(url).header(AUTHORIZATION, credential).build()).execute();
 
             response.body().close();
             response = response.priorResponse() != null ? response.priorResponse() : response;
