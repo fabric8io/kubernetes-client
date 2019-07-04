@@ -13,23 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.ap4k.crd.configurator;
+package io.dekorate.crd.confg;
 
-import io.ap4k.crd.confg.Keys;
-import io.ap4k.crd.config.CustomResourceConfigBuilder;
-import io.ap4k.kubernetes.config.Configurator;
+import io.dekorate.kubernetes.config.ConfigKey;
 import io.sundr.codegen.model.TypeDef;
 
-public class AddTypeDefConfigurator extends Configurator<CustomResourceConfigBuilder> {
+public class Keys {
 
-  private final TypeDef typeDef;
-
-  public AddTypeDefConfigurator(TypeDef typeDef) {
-    this.typeDef = typeDef;
-  }
-
-  @Override
-  public void visit(CustomResourceConfigBuilder customResourceConfig) {
-    customResourceConfig.addToAttributes(Keys.TYPE_DEFINITION, typeDef);
-  }
+  public static final ConfigKey<TypeDef> TYPE_DEFINITION = new ConfigKey<>("TYPE_DEFINITION", TypeDef.class);
 }

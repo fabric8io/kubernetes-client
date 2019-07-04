@@ -13,12 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.ap4k.crd.confg;
+package io.dekorate.crd.util;
 
-import io.ap4k.kubernetes.config.ConfigKey;
+import io.dekorate.deps.kubernetes.api.model.apiextensions.JSONSchemaProps;
+import io.dekorate.utils.Serialization;
+import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.model.TypeDef;
+import org.junit.jupiter.api.Test;
 
-public class Keys {
+import static org.junit.jupiter.api.Assertions.*;
 
-  public static final ConfigKey<TypeDef> TYPE_DEFINITION = new ConfigKey<>("TYPE_DEFINITION", TypeDef.class);
+class JsonSchemaTest {
+
+  @Test
+  void shouldCreateJsonSchemaFromClass() {
+    TypeDef person = ClassTo.TYPEDEF.apply(Person.class);
+    JSONSchemaProps schema = JsonSchema.from(person);
+    System.out.println(Serialization.asJson(schema));
+    assertNotNull(schema);
+  }
+
 }

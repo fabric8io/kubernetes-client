@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.ap4k.crd.configurator;
+package io.dekorate.crd.configurator;
 
-import io.ap4k.crd.config.CustomResourceConfigBuilder;
-import io.ap4k.crd.util.CamelCase;
-import io.ap4k.crd.util.Pluralize;
-import io.ap4k.kubernetes.config.Configurator;
-import io.ap4k.utils.Strings;
+import io.dekorate.crd.config.CustomResourceConfigBuilder;
+import io.dekorate.crd.util.CamelCase;
+import io.dekorate.crd.util.Pluralize;
+import io.dekorate.kubernetes.config.Configurator;
+import io.dekorate.utils.Strings;
 
 public class AddClassNameConfigurator extends Configurator<CustomResourceConfigBuilder> {
 

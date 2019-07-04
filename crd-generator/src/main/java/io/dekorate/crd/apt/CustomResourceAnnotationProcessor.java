@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.ap4k.crd.apt;
+package io.dekorate.crd.apt;
 
 
-import io.ap4k.crd.generator.CustomResourceGenerator;
-import io.ap4k.processor.AbstractAnnotationProcessor;
+import io.dekorate.crd.generator.CustomResourceGenerator;
+import io.dekorate.processor.AbstractAnnotationProcessor;
 import io.sundr.codegen.CodegenContext;
 
 import javax.annotation.processing.RoundEnvironment;
@@ -28,7 +28,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import java.util.Set;
 
-@SupportedAnnotationTypes({"io.ap4k.crd.annotation.CustomResource"})
+@SupportedAnnotationTypes({"io.dekorate.crd.annotation.CustomResource"})
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class CustomResourceAnnotationProcessor extends AbstractAnnotationProcessor implements CustomResourceGenerator {
 

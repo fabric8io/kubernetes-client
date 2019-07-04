@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.ap4k.crd.annotation;
+package io.dekorate.crd.annotation;
 
 
-import io.ap4k.crd.confg.Scope;
-import io.ap4k.kubernetes.config.Configuration;
+import io.dekorate.crd.confg.Scope;
+import io.dekorate.kubernetes.config.Configuration;
 import io.sundr.builder.annotations.Adapter;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.Pojo;
@@ -27,7 +27,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Buildable(builderPackage = "io.ap4k.deps.kubernetes.api.builder")
+@Buildable(builderPackage = "io.dekorate.deps.kubernetes.api.builder")
 @Pojo(name = "CustomResourceConfig", relativePath = "../config",
       mutable = true,
       superClass = Configuration.class,

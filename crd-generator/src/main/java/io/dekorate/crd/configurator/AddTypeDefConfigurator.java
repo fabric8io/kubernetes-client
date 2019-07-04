@@ -13,18 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.ap4k.crd.util;
+package io.dekorate.crd.configurator;
 
-import java.util.List;
-import java.util.Optional;
+import io.dekorate.crd.confg.Keys;
+import io.dekorate.crd.config.CustomResourceConfigBuilder;
+import io.dekorate.kubernetes.config.Configurator;
+import io.sundr.codegen.model.TypeDef;
 
-public class Person {
+public class AddTypeDefConfigurator extends Configurator<CustomResourceConfigBuilder> {
 
- private String firstName;
- private Optional<String> middleName;
- private String lastName;
- private int birthYear;
- private List<String> hobbies;
- private List<Address> addresses;
+  private final TypeDef typeDef;
 
+  public AddTypeDefConfigurator(TypeDef typeDef) {
+    this.typeDef = typeDef;
+  }
+
+  @Override
+  public void visit(CustomResourceConfigBuilder customResourceConfig) {
+    customResourceConfig.addToAttributes(Keys.TYPE_DEFINITION, typeDef);
+  }
 }

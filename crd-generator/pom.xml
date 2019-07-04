@@ -2,19 +2,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
     <artifactId>annotations</artifactId>
-    <groupId>io.ap4k</groupId>
-    <version>0.5-SNAPSHOT</version>
+    <groupId>io.dekorate</groupId>
+    <version>0.6-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>io.ap4k</groupId>
+  <groupId>io.dekorate</groupId>
   <artifactId>crd-annotations</artifactId>
-<name>AP4K :: Annotations :: Custom Resource</name>
+<name>Dekorate :: Annotations :: Custom Resource</name>
 
   <dependencies>
     <dependency>
-      <groupId>io.ap4k</groupId>
-      <artifactId>ap4k-core</artifactId>
+      <groupId>io.dekorate</groupId>
+      <artifactId>dekorate-core</artifactId>
       <version>${project.version}</version>
     </dependency>
 
@@ -80,7 +80,7 @@
                 <filter>
                   <artifact>*:*</artifact>
                   <includes>
-                    <include>io/ap4k/crd/annotation/**</include>
+                    <include>io/dekorate/crd/annotation/**</include>
                   </includes>
                 </filter>
               </filters>
@@ -99,14 +99,14 @@
                 <filter>
                   <artifact>*:*</artifact>
                   <includes>
-                    <include>io/ap4k/crd/adapter/**</include>
-                    <include>io/ap4k/crd/annotation/**</include>
-                    <include>io/ap4k/crd/apt/**</include>
-                    <include>io/ap4k/crd/config/**</include>
-                    <include>io/ap4k/crd/configurator/**</include>
-                    <include>io/ap4k/crd/generator/**</include>
-                    <include>io/ap4k/crd/handler/**</include>
-                    <include>io/ap4k/crd/util/**</include>
+                    <include>io/dekorate/crd/adapter/**</include>
+                    <include>io/dekorate/crd/annotation/**</include>
+                    <include>io/dekorate/crd/apt/**</include>
+                    <include>io/dekorate/crd/config/**</include>
+                    <include>io/dekorate/crd/configurator/**</include>
+                    <include>io/dekorate/crd/generator/**</include>
+                    <include>io/dekorate/crd/handler/**</include>
+                    <include>io/dekorate/crd/util/**</include>
                     <include>META-INF/services/javax.annotation.processing.Processor</include>
                   </includes>
                 </filter>
@@ -126,12 +126,12 @@
                 <filter>
                   <artifact>*:*</artifact>
                   <includes>
-                    <include>io/ap4k/crd/adapter/**</include>
-                    <include>io/ap4k/crd/config/**</include>
-                    <include>io/ap4k/crd/configurator/**</include>
-                    <include>io/ap4k/crd/generator/**</include>
-                    <include>io/ap4k/crd/handler/**</include>
-                    <include>io/ap4k/crd/util/**</include>
+                    <include>io/dekorate/crd/adapter/**</include>
+                    <include>io/dekorate/crd/config/**</include>
+                    <include>io/dekorate/crd/configurator/**</include>
+                    <include>io/dekorate/crd/generator/**</include>
+                    <include>io/dekorate/crd/handler/**</include>
+                    <include>io/dekorate/crd/util/**</include>
                   </includes>
                 </filter>
               </filters>

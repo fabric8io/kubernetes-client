@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.ap4k.crd.util;
+package io.dekorate.crd.util;
 
-import io.ap4k.deps.kubernetes.api.model.apiextensions.JSONSchemaProps;
-import io.ap4k.deps.kubernetes.api.model.apiextensions.JSONSchemaPropsBuilder;
+import io.dekorate.deps.kubernetes.api.model.apiextensions.JSONSchemaProps;
+import io.dekorate.deps.kubernetes.api.model.apiextensions.JSONSchemaPropsBuilder;
 import io.sundr.builder.internal.functions.TypeAs;
 import io.sundr.builder.internal.utils.BuilderUtils;
 import io.sundr.codegen.functions.ClassTo;

@@ -13,14 +13,14 @@ package ${model.packageName}.handler;
 
 import java.util.function.Predicate;
 
-import io.ap4k.deps.kubernetes.client.Config;
-import io.ap4k.deps.kubernetes.client.ResourceHandler;
-import io.ap4k.deps.kubernetes.client.Watch;
-import io.ap4k.deps.kubernetes.client.Watcher;
+import io.dekorate.deps.kubernetes.client.Config;
+import io.dekorate.deps.kubernetes.client.ResourceHandler;
+import io.dekorate.deps.kubernetes.client.Watch;
+import io.dekorate.deps.kubernetes.client.Watcher;
 import ${model.packageName}.${kind};
 import ${model.packageName}.operation.${kind}OperationsImpl;
 
-import io.ap4k.deps.okhttp3.OkHttpClient;
+import io.dekorate.deps.okhttp3.OkHttpClient;
 
 import ${model.fullyQualifiedName};
 import ${model.fullyQualifiedName}Builder;

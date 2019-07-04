@@ -13,24 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.ap4k.crd.util;
+package io.dekorate.crd.util;
 
-import io.ap4k.deps.kubernetes.api.model.apiextensions.JSONSchemaProps;
-import io.ap4k.utils.Serialization;
-import io.sundr.codegen.functions.ClassTo;
-import io.sundr.codegen.model.TypeDef;
-import org.junit.jupiter.api.Test;
+import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+public class Person {
 
-class JsonSchemaTest {
-
-  @Test
-  void shouldCreateJsonSchemaFromClass() {
-    TypeDef person = ClassTo.TYPEDEF.apply(Person.class);
-    JSONSchemaProps schema = JsonSchema.from(person);
-    System.out.println(Serialization.asJson(schema));
-    assertNotNull(schema);
-  }
+ private String firstName;
+ private Optional<String> middleName;
+ private String lastName;
+ private int birthYear;
+ private List<String> hobbies;
+ private List<Address> addresses;
 
 }

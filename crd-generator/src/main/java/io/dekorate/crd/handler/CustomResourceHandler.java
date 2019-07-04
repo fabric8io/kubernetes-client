@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.ap4k.crd.handler;
+package io.dekorate.crd.handler;
 
-import io.ap4k.Handler;
-import io.ap4k.Resources;
-import io.ap4k.crd.confg.Keys;
-import io.ap4k.crd.config.CustomResourceConfig;
-import io.ap4k.crd.config.EditableCustomResourceConfig;
-import io.ap4k.crd.util.JsonSchema;
-import io.ap4k.deps.kubernetes.api.model.apiextensions.CustomResourceDefinitionBuilder;
-import io.ap4k.kubernetes.config.Configuration;
+import io.dekorate.Handler;
+import io.dekorate.Resources;
+import io.dekorate.crd.confg.Keys;
+import io.dekorate.crd.config.CustomResourceConfig;
+import io.dekorate.crd.config.EditableCustomResourceConfig;
+import io.dekorate.crd.util.JsonSchema;
+import io.dekorate.deps.kubernetes.api.model.apiextensions.CustomResourceDefinitionBuilder;
+import io.dekorate.kubernetes.config.Configuration;
 import io.sundr.codegen.model.TypeDef;
 
 public class CustomResourceHandler implements Handler<CustomResourceConfig> {

@@ -12,13 +12,13 @@
 
 package ${model.packageName}.operation;
 
-import io.ap4k.deps.kubernetes.client.Config;
-import io.ap4k.deps.kubernetes.client.dsl.Resource;
-import io.ap4k.deps.kubernetes.client.dsl.base.HasMetadataOperation;
-import io.ap4k.deps.kubernetes.client.dsl.NonNamespaceOperation;
-import io.ap4k.deps.kubernetes.client.utils.ApiVersionUtil;
+import io.dekorate.deps.kubernetes.client.Config;
+import io.dekorate.deps.kubernetes.client.dsl.Resource;
+import io.dekorate.deps.kubernetes.client.dsl.base.HasMetadataOperation;
+import io.dekorate.deps.kubernetes.client.dsl.NonNamespaceOperation;
+import io.dekorate.deps.kubernetes.client.utils.ApiVersionUtil;
 
-import io.ap4k.deps.okhttp3.OkHttpClient;
+import io.dekorate.deps.okhttp3.OkHttpClient;
 
 import ${model.packageName}.Doneable${kind};
 import ${model.packageName}.${kind};
