@@ -123,6 +123,26 @@ public class PodTest {
     assertEquals(3, podList.getItems().size());
   }
 
+  @Test
+  public void testListWithFields() {
+   server.expect().withPath("/api/v1/namespaces/test/pods?fieldSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3!=value3,key3!=value4")).andReturn(200, new PodListBuilder()
+      .addNewItem().and()
+      .addNewItem().and()
+      .build()).once();
+
+    KubernetesClient client = server.getClient();
+    PodList podList = client.pods()
+      .withField("key1", "value1")
+      .withField("key2","value2")
+      .withoutField("key3","value3")
+      .withoutField("key3", "value4")
+      .list();
+
+
+    assertNotNull(podList);
+    assertEquals(2, podList.getItems().size());
+  }
+
 
   @Test(expected = KubernetesClientException.class)
   public void testEditMissing() {
@@ -140,7 +160,7 @@ public class PodTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.pods().withName("pod1").delete();
-    assertNotNull(deleted);
+    assertTrue(deleted);
 
     deleted = client.pods().withName("pod2").delete();
     assertFalse(deleted);
@@ -162,7 +182,7 @@ public class PodTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.pods().inAnyNamespace().delete(pod1, pod2);
-    assertNotNull(deleted);
+    assertTrue(deleted);
 
     deleted = client.pods().inAnyNamespace().delete(pod3);
     assertFalse(deleted);
