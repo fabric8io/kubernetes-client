@@ -216,7 +216,7 @@ public class CronJobTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.batch().cronjobs().inAnyNamespace().delete(cronjob1, cronjob2);
-    assertNotNull(deleted);
+    assertTrue(deleted);
 
     deleted = client.batch().cronjobs().inAnyNamespace().delete(cronjob3);
     assertFalse(deleted);

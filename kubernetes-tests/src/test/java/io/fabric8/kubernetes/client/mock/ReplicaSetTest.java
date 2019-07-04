@@ -130,7 +130,7 @@ public class ReplicaSetTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.apps().replicaSets().withName("repl1").delete();
-    assertNotNull(deleted);
+    assertTrue(deleted);
 
     deleted = client.apps().replicaSets().withName("repl2").delete();
     assertFalse(deleted);
