@@ -2,11 +2,19 @@
 
 ### 4.3-SNAPSHOT
   Bugs
+   * Fix #1592: Corrected type returned by Config.builder() 
 
+  
   Improvements
   
     * Example added for Endpoints.
-    
+    * Test coverage for Endpoints.
+    * Fix #1589: Move HorizontalPodAutoscaler to autoscaling/v1
+    * Fix #1553: Allow to explicitly set non-matching field selectors using `withoutField
+    * assertNotNull replaced with assertTrue for boolean statements in unit tests
+    * Test coverage for PodPreset
+    * Added test coverage for PersistentVolume
+
   Dependency Upgrade
 
   New Feature
@@ -22,7 +30,7 @@
     * Fix #1550: MutatingWebhookConfigurationOperationsImpl should be a NonNamespaceOperation
 
   Improvements
-  
+
     * Added example for raw custom resources.
 
   Dependency Upgrade
@@ -48,22 +56,22 @@
 #### 4.2.1 (15-04-2019)
 
   Bugs
-    
+
     * Fix #1297: wrong result produced when exec in used and params contains '&'. Url string not encoded properly.
     * Fix #1473: Use correct plural form in OpenshiftRole
     * Fix #1480: The kubernetes-client is not optionally depending on bouncycastle.
     * Fix #1490: Resource could not be loaded
     * Fix #1468: Taking labels into consideration when comparing resources for equality.
-  
+
   Improvements
-  
+
     * Fix #1455: Use SubjectAccessReview and LocalSubjectAccessReview in kubernetes client using subjectAccessReviewAuth()
-  
+
   Dependency Upgrade
-  
+
 
   New Feature
-  
+
     * First Draft of Custom Resource Improvements (#1472)
 
 #### 4.2.0 (29-03-2019)
@@ -277,7 +285,7 @@
 
   New Feature
 
-    * Fix #1020 : Support for Kubernetes/Openshift v1.9/v3.9 respectively    
+    * Fix #1020 : Support for Kubernetes/Openshift v1.9/v3.9 respectively
 
   Improvements
 

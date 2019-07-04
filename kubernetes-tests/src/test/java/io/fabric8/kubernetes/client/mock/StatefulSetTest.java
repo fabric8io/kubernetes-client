@@ -130,7 +130,7 @@ public class StatefulSetTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.apps().statefulSets().withName("repl1").delete();
-    assertNotNull(deleted);
+    assertTrue(deleted);
 
     deleted = client.apps().statefulSets().withName("repl2").delete();
     assertFalse(deleted);
