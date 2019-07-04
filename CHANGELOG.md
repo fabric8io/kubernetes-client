@@ -3,14 +3,13 @@
 ### 4.3-SNAPSHOT
   Bugs
    * Fix #1592: Corrected type returned by Config.builder() 
-
-  
+   
   Improvements
-  
+    * Example added for NamespaceQuota
     * Example added for Endpoints.
     * Test coverage for Endpoints.
     * Fix #1589: Move HorizontalPodAutoscaler to autoscaling/v1
-    * Fix #1553: Allow to explicitly set non-matching field selectors using `withoutField
+    * Fix #1553: Allow to explicitly set non-matching field selectors using withoutField
     * assertNotNull replaced with assertTrue for boolean statements in unit tests
     * Test coverage for PodPreset
     * Added test coverage for PersistentVolume
