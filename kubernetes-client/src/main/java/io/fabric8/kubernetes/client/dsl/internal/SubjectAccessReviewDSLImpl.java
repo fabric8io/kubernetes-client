@@ -26,6 +26,8 @@ import io.fabric8.kubernetes.client.dsl.SubjectAccessReviewDSL;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.Utils;
+import io.fabric8.openshift.api.model.DoneableSelfSubjectAccessReview;
+import io.fabric8.openshift.api.model.SelfSubjectAccessReview;
 import okhttp3.OkHttpClient;
 
 import java.io.IOException;
@@ -36,6 +38,7 @@ public class SubjectAccessReviewDSLImpl extends OperationSupport implements Subj
   private static final String AUTHORIZATION = "authorization.k8s.io/v1";
   private static final String SAR_PLURAL = "subjectaccessreviews";
   private static final String LSAR_PLURAL = "localsubjectaccessreviews";
+  private static final String SSAR_PLURAL = "selfsubjectaccessreviews";
 
   private boolean isNamespaced = false;
 
@@ -73,9 +76,19 @@ public class SubjectAccessReviewDSLImpl extends OperationSupport implements Subj
     return new SubjectAccessReviewDSLImpl(this.context, namespace, LSAR_PLURAL, true).local(namespace);
   }
 
+  @Override
+  public Createable<SelfSubjectAccessReview, SelfSubjectAccessReview, DoneableSelfSubjectAccessReview> inAnyNamespace() {
+    return new SubjectAccessReviewDSLImpl(this.context, namespace, SSAR_PLURAL, true).self();
+  }
+
   private Createable<LocalSubjectAccessReview, LocalSubjectAccessReview, DoneableLocalSubjectAccessReview> local(String namespace) {
     return new CreatableLocalSubjectAccessReview(namespace);
   }
+
+  private Createable<SelfSubjectAccessReview, SelfSubjectAccessReview, DoneableSelfSubjectAccessReview> self() {
+    return new CreatableSelfSubjectAccessReview();
+  }
+
 
   private class CreatableLocalSubjectAccessReview implements Createable<LocalSubjectAccessReview, LocalSubjectAccessReview, DoneableLocalSubjectAccessReview> {
 
@@ -150,5 +163,28 @@ public class SubjectAccessReviewDSLImpl extends OperationSupport implements Subj
       return new DoneableSubjectAccessReview(this::create);
     }
   }
+
+  private class CreatableSelfSubjectAccessReview implements Createable<SelfSubjectAccessReview, SelfSubjectAccessReview, DoneableSelfSubjectAccessReview> {
+
+    @Override
+    public SelfSubjectAccessReview create(SelfSubjectAccessReview... resources) {
+      try {
+        if (resources.length > 1) {
+          throw new IllegalArgumentException("Too many items to create.");
+        } else if (resources.length == 1) {
+          return handleCreate(resources[0], SelfSubjectAccessReview.class);
+        } else {
+          throw new IllegalArgumentException("Nothing to create.");
+        }
+      } catch (InterruptedException | ExecutionException | IOException e) {
+        throw KubernetesClientException.launderThrowable(e);
+      }
+    }
+
+    @Override
+    public DoneableSelfSubjectAccessReview createNew() {
+      return new DoneableSelfSubjectAccessReview(this::create);    }
+  }
+
 }
 

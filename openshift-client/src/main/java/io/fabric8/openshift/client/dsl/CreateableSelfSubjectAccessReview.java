@@ -20,11 +20,11 @@ import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.client.dsl.Createable;
 import io.fabric8.openshift.api.model.SelfSubjectAccessReview;
 import io.fabric8.openshift.api.model.SelfSubjectAccessReviewFluentImpl;
-import io.fabric8.openshift.api.model.SelfSubjectAccessReviewResponse;
+import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
 
 public abstract class CreateableSelfSubjectAccessReview extends
   SelfSubjectAccessReviewFluentImpl<CreateableSelfSubjectAccessReview>
   implements
-  Doneable<SelfSubjectAccessReviewResponse>,
-  Createable<SelfSubjectAccessReview, SelfSubjectAccessReviewResponse, CreateableSelfSubjectAccessReview> {
+  Doneable<SubjectAccessReviewResponse>,
+  Createable<SelfSubjectAccessReview, SubjectAccessReviewResponse, CreateableSelfSubjectAccessReview> {
 }

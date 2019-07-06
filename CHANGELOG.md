@@ -15,7 +15,7 @@
   Dependency Upgrade
 
   New Feature
-   * Add support for SelfSubjectAccessReview
+   * Added support for SelfSubjectAccessReview
 
 #### 4.3.0 (10-06-2019)
 
