@@ -19,8 +19,8 @@ import io.fabric8.kubernetes.api.model.authorization.DoneableLocalSubjectAccessR
 import io.fabric8.kubernetes.api.model.authorization.DoneableSubjectAccessReview;
 import io.fabric8.kubernetes.api.model.authorization.LocalSubjectAccessReview;
 import io.fabric8.kubernetes.api.model.authorization.SubjectAccessReview;
-import io.fabric8.openshift.api.model.DoneableSelfSubjectAccessReview;
-import io.fabric8.openshift.api.model.SelfSubjectAccessReview;
+import io.fabric8.kubernetes.api.model.authorization.DoneableSelfSubjectAccessReview;
+import io.fabric8.kubernetes.api.model.authorization.SelfSubjectAccessReview;
 
 public interface SubjectAccessReviewDSL extends
   Createable<SubjectAccessReview, SubjectAccessReview, DoneableSubjectAccessReview>,

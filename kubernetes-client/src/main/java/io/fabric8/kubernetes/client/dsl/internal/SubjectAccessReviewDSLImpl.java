@@ -19,6 +19,8 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.authorization.*;
 import io.fabric8.kubernetes.api.model.authorization.DoneableLocalSubjectAccessReview;
 import io.fabric8.kubernetes.api.model.authorization.DoneableSubjectAccessReview;
+import io.fabric8.kubernetes.api.model.authorization.DoneableSelfSubjectAccessReview;
+import io.fabric8.kubernetes.api.model.authorization.SelfSubjectAccessReview;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Createable;
@@ -26,8 +28,7 @@ import io.fabric8.kubernetes.client.dsl.SubjectAccessReviewDSL;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.openshift.api.model.DoneableSelfSubjectAccessReview;
-import io.fabric8.openshift.api.model.SelfSubjectAccessReview;
+
 import okhttp3.OkHttpClient;
 
 import java.io.IOException;

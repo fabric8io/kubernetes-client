@@ -18139,8 +18139,8 @@
       "javaType": "io.fabric8.kubernetes.api.model.authorization.SubjectAccessReview"
     },
     "K8sSelfSubjectAccessReview": {
-      "$ref": "#/definitions/kubernetes_authorization_SubjectAccessReview",
-      "javaType": "io.fabric8.kubernetes.api.model.authorization.SubjectAccessReview"
+      "$ref": "#/definitions/kubernetes_authorization_SelfSubjectAccessReview",
+      "javaType": "io.fabric8.kubernetes.api.model.authorization.SelfSubjectAccessReview"
     },
     "LimitRangeList": {
       "$ref": "#/definitions/kubernetes_core_LimitRangeList",
