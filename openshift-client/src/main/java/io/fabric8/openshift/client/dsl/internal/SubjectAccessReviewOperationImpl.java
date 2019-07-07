@@ -22,16 +22,13 @@ import io.fabric8.openshift.api.model.*;
 import io.fabric8.openshift.api.model.LocalSubjectAccessReviewBuilder;
 import io.fabric8.openshift.api.model.SelfSubjectAccessReviewBuilder;
 import io.fabric8.openshift.api.model.SubjectAccessReviewBuilder;
-import io.fabric8.openshift.client.dsl.CreateableSelfSubjectAccessReview;
+import io.fabric8.openshift.client.dsl.*;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.client.OpenShiftConfig;
-import io.fabric8.openshift.client.dsl.SubjectAccessReviewOperation;
-import io.fabric8.openshift.client.dsl.CreateableLocalSubjectAccessReview;
-import io.fabric8.openshift.client.dsl.CreateableSubjectAccessReview;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -40,7 +37,7 @@ import java.util.concurrent.ExecutionException;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.AUTHORIZATION;
 
-public class SubjectAccessReviewOperationImpl extends OperationSupport implements SubjectAccessReviewOperation<CreateableSubjectAccessReview, CreateableLocalSubjectAccessReview, CreateableSelfSubjectAccessReview> {
+public class SubjectAccessReviewOperationImpl extends OperationSupport implements SubjectAccessReviewOperation<CreateableSubjectAccessReview, CreateableLocalSubjectAccessReview, CreateableSelfSubjectAccessReview, CreateableSelfSubjectRulesReview> {
 
   public SubjectAccessReviewOperationImpl(OkHttpClient client, OpenShiftConfig config) {
     this(new OperationContext().withOkhttpClient(client).withConfig(config));
@@ -82,6 +79,18 @@ public class SubjectAccessReviewOperationImpl extends OperationSupport implement
 
   private CreateableSelfSubjectAccessReview self() {
     return new CreateableSelfSubjectAccessReviewImpl(client);
+  }
+
+  @Override
+  public Createable<SelfSubjectRulesReview, SelfSubjectRulesReview, CreateableSelfSubjectRulesReview> list() {
+    // WIP
+    return null;
+  }
+
+  @Override
+  public Createable<SelfSubjectRulesReview, SelfSubjectRulesReview, CreateableSelfSubjectRulesReview> list(Integer limitVal, String continueVal) {
+    // WIP
+    return null;
   }
 
   private class CreateableLocalSubjectAccessReviewImpl extends CreateableLocalSubjectAccessReview {

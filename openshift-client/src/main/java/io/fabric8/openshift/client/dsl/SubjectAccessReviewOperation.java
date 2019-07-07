@@ -19,13 +19,14 @@ package io.fabric8.openshift.client.dsl;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.client.dsl.AnyNamespaceable;
 import io.fabric8.kubernetes.client.dsl.Createable;
+import io.fabric8.kubernetes.client.dsl.Listable;
 import io.fabric8.kubernetes.client.dsl.Namespaceable;
 import io.fabric8.openshift.api.model.*;
 
-public interface SubjectAccessReviewOperation<S extends Doneable<SubjectAccessReviewResponse>, L extends Doneable<SubjectAccessReviewResponse>, M extends Doneable<SubjectAccessReviewResponse>> extends
+public interface SubjectAccessReviewOperation<S extends Doneable<SubjectAccessReviewResponse>, L extends Doneable<SubjectAccessReviewResponse>, M extends Doneable<SubjectAccessReviewResponse>, N extends Doneable<SubjectAccessReviewResponse>> extends
   Createable<SubjectAccessReview, SubjectAccessReviewResponse, S>,
   Namespaceable<Createable<LocalSubjectAccessReview, SubjectAccessReviewResponse, L>>,
-  AnyNamespaceable<Createable<SelfSubjectAccessReview, SelfSubjectAccessReview, M>> {
-
+  AnyNamespaceable<Createable<SelfSubjectAccessReview, SelfSubjectAccessReview, M>>,
+  Listable<Createable<SelfSubjectRulesReview, SelfSubjectRulesReview, N>> {
 
 }
