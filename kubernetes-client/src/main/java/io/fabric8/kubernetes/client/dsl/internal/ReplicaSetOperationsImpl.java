@@ -36,7 +36,7 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
   implements TimeoutImageEditReplacePatchable<ReplicaSet, ReplicaSet, DoneableReplicaSet> {
 
   public ReplicaSetOperationsImpl(OkHttpClient client, Config config) {
-    this(new RollingOperationContext().withOkhttpClient(client).withConfig(config));
+    this(new RollingOperationContext().withOkhttpClient(client).withConfig(config).withCascading(true));
   }
 
   public ReplicaSetOperationsImpl(RollingOperationContext context) {

@@ -237,7 +237,11 @@ public class DeploymentTest {
       .endStatus()
       .build();
 
-    Deployment deployment3 = new DeploymentBuilder().withNewMetadata().withName("deployment3").withNamespace("any").and().build();
+    Deployment deployment3 = new DeploymentBuilder().withNewMetadata().withName("deployment3").withNamespace("any").endMetadata()
+      .withNewSpec()
+      .withReplicas(1)
+      .endSpec()
+      .build();
 
     server.expect().withPath("/apis/apps/v1/namespaces/test/deployments/deployment1").andReturn(200, deployment1).once();
     server.expect().withPath("/apis/apps/v1/namespaces/test/deployments/deployment1").andReturn(200, new DeploymentBuilder(deployment1)
@@ -266,7 +270,11 @@ public class DeploymentTest {
 
   @Test(expected = KubernetesClientException.class)
   public void testDeleteWithNamespaceMismatch() {
-    Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test").and().build();
+    Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test").endMetadata()
+      .withNewSpec()
+      .withReplicas(1)
+      .endSpec()
+      .build();
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.apps().deployments().inNamespace("test1").delete(deployment1);

@@ -3,6 +3,7 @@
 ### 4.3-SNAPSHOT
   Bugs
    * Fix #1592: Corrected type returned by Config.builder() 
+   * Set cascade deletion to true in case of list operations
    
   Improvements
     * Test coverage for Namespace.
