@@ -12,6 +12,7 @@
 * Updated Kubernetes Model to Kubernetes v1.15.3
 
 #### New Feature
+* Fix #1380: Support for ControllerRevision
 * Added Template Instance Support
 * Fix #1384: Initial draft for SharedInformer support.
 
@@ -124,7 +125,6 @@
     * Add type parameter to make CustomResourceList.getItems() return a typed List.
 
   Dependency Upgrade
-
     * Upgrade Jackson to version 2.9.9
 
   New Feature

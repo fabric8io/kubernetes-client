@@ -13450,20 +13450,32 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList"
       ]
     },
+<<<<<<< HEAD
     "os_template_TemplateInstance": {
+=======
+    "os_revision_ControllerRevision": {
+>>>>>>> Fix #1380: Support for ControllerRevision
       "type": "object",
       "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
           "description": "",
+<<<<<<< HEAD
           "default": "template.openshift.io/v1",
+=======
+          "default": "apps/v1beta2",
+>>>>>>> Fix #1380: Support for ControllerRevision
           "required": true
         },
         "kind": {
           "type": "string",
           "description": "",
+<<<<<<< HEAD
           "default": "TemplateInstance",
+=======
+          "default": "ControllerRevision",
+>>>>>>> Fix #1380: Support for ControllerRevision
           "required": true
         },
         "labels": {
@@ -13483,6 +13495,7 @@
           "$ref": "#/definitions/k8s_io_apimachinery_ObjectMeta",
           "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
+<<<<<<< HEAD
         "spec": {
           "$ref": "#/definitions/os_template_TemplateInstanceSpec",
           "javaType": "io.fabric8.openshift.api.model.HasMetadata"
@@ -13494,10 +13507,20 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.TemplateInstance",
+=======
+        "revision": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.ControllerRevision",
+>>>>>>> Fix #1380: Support for ControllerRevision
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
     },
+<<<<<<< HEAD
     "os_template_TemplateInstanceStatus": {
       "type": "object",
       "description": "",
@@ -13636,27 +13659,43 @@
       ]
     },
     "os_template_TemplateInstanceList": {
+=======
+    "os_revision_ControllerRevisionList": {
+>>>>>>> Fix #1380: Support for ControllerRevision
       "type": "object",
       "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
           "description": "",
+<<<<<<< HEAD
           "default": "template.openshift.io/v1",
+=======
+          "default": "apps/v1beta2",
+>>>>>>> Fix #1380: Support for ControllerRevision
           "required": true
         },
         "items": {
           "type": "array",
           "description": "",
           "items": {
+<<<<<<< HEAD
             "$ref": "#/definitions/os_template_TemplateInstance",
             "javaType": "io.fabric8.openshift.api.model.TemplateInstance"
+=======
+            "$ref": "#/definitions/os_revision_ControllerRevision",
+            "javaType": "io.fabric8.openshift.api.model.ControllerRevision"
+>>>>>>> Fix #1380: Support for ControllerRevision
           }
         },
         "kind": {
           "type": "string",
           "description": "",
+<<<<<<< HEAD
           "default": "TemplateInstanceList",
+=======
+          "default": "ControllerRevisionList",
+>>>>>>> Fix #1380: Support for ControllerRevision
           "required": true
         },
         "metadata": {
@@ -13665,10 +13704,17 @@
         }
       },
       "additionalProperties": true,
+<<<<<<< HEAD
       "javaType": "io.fabric8.openshift.api.model.TemplateInstanceList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openshift.api.model.TemplateInstance\u003e"
+=======
+      "javaType": "io.fabric8.openshift.api.model.ControllerRevisionList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openshift.api.model.ControllerRevision\u003e"
+>>>>>>> Fix #1380: Support for ControllerRevision
       ]
     },
     "os_user_Group": {
@@ -14372,6 +14418,7 @@
       "$ref": "#/definitions/os_template_TemplateList",
       "javaType": "io.fabric8.openshift.api.model.TemplateList"
     },
+<<<<<<< HEAD
     "TemplateInstance": {
       "$ref": "#/definitions/os_template_TemplateInstance",
       "javaType": "io.fabric8.openshift.api.model.TemplateInstance"
@@ -14379,6 +14426,15 @@
     "TemplateInstanceList": {
       "$ref": "#/definitions/os_template_TemplateInstanceList",
       "javaType": "io.fabric8.openshift.api.model.TemplateInstanceList"
+=======
+    "ControllerRevision": {
+      "$ref": "#/definitions/os_revision_ControllerRevision",
+      "javaType": "io.fabric8.openshift.api.model.ControllerRevision"
+    },
+    "ControllerRevisionList": {
+      "$ref": "#/definitions/os_revision_ControllerRevisionList",
+      "javaType": "io.fabric8.openshift.api.model.ControllerRevisionList"
+>>>>>>> Fix #1380: Support for ControllerRevision
     },
     "ThirdPartyResource": {
       "$ref": "#/definitions/kubernetes_extensions_ThirdPartyResource",
@@ -24851,18 +24907,30 @@
       },
       "additionalProperties": true
     },
+<<<<<<< HEAD
     "templateinstance": {
+=======
+    "controllerrevision": {
+>>>>>>> Fix #1380: Support for ControllerRevision
       "properties": {
         "apiVersion": {
           "type": "string",
           "description": "",
+<<<<<<< HEAD
           "default": "template/v1",
+=======
+          "default": "apps/v1beta2",
+>>>>>>> Fix #1380: Support for ControllerRevision
           "required": true
         },
         "kind": {
           "type": "string",
           "description": "",
+<<<<<<< HEAD
           "default": "TemplateInstance",
+=======
+          "default": "ControllerRevision",
+>>>>>>> Fix #1380: Support for ControllerRevision
           "required": true
         },
         "labels": {
@@ -24882,6 +24950,7 @@
           "$ref": "#/definitions/k8s_io_apimachinery_ObjectMeta",
           "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
+<<<<<<< HEAD
         "spec": {
           "$ref": "#/definitions/os_template_TemplateInstanceSpec",
           "javaType": "io.fabric8.openshift.api.model.HasMetadata"
@@ -24889,30 +24958,52 @@
         "status": {
           "$ref": "#/definitions/os_template_TemplateInstanceStatus",
           "javaType": "io.fabric8.openshift.api.model.TemplateInstanceStatus"
+=======
+        "revision": {
+          "type": "string",
+          "description": ""
+>>>>>>> Fix #1380: Support for ControllerRevision
         }
       },
       "additionalProperties": true
     },
+<<<<<<< HEAD
     "templateinstancelist": {
+=======
+    "controllerrevisionlist": {
+>>>>>>> Fix #1380: Support for ControllerRevision
       "properties": {
         "apiVersion": {
           "type": "string",
           "description": "",
+<<<<<<< HEAD
           "default": "template/v1",
+=======
+          "default": "apps/v1beta2",
+>>>>>>> Fix #1380: Support for ControllerRevision
           "required": true
         },
         "items": {
           "type": "array",
           "description": "",
           "items": {
+<<<<<<< HEAD
             "$ref": "#/definitions/os_template_TemplateInstance",
             "javaType": "io.fabric8.openshift.api.model.TemplateInstance"
+=======
+            "$ref": "#/definitions/os_revision_ControllerRevision",
+            "javaType": "io.fabric8.openshift.api.model.ControllerRevision"
+>>>>>>> Fix #1380: Support for ControllerRevision
           }
         },
         "kind": {
           "type": "string",
           "description": "",
+<<<<<<< HEAD
           "default": "TemplateInstanceList",
+=======
+          "default": "ControllerRevisionList",
+>>>>>>> Fix #1380: Support for ControllerRevision
           "required": true
         },
         "metadata": {
