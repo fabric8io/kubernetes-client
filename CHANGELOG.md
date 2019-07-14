@@ -103,6 +103,7 @@
 
   Bugs
 
+   * Fix nanosecond conversion using waitUntilReady
    * Fix #1008: Use a reasonable buffer size for exec stdin
    * Fix #1005: Loading a template from file and processing it locally by passing parameters map is broken
 
