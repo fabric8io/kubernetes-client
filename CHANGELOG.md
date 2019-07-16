@@ -4,7 +4,8 @@
   Bugs
    * Fix #1592: Corrected type returned by Config.builder() 
    * Set cascade deletion to true in case of list operations
-   
+   * Fix #1617: Multiple CA certificates with non-unique Subject DN not loaded
+
   Improvements
     * Test coverage for Namespace.
     * Example added for NamespaceQuota
@@ -15,6 +16,8 @@
     * assertNotNull replaced with assertTrue for boolean statements in unit tests
     * Test coverage for PodPreset
     * Added test coverage for PersistentVolume
+    * Fix #1290: Added github stale bot.
+    * Add type parameter to make CustomResourceList.getItems() return a typed List.
 
   Dependency Upgrade
 
@@ -101,6 +104,7 @@
 
   Bugs
 
+   * Fix nanosecond conversion using waitUntilReady
    * Fix #1008: Use a reasonable buffer size for exec stdin
    * Fix #1005: Loading a template from file and processing it locally by passing parameters map is broken
 
@@ -147,6 +151,7 @@
     * Fix #1326: Make CustomResource @Buildable
 
     * Fix #1354: suppress log warnings that `CustomResourceDefinition`s are still in beta
+
 
   Dependency Upgrade
 

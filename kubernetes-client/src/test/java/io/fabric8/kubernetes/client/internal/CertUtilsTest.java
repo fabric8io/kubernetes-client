@@ -85,6 +85,16 @@ public class CertUtilsTest {
   }
 
   @Test
+  public void testLoadingMultipleCertsWithSameSubjectFromSameFile() throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+    KeyStore ts = CertUtils.createTrustStore(CertUtils.getInputStreamFromDataOrFile(
+      null,
+      "src/test/resources/ssl/nonunique-subject.pem"
+    ), null, "changeit".toCharArray());
+
+    assertTrue(ts.size() >= 2);
+  }
+
+  @Test
   public void testLoadTrustStoreFromFileUsingConfigProperties()
     throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
 
