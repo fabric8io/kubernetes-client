@@ -3,8 +3,11 @@
 ### 4.3-SNAPSHOT
   Bugs
    * Fix #1592: Corrected type returned by Config.builder() 
-   
+   * Fix #1617: Multiple CA certificates with non-unique Subject DN not loaded
+
+ 
   Improvements
+    * Test coverage for Namespace.
     * Example added for NamespaceQuota
     * Example added for Endpoints.
     * Test coverage for Endpoints.
@@ -14,6 +17,7 @@
     * Test coverage for PodPreset
     * Added test coverage for PersistentVolume
     * Fix #1290: Added github stale bot.
+    * Add type parameter to make CustomResourceList.getItems() return a typed List.
 
   Dependency Upgrade
 
@@ -100,6 +104,7 @@
 
   Bugs
 
+   * Fix nanosecond conversion using waitUntilReady
    * Fix #1008: Use a reasonable buffer size for exec stdin
    * Fix #1005: Loading a template from file and processing it locally by passing parameters map is broken
 

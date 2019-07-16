@@ -17,6 +17,13 @@ package io.fabric8.kubernetes.client.internal;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.Utils;
+import okio.ByteString;
+import org.bouncycastle.openssl.PEMKeyPair;
+import org.bouncycastle.openssl.PEMParser;
+import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -40,13 +47,6 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.RSAPrivateCrtKeySpec;
 import java.util.concurrent.Callable;
-
-import okio.ByteString;
-import org.bouncycastle.openssl.PEMKeyPair;
-import org.bouncycastle.openssl.PEMParser;
-import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class CertUtils {
 
@@ -99,8 +99,7 @@ public class CertUtils {
     while (pemInputStream.available() > 0) {
       CertificateFactory certFactory = CertificateFactory.getInstance("X509");
       X509Certificate cert = (X509Certificate) certFactory.generateCertificate(pemInputStream);
-
-      String alias = cert.getSubjectX500Principal().getName();
+      String alias = cert.getSubjectX500Principal().getName() + "_" + cert.getSerialNumber().toString(16);
       trustStore.setCertificateEntry(alias, cert);
     }
     return trustStore;
