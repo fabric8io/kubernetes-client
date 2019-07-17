@@ -83,7 +83,47 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
 
   @Override
   public List<HasMetadata> waitUntilReady(final long amount, final TimeUnit timeUnit) throws InterruptedException {
-    return waitUntilCondition(Objects::nonNull, amount, timeUnit);
+    List<HasMetadata> items = acceptVisitors(asHasMetadata(item, true), visitors);
+    if (items.size() == 0) {
+      return Collections.emptyList();
+    }
+
+    final List<HasMetadata> result = new ArrayList<>();
+    final List<HasMetadata> itemsWithConditionNotMatched = new ArrayList<>(items);
+    final int size = items.size();
+    final ExecutorService executor = Executors.newFixedThreadPool(size);
+
+    try {
+      final CountDownLatch latch = new CountDownLatch(size);
+      for (final HasMetadata meta : items) {
+        final ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
+        executor.submit(() -> {
+          try {
+            result.add(h.waitUntilReady(client, config, meta.getMetadata().getNamespace(), meta, amount, timeUnit));
+          } catch (InterruptedException | IllegalArgumentException interruptedException) {
+            // We may get here if waiting is interrupted or resource doesn't support concept of readiness.
+            // We don't want to wait for items that will never become ready
+            // Skip that resource then.
+            LOGGER.info(meta.getKind() + " " + meta.getMetadata().getName() + " does not support readiness. skipping..");
+            latch.countDown();
+          } catch (IllegalStateException t) {
+            LOGGER.warn("Error while waiting for: [" + meta.getKind() + "] with name: [" + meta.getMetadata().getName() + "] in namespace: [" + meta.getMetadata().getNamespace() + "]: " + t.getMessage()+ ". The resource will be considered not ready.");
+            LOGGER.debug("The error stack trace:", t);
+          } finally {
+            // Resource got ready and was returned properly
+            latch.countDown();
+          }
+        });
+      }
+      latch.await(amount, timeUnit);
+      if(latch.getCount() == 0) {
+        return result;
+      } else {
+        throw new KubernetesClientTimeoutException(itemsWithConditionNotMatched, amount, timeUnit);
+      }
+    } finally {
+      executor.shutdown();
+    }
   }
   
   @Override
