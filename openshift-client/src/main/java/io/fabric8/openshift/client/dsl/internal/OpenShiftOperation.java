@@ -55,15 +55,6 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
   }
 
   @Override
-  public URL getRootUrl() {
-    try {
-      return new URL(OpenShiftConfig.wrap(getConfig()).getOpenShiftUrl());
-    } catch (MalformedURLException e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
-  }
-
-  @Override
   public OpenShiftConfig getConfig() {
     return OpenShiftConfig.wrap(super.getConfig());
   }
