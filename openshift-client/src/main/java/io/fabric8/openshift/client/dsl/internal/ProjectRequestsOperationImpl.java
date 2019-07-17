@@ -19,7 +19,6 @@ import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import io.fabric8.kubernetes.api.builder.Function;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
@@ -29,7 +28,6 @@ import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.ProjectRequestOperation;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
@@ -52,30 +50,16 @@ public class ProjectRequestsOperationImpl extends OperationSupport implements Pr
   }
 
   @Override
-  public URL getRootUrl() {
-    try {
-      return new URL(OpenShiftConfig.wrap(getConfig()).getOpenShiftUrl());
-    } catch (MalformedURLException e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
-  }
-
-  private ProjectRequest updateApiVersion(ProjectRequest p) {
-      p.setApiVersion(this.apiGroupVersion);
-      return p;
-  }
-
-  @Override
   public ProjectRequest create(ProjectRequest... resources) {
     try {
       if (resources.length > 1) {
         throw new IllegalArgumentException("Too many items to create.");
       } else if (resources.length == 1) {
-        return handleCreate(updateApiVersion(resources[0]), ProjectRequest.class);
+        return handleCreate(resources[0], ProjectRequest.class);
       } else if (getItem() == null) {
         throw new IllegalArgumentException("Nothing to create.");
       } else {
-        return handleCreate(updateApiVersion(getItem()), ProjectRequest.class);
+        return handleCreate(getItem(), ProjectRequest.class);
       }
     } catch (InterruptedException | ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);

@@ -54,7 +54,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.TEMPLATE;
@@ -81,6 +80,7 @@ public class TemplateOperationsImpl
     this.type = Template.class;
     this.listType = TemplateList.class;
     this.doneableType = DoneableTemplate.class;
+    this.apiGroupName = TEMPLATE;
   }
   @Override
   public TemplateOperationsImpl newInstance(OperationContext context) {
