@@ -39,6 +39,7 @@ public class CronJobOperationsImpl extends HasMetadataOperation<CronJob, CronJob
   public CronJobOperationsImpl(OperationContext context) {
     super(context.withApiGroupName("batch")
       .withApiGroupVersion("v1beta1")
+      .withCascading(true)
       .withPlural("cronjobs"));
     this.type = CronJob.class;
     this.listType = CronJobList.class;

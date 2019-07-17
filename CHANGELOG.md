@@ -3,9 +3,9 @@
 ### 4.3-SNAPSHOT
   Bugs
    * Fix #1592: Corrected type returned by Config.builder() 
+   * Set cascade deletion to true in case of list operations
    * Fix #1617: Multiple CA certificates with non-unique Subject DN not loaded
 
- 
   Improvements
     * Test coverage for Namespace.
     * Example added for NamespaceQuota
