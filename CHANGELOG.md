@@ -5,6 +5,7 @@
    * Fix #1592: Corrected type returned by Config.builder() 
    * Set cascade deletion to true in case of list operations
    * Fix #1617: Multiple CA certificates with non-unique Subject DN not loaded
+   * Fix #1634: Make map backing KubernetesDeserializer thread-safe
 
   Improvements
     * Test coverage for Namespace.
