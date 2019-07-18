@@ -48,6 +48,7 @@ import (
 	resource "k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	apimachineryversion "k8s.io/apimachinery/pkg/version"
+        apimachineryapis "k8s.io/apimachinery/pkg/apis/meta/v1"
 	configapi "k8s.io/client-go/tools/clientcmd/api/v1"
 	watch "k8s.io/kubernetes/pkg/watch/json"
         scheduling "k8s.io/api/scheduling/v1beta1"
@@ -66,6 +67,8 @@ import (
 
 type Schema struct {
 	Info                                  apimachineryversion.Info
+        APIGroup                              apimachineryapis.APIGroup
+        APIGroupList                          apimachineryapis.APIGroupList
 	BaseKubernetesList                    metav1.List
 	ObjectMeta                            metav1.ObjectMeta
 	TypeMeta                              metav1.TypeMeta
@@ -135,7 +138,7 @@ type Schema struct {
 	OpenshiftRoleBindingRestriction       authapi.RoleBindingRestriction
 	LocalSubjectAccessReview              authapi.LocalSubjectAccessReview
 	SubjectAccessReview                   authapi.SubjectAccessReview
-  SubjectAccessReviewResponse           authapi.SubjectAccessReviewResponse
+        SubjectAccessReviewResponse           authapi.SubjectAccessReviewResponse
 	OpenshiftClusterRole                  authapi.ClusterRole
 	OpenshiftClusterRoleBinding           authapi.ClusterRoleBinding
 	OpenshiftClusterRoleBindingList       authapi.ClusterRoleBindingList
@@ -234,6 +237,7 @@ func main() {
 		{"k8s.io/apimachinery/pkg/util/intstr", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_pkg_util_intstr_"},
 		{"k8s.io/apimachinery/pkg/runtime", "", "io.fabric8.kubernetes.api.model.runtime", "kubernetes_apimachinery_pkg_runtime_"},
 		{"k8s.io/apimachinery/pkg/version", "", "io.fabric8.kubernetes.api.model.version", "kubernetes_apimachinery_pkg_version_"},
+		{"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model.apis", "kubernetes_apimachinery_pkg_apis_"},
 		{"k8s.io/kubernetes/pkg/util", "", "io.fabric8.kubernetes.api.model", "kubernetes_util_"},
 		{"k8s.io/kubernetes/pkg/watch/json", "", "io.fabric8.kubernetes.api.model", "kubernetes_watch_"},
 		{"k8s.io/kubernetes/pkg/api/errors", "", "io.fabric8.kubernetes.api.model", "kubernetes_errors_"},
