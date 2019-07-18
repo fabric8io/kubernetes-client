@@ -381,6 +381,7 @@ All the resource objects used here will be according to OpenShift 3.9.0  and Kub
   Platforms:
   - [Apache Openwhisk](https://github.com/apache/incubator-openwhisk)
   - [Eclipse che](https://www.eclipse.org/che/)
+  - [EnMasse](https://enmasse.io)
   - [Openshift.io (Launcher service)](https://github.com/fabric8-launcher)
   - [Spotify Styx](https://github.com/spotify/styx)
   - [Strimzi](https://github.com/strimzi/)
