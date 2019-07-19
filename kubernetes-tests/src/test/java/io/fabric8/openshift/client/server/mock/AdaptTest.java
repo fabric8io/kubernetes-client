@@ -16,6 +16,8 @@
 
 package io.fabric8.openshift.client.server.mock;
 
+import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
+import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -23,28 +25,30 @@ import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
 
 public class AdaptTest {
 
-  private OpenShiftMockServer mock = new OpenShiftMockServer();
-
-  @Before
-  public void setUp() {
-    mock.init();
-  }
-
-  @After
-  public void tearDown() throws IOException {
-    mock.destroy();
-  }
-
+  @Rule
+  public KubernetesServer server = new KubernetesServer();
 
   @Test
   public void testSharedClient() {
-    KubernetesClient client = mock.createClient();
+    server.expect().withPath("/apis").andReturn(200, new APIGroupListBuilder()
+      .addNewGroup()
+      .withApiVersion("v1")
+      .withName("autoscaling.k8s.io")
+      .endGroup()
+      .addNewGroup()
+      .withApiVersion("v1")
+      .withName("security.openshift.io")
+      .endGroup()
+      .build()).once();
+
+    KubernetesClient client = server.getClient();
     OpenShiftClient oclient = client.adapt(OpenShiftClient.class);
     Assert.assertNotNull(client.adapt(OkHttpClient.class));
     Assert.assertNotNull(oclient.adapt(OkHttpClient.class));

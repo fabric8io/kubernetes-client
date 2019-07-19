@@ -58,6 +58,15 @@ public class OpenshiftAdapterSupport {
    * @return         True if oapi is found in the root paths.
    */
     static boolean isOpenShift(Client client) {
+      return isOpenShiftAPIGroups(client);
+    }
+
+    /**
+     * Check if OpenShift API Groups are available
+     * @param client   The client.
+     * @return         True if the new <code>/apis/*.openshift.io/</code> APIs are found in the root paths.
+     */
+    static boolean isOpenShiftAPIGroups(Client client) {
       URL masterUrl = client.getMasterUrl();
 
       OkHttpClient httpClient = ((BaseClient)client).getHttpClient();
@@ -78,26 +87,6 @@ public class OpenshiftAdapterSupport {
         KubernetesClientException.launderThrowable(e);
       }
       return false;
-    }
-
-    /**
-     * Check if OpenShift API Groups are available
-     * @param client   The client.
-     * @return         True if the new <code>/apis/*.openshift.io/</code> APIs are found in the root paths.
-     */
-    static boolean isOpenShiftAPIGroups(Client client) {
-        Config configuration = client.getConfiguration();
-        if (configuration instanceof OpenShiftConfig) {
-            OpenShiftConfig openShiftConfig = (OpenShiftConfig) configuration;
-            if (openShiftConfig.isDisableApiGroupCheck()) {
-                return false;
-            }
-        }
-        URL masterUrl = client.getMasterUrl();
-        if (isOpenShift(client) && USES_OPENSHIFT_APIGROUPS.containsKey(masterUrl)) {
-            return USES_OPENSHIFT_APIGROUPS.get(masterUrl);
-        }
-        return false;
     }
 
 

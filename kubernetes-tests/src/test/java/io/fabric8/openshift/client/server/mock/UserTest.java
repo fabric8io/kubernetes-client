@@ -16,6 +16,7 @@
 
 package io.fabric8.openshift.client.server.mock;
 
+import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.api.model.UserBuilder;
 import io.fabric8.openshift.api.model.UserList;
@@ -38,9 +39,22 @@ public class UserTest {
 
   @Test
   public void testList() {
+   server.expect().withPath("/apis/user.openshift.io/v1/users").andReturn(200, new UserListBuilder()
+      .addNewItem().and()
+      .addNewItem().and().build()).always();
    server.expect().withPath("/oapi/v1/users").andReturn(200, new UserListBuilder()
       .addNewItem().and()
       .addNewItem().and().build()).always();
+   server.expect().withPath("/apis").andReturn(200, new APIGroupListBuilder()
+      .addNewGroup()
+      .withApiVersion("v1")
+      .withName("autoscaling.k8s.io")
+      .endGroup()
+      .addNewGroup()
+      .withApiVersion("v1")
+      .withName("security.openshift.io")
+      .endGroup()
+      .build()).once();
 
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();
