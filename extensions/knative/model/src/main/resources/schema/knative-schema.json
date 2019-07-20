@@ -1,0 +1,4670 @@
+{
+  "id": "http://fabric8.io/knative/v1alpha1/Schema#",
+  "$schema": "http://json-schema.org/schema#",
+  "definitions": {
+    "k8s_io_apimachinery_pkg_api_resource_Quantity": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "format": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "Quantity",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "k8s_io_apimachinery_pkg_runtime_RawExtension": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "raw": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "java.util.Map\u003cString, Object\u003e",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "k8s_io_apimachinery_pkg_util_intstr_IntOrString": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "intVal": {
+          "type": "integer",
+          "description": ""
+        },
+        "strVal": {
+          "type": "string",
+          "description": ""
+        },
+        "type": {
+          "type": "integer",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "IntOrString",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_Condition": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "lastTransitionTime": {
+          "$ref": "#/definitions/knative_VolatileTime",
+          "javaType": "io.fabric8.knative.v1.VolatileTime"
+        },
+        "message": {
+          "type": "string",
+          "description": "human-readable message indicating details about last transition"
+        },
+        "reason": {
+          "type": "string",
+          "description": "one-word CamelCase reason for the condition's last transition"
+        },
+        "severity": {
+          "type": "string",
+          "description": "how to interpret failures of this condition"
+        },
+        "status": {
+          "type": "string",
+          "description": "status of the condition"
+        },
+        "type": {
+          "type": "string",
+          "description": "type of status condition"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.v1.Condition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_URL": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "forceQuery": {
+          "type": "boolean",
+          "description": ""
+        },
+        "fragment": {
+          "type": "string",
+          "description": ""
+        },
+        "host": {
+          "type": "string",
+          "description": ""
+        },
+        "opaque": {
+          "type": "string",
+          "description": ""
+        },
+        "path": {
+          "type": "string",
+          "description": ""
+        },
+        "rawPath": {
+          "type": "string",
+          "description": ""
+        },
+        "rawQuery": {
+          "type": "string",
+          "description": ""
+        },
+        "scheme": {
+          "type": "string",
+          "description": ""
+        },
+        "user": {
+          "$ref": "#/definitions/net_url_Userinfo",
+          "javaType": "java.lang.String"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.v1.URL",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_VolatileTime": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "inner": {
+          "$ref": "#/definitions/kubernetes_meta_Time",
+          "javaType": "java.lang.String"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.v1.VolatileTime",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_duck_v1alpha1_AddressStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "address": {
+          "$ref": "#/definitions/knative_duck_v1alpha1_Addressable",
+          "javaType": "io.fabric8.knative.duck.v1alpha1.Addressable"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.duck.v1alpha1.AddressStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_duck_v1alpha1_Addressable": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "hostname": {
+          "type": "string",
+          "description": ""
+        },
+        "url": {
+          "$ref": "#/definitions/knative_URL",
+          "javaType": "io.fabric8.knative.v1.URL"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.duck.v1alpha1.Addressable",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_duck_v1alpha1_Subscribable": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "subscribers": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_duck_v1alpha1_SubscriberSpec",
+            "javaType": "io.fabric8.knative.duck.v1alpha1.SubscriberSpec"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.duck.v1alpha1.Subscribable",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_duck_v1alpha1_SubscribableStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "subscribers": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_duck_v1alpha1_SubscriberStatus",
+            "javaType": "io.fabric8.knative.duck.v1alpha1.SubscriberStatus"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.duck.v1alpha1.SubscribableStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_duck_v1alpha1_SubscribableTypeStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "subscribablestatus": {
+          "$ref": "#/definitions/knative_duck_v1alpha1_SubscribableStatus",
+          "javaType": "io.fabric8.knative.duck.v1alpha1.SubscribableStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.duck.v1alpha1.SubscribableTypeStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_duck_v1alpha1_SubscriberSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "generation": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "ref": {
+          "$ref": "#/definitions/kubernetes_ObjectReference",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        },
+        "replyURI": {
+          "type": "string",
+          "description": ""
+        },
+        "subscriberURI": {
+          "type": "string",
+          "description": ""
+        },
+        "uid": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.duck.v1alpha1.SubscriberSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_duck_v1alpha1_SubscriberStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "message": {
+          "type": "string",
+          "description": ""
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "ready": {
+          "type": "string",
+          "description": ""
+        },
+        "uid": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.duck.v1alpha1.SubscriberStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_duck_v1beta1_Addressable": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "url": {
+          "$ref": "#/definitions/knative_URL",
+          "javaType": "io.fabric8.knative.v1.URL"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.duck.v1beta1.Addressable",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_duck_v1beta1_Status": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_Condition",
+            "javaType": "io.fabric8.knative.v1.Condition"
+          }
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.duck.v1beta1.Status",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_eventing_v1alpha1_Broker": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "eventing.knative.dev/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "Broker",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_meta_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_eventing_v1alpha1_BrokerSpec",
+          "javaType": "io.fabric8.knative.eventing.v1alpha1.BrokerSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_eventing_v1alpha1_BrokerStatus",
+          "javaType": "io.fabric8.knative.eventing.v1alpha1.BrokerStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.Broker",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "knative_eventing_v1alpha1_BrokerList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "eventing.knative.dev/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/knative_eventing_v1alpha1_Broker",
+            "javaType": "io.fabric8.knative.eventing.v1alpha1.Broker"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "BrokerList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_meta_ListMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.BrokerList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList"
+      ]
+    },
+    "knative_eventing_v1alpha1_BrokerSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "channelTemplate": {
+          "$ref": "#/definitions/knative_eventing_v1alpha1_ChannelSpec",
+          "javaType": "io.fabric8.knative.eventing.v1alpha1.ChannelSpec"
+        },
+        "channelTemplateSpec": {
+          "$ref": "#/definitions/knative_eventing_v1alpha1_ChannelTemplateSpec",
+          "javaType": "io.fabric8.knative.eventing.v1alpha1.ChannelTemplateSpec"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.BrokerSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_eventing_v1alpha1_BrokerStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "address": {
+          "$ref": "#/definitions/knative_duck_v1alpha1_Addressable",
+          "javaType": "io.fabric8.knative.duck.v1alpha1.Addressable"
+        },
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_Condition",
+            "javaType": "io.fabric8.knative.v1.Condition"
+          }
+        },
+        "ingressChannel": {
+          "$ref": "#/definitions/kubernetes_ObjectReference",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "triggerChannel": {
+          "$ref": "#/definitions/kubernetes_ObjectReference",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.BrokerStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_eventing_v1alpha1_Channel": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "eventing.knative.dev/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "Channel",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_meta_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_eventing_v1alpha1_ChannelSpec",
+          "javaType": "io.fabric8.knative.eventing.v1alpha1.ChannelSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_eventing_v1alpha1_ChannelStatus",
+          "javaType": "io.fabric8.knative.eventing.v1alpha1.ChannelStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.Channel",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "knative_eventing_v1alpha1_ChannelList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "eventing.knative.dev/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/knative_eventing_v1alpha1_Channel",
+            "javaType": "io.fabric8.knative.eventing.v1alpha1.Channel"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ChannelList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_meta_ListMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.ChannelList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList"
+      ]
+    },
+    "knative_eventing_v1alpha1_ChannelSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "arguments": {
+          "$ref": "#/definitions/k8s_io_apimachinery_pkg_runtime_RawExtension",
+          "javaType": "java.util.Map\u003cString, Object\u003e"
+        },
+        "generation": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "provisioner": {
+          "$ref": "#/definitions/kubernetes_ObjectReference",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        },
+        "subscribable": {
+          "$ref": "#/definitions/knative_duck_v1alpha1_Subscribable",
+          "javaType": "io.fabric8.knative.duck.v1alpha1.Subscribable"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.ChannelSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_eventing_v1alpha1_ChannelStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "address": {
+          "$ref": "#/definitions/knative_duck_v1alpha1_Addressable",
+          "javaType": "io.fabric8.knative.duck.v1alpha1.Addressable"
+        },
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_Condition",
+            "javaType": "io.fabric8.knative.v1.Condition"
+          }
+        },
+        "internal": {
+          "$ref": "#/definitions/k8s_io_apimachinery_pkg_runtime_RawExtension",
+          "javaType": "java.util.Map\u003cString, Object\u003e"
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "subscribablestatus": {
+          "$ref": "#/definitions/knative_duck_v1alpha1_SubscribableStatus",
+          "javaType": "io.fabric8.knative.duck.v1alpha1.SubscribableStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.ChannelStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_eventing_v1alpha1_ChannelTemplateSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "eventing.knative.dev/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ChannelTemplateSpec",
+          "required": true
+        },
+        "spec": {
+          "$ref": "#/definitions/k8s_io_apimachinery_pkg_runtime_RawExtension",
+          "javaType": "java.util.Map\u003cString, Object\u003e"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.ChannelTemplateSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_eventing_v1alpha1_ClusterChannelProvisioner": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "eventing.knative.dev/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ClusterChannelProvisioner",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_meta_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_eventing_v1alpha1_ClusterChannelProvisionerSpec",
+          "javaType": "io.fabric8.knative.eventing.v1alpha1.ClusterChannelProvisionerSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_eventing_v1alpha1_ClusterChannelProvisionerStatus",
+          "javaType": "io.fabric8.knative.eventing.v1alpha1.ClusterChannelProvisionerStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.ClusterChannelProvisioner",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "knative_eventing_v1alpha1_ClusterChannelProvisionerList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "eventing.knative.dev/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/knative_eventing_v1alpha1_ClusterChannelProvisioner",
+            "javaType": "io.fabric8.knative.eventing.v1alpha1.ClusterChannelProvisioner"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ClusterChannelProvisionerList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_meta_ListMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.ClusterChannelProvisionerList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList"
+      ]
+    },
+    "knative_eventing_v1alpha1_ClusterChannelProvisionerSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "generation": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.ClusterChannelProvisionerSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_eventing_v1alpha1_ClusterChannelProvisionerStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_Condition",
+            "javaType": "io.fabric8.knative.v1.Condition"
+          }
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.ClusterChannelProvisionerStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_eventing_v1alpha1_EventType": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "eventing.knative.dev/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "EventType",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_meta_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_eventing_v1alpha1_EventTypeSpec",
+          "javaType": "io.fabric8.knative.eventing.v1alpha1.EventTypeSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_eventing_v1alpha1_EventTypeStatus",
+          "javaType": "io.fabric8.knative.eventing.v1alpha1.EventTypeStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.EventType",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "knative_eventing_v1alpha1_EventTypeList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "eventing.knative.dev/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/knative_eventing_v1alpha1_EventType",
+            "javaType": "io.fabric8.knative.eventing.v1alpha1.EventType"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "EventTypeList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_meta_ListMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.EventTypeList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList"
+      ]
+    },
+    "knative_eventing_v1alpha1_EventTypeSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "broker": {
+          "type": "string",
+          "description": ""
+        },
+        "description": {
+          "type": "string",
+          "description": ""
+        },
+        "schema": {
+          "type": "string",
+          "description": ""
+        },
+        "source": {
+          "type": "string",
+          "description": ""
+        },
+        "type": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.EventTypeSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_eventing_v1alpha1_EventTypeStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_Condition",
+            "javaType": "io.fabric8.knative.v1.Condition"
+          }
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.EventTypeStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_eventing_v1alpha1_ReplyStrategy": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "channel": {
+          "$ref": "#/definitions/kubernetes_ObjectReference",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.ReplyStrategy",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_eventing_v1alpha1_SubscriberSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "dnsName": {
+          "type": "string",
+          "description": ""
+        },
+        "ref": {
+          "$ref": "#/definitions/kubernetes_ObjectReference",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        },
+        "uri": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.SubscriberSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_eventing_v1alpha1_Subscription": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "eventing.knative.dev/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "Subscription",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_meta_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_eventing_v1alpha1_SubscriptionSpec",
+          "javaType": "io.fabric8.knative.eventing.v1alpha1.SubscriptionSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_eventing_v1alpha1_SubscriptionStatus",
+          "javaType": "io.fabric8.knative.eventing.v1alpha1.SubscriptionStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.Subscription",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "knative_eventing_v1alpha1_SubscriptionList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "eventing.knative.dev/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/knative_eventing_v1alpha1_Subscription",
+            "javaType": "io.fabric8.knative.eventing.v1alpha1.Subscription"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "SubscriptionList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_meta_ListMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.SubscriptionList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList"
+      ]
+    },
+    "knative_eventing_v1alpha1_SubscriptionSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "channel": {
+          "$ref": "#/definitions/kubernetes_ObjectReference",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        },
+        "generation": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "reply": {
+          "$ref": "#/definitions/knative_eventing_v1alpha1_ReplyStrategy",
+          "javaType": "io.fabric8.knative.eventing.v1alpha1.ReplyStrategy"
+        },
+        "subscriber": {
+          "$ref": "#/definitions/knative_eventing_v1alpha1_SubscriberSpec",
+          "javaType": "io.fabric8.knative.eventing.v1alpha1.SubscriberSpec"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.SubscriptionSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_eventing_v1alpha1_SubscriptionStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_Condition",
+            "javaType": "io.fabric8.knative.v1.Condition"
+          }
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "physicalSubscription": {
+          "$ref": "#/definitions/knative_eventing_v1alpha1_SubscriptionStatusPhysicalSubscription",
+          "javaType": "io.fabric8.knative.eventing.v1alpha1.SubscriptionStatusPhysicalSubscription"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.SubscriptionStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_eventing_v1alpha1_SubscriptionStatusPhysicalSubscription": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "replyURI": {
+          "type": "string",
+          "description": ""
+        },
+        "subscriberURI": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.SubscriptionStatusPhysicalSubscription",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_eventing_v1alpha1_Trigger": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "eventing.knative.dev/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "Trigger",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_meta_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_eventing_v1alpha1_TriggerSpec",
+          "javaType": "io.fabric8.knative.eventing.v1alpha1.TriggerSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_eventing_v1alpha1_TriggerStatus",
+          "javaType": "io.fabric8.knative.eventing.v1alpha1.TriggerStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.Trigger",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "knative_eventing_v1alpha1_TriggerFilter": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "sourceAndType": {
+          "$ref": "#/definitions/knative_eventing_v1alpha1_TriggerFilterSourceAndType",
+          "javaType": "io.fabric8.knative.eventing.v1alpha1.TriggerFilterSourceAndType"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.TriggerFilter",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_eventing_v1alpha1_TriggerFilterSourceAndType": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "source": {
+          "type": "string",
+          "description": ""
+        },
+        "type": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.TriggerFilterSourceAndType",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_eventing_v1alpha1_TriggerList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "eventing.knative.dev/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/knative_eventing_v1alpha1_Trigger",
+            "javaType": "io.fabric8.knative.eventing.v1alpha1.Trigger"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "TriggerList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_meta_ListMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.TriggerList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList"
+      ]
+    },
+    "knative_eventing_v1alpha1_TriggerSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "broker": {
+          "type": "string",
+          "description": ""
+        },
+        "filter": {
+          "$ref": "#/definitions/knative_eventing_v1alpha1_TriggerFilter",
+          "javaType": "io.fabric8.knative.eventing.v1alpha1.TriggerFilter"
+        },
+        "subscriber": {
+          "$ref": "#/definitions/knative_eventing_v1alpha1_SubscriberSpec",
+          "javaType": "io.fabric8.knative.eventing.v1alpha1.SubscriberSpec"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.TriggerSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_eventing_v1alpha1_TriggerStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_Condition",
+            "javaType": "io.fabric8.knative.v1.Condition"
+          }
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "subscriberURI": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.TriggerStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_messaging_v1alpha1_ChannelTemplateSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "messaging.knative.dev/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ChannelTemplateSpec",
+          "required": true
+        },
+        "spec": {
+          "$ref": "#/definitions/k8s_io_apimachinery_pkg_runtime_RawExtension",
+          "javaType": "java.util.Map\u003cString, Object\u003e"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.messaging.v1alpha1.ChannelTemplateSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_messaging_v1alpha1_InMemoryChannel": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "messaging.knative.dev/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "InMemoryChannel",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_meta_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_messaging_v1alpha1_InMemoryChannelSpec",
+          "javaType": "io.fabric8.knative.messaging.v1alpha1.InMemoryChannelSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_messaging_v1alpha1_InMemoryChannelStatus",
+          "javaType": "io.fabric8.knative.messaging.v1alpha1.InMemoryChannelStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.messaging.v1alpha1.InMemoryChannel",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "knative_messaging_v1alpha1_InMemoryChannelList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "messaging.knative.dev/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/knative_messaging_v1alpha1_InMemoryChannel",
+            "javaType": "io.fabric8.knative.messaging.v1alpha1.InMemoryChannel"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "InMemoryChannelList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_meta_ListMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.messaging.v1alpha1.InMemoryChannelList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList"
+      ]
+    },
+    "knative_messaging_v1alpha1_InMemoryChannelSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "subscribable": {
+          "$ref": "#/definitions/knative_duck_v1alpha1_Subscribable",
+          "javaType": "io.fabric8.knative.duck.v1alpha1.Subscribable"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.messaging.v1alpha1.InMemoryChannelSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_messaging_v1alpha1_InMemoryChannelStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "address": {
+          "$ref": "#/definitions/knative_duck_v1alpha1_Addressable",
+          "javaType": "io.fabric8.knative.duck.v1alpha1.Addressable"
+        },
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_Condition",
+            "javaType": "io.fabric8.knative.v1.Condition"
+          }
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "subscribablestatus": {
+          "$ref": "#/definitions/knative_duck_v1alpha1_SubscribableStatus",
+          "javaType": "io.fabric8.knative.duck.v1alpha1.SubscribableStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.messaging.v1alpha1.InMemoryChannelStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_messaging_v1alpha1_Sequence": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "messaging.knative.dev/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "Sequence",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_meta_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_messaging_v1alpha1_SequenceSpec",
+          "javaType": "io.fabric8.knative.messaging.v1alpha1.SequenceSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_messaging_v1alpha1_SequenceStatus",
+          "javaType": "io.fabric8.knative.messaging.v1alpha1.SequenceStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.messaging.v1alpha1.Sequence",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "knative_messaging_v1alpha1_SequenceChannelStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "channel": {
+          "$ref": "#/definitions/kubernetes_ObjectReference",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        },
+        "ready": {
+          "$ref": "#/definitions/knative_Condition",
+          "javaType": "io.fabric8.knative.v1.Condition"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.messaging.v1alpha1.SequenceChannelStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_messaging_v1alpha1_SequenceList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "messaging.knative.dev/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/knative_messaging_v1alpha1_Sequence",
+            "javaType": "io.fabric8.knative.messaging.v1alpha1.Sequence"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "SequenceList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_meta_ListMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.messaging.v1alpha1.SequenceList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList"
+      ]
+    },
+    "knative_messaging_v1alpha1_SequenceSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "channelTemplate": {
+          "$ref": "#/definitions/knative_messaging_v1alpha1_ChannelTemplateSpec",
+          "javaType": "io.fabric8.knative.messaging.v1alpha1.ChannelTemplateSpec"
+        },
+        "reply": {
+          "$ref": "#/definitions/kubernetes_ObjectReference",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        },
+        "steps": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/knative_eventing_v1alpha1_SubscriberSpec",
+            "javaType": "io.fabric8.knative.eventing.v1alpha1.SubscriberSpec"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.messaging.v1alpha1.SequenceSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_messaging_v1alpha1_SequenceStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "address": {
+          "$ref": "#/definitions/knative_duck_v1alpha1_Addressable",
+          "javaType": "io.fabric8.knative.duck.v1alpha1.Addressable"
+        },
+        "channelStatuses": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/knative_messaging_v1alpha1_SequenceChannelStatus",
+            "javaType": "io.fabric8.knative.messaging.v1alpha1.SequenceChannelStatus"
+          }
+        },
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_Condition",
+            "javaType": "io.fabric8.knative.v1.Condition"
+          }
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "subscriptionStatuses": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/knative_messaging_v1alpha1_SequenceSubscriptionStatus",
+            "javaType": "io.fabric8.knative.messaging.v1alpha1.SequenceSubscriptionStatus"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.messaging.v1alpha1.SequenceStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_messaging_v1alpha1_SequenceSubscriptionStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "ready": {
+          "$ref": "#/definitions/knative_Condition",
+          "javaType": "io.fabric8.knative.v1.Condition"
+        },
+        "subscription": {
+          "$ref": "#/definitions/kubernetes_ObjectReference",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.messaging.v1alpha1.SequenceSubscriptionStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_serving_v1beta1_Configuration": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "serving.knative.dev/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "Configuration",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_meta_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_serving_v1beta1_ConfigurationSpec",
+          "javaType": "io.fabric8.knative.serving.v1beta1.ConfigurationSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_serving_v1beta1_ConfigurationStatus",
+          "javaType": "io.fabric8.knative.serving.v1beta1.ConfigurationStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.serving.v1beta1.Configuration",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "knative_serving_v1beta1_ConfigurationList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "serving.knative.dev/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/knative_serving_v1beta1_Configuration",
+            "javaType": "io.fabric8.knative.serving.v1beta1.Configuration"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ConfigurationList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_meta_ListMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.serving.v1beta1.ConfigurationList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList"
+      ]
+    },
+    "knative_serving_v1beta1_ConfigurationSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "template": {
+          "$ref": "#/definitions/knative_serving_v1beta1_RevisionTemplateSpec",
+          "javaType": "io.fabric8.knative.serving.v1beta1.RevisionTemplateSpec"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.serving.v1beta1.ConfigurationSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_serving_v1beta1_ConfigurationStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_Condition",
+            "javaType": "io.fabric8.knative.v1.Condition"
+          }
+        },
+        "latestCreatedRevisionName": {
+          "type": "string",
+          "description": ""
+        },
+        "latestReadyRevisionName": {
+          "type": "string",
+          "description": ""
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.serving.v1beta1.ConfigurationStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_serving_v1beta1_ConfigurationStatusFields": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "latestCreatedRevisionName": {
+          "type": "string",
+          "description": ""
+        },
+        "latestReadyRevisionName": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.serving.v1beta1.ConfigurationStatusFields",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_serving_v1beta1_PodSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "containers": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_Container",
+            "javaType": "io.fabric8.kubernetes.api.model.Container"
+          }
+        },
+        "serviceAccountName": {
+          "type": "string",
+          "description": ""
+        },
+        "volumes": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_Volume",
+            "javaType": "io.fabric8.kubernetes.api.model.Volume"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.serving.v1beta1.PodSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_serving_v1beta1_Revision": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "serving.knative.dev/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "Revision",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_meta_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_serving_v1beta1_RevisionSpec",
+          "javaType": "io.fabric8.knative.serving.v1beta1.RevisionSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_serving_v1beta1_RevisionStatus",
+          "javaType": "io.fabric8.knative.serving.v1beta1.RevisionStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.serving.v1beta1.Revision",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "knative_serving_v1beta1_RevisionList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "serving.knative.dev/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/knative_serving_v1beta1_Revision",
+            "javaType": "io.fabric8.knative.serving.v1beta1.Revision"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "RevisionList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_meta_ListMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.serving.v1beta1.RevisionList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList"
+      ]
+    },
+    "knative_serving_v1beta1_RevisionSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "containerConcurrency": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "containers": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_Container",
+            "javaType": "io.fabric8.kubernetes.api.model.Container"
+          }
+        },
+        "serviceAccountName": {
+          "type": "string",
+          "description": ""
+        },
+        "timeoutSeconds": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "volumes": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_Volume",
+            "javaType": "io.fabric8.kubernetes.api.model.Volume"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.serving.v1beta1.RevisionSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_serving_v1beta1_RevisionStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_Condition",
+            "javaType": "io.fabric8.knative.v1.Condition"
+          }
+        },
+        "logUrl": {
+          "type": "string",
+          "description": ""
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "serviceName": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.serving.v1beta1.RevisionStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_serving_v1beta1_RevisionTemplateSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_meta_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_serving_v1beta1_RevisionSpec",
+          "javaType": "io.fabric8.knative.serving.v1beta1.RevisionSpec"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.serving.v1beta1.RevisionTemplateSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_serving_v1beta1_Route": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "serving.knative.dev/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "Route",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_meta_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_serving_v1beta1_RouteSpec",
+          "javaType": "io.fabric8.knative.serving.v1beta1.RouteSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_serving_v1beta1_RouteStatus",
+          "javaType": "io.fabric8.knative.serving.v1beta1.RouteStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.serving.v1beta1.Route",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "knative_serving_v1beta1_RouteList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "serving.knative.dev/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/knative_serving_v1beta1_Route",
+            "javaType": "io.fabric8.knative.serving.v1beta1.Route"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "RouteList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_meta_ListMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.serving.v1beta1.RouteList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList"
+      ]
+    },
+    "knative_serving_v1beta1_RouteSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "traffic": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_serving_v1beta1_TrafficTarget",
+            "javaType": "io.fabric8.knative.serving.v1beta1.TrafficTarget"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.serving.v1beta1.RouteSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_serving_v1beta1_RouteStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "address": {
+          "$ref": "#/definitions/knative_duck_v1beta1_Addressable",
+          "javaType": "io.fabric8.knative.duck.v1beta1.Addressable"
+        },
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_Condition",
+            "javaType": "io.fabric8.knative.v1.Condition"
+          }
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "traffic": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_serving_v1beta1_TrafficTarget",
+            "javaType": "io.fabric8.knative.serving.v1beta1.TrafficTarget"
+          }
+        },
+        "url": {
+          "$ref": "#/definitions/knative_URL",
+          "javaType": "io.fabric8.knative.v1.URL"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.serving.v1beta1.RouteStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_serving_v1beta1_RouteStatusFields": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "address": {
+          "$ref": "#/definitions/knative_duck_v1beta1_Addressable",
+          "javaType": "io.fabric8.knative.duck.v1beta1.Addressable"
+        },
+        "traffic": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_serving_v1beta1_TrafficTarget",
+            "javaType": "io.fabric8.knative.serving.v1beta1.TrafficTarget"
+          }
+        },
+        "url": {
+          "$ref": "#/definitions/knative_URL",
+          "javaType": "io.fabric8.knative.v1.URL"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.serving.v1beta1.RouteStatusFields",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_serving_v1beta1_Service": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "serving.knative.dev/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "Service",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_meta_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_serving_v1beta1_ServiceSpec",
+          "javaType": "io.fabric8.knative.serving.v1beta1.ServiceSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_serving_v1beta1_ServiceStatus",
+          "javaType": "io.fabric8.knative.serving.v1beta1.ServiceStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.serving.v1beta1.Service",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "knative_serving_v1beta1_ServiceList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "serving.knative.dev/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/knative_serving_v1beta1_Service",
+            "javaType": "io.fabric8.knative.serving.v1beta1.Service"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ServiceList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_meta_ListMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.serving.v1beta1.ServiceList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList"
+      ]
+    },
+    "knative_serving_v1beta1_ServiceSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "template": {
+          "$ref": "#/definitions/knative_serving_v1beta1_RevisionTemplateSpec",
+          "javaType": "io.fabric8.knative.serving.v1beta1.RevisionTemplateSpec"
+        },
+        "traffic": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_serving_v1beta1_TrafficTarget",
+            "javaType": "io.fabric8.knative.serving.v1beta1.TrafficTarget"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.serving.v1beta1.ServiceSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_serving_v1beta1_ServiceStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "address": {
+          "$ref": "#/definitions/knative_duck_v1beta1_Addressable",
+          "javaType": "io.fabric8.knative.duck.v1beta1.Addressable"
+        },
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_Condition",
+            "javaType": "io.fabric8.knative.v1.Condition"
+          }
+        },
+        "latestCreatedRevisionName": {
+          "type": "string",
+          "description": ""
+        },
+        "latestReadyRevisionName": {
+          "type": "string",
+          "description": ""
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "traffic": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_serving_v1beta1_TrafficTarget",
+            "javaType": "io.fabric8.knative.serving.v1beta1.TrafficTarget"
+          }
+        },
+        "url": {
+          "$ref": "#/definitions/knative_URL",
+          "javaType": "io.fabric8.knative.v1.URL"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.serving.v1beta1.ServiceStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_serving_v1beta1_TrafficTarget": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "configurationName": {
+          "type": "string",
+          "description": ""
+        },
+        "latestRevision": {
+          "type": "boolean",
+          "description": ""
+        },
+        "percent": {
+          "type": "integer",
+          "description": ""
+        },
+        "revisionName": {
+          "type": "string",
+          "description": ""
+        },
+        "tag": {
+          "type": "string",
+          "description": ""
+        },
+        "url": {
+          "$ref": "#/definitions/knative_URL",
+          "javaType": "io.fabric8.knative.v1.URL"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.serving.v1beta1.TrafficTarget",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_AWSElasticBlockStoreVolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "fsType": {
+          "type": "string",
+          "description": ""
+        },
+        "partition": {
+          "type": "integer",
+          "description": ""
+        },
+        "readOnly": {
+          "type": "boolean",
+          "description": ""
+        },
+        "volumeID": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.AWSElasticBlockStoreVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_AzureDiskVolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "cachingMode": {
+          "type": "string",
+          "description": ""
+        },
+        "diskName": {
+          "type": "string",
+          "description": ""
+        },
+        "diskURI": {
+          "type": "string",
+          "description": ""
+        },
+        "fsType": {
+          "type": "string",
+          "description": ""
+        },
+        "kind": {
+          "type": "string",
+          "description": ""
+        },
+        "readOnly": {
+          "type": "boolean",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.AzureDiskVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_AzureFileVolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "readOnly": {
+          "type": "boolean",
+          "description": ""
+        },
+        "secretName": {
+          "type": "string",
+          "description": ""
+        },
+        "shareName": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.AzureFileVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_Capabilities": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "add": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "drop": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.Capabilities",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_CephFSVolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "monitors": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "path": {
+          "type": "string",
+          "description": ""
+        },
+        "readOnly": {
+          "type": "boolean",
+          "description": ""
+        },
+        "secretFile": {
+          "type": "string",
+          "description": ""
+        },
+        "secretRef": {
+          "$ref": "#/definitions/kubernetes_LocalObjectReference",
+          "javaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
+        },
+        "user": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.CephFSVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_CinderVolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "fsType": {
+          "type": "string",
+          "description": ""
+        },
+        "readOnly": {
+          "type": "boolean",
+          "description": ""
+        },
+        "secretRef": {
+          "$ref": "#/definitions/kubernetes_LocalObjectReference",
+          "javaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
+        },
+        "volumeID": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.CinderVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_ConfigMapEnvSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "optional": {
+          "type": "boolean",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.ConfigMapEnvSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_ConfigMapKeySelector": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "optional": {
+          "type": "boolean",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.ConfigMapKeySelector",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_ConfigMapProjection": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "items": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_KeyToPath",
+            "javaType": "io.fabric8.kubernetes.api.model.KeyToPath"
+          }
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "optional": {
+          "type": "boolean",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.ConfigMapProjection",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_ConfigMapVolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "defaultMode": {
+          "type": "integer",
+          "description": ""
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_KeyToPath",
+            "javaType": "io.fabric8.kubernetes.api.model.KeyToPath"
+          }
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "optional": {
+          "type": "boolean",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.ConfigMapVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_Container": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "args": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "command": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "env": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_EnvVar",
+            "javaType": "io.fabric8.kubernetes.api.model.EnvVar"
+          }
+        },
+        "envFrom": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_EnvFromSource",
+            "javaType": "io.fabric8.kubernetes.api.model.EnvFromSource"
+          }
+        },
+        "image": {
+          "type": "string",
+          "description": ""
+        },
+        "imagePullPolicy": {
+          "type": "string",
+          "description": ""
+        },
+        "lifecycle": {
+          "$ref": "#/definitions/kubernetes_Lifecycle",
+          "javaType": "io.fabric8.kubernetes.api.model.Lifecycle"
+        },
+        "livenessProbe": {
+          "$ref": "#/definitions/kubernetes_Probe",
+          "javaType": "io.fabric8.kubernetes.api.model.Probe"
+        },
+        "name": {
+          "type": "string",
+          "description": "",
+          "maxLength": 63,
+          "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+        },
+        "ports": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_ContainerPort",
+            "javaType": "io.fabric8.kubernetes.api.model.ContainerPort"
+          }
+        },
+        "readinessProbe": {
+          "$ref": "#/definitions/kubernetes_Probe",
+          "javaType": "io.fabric8.kubernetes.api.model.Probe"
+        },
+        "resources": {
+          "$ref": "#/definitions/kubernetes_ResourceRequirements",
+          "javaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
+        },
+        "securityContext": {
+          "$ref": "#/definitions/kubernetes_SecurityContext",
+          "javaType": "io.fabric8.kubernetes.api.model.SecurityContext"
+        },
+        "stdin": {
+          "type": "boolean",
+          "description": ""
+        },
+        "stdinOnce": {
+          "type": "boolean",
+          "description": ""
+        },
+        "terminationMessagePath": {
+          "type": "string",
+          "description": ""
+        },
+        "terminationMessagePolicy": {
+          "type": "string",
+          "description": ""
+        },
+        "tty": {
+          "type": "boolean",
+          "description": ""
+        },
+        "volumeDevices": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_VolumeDevice",
+            "javaType": "io.fabric8.kubernetes.api.model.VolumeDevice"
+          }
+        },
+        "volumeMounts": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_VolumeMount",
+            "javaType": "io.fabric8.kubernetes.api.model.VolumeMount"
+          }
+        },
+        "workingDir": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.Container",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_ContainerPort": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "containerPort": {
+          "type": "integer",
+          "description": ""
+        },
+        "hostIP": {
+          "type": "string",
+          "description": ""
+        },
+        "hostPort": {
+          "type": "integer",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "protocol": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.ContainerPort",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_DownwardAPIProjection": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "items": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_DownwardAPIVolumeFile",
+            "javaType": "io.fabric8.kubernetes.api.model.DownwardAPIVolumeFile"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.DownwardAPIProjection",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_DownwardAPIVolumeFile": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "fieldRef": {
+          "$ref": "#/definitions/kubernetes_ObjectFieldSelector",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectFieldSelector"
+        },
+        "mode": {
+          "type": "integer",
+          "description": ""
+        },
+        "path": {
+          "type": "string",
+          "description": ""
+        },
+        "resourceFieldRef": {
+          "$ref": "#/definitions/kubernetes_ResourceFieldSelector",
+          "javaType": "io.fabric8.kubernetes.api.model.ResourceFieldSelector"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.DownwardAPIVolumeFile",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_DownwardAPIVolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "defaultMode": {
+          "type": "integer",
+          "description": ""
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_DownwardAPIVolumeFile",
+            "javaType": "io.fabric8.kubernetes.api.model.DownwardAPIVolumeFile"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.DownwardAPIVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_EmptyDirVolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "medium": {
+          "type": "string",
+          "description": ""
+        },
+        "sizeLimit": {
+          "$ref": "#/definitions/k8s_io_apimachinery_pkg_api_resource_Quantity",
+          "javaType": "Quantity"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.EmptyDirVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_EnvFromSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "configMapRef": {
+          "$ref": "#/definitions/kubernetes_ConfigMapEnvSource",
+          "javaType": "io.fabric8.kubernetes.api.model.ConfigMapEnvSource"
+        },
+        "prefix": {
+          "type": "string",
+          "description": ""
+        },
+        "secretRef": {
+          "$ref": "#/definitions/kubernetes_SecretEnvSource",
+          "javaType": "io.fabric8.kubernetes.api.model.SecretEnvSource"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.EnvFromSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_EnvVar": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "",
+          "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+        },
+        "value": {
+          "type": "string",
+          "description": ""
+        },
+        "valueFrom": {
+          "$ref": "#/definitions/kubernetes_EnvVarSource",
+          "javaType": "io.fabric8.kubernetes.api.model.EnvVarSource"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.EnvVar",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_EnvVarSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "configMapKeyRef": {
+          "$ref": "#/definitions/kubernetes_ConfigMapKeySelector",
+          "javaType": "io.fabric8.kubernetes.api.model.ConfigMapKeySelector"
+        },
+        "fieldRef": {
+          "$ref": "#/definitions/kubernetes_ObjectFieldSelector",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectFieldSelector"
+        },
+        "resourceFieldRef": {
+          "$ref": "#/definitions/kubernetes_ResourceFieldSelector",
+          "javaType": "io.fabric8.kubernetes.api.model.ResourceFieldSelector"
+        },
+        "secretKeyRef": {
+          "$ref": "#/definitions/kubernetes_SecretKeySelector",
+          "javaType": "io.fabric8.kubernetes.api.model.SecretKeySelector"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.EnvVarSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_ExecAction": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "command": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.ExecAction",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_FCVolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "fsType": {
+          "type": "string",
+          "description": ""
+        },
+        "lun": {
+          "type": "integer",
+          "description": ""
+        },
+        "readOnly": {
+          "type": "boolean",
+          "description": ""
+        },
+        "targetWWNs": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "wwids": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.FCVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_FlexVolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "driver": {
+          "type": "string",
+          "description": ""
+        },
+        "fsType": {
+          "type": "string",
+          "description": ""
+        },
+        "options": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "string",
+            "description": ""
+          },
+          "javaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "readOnly": {
+          "type": "boolean",
+          "description": ""
+        },
+        "secretRef": {
+          "$ref": "#/definitions/kubernetes_LocalObjectReference",
+          "javaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.FlexVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_FlockerVolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "datasetName": {
+          "type": "string",
+          "description": ""
+        },
+        "datasetUUID": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.FlockerVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_GCEPersistentDiskVolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "fsType": {
+          "type": "string",
+          "description": ""
+        },
+        "partition": {
+          "type": "integer",
+          "description": ""
+        },
+        "pdName": {
+          "type": "string",
+          "description": ""
+        },
+        "readOnly": {
+          "type": "boolean",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.GCEPersistentDiskVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_GitRepoVolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "directory": {
+          "type": "string",
+          "description": ""
+        },
+        "repository": {
+          "type": "string",
+          "description": ""
+        },
+        "revision": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.GitRepoVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_GlusterfsVolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "endpoints": {
+          "type": "string",
+          "description": ""
+        },
+        "path": {
+          "type": "string",
+          "description": ""
+        },
+        "readOnly": {
+          "type": "boolean",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.GlusterfsVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_HTTPGetAction": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "host": {
+          "type": "string",
+          "description": ""
+        },
+        "httpHeaders": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_HTTPHeader",
+            "javaType": "io.fabric8.kubernetes.api.model.HTTPHeader"
+          }
+        },
+        "path": {
+          "type": "string",
+          "description": ""
+        },
+        "port": {
+          "$ref": "#/definitions/k8s_io_apimachinery_pkg_util_intstr_IntOrString",
+          "javaType": "IntOrString"
+        },
+        "scheme": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.HTTPGetAction",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_HTTPHeader": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "value": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.HTTPHeader",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_Handler": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "exec": {
+          "$ref": "#/definitions/kubernetes_ExecAction",
+          "javaType": "io.fabric8.kubernetes.api.model.ExecAction"
+        },
+        "httpGet": {
+          "$ref": "#/definitions/kubernetes_HTTPGetAction",
+          "javaType": "io.fabric8.kubernetes.api.model.HTTPGetAction"
+        },
+        "tcpSocket": {
+          "$ref": "#/definitions/kubernetes_TCPSocketAction",
+          "javaType": "io.fabric8.kubernetes.api.model.TCPSocketAction"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.Handler",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_HostPathVolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": ""
+        },
+        "type": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.HostPathVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_ISCSIVolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "chapAuthDiscovery": {
+          "type": "boolean",
+          "description": ""
+        },
+        "chapAuthSession": {
+          "type": "boolean",
+          "description": ""
+        },
+        "fsType": {
+          "type": "string",
+          "description": ""
+        },
+        "initiatorName": {
+          "type": "string",
+          "description": ""
+        },
+        "iqn": {
+          "type": "string",
+          "description": ""
+        },
+        "iscsiInterface": {
+          "type": "string",
+          "description": ""
+        },
+        "lun": {
+          "type": "integer",
+          "description": ""
+        },
+        "portals": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "readOnly": {
+          "type": "boolean",
+          "description": ""
+        },
+        "secretRef": {
+          "$ref": "#/definitions/kubernetes_LocalObjectReference",
+          "javaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
+        },
+        "targetPortal": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.ISCSIVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_KeyToPath": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": ""
+        },
+        "mode": {
+          "type": "integer",
+          "description": ""
+        },
+        "path": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.KeyToPath",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_Lifecycle": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "postStart": {
+          "$ref": "#/definitions/kubernetes_Handler",
+          "javaType": "io.fabric8.kubernetes.api.model.Handler"
+        },
+        "preStop": {
+          "$ref": "#/definitions/kubernetes_Handler",
+          "javaType": "io.fabric8.kubernetes.api.model.Handler"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.Lifecycle",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_LocalObjectReference": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.LocalObjectReference",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_NFSVolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": ""
+        },
+        "readOnly": {
+          "type": "boolean",
+          "description": ""
+        },
+        "server": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.NFSVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_ObjectFieldSelector": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": ""
+        },
+        "fieldPath": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.ObjectFieldSelector",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_ObjectReference": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": ""
+        },
+        "fieldPath": {
+          "type": "string",
+          "description": ""
+        },
+        "kind": {
+          "type": "string",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "namespace": {
+          "type": "string",
+          "description": ""
+        },
+        "resourceVersion": {
+          "type": "string",
+          "description": ""
+        },
+        "uid": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.ObjectReference",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_PersistentVolumeClaimVolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "claimName": {
+          "type": "string",
+          "description": ""
+        },
+        "readOnly": {
+          "type": "boolean",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.PersistentVolumeClaimVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_PhotonPersistentDiskVolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "fsType": {
+          "type": "string",
+          "description": ""
+        },
+        "pdID": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.PhotonPersistentDiskVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_PortworxVolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "fsType": {
+          "type": "string",
+          "description": ""
+        },
+        "readOnly": {
+          "type": "boolean",
+          "description": ""
+        },
+        "volumeID": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.PortworxVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_Probe": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "exec": {
+          "$ref": "#/definitions/kubernetes_ExecAction",
+          "javaType": "io.fabric8.kubernetes.api.model.ExecAction"
+        },
+        "failureThreshold": {
+          "type": "integer",
+          "description": ""
+        },
+        "httpGet": {
+          "$ref": "#/definitions/kubernetes_HTTPGetAction",
+          "javaType": "io.fabric8.kubernetes.api.model.HTTPGetAction"
+        },
+        "initialDelaySeconds": {
+          "type": "integer",
+          "description": ""
+        },
+        "periodSeconds": {
+          "type": "integer",
+          "description": ""
+        },
+        "successThreshold": {
+          "type": "integer",
+          "description": ""
+        },
+        "tcpSocket": {
+          "$ref": "#/definitions/kubernetes_TCPSocketAction",
+          "javaType": "io.fabric8.kubernetes.api.model.TCPSocketAction"
+        },
+        "timeoutSeconds": {
+          "type": "integer",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.Probe",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_ProjectedVolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "defaultMode": {
+          "type": "integer",
+          "description": ""
+        },
+        "sources": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/kubernetes_VolumeProjection",
+            "javaType": "io.fabric8.kubernetes.api.model.VolumeProjection"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.ProjectedVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_QuobyteVolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "group": {
+          "type": "string",
+          "description": ""
+        },
+        "readOnly": {
+          "type": "boolean",
+          "description": ""
+        },
+        "registry": {
+          "type": "string",
+          "description": ""
+        },
+        "user": {
+          "type": "string",
+          "description": ""
+        },
+        "volume": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.QuobyteVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_RBDVolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "fsType": {
+          "type": "string",
+          "description": ""
+        },
+        "image": {
+          "type": "string",
+          "description": ""
+        },
+        "keyring": {
+          "type": "string",
+          "description": ""
+        },
+        "monitors": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "pool": {
+          "type": "string",
+          "description": ""
+        },
+        "readOnly": {
+          "type": "boolean",
+          "description": ""
+        },
+        "secretRef": {
+          "$ref": "#/definitions/kubernetes_LocalObjectReference",
+          "javaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
+        },
+        "user": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.RBDVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_ResourceFieldSelector": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "containerName": {
+          "type": "string",
+          "description": ""
+        },
+        "divisor": {
+          "$ref": "#/definitions/k8s_io_apimachinery_pkg_api_resource_Quantity",
+          "javaType": "Quantity"
+        },
+        "resource": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.ResourceFieldSelector",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_ResourceRequirements": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "limits": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "$ref": "#/definitions/k8s_io_apimachinery_pkg_api_resource_Quantity",
+            "javaType": "Quantity"
+          },
+          "javaType": "java.util.Map\u003cString,Quantity\u003e"
+        },
+        "requests": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "$ref": "#/definitions/k8s_io_apimachinery_pkg_api_resource_Quantity",
+            "javaType": "Quantity"
+          },
+          "javaType": "java.util.Map\u003cString,Quantity\u003e"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.ResourceRequirements",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_SELinuxOptions": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "level": {
+          "type": "string",
+          "description": ""
+        },
+        "role": {
+          "type": "string",
+          "description": ""
+        },
+        "type": {
+          "type": "string",
+          "description": ""
+        },
+        "user": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.SELinuxOptions",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_ScaleIOVolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "fsType": {
+          "type": "string",
+          "description": ""
+        },
+        "gateway": {
+          "type": "string",
+          "description": ""
+        },
+        "protectionDomain": {
+          "type": "string",
+          "description": ""
+        },
+        "readOnly": {
+          "type": "boolean",
+          "description": ""
+        },
+        "secretRef": {
+          "$ref": "#/definitions/kubernetes_LocalObjectReference",
+          "javaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
+        },
+        "sslEnabled": {
+          "type": "boolean",
+          "description": ""
+        },
+        "storageMode": {
+          "type": "string",
+          "description": ""
+        },
+        "storagePool": {
+          "type": "string",
+          "description": ""
+        },
+        "system": {
+          "type": "string",
+          "description": ""
+        },
+        "volumeName": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.ScaleIOVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_SecretEnvSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "optional": {
+          "type": "boolean",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.SecretEnvSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_SecretKeySelector": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "optional": {
+          "type": "boolean",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.SecretKeySelector",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_SecretProjection": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "items": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_KeyToPath",
+            "javaType": "io.fabric8.kubernetes.api.model.KeyToPath"
+          }
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "optional": {
+          "type": "boolean",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.SecretProjection",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_SecretVolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "defaultMode": {
+          "type": "integer",
+          "description": ""
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_KeyToPath",
+            "javaType": "io.fabric8.kubernetes.api.model.KeyToPath"
+          }
+        },
+        "optional": {
+          "type": "boolean",
+          "description": ""
+        },
+        "secretName": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.SecretVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_SecurityContext": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "allowPrivilegeEscalation": {
+          "type": "boolean",
+          "description": ""
+        },
+        "capabilities": {
+          "$ref": "#/definitions/kubernetes_Capabilities",
+          "javaType": "io.fabric8.kubernetes.api.model.Capabilities"
+        },
+        "privileged": {
+          "type": "boolean",
+          "description": ""
+        },
+        "procMount": {
+          "type": "string",
+          "description": ""
+        },
+        "readOnlyRootFilesystem": {
+          "type": "boolean",
+          "description": ""
+        },
+        "runAsGroup": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "runAsNonRoot": {
+          "type": "boolean",
+          "description": ""
+        },
+        "runAsUser": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "seLinuxOptions": {
+          "$ref": "#/definitions/kubernetes_SELinuxOptions",
+          "javaType": "io.fabric8.kubernetes.api.model.SELinuxOptions"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.SecurityContext",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_ServiceAccountTokenProjection": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "audience": {
+          "type": "string",
+          "description": ""
+        },
+        "expirationSeconds": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "path": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.ServiceAccountTokenProjection",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_StorageOSVolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "fsType": {
+          "type": "string",
+          "description": ""
+        },
+        "readOnly": {
+          "type": "boolean",
+          "description": ""
+        },
+        "secretRef": {
+          "$ref": "#/definitions/kubernetes_LocalObjectReference",
+          "javaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
+        },
+        "volumeName": {
+          "type": "string",
+          "description": ""
+        },
+        "volumeNamespace": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.StorageOSVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_TCPSocketAction": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "host": {
+          "type": "string",
+          "description": ""
+        },
+        "port": {
+          "$ref": "#/definitions/k8s_io_apimachinery_pkg_util_intstr_IntOrString",
+          "javaType": "IntOrString"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.TCPSocketAction",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_Volume": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "awsElasticBlockStore": {
+          "$ref": "#/definitions/kubernetes_AWSElasticBlockStoreVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.AWSElasticBlockStoreVolumeSource"
+        },
+        "azureDisk": {
+          "$ref": "#/definitions/kubernetes_AzureDiskVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.AzureDiskVolumeSource"
+        },
+        "azureFile": {
+          "$ref": "#/definitions/kubernetes_AzureFileVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.AzureFileVolumeSource"
+        },
+        "cephfs": {
+          "$ref": "#/definitions/kubernetes_CephFSVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.CephFSVolumeSource"
+        },
+        "cinder": {
+          "$ref": "#/definitions/kubernetes_CinderVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.CinderVolumeSource"
+        },
+        "configMap": {
+          "$ref": "#/definitions/kubernetes_ConfigMapVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.ConfigMapVolumeSource"
+        },
+        "downwardAPI": {
+          "$ref": "#/definitions/kubernetes_DownwardAPIVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.DownwardAPIVolumeSource"
+        },
+        "emptyDir": {
+          "$ref": "#/definitions/kubernetes_EmptyDirVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.EmptyDirVolumeSource"
+        },
+        "fc": {
+          "$ref": "#/definitions/kubernetes_FCVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.FCVolumeSource"
+        },
+        "flexVolume": {
+          "$ref": "#/definitions/kubernetes_FlexVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.FlexVolumeSource"
+        },
+        "flocker": {
+          "$ref": "#/definitions/kubernetes_FlockerVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.FlockerVolumeSource"
+        },
+        "gcePersistentDisk": {
+          "$ref": "#/definitions/kubernetes_GCEPersistentDiskVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.GCEPersistentDiskVolumeSource"
+        },
+        "gitRepo": {
+          "$ref": "#/definitions/kubernetes_GitRepoVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.GitRepoVolumeSource"
+        },
+        "glusterfs": {
+          "$ref": "#/definitions/kubernetes_GlusterfsVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.GlusterfsVolumeSource"
+        },
+        "hostPath": {
+          "$ref": "#/definitions/kubernetes_HostPathVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.HostPathVolumeSource"
+        },
+        "iscsi": {
+          "$ref": "#/definitions/kubernetes_ISCSIVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.ISCSIVolumeSource"
+        },
+        "name": {
+          "type": "string",
+          "description": "",
+          "maxLength": 63,
+          "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+        },
+        "nfs": {
+          "$ref": "#/definitions/kubernetes_NFSVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.NFSVolumeSource"
+        },
+        "persistentVolumeClaim": {
+          "$ref": "#/definitions/kubernetes_PersistentVolumeClaimVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.PersistentVolumeClaimVolumeSource"
+        },
+        "photonPersistentDisk": {
+          "$ref": "#/definitions/kubernetes_PhotonPersistentDiskVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.PhotonPersistentDiskVolumeSource"
+        },
+        "portworxVolume": {
+          "$ref": "#/definitions/kubernetes_PortworxVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.PortworxVolumeSource"
+        },
+        "projected": {
+          "$ref": "#/definitions/kubernetes_ProjectedVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.ProjectedVolumeSource"
+        },
+        "quobyte": {
+          "$ref": "#/definitions/kubernetes_QuobyteVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.QuobyteVolumeSource"
+        },
+        "rbd": {
+          "$ref": "#/definitions/kubernetes_RBDVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.RBDVolumeSource"
+        },
+        "scaleIO": {
+          "$ref": "#/definitions/kubernetes_ScaleIOVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.ScaleIOVolumeSource"
+        },
+        "secret": {
+          "$ref": "#/definitions/kubernetes_SecretVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.SecretVolumeSource"
+        },
+        "storageos": {
+          "$ref": "#/definitions/kubernetes_StorageOSVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.StorageOSVolumeSource"
+        },
+        "vsphereVolume": {
+          "$ref": "#/definitions/kubernetes_VsphereVirtualDiskVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.VsphereVirtualDiskVolumeSource"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.Volume",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_VolumeDevice": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "devicePath": {
+          "type": "string",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.VolumeDevice",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_VolumeMount": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "mountPath": {
+          "type": "string",
+          "description": ""
+        },
+        "mountPropagation": {
+          "type": "string",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "readOnly": {
+          "type": "boolean",
+          "description": ""
+        },
+        "subPath": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.VolumeMount",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_VolumeProjection": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "configMap": {
+          "$ref": "#/definitions/kubernetes_ConfigMapProjection",
+          "javaType": "io.fabric8.kubernetes.api.model.ConfigMapProjection"
+        },
+        "downwardAPI": {
+          "$ref": "#/definitions/kubernetes_DownwardAPIProjection",
+          "javaType": "io.fabric8.kubernetes.api.model.DownwardAPIProjection"
+        },
+        "secret": {
+          "$ref": "#/definitions/kubernetes_SecretProjection",
+          "javaType": "io.fabric8.kubernetes.api.model.SecretProjection"
+        },
+        "serviceAccountToken": {
+          "$ref": "#/definitions/kubernetes_ServiceAccountTokenProjection",
+          "javaType": "io.fabric8.kubernetes.api.model.ServiceAccountTokenProjection"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.VolumeProjection",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_VolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "awsElasticBlockStore": {
+          "$ref": "#/definitions/kubernetes_AWSElasticBlockStoreVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.AWSElasticBlockStoreVolumeSource"
+        },
+        "azureDisk": {
+          "$ref": "#/definitions/kubernetes_AzureDiskVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.AzureDiskVolumeSource"
+        },
+        "azureFile": {
+          "$ref": "#/definitions/kubernetes_AzureFileVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.AzureFileVolumeSource"
+        },
+        "cephfs": {
+          "$ref": "#/definitions/kubernetes_CephFSVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.CephFSVolumeSource"
+        },
+        "cinder": {
+          "$ref": "#/definitions/kubernetes_CinderVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.CinderVolumeSource"
+        },
+        "configMap": {
+          "$ref": "#/definitions/kubernetes_ConfigMapVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.ConfigMapVolumeSource"
+        },
+        "downwardAPI": {
+          "$ref": "#/definitions/kubernetes_DownwardAPIVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.DownwardAPIVolumeSource"
+        },
+        "emptyDir": {
+          "$ref": "#/definitions/kubernetes_EmptyDirVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.EmptyDirVolumeSource"
+        },
+        "fc": {
+          "$ref": "#/definitions/kubernetes_FCVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.FCVolumeSource"
+        },
+        "flexVolume": {
+          "$ref": "#/definitions/kubernetes_FlexVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.FlexVolumeSource"
+        },
+        "flocker": {
+          "$ref": "#/definitions/kubernetes_FlockerVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.FlockerVolumeSource"
+        },
+        "gcePersistentDisk": {
+          "$ref": "#/definitions/kubernetes_GCEPersistentDiskVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.GCEPersistentDiskVolumeSource"
+        },
+        "gitRepo": {
+          "$ref": "#/definitions/kubernetes_GitRepoVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.GitRepoVolumeSource"
+        },
+        "glusterfs": {
+          "$ref": "#/definitions/kubernetes_GlusterfsVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.GlusterfsVolumeSource"
+        },
+        "hostPath": {
+          "$ref": "#/definitions/kubernetes_HostPathVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.HostPathVolumeSource"
+        },
+        "iscsi": {
+          "$ref": "#/definitions/kubernetes_ISCSIVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.ISCSIVolumeSource"
+        },
+        "nfs": {
+          "$ref": "#/definitions/kubernetes_NFSVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.NFSVolumeSource"
+        },
+        "persistentVolumeClaim": {
+          "$ref": "#/definitions/kubernetes_PersistentVolumeClaimVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.PersistentVolumeClaimVolumeSource"
+        },
+        "photonPersistentDisk": {
+          "$ref": "#/definitions/kubernetes_PhotonPersistentDiskVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.PhotonPersistentDiskVolumeSource"
+        },
+        "portworxVolume": {
+          "$ref": "#/definitions/kubernetes_PortworxVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.PortworxVolumeSource"
+        },
+        "projected": {
+          "$ref": "#/definitions/kubernetes_ProjectedVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.ProjectedVolumeSource"
+        },
+        "quobyte": {
+          "$ref": "#/definitions/kubernetes_QuobyteVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.QuobyteVolumeSource"
+        },
+        "rbd": {
+          "$ref": "#/definitions/kubernetes_RBDVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.RBDVolumeSource"
+        },
+        "scaleIO": {
+          "$ref": "#/definitions/kubernetes_ScaleIOVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.ScaleIOVolumeSource"
+        },
+        "secret": {
+          "$ref": "#/definitions/kubernetes_SecretVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.SecretVolumeSource"
+        },
+        "storageos": {
+          "$ref": "#/definitions/kubernetes_StorageOSVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.StorageOSVolumeSource"
+        },
+        "vsphereVolume": {
+          "$ref": "#/definitions/kubernetes_VsphereVirtualDiskVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.VsphereVirtualDiskVolumeSource"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.VolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_VsphereVirtualDiskVolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "fsType": {
+          "type": "string",
+          "description": ""
+        },
+        "storagePolicyID": {
+          "type": "string",
+          "description": ""
+        },
+        "storagePolicyName": {
+          "type": "string",
+          "description": ""
+        },
+        "volumePath": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.VsphereVirtualDiskVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_meta_Initializer": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.Initializer",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_meta_Initializers": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "pending": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/kubernetes_meta_Initializer",
+            "javaType": "io.fabric8.kubernetes.api.model.Initializer"
+          }
+        },
+        "result": {
+          "$ref": "#/definitions/kubernetes_meta_Status",
+          "javaType": "io.fabric8.kubernetes.api.model.Status"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.Initializers",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_meta_ListMeta": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "continue": {
+          "type": "string",
+          "description": ""
+        },
+        "resourceVersion": {
+          "type": "string",
+          "description": ""
+        },
+        "selfLink": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.ListMeta",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_meta_ObjectMeta": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "annotations": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "string",
+            "description": ""
+          },
+          "javaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "clusterName": {
+          "type": "string",
+          "description": ""
+        },
+        "creationTimestamp": {
+          "$ref": "#/definitions/kubernetes_meta_Time",
+          "javaType": "java.lang.String"
+        },
+        "deletionGracePeriodSeconds": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "deletionTimestamp": {
+          "$ref": "#/definitions/kubernetes_meta_Time",
+          "javaType": "java.lang.String"
+        },
+        "finalizers": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "generateName": {
+          "type": "string",
+          "description": ""
+        },
+        "generation": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "initializers": {
+          "$ref": "#/definitions/kubernetes_meta_Initializers",
+          "javaType": "io.fabric8.kubernetes.api.model.Initializers"
+        },
+        "labels": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "string",
+            "description": ""
+          },
+          "javaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "namespace": {
+          "type": "string",
+          "description": "",
+          "maxLength": 253,
+          "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
+        },
+        "ownerReferences": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_meta_OwnerReference",
+            "javaType": "io.fabric8.kubernetes.api.model.OwnerReference"
+          }
+        },
+        "resourceVersion": {
+          "type": "string",
+          "description": ""
+        },
+        "selfLink": {
+          "type": "string",
+          "description": ""
+        },
+        "uid": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_meta_OwnerReference": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": ""
+        },
+        "blockOwnerDeletion": {
+          "type": "boolean",
+          "description": ""
+        },
+        "controller": {
+          "type": "boolean",
+          "description": ""
+        },
+        "kind": {
+          "type": "string",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "uid": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.OwnerReference",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_meta_Status": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "v1.knative.dev/v1",
+          "required": true
+        },
+        "code": {
+          "type": "integer",
+          "description": ""
+        },
+        "details": {
+          "$ref": "#/definitions/kubernetes_meta_StatusDetails",
+          "javaType": "io.fabric8.kubernetes.api.model.StatusDetails"
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "Status",
+          "required": true
+        },
+        "message": {
+          "type": "string",
+          "description": ""
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_meta_ListMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        },
+        "reason": {
+          "type": "string",
+          "description": ""
+        },
+        "status": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.Status",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_meta_StatusCause": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "field": {
+          "type": "string",
+          "description": ""
+        },
+        "message": {
+          "type": "string",
+          "description": ""
+        },
+        "reason": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.StatusCause",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_meta_StatusDetails": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "causes": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_meta_StatusCause",
+            "javaType": "io.fabric8.kubernetes.api.model.StatusCause"
+          }
+        },
+        "group": {
+          "type": "string",
+          "description": ""
+        },
+        "kind": {
+          "type": "string",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "retryAfterSeconds": {
+          "type": "integer",
+          "description": ""
+        },
+        "uid": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.StatusDetails",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_meta_Time": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "time": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "java.lang.String",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_meta_TypeMeta": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": ""
+        },
+        "kind": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.TypeMeta",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "net_url_Userinfo": {
+      "type": "object",
+      "description": "",
+      "additionalProperties": true,
+      "javaType": "java.lang.String",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "broker": {
+      "$ref": "#/definitions/knative_eventing_v1alpha1_Broker",
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.Broker"
+    },
+    "brokerList": {
+      "$ref": "#/definitions/knative_eventing_v1alpha1_BrokerList",
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.BrokerList"
+    },
+    "channel": {
+      "$ref": "#/definitions/knative_eventing_v1alpha1_Channel",
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.Channel"
+    },
+    "channelList": {
+      "$ref": "#/definitions/knative_eventing_v1alpha1_ChannelList",
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.ChannelList"
+    },
+    "clusterChannelProvisioner": {
+      "$ref": "#/definitions/knative_eventing_v1alpha1_ClusterChannelProvisioner",
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.ClusterChannelProvisioner"
+    },
+    "clusterChannelProvisionerList": {
+      "$ref": "#/definitions/knative_eventing_v1alpha1_ClusterChannelProvisionerList",
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.ClusterChannelProvisionerList"
+    },
+    "configuration": {
+      "$ref": "#/definitions/knative_serving_v1beta1_Configuration",
+      "javaType": "io.fabric8.knative.serving.v1beta1.Configuration"
+    },
+    "configurationList": {
+      "$ref": "#/definitions/knative_serving_v1beta1_ConfigurationList",
+      "javaType": "io.fabric8.knative.serving.v1beta1.ConfigurationList"
+    },
+    "eventType": {
+      "$ref": "#/definitions/knative_eventing_v1alpha1_EventType",
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.EventType"
+    },
+    "eventTypeList": {
+      "$ref": "#/definitions/knative_eventing_v1alpha1_EventTypeList",
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.EventTypeList"
+    },
+    "inMemoryChannel": {
+      "$ref": "#/definitions/knative_messaging_v1alpha1_InMemoryChannel",
+      "javaType": "io.fabric8.knative.messaging.v1alpha1.InMemoryChannel"
+    },
+    "inMemoryChannelList": {
+      "$ref": "#/definitions/knative_messaging_v1alpha1_InMemoryChannelList",
+      "javaType": "io.fabric8.knative.messaging.v1alpha1.InMemoryChannelList"
+    },
+    "revision": {
+      "$ref": "#/definitions/knative_serving_v1beta1_Revision",
+      "javaType": "io.fabric8.knative.serving.v1beta1.Revision"
+    },
+    "revisionList": {
+      "$ref": "#/definitions/knative_serving_v1beta1_RevisionList",
+      "javaType": "io.fabric8.knative.serving.v1beta1.RevisionList"
+    },
+    "route": {
+      "$ref": "#/definitions/knative_serving_v1beta1_Route",
+      "javaType": "io.fabric8.knative.serving.v1beta1.Route"
+    },
+    "routeList": {
+      "$ref": "#/definitions/knative_serving_v1beta1_RouteList",
+      "javaType": "io.fabric8.knative.serving.v1beta1.RouteList"
+    },
+    "sequence": {
+      "$ref": "#/definitions/knative_messaging_v1alpha1_Sequence",
+      "javaType": "io.fabric8.knative.messaging.v1alpha1.Sequence"
+    },
+    "sequenceList": {
+      "$ref": "#/definitions/knative_messaging_v1alpha1_SequenceList",
+      "javaType": "io.fabric8.knative.messaging.v1alpha1.SequenceList"
+    },
+    "service": {
+      "$ref": "#/definitions/knative_serving_v1beta1_Service",
+      "javaType": "io.fabric8.knative.serving.v1beta1.Service"
+    },
+    "serviceList": {
+      "$ref": "#/definitions/knative_serving_v1beta1_ServiceList",
+      "javaType": "io.fabric8.knative.serving.v1beta1.ServiceList"
+    },
+    "subscription": {
+      "$ref": "#/definitions/knative_eventing_v1alpha1_Subscription",
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.Subscription"
+    },
+    "subscriptionList": {
+      "$ref": "#/definitions/knative_eventing_v1alpha1_SubscriptionList",
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.SubscriptionList"
+    },
+    "trigger": {
+      "$ref": "#/definitions/knative_eventing_v1alpha1_Trigger",
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.Trigger"
+    },
+    "triggerList": {
+      "$ref": "#/definitions/knative_eventing_v1alpha1_TriggerList",
+      "javaType": "io.fabric8.knative.eventing.v1alpha1.TriggerList"
+    }
+  },
+  "additionalProperties": true
+}
