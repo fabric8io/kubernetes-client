@@ -2,6 +2,15 @@
 
 ### 4.3-SNAPSHOT
   Bugs
+
+  Improvements
+
+  Dependency Upgrade
+
+  New Feature
+
+### 4.3.1 (19-07-2019)
+  Bugs
    * Fix #1592: Corrected type returned by Config.builder() 
    * Set cascade deletion to true in case of list operations
    * Fix #1617: Multiple CA certificates with non-unique Subject DN not loaded
