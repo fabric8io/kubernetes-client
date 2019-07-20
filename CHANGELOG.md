@@ -34,6 +34,8 @@
     * Upgrade Jackson to version 2.9.9
 
   New Feature
+   * Added support for SelfSubjectAccessReview
+   * Added support for SelfSubjectRulesReview
 
 #### 4.3.0 (10-06-2019)
 
