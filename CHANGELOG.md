@@ -2,6 +2,7 @@
 
 ### 4.3-SNAPSHOT
   Bugs
+   * Fix #1626: Scaling StatefulSets with waiting seems to fail
 
   Improvements
    * Test coverage for PersistentVolumeClaim

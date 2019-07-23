@@ -119,12 +119,12 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
     ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     ScheduledFuture poller = executor.scheduleWithFixedDelay(tPoller, 0, POLL_INTERVAL_MS, TimeUnit.MILLISECONDS);
     try {
-      if (Utils.waitUntilReady(queue, rollingTimeout, rollingTimeUnit)) {
+      if (Utils.waitUntilReady(queue, getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS)) {
         Log.debug("{}/{} pod(s) ready for {}: {} in namespace: {}.",
           replicasRef.get(), count, getType().getSimpleName(), name, namespace);
       } else {
         Log.error("{}/{} pod(s) ready for {}: {} in namespace: {}  after waiting for {} seconds so giving up",
-          replicasRef.get(), count, getType().getSimpleName(), name, namespace, rollingTimeUnit.toSeconds(rollingTimeout));
+          replicasRef.get(), count, getType().getSimpleName(), name, namespace, TimeUnit.MILLISECONDS.toSeconds(getConfig().getScaleTimeout()));
       }
     } finally {
       poller.cancel(true);
