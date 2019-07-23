@@ -23,12 +23,16 @@ import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGet
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.AssertionsForClassTypes.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@EnableRuleMigrationSupport
 public class ClusterRoleTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
@@ -47,14 +51,14 @@ public class ClusterRoleTest {
 
     ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> load = client.load(getClass().getResourceAsStream("/test-clusterrole.yml"));
 
-    assertNotNull("Handlers did not return a valid list of resources", load);
+    assertNotNull(load);
 
     try {
       List<HasMetadata> hasMetadata = load.get();
 
-      assertNotNull("Handlers did not return a valid resource", hasMetadata);
+      assertNotNull(hasMetadata);
       Assert.assertTrue("Handler did not return expected single resource", 1 == hasMetadata.size());
-      assertEquals("hasMetadata found did not match the expected name of the test input", "viewer", hasMetadata.get(0).getMetadata().getName());
+      assertEquals(hasMetadata.get(0).getMetadata().getName(), "viewer");
     } catch (NullPointerException e) {
       fail("No handler found for specified resource");
     }

@@ -27,15 +27,18 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.Arrays;
 import java.util.Collections;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@EnableRuleMigrationSupport
 public class PersistentVolumeTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
@@ -80,12 +83,15 @@ public class PersistentVolumeTest {
     assertNotNull(persistentVolume);
   }
 
-  @Test(expected = KubernetesClientException.class)
+  @Test
   public void testEditMissing() {
-    server.expect().withPath("/api/v1/persistentvolumes/persistentvolume").andReturn(404, "error message from kubernetes").always();
-    KubernetesClient client = server.getClient();
+    Assertions.assertThrows(KubernetesClientException.class, () -> {
+      server.expect().withPath("/api/v1/persistentvolumes/persistentvolume").andReturn(404, "error message from kubernetes").always();
+      KubernetesClient client = server.getClient();
 
-    client.persistentVolumes().withName("persistentvolume").edit();
+      client.persistentVolumes().withName("persistentvolume").edit();
+    });
+
   }
 
   @Test

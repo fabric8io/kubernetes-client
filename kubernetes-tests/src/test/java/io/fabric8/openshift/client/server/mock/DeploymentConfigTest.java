@@ -16,18 +16,19 @@
 
 package io.fabric8.openshift.client.server.mock;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
 import io.fabric8.kubernetes.api.model.ContainerFluent;
 import io.fabric8.openshift.api.model.DeploymentConfigSpecFluent;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
@@ -37,6 +38,7 @@ import io.fabric8.openshift.client.OpenShiftClient;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+@EnableRuleMigrationSupport
 public class DeploymentConfigTest {
   @Rule
   public OpenShiftServer server = new OpenShiftServer();

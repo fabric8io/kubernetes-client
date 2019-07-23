@@ -22,14 +22,15 @@ import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+@EnableRuleMigrationSupport
 public class AdaptTest {
 
   @Rule
@@ -50,7 +51,7 @@ public class AdaptTest {
 
     KubernetesClient client = server.getClient();
     OpenShiftClient oclient = client.adapt(OpenShiftClient.class);
-    Assert.assertNotNull(client.adapt(OkHttpClient.class));
-    Assert.assertNotNull(oclient.adapt(OkHttpClient.class));
+    assertNotNull(client.adapt(OkHttpClient.class));
+    assertNotNull(oclient.adapt(OkHttpClient.class));
   }
 }

@@ -18,13 +18,16 @@ package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@EnableRuleMigrationSupport
 public class VersionInfoTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
@@ -40,10 +43,10 @@ public class VersionInfoTest {
       "}").always();
 
     KubernetesClient client = server.getClient();
-    Assert.assertEquals("v1.6.1+5115d708d7", client.getVersion().getGitVersion());
-    Assert.assertEquals("e6301f88a8", client.getVersion().getGitCommit());
-    Assert.assertEquals("3", client.getVersion().getMajor());
-    Assert.assertEquals("6", client.getVersion().getMinor());
-    Assert.assertEquals(new SimpleDateFormat("YYYY-MM-dd'T'HH:mm:ss'Z'").parse("2018-03-01T14:27:17Z").getTime(), client.getVersion().getBuildDate().getTime());
+    assertEquals("v1.6.1+5115d708d7", client.getVersion().getGitVersion());
+    assertEquals("e6301f88a8", client.getVersion().getGitCommit());
+    assertEquals("3", client.getVersion().getMajor());
+    assertEquals("6", client.getVersion().getMinor());
+    assertEquals(new SimpleDateFormat("YYYY-MM-dd'T'HH:mm:ss'Z'").parse("2018-03-01T14:27:17Z").getTime(), client.getVersion().getBuildDate().getTime());
   }
 }

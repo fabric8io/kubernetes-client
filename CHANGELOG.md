@@ -6,7 +6,8 @@
   Improvements
 
   Dependency Upgrade
-
+    * Fix #1331: Migrated from JUnit 4 to JUnit 5
+    
   New Feature
 
 ### 4.3.1 (19-07-2019)

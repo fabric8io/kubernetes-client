@@ -26,8 +26,8 @@ import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
@@ -37,7 +37,7 @@ public class ResourceCompareTest {
   private Service service;
   private KubernetesList kubeList;
 
-  @Before
+  @BeforeEach
   public void setup() {
     pod = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").withLabels(Collections.singletonMap("label", "value")).and().build();
     service = new ServiceBuilder()

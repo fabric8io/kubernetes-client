@@ -21,9 +21,8 @@ import io.fabric8.mockwebserver.crud.Attribute;
 import io.fabric8.mockwebserver.crud.AttributeSet;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.Assert;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KubernetesAttributesExtractorTest {
 
@@ -36,7 +35,7 @@ public class KubernetesAttributesExtractorTest {
     expected = expected.add(new Attribute("kind", "pod"));
     expected = expected.add(new Attribute("namespace", "myns"));
     expected = expected.add(new Attribute("name", "mypod"));
-    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
+    assertTrue(attributes.matches(expected));
   }
 
   @Test
@@ -47,7 +46,7 @@ public class KubernetesAttributesExtractorTest {
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("kind", "pod"));
     expected = expected.add(new Attribute("namespace", "myns"));
-    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
+    assertTrue(attributes.matches(expected));
   }
 
   @Test
@@ -58,7 +57,7 @@ public class KubernetesAttributesExtractorTest {
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("kind", "node"));
     expected = expected.add(new Attribute("name", "mynode"));
-    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
+    assertTrue(attributes.matches(expected));
   }
 
   @Test
@@ -68,7 +67,7 @@ public class KubernetesAttributesExtractorTest {
 
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("kind", "pod"));
-    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
+    assertTrue(attributes.matches(expected));
   }
 
   @Test
@@ -82,7 +81,7 @@ public class KubernetesAttributesExtractorTest {
     expected = expected.add(new Attribute("kind", "pod"));
     expected = expected.add(new Attribute("namespace", "myns"));
     expected = expected.add(new Attribute("name", "mypod"));
-    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
+    assertTrue(attributes.matches(expected));
 
   }
 
@@ -97,7 +96,7 @@ public class KubernetesAttributesExtractorTest {
 
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("labels:name", "myname"));
-    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
+    assertTrue(attributes.matches(expected));
   }
 
   @Test
@@ -107,7 +106,7 @@ public class KubernetesAttributesExtractorTest {
 
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("kind", "pod"));
-    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
+    assertTrue(attributes.matches(expected));
   }
 
   @Test
@@ -117,7 +116,7 @@ public class KubernetesAttributesExtractorTest {
 
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("kind", "deployment"));
-    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
+    assertTrue(attributes.matches(expected));
   }
 
   @Test
@@ -129,7 +128,7 @@ public class KubernetesAttributesExtractorTest {
     expected = expected.add(new Attribute("kind", "ingress"));
     expected = expected.add(new Attribute("namespace", "myns"));
     expected = expected.add(new Attribute("name", "myingress"));
-    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
+    assertTrue(attributes.matches(expected));
   }
 
   @Test
@@ -140,7 +139,7 @@ public class KubernetesAttributesExtractorTest {
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("kind", "ingress"));
     expected = expected.add(new Attribute("namespace", "myns"));
-    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
+    assertTrue(attributes.matches(expected));
   }
 
   @Test
@@ -152,7 +151,7 @@ public class KubernetesAttributesExtractorTest {
     expected = expected.add(new Attribute("kind", "horizontalpodautoscaler"));
     expected = expected.add(new Attribute("namespace", "myns"));
     expected = expected.add(new Attribute("name", "myhpa"));
-    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
+    assertTrue(attributes.matches(expected));
   }
 
   @Test
@@ -164,7 +163,7 @@ public class KubernetesAttributesExtractorTest {
     expected = expected.add(new Attribute("kind", "crd"));
     expected = expected.add(new Attribute("namespace", "myns"));
     expected = expected.add(new Attribute("name", "mycrd"));
-    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
+    assertTrue(attributes.matches(expected));
   }
 
   @Test
@@ -174,7 +173,7 @@ public class KubernetesAttributesExtractorTest {
 
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("labels:name", "myname"));
-    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
+    assertTrue(attributes.matches(expected));
   }
 
   @Test
@@ -184,7 +183,7 @@ public class KubernetesAttributesExtractorTest {
 
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("labels:name", "myname"));
-    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
+    assertTrue(attributes.matches(expected));
   }
 
   @Test
@@ -195,7 +194,7 @@ public class KubernetesAttributesExtractorTest {
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("labels:name", "myname"));
     expected = expected.add(new Attribute("labels:age", "37"));
-    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
+    assertTrue(attributes.matches(expected));
   }
 
   @Test
@@ -205,7 +204,7 @@ public class KubernetesAttributesExtractorTest {
 
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("labels:example.com/name", "myname"));
-    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
+    assertTrue(attributes.matches(expected));
   }
 
 }
