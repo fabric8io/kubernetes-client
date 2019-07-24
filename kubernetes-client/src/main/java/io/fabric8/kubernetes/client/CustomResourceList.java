@@ -30,7 +30,7 @@ import java.util.List;
 /**
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
-public class CustomResourceList<T extends HasMetadata> implements KubernetesResource, KubernetesResourceList<T> {
+public class CustomResourceList<T extends HasMetadata> implements KubernetesResource<T>, KubernetesResourceList<T> {
 
   @NotNull
   @JsonProperty("apiVersion")
