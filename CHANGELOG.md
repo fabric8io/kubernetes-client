@@ -4,10 +4,13 @@
   Bugs
 
   Improvements
+  * Cleaned up kubernetes-model pom.xml
 
   Dependency Upgrade
 
   New Feature
+  * Knative extension
+  * Tekton extension
 
 ### 4.3.1 (19-07-2019)
   Bugs
