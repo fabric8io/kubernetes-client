@@ -32,6 +32,7 @@
 
   <modules>
     <module>knative</module>
+    <module>tekton</module>
   </modules>
 
 </project>
