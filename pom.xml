@@ -103,7 +103,7 @@
     <slf4j.version>1.7.26</slf4j.version>
     <snakeyaml.version>1.24</snakeyaml.version>
     <bouncycastle.version>1.62</bouncycastle.version>
-    <commons-codec.version>1.10</commons-codec.version>
+    <commons-codec.version>1.13</commons-codec.version>
     <commons-compress.version>1.18</commons-compress.version>
     <scr.annotations.version>1.9.12</scr.annotations.version>
     <sundrio.version>0.17.2</sundrio.version>
