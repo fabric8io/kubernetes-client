@@ -38,7 +38,6 @@
     <skipTests>false</skipTests>
     <testExclusionPattern>**/*KubernetesTest.java</testExclusionPattern>
 
-    <buildnumber.plugin.version>1.4</buildnumber.plugin.version>
     <compiler.plugin.version>3.8.1</compiler.plugin.version>
     <jar.plugin.version>3.1.2</jar.plugin.version>
     <deploy.plugin.version>2.8.2</deploy.plugin.version>

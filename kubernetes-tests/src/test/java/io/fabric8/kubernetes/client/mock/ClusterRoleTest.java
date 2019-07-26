@@ -21,7 +21,6 @@ import io.fabric8.kubernetes.api.model.rbac.ClusterRole;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
@@ -57,7 +56,7 @@ public class ClusterRoleTest {
       List<HasMetadata> hasMetadata = load.get();
 
       assertNotNull(hasMetadata);
-      Assert.assertTrue("Handler did not return expected single resource", 1 == hasMetadata.size());
+      assertEquals(hasMetadata.size(), 1);
       assertEquals(hasMetadata.get(0).getMetadata().getName(), "viewer");
     } catch (NullPointerException e) {
       fail("No handler found for specified resource");

@@ -4,11 +4,17 @@
   Bugs
 
   Improvements
+   * Test coverage for PersistentVolumeClaim
+   * Fix #1589: Move HorizontalPodAutoscaler to autoscaling/v1
+   * Fix #1553: Allow to explicitly set non-matching field selectors using `withoutField`
+   * Cleaned up kubernetes-model pom.xml
 
   Dependency Upgrade
     * Fix #1331: Migrated from JUnit 4 to JUnit 5
     
   New Feature
+  * Knative extension
+  * Tekton extension
 
 ### 4.3.1 (19-07-2019)
   Bugs

@@ -59,6 +59,17 @@ public class KubernetesList extends BaseKubernetesList implements KubernetesReso
         super(apiVersion, items, kind, metadata);
     }
 
+    //Let's just override those, cause some IDEs can't handle extending a generated class and can't see those and get crazy.
+    @Override
+    public String getKind() {
+      return super.getKind();
+    }
+
+    @Override
+    public String getApiVersion() {
+      return super.getApiVersion();
+    }
+
     @Override
     public List<HasMetadata> getItems() {
         List<HasMetadata> sortedItems = new ArrayList<>(super.getItems());
