@@ -133,9 +133,6 @@ public class ConfigTest {
 
     config = new ConfigBuilder().build();
     assertConfig(config);
-
-    config = Config.builder().build();
-    assertConfig(config);
   }
 
   @Test

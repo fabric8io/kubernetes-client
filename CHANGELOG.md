@@ -2,7 +2,8 @@
 
 ### 4.3-SNAPSHOT
   Bugs
-
+   * Fix #1592: Corrected type returned by Config.builder() 
+  
   Improvements
   * Cleaned up kubernetes-model pom.xml
 
@@ -11,6 +12,7 @@
   New Feature
   * Knative extension
   * Tekton extension
+  * Service Catalog extension
 
 ### 4.3.1 (19-07-2019)
   Bugs
@@ -37,9 +39,14 @@
     * Upgrade Jackson to version 2.9.9
 
   New Feature
+<<<<<<< HEAD
+    * Fixes #973: added support for service catalog client
+ 
+=======
    * Added support for SelfSubjectAccessReview
    * Added support for SelfSubjectRulesReview
 
+>>>>>>> f5ebea64ecd31ad683c3b0eefac7804115fa2bcd
 #### 4.3.0 (10-06-2019)
 
   Bugs
