@@ -76,7 +76,7 @@ public class Readiness {
     } else if (item instanceof StatefulSet) {
       return isStatefulSetReady((StatefulSet) item);
     } else {
-      throw new IllegalArgumentException("Item needs to be one of [Node, Deployment, ReplicaSet, StatefulSet, Pod, DeploymentConfig, ReplicationController], but was: [" + item != null ? item.getKind() : "Unknown (null)" + "]");
+      throw new IllegalArgumentException("Item needs to be one of [Node, Deployment, ReplicaSet, StatefulSet, Pod, DeploymentConfig, ReplicationController], but was: [" + (item != null ? item.getKind() : "Unknown (null)") + "]");
     }
   }
 

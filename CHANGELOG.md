@@ -2,18 +2,46 @@
 
 ### 4.3-SNAPSHOT
   Bugs
-  
+
   Improvements
-  
-    * Test coverage for PersistentVolumeClaim
+   * Test coverage for PersistentVolumeClaim
    * Fix #1589: Move HorizontalPodAutoscaler to autoscaling/v1
    * Fix #1553: Allow to explicitly set non-matching field selectors using `withoutField`
-
-    * assertNotNull replaced with assertTrue for boolean statements in unit tests
+   * Cleaned up kubernetes-model pom.xml
 
   Dependency Upgrade
 
   New Feature
+  * Knative extension
+  * Tekton extension
+
+### 4.3.1 (19-07-2019)
+  Bugs
+   * Fix #1592: Corrected type returned by Config.builder() 
+   * Set cascade deletion to true in case of list operations
+   * Fix #1617: Multiple CA certificates with non-unique Subject DN not loaded
+   * Fix #1634: Make map backing KubernetesDeserializer thread-safe
+
+  Improvements
+    * Test coverage for Namespace.
+    * Example added for NamespaceQuota
+    * Example added for Endpoints.
+    * Test coverage for Endpoints.
+    * Fix #1589: Move HorizontalPodAutoscaler to autoscaling/v1
+    * Fix #1553: Allow to explicitly set non-matching field selectors using withoutField
+    * assertNotNull replaced with assertTrue for boolean statements in unit tests
+    * Test coverage for PodPreset
+    * Added test coverage for PersistentVolume
+    * Fix #1290: Added github stale bot.
+    * Add type parameter to make CustomResourceList.getItems() return a typed List.
+
+  Dependency Upgrade
+
+    * Upgrade Jackson to version 2.9.9
+
+  New Feature
+   * Added support for SelfSubjectAccessReview
+   * Added support for SelfSubjectRulesReview
 
 #### 4.3.0 (10-06-2019)
 
@@ -96,6 +124,7 @@
 
   Bugs
 
+   * Fix nanosecond conversion using waitUntilReady
    * Fix #1008: Use a reasonable buffer size for exec stdin
    * Fix #1005: Loading a template from file and processing it locally by passing parameters map is broken
 
@@ -142,6 +171,7 @@
     * Fix #1326: Make CustomResource @Buildable
 
     * Fix #1354: suppress log warnings that `CustomResourceDefinition`s are still in beta
+
 
   Dependency Upgrade
 

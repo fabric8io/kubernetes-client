@@ -23,6 +23,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
+import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
 import io.fabric8.kubernetes.api.model.ContainerFluent;
 import io.fabric8.openshift.api.model.DeploymentConfigSpecFluent;
 import org.junit.Rule;
@@ -43,11 +44,21 @@ public class DeploymentConfigTest {
   @Test
   public void testList() {
    server.expect().withPath("/oapi/v1/namespaces/test/deploymentconfigs").andReturn(200, new DeploymentConfigListBuilder().build()).once();
+   server.expect().withPath("/apis").andReturn(200, new APIGroupListBuilder()
+      .addNewGroup()
+      .withApiVersion("v1")
+      .withName("autoscaling.k8s.io")
+      .endGroup()
+      .addNewGroup()
+      .withApiVersion("v1")
+      .withName("security.openshift.io")
+      .endGroup()
+      .build()).once();
    server.expect().withPath("/oapi/v1/namespaces/ns1/deploymentconfigs").andReturn(200, new DeploymentConfigListBuilder()
       .addNewItem().and()
       .addNewItem().and().build()).once();
 
-   server.expect().withPath("/oapi/v1/deploymentconfigs").andReturn(200, new DeploymentConfigListBuilder()
+   server.expect().withPath("/apis/apps.openshift.io/v1/deploymentconfigs").andReturn(200, new DeploymentConfigListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .addNewItem()

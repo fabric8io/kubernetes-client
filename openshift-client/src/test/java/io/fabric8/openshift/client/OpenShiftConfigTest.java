@@ -17,8 +17,6 @@ package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.utils.Serialization;
 
 import org.junit.After;
@@ -26,9 +24,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 
 import static org.junit.Assert.assertEquals;
@@ -52,35 +47,35 @@ public class OpenShiftConfigTest {
 
   @After
   public void tearDown() {
-    System.clearProperty(OpenShiftConfig.OPENSHIFT_URL_SYTEM_PROPERTY);
+    System.clearProperty(OpenShiftConfig.OPENSHIFT_URL_SYSTEM_PROPERTY);
     System.clearProperty(OpenShiftConfig.KUBERNETES_OAPI_VERSION_SYSTEM_PROPERTY);
   }
 
 
   @Test
   public void testOpenshiftURLAsRoot() {
-    System.setProperty(OpenShiftConfig.OPENSHIFT_URL_SYTEM_PROPERTY, "https://1.1.1.1");
+    System.setProperty(OpenShiftConfig.OPENSHIFT_URL_SYSTEM_PROPERTY, "https://1.1.1.1");
     OpenShiftConfig config = new OpenShiftConfig(kubernetesConfig);
     assertEquals("https://1.1.1.1/oapi/" + version + "/", config.getOpenShiftUrl());
   }
 
   @Test
   public void testOpenshiftURLAsRootWithSlash() {
-    System.setProperty(OpenShiftConfig.OPENSHIFT_URL_SYTEM_PROPERTY, "https://1.1.1.1/");
+    System.setProperty(OpenShiftConfig.OPENSHIFT_URL_SYSTEM_PROPERTY, "https://1.1.1.1/");
     OpenShiftConfig config = new OpenShiftConfig(kubernetesConfig);
     assertEquals("https://1.1.1.1/oapi/" + version + "/", config.getOpenShiftUrl());
   }
 
   @Test
   public void testFullOpenshiftURL() {
-    System.setProperty(OpenShiftConfig.OPENSHIFT_URL_SYTEM_PROPERTY, "https://1.1.1.1/xxx");
+    System.setProperty(OpenShiftConfig.OPENSHIFT_URL_SYSTEM_PROPERTY, "https://1.1.1.1/xxx");
     OpenShiftConfig config = new OpenShiftConfig(kubernetesConfig);
     assertEquals("https://1.1.1.1/xxx/", config.getOpenShiftUrl());
   }
 
   @Test
   public void testNoOpenshiftURL() {
-    System.clearProperty(OpenShiftConfig.OPENSHIFT_URL_SYTEM_PROPERTY);
+    System.clearProperty(OpenShiftConfig.OPENSHIFT_URL_SYSTEM_PROPERTY);
     OpenShiftConfig config = new OpenShiftConfig(kubernetesConfig);
     // Use the master URL
     assertEquals("https://2.2.2.2/oapi/" + version + "/", config.getOpenShiftUrl());
