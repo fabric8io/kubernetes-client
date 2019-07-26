@@ -2,6 +2,7 @@
 
 ### 4.3-SNAPSHOT
   Bugs
+   * Fix #1647: CustomResourceList<T> should extend KubernetesResourceList<T>
 
   Improvements
 
