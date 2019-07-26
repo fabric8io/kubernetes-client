@@ -86,7 +86,7 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
     }
 
 
-    //If token was obtain, then retry request using the obtained token.
+    //If token was obtained, then retry request using the obtained token.
     if (Utils.isNotNullOrEmpty(token)) {
       // Close the previous response to prevent leaked connections.
       response.body().close();
@@ -121,14 +121,14 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
       String body = response.body().string();
       JsonNode jsonResponse = Serialization.jsonMapper().readTree(body);
       String authorizationServer = jsonResponse.get("authorization_endpoint").asText();
-      response.body().close();
+      response.close();
 
       url = new URL(authorizationServer + AUTHORIZE_QUERY);
 
       String credential = Credentials.basic(config.getUsername(), config.getPassword());
       response = clone.newCall(new Request.Builder().get().url(url).header(AUTHORIZATION, credential).build()).execute();
 
-      response.body().close();
+      response.close();
       response = response.priorResponse() != null ? response.priorResponse() : response;
       response = response.networkResponse() != null ? response.networkResponse() : response;
       String token = response.header(LOCATION);
