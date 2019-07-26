@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.api.model;
 
-public interface HasMetadata extends KubernetesResource {
+public interface HasMetadata<E extends HasMetadata<E>> extends KubernetesResource<E> {
 
   ObjectMeta getMetadata();
   void setMetadata(ObjectMeta metadata);

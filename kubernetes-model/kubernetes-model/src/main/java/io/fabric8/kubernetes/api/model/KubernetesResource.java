@@ -20,5 +20,5 @@ import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 import java.io.Serializable;
 
 @JsonDeserialize(using = KubernetesDeserializer.class)
-public interface KubernetesResource<E extends io.fabric8.kubernetes.api.model.HasMetadata> extends Serializable {
+public interface KubernetesResource<E extends io.fabric8.kubernetes.api.model.HasMetadata<E>> extends Serializable {
 }
