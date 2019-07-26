@@ -24,6 +24,7 @@ buildNumber.properties
 # Package Files #
 *.jar
 *.war
+<<<<<<< HEAD
 *.ear
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
@@ -77,3 +78,10 @@ atlassian-ide-plugin.xml
 com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
+=======
+*.ear
+
+# Project specific #
+generator/vendor
+generator/vendor/**
+>>>>>>> repo-a/master
