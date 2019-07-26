@@ -1,4 +1,0 @@
-package: github.com/snowdrop/service-catalog-java-api/generator
-import:
-- package: github.com/kubernetes-incubator/service-catalog
-  version: v0.1.16
