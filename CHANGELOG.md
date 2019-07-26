@@ -8,6 +8,7 @@
    * Fix #1589: Move HorizontalPodAutoscaler to autoscaling/v1
    * Fix #1553: Allow to explicitly set non-matching field selectors using `withoutField`
    * Cleaned up kubernetes-model pom.xml
+   * Removed deprecated KubernetesKind enum
 
   Dependency Upgrade
 
