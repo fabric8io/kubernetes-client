@@ -4,7 +4,10 @@
   Bugs
 
   Improvements
-  * Cleaned up kubernetes-model pom.xml
+   * Test coverage for PersistentVolumeClaim
+   * Fix #1589: Move HorizontalPodAutoscaler to autoscaling/v1
+   * Fix #1553: Allow to explicitly set non-matching field selectors using `withoutField`
+   * Cleaned up kubernetes-model pom.xml
 
   Dependency Upgrade
 
