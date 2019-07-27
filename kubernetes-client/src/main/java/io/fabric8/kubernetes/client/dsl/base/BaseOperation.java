@@ -683,7 +683,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
             && ((HasMetadata) item).getMetadata() != null
             && ((HasMetadata) item).getMetadata().getName() != null
             && !((HasMetadata) item).getMetadata().getName().isEmpty())  {
-            op = (R) withName(((HasMetadata) item).getMetadata().getName());
+            op = (R) inNamespace(checkNamespace(item)).withName(((HasMetadata) item).getMetadata().getName());
           } else {
             op = (R) withItem(item);
           }
