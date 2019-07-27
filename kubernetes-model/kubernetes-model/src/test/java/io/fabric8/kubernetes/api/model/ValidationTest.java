@@ -31,12 +31,7 @@ public class ValidationTest {
 
   @Test
   public void testIllegalNodeName() throws JsonProcessingException {
-    Assertions.assertThrows(ConstraintViolationException.class, new Executable() {
-      @Override
-      public void execute() throws Throwable {
-        new io.fabric8.kubernetes.api.model.NodeBuilder().withNewMetadata().withName("..").and().build();
-      }
-    });
+    Assertions.assertThrows(ConstraintViolationException.class, () -> new io.fabric8.kubernetes.api.model.NodeBuilder().withNewMetadata().withName("..").and().build());
   }
 
 }
