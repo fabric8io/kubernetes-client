@@ -36,6 +36,7 @@ import java.net.Proxy;
 import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -162,6 +163,10 @@ public class HttpClientUtils {
                 .tlsVersions(config.getTlsVersions())
                 .build();
               httpClientBuilder.connectionSpecs(Arrays.asList(spec, CLEARTEXT));
+            }
+
+            if (config.isHttp2Disable()) {
+                httpClientBuilder.protocols(Collections.singletonList(Protocol.HTTP_1_1));
             }
 
             return httpClientBuilder.build();
