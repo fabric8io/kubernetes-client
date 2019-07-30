@@ -80,7 +80,6 @@ public class TemplateOperationsImpl
     this.type = Template.class;
     this.listType = TemplateList.class;
     this.doneableType = DoneableTemplate.class;
-    this.apiGroupName = TEMPLATE;
   }
   @Override
   public TemplateOperationsImpl newInstance(OperationContext context) {

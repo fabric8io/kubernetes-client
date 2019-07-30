@@ -42,9 +42,7 @@ public class GroupTest {
    server.expect().withPath("/oapi/v1/groups").andReturn(200, new GroupListBuilder()
       .addNewItem().and()
       .addNewItem().and().build()).always();
-   server.expect().withPath("/apis/user.openshift.io/v1/groups").andReturn(200, new GroupListBuilder()
-      .addNewItem().and()
-      .addNewItem().and().build()).always();
+
    server.expect().withPath("/apis").andReturn(200, new APIGroupListBuilder()
       .addNewGroup()
       .withApiVersion("v1")
@@ -54,7 +52,11 @@ public class GroupTest {
       .withApiVersion("v1")
       .withName("security.openshift.io")
       .endGroup()
-      .build()).once();
+      .build()).always();
+
+    server.expect().withPath("/apis/user.openshift.io/v1/groups").andReturn(200, new GroupListBuilder()
+      .addNewItem().and()
+      .addNewItem().and().build()).always();
 
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();

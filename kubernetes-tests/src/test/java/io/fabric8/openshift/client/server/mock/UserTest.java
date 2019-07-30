@@ -54,7 +54,7 @@ public class UserTest {
       .withApiVersion("v1")
       .withName("security.openshift.io")
       .endGroup()
-      .build()).once();
+      .build()).always();
 
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();

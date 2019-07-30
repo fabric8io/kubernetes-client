@@ -49,7 +49,7 @@ public class OpenshiftRoleTest {
       .withApiVersion("v1")
       .withName("security.openshift.io")
       .endGroup()
-      .build()).once();
+      .build()).always();
 
    server.expect().withPath("/apis/authorization.openshift.io/v1/roles").andReturn(200, new OpenshiftRoleListBuilder()
       .addNewItem().and()

@@ -47,9 +47,11 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
     if (Utils.isNotNullOrEmpty(context.getApiGroupName()) && config.isOpenShiftAPIGroups(oc)) {
       String apiGroupUrl = URLUtils.join(config.getMasterUrl(), "apis", context.getApiGroupName(), oapiVersion);
       String apiGroupVersion = URLUtils.join(context.getApiGroupName(), oapiVersion);
+      oc.close();
       return context.withConfig(new OpenShiftConfigBuilder(config).withOpenShiftUrl(apiGroupUrl).build()).withApiGroupName(context.getApiGroupName()).withApiGroupVersion(apiGroupVersion);
     } else {
       String apiGroupUrl = URLUtils.join(config.getMasterUrl(), "oapi", oapiVersion);
+      oc.close();
       return context.withConfig(new OpenShiftConfigBuilder(config).withOpenShiftUrl(apiGroupUrl).build()).withApiGroupName(context.getApiGroupName()).withApiGroupVersion(oapiVersion);
     }
   }
@@ -57,6 +59,23 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
   @Override
   public OpenShiftConfig getConfig() {
     return OpenShiftConfig.wrap(super.getConfig());
+  }
+
+  @Override
+  public URL getRootUrl() {
+    OpenShiftConfig config = OpenShiftConfig.wrap(context.getConfig());
+    OpenShiftClient oc = new DefaultOpenShiftClient(context.getClient(), config);
+    if (config.isOpenShiftAPIGroups(oc)) {
+      oc.close();
+      return super.getRootUrl();
+    } else {
+      oc.close();
+      try {
+        return new URL(OpenShiftConfig.wrap(getConfig()).getOpenShiftUrl());
+      } catch (MalformedURLException e) {
+        throw KubernetesClientException.launderThrowable(e);
+      }
+    }
   }
 
   protected Class<? extends Config> getConfigType() {
