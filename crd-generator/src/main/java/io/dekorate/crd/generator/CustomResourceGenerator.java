@@ -16,6 +16,7 @@
 package io.dekorate.crd.generator;
 
 import io.dekorate.Generator;
+import io.dekorate.Session;
 import io.dekorate.WithSession;
 import io.dekorate.config.ConfigurationSupplier;
 import io.dekorate.crd.adapter.CustomResourceConfigAdapter;
@@ -54,6 +55,7 @@ public interface CustomResourceGenerator extends Generator, WithSession {
   }
 
   default void on(ConfigurationSupplier<CustomResourceConfig> config) {
+    Session session = getSession();
     session.configurators().add(config);
     session.handlers().add(new CustomResourceHandler(session.resources()));
   }

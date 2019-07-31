@@ -16,6 +16,7 @@
 package io.dekorate.crd.apt;
 
 
+import io.dekorate.Session;
 import io.dekorate.crd.generator.CustomResourceGenerator;
 import io.dekorate.processor.AbstractAnnotationProcessor;
 import io.sundr.codegen.CodegenContext;
@@ -33,6 +34,7 @@ import java.util.Set;
 public class CustomResourceAnnotationProcessor extends AbstractAnnotationProcessor implements CustomResourceGenerator {
 
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+    Session session = getSession();
     if  (roundEnv.processingOver()) {
       session.close();
       return true;
