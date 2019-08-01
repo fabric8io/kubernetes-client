@@ -71,6 +71,7 @@ public class TemplateIT {
       .build();
 
     template1 = new TemplateBuilder()
+      .withApiVersion("template.openshift.io/v1")
       .withNewMetadata().withName("foo").endMetadata()
       .addToObjects(aService)
       .build();
@@ -111,7 +112,7 @@ public class TemplateIT {
   @After
   public void cleanup() throws InterruptedException {
     if (client.templates().inNamespace(currentNamespace).list().getItems().size()!= 0) {
-      client.templates().inNamespace(currentNamespace).delete();
+      client.templates().inNamespace(currentNamespace).withName("foo").delete();
     }
 
     DeleteEntity<Template> templateDelete = new DeleteEntity<>(Template.class, client, "foo", currentNamespace);

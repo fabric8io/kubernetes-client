@@ -67,7 +67,7 @@ public class TemplateTest {
       .withApiVersion("v1")
       .withName("security.openshift.io")
       .endGroup()
-      .build()).once();
+      .build()).always();
 
     server.expect().withPath("/apis/template.openshift.io/v1/templates").andReturn(200, new TemplateListBuilder()
       .addNewItem().and()

@@ -53,7 +53,7 @@ public class DeploymentConfigTest {
       .withApiVersion("v1")
       .withName("security.openshift.io")
       .endGroup()
-      .build()).once();
+      .build()).always();
    server.expect().withPath("/oapi/v1/namespaces/ns1/deploymentconfigs").andReturn(200, new DeploymentConfigListBuilder()
       .addNewItem().and()
       .addNewItem().and().build()).once();
