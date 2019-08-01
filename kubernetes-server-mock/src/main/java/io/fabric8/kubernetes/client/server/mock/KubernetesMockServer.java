@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 
+import static io.fabric8.kubernetes.client.utils.HttpClientUtils.createHttpClientForMockServer;
 import static okhttp3.TlsVersion.TLS_1_0;
 
 public class KubernetesMockServer extends DefaultMockServer {
@@ -82,7 +83,7 @@ public class KubernetesMockServer extends DefaultMockServer {
                 .withTlsVersions(TLS_1_0)
                 .withNamespace("test")
                 .build();
-        return new DefaultKubernetesClient(config);
+        return new DefaultKubernetesClient(createHttpClientForMockServer(config), config);
     }
 
 
