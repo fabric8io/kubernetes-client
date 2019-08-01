@@ -1,7 +1,7 @@
 ### CHANGELOG
 
 ### 4.3-SNAPSHOT
-  Bugs  
+  Bugs
   * Fixed user/password authentication bug in OpenShift 4
   * Fix #1667: Origin header for watch requests had a port of -1 when no port specified
 
