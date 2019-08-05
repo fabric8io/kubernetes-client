@@ -2,19 +2,23 @@
 
 ### 4.3-SNAPSHOT
   Bugs
-   * Fix #1626: Scaling StatefulSets with waiting seems to fail
+  * Fix #1626: Scaling StatefulSets with waiting seems to fail
+  * Fixed user/password authentication bug in OpenShift 4
+  * Fix #1667: Origin header for watch requests had a port of -1 when no port specified
 
   Improvements
    * Test coverage for PersistentVolumeClaim
    * Fix #1589: Move HorizontalPodAutoscaler to autoscaling/v1
    * Fix #1553: Allow to explicitly set non-matching field selectors using `withoutField`
    * Cleaned up kubernetes-model pom.xml
+   * Removed deprecated KubernetesKind enum
 
   Dependency Upgrade
 
   New Feature
   * Knative extension
   * Tekton extension
+  * Increased OpenShift 4.x compatibility
 
 ### 4.3.1 (19-07-2019)
   Bugs

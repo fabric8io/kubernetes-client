@@ -147,7 +147,7 @@
                         <configuration>
                             <artifacts>
                                 <artifact>
-                                    <file>${build.outputDirectory}/schema/knative-schema.json</file>
+                                    <file>${project.build.outputDirectory}/schema/knative-schema.json</file>
                                     <type>json</type>
                                     <classifier>schema</classifier>
                                 </artifact>

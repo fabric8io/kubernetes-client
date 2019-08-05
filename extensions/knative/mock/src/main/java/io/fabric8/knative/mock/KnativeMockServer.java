@@ -29,6 +29,7 @@ import okhttp3.mockwebserver.MockWebServer;
 import java.util.Map;
 import java.util.Queue;
 
+import static io.fabric8.kubernetes.client.utils.HttpClientUtils.createHttpClientForMockServer;
 import static okhttp3.TlsVersion.TLS_1_0;
 
 public class KnativeMockServer extends KubernetesMockServer {
@@ -58,6 +59,6 @@ public class KnativeMockServer extends KubernetesMockServer {
       .withTrustCerts(true)
       .withTlsVersions(TLS_1_0)
       .build();
-    return new DefaultKnativeClient(config);
+    return new DefaultKnativeClient(createHttpClientForMockServer(config), config);
   }
 }

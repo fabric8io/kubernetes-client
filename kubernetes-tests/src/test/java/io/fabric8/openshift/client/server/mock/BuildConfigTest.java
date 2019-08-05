@@ -62,7 +62,7 @@ public class BuildConfigTest {
       .withApiVersion("v1")
       .withName("security.openshift.io")
       .endGroup()
-      .build()).once();
+      .build()).always();
 
    server.expect().withPath("/oapi/v1/namespaces/ns1/buildconfigs").andReturn(200, new BuildConfigListBuilder()
       .addNewItem().and()
