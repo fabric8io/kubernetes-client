@@ -16,11 +16,13 @@
 
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.model.authorization.SelfSubjectAccessReview;
+import io.fabric8.kubernetes.api.model.authorization.SelfSubjectAccessReviewBuilder;
+import io.fabric8.kubernetes.api.model.authorization.SelfSubjectRulesReview;
 import io.fabric8.kubernetes.client.dsl.Createable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.openshift.api.model.*;
 import io.fabric8.openshift.api.model.LocalSubjectAccessReviewBuilder;
-import io.fabric8.openshift.api.model.SelfSubjectAccessReviewBuilder;
 import io.fabric8.openshift.api.model.SubjectAccessReviewBuilder;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;

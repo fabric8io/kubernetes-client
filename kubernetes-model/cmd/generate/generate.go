@@ -131,6 +131,8 @@ type Schema struct {
 	TokenReview                           authenticationapi.TokenReview
 	K8sSubjectAccessReview                k8sauthapi.SubjectAccessReview
 	K8sLocalSubjectAccessReview           k8sauthapi.LocalSubjectAccessReview
+	SelfSubjectRulesReview                k8sauthapi.SelfSubjectRulesReview  
+        SelfSubjectAccessReview               k8sauthapi.SelfSubjectAccessReview  
 	OpenshiftRole                         authapi.Role
 	OpenshiftRoleList                     authapi.RoleList
 	OpenshiftRoleBinding                  authapi.RoleBinding

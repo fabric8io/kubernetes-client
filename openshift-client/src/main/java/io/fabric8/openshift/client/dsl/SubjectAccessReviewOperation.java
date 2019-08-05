@@ -17,6 +17,8 @@
 package io.fabric8.openshift.client.dsl;
 
 import io.fabric8.kubernetes.api.model.Doneable;
+import io.fabric8.kubernetes.api.model.authorization.SelfSubjectAccessReview;
+import io.fabric8.kubernetes.api.model.authorization.SelfSubjectRulesReview;
 import io.fabric8.kubernetes.client.dsl.AnyNamespaceable;
 import io.fabric8.kubernetes.client.dsl.Createable;
 import io.fabric8.kubernetes.client.dsl.Listable;
