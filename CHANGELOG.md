@@ -2,6 +2,7 @@
 
 ### 4.3-SNAPSHOT
   Bugs
+  * Fix #1565: CRD's Enums are prefixed with Raw keyword
   * Fixed user/password authentication bug in OpenShift 4
   * Fix #1667: Origin header for watch requests had a port of -1 when no port specified
 
