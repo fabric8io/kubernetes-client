@@ -1,6 +1,15 @@
 ### CHANGELOG
 
-### 4.3-SNAPSHOT
+### 4.4-SNAPSHOT
+  Bugs
+
+  Improvements
+
+  Dependency Upgrade
+
+  New Feature
+
+### 4.4.0 (05-08-2019)
   Bugs
   * Fix #1565: CRD's Enums are prefixed with Raw keyword
   * Fixed user/password authentication bug in OpenShift 4
