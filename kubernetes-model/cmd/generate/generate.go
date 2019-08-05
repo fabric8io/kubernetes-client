@@ -297,7 +297,16 @@ func main() {
 	result := string(b)
 	result = strings.Replace(result, "\"additionalProperty\":", "\"additionalProperties\":", -1)
 
-	// Hack to fix https://github.com/fabric8io/kubernetes-client/issues/1565
+	/**
+         * Hack to fix https://github.com/fabric8io/kubernetes-client/issues/1565
+         *
+         * Right now enums are having body as array of jsons rather than being array of strings.
+         * (See https://user-images.githubusercontent.com/13834498/59852204-00d25680-938c-11e9-91b6-74f6bc3ae65b.png)
+         *
+         * I could not find any other way of fixing this since I'm not sure where it's coming from.
+         * So doing this search and replace of whole enum json object block hence converting it to an array of plain
+         * strings rather than of json objects.
+         */
 	result = strings.Replace(result, "\"enum\":{\"type\":\"array\",\"description\":\"\",\"javaOmitEmpty\":true,\"items\":{\"$ref\":\"#/definitions/kubernetes_apiextensions_JSON\",\"javaType\":\"io.fabric8.kubernetes.api.model.apiextensions.JSON\"}},",
 	"\"enum\":{\"type\":\"array\",\"description\":\"\",\"javaOmitEmpty\":true,\"items\":{\"type\": \"string\"}},", -1)
 
