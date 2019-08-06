@@ -2,6 +2,7 @@
 
 ### 4.4-SNAPSHOT
   Bugs
+  * Fix #1690: Endpoints is always pluralized
 
   Improvements
 
