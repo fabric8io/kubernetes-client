@@ -160,7 +160,8 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
           kind.equalsIgnoreCase("NetworkPolicies")){
           kind = kind.substring(0,kind.length() - 3) + "y";
         }
-        else if (kind.equalsIgnoreCase("securityContextConstraints")){
+        else if (kind.equalsIgnoreCase("securityContextConstraints") ||
+          kind.equalsIgnoreCase("endpoints")){
           // do nothing
           // because its a case which is ending with s but its name is
           // like that, it is not plural
