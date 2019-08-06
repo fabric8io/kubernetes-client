@@ -43,7 +43,7 @@ public class DeploymentConfigTest {
 
   @Test
   public void testList() {
-   server.expect().withPath("/oapi/v1/namespaces/test/deploymentconfigs").andReturn(200, new DeploymentConfigListBuilder().build()).once();
+   server.expect().withPath("/apis/apps.openshift.io/v1/namespaces/test/deploymentconfigs").andReturn(200, new DeploymentConfigListBuilder().build()).once();
    server.expect().withPath("/apis").andReturn(200, new APIGroupListBuilder()
       .addNewGroup()
       .withApiVersion("v1")
@@ -54,7 +54,7 @@ public class DeploymentConfigTest {
       .withName("security.openshift.io")
       .endGroup()
       .build()).always();
-   server.expect().withPath("/oapi/v1/namespaces/ns1/deploymentconfigs").andReturn(200, new DeploymentConfigListBuilder()
+   server.expect().withPath("/apis/apps.openshift.io/v1/namespaces/ns1/deploymentconfigs").andReturn(200, new DeploymentConfigListBuilder()
       .addNewItem().and()
       .addNewItem().and().build()).once();
 
@@ -81,11 +81,11 @@ public class DeploymentConfigTest {
 
   @Test
   public void testGet() {
-   server.expect().withPath("/oapi/v1/namespaces/test/deploymentconfigs/dc1").andReturn(200, new DeploymentConfigBuilder()
+   server.expect().withPath("/apis/apps.openshift.io/v1/namespaces/test/deploymentconfigs/dc1").andReturn(200, new DeploymentConfigBuilder()
       .withNewMetadata().withName("dc1").endMetadata()
       .build()).once();
 
-   server.expect().withPath("/oapi/v1/namespaces/ns1/deploymentconfigs/dc2").andReturn(200, new DeploymentConfigBuilder()
+   server.expect().withPath("/apis/apps.openshift.io/v1/namespaces/ns1/deploymentconfigs/dc2").andReturn(200, new DeploymentConfigBuilder()
       .withNewMetadata().withName("dc2").endMetadata()
       .build()).once();
 
@@ -144,8 +144,8 @@ public class DeploymentConfigTest {
       .endStatus()
       .build();
 
-   server.expect().withPath("/oapi/v1/namespaces/test/deploymentconfigs/dc1").andReturn(200, dc1).times(2);
-   server.expect().withPath("/oapi/v1/namespaces/ns1/deploymentconfigs/dc2").andReturn( 200, dc2).times(5);
+   server.expect().withPath("/apis/apps.openshift.io/v1/namespaces/test/deploymentconfigs/dc1").andReturn(200, dc1).times(2);
+   server.expect().withPath("/apis/apps.openshift.io/v1/namespaces/ns1/deploymentconfigs/dc2").andReturn( 200, dc2).times(5);
 
     OpenShiftClient client = server.getOpenshiftClient();
 
@@ -161,12 +161,12 @@ public class DeploymentConfigTest {
 
 	@Test
 	public void testDeployingLatest() {
-		server.expect().withPath("/oapi/v1/namespaces/test/deploymentconfigs/dc1")
+		server.expect().withPath("/apis/apps.openshift.io/v1/namespaces/test/deploymentconfigs/dc1")
 				.andReturn(200, new DeploymentConfigBuilder().withNewMetadata().withName("dc1").endMetadata()
 						.withNewStatus().withLatestVersion(1L).endStatus().build())
 				.always();
 
-		server.expect().patch().withPath("/oapi/v1/namespaces/test/deploymentconfigs/dc1")
+		server.expect().patch().withPath("/apis/apps.openshift.io/v1/namespaces/test/deploymentconfigs/dc1")
 				.andReturn(200, new DeploymentConfigBuilder().withNewMetadata().withName("dc1").endMetadata()
 						.withNewStatus().withLatestVersion(2L).endStatus().build())
 				.once();
@@ -180,12 +180,12 @@ public class DeploymentConfigTest {
 
   @Test
   public void testDeployingLatestHandlesMissingLatestVersion() {
-    server.expect().withPath("/oapi/v1/namespaces/test/deploymentconfigs/dc1")
+    server.expect().withPath("/apis/apps.openshift.io/v1/namespaces/test/deploymentconfigs/dc1")
       .andReturn(200, new DeploymentConfigBuilder().withNewMetadata().withName("dc1").endMetadata()
         .withNewStatus().endStatus().build())
       .always();
 
-    server.expect().patch().withPath("/oapi/v1/namespaces/test/deploymentconfigs/dc1")
+    server.expect().patch().withPath("/apis/apps.openshift.io/v1/namespaces/test/deploymentconfigs/dc1")
       .andReturn(200, new DeploymentConfigBuilder().withNewMetadata().withName("dc1").endMetadata()
         .withNewStatus().withLatestVersion(1L).endStatus().build())
       .once();

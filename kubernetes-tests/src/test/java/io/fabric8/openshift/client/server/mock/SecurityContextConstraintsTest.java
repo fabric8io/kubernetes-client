@@ -37,7 +37,7 @@ public class SecurityContextConstraintsTest {
 
   @Test
   public void testList() {
-   server.expect().withPath("/oapi/v1/securitycontextconstraints").andReturn(200, new SecurityContextConstraintsListBuilder()
+   server.expect().withPath("/apis/security.openshift.io/v1/securitycontextconstraints").andReturn(200, new SecurityContextConstraintsListBuilder()
             .addNewItem().endItem()
             .build()).once();
 
@@ -50,8 +50,8 @@ public class SecurityContextConstraintsTest {
 
   @Test
   public void testDelete() {
-   server.expect().withPath("/oapi/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().build()).once();
-   server.expect().withPath("/oapi/v1/securitycontextconstraints/scc2").andReturn(200, new SecurityContextConstraintsBuilder().build()).once();
+   server.expect().withPath("/apis/security.openshift.io/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().build()).once();
+   server.expect().withPath("/apis/security.openshift.io/v1/securitycontextconstraints/scc2").andReturn(200, new SecurityContextConstraintsBuilder().build()).once();
 
     OpenShiftClient client = server.getOpenshiftClient();
 
@@ -67,8 +67,8 @@ public class SecurityContextConstraintsTest {
 
   @Test
   public void testEdit() {
-   server.expect().withPath("/oapi/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().withNewMetadata().withName("scc1").and().build()).times(2);
-   server.expect().withPath("/oapi/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().withNewMetadata().withName("scc1").and().addToAllowedCapabilities("allowed").build()).once();
+   server.expect().withPath("/apis/security.openshift.io/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().withNewMetadata().withName("scc1").and().build()).times(2);
+   server.expect().withPath("/apis/security.openshift.io/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().withNewMetadata().withName("scc1").and().addToAllowedCapabilities("allowed").build()).once();
 
     OpenShiftClient client = server.getOpenshiftClient();
     SecurityContextConstraints scc = client.securityContextConstraints().withName("scc1").edit().addToAllowedCapabilities("allowed").done();

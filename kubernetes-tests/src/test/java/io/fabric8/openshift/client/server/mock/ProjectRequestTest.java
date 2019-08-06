@@ -34,7 +34,7 @@ public class ProjectRequestTest {
 
   @Test
   public void testList() {
-   server.expect().withPath("/oapi/v1/projectrequests").andReturn(200, new StatusBuilder().withMessage("success").build()).once();
+   server.expect().withPath("/apis/project.openshift.io/v1/projectrequests").andReturn(200, new StatusBuilder().withMessage("success").build()).once();
     OpenShiftClient client = server.getOpenshiftClient();
 
     Status status = client.projectrequests().list();
@@ -48,7 +48,7 @@ public class ProjectRequestTest {
   public void testCreate() {
     ProjectRequest req1 = new ProjectRequestBuilder().withApiVersion("v1").withNewMetadata().withName("req1").and().build();
 
-   server.expect().withPath("/oapi/v1/projectrequests").andReturn(201, req1).once();
+   server.expect().withPath("/apis/project.openshift.io/v1/projectrequests").andReturn(201, req1).once();
 
     OpenShiftClient client = server.getOpenshiftClient();
 

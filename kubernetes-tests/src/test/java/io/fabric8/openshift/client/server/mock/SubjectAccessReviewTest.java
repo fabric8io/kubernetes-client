@@ -65,7 +65,7 @@ public class SubjectAccessReviewTest {
 
   @Test
   public void testCreateLocal() {
-   server.expect().withPath("/oapi/v1/namespaces/test/subjectaccessreviews").andReturn(201, new SubjectAccessReviewResponseBuilder()
+   server.expect().withPath("/apis/authorization.openshift.io/v1/namespaces/test/subjectaccessreviews").andReturn(201, new SubjectAccessReviewResponseBuilder()
       .withReason("r1")
       .build()).once();
 
