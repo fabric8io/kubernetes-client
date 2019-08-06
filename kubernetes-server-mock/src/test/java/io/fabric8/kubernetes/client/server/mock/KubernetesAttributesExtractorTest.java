@@ -133,6 +133,17 @@ public class KubernetesAttributesExtractorTest {
   }
 
   @Test
+  public void shouldHandleEndpoints() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor.extract("/api/v1/namespaces/myns/endpoints");
+
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("kind", "endpoints"));
+    expected = expected.add(new Attribute("namespace", "myns"));
+    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
+  }
+
+  @Test
   public void shouldHandleIngresses() {
     KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
     AttributeSet attributes = extractor.extract("/apis/extensions/v1beta1/namespaces/myns/ingresses");
