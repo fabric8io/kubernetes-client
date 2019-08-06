@@ -17,12 +17,9 @@ package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.utils.URLUtils;
-import io.fabric8.openshift.client.DefaultOpenShiftClient;
-import io.fabric8.openshift.client.OpenShiftClient;
-import io.fabric8.openshift.client.OpenshiftAdapterSupport;
+import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import io.fabric8.kubernetes.api.builder.Function;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
@@ -38,6 +35,7 @@ import java.util.concurrent.ExecutionException;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.PROJECT;
 
+// TODO: Check why this class does not extend OpenshiftOperation, then the getRoot method can be removed
 public class ProjectRequestsOperationImpl extends OperationSupport implements ProjectRequestOperation {
 
   public ProjectRequestsOperationImpl(OkHttpClient client, OpenShiftConfig config) {
@@ -56,18 +54,15 @@ public class ProjectRequestsOperationImpl extends OperationSupport implements Pr
 
   @Override
   public URL getRootUrl() {
-    OpenShiftConfig config = OpenShiftConfig.wrap(context.getConfig());
-    OpenShiftClient oc = new DefaultOpenShiftClient(context.getClient(), config);
-    if (config.isOpenShiftAPIGroups(oc)) {
-      oc.close();
-      return super.getRootUrl();
-    } else {
-      oc.close();
+    // This is an OpenShift resource. If no API Group Name is specified, use /oapi endpoint
+    if (Utils.isNullOrEmpty(context.getApiGroupName())) {
       try {
         return new URL(OpenShiftConfig.wrap(getConfig()).getOpenShiftUrl());
       } catch (MalformedURLException e) {
         throw KubernetesClientException.launderThrowable(e);
       }
+    } else {
+      return super.getRootUrl();
     }
   }
 
