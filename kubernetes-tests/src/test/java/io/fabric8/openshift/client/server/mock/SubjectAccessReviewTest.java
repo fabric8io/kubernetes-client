@@ -36,17 +36,6 @@ public class SubjectAccessReviewTest {
 
   @Test
   public void testCreate() {
-    server.expect().withPath("/apis").andReturn(200, new APIGroupListBuilder()
-      .addNewGroup()
-      .withApiVersion("v1")
-      .withName("autoscaling.k8s.io")
-      .endGroup()
-      .addNewGroup()
-      .withApiVersion("v1")
-      .withName("security.openshift.io")
-      .endGroup()
-      .build()).always();
-
     server.expect().withPath("/apis/authorization.openshift.io/v1/subjectaccessreviews").andReturn(201, new SubjectAccessReviewResponseBuilder()
       .withReason("r1")
       .build()).once();
@@ -61,17 +50,6 @@ public class SubjectAccessReviewTest {
 
   @Test
   public void testCreateInLine() {
-    server.expect().withPath("/apis").andReturn(200, new APIGroupListBuilder()
-      .addNewGroup()
-      .withApiVersion("v1")
-      .withName("autoscaling.k8s.io")
-      .endGroup()
-      .addNewGroup()
-      .withApiVersion("v1")
-      .withName("security.openshift.io")
-      .endGroup()
-      .build()).always();
-
     server.expect().withPath("/apis/authorization.openshift.io/v1/subjectaccessreviews").andReturn(201, new SubjectAccessReviewResponseBuilder()
       .withReason("r2")
       .build()).once();
@@ -101,7 +79,7 @@ public class SubjectAccessReviewTest {
 
   @Test
   public void testCreateLocalInLine() {
-   server.expect().withPath("/oapi/v1/namespaces/test/subjectaccessreviews").andReturn( 201, new SubjectAccessReviewResponseBuilder()
+   server.expect().withPath("/apis/authorization.openshift.io/v1/namespaces/test/subjectaccessreviews").andReturn( 201, new SubjectAccessReviewResponseBuilder()
       .withReason("r2")
       .build()).once();
 
