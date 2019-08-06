@@ -1,20 +1,35 @@
 ### CHANGELOG
 
-### 4.3-SNAPSHOT
+### 4.4-SNAPSHOT
   Bugs
+  * Fix #1690: Endpoints is always pluralized
+
+  Improvements
+  * Fix #1661: Remove generic parameter from KubernetesResource
+
+  Dependency Upgrade
+
+  New Feature
+
+### 4.4.0 (05-08-2019)
+  Bugs
+  * Fix #1565: CRD's Enums are prefixed with Raw keyword
+  * Fixed user/password authentication bug in OpenShift 4
+  * Fix #1667: Origin header for watch requests had a port of -1 when no port specified
 
   Improvements
    * Test coverage for PersistentVolumeClaim
    * Fix #1589: Move HorizontalPodAutoscaler to autoscaling/v1
    * Fix #1553: Allow to explicitly set non-matching field selectors using `withoutField`
    * Cleaned up kubernetes-model pom.xml
-   * Fix #1661: Remove generic parameter from KubernetesResource
+   * Removed deprecated KubernetesKind enum
 
   Dependency Upgrade
 
   New Feature
   * Knative extension
   * Tekton extension
+  * Increased OpenShift 4.x compatibility
 
 ### 4.3.1 (19-07-2019)
   Bugs

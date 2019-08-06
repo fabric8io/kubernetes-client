@@ -16,12 +16,16 @@
 
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.model.authorization.SelfSubjectAccessReview;
+import io.fabric8.kubernetes.api.model.authorization.SelfSubjectAccessReviewBuilder;
+import io.fabric8.kubernetes.api.model.authorization.SelfSubjectRulesReview;
 import io.fabric8.kubernetes.client.dsl.Createable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.openshift.api.model.*;
 import io.fabric8.openshift.api.model.LocalSubjectAccessReviewBuilder;
-import io.fabric8.openshift.api.model.SelfSubjectAccessReviewBuilder;
 import io.fabric8.openshift.api.model.SubjectAccessReviewBuilder;
+import io.fabric8.openshift.client.DefaultOpenShiftClient;
+import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.dsl.*;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -65,10 +69,18 @@ public class SubjectAccessReviewOperationImpl extends OperationSupport implement
 
   @Override
   public URL getRootUrl() {
-    try {
-      return new URL(OpenShiftConfig.wrap(getConfig()).getOpenShiftUrl());
-    } catch (MalformedURLException e) {
-      throw KubernetesClientException.launderThrowable(e);
+    OpenShiftConfig config = OpenShiftConfig.wrap(context.getConfig());
+    OpenShiftClient oc = new DefaultOpenShiftClient(context.getClient(), config);
+    if (config.isOpenShiftAPIGroups(oc)) {
+      oc.close();
+      return super.getRootUrl();
+    } else {
+      oc.close();
+      try {
+        return new URL(OpenShiftConfig.wrap(getConfig()).getOpenShiftUrl());
+      } catch (MalformedURLException e) {
+        throw KubernetesClientException.launderThrowable(e);
+      }
     }
   }
 
