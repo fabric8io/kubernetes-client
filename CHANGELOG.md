@@ -3,6 +3,7 @@
 ### 4.4-SNAPSHOT
   Bugs
   * Fix #1690: Endpoints is always pluralized
+  * Fix #1684: Fixed URL resolution algorithm for OpenShift resources without API Group name
 
   Improvements
 
