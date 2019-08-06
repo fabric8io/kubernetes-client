@@ -5,6 +5,7 @@
   * Fix #1690: Endpoints is always pluralized
 
   Improvements
+  * Fix #1650: Introduced `kubernetes.disable.autoConfig` system property to disable auto configuration in Config
 
   Dependency Upgrade
 
