@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -46,7 +47,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
     this.client = client;
     this.config = config;
     this.customResourceDefinition = customResourceDefinition;
-    this.objectMapper = new ObjectMapper();
+    this.objectMapper = Serialization.jsonMapper();
   }
 
   public Map<String, Object> load(InputStream fileInputStream) throws IOException {
