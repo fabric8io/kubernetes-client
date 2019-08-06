@@ -5,6 +5,7 @@
   * Fix #1690: Endpoints is always pluralized
 
   Improvements
+  * Fix #1661: Remove generic parameter from KubernetesResource
 
   Dependency Upgrade
 
