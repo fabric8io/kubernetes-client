@@ -72,11 +72,14 @@ import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.*;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.client.utils.informers.SharedInformerFactory;
 import okhttp3.OkHttpClient;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class DefaultKubernetesClient extends BaseClient implements NamespacedKubernetesClient {
 
@@ -314,6 +317,11 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   @Override
   public SubjectAccessReviewDSL subjectAccessReviewAuth() {
     return new SubjectAccessReviewDSLImpl(httpClient, getConfiguration());
+  }
+
+  @Override
+  public SharedInformerFactory informers() {
+    return new SharedInformerFactory(Executors.newCachedThreadPool(), httpClient, getConfiguration());
   }
 
 }

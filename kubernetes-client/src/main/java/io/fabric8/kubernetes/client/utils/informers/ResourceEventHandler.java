@@ -1,0 +1,42 @@
+package io.fabric8.kubernetes.client.utils.informers;
+
+/**
+ * ResourceEventHandler can handle notifications for events that
+ * happen to a resource. The events are information only, so you can't
+ * return an error.
+ *
+ * @param <T> resource
+ */
+public interface ResourceEventHandler<T> {
+
+  /**
+   * Called when an object is added.
+   *
+   * @param obj object
+   */
+  void onAdd(T obj);
+
+  /**
+   * Called when an object is modified. Note that oldObj is the last
+   * known state of the object -- it is possible that several changes
+   * were combined together, so you can't use this to see every single
+   * change. It is also called when a re-list happens, and it will get
+   * called even if nothing changes. This is useful for periodically
+   * evaluating or syncing something.
+   *
+   * @param oldObj old object
+   * @param newObj new object
+   */
+  void onUpdate(T oldObj, T newObj);
+
+  /**
+   * Gets the final state of the item if it is known, otherwise
+   * it would get an object of the DeletedFinalStateUnknown. This can
+   * happen if the watch is closed and misses the delete event and
+   * we don't notice the deletion until the subsequent re-list.
+   *
+   * @param obj
+   * @param deletedFinalStateUnknown
+   */
+  void onDelete(T obj, boolean deletedFinalStateUnknown);
+}

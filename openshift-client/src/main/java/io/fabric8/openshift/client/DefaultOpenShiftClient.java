@@ -43,6 +43,7 @@ import io.fabric8.kubernetes.client.dsl.internal.*;
 import io.fabric8.kubernetes.client.utils.BackwardsCompatibilityInterceptor;
 import io.fabric8.kubernetes.client.utils.ImpersonatorInterceptor;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.client.utils.informers.SharedInformerFactory;
 import io.fabric8.openshift.api.model.*;
 import io.fabric8.openshift.api.model.DoneableBuild;
 import io.fabric8.openshift.api.model.DoneableBuildConfig;
@@ -73,6 +74,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 import java.util.Objects;
+import java.util.concurrent.Executors;
 
 public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpenShiftClient {
 
@@ -454,6 +456,9 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
 
   @Override
   public SchedulingAPIGroupDSL scheduling() { return adapt(SchedulingAPIGroupClient.class); }
+
+  @Override
+  public SharedInformerFactory informers() { return new SharedInformerFactory(Executors.newCachedThreadPool(), httpClient, getConfiguration()); }
 
   @Override
   public FunctionCallable<NamespacedOpenShiftClient> withRequestConfig(RequestConfig requestConfig) {

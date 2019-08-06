@@ -1028,4 +1028,16 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
     throw new IllegalArgumentException(type.getSimpleName() + " with name:[" + name + "] in namespace:[" + namespace + "] not found!");
   }
+
+  public void setType(Class<T> type) {
+    this.type = type;
+  }
+
+  public void setListType(Class<L> listType) {
+    this.listType = listType;
+  }
+
+  public void setNamespace(String namespace) {
+    this.namespace = namespace;
+  }
 }

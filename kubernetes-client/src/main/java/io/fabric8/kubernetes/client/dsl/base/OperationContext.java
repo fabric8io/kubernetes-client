@@ -49,7 +49,6 @@ public class OperationContext {
   protected Map<String, String> fields;
   protected Map<String, String[]> fieldsNot;
 
-
   public OperationContext() {
   }
 
