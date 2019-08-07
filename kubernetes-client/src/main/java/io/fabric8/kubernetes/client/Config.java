@@ -58,7 +58,7 @@ public class Config {
   private static final Logger LOGGER = LoggerFactory.getLogger(Config.class);
 
   /**
-   * Auto configures a {@link Config} object in the default constructor based on opinionated defaults
+   * Disables auto-configuration based on opinionated defaults in a {@link Config} object in the default constructor
    */
   public static final String KUBERNETES_DISABLE_AUTO_CONFIG_SYSTEM_PROPERTY = "kubernetes.disable.autoConfig";
   public static final String KUBERNETES_MASTER_SYSTEM_PROPERTY = "kubernetes.master";
@@ -198,7 +198,7 @@ public class Config {
   private Map<Integer, String> errorMessages = new HashMap<>();
 
   /**
-   * @deprecated use Config{@link #autoConfigure()} or {@link ConfigBuilder} instead
+   * @deprecated use {@link #autoConfigure(String)} or {@link ConfigBuilder} instead
    */
   @Deprecated
   public Config() {
