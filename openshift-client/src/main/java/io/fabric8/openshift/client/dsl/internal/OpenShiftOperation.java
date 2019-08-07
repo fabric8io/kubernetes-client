@@ -40,19 +40,23 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
     super(wrap(ctx));
   }
 
-  public static OperationContext wrap(OperationContext context) {
+  private static OperationContext wrap(OperationContext context) {
     OpenShiftConfig config = OpenShiftConfig.wrap(context.getConfig());
     String oapiVersion = config.getOapiVersion();
-    OpenShiftClient oc = new DefaultOpenShiftClient(context.getClient(), config);
-    if (Utils.isNotNullOrEmpty(context.getApiGroupName()) && config.isOpenShiftAPIGroups(oc)) {
-      String apiGroupUrl = URLUtils.join(config.getMasterUrl(), "apis", context.getApiGroupName(), oapiVersion);
-      String apiGroupVersion = URLUtils.join(context.getApiGroupName(), oapiVersion);
-      oc.close();
-      return context.withConfig(new OpenShiftConfigBuilder(config).withOpenShiftUrl(apiGroupUrl).build()).withApiGroupName(context.getApiGroupName()).withApiGroupVersion(apiGroupVersion);
+    if (Utils.isNotNullOrEmpty(context.getApiGroupName())) {
+      try (OpenShiftClient oc = new DefaultOpenShiftClient(context.getClient(), config)) {
+        if (config.isOpenShiftAPIGroups(oc)) {
+          String apiGroupUrl = URLUtils.join(config.getMasterUrl(), "apis", context.getApiGroupName(), oapiVersion);
+          String apiGroupVersion = URLUtils.join(context.getApiGroupName(), oapiVersion);
+          return context.withConfig(new OpenShiftConfigBuilder(config).withOpenShiftUrl(apiGroupUrl).build()).withApiGroupName(context.getApiGroupName()).withApiGroupVersion(apiGroupVersion);
+        } else {
+          String apiGroupUrl = URLUtils.join(config.getMasterUrl(), "oapi", oapiVersion);
+          return context.withConfig(new OpenShiftConfigBuilder(config).withOpenShiftUrl(apiGroupUrl).build()).withApiGroupName(context.getApiGroupName()).withApiGroupVersion(oapiVersion);
+        }
+      }
     } else {
       String apiGroupUrl = URLUtils.join(config.getMasterUrl(), "oapi", oapiVersion);
-      oc.close();
-      return context.withConfig(new OpenShiftConfigBuilder(config).withOpenShiftUrl(apiGroupUrl).build()).withApiGroupName(context.getApiGroupName()).withApiGroupVersion(oapiVersion);
+      return context.withConfig(new OpenShiftConfigBuilder(config).withOpenShiftUrl(apiGroupUrl).build()).withApiGroupVersion(oapiVersion);
     }
   }
 

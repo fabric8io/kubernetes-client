@@ -8,7 +8,8 @@
   Improvements
   * Fix #1650: Introduced `kubernetes.disable.autoConfig` system property to disable auto configuration in Config
   * Fix #1661: Remove generic parameter from KubernetesResource
-
+  * Improved OpenShiftOperation.wrap method performance
+  
   Dependency Upgrade
 
   New Feature
