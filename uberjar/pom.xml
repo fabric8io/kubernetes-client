@@ -176,7 +176,7 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>${jackson.version}</version>
+      <version>${jackson.version.databind}</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
