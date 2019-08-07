@@ -96,7 +96,7 @@
     <junit.version>4.12</junit.version>
     <assertj.core.version>3.13.1</assertj.core.version>
     <arquillian.core.version>1.2.0.Final</arquillian.core.version>
-    <awaitility.version>3.1.3</awaitility.version>
+    <awaitility.version>3.1.6</awaitility.version>
     <jsonassert.version>1.5.0</jsonassert.version>
 
     <retrofit.bundle.version>2.5.0_1</retrofit.bundle.version>
