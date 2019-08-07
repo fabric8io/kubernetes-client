@@ -77,7 +77,7 @@ public class Template implements HasMetadata {
      */
     @JsonProperty("apiVersion")
     @NotNull
-    private String apiVersion = "v1";
+    private String apiVersion = "template.openshift.io/v1";
     /**
      * (Required)
      */

@@ -63,18 +63,15 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
 
   @Override
   public URL getRootUrl() {
-    OpenShiftConfig config = OpenShiftConfig.wrap(context.getConfig());
-    OpenShiftClient oc = new DefaultOpenShiftClient(context.getClient(), config);
-    if (config.isOpenShiftAPIGroups(oc)) {
-      oc.close();
-      return super.getRootUrl();
-    } else {
-      oc.close();
+    // This is an OpenShift resource. If no API Group Name is specified, use /oapi endpoint
+    if (Utils.isNullOrEmpty(context.getApiGroupName())) {
       try {
         return new URL(OpenShiftConfig.wrap(getConfig()).getOpenShiftUrl());
       } catch (MalformedURLException e) {
         throw KubernetesClientException.launderThrowable(e);
       }
+    } else {
+      return super.getRootUrl();
     }
   }
 
