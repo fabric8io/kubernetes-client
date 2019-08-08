@@ -31,6 +31,7 @@ import io.fabric8.kubernetes.api.model.DoneableResourceQuota;
 import io.fabric8.kubernetes.api.model.DoneableSecret;
 import io.fabric8.kubernetes.api.model.DoneableService;
 import io.fabric8.kubernetes.api.model.DoneableServiceAccount;
+import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionList;
 import io.fabric8.kubernetes.api.model.apiextensions.DoneableCustomResourceDefinition;
@@ -59,6 +60,7 @@ import io.fabric8.openshift.api.model.DoneableProject;
 import io.fabric8.openshift.api.model.DoneableRoute;
 import io.fabric8.openshift.api.model.DoneableSecurityContextConstraints;
 import io.fabric8.openshift.api.model.DoneableTemplate;
+import io.fabric8.openshift.api.model.DoneableTemplateInstance;
 import io.fabric8.openshift.api.model.DoneableUser;
 import io.fabric8.openshift.client.dsl.*;
 import io.fabric8.openshift.client.dsl.internal.*;
@@ -70,6 +72,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
+import java.util.Objects;
 
 public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpenShiftClient {
 
@@ -375,6 +378,11 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public ParameterMixedOperation<Template, TemplateList, DoneableTemplate, TemplateResource<Template, KubernetesList, DoneableTemplate>> templates() {
     return new TemplateOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+  }
+
+  @Override
+  public MixedOperation<TemplateInstance, TemplateInstanceList, DoneableTemplateInstance, TemplateInstanceResource<TemplateInstance, KubernetesList, DoneableTemplateInstance>> templateinstances() {
+    return new TemplateInstanceOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
