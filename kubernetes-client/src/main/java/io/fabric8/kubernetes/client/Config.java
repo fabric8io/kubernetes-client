@@ -26,7 +26,6 @@ import io.fabric8.kubernetes.api.model.Context;
 import io.fabric8.kubernetes.api.model.ExecConfig;
 import io.fabric8.kubernetes.api.model.ExecEnvVar;
 import io.fabric8.kubernetes.client.internal.CertUtils;
-import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.internal.KubeConfigUtils;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
@@ -39,10 +38,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -58,6 +57,10 @@ public class Config {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(Config.class);
 
+  /**
+   * Disables auto-configuration based on opinionated defaults in a {@link Config} object in the default constructor
+   */
+  public static final String KUBERNETES_DISABLE_AUTO_CONFIG_SYSTEM_PROPERTY = "kubernetes.disable.autoConfig";
   public static final String KUBERNETES_MASTER_SYSTEM_PROPERTY = "kubernetes.master";
   public static final String KUBERNETES_API_VERSION_SYSTEM_PROPERTY = "kubernetes.api.version";
   public static final String KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY = "kubernetes.trust.certificates";
@@ -194,12 +197,14 @@ public class Config {
 
   private Map<Integer, String> errorMessages = new HashMap<>();
 
-  //In future releases (2.4.x) the public constructor will be empty.
-  //The current functionality will be provided by autoConfigure().
-  //This is a necessary change to allow us distinguish between auto configured values and builder values.
+  /**
+   * @deprecated use {@link #autoConfigure(String)} or {@link ConfigBuilder} instead
+   */
   @Deprecated
   public Config() {
-    autoConfigure(this, null);
+    if (!Utils.getSystemPropertyOrEnvVar(KUBERNETES_DISABLE_AUTO_CONFIG_SYSTEM_PROPERTY, false)) {
+      autoConfigure(this, null);
+    }
   }
 
   /**
@@ -469,13 +474,11 @@ public class Config {
       }
 
       File kubeConfigFile = new File(fileName);
-      boolean kubeConfigFileExists = Files.isRegularFile(kubeConfigFile.toPath());
-
-      if (kubeConfigFileExists) {
+      if (kubeConfigFile.isFile()) {
         LOGGER.debug("Found for Kubernetes config at: ["+kubeConfigFile.getPath()+"].");
         String kubeconfigContents;
-        try {
-          kubeconfigContents = new String(Files.readAllBytes(kubeConfigFile.toPath()), StandardCharsets.UTF_8);
+        try (FileReader reader = new FileReader(kubeConfigFile)){
+          kubeconfigContents = IOHelpers.readFully(reader);
         } catch(IOException e) {
           LOGGER.error("Could not load Kubernetes config file from {}", kubeConfigFile.getPath(), e);
           return false;
