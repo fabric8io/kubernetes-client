@@ -1,19 +1,15 @@
 ### CHANGELOG
 
-### 4.4-SNAPSHOT
-  Bugs
+### 4.4.1 (08-08-2019)
+####  Bugs
   * Fix #1690: Endpoints is always pluralized
   * Fix #1684: Fixed URL resolution algorithm for OpenShift resources without API Group name
 
-  Improvements
+#### Improvements
   * Fix #1650: Introduced `kubernetes.disable.autoConfig` system property to disable auto configuration in Config
   * Fix #1661: Remove generic parameter from KubernetesResource
   * Improved OpenShiftOperation.wrap method performance
   * RawCustomResourceOperationsImpl#makeCall now closes the created Response object
-
-  Dependency Upgrade
-
-  New Feature
 
 ### 4.4.0 (05-08-2019)
   Bugs
