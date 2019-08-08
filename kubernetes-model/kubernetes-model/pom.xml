@@ -22,7 +22,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-model-generator</artifactId>
-    <version>4.4-SNAPSHOT</version>
+    <version>4.4.1</version>
     <relativePath>../</relativePath>
   </parent>
 
@@ -149,7 +149,7 @@
                 <delete file="${basedir}/target/generated-sources/io/fabric8/kubernetes/api/model/WatchEvent.java" verbose="true" />
                 <delete verbose="true">
                   <fileset dir="${basedir}/target/generated-sources">
-                    <include name="*.java"/>
+                    <include name="*.java" />
                   </fileset>
                 </delete>
               </target>
