@@ -1,5 +1,15 @@
 ### CHANGELOG
 
+### 4.4-SNAPSHOT
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Feature
+
+
 ### 4.4.1 (08-08-2019)
 ####  Bugs
   * Fix #1690: Endpoints is always pluralized
