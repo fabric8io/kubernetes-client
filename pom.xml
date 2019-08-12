@@ -125,7 +125,7 @@
     <maven.buildhelper.plugin.version>1.10</maven.buildhelper.plugin.version>
     <maven.jar.plugin.version>3.1.2</maven.jar.plugin.version>
     <maven.resources.plugin.version>3.0.1</maven.resources.plugin.version>
-    <maven.surefire.plugin.version>3.0.0-M1</maven.surefire.plugin.version>
+    <maven.surefire.plugin.version>3.0.0-M3</maven.surefire.plugin.version>
     <maven.scr.plugin.version>1.26.2</maven.scr.plugin.version>
     <maven.bundle.plugin.version>4.1.0</maven.bundle.plugin.version>
     <maven.buildhelper.plugin.version>3.0.0</maven.buildhelper.plugin.version>
