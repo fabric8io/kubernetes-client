@@ -55,6 +55,7 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
 
         PACKAGES = new ArrayList<String>(){{
             add("io.fabric8.kubernetes.api.model.");
+            add("io.fabric8.kubernetes.api.model.admissionregistration.");
             add("io.fabric8.kubernetes.api.model.apiextensions.");
             add("io.fabric8.kubernetes.api.model.apps.");
             add("io.fabric8.kubernetes.api.model.authentication.");

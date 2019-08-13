@@ -14,6 +14,7 @@
 ####  Bugs
   * Fix #1690: Endpoints is always pluralized
   * Fix #1684: Fixed URL resolution algorithm for OpenShift resources without API Group name
+  * FIX #1706: Fixed Add admissionregistration to Packages.
 
 #### Improvements
   * Fix #1650: Introduced `kubernetes.disable.autoConfig` system property to disable auto configuration in Config
