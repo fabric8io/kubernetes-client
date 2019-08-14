@@ -62,7 +62,7 @@ public class KubernetesOperationTest {
       .withName("security.openshift.io")
       .endGroup()
       .build()).once();
-   server.expect().withPath("/oapi/v1/namespaces/test/buildconfigs/bc1").andReturn(200, new BuildConfigBuilder().build()).once();
+   server.expect().withPath("/apis/build.openshift.io/v1/namespaces/test/buildconfigs/bc1").andReturn(200, new BuildConfigBuilder().build()).once();
    server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, new PodBuilder().build()).once();
 
     try (KubernetesClient client = server.getKubernetesClient()) {

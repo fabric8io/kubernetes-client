@@ -16,11 +16,13 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -30,7 +32,6 @@ import okhttp3.Response;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,7 +47,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
     this.client = client;
     this.config = config;
     this.customResourceDefinition = customResourceDefinition;
-    this.objectMapper = new ObjectMapper();
+    this.objectMapper = Serialization.jsonMapper();
   }
 
   public Map<String, Object> load(InputStream fileInputStream) throws IOException {
@@ -218,26 +219,15 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
     return labelQueryBuilder.toString();
   }
 
-  private Map<String, Object> makeCall(String url, String body, HttpCallMethod callMethod) throws RuntimeException {
-    try {
-      Response response;
-      if(body == null) {
-        response = client.newCall(getRequest(url, callMethod)).execute();
-      }
-      else {
-        response = client.newCall(getRequest(url, body, callMethod)).execute();
-      }
-      if(response.code() != HttpURLConnection.HTTP_NOT_FOUND &&
-         response.code() != HttpURLConnection.HTTP_SERVER_ERROR &&
-         response.code() != HttpURLConnection.HTTP_BAD_REQUEST) {
+  private Map<String, Object> makeCall(String url, String body, HttpCallMethod callMethod) {
+    Request request = (body == null) ? getRequest(url, callMethod) : getRequest(url, body, callMethod);
+    try (Response response = client.newCall(request).execute()) {
+      if (response.isSuccessful()) {
         return objectMapper.readValue(response.body().string(), HashMap.class);
       } else {
-        if(response.body() != null) {
-          throw new KubernetesClientException(response.body().string());
-        } else {
-          response.close();
-          throw new KubernetesClientException(response.message());
-        }
+        String message = String.format("Error while performing the call to %s. Response code: %s", url, response.code());
+        Status status = createStatus(response);
+        throw new KubernetesClientException(message, response.code(), status);
       }
     } catch(Exception e) {
       throw KubernetesClientException.launderThrowable(e);

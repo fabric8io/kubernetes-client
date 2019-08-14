@@ -41,12 +41,10 @@ public class GroupTest {
 
   @Test
   public void testList() {
-   server.expect().withPath("/oapi/v1/groups").andReturn(200, new GroupListBuilder()
-      .addNewItem().and()
-      .addNewItem().and().build()).always();
    server.expect().withPath("/apis/user.openshift.io/v1/groups").andReturn(200, new GroupListBuilder()
       .addNewItem().and()
       .addNewItem().and().build()).always();
+
    server.expect().withPath("/apis").andReturn(200, new APIGroupListBuilder()
       .addNewGroup()
       .withApiVersion("v1")
@@ -56,7 +54,7 @@ public class GroupTest {
       .withApiVersion("v1")
       .withName("security.openshift.io")
       .endGroup()
-      .build()).once();
+      .build()).always();
 
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();
@@ -74,11 +72,11 @@ public class GroupTest {
 
   @Test
   public void testGet() {
-   server.expect().withPath("/oapi/v1/groups/group1").andReturn(200, new GroupBuilder()
+   server.expect().withPath("/apis/user.openshift.io/v1/groups/group1").andReturn(200, new GroupBuilder()
       .withNewMetadata().withName("group1").endMetadata()
       .build()).once();
 
-   server.expect().withPath("/oapi/v1/groups/Group2").andReturn(200, new GroupBuilder()
+   server.expect().withPath("/apis/user.openshift.io/v1/groups/Group2").andReturn(200, new GroupBuilder()
       .withNewMetadata().withName("Group2").endMetadata()
       .build()).once();
 
@@ -99,8 +97,8 @@ public class GroupTest {
 
   @Test
   public void testDelete() {
-   server.expect().withPath("/oapi/v1/groups/group1").andReturn(200, new GroupBuilder().build()).once();
-   server.expect().withPath("/oapi/v1/groups/Group2").andReturn( 200, new GroupBuilder().build()).once();
+   server.expect().withPath("/apis/user.openshift.io/v1/groups/group1").andReturn(200, new GroupBuilder().build()).once();
+   server.expect().withPath("/apis/user.openshift.io/v1/groups/Group2").andReturn( 200, new GroupBuilder().build()).once();
 
     OpenShiftClient client = server.getOpenshiftClient();
 

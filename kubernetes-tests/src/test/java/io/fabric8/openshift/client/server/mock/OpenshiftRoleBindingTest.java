@@ -43,7 +43,7 @@ public class OpenshiftRoleBindingTest {
 
   @Test
   public void testCreateWithOnlySubjects() throws Exception {
-    server.expect().post().withPath("/oapi/v1/namespaces/test/rolebindings").andReturn(201, expectedOpenshiftRoleBinding).once();
+    server.expect().post().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings").andReturn(201, expectedOpenshiftRoleBinding).once();
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
@@ -64,7 +64,7 @@ public class OpenshiftRoleBindingTest {
 
   @Test
   public void testCreateWithUserNamesAndGroupsAndNoSubjects() throws Exception {
-    server.expect().post().withPath("/oapi/v1/namespaces/test/rolebindings").andReturn(201, expectedOpenshiftRoleBinding).once();
+    server.expect().post().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings").andReturn(201, expectedOpenshiftRoleBinding).once();
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
@@ -83,7 +83,7 @@ public class OpenshiftRoleBindingTest {
 
   @Test
   public void testCreateWithUserNamesAndGroupsAndOverwriteSubjects() throws Exception {
-    server.expect().post().withPath("/oapi/v1/namespaces/test/rolebindings").andReturn(201, expectedOpenshiftRoleBinding).once();
+    server.expect().post().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings").andReturn(201, expectedOpenshiftRoleBinding).once();
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
@@ -103,8 +103,8 @@ public class OpenshiftRoleBindingTest {
 
   @Test
   public void testReplaceWithOnlySubjects() throws Exception {
-    server.expect().get().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedOpenshiftRoleBinding).once();
-    server.expect().put().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedOpenshiftRoleBinding).once();
+    server.expect().get().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedOpenshiftRoleBinding).once();
+    server.expect().put().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedOpenshiftRoleBinding).once();
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
@@ -125,8 +125,8 @@ public class OpenshiftRoleBindingTest {
 
   @Test
   public void testReplaceWithUserNamesAndGroupsAndNoSubjects() throws Exception {
-    server.expect().get().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedOpenshiftRoleBinding).once();
-    server.expect().put().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedOpenshiftRoleBinding).once();
+    server.expect().get().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedOpenshiftRoleBinding).once();
+    server.expect().put().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedOpenshiftRoleBinding).once();
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
@@ -146,8 +146,8 @@ public class OpenshiftRoleBindingTest {
 
   @Test
   public void testReplaceWithUserNamesAndGroupsAndOverwriteSubjects() throws Exception {
-    server.expect().get().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedOpenshiftRoleBinding).once();
-    server.expect().put().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedOpenshiftRoleBinding).once();
+    server.expect().get().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedOpenshiftRoleBinding).once();
+    server.expect().put().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedOpenshiftRoleBinding).once();
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
@@ -167,8 +167,8 @@ public class OpenshiftRoleBindingTest {
 
   @Test
   public void testPatchWithOnlySubjects() throws Exception {
-    server.expect().get().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, new OpenshiftRoleBindingBuilder().addToUserNames("unexpected").build()).once();
-    server.expect().patch().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedOpenshiftRoleBinding).once();
+    server.expect().get().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb").andReturn(200, new OpenshiftRoleBindingBuilder().addToUserNames("unexpected").build()).once();
+    server.expect().patch().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedOpenshiftRoleBinding).once();
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
@@ -192,8 +192,8 @@ public class OpenshiftRoleBindingTest {
 
   @Test
   public void testPatchWithUserNamesAndGroupsAndNoSubjects() throws Exception {
-    server.expect().get().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, new OpenshiftRoleBindingBuilder().addToUserNames("unexpected").build()).once();
-    server.expect().patch().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedOpenshiftRoleBinding).once();
+    server.expect().get().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb").andReturn(200, new OpenshiftRoleBindingBuilder().addToUserNames("unexpected").build()).once();
+    server.expect().patch().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedOpenshiftRoleBinding).once();
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
@@ -215,8 +215,8 @@ public class OpenshiftRoleBindingTest {
 
   @Test
   public void testPatchWithUserNamesAndGroupsAndOverwriteSubjects() throws Exception {
-    server.expect().get().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, new OpenshiftRoleBindingBuilder().addToUserNames("unexpected").build()).once();
-    server.expect().patch().withPath("/oapi/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedOpenshiftRoleBinding).once();
+    server.expect().get().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb").andReturn(200, new OpenshiftRoleBindingBuilder().addToUserNames("unexpected").build()).once();
+    server.expect().patch().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings/testrb").andReturn(200, expectedOpenshiftRoleBinding).once();
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
@@ -239,7 +239,7 @@ public class OpenshiftRoleBindingTest {
 
   @Test
   public void testCreateInline() throws Exception {
-    server.expect().post().withPath("/oapi/v1/namespaces/test/rolebindings").andReturn(201, expectedOpenshiftRoleBinding).once();
+    server.expect().post().withPath("/apis/authorization.openshift.io/v1/namespaces/test/rolebindings").andReturn(201, expectedOpenshiftRoleBinding).once();
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();
 

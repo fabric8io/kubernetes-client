@@ -39,7 +39,7 @@ public class ProjectTest {
 
   @Test
   public void testList() {
-   server.expect().withPath("/oapi/v1/projects").andReturn(200, new ProjectListBuilder()
+   server.expect().withPath("/apis/project.openshift.io/v1/projects").andReturn(200, new ProjectListBuilder()
       .addNewItem().and()
       .addNewItem().and().build()).once();
 
@@ -54,11 +54,11 @@ public class ProjectTest {
 
   @Test
   public void testGet() {
-   server.expect().withPath("/oapi/v1/projects/project1").andReturn(200, new ProjectBuilder()
+   server.expect().withPath("/apis/project.openshift.io/v1/projects/project1").andReturn(200, new ProjectBuilder()
       .withNewMetadata().withName("project1").endMetadata()
       .build()).once();
 
-   server.expect().withPath("/oapi/v1/projects/project2").andReturn(200, new ProjectBuilder()
+   server.expect().withPath("/apis/project.openshift.io/v1/projects/project2").andReturn(200, new ProjectBuilder()
       .withNewMetadata().withName("project2").endMetadata()
       .build()).once();
 
@@ -79,8 +79,8 @@ public class ProjectTest {
 
   @Test
   public void testDelete() {
-   server.expect().withPath("/oapi/v1/projects/project1").andReturn(200, new ProjectBuilder().build()).once();
-   server.expect().withPath("/oapi/v1/projects/project2").andReturn( 200, new ProjectBuilder().build()).once();
+   server.expect().withPath("/apis/project.openshift.io/v1/projects/project1").andReturn(200, new ProjectBuilder().build()).once();
+   server.expect().withPath("/apis/project.openshift.io/v1/projects/project2").andReturn( 200, new ProjectBuilder().build()).once();
 
     OpenShiftClient client = server.getOpenshiftClient();
 

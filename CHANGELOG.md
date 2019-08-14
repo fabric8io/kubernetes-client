@@ -1,13 +1,38 @@
 ### CHANGELOG
 
-### 4.3-SNAPSHOT
+### 4.4-SNAPSHOT
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Feature
+
+
+### 4.4.1 (08-08-2019)
+####  Bugs
+  * Fix #1690: Endpoints is always pluralized
+  * Fix #1684: Fixed URL resolution algorithm for OpenShift resources without API Group name
+
+#### Improvements
+  * Fix #1650: Introduced `kubernetes.disable.autoConfig` system property to disable auto configuration in Config
+  * Fix #1661: Remove generic parameter from KubernetesResource
+  * Improved OpenShiftOperation.wrap method performance
+  * RawCustomResourceOperationsImpl#makeCall now closes the created Response object
+
+### 4.4.0 (05-08-2019)
   Bugs
+  * Fix #1565: CRD's Enums are prefixed with Raw keyword
+  * Fixed user/password authentication bug in OpenShift 4
+  * Fix #1667: Origin header for watch requests had a port of -1 when no port specified
 
   Improvements
    * Test coverage for PersistentVolumeClaim
    * Fix #1589: Move HorizontalPodAutoscaler to autoscaling/v1
    * Fix #1553: Allow to explicitly set non-matching field selectors using `withoutField`
    * Cleaned up kubernetes-model pom.xml
+   * Removed deprecated KubernetesKind enum
 
   Dependency Upgrade
     * Fix #1331: Migrated from JUnit 4 to JUnit 5
@@ -15,6 +40,7 @@
   New Feature
   * Knative extension
   * Tekton extension
+  * Increased OpenShift 4.x compatibility
 
 ### 4.3.1 (19-07-2019)
   Bugs
