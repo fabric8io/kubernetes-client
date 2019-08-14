@@ -139,7 +139,7 @@ public class KubernetesAttributesExtractorTest {
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("kind", "endpoints"));
     expected = expected.add(new Attribute("namespace", "myns"));
-    Assert.assertTrue("Expected " + attributes + " to match " + expected, attributes.matches(expected));
+    assertTrue(attributes.matches(expected));
   }
 
   @Test

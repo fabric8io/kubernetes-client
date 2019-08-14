@@ -6,6 +6,7 @@
 #### Improvements
 
 #### Dependency Upgrade
+  * Fix #1331: Migrated from JUnit 4 to JUnit 5
 
 #### New Feature
 
@@ -35,7 +36,6 @@
    * Removed deprecated KubernetesKind enum
 
   Dependency Upgrade
-    * Fix #1331: Migrated from JUnit 4 to JUnit 5
     
   New Feature
   * Knative extension
