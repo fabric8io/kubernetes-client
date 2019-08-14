@@ -121,7 +121,7 @@ public class IngressTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.extensions().ingress().withName("ingress1").delete();
-    assertNotNull(deleted);
+    assertTrue(deleted);
 
     deleted = client.extensions().ingress().withName("ingress2").delete();
     assertFalse(deleted);
@@ -143,7 +143,7 @@ public class IngressTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.extensions().ingress().inAnyNamespace().delete(ingress1, ingress2);
-    assertNotNull(deleted);
+    assertTrue(deleted);
 
     deleted = client.extensions().ingress().inAnyNamespace().delete(ingress3);
     assertFalse(deleted);
@@ -156,7 +156,7 @@ public class IngressTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.extensions().ingress().inNamespace("test1").delete(ingress1);
-    assertNotNull(deleted);
+    assertTrue(deleted);
   }
 
   @Test(expected = KubernetesClientException.class)

@@ -117,6 +117,7 @@ public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
    * @param client        An instance of the http client.
    * @param config        The client config.
    * @param namespace     The target namespace.
+   * @param cascading     Whether deletion needs to be cascading or not
    * @param item          The resource to delete.
    * @return              The true if the resource was successfully deleted.
    */

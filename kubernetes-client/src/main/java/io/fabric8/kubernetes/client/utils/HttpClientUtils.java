@@ -36,7 +36,9 @@ import java.net.Proxy;
 import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -58,6 +60,14 @@ public class HttpClientUtils {
   }
 
   public static OkHttpClient createHttpClient(final Config config) {
+      return createHttpClient(config, (b) -> {});
+  }
+
+  public static OkHttpClient createHttpClientForMockServer(final Config config) {
+      return createHttpClient(config, b -> b.protocols(Collections.singletonList(Protocol.HTTP_1_1)));
+  }
+
+  private static OkHttpClient createHttpClient(final Config config, final Consumer<OkHttpClient.Builder> additionalConfig) {
         try {
             OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
 
@@ -162,6 +172,14 @@ public class HttpClientUtils {
                 .tlsVersions(config.getTlsVersions())
                 .build();
               httpClientBuilder.connectionSpecs(Arrays.asList(spec, CLEARTEXT));
+            }
+
+            if (config.isHttp2Disable()) {
+                httpClientBuilder.protocols(Collections.singletonList(Protocol.HTTP_1_1));
+            }
+
+            if(additionalConfig != null) {
+                additionalConfig.accept(httpClientBuilder);
             }
 
             return httpClientBuilder.build();

@@ -43,6 +43,10 @@ public interface Filterable<T> {
 
   T withField(String key, String value);
 
+  T withoutFields(Map<String, String> fields);
+
+  T withoutField(String key, String value);
+
   T withLabelSelector(LabelSelector selector);
 }
 

@@ -21,7 +21,6 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
-import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.client.*;
 import io.fabric8.kubernetes.client.dsl.Deletable;
@@ -45,8 +44,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -59,7 +58,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
 public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
@@ -73,10 +71,12 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   private final T item;
 
   private final Map<String, String> labels;
-  private final Map<String, String> labelsNot;
+  private final Map<String, String[]> labelsNot;
   private final Map<String, String[]> labelsIn;
   private final Map<String, String[]> labelsNotIn;
   private final Map<String, String> fields;
+  // Use a multi-value map as its possible to define keyA != foo && keyA != bar
+  private final Map<String, String[]> fieldsNot;
 
   private final String resourceVersion;
   private final Boolean reloadingFromServer;
@@ -102,6 +102,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     this.labelsIn = ctx.getLabelsIn();
     this.labelsNotIn = ctx.getLabelsNotIn();
     this.fields = ctx.getFields();
+    this.fieldsNot = ctx.getFieldsNot();
     this.reaper = null;
   }
 
@@ -425,10 +426,16 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     return this;
   }
 
+  // Deprecated as the underlying implementation does not align with the arguments anymore.
+  // It is possible to negate multiple values with the same key, e.g.:
+  // foo != bar , foo != baz
+  // To support this a multi-value map is needed, as a regular map would override the key with the new value.
   @Override
+  @Deprecated
   public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withoutLabels(Map<String, String> labels) throws
     KubernetesClientException {
-    labelsNot.putAll(labels);
+    // Re-use "withoutLabel" to convert values from String to String[]
+    labels.forEach(this::withoutLabel);
     return this;
   }
 
@@ -459,7 +466,12 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   @Override
   public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withoutLabel(String key, String value) {
-    labelsNot.put(key, value);
+    labelsNot.merge(key, new String[]{value}, (oldList, newList) -> {
+      final String[] concatList = (String[]) Array.newInstance(String.class, oldList.length + newList.length);
+      System.arraycopy(oldList, 0, concatList, 0, oldList.length);
+      System.arraycopy(newList, 0, concatList, oldList.length, newList.length);
+      return concatList;
+    });
     return this;
   }
 
@@ -469,14 +481,44 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withFields(Map<String, String> labels) {
-    fields.putAll(labels);
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withFields(Map<String, String> fields) {
+    this.fields.putAll(fields);
     return this;
   }
 
   @Override
   public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withField(String key, String value) {
     fields.put(key, value);
+    return this;
+  }
+
+  // Deprecated as the underlying implementation does not align with the arguments fully.
+  // Method is created to have a similar API as `withoutLabels`, but should eventually be replaced with something
+  // better for the same reasons.
+  // It is possible to negate multiple values with the same key, e.g.:
+  // foo != bar , foo != baz
+  // To support this a multi-value map is needed, as a regular map would override the key with the new value.
+  @Override
+  @Deprecated
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withoutFields(Map<String, String> fields) throws
+    KubernetesClientException {
+    // Re-use "withoutField" to convert values from String to String[]
+    labels.forEach(this::withoutField);
+    return this;
+  }
+
+  @Override
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withoutField(String key, String value) {
+    fieldsNot.merge(key, new String[]{value}, (oldList, newList) -> {
+      if (Utils.isNotNullOrEmpty(newList[0])) { // Only add new values when not null
+        final String[] concatList = (String[]) Array.newInstance(String.class, oldList.length + newList.length);
+        System.arraycopy(oldList, 0, concatList, 0, oldList.length);
+        System.arraycopy(newList, 0, concatList, oldList.length, newList.length);
+        return concatList;
+      } else {
+        return oldList;
+      }
+    });
     return this;
   }
 
@@ -497,13 +539,18 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     }
 
     if (labelsNot != null && !labelsNot.isEmpty()) {
-      for (Iterator<Map.Entry<String, String>> iter = labelsNot.entrySet().iterator(); iter.hasNext(); ) {
+      for (Iterator<Map.Entry<String, String[]>> iter = labelsNot.entrySet().iterator(); iter.hasNext(); ) {
         if (sb.length() > 0) {
           sb.append(",");
         }
-        Map.Entry<String, String> entry = iter.next();
+        Map.Entry<String, String[]> entry = iter.next();
         if (entry.getValue() != null) {
-            sb.append(entry.getKey()).append("!=").append(entry.getValue());
+          for (int i = 0; i < entry.getValue().length; i++) {
+            if (i > 0) {
+              sb.append(",");
+            }
+            sb.append(entry.getKey()).append("!=").append(entry.getValue()[i]);
+          }
         } else {
             sb.append('!').append(entry.getKey());
         }
@@ -541,6 +588,20 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
         }
         Map.Entry<String, String> entry = iter.next();
         sb.append(entry.getKey()).append("=").append(entry.getValue());
+      }
+    }
+    if (fieldsNot != null && !fieldsNot.isEmpty()) {
+      for (Iterator<Map.Entry<String, String[]>> iter = fieldsNot.entrySet().iterator(); iter.hasNext(); ) {
+        if (sb.length() > 0) {
+          sb.append(",");
+        }
+        Map.Entry<String, String[]> entry = iter.next();
+        for (int i = 0; i < entry.getValue().length; i++) {
+          if (i > 0) {
+            sb.append(",");
+          }
+          sb.append(entry.getKey()).append("!=").append(entry.getValue()[i]);
+        }
       }
     }
     return sb.toString();
@@ -804,7 +865,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     return labels;
   }
 
-  protected Map<String, String> getLabelsNot() {
+  protected Map<String, String[]> getLabelsNot() {
     return labelsNot;
   }
 
@@ -818,6 +879,10 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   protected Map<String, String> getFields() {
     return fields;
+  }
+
+  protected Map<String, String[]> getFieldsNot() {
+    return fieldsNot;
   }
 
   @Override

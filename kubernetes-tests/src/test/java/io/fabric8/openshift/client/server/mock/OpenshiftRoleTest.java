@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -35,12 +36,22 @@ public class OpenshiftRoleTest {
 
   @Test
   public void testList() {
-   server.expect().withPath("/oapi/v1/namespaces/test/roles").andReturn(200, new OpenshiftRoleListBuilder().build()).once();
-   server.expect().withPath("/oapi/v1/namespaces/ns1/roles").andReturn(200, new OpenshiftRoleListBuilder()
+   server.expect().withPath("/apis/authorization.openshift.io/v1/namespaces/test/roles").andReturn(200, new OpenshiftRoleListBuilder().build()).once();
+   server.expect().withPath("/apis/authorization.openshift.io/v1/namespaces/ns1/roles").andReturn(200, new OpenshiftRoleListBuilder()
       .addNewItem().and()
       .addNewItem().and().build()).once();
+   server.expect().withPath("/apis").andReturn(200, new APIGroupListBuilder()
+      .addNewGroup()
+      .withApiVersion("v1")
+      .withName("autoscaling.k8s.io")
+      .endGroup()
+      .addNewGroup()
+      .withApiVersion("v1")
+      .withName("security.openshift.io")
+      .endGroup()
+      .build()).always();
 
-   server.expect().withPath("/oapi/v1/roles").andReturn(200, new OpenshiftRoleListBuilder()
+   server.expect().withPath("/apis/authorization.openshift.io/v1/roles").andReturn(200, new OpenshiftRoleListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .addNewItem()
@@ -63,11 +74,11 @@ public class OpenshiftRoleTest {
 
   @Test
   public void testGet() {
-   server.expect().withPath("/oapi/v1/namespaces/test/roles/role1").andReturn(200, new OpenshiftRoleBuilder()
+   server.expect().withPath("/apis/authorization.openshift.io/v1/namespaces/test/roles/role1").andReturn(200, new OpenshiftRoleBuilder()
       .withNewMetadata().withName("role1").endMetadata()
       .build()).once();
 
-   server.expect().withPath("/oapi/v1/namespaces/ns1/roles/role2").andReturn(200, new OpenshiftRoleBuilder()
+   server.expect().withPath("/apis/authorization.openshift.io/v1/namespaces/ns1/roles/role2").andReturn(200, new OpenshiftRoleBuilder()
       .withNewMetadata().withName("role2").endMetadata()
       .build()).once();
 

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2015 Red Hat, Inc.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>io.fabric8</groupId>
+        <artifactId>knative-extension-pom</artifactId>
+        <version>4.4-SNAPSHOT</version>
+        <relativePath>..</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.fabric8</groupId>
+    <artifactId>knative-model</artifactId>
+    <name>Fabric8 :: Knative :: Model</name>
+    <packaging>bundle</packaging>
+
+    <properties>
+        <osgi.import>
+            io.fabric8.kubernetes.api.builder,
+            !io.fabric8.knative.*,
+            *
+        </osgi.import>
+        <osgi.export>
+            io.fabric8.knative.*
+        </osgi.export>
+        <osgi.include.resources>
+          {maven-resources},
+          /knative.properties=target/classes/knative.properties
+        </osgi.include.resources>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>io.sundr</groupId>
+            <artifactId>builder-annotations</artifactId>
+        </dependency>
+      <dependency>
+        <groupId>io.sundr</groupId>
+        <artifactId>transform-annotations</artifactId>
+      </dependency>
+        <dependency>
+          <groupId>io.fabric8</groupId>
+          <artifactId>kubernetes-model</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-jaxb-annotations</artifactId>
+        </dependency>
+        <!--dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency-->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.skyscreamer</groupId>
+            <artifactId>jsonassert</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+          <plugin>
+            <groupId>com.mysema.maven</groupId>
+            <artifactId>apt-maven-plugin</artifactId>
+            <version>1.1.3</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>process</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>target/generated-sources</outputDirectory>
+                  <processor>io.sundr.builder.internal.processor.BuildableProcessor</processor>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+            <plugin>
+                <groupId>org.jsonschema2pojo</groupId>
+                <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+                <version>${jsonschema2pojo.version}</version>
+                <configuration>
+                    <sourceDirectory>${basedir}/src/main/resources/schema</sourceDirectory>
+                    <targetPackage>io.fabric8.knative.api.model</targetPackage>
+                    <includeConstructors>true</includeConstructors>
+                    <includeJsr303Annotations>true</includeJsr303Annotations>
+                    <includeToString>false</includeToString>
+                    <includeHashcodeAndEquals>false</includeHashcodeAndEquals>
+                    <outputDirectory>${basedir}/target/generated-sources</outputDirectory>
+                    <customAnnotator>io.fabric8.knative.KnativeTypeAnnotator</customAnnotator>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>generate</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>knative-model-annotator</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.9.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-artifacts</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attach-artifact</goal>
+                        </goals>
+                        <configuration>
+                            <artifacts>
+                                <artifact>
+                                    <file>${project.build.outputDirectory}/schema/knative-schema.json</file>
+                                    <type>json</type>
+                                    <classifier>schema</classifier>
+                                </artifact>
+                            </artifacts>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

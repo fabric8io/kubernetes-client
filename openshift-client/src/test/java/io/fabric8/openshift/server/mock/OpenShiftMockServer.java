@@ -21,7 +21,9 @@ import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.server.mock.KubernetesMockServer;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
+import io.fabric8.openshift.client.OpenShiftConfig;
 
+import static io.fabric8.kubernetes.client.utils.HttpClientUtils.createHttpClientForMockServer;
 import static okhttp3.TlsVersion.TLS_1_0;
 
 @Deprecated
@@ -48,6 +50,6 @@ public class OpenShiftMockServer extends KubernetesMockServer {
       .withTrustCerts(true)
       .withTlsVersions(TLS_1_0)
       .build();
-    return new DefaultOpenShiftClient(config);
+    return new DefaultOpenShiftClient(createHttpClientForMockServer(config), new OpenShiftConfig(config));
   }
 }

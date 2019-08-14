@@ -16,6 +16,7 @@
 
 package io.fabric8.openshift.client.server.mock;
 
+import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.api.model.UserBuilder;
 import io.fabric8.openshift.api.model.UserList;
@@ -38,10 +39,9 @@ public class UserTest {
 
   @Test
   public void testList() {
-   server.expect().withPath("/oapi/v1/users").andReturn(200, new UserListBuilder()
+   server.expect().withPath("/apis/user.openshift.io/v1/users").andReturn(200, new UserListBuilder()
       .addNewItem().and()
       .addNewItem().and().build()).always();
-
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
@@ -58,11 +58,11 @@ public class UserTest {
 
   @Test
   public void testGet() {
-   server.expect().withPath("/oapi/v1/users/user1").andReturn(200, new UserBuilder()
+   server.expect().withPath("/apis/user.openshift.io/v1/users/user1").andReturn(200, new UserBuilder()
       .withNewMetadata().withName("user1").endMetadata()
       .build()).once();
 
-   server.expect().withPath("/oapi/v1/users/User2").andReturn(200, new UserBuilder()
+   server.expect().withPath("/apis/user.openshift.io/v1/users/User2").andReturn(200, new UserBuilder()
       .withNewMetadata().withName("User2").endMetadata()
       .build()).once();
 
@@ -83,8 +83,8 @@ public class UserTest {
 
   @Test
   public void testDelete() {
-   server.expect().withPath("/oapi/v1/users/user1").andReturn(200, new UserBuilder().build()).once();
-   server.expect().withPath("/oapi/v1/users/User2").andReturn( 200, new UserBuilder().build()).once();
+   server.expect().withPath("/apis/user.openshift.io/v1/users/user1").andReturn(200, new UserBuilder().build()).once();
+   server.expect().withPath("/apis/user.openshift.io/v1/users/User2").andReturn( 200, new UserBuilder().build()).once();
 
     OpenShiftClient client = server.getOpenshiftClient();
 

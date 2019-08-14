@@ -33,7 +33,7 @@ import (
 	k8sappsapi "k8s.io/api/apps/v1"
 	authenticationapi "k8s.io/api/authentication/v1"
 	k8sauthapi "k8s.io/api/authorization/v1"
-        autoscalingapiv2beta1 "k8s.io/api/autoscaling/v2beta1"
+	autoscalingapi "k8s.io/api/autoscaling/v1"
 	batchapiv1 "k8s.io/api/batch/v1"
 	batchapiv1beta1 "k8s.io/api/batch/v1beta1"
 	kapi "k8s.io/api/core/v1"
@@ -48,6 +48,7 @@ import (
 	resource "k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	apimachineryversion "k8s.io/apimachinery/pkg/version"
+        apimachineryapis "k8s.io/apimachinery/pkg/apis/meta/v1"
 	configapi "k8s.io/client-go/tools/clientcmd/api/v1"
 	watch "k8s.io/kubernetes/pkg/watch/json"
         scheduling "k8s.io/api/scheduling/v1beta1"
@@ -66,6 +67,8 @@ import (
 
 type Schema struct {
 	Info                                  apimachineryversion.Info
+        APIGroup                              apimachineryapis.APIGroup
+        APIGroupList                          apimachineryapis.APIGroupList
 	BaseKubernetesList                    metav1.List
 	ObjectMeta                            metav1.ObjectMeta
 	TypeMeta                              metav1.TypeMeta
@@ -128,6 +131,8 @@ type Schema struct {
 	TokenReview                           authenticationapi.TokenReview
 	K8sSubjectAccessReview                k8sauthapi.SubjectAccessReview
 	K8sLocalSubjectAccessReview           k8sauthapi.LocalSubjectAccessReview
+	SelfSubjectRulesReview                k8sauthapi.SelfSubjectRulesReview  
+        SelfSubjectAccessReview               k8sauthapi.SelfSubjectAccessReview  
 	OpenshiftRole                         authapi.Role
 	OpenshiftRoleList                     authapi.RoleList
 	OpenshiftRoleBinding                  authapi.RoleBinding
@@ -135,7 +140,7 @@ type Schema struct {
 	OpenshiftRoleBindingRestriction       authapi.RoleBindingRestriction
 	LocalSubjectAccessReview              authapi.LocalSubjectAccessReview
 	SubjectAccessReview                   authapi.SubjectAccessReview
-  SubjectAccessReviewResponse           authapi.SubjectAccessReviewResponse
+        SubjectAccessReviewResponse           authapi.SubjectAccessReviewResponse
 	OpenshiftClusterRole                  authapi.ClusterRole
 	OpenshiftClusterRoleBinding           authapi.ClusterRoleBinding
 	OpenshiftClusterRoleBindingList       authapi.ClusterRoleBindingList
@@ -156,8 +161,8 @@ type Schema struct {
 	CronJob                               batchapiv1beta1.CronJob
 	CronJobList                           batchapiv1beta1.CronJobList
 	Scale                                 extensions.Scale
-	HorizontalPodAutoscaler               autoscalingapiv2beta1.HorizontalPodAutoscaler
-	HorizontalPodAutoscalerList           autoscalingapiv2beta1.HorizontalPodAutoscalerList
+	HorizontalPodAutoscaler               autoscalingapi.HorizontalPodAutoscaler
+	HorizontalPodAutoscalerList           autoscalingapi.HorizontalPodAutoscalerList
 	Deployment                            k8sappsapi.Deployment
 	DeploymentList                        k8sappsapi.DeploymentList
 	DeploymentRollback                    extensions.DeploymentRollback
@@ -234,6 +239,7 @@ func main() {
 		{"k8s.io/apimachinery/pkg/util/intstr", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_pkg_util_intstr_"},
 		{"k8s.io/apimachinery/pkg/runtime", "", "io.fabric8.kubernetes.api.model.runtime", "kubernetes_apimachinery_pkg_runtime_"},
 		{"k8s.io/apimachinery/pkg/version", "", "io.fabric8.kubernetes.api.model.version", "kubernetes_apimachinery_pkg_version_"},
+		{"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model.apis", "kubernetes_apimachinery_pkg_apis_"},
 		{"k8s.io/kubernetes/pkg/util", "", "io.fabric8.kubernetes.api.model", "kubernetes_util_"},
 		{"k8s.io/kubernetes/pkg/watch/json", "", "io.fabric8.kubernetes.api.model", "kubernetes_watch_"},
 		{"k8s.io/kubernetes/pkg/api/errors", "", "io.fabric8.kubernetes.api.model", "kubernetes_errors_"},
@@ -257,7 +263,7 @@ func main() {
 		{"k8s.io/api/apps/v1", "", "io.fabric8.kubernetes.api.model.apps", "kubernetes_apps_"},
 		{"k8s.io/api/batch/v1beta1", "", "io.fabric8.kubernetes.api.model.batch", "kubernetes_batch_"},
 		{"k8s.io/api/batch/v1", "", "io.fabric8.kubernetes.api.model.batch", "kubernetes_batch_"},
-		{"k8s.io/api/autoscaling/v2beta1", "", "io.fabric8.kubernetes.api.model", "kubernetes_autoscaling_"},
+		{"k8s.io/api/autoscaling/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_autoscaling_"},
 		{"k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1", "", "io.fabric8.kubernetes.api.model.apiextensions", "kubernetes_apiextensions_"},
 		{"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_"},
 		{"k8s.io/api/networking/v1", "networking.k8s.io", "io.fabric8.kubernetes.api.model.networking", "kubernetes_networking_"},
@@ -292,6 +298,20 @@ func main() {
 	}
 	result := string(b)
 	result = strings.Replace(result, "\"additionalProperty\":", "\"additionalProperties\":", -1)
+
+	/**
+         * Hack to fix https://github.com/fabric8io/kubernetes-client/issues/1565
+         *
+         * Right now enums are having body as array of jsons rather than being array of strings.
+         * (See https://user-images.githubusercontent.com/13834498/59852204-00d25680-938c-11e9-91b6-74f6bc3ae65b.png)
+         *
+         * I could not find any other way of fixing this since I'm not sure where it's coming from.
+         * So doing this search and replace of whole enum json object block hence converting it to an array of plain
+         * strings rather than of json objects.
+         */
+	result = strings.Replace(result, "\"enum\":{\"type\":\"array\",\"description\":\"\",\"javaOmitEmpty\":true,\"items\":{\"$ref\":\"#/definitions/kubernetes_apiextensions_JSON\",\"javaType\":\"io.fabric8.kubernetes.api.model.apiextensions.JSON\"}},",
+	"\"enum\":{\"type\":\"array\",\"description\":\"\",\"javaOmitEmpty\":true,\"items\":{\"type\": \"string\"}},", -1)
+
 	var out bytes.Buffer
 	err = json.Indent(&out, []byte(result), "", "  ")
 	if err != nil {

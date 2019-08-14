@@ -16,21 +16,21 @@
 
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.model.authorization.SelfSubjectAccessReview;
+import io.fabric8.kubernetes.api.model.authorization.SelfSubjectAccessReviewBuilder;
+import io.fabric8.kubernetes.api.model.authorization.SelfSubjectRulesReview;
+import io.fabric8.kubernetes.client.dsl.Createable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.openshift.api.model.*;
+import io.fabric8.openshift.api.model.LocalSubjectAccessReviewBuilder;
+import io.fabric8.openshift.api.model.SubjectAccessReviewBuilder;
+import io.fabric8.openshift.client.dsl.*;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.openshift.api.model.LocalSubjectAccessReview;
-import io.fabric8.openshift.api.model.LocalSubjectAccessReviewBuilder;
-import io.fabric8.openshift.api.model.SubjectAccessReview;
-import io.fabric8.openshift.api.model.SubjectAccessReviewBuilder;
-import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
 import io.fabric8.openshift.client.OpenShiftConfig;
-import io.fabric8.openshift.client.dsl.SubjectAccessReviewOperation;
-import io.fabric8.openshift.client.dsl.CreateableLocalSubjectAccessReview;
-import io.fabric8.openshift.client.dsl.CreateableSubjectAccessReview;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -39,7 +39,8 @@ import java.util.concurrent.ExecutionException;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.AUTHORIZATION;
 
-public class SubjectAccessReviewOperationImpl extends OperationSupport implements SubjectAccessReviewOperation<CreateableSubjectAccessReview, CreateableLocalSubjectAccessReview> {
+// TODO: Check why this class does not extend OpenshiftOperation, then the getRoot method can be removed
+public class SubjectAccessReviewOperationImpl extends OperationSupport implements SubjectAccessReviewOperation<CreateableSubjectAccessReview, CreateableLocalSubjectAccessReview, CreateableSelfSubjectAccessReview, CreateableSelfSubjectRulesReview> {
 
   public SubjectAccessReviewOperationImpl(OkHttpClient client, OpenShiftConfig config) {
     this(new OperationContext().withOkhttpClient(client).withConfig(config));
@@ -67,13 +68,38 @@ public class SubjectAccessReviewOperationImpl extends OperationSupport implement
 
   @Override
   public URL getRootUrl() {
-    try {
-      return new URL(OpenShiftConfig.wrap(getConfig()).getOpenShiftUrl());
-    } catch (MalformedURLException e) {
-      throw KubernetesClientException.launderThrowable(e);
+    // This is an OpenShift resource. If no API Group Name is specified, use /oapi endpoint
+    if (Utils.isNullOrEmpty(context.getApiGroupName())) {
+      try {
+        return new URL(OpenShiftConfig.wrap(getConfig()).getOpenShiftUrl());
+      } catch (MalformedURLException e) {
+        throw KubernetesClientException.launderThrowable(e);
+      }
+    } else {
+      return super.getRootUrl();
     }
   }
 
+  @Override
+  public Createable inAnyNamespace() {
+    return new SubjectAccessReviewOperationImpl(client, OpenShiftConfig.wrap(getConfig())).self();
+  }
+
+  private CreateableSelfSubjectAccessReview self() {
+    return new CreateableSelfSubjectAccessReviewImpl(client);
+  }
+
+  @Override
+  public Createable<SelfSubjectRulesReview, SelfSubjectRulesReview, CreateableSelfSubjectRulesReview> list() {
+    // WIP
+    return null;
+  }
+
+  @Override
+  public Createable<SelfSubjectRulesReview, SelfSubjectRulesReview, CreateableSelfSubjectRulesReview> list(Integer limitVal, String continueVal) {
+    // WIP
+    return null;
+  }
 
   private class CreateableLocalSubjectAccessReviewImpl extends CreateableLocalSubjectAccessReview {
     private final OkHttpClient client;
@@ -175,4 +201,45 @@ public class SubjectAccessReviewOperationImpl extends OperationSupport implement
       return create(builder.build());
     }
   }
+
+  private class CreateableSelfSubjectAccessReviewImpl extends CreateableSelfSubjectAccessReview {
+    private final OkHttpClient client;
+    private final SelfSubjectAccessReviewBuilder builder;
+
+    private CreateableSelfSubjectAccessReviewImpl(OkHttpClient client) {
+      this.client = client;
+      this.builder = new SelfSubjectAccessReviewBuilder(CreateableSelfSubjectAccessReviewImpl.this);
+    }
+
+    private CreateableSelfSubjectAccessReviewImpl(OkHttpClient client, SelfSubjectAccessReviewBuilder builder) {
+      this.client = client;
+      this.builder = builder;
+    }
+
+    @Override
+    public SubjectAccessReviewResponse create(SelfSubjectAccessReview... resources) {
+      try {
+        if (resources.length > 1) {
+          throw new IllegalArgumentException("Too many items to create.");
+        } else if (resources.length == 1) {
+          return handleCreate(resources[0], SubjectAccessReviewResponse.class);
+        } else {
+          throw new IllegalArgumentException("Nothing to create.");
+        }
+      } catch (InterruptedException | ExecutionException | IOException e) {
+        throw KubernetesClientException.launderThrowable(e);
+      }
+    }
+
+    @Override
+    public CreateableSelfSubjectAccessReview createNew() {
+      return this;
+    }
+
+    @Override
+    public SubjectAccessReviewResponse done() {
+      return create(builder.build());
+    }
+  }
+
 }
