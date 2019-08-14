@@ -17,8 +17,6 @@
 package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
@@ -31,12 +29,9 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import java.net.URL;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
 
 
 public abstract class BaseClient implements Client, HttpClientAware {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(BaseClient.class);
 
   protected OkHttpClient httpClient;
   private URL masterUrl;

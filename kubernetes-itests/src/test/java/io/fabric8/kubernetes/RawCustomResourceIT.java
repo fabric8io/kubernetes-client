@@ -49,6 +49,8 @@ public class RawCustomResourceIT {
 
   private CustomResourceDefinitionContext customResourceDefinitionContext;
 
+  private CustomResourceDefinitionContext customResourceDefinitionContextWithOpenAPIV3Schema;
+
   @Before
   public void initCustomResourceDefinition() {
     currentNamespace = session.getNamespace();
@@ -63,6 +65,18 @@ public class RawCustomResourceIT {
       .withVersion("v1")
       .withPlural("animals")
       .withScope("Namespaced")
+      .build();
+
+    // Create a Custom Resource Definition with OpenAPIV3 validation schema
+    CustomResourceDefinition aComplexCrd = client.customResourceDefinitions().load(getClass().getResourceAsStream("/kafka-crd.yml")).get();
+    client.customResourceDefinitions().create(aComplexCrd);
+
+    customResourceDefinitionContextWithOpenAPIV3Schema = new CustomResourceDefinitionContext.Builder()
+      .withName("kafkas.kafka.strimzi.io")
+      .withGroup("kafka.strimzi.io")
+      .withPlural("kafkas")
+      .withScope("Namespaced")
+      .withVersion("v1beta1")
       .build();
   }
 
@@ -96,8 +110,14 @@ public class RawCustomResourceIT {
     object = client.customResource(customResourceDefinitionContext).edit(currentNamespace, "walrus", new ObjectMapper().writeValueAsString(object));
     assertThat(((HashMap<String, Object>)object.get("spec")).get("image")).isEqualTo("my-updated-awesome-walrus-image");
 
+    // Test creation with openAPIV3Schema
+    Map<String, Object> ret = client.customResource(customResourceDefinitionContextWithOpenAPIV3Schema).create(currentNamespace, getClass().getResourceAsStream("/kafka-cr.yml"));
+    assertThat(ret).isNotNull();
+    assertThat(((Map<String, Object>)ret.get("metadata")).get("name")).isEqualTo("kafka-single");
+
     // Test Delete:
     client.customResource(customResourceDefinitionContext).delete(currentNamespace, "otter");
+    client.customResource(customResourceDefinitionContextWithOpenAPIV3Schema).delete(currentNamespace, "kafka-single");
     client.customResource(customResourceDefinitionContext).delete(currentNamespace);
   }
 
@@ -105,5 +125,6 @@ public class RawCustomResourceIT {
   public void cleanup() {
     // Delete Custom Resource Definition Animals:
     client.customResourceDefinitions().withName(customResourceDefinitionContext.getName()).delete();
+    client.customResourceDefinitions().withName(customResourceDefinitionContextWithOpenAPIV3Schema.getName()).delete();
   }
 }

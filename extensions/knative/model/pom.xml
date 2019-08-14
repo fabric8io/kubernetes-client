@@ -20,7 +20,7 @@
     <parent>
         <groupId>io.fabric8</groupId>
         <artifactId>knative-extension-pom</artifactId>
-        <version>4.3-SNAPSHOT</version>
+        <version>4.4-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -147,7 +147,7 @@
                         <configuration>
                             <artifacts>
                                 <artifact>
-                                    <file>${build.outputDirectory}/schema/knative-schema.json</file>
+                                    <file>${project.build.outputDirectory}/schema/knative-schema.json</file>
                                     <type>json</type>
                                     <classifier>schema</classifier>
                                 </artifact>
@@ -159,7 +159,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.5</version>
+                <version>2.5.3</version>
             </plugin>
         </plugins>
     </build>

@@ -42,20 +42,6 @@ public class UserTest {
    server.expect().withPath("/apis/user.openshift.io/v1/users").andReturn(200, new UserListBuilder()
       .addNewItem().and()
       .addNewItem().and().build()).always();
-   server.expect().withPath("/oapi/v1/users").andReturn(200, new UserListBuilder()
-      .addNewItem().and()
-      .addNewItem().and().build()).always();
-   server.expect().withPath("/apis").andReturn(200, new APIGroupListBuilder()
-      .addNewGroup()
-      .withApiVersion("v1")
-      .withName("autoscaling.k8s.io")
-      .endGroup()
-      .addNewGroup()
-      .withApiVersion("v1")
-      .withName("security.openshift.io")
-      .endGroup()
-      .build()).once();
-
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
@@ -72,11 +58,11 @@ public class UserTest {
 
   @Test
   public void testGet() {
-   server.expect().withPath("/oapi/v1/users/user1").andReturn(200, new UserBuilder()
+   server.expect().withPath("/apis/user.openshift.io/v1/users/user1").andReturn(200, new UserBuilder()
       .withNewMetadata().withName("user1").endMetadata()
       .build()).once();
 
-   server.expect().withPath("/oapi/v1/users/User2").andReturn(200, new UserBuilder()
+   server.expect().withPath("/apis/user.openshift.io/v1/users/User2").andReturn(200, new UserBuilder()
       .withNewMetadata().withName("User2").endMetadata()
       .build()).once();
 
@@ -97,8 +83,8 @@ public class UserTest {
 
   @Test
   public void testDelete() {
-   server.expect().withPath("/oapi/v1/users/user1").andReturn(200, new UserBuilder().build()).once();
-   server.expect().withPath("/oapi/v1/users/User2").andReturn( 200, new UserBuilder().build()).once();
+   server.expect().withPath("/apis/user.openshift.io/v1/users/user1").andReturn(200, new UserBuilder().build()).once();
+   server.expect().withPath("/apis/user.openshift.io/v1/users/User2").andReturn( 200, new UserBuilder().build()).once();
 
     OpenShiftClient client = server.getOpenshiftClient();
 

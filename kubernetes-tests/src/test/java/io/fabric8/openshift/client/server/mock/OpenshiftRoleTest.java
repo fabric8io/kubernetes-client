@@ -36,8 +36,8 @@ public class OpenshiftRoleTest {
 
   @Test
   public void testList() {
-   server.expect().withPath("/oapi/v1/namespaces/test/roles").andReturn(200, new OpenshiftRoleListBuilder().build()).once();
-   server.expect().withPath("/oapi/v1/namespaces/ns1/roles").andReturn(200, new OpenshiftRoleListBuilder()
+   server.expect().withPath("/apis/authorization.openshift.io/v1/namespaces/test/roles").andReturn(200, new OpenshiftRoleListBuilder().build()).once();
+   server.expect().withPath("/apis/authorization.openshift.io/v1/namespaces/ns1/roles").andReturn(200, new OpenshiftRoleListBuilder()
       .addNewItem().and()
       .addNewItem().and().build()).once();
    server.expect().withPath("/apis").andReturn(200, new APIGroupListBuilder()
@@ -49,7 +49,7 @@ public class OpenshiftRoleTest {
       .withApiVersion("v1")
       .withName("security.openshift.io")
       .endGroup()
-      .build()).once();
+      .build()).always();
 
    server.expect().withPath("/apis/authorization.openshift.io/v1/roles").andReturn(200, new OpenshiftRoleListBuilder()
       .addNewItem().and()
@@ -74,11 +74,11 @@ public class OpenshiftRoleTest {
 
   @Test
   public void testGet() {
-   server.expect().withPath("/oapi/v1/namespaces/test/roles/role1").andReturn(200, new OpenshiftRoleBuilder()
+   server.expect().withPath("/apis/authorization.openshift.io/v1/namespaces/test/roles/role1").andReturn(200, new OpenshiftRoleBuilder()
       .withNewMetadata().withName("role1").endMetadata()
       .build()).once();
 
-   server.expect().withPath("/oapi/v1/namespaces/ns1/roles/role2").andReturn(200, new OpenshiftRoleBuilder()
+   server.expect().withPath("/apis/authorization.openshift.io/v1/namespaces/ns1/roles/role2").andReturn(200, new OpenshiftRoleBuilder()
       .withNewMetadata().withName("role2").endMetadata()
       .build()).once();
 

@@ -25,7 +25,6 @@ import java.util.Map;
 
 public class ResourceCompare {
 
-    private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
     private static TypeReference<HashMap<String, Object>> TYPE_REF = new TypeReference<HashMap<String, Object>>(){};
 
     private static final String METADATA = "metadata";
@@ -34,8 +33,9 @@ public class ResourceCompare {
 
 
     public static <T>  boolean equals(T left, T right) {
-        Map<String, Object> leftJson = (Map<String, Object>) JSON_MAPPER.convertValue(left, TYPE_REF);
-        Map<String, Object> rightJson = (Map<String, Object>) JSON_MAPPER.convertValue(right, TYPE_REF);
+        ObjectMapper jsonMapper = Serialization.jsonMapper();
+        Map<String, Object> leftJson = (Map<String, Object>) jsonMapper.convertValue(left, TYPE_REF);
+        Map<String, Object> rightJson = (Map<String, Object>) jsonMapper.convertValue(right, TYPE_REF);
 
         Map<String, Object> leftLabels = fetchLabels(leftJson);
         Map<String, Object> rightLabels = fetchLabels(rightJson);
