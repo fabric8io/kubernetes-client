@@ -25,14 +25,17 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
+@EnableRuleMigrationSupport
 public class JobTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
@@ -164,7 +167,7 @@ public class JobTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.batch().jobs().withName("job1").delete();
-    assertNotNull(deleted);
+    assertTrue(deleted);
 
     deleted = client.batch().jobs().withName("job2").delete();
     assertTrue(deleted);
@@ -209,27 +212,31 @@ public class JobTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.batch().jobs().inAnyNamespace().delete(job1, job2);
-    assertNotNull(deleted);
+    assertTrue(deleted);
 
     deleted = client.batch().jobs().inAnyNamespace().delete(job3);
     assertFalse(deleted);
   }
 
-  @Test(expected = KubernetesClientException.class)
+  @Test
   public void testDeleteWithNamespaceMismatch() {
-    Job job1 = new JobBuilder().withNewMetadata().withName("job1").withNamespace("test").and().build();
-    KubernetesClient client = server.getClient();
+    Assertions.assertThrows(KubernetesClientException.class, () -> {
+      Job job1 = new JobBuilder().withNewMetadata().withName("job1").withNamespace("test").and().build();
+      KubernetesClient client = server.getClient();
 
-    Boolean deleted = client.batch().jobs().inNamespace("test1").delete(job1);
-    assertNotNull(deleted);
+      Boolean deleted = client.batch().jobs().inNamespace("test1").delete(job1);
+      assertTrue(deleted);
+    });
   }
 
-  @Test(expected = KubernetesClientException.class)
+  @Test
   public void testCreateWithNameMismatch() {
-    Job job1 = new JobBuilder().withNewMetadata().withName("job1").withNamespace("test").and().build();
-    Job job2 = new JobBuilder().withNewMetadata().withName("job2").withNamespace("ns1").and().build();
-    KubernetesClient client = server.getClient();
+    Assertions.assertThrows(KubernetesClientException.class, () -> {
+      Job job1 = new JobBuilder().withNewMetadata().withName("job1").withNamespace("test").and().build();
+      Job job2 = new JobBuilder().withNewMetadata().withName("job2").withNamespace("ns1").and().build();
+      KubernetesClient client = server.getClient();
 
-    client.batch().jobs().inNamespace("test1").withName("myjob1").create(job1);
+      client.batch().jobs().inNamespace("test1").withName("myjob1").create(job1);
+    });
   }
 }

@@ -26,14 +26,17 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
+@EnableRuleMigrationSupport
 public class NodeTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
@@ -85,11 +88,13 @@ public class NodeTest {
     assertFalse(deleted);
   }
 
-  @Test(expected = KubernetesClientException.class)
+  @Test
   public void testCreateWithNameMismatch() {
-    Namespace ns1 = new NamespaceBuilder().withNewMetadata().withName("ns1").and().build();
-    KubernetesClient client = server.getClient();
+    Assertions.assertThrows(KubernetesClientException.class, () -> {
+      Namespace ns1 = new NamespaceBuilder().withNewMetadata().withName("ns1").and().build();
+      KubernetesClient client = server.getClient();
 
-    client.namespaces().withName("myns1").create(ns1);
+      client.namespaces().withName("myns1").create(ns1);
+    });
   }
 }

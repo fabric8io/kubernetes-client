@@ -16,6 +16,7 @@
 
 package io.fabric8.openshift.client.server.mock;
 
+import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -23,10 +24,12 @@ import io.fabric8.openshift.api.model.BuildConfigBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@EnableRuleMigrationSupport
 public class KubernetesOperationTest {
   @Rule
   public OpenShiftServer server = new OpenShiftServer();
@@ -49,7 +52,17 @@ public class KubernetesOperationTest {
   public void testDeleteWithAdapt() {
    server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers/rc1").andReturn(200, new ReplicationControllerBuilder().build()).once();
    server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, new PodBuilder().build()).once();
-   server.expect().withPath("/oapi/v1/namespaces/test/buildconfigs/bc1").andReturn(200, new BuildConfigBuilder().build()).once();
+   server.expect().withPath("/apis").andReturn(200, new APIGroupListBuilder()
+      .addNewGroup()
+      .withApiVersion("v1")
+      .withName("autoscaling.k8s.io")
+      .endGroup()
+      .addNewGroup()
+      .withApiVersion("v1")
+      .withName("security.openshift.io")
+      .endGroup()
+      .build()).once();
+   server.expect().withPath("/apis/build.openshift.io/v1/namespaces/test/buildconfigs/bc1").andReturn(200, new BuildConfigBuilder().build()).once();
    server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, new PodBuilder().build()).once();
 
     try (KubernetesClient client = server.getKubernetesClient()) {

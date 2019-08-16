@@ -20,16 +20,19 @@ import io.fabric8.openshift.api.model.SecurityContextConstraintsBuilder;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsList;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
+@EnableRuleMigrationSupport
 public class SecurityContextConstraintsCrudTest {
 
   private static final Logger logger = LoggerFactory.getLogger(SecurityContextConstraintsCrudTest.class);

@@ -23,19 +23,21 @@ import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.api.model.ReplicationControllerListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
+@EnableRuleMigrationSupport
 public class ReplicationControllerTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
@@ -130,7 +132,7 @@ public class ReplicationControllerTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.replicationControllers().withName("repl1").delete();
-    assertNotNull(deleted);
+    assertTrue(deleted);
 
     deleted = client.replicationControllers().withName("repl2").delete();
     assertFalse(deleted);
@@ -198,7 +200,7 @@ public class ReplicationControllerTest {
     assertEquals(5, repl.getStatus().getReplicas().intValue());
   }
 
-  @Ignore
+  @Disabled
   @Test
   public void testUpdate() {
     ReplicationController repl1 = new ReplicationControllerBuilder()

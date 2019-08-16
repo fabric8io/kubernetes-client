@@ -21,10 +21,9 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.OkHttpClient;
 import okhttp3.TlsVersion;
 import org.apache.commons.lang.SystemUtils;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,10 +40,11 @@ import java.util.Map;
 
 import static okhttp3.TlsVersion.TLS_1_1;
 import static okhttp3.TlsVersion.TLS_1_2;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class ConfigTest {
 
@@ -57,7 +57,7 @@ public class ConfigTest {
   private static final String TEST_TOKEN_GENERATOR_FILE = Utils.filePath(ConfigTest.class.getResource("/token-generator"));
 
   private static final String TEST_KUBECONFIG_EXEC_WIN_FILE = Utils.filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-win"));
-  @Before
+  @BeforeEach
   public void setUp() {
     System.getProperties().remove(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY);
     System.getProperties().remove(Config.KUBERNETES_NAMESPACE_SYSTEM_PROPERTY);
@@ -92,7 +92,7 @@ public class ConfigTest {
     System.getProperties().remove(Config.KUBERNETES_IMPERSONATE_GROUP);
   }
 
-  @After
+  @AfterEach
   public void tearDown() {
     setUp();
   }
@@ -132,6 +132,9 @@ public class ConfigTest {
     assertConfig(config);
 
     config = new ConfigBuilder().build();
+    assertConfig(config);
+
+    config = Config.builder().build();
     assertConfig(config);
   }
 
@@ -371,9 +374,9 @@ public class ConfigTest {
     File configYml = new File(TEST_CONFIG_YML_FILE);
     try (InputStream is = new FileInputStream(configYml)){
       KubernetesClient client = DefaultKubernetesClient.fromConfig(is);
-      Assert.assertEquals("http://some.url", client.getMasterUrl().toString());
+      assertEquals("http://some.url", client.getMasterUrl().toString());
     } catch (Exception e) {
-      Assert.fail();
+      fail();
     }
   }
 
@@ -383,11 +386,11 @@ public class ConfigTest {
     String json = Serialization.asJson(original.getConfiguration());
     DefaultKubernetesClient copy = DefaultKubernetesClient.fromConfig(json);
 
-    Assert.assertEquals(original.getConfiguration().getMasterUrl(), copy.getConfiguration().getMasterUrl());
-    Assert.assertEquals(original.getConfiguration().getOauthToken(), copy.getConfiguration().getOauthToken());
-    Assert.assertEquals(original.getConfiguration().getNamespace(), copy.getConfiguration().getNamespace());
-    Assert.assertEquals(original.getConfiguration().getUsername(), copy.getConfiguration().getUsername());
-    Assert.assertEquals(original.getConfiguration().getPassword(), copy.getConfiguration().getPassword());
+    assertEquals(original.getConfiguration().getMasterUrl(), copy.getConfiguration().getMasterUrl());
+    assertEquals(original.getConfiguration().getOauthToken(), copy.getConfiguration().getOauthToken());
+    assertEquals(original.getConfiguration().getNamespace(), copy.getConfiguration().getNamespace());
+    assertEquals(original.getConfiguration().getUsername(), copy.getConfiguration().getUsername());
+    assertEquals(original.getConfiguration().getPassword(), copy.getConfiguration().getPassword());
   }
 
   @Test

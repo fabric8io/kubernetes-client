@@ -25,14 +25,17 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
+@EnableRuleMigrationSupport
 public class IngressTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
@@ -121,7 +124,7 @@ public class IngressTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.extensions().ingress().withName("ingress1").delete();
-    assertNotNull(deleted);
+    assertTrue(deleted);
 
     deleted = client.extensions().ingress().withName("ingress2").delete();
     assertFalse(deleted);
@@ -143,29 +146,33 @@ public class IngressTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.extensions().ingress().inAnyNamespace().delete(ingress1, ingress2);
-    assertNotNull(deleted);
+    assertTrue(deleted);
 
     deleted = client.extensions().ingress().inAnyNamespace().delete(ingress3);
     assertFalse(deleted);
   }
 
-  @Test(expected = KubernetesClientException.class)
+  @Test
   public void testDeleteWithNamespaceMismatch() {
-    Ingress ingress1 = new IngressBuilder().withNewMetadata().withName("ingress1").withNamespace("test").and().build();
-    Ingress ingress2 = new IngressBuilder().withNewMetadata().withName("ingress2").withNamespace("ns1").and().build();
-    KubernetesClient client = server.getClient();
+    Assertions.assertThrows(KubernetesClientException.class, () -> {
+      Ingress ingress1 = new IngressBuilder().withNewMetadata().withName("ingress1").withNamespace("test").and().build();
+      Ingress ingress2 = new IngressBuilder().withNewMetadata().withName("ingress2").withNamespace("ns1").and().build();
+      KubernetesClient client = server.getClient();
 
-    Boolean deleted = client.extensions().ingress().inNamespace("test1").delete(ingress1);
-    assertNotNull(deleted);
+      Boolean deleted = client.extensions().ingress().inNamespace("test1").delete(ingress1);
+      assertTrue(deleted);
+    });
   }
 
-  @Test(expected = KubernetesClientException.class)
+  @Test
   public void testCreateWithNameMismatch() {
-    Ingress ingress1 = new IngressBuilder().withNewMetadata().withName("ingress1").withNamespace("test").and().build();
-    Ingress ingress2 = new IngressBuilder().withNewMetadata().withName("ingress2").withNamespace("ns1").and().build();
-    KubernetesClient client = server.getClient();
+    Assertions.assertThrows(KubernetesClientException.class, () -> {
+      Ingress ingress1 = new IngressBuilder().withNewMetadata().withName("ingress1").withNamespace("test").and().build();
+      Ingress ingress2 = new IngressBuilder().withNewMetadata().withName("ingress2").withNamespace("ns1").and().build();
+      KubernetesClient client = server.getClient();
 
-    client.extensions().ingress().inNamespace("test1").withName("myingress1").create(ingress1);
+      client.extensions().ingress().inNamespace("test1").withName("myingress1").create(ingress1);
+    });
   }
 
 }

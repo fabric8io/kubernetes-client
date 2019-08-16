@@ -15,10 +15,10 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class URLUtilsTest {
 

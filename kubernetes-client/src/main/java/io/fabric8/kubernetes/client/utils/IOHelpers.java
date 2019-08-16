@@ -17,7 +17,6 @@ package io.fabric8.kubernetes.client.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -61,7 +60,7 @@ public class IOHelpers {
   public static boolean isJSONValid(String json) throws IOException {
     boolean valid = true;
     try{
-      ObjectMapper objectMapper = new ObjectMapper();
+      ObjectMapper objectMapper = Serialization.jsonMapper();
       objectMapper.readTree(json);
     } catch(JsonProcessingException e){
       valid = false;
@@ -70,10 +69,10 @@ public class IOHelpers {
   }
 
   public static String convertYamlToJson(String yaml) throws IOException {
-    ObjectMapper yamlReader = new ObjectMapper(new YAMLFactory());
+    ObjectMapper yamlReader = Serialization.yamlMapper();
     Object obj = yamlReader.readValue(yaml, Object.class);
 
-    ObjectMapper jsonWriter = new ObjectMapper();
+    ObjectMapper jsonWriter = Serialization.jsonMapper();
     return jsonWriter.writeValueAsString(obj);
   }
 

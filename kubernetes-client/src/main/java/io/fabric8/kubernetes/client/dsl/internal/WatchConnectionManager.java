@@ -144,10 +144,15 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
 
     httpUrlBuilder.addQueryParameter("watch", "true");
 
+    String origin = requestUrl.getProtocol() + "://" + requestUrl.getHost();
+    if (requestUrl.getPort() != -1) {
+        origin += ":" + requestUrl.getPort();
+    }
+
     Request request = new Request.Builder()
       .get()
       .url(httpUrlBuilder.build())
-      .addHeader("Origin", requestUrl.getProtocol() + "://" + requestUrl.getHost() + ":" + requestUrl.getPort())
+      .addHeader("Origin", origin)
       .build();
 
     webSocket = clonedClient.newWebSocket(request, new WebSocketListener() {

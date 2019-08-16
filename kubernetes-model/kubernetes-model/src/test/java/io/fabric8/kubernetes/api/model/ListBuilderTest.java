@@ -15,12 +15,10 @@
  */
 package io.fabric8.kubernetes.api.model;
 
-
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 

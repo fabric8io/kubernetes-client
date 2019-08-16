@@ -11,6 +11,10 @@ This client provides access to the full [Kubernetes](http://kubernetes.io/) &
 [![Javadocs](http://www.javadoc.io/badge/io.fabric8/kubernetes-model.svg?color=blue)](http://www.javadoc.io/doc/io.fabric8/kubernetes-model)
 * openshift-client: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/openshift-client.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Aopenshift-client)
 [![Javadocs](http://www.javadoc.io/badge/io.fabric8/openshift-client.svg?color=blue)](http://www.javadoc.io/doc/io.fabric8/openshift-client)
+* knative-client: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/knative-client.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Aknative-client)
+[![Javadocs](http://www.javadoc.io/badge/io.fabric8/knative-client.svg?color=blue)](http://www.javadoc.io/doc/io.fabric8/knative-client)
+* tekton-client: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/tekton-client.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Atekton-client)
+[![Javadocs](http://www.javadoc.io/badge/io.fabric8/tekton-client.svg?color=blue)](http://www.javadoc.io/doc/io.fabric8/tekton-client)
 
 - [Usage](#usage)
     - [Creating a client](#creating-a-client)
@@ -318,23 +322,28 @@ Then you can use the server like:
 | kubernetes-client 4.2.1   | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | -                 |
 | kubernetes-client 4.2.2   | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | -                 |
 | kubernetes-client 4.3.0   | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 |
+| kubernetes-client 4.3.1   | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 |
+| kubernetes-client 4.4.0   | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 |
 
-|                           | OpenShift  3.6.0 | OpenShift  3.7.0  | OpenShift  3.9.0  | OpenShift 3.10.0 | OpenShift 3.11.0 |
-|---------------------------|------------------|-------------------|-------------------|------------------|------------------|
-| kubernetes-client 1.3.92  | +                | -                 | -                 | -                | -                |
-| kubernetes-client 3.0.3   | -                | ✓                 | -                 | -                | -                |
-| kubernetes-client 3.0.10  | ✓                | ✓                 | ✓                 | -                | -                |
-| kubernetes-client 3.0.11  | ✓                | ✓                 | ✓                 | -                | -                |
-| kubernetes-client 3.1.12  | ✓                | ✓                 | ✓                 | -                | -                |
-| kubernetes-client 3.2.0   | ✓                | ✓                 | ✓                 | -                | -                |
-| kubernetes-client 4.0.0   | ✓                | ✓                 | ✓                 | -                | -                |
-| kubernetes-client 4.1.0   | -                | ✓                 | ✓                 | ✓                | -                |
-| kubernetes-client 4.1.1   | -                | -                 | ✓                 | ✓                | ✓                |
-| kubernetes-client 4.1.2   | -                | -                 | ✓                 | ✓                | ✓                |
-| kubernetes-client 4.1.3   | -                | -                 | ✓                 | ✓                | ✓                |
-| kubernetes-client 4.2.0   | -                | -                 | ✓                 | ✓                | ✓                |
-| kubernetes-client 4.2.1   | -                | -                 | ✓                 | ✓                | ✓                |
-| kubernetes-client 4.2.2   | -                | -                 | ✓                 | ✓                | ✓                |
+|                           | OpenShift  3.6.0 | OpenShift  3.7.0  | OpenShift  3.9.0  | OpenShift 3.10.0 | OpenShift 3.11.0 | OpenShift 4.1.0 |
+|---------------------------|------------------|-------------------|-------------------|------------------|------------------|-----------------|
+| kubernetes-client 1.3.92  | +                | -                 | -                 | -                | -                | -               |
+| kubernetes-client 3.0.3   | -                | ✓                 | -                 | -                | -                | -               |
+| kubernetes-client 3.0.10  | ✓                | ✓                 | ✓                 | -                | -                | -               |
+| kubernetes-client 3.0.11  | ✓                | ✓                 | ✓                 | -                | -                | -               |
+| kubernetes-client 3.1.12  | ✓                | ✓                 | ✓                 | -                | -                | -               |
+| kubernetes-client 3.2.0   | ✓                | ✓                 | ✓                 | -                | -                | -               |
+| kubernetes-client 4.0.0   | ✓                | ✓                 | ✓                 | -                | -                | -               |
+| kubernetes-client 4.1.0   | -                | ✓                 | ✓                 | ✓                | -                | -               |
+| kubernetes-client 4.1.1   | -                | -                 | ✓                 | ✓                | ✓                | -               |
+| kubernetes-client 4.1.2   | -                | -                 | ✓                 | ✓                | ✓                | -               |
+| kubernetes-client 4.1.3   | -                | -                 | ✓                 | ✓                | ✓                | -               |
+| kubernetes-client 4.2.0   | -                | -                 | ✓                 | ✓                | ✓                | -               |
+| kubernetes-client 4.2.1   | -                | -                 | ✓                 | ✓                | ✓                | -               |
+| kubernetes-client 4.2.2   | -                | -                 | ✓                 | ✓                | ✓                | -               |
+| kubernetes-client 4.3.0   | -                | -                 | ✓                 | ✓                | ✓                | -               |
+| kubernetes-client 4.3.1   | -                | -                 | ✓                 | ✓                | ✓                | -               |
+| kubernetes-client 4.4.0   | -                | -                 | ✓                 | ✓                | ✓                | ✓               |
 
 ## Major Changes in Kubernetes Client 4.0.0
 All the resource objects used here will be according to OpenShift 3.9.0  and Kubernetes 1.9.0. All the resource objects will give all the fields according to OpenShift 3.9.0 and Kubernetes 1.9.0
@@ -381,6 +390,7 @@ All the resource objects used here will be according to OpenShift 3.9.0  and Kub
   Platforms:
   - [Apache Openwhisk](https://github.com/apache/incubator-openwhisk)
   - [Eclipse che](https://www.eclipse.org/che/)
+  - [EnMasse](https://enmasse.io)
   - [Openshift.io (Launcher service)](https://github.com/fabric8-launcher)
   - [Spotify Styx](https://github.com/spotify/styx)
   - [Strimzi](https://github.com/strimzi/)

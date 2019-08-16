@@ -22,15 +22,20 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import io.fabric8.kubernetes.client.utils.Utils;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
+@EnableRuleMigrationSupport
 public class CronJobTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
@@ -216,27 +221,31 @@ public class CronJobTest {
     KubernetesClient client = server.getClient();
 
     Boolean deleted = client.batch().cronjobs().inAnyNamespace().delete(cronjob1, cronjob2);
-    assertNotNull(deleted);
+    assertTrue(deleted);
 
     deleted = client.batch().cronjobs().inAnyNamespace().delete(cronjob3);
     assertFalse(deleted);
   }
 
-  @Test(expected = KubernetesClientException.class)
+  @Test
   public void testDeleteWithNamespaceMismatch() {
-    CronJob cronjob1 = new CronJobBuilder().withNewMetadata().withName("cronjob1").withNamespace("test").and().build();
-    KubernetesClient client = server.getClient();
+    Assertions.assertThrows(KubernetesClientException.class, () -> {
+      CronJob cronjob1 = new CronJobBuilder().withNewMetadata().withName("cronjob1").withNamespace("test").and().build();
+      KubernetesClient client = server.getClient();
 
-    Boolean deleted = client.batch().cronjobs().inNamespace("test1").delete(cronjob1);
-    assertFalse(deleted);
+      Boolean deleted = client.batch().cronjobs().inNamespace("test1").delete(cronjob1);
+      assertFalse(deleted);
+    });
   }
 
-  @Test(expected = KubernetesClientException.class)
+  @Test
   public void testCreateWithNameMismatch() {
-    CronJob cronjob1 = new CronJobBuilder().withNewMetadata().withName("cronjob1").withNamespace("test").and().build();
-    KubernetesClient client = server.getClient();
+    Assertions.assertThrows(KubernetesClientException.class, () -> {
+      CronJob cronjob1 = new CronJobBuilder().withNewMetadata().withName("cronjob1").withNamespace("test").and().build();
+      KubernetesClient client = server.getClient();
 
-    client.batch().cronjobs().inNamespace("test1").withName("mycronjob1").create(cronjob1);
+      client.batch().cronjobs().inNamespace("test1").withName("mycronjob1").create(cronjob1);
+    });
   }
 
   @Test
@@ -249,8 +258,8 @@ public class CronJobTest {
     KubernetesClient client = server.getClient();
     List<HasMetadata> hasMetadata = client.load(getClass().getResourceAsStream("/test-cronjob.yml")).get();
 
-    assertNotNull("Handlers did not return a valid resource", hasMetadata);
-    assertTrue("Handler did not return expected single resource", 1==hasMetadata.size());
-    assertEquals("hasMetadata found did not match the expected name of the test input", "pi", hasMetadata.get(0).getMetadata().getName());
+    assertNotNull(hasMetadata);
+    assertEquals(hasMetadata.size(), 1);
+    assertEquals(hasMetadata.get(0).getMetadata().getName(), "pi");
   }
 }

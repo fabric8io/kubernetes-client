@@ -1,15 +1,75 @@
 ### CHANGELOG
 
-### 4.3-SNAPSHOT
+### 4.4-SNAPSHOT
+#### Bugs
+
+#### Improvements
+  * Added test coverage for ResourceQuota
+
+#### Dependency Upgrade
+  * Fix #1331: Migrated from JUnit 4 to JUnit 5
+
+#### New Feature
+
+
+### 4.4.1 (08-08-2019)
+####  Bugs
+  * Fix #1690: Endpoints is always pluralized
+  * Fix #1684: Fixed URL resolution algorithm for OpenShift resources without API Group name
+
+#### Improvements
+  * Fix #1650: Introduced `kubernetes.disable.autoConfig` system property to disable auto configuration in Config
+  * Fix #1661: Remove generic parameter from KubernetesResource
+  * Improved OpenShiftOperation.wrap method performance
+  * RawCustomResourceOperationsImpl#makeCall now closes the created Response object
+
+### 4.4.0 (05-08-2019)
   Bugs
+  * Fix #1565: CRD's Enums are prefixed with Raw keyword
+  * Fixed user/password authentication bug in OpenShift 4
+  * Fix #1667: Origin header for watch requests had a port of -1 when no port specified
 
   Improvements
-  
-    * Added test coverage for ResourceQuota.
+   * Test coverage for PersistentVolumeClaim
+   * Fix #1589: Move HorizontalPodAutoscaler to autoscaling/v1
+   * Fix #1553: Allow to explicitly set non-matching field selectors using `withoutField`
+   * Cleaned up kubernetes-model pom.xml
+   * Removed deprecated KubernetesKind enum
+
+  Dependency Upgrade
+    
+  New Feature
+  * Knative extension
+  * Tekton extension
+  * Increased OpenShift 4.x compatibility
+
+### 4.3.1 (19-07-2019)
+  Bugs
+   * Fix #1592: Corrected type returned by Config.builder() 
+   * Set cascade deletion to true in case of list operations
+   * Fix #1617: Multiple CA certificates with non-unique Subject DN not loaded
+   * Fix #1634: Make map backing KubernetesDeserializer thread-safe
+
+  Improvements
+    * Test coverage for Namespace.
+    * Example added for NamespaceQuota
+    * Example added for Endpoints.
+    * Test coverage for Endpoints.
+    * Fix #1589: Move HorizontalPodAutoscaler to autoscaling/v1
+    * Fix #1553: Allow to explicitly set non-matching field selectors using withoutField
+    * assertNotNull replaced with assertTrue for boolean statements in unit tests
+    * Test coverage for PodPreset
+    * Added test coverage for PersistentVolume
+    * Fix #1290: Added github stale bot.
+    * Add type parameter to make CustomResourceList.getItems() return a typed List.
 
   Dependency Upgrade
 
+    * Upgrade Jackson to version 2.9.9
+
   New Feature
+   * Added support for SelfSubjectAccessReview
+   * Added support for SelfSubjectRulesReview
 
 #### 4.3.0 (10-06-2019)
 
@@ -22,7 +82,7 @@
     * Fix #1550: MutatingWebhookConfigurationOperationsImpl should be a NonNamespaceOperation
 
   Improvements
-  
+
     * Added example for raw custom resources.
     
   Dependency Upgrade
@@ -48,22 +108,22 @@
 #### 4.2.1 (15-04-2019)
 
   Bugs
-    
+
     * Fix #1297: wrong result produced when exec in used and params contains '&'. Url string not encoded properly.
     * Fix #1473: Use correct plural form in OpenshiftRole
     * Fix #1480: The kubernetes-client is not optionally depending on bouncycastle.
     * Fix #1490: Resource could not be loaded
     * Fix #1468: Taking labels into consideration when comparing resources for equality.
-  
+
   Improvements
-  
+
     * Fix #1455: Use SubjectAccessReview and LocalSubjectAccessReview in kubernetes client using subjectAccessReviewAuth()
-  
+
   Dependency Upgrade
-  
+
 
   New Feature
-  
+
     * First Draft of Custom Resource Improvements (#1472)
 
 #### 4.2.0 (29-03-2019)
@@ -92,6 +152,7 @@
 
   Bugs
 
+   * Fix nanosecond conversion using waitUntilReady
    * Fix #1008: Use a reasonable buffer size for exec stdin
    * Fix #1005: Loading a template from file and processing it locally by passing parameters map is broken
 
@@ -138,6 +199,7 @@
     * Fix #1326: Make CustomResource @Buildable
 
     * Fix #1354: suppress log warnings that `CustomResourceDefinition`s are still in beta
+
 
   Dependency Upgrade
 
@@ -277,7 +339,7 @@
 
   New Feature
 
-    * Fix #1020 : Support for Kubernetes/Openshift v1.9/v3.9 respectively    
+    * Fix #1020 : Support for Kubernetes/Openshift v1.9/v3.9 respectively
 
   Improvements
 
