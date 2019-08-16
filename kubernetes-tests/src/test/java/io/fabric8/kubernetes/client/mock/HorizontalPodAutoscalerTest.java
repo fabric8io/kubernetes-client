@@ -25,14 +25,17 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
+@EnableRuleMigrationSupport
 public class HorizontalPodAutoscalerTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
@@ -97,12 +100,15 @@ public class HorizontalPodAutoscalerTest {
     assertNotNull(horizontalPodAutoscaler);
   }
 
-  @Test(expected = KubernetesClientException.class)
+  @Test
   public void testEditMissing() {
-    server.expect().withPath("/apis/autoscaling/v1/namespaces/test/horizontalpodautoscalers/horizontalpodautoscaler").andReturn(404, "error message from kubernetes").always();
-    KubernetesClient client = server.getClient();
 
-    client.autoscaling().horizontalPodAutoscalers().inNamespace("test").withName("horizontalpodautoscaler").edit();
+    Assertions.assertThrows(KubernetesClientException.class, () -> {
+      server.expect().withPath("/apis/autoscaling/v1/namespaces/test/horizontalpodautoscalers/horizontalpodautoscaler").andReturn(404, "error message from kubernetes").always();
+      KubernetesClient client = server.getClient();
+
+      client.autoscaling().horizontalPodAutoscalers().inNamespace("test").withName("horizontalpodautoscaler").edit();
+    });
   }
 
   @Test
@@ -138,11 +144,13 @@ public class HorizontalPodAutoscalerTest {
     assertFalse(deleted);
   }
 
-  @Test(expected = KubernetesClientException.class)
+  @Test
   public void testCreateWithNameMismatch() {
-    HorizontalPodAutoscaler horizontalPodAutoscaler1 = new HorizontalPodAutoscalerBuilder().withNewMetadata().withName("horizontalpodautoscaler1").withNamespace("test").endMetadata().build();
-    KubernetesClient client = server.getClient();
-    client.autoscaling().horizontalPodAutoscalers().inNamespace("test").withName("horizontalpodautoscaler1").create(horizontalPodAutoscaler1);
+    Assertions.assertThrows(KubernetesClientException.class, () -> {
+      HorizontalPodAutoscaler horizontalPodAutoscaler1 = new HorizontalPodAutoscalerBuilder().withNewMetadata().withName("horizontalpodautoscaler1").withNamespace("test").endMetadata().build();
+      KubernetesClient client = server.getClient();
+      client.autoscaling().horizontalPodAutoscalers().inNamespace("test").withName("horizontalpodautoscaler1").create(horizontalPodAutoscaler1);
+    });
   }
 
   @Test

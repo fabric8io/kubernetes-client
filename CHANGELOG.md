@@ -4,6 +4,7 @@
 #### Bugs
 
 #### Improvements
+  * Test coverage for HorizontalPodAutoscaler
 
 #### Dependency Upgrade
   * Fix #1331: Migrated from JUnit 4 to JUnit 5
@@ -51,7 +52,6 @@
 
   Improvements
   
-    * Test coverage for HorizontalPodAutoscaler
     * Test coverage for Namespace.
     * Example added for NamespaceQuota
     * Example added for Endpoints.
