@@ -137,8 +137,8 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
       String noProxyProperty = (String) properties.get(KUBERNETES_NO_PROXY);
       builder.withNoProxy(noProxyProperty.split(","));
     }
-    if (properties.containsKey(OPENSHIFT_URL_SYTEM_PROPERTY)) {
-      builder.withOpenShiftUrl((String) properties.get(OPENSHIFT_URL_SYTEM_PROPERTY));
+    if (properties.containsKey(OPENSHIFT_URL_SYSTEM_PROPERTY)) {
+      builder.withOpenShiftUrl((String) properties.get(OPENSHIFT_URL_SYSTEM_PROPERTY));
     } else {
       builder.withOpenShiftUrl(URLUtils.join(builder.getMasterUrl(), "oapi", builder.getOapiVersion()));
     }
@@ -253,7 +253,7 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public SubjectAccessReviewOperation<CreateableSubjectAccessReview, CreateableLocalSubjectAccessReview> subjectAccessReviews() {
+  public SubjectAccessReviewOperation<CreateableSubjectAccessReview, CreateableLocalSubjectAccessReview, CreateableSelfSubjectAccessReview, CreateableSelfSubjectRulesReview> subjectAccessReviews() {
     return delegate.subjectAccessReviews();
   }
 

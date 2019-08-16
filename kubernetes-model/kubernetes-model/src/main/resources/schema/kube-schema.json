@@ -962,8 +962,7 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_apiextensions_JSON",
-            "javaType": "io.fabric8.kubernetes.api.model.apiextensions.JSON"
+            "type": "string"
           }
         },
         "example": {
@@ -1210,6 +1209,85 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_apimachinery_APIGroup": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "APIGroup",
+          "required": true
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "preferredVersion": {
+          "$ref": "#/definitions/kubernetes_apimachinery_GroupVersionForDiscovery",
+          "javaType": "io.fabric8.kubernetes.api.model.GroupVersionForDiscovery"
+        },
+        "serverAddressByClientCIDRs": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_apimachinery_ServerAddressByClientCIDR",
+            "javaType": "io.fabric8.kubernetes.api.model.ServerAddressByClientCIDR"
+          }
+        },
+        "versions": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/kubernetes_apimachinery_GroupVersionForDiscovery",
+            "javaType": "io.fabric8.kubernetes.api.model.GroupVersionForDiscovery"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.APIGroup",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_apimachinery_APIGroupList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "v1",
+          "required": true
+        },
+        "groups": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/kubernetes_apimachinery_APIGroup",
+            "javaType": "io.fabric8.kubernetes.api.model.APIGroup"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "APIGroupList",
+          "required": true
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.APIGroupList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_apimachinery_DeleteOptions": {
       "type": "object",
       "description": "",
@@ -1255,6 +1333,25 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.DeleteOptions",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_apimachinery_GroupVersionForDiscovery": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "groupVersion": {
+          "type": "string",
+          "description": ""
+        },
+        "version": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.GroupVersionForDiscovery",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1647,6 +1744,25 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.RootPaths",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_apimachinery_ServerAddressByClientCIDR": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "clientCIDR": {
+          "type": "string",
+          "description": ""
+        },
+        "serverAddress": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.ServerAddressByClientCIDR",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -2948,6 +3064,34 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_authorization_NonResourceRule": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "nonResourceURLs": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "verbs": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.authorization.NonResourceRule",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_authorization_ResourceAttributes": {
       "type": "object",
       "description": "",
@@ -2983,6 +3127,156 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.authorization.ResourceAttributes",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_authorization_ResourceRule": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiGroups": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "resourceNames": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "resources": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "verbs": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.authorization.ResourceRule",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_authorization_SelfSubjectAccessReview": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "authorization.k8s.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "SelfSubjectAccessReview",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/kubernetes_authorization_SelfSubjectAccessReviewSpec",
+          "javaType": "io.fabric8.kubernetes.api.model.authorization.SelfSubjectAccessReviewSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/kubernetes_authorization_SubjectAccessReviewStatus",
+          "javaType": "io.fabric8.kubernetes.api.model.authorization.SubjectAccessReviewStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.authorization.SelfSubjectAccessReview",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "kubernetes_authorization_SelfSubjectAccessReviewSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "nonResourceAttributes": {
+          "$ref": "#/definitions/kubernetes_authorization_NonResourceAttributes",
+          "javaType": "io.fabric8.kubernetes.api.model.authorization.NonResourceAttributes"
+        },
+        "resourceAttributes": {
+          "$ref": "#/definitions/kubernetes_authorization_ResourceAttributes",
+          "javaType": "io.fabric8.kubernetes.api.model.authorization.ResourceAttributes"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.authorization.SelfSubjectAccessReviewSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_authorization_SelfSubjectRulesReview": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "authorization.k8s.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "SelfSubjectRulesReview",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/kubernetes_authorization_SelfSubjectRulesReviewSpec",
+          "javaType": "io.fabric8.kubernetes.api.model.authorization.SelfSubjectRulesReviewSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/kubernetes_authorization_SubjectRulesReviewStatus",
+          "javaType": "io.fabric8.kubernetes.api.model.authorization.SubjectRulesReviewStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.authorization.SelfSubjectRulesReview",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "kubernetes_authorization_SelfSubjectRulesReviewSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "namespace": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.authorization.SelfSubjectRulesReviewSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -3094,6 +3388,41 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.authorization.SubjectAccessReviewStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_authorization_SubjectRulesReviewStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "evaluationError": {
+          "type": "string",
+          "description": ""
+        },
+        "incomplete": {
+          "type": "boolean",
+          "description": ""
+        },
+        "nonResourceRules": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/kubernetes_authorization_NonResourceRule",
+            "javaType": "io.fabric8.kubernetes.api.model.authorization.NonResourceRule"
+          }
+        },
+        "resourceRules": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/kubernetes_authorization_ResourceRule",
+            "javaType": "io.fabric8.kubernetes.api.model.authorization.ResourceRule"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.authorization.SubjectRulesReviewStatus",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -17714,6 +18043,14 @@
   },
   "type": "object",
   "properties": {
+    "APIGroup": {
+      "$ref": "#/definitions/kubernetes_apimachinery_APIGroup",
+      "javaType": "io.fabric8.kubernetes.api.model.APIGroup"
+    },
+    "APIGroupList": {
+      "$ref": "#/definitions/kubernetes_apimachinery_APIGroupList",
+      "javaType": "io.fabric8.kubernetes.api.model.APIGroupList"
+    },
     "AdmissionRequest": {
       "$ref": "#/definitions/kubernetes_admission_AdmissionRequest",
       "javaType": "io.fabric8.kubernetes.api.model.admission.AdmissionRequest"
@@ -18261,6 +18598,14 @@
     "SecurityContextConstraintsList": {
       "$ref": "#/definitions/os_security_SecurityContextConstraintsList",
       "javaType": "io.fabric8.openshift.api.model.SecurityContextConstraintsList"
+    },
+    "SelfSubjectAccessReview": {
+      "$ref": "#/definitions/kubernetes_authorization_SelfSubjectAccessReview",
+      "javaType": "io.fabric8.kubernetes.api.model.authorization.SelfSubjectAccessReview"
+    },
+    "SelfSubjectRulesReview": {
+      "$ref": "#/definitions/kubernetes_authorization_SelfSubjectRulesReview",
+      "javaType": "io.fabric8.kubernetes.api.model.authorization.SelfSubjectRulesReview"
     },
     "ServiceAccount": {
       "$ref": "#/definitions/kubernetes_core_ServiceAccount",

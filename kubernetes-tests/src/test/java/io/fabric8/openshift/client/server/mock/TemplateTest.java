@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
@@ -38,27 +39,39 @@ import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
 import io.fabric8.openshift.client.ParameterValue;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import static java.util.Collections.singletonMap;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@EnableRuleMigrationSupport
 public class TemplateTest {
   @Rule
   public OpenShiftServer server = new OpenShiftServer();
 
   @Test
   public void testList() {
-    server.expect().withPath("/oapi/v1/namespaces/test/templates").andReturn(200, new TemplateListBuilder().build()).once();
-    server.expect().withPath("/oapi/v1/namespaces/ns1/templates").andReturn(200, new TemplateListBuilder()
+    server.expect().withPath("/apis/template.openshift.io/v1/namespaces/test/templates").andReturn(200, new TemplateListBuilder().build()).once();
+    server.expect().withPath("/apis/template.openshift.io/v1/namespaces/ns1/templates").andReturn(200, new TemplateListBuilder()
       .addNewItem().and()
       .addNewItem().and().build()).once();
+    server.expect().withPath("/apis").andReturn(200, new APIGroupListBuilder()
+      .addNewGroup()
+      .withApiVersion("v1")
+      .withName("autoscaling.k8s.io")
+      .endGroup()
+      .addNewGroup()
+      .withApiVersion("v1")
+      .withName("security.openshift.io")
+      .endGroup()
+      .build()).always();
 
-    server.expect().withPath("/oapi/v1/templates").andReturn(200, new TemplateListBuilder()
+    server.expect().withPath("/apis/template.openshift.io/v1/templates").andReturn(200, new TemplateListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .addNewItem()
@@ -83,7 +96,7 @@ public class TemplateTest {
   public void testListWithParams() throws IOException {
     String json = IOHelpers.readFully(getClass().getResourceAsStream("/template-list-with-number-params.json"));
 
-    server.expect().withPath("/oapi/v1/namespaces/test/templates").andReturn(200, json).always();
+    server.expect().withPath("/apis/template.openshift.io/v1/namespaces/test/templates").andReturn(200, json).always();
 
     OpenShiftClient client = server.getOpenshiftClient();
 
@@ -98,11 +111,11 @@ public class TemplateTest {
 
   @Test
   public void testGet() {
-    server.expect().withPath("/oapi/v1/namespaces/test/templates/tmpl1").andReturn(200, new TemplateBuilder()
+    server.expect().withPath("/apis/template.openshift.io/v1/namespaces/test/templates/tmpl1").andReturn(200, new TemplateBuilder()
       .withNewMetadata().withName("tmpl1").endMetadata()
       .build()).once();
 
-    server.expect().withPath("/oapi/v1/namespaces/ns1/templates/tmpl2").andReturn(200, new TemplateBuilder()
+    server.expect().withPath("/apis/template.openshift.io/v1/namespaces/ns1/templates/tmpl2").andReturn(200, new TemplateBuilder()
       .withNewMetadata().withName("tmpl2").endMetadata()
       .build()).once();
 
@@ -123,8 +136,8 @@ public class TemplateTest {
 
   @Test
   public void testDelete() {
-    server.expect().withPath("/oapi/v1/namespaces/test/templates/tmpl1").andReturn(200, new TemplateBuilder().build()).once();
-    server.expect().withPath("/oapi/v1/namespaces/ns1/templates/tmpl2").andReturn(200, new TemplateBuilder().build()).once();
+    server.expect().withPath("/apis/template.openshift.io/v1/namespaces/test/templates/tmpl1").andReturn(200, new TemplateBuilder().build()).once();
+    server.expect().withPath("/apis/template.openshift.io/v1/namespaces/ns1/templates/tmpl2").andReturn(200, new TemplateBuilder().build()).once();
 
     OpenShiftClient client = server.getOpenshiftClient();
 
@@ -147,8 +160,8 @@ public class TemplateTest {
       .endMetadata()
       .build();
 
-    server.expect().withPath("/oapi/v1/namespaces/test/templates").andReturn(200, template).once();
-    server.expect().withPath("/oapi/v1/namespaces/test/templates/tmpl3").andReturn(404, new StatusBuilder().withCode(404).build()).once();
+    server.expect().withPath("/apis/template.openshift.io/v1/namespaces/test/templates").andReturn(200, template).once();
+    server.expect().withPath("/apis/template.openshift.io/v1/namespaces/test/templates/tmpl3").andReturn(404, new StatusBuilder().withCode(404).build()).once();
 
     OpenShiftClient client = server.getOpenshiftClient();
 
@@ -159,8 +172,8 @@ public class TemplateTest {
 
   @Test
   public void testProcess() {
-    server.expect().withPath("/oapi/v1/namespaces/test/templates/tmpl1").andReturn(200, new TemplateBuilder().build()).once();
-    server.expect().withPath("/oapi/v1/namespaces/test/processedtemplates").andReturn(201, new KubernetesListBuilder().build()).once();
+    server.expect().withPath("/apis/template.openshift.io/v1/namespaces/test/templates/tmpl1").andReturn(200, new TemplateBuilder().build()).once();
+    server.expect().withPath("/apis/template.openshift.io/v1/namespaces/test/processedtemplates").andReturn(201, new KubernetesListBuilder().build()).once();
 
     OpenShiftClient client = server.getOpenshiftClient();
     KubernetesList list = client.templates().withName("tmpl1").process(new ParameterValue("name1", "value1"));
@@ -198,7 +211,7 @@ public class TemplateTest {
   @Test
   public void testLoadParameterizedNumberTemplate() throws IOException {
     String json = IOHelpers.readFully(getClass().getResourceAsStream("/template-with-number-params.json"));
-    server.expect().withPath("/oapi/v1/namespaces/test/templates/tmpl1").andReturn(200, json).once();
+    server.expect().withPath("/apis/template.openshift.io/v1/namespaces/test/templates/tmpl1").andReturn(200, json).once();
 
     Map<String, String> map = new HashMap<>();
     map.put("PORT", "8080");
@@ -212,7 +225,7 @@ public class TemplateTest {
   @Test
   public void testProcessParameterizedNumberTemplate() throws IOException {
     String json = IOHelpers.readFully(getClass().getResourceAsStream("/template-with-number-params.json"));
-    server.expect().withPath("/oapi/v1/namespaces/test/templates/tmpl1").andReturn(200, json).once();
+    server.expect().withPath("/apis/template.openshift.io/v1/namespaces/test/templates/tmpl1").andReturn(200, json).once();
 
     Map<String, String> map = new HashMap<>();
     map.put("PORT", "8080");
@@ -224,7 +237,7 @@ public class TemplateTest {
 
   @Test
   public void testNullParameterMapValueShouldNotThrowNullPointerException() {
-    server.expect().withPath("/oapi/v1/namespaces/test/templates/tmpl1").andReturn(200, new TemplateBuilder()
+    server.expect().withPath("/apis/template.openshift.io/v1/namespaces/test/templates/tmpl1").andReturn(200, new TemplateBuilder()
       .withNewMetadata().withName("tmpl1").endMetadata()
       .withParameters(new ParameterBuilder().withName("key").build())
       .build()).once();
@@ -236,7 +249,7 @@ public class TemplateTest {
 
   @Test
   public void testEmptyParameterMapValueShouldNotThrowNullPointerException() {
-    server.expect().withPath("/oapi/v1/namespaces/test/templates/tmpl1").andReturn(200, new TemplateBuilder()
+    server.expect().withPath("/apis/template.openshift.io/v1/namespaces/test/templates/tmpl1").andReturn(200, new TemplateBuilder()
       .withNewMetadata().withName("tmpl1").endMetadata()
       .withParameters(new ParameterBuilder().withName("key").build())
       .build()).once();

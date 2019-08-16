@@ -32,16 +32,19 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.Collections;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
+@EnableRuleMigrationSupport
 public class PodPresetTest {
   @Rule public KubernetesServer server = new KubernetesServer();
 
@@ -240,13 +243,15 @@ public class PodPresetTest {
     assertTrue(deleted);
   }
 
-  @Test(expected = KubernetesClientException.class)
+  @Test
   public void testDeleteWithNamespaceMismatch() {
-    PodPreset podPreset1 = new PodPresetBuilder().withNewMetadata().withName("podPreset1").withNamespace("test").endMetadata().build();
+    Assertions.assertThrows(KubernetesClientException.class, () -> {
+      PodPreset podPreset1 = new PodPresetBuilder().withNewMetadata().withName("podPreset1").withNamespace("test").endMetadata().build();
 
-    KubernetesClient client = server.getClient();
+      KubernetesClient client = server.getClient();
 
-    Boolean deleted = client.settings().podPresets().inNamespace("hello").delete(podPreset1);
-    assertFalse(deleted);
+      Boolean deleted = client.settings().podPresets().inNamespace("hello").delete(podPreset1);
+      assertFalse(deleted);
+    });
   }
 }

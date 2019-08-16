@@ -16,6 +16,7 @@
 
 package io.fabric8.openshift.client.server.mock;
 
+import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.api.model.UserBuilder;
 import io.fabric8.openshift.api.model.UserList;
@@ -24,24 +25,25 @@ import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@EnableRuleMigrationSupport
 public class UserTest {
   @Rule
   public OpenShiftServer server = new OpenShiftServer();
 
   @Test
   public void testList() {
-   server.expect().withPath("/oapi/v1/users").andReturn(200, new UserListBuilder()
+   server.expect().withPath("/apis/user.openshift.io/v1/users").andReturn(200, new UserListBuilder()
       .addNewItem().and()
       .addNewItem().and().build()).always();
-
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
@@ -58,11 +60,11 @@ public class UserTest {
 
   @Test
   public void testGet() {
-   server.expect().withPath("/oapi/v1/users/user1").andReturn(200, new UserBuilder()
+   server.expect().withPath("/apis/user.openshift.io/v1/users/user1").andReturn(200, new UserBuilder()
       .withNewMetadata().withName("user1").endMetadata()
       .build()).once();
 
-   server.expect().withPath("/oapi/v1/users/User2").andReturn(200, new UserBuilder()
+   server.expect().withPath("/apis/user.openshift.io/v1/users/User2").andReturn(200, new UserBuilder()
       .withNewMetadata().withName("User2").endMetadata()
       .build()).once();
 
@@ -83,8 +85,8 @@ public class UserTest {
 
   @Test
   public void testDelete() {
-   server.expect().withPath("/oapi/v1/users/user1").andReturn(200, new UserBuilder().build()).once();
-   server.expect().withPath("/oapi/v1/users/User2").andReturn( 200, new UserBuilder().build()).once();
+   server.expect().withPath("/apis/user.openshift.io/v1/users/user1").andReturn(200, new UserBuilder().build()).once();
+   server.expect().withPath("/apis/user.openshift.io/v1/users/User2").andReturn( 200, new UserBuilder().build()).once();
 
     OpenShiftClient client = server.getOpenshiftClient();
 

@@ -40,32 +40,43 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
     super(wrap(ctx));
   }
 
-  public static OperationContext wrap(OperationContext context) {
+  private static OperationContext wrap(OperationContext context) {
     OpenShiftConfig config = OpenShiftConfig.wrap(context.getConfig());
     String oapiVersion = config.getOapiVersion();
-    OpenShiftClient oc = new DefaultOpenShiftClient(context.getClient(), config);
-    if (Utils.isNotNullOrEmpty(context.getApiGroupName()) && config.isOpenShiftAPIGroups(oc)) {
-      String apiGroupUrl = URLUtils.join(config.getMasterUrl(), "apis", context.getApiGroupName(), oapiVersion);
-      String apiGroupVersion = URLUtils.join(context.getApiGroupName(), oapiVersion);
-      return context.withConfig(new OpenShiftConfigBuilder(config).withOpenShiftUrl(apiGroupUrl).build()).withApiGroupName(context.getApiGroupName()).withApiGroupVersion(apiGroupVersion);
+    if (Utils.isNotNullOrEmpty(context.getApiGroupName())) {
+      try (OpenShiftClient oc = new DefaultOpenShiftClient(context.getClient(), config)) {
+        if (config.isOpenShiftAPIGroups(oc)) {
+          String apiGroupUrl = URLUtils.join(config.getMasterUrl(), "apis", context.getApiGroupName(), oapiVersion);
+          String apiGroupVersion = URLUtils.join(context.getApiGroupName(), oapiVersion);
+          return context.withConfig(new OpenShiftConfigBuilder(config).withOpenShiftUrl(apiGroupUrl).build()).withApiGroupName(context.getApiGroupName()).withApiGroupVersion(apiGroupVersion);
+        } else {
+          String apiGroupUrl = URLUtils.join(config.getMasterUrl(), "oapi", oapiVersion);
+          return context.withConfig(new OpenShiftConfigBuilder(config).withOpenShiftUrl(apiGroupUrl).build()).withApiGroupName(context.getApiGroupName()).withApiGroupVersion(oapiVersion);
+        }
+      }
     } else {
       String apiGroupUrl = URLUtils.join(config.getMasterUrl(), "oapi", oapiVersion);
-      return context.withConfig(new OpenShiftConfigBuilder(config).withOpenShiftUrl(apiGroupUrl).build()).withApiGroupName(context.getApiGroupName()).withApiGroupVersion(oapiVersion);
-    }
-  }
-
-  @Override
-  public URL getRootUrl() {
-    try {
-      return new URL(OpenShiftConfig.wrap(getConfig()).getOpenShiftUrl());
-    } catch (MalformedURLException e) {
-      throw KubernetesClientException.launderThrowable(e);
+      return context.withConfig(new OpenShiftConfigBuilder(config).withOpenShiftUrl(apiGroupUrl).build()).withApiGroupVersion(oapiVersion);
     }
   }
 
   @Override
   public OpenShiftConfig getConfig() {
     return OpenShiftConfig.wrap(super.getConfig());
+  }
+
+  @Override
+  public URL getRootUrl() {
+    // This is an OpenShift resource. If no API Group Name is specified, use /oapi endpoint
+    if (Utils.isNullOrEmpty(context.getApiGroupName())) {
+      try {
+        return new URL(OpenShiftConfig.wrap(getConfig()).getOpenShiftUrl());
+      } catch (MalformedURLException e) {
+        throw KubernetesClientException.launderThrowable(e);
+      }
+    } else {
+      return super.getRootUrl();
+    }
   }
 
   protected Class<? extends Config> getConfigType() {

@@ -129,9 +129,10 @@ public class ReplicaSetIT {
   @Test
   public void update() {
     ReadyEntity<ReplicaSet> replicaSetReady = new ReadyEntity<>(ReplicaSet.class, client, "replicaset1", currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(replicaSetReady);
+
     replicaset1 = client.apps().replicaSets().inNamespace(currentNamespace).withName("replicaset1").edit()
       .editSpec().withReplicas(2).endSpec().done();
-    await().atMost(30, TimeUnit.SECONDS).until(replicaSetReady);
     assertThat(replicaset1).isNotNull();
     assertEquals(2, replicaset1.getSpec().getReplicas().intValue());
   }

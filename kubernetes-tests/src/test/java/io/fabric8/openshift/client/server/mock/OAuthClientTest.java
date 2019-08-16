@@ -23,21 +23,23 @@ import io.fabric8.openshift.api.model.OAuthClientListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@EnableRuleMigrationSupport
 public class OAuthClientTest {
   @Rule
   public OpenShiftServer server = new OpenShiftServer();
 
   @Test
   public void testList() {
-   server.expect().withPath("/oapi/v1/oauthclients").andReturn(200, new OAuthClientListBuilder()
+   server.expect().withPath("/apis/oauth.openshift.io/v1/oauthclients").andReturn(200, new OAuthClientListBuilder()
       .addNewItem().and()
       .addNewItem().and().build()).once();
 
@@ -52,11 +54,11 @@ public class OAuthClientTest {
 
   @Test
   public void testGet() {
-   server.expect().withPath("/oapi/v1/oauthclients/client1").andReturn(200, new OAuthClientBuilder()
+   server.expect().withPath("/apis/oauth.openshift.io/v1/oauthclients/client1").andReturn(200, new OAuthClientBuilder()
       .withNewMetadata().withName("client1").endMetadata()
       .build()).once();
 
-   server.expect().withPath("/oapi/v1/oauthclients/client2").andReturn(200, new OAuthClientBuilder()
+   server.expect().withPath("/apis/oauth.openshift.io/v1/oauthclients/client2").andReturn(200, new OAuthClientBuilder()
       .withNewMetadata().withName("client2").endMetadata()
       .build()).once();
 
@@ -77,8 +79,8 @@ public class OAuthClientTest {
 
   @Test
   public void testDelete() {
-   server.expect().withPath("/oapi/v1/oauthclients/client1").andReturn(200, new OAuthClientBuilder().build()).once();
-   server.expect().withPath("/oapi/v1/oauthclients/client2").andReturn(200, new OAuthClientBuilder().build()).once();
+   server.expect().withPath("/apis/oauth.openshift.io/v1/oauthclients/client1").andReturn(200, new OAuthClientBuilder().build()).once();
+   server.expect().withPath("/apis/oauth.openshift.io/v1/oauthclients/client2").andReturn(200, new OAuthClientBuilder().build()).once();
 
     OpenShiftClient client = server.getOpenshiftClient();
 

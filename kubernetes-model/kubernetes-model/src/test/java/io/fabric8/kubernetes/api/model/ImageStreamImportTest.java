@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.openshift.api.model.ImageImportSpecBuilder;
 import io.fabric8.openshift.api.model.ImageStreamImport;
 import io.fabric8.openshift.api.model.ImageStreamImportBuilder;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 

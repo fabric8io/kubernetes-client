@@ -19,18 +19,18 @@ package io.fabric8.kubernetes.client.internal;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class KubernetesResourceUtilTest {
   private ConfigMap configMap1;
 
-  @Before
+  @BeforeEach
   public void createTestResource() {
     configMap1 = new ConfigMapBuilder()
       .withNewMetadata()

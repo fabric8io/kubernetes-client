@@ -32,19 +32,22 @@ import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
+@EnableRuleMigrationSupport
 public class DeploymentTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
@@ -237,7 +240,11 @@ public class DeploymentTest {
       .endStatus()
       .build();
 
-    Deployment deployment3 = new DeploymentBuilder().withNewMetadata().withName("deployment3").withNamespace("any").and().build();
+    Deployment deployment3 = new DeploymentBuilder().withNewMetadata().withName("deployment3").withNamespace("any").endMetadata()
+      .withNewSpec()
+      .withReplicas(1)
+      .endSpec()
+      .build();
 
     server.expect().withPath("/apis/apps/v1/namespaces/test/deployments/deployment1").andReturn(200, deployment1).once();
     server.expect().withPath("/apis/apps/v1/namespaces/test/deployments/deployment1").andReturn(200, new DeploymentBuilder(deployment1)
@@ -264,22 +271,30 @@ public class DeploymentTest {
     assertFalse(deleted);
   }
 
-  @Test(expected = KubernetesClientException.class)
+  @Test
   public void testDeleteWithNamespaceMismatch() {
-    Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test").and().build();
-    KubernetesClient client = server.getClient();
+    Assertions.assertThrows(KubernetesClientException.class, () -> {
+      Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test").endMetadata()
+        .withNewSpec()
+        .withReplicas(1)
+        .endSpec()
+        .build();
+      KubernetesClient client = server.getClient();
 
-    Boolean deleted = client.apps().deployments().inNamespace("test1").delete(deployment1);
-    assertFalse(deleted);
+      Boolean deleted = client.apps().deployments().inNamespace("test1").delete(deployment1);
+      assertFalse(deleted);
+    });
   }
 
-  @Test(expected = KubernetesClientException.class)
+  @Test
   public void testCreateWithNameMismatch() {
-    Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test").and().build();
-    Deployment deployment2 = new DeploymentBuilder().withNewMetadata().withName("deployment2").withNamespace("ns1").and().build();
-    KubernetesClient client = server.getClient();
+    Assertions.assertThrows(KubernetesClientException.class, () -> {
+      Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test").and().build();
+      Deployment deployment2 = new DeploymentBuilder().withNewMetadata().withName("deployment2").withNamespace("ns1").and().build();
+      KubernetesClient client = server.getClient();
 
-    client.apps().deployments().inNamespace("test1").withName("mydeployment1").create(deployment1);
+      client.apps().deployments().inNamespace("test1").withName("mydeployment1").create(deployment1);
+    });
   }
 
   @Test

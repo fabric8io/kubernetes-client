@@ -16,6 +16,7 @@
 
 package io.fabric8.openshift.client.server.mock;
 
+import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
 import io.fabric8.openshift.api.model.LocalSubjectAccessReviewBuilder;
 import io.fabric8.openshift.api.model.SubjectAccessReviewBuilder;
 import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
@@ -24,18 +25,20 @@ import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@EnableRuleMigrationSupport
 public class SubjectAccessReviewTest {
   @Rule
   public OpenShiftServer server = new OpenShiftServer();
 
   @Test
   public void testCreate() {
-   server.expect().withPath("/oapi/v1/subjectaccessreviews").andReturn(201, new SubjectAccessReviewResponseBuilder()
+    server.expect().withPath("/apis/authorization.openshift.io/v1/subjectaccessreviews").andReturn(201, new SubjectAccessReviewResponseBuilder()
       .withReason("r1")
       .build()).once();
 
@@ -49,9 +52,10 @@ public class SubjectAccessReviewTest {
 
   @Test
   public void testCreateInLine() {
-   server.expect().withPath("/oapi/v1/subjectaccessreviews").andReturn(201, new SubjectAccessReviewResponseBuilder()
+    server.expect().withPath("/apis/authorization.openshift.io/v1/subjectaccessreviews").andReturn(201, new SubjectAccessReviewResponseBuilder()
       .withReason("r2")
       .build()).once();
+
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
@@ -63,7 +67,7 @@ public class SubjectAccessReviewTest {
 
   @Test
   public void testCreateLocal() {
-   server.expect().withPath("/oapi/v1/namespaces/test/subjectaccessreviews").andReturn(201, new SubjectAccessReviewResponseBuilder()
+   server.expect().withPath("/apis/authorization.openshift.io/v1/namespaces/test/subjectaccessreviews").andReturn(201, new SubjectAccessReviewResponseBuilder()
       .withReason("r1")
       .build()).once();
 
@@ -77,7 +81,7 @@ public class SubjectAccessReviewTest {
 
   @Test
   public void testCreateLocalInLine() {
-   server.expect().withPath("/oapi/v1/namespaces/test/subjectaccessreviews").andReturn( 201, new SubjectAccessReviewResponseBuilder()
+   server.expect().withPath("/apis/authorization.openshift.io/v1/namespaces/test/subjectaccessreviews").andReturn( 201, new SubjectAccessReviewResponseBuilder()
       .withReason("r2")
       .build()).once();
 

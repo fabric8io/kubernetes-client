@@ -28,15 +28,18 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.io.InputStream;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
+@EnableRuleMigrationSupport
 public class KubernetesListTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
@@ -98,11 +101,13 @@ public class KubernetesListTest {
     assertTrue(result);
   }
 
-  @Test(expected = KubernetesClientException.class)
+  @Test
   public void testDeleteWithMismatch() {
-    KubernetesClient client = server.getClient();
-    Boolean result = client.lists().inNamespace("test1").delete(list);
+    Assertions.assertThrows(KubernetesClientException.class, () -> {
+      KubernetesClient client = server.getClient();
+      Boolean result = client.lists().inNamespace("test1").delete(list);
 
-    assertFalse(result);
+      assertFalse(result);
+    });
   }
 }

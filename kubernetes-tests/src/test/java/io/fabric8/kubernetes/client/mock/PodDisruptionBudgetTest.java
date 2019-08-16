@@ -25,16 +25,19 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.Collections;
 
-import static junit.framework.TestCase.assertNotNull;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
+@EnableRuleMigrationSupport
 public class PodDisruptionBudgetTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
@@ -131,21 +134,26 @@ public class PodDisruptionBudgetTest {
     assertTrue(deleted);
   }
 
-  @Test(expected = KubernetesClientException.class)
+  @Test
   public void testDeleteWithNamespaceMismatch() {
-    PodDisruptionBudget podDisruptionBudget1 = new PodDisruptionBudgetBuilder().withNewMetadata().withName("podDisruptionBudget1").withNamespace("test").and().build();
-    KubernetesClient client = server.getClient();
+    Assertions.assertThrows(KubernetesClientException.class, () -> {
+      PodDisruptionBudget podDisruptionBudget1 = new PodDisruptionBudgetBuilder().withNewMetadata().withName("podDisruptionBudget1").withNamespace("test").and().build();
+      KubernetesClient client = server.getClient();
 
-    Boolean deleted = client.policy().podDisruptionBudget().inNamespace("test1").delete(podDisruptionBudget1);
-    assertFalse(deleted);
+      Boolean deleted = client.policy().podDisruptionBudget().inNamespace("test1").delete(podDisruptionBudget1);
+      assertFalse(deleted);
+    });
+
   }
 
-  @Test(expected = KubernetesClientException.class)
+  @Test
   public void testCreateWithNameMismatch() {
-    PodDisruptionBudget podDisruptionBudget1 = new PodDisruptionBudgetBuilder().withNewMetadata().withName("podDisruptionBudget1").withNamespace("test").and().build();
-    KubernetesClient client = server.getClient();
+    Assertions.assertThrows(KubernetesClientException.class, () -> {
+      PodDisruptionBudget podDisruptionBudget1 = new PodDisruptionBudgetBuilder().withNewMetadata().withName("podDisruptionBudget1").withNamespace("test").and().build();
+      KubernetesClient client = server.getClient();
 
-    client.policy().podDisruptionBudget().inNamespace("test1").withName("mypodDisruptionBudget1").create(podDisruptionBudget1);
+      client.policy().podDisruptionBudget().inNamespace("test1").withName("mypodDisruptionBudget1").create(podDisruptionBudget1);
+    });
   }
 
   @Test

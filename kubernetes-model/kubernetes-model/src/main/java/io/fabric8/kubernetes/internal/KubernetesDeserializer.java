@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.internal;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -35,7 +36,7 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
     private static final String API_VERSION = "apiVersion";
     private static final String KEY_SEPARATOR = "#";
 
-    private static final Map<String, Class<? extends KubernetesResource>> MAP = new HashMap<>();
+    private static final Map<String, Class<? extends KubernetesResource>> MAP = new ConcurrentHashMap<>();
     private static final List<String> PACKAGES;
 
     static {

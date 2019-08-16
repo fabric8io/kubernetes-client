@@ -29,7 +29,8 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import junit.framework.AssertionFailedError;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,8 +38,9 @@ import java.net.HttpURLConnection;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@EnableRuleMigrationSupport
 public class WatchOverHTTP {
   static final Pod pod1 = new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1")
     .withResourceVersion("1").endMetadata().build();

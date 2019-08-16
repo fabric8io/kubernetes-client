@@ -23,21 +23,23 @@ import io.fabric8.openshift.api.model.ProjectListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@EnableRuleMigrationSupport
 public class ProjectTest {
   @Rule
   public OpenShiftServer server = new OpenShiftServer();
 
   @Test
   public void testList() {
-   server.expect().withPath("/oapi/v1/projects").andReturn(200, new ProjectListBuilder()
+   server.expect().withPath("/apis/project.openshift.io/v1/projects").andReturn(200, new ProjectListBuilder()
       .addNewItem().and()
       .addNewItem().and().build()).once();
 
@@ -52,11 +54,11 @@ public class ProjectTest {
 
   @Test
   public void testGet() {
-   server.expect().withPath("/oapi/v1/projects/project1").andReturn(200, new ProjectBuilder()
+   server.expect().withPath("/apis/project.openshift.io/v1/projects/project1").andReturn(200, new ProjectBuilder()
       .withNewMetadata().withName("project1").endMetadata()
       .build()).once();
 
-   server.expect().withPath("/oapi/v1/projects/project2").andReturn(200, new ProjectBuilder()
+   server.expect().withPath("/apis/project.openshift.io/v1/projects/project2").andReturn(200, new ProjectBuilder()
       .withNewMetadata().withName("project2").endMetadata()
       .build()).once();
 
@@ -77,8 +79,8 @@ public class ProjectTest {
 
   @Test
   public void testDelete() {
-   server.expect().withPath("/oapi/v1/projects/project1").andReturn(200, new ProjectBuilder().build()).once();
-   server.expect().withPath("/oapi/v1/projects/project2").andReturn( 200, new ProjectBuilder().build()).once();
+   server.expect().withPath("/apis/project.openshift.io/v1/projects/project1").andReturn(200, new ProjectBuilder().build()).once();
+   server.expect().withPath("/apis/project.openshift.io/v1/projects/project2").andReturn( 200, new ProjectBuilder().build()).once();
 
     OpenShiftClient client = server.getOpenshiftClient();
 

@@ -35,7 +35,7 @@ import okhttp3.TlsVersion;
 public class OpenShiftConfig extends Config {
 
   public static final String KUBERNETES_OAPI_VERSION_SYSTEM_PROPERTY = "kubernetes.oapi.version";
-  public static final String OPENSHIFT_URL_SYTEM_PROPERTY = "openshift.url";
+  public static final String OPENSHIFT_URL_SYSTEM_PROPERTY = "openshift.url";
   public static final String OPENSHIFT_BUILD_TIMEOUT_SYSTEM_PROPERTY = "openshift.build.timeout";
 
   public static final Long DEFAULT_BUILD_TIMEOUT = 5 * 60 * 1000L;
@@ -126,7 +126,7 @@ public class OpenShiftConfig extends Config {
   }
 
   private static String getDefaultOpenShiftUrl(Config config) {
-    String openshiftUrl = Utils.getSystemPropertyOrEnvVar(OPENSHIFT_URL_SYTEM_PROPERTY);
+    String openshiftUrl = Utils.getSystemPropertyOrEnvVar(OPENSHIFT_URL_SYSTEM_PROPERTY);
     if (openshiftUrl != null) {
       // The OPENSHIFT_URL environment variable may be set to the root url (i.e. without the '/oapi/version' path) in some configurations
       if (isRootURL(openshiftUrl)) {

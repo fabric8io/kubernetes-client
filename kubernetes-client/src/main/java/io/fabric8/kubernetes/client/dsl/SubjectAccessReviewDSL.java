@@ -15,14 +15,15 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.api.model.authorization.*;
 import io.fabric8.kubernetes.api.model.authorization.DoneableLocalSubjectAccessReview;
+import io.fabric8.kubernetes.api.model.authorization.DoneableSelfSubjectAccessReview;
+import io.fabric8.kubernetes.api.model.authorization.DoneableSelfSubjectRulesReview;
 import io.fabric8.kubernetes.api.model.authorization.DoneableSubjectAccessReview;
-import io.fabric8.kubernetes.api.model.authorization.LocalSubjectAccessReview;
-import io.fabric8.kubernetes.api.model.authorization.SubjectAccessReview;
 
 public interface SubjectAccessReviewDSL extends
   Createable<SubjectAccessReview, SubjectAccessReview, DoneableSubjectAccessReview>,
-  Namespaceable<Createable<LocalSubjectAccessReview, LocalSubjectAccessReview, DoneableLocalSubjectAccessReview>> {
-
-
+  Namespaceable<Createable<LocalSubjectAccessReview, LocalSubjectAccessReview, DoneableLocalSubjectAccessReview>>,
+  AnyNamespaceable<Createable<SelfSubjectAccessReview, SelfSubjectAccessReview, DoneableSelfSubjectAccessReview>>,
+  Listable<Createable<SelfSubjectRulesReview, SelfSubjectRulesReview, DoneableSelfSubjectRulesReview>> {
 }
