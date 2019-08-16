@@ -16,7 +16,9 @@
 package io.fabric8.kubernetes.api.model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 import javax.validation.ConstraintViolationException;
 
@@ -27,9 +29,9 @@ public class ValidationTest {
     new io.fabric8.kubernetes.api.model.NodeBuilder().withNewMetadata().withName("1.0.0.1").and().build();
   }
 
-  @Test(expected = ConstraintViolationException.class)
+  @Test
   public void testIllegalNodeName() throws JsonProcessingException {
-    new io.fabric8.kubernetes.api.model.NodeBuilder().withNewMetadata().withName("..").and().build();
+    Assertions.assertThrows(ConstraintViolationException.class, () -> new io.fabric8.kubernetes.api.model.NodeBuilder().withNewMetadata().withName("..").and().build());
   }
 
 }

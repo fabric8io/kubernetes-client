@@ -22,8 +22,8 @@ import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateBuilder;
-import org.junit.Assert;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,6 +32,10 @@ import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
 import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
 import static net.javacrumbs.jsonunit.core.Option.TREATING_NULL_AS_ABSENT;
 import static net.javacrumbs.jsonunit.fluent.JsonFluentAssert.assertThatJson;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class DeploymentTest {
 
@@ -244,133 +248,133 @@ public class DeploymentTest {
                 .build();
 
         // Assert that we serve as Expected
-        Assert.assertEquals("fabric8-maven-sample-zero-config", deployment.getMetadata().getName());
-        Assert.assertEquals("apps/v1", deployment.getApiVersion());
+        assertEquals("fabric8-maven-sample-zero-config", deployment.getMetadata().getName());
+        assertEquals("apps/v1", deployment.getApiVersion());
 
         // Assert Metadata
-        Assert.assertArrayEquals(new Object[] {"fabric8.io/iconUrl", "fabric8.io/metrics-path", "fabric8.io/scm-url"}
+        assertArrayEquals(new Object[] {"fabric8.io/iconUrl", "fabric8.io/metrics-path", "fabric8.io/scm-url"}
         , deployment.getMetadata().getAnnotations().keySet().toArray());
-        Assert.assertArrayEquals(
+        assertArrayEquals(
                 new Object[] {"img/icons/spring-boot.svg",
                         "dashboard/file/kubernetes-pods.json/?var-project=fabric8-maven-sample-zero-config&var-version=3.5-SNAPSHOT",
                         "https://github.com/spring-projects/spring-boot/spring-boot-starter-parent/fabric8-maven-sample-zero-config"},
                 deployment.getMetadata().getAnnotations().values().toArray());
-        Assert.assertArrayEquals(
+        assertArrayEquals(
                 new Object[] {"app", "provider", "version", "group"}, deployment.getMetadata().getLabels().keySet().toArray());
-        Assert.assertArrayEquals(
+        assertArrayEquals(
                 new Object[] {"fabric8-maven-sample-zero-config", "fabric8", "3.5-SNAPSHOT", "io.fabric8", },
                 deployment.getMetadata().getLabels().values().toArray());
-        Assert.assertEquals("fabric8-maven-sample-zero-config", deployment.getMetadata().getName());
-        Assert.assertEquals("kubernetes", deployment.getMetadata().getClusterName());
-        Assert.assertEquals("myproject", deployment.getMetadata().getNamespace());
-        Assert.assertEquals("zero-config-test", deployment.getMetadata().getGenerateName());
-        Assert.assertEquals(1, deployment.getMetadata().getInitializers().getPending().size());
-        Assert.assertTrue(deployment.getMetadata().getOwnerReferences().isEmpty());
+        assertEquals("fabric8-maven-sample-zero-config", deployment.getMetadata().getName());
+        assertEquals("kubernetes", deployment.getMetadata().getClusterName());
+        assertEquals("myproject", deployment.getMetadata().getNamespace());
+        assertEquals("zero-config-test", deployment.getMetadata().getGenerateName());
+        assertEquals(1, deployment.getMetadata().getInitializers().getPending().size());
+        assertTrue(deployment.getMetadata().getOwnerReferences().isEmpty());
 
         // Assert Spec
-        Assert.assertEquals(5, deployment.getSpec().getMinReadySeconds().intValue());
-        Assert.assertFalse(deployment.getSpec().getPaused());
-        Assert.assertEquals(5, deployment.getSpec().getReplicas().intValue());
-        Assert.assertEquals(3, deployment.getSpec().getRevisionHistoryLimit().intValue());
-        Assert.assertArrayEquals(
+        assertEquals(5, deployment.getSpec().getMinReadySeconds().intValue());
+        assertFalse(deployment.getSpec().getPaused());
+        assertEquals(5, deployment.getSpec().getReplicas().intValue());
+        assertEquals(3, deployment.getSpec().getRevisionHistoryLimit().intValue());
+        assertArrayEquals(
                 new Object[] {"app", "provider", "group"}, deployment.getSpec().getSelector().getMatchLabels().keySet().toArray());
-        Assert.assertArrayEquals(
+        assertArrayEquals(
                 new Object[] {"fabric8-maven-sample-zero-config", "fabric8", "io.fabric8"},
                 deployment.getSpec().getSelector().getMatchLabels().values().toArray());
-        Assert.assertEquals("Rolling", deployment.getSpec().getStrategy().getType());
-        Assert.assertEquals(20, deployment.getSpec().getStrategy().getRollingUpdate().getMaxSurge().getIntVal().intValue());
-        Assert.assertEquals(20, deployment.getSpec().getStrategy().getRollingUpdate().getMaxUnavailable().getIntVal().intValue());
+        assertEquals("Rolling", deployment.getSpec().getStrategy().getType());
+        assertEquals(20, deployment.getSpec().getStrategy().getRollingUpdate().getMaxSurge().getIntVal().intValue());
+        assertEquals(20, deployment.getSpec().getStrategy().getRollingUpdate().getMaxUnavailable().getIntVal().intValue());
 
         // Assert Spec's template
-        Assert.assertArrayEquals(
+        assertArrayEquals(
                 new Object[] {"fabric8.io/metrics-path", "fabric8.io/scm-url", "fabric8.io/iconUrl"},
                 deployment.getSpec().getTemplate().getMetadata().getAnnotations().keySet().toArray());
-        Assert.assertArrayEquals(
+        assertArrayEquals(
                 new Object[]{
                         "dashboard/file/kubernetes-pods.json/?var-project=fabric8-maven-sample-zero-config&var-version=3.5-SNAPSHOT",
                         "https://github.com/spring-projects/spring-boot/spring-boot-starter-parent/fabric8-maven-sample-zero-config",
                         "img/icons/spring-boot.svg"
                 }, deployment.getSpec().getTemplate().getMetadata().getAnnotations().values().toArray());
-        Assert.assertArrayEquals(
+        assertArrayEquals(
                 new Object[] {"app", "provider", "version", "group"}, deployment.getSpec().getTemplate().getMetadata().getLabels().keySet().toArray());
-        Assert.assertArrayEquals(
+        assertArrayEquals(
                 new Object[] {"fabric8-maven-sample-zero-config", "fabric8", "3.5-SNAPSHOT", "io.fabric8"},
                 deployment.getSpec().getTemplate().getMetadata().getLabels().values().toArray());
-        Assert.assertEquals(10, deployment.getSpec().getTemplate().getSpec().getActiveDeadlineSeconds().intValue());
+        assertEquals(10, deployment.getSpec().getTemplate().getSpec().getActiveDeadlineSeconds().intValue());
 
         // Assert Spec's template's container
-        Assert.assertEquals(1, deployment.getSpec().getTemplate().getSpec().getContainers().size());
-        Assert.assertArrayEquals(new Object[] {"printenv"}, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getCommand().toArray());
-        Assert.assertArrayEquals(new Object[] {"HOSTNAME", "KUBERNETES_PORT"}, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getArgs().toArray());
-        Assert.assertEquals(3, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getEnv().size());
-        Assert.assertEquals("KUBERNETES_NAMESPACE", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getEnv().get(0).getName());
-        Assert.assertEquals("KUBERNETES-NAME", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getEnv().get(1).getName());
-        Assert.assertEquals("KUBERNETES.CLUSTERNAME", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getEnv().get(2).getName());
-        Assert.assertEquals("fabric8/fabric8-maven-sample-zero-config:snapshot-171129-120114-0102", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
-        Assert.assertEquals("IfNotPresent", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getImagePullPolicy());
-        Assert.assertEquals("spring-boot", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getName());
-        Assert.assertEquals(1, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getEnvFrom().size());
-        Assert.assertEquals("my-app-secret", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getEnvFrom().get(0).getSecretRef().getName());
-        Assert.assertEquals("/healthz", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getHttpGet().getPath());
-        Assert.assertEquals("8080", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getHttpGet().getPort().getStrVal());
-        Assert.assertEquals("X-Custom-Header", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getHttpGet().getHttpHeaders().get(0).getName());
-        Assert.assertEquals("Awesome", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getHttpGet().getHttpHeaders().get(0).getValue());
-        Assert.assertEquals(5, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getInitialDelaySeconds().intValue());
-        Assert.assertEquals(5, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getPeriodSeconds().intValue());
-        Assert.assertEquals(5, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getFailureThreshold().intValue());
-        Assert.assertEquals(5, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getSuccessThreshold().intValue());
-        Assert.assertEquals(3, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().size());
-        Assert.assertEquals(8080, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(0).getContainerPort().intValue());
-        Assert.assertEquals("http", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(0).getName());
-        Assert.assertEquals("TCP", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(0).getProtocol());
-        Assert.assertEquals("127.0.0.1", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(0).getHostIP());
-        Assert.assertEquals(50, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(0).getHostPort().intValue());
-        Assert.assertEquals(9779, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(1).getContainerPort().intValue());
-        Assert.assertEquals("prometheus", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(1).getName());
-        Assert.assertEquals("TCP", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(1).getProtocol());
-        Assert.assertEquals(8778, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(2).getContainerPort().intValue());
-        Assert.assertEquals("jolokia", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(2).getName());
-        Assert.assertEquals("TCP", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(2).getProtocol());
-        Assert.assertFalse(deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getStdin());
-        Assert.assertFalse(deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getStdinOnce());
-        Assert.assertArrayEquals(new Object[] {"memory", "cpu"}, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getResources().getRequests().keySet().toArray());
-        Assert.assertArrayEquals(new Object[] {"memory", "cpu"}, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getResources().getLimits().keySet().toArray());
-        Assert.assertEquals("/tmp/my-log", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getTerminationMessagePath());
-        Assert.assertEquals("FallbackToLogsOnError", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getTerminationMessagePolicy());
-        Assert.assertFalse(deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getTty());
-        Assert.assertEquals(1, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getVolumeMounts().size());
-        Assert.assertEquals("/cache", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getVolumeMounts().get(0).getMountPath());
-        Assert.assertEquals("cache-volume", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getVolumeMounts().get(0).getName());
-        Assert.assertEquals("/workdir", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getWorkingDir());
+        assertEquals(1, deployment.getSpec().getTemplate().getSpec().getContainers().size());
+        assertArrayEquals(new Object[] {"printenv"}, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getCommand().toArray());
+        assertArrayEquals(new Object[] {"HOSTNAME", "KUBERNETES_PORT"}, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getArgs().toArray());
+        assertEquals(3, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getEnv().size());
+        assertEquals("KUBERNETES_NAMESPACE", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getEnv().get(0).getName());
+        assertEquals("KUBERNETES-NAME", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getEnv().get(1).getName());
+        assertEquals("KUBERNETES.CLUSTERNAME", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getEnv().get(2).getName());
+        assertEquals("fabric8/fabric8-maven-sample-zero-config:snapshot-171129-120114-0102", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
+        assertEquals("IfNotPresent", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getImagePullPolicy());
+        assertEquals("spring-boot", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getName());
+        assertEquals(1, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getEnvFrom().size());
+        assertEquals("my-app-secret", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getEnvFrom().get(0).getSecretRef().getName());
+        assertEquals("/healthz", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getHttpGet().getPath());
+        assertEquals("8080", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getHttpGet().getPort().getStrVal());
+        assertEquals("X-Custom-Header", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getHttpGet().getHttpHeaders().get(0).getName());
+        assertEquals("Awesome", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getHttpGet().getHttpHeaders().get(0).getValue());
+        assertEquals(5, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getInitialDelaySeconds().intValue());
+        assertEquals(5, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getPeriodSeconds().intValue());
+        assertEquals(5, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getFailureThreshold().intValue());
+        assertEquals(5, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getSuccessThreshold().intValue());
+        assertEquals(3, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().size());
+        assertEquals(8080, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(0).getContainerPort().intValue());
+        assertEquals("http", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(0).getName());
+        assertEquals("TCP", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(0).getProtocol());
+        assertEquals("127.0.0.1", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(0).getHostIP());
+        assertEquals(50, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(0).getHostPort().intValue());
+        assertEquals(9779, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(1).getContainerPort().intValue());
+        assertEquals("prometheus", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(1).getName());
+        assertEquals("TCP", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(1).getProtocol());
+        assertEquals(8778, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(2).getContainerPort().intValue());
+        assertEquals("jolokia", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(2).getName());
+        assertEquals("TCP", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(2).getProtocol());
+        assertFalse(deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getStdin());
+        assertFalse(deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getStdinOnce());
+        assertArrayEquals(new Object[] {"memory", "cpu"}, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getResources().getRequests().keySet().toArray());
+        assertArrayEquals(new Object[] {"memory", "cpu"}, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getResources().getLimits().keySet().toArray());
+        assertEquals("/tmp/my-log", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getTerminationMessagePath());
+        assertEquals("FallbackToLogsOnError", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getTerminationMessagePolicy());
+        assertFalse(deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getTty());
+        assertEquals(1, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getVolumeMounts().size());
+        assertEquals("/cache", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getVolumeMounts().get(0).getMountPath());
+        assertEquals("cache-volume", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getVolumeMounts().get(0).getName());
+        assertEquals("/workdir", deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getWorkingDir());
 
-        Assert.assertEquals("ClusterFirst", deployment.getSpec().getTemplate().getSpec().getDnsPolicy());
-        Assert.assertEquals(2, deployment.getSpec().getTemplate().getSpec().getHostAliases().size());
-        Assert.assertEquals("127.0.0.1", deployment.getSpec().getTemplate().getSpec().getHostAliases().get(0).getIp());
-        Assert.assertArrayEquals(new Object[] {"foo.local", "bar.local"}, deployment.getSpec().getTemplate().getSpec().getHostAliases().get(0).getHostnames().toArray());
-        Assert.assertEquals("10.0.2.3", deployment.getSpec().getTemplate().getSpec().getHostAliases().get(1).getIp());
-        Assert.assertArrayEquals(new Object[] {"foo.remote", "bar.remote"}, deployment.getSpec().getTemplate().getSpec().getHostAliases().get(1).getHostnames().toArray());
-        Assert.assertFalse(deployment.getSpec().getTemplate().getSpec().getHostIPC());
-        Assert.assertFalse(deployment.getSpec().getTemplate().getSpec().getHostNetwork());
-        Assert.assertFalse(deployment.getSpec().getTemplate().getSpec().getHostPID());
-        Assert.assertEquals("localhost", deployment.getSpec().getTemplate().getSpec().getHostname());
-        Assert.assertEquals(1, deployment.getSpec().getTemplate().getSpec().getImagePullSecrets().size());
-        Assert.assertEquals("regsecret", deployment.getSpec().getTemplate().getSpec().getImagePullSecrets().get(0).getName());
-        Assert.assertEquals(1, deployment.getSpec().getTemplate().getSpec().getInitContainers().size());
-        Assert.assertEquals("init-mydb", deployment.getSpec().getTemplate().getSpec().getInitContainers().get(0).getName());
-        Assert.assertEquals("busybox", deployment.getSpec().getTemplate().getSpec().getInitContainers().get(0).getImage());
-        Assert.assertArrayEquals(new Object[] {"sh", "-c", "until nslookup mydb; do echo waiting for mydb; sleep 2; done;"}, deployment.getSpec().getTemplate().getSpec().getInitContainers().get(0).getCommand().toArray());
-        Assert.assertEquals("node1", deployment.getSpec().getTemplate().getSpec().getNodeName());
-        Assert.assertEquals("ssd", deployment.getSpec().getTemplate().getSpec().getNodeSelector().get("disktype"));
-        Assert.assertEquals("robot", deployment.getSpec().getTemplate().getSpec().getServiceAccount());
-        Assert.assertEquals("robot", deployment.getSpec().getTemplate().getSpec().getServiceAccountName());
-        Assert.assertEquals("test", deployment.getSpec().getTemplate().getSpec().getSubdomain());
-        Assert.assertEquals("Always", deployment.getSpec().getTemplate().getSpec().getRestartPolicy());
-        Assert.assertEquals("default", deployment.getSpec().getTemplate().getSpec().getSchedulerName());
-        Assert.assertEquals(30, deployment.getSpec().getTemplate().getSpec().getTerminationGracePeriodSeconds().intValue());
-        Assert.assertEquals(1, deployment.getSpec().getTemplate().getSpec().getVolumes().size());
-        Assert.assertEquals("test-volume", deployment.getSpec().getTemplate().getSpec().getVolumes().get(0).getName());
-        Assert.assertEquals("<volume-id>", deployment.getSpec().getTemplate().getSpec().getVolumes().get(0).getAwsElasticBlockStore().getVolumeID());
-        Assert.assertEquals("ext4", deployment.getSpec().getTemplate().getSpec().getVolumes().get(0).getAwsElasticBlockStore().getFsType());
+        assertEquals("ClusterFirst", deployment.getSpec().getTemplate().getSpec().getDnsPolicy());
+        assertEquals(2, deployment.getSpec().getTemplate().getSpec().getHostAliases().size());
+        assertEquals("127.0.0.1", deployment.getSpec().getTemplate().getSpec().getHostAliases().get(0).getIp());
+        assertArrayEquals(new Object[] {"foo.local", "bar.local"}, deployment.getSpec().getTemplate().getSpec().getHostAliases().get(0).getHostnames().toArray());
+        assertEquals("10.0.2.3", deployment.getSpec().getTemplate().getSpec().getHostAliases().get(1).getIp());
+        assertArrayEquals(new Object[] {"foo.remote", "bar.remote"}, deployment.getSpec().getTemplate().getSpec().getHostAliases().get(1).getHostnames().toArray());
+        assertFalse(deployment.getSpec().getTemplate().getSpec().getHostIPC());
+        assertFalse(deployment.getSpec().getTemplate().getSpec().getHostNetwork());
+        assertFalse(deployment.getSpec().getTemplate().getSpec().getHostPID());
+        assertEquals("localhost", deployment.getSpec().getTemplate().getSpec().getHostname());
+        assertEquals(1, deployment.getSpec().getTemplate().getSpec().getImagePullSecrets().size());
+        assertEquals("regsecret", deployment.getSpec().getTemplate().getSpec().getImagePullSecrets().get(0).getName());
+        assertEquals(1, deployment.getSpec().getTemplate().getSpec().getInitContainers().size());
+        assertEquals("init-mydb", deployment.getSpec().getTemplate().getSpec().getInitContainers().get(0).getName());
+        assertEquals("busybox", deployment.getSpec().getTemplate().getSpec().getInitContainers().get(0).getImage());
+        assertArrayEquals(new Object[] {"sh", "-c", "until nslookup mydb; do echo waiting for mydb; sleep 2; done;"}, deployment.getSpec().getTemplate().getSpec().getInitContainers().get(0).getCommand().toArray());
+        assertEquals("node1", deployment.getSpec().getTemplate().getSpec().getNodeName());
+        assertEquals("ssd", deployment.getSpec().getTemplate().getSpec().getNodeSelector().get("disktype"));
+        assertEquals("robot", deployment.getSpec().getTemplate().getSpec().getServiceAccount());
+        assertEquals("robot", deployment.getSpec().getTemplate().getSpec().getServiceAccountName());
+        assertEquals("test", deployment.getSpec().getTemplate().getSpec().getSubdomain());
+        assertEquals("Always", deployment.getSpec().getTemplate().getSpec().getRestartPolicy());
+        assertEquals("default", deployment.getSpec().getTemplate().getSpec().getSchedulerName());
+        assertEquals(30, deployment.getSpec().getTemplate().getSpec().getTerminationGracePeriodSeconds().intValue());
+        assertEquals(1, deployment.getSpec().getTemplate().getSpec().getVolumes().size());
+        assertEquals("test-volume", deployment.getSpec().getTemplate().getSpec().getVolumes().get(0).getName());
+        assertEquals("<volume-id>", deployment.getSpec().getTemplate().getSpec().getVolumes().get(0).getAwsElasticBlockStore().getVolumeID());
+        assertEquals("ext4", deployment.getSpec().getTemplate().getSpec().getVolumes().get(0).getAwsElasticBlockStore().getFsType());
     }
 
     @Test
@@ -604,125 +608,125 @@ public class DeploymentTest {
 
 
         // Assert that we serve as Expected
-        Assert.assertEquals("fabric8-maven-sample-zero-config", deploymentConfig.getMetadata().getName());
-        Assert.assertEquals("apps.openshift.io/v1", deploymentConfig.getApiVersion());
+        assertEquals("fabric8-maven-sample-zero-config", deploymentConfig.getMetadata().getName());
+        assertEquals("apps.openshift.io/v1", deploymentConfig.getApiVersion());
 
         // Assert Metadata
-        Assert.assertArrayEquals(
+        assertArrayEquals(
                 new Object[] {"fabric8.io/iconUrl", "fabric8.io/metrics-path", "fabric8.io/scm-url"},
                 deploymentConfig.getMetadata().getAnnotations().keySet().toArray());
-        Assert.assertArrayEquals(
+        assertArrayEquals(
                 new Object[] {"img/icons/spring-boot.svg",
                         "dashboard/file/kubernetes-pods.json/?var-project=fabric8-maven-sample-zero-config&var-version=3.5-SNAPSHOT",
                         "https://github.com/spring-projects/spring-boot/spring-boot-starter-parent/fabric8-maven-sample-zero-config"},
                 deploymentConfig.getMetadata().getAnnotations().values().toArray());
-        Assert.assertArrayEquals(
+        assertArrayEquals(
                 new Object[] {"app", "provider", "version", "group"},
                 deploymentConfig.getMetadata().getLabels().keySet().toArray());
-        Assert.assertArrayEquals(
+        assertArrayEquals(
                 new Object[] {"fabric8-maven-plugin-zero-config", "fabric8", "3.5-SNAPSHOT", "io.fabric8", },
                 deploymentConfig.getMetadata().getLabels().values().toArray());
-        Assert.assertEquals("fabric8-maven-sample-zero-config", deploymentConfig.getMetadata().getName());
-        Assert.assertEquals("openshift", deploymentConfig.getMetadata().getClusterName());
-        Assert.assertEquals("myproject", deploymentConfig.getMetadata().getNamespace());
-        Assert.assertEquals("zero-config-test", deploymentConfig.getMetadata().getGenerateName());
-        Assert.assertEquals(1, deploymentConfig.getMetadata().getInitializers().getPending().size());
-        Assert.assertTrue(deploymentConfig.getMetadata().getOwnerReferences().isEmpty());
+        assertEquals("fabric8-maven-sample-zero-config", deploymentConfig.getMetadata().getName());
+        assertEquals("openshift", deploymentConfig.getMetadata().getClusterName());
+        assertEquals("myproject", deploymentConfig.getMetadata().getNamespace());
+        assertEquals("zero-config-test", deploymentConfig.getMetadata().getGenerateName());
+        assertEquals(1, deploymentConfig.getMetadata().getInitializers().getPending().size());
+        assertTrue(deploymentConfig.getMetadata().getOwnerReferences().isEmpty());
 
         // Assert Spec
-        Assert.assertEquals(5, deploymentConfig.getSpec().getMinReadySeconds().intValue());
-        Assert.assertFalse(deploymentConfig.getSpec().getPaused());
-        Assert.assertEquals(5, deploymentConfig.getSpec().getReplicas().intValue());
-        Assert.assertEquals(3, deploymentConfig.getSpec().getRevisionHistoryLimit().intValue());
-        Assert.assertEquals("Rolling", deploymentConfig.getSpec().getStrategy().getType());
+        assertEquals(5, deploymentConfig.getSpec().getMinReadySeconds().intValue());
+        assertFalse(deploymentConfig.getSpec().getPaused());
+        assertEquals(5, deploymentConfig.getSpec().getReplicas().intValue());
+        assertEquals(3, deploymentConfig.getSpec().getRevisionHistoryLimit().intValue());
+        assertEquals("Rolling", deploymentConfig.getSpec().getStrategy().getType());
 
         // Assert Spec's template
-        Assert.assertArrayEquals(
+        assertArrayEquals(
                 new Object[] {"fabric8.io/metrics-path", "fabric8.io/scm-url", "fabric8.io/iconUrl"},
                 deploymentConfig.getSpec().getTemplate().getMetadata().getAnnotations().keySet().toArray());
-        Assert.assertArrayEquals(
+        assertArrayEquals(
                 new Object[]{
                         "dashboard/file/kubernetes-pods.json/?var-project=fabric8-maven-sample-zero-config&var-version=3.5-SNAPSHOT",
                         "https://github.com/spring-projects/spring-boot/spring-boot-starter-parent/fabric8-maven-sample-zero-config",
                         "img/icons/spring-boot.svg"
                 }, deploymentConfig.getSpec().getTemplate().getMetadata().getAnnotations().values().toArray());
-        Assert.assertArrayEquals(new Object[] {"app", "provider", "version", "group"}, deploymentConfig.getSpec().getTemplate().getMetadata().getLabels().keySet().toArray());
-        Assert.assertArrayEquals(new Object[] {"fabric8-maven-sample-zero-config", "fabric8", "3.5-SNAPSHOT", "io.fabric8"}, deploymentConfig.getSpec().getTemplate().getMetadata().getLabels().values().toArray());
-        Assert.assertEquals(10, deploymentConfig.getSpec().getTemplate().getSpec().getActiveDeadlineSeconds().intValue());
+        assertArrayEquals(new Object[] {"app", "provider", "version", "group"}, deploymentConfig.getSpec().getTemplate().getMetadata().getLabels().keySet().toArray());
+        assertArrayEquals(new Object[] {"fabric8-maven-sample-zero-config", "fabric8", "3.5-SNAPSHOT", "io.fabric8"}, deploymentConfig.getSpec().getTemplate().getMetadata().getLabels().values().toArray());
+        assertEquals(10, deploymentConfig.getSpec().getTemplate().getSpec().getActiveDeadlineSeconds().intValue());
 
         // Assert Spec's template's container
-        Assert.assertEquals(1, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().size());
-        Assert.assertArrayEquals(new Object[] {"printenv"}, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getCommand().toArray());
-        Assert.assertArrayEquals(new Object[] {"HOSTNAME", "KUBERNETES_PORT"}, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getArgs().toArray());
-        Assert.assertEquals(3, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getEnv().size());
-        Assert.assertEquals("KUBERNETES_NAMESPACE", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getEnv().get(0).getName());
-        Assert.assertEquals("KUBERNETES-NAME", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getEnv().get(1).getName());
-        Assert.assertEquals("KUBERNETES.CLUSTERNAME", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getEnv().get(2).getName());
-        Assert.assertEquals("fabric8/fabric8-maven-sample-zero-config:snapshot-171129-120114-0102", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
-        Assert.assertEquals("IfNotPresent", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getImagePullPolicy());
-        Assert.assertEquals("spring-boot", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getName());
-        Assert.assertEquals(1, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getEnvFrom().size());
-        Assert.assertEquals("my-app-secret", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getEnvFrom().get(0).getSecretRef().getName());
-        Assert.assertEquals("/healthz", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getHttpGet().getPath());
-        Assert.assertEquals("8080", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getHttpGet().getPort().getStrVal());
-        Assert.assertEquals("X-Custom-Header", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getHttpGet().getHttpHeaders().get(0).getName());
-        Assert.assertEquals("Awesome", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getHttpGet().getHttpHeaders().get(0).getValue());
-        Assert.assertEquals(5, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getInitialDelaySeconds().intValue());
-        Assert.assertEquals(5, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getPeriodSeconds().intValue());
-        Assert.assertEquals(5, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getFailureThreshold().intValue());
-        Assert.assertEquals(5, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getSuccessThreshold().intValue());
-        Assert.assertEquals(3, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().size());
-        Assert.assertEquals(8080, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(0).getContainerPort().intValue());
-        Assert.assertEquals("http", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(0).getName());
-        Assert.assertEquals("TCP", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(0).getProtocol());
-        Assert.assertEquals("127.0.0.1", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(0).getHostIP());
-        Assert.assertEquals(50, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(0).getHostPort().intValue());
-        Assert.assertEquals(9779, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(1).getContainerPort().intValue());
-        Assert.assertEquals("prometheus", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(1).getName());
-        Assert.assertEquals("TCP", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(1).getProtocol());
-        Assert.assertEquals(8778, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(2).getContainerPort().intValue());
-        Assert.assertEquals("jolokia", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(2).getName());
-        Assert.assertEquals("TCP", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(2).getProtocol());
-        Assert.assertFalse(deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getStdin());
-        Assert.assertFalse(deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getStdinOnce());
-        Assert.assertArrayEquals(new Object[] {"memory", "cpu"}, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getResources().getRequests().keySet().toArray());
-        Assert.assertArrayEquals(new Object[] {"memory", "cpu"}, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getResources().getLimits().keySet().toArray());
-        Assert.assertEquals("/tmp/my-log", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getTerminationMessagePath());
-        Assert.assertEquals("FallbackToLogsOnError", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getTerminationMessagePolicy());
-        Assert.assertFalse(deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getTty());
-        Assert.assertEquals(1, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getVolumeMounts().size());
-        Assert.assertEquals("/cache", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getVolumeMounts().get(0).getMountPath());
-        Assert.assertEquals("cache-volume", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getVolumeMounts().get(0).getName());
-        Assert.assertEquals("/workdir", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getWorkingDir());
+        assertEquals(1, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().size());
+        assertArrayEquals(new Object[] {"printenv"}, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getCommand().toArray());
+        assertArrayEquals(new Object[] {"HOSTNAME", "KUBERNETES_PORT"}, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getArgs().toArray());
+        assertEquals(3, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getEnv().size());
+        assertEquals("KUBERNETES_NAMESPACE", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getEnv().get(0).getName());
+        assertEquals("KUBERNETES-NAME", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getEnv().get(1).getName());
+        assertEquals("KUBERNETES.CLUSTERNAME", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getEnv().get(2).getName());
+        assertEquals("fabric8/fabric8-maven-sample-zero-config:snapshot-171129-120114-0102", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
+        assertEquals("IfNotPresent", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getImagePullPolicy());
+        assertEquals("spring-boot", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getName());
+        assertEquals(1, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getEnvFrom().size());
+        assertEquals("my-app-secret", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getEnvFrom().get(0).getSecretRef().getName());
+        assertEquals("/healthz", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getHttpGet().getPath());
+        assertEquals("8080", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getHttpGet().getPort().getStrVal());
+        assertEquals("X-Custom-Header", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getHttpGet().getHttpHeaders().get(0).getName());
+        assertEquals("Awesome", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getHttpGet().getHttpHeaders().get(0).getValue());
+        assertEquals(5, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getInitialDelaySeconds().intValue());
+        assertEquals(5, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getPeriodSeconds().intValue());
+        assertEquals(5, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getFailureThreshold().intValue());
+        assertEquals(5, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getLivenessProbe().getSuccessThreshold().intValue());
+        assertEquals(3, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().size());
+        assertEquals(8080, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(0).getContainerPort().intValue());
+        assertEquals("http", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(0).getName());
+        assertEquals("TCP", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(0).getProtocol());
+        assertEquals("127.0.0.1", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(0).getHostIP());
+        assertEquals(50, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(0).getHostPort().intValue());
+        assertEquals(9779, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(1).getContainerPort().intValue());
+        assertEquals("prometheus", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(1).getName());
+        assertEquals("TCP", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(1).getProtocol());
+        assertEquals(8778, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(2).getContainerPort().intValue());
+        assertEquals("jolokia", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(2).getName());
+        assertEquals("TCP", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getPorts().get(2).getProtocol());
+        assertFalse(deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getStdin());
+        assertFalse(deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getStdinOnce());
+        assertArrayEquals(new Object[] {"memory", "cpu"}, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getResources().getRequests().keySet().toArray());
+        assertArrayEquals(new Object[] {"memory", "cpu"}, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getResources().getLimits().keySet().toArray());
+        assertEquals("/tmp/my-log", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getTerminationMessagePath());
+        assertEquals("FallbackToLogsOnError", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getTerminationMessagePolicy());
+        assertFalse(deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getTty());
+        assertEquals(1, deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getVolumeMounts().size());
+        assertEquals("/cache", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getVolumeMounts().get(0).getMountPath());
+        assertEquals("cache-volume", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getVolumeMounts().get(0).getName());
+        assertEquals("/workdir", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getWorkingDir());
 
-        Assert.assertEquals("ClusterFirst", deploymentConfig.getSpec().getTemplate().getSpec().getDnsPolicy());
-        Assert.assertEquals(2, deploymentConfig.getSpec().getTemplate().getSpec().getHostAliases().size());
-        Assert.assertEquals("127.0.0.1", deploymentConfig.getSpec().getTemplate().getSpec().getHostAliases().get(0).getIp());
-        Assert.assertArrayEquals(new Object[] {"foo.local", "bar.local"}, deploymentConfig.getSpec().getTemplate().getSpec().getHostAliases().get(0).getHostnames().toArray());
-        Assert.assertEquals("10.0.2.3", deploymentConfig.getSpec().getTemplate().getSpec().getHostAliases().get(1).getIp());
-        Assert.assertArrayEquals(new Object[] {"foo.remote", "bar.remote"}, deploymentConfig.getSpec().getTemplate().getSpec().getHostAliases().get(1).getHostnames().toArray());
-        Assert.assertFalse(deploymentConfig.getSpec().getTemplate().getSpec().getHostIPC());
-        Assert.assertFalse(deploymentConfig.getSpec().getTemplate().getSpec().getHostNetwork());
-        Assert.assertFalse(deploymentConfig.getSpec().getTemplate().getSpec().getHostPID());
-        Assert.assertEquals("localhost", deploymentConfig.getSpec().getTemplate().getSpec().getHostname());
-        Assert.assertEquals(1, deploymentConfig.getSpec().getTemplate().getSpec().getImagePullSecrets().size());
-        Assert.assertEquals("regsecret", deploymentConfig.getSpec().getTemplate().getSpec().getImagePullSecrets().get(0).getName());
-        Assert.assertEquals(1, deploymentConfig.getSpec().getTemplate().getSpec().getInitContainers().size());
-        Assert.assertEquals("init-mydb", deploymentConfig.getSpec().getTemplate().getSpec().getInitContainers().get(0).getName());
-        Assert.assertEquals("busybox", deploymentConfig.getSpec().getTemplate().getSpec().getInitContainers().get(0).getImage());
-        Assert.assertArrayEquals(new Object[] {"sh", "-c", "until nslookup mydb; do echo waiting for mydb; sleep 2; done;"}, deploymentConfig.getSpec().getTemplate().getSpec().getInitContainers().get(0).getCommand().toArray());
-        Assert.assertEquals("node1", deploymentConfig.getSpec().getTemplate().getSpec().getNodeName());
-        Assert.assertEquals("ssd", deploymentConfig.getSpec().getTemplate().getSpec().getNodeSelector().get("disktype"));
-        Assert.assertEquals("robot", deploymentConfig.getSpec().getTemplate().getSpec().getServiceAccount());
-        Assert.assertEquals("robot", deploymentConfig.getSpec().getTemplate().getSpec().getServiceAccountName());
-        Assert.assertEquals("test", deploymentConfig.getSpec().getTemplate().getSpec().getSubdomain());
-        Assert.assertEquals("Always", deploymentConfig.getSpec().getTemplate().getSpec().getRestartPolicy());
-        Assert.assertEquals("default", deploymentConfig.getSpec().getTemplate().getSpec().getSchedulerName());
-        Assert.assertEquals(30, deploymentConfig.getSpec().getTemplate().getSpec().getTerminationGracePeriodSeconds().intValue());
-        Assert.assertEquals(1, deploymentConfig.getSpec().getTemplate().getSpec().getVolumes().size());
-        Assert.assertEquals("site-data", deploymentConfig.getSpec().getTemplate().getSpec().getVolumes().get(0).getName());
-        Assert.assertEquals("my-site-data", deploymentConfig.getSpec().getTemplate().getSpec().getVolumes().get(0).getPersistentVolumeClaim().getClaimName());
-        Assert.assertFalse(deploymentConfig.getSpec().getTemplate().getSpec().getVolumes().get(0).getPersistentVolumeClaim().getReadOnly());
+        assertEquals("ClusterFirst", deploymentConfig.getSpec().getTemplate().getSpec().getDnsPolicy());
+        assertEquals(2, deploymentConfig.getSpec().getTemplate().getSpec().getHostAliases().size());
+        assertEquals("127.0.0.1", deploymentConfig.getSpec().getTemplate().getSpec().getHostAliases().get(0).getIp());
+        assertArrayEquals(new Object[] {"foo.local", "bar.local"}, deploymentConfig.getSpec().getTemplate().getSpec().getHostAliases().get(0).getHostnames().toArray());
+        assertEquals("10.0.2.3", deploymentConfig.getSpec().getTemplate().getSpec().getHostAliases().get(1).getIp());
+        assertArrayEquals(new Object[] {"foo.remote", "bar.remote"}, deploymentConfig.getSpec().getTemplate().getSpec().getHostAliases().get(1).getHostnames().toArray());
+        assertFalse(deploymentConfig.getSpec().getTemplate().getSpec().getHostIPC());
+        assertFalse(deploymentConfig.getSpec().getTemplate().getSpec().getHostNetwork());
+        assertFalse(deploymentConfig.getSpec().getTemplate().getSpec().getHostPID());
+        assertEquals("localhost", deploymentConfig.getSpec().getTemplate().getSpec().getHostname());
+        assertEquals(1, deploymentConfig.getSpec().getTemplate().getSpec().getImagePullSecrets().size());
+        assertEquals("regsecret", deploymentConfig.getSpec().getTemplate().getSpec().getImagePullSecrets().get(0).getName());
+        assertEquals(1, deploymentConfig.getSpec().getTemplate().getSpec().getInitContainers().size());
+        assertEquals("init-mydb", deploymentConfig.getSpec().getTemplate().getSpec().getInitContainers().get(0).getName());
+        assertEquals("busybox", deploymentConfig.getSpec().getTemplate().getSpec().getInitContainers().get(0).getImage());
+        assertArrayEquals(new Object[] {"sh", "-c", "until nslookup mydb; do echo waiting for mydb; sleep 2; done;"}, deploymentConfig.getSpec().getTemplate().getSpec().getInitContainers().get(0).getCommand().toArray());
+        assertEquals("node1", deploymentConfig.getSpec().getTemplate().getSpec().getNodeName());
+        assertEquals("ssd", deploymentConfig.getSpec().getTemplate().getSpec().getNodeSelector().get("disktype"));
+        assertEquals("robot", deploymentConfig.getSpec().getTemplate().getSpec().getServiceAccount());
+        assertEquals("robot", deploymentConfig.getSpec().getTemplate().getSpec().getServiceAccountName());
+        assertEquals("test", deploymentConfig.getSpec().getTemplate().getSpec().getSubdomain());
+        assertEquals("Always", deploymentConfig.getSpec().getTemplate().getSpec().getRestartPolicy());
+        assertEquals("default", deploymentConfig.getSpec().getTemplate().getSpec().getSchedulerName());
+        assertEquals(30, deploymentConfig.getSpec().getTemplate().getSpec().getTerminationGracePeriodSeconds().intValue());
+        assertEquals(1, deploymentConfig.getSpec().getTemplate().getSpec().getVolumes().size());
+        assertEquals("site-data", deploymentConfig.getSpec().getTemplate().getSpec().getVolumes().get(0).getName());
+        assertEquals("my-site-data", deploymentConfig.getSpec().getTemplate().getSpec().getVolumes().get(0).getPersistentVolumeClaim().getClaimName());
+        assertFalse(deploymentConfig.getSpec().getTemplate().getSpec().getVolumes().get(0).getPersistentVolumeClaim().getReadOnly());
 
     }
 }

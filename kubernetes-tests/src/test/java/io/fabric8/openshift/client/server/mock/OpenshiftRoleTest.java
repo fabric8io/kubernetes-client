@@ -16,13 +16,14 @@
 
 package io.fabric8.openshift.client.server.mock;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import io.fabric8.openshift.api.model.OpenshiftRole;
 import io.fabric8.openshift.api.model.OpenshiftRoleBuilder;
@@ -30,6 +31,7 @@ import io.fabric8.openshift.api.model.OpenshiftRoleList;
 import io.fabric8.openshift.api.model.OpenshiftRoleListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 
+@EnableRuleMigrationSupport
 public class OpenshiftRoleTest {
   @Rule
   public OpenShiftServer server = new OpenShiftServer();

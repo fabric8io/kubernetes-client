@@ -6,6 +6,7 @@
 #### Improvements
 
 #### Dependency Upgrade
+  * Fix #1331: Migrated from JUnit 4 to JUnit 5
 
 #### New Feature
   * Service Catalog extension
@@ -37,7 +38,7 @@
    * Removed deprecated KubernetesKind enum
 
   Dependency Upgrade
-
+    
   New Feature
   * Knative extension
   * Tekton extension

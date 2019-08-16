@@ -16,9 +16,10 @@
 package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.client.handlers.DeploymentHandler;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 public class HandlersTest {
   @Test
@@ -28,7 +29,7 @@ public class HandlersTest {
     Handlers.unregister(h);
 
     // Pass class loader because we dont need load handler by ServiceLoader
-    Assert.assertNull(Handlers.get(h.getKind(), h.getApiVersion(), ClassLoader.getSystemClassLoader().getParent()));
+    assertNull(Handlers.get(h.getKind(), h.getApiVersion(), ClassLoader.getSystemClassLoader().getParent()));
   }
 
   @Test
@@ -38,6 +39,6 @@ public class HandlersTest {
     Handlers.unregister(h);
     Handlers.register(h);
 
-    Assert.assertSame(h, Handlers.get(h.getKind(), h.getApiVersion()));
+    assertSame(h, Handlers.get(h.getKind(), h.getApiVersion()));
   }
 }

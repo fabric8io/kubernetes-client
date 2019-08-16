@@ -17,15 +17,17 @@
 package io.fabric8.kubernetes.client;
 
 import okhttp3.OkHttpClient;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class AdaptTest {
 
     @Test
     public void testAdaptToHttpClient() {
         KubernetesClient client = new DefaultKubernetesClient();
-        Assert.assertTrue(client.isAdaptable(OkHttpClient.class));
-        Assert.assertNotNull(client.adapt(OkHttpClient.class));
+        assertTrue(client.isAdaptable(OkHttpClient.class));
+        assertNotNull(client.adapt(OkHttpClient.class));
     }
 }

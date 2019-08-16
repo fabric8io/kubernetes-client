@@ -25,14 +25,17 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
+@EnableRuleMigrationSupport
 public class EndpointsTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
@@ -89,12 +92,14 @@ public class EndpointsTest {
     assertEquals(2, endpointsList.getItems().size());
   }
 
-  @Test(expected = KubernetesClientException.class)
+  @Test
   public void testEditMissing() {
-    server.expect().withPath("/api/v1/namespaces/test/endpoints/endpoint").andReturn(404, "error message from kubernetes").always();
-    KubernetesClient client = server.getClient();
+    Assertions.assertThrows(KubernetesClientException.class, () -> {
+      server.expect().withPath("/api/v1/namespaces/test/endpoints/endpoint").andReturn(404, "error message from kubernetes").always();
+      KubernetesClient client = server.getClient();
 
-    client.endpoints().withName("endpoint").edit();
+      client.endpoints().withName("endpoint").edit();
+    });
   }
 
   @Test
@@ -146,13 +151,15 @@ public class EndpointsTest {
     assertFalse(deleted);
   }
 
-  @Test(expected = KubernetesClientException.class)
+  @Test
   public void testCreateWithNameMismatch() {
-    Endpoints endpoint1 = new EndpointsBuilder().withNewMetadata().withName("endpoint1").withNamespace("test").endMetadata().build();
-    Endpoints endpoint2 = new EndpointsBuilder().withNewMetadata().withName("endpoint2").withNamespace("ns1").endMetadata().build();
+    Assertions.assertThrows(KubernetesClientException.class, () -> {
+      Endpoints endpoint1 = new EndpointsBuilder().withNewMetadata().withName("endpoint1").withNamespace("test").endMetadata().build();
+      Endpoints endpoint2 = new EndpointsBuilder().withNewMetadata().withName("endpoint2").withNamespace("ns1").endMetadata().build();
 
-    KubernetesClient client = server.getClient();
-    client.endpoints().inNamespace("test1").withName("myendpoint1").create(endpoint1);
+      KubernetesClient client = server.getClient();
+      client.endpoints().inNamespace("test1").withName("myendpoint1").create(endpoint1);
+    });
   }
 
   @Test

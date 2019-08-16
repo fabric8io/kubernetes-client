@@ -19,7 +19,9 @@ package io.fabric8.kubernetes.client.mock;
 import io.fabric8.kubernetes.client.ResourceNotFoundException;
 import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 import java.util.concurrent.CountDownLatch;
@@ -38,10 +40,11 @@ import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.tuple;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
+@EnableRuleMigrationSupport
 public class ResourceTest {
 
   @Rule
@@ -72,14 +75,16 @@ public class ResourceTest {
         assertEquals(pod1, response);
     }
 
-    @Test(expected = ResourceNotFoundException.class)
+    @Test
     public void testRequire() {
+      Assertions.assertThrows(ResourceNotFoundException.class, () -> {
         Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test1").and().build();
 
         server.expect().get().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(HttpURLConnection.HTTP_NOT_FOUND, "").once();
 
         KubernetesClient client = server.getClient();
         client.pods().inNamespace("ns1").withName("pod1").require();
+      });
     }
 
   @Test
