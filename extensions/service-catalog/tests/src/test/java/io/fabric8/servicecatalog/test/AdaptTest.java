@@ -19,32 +19,35 @@ import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.servicecatalog.client.ServiceCatalogClient;
 import io.fabric8.servicecatalog.server.mock.ServiceCatalogMockServer;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.IOException;
 
+@EnableRuleMigrationSupport
 public class AdaptTest {
 
   private ServiceCatalogMockServer mock = new ServiceCatalogMockServer();
 
-  @Before
+  @BeforeEach
   public void setUp() {
     mock.init();
   }
 
-  @After
+  @AfterEach
   public void tearDown() throws IOException {
     mock.destroy();
   }
-
 
   @Test
   public void testAdapt() {
     ServiceCatalogClient sc = mock.createServiceCatalog();
     KubernetesClient kc = new DefaultKubernetesClient(sc.getConfiguration());
-    Assert.assertNotNull(kc.adapt(ServiceCatalogClient.class));
+    assertNotNull(kc.adapt(ServiceCatalogClient.class));
   }
 }

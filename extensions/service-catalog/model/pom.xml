@@ -55,7 +55,6 @@
     <exec-maven-plugin.version>1.5.0</exec-maven-plugin.version>
     <jsonassert.version>1.2.3</jsonassert.version>
     <jsonschema2pojo.version>0.4.23</jsonschema2pojo.version>
-    <junit.version>4.12</junit.version>
     <lombok.version>1.16.4</lombok.version>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -178,9 +177,16 @@
       </dependency>
 
       <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
         <version>${junit.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-migrationsupport</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
