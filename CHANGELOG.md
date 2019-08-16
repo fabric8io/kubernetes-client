@@ -2,6 +2,7 @@
 
 ### 4.4-SNAPSHOT
 #### Bugs
+  * Fix #1706: admissionregistration resources are now parsed correctly
 
 #### Improvements
 
