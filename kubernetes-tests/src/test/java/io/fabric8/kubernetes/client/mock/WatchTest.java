@@ -36,10 +36,13 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@EnableRuleMigrationSupport
 public class WatchTest {
   Logger logger = LoggerFactory.getLogger(WatchTest.class);
 
@@ -90,29 +93,31 @@ public class WatchTest {
     }
   }
 
-  @Test(expected = KubernetesClientException.class)
+  @Test
   public void testHttpErrorWithOutdated() {
-    logger.info("testHttpErrorWithOutdated");
-    KubernetesClient client = server.getClient().inNamespace("test");
-    // http error: history outdated
-    server.expect()
-      .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true")
-      .andReturn(410, outdatedEvent).once();
-    final boolean[] onCloseCalled = {false};
-    try (Watch watch = client.pods().withName("pod1").withResourceVersion("1").watch(new Watcher<Pod>() {
-      @Override
-      public void eventReceived(Action action, Pod resource) {
-        throw new AssertionFailedError();
-      }
+    Assertions.assertThrows(KubernetesClientException.class, () -> {
+      logger.info("testHttpErrorWithOutdated");
+      KubernetesClient client = server.getClient().inNamespace("test");
+      // http error: history outdated
+      server.expect()
+        .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true")
+        .andReturn(410, outdatedEvent).once();
+      final boolean[] onCloseCalled = {false};
+      try (Watch watch = client.pods().withName("pod1").withResourceVersion("1").watch(new Watcher<Pod>() {
+        @Override
+        public void eventReceived(Action action, Pod resource) {
+          throw new AssertionFailedError();
+        }
 
-      @Override
-      public void onClose(KubernetesClientException cause) {
-        onCloseCalled[0] =true;
-      }
-    })) {
+        @Override
+        public void onClose(KubernetesClientException cause) {
+          onCloseCalled[0] =true;
+        }
+      })) {
 
-    }
-    assertTrue(onCloseCalled[0]);
+      }
+      assertTrue(onCloseCalled[0]);
+    });
   }
 
   @Test

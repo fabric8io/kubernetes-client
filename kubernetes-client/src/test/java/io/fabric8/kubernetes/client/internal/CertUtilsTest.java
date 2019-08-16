@@ -19,10 +19,10 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.utils.Utils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,9 +35,9 @@ import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Properties;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CertUtilsTest {
 
@@ -45,7 +45,7 @@ public class CertUtilsTest {
   private static char[] FABRIC8_STORE_PASSPHRASE = "fabric8".toCharArray();
   private Properties systemProperties;
 
-  @Before
+  @BeforeEach
   public void storeSystemProperties() {
     systemProperties = new Properties();
     storeSystemProperty(CertUtils.TRUST_STORE_SYSTEM_PROPERTY);
@@ -61,12 +61,12 @@ public class CertUtilsTest {
     }
   }
 
-  @After
+  @AfterEach
   public void resetSystemPropertiesBack() {
     System.setProperties(systemProperties);
   }
 
-  @Ignore
+  @Disabled
   @Test
   public void testLoadingDodgyKubeConfig() throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException, InvalidKeySpecException {
     System.setProperty("kubeconfig", "/tmp/ceposta.kubeconfig");

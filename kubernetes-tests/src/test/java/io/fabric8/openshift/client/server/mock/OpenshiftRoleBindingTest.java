@@ -21,10 +21,12 @@ import io.fabric8.openshift.api.model.OpenshiftRoleBindingBuilder;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@EnableRuleMigrationSupport
 public class OpenshiftRoleBindingTest {
   @Rule
   public OpenShiftServer server = new OpenShiftServer();

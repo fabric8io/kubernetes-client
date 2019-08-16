@@ -16,8 +16,9 @@
 package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.client.Config;
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import org.junit.jupiter.api.Test;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,14 +27,14 @@ public class IpAddressMatcherTest {
 
   @Test
   public void testIpRangeMatcher() {
-    Assert.assertTrue(new IpAddressMatcher("192.168.10.110").matches("192.168.10.110"));
-    Assert.assertTrue(new IpAddressMatcher("192.168.1.0/8").matches("192.168.10.110"));
-    Assert.assertTrue(new IpAddressMatcher("192.168.1.0/24").matches("192.168.1.100"));
-    Assert.assertFalse(new IpAddressMatcher("192.168.1.0/24").matches("193.168.1.10"));
-    Assert.assertFalse(new IpAddressMatcher("192.168.1.0/24").matches("192.168.2.10"));
-    Assert.assertFalse(new IpAddressMatcher("192.168.1.0/24").matches("192.168.2.10"));
-    Assert.assertFalse(new IpAddressMatcher("192.168.1.0/8").matches("193.168.1.10"));
-    Assert.assertFalse(new IpAddressMatcher(Config.KUBERNETES_NO_PROXY).matches("kubernetes.default.svc"));
+    assertTrue(new IpAddressMatcher("192.168.10.110").matches("192.168.10.110"));
+    assertTrue(new IpAddressMatcher("192.168.1.0/8").matches("192.168.10.110"));
+    assertTrue(new IpAddressMatcher("192.168.1.0/24").matches("192.168.1.100"));
+    assertFalse(new IpAddressMatcher("192.168.1.0/24").matches("193.168.1.10"));
+    assertFalse(new IpAddressMatcher("192.168.1.0/24").matches("192.168.2.10"));
+    assertFalse(new IpAddressMatcher("192.168.1.0/24").matches("192.168.2.10"));
+    assertFalse(new IpAddressMatcher("192.168.1.0/8").matches("193.168.1.10"));
+    assertFalse(new IpAddressMatcher(Config.KUBERNETES_NO_PROXY).matches("kubernetes.default.svc"));
   }
 
   @Test
@@ -41,22 +42,22 @@ public class IpAddressMatcherTest {
     try {
       Pattern pattern = Pattern.compile(HttpClientUtils.ipv4Pattern, Pattern.CASE_INSENSITIVE);
       Matcher matcherPlain = pattern.matcher("192.168.0.1");
-      Assert.assertTrue(matcherPlain.matches());
+      assertTrue(matcherPlain.matches());
 
       Matcher matcherPlainProtocol = pattern.matcher("http://192.168.0.1");
-      Assert.assertTrue(matcherPlainProtocol.matches());
+      assertTrue(matcherPlainProtocol.matches());
 
       Matcher matcherPlainProtocol2 = pattern.matcher("https://192.168.0.1");
-      Assert.assertTrue(matcherPlainProtocol2.matches());
+      assertTrue(matcherPlainProtocol2.matches());
 
       Matcher matcherRange = pattern.matcher("192.168.0.1/24");
-      Assert.assertTrue(matcherRange.matches());
+      assertTrue(matcherRange.matches());
 
       Matcher matcherRangeProtocol = pattern.matcher("http://192.168.0.1/24");
-      Assert.assertTrue(matcherRangeProtocol.matches());
+      assertTrue(matcherRangeProtocol.matches());
 
       Matcher matcherRangeProtocol2 = pattern.matcher("https://192.168.0.1/24");
-      Assert.assertTrue(matcherRangeProtocol2.matches());
+      assertTrue(matcherRangeProtocol2.matches());
     } catch (Exception e) {
       throw new IllegalStateException("Failed to compile pattern.");
     }
