@@ -81,10 +81,10 @@ public final class SSLUtils {
     }
 
     public static SSLContext sslContext(Config config) throws CertificateException, UnrecoverableKeyException, NoSuchAlgorithmException, KeyStoreException, IOException, InvalidKeySpecException, KeyManagementException {
-        return sslContext(keyManagers(config), trustManagers(config), config.isTrustCerts());
+        return sslContext(keyManagers(config), trustManagers(config));
     }
 
-    public static SSLContext sslContext(KeyManager[] keyManagers, TrustManager[] trustManagers, boolean trustCerts) throws CertificateException, UnrecoverableKeyException, NoSuchAlgorithmException, KeyStoreException, IOException, InvalidKeySpecException, KeyManagementException {
+    public static SSLContext sslContext(KeyManager[] keyManagers, TrustManager[] trustManagers) throws NoSuchAlgorithmException, KeyManagementException {
         SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
         sslContext.init(keyManagers, trustManagers, new SecureRandom());
         return sslContext;
