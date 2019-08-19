@@ -149,7 +149,7 @@
       <plugin>
         <groupId>io.sundr</groupId>
         <artifactId>sundr-maven-plugin</artifactId>
-        <version>0.18.0</version>
+        <version>0.19.1</version>
         <configuration>
           <boms>
             <bom>
