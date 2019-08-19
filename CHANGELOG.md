@@ -3,6 +3,7 @@
 ### 4.4-SNAPSHOT
 #### Bugs
   * Fix #1706: admissionregistration resources are now parsed correctly
+  * Fixed deserialize of `IntOrString` with correct `Kind` instead of `null`
 
 #### Improvements
 
