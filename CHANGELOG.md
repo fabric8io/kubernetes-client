@@ -10,6 +10,7 @@
   * Fix #1331: Migrated from JUnit 4 to JUnit 5
 
 #### New Feature
+  * Service Catalog extension
 
 
 ### 4.4.1 (08-08-2019)
@@ -25,6 +26,7 @@
 
 ### 4.4.0 (05-08-2019)
   Bugs
+  * Fix #1592: Corrected type returned by Config.builder() 
   * Fix #1565: CRD's Enums are prefixed with Raw keyword
   * Fixed user/password authentication bug in OpenShift 4
   * Fix #1667: Origin header for watch requests had a port of -1 when no port specified
@@ -68,8 +70,9 @@
     * Upgrade Jackson to version 2.9.9
 
   New Feature
-   * Added support for SelfSubjectAccessReview
-   * Added support for SelfSubjectRulesReview
+    * Fixes #973: added support for service catalog client
+    * Added support for SelfSubjectAccessReview
+    * Added support for SelfSubjectRulesReview
 
 #### 4.3.0 (10-06-2019)
 
