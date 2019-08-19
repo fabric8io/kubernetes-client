@@ -15,20 +15,20 @@
  */
 package io.fabric8.kubernetes.internal;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
-
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.fabric8.kubernetes.api.model.KubernetesList;
-import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.KubernetesResourceMappingProvider;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
+
+import java.io.IOException;
+import java.util.Map;
+import java.util.ServiceLoader;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource> {
 
@@ -37,7 +37,21 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
     private static final String KEY_SEPARATOR = "#";
 
     private static final Map<String, Class<? extends KubernetesResource>> MAP = new ConcurrentHashMap<>();
-    private static final List<String> PACKAGES;
+    private static final String[] PACKAGES = {
+      "io.fabric8.kubernetes.api.model.",
+      "io.fabric8.kubernetes.api.model.admissionregistration.",
+      "io.fabric8.kubernetes.api.model.apiextensions.",
+      "io.fabric8.kubernetes.api.model.apps.",
+      "io.fabric8.kubernetes.api.model.authentication.",
+      "io.fabric8.kubernetes.api.model.authorization.",
+      "io.fabric8.kubernetes.api.model.batch.",
+      "io.fabric8.kubernetes.api.model.extensions.",
+      "io.fabric8.kubernetes.api.model.networking.",
+      "io.fabric8.kubernetes.api.model.policy.",
+      "io.fabric8.kubernetes.api.model.rbac.",
+      "io.fabric8.kubernetes.api.model.storage.",
+      "io.fabric8.openshift.api.model."
+    };
 
     static {
         //Use service loader to load extension types.
@@ -52,22 +66,6 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
                 }
             }
         }
-
-        PACKAGES = new ArrayList<String>(){{
-            add("io.fabric8.kubernetes.api.model.");
-            add("io.fabric8.kubernetes.api.model.admissionregistration.");
-            add("io.fabric8.kubernetes.api.model.apiextensions.");
-            add("io.fabric8.kubernetes.api.model.apps.");
-            add("io.fabric8.kubernetes.api.model.authentication.");
-            add("io.fabric8.kubernetes.api.model.authorization.");
-            add("io.fabric8.kubernetes.api.model.batch.");
-            add("io.fabric8.kubernetes.api.model.extensions.");
-            add("io.fabric8.kubernetes.api.model.networking.");
-            add("io.fabric8.kubernetes.api.model.policy.");
-            add("io.fabric8.kubernetes.api.model.rbac.");
-            add("io.fabric8.kubernetes.api.model.storage.");
-            add("io.fabric8.openshift.api.model.");
-        }};
     }
 
     @Override
@@ -77,7 +75,7 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
         if (key != null) {
             Class<? extends KubernetesResource> resourceType = getTypeForKey(key);
             if (resourceType == null) {
-                throw ctxt.mappingException("No resource type found for:" + key);
+                throw JsonMappingException.from(jp,"No resource type found for:" + key);
             } else {
                 return jp.getCodec().treeToValue(node, resourceType);
             }
@@ -88,7 +86,7 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
     /**
      * Return a string representation of the key of the type: <version>#<kind>.
      */
-    private static final String getKey(ObjectNode node) {
+    private static String getKey(ObjectNode node) {
         JsonNode apiVersion = node.get(API_VERSION);
         JsonNode kind = node.get(KIND);
 
@@ -99,7 +97,7 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
     /**
      * Returns a composite key for apiVersion and kind.
      */
-    private static final String getKey(String apiVersion, String kind) {
+    private static String getKey(String apiVersion, String kind) {
         if (kind == null) {
             return null;
         } else if (apiVersion == null) {
@@ -123,8 +121,8 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
         MAP.put(getKey(apiVersion, kind), clazz);
     }
 
-    static Class getTypeForKey(String key) {
-        Class result = MAP.get(key);
+    private static Class getTypeForKey(String key) {
+        Class<? extends KubernetesResource> result = MAP.get(key);
         if (result == null) {
             String name = key != null && key.contains(KEY_SEPARATOR) ?
                 key.substring(key.indexOf(KEY_SEPARATOR) + 1) :
@@ -141,12 +139,12 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
 
     private static Class getInternalTypeForName(String name) {
 
-        for (int i = 0; i < PACKAGES.size(); i++ ) {
-            Class result = loadClassIfExists(PACKAGES.get(i) + name);
-            if (result != null) {
-                return result;
-            }
+      for (String aPackage : PACKAGES) {
+        Class result = loadClassIfExists(aPackage + name);
+        if (result != null) {
+          return result;
         }
+      }
 
         return null;
     } 
