@@ -5,6 +5,7 @@
   * Fix #1706: admissionregistration resources are now parsed correctly
 
 #### Improvements
+  * Test coverage for HorizontalPodAutoscaler
   * Added example for PersistentVolumeClaim
   * Added test coverage for ResourceQuota
 
