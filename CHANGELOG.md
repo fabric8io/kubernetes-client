@@ -5,6 +5,7 @@
   * Fix #1706: admissionregistration resources are now parsed correctly
 
 #### Improvements
+  * Added example for PersistentVolumeClaim
   * Added test coverage for ResourceQuota
 
 #### Dependency Upgrade
@@ -54,6 +55,7 @@
    * Fix #1634: Make map backing KubernetesDeserializer thread-safe
 
   Improvements
+  
     * Test coverage for Namespace.
     * Example added for NamespaceQuota
     * Example added for Endpoints.
