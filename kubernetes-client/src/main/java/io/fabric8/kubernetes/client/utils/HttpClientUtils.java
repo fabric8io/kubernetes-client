@@ -89,7 +89,7 @@ public class HttpClientUtils {
                 }
 
                 try {
-                    SSLContext sslContext = SSLUtils.sslContext(keyManagers, trustManagers, config.isTrustCerts());
+                    SSLContext sslContext = SSLUtils.sslContext(keyManagers, trustManagers);
                     httpClientBuilder.sslSocketFactory(sslContext.getSocketFactory(), trustManager);
                 } catch (GeneralSecurityException e) {
                     throw new AssertionError(); // The system has no TLS. Just give up.
