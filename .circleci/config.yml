@@ -69,7 +69,7 @@ jobs:
             sudo mount --make-shared /
             sudo service docker restart
             echo "Configured Docker daemon with insecure-registry"
-            oc cluster up 
+            oc cluster up
             sleep 10
             oc login -u system:admin
             echo "Configured OpenShift cluster : v3.9.0"
@@ -188,7 +188,7 @@ jobs:
             sudo mount --make-shared /
             sudo service docker restart
             echo "Configured Docker daemon with insecure-registry"
-            oc cluster up 
+            oc cluster up
             sleep 10
             oc login -u system:admin
             echo "Configured OpenShift cluster : v3.11.0"
