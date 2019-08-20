@@ -5,6 +5,7 @@
   * Fix #1706: admissionregistration resources are now parsed correctly
 
 #### Improvements
+  * Added test coverage for ResourceQuota
 
 #### Dependency Upgrade
   * Fix #1331: Migrated from JUnit 4 to JUnit 5
@@ -87,7 +88,7 @@
   Improvements
 
     * Added example for raw custom resources.
-
+    
   Dependency Upgrade
 
   New Feature
