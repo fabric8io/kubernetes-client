@@ -25,12 +25,15 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+@EnableRuleMigrationSupport
 public class PriorityClassTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
@@ -134,12 +137,14 @@ public class PriorityClassTest {
     assertNotNull(deleted);
   }
 
-  @Test(expected = KubernetesClientException.class)
+  @Test
   public void testCreateWithNameMismatch() {
-    PriorityClass priorityClass1 = new PriorityClassBuilder().withNewMetadata().withName("priorityclass1").and().build();
-    KubernetesClient client = server.getClient();
+    Assertions.assertThrows(KubernetesClientException.class, () -> {
+      PriorityClass priorityClass1 = new PriorityClassBuilder().withNewMetadata().withName("priorityclass1").and().build();
+      KubernetesClient client = server.getClient();
 
-    client.scheduling().priorityClass().withName("mypriorityclass1").create(priorityClass1);
+      client.scheduling().priorityClass().withName("mypriorityclass1").create(priorityClass1);
+    });
   }
 
   @Test

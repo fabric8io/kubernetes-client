@@ -68,8 +68,15 @@
         <artifactId>jackson-module-jaxb-annotations</artifactId>
       </dependency>
       <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-migrationsupport</artifactId>
+        <version>${junit.version}</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -136,7 +143,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
-          <version>1.9.1</version>
+          <version>3.0.0</version>
           <executions>
             <execution>
               <id>attach-artifacts</id>

@@ -22,10 +22,12 @@ import io.fabric8.kubernetes.api.model.admissionregistration.WebhookBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@EnableRuleMigrationSupport
 public class MutatingWebhookConfigurationTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();

@@ -20,14 +20,14 @@ import io.fabric8.tekton.client.TektonClient;
 import io.fabric8.tekton.mock.TektonServer;
 
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import java.util.Collections;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
+@EnableRuleMigrationSupport
 public class PipelineCrudTest {
   
   @Rule

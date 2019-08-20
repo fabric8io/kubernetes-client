@@ -77,6 +77,7 @@
   </distributionManagement>
 
   <properties>
+    <useIncrementalCompilation>false</useIncrementalCompilation>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- Core versions -->
@@ -93,8 +94,7 @@
     <validation.api.version>2.0.1.Final</validation.api.version>
 
     <!-- Testing versions -->
-    <junit.version>4.12</junit.version>
-    <assertj.core.version>3.13.1</assertj.core.version>
+    <assertj.core.version>3.13.2</assertj.core.version>
     <arquillian.core.version>1.2.0.Final</arquillian.core.version>
     <awaitility.version>3.1.6</awaitility.version>
     <jsonassert.version>1.5.0</jsonassert.version>
@@ -107,6 +107,7 @@
     <automaton.version>1.11-8</automaton.version>
     <automaton.bundle.version>1.11-8_1</automaton.bundle.version>
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
+    <junit.version>5.5.1</junit.version>
     <log4j.version>2.12.0</log4j.version>
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
     <arquillian.cube.version>1.18.2</arquillian.cube.version>
@@ -122,10 +123,10 @@
     <!-- Maven plugin versions -->
     <buildnumber.plugin.version>1.4</buildnumber.plugin.version>
     <maven.bundle.plugin.version>4.2.0</maven.bundle.plugin.version>
-    <maven.buildhelper.plugin.version>1.10</maven.buildhelper.plugin.version>
+    <maven.buildhelper.plugin.version>3.0.0</maven.buildhelper.plugin.version>
     <maven.jar.plugin.version>3.1.2</maven.jar.plugin.version>
     <maven.resources.plugin.version>3.0.1</maven.resources.plugin.version>
-    <maven.surefire.plugin.version>3.0.0-M1</maven.surefire.plugin.version>
+    <maven.surefire.plugin.version>3.0.0-M3</maven.surefire.plugin.version>
     <maven.scr.plugin.version>1.26.2</maven.scr.plugin.version>
     <maven.bundle.plugin.version>4.1.0</maven.bundle.plugin.version>
     <maven.buildhelper.plugin.version>3.0.0</maven.buildhelper.plugin.version>
@@ -135,9 +136,10 @@
     <maven.scr.plugin.version>1.26.0</maven.scr.plugin.version>
     <jandex.plugin.version>1.0.6</jandex.plugin.version>
 
-    <!-- Othe options -->
+    <!-- Other options -->
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <svc.version>1.1.1</svc.version>
 
     <exec.master>https://localhost:8443</exec.master>
 
@@ -268,9 +270,16 @@
       </dependency>
 
       <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
         <version>${junit.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-migrationsupport</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -298,7 +307,7 @@
             <version>2.1.1.Final</version>
           </dependency>
         </dependencies>
-      </plugin>      
+      </plugin>
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
@@ -486,7 +495,7 @@
             </executions>
           </plugin>
           <plugin>
-            <groupId>maven</groupId>
+            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-release-plugin</artifactId>
             <version>2.5.3</version>
             <configuration>
@@ -542,7 +551,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
-            <version>3.1.0</version>
+            <version>3.0.1</version>
             <executions>
               <execution>
                 <id>attach-sources</id>
