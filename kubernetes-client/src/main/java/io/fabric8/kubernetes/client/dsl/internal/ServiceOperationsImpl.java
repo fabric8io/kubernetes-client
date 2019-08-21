@@ -132,7 +132,7 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
   private Pod matchingPod() {
     Service item = fromServer().get();
     Map<String, String> labels = item.getSpec().getSelector();
-    PodList list = new PodOperationsImpl(client, config).withLabels(labels).list();
+    PodList list = new PodOperationsImpl(client, config).inNamespace(item.getMetadata().getNamespace()).withLabels(labels).list();
     return list.getItems().stream().findFirst().orElseThrow(() -> new IllegalStateException("Could not find matching pod for service:" + item + "."));
   }
 
