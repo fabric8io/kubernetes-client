@@ -4,6 +4,7 @@
 #### Bugs
   * Fix #1706: admissionregistration resources are now parsed correctly
   * Fix #1722: Service port forward are now done in the correct namespace
+  * Fixed deserialize of `IntOrString` with correct `Kind` instead of `null`
 
 #### Improvements
   * Test coverage for HorizontalPodAutoscaler
