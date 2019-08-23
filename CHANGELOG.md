@@ -1,5 +1,15 @@
 ## CHANGELOG
 
+### 4.4-SNAPSHOT
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Feature
+
+
 ### 4.4.2 (23-08-2019)
 #### Bugs
   * Fix #1706: admissionregistration resources are now parsed correctly
