@@ -1,6 +1,6 @@
-### CHANGELOG
+## CHANGELOG
 
-### 4.4-SNAPSHOT
+### 4.4.2 (23-08-2019)
 #### Bugs
   * Fix #1706: admissionregistration resources are now parsed correctly
   * Fix #1722: Service port forward are now done in the correct namespace
