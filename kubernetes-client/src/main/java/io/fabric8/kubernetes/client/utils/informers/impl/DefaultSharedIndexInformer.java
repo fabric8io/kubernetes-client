@@ -96,12 +96,10 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, TList extends Kub
     }
 
     ProcessorListener<T> listener = new ProcessorListener(handler, determineResyncPeriod(resyncCheckPeriodMillis, this.resyncCheckPeriodMillis));
-    System.out.println("adding listeners");
-//    if (!started) {
-//      System.out.println("this.processor.addListener(" + listener + " )");
-//      this.processor.addListener(listener);
-//      return;
-//    }
+    if (!started) {
+      this.processor.addListener(listener);
+      return;
+    }
 
     this.processor.addAndStartListener(listener);
     List<T> objectList = this.indexer.list();
@@ -126,7 +124,6 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, TList extends Kub
 
     started = true;
 
-    System.out.println("Processor::run()");
     this.processor.run();
     controllerThread.start();
   }

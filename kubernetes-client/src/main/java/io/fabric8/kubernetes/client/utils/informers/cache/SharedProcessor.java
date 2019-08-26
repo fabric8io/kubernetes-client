@@ -72,14 +72,12 @@ public class SharedProcessor<T> {
    */
   public void run() {
     lock.readLock().lock();
-    System.out.println("SharedProcessor::run()");
     try {
-      if (listeners != null || listeners.isEmpty()) {
+      if (listeners == null || listeners.isEmpty()) {
         return;
       }
       for (ProcessorListener listener : listeners) {
-        System.out.println("executorService.execute(" + listener.getClass().getName() + ")");
-        executorService.execute(listener);
+        executorService.submit(listener);
       }
     } finally {
       lock.readLock().unlock();
@@ -97,6 +95,10 @@ public class SharedProcessor<T> {
     try {
       if (isSync) {
         for (ProcessorListener<T> listener : syncingListeners) {
+          listener.add(obj);
+        }
+      } else {
+        for (ProcessorListener<T> listener : listeners) {
           listener.add(obj);
         }
       }

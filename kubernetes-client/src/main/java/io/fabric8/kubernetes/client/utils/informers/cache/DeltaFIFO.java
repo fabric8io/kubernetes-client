@@ -78,13 +78,11 @@ public class DeltaFIFO<T> implements Store<Object> {
    */
   @Override
   public void add(Object obj) {
-//    System.out.println("DeltaFIFO add LOCK O");
     lock.writeLock().lock();
     try {
       populated = true;
       this.queueActionLocked(DeltaType.ADDITION, obj);
     } finally {
-//      System.out.println("DeltaFIFO add UNLOCK -");
       lock.writeLock().unlock();
     }
   }
@@ -97,12 +95,10 @@ public class DeltaFIFO<T> implements Store<Object> {
   @Override
   public void update(Object obj) {
     lock.writeLock().lock();
-//    System.out.println("DeltaFIFO Update LOCK O");
     try {
       populated = true;
       this.queueActionLocked(DeltaType.UPDATION, obj);
     } finally {
-//      System.out.println("DeltaFIFO Update UNLOCK -");
       lock.writeLock().unlock();
     }
   }
@@ -115,9 +111,7 @@ public class DeltaFIFO<T> implements Store<Object> {
   @Override
   public void delete(Object obj) {
     String id = this.keyOf(obj);
-//    System.out.println("DeltaFIFO delete trying to lock O");
     lock.writeLock().lock();
-//    System.out.println("DeltaFIFO delete LOCK O");
     try {
       this.populated = true;
       if (this.knownObjects == null) {
@@ -136,7 +130,6 @@ public class DeltaFIFO<T> implements Store<Object> {
       }
       this.queueActionLocked(DeltaType.DELETION, obj);
     } finally {
-//      System.out.println("DELTAFIFO delete UNLOCK -");
       lock.writeLock().unlock();
     }
   }
@@ -149,9 +142,7 @@ public class DeltaFIFO<T> implements Store<Object> {
    */
   @Override
   public void replace(List list, String resourceVersion) {
-//    System.out.println("DeltaFIFO replace trying to LOCK O");
     lock.writeLock().lock();
-//    System.out.println("DELTAFIFO replace LOCK O");
     try {
       Set<String> keys = new HashSet<>();
       for (Object obj : list) {
@@ -203,7 +194,6 @@ public class DeltaFIFO<T> implements Store<Object> {
       }
     } finally {
       lock.writeLock().unlock();
-//      System.out.println("DELTAFIFO replace UNLOCK -");
     }
   }
 
@@ -215,7 +205,6 @@ public class DeltaFIFO<T> implements Store<Object> {
   @Override
   public void resync() {
     lock.writeLock().lock();
-//    System.out.println("DELTAFIFO resync LOCK O");
     try {
       if (this.knownObjects == null) {
         return;
@@ -226,7 +215,6 @@ public class DeltaFIFO<T> implements Store<Object> {
         syncKeyLocked(key);
       }
     } finally {
-//      System.out.println("DELTAFIFO resync UNLOCK -");
       lock.writeLock().unlock();
     }
   }
@@ -238,9 +226,7 @@ public class DeltaFIFO<T> implements Store<Object> {
    */
   @Override
   public List<String> listKeys() {
-//    System.out.println("DELTAFIFO listKeys trying to LOCK O");
     lock.readLock().lock();
-//    System.out.println("DELTAFIFO listKeys LOCK O");
     try {
       List<String> keyList = new ArrayList<>(items.size());
       for (Map.Entry<String, Deque<AbstractMap.SimpleEntry<DeltaType, Object>>> entry : items.entrySet()) {
@@ -248,7 +234,6 @@ public class DeltaFIFO<T> implements Store<Object> {
       }
       return keyList;
     } finally {
-//      System.out.println("DELTAFIFO listKeys UNLOCK -");
       lock.readLock().unlock();
     }
   }
@@ -273,9 +258,7 @@ public class DeltaFIFO<T> implements Store<Object> {
    */
   @Override
   public Deque<AbstractMap.SimpleEntry<DeltaType, Object>> getByKey(String key) {
-//    System.out.println("DeltaFIFO getByKey trying to LOCK O");
     lock.readLock().lock();
-//    System.out.println("DeltaFIFO getByKey LOCK O");
     try {
       Deque<AbstractMap.SimpleEntry<DeltaType, Object>> deltas = this.items.get(key);
       if (deltas != null) {
@@ -283,7 +266,6 @@ public class DeltaFIFO<T> implements Store<Object> {
         return new LinkedList<>(deltas);
       }
     } finally {
-//      System.out.println("DeltaFIFO getByKey UNLOCK -");
       lock.readLock().unlock();
     }
     return null;
@@ -296,9 +278,7 @@ public class DeltaFIFO<T> implements Store<Object> {
    */
   @Override
   public List<Object> list() {
-//    System.out.println("DeltaFIFO list trying to lock O");
     lock.readLock().lock();
-//    System.out.println("DeltaFIFO list LOCKed O");
     List<Object> objects = new ArrayList<>();
     try {
       for (Map.Entry<String, Deque<AbstractMap.SimpleEntry<DeltaType, Object>>> entry : items.entrySet()) {
@@ -306,7 +286,6 @@ public class DeltaFIFO<T> implements Store<Object> {
         objects.add(copiedDeltas);
       }
     } finally {
-//      System.out.println("DeltaFIFO list UNLOCK -");
       lock.readLock().unlock();
     }
     return objects;
@@ -320,9 +299,7 @@ public class DeltaFIFO<T> implements Store<Object> {
    * @throws InterruptedException interruption exception
    */
   public Deque<AbstractMap.SimpleEntry<DeltaType, Object>> pop(Consumer<Deque<AbstractMap.SimpleEntry<DeltaType, Object>>> func) throws InterruptedException {
-//    System.out.println("DeltaFIFO pop Locking ... ");
     lock.writeLock().lock();
-//    System.out.println("DeltaFIFO pop LOCK O");
     try {
       while (true) {
         while (queue.isEmpty()) {
@@ -346,7 +323,6 @@ public class DeltaFIFO<T> implements Store<Object> {
         return deltas;
       }
     } finally {
-//      System.out.println("DeltaFIFO pop UNLOCK -");
       lock.writeLock().unlock();
     }
   }
@@ -358,12 +334,10 @@ public class DeltaFIFO<T> implements Store<Object> {
    */
   public boolean hasSynced() {
     lock.readLock().lock();
-//    System.out.println("DeltaFIFO hasSynced LOCK O");
     try {
       return this.populated && this.initialPopulationCount == 0;
     } finally {
       lock.readLock().unlock();
-//      System.out.println("DeltaFIFO hasSynced UNLOCK -");
     }
   }
 

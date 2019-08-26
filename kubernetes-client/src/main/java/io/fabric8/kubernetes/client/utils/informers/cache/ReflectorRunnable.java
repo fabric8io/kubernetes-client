@@ -16,6 +16,7 @@ import io.fabric8.kubernetes.client.dsl.Watchable;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.PodOperationsImpl;
 import io.fabric8.kubernetes.client.utils.ReflectUtils;
 import io.fabric8.kubernetes.client.utils.informers.ListerWatcher;
 import org.slf4j.Logger;
@@ -26,6 +27,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -59,101 +61,86 @@ public class ReflectorRunnable<T extends HasMetadata, TList extends KubernetesRe
     try {
       log.info("{}#Start listing and watching...", apiTypeClass);
 
-      BaseOperation<Namespace, NamespaceList, DoneableNamespace, Resource<Namespace, DoneableNamespace>> namespaceOperation = new NamespaceOperationsImpl(operationContext);
+      TList list = listerWatcher.list(new ListOptionsBuilder().withWatch(Boolean.FALSE).withResourceVersion(null).withTimeoutSeconds(null).build(), null);
 
-      NamespaceList namespaceList = namespaceOperation.list();
-      ExecutorService executorService = Executors.newFixedThreadPool(namespaceList.getItems().size());
-      List<Callable<Watch>> watchThreadList = new ArrayList();
+      ListMeta listMeta = list.getMetadata();
+      String resourceVersion = listMeta.getResourceVersion();
+      List<T> items = list.getItems();
 
-      for (Namespace namespace : namespaceList.getItems()) {
-        TList list = listerWatcher.list(new ListOptionsBuilder().withWatch(Boolean.FALSE).withResourceVersion(null).withTimeoutSeconds(null).build(), namespace.getMetadata().getName());
-
-        ListMeta listMeta = list.getMetadata();
-        String resourceVersion = listMeta.getResourceVersion();
-        List<T> items = list.getItems();
-
-        if (log.isDebugEnabled()) {
-          log.debug("{}#Extract resourceVersion {} list meta", apiTypeClass, resourceVersion);
-        }
-        this.syncWith(items, resourceVersion);
-        this.lastSyncResourceVersion = resourceVersion;
-
-        // let's watch in a separate thread:
-        watchThreadList.add(() -> {
-          if (log.isDebugEnabled()) {
-            log.debug("{}#Start watching with {}...", apiTypeClass, lastSyncResourceVersion);
-          }
-
-          if (!isActive.get()) {
-            if (watch != null) {
-              log.info("Closing watch");
-              watch.close();
-              return null;
-            }
-          }
-          if (watch != null) {
-            log.info("Closing existing watch and waiting");
-            watch.close();
-          }
-          try {
-            // Use resource version to watch
-            watch = listerWatcher.watch(new ListOptionsBuilder().withWatch(Boolean.TRUE).withResourceVersion(resourceVersion).withTimeoutSeconds(null).build(),
-              namespace.getMetadata().getName(), new Watcher<T>() {
-                @Override
-                public void eventReceived(Action action, T resource) {
-                  log.info("Watch event received " + action.name() + "for " + resource.getMetadata().getName());
-                  if (action == null) {
-                    log.error("unrecognized event {}", resource);
-                  }
-                  if (action == Action.ERROR) {
-                    String errorMessage = String.format("got ERROR event for ", resource.getMetadata().getName());
-                    log.error(errorMessage);
-                    throw new RuntimeException(errorMessage);
-                  }
-
-                  ObjectMeta meta = resource.getMetadata();
-                  String newResourceVersion = meta.getResourceVersion();
-                  switch (action) {
-                    case ADDED:
-                      store.add(resource);
-                      break;
-                    case MODIFIED:
-                      store.update(resource);
-                      break;
-                    case DELETED:
-                      store.delete(resource);
-                      break;
-                  }
-                  lastSyncResourceVersion = newResourceVersion;
-                  if (log.isDebugEnabled()) {
-                    log.debug("{}#Receiving resourceVersion {}", apiTypeClass, lastSyncResourceVersion);
-                  }
-                }
-
-                @Override
-                public void onClose(KubernetesClientException exception) {
-                  if (exception != null) {
-                    exception.printStackTrace();
-                    log.debug("watch closing " + exception.getMessage());
-                  }
-                }
-              });
-          } catch (Throwable t) {
-            log.info("{}#Watch connection got exception {}", apiTypeClass, t.getMessage());
-            Throwable cause = t.getCause();
-          } finally {
-            if (watch != null) {
-              watch.close();
-              watch = null;
-            }
-          }
-          return watch;
-        });
+      if (log.isDebugEnabled()) {
+        log.debug("{}#Extract resourceVersion {} list meta", apiTypeClass, resourceVersion);
       }
-      executorService.invokeAll(watchThreadList);
+      this.syncWith(items, resourceVersion);
+      this.lastSyncResourceVersion = resourceVersion;
 
-    } catch (Throwable t) {
-      log.error("{}#Failed to list-watch: {}", apiTypeClass, t.getStackTrace());
+      if (log.isDebugEnabled()) {
+        log.debug("{}#Start watching with {}...", apiTypeClass, lastSyncResourceVersion);
+      }
+
+      if (!isActive.get()) {
+        if (watch != null) {
+          log.info("Closing watch");
+          watch.close();
+          return;
+        }
+      }
+      if (watch != null) {
+        log.info("Closing existing watch and waiting");
+        watch.close();
+      }
+      try {
+        // Use resource version to watch
+        watch = listerWatcher.watch(new ListOptionsBuilder().withWatch(Boolean.TRUE).withResourceVersion(null).withTimeoutSeconds(null).build(),
+          null, new Watcher<T>() {
+            @Override
+            public void eventReceived(Action action, T resource) {
+              if (action == null) {
+                log.error("unrecognized event {}", resource);
+              }
+              if (action == Action.ERROR) {
+                String errorMessage = String.format("got ERROR event for ", resource.getMetadata().getName());
+                log.error(errorMessage);
+                throw new RuntimeException(errorMessage);
+              }
+
+              ObjectMeta meta = resource.getMetadata();
+              String newResourceVersion = meta.getResourceVersion();
+              switch (action) {
+                case ADDED:
+                  store.add(resource);
+                  break;
+                case MODIFIED:
+                  store.update(resource);
+                  break;
+                case DELETED:
+                  store.delete(resource);
+                  break;
+              }
+              lastSyncResourceVersion = newResourceVersion;
+              if (log.isDebugEnabled()) {
+                log.debug("{}#Receiving resourceVersion {}", apiTypeClass, lastSyncResourceVersion);
+              }
+            }
+
+            @Override
+            public void onClose(KubernetesClientException exception) {
+              log.error("Watch closing.");
+              if (exception != null) {
+                exception.printStackTrace();
+                log.error("watch closed due to  " + exception.getMessage());
+              }
+            }
+          });
+      } catch (Throwable t) {
+        log.info("{}#Watch connection got exception {}", apiTypeClass, t.getMessage());
+      } finally {
+//        if (watch != null) {
+//          watch.close();
+//          watch = null;
+//        }
+      }
+    } catch (Exception exception) {
+      log.error("Failure in list-watch: {}", exception.getMessage());
     }
   }
 

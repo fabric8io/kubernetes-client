@@ -39,7 +39,6 @@ public class ProcessorListener<T> implements Runnable {
   public void run() {
     while (true) {
       try {
-        System.out.println("Trying to pop item from queue");
         Notification obj = queue.take();
         if (obj instanceof UpdateNotification) {
           UpdateNotification notification = (UpdateNotification) obj;
@@ -59,7 +58,6 @@ public class ProcessorListener<T> implements Runnable {
           throw new RuntimeException("unrecognized notification");
         }
       } catch (InterruptedException e) {
-        System.out.println("ERrror unable to pop item from queue");
         log.error("processor interrupted: {}", e.getMessage());
         return;
       }
