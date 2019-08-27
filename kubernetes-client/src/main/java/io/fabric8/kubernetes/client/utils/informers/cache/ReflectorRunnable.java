@@ -1,3 +1,18 @@
+/**
+ * Copyright (C) 2015 Red Hat, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.fabric8.kubernetes.client.utils.informers.cache;
 
 import io.fabric8.kubernetes.api.model.DoneableNamespace;
@@ -90,10 +105,11 @@ public class ReflectorRunnable<T extends HasMetadata, TList extends KubernetesRe
       }
       try {
         // Use resource version to watch
-        watch = listerWatcher.watch(new ListOptionsBuilder().withWatch(Boolean.TRUE).withResourceVersion(null).withTimeoutSeconds(null).build(),
+        watch = listerWatcher.watch(new ListOptionsBuilder().withWatch(Boolean.TRUE).withResourceVersion(resourceVersion).withTimeoutSeconds(null).build(),
           null, new Watcher<T>() {
             @Override
             public void eventReceived(Action action, T resource) {
+              log.info("Event received ", action.name());
               if (action == null) {
                 log.error("unrecognized event {}", resource);
               }
@@ -133,11 +149,6 @@ public class ReflectorRunnable<T extends HasMetadata, TList extends KubernetesRe
           });
       } catch (Throwable t) {
         log.info("{}#Watch connection got exception {}", apiTypeClass, t.getMessage());
-      } finally {
-//        if (watch != null) {
-//          watch.close();
-//          watch = null;
-//        }
       }
     } catch (Exception exception) {
       log.error("Failure in list-watch: {}", exception.getMessage());
