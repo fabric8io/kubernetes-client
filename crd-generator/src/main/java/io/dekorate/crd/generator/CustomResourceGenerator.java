@@ -19,6 +19,8 @@ import io.dekorate.Generator;
 import io.dekorate.Session;
 import io.dekorate.WithSession;
 import io.dekorate.config.ConfigurationSupplier;
+import io.dekorate.config.AnnotationConfiguration;
+import io.dekorate.config.PropertyConfiguration;
 import io.dekorate.crd.adapter.CustomResourceConfigAdapter;
 import io.dekorate.crd.annotation.CustomResource;
 import io.dekorate.crd.confg.Keys;
@@ -38,7 +40,7 @@ public interface CustomResourceGenerator extends Generator, WithSession {
 
   @Override
   default void add(Map map) {
-    on(new ConfigurationSupplier<>(CustomResourceConfigAdapter.newBuilder(propertiesMap(map, CustomResource.class))));
+    on(new PropertyConfiguration<>(CustomResourceConfigAdapter.newBuilder(propertiesMap(map, CustomResource.class))));
   }
 
   @Override
@@ -49,8 +51,8 @@ public interface CustomResourceGenerator extends Generator, WithSession {
       String className = ModelUtils.getClassName(element);
 
       on(customResource != null
-        ? new ConfigurationSupplier<CustomResourceConfig>(CustomResourceConfigAdapter.newBuilder(customResource).addToAttributes(Keys.TYPE_DEFINITION, definition).accept(new AddClassNameConfigurator(className)))
-        : new ConfigurationSupplier<CustomResourceConfig>(new CustomResourceConfigBuilder().addToAttributes(Keys.TYPE_DEFINITION, definition).accept(new AddClassNameConfigurator(className))));
+        ? new AnnotationConfiguration<CustomResourceConfig>(CustomResourceConfigAdapter.newBuilder(customResource).addToAttributes(Keys.TYPE_DEFINITION, definition).accept(new AddClassNameConfigurator(className)))
+        : new AnnotationConfiguration<CustomResourceConfig>(new CustomResourceConfigBuilder().addToAttributes(Keys.TYPE_DEFINITION, definition).accept(new AddClassNameConfigurator(className))));
     }
   }
 
