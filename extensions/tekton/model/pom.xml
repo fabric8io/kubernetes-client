@@ -117,7 +117,7 @@
             <sourceDirectory>${basedir}/src/main/resources/schema</sourceDirectory>
             <targetPackage>io.fabric8.tekton.api.model</targetPackage>
             <includeConstructors>true</includeConstructors>
-            <includeJsr303Annotations>true</includeJsr303Annotations>
+            <includeJsr303Annotations>false</includeJsr303Annotations>
             <includeToString>false</includeToString>
             <includeHashcodeAndEquals>false</includeHashcodeAndEquals>
             <outputDirectory>${basedir}/target/generated-sources</outputDirectory>
