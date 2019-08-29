@@ -53,7 +53,6 @@
     <exec-maven-plugin.version>1.5.0</exec-maven-plugin.version>
     <jsonassert.version>1.2.3</jsonassert.version>
     <jsonschema2pojo.version>0.4.23</jsonschema2pojo.version>
-    <lombok.version>1.16.4</lombok.version>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <felix.scr.annotations.version>1.9.8</felix.scr.annotations.version>

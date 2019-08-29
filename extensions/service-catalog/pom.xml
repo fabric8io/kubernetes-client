@@ -29,6 +29,10 @@
   <packaging>pom</packaging>
   <name>Fabric8 :: Service Catalog :: Extension</name>
 
+  <properties>
+    <lombok.version>1.18.8</lombok.version>
+  </properties>
+
   <modules>
     <module>model</module>
     <module>client</module>

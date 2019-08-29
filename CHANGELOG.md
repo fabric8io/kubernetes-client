@@ -2,6 +2,7 @@
 
 ### 4.4-SNAPSHOT
 #### Bugs
+  * Fix #1730: Fix failing build on jdk11
 
 #### Improvements
 
