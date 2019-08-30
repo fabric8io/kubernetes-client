@@ -28,7 +28,11 @@ import okhttp3.OkHttpClient;
 public class PriorityClassOperationsImpl extends HasMetadataOperation<PriorityClass, PriorityClassList, DoneablePriorityClass, Resource<PriorityClass, DoneablePriorityClass>> {
 
   public PriorityClassOperationsImpl(OkHttpClient client, Config config) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config));
+    this(client, config, null);
+  }
+
+  public PriorityClassOperationsImpl(OkHttpClient client, Config config, String namespace) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace));
   }
 
   public PriorityClassOperationsImpl(OperationContext context) {

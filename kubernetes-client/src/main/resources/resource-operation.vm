@@ -65,7 +65,11 @@ import java.util.TreeMap;
 public class ${model.name}OperationsImpl extends HasMetadataOperation<${model.name}, ${model.name}List, Doneable${model.name}, Resource<${model.name}, Doneable${model.name}>> {
 
   public ${model.name}OperationsImpl(OkHttpClient client, Config config) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config));
+    this(client, config, null);
+  }
+
+  public ${model.name}OperationsImpl(OkHttpClient client, Config config, String namespace) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace));
   }
 
   public ${model.name}OperationsImpl(OperationContext context) {

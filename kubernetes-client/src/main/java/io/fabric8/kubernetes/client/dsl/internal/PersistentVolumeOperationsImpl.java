@@ -28,7 +28,11 @@ public class PersistentVolumeOperationsImpl
   extends HasMetadataOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, Resource<PersistentVolume, DoneablePersistentVolume>> {
 
   public PersistentVolumeOperationsImpl(OkHttpClient client, Config config) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config));
+    this(client, config, null);
+  }
+
+  public PersistentVolumeOperationsImpl(OkHttpClient client, Config config, String namespace) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace));
   }
 
   public PersistentVolumeOperationsImpl(OperationContext context) {

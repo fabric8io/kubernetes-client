@@ -48,7 +48,11 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
   static final transient Logger LOG = LoggerFactory.getLogger(DeploymentOperationsImpl.class);
 
   public DeploymentOperationsImpl(OkHttpClient client, Config config) {
-    this(new RollingOperationContext().withOkhttpClient(client).withConfig(config).withCascading(true));
+    this(client, config, null);
+  }
+
+  public DeploymentOperationsImpl(OkHttpClient client, Config config, String namespace) {
+    this(new RollingOperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withCascading(true));
     if (config.getNamespace() != null) {
       this.namespace = config.getNamespace();
     }

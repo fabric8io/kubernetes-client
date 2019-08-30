@@ -27,7 +27,11 @@ import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 public class NamespaceOperationsImpl  extends HasMetadataOperation<Namespace, NamespaceList, DoneableNamespace, Resource<Namespace, DoneableNamespace>> {
 
   public NamespaceOperationsImpl(OkHttpClient client, Config config) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config));
+    this(client, config, null);
+  }
+
+  public NamespaceOperationsImpl(OkHttpClient client, Config config, String namespace) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(null));
   }
 
   public NamespaceOperationsImpl(OperationContext context) {

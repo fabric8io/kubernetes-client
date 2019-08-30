@@ -32,7 +32,11 @@ public class ComponentStatusOperationsImpl extends HasMetadataOperation<Componen
   Resource<ComponentStatus, DoneableComponentStatus>> {
 
   public ComponentStatusOperationsImpl(OkHttpClient client, Config config) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config));
+    this(client, config, null);
+  }
+
+  public ComponentStatusOperationsImpl(OkHttpClient client, Config config, String namespace) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace));
   }
 
   public ComponentStatusOperationsImpl(OperationContext context) {
