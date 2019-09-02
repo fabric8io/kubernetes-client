@@ -86,7 +86,7 @@
     <okhttp.bundle.version>3.12.0_1</okhttp.bundle.version>
     <okio.version>1.15.0</okio.version>
     <okio.bundle.version>1.15.0_1</okio.bundle.version>
-    <jackson.version>2.9.9</jackson.version>
+    <jackson.version>2.10.0.pr2</jackson.version>
     <jackson.version.databind>2.9.9.3</jackson.version.databind>
     <mockwebserver.version>0.1.2</mockwebserver.version>
 
