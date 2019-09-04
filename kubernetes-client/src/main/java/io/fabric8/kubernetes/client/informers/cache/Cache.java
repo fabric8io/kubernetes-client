@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.utils.informers.cache;
+package io.fabric8.kubernetes.client.informers.cache;
 
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.utils.ReflectUtils;
-import io.fabric8.zjsonpatch.internal.guava.Strings;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,7 +26,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 
 /**
@@ -359,7 +357,7 @@ public class Cache<T> implements Indexer<T> {
           throw new RuntimeException("Object is bad :" + obj);
         }
       }
-      if (!Strings.isNullOrEmpty(metadata.getNamespace())) {
+      if ((metadata.getNamespace() != null) && !metadata.getNamespace().isEmpty()) {
         return metadata.getNamespace() + "/" + metadata.getName();
       }
       return metadata.getName();

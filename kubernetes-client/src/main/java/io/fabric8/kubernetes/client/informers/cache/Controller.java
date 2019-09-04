@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.utils.informers.cache;
+package io.fabric8.kubernetes.client.informers.cache;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.utils.informers.ListerWatcher;
-import io.fabric8.kubernetes.client.utils.informers.ResyncRunnable;
+import io.fabric8.kubernetes.client.informers.ListerWatcher;
+import io.fabric8.kubernetes.client.informers.ResyncRunnable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,13 +30,15 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
  * Controller is a generic controller framework.
+ *
+ * This is taken from https://github.com/kubernetes-client/java/blob/master/util/src/main/java/io/kubernetes/client/informer/cache/Controller.java
+ * which has been ported from official go client: https://github.com/kubernetes/client-go/blob/master/tools/cache/controller.go
  */
 public class Controller<T extends HasMetadata, TList extends KubernetesResourceList<T>> {
   private static final Logger log = LoggerFactory.getLogger(Controller.class);

@@ -72,14 +72,13 @@ import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.*;
 import io.fabric8.kubernetes.client.utils.Serialization;
-import io.fabric8.kubernetes.client.utils.informers.SharedInformerFactory;
+import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import okhttp3.OkHttpClient;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
 
 public class DefaultKubernetesClient extends BaseClient implements NamespacedKubernetesClient {
 
@@ -321,7 +320,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public SharedInformerFactory informers() {
-    return new SharedInformerFactory(Executors.newCachedThreadPool(), httpClient, getConfiguration());
+    return new SharedInformerFactory(ForkJoinPool.commonPool(), httpClient, getConfiguration());
   }
 
 }

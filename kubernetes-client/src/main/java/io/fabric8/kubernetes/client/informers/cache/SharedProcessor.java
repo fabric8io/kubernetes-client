@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.utils.informers.cache;
+package io.fabric8.kubernetes.client.informers.cache;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -27,6 +26,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 /**
  * SharedProcessor class manages all the registered ProcessListener and distributes
  * notifications.
+ *
+ * This has been taken from official-client: https://github.com/kubernetes-client/java/blob/master/util/src/main/java/io/kubernetes/client/informer/cache/SharedProcessor.java
  */
 public class SharedProcessor<T> {
   private ReadWriteLock lock = new ReentrantReadWriteLock();

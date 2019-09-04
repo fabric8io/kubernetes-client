@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.utils.informers.cache;
-
-import io.fabric8.zjsonpatch.internal.guava.Strings;
+package io.fabric8.kubernetes.client.informers.cache;
 
 import java.util.List;
 
@@ -46,7 +44,7 @@ public class Lister<T> {
   }
 
   public List<T> list() {
-    if (Strings.isNullOrEmpty(namespace)) {
+    if ((namespace == null || namespace.isEmpty())) {
       return indexer.list();
     } else {
       return indexer.byIndex(this.indexName, namespace);
@@ -55,7 +53,7 @@ public class Lister<T> {
 
   public T get(String name) {
     String key = name;
-    if (!Strings.isNullOrEmpty(namespace)) {
+    if (namespace != null && !namespace.isEmpty()) {
       key = namespace + "/" + name;
     }
     return indexer.getByKey(key);

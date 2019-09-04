@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.utils.informers.cache;
+package io.fabric8.kubernetes.client.informers.cache;
 
 import java.util.List;
 
@@ -26,6 +26,8 @@ import java.util.List;
  * It makes no assumptions about the stored object identity; it is the responsibility
  * of a Store implementation to provide a mechanism to correctly key objects and to
  * define the contract for obtaining objects by some arbitrary key type.
+ *
+ * This is ported from official go client: https://github.com/kubernetes/client-go/blob/master/tools/cache/store.go
  *
  * @param <T> resource
  */

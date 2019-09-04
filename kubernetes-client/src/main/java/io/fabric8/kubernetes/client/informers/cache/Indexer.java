@@ -13,12 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.utils.informers.cache;
+package io.fabric8.kubernetes.client.informers.cache;
 
 import java.util.List;
 
 /**
  * Indexer extends Store interface and add index/de-index methods.
+ *
+ * This implementation has been taken from official client: https://github.com/kubernetes-client/java/blob/master/util/src/main/java/io/kubernetes/client/informer/cache/Indexer.java
+ * which has been ported from official go client: https://github.com/kubernetes/client-go/blob/master/tools/cache/index.go
  *
  * @param <T> resource
  */

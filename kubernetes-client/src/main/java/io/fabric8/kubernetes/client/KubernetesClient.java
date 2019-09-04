@@ -70,7 +70,7 @@ import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionLis
 import io.fabric8.kubernetes.api.model.apiextensions.DoneableCustomResourceDefinition;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
-import io.fabric8.kubernetes.client.utils.informers.SharedInformerFactory;
+import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 
 import java.io.InputStream;
 import java.util.Collection;

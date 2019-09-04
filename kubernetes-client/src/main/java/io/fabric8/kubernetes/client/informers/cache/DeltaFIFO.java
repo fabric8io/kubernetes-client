@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.utils.informers.cache;
+package io.fabric8.kubernetes.client.informers.cache;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,7 +30,6 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -39,6 +37,9 @@ import java.util.function.Function;
 /**
  * The DeltaFIFO inherits from an Object queue since that we're actually
  * reading from it as Deltas but writing it as Kubernetes object.
+ *
+ * This is taken from official client: https://github.com/kubernetes-client/java/blob/master/util/src/main/java/io/kubernetes/client/informer/cache/DeltaFIFO.java
+ * which is ported from official go client: https://github.com/kubernetes/client-go/blob/master/tools/cache/delta_fifo.go
  */
 public class DeltaFIFO<T> implements Store<Object> {
   private static final Logger log = LoggerFactory.getLogger(DeltaFIFO.class);

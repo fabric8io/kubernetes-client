@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.utils.informers.cache;
+package io.fabric8.kubernetes.client.informers.cache;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
-import io.fabric8.kubernetes.client.utils.informers.ResourceEventHandler;
+import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertTrue;

@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.utils.informers.cache;
+package io.fabric8.kubernetes.client.informers.cache;
 
-import io.fabric8.kubernetes.client.utils.informers.ResourceEventHandler;
+import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +27,9 @@ import java.util.concurrent.BlockingQueue;
  * ProcessorListener implements Runnable interface. It's supposed to run in background
  * and actually executes its event handler on notification. Note that it allows 1000
  * pending notification at maximum.
+ *
+ * This has been taken from official client: https://github.com/kubernetes-client/java/blob/master/util/src/main/java/io/kubernetes/client/informer/cache/ProcessorListener.java
+ * which has been ported from official go client: https://github.com/kubernetes/client-go/blob/master/tools/cache/shared_informer.go#L570
  *
  * @param <T>
  */

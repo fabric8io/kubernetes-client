@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.utils.informers;
+package io.fabric8.kubernetes.client.informers;
 
-import io.fabric8.kubernetes.client.utils.informers.cache.Indexer;
+import io.fabric8.kubernetes.client.informers.cache.Indexer;
 
 import java.util.List;
 import java.util.Map;

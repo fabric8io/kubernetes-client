@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.utils.informers;
+package io.fabric8.kubernetes.client.informers;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
@@ -24,7 +24,7 @@ import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.utils.informers.impl.DefaultSharedIndexInformer;
+import io.fabric8.kubernetes.client.informers.impl.DefaultSharedIndexInformer;
 import okhttp3.OkHttpClient;
 
 import java.lang.reflect.Type;
@@ -36,6 +36,8 @@ import java.util.concurrent.Future;
 /**
  * SharedInformerFactory class constructs and caches informers for api types.
  *
+ * This has been taken from https://github.com/kubernetes-client/java/blob/master/util/src/main/java/io/kubernetes/client/informer/SharedInformerFactory.java
+ * which is ported from offical go client https://github.com/kubernetes/client-go/blob/master/informers/factory.go
  */
 public class SharedInformerFactory extends BaseOperation {
   private Map<Type, SharedIndexInformer> informers;

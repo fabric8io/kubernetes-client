@@ -20,10 +20,10 @@ import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.utils.informers.ResourceEventHandler;
-import io.fabric8.kubernetes.client.utils.informers.SharedIndexInformer;
-import io.fabric8.kubernetes.client.utils.informers.SharedInformerFactory;
-import io.fabric8.kubernetes.client.utils.informers.cache.Lister;
+import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
+import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
+import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
+import io.fabric8.kubernetes.client.informers.cache.Lister;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

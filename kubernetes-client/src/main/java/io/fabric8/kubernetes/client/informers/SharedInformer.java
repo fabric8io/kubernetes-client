@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.utils.informers;
+package io.fabric8.kubernetes.client.informers;
 
 /**
  * SharedInformer defines basic methods of an informer.
+ *
+ * This has been ported from official go client: https://github.com/kubernetes/client-go/blob/master/tools/cache/shared_informer.go
  */
 public interface SharedInformer<T> {
 

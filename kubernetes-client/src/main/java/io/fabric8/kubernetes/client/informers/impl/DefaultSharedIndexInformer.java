@@ -13,21 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.utils.informers.impl;
+package io.fabric8.kubernetes.client.informers.impl;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.utils.informers.ListerWatcher;
-import io.fabric8.kubernetes.client.utils.informers.ResourceEventHandler;
-import io.fabric8.kubernetes.client.utils.informers.SharedIndexInformer;
-import io.fabric8.kubernetes.client.utils.informers.cache.Cache;
-import io.fabric8.kubernetes.client.utils.informers.cache.Controller;
-import io.fabric8.kubernetes.client.utils.informers.cache.DeltaFIFO;
-import io.fabric8.kubernetes.client.utils.informers.cache.Indexer;
-import io.fabric8.kubernetes.client.utils.informers.cache.ProcessorListener;
-import io.fabric8.kubernetes.client.utils.informers.cache.SharedProcessor;
+import io.fabric8.kubernetes.client.informers.ListerWatcher;
+import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
+import io.fabric8.kubernetes.client.informers.cache.Cache;
+import io.fabric8.kubernetes.client.informers.cache.Controller;
+import io.fabric8.kubernetes.client.informers.cache.DeltaFIFO;
+import io.fabric8.kubernetes.client.informers.cache.Indexer;
+import io.fabric8.kubernetes.client.informers.cache.ProcessorListener;
+import io.fabric8.kubernetes.client.informers.cache.SharedProcessor;
+import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
