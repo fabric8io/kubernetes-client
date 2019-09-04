@@ -91,7 +91,11 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
     private final Integer bufferSize;
 
   public PodOperationsImpl(OkHttpClient client, Config config) {
-    this(new PodOperationContext().withOkhttpClient(client).withConfig(config).withCascading(true));
+    this(client, config, null);
+  }
+
+  public PodOperationsImpl(OkHttpClient client, Config config, String namespace) {
+    this(new PodOperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withCascading(true));
   }
 
   public PodOperationsImpl(PodOperationContext context) {

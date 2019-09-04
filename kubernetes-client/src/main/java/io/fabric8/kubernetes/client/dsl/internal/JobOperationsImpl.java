@@ -43,7 +43,11 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
   static final transient Logger LOG = LoggerFactory.getLogger(JobOperationsImpl.class);
 
   public JobOperationsImpl(OkHttpClient client, Config config) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config).withCascading(true));
+    this(client, config, null);
+  }
+
+  public JobOperationsImpl(OkHttpClient client, Config config, String namespace) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withCascading(true));
   }
 
   public JobOperationsImpl(OperationContext context) {

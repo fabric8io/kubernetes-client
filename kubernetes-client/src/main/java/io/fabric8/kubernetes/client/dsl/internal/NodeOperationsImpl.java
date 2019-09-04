@@ -27,7 +27,11 @@ import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 public class NodeOperationsImpl extends HasMetadataOperation<Node, NodeList, DoneableNode, Resource<Node, DoneableNode>> {
 
   public NodeOperationsImpl(OkHttpClient client, Config config) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config));
+    this(client, config, null);
+  }
+
+  public NodeOperationsImpl(OkHttpClient client, Config config, String namespace) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace));
   }
 
   public NodeOperationsImpl(OperationContext context) {

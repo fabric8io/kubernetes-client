@@ -3,6 +3,7 @@
 ### 4.4-SNAPSHOT
 #### Bugs
   * Fix #1730: Fix failing build on jdk11
+  * Fix #1634: Cascade delete can't be overriden
 
 #### Improvements
 

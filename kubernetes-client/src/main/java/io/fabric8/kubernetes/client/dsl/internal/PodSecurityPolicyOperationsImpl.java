@@ -27,7 +27,11 @@ import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 public class PodSecurityPolicyOperationsImpl extends HasMetadataOperation<PodSecurityPolicy, PodSecurityPolicyList, DoneablePodSecurityPolicy, Resource<PodSecurityPolicy, DoneablePodSecurityPolicy>>{
 
   public PodSecurityPolicyOperationsImpl(OkHttpClient client, Config config) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config));
+    this(client, config, null);
+  }
+
+  public PodSecurityPolicyOperationsImpl(OkHttpClient client, Config config, String namespace) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace));
   }
 
   public PodSecurityPolicyOperationsImpl(OperationContext context) {

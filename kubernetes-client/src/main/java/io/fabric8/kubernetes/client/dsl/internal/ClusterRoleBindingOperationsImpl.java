@@ -27,7 +27,11 @@ import okhttp3.OkHttpClient;
 public class ClusterRoleBindingOperationsImpl extends HasMetadataOperation<ClusterRoleBinding, ClusterRoleBindingList, DoneableClusterRoleBinding, Resource<ClusterRoleBinding, DoneableClusterRoleBinding>> {
 
   public ClusterRoleBindingOperationsImpl(OkHttpClient client, Config config) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config));
+    this(client, config, null);
+  }
+
+  public ClusterRoleBindingOperationsImpl(OkHttpClient client, Config config, String namespace) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace));
   }
 
   public ClusterRoleBindingOperationsImpl(OperationContext context) {
