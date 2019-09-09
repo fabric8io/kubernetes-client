@@ -6,6 +6,7 @@
   * Fix #1634: Cascade delete can't be overriden
 
 #### Improvements
+  * Added in kubernetes-server-mock (CRUD) the withoutLabel filter and respective tests
 
 #### Dependency Upgrade
 
