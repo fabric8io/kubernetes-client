@@ -676,7 +676,7 @@ public class Config {
 
     // Detect algorithm
     try {
-      InputStream keyInputStream = CertUtils.getInputStreamFromDataOrFile(clientKeyFile, clientKeyData);
+      InputStream keyInputStream = CertUtils.getInputStreamFromDataOrFile(clientKeyData, clientKeyFile);
       if(keyInputStream != null) {
         return getKeyAlgorithm(keyInputStream);
       }
