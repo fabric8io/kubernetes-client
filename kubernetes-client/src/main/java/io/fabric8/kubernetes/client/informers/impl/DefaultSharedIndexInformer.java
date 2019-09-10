@@ -17,7 +17,6 @@ package io.fabric8.kubernetes.client.informers.impl;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
@@ -61,7 +60,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, TList extends Kub
   private volatile boolean started = false;
   private volatile boolean stopped = false;
 
-  public DefaultSharedIndexInformer(Class<T> apiTypeClass, ListerWatcher listerWatcher, long resyncPeriod, BaseOperation<T, TList, ?, ?> baseOperation, OperationContext context) {
+  public DefaultSharedIndexInformer(Class<T> apiTypeClass, ListerWatcher listerWatcher, long resyncPeriod, OperationContext context) {
     this.resyncCheckPeriodMillis = resyncPeriod;
     this.defaultEventHandlerResyncPeriod = resyncPeriod;
 
@@ -70,7 +69,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, TList extends Kub
 
     DeltaFIFO<T> fifo = new DeltaFIFO<T>(Cache::metaNamespaceKeyFunc, this.indexer);
 
-    this.controller = new Controller<T, TList>(apiTypeClass, fifo, listerWatcher, this::handleDeltas, processor::shouldResync, resyncCheckPeriodMillis, baseOperation, context);
+    this.controller = new Controller<T, TList>(apiTypeClass, fifo, listerWatcher, this::handleDeltas, processor::shouldResync, resyncCheckPeriodMillis, context);
     controllerThread = new Thread(controller::run);
   }
 

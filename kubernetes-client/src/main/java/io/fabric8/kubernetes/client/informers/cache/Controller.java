@@ -69,22 +69,19 @@ public class Controller<T extends HasMetadata, TList extends KubernetesResourceL
 
   private ScheduledFuture resyncFuture;
 
-  private BaseOperation<T, TList, ?, ?> baseOperation;
-
   private OperationContext operationContext;
 
   private Class<T> apiTypeClass;
 
   private ScheduledFuture reflectorFuture;
 
-  public Controller(Class<T> apiTypeClass, DeltaFIFO<T> queue, ListerWatcher<T, TList> listerWatcher, Consumer<Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>>> processFunc, Supplier<Boolean> resyncFunc, long fullResyncPeriod, BaseOperation<T, TList, ?, ?> baseOperation, OperationContext context) {
+  public Controller(Class<T> apiTypeClass, DeltaFIFO<T> queue, ListerWatcher<T, TList> listerWatcher, Consumer<Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>>> processFunc, Supplier<Boolean> resyncFunc, long fullResyncPeriod, OperationContext context) {
     this.queue = queue;
     this.listerWatcher = listerWatcher;
     this.apiTypeClass = apiTypeClass;
     this.processFunc = processFunc;
     this.resyncFunc = resyncFunc;
     this.fullResyncPeriod = fullResyncPeriod;
-    this.baseOperation = baseOperation;
     this.operationContext = context;
 
     // Starts one daemon thread for reflector
@@ -94,8 +91,8 @@ public class Controller<T extends HasMetadata, TList extends KubernetesResourceL
     this.resyncExecutor = Executors.newSingleThreadScheduledExecutor();
   }
 
-  public Controller(Class<T> apiTypeClass, DeltaFIFO<T> queue, ListerWatcher<T, TList> listerWatcher, Consumer<Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>>> popProcessFunc, BaseOperation<T, TList, ?, ?> baseOperation, OperationContext context) {
-    this(apiTypeClass, queue, listerWatcher, popProcessFunc, null, 0, baseOperation, context);
+  public Controller(Class<T> apiTypeClass, DeltaFIFO<T> queue, ListerWatcher<T, TList> listerWatcher, Consumer<Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>>> popProcessFunc, OperationContext context) {
+    this(apiTypeClass, queue, listerWatcher, popProcessFunc, null, 0, context);
   }
 
   public void run() {
@@ -110,7 +107,7 @@ public class Controller<T extends HasMetadata, TList extends KubernetesResourceL
     }
 
     synchronized (this) {
-      reflector = new ReflectorRunnable<T, TList>(apiTypeClass, listerWatcher, queue, baseOperation, operationContext);
+      reflector = new ReflectorRunnable<T, TList>(apiTypeClass, listerWatcher, queue, operationContext);
       try {
         if (fullResyncPeriod > 0) {
           reflectorFuture = reflectExecutor.scheduleWithFixedDelay(reflector::run, 0L, fullResyncPeriod, TimeUnit.MILLISECONDS);

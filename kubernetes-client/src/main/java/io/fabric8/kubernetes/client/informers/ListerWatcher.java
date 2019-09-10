@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 
 /**
  * ListerWatcher is any object that knows how to perform an initial list and
@@ -28,7 +29,7 @@ import io.fabric8.kubernetes.client.Watcher;
  * @param <TList> list for that type
  */
 public interface ListerWatcher<T, TList> {
-  Watch watch(ListOptions params, String namespace, Watcher<T> watcher) throws KubernetesClientException;
+  Watch watch(ListOptions params, String namespace, OperationContext context, Watcher<T> watcher) throws KubernetesClientException;
 
-  TList list(ListOptions params, String namespace) throws KubernetesClientException;
+  TList list(ListOptions params, String namespace, OperationContext context) throws KubernetesClientException;
 }

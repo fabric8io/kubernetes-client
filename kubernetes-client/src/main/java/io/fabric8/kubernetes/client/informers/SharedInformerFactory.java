@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.informers.impl.DefaultSharedIndexInformer;
 import okhttp3.OkHttpClient;
@@ -32,6 +33,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+
+import static io.fabric8.kubernetes.client.utils.Utils.getPluralFromKind;
 
 /**
  * SharedInformerFactory class constructs and caches informers for api types.
@@ -58,7 +61,7 @@ public class SharedInformerFactory extends BaseOperation {
     this.informerExecutor = threadPool;
     this.informers = new HashMap<>();
     this.startedInformers = new HashMap<>();
-    this.baseOperation = this.newInstance(context.withPlural("pods"));
+    this.baseOperation = this.newInstance(context);
   }
 
   /**
@@ -73,9 +76,40 @@ public class SharedInformerFactory extends BaseOperation {
    * @return the shared index informer
    */
   public synchronized <T extends HasMetadata, TList extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerFor(Class<T> apiTypeClass, Class<TList> apiListTypeClass, long resyncPeriodInMillis) {
-    BaseOperation<T, TList, ?, ?> baseOperation = this.newInstance(context.withPlural("pods"));
+    return sharedIndexInformerFor(apiTypeClass, apiListTypeClass, context.withPlural(getPluralFromKind(apiTypeClass.getSimpleName())), resyncPeriodInMillis);
+  }
+
+  /**
+   * Constructs and returns a shared index informer with resync period specified for custom resources.
+   *
+   * @param customResourceContext basic information about the Custom Resource Definition corresponding to that custom resource
+   * @param apiTypeClass apiType class
+   * @param apiListTypeClass api list type class
+   * @param resyncPeriodInMillis resync period in milliseconds
+   * @param <T> the type parameter
+   * @param <TList> the type's list parameter
+   * @return the shared index informer
+   */
+  public synchronized <T extends HasMetadata, TList extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerForCustomResource(CustomResourceDefinitionContext customResourceContext, Class<T> apiTypeClass, Class<TList> apiListTypeClass, long resyncPeriodInMillis) {
+    return sharedIndexInformerFor(apiTypeClass, apiListTypeClass, context.withApiGroupVersion(customResourceContext.getVersion())
+      .withApiGroupName(customResourceContext.getGroup())
+      .withPlural(customResourceContext.getPlural()), resyncPeriodInMillis);
+  }
+
+  /**
+   * Constructs and returns a shared index informer with resync period specified. And the
+   * informer cache will be overwritten.
+   *
+   * @param apiTypeClass apiType class
+   * @param apiListTypeClass api list type class
+   * @param resyncPeriodInMillis resync period in milliseconds
+   * @param <T> the type parameter
+   * @param <TList> the type's list parameter
+   * @return the shared index informer
+   */
+  public synchronized <T extends HasMetadata, TList extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerFor(Class<T> apiTypeClass, Class<TList> apiListTypeClass, OperationContext operationContext, long resyncPeriodInMillis) {
     ListerWatcher<T, TList> listerWatcher = listerWatcherFor(apiTypeClass, apiListTypeClass);
-    SharedIndexInformer<T> informer = new DefaultSharedIndexInformer<T, TList>(apiTypeClass, listerWatcher, resyncPeriodInMillis, baseOperation, context);
+    SharedIndexInformer<T> informer = new DefaultSharedIndexInformer<T, TList>(apiTypeClass, listerWatcher, resyncPeriodInMillis, operationContext);
     this.informers.put(apiTypeClass, informer);
     return informer;
   }
@@ -84,16 +118,21 @@ public class SharedInformerFactory extends BaseOperation {
 
     return new ListerWatcher<T, TList>() {
       @Override
-      public TList list(ListOptions params, String namespace) throws KubernetesClientException {
-        baseOperation.setType(apiTypeClass);
-        baseOperation.setListType(apiListTypeClass);
-        baseOperation.setNamespace(namespace);
-        return (TList)baseOperation.list();
+      public TList list(ListOptions params, String namespace, OperationContext context) throws KubernetesClientException {
+        BaseOperation<T, TList, ?, ?> listBaseOperation = baseOperation.newInstance(context.withNamespace(namespace));
+        listBaseOperation.setType(apiTypeClass);
+        listBaseOperation.setListType(apiListTypeClass);
+
+        return listBaseOperation.list();
       }
 
       @Override
-      public Watch watch(ListOptions params, String namespace, Watcher<T> resourceWatcher) throws KubernetesClientException {
-        return baseOperation.watch(params.getResourceVersion(), resourceWatcher);
+      public Watch watch(ListOptions params, String namespace, OperationContext context, Watcher<T> resourceWatcher) throws KubernetesClientException {
+        BaseOperation<T, TList, ?, ?> watchBaseOperation = baseOperation.newInstance(context);
+        watchBaseOperation.setType(apiTypeClass);
+        watchBaseOperation.setListType(apiListTypeClass);
+
+        return watchBaseOperation.watch(params.getResourceVersion(), resourceWatcher, true);
       }
     };
   }

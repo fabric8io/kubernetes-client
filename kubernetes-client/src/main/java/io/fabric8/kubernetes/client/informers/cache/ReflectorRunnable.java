@@ -23,7 +23,6 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import org.slf4j.Logger;
@@ -41,14 +40,12 @@ public class ReflectorRunnable<T extends HasMetadata, TList extends KubernetesRe
   private Store<T> store;
   private Class<T> apiTypeClass;
   private AtomicBoolean isActive = new AtomicBoolean(true);
-  private BaseOperation baseOperation;
   private OperationContext operationContext;
 
-  public ReflectorRunnable(Class<T> apiTypeClass, ListerWatcher listerWatcher, Store store, BaseOperation<T, TList, ?, ?> baseOperation, OperationContext operationContext) {
+  public ReflectorRunnable(Class<T> apiTypeClass, ListerWatcher listerWatcher, Store store, OperationContext operationContext) {
     this.listerWatcher = listerWatcher;
     this.store = store;
     this.apiTypeClass = apiTypeClass;
-    this.baseOperation = baseOperation;
     this.operationContext = operationContext;
   }
 
@@ -60,7 +57,7 @@ public class ReflectorRunnable<T extends HasMetadata, TList extends KubernetesRe
     try {
       log.info("{}#Start listing and watching...", apiTypeClass);
 
-      TList list = listerWatcher.list(new ListOptionsBuilder().withWatch(Boolean.FALSE).withResourceVersion(null).withTimeoutSeconds(null).build(), null);
+      TList list = listerWatcher.list(new ListOptionsBuilder().withWatch(Boolean.FALSE).withResourceVersion(null).withTimeoutSeconds(null).build(), null, operationContext);
 
       ListMeta listMeta = list.getMetadata();
       String resourceVersion = listMeta.getResourceVersion();
@@ -90,7 +87,7 @@ public class ReflectorRunnable<T extends HasMetadata, TList extends KubernetesRe
       try {
         // Use resource version to watch
         watch = listerWatcher.watch(new ListOptionsBuilder().withWatch(Boolean.TRUE).withResourceVersion(resourceVersion).withTimeoutSeconds(null).build(),
-          null, new Watcher<T>() {
+          null, operationContext, new Watcher<T>() {
             @Override
             public void eventReceived(Action action, T resource) {
               log.info("Event received ", action.name());
@@ -136,6 +133,7 @@ public class ReflectorRunnable<T extends HasMetadata, TList extends KubernetesRe
       }
     } catch (Exception exception) {
       log.error("Failure in list-watch: {}", exception.getMessage());
+      exception.printStackTrace();
     }
   }
 
