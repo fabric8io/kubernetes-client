@@ -206,6 +206,17 @@ public class PodTest {
   }
 
   @Test
+  public void testDeleteWithPropagationPolicy() {
+    Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
+    server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, pod1).once();
+
+    KubernetesClient client = server.getClient();
+
+    Boolean deleted = client.pods().inNamespace("test").withName("pod1").withPropagationPolicy("Foreground").delete();
+    assertTrue(deleted);
+  }
+
+  @Test
   public void testCreateWithNameMismatch() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();

@@ -111,4 +111,21 @@ public class GroupTest {
     deleted = client.groups().withName("Group3").delete();
     assertFalse(deleted);
   }
+
+  @Test
+  public void testDeleteWithPropagationPolicy() {
+    server.expect().withPath("/apis/user.openshift.io/v1/groups/group1").andReturn(200, new GroupBuilder().build()).once();
+    server.expect().withPath("/apis/user.openshift.io/v1/groups/Group2").andReturn( 200, new GroupBuilder().build()).once();
+
+    OpenShiftClient client = server.getOpenshiftClient();
+
+    Boolean deleted = client.groups().withName("group1").withPropagationPolicy("Foreground").delete();
+    assertNotNull(deleted);
+
+    deleted = client.groups().withName("Group2").withPropagationPolicy("Foreground").delete();
+    assertTrue(deleted);
+
+    deleted = client.groups().withName("Group3").withPropagationPolicy("Foreground").delete();
+    assertFalse(deleted);
+  }
 }
