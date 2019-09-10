@@ -9,6 +9,7 @@
 
 #### Improvements
   * Added in kubernetes-server-mock (CRUD) the withoutLabel filter and respective tests
+  * Removed @Valid annotation from all model class fields (improves quarkus integration).
 
 #### Dependency Upgrade
 
