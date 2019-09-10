@@ -17,7 +17,6 @@ package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.api.builder.Function;
 import io.fabric8.kubernetes.api.model.Doneable;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 
 /**
  */

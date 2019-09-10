@@ -18,7 +18,6 @@
 <features xmlns="http://karaf.apache.org/xmlns/features/v1.2.0" name="kuberntes-features-${project.version}">
 
   <feature name="kubernetes-client" description="Fabric8 Kubernetes Client" version="${project.version}">
-    <bundle dependency='true'>mvn:javax.validation/validation-api/${validation.api.version}</bundle>
     <bundle dependency='true'>mvn:com.google.code.findbugs/jsr305/${jsr305.version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-core/${jackson.version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-annotations/${jackson.bundle.version}</bundle>

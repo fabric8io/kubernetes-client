@@ -29,7 +29,6 @@ import io.sundr.builder.annotations.Inline;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import javax.annotation.Generated;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,7 +43,7 @@ import java.io.Serializable;
 @JsonSerialize(using = Quantity.Serializer.class)
 @ToString
 @EqualsAndHashCode
-@Buildable(editableEnabled = false, validationEnabled = true, generateBuilderPackage=true, builderPackage = "io.fabric8.kubernetes.api.builder", inline = @Inline(type = Doneable.class, prefix = "Doneable", value = "done"))
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage=true, builderPackage = "io.fabric8.kubernetes.api.builder", inline = @Inline(type = Doneable.class, prefix = "Doneable", value = "done"))
 public class Quantity  implements Serializable {
 
     private String amount;

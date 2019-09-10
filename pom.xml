@@ -92,7 +92,6 @@
 
     <!-- API versions -->
     <jsr305.version>3.0.2</jsr305.version>
-    <validation.api.version>2.0.1.Final</validation.api.version>
 
     <!-- Testing versions -->
     <assertj.core.version>3.13.2</assertj.core.version>
@@ -232,11 +231,6 @@
         <groupId>com.fasterxml.jackson.module</groupId>
         <artifactId>jackson-module-jaxb-annotations</artifactId>
         <version>${jackson.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>javax.validation</groupId>
-        <artifactId>validation-api</artifactId>
-        <version>${validation.api.version}</version>
       </dependency>
       <dependency>
         <groupId>io.sundr</groupId>
