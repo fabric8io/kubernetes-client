@@ -49,7 +49,7 @@ public class ServiceCatalogTypeAnnotator extends Jackson2Annotator {
         try {
             JAnnotationUse buildable = clazz.annotate(Buildable.class)
                     .param("editableEnabled", false)
-                    .param("validationEnabled", true)
+                    .param("validationEnabled", false)
                     .param("generateBuilderPackage", false)
                     .param("builderPackage", "io.fabric8.kubernetes.api.builder");
 

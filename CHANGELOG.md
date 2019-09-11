@@ -5,7 +5,8 @@
 #### Bugs
 
 #### Improvements
-
+  * Removed Bean Validation integration
+  
 #### Dependency Upgrade
 
 #### New Feature
