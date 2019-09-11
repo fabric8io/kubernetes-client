@@ -11,6 +11,7 @@
 
 #### New Feature
 * Added Template Instance Support
+* Fix #1384: Initial draft for SharedInformer support.
 
 ### 4.5.2 (14-09-2019)
 #### Bugs

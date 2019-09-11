@@ -74,6 +74,7 @@ import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 
 import java.io.InputStream;
 import java.util.Collection;
+import java.util.concurrent.ExecutorService;
 
 public interface KubernetesClient extends Client {
 
@@ -168,5 +169,7 @@ public interface KubernetesClient extends Client {
   SubjectAccessReviewDSL subjectAccessReviewAuth();
 
   SharedInformerFactory informers();
+
+  SharedInformerFactory informers(ExecutorService executorService);
 
 }

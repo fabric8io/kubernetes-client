@@ -45,6 +45,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_API_VERSION_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_AUTH_BASIC_PASSWORD_SYSTEM_PROPERTY;
@@ -489,6 +490,9 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
 
   @Override
   public SharedInformerFactory informers() { return delegate.informers(); }
+
+  @Override
+  public SharedInformerFactory informers(ExecutorService executorService) { return delegate.informers(executorService); }
 
   @Override
   public NamespacedOpenShiftClient inAnyNamespace() {

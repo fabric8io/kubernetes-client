@@ -78,6 +78,7 @@ import okhttp3.OkHttpClient;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
 public class DefaultKubernetesClient extends BaseClient implements NamespacedKubernetesClient {
@@ -321,6 +322,11 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   @Override
   public SharedInformerFactory informers() {
     return new SharedInformerFactory(ForkJoinPool.commonPool(), httpClient, getConfiguration());
+  }
+
+  @Override
+  public SharedInformerFactory informers(ExecutorService executorService) {
+    return new SharedInformerFactory(executorService, httpClient, getConfiguration());
   }
 
 }

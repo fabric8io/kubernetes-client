@@ -118,6 +118,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 
 import static io.fabric8.kubernetes.client.Config.*;
 
@@ -400,6 +401,11 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   @Override
   public SharedInformerFactory informers() {
     return delegate.informers();
+  }
+
+  @Override
+  public SharedInformerFactory informers(ExecutorService executorService) {
+    return delegate.informers(executorService);
   }
 
   @Override
