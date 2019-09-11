@@ -1,5 +1,15 @@
 ## CHANGELOG
 
+### 4.5-SNAPSHOT
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Feature
+
+
 ### 4.5.1 (11-09-2019)
 
 #### Improvements
