@@ -30,7 +30,7 @@
   <name>Fabric8 :: Service Catalog :: Extension</name>
 
   <properties>
-    <lombok.version>1.18.8</lombok.version>
+    <lombok.version>1.18.10</lombok.version>
   </properties>
 
   <modules>

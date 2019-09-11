@@ -113,7 +113,7 @@
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
     <arquillian.cube.version>1.18.2</arquillian.cube.version>
     <slf4j.version>1.7.26</slf4j.version>
-    <lombok.version>1.18.8</lombok.version>
+    <lombok.version>1.18.10</lombok.version>
     <snakeyaml.version>1.24</snakeyaml.version>
     <bouncycastle.version>1.62</bouncycastle.version>
     <commons-codec.version>1.13</commons-codec.version>
