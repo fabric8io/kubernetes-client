@@ -1,17 +1,10 @@
 ## CHANGELOG
 
-### 4.5-SNAPSHOT
-
-#### Bugs
+### 4.5.1 (11-09-2019)
 
 #### Improvements
   * Removed Bean Validation integration
   
-#### Dependency Upgrade
-
-#### New Feature
-
-
 ### 4.5.0 (10-09-2019)
 
 #### Bugs
