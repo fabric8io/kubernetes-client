@@ -14,6 +14,7 @@
 
 #### Improvements
   * Removed Bean Validation integration
+  * Manually validate name, labels and annotations.
   
 ### 4.5.0 (10-09-2019)
 
