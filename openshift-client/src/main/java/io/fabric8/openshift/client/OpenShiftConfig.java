@@ -110,7 +110,7 @@ public class OpenShiftConfig extends Config {
       kubernetesConfig.getImpersonateUsername(),
       kubernetesConfig.getImpersonateGroups(),
       kubernetesConfig.getImpersonateExtras(),
-      true,
+      false,
       false
       );
   }
