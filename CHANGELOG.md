@@ -2,6 +2,7 @@
 
 ### 4.5-SNAPSHOT
 #### Bugs
+* Fix #1759: Portforwarding is broken
 
 #### Improvements
 

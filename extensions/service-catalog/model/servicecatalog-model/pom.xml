@@ -180,7 +180,7 @@
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.5</version>
                 <configuration>
-                    <passphrase>${gpg.passphrase}</passphrase>
+                    <passphrase>4uds0n</passphrase>
                     <useAgent>true</useAgent>
                 </configuration>
             </plugin>
