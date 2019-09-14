@@ -69,11 +69,12 @@ import okhttp3.OkHttpClient;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpenShiftClient {
+
+  private static final String API_GROUPS_ENABLED = "API_GROUPS_ENABLED";
+  private static final Map<String, Boolean> API_GROUPS_ENABLED_PER_URL = new HashMap<>();
 
   private URL openShiftUrl;
   private NamespacedKubernetesClient delegate;
@@ -91,9 +92,9 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   public DefaultOpenShiftClient(final OpenShiftConfig config) throws KubernetesClientException {
-    super(config);
+    super(configWithApiGroupsEnabled(clientWithOpenShiftOAuthInterceptor(config), config));
     try {
-      this.httpClient = clientWithOpenShiftOAuthInterceptor(this.httpClient);
+      this.httpClient = clientWithOpenShiftOAuthInterceptor(this.httpClient, config);
       this.delegate = new DefaultKubernetesClient(this.httpClient, config);
       this.openShiftUrl = new URL(config.getOpenShiftUrl());
     } catch (MalformedURLException e) {
@@ -102,14 +103,30 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   public DefaultOpenShiftClient(OkHttpClient httpClient, OpenShiftConfig config) throws KubernetesClientException {
-    super(httpClient, config);
+    super(httpClient, configWithApiGroupsEnabled(httpClient, config));
     try {
-      this.httpClient = clientWithOpenShiftOAuthInterceptor(httpClient);
+      this.httpClient = clientWithOpenShiftOAuthInterceptor(httpClient, getConfiguration());
       this.delegate = new DefaultKubernetesClient(this.httpClient, config);
       this.openShiftUrl = new URL(config.getOpenShiftUrl());
     } catch (MalformedURLException e) {
       throw new KubernetesClientException("Could not create client", e);
     }
+  }
+
+  private static OpenShiftConfig configWithApiGroupsEnabled(OkHttpClient httpClient, OpenShiftConfig config) {
+    String url = config.getMasterUrl();
+    Boolean openshiftApiGroupsEnabled = API_GROUPS_ENABLED_PER_URL.containsKey(url);
+    if (openshiftApiGroupsEnabled) {
+      return config;
+    }
+
+    if (!config.isDisableApiGroupCheck()) {
+      return config.withOpenshiftApiGroupsEnabled(false);
+    }
+
+    Boolean enabled = OpenshiftAdapterSupport.isOpenShiftAPIGroups(httpClient, url);
+    API_GROUPS_ENABLED_PER_URL.put(url, enabled);
+   return config.withOpenshiftApiGroupsEnabled(enabled);
   }
 
   public static DefaultOpenShiftClient fromConfig(String config) {
@@ -120,12 +137,18 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
     return new DefaultOpenShiftClient(Serialization.unmarshal(is, OpenShiftConfig.class));
   }
 
-  private OkHttpClient clientWithOpenShiftOAuthInterceptor(OkHttpClient httpClient) {
-    httpClient = httpClient.newBuilder().authenticator(Authenticator.NONE).build();
-    OkHttpClient.Builder builder = httpClient.newBuilder();
+  private static OkHttpClient clientWithOpenShiftOAuthInterceptor(Config config) {
+    return clientWithOpenShiftOAuthInterceptor(null, config);
+  }
+
+  private static OkHttpClient clientWithOpenShiftOAuthInterceptor(OkHttpClient httpClient, Config config) {
+    OkHttpClient.Builder builder = httpClient != null ?
+      httpClient.newBuilder().authenticator(Authenticator.NONE) :
+      new OkHttpClient.Builder().authenticator(Authenticator.NONE);
+
     builder.interceptors().clear();
-    return builder.addInterceptor(new OpenShiftOAuthInterceptor(httpClient, OpenShiftConfig.wrap(getConfiguration())))
-      .addInterceptor(new ImpersonatorInterceptor(getConfiguration()))
+    return builder.addInterceptor(new OpenShiftOAuthInterceptor(httpClient, OpenShiftConfig.wrap(config)))
+      .addInterceptor(new ImpersonatorInterceptor(config))
       .addInterceptor(new BackwardsCompatibilityInterceptor())
       .build();
   }

@@ -82,6 +82,30 @@ public class OpenshiftAdapterSupport {
       return false;
     }
 
+    /**
+     * Check if OpenShift API Groups are available
+     * @param httpClient   The httpClient.
+     * @param masterUrl    The master url.
+     * @return             True if the new <code>/apis/*.openshift.io/</code> APIs are found in the root paths.
+     */
+    static boolean isOpenShiftAPIGroups(OkHttpClient httpClient, String masterUrl) {
+      try {
+        Request.Builder requestBuilder = new Request.Builder()
+          .get()
+          .url(URLUtils.join(masterUrl, APIS));
+        Response response = httpClient.newCall(requestBuilder.build()).execute();
+        APIGroupList apiGroupList = Serialization.unmarshal(response.body().string(), APIGroupList.class);
+
+        for (APIGroup apiGroup : apiGroupList.getGroups()) {
+          if (apiGroup.getName().endsWith("openshift.io")) {
+            return true;
+          }
+        }
+      } catch(Exception e) {
+        KubernetesClientException.launderThrowable(e);
+      }
+      return false;
+    }
 
     /**
      * Checks if a custom URL for OpenShift has been used.
