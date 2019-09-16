@@ -460,6 +460,13 @@ public class ConfigTest {
     assertEquals("PROVIDER_TOKEN", config.getOauthToken());
   }
 
+  @Test
+  public void shouldHonorDefaultWebsocketPingInterval() {
+    Config config = new ConfigBuilder().build();
+
+    assertEquals(30000L, config.getWebsocketPingInterval());
+  }
+
   private void assertConfig(Config config) {
     assertNotNull(config);
     assertTrue(config.isTrustCerts());
