@@ -25,8 +25,6 @@ import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.openshift.client.DefaultOpenShiftClient;
-import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
 
@@ -44,8 +42,7 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
     OpenShiftConfig config = OpenShiftConfig.wrap(context.getConfig());
     String oapiVersion = config.getOapiVersion();
     if (Utils.isNotNullOrEmpty(context.getApiGroupName())) {
-      try (OpenShiftClient oc = new DefaultOpenShiftClient(context.getClient(), config)) {
-        if (config.isOpenShiftAPIGroups(oc)) {
+        if (config.isOpenshiftApiGroupsEnabled()) {
           String apiGroupUrl = URLUtils.join(config.getMasterUrl(), "apis", context.getApiGroupName(), oapiVersion);
           String apiGroupVersion = URLUtils.join(context.getApiGroupName(), oapiVersion);
           return context.withConfig(new OpenShiftConfigBuilder(config).withOpenShiftUrl(apiGroupUrl).build()).withApiGroupName(context.getApiGroupName()).withApiGroupVersion(apiGroupVersion);
@@ -53,7 +50,6 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
           String apiGroupUrl = URLUtils.join(config.getMasterUrl(), "oapi", oapiVersion);
           return context.withConfig(new OpenShiftConfigBuilder(config).withOpenShiftUrl(apiGroupUrl).build()).withApiGroupName(context.getApiGroupName()).withApiGroupVersion(oapiVersion);
         }
-      }
     } else {
       String apiGroupUrl = URLUtils.join(config.getMasterUrl(), "oapi", oapiVersion);
       return context.withConfig(new OpenShiftConfigBuilder(config).withOpenShiftUrl(apiGroupUrl).build()).withApiGroupVersion(oapiVersion);

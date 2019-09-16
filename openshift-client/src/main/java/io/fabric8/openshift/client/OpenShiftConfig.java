@@ -42,8 +42,9 @@ public class OpenShiftConfig extends Config {
 
   private String oapiVersion = "v1";
   private String openShiftUrl;
-  private boolean disableApiGroupCheck;
   private long buildTimeout = DEFAULT_BUILD_TIMEOUT;
+  private boolean openshiftApiGroupsEnabled;
+  private boolean disableApiGroupCheck; //If group hasn't been explicitly set.
 
   //This is not meant to be used. This constructor is used only by the generated builder.
   OpenShiftConfig() {
@@ -63,11 +64,13 @@ public class OpenShiftConfig extends Config {
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false, refs = {@BuildableReference(Config.class)})
-  public OpenShiftConfig(String openShiftUrl, String oapiVersion, String masterUrl, String apiVersion, String namespace, Boolean trustCerts, Boolean disableHostnameVerification, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, long scaleTimeout, int loggingInterval, Integer maxConcurrentRequestsPerHost, String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages, String userAgent, TlsVersion[] tlsVersions, long buildTimeout, long websocketTimeout, long websocketPingInterval, String proxyUsername, String proxyPassword, String trustStoreFile, String trustStorePassphrase, String keyStoreFile, String keyStorePassphrase, String impersonateUsername, String[] impersonateGroups, Map<String, List<String>> impersonateExtras) {
+  public OpenShiftConfig(String openShiftUrl, String oapiVersion, String masterUrl, String apiVersion, String namespace, Boolean trustCerts, Boolean disableHostnameVerification, String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password, String oauthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout, int requestTimeout, long rollingTimeout, long scaleTimeout, int loggingInterval, Integer maxConcurrentRequestsPerHost, String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages, String userAgent, TlsVersion[] tlsVersions, long buildTimeout, long websocketTimeout, long websocketPingInterval, String proxyUsername, String proxyPassword, String trustStoreFile, String trustStorePassphrase, String keyStoreFile, String keyStorePassphrase, String impersonateUsername, String[] impersonateGroups, Map<String, List<String>> impersonateExtras, boolean openshiftApiGroupsEnabled, boolean disableApiGroupCheck) {
     super(masterUrl, apiVersion, namespace, trustCerts, disableHostnameVerification, caCertFile, caCertData, clientCertFile, clientCertData, clientKeyFile, clientKeyData, clientKeyAlgo, clientKeyPassphrase, username, password, oauthToken, watchReconnectInterval, watchReconnectLimit, connectionTimeout, requestTimeout, rollingTimeout, scaleTimeout, loggingInterval, maxConcurrentRequestsPerHost, httpProxy, httpsProxy, noProxy, errorMessages, userAgent, tlsVersions, websocketTimeout, websocketPingInterval, proxyUsername, proxyPassword, trustStoreFile, trustStorePassphrase, keyStoreFile, keyStorePassphrase, impersonateUsername, impersonateGroups, impersonateExtras);
     this.oapiVersion = oapiVersion;
     this.openShiftUrl = openShiftUrl;
     this.buildTimeout = buildTimeout;
+    this.openshiftApiGroupsEnabled = openshiftApiGroupsEnabled;
+    this.disableApiGroupCheck = openshiftApiGroupsEnabled ? false : disableApiGroupCheck;
 
     if (this.openShiftUrl == null || this.openShiftUrl.isEmpty()) {
       this.openShiftUrl = URLUtils.join(getMasterUrl(), "oapi", this.oapiVersion);
@@ -106,7 +109,9 @@ public class OpenShiftConfig extends Config {
       kubernetesConfig.getKeyStorePassphrase(),
       kubernetesConfig.getImpersonateUsername(),
       kubernetesConfig.getImpersonateGroups(),
-      kubernetesConfig.getImpersonateExtras()
+      kubernetesConfig.getImpersonateExtras(),
+      false,
+      false
       );
   }
 
@@ -114,12 +119,6 @@ public class OpenShiftConfig extends Config {
     return config instanceof OpenShiftConfig ? (OpenShiftConfig) config : new OpenShiftConfig(config);
   }
 
-  public boolean isOpenShiftAPIGroups(OpenShiftClient openShiftClient) {
-    if (isDisableApiGroupCheck()) {
-      return false;
-    }
-    return OpenshiftAdapterSupport.isOpenShiftAPIGroups(openShiftClient);
-  }
 
   private static String getDefaultOapiVersion(Config config) {
     return Utils.getSystemPropertyOrEnvVar(KUBERNETES_OAPI_VERSION_SYSTEM_PROPERTY, config.getApiVersion());
@@ -136,6 +135,10 @@ public class OpenShiftConfig extends Config {
     } else {
       return URLUtils.join(config.getMasterUrl(), "oapi", getDefaultOapiVersion(config));
     }
+  }
+
+  public OpenShiftConfig withOpenshiftApiGroupsEnabled(boolean openshiftApiGroupsEnabled) {
+    return new OpenShiftConfigBuilder(this).withOpenshiftApiGroupsEnabled(openshiftApiGroupsEnabled).build();
   }
 
   private static boolean isRootURL(String url) {
@@ -182,4 +185,11 @@ public class OpenShiftConfig extends Config {
     this.disableApiGroupCheck = disableApiGroupCheck;
   }
 
+  public boolean isOpenshiftApiGroupsEnabled() {
+    return openshiftApiGroupsEnabled;
+  }
+
+  public void setOpenshiftApiGroupsEnabled(boolean openshiftApiGroupsEnabled) {
+    this.openshiftApiGroupsEnabled = openshiftApiGroupsEnabled;
+  }
 }
