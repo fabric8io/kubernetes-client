@@ -126,7 +126,7 @@ public class Config {
   public static final Long DEFAULT_SCALE_TIMEOUT = 10 * 60 * 1000L;
   public static final int DEFAULT_LOGGING_INTERVAL = 20 * 1000;
   public static final Long DEFAULT_WEBSOCKET_TIMEOUT = 5 * 1000L;
-  public static final Long DEFAULT_WEBSOCKET_PING_INTERVAL = 1 * 1000L;
+  public static final Long DEFAULT_WEBSOCKET_PING_INTERVAL = 30 * 1000L;
 
   public static final Integer DEFAULT_MAX_CONCURRENT_REQUESTS = 64;
   public static final Integer DEFAULT_MAX_CONCURRENT_REQUESTS_PER_HOST = 5;
