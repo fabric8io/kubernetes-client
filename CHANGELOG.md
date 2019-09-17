@@ -3,6 +3,7 @@
 ### 4.5-SNAPSHOT
 #### Bugs
 * Fix #1767: Removed fixed override for Okhttp client's `pingInterval`
+* Fix #1758: generation of resource handlers for OpenShift
 
 #### Improvements
 
