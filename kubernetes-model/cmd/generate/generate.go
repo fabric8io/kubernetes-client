@@ -72,8 +72,6 @@ type Schema struct {
 	BaseKubernetesList                    metav1.List
 	ObjectMeta                            metav1.ObjectMeta
 	TypeMeta                              metav1.TypeMeta
-	Initializer                           metav1.Initializer
-	Initializers                          metav1.Initializers
 	PodList                               kapi.PodList
 	PodTemplateList                       kapi.PodTemplateList
 	ReplicationControllerList             kapi.ReplicationControllerList
@@ -132,8 +130,8 @@ type Schema struct {
 	TokenReview                           authenticationapi.TokenReview
 	K8sSubjectAccessReview                k8sauthapi.SubjectAccessReview
 	K8sLocalSubjectAccessReview           k8sauthapi.LocalSubjectAccessReview
-	SelfSubjectRulesReview                k8sauthapi.SelfSubjectRulesReview  
-        SelfSubjectAccessReview               k8sauthapi.SelfSubjectAccessReview  
+	SelfSubjectRulesReview                k8sauthapi.SelfSubjectRulesReview
+        SelfSubjectAccessReview               k8sauthapi.SelfSubjectAccessReview
 	OpenshiftRole                         authapi.Role
 	OpenshiftRoleList                     authapi.RoleList
 	OpenshiftRoleBinding                  authapi.RoleBinding
@@ -224,8 +222,8 @@ type Schema struct {
   ValidatingWebhookConfigurationList    admissionregistration.ValidatingWebhookConfigurationList
   MutatingWebhookConfiguration          admissionregistration.MutatingWebhookConfiguration
   MutatingWebhookConfigurationList      admissionregistration.MutatingWebhookConfigurationList
-  AdmissionWebhook                      admissionregistration.Webhook
   RuleWithOperations                    admissionregistration.RuleWithOperations
+	ServiceReference                      admissionregistration.ServiceReference
   CertificateSigningRequest             certificates.CertificateSigningRequest
   CertificateSigningRequestSpec         certificates.CertificateSigningRequestSpec
   CertificateSigningRequestStatus       certificates.CertificateSigningRequestStatus

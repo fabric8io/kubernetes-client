@@ -38,19 +38,19 @@ required = [
 
 [[constraint]]
   name = "github.com/openshift/origin"
-  version = "v3.11.0"
+  version = "v4.1.0"
 
 [[constraint]]
-  branch = "master"
   name = "k8s.io/apiextensions-apiserver"
+  version = "kubernetes-1.15.3"
 
 [[constraint]]
-  branch = "master"
   name = "k8s.io/apimachinery"
+  branch = "master"
 
 [[constraint]]
   name = "k8s.io/client-go"
-  version = "9.0.0"
+  version = "kubernetes-1.15.3"
 
 [prune]
   go-tests = true

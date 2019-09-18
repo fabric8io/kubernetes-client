@@ -87,11 +87,6 @@ public class DeploymentTest {
                 .withDeletionTimestamp("2017-11-02 13:21:22 UTC")
                 .withNamespace("myproject")
                 .withGenerateName("zero-config-test")
-                .withNewInitializers()
-                .addNewPending()
-                .withName("initializer.testproject.io")
-                .endPending()
-                .endInitializers()
                 .withOwnerReferences()
                 .endMetadata()
                 .withNewSpec()
@@ -268,7 +263,6 @@ public class DeploymentTest {
         assertEquals("kubernetes", deployment.getMetadata().getClusterName());
         assertEquals("myproject", deployment.getMetadata().getNamespace());
         assertEquals("zero-config-test", deployment.getMetadata().getGenerateName());
-        assertEquals(1, deployment.getMetadata().getInitializers().getPending().size());
         assertTrue(deployment.getMetadata().getOwnerReferences().isEmpty());
 
         // Assert Spec
@@ -396,9 +390,6 @@ public class DeploymentTest {
                 .withDeletionTimestamp("2017-11-02 13:21:22 UTC")
                 .withNamespace("myproject")
                 .withGenerateName("zero-config-test")
-                .withNewInitializers()
-                .addToPending(new Initializer("initializer.testproject.io"))
-                .endInitializers()
                 .withOwnerReferences()
                 .endMetadata()
                 .withNewSpec()
@@ -630,7 +621,6 @@ public class DeploymentTest {
         assertEquals("openshift", deploymentConfig.getMetadata().getClusterName());
         assertEquals("myproject", deploymentConfig.getMetadata().getNamespace());
         assertEquals("zero-config-test", deploymentConfig.getMetadata().getGenerateName());
-        assertEquals(1, deploymentConfig.getMetadata().getInitializers().getPending().size());
         assertTrue(deploymentConfig.getMetadata().getOwnerReferences().isEmpty());
 
         // Assert Spec
