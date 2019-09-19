@@ -32,7 +32,6 @@ import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import io.fabric8.openshift.api.model.*;
-import io.fabric8.openshift.api.model.DoneableTemplateInstance;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -250,11 +249,6 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public ParameterMixedOperation<Template, TemplateList, DoneableTemplate, TemplateResource<Template, KubernetesList, DoneableTemplate>> templates() {
     return delegate.templates();
-  }
-
-  @Override
-  public MixedOperation<TemplateInstance, TemplateInstanceList, DoneableTemplateInstance, TemplateInstanceResource<TemplateInstance, KubernetesList, DoneableTemplateInstance>> templateinstances() {
-    return delegate.templateinstances();
   }
 
   @Override
