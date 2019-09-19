@@ -16,9 +16,9 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.admissionregistration.MutatingWebhookBuilder;
 import io.fabric8.kubernetes.api.model.admissionregistration.MutatingWebhookConfiguration;
 import io.fabric8.kubernetes.api.model.admissionregistration.MutatingWebhookConfigurationBuilder;
-import io.fabric8.kubernetes.api.model.admissionregistration.WebhookBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Rule;
@@ -36,7 +36,7 @@ public class MutatingWebhookConfigurationTest {
   public void create() {
     MutatingWebhookConfiguration mutatingWebhookConfiguration = new MutatingWebhookConfigurationBuilder()
       .withNewMetadata().withName("mutatingWebhookConfiguration1").endMetadata()
-      .addToWebhooks(new WebhookBuilder()
+      .addToWebhooks(new MutatingWebhookBuilder()
         .withName("webhook1")
         .withNewClientConfig()
         .withNewService()

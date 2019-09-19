@@ -16,9 +16,9 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.admissionregistration.ValidatingWebhookBuilder;
 import io.fabric8.kubernetes.api.model.admissionregistration.ValidatingWebhookConfiguration;
 import io.fabric8.kubernetes.api.model.admissionregistration.ValidatingWebhookConfigurationBuilder;
-import io.fabric8.kubernetes.api.model.admissionregistration.WebhookBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Rule;
@@ -36,7 +36,7 @@ public class ValidatingWebhookConfigurationTest {
   public void create() {
     ValidatingWebhookConfiguration validatingWebhookConfiguration = new ValidatingWebhookConfigurationBuilder()
       .withNewMetadata().withName("validatingWebhookConfiguration1").endMetadata()
-      .addToWebhooks(new WebhookBuilder()
+      .addToWebhooks(new ValidatingWebhookBuilder()
         .withName("webhook1")
         .withNewClientConfig()
         .withNewService()

@@ -9,6 +9,7 @@
 #### Improvements
 
 #### Dependency Upgrade
+* Updated Kubernetes Model to Kubernetes v1.15.3
 
 #### New Feature
 * Added Template Instance Support

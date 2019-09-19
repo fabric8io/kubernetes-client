@@ -81,8 +81,6 @@ public interface OpenShiftClient extends KubernetesClient {
 
   ParameterMixedOperation<Template, TemplateList, DoneableTemplate, TemplateResource<Template, KubernetesList, DoneableTemplate>> templates();
 
-  MixedOperation<TemplateInstance, TemplateInstanceList, DoneableTemplateInstance, TemplateInstanceResource<TemplateInstance, KubernetesList, DoneableTemplateInstance>> templateinstances();
-
   NonNamespaceOperation<User, UserList, DoneableUser, Resource<User, DoneableUser>> users();
 
   NonNamespaceOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, Resource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints();

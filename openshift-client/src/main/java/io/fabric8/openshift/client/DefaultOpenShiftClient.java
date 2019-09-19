@@ -61,7 +61,6 @@ import io.fabric8.openshift.api.model.DoneableProject;
 import io.fabric8.openshift.api.model.DoneableRoute;
 import io.fabric8.openshift.api.model.DoneableSecurityContextConstraints;
 import io.fabric8.openshift.api.model.DoneableTemplate;
-import io.fabric8.openshift.api.model.DoneableTemplateInstance;
 import io.fabric8.openshift.api.model.DoneableUser;
 import io.fabric8.openshift.client.dsl.*;
 import io.fabric8.openshift.client.dsl.internal.*;
@@ -384,11 +383,6 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public ParameterMixedOperation<Template, TemplateList, DoneableTemplate, TemplateResource<Template, KubernetesList, DoneableTemplate>> templates() {
     return new TemplateOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
-  }
-
-  @Override
-  public MixedOperation<TemplateInstance, TemplateInstanceList, DoneableTemplateInstance, TemplateInstanceResource<TemplateInstance, KubernetesList, DoneableTemplateInstance>> templateinstances() {
-    return new TemplateInstanceOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
