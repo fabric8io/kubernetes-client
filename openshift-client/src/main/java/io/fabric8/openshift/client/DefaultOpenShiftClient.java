@@ -43,6 +43,7 @@ import io.fabric8.kubernetes.client.dsl.internal.*;
 import io.fabric8.kubernetes.client.utils.BackwardsCompatibilityInterceptor;
 import io.fabric8.kubernetes.client.utils.ImpersonatorInterceptor;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import io.fabric8.openshift.api.model.*;
 import io.fabric8.openshift.api.model.DoneableBuild;
 import io.fabric8.openshift.api.model.DoneableBuildConfig;
@@ -71,8 +72,13 @@ import okhttp3.OkHttpClient;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
 import java.util.Objects;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ForkJoinPool;
 
 public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpenShiftClient {
 
@@ -454,6 +460,12 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
 
   @Override
   public SchedulingAPIGroupDSL scheduling() { return adapt(SchedulingAPIGroupClient.class); }
+
+  @Override
+  public SharedInformerFactory informers() { return new SharedInformerFactory(ForkJoinPool.commonPool(), httpClient, getConfiguration()); }
+
+  @Override
+  public SharedInformerFactory informers(ExecutorService executorService) { return new SharedInformerFactory(executorService, httpClient, getConfiguration()); }
 
   @Override
   public FunctionCallable<NamespacedOpenShiftClient> withRequestConfig(RequestConfig requestConfig) {

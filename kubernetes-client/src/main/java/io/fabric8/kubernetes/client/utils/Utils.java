@@ -319,4 +319,24 @@ public class Utils {
     }
     return null;
   }
+
+  public static String getPluralFromKind(String kind) {
+    StringBuffer pluralBuffer = new StringBuffer(kind.toLowerCase());
+    switch (kind) {
+      case "ComponentStatus":
+      case "Ingress":
+      case "RuntimeClass":
+      case "PriorityClass":
+      case "StorageClass":
+        pluralBuffer.append("es");
+        break;
+      case "NetworkPolicy":
+      case "PodSecurityPolicy":
+        pluralBuffer.append("ies");
+        break;
+      default:
+        pluralBuffer.append("s");
+    }
+    return pluralBuffer.toString();
+  }
 }

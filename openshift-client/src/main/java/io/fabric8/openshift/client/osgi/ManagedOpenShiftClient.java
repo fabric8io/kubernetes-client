@@ -30,6 +30,7 @@ import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
 import io.fabric8.kubernetes.client.utils.URLUtils;
+import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import io.fabric8.openshift.api.model.*;
 import io.fabric8.openshift.api.model.DoneableTemplateInstance;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
@@ -44,6 +45,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_API_VERSION_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_AUTH_BASIC_PASSWORD_SYSTEM_PROPERTY;
@@ -485,6 +487,12 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
 
   @Override
   public SettingsAPIGroupDSL settings() { return delegate.settings(); }
+
+  @Override
+  public SharedInformerFactory informers() { return delegate.informers(); }
+
+  @Override
+  public SharedInformerFactory informers(ExecutorService executorService) { return delegate.informers(executorService); }
 
   @Override
   public NamespacedOpenShiftClient inAnyNamespace() {

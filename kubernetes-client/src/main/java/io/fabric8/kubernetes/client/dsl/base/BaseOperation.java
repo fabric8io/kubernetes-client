@@ -719,10 +719,14 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   public Watch watch(final Watcher<T> watcher) throws KubernetesClientException {
-    return watch(resourceVersion, watcher);
+    return watch(resourceVersion, watcher, false);
   }
 
   public Watch watch(String resourceVersion, final Watcher<T> watcher) throws KubernetesClientException {
+    return watch(resourceVersion, watcher, false);
+  }
+
+  public Watch watch(String resourceVersion, final Watcher<T> watcher, boolean deserializeWithoutTypeCheck) throws KubernetesClientException {
     WatcherToggle<T> watcherToggle = new WatcherToggle<>(watcher, true);
     WatchConnectionManager watch = null;
     try {
@@ -733,7 +737,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
         watcherToggle,
         config.getWatchReconnectInterval(),
         config.getWatchReconnectLimit(),
-        config.getWebsocketTimeout()
+        config.getWebsocketTimeout(),
+        deserializeWithoutTypeCheck
       );
       watch.waitUntilReady();
       return watch;
@@ -1027,5 +1032,17 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     }
 
     throw new IllegalArgumentException(type.getSimpleName() + " with name:[" + name + "] in namespace:[" + namespace + "] not found!");
+  }
+
+  public void setType(Class<T> type) {
+    this.type = type;
+  }
+
+  public void setListType(Class<L> listType) {
+    this.listType = listType;
+  }
+
+  public void setNamespace(String namespace) {
+    this.namespace = namespace;
   }
 }

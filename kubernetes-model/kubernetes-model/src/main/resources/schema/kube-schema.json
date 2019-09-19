@@ -1556,6 +1556,63 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_apimachinery_ListOptions": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "v1",
+          "required": true
+        },
+        "continue": {
+          "type": "string",
+          "description": ""
+        },
+        "fieldSelector": {
+          "type": "string",
+          "description": ""
+        },
+        "includeUninitialized": {
+          "type": "boolean",
+          "description": ""
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ListOptions",
+          "required": true
+        },
+        "labelSelector": {
+          "type": "string",
+          "description": ""
+        },
+        "limit": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "resourceVersion": {
+          "type": "string",
+          "description": ""
+        },
+        "timeoutSeconds": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "watch": {
+          "type": "boolean",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.ListOptions",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_apimachinery_MicroTime": {
       "type": "object",
       "description": "",
@@ -18543,6 +18600,10 @@
     "LimitRangeList": {
       "$ref": "#/definitions/kubernetes_core_LimitRangeList",
       "javaType": "io.fabric8.kubernetes.api.model.LimitRangeList"
+    },
+    "ListOptions": {
+      "$ref": "#/definitions/kubernetes_apimachinery_ListOptions",
+      "javaType": "io.fabric8.kubernetes.api.model.ListOptions"
     },
     "LocalSubjectAccessReview": {
       "$ref": "#/definitions/os_authorization_LocalSubjectAccessReview",

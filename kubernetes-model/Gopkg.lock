@@ -2,27 +2,22 @@
 
 
 [[projects]]
-  digest = "1:34e709f36fd4f868fb00dbaf8a6cab4c1ae685832d392874ba9d7c5dec2429d1"
   name = "github.com/gogo/protobuf"
   packages = [
     "proto",
-    "sortkeys",
+    "sortkeys"
   ]
-  pruneopts = "UT"
   revision = "636bf0302bc95575d69441b25a2603156ffdddf1"
   version = "v1.1.1"
 
 [[projects]]
   branch = "master"
-  digest = "1:3ee90c0d94da31b442dde97c99635aaafec68d0b8a3c12ee2075c6bdabeec6bb"
   name = "github.com/google/gofuzz"
   packages = ["."]
-  pruneopts = "UT"
   revision = "24818f796faf91cd76ec7bddd72458fbced7a6c1"
 
 [[projects]]
   branch = "master"
-  digest = "1:26eb53036ac0a0c7bf84a97be19d0ce82de10431db558cd806e976d237a0b3a7"
   name = "github.com/openshift/api"
   packages = [
     "apps/v1",
@@ -38,34 +33,28 @@
     "route/v1",
     "security/v1",
     "template/v1",
-    "user/v1",
+    "user/v1"
   ]
-  pruneopts = "UT"
   revision = "8a3880e9178ebf7a6655469c7dd213ea9a378c33"
 
 [[projects]]
-  digest = "1:ef03a648cc87c8f1a350ff49b2df30a9b8ad03ca71c388d2c2554997cdfbb2b4"
   name = "github.com/openshift/origin"
   packages = ["."]
-  pruneopts = "UT"
   revision = "0cbc58b117403b9d9169dbafdfac59ef104bb997"
   version = "v3.11.0"
 
 [[projects]]
   branch = "master"
-  digest = "1:67c2a615ba674115933f3ee56daa132974de340a9573937a97d14039f8544e8b"
   name = "golang.org/x/net"
   packages = [
     "http/httpguts",
     "http2",
     "http2/hpack",
-    "idna",
+    "idna"
   ]
-  pruneopts = "UT"
   revision = "88d92db4c548972d942ac2a3531a8a9a34c82ca6"
 
 [[projects]]
-  digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
   name = "golang.org/x/text"
   packages = [
     "collate",
@@ -81,23 +70,19 @@
     "unicode/bidi",
     "unicode/cldr",
     "unicode/norm",
-    "unicode/rangetable",
+    "unicode/rangetable"
   ]
-  pruneopts = "UT"
   revision = "f21a4dfb5e38f5895301dc265a8def02365cc3d0"
   version = "v0.3.0"
 
 [[projects]]
-  digest = "1:2d1fbdc6777e5408cabeb02bf336305e724b925ff4546ded0fa8715a7267922a"
   name = "gopkg.in/inf.v0"
   packages = ["."]
-  pruneopts = "UT"
   revision = "d2d2541c53f18d2a059457998ce2876cc8e67cbf"
   version = "v0.9.1"
 
 [[projects]]
   branch = "master"
-  digest = "1:d64f05bc162a90667dff4ba1b7779a3d19f1280c201c436f2e6c383eb6e7ceed"
   name = "k8s.io/api"
   packages = [
     "admission/v1beta1",
@@ -118,25 +103,21 @@
     "rbac/v1",
     "scheduling/v1beta1",
     "settings/v1alpha1",
-    "storage/v1",
+    "storage/v1"
   ]
-  pruneopts = "UT"
   revision = "a675ac48af67cf21d815b5f8df288462096eb9c9"
 
 [[projects]]
   branch = "master"
-  digest = "1:46e3296eec0a6e864c2ef813ccfdb0b83d144fcc23414d97dd4894e9464cf4d5"
   name = "k8s.io/apiextensions-apiserver"
   packages = [
     "pkg/apis/apiextensions",
-    "pkg/apis/apiextensions/v1beta1",
+    "pkg/apis/apiextensions/v1beta1"
   ]
-  pruneopts = "UT"
   revision = "2c43ee60e25b6e421b37db431bad60e7416a6fd4"
 
 [[projects]]
   branch = "master"
-  digest = "1:29c84e4739ac730f21a2389ec1b2ac38925a1ee27a99c67fb75723a44c95e9aa"
   name = "k8s.io/apimachinery"
   packages = [
     "pkg/api/resource",
@@ -161,78 +142,34 @@
     "pkg/util/validation/field",
     "pkg/version",
     "pkg/watch",
-    "third_party/forked/golang/reflect",
+    "third_party/forked/golang/reflect"
   ]
-  pruneopts = "UT"
   revision = "2a7c9300402896b3c073f2f47df85527c94f83a0"
 
 [[projects]]
-  digest = "1:3ee510d91cb50af1b59177524dd89841b13a41167f029f66ed39b009a466c106"
   name = "k8s.io/client-go"
   packages = [
     "tools/clientcmd/api",
-    "tools/clientcmd/api/v1",
+    "tools/clientcmd/api/v1"
   ]
-  pruneopts = "UT"
   revision = "1638f8970cefaa404ff3a62950f88b08292b2696"
   version = "v9.0.0"
 
 [[projects]]
-  digest = "1:e2999bf1bb6eddc2a6aa03fe5e6629120a53088926520ca3b4765f77d7ff7eab"
   name = "k8s.io/klog"
   packages = ["."]
-  pruneopts = "UT"
   revision = "a5bc97fbc634d635061f3146511332c7e313a55a"
   version = "v0.1.0"
 
 [[projects]]
-  digest = "1:4148a60e15f2c7600fa6a94dac91178ea9b1613a0d230ceeb653741f4060574f"
   name = "k8s.io/kubernetes"
   packages = ["pkg/watch/json"]
-  pruneopts = "UT"
   revision = "66049e3b21efe110454d67df4fa62b08ea79a19b"
   version = "v1.14.2"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  input-imports = [
-    "github.com/openshift/api/apps/v1",
-    "github.com/openshift/api/authorization/v1",
-    "github.com/openshift/api/build/v1",
-    "github.com/openshift/api/image/v1",
-    "github.com/openshift/api/network/v1",
-    "github.com/openshift/api/oauth/v1",
-    "github.com/openshift/api/project/v1",
-    "github.com/openshift/api/route/v1",
-    "github.com/openshift/api/security/v1",
-    "github.com/openshift/api/template/v1",
-    "github.com/openshift/api/user/v1",
-    "github.com/openshift/origin",
-    "k8s.io/api/admission/v1beta1",
-    "k8s.io/api/admissionregistration/v1beta1",
-    "k8s.io/api/apps/v1",
-    "k8s.io/api/authentication/v1",
-    "k8s.io/api/authorization/v1",
-    "k8s.io/api/autoscaling/v1",
-    "k8s.io/api/batch/v1",
-    "k8s.io/api/batch/v1beta1",
-    "k8s.io/api/certificates/v1beta1",
-    "k8s.io/api/core/v1",
-    "k8s.io/api/events/v1beta1",
-    "k8s.io/api/extensions/v1beta1",
-    "k8s.io/api/networking/v1",
-    "k8s.io/api/policy/v1beta1",
-    "k8s.io/api/rbac/v1",
-    "k8s.io/api/scheduling/v1beta1",
-    "k8s.io/api/settings/v1alpha1",
-    "k8s.io/api/storage/v1",
-    "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1",
-    "k8s.io/apimachinery/pkg/api/resource",
-    "k8s.io/apimachinery/pkg/apis/meta/v1",
-    "k8s.io/apimachinery/pkg/version",
-    "k8s.io/client-go/tools/clientcmd/api/v1",
-    "k8s.io/kubernetes/pkg/watch/json",
-  ]
+  inputs-digest = "5a8a0a899e206973c43ee92c24a126bafa67f9fb86c7e58568a2b70081331ddd"
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -102,6 +102,7 @@ type Schema struct {
 	Patch                                 metav1.Patch
 	Binding                               kapi.Binding
 	LimitRangeList                        kapi.LimitRangeList
+	ListOptions                           metav1.ListOptions
 	DeleteOptions                         metav1.DeleteOptions
 	Quantity                              resource.Quantity
 	BuildRequest                          buildapi.BuildRequest

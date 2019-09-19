@@ -103,6 +103,7 @@ import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.SubjectAccessReviewDSL;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
+import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.ConfigurationPolicy;
@@ -117,6 +118,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 
 import static io.fabric8.kubernetes.client.Config.*;
 
@@ -394,6 +396,16 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   @Override
   public RawCustomResourceOperationsImpl customResource(CustomResourceDefinitionContext customResourceDefinition) {
     return delegate.customResource(customResourceDefinition);
+  }
+
+  @Override
+  public SharedInformerFactory informers() {
+    return delegate.informers();
+  }
+
+  @Override
+  public SharedInformerFactory informers(ExecutorService executorService) {
+    return delegate.informers(executorService);
   }
 
   @Override
