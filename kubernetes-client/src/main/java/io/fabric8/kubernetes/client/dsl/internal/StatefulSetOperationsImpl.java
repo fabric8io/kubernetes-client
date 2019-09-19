@@ -36,7 +36,11 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
   implements TimeoutImageEditReplacePatchable<StatefulSet, StatefulSet, DoneableStatefulSet>
 {
   public StatefulSetOperationsImpl(OkHttpClient client, Config config) {
-    this(new RollingOperationContext().withOkhttpClient(client).withConfig(config).withCascading(true));
+    this(client, config, null);
+  }
+
+  public StatefulSetOperationsImpl(OkHttpClient client, Config config, String namespace) {
+    this(new RollingOperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withCascading(true));
   }
 
   public StatefulSetOperationsImpl(RollingOperationContext context) {

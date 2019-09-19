@@ -20,7 +20,7 @@
   <parent>
     <artifactId>platforms</artifactId>
     <groupId>io.fabric8.kubernetes</groupId>
-    <version>4.3-SNAPSHOT</version>
+    <version>4.5-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -30,7 +30,7 @@
   <name>Fabric8 :: Kubernetes :: Platforms :: Karaf</name>
 
   <properties>
-    <karaf.version>4.2.5</karaf.version>
+    <karaf.version>4.2.6</karaf.version>
     <osgi.version>6.0.0</osgi.version>
     <pax.exam.version>4.13.1</pax.exam.version>
   </properties>

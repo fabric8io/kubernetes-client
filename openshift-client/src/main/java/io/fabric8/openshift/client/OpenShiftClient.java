@@ -18,6 +18,7 @@ package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.VersionInfo;
 import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.openshift.api.model.*;
@@ -80,6 +81,8 @@ public interface OpenShiftClient extends KubernetesClient {
 
   ParameterMixedOperation<Template, TemplateList, DoneableTemplate, TemplateResource<Template, KubernetesList, DoneableTemplate>> templates();
 
+  MixedOperation<TemplateInstance, TemplateInstanceList, DoneableTemplateInstance, TemplateInstanceResource<TemplateInstance, KubernetesList, DoneableTemplateInstance>> templateinstances();
+
   NonNamespaceOperation<User, UserList, DoneableUser, Resource<User, DoneableUser>> users();
 
   NonNamespaceOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, Resource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints();
@@ -87,6 +90,8 @@ public interface OpenShiftClient extends KubernetesClient {
   SubjectAccessReviewOperation<CreateableSubjectAccessReview, CreateableLocalSubjectAccessReview, CreateableSelfSubjectAccessReview, CreateableSelfSubjectRulesReview> subjectAccessReviews();
 
   MixedOperation<OpenshiftClusterRoleBinding, OpenshiftClusterRoleBindingList, DoneableOpenshiftClusterRoleBinding, Resource<OpenshiftClusterRoleBinding, DoneableOpenshiftClusterRoleBinding>> clusterRoleBindings();
+
+  FunctionCallable<NamespacedOpenShiftClient> withRequestConfig(RequestConfig requestConfig);
 
   /**
    * Returns the current logged in user details similar to the `oc whoami` command.

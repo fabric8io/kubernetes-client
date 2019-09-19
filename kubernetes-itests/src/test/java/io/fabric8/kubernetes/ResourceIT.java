@@ -15,9 +15,12 @@
  */
 package io.fabric8.kubernetes;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
+import io.fabric8.kubernetes.api.model.apps.Deployment;
+import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.apache.commons.lang.RandomStringUtils;
@@ -30,11 +33,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.sql.Time;
+import java.util.Collections;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.awaitility.Awaitility.await;
+import static org.awaitility.Awaitility.waitAtMost;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(ArquillianConditionalRunner.class)
@@ -49,6 +56,24 @@ public class ResourceIT {
   private Pod pod1;
 
   private String currentNamespace;
+
+  private Deployment deployment = new DeploymentBuilder()
+    .withNewMetadata().withName("deploy1").endMetadata()
+    .withNewSpec()
+    .withReplicas(1)
+    .withNewSelector().withMatchLabels(Collections.singletonMap("run", "deploy1")).endSelector()
+    .withNewTemplate()
+    .withNewMetadata().withLabels(Collections.singletonMap("run", "deploy1")).endMetadata()
+    .withNewSpec()
+    .addNewContainer()
+    .withImage("httpd")
+    .withName("deploy1")
+    .addNewPort().withContainerPort(80).endPort()
+    .endContainer()
+    .endSpec()
+    .endTemplate()
+    .endSpec()
+    .build();
 
   @Before
   public void init() {
@@ -90,9 +115,50 @@ public class ResourceIT {
 
   @Test
   public void delete() {
-    await().atMost(30, TimeUnit.SECONDS).until(resourceIsReady());
+    await().atMost(30, TimeUnit.SECONDS).until(resourceIsReady(pod1));
     assertTrue(client.resource(pod1).inNamespace(currentNamespace).delete());
   }
+
+  @Test
+  public void testCascadeDeletion() throws InterruptedException {
+    // Create Deployment
+    client.resource(deployment).inNamespace(currentNamespace).createOrReplace();
+    await().atMost(30, TimeUnit.SECONDS).until(resourceIsReady(deployment));
+    // Check whether child resources are also created
+    assertEquals(1, client.apps().replicaSets().inNamespace(currentNamespace).withLabel("run", "deploy1").list().getItems().size());
+
+    // Delete deployment
+    Boolean deleted = client.resource(deployment).inNamespace(currentNamespace).withGracePeriod(0).cascading(true).delete();
+    assertTrue(deleted);
+
+    // Check whether child resources are also deleted
+    await().atMost(30, TimeUnit.SECONDS)
+      .until(() -> client.apps().replicaSets().inNamespace(currentNamespace).withLabel("run", "deploy1").list().getItems().size() == 0);
+  }
+
+  @Test
+  public void testDisabledCascadeDeletion() throws InterruptedException {
+    // Create Deployment
+    client.resource(deployment).inNamespace(currentNamespace).createOrReplace();
+    await().atMost(30, TimeUnit.SECONDS).until(resourceIsReady(deployment));
+    // Check whether child resources are also created
+    assertEquals(1, client.apps().replicaSets().inNamespace(currentNamespace).withLabel("run", "deploy1").list().getItems().size());
+
+    // Delete deployment
+    Boolean deleted = client.resource(deployment).inNamespace(currentNamespace).withGracePeriod(0).cascading(false).delete();
+    assertTrue(deleted);
+
+    // wait till deployment is deleted
+    await().atMost(30, TimeUnit.SECONDS)
+      .until(() -> client.apps().deployments().inNamespace(currentNamespace).withLabel("run", "deploy1").list().getItems().size() == 0);
+
+    // Check whether child resources are not deleted, they should be alive
+    assertEquals(1, client.apps().replicaSets().inNamespace(currentNamespace).withLabel("run", "deploy1").list().getItems().size());
+
+    // cleanup resources which are not cleaned up during cascade deletion
+    client.apps().replicaSets().inNamespace(currentNamespace).withLabel("run", "deploy1").delete();
+  }
+
 
   @After
   public void cleanup() throws InterruptedException {
@@ -101,8 +167,12 @@ public class ResourceIT {
     Thread.sleep(30000);
   }
 
-  private Callable<Boolean> resourceIsReady() {
-    return () -> client.resource(pod1).inNamespace(currentNamespace).get()!= null;
+  private Callable<Boolean> resourceIsReady(HasMetadata resource) {
+    return () -> client.resource(resource).inNamespace(currentNamespace).get()!= null;
+  }
+
+  private Callable<Boolean> resourceCleanedUp(HasMetadata resource) {
+    return () -> client.resource(resource).inNamespace(currentNamespace).get() == null;
   }
 
 }

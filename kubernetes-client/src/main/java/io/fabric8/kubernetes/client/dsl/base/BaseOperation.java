@@ -81,6 +81,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   private final String resourceVersion;
   private final Boolean reloadingFromServer;
   private final long gracePeriodSeconds;
+  private final String propagationPolicy;
 
   private boolean reaping;
   protected Reaper reaper;
@@ -97,6 +98,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     this.reloadingFromServer = ctx.getReloadingFromServer();
     this.resourceVersion = ctx.getResourceVersion();
     this.gracePeriodSeconds = ctx.getGracePeriodSeconds();
+    this.propagationPolicy = ctx.getPropagationPolicy();
     this.labels = ctx.getLabels();
     this.labelsNot = ctx.getLabelsNot();
     this.labelsIn = ctx.getLabelsIn();
@@ -708,9 +710,9 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     try {
       if (item != null) {
         updateApiVersionResource(item);
-        handleDelete(item, gracePeriodSeconds, cascading);
+        handleDelete(item, gracePeriodSeconds, propagationPolicy, cascading);
       } else {
-        handleDelete(getResourceUrl(), gracePeriodSeconds, cascading);
+        handleDelete(getResourceUrl(), gracePeriodSeconds, propagationPolicy, cascading);
       }
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(forOperationType("delete"), e);
@@ -847,6 +849,10 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     return gracePeriodSeconds;
   }
 
+  public String getPropagationPolicy() {
+    return propagationPolicy;
+  }
+
   public String getResourceT() {
     return resourceT;
   }
@@ -914,6 +920,12 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   public Deletable<Boolean> withGracePeriod(long gracePeriodSeconds)
   {
     return newInstance(context.withGracePeriodSeconds(gracePeriodSeconds));
+  }
+
+  @Override
+  public Deletable<Boolean> withPropagationPolicy(String propagationPolicy)
+  {
+    return newInstance(context.withPropagationPolicy(propagationPolicy));
   }
 
   protected Class<? extends Config> getConfigType() {

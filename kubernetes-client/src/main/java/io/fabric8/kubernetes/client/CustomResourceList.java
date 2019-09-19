@@ -22,8 +22,6 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ListMeta;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,17 +30,16 @@ import java.util.List;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 public class CustomResourceList<T extends HasMetadata> implements KubernetesResource, KubernetesResourceList<T> {
 
-  @NotNull
   @JsonProperty("apiVersion")
   private String apiVersion;
+
   @JsonProperty("items")
-  @Valid
   private List<T> items = new ArrayList<T>();
-  @NotNull
+
   @JsonProperty("kind")
   private String kind;
+
   @JsonProperty("metadata")
-  @Valid
   private ListMeta metadata;
 
   public String getApiVersion() {

@@ -82,7 +82,6 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
     this.maxIntervalExponent = maxIntervalExponent;
 
     this.clonedClient = client.newBuilder()
-      .pingInterval(30, TimeUnit.SECONDS)
       .readTimeout(this.websocketTimeout, TimeUnit.MILLISECONDS)
       .build();
 

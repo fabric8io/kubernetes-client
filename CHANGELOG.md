@@ -1,8 +1,88 @@
-### CHANGELOG
+## CHANGELOG
 
-### 4.3-SNAPSHOT
+### 4.5-SNAPSHOT
+#### Bugs
+* Fix #1767: Removed fixed override for Okhttp client's `pingInterval`
+* Fix #1758: generation of resource handlers for OpenShift
+* Fix #1626: Scaling StatefulSets with waiting seems to fail
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Feature
+* Added Template Instance Support
+
+### 4.5.2 (14-09-2019)
+#### Bugs
+* Fix #1759: Portforwarding is broken
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Feature
+
+
+### 4.5.1 (11-09-2019)
+
+#### Improvements
+  * Removed Bean Validation integration
+  
+### 4.5.0 (10-09-2019)
+
+#### Bugs
+  * Fix #1745: Calling getInputStreamFromDataOrFile function with correct parameter order
+  * Fix #1730: Fix failing build on jdk11
+  * Fix #1634: Cascade delete can't be overriden
+  * Fixed Knative model so that it recognizes Container and Volume types as Buildable.
+  * Remove lexicographic resource version check in WatchHTTPManager
+
+#### Improvements
+  * Added in kubernetes-server-mock (CRUD) the withoutLabel filter and respective tests
+  * Removed @Valid annotation from all model class fields (improves quarkus integration).
+
+#### New Feature
+  * Allow user to set a propagation policy on deletion
+
+
+### 4.4.2 (23-08-2019)
+#### Bugs
+  * Fix #1706: admissionregistration resources are now parsed correctly
+  * Fix #1722: Service port forward are now done in the correct namespace
+  * Fixed deserialize of `IntOrString` with correct `Kind` instead of `null`
+
+#### Improvements
+  * Test coverage for HorizontalPodAutoscaler
+  * Added example for PersistentVolumeClaim
+  * Added test coverage for ResourceQuota
+
+#### Dependency Upgrade
+  * Fix #1331: Migrated from JUnit 4 to JUnit 5
+
+#### New Feature
+  * Service Catalog extension
+
+
+### 4.4.1 (08-08-2019)
+####  Bugs
+  * Fix #1690: Endpoints is always pluralized
+  * Fix #1684: Fixed URL resolution algorithm for OpenShift resources without API Group name
+
+#### Improvements
+  * Fix #1650: Introduced `kubernetes.disable.autoConfig` system property to disable auto configuration in Config
+  * Fix #1661: Remove generic parameter from KubernetesResource
+  * Improved OpenShiftOperation.wrap method performance
+  * RawCustomResourceOperationsImpl#makeCall now closes the created Response object
+
+#### Dependency Upgrade
+
+#### New Feature
+
+### 4.4.0 (05-08-2019)
   Bugs
-  * Fix #1626: Scaling StatefulSets with waiting seems to fail
+  * Fix #1592: Corrected type returned by Config.builder() 
+  * Fix #1565: CRD's Enums are prefixed with Raw keyword
   * Fixed user/password authentication bug in OpenShift 4
   * Fix #1667: Origin header for watch requests had a port of -1 when no port specified
 
@@ -14,7 +94,7 @@
    * Removed deprecated KubernetesKind enum
 
   Dependency Upgrade
-
+    
   New Feature
   * Knative extension
   * Tekton extension
@@ -28,6 +108,7 @@
    * Fix #1634: Make map backing KubernetesDeserializer thread-safe
 
   Improvements
+  
     * Test coverage for Namespace.
     * Example added for NamespaceQuota
     * Example added for Endpoints.
@@ -45,8 +126,9 @@
     * Upgrade Jackson to version 2.9.9
 
   New Feature
-   * Added support for SelfSubjectAccessReview
-   * Added support for SelfSubjectRulesReview
+    * Fixes #973: added support for service catalog client
+    * Added support for SelfSubjectAccessReview
+    * Added support for SelfSubjectRulesReview
 
 #### 4.3.0 (10-06-2019)
 
@@ -61,7 +143,7 @@
   Improvements
 
     * Added example for raw custom resources.
-
+    
   Dependency Upgrade
 
   New Feature

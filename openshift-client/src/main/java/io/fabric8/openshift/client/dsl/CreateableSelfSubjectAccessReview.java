@@ -17,9 +17,9 @@
 package io.fabric8.openshift.client.dsl;
 
 import io.fabric8.kubernetes.api.model.Doneable;
+import io.fabric8.kubernetes.api.model.authorization.SelfSubjectAccessReview;
+import io.fabric8.kubernetes.api.model.authorization.SelfSubjectAccessReviewFluentImpl;
 import io.fabric8.kubernetes.client.dsl.Createable;
-import io.fabric8.openshift.api.model.SelfSubjectAccessReview;
-import io.fabric8.openshift.api.model.SelfSubjectAccessReviewFluentImpl;
 import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
 
 public abstract class CreateableSelfSubjectAccessReview extends

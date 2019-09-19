@@ -26,7 +26,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionList;
@@ -37,6 +39,7 @@ import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import io.fabric8.kubernetes.client.utils.Utils;
 
+@EnableRuleMigrationSupport
 public class CustomResourceTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
@@ -172,9 +175,11 @@ public class CustomResourceTest {
     assertEquals("Success", result.get("status"));
   }
 
-  @Test(expected = KubernetesClientException.class)
+  @Test
   public void testDeleteWithNamespaceMismatch() {
-    KubernetesClient client = server.getClient();
-    client.customResource(customResourceDefinitionContext).delete("ns2", "example-hello");
+    Assertions.assertThrows(KubernetesClientException.class, () -> {
+      KubernetesClient client = server.getClient();
+      client.customResource(customResourceDefinitionContext).delete("ns2", "example-hello");
+    });
   }
 }

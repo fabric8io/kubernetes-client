@@ -246,30 +246,23 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
         @SuppressWarnings("unchecked")
         T obj = (T) object;
         // Dirty cast - should always be valid though
-        String currentResourceVersion = resourceVersion.get();
-        String newResourceVersion = ((HasMetadata) obj).getMetadata().getResourceVersion();
-        if (currentResourceVersion == null || currentResourceVersion.compareTo(newResourceVersion) < 0) {
-          resourceVersion.compareAndSet(currentResourceVersion, newResourceVersion);
-        }
+        resourceVersion.set(((HasMetadata) obj).getMetadata().getResourceVersion());
         Watcher.Action action = Watcher.Action.valueOf(event.getType());
         watcher.eventReceived(action, obj);
       } else if (object instanceof KubernetesResourceList) {
-          @SuppressWarnings("unchecked")
-          KubernetesResourceList list = (KubernetesResourceList) object;
-          // Dirty cast - should always be valid though
-          String currentResourceVersion = resourceVersion.get();
-          String newResourceVersion = list.getMetadata().getResourceVersion();
-          if (currentResourceVersion == null || currentResourceVersion.compareTo(newResourceVersion) < 0) {
-            resourceVersion.compareAndSet(currentResourceVersion, newResourceVersion);
+        @SuppressWarnings("unchecked")
+
+        KubernetesResourceList list = (KubernetesResourceList) object;
+        // Dirty cast - should always be valid though
+        resourceVersion.set(list.getMetadata().getResourceVersion());
+        Watcher.Action action = Watcher.Action.valueOf(event.getType());
+        List<HasMetadata> items = list.getItems();
+        if (items != null) {
+          String name = baseOperation.getName();
+          for (HasMetadata item : items) {
+            watcher.eventReceived(action, (T) item);
           }
-          Watcher.Action action = Watcher.Action.valueOf(event.getType());
-          List<HasMetadata> items = list.getItems();
-          if (items != null) {
-            String name = baseOperation.getName();
-            for (HasMetadata item : items) {
-              watcher.eventReceived(action, (T) item);
-            }
-          }
+        }
       } else if (object instanceof Status) {
         Status status = (Status) object;
         // The resource version no longer exists - this has to be handled by the caller.

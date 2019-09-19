@@ -31,6 +31,10 @@ public class MutatingWebhookConfigurationOperationsImpl extends HasMetadataOpera
     this(new OperationContext().withOkhttpClient(client).withConfig(config));
   }
 
+  public MutatingWebhookConfigurationOperationsImpl(OkHttpClient client, Config config, String namespace) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace));
+  }
+
   public MutatingWebhookConfigurationOperationsImpl(OperationContext context) {
     super(context.withApiGroupName("admissionregistration.k8s.io")
       .withApiGroupVersion("v1beta1")

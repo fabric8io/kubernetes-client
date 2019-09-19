@@ -21,7 +21,7 @@
     <parent>
         <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-extensions</artifactId>
-        <version>4.3-SNAPSHOT</version>
+        <version>4.5-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -37,7 +37,7 @@
         <module>client</module>
         <module>mock</module>
         <module>examples</module>
-      <module>tests</module>
+        <module>tests</module>
     </modules>
 
 </project>

@@ -16,15 +16,12 @@
 
 package io.fabric8.openshift.client;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.APIGroup;
 import io.fabric8.kubernetes.api.model.APIGroupList;
-import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.VersionInfo;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -32,9 +29,6 @@ import okhttp3.Response;
 
 import java.net.URI;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -75,8 +69,7 @@ public class OpenshiftAdapterSupport {
           .get()
           .url(URLUtils.join(masterUrl.toString(), APIS));
         Response response = httpClient.newCall(requestBuilder.build()).execute();
-        ObjectMapper objectMapper = new ObjectMapper();
-        APIGroupList apiGroupList = objectMapper.readValue(response.body().string(), APIGroupList.class);
+        APIGroupList apiGroupList = Serialization.unmarshal(response.body().string(), APIGroupList.class);
 
         for (APIGroup apiGroup : apiGroupList.getGroups()) {
           if (apiGroup.getName().endsWith("openshift.io")) {
@@ -89,6 +82,30 @@ public class OpenshiftAdapterSupport {
       return false;
     }
 
+    /**
+     * Check if OpenShift API Groups are available
+     * @param httpClient   The httpClient.
+     * @param masterUrl    The master url.
+     * @return             True if the new <code>/apis/*.openshift.io/</code> APIs are found in the root paths.
+     */
+    static boolean isOpenShiftAPIGroups(OkHttpClient httpClient, String masterUrl) {
+      try {
+        Request.Builder requestBuilder = new Request.Builder()
+          .get()
+          .url(URLUtils.join(masterUrl, APIS));
+        Response response = httpClient.newCall(requestBuilder.build()).execute();
+        APIGroupList apiGroupList = Serialization.unmarshal(response.body().string(), APIGroupList.class);
+
+        for (APIGroup apiGroup : apiGroupList.getGroups()) {
+          if (apiGroup.getName().endsWith("openshift.io")) {
+            return true;
+          }
+        }
+      } catch(Exception e) {
+        KubernetesClientException.launderThrowable(e);
+      }
+      return false;
+    }
 
     /**
      * Checks if a custom URL for OpenShift has been used.

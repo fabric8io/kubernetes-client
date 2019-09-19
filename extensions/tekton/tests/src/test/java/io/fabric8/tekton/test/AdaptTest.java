@@ -20,32 +20,32 @@ import io.fabric8.tekton.client.TektonClient;
 import io.fabric8.tekton.mock.TektonMockServer;
 import io.fabric8.kubernetes.client.KubernetesClient;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 
 import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class AdaptTest {
 
   private TektonMockServer mock = new TektonMockServer();
 
-  @Before
+  @BeforeEach
   public void setUp() {
     mock.init();
   }
 
-  @After
+  @AfterEach
   public void tearDown() throws IOException {
     mock.destroy();
   }
-
 
   @Test
   public void testAdapt() {
     TektonClient sc = mock.createTekton();
     KubernetesClient kc = new DefaultKubernetesClient(sc.getConfiguration());
-    Assert.assertNotNull(kc.adapt(TektonClient.class));
+    assertNotNull(kc.adapt(TektonClient.class));
   }
 }

@@ -40,7 +40,11 @@ import java.util.concurrent.TimeUnit;
 public class ServiceOperationsImpl extends HasMetadataOperation<Service, ServiceList, DoneableService, ServiceResource<Service, DoneableService>> implements ServiceResource<Service, DoneableService> {
 
   public ServiceOperationsImpl(OkHttpClient client, Config config) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config));
+    this(client, config, null);
+  }
+
+  public ServiceOperationsImpl(OkHttpClient client, Config config, String namespace) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace));
   }
 
   public ServiceOperationsImpl(OperationContext context) {
@@ -132,7 +136,7 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
   private Pod matchingPod() {
     Service item = fromServer().get();
     Map<String, String> labels = item.getSpec().getSelector();
-    PodList list = new PodOperationsImpl(client, config).withLabels(labels).list();
+    PodList list = new PodOperationsImpl(client, config).inNamespace(item.getMetadata().getNamespace()).withLabels(labels).list();
     return list.getItems().stream().findFirst().orElseThrow(() -> new IllegalStateException("Could not find matching pod for service:" + item + "."));
   }
 

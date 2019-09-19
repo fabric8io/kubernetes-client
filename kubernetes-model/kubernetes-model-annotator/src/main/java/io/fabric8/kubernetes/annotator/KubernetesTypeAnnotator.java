@@ -74,7 +74,7 @@ public class KubernetesTypeAnnotator extends Jackson2Annotator {
         try {
             clazz.annotate(Buildable.class)
                     .param("editableEnabled", false)
-                    .param("validationEnabled", true)
+                    .param("validationEnabled", false)
                     .param("generateBuilderPackage", true)
                     .param("builderPackage", "io.fabric8.kubernetes.api.builder")
                     .annotationParam("inline", Inline.class)
@@ -82,8 +82,6 @@ public class KubernetesTypeAnnotator extends Jackson2Annotator {
                     .param("prefix", "Doneable")
                     .param("value", "done");
 
-            annotateMetatadataValidator(clazz);
-            envNameValidator(clazz);
         } catch (JClassAlreadyExistsException e) {
             e.printStackTrace();
         }
@@ -157,44 +155,6 @@ public class KubernetesTypeAnnotator extends Jackson2Annotator {
             return nameIsDNS1123LabelPattern;
         }
         return nameIsDNS1123SubdomainPattern;
-    }
-
-    private void annotateMetatadataValidator(JDefinedClass clazz) {
-        if (clazz.name().equals("PodTemplateSpec")) {
-            return;
-        }
-
-        for (Map.Entry<String, JFieldVar> f : clazz.fields().entrySet()) {
-            if (f.getKey().equals("metadata") && f.getValue().type().name().equals("ObjectMeta")) {
-                try {
-                    JAnnotationUse annotation = f.getValue().annotate(new JCodeModel()._class("io.fabric8.kubernetes.api.model.validators.CheckObjectMeta"));
-
-                    if (isMinimal(clazz)) {
-                        annotation.param("minimal", true);
-                    } else {
-                        annotation
-                            .param("regexp", "^" + getObjectNamePattern(clazz) + "$")
-                            .param("max", getObjectNameMaxLength(clazz));
-                    }
-                } catch (JClassAlreadyExistsException e) {
-                    e.printStackTrace();
-                }
-                return;
-            }
-        }
-    }
-
-    private void envNameValidator(JDefinedClass clazz) {
-        for (Map.Entry<String, JFieldVar> f : clazz.fields().entrySet()) {
-            if (f.getKey().equals("name") && f.getValue().type().name().equals("String") && clazz.name().equals("EnvVar")) {
-                for (JAnnotationUse annotation: f.getValue().annotations()) {
-                    if (annotation.getAnnotationClass().name().equals("Pattern")) {
-                        annotation.param("regexp", "^" + envNamePattern + "$");
-                    }
-                }
-                return;
-            }
-        }
     }
 
     private boolean isMinimal(JDefinedClass clazz) {

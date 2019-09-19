@@ -37,6 +37,10 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
   implements TimeoutImageEditReplacePatchable<ReplicationController, ReplicationController, DoneableReplicationController> {
 
   public ReplicationControllerOperationsImpl(OkHttpClient client, Config config) {
+    this(client, config, null);
+  }
+
+  public ReplicationControllerOperationsImpl(OkHttpClient client, Config config, String namespace) {
     this(new RollingOperationContext().withOkhttpClient(client).withConfig(config).withCascading(true));
   }
 

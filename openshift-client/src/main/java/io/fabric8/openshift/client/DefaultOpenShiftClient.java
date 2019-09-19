@@ -31,6 +31,7 @@ import io.fabric8.kubernetes.api.model.DoneableResourceQuota;
 import io.fabric8.kubernetes.api.model.DoneableSecret;
 import io.fabric8.kubernetes.api.model.DoneableService;
 import io.fabric8.kubernetes.api.model.DoneableServiceAccount;
+import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionList;
 import io.fabric8.kubernetes.api.model.apiextensions.DoneableCustomResourceDefinition;
@@ -59,6 +60,7 @@ import io.fabric8.openshift.api.model.DoneableProject;
 import io.fabric8.openshift.api.model.DoneableRoute;
 import io.fabric8.openshift.api.model.DoneableSecurityContextConstraints;
 import io.fabric8.openshift.api.model.DoneableTemplate;
+import io.fabric8.openshift.api.model.DoneableTemplateInstance;
 import io.fabric8.openshift.api.model.DoneableUser;
 import io.fabric8.openshift.client.dsl.*;
 import io.fabric8.openshift.client.dsl.internal.*;
@@ -69,11 +71,13 @@ import okhttp3.OkHttpClient;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.Objects;
 
 public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpenShiftClient {
+
+  private static final String API_GROUPS_ENABLED = "API_GROUPS_ENABLED";
+  private static final Map<String, Boolean> API_GROUPS_ENABLED_PER_URL = new HashMap<>();
 
   private URL openShiftUrl;
   private NamespacedKubernetesClient delegate;
@@ -91,9 +95,9 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   public DefaultOpenShiftClient(final OpenShiftConfig config) throws KubernetesClientException {
-    super(config);
+    super(configWithApiGroupsEnabled(clientWithOpenShiftOAuthInterceptor(config), config));
     try {
-      this.httpClient = clientWithOpenShiftOAuthInterceptor(this.httpClient);
+      this.httpClient = clientWithOpenShiftOAuthInterceptor(this.httpClient, config);
       this.delegate = new DefaultKubernetesClient(this.httpClient, config);
       this.openShiftUrl = new URL(config.getOpenShiftUrl());
     } catch (MalformedURLException e) {
@@ -102,14 +106,30 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   public DefaultOpenShiftClient(OkHttpClient httpClient, OpenShiftConfig config) throws KubernetesClientException {
-    super(httpClient, config);
+    super(httpClient, configWithApiGroupsEnabled(httpClient, config));
     try {
-      this.httpClient = clientWithOpenShiftOAuthInterceptor(httpClient);
+      this.httpClient = clientWithOpenShiftOAuthInterceptor(httpClient, getConfiguration());
       this.delegate = new DefaultKubernetesClient(this.httpClient, config);
       this.openShiftUrl = new URL(config.getOpenShiftUrl());
     } catch (MalformedURLException e) {
       throw new KubernetesClientException("Could not create client", e);
     }
+  }
+
+  private static OpenShiftConfig configWithApiGroupsEnabled(OkHttpClient httpClient, OpenShiftConfig config) {
+    String url = config.getMasterUrl();
+    Boolean openshiftApiGroupsEnabled = API_GROUPS_ENABLED_PER_URL.containsKey(url);
+    if (openshiftApiGroupsEnabled) {
+      return config;
+    }
+
+    if (!config.isDisableApiGroupCheck()) {
+      return config.withOpenshiftApiGroupsEnabled(false);
+    }
+
+    Boolean enabled = OpenshiftAdapterSupport.isOpenShiftAPIGroups(httpClient, url);
+    API_GROUPS_ENABLED_PER_URL.put(url, enabled);
+   return config.withOpenshiftApiGroupsEnabled(enabled);
   }
 
   public static DefaultOpenShiftClient fromConfig(String config) {
@@ -120,12 +140,18 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
     return new DefaultOpenShiftClient(Serialization.unmarshal(is, OpenShiftConfig.class));
   }
 
-  private OkHttpClient clientWithOpenShiftOAuthInterceptor(OkHttpClient httpClient) {
-    httpClient = httpClient.newBuilder().authenticator(Authenticator.NONE).build();
-    OkHttpClient.Builder builder = httpClient.newBuilder();
+  private static OkHttpClient clientWithOpenShiftOAuthInterceptor(Config config) {
+    return clientWithOpenShiftOAuthInterceptor(null, config);
+  }
+
+  private static OkHttpClient clientWithOpenShiftOAuthInterceptor(OkHttpClient httpClient, Config config) {
+    OkHttpClient.Builder builder = httpClient != null ?
+      httpClient.newBuilder().authenticator(Authenticator.NONE) :
+      new OkHttpClient.Builder().authenticator(Authenticator.NONE);
+
     builder.interceptors().clear();
-    return builder.addInterceptor(new OpenShiftOAuthInterceptor(httpClient, OpenShiftConfig.wrap(getConfiguration())))
-      .addInterceptor(new ImpersonatorInterceptor(getConfiguration()))
+    return builder.addInterceptor(new OpenShiftOAuthInterceptor(httpClient, OpenShiftConfig.wrap(config)))
+      .addInterceptor(new ImpersonatorInterceptor(config))
       .addInterceptor(new BackwardsCompatibilityInterceptor())
       .build();
   }
@@ -352,6 +378,11 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public ParameterMixedOperation<Template, TemplateList, DoneableTemplate, TemplateResource<Template, KubernetesList, DoneableTemplate>> templates() {
     return new TemplateOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+  }
+
+  @Override
+  public MixedOperation<TemplateInstance, TemplateInstanceList, DoneableTemplateInstance, TemplateInstanceResource<TemplateInstance, KubernetesList, DoneableTemplateInstance>> templateinstances() {
+    return new TemplateInstanceOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override

@@ -52,7 +52,7 @@ import java.util.Map;
 })
 @ToString
 @EqualsAndHashCode
-@Buildable(editableEnabled = false, validationEnabled = true, generateBuilderPackage=true, builderPackage = "io.fabric8.kubernetes.api.builder", inline = @Inline(type = Doneable.class, prefix = "Doneable", value = "done"))
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage=true, builderPackage = "io.fabric8.kubernetes.api.builder", inline = @Inline(type = Doneable.class, prefix = "Doneable", value = "done"))
 public class IntOrString implements Serializable {
 
     @JsonProperty("IntVal")
@@ -159,16 +159,24 @@ public class IntOrString implements Serializable {
         @Override
         public void serialize(IntOrString value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
             if (value != null) {
-                Integer intValue = value.getIntVal();
-                if (intValue != null) {
-                    jgen.writeNumber(intValue);
-                } else {
-                    String stringValue = value.getStrVal();
-                    if (stringValue != null) {
-                        jgen.writeString(stringValue);
+                if (value.getKind() == null) {
+                    Integer intValue = value.getIntVal();
+                    if (intValue != null) {
+                        jgen.writeNumber(intValue);
                     } else {
-                        jgen.writeNull();
+                        String stringValue = value.getStrVal();
+                        if (stringValue != null) {
+                            jgen.writeString(stringValue);
+                        } else {
+                            jgen.writeNull();
+                        }
                     }
+                } else if (value.getKind() == 0) {
+                    jgen.writeNumber(value.getIntVal());
+                } else if (value.getKind() == 1) {
+                    jgen.writeString(value.getStrVal());
+                } else {
+                    jgen.writeNull();
                 }
             } else {
                 jgen.writeNull();
@@ -183,11 +191,11 @@ public class IntOrString implements Serializable {
         public IntOrString deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException, JsonProcessingException {
             ObjectCodec oc = jsonParser.getCodec();
             JsonNode node = oc.readTree(jsonParser);
-            IntOrString intOrString = new IntOrString();
+            IntOrString intOrString;
             if (node.isInt()) {
-                intOrString.setIntVal(node.asInt());
+                intOrString = new IntOrString(node.asInt());
             } else {
-                intOrString.setStrVal(node.asText());
+                intOrString = new IntOrString(node.asText());
             }
             return intOrString;
         }

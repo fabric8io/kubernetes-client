@@ -20,7 +20,7 @@
     <parent>
       <groupId>io.fabric8</groupId>
       <artifactId>tekton-extension-pom</artifactId>
-      <version>4.3-SNAPSHOT</version>
+      <version>4.5-SNAPSHOT</version>
       <relativePath>../</relativePath>
     </parent>
 
@@ -43,8 +43,17 @@
     </dependency>
 
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-migrationsupport</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 

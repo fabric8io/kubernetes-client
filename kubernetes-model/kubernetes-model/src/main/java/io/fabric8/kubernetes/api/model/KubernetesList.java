@@ -42,7 +42,7 @@ import java.util.List;
         "items",
 })
 @JsonDeserialize(using = JsonDeserializer.None.class)
-@Buildable(editableEnabled = false, validationEnabled = true, generateBuilderPackage=true, builderPackage = "io.fabric8.kubernetes.api.builder", inline = @Inline(type = Doneable.class, prefix = "Doneable", value = "done"))
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage=true, builderPackage = "io.fabric8.kubernetes.api.builder", inline = @Inline(type = Doneable.class, prefix = "Doneable", value = "done"))
 public class KubernetesList extends BaseKubernetesList implements KubernetesResource {
 
     /**

@@ -15,22 +15,25 @@
  */
 package io.fabric8.kubernetes.client.server.mock;
 
+import static io.fabric8.mockwebserver.crud.AttributeType.WITHOUT;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.mockwebserver.crud.Attribute;
 import io.fabric8.mockwebserver.crud.AttributeExtractor;
 import io.fabric8.mockwebserver.crud.AttributeSet;
-import java.util.Map;
 import okhttp3.HttpUrl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class KubernetesAttributesExtractor implements AttributeExtractor<HasMetadata> {
 
@@ -55,8 +58,11 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
   private static final String KEY_GROUP = "(?<key>[a-zA-Z0-9-_./]+)";
   // Matches a==b and a=b but not a!=b.
   private static final String EQUALITY_GROUP = "(==|(?<!!)=)";
+  // Matches a!=b but not a==b or a=b .
+  private static final String NOT_EQUALITY_GROUP = "(!=)";
   private static final String VALUE_GROUP = "(?<value>[a-zA-Z0-9-_.]+)";
   private static final Pattern LABEL_REQUIREMENT_EQUALITY = Pattern.compile(KEY_GROUP + EQUALITY_GROUP + VALUE_GROUP);
+  private static final Pattern LABEL_REQUIREMENT_NOT_EQUALITY = Pattern.compile(KEY_GROUP + NOT_EQUALITY_GROUP + VALUE_GROUP);
 
   // These elements are added to the path/query fragment so that it can be parsed by HttpUrl. Their
   // values are not important, HttpUrl expects the scheme to be http or https.
@@ -102,7 +108,6 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
     return new AttributeSet();
   }
 
-
   @Override
   public AttributeSet extract(String s) {
     if (s == null || s.isEmpty()) {
@@ -116,7 +121,6 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
 
     return fromPath(s);
   }
-
 
   @Override
   public AttributeSet extract(HasMetadata o) {
@@ -160,7 +164,8 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
           kind.equalsIgnoreCase("NetworkPolicies")){
           kind = kind.substring(0,kind.length() - 3) + "y";
         }
-        else if (kind.equalsIgnoreCase("securityContextConstraints")){
+        else if (kind.equalsIgnoreCase("securityContextConstraints") ||
+          kind.equalsIgnoreCase("endpoints")){
           // do nothing
           // because its a case which is ending with s but its name is
           // like that, it is not plural
@@ -197,7 +202,12 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
         if (m.matches()) {
           attributes = attributes.add(new Attribute(LABEL_KEY_PREFIX + m.group(KEY), m.group(VALUE)));
         } else {
-          LOGGER.warn("Ignoring unsupported label requirement: {}", requirement);
+          m = LABEL_REQUIREMENT_NOT_EQUALITY.matcher(requirement);
+          if (m.matches()) {
+            attributes = attributes.add(new Attribute(LABEL_KEY_PREFIX + m.group(KEY), m.group(VALUE), WITHOUT));
+          } else {
+            LOGGER.warn("Ignoring unsupported label requirement: {}", requirement);
+          }
         }
       }
     }

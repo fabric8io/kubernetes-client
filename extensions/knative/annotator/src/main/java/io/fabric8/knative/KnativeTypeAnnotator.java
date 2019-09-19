@@ -56,7 +56,7 @@ public class KnativeTypeAnnotator extends Jackson2Annotator {
         try {
             JAnnotationUse buildable = clazz.annotate(Buildable.class)
                     .param("editableEnabled", false)
-                    .param("validationEnabled", true)
+                    .param("validationEnabled", false)
                     .param("generateBuilderPackage", false)
                     .param("builderPackage", "io.fabric8.kubernetes.api.builder");
 
@@ -65,8 +65,10 @@ public class KnativeTypeAnnotator extends Jackson2Annotator {
                     .param("prefix", "Doneable")
                     .param("value", "done");
 
-            buildable.paramArray("refs").annotate(BuildableReference.class)
-                .param("value", new JCodeModel()._class("io.fabric8.kubernetes.api.model.ObjectMeta"));
+            JAnnotationArrayMember arrayMember = buildable.paramArray("refs");
+            arrayMember.annotate(BuildableReference.class).param("value", new JCodeModel()._class("io.fabric8.kubernetes.api.model.ObjectMeta"));
+            arrayMember.annotate(BuildableReference.class).param("value", new JCodeModel()._class("io.fabric8.kubernetes.api.model.Volume"));
+            arrayMember.annotate(BuildableReference.class).param("value", new JCodeModel()._class("io.fabric8.kubernetes.api.model.Container"));
 
         } catch (JClassAlreadyExistsException e) {
             e.printStackTrace();

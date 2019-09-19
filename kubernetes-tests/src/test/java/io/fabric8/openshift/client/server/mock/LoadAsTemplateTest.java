@@ -16,7 +16,8 @@
 package io.fabric8.openshift.client.server.mock;
 
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,10 +31,11 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@EnableRuleMigrationSupport
 public class LoadAsTemplateTest {
 
   @Test
@@ -65,7 +67,7 @@ public class LoadAsTemplateTest {
   }
 
   protected DefaultOpenShiftClient createOpenShiftClientWithNoServer() {
-    return new DefaultOpenShiftClient(new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
+    return new DefaultOpenShiftClient(new OpenShiftConfigBuilder().build());
   }
 
   //Check that the processed template is as expected

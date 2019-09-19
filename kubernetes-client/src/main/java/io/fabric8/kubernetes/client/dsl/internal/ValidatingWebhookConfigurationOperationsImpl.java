@@ -36,7 +36,11 @@ import java.util.TreeMap;
 public class ValidatingWebhookConfigurationOperationsImpl extends HasMetadataOperation<ValidatingWebhookConfiguration, ValidatingWebhookConfigurationList, DoneableValidatingWebhookConfiguration, Resource<ValidatingWebhookConfiguration, DoneableValidatingWebhookConfiguration>> {
 
   public ValidatingWebhookConfigurationOperationsImpl(OkHttpClient client, Config config) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config));
+    this(client, config, null);
+  }
+
+  public ValidatingWebhookConfigurationOperationsImpl(OkHttpClient client, Config config, String namespace) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace));
   }
 
   public ValidatingWebhookConfigurationOperationsImpl(OperationContext context) {

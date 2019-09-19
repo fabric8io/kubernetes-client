@@ -197,16 +197,23 @@ public class OperationSupport {
   }
 
 
-  protected <T> void handleDelete(T resource, long gracePeriodSeconds, boolean cascading) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    handleDelete(getResourceUrl(checkNamespace(resource), checkName(resource)), gracePeriodSeconds, cascading);
+  protected <T> void handleDelete(T resource, long gracePeriodSeconds, String propagationPolicy, boolean cascading) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+    handleDelete(getResourceUrl(checkNamespace(resource), checkName(resource)), gracePeriodSeconds, propagationPolicy, cascading);
   }
 
-  protected void handleDelete(URL requestUrl, long gracePeriodSeconds, boolean cascading) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+  protected void handleDelete(URL requestUrl, long gracePeriodSeconds, String propagationPolicy, boolean cascading) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     RequestBody requestBody = null;
     DeleteOptions deleteOptions = new DeleteOptions();
-    deleteOptions.setOrphanDependents(!cascading);
     if (gracePeriodSeconds >= 0) {
       deleteOptions.setGracePeriodSeconds(gracePeriodSeconds);
+    }
+    /*
+     * Either the propagation policy or the orphan dependent (deprecated) property must be set, but not both.
+     */
+    if (propagationPolicy != null) {
+      deleteOptions.setPropagationPolicy(propagationPolicy);
+    } else {
+      deleteOptions.setOrphanDependents(!cascading);
     }
     requestBody = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(deleteOptions));
 

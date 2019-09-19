@@ -18,11 +18,10 @@ package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.client.OAuthTokenProvider;
 import io.fabric8.kubernetes.client.RequestConfig;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import io.fabric8.kubernetes.api.builder.Function;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
@@ -32,9 +31,10 @@ import okhttp3.mockwebserver.RecordedRequest;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+@EnableRuleMigrationSupport
 public class RequestConfigTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
@@ -62,13 +62,13 @@ public class RequestConfigTest {
     //Let's check that request config actually works
     RecordedRequest request1 = server.getMockServer().takeRequest();
     String authHeader1 = request1.getHeader("Authorization");
-    Assert.assertEquals("Bearer TOKEN", authHeader1);
+    assertEquals("Bearer TOKEN", authHeader1);
 
     //Let's also check that we didn't pollute client config.
     Pod pod2 = client.pods().inNamespace("test").withName("pod2").get();
     RecordedRequest request2 = server.getMockServer().takeRequest();
     String authHeader2 = request2.getHeader("Authorization");
-    Assert.assertNotEquals("Bearer TOKEN", authHeader2);
+    assertNotEquals("Bearer TOKEN", authHeader2);
   }
 
   @Test
@@ -100,7 +100,7 @@ public class RequestConfigTest {
   private void assertAuthorizationHeader(String expectedValue) throws InterruptedException {
     RecordedRequest request = server.getMockServer().takeRequest();
     String acutalValue = request.getHeader("Authorization");
-    Assert.assertEquals(expectedValue, acutalValue);
+    assertEquals(expectedValue, acutalValue);
   }
 
   private static class TestableOAuthTokenProvider implements OAuthTokenProvider {
