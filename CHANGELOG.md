@@ -10,6 +10,7 @@
 #### Dependency Upgrade
 
 #### New Feature
+* Added Template Instance Support
 
 ### 4.5.2 (14-09-2019)
 #### Bugs
@@ -72,6 +73,10 @@
   * Fix #1661: Remove generic parameter from KubernetesResource
   * Improved OpenShiftOperation.wrap method performance
   * RawCustomResourceOperationsImpl#makeCall now closes the created Response object
+
+#### Dependency Upgrade
+
+#### New Feature
 
 ### 4.4.0 (05-08-2019)
   Bugs
