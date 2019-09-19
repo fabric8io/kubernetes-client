@@ -679,7 +679,17 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
         updateApiVersionResource(item);
 
         try {
-          R op = (R) withItem(item);
+          R op;
+
+          if (item instanceof HasMetadata
+            && ((HasMetadata) item).getMetadata() != null
+            && ((HasMetadata) item).getMetadata().getName() != null
+            && !((HasMetadata) item).getMetadata().getName().isEmpty())  {
+            op = (R) inNamespace(checkNamespace(item)).withName(((HasMetadata) item).getMetadata().getName());
+          } else {
+            op = (R) withItem(item);
+          }
+
           deleted &= op.delete();
         } catch (KubernetesClientException e) {
           if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
