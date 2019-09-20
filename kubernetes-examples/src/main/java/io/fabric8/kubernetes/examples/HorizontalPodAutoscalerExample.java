@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.examples;
 
 import io.fabric8.kubernetes.api.model.HorizontalPodAutoscaler;
 import io.fabric8.kubernetes.api.model.HorizontalPodAutoscalerBuilder;
+import io.fabric8.kubernetes.api.model.MetricSpecBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
@@ -47,7 +48,10 @@ public class HorizontalPodAutoscalerExample {
         .endScaleTargetRef()
         .withMinReplicas(1)
         .withMaxReplicas(10)
-        .withTargetCPUUtilizationPercentage(50)
+        .addToMetrics(new MetricSpecBuilder()
+          .withType("Resource")
+          .withNewResource().withName("cpu").withTargetAverageUtilization(50).endResource()
+          .build())
         .endSpec()
         .build();
 
