@@ -1,6 +1,15 @@
 ## CHANGELOG
 
-### 4.5-SNAPSHOT
+### 4.6-SNAPSHOT
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Feature
+
+### 4.6.0 (20-09-2019)
 #### Bugs
 * Fix #1767: Removed fixed override for Okhttp client's `pingInterval`
 * Fix #1758: generation of resource handlers for OpenShift
