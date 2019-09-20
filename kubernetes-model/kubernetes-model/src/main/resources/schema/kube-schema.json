@@ -2202,6 +2202,78 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_apps_ControllerRevision": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "apps/v1",
+          "required": true
+        },
+        "data": {
+          "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
+          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ControllerRevision",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "revision": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.apps.ControllerRevision",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "kubernetes_apps_ControllerRevisionList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "apps/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/kubernetes_apps_ControllerRevision",
+            "javaType": "io.fabric8.kubernetes.api.model.apps.ControllerRevision"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ControllerRevisionList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.apps.ControllerRevisionList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.apps.ControllerRevision\u003e"
+      ]
+    },
     "kubernetes_apps_DaemonSet": {
       "type": "object",
       "description": "",
@@ -18403,6 +18475,14 @@
     "ContainerStatus": {
       "$ref": "#/definitions/kubernetes_core_ContainerStatus",
       "javaType": "io.fabric8.kubernetes.api.model.ContainerStatus"
+    },
+    "ControllerRevision": {
+      "$ref": "#/definitions/kubernetes_apps_ControllerRevision",
+      "javaType": "io.fabric8.kubernetes.api.model.apps.ControllerRevision"
+    },
+    "ControllerRevisionList": {
+      "$ref": "#/definitions/kubernetes_apps_ControllerRevisionList",
+      "javaType": "io.fabric8.kubernetes.api.model.apps.ControllerRevisionList"
     },
     "CronJob": {
       "$ref": "#/definitions/kubernetes_batch_CronJob",

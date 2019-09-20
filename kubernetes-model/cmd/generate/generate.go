@@ -177,6 +177,8 @@ type Schema struct {
   IngressList                       extensions.IngressList
   ReplicaSet                        k8sappsapi.ReplicaSet
   ReplicaSetList                    k8sappsapi.ReplicaSetList
+  ControllerRevision                k8sappsapi.ControllerRevision
+  ControllerRevisionList            k8sappsapi.ControllerRevisionList
   NetworkPolicy                     networking.NetworkPolicy
   NetworkPolicyList                 networking.NetworkPolicyList
   ConfigMap                         kapi.ConfigMap
