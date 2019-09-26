@@ -138,7 +138,7 @@ public class SharedProcessor<T> {
         }
       }
     } finally {
-      lock.readLock().unlock();
+      lock.writeLock().unlock();
     }
     return resyncNeeded;
   }
