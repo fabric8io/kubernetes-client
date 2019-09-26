@@ -308,4 +308,50 @@ public class KubernetesAttributesExtractorTest {
 		assertTrue(deployments.stream().filter(d -> d.getMetadata().getName().equals("withoutKeepUntil")).findFirst()
 				.isPresent());
 	}
+
+  @Test
+  public void shouldFilterBasedOnLabelExists() {
+    KubernetesServer kubernetesServer = new KubernetesServer(false, true);
+    kubernetesServer.before();
+    KubernetesClient kubernetesClient = kubernetesServer.getClient();
+    Map<String, String> labels = new HashMap<>();
+    labels.put("app", "core");
+    labels.put("apiVersion", "1.7.1");
+    labels.put("keepUntil", "12000");
+    Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("withKeepUntil").addToLabels(labels)
+      .endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
+    kubernetesClient.apps().deployments().create(deployment1);
+
+    labels.remove("keepUntil");
+    Deployment deployment2 = new DeploymentBuilder().withNewMetadata().withName("withoutKeepUntil")
+      .addToLabels(labels).endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
+    kubernetesClient.apps().deployments().create(deployment2);
+
+    List<Deployment> deployments = kubernetesClient.apps().deployments().withLabel("keepUntil").list().getItems();
+    assertTrue(deployments.stream().anyMatch(d -> d.getMetadata().getName().equals("withKeepUntil")));
+    assertTrue(deployments.stream().noneMatch(d -> d.getMetadata().getName().equals("withoutKeepUntil")));
+  }
+
+  @Test
+  public void shouldFilterBasedOnLabelNotExists() {
+    KubernetesServer kubernetesServer = new KubernetesServer(false, true);
+    kubernetesServer.before();
+    KubernetesClient kubernetesClient = kubernetesServer.getClient();
+    Map<String, String> labels = new HashMap<>();
+    labels.put("app", "core");
+    labels.put("apiVersion", "1.7.1");
+    labels.put("keepUntil", "12000");
+    Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("withKeepUntil").addToLabels(labels)
+      .endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
+    kubernetesClient.apps().deployments().create(deployment1);
+
+    labels.remove("keepUntil");
+    Deployment deployment2 = new DeploymentBuilder().withNewMetadata().withName("withoutKeepUntil")
+      .addToLabels(labels).endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
+    kubernetesClient.apps().deployments().create(deployment2);
+
+    List<Deployment> deployments = kubernetesClient.apps().deployments().withoutLabel("keepUntil").list().getItems();
+    assertFalse(deployments.stream().noneMatch(d -> d.getMetadata().getName().equals("withKeepUntil")));
+    assertTrue(deployments.stream().anyMatch(d -> d.getMetadata().getName().equals("withoutKeepUntil")));
+  }
 }

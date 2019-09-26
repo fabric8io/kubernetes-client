@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.server.mock;
 
+import static io.fabric8.mockwebserver.crud.AttributeType.EXISTS;
+import static io.fabric8.mockwebserver.crud.AttributeType.NOT_EXISTS;
 import static io.fabric8.mockwebserver.crud.AttributeType.WITHOUT;
 
 import java.io.ByteArrayInputStream;
@@ -63,6 +65,8 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
   private static final String VALUE_GROUP = "(?<value>[a-zA-Z0-9-_.]+)";
   private static final Pattern LABEL_REQUIREMENT_EQUALITY = Pattern.compile(KEY_GROUP + EQUALITY_GROUP + VALUE_GROUP);
   private static final Pattern LABEL_REQUIREMENT_NOT_EQUALITY = Pattern.compile(KEY_GROUP + NOT_EQUALITY_GROUP + VALUE_GROUP);
+  private static final Pattern LABEL_REQUIREMENT_EXISTS = Pattern.compile(KEY_GROUP);
+  private static final Pattern LABEL_REQUIREMENT_NOT_EXISTS = Pattern.compile("!" + KEY_GROUP);
 
   // These elements are added to the path/query fragment so that it can be parsed by HttpUrl. Their
   // values are not important, HttpUrl expects the scheme to be http or https.
@@ -198,20 +202,40 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
     String labelSelector = url.queryParameter("labelSelector");
     if (labelSelector != null) {
       for (String requirement : labelSelector.split(",")) {
-        Matcher m = LABEL_REQUIREMENT_EQUALITY.matcher(requirement);
-        if (m.matches()) {
-          attributes = attributes.add(new Attribute(LABEL_KEY_PREFIX + m.group(KEY), m.group(VALUE)));
+        Attribute label = parseLabel(requirement);
+
+        if (label != null) {
+          attributes = attributes.add(label);
         } else {
-          m = LABEL_REQUIREMENT_NOT_EQUALITY.matcher(requirement);
-          if (m.matches()) {
-            attributes = attributes.add(new Attribute(LABEL_KEY_PREFIX + m.group(KEY), m.group(VALUE), WITHOUT));
-          } else {
-            LOGGER.warn("Ignoring unsupported label requirement: {}", requirement);
-          }
+          LOGGER.warn("Ignoring unsupported label requirement: {}", requirement);
         }
       }
     }
     return attributes;
+  }
+
+  private static Attribute parseLabel(String label) {
+    Matcher m = LABEL_REQUIREMENT_EQUALITY.matcher(label);
+    if (m.matches()) {
+      return new Attribute(LABEL_KEY_PREFIX + m.group(KEY), m.group(VALUE));
+    }
+
+    m = LABEL_REQUIREMENT_NOT_EQUALITY.matcher(label);
+    if (m.matches()) {
+      return new Attribute(LABEL_KEY_PREFIX + m.group(KEY), m.group(VALUE), WITHOUT);
+    }
+
+    m = LABEL_REQUIREMENT_EXISTS.matcher(label);
+    if (m.matches()) {
+      return new Attribute(LABEL_KEY_PREFIX + m.group(KEY), "", EXISTS);
+    }
+
+    m = LABEL_REQUIREMENT_NOT_EXISTS.matcher(label);
+    if (m.matches()) {
+      return new Attribute(LABEL_KEY_PREFIX + m.group(KEY), "", NOT_EXISTS);
+    }
+
+    return null;
   }
 
   private static HasMetadata toKubernetesResource(String s) {

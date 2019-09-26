@@ -4,7 +4,7 @@
 #### Bugs
 
 #### Improvements
-
+* Add support for filtering labels by EXISTS/NOT_EXISTS via the single argument versions of `.withLabel` and `.withoutLabel`
 #### Dependency Upgrade
 
 #### New Feature
