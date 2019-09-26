@@ -2,6 +2,7 @@
 
 ### 4.6-SNAPSHOT
 #### Bugs
+* Fix #1782: Informer Deadlock; Fix lock typo in SharedProcessor
 
 #### Improvements
 
