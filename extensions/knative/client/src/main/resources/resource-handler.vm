@@ -31,6 +31,7 @@
 
 #set ($version = "unknown")
 #set ($annotations = $model.annotations)
+#set ($group = $model.getPackageName().split("\.")[3])
 #foreach ($annotation in $annotations)
   #if ($annotation.getClassRef().getName().equals("ApiVersion"))
     #set ($apiVersion = $annotation.getParameters().get("value"))
@@ -41,7 +42,7 @@
 #end
 
 
-package io.fabric8.knative.client.handlers;
+package io.fabric8.knative.client.${group}.${apiVersion}.handlers;
 
 import java.util.function.Predicate;
 
@@ -49,7 +50,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.knative.client.internal.${model.name}OperationsImpl;
+import io.fabric8.knative.client.${group}.${apiVersion}.internal.${model.name}OperationsImpl;
 
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;

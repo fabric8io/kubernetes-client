@@ -143,6 +143,7 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 		t = t.Elem()
 	}
 	pkgDesc, ok := g.packages[pkgPath(t)]
+	//	fmt.Println("path:" + pkgPath(t) + "java:" + pkgDesc.JavaPackage)
 
 	//Added a special case for RunAsUserStrategyOptions
 	//If i don't add a prefix it get conflict with
