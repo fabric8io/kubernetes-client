@@ -10,6 +10,7 @@
 #### Dependency Upgrade
 
 #### New Feature
+* Add support for watch in RawCustomResourceOperations
 
 ### 4.6.0 (20-09-2019)
 #### Bugs

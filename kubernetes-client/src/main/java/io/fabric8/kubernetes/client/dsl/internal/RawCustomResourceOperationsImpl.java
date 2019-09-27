@@ -19,21 +19,31 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
+import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
+import okio.ByteString;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This class simple does basic operations for custom defined resources without
@@ -48,6 +58,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
   private Config config;
   private CustomResourceDefinitionContext customResourceDefinition;
   private ObjectMapper objectMapper;
+  private static final Logger logger = LoggerFactory.getLogger(RawCustomResourceOperationsImpl.class);
 
   private enum HttpCallMethod { GET, POST, PUT, DELETE };
 
@@ -374,6 +385,139 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
     return makeCall(fetchUrl(namespace, null) + name, null, HttpCallMethod.DELETE);
   }
 
+  /**
+   * Watch custom resources in a specific namespace. Here Watcher is provided
+   * for string type only. User has to deserialize object itself.
+   *
+   * @param namespace namespace to watch
+   * @param watcher watcher object which reports updates with object
+   * @throws IOException in case of network error
+   */
+  public void watch(String namespace, Watcher<String> watcher) throws IOException {
+    watch(namespace, null, null, null, watcher);
+  }
+
+  /**
+   * Watch a custom resource in a specific namespace with some resourceVersion. Here
+   * watcher is provided from string type only. User has to deserialize object itself.
+   *
+   * @param namespace namespace to watch
+   * @param resourceVersion resource version since when to watch
+   * @param watcher watcher object which reports updates
+   * @throws IOException in case of network error
+   */
+  public void watch(String namespace, String resourceVersion, Watcher<String> watcher) throws IOException {
+    watch(namespace, null, null, resourceVersion, watcher);
+  }
+
+  /**
+   * Watchers custom resources across all namespaces. Here watcher is provided
+   * for string type only. User has to deserialize object itself.
+   *
+   * @param watcher watcher object which reports events
+   * @throws IOException in case of network error
+   */
+  public void watch(Watcher<String> watcher) throws IOException {
+    watch(null, null, null, null, watcher);
+  }
+
+  /**
+   * Watch custom resources in the parameters specified.
+   *
+   * Most of the parameters except watcher are optional, they would be
+   * skipped if passed null. Here watcher is provided for string type
+   * only. User has to deserialize the object itself.
+   *
+   * @param namespace namespace to watch (optional
+   * @param name name of custom resource (optional)
+   * @param labels HashMap containing labels (optional)
+   * @param resourceVersion resource version since when to watch (optional)
+   * @param watcher watcher object which reports events
+   * @throws IOException in case of network error
+   */
+  public void watch(String namespace, String name, Map<String, String> labels, String resourceVersion, Watcher<String> watcher) throws IOException {
+    URL url = new URL(fetchUrl(name, namespace, labels));
+    HttpUrl.Builder httpUrlBuilder = HttpUrl.get(url).newBuilder();
+    if (resourceVersion != null) {
+      httpUrlBuilder.addQueryParameter("resourceVersion", resourceVersion);
+    }
+
+    httpUrlBuilder.addQueryParameter("watch", "true");
+    String origin = url.getProtocol() + "://" + url.getHost();
+    if (url.getPort() != -1) {
+      origin += ":" + url.getPort();
+    }
+
+    Request request = new Request.Builder()
+      .get()
+      .url(httpUrlBuilder.build())
+      .addHeader("Origin", origin)
+      .build();
+
+    OkHttpClient.Builder clonedClientBuilder = client.newBuilder();
+      clonedClientBuilder.readTimeout(getConfig() != null ?
+        getConfig().getWebsocketTimeout() : Config.DEFAULT_WEBSOCKET_TIMEOUT, TimeUnit.MILLISECONDS);
+      clonedClientBuilder.pingInterval(getConfig() != null ?
+        getConfig().getWebsocketPingInterval() : Config.DEFAULT_WEBSOCKET_PING_INTERVAL, TimeUnit.MILLISECONDS);
+
+    OkHttpClient clonedOkHttpClient = clonedClientBuilder.build();
+    WebSocket webSocket = clonedOkHttpClient.newWebSocket(request, new WebSocketListener() {
+      @Override
+      public void onOpen(WebSocket webSocket, Response response) {
+        logger.info("Websocket opened");
+        super.onOpen(webSocket, response);
+      }
+
+      @Override
+      public void onMessage(WebSocket webSocket, String text) {
+        try {
+          Map<String, Object> watchEvent = objectMapper.readValue(text, HashMap.class);
+
+          String watchEventType = watchEvent.get("type").toString();
+          String watchObjectAsString = objectMapper.writeValueAsString(watchEvent.get("object"));
+
+          watcher.eventReceived(Watcher.Action.valueOf(watchEventType), watchObjectAsString);
+
+        } catch (IOException exception) {
+          logger.error("Failed to deserialize watch response: " + exception.getMessage());
+        }
+        super.onMessage(webSocket, text);
+      }
+
+      @Override
+      public void onMessage(WebSocket webSocket, ByteString bytes) {
+        onMessage(webSocket, bytes.utf8());
+      }
+
+      @Override
+      public void onClosing(WebSocket webSocket, int code, String reason) {
+        logger.info("Socket closing: " + reason);
+        webSocket.close(code, reason);
+        super.onClosing(webSocket, code, reason);
+      }
+
+      @Override
+      public void onClosed(WebSocket webSocket, int code, String reason) {
+        logger.info("Socked closed: " + reason);
+        super.onClosed(webSocket, code, reason);
+      }
+
+      @Override
+      public void onFailure(WebSocket webSocket, Throwable t, Response response) {
+        logger.info("Socket failed");
+        if (response != null) {
+          Status status = OperationSupport.createStatus(response);
+          logger.error("Websocket failed HTTP {}, Status {} - {}", response.code(), status.getCode(), status.getMessage());
+          if (response.body() != null)
+            response.body().close();
+          else
+            response.close();
+        }
+        super.onFailure(webSocket, t, response);
+      }
+    });
+  }
+
   private Map<String, Object> createOrReplaceJsonStringObject(String namespace, String objectAsString) throws IOException {
     Map<String, Object> ret;
     try {
@@ -403,6 +547,15 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
       retVal = objectMapper.readValue(IOHelpers.convertYamlToJson(objectAsString), HashMap.class);
     }
     return retVal;
+  }
+
+  private String fetchUrl(String name, String namespace, Map<String, String> labels) {
+    String url = fetchUrl(namespace, labels);
+    if (name != null) {
+      return url + name;
+    } else {
+      return url.substring(0, url.length() - 1);
+    }
   }
 
   private String fetchUrl(String namespace, Map<String, String> labels) {
