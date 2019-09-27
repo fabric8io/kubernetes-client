@@ -56,7 +56,7 @@
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <felix.scr.annotations.version>1.9.8</felix.scr.annotations.version>
-    <jackson.version>2.6.3</jackson.version>
+    <jackson.version>2.10.0</jackson.version>
     <log4j.version>2.3</log4j.version>
     <mockwebserver.version>0.1.4</mockwebserver.version>
 
