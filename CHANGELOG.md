@@ -21,6 +21,7 @@
 
 #### Dependency Upgrade
 * Updated Kubernetes Model to Kubernetes v1.15.3
+* Update Tekton to v0.7.0
 
 #### New Feature
 * Fix #1380: Support for ControllerRevision
