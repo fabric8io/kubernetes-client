@@ -13,33 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.knative.client;
+package io.fabric8.knative.client.serving.v1beta1;
 
 
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.knative.serving.v1alpha1.*;
-import io.fabric8.knative.eventing.v1alpha1.*;
-import io.fabric8.knative.messaging.v1alpha1.*;
+import io.fabric8.knative.serving.v1beta1.*;
 
-public interface KnativeClient extends Client {
+public interface ServingV1Beta1Client extends Client {
 
-    // Serving
+  // Serving
   MixedOperation<Service, ServiceList, DoneableService, Resource<Service, DoneableService>> services();
   MixedOperation<Route, RouteList, DoneableRoute, Resource<Route, DoneableRoute>> routes();
   MixedOperation<Revision, RevisionList, DoneableRevision, Resource<Revision, DoneableRevision>> revisions();
   MixedOperation<Configuration, ConfigurationList, DoneableConfiguration, Resource<Configuration, DoneableConfiguration>> configurations();
 
-
-    //Eventing
-  MixedOperation<Broker, BrokerList, DoneableBroker, Resource<Broker, DoneableBroker>> brokers();
-  MixedOperation<Trigger, TriggerList, DoneableTrigger, Resource<Trigger, DoneableTrigger>> triggers();
-  MixedOperation<Channel, ChannelList, DoneableChannel, Resource<Channel, DoneableChannel>> channels();
-  MixedOperation<Subscription, SubscriptionList, DoneableSubscription, Resource<Subscription, DoneableSubscription>> subscriptions();
-  MixedOperation<EventType, EventTypeList, DoneableEventType, Resource<EventType, DoneableEventType>> eventTypes();
-
-    //Messaging
-  MixedOperation<Sequence, SequenceList, DoneableSequence, Resource<Sequence, DoneableSequence>> sequences();
-  MixedOperation<InMemoryChannel, InMemoryChannelList, DoneableInMemoryChannel, Resource<InMemoryChannel, DoneableInMemoryChannel>> inMemoryChannels();
 }
