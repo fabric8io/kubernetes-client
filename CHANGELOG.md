@@ -6,7 +6,7 @@
 * Fix #1782: Informer Deadlock; Fix lock typo in SharedProcessor
 
 #### Improvements
-
+* Add support for filtering labels by EXISTS/NOT_EXISTS via the single argument versions of `.withLabel` and `.withoutLabel`
 #### Dependency Upgrade
 
 #### New Feature
