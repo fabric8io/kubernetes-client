@@ -26,17 +26,13 @@ import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
+import io.fabric8.kubernetes.client.utils.WatcherToggle;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.WebSocket;
-import okhttp3.WebSocketListener;
-import okio.ByteString;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,7 +54,6 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
   private Config config;
   private CustomResourceDefinitionContext customResourceDefinition;
   private ObjectMapper objectMapper;
-  private static final Logger logger = LoggerFactory.getLogger(RawCustomResourceOperationsImpl.class);
 
   private enum HttpCallMethod { GET, POST, PUT, DELETE };
 
@@ -435,7 +430,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @param watcher watcher object which reports events
    * @throws IOException in case of network error
    */
-  public void watch(String namespace, String name, Map<String, String> labels, String resourceVersion, Watcher<String> watcher) throws IOException {
+  public Watch watch(String namespace, String name, Map<String, String> labels, String resourceVersion, Watcher<String> watcher) throws IOException {
     URL url = new URL(fetchUrl(name, namespace, labels));
     HttpUrl.Builder httpUrlBuilder = HttpUrl.get(url).newBuilder();
     if (resourceVersion != null) {
@@ -461,61 +456,43 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
         getConfig().getWebsocketPingInterval() : Config.DEFAULT_WEBSOCKET_PING_INTERVAL, TimeUnit.MILLISECONDS);
 
     OkHttpClient clonedOkHttpClient = clonedClientBuilder.build();
-    WebSocket webSocket = clonedOkHttpClient.newWebSocket(request, new WebSocketListener() {
-      @Override
-      public void onOpen(WebSocket webSocket, Response response) {
-        logger.info("Websocket opened");
-        super.onOpen(webSocket, response);
-      }
+    WatcherToggle<String> watcherToggle = new WatcherToggle<>(watcher, true);
+    RawWatchConnectionManager watch = null;
+    try {
+      watch = new RawWatchConnectionManager(
+        clonedOkHttpClient, request, resourceVersion, objectMapper, watcher,
+        getConfig() != null ? getConfig().getWatchReconnectLimit() : -1,
+        getConfig() != null ? getConfig().getWatchReconnectInterval() : 1000,
+        5);
+      watch.waitUntilReady();
+      return watch;
+    } catch (KubernetesClientException ke) {
 
-      @Override
-      public void onMessage(WebSocket webSocket, String text) {
-        try {
-          Map<String, Object> watchEvent = objectMapper.readValue(text, HashMap.class);
-
-          String watchEventType = watchEvent.get("type").toString();
-          String watchObjectAsString = objectMapper.writeValueAsString(watchEvent.get("object"));
-
-          watcher.eventReceived(Watcher.Action.valueOf(watchEventType), watchObjectAsString);
-
-        } catch (IOException exception) {
-          logger.error("Failed to deserialize watch response: " + exception.getMessage());
+      if (ke.getCode() != 200) {
+        if(watch != null){
+          //release the watch
+          watch.close();
         }
-        super.onMessage(webSocket, text);
+
+        throw ke;
       }
 
-      @Override
-      public void onMessage(WebSocket webSocket, ByteString bytes) {
-        onMessage(webSocket, bytes.utf8());
+      if(watch != null){
+        //release the watch after disabling the watcher (to avoid premature call to onClose)
+        watcherToggle.disable();
+        watch.close();
       }
 
-      @Override
-      public void onClosing(WebSocket webSocket, int code, String reason) {
-        logger.info("Socket closing: " + reason);
-        webSocket.close(code, reason);
-        super.onClosing(webSocket, code, reason);
-      }
+      // If the HTTP return code is 200, we retry the watch again using a persistent hanging
+      // HTTP GET. This is meant to handle cases like kubectl local proxy which does not support
+      // websockets. Issue: https://github.com/kubernetes/kubernetes/issues/25126
+      return new RawWatchConnectionManager(
+        clonedOkHttpClient, request, resourceVersion, objectMapper, watcher,
+        getConfig() != null ? getConfig().getWatchReconnectLimit() : -1,
+        getConfig() != null ? getConfig().getWatchReconnectInterval() : 1000,
+        5);
+    }
 
-      @Override
-      public void onClosed(WebSocket webSocket, int code, String reason) {
-        logger.info("Socked closed: " + reason);
-        super.onClosed(webSocket, code, reason);
-      }
-
-      @Override
-      public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-        logger.info("Socket failed");
-        if (response != null) {
-          Status status = OperationSupport.createStatus(response);
-          logger.error("Websocket failed HTTP {}, Status {} - {}", response.code(), status.getCode(), status.getMessage());
-          if (response.body() != null)
-            response.body().close();
-          else
-            response.close();
-        }
-        super.onFailure(webSocket, t, response);
-      }
-    });
   }
 
   private Map<String, Object> createOrReplaceJsonStringObject(String namespace, String objectAsString) throws IOException {
