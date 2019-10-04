@@ -82,7 +82,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
         if (fixedResourceVersion != null) {
           resourceVersion = fixedResourceVersion;
         } else {
-          T got = get();
+          T got = fromServer().get();
           if (got == null) {
             return null;
           }
@@ -136,12 +136,19 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
             reaper.reap();
           }
         }
-        final T got = get();
+        String resourceVersion;
+        final T got = fromServer().get();
         if (got == null) {
           return null;
         }
+        if (got.getMetadata() != null) {
+          resourceVersion = got.getMetadata().getResourceVersion();
+        } else {
+          resourceVersion = null;
+        }
         final Function<T, T> visitor = resource -> {
           try {
+            resource.getMetadata().setResourceVersion(resourceVersion);
             return handlePatch(got, resource);
           } catch (Exception e) {
             throw KubernetesClientException.launderThrowable(forOperationType("patch"), e);
