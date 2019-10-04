@@ -30,19 +30,20 @@ import (
 
 //A Schema with the core types of the Service Catalog
 type Schema struct {
-	Pipeline                 v1alpha1.Pipeline
-	PipelineList             v1alpha1.PipelineList
-	PipelineRun              v1alpha1.PipelineRun
-	PipelineRunList          v1alpha1.PipelineRunList
-	PipelineResource         v1alpha1.PipelineResource
-	PipelineResourceList     v1alpha1.PipelineResourceList
-	PipelineRunTaskRunStatus v1alpha1.PipelineRunTaskRunStatus
-	Task                     v1alpha1.Task
-	TaskList                 v1alpha1.TaskList
-	TaskRun                  v1alpha1.TaskRun
-	TaskRunList              v1alpha1.TaskRunList
-	ClusterTask              v1alpha1.ClusterTask
-	ClusterTaskList          v1alpha1.ClusterTaskList
+	Pipeline                        v1alpha1.Pipeline
+	PipelineList                    v1alpha1.PipelineList
+	PipelineRun                     v1alpha1.PipelineRun
+	PipelineRunList                 v1alpha1.PipelineRunList
+	PipelineResource                v1alpha1.PipelineResource
+	PipelineResourceList            v1alpha1.PipelineResourceList
+	PipelineRunTaskRunStatus        v1alpha1.PipelineRunTaskRunStatus
+	PipelineRunConditionCheckStatus v1alpha1.PipelineRunConditionCheckStatus
+	Task                            v1alpha1.Task
+	TaskList                        v1alpha1.TaskList
+	TaskRun                         v1alpha1.TaskRun
+	TaskRunList                     v1alpha1.TaskRunList
+	ClusterTask                     v1alpha1.ClusterTask
+	ClusterTaskList                 v1alpha1.ClusterTaskList
 }
 
 func main() {
@@ -50,7 +51,9 @@ func main() {
 		//"$ref": "#/definitions/github_com_tektoncd_pipeline_vendor_k8s_io_api_core_v1_Probe",
 		{"github.com/tektoncd/pipeline/pkg/apis/pipeline/v1alpha1", "tekton.dev", "io.fabric8.tekton.pipeline.v1alpha1", "tekton_v1alpha1_"},
 		{"github.com/knative/pkg/apis", "v1", "io.fabric8.knative.v1", "knative_"},
+		{"knative.dev/pkg/apis", "v1", "io.fabric8.knative.v1", "knative_"},
 		{"github.com/knative/pkg/apis/duck/v1beta1", "duck", "io.fabric8.knative.duck.v1beta1", "knative_duck_v1beta1_"},
+		{"knative.dev/pkg/apis/duck/v1beta1", "duck", "io.fabric8.knative.duck.v1beta1", "knative_duck_v1beta1_"},
 		{"k8s.io/api/core/v1", "v1", "io.fabric8.kubernetes.api.model", "kubernetes_"},
 		{"k8s.io/apimachinery/pkg/apis/meta/v1", "v1", "io.fabric8.kubernetes.api.model", "kubernetes_meta_"},
 		{"k8s.io/apimachinery/pkg/util", "v1", "io.fabric8.kubernetes.api.model", "kubernetes_uti_"},

@@ -30,7 +30,7 @@ require (
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/spf13/cobra v0.0.3 // indirect
 	github.com/spf13/viper v1.3.1 // indirect
-	github.com/tektoncd/pipeline v0.5.2
+	github.com/tektoncd/pipeline v0.7.0
 	go.uber.org/atomic v1.4.0 // indirect
 	go.uber.org/multierr v1.1.0 // indirect
 	go.uber.org/zap v1.10.0 // indirect
@@ -45,6 +45,7 @@ require (
 	k8s.io/cli-runtime v0.0.0-20190325194458-f2b4781c3ae1 // indirect
 	k8s.io/client-go v0.0.0-20190226174127-78295b709ec6 // indirect
 	k8s.io/kube-openapi v0.0.0-20190603182131-db7b694dc208 // indirect
+	knative.dev/pkg v0.0.0-20190929160444-43f0d8fdb918 // indirect
 	sigs.k8s.io/yaml v1.1.0 // indirect
 )
 
