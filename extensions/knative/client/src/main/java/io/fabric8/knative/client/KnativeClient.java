@@ -19,7 +19,7 @@ package io.fabric8.knative.client;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.knative.serving.v1beta1.*;
+import io.fabric8.knative.serving.v1alpha1.*;
 import io.fabric8.knative.eventing.v1alpha1.*;
 import io.fabric8.knative.messaging.v1alpha1.*;
 

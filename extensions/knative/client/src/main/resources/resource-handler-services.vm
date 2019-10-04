@@ -14,5 +14,17 @@
  * limitations under the License.
  *#
 #foreach ($m in ${model.values()})
-io.fabric8.knative.client.handlers.${m.name}Handler
+#set ($version = "unknown")
+#set ($group = $m.getPackageName().split("\.")[3])
+#set ($annotations = $m.annotations)
+#foreach ($annotation in $annotations)
+  #if ($annotation.getClassRef().getName().equals("ApiVersion"))
+    #set ($apiVersion = $annotation.getParameters().get("value"))
+  #end
+  #if ($annotation.getClassRef().getName().equals("ApiGroup"))
+    #set ($apiGroup = $annotation.getParameters().get("value"))
+  #end
+#end
+
+io.fabric8.knative.client.${group}.${apiVersion}.handlers.${m.name}Handler
 #end

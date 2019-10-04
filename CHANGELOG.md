@@ -9,6 +9,8 @@
 #### Improvements
 * Add support for filtering labels by EXISTS/NOT_EXISTS via the single argument versions of `.withLabel` and `.withoutLabel`
 #### Dependency Upgrade
+* Updated Knative Serving to v0.9.90
+* Update Tekton to v0.7.0
 
 #### New Feature
 
@@ -22,7 +24,6 @@
 
 #### Dependency Upgrade
 * Updated Kubernetes Model to Kubernetes v1.15.3
-* Update Tekton to v0.7.0
 
 #### New Feature
 * Fix #1380: Support for ControllerRevision
