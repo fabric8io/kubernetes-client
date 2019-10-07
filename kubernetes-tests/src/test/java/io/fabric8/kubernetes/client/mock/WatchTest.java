@@ -139,7 +139,7 @@ public class WatchTest {
     // accept watch and disconnect
     server.expect().withPath(path).andUpgradeToWebSocket().open().done().once();
     // refuse reconnect attempts 6 times
-    server.expect().withPath(path).andReturn(503, new StatusBuilder().withCode(503).build()).times(1);
+    server.expect().withPath(path).andReturn(503, new StatusBuilder().withCode(503).build()).times(6);
     // accept next reconnect and send ADDED event
     server.expect().withPath(path)
         .andUpgradeToWebSocket().open(new WatchEvent(pod1, "ADDED")).done().once();
