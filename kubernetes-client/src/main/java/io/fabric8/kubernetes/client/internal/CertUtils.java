@@ -143,7 +143,9 @@ public class CertUtils {
         @Override
         public PrivateKey call() {
           try {
-            Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+            if (Security.getProvider("BC") == null) {
+              Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+            }
             PEMKeyPair keys = (PEMKeyPair) new PEMParser(new InputStreamReader(keyInputStream)).readObject();
             return new
               JcaPEMKeyConverter().
