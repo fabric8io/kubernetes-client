@@ -15,6 +15,7 @@
 * Update Tekton to v0.7.0
 
 #### New Feature
+* Add support for watch in RawCustomResourceOperations
 
 ### 4.6.0 (20-09-2019)
 #### Bugs
