@@ -2,6 +2,7 @@
 
 ### 4.6-SNAPSHOT
 #### Bugs
+* Fix #1796: Check if BouncyCastle provider is set
 * Fix #1724: createOrReplace function does not work properly for Custom defined resources
 * Fix #1789: Create or replace on operation seems broken
 * Fix #1782: Informer Deadlock; Fix lock typo in SharedProcessor
