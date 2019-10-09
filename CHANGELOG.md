@@ -4,12 +4,14 @@
 #### Bugs
 * Fix #1796: Check if BouncyCastle provider is set
 * Fix #1724: createOrReplace function does not work properly for Custom defined resources
+* Fix #1803: Missing "/" in request url while using customresource client
 * Fix #1789: Create or replace on operation seems broken
 * Fix #1782: Informer Deadlock; Fix lock typo in SharedProcessor
 
 #### Improvements
-* Add support for filtering labels by EXISTS/NOT_EXISTS via the single argument versions of `.withLabel` and `.withoutLabel`
-* Schedule reconnect in case of HTTP_GONE when watching; the rescheduled connect will start from beginning of history by not specifying resourceVersion
+* Add support for filtering labels by EXISTS/NOT-EXISTS via the single argument versions of `.withLabel` and `.withoutLabel`
+* Schedule reconnect in case of HTTP-GONE when watching; the rescheduled connect will start from beginning of history by not specifying resourceVersion
+* Add support for filtering labels by EXISTS/NOT-EXISTS via the single argument versions of `.withLabel` and `.withoutLabel`
 #### Dependency Upgrade
 * Updated Knative Serving to v0.9.90
 * Update Tekton to v0.7.0
