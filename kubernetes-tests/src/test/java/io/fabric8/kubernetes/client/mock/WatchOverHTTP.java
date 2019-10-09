@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.Status;
@@ -27,18 +29,15 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import java.net.HttpURLConnection;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import junit.framework.AssertionFailedError;
 import org.junit.Rule;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.net.HttpURLConnection;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableRuleMigrationSupport
 public class WatchOverHTTP {
@@ -50,6 +49,7 @@ public class WatchOverHTTP {
     .build();
   static final WatchEvent outdatedEvent = new WatchEventBuilder().withStatusObject(outdatedStatus).build();
   final String path = "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true";
+  final String pathWithoutResourceVersion = "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&watch=true";
   @Rule
   public KubernetesServer server = new KubernetesServer(false);
   Logger logger = LoggerFactory.getLogger(WatchTest.class);
@@ -92,55 +92,38 @@ public class WatchOverHTTP {
   }
 
   @Test
-  public void testOutdated() throws InterruptedException {
-    logger.info("testOutdated");
+  public void testHttpErrorReconnectOutdatedAndModified() throws InterruptedException {
     KubernetesClient client = server.getClient().inNamespace("test");
 
     server.expect()
-      .withPath(path)
-      .andReturn(200, "Failed WebSocket Connection").once();
-    server.expect().withPath(path).andReturnChunked(200, outdatedEvent, "\n").once();
+        .withPath(path)
+        .andReturn(200, "Failed WebSocket Connection").once();
 
-    final boolean[] onCloseCalled = {false};
+    server.expect()
+        .withPath(path)
+        .andReturnChunked(200, outdatedEvent, "\n").once();
+    server.expect()
+        .withPath(pathWithoutResourceVersion)
+        .andReturnChunked(200, pod1, "\n").once();
+
+    final CountDownLatch modifyLatch = new CountDownLatch(1);
     try (Watch watch = client.pods().withName("pod1").withResourceVersion("1").watch(new Watcher<Pod>() {
       @Override
       public void eventReceived(Action action, Pod resource) {
-        throw new AssertionFailedError();
+        switch (action) {
+          case MODIFIED:
+            modifyLatch.countDown();
+            break;
+          default:
+            throw new AssertionFailedError();
+        }
       }
 
       @Override
       public void onClose(KubernetesClientException cause) {
-        onCloseCalled[0] = true;
-      }
-    })){};
-    assertTrue(onCloseCalled[0]);
-  }
-
-  @Test
-  public void testHttpErrorReconnect() throws InterruptedException {
-    logger.info("testHttpErrorReconnect");
-    KubernetesClient client = server.getClient().inNamespace("test");
-
-    server.expect()
-      .withPath(path)
-      .andReturn(200, "Failed WebSocket Connection").once();
-    server.expect().withPath(path).andReturnChunked(503, new StatusBuilder().withCode(503).build()).times(6);
-    server.expect().withPath(path).andReturnChunked(200, outdatedEvent, "\n").once();
-
-    final CountDownLatch closeLatch = new CountDownLatch(1);
-    try (Watch watch = client.pods().withName("pod1").withResourceVersion("1").watch(new Watcher<Pod>() {
-      @Override
-      public void eventReceived(Action action, Pod resource) {
-        throw new AssertionFailedError();
-      }
-
-      @Override
-      public void onClose(KubernetesClientException cause) {
-        logger.debug("onClose", cause);
-        closeLatch.countDown();
       }
     })) /* autoclose */ {
-      assertTrue(closeLatch.await(3, TimeUnit.MINUTES));
+      assertTrue(modifyLatch.await(10, TimeUnit.SECONDS));
     }
   }
 }

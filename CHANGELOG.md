@@ -8,6 +8,7 @@
 
 #### Improvements
 * Add support for filtering labels by EXISTS/NOT_EXISTS via the single argument versions of `.withLabel` and `.withoutLabel`
+* Schedule reconnect in case of HTTP_GONE when watching; the rescheduled connect will start from beginning of history by not specifying resourceVersion
 #### Dependency Upgrade
 * Updated Knative Serving to v0.9.90
 * Update Tekton to v0.7.0
