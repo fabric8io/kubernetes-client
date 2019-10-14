@@ -8,6 +8,7 @@
 * Fix #1803: Missing "/" in request url while using customresource client
 * Fix #1789: Create or replace on operation seems broken
 * Fix #1782: Informer Deadlock; Fix lock typo in SharedProcessor
+* Fix #1607: WaitUntilReady for lists
 
 #### Improvements
 * Fix #1797: Utils.waitUntilReady should record the stack trace of the caller before rethrowing an exception
