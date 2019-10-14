@@ -9,14 +9,16 @@
 * Fix #1782: Informer Deadlock; Fix lock typo in SharedProcessor
 
 #### Improvements
-* Add support for filtering labels by EXISTS/NOT-EXISTS via the single argument versions of `.withLabel` and `.withoutLabel`
-* Schedule reconnect in case of HTTP-GONE when watching; the rescheduled connect will start from beginning of history by not specifying resourceVersion
-* Add support for filtering labels by EXISTS/NOT-EXISTS via the single argument versions of `.withLabel` and `.withoutLabel`
+* Fix #1797: Utils.waitUntilReady should record the stack trace of the caller before rethrowing an exception
+* Add support for filtering labels by EXISTS/NOT_EXISTS via the single argument versions of `.withLabel` and `.withoutLabel`
+* Schedule reconnect in case of HTTP_GONE when watching; the rescheduled connect will start from beginning of history by not specifying resourceVersion
+
 #### Dependency Upgrade
 * Updated Knative Serving to v0.9.90
 * Update Tekton to v0.7.0
 
 #### New Feature
+* Add support for watch in RawCustomResourceOperations
 
 ### 4.6.0 (20-09-2019)
 #### Bugs
