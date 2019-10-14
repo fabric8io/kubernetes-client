@@ -536,7 +536,13 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
   }
 
   private String fetchUrl(String namespace, Map<String, String> labels) {
+    if (config.getMasterUrl() == null) {
+      return null;
+    }
+
     StringBuilder urlBuilder = new StringBuilder(config.getMasterUrl());
+
+    urlBuilder.append(config.getMasterUrl().endsWith("/") ? "" : "/");
     urlBuilder.append("apis/")
       .append(customResourceDefinition.getGroup())
       .append("/")
