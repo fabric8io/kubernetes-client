@@ -4,6 +4,7 @@
 #### Bugs
 * Fix #1796: Check if BouncyCastle provider is set
 * Fix #1724: createOrReplace function does not work properly for Custom defined resources
+* Fix #1775: KubernetesList.list().delete(resources) orphanDependents semantics change between 4.1.3 and 4.5.2
 * Fix #1803: Missing "/" in request url while using customresource client
 * Fix #1789: Create or replace on operation seems broken
 * Fix #1782: Informer Deadlock; Fix lock typo in SharedProcessor
@@ -131,7 +132,6 @@
    * Fix #1634: Make map backing KubernetesDeserializer thread-safe
 
   Improvements
-  
     * Test coverage for Namespace.
     * Example added for NamespaceQuota
     * Example added for Endpoints.
