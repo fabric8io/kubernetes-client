@@ -18,18 +18,22 @@ package io.fabric8.tekton.test.crud;
 import io.fabric8.tekton.pipeline.v1alpha1.*;
 import io.fabric8.tekton.client.TektonClient;
 import io.fabric8.tekton.mock.TektonServer;
-
+import io.fabric8.tekton.pipeline.v1alpha1.Param;
+import io.fabric8.tekton.pipeline.v1alpha1.Pipeline;
+import io.fabric8.tekton.pipeline.v1alpha1.PipelineList;
 import org.junit.Rule;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.io.ByteArrayInputStream;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @EnableRuleMigrationSupport
 public class PipelineCrudTest {
-  
+
   @Rule
   public TektonServer server = new TektonServer(true, true);
 
@@ -64,4 +68,30 @@ public class PipelineCrudTest {
     Boolean deleted = client.pipelines().inNamespace("ns3").withName("pipeline3").delete();
     assertTrue(deleted);
   }
+
+  @Test
+  public void shouldLoadAPipelineWithParams() {
+    TektonClient client = server.getTektonClient();
+
+    String pipelineDefinition = String.join("\n", Arrays.asList(
+      "apiVersion: tekton.dev/v1alpha1",
+      "kind: Pipeline",
+      "metadata:",
+      "  name: pipeline4",
+      "spec:",
+      "  tasks:",
+      "    - name: task-with-params",
+      "      params:",
+      "        - name: name",
+      "          value: param-value"
+    ));
+
+    Pipeline p = client.pipelines().inNamespace("ns4").load(new ByteArrayInputStream(pipelineDefinition.getBytes())).createOrReplace();
+
+    final List<Param> taskParams = p.getSpec().getTasks().get(0).getParams();
+    assertEquals(1, taskParams.size());
+    assertEquals("name", taskParams.get(0).getName());
+    assertEquals("param-value", taskParams.get(0).getValue().getStringVal());
+  }
+
 }
