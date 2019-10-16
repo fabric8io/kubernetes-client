@@ -1,6 +1,15 @@
 ## CHANGELOG
 
-### 4.6-SNAPSHOT
+### 4.7-SNAPSHOT
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Feature
+
+### 4.6.1 (15-10-2019)
 #### Bugs
 * Fix #1796: Check if BouncyCastle provider is set
 * Fix #1724: createOrReplace function does not work properly for Custom defined resources
