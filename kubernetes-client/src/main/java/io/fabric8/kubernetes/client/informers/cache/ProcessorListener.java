@@ -63,7 +63,6 @@ public class ProcessorListener<T> implements Runnable {
           this.handler.onUpdate((T) notification.getOldObj(), (T) notification.getNewObj());
         } else if (obj instanceof AddNotification) {
           AddNotification notification = (AddNotification) obj;
-          System.out.println(this.handler.getClass().getName() + ".onAdd()");
           this.handler.onAdd((T) notification.getNewObj());
         } else if (obj instanceof DeleteNotification) {
           Object deletedObj = ((DeleteNotification) obj).getOldObj();
