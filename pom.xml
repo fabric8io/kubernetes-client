@@ -86,8 +86,7 @@
     <okhttp.bundle.version>3.12.0_1</okhttp.bundle.version>
     <okio.version>1.15.0</okio.version>
     <okio.bundle.version>1.15.0_1</okio.bundle.version>
-    <jackson.version>2.9.9</jackson.version>
-    <jackson.version.databind>2.9.9.3</jackson.version.databind>
+    <jackson.version>2.9.10</jackson.version>
     <mockwebserver.version>0.1.7</mockwebserver.version>
 
     <!-- API versions -->
@@ -225,13 +224,16 @@
         <version>${project.version}</version>
        </dependency>
 
-
-       <!-- Dependencies -->
-       <dependency>
-        <groupId>com.fasterxml.jackson.module</groupId>
-        <artifactId>jackson-module-jaxb-annotations</artifactId>
+      <!-- Jackson dependencies, imported as a BOM -->
+      <dependency>
+        <groupId>com.fasterxml.jackson</groupId>
+        <artifactId>jackson-bom</artifactId>
         <version>${jackson.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
       </dependency>
+
+      <!-- Dependencies -->
       <dependency>
         <groupId>io.sundr</groupId>
         <artifactId>builder-annotations</artifactId>
