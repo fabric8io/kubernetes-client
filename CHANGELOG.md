@@ -8,6 +8,7 @@
 #### Dependency Upgrade
 
 #### New Feature
+* Fix #1816: Support for Binding in k8-client dsl
 
 ### 4.6.1 (15-10-2019)
 #### Bugs
