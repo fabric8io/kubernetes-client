@@ -62,7 +62,7 @@
     <slf4j.version>1.7.12</slf4j.version>
 
     <scr.annotations.version>1.9.2</scr.annotations.version>
-    <sundrio.version>0.17.2</sundrio.version>
+    <sundrio.version>0.19.2</sundrio.version>
 
     <osgi.import />
     <osgi.export />
