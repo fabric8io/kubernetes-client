@@ -16,11 +16,13 @@
 
 package io.fabric8.kubernetes.client.osgi;
 
+import io.fabric8.kubernetes.api.model.Binding;
 import io.fabric8.kubernetes.api.model.ComponentStatus;
 import io.fabric8.kubernetes.api.model.ComponentStatusList;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.api.model.Doneable;
+import io.fabric8.kubernetes.api.model.DoneableBinding;
 import io.fabric8.kubernetes.api.model.DoneableComponentStatus;
 import io.fabric8.kubernetes.api.model.DoneableConfigMap;
 import io.fabric8.kubernetes.api.model.DoneableEndpoints;
@@ -266,6 +268,10 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
 
   public MixedOperation<Endpoints, EndpointsList, DoneableEndpoints, Resource<Endpoints, DoneableEndpoints>> endpoints() {
     return delegate.endpoints();
+  }
+
+  public MixedOperation<Binding, KubernetesResourceList, DoneableBinding, Resource<Binding, DoneableBinding>> bindings() {
+    return delegate.bindings();
   }
 
   public MixedOperation<Pod, PodList, DoneablePod, PodResource<Pod, DoneablePod>> pods() {
