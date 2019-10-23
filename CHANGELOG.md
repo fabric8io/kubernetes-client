@@ -2,6 +2,7 @@
 
 ### 4.6-SNAPSHOT
 #### Bugs
+* Fix #1827: Fix `withGracePeriod` and `withPropagationPolicy` return type to safely chain further DSL methods and default GracePeriod to 30s
 * Fix #1724: createOrReplace function does not work properly for Custom defined resources
 * Fix #1782: Informer Deadlock; Fix lock typo in SharedProcessor
 

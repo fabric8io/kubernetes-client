@@ -40,7 +40,7 @@ public class OperationContext {
   protected boolean reloadingFromServer;
 
   // Default to k8s 30s value: https://kubernetes.io/docs/concepts/workloads/pods/pod/#termination-of-pods
-  protected long gracePeriodSeconds = 30;
+  protected long gracePeriodSeconds = 30L;
   protected String propagationPolicy;
 
   protected Map<String, String> labels;
