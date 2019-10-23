@@ -39,7 +39,7 @@ public class OperationContext {
   protected boolean cascading;
   protected boolean reloadingFromServer;
 
-  protected long gracePeriodSeconds;
+  protected long gracePeriodSeconds = -1;
   protected String propagationPolicy;
 
   protected Map<String, String> labels;
