@@ -15,13 +15,13 @@
  */
 package io.fabric8.kubernetes.client.dsl.base;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.OkHttpClient;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class OperationContext {
 
@@ -39,7 +39,8 @@ public class OperationContext {
   protected boolean cascading;
   protected boolean reloadingFromServer;
 
-  protected long gracePeriodSeconds = -1;
+  // Default to k8s 30s value: https://kubernetes.io/docs/concepts/workloads/pods/pod/#termination-of-pods
+  protected long gracePeriodSeconds = 30;
   protected String propagationPolicy;
 
   protected Map<String, String> labels;
