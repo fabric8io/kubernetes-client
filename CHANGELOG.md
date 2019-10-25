@@ -2,6 +2,7 @@
 
 ### 4.7-SNAPSHOT
 #### Bugs
+* Fix #1828: VersionInfo date parsing of year
 
 #### Improvements
 

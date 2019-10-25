@@ -33,7 +33,7 @@ public class VersionInfo {
     public static final String PLATFORM = "platform";
     public static final String GO_VERSION = "goVersion";
     public static final String COMPILER = "compiler";
-    public static final String BUILD_DATE_FORMAT = "YYYY-MM-dd'T'HH:mm:ss'Z'";
+    public static final String BUILD_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
   }
   private Date buildDate;
   private String gitCommit;
