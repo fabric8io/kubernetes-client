@@ -15,7 +15,15 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.model.DoneablePod;
+import io.fabric8.kubernetes.api.model.OwnerReference;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.client.dsl.LogWatch;
+import io.fabric8.kubernetes.client.dsl.Loggable;
+import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.batch.DoneableJob;
 import io.fabric8.kubernetes.api.model.batch.Job;
@@ -25,10 +33,15 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ScalableResource;
 import io.fabric8.kubernetes.client.dsl.Reaper;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
+import okhttp3.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
@@ -134,6 +147,73 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
       LOG.error("Only {}/{} pod(s) ready for Job: {} in namespace: {} - giving up",
         atomicJob.get().getStatus().getActive(), atomicJob.get().getSpec().getParallelism(), atomicJob.get().getMetadata().getName(), namespace);
     }
+  }
+
+  public String getLog() {
+    return getLog(false);
+  }
+
+  public String getLog(Boolean isPretty) {
+    StringBuilder stringBuilder = new StringBuilder();
+    List<PodResource<Pod, DoneablePod>> podOperationList = doGetLog(false);
+    for (PodResource<Pod, DoneablePod> podOperation : podOperationList) {
+      stringBuilder.append(podOperation.getLog(isPretty));
+    }
+    return stringBuilder.toString();
+  }
+
+  private List<PodResource<Pod, DoneablePod>> doGetLog(boolean isPretty) {
+    List<PodResource<Pod, DoneablePod>> pods = new ArrayList<>();
+    Job job = fromServer().get();
+    String jobUid = job.getMetadata().getUid();
+
+    PodOperationsImpl podOperations = new PodOperationsImpl(new PodOperationContext(context.getClient(),
+      context.getConfig(), context.getPlural(), context.getNamespace(), context.getName(), null,
+      "v1", context.getCascading(), context.getItem(), context.getLabels(), context.getLabelsNot(),
+      context.getLabelsIn(), context.getLabelsNotIn(), context.getFields(), context.getFieldsNot(), context.getResourceVersion(),
+      context.getReloadingFromServer(), context.getGracePeriodSeconds(), context.getPropagationPolicy(), null, null, null, null, null,
+      null, null, null, null, false, false, false, null, null,
+      null, isPretty, null, null, null, null, null));
+    PodList jobPodList = podOperations.withLabel("controller-uid", jobUid).list();
+
+    for (Pod pod : jobPodList.getItems()) {
+      OwnerReference ownerReference = KubernetesResourceUtil.getControllerUid(pod);
+      if (ownerReference != null && ownerReference.getUid().equals(jobUid)) {
+        pods.add(podOperations.withName(pod.getMetadata().getName()));
+      }
+    }
+    return pods;
+  }
+
+  /**
+   * Returns an unclosed Reader. It's the caller responsibility to close it.
+   * @return Reader
+   */
+  @Override
+  public Reader getLogReader() {
+    List<PodResource<Pod, DoneablePod>> podResources = doGetLog(false);
+    if (podResources.size() > 1) {
+      throw new KubernetesClientException("Reading logs is not supported for multicontainer jobs");
+    } else if (podResources.size() == 1) {
+      return podResources.get(0).getLogReader();
+    }
+    return null;
+  }
+
+  @Override
+  public LogWatch watchLog() {
+    return watchLog(null);
+  }
+
+  @Override
+  public LogWatch watchLog(OutputStream out) {
+    List<PodResource<Pod, DoneablePod>> podResources = doGetLog(false);
+    if (podResources.size() > 1) {
+      throw new KubernetesClientException("Watching logs is not supported for multicontainer jobs");
+    } else if (podResources.size() == 1) {
+      return podResources.get(0).watchLog(out);
+    }
+    return null;
   }
 
   private static class JobReaper implements Reaper {

@@ -25,7 +25,6 @@ import java.io.PipedOutputStream;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.file.Path;
@@ -130,91 +129,91 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
     return new PodOperationsImpl((PodOperationContext) context);
   }
 
- public PodOperationContext getContext() {
+  public PodOperationContext getContext() {
     return (PodOperationContext) context;
- }
-    protected String getLogParameters() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("log?pretty=").append(withPrettyOutput);
-        if (containerId != null && !containerId.isEmpty()) {
-            sb.append("&container=").append(containerId);
-        }
-        if (withTerminatedStatus) {
-            sb.append("&previous=true");
-        }
-        if (sinceSeconds != null) {
-            sb.append("&sinceSeconds=").append(sinceSeconds);
-        } else if (sinceTimestamp != null) {
-            sb.append("&sinceTime=").append(sinceTimestamp);
-        }
-        if (withTailingLines != null) {
-            sb.append("&tailLines=").append(withTailingLines);
-        }
-        if (limitBytes != null) {
-          sb.append("&limitBytes=").append(limitBytes);
-        }
-        if (withTimestamps) {
-          sb.append("&timestamps=true");
-        }
-        return sb.toString();
+  }
+  protected String getLogParameters() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("log?pretty=").append(withPrettyOutput);
+    if (containerId != null && !containerId.isEmpty()) {
+      sb.append("&container=").append(containerId);
     }
+    if (withTerminatedStatus) {
+      sb.append("&previous=true");
+    }
+    if (sinceSeconds != null) {
+      sb.append("&sinceSeconds=").append(sinceSeconds);
+    } else if (sinceTimestamp != null) {
+      sb.append("&sinceTime=").append(sinceTimestamp);
+    }
+    if (withTailingLines != null) {
+      sb.append("&tailLines=").append(withTailingLines);
+    }
+    if (limitBytes != null) {
+      sb.append("&limitBytes=").append(limitBytes);
+    }
+    if (withTimestamps) {
+      sb.append("&timestamps=true");
+    }
+    return sb.toString();
+  }
 
-    protected ResponseBody doGetLog(){
-      try {
-        URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters()));
-        Request.Builder requestBuilder = new Request.Builder().get().url(url);
-        Request request = requestBuilder.build();
-        Response response = client.newCall(request).execute();
-        ResponseBody body = response.body();
-        assertResponseCode(request, response);
-        return body;
-      } catch (Throwable t) {
-        throw KubernetesClientException.launderThrowable(forOperationType("doGetLog"), t);
-      }
+  protected ResponseBody doGetLog(){
+    try {
+      URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters()));
+      Request.Builder requestBuilder = new Request.Builder().get().url(url);
+      Request request = requestBuilder.build();
+      Response response = client.newCall(request).execute();
+      ResponseBody body = response.body();
+      assertResponseCode(request, response);
+      return body;
+    } catch (Throwable t) {
+      throw KubernetesClientException.launderThrowable(forOperationType("doGetLog"), t);
     }
+  }
 
-    @Override
-    public String getLog() {
-      try(ResponseBody body = doGetLog()) {
-        return body.string();
-      } catch (IOException e) {
-        throw KubernetesClientException.launderThrowable(forOperationType("getLog"), e);
-      }
+  @Override
+  public String getLog() {
+    try(ResponseBody body = doGetLog()) {
+      return body.string();
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(forOperationType("getLog"), e);
     }
+  }
 
   /**
    * Returns an unclosed Reader. It's the caller responsibility to close it.
    * @return Reader                                                                                                                                                             
    */
   @Override
-    public Reader getLogReader() {
-        return doGetLog().charStream();
-    }
+  public Reader getLogReader() {
+    return doGetLog().charStream();
+  }
 
-    @Override
-    public String getLog(Boolean isPretty) {
-        return new PodOperationsImpl(getContext().withPrettyOutput(isPretty)).getLog();
-    }
+  @Override
+  public String getLog(Boolean isPretty) {
+    return new PodOperationsImpl(getContext().withPrettyOutput(isPretty)).getLog();
+  }
 
-    @Override
-    public LogWatch watchLog() {
-        return watchLog(null);
-    }
+  @Override
+  public LogWatch watchLog() {
+    return watchLog(null);
+  }
 
-    @Override
-    public LogWatch watchLog(OutputStream out) {
-        try {
-            URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters() + "&follow=true"));
-            Request request = new Request.Builder().url(url).get().build();
-            final LogWatchCallback callback = new LogWatchCallback(out);
-            OkHttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
-            clone.newCall(request).enqueue(callback);
-            callback.waitUntilReady();
-            return callback;
-        } catch (Throwable t) {
-            throw KubernetesClientException.launderThrowable(forOperationType("watchLog"), t);
-        }
+  @Override
+  public LogWatch watchLog(OutputStream out) {
+    try {
+      URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters() + "&follow=true"));
+      Request request = new Request.Builder().url(url).get().build();
+      final LogWatchCallback callback = new LogWatchCallback(out);
+      OkHttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
+      clone.newCall(request).enqueue(callback);
+      callback.waitUntilReady();
+      return callback;
+    } catch (Throwable t) {
+      throw KubernetesClientException.launderThrowable(forOperationType("watchLog"), t);
     }
+  }
 
   @Override
   public PortForward portForward(int port, ReadableByteChannel in, WritableByteChannel out) {
