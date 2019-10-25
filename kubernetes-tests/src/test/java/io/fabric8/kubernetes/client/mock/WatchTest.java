@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.mock;
 
 import static org.junit.Assert.assertTrue;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.Status;
@@ -29,12 +30,10 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import junit.framework.AssertionFailedError;
-
 import java.net.HttpURLConnection;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-
+import junit.framework.AssertionFailedError;
 import org.junit.Rule;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -58,25 +57,39 @@ public class WatchTest {
       .build();
   static final WatchEvent outdatedEvent = new WatchEventBuilder().withStatusObject(outdatedStatus).build();
 
+  private static final ObjectMapper mapper = new ObjectMapper();
+
   @Test
-  public void testDeletedAndOutdated() throws InterruptedException {
+  public void testDeletedOutdatedAndAdded() throws InterruptedException {
     logger.info("testDeletedAndOutdated");
     KubernetesClient client = server.getClient().inNamespace("test");
 
+    final String path = "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true";
+    final String pathWithoutResourceVersion = "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&watch=true";
+
     // DELETED event, then history outdated
     server.expect()
-        .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true")
+        .withPath(path)
         .andUpgradeToWebSocket().open().waitFor(2000).andEmit(new WatchEvent(pod1, "DELETED")).waitFor(2000)
         .andEmit(outdatedEvent).done().once();
 
+    // ADDED event
+    server.expect()
+        .withPath(pathWithoutResourceVersion)
+        .andUpgradeToWebSocket().open().waitFor(2000).andEmit(new WatchEvent(pod1, "ADDED")).done().once();
+
     final CountDownLatch deleteLatch = new CountDownLatch(1);
-    final CountDownLatch closeLatch = new CountDownLatch(1);
+    final CountDownLatch addLatch = new CountDownLatch(1);
+    final boolean[] onCloseCalled = {false};
     try (Watch watch = client.pods().withName("pod1").withResourceVersion("1").watch(new Watcher<Pod>() {
       @Override
       public void eventReceived(Action action, Pod resource) {
         switch (action) {
         case DELETED:
           deleteLatch.countDown();
+          break;
+        case ADDED:
+          addLatch.countDown();
           break;
         default:
           throw new AssertionFailedError();
@@ -85,12 +98,13 @@ public class WatchTest {
 
       @Override
       public void onClose(KubernetesClientException cause) {
-        closeLatch.countDown();
+        onCloseCalled[0] =true;
       }
     })) /* autoclose */ {
       assertTrue(deleteLatch.await(10, TimeUnit.SECONDS));
-      assertTrue(closeLatch.await(10, TimeUnit.SECONDS));
+      assertTrue(addLatch.await(10, TimeUnit.SECONDS));
     }
+    assertTrue(onCloseCalled[0]);
   }
 
   @Test
@@ -128,25 +142,28 @@ public class WatchTest {
     // accept watch and disconnect
     server.expect().withPath(path).andUpgradeToWebSocket().open().done().once();
     // refuse reconnect attempts 6 times
-    server.expect().withPath(path).andReturn(503, new StatusBuilder().withCode(503).build()).times(6);
-    // accept next reconnect and send outdated event to stop the watch
-    server.expect().withPath(path).andUpgradeToWebSocket().open(outdatedEvent).done().once();
+    server.expect().withPath(path).andReturn(503, new StatusBuilder().withCode(503).build()).times(1);
+    // accept next reconnect and send ADDED event
+    server.expect().withPath(path)
+        .andUpgradeToWebSocket().open(new WatchEvent(pod1, "ADDED")).done().once();
 
-    final CountDownLatch closeLatch = new CountDownLatch(1);
+    final CountDownLatch addLatch = new CountDownLatch(1);
+    final boolean[] onCloseCalled = {false};
     try (Watch watch = client.pods().withName("pod1").withResourceVersion("1").watch(new Watcher<Pod>() {
       @Override
       public void eventReceived(Action action, Pod resource) {
-        throw new AssertionFailedError();
+        addLatch.countDown();
       }
 
       @Override
       public void onClose(KubernetesClientException cause) {
         logger.debug("onClose", cause);
-        closeLatch.countDown();
+        onCloseCalled[0] =true;
       }
     })) /* autoclose */ {
-      assertTrue(closeLatch.await(3, TimeUnit.MINUTES));
+      assertTrue(addLatch.await(3, TimeUnit.MINUTES));
     }
+    assertTrue(onCloseCalled[0]);
   }
 
   @Test

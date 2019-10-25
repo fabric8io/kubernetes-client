@@ -1,16 +1,38 @@
 ## CHANGELOG
 
-### 4.6-SNAPSHOT
+### 4.7-SNAPSHOT
 #### Bugs
 * Fix #1827: Fix `withGracePeriod` and `withPropagationPolicy` return type to safely chain further DSL methods and default GracePeriod to 30s
-* Fix #1724: createOrReplace function does not work properly for Custom defined resources
-* Fix #1782: Informer Deadlock; Fix lock typo in SharedProcessor
 
 #### Improvements
-* Add support for filtering labels by EXISTS/NOT_EXISTS via the single argument versions of `.withLabel` and `.withoutLabel`
+
 #### Dependency Upgrade
 
 #### New Feature
+* Fix #1816: Support for Binding in k8-client dsl
+
+### 4.6.1 (15-10-2019)
+#### Bugs
+* Fix #1796: Check if BouncyCastle provider is set
+* Fix #1724: createOrReplace function does not work properly for Custom defined resources
+* Fix #1775: KubernetesList.list().delete(resources) orphanDependents semantics change between 4.1.3 and 4.5.2
+* Fix #1803: Missing "/" in request url while using customresource client
+* Fix #1789: Create or replace on operation seems broken
+* Fix #1782: Informer Deadlock; Fix lock typo in SharedProcessor
+* Fix #1607: WaitUntilReady for lists
+
+#### Improvements
+* Fix #1797: Utils.waitUntilReady should record the stack trace of the caller before rethrowing an exception
+* Add support for filtering labels by EXISTS/NOT_EXISTS via the single argument versions of `.withLabel` and `.withoutLabel`
+* Schedule reconnect in case of HTTP_GONE when watching; the rescheduled connect will start from beginning of history by not specifying resourceVersion
+* Example added for PortForward.
+
+#### Dependency Upgrade
+* Updated Knative Serving to v0.9.90
+* Update Tekton to v0.7.0
+
+#### New Feature
+* Add support for watch in RawCustomResourceOperations
 
 ### 4.6.0 (20-09-2019)
 #### Bugs
@@ -22,7 +44,6 @@
 
 #### Dependency Upgrade
 * Updated Kubernetes Model to Kubernetes v1.15.3
-* Update Tekton to v0.7.0
 
 #### New Feature
 * Fix #1380: Support for ControllerRevision
@@ -124,7 +145,6 @@
    * Fix #1634: Make map backing KubernetesDeserializer thread-safe
 
   Improvements
-  
     * Test coverage for Namespace.
     * Example added for NamespaceQuota
     * Example added for Endpoints.

@@ -22,7 +22,13 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
 import io.fabric8.kubernetes.api.model.RootPaths;
-import io.fabric8.kubernetes.client.*;
+import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ConfigBuilder;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.OperationInfo;
+import io.fabric8.kubernetes.client.ResourceNotFoundException;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.Deletable;
 import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
@@ -1016,7 +1022,30 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   @Override
   public T waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
-    return waitUntilExists(amount, timeUnit);
+
+    long timeoutInNanos = timeUnit.toNanos(amount);
+    long end = System.nanoTime() + timeoutInNanos;
+
+    while (System.nanoTime() < end) {
+      T item = fromServer().get();
+      try {
+        if (Readiness.isReady((HasMetadata) item)) {
+          return item;
+        }
+
+        Thread.sleep(500);
+      } catch (IllegalArgumentException illegalArgumentException) {
+        // This might be thrown if Resource passed doesn't comply with concept of "readiness"
+        throw illegalArgumentException;
+      }
+    }
+
+    T item = fromServer().get();
+    if (Readiness.isReady((HasMetadata) item)) {
+      return item;
+    }
+
+    throw new IllegalStateException(type.getSimpleName() + " with name:[" + name + "] in namespace:[" + namespace + "] not ready!");
   }
 
   @Override
@@ -1033,7 +1062,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
       }
 
       // in the future, this should probably be more intelligent
-      Thread.sleep(1000);
+      Thread.sleep(500);
     }
 
     T item = get();

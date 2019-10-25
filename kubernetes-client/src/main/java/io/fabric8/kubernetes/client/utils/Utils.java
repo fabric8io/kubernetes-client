@@ -130,7 +130,9 @@ public class Utils {
       if (obj instanceof Boolean) {
         return (Boolean) obj;
       } else if (obj instanceof Throwable) {
-        throw (Throwable) obj;
+        Throwable t = (Throwable) obj;
+        t.addSuppressed(new Throwable("waiting here"));
+        throw t;
       }
       return false;
     } catch (Throwable t) {

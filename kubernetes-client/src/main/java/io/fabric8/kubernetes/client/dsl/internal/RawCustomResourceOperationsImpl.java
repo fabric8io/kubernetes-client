@@ -19,11 +19,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
+import io.fabric8.kubernetes.client.utils.WatcherToggle;
+import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -32,8 +36,10 @@ import okhttp3.Response;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This class simple does basic operations for custom defined resources without
@@ -374,6 +380,121 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
     return makeCall(fetchUrl(namespace, null) + name, null, HttpCallMethod.DELETE);
   }
 
+  /**
+   * Watch custom resources in a specific namespace. Here Watcher is provided
+   * for string type only. User has to deserialize object itself.
+   *
+   * @param namespace namespace to watch
+   * @param watcher watcher object which reports updates with object
+   * @throws IOException in case of network error
+   */
+  public void watch(String namespace, Watcher<String> watcher) throws IOException {
+    watch(namespace, null, null, null, watcher);
+  }
+
+  /**
+   * Watch a custom resource in a specific namespace with some resourceVersion. Here
+   * watcher is provided from string type only. User has to deserialize object itself.
+   *
+   * @param namespace namespace to watch
+   * @param resourceVersion resource version since when to watch
+   * @param watcher watcher object which reports updates
+   * @throws IOException in case of network error
+   */
+  public void watch(String namespace, String resourceVersion, Watcher<String> watcher) throws IOException {
+    watch(namespace, null, null, resourceVersion, watcher);
+  }
+
+  /**
+   * Watchers custom resources across all namespaces. Here watcher is provided
+   * for string type only. User has to deserialize object itself.
+   *
+   * @param watcher watcher object which reports events
+   * @throws IOException in case of network error
+   */
+  public void watch(Watcher<String> watcher) throws IOException {
+    watch(null, null, null, null, watcher);
+  }
+
+  /**
+   * Watch custom resources in the parameters specified.
+   *
+   * Most of the parameters except watcher are optional, they would be
+   * skipped if passed null. Here watcher is provided for string type
+   * only. User has to deserialize the object itself.
+   *
+   * @param namespace namespace to watch (optional
+   * @param name name of custom resource (optional)
+   * @param labels HashMap containing labels (optional)
+   * @param resourceVersion resource version since when to watch (optional)
+   * @param watcher watcher object which reports events
+   * @throws IOException in case of network error
+   */
+  public Watch watch(String namespace, String name, Map<String, String> labels, String resourceVersion, Watcher<String> watcher) throws IOException {
+    URL url = new URL(fetchUrl(name, namespace, labels));
+    HttpUrl.Builder httpUrlBuilder = HttpUrl.get(url).newBuilder();
+    if (resourceVersion != null) {
+      httpUrlBuilder.addQueryParameter("resourceVersion", resourceVersion);
+    }
+
+    httpUrlBuilder.addQueryParameter("watch", "true");
+    String origin = url.getProtocol() + "://" + url.getHost();
+    if (url.getPort() != -1) {
+      origin += ":" + url.getPort();
+    }
+
+    Request request = new Request.Builder()
+      .get()
+      .url(httpUrlBuilder.build())
+      .addHeader("Origin", origin)
+      .build();
+
+    OkHttpClient.Builder clonedClientBuilder = client.newBuilder();
+      clonedClientBuilder.readTimeout(getConfig() != null ?
+        getConfig().getWebsocketTimeout() : Config.DEFAULT_WEBSOCKET_TIMEOUT, TimeUnit.MILLISECONDS);
+      clonedClientBuilder.pingInterval(getConfig() != null ?
+        getConfig().getWebsocketPingInterval() : Config.DEFAULT_WEBSOCKET_PING_INTERVAL, TimeUnit.MILLISECONDS);
+
+    OkHttpClient clonedOkHttpClient = clonedClientBuilder.build();
+    WatcherToggle<String> watcherToggle = new WatcherToggle<>(watcher, true);
+    RawWatchConnectionManager watch = null;
+    try {
+      watch = new RawWatchConnectionManager(
+        clonedOkHttpClient, request, resourceVersion, objectMapper, watcher,
+        getConfig() != null ? getConfig().getWatchReconnectLimit() : -1,
+        getConfig() != null ? getConfig().getWatchReconnectInterval() : 1000,
+        5);
+      watch.waitUntilReady();
+      return watch;
+    } catch (KubernetesClientException ke) {
+
+      if (ke.getCode() != 200) {
+        if(watch != null){
+          //release the watch
+          watch.close();
+        }
+
+        throw ke;
+      }
+
+      if(watch != null){
+        //release the watch after disabling the watcher (to avoid premature call to onClose)
+        watcherToggle.disable();
+        watch.close();
+      }
+
+      // If the HTTP return code is 200, we retry the watch again using a persistent hanging
+      // HTTP GET. This is meant to handle cases like kubectl local proxy which does not support
+      // websockets. Issue: https://github.com/kubernetes/kubernetes/issues/25126
+      return new RawWatchConnectionManager(
+        clonedOkHttpClient, request, resourceVersion, objectMapper, watcher,
+        getConfig() != null ? getConfig().getWatchReconnectLimit() : -1,
+        getConfig() != null ? getConfig().getWatchReconnectInterval() : 1000,
+        5);
+    }
+
+  }
+
   private Map<String, Object> createOrReplaceJsonStringObject(String namespace, String objectAsString) throws IOException {
     Map<String, Object> ret;
     try {
@@ -405,8 +526,23 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
     return retVal;
   }
 
+  private String fetchUrl(String name, String namespace, Map<String, String> labels) {
+    String url = fetchUrl(namespace, labels);
+    if (name != null) {
+      return url + name;
+    } else {
+      return url.substring(0, url.length() - 1);
+    }
+  }
+
   private String fetchUrl(String namespace, Map<String, String> labels) {
+    if (config.getMasterUrl() == null) {
+      return null;
+    }
+
     StringBuilder urlBuilder = new StringBuilder(config.getMasterUrl());
+
+    urlBuilder.append(config.getMasterUrl().endsWith("/") ? "" : "/");
     urlBuilder.append("apis/")
       .append(customResourceDefinition.getGroup())
       .append("/")

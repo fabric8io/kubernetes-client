@@ -212,6 +212,11 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
+  public MixedOperation<Binding, KubernetesResourceList, DoneableBinding, Resource<Binding, DoneableBinding>> bindings() {
+    return delegate.bindings();
+  }
+
+  @Override
   public MixedOperation<Event, EventList, DoneableEvent, Resource<Event, DoneableEvent>> events() {
     return delegate.events();
   }

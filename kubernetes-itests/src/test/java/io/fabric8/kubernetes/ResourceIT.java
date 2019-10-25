@@ -15,10 +15,17 @@
  */
 package io.fabric8.kubernetes;
 
+import io.fabric8.kubernetes.api.model.ConfigMap;
+import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.KubernetesList;
+import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
+import io.fabric8.kubernetes.api.model.Service;
+import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -35,6 +42,7 @@ import org.junit.runner.RunWith;
 
 import java.sql.Time;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
@@ -111,6 +119,51 @@ public class ResourceIT {
       .inNamespace(currentNamespace)
       .delete();
     assertTrue(bDeleted);
+  }
+
+  @Test
+  public void createOrReplace() {
+    Service service =  new ServiceBuilder()
+      .withNewMetadata().withName("my-service").endMetadata()
+      .withNewSpec()
+      .addToSelector("app", "Myapp")
+      .addNewPort().withProtocol("TCP").withPort(80).withTargetPort(new IntOrString(9376)).endPort()
+      .endSpec()
+      .build();
+
+
+    ConfigMap configMap = new ConfigMapBuilder()
+      .withNewMetadata().withName("my-configmap").endMetadata()
+      .addToData(Collections.singletonMap("app", "Myapp"))
+      .build();
+
+    KubernetesList list = new KubernetesListBuilder().withItems(deployment, service, configMap).build();
+
+    // Create them for the first time
+    client.resourceList(list).inNamespace(currentNamespace).createOrReplace();
+
+    // Modify
+    service = client.services().inNamespace(currentNamespace).withName("my-service").get();
+    service.getSpec().getPorts().get(0).setTargetPort(new IntOrString(9998));
+    configMap.getData().put("test", "createOrReplace");
+    configMap.getData().put("io", "fabric8");
+
+    // Issue createOrReplace()
+    list = new KubernetesListBuilder().withItems(deployment, service, configMap).build();
+    List<HasMetadata> createdObjects = client.resourceList(list).inNamespace(currentNamespace).createOrReplace();
+
+    // Assert whether objects have been modified
+    createdObjects.forEach((HasMetadata object) -> {
+      if (object instanceof Service) {
+        assertEquals(9998, ((Service)object).getSpec().getPorts().get(0).getTargetPort().getIntVal().intValue());
+      } else if (object instanceof ConfigMap) {
+        assertTrue(((ConfigMap)object).getData().containsKey("io"));
+        assertTrue(((ConfigMap)object).getData().containsKey("test"));
+      }
+    });
+
+    // Cleanup
+    client.resourceList(list).inNamespace(currentNamespace).deletingExisting();
   }
 
   @Test

@@ -30,19 +30,19 @@
  */
 
 #set ($version = "unknown")
-#set ($group = "")
+#set ($group = $model.getPackageName().split("\.")[3])
 #set ($annotations = $model.annotations)
 #foreach ($annotation in $annotations)
   #if ($annotation.getClassRef().getName().equals("ApiVersion"))
-    #set ($apiGroupVersion = $annotation.getParameters().get("value"))
+    #set ($apiVersion = $annotation.getParameters().get("value"))
   #end
   #if ($annotation.getClassRef().getName().equals("ApiGroup"))
-    #set ($apiGroupName = $annotation.getParameters().get("value"))
+    #set ($apiGroup = $annotation.getParameters().get("value"))
   #end
 #end
 
 
-package io.fabric8.knative.client.internal;
+package io.fabric8.knative.client.${group}.${apiVersion}.internal;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -69,8 +69,8 @@ public class ${model.name}OperationsImpl extends HasMetadataOperation<${model.na
   }
 
   public ${model.name}OperationsImpl(OperationContext context) {
-    super(context.withApiGroupName("$apiGroupName")
-    .withApiGroupVersion("$apiGroupVersion")
+    super(context.withApiGroupName("${apiGroup}")
+    .withApiGroupVersion("${apiVersion}")
     .withPlural("#pluralize ($model.name.toLowerCase())"));
     this.type = ${model.name}.class;
     this.listType = ${model.name}List.class;

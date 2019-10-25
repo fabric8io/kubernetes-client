@@ -20,7 +20,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>service-catalog</artifactId>
-    <version>4.6-SNAPSHOT</version>
+    <version>4.7-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -56,7 +56,6 @@
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <felix.scr.annotations.version>1.9.8</felix.scr.annotations.version>
-    <jackson.version>2.6.3</jackson.version>
     <log4j.version>2.3</log4j.version>
     <mockwebserver.version>0.1.4</mockwebserver.version>
 
@@ -120,11 +119,6 @@
             <artifactId>*</artifactId>
           </exclusion>
         </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.module</groupId>
-        <artifactId>jackson-module-jaxb-annotations</artifactId>
-        <version>${jackson.version}</version>
       </dependency>
       <dependency>
         <groupId>io.sundr</groupId>

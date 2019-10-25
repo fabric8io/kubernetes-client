@@ -15,25 +15,29 @@
  */
 package io.fabric8.kubernetes.examples;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 public class RawCustomResourceExample {
   private static final Logger logger = LoggerFactory.getLogger(RawCustomResourceExample.class);
 
-  public static void main(String args[]) throws IOException {
+  public static void main(String args[]) throws Exception {
 
+    final CountDownLatch closeLatch = new CountDownLatch(1);
     try (final KubernetesClient client = new DefaultKubernetesClient()) {
+
+      String namespace = "default";
       CustomResourceDefinition prometheousRuleCrd = client.customResourceDefinitions().load(RawCustomResourceExample.class.getResourceAsStream("/prometheous-rule-crd.yml")).get();
       client.customResourceDefinitions().create(prometheousRuleCrd);
       log("Successfully created prometheous custom resource definition");
@@ -46,11 +50,11 @@ public class RawCustomResourceExample {
         .withVersion("v1")
         .build();
 
-      client.customResource(crdContext).create("myproject", RawCustomResourceExample.class.getResourceAsStream("/prometheous-rule-cr.yml"));
+      client.customResource(crdContext).create(namespace, RawCustomResourceExample.class.getResourceAsStream("/prometheous-rule-cr.yml"));
       log("Created Custom Resource successfully too");
 
       // Listing all custom resources in given namespace:
-      Map<String, Object> list = client.customResource(crdContext).list("myproject");
+      Map<String, Object> list = client.customResource(crdContext).list(namespace);
       List<Map<String, Object>> items = (List<Map<String, Object>>) list.get("items");
       log("Custom Resources :- ");
       for(Map<String, Object> customResource : items) {
@@ -58,11 +62,30 @@ public class RawCustomResourceExample {
         log(metadata.get("name").toString());
       }
 
+
+      // Watching custom resources now
+      log("Watching custom resources now");
+      client.customResource(crdContext).watch(namespace, new Watcher<String>() {
+        @Override
+        public void eventReceived(Action action, String resource) {
+          logger.info("{}: {}", action, resource);
+        }
+
+        @Override
+        public void onClose(KubernetesClientException e) {
+          logger.debug("Watcher onClose");
+          closeLatch.countDown();
+          if (e != null) {
+            logger.error(e.getMessage(), e);
+          }
+        }
+      });
+      closeLatch.await(10, TimeUnit.MINUTES);
+
       // Cleanup
       log("Deleting custom resources...");
-      Map<String, Object> deleted  = client.customResource(crdContext).delete("myproject", "prometheus-example-rules");
+      Map<String, Object> deleted  = client.customResource(crdContext).delete(namespace, "prometheus-example-rules");
       client.customResourceDefinitions().withName("prometheusrules.monitoring.coreos.com").delete();
-
     } catch (KubernetesClientException e) {
       e.printStackTrace();
       log("Could not create resource", e.getMessage());

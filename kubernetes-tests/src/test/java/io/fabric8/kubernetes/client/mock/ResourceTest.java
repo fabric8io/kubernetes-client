@@ -17,6 +17,7 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.client.ResourceNotFoundException;
+import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.jupiter.api.Assertions;
@@ -73,6 +74,24 @@ public class ResourceTest {
         KubernetesClient client = server.getClient();
         HasMetadata response = client.resource(pod1).inNamespace("ns1").apply();
         assertEquals(pod1, response);
+    }
+
+    @Test
+    public void testCreateOrReplaceWithDeleteExisting() throws Exception {
+      Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
+
+      server.expect().get().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(200, pod1).once();
+      server.expect().delete().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(200, pod1).once();
+      server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(201, pod1).once();
+
+      KubernetesClient client = server.getClient();
+      HasMetadata response = client.resource(pod1).inNamespace("ns1").deletingExisting().createOrReplace();
+      assertEquals(pod1, response);
+
+      RecordedRequest request = server.getLastRequest();
+      assertEquals(3, server.getMockServer().getRequestCount());
+      assertEquals("/api/v1/namespaces/ns1/pods", request.getPath());
+      assertEquals("POST", request.getMethod());
     }
 
     @Test

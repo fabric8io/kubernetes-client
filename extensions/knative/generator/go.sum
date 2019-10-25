@@ -64,6 +64,10 @@ github.com/knative/pkg v0.0.0-20190617142447-13b093adc272 h1:8reWGJv6V0UUy8XFclP
 github.com/knative/pkg v0.0.0-20190617142447-13b093adc272/go.mod h1:7Ijfhw7rfB+H9VtosIsDYvZQ+qYTz7auK3fHW/5z4ww=
 github.com/knative/serving v0.6.0 h1:2SOr1jAvrUPO1y0mJvpiTe3bJTSMd2tKXflmHCM0MAA=
 github.com/knative/serving v0.6.0/go.mod h1:ljvMfwQy2qanaM/8xnBSK4Mz3Vv2NawC2fo5kFRJS1A=
+github.com/knative/serving v0.8.0 h1:+pRoPA34iR3y7w8FAG5IYSKfmzR57ScCjcI0Wq6dNUo=
+github.com/knative/serving v0.8.0/go.mod h1:ljvMfwQy2qanaM/8xnBSK4Mz3Vv2NawC2fo5kFRJS1A=
+github.com/knative/serving v0.9.0 h1:cjzlVaZh4nfMd+8O8fYW8vRxzLQvP22v7LhHAgjaLH0=
+github.com/knative/serving v0.9.0/go.mod h1:ljvMfwQy2qanaM/8xnBSK4Mz3Vv2NawC2fo5kFRJS1A=
 github.com/knative/test-infra v0.0.0-20190702025031-91d37e4abc30/go.mod h1:l77IWBscEV5T4sYb64/9iwRCVY4UXEIqMcAppsblHW4=
 github.com/magiconair/properties v1.8.0/go.mod h1:PppfXfuXeibc/6YijjN8zIbojt8czPbwD3XqdrwzmxQ=
 github.com/mailru/easyjson v0.0.0-20160728113105-d5b7844b561a/go.mod h1:C1wdFJiN94OJF2b5HbByQZoLdCWB1Yqtg26g4irojpc=
@@ -146,5 +150,9 @@ k8s.io/client-go v0.0.0-20190226174127-78295b709ec6/go.mod h1:7vJpHMYJwNQCWgzmNV
 k8s.io/gengo v0.0.0-20190128074634-0689ccc1d7d6/go.mod h1:ezvh/TsK7cY6rbqRK0oQQ8IAqLxYwwyPxAX1Pzy0ii0=
 k8s.io/klog v0.0.0-20181102134211-b9b56d5dfc92/go.mod h1:Gq+BEi5rUBO/HRz0bTSXDUcqjScdoY3a9IHpCEIOOfk=
 k8s.io/kube-openapi v0.0.0-20190603182131-db7b694dc208/go.mod h1:nfDlWeOsu3pUf4yWGL+ERqohP4YsZcBJXWMK+gkzOA4=
+knative.dev/pkg v0.0.0-20190925130640-d02c80dc6256 h1:nBIY7OX0LDdaIoosB0KseNDH2hkOIHWwnQLa+BxwUUs=
+knative.dev/pkg v0.0.0-20190925130640-d02c80dc6256/go.mod h1:pgODObA1dTyhNoFxPZTTjNWfx6F0aKsKzn+vaT9XO/Q=
+knative.dev/serving v0.9.0 h1:GVnsksAEX6vMXGygvzsGPIrFTypiesaseK7emm0LKWQ=
+knative.dev/serving v0.9.0/go.mod h1:x2n255JS2XBI39tmjZ8CwTxIf9EKNMCrkVuiOttLRm0=
 sigs.k8s.io/structured-merge-diff v0.0.0-20190525122527-15d366b2352e/go.mod h1:wWxsB5ozmmv/SG7nM11ayaAW51xMvak/t1r0CSlcokI=
 sigs.k8s.io/yaml v1.1.0/go.mod h1:UJmg0vDUVViEyp3mgSv9WPwZCDxu4rQW1olrI1uml+o=
