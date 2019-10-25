@@ -14,6 +14,7 @@ buildNumber.properties
 .project
 .settings/
 .classpath
+.factorypath
 
 ### Java template
 *.class

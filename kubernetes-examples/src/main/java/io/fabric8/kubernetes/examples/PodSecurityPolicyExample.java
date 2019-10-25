@@ -22,8 +22,8 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 
 import java.io.FileInputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PodSecurityPolicyExample {
 
@@ -31,7 +31,7 @@ public class PodSecurityPolicyExample {
     //command for that is
     //oc login -u system:admin
 
-    private static final Logger logger = Logger.getLogger(PodSecurityPolicyExample.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(PodSecurityPolicyExample.class);
 
     public static void main(String args[]) throws InterruptedException {
 
@@ -42,15 +42,14 @@ public class PodSecurityPolicyExample {
 
             //Creating PodSecurityPolicy from Yaml file
 
-            logger.log(Level.INFO, "Loading File : " + sample);
+            logger.info("Loading File : {}", sample);
             PodSecurityPolicy podSecurityPolicy = client.extensions().podSecurityPolicies().load(new FileInputStream(sample)).get();
             client.extensions().podSecurityPolicies().create(podSecurityPolicy);
-            logger.log(Level.INFO, "PodSecurityPolicy created with Name : "
-                  + podSecurityPolicy.getMetadata().getName());
+            logger.info("PodSecurityPolicy created with Name : {}", podSecurityPolicy.getMetadata().getName());
 
             //Creating PodSecurityPolicy from Builder
 
-            logger.log(Level.INFO, "Starting creating PodSecurityPolicy from Builder ");
+            logger.info("Starting creating PodSecurityPolicy from Builder ");
 
             PodSecurityPolicy podSecurityPolicy1 = new PodSecurityPolicyBuilder().withNewMetadata()
                     .withName("example2")
@@ -65,17 +64,16 @@ public class PodSecurityPolicyExample {
                     .build();
 
             client.extensions().podSecurityPolicies().create(podSecurityPolicy1);
-            logger.log(Level.INFO, "PodSecurityPolicy created with Name : "
-                    + podSecurityPolicy1.getMetadata().getName());
+            logger.info("PodSecurityPolicy created with Name : {}",
+                    podSecurityPolicy1.getMetadata().getName());
 
             client.close();
 
         } catch (KubernetesClientException ClientException) {
-            logger.log(Level.SEVERE, "Problem encountered with Kubernetes client!!");
-            ClientException.printStackTrace();
+            logger.error("Problem encountered with Kubernetes client!!", ClientException);
 
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Exception encountered : " + e.getMessage());
+            logger.error("Exception encountered : {}", e.getMessage());
         }
 
 
