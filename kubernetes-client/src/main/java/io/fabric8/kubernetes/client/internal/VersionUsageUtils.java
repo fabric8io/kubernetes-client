@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.internal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -47,7 +48,7 @@ public final class VersionUsageUtils {
   }
 
   private static boolean isUnstable(String version) {
-    String lowerCaseVersion = version.toLowerCase();
+    String lowerCaseVersion = version.toLowerCase(Locale.ROOT);
     return lowerCaseVersion.contains("beta") || lowerCaseVersion.contains("alpha");
   }
 

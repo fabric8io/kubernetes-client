@@ -43,6 +43,7 @@ import org.junit.runner.RunWith;
 import java.sql.Time;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
@@ -87,7 +88,7 @@ public class ResourceIT {
   public void init() {
     currentNamespace = session.getNamespace();
     pod1 = new PodBuilder()
-      .withNewMetadata().withName("resource-pod-" + RandomStringUtils.randomAlphanumeric(6).toLowerCase()).endMetadata()
+      .withNewMetadata().withName("resource-pod-" + RandomStringUtils.randomAlphanumeric(6).toLowerCase(Locale.ROOT)).endMetadata()
       .withNewSpec()
       .addNewContainer().withName("nginx").withImage("nginx").endContainer()
       .endSpec()

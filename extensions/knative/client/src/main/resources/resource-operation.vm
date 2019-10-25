@@ -58,6 +58,7 @@ import ${model.packageName}.${model.name};
 import ${model.packageName}.${model.name}List;
 import ${model.packageName}.Doneable${model.name};
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -71,7 +72,7 @@ public class ${model.name}OperationsImpl extends HasMetadataOperation<${model.na
   public ${model.name}OperationsImpl(OperationContext context) {
     super(context.withApiGroupName("${apiGroup}")
     .withApiGroupVersion("${apiVersion}")
-    .withPlural("#pluralize ($model.name.toLowerCase())"));
+    .withPlural("#pluralize ($model.name.toLowerCase(Locale.ROOT))"));
     this.type = ${model.name}.class;
     this.listType = ${model.name}List.class;
     this.doneableType = Doneable${model.name}.class;
