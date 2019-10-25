@@ -928,13 +928,13 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   @Override
-  public Deletable<Boolean> withGracePeriod(long gracePeriodSeconds)
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withGracePeriod(long gracePeriodSeconds)
   {
     return newInstance(context.withGracePeriodSeconds(gracePeriodSeconds));
   }
 
   @Override
-  public Deletable<Boolean> withPropagationPolicy(String propagationPolicy)
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withPropagationPolicy(String propagationPolicy)
   {
     return newInstance(context.withPropagationPolicy(propagationPolicy));
   }

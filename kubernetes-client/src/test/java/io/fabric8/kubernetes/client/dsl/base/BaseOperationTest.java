@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.dsl.base;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.HashMap;
@@ -25,6 +26,9 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationsImpl;
 
@@ -64,5 +68,25 @@ public class BaseOperationTest {
       .withoutField("key10", ""); // Once more to make sure no accidental trailing comma is added
 
     assertThat(operation.getFieldQueryParam(), is(equalTo("key1=value1,key2!=value2,key2!=value3,key10!=value11")));
+  }
+
+  @Test
+  public void testDefaultGracePeriod() {
+    final BaseOperation operation = new BaseOperation(new OperationContext());
+
+    assertThat(operation.getGracePeriodSeconds(), is(30L));
+  }
+
+  @Test
+  public void testChainingGracePeriodAndPropagationPolicy() {
+    final BaseOperation operation = new BaseOperation(new OperationContext());
+    FilterWatchListDeletable<?, ?, Boolean, Watch, Watcher<?>> operationWithGracePeriod = operation.withGracePeriod(10L);
+    FilterWatchListDeletable<?, ?, Boolean, Watch, Watcher<?>> operationWithPropagationPolicy = operation.withPropagationPolicy("Foreground");
+
+    Object chainedGracePeriod = operationWithPropagationPolicy.withGracePeriod(10);
+    Object chainedPropagationPolicy = operationWithGracePeriod.withPropagationPolicy("Foreground");
+
+    assertThat(chainedGracePeriod, is(notNullValue()));
+    assertThat(chainedPropagationPolicy, is(notNullValue()));
   }
 }
