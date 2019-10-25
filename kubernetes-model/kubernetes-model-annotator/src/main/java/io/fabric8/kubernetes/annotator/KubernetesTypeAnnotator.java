@@ -38,17 +38,6 @@ import java.util.regex.Pattern;
 
 public class KubernetesTypeAnnotator extends Jackson2Annotator {
 
-    // see: https://github.com/kubernetes/kubernetes/blob/6902f3112d98eb6bd0894886ff9cd3fbd03a7f79/staging/src/k8s.io/apimachinery/pkg/util/validation/validation.go#L315
-    private final String envNamePattern = "[-._a-zA-Z][-._a-zA-Z0-9]*";
-
-    private final String nameIsDNS952LabelPattern = "[a-z]([-a-z0-9]*[a-z0-9])?";
-
-    private final String nameIsDNS1123LabelPattern = "[a-z0-9]([-a-z0-9]*[a-z0-9])?";
-    private final int nameIsDNS1123LabelLength = 63;
-
-    private final String nameIsDNS1123SubdomainPattern = nameIsDNS1123LabelPattern + "(\\." + nameIsDNS1123LabelPattern + ")*";
-    private final int nameIsDNS1123SubdomainLength = 253;
-
     private final Map<String, JDefinedClass> pendingResources = new HashMap<>();
     private final Map<String, JDefinedClass> pendingLists = new HashMap<>();
 
@@ -137,33 +126,4 @@ public class KubernetesTypeAnnotator extends Jackson2Annotator {
             field.annotate(JsonInclude.class).param("value", JsonInclude.Include.NON_EMPTY);
         }
     }
-
-    private int getObjectNameMaxLength(JDefinedClass clazz) {
-        String kind = clazz.name();
-        if (kind.equals("Namespace") || kind.equals("Project") || kind.equals("Service")) {
-            return nameIsDNS1123LabelLength;
-        }
-        return nameIsDNS1123SubdomainLength;
-    }
-
-    private String getObjectNamePattern(JDefinedClass clazz) {
-        String kind = clazz.name();
-        if (kind.equals("Service")) {
-            return nameIsDNS952LabelPattern;
-        }
-        if (kind.equals("Namespace") || kind.equals("Project")) {
-            return nameIsDNS1123LabelPattern;
-        }
-        return nameIsDNS1123SubdomainPattern;
-    }
-
-    private boolean isMinimal(JDefinedClass clazz) {
-        String kind = clazz.name();
-        return kind.equals("Group") || kind.equals("User") || kind.equals("Identity") || kind.equals("UserIdentityMapping")
-            || kind.equals("ClusterNetwork") || kind.equals("HostSubnet") || kind.equals("NetNamespace")
-            || kind.equals("Image") || kind.equals("ImageStream") || kind.equals("ImageStreamMapping") || kind.equals("ImageStreamTag") || kind.equals("ImageStreamImport")
-            || kind.equals("Policy") || kind.equals("PolicyBinding") || kind.equals("Role") || kind.equals("RoleBinding")
-            || kind.equals("OAuthAccessToken") || kind.equals("OAuthAuthorizeToken") || kind.equals("OAuthClientAuthorization");
-    }
-
 }
