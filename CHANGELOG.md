@@ -3,6 +3,7 @@
 ### 4.7-SNAPSHOT
 #### Bugs
 * Fix #1827: Fix `withGracePeriod` and `withPropagationPolicy` return type to safely chain further DSL methods and default GracePeriod to 30s
+* Fix #1828: VersionInfo date parsing of year
 
 #### Improvements
 
