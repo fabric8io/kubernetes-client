@@ -6,6 +6,7 @@
 * Fix #1828: VersionInfo date parsing of year
 
 #### Improvements
+* Cleanup log4j dependency from project
 
 #### Dependency Upgrade
 
@@ -66,7 +67,7 @@
 
 #### Improvements
   * Removed Bean Validation integration
-  
+
 ### 4.5.0 (10-09-2019)
 
 #### Bugs
@@ -119,7 +120,7 @@
 
 ### 4.4.0 (05-08-2019)
   Bugs
-  * Fix #1592: Corrected type returned by Config.builder() 
+  * Fix #1592: Corrected type returned by Config.builder()
   * Fix #1565: CRD's Enums are prefixed with Raw keyword
   * Fixed user/password authentication bug in OpenShift 4
   * Fix #1667: Origin header for watch requests had a port of -1 when no port specified
@@ -132,7 +133,7 @@
    * Removed deprecated KubernetesKind enum
 
   Dependency Upgrade
-    
+
   New Feature
   * Knative extension
   * Tekton extension
@@ -140,7 +141,7 @@
 
 ### 4.3.1 (19-07-2019)
   Bugs
-   * Fix #1592: Corrected type returned by Config.builder() 
+   * Fix #1592: Corrected type returned by Config.builder()
    * Set cascade deletion to true in case of list operations
    * Fix #1617: Multiple CA certificates with non-unique Subject DN not loaded
    * Fix #1634: Make map backing KubernetesDeserializer thread-safe
@@ -179,7 +180,7 @@
   Improvements
 
     * Added example for raw custom resources.
-    
+
   Dependency Upgrade
 
   New Feature
