@@ -74,7 +74,7 @@ public class BaseOperationTest {
   public void testDefaultGracePeriod() {
     final BaseOperation operation = new BaseOperation(new OperationContext());
 
-    assertThat(operation.getGracePeriodSeconds(), is(30L));
+    assertThat(operation.getGracePeriodSeconds(), is(-1L));
   }
 
   @Test
