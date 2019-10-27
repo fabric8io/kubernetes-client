@@ -17,24 +17,21 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-      <groupId>io.fabric8</groupId>
-      <artifactId>tekton-extension-pom</artifactId>
-      <version>4.7-SNAPSHOT</version>
-      <relativePath>..</relativePath>
-    </parent>
-    <modelVersion>4.0.0</modelVersion>
-
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
     <groupId>io.fabric8</groupId>
-    <artifactId>tekton-examples</artifactId>
-    <name>Fabric8 :: Tekton :: Examples</name>
+    <artifactId>tekton-extension-pom</artifactId>
+    <version>4.7-SNAPSHOT</version>
+  </parent>
 
-    <dependencies>
-        <dependency>
-          <groupId>io.fabric8</groupId>
-          <artifactId>tekton-client</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-    </dependencies>
+  <artifactId>tekton-examples</artifactId>
+  <name>Fabric8 :: Tekton :: Examples</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>tekton-client</artifactId>
+    </dependency>
+  </dependencies>
 
 </project>

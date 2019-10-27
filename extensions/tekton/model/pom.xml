@@ -17,18 +17,16 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
       <groupId>io.fabric8</groupId>
       <artifactId>tekton-extension-pom</artifactId>
       <version>4.7-SNAPSHOT</version>
-      <relativePath>..</relativePath>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.fabric8</groupId>
     <artifactId>tekton-model</artifactId>
-    <name>Fabric8 :: Tekton :: Model</name>
     <packaging>bundle</packaging>
+    <name>Fabric8 :: Tekton :: Model</name>
 
     <properties>
         <osgi.import>
@@ -70,13 +68,11 @@
       <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-engine</artifactId>
-        <version>${junit.version}</version>
         <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-migrationsupport</artifactId>
-        <version>${junit.version}</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -126,7 +122,6 @@
         </plugin>
         <plugin>
           <artifactId>maven-antrun-plugin</artifactId>
-          <version>1.8</version>
           <executions>
             <execution>
               <phase>generate-sources</phase>
@@ -150,7 +145,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
-          <version>3.0.0</version>
+          <version>${maven.buildhelper.plugin.version}</version>
           <executions>
             <execution>
               <id>attach-artifacts</id>
@@ -173,7 +168,6 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-release-plugin</artifactId>
-          <version>2.5.3</version>
         </plugin>
       </plugins>
     </build>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!--
 
     Copyright (C) 2015 Red Hat, Inc.
@@ -16,13 +16,10 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.sonatype.oss</groupId>
-    <artifactId>oss-parent</artifactId>
-    <version>9</version>
-  </parent>
 
   <groupId>io.fabric8</groupId>
   <artifactId>kubernetes-client-project</artifactId>
@@ -82,8 +79,8 @@
 
     <!-- Core versions -->
     <sundrio.version>0.17.2</sundrio.version>
-    <okhttp.version>3.12.0</okhttp.version>
-    <okhttp.bundle.version>3.12.0_1</okhttp.bundle.version>
+    <okhttp.version>3.12.6</okhttp.version>
+    <okhttp.bundle.version>3.12.1_1</okhttp.bundle.version>
     <okio.version>1.15.0</okio.version>
     <okio.bundle.version>1.15.0_1</okio.bundle.version>
     <jackson.version>2.9.10</jackson.version>
@@ -109,8 +106,8 @@
     <junit.version>5.5.2</junit.version>
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
     <arquillian.cube.version>1.18.2</arquillian.cube.version>
-    <slf4j.version>1.7.26</slf4j.version>
-    <lombok.version>1.18.8</lombok.version>
+    <slf4j.version>1.7.28</slf4j.version>
+    <lombok.version>1.18.10</lombok.version>
     <snakeyaml.version>1.24</snakeyaml.version>
     <bouncycastle.version>1.62</bouncycastle.version>
     <commons-codec.version>1.13</commons-codec.version>
@@ -120,19 +117,25 @@
 
     <!-- Maven plugin versions -->
     <buildnumber.plugin.version>1.4</buildnumber.plugin.version>
+    <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
     <maven.bundle.plugin.version>4.2.1</maven.bundle.plugin.version>
     <maven.buildhelper.plugin.version>3.0.0</maven.buildhelper.plugin.version>
     <maven.jar.plugin.version>3.1.2</maven.jar.plugin.version>
-    <maven.resources.plugin.version>3.0.1</maven.resources.plugin.version>
     <maven.surefire.plugin.version>3.0.0-M3</maven.surefire.plugin.version>
     <maven.scr.plugin.version>1.26.2</maven.scr.plugin.version>
-    <maven.bundle.plugin.version>4.1.0</maven.bundle.plugin.version>
-    <maven.buildhelper.plugin.version>3.0.0</maven.buildhelper.plugin.version>
-    <maven.jar.plugin.version>3.1.1</maven.jar.plugin.version>
     <maven.resources.plugin.version>3.1.0</maven.resources.plugin.version>
-    <maven.surefire.plugin.version>3.0.0-M3</maven.surefire.plugin.version>
-    <maven.scr.plugin.version>1.26.0</maven.scr.plugin.version>
+    <maven.release.plugin.version>2.5.3</maven.release.plugin.version>
+    <maven.javadoc.plugin.version>3.1.1</maven.javadoc.plugin.version>
+    <maven.source.plugin.version>3.1.0</maven.source.plugin.version>
+    <maven.enforcer.plugin.version>3.0.0-M2</maven.enforcer.plugin.version>
+    <maven.deploy.plugin.version>3.0.0-M1</maven.deploy.plugin.version>
+    <maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
+    <maven.antrun.plugin.version>1.8</maven.antrun.plugin.version>
+    <maven.dependency.plugin.version>3.1.1</maven.dependency.plugin.version>
+    <maven.shade.plugin.version>3.2.1</maven.shade.plugin.version>
+    <maven.install.plugin.version>3.0.0-M1</maven.install.plugin.version>
     <jandex.plugin.version>1.0.6</jandex.plugin.version>
+    <jandex.version>2.1.1.Final</jandex.version>
 
     <!-- Other options -->
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -172,56 +175,56 @@
   <dependencyManagement>
     <dependencies>
       <!-- Internal -->
-       <dependency>
+      <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-model</artifactId>
         <version>${project.version}</version>
-       </dependency>
-       <dependency>
+      </dependency>
+      <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-client</artifactId>
         <version>${project.version}</version>
-       </dependency>
-       <dependency>
+      </dependency>
+      <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>openshift-client</artifactId>
         <version>${project.version}</version>
-       </dependency>
-       <dependency>
+      </dependency>
+      <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-server-mock</artifactId>
         <version>${project.version}</version>
-       </dependency>
-       <dependency>
+      </dependency>
+      <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>knative-model</artifactId>
         <version>${project.version}</version>
-       </dependency>
-       <dependency>
+      </dependency>
+      <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>knative-client</artifactId>
         <version>${project.version}</version>
-       </dependency>
-       <dependency>
+      </dependency>
+      <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>knative-server-mock</artifactId>
         <version>${project.version}</version>
-       </dependency>
-       <dependency>
+      </dependency>
+      <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>tekton-model</artifactId>
         <version>${project.version}</version>
-       </dependency>
-       <dependency>
+      </dependency>
+      <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>tekton-client</artifactId>
         <version>${project.version}</version>
-       </dependency>
-       <dependency>
+      </dependency>
+      <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>tekton-server-mock</artifactId>
         <version>${project.version}</version>
-       </dependency>
+      </dependency>
 
       <!-- Jackson dependencies, imported as a BOM -->
       <dependency>
@@ -239,8 +242,8 @@
         <version>${sundrio.version}</version>
         <exclusions>
           <exclusion>
-          <artifactId>tools</artifactId>
-          <groupId>com.sun</groupId>
+            <groupId>com.sun</groupId>
+            <artifactId>tools</artifactId>
           </exclusion>
         </exclusions>
         <scope>provided</scope>
@@ -255,6 +258,11 @@
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
         <version>${lombok.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j.version}</version>
       </dependency>
 
       <!-- Testing and Mocking -->
@@ -271,44 +279,140 @@
         <scope>test</scope>
       </dependency>
 
+      <!-- JUnit dependencies, imported as a BOM -->
       <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter-engine</artifactId>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
         <version>${junit.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter-migrationsupport</artifactId>
-        <version>${junit.version}</version>
-        <scope>test</scope>
+        <scope>import</scope>
+        <type>pom</type>
       </dependency>
     </dependencies>
   </dependencyManagement>
 
   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven.compiler.plugin.version}</version>
+          <configuration>
+            <showDeprecation>true</showDeprecation>
+            <showWarnings>true</showWarnings>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>${maven.jar.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>${maven.javadoc.plugin.version}</version>
+          <executions>
+            <execution>
+              <id>attach-javadocs</id>
+              <goals>
+                <goal>jar</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>${maven.source.plugin.version}</version>
+          <executions>
+            <execution>
+              <id>attach-sources</id>
+              <goals>
+                <goal>jar-no-fork</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${maven.surefire.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <version>${maven.antrun.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>${maven.dependency.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>${maven.release.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>${maven.gpg.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>${maven.deploy.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>${maven.resources.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>${maven.install.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>${maven.enforcer.plugin.version}</version>
+          <!-- <executions>
+            <execution>
+              <id>enforce-maven</id>
+              <goals>
+                <goal>enforce</goal>
+              </goals>
+              <configuration>
+                <failFast>true</failFast>
+                <rules>
+                  <requireMavenVersion>
+                    <version>[3.2.5,)</version>
+                  </requireMavenVersion>
+                </rules>
+              </configuration>
+            </execution>
+          </executions> -->
+        </plugin>
+        <plugin>
+          <groupId>org.jboss.jandex</groupId>
+          <artifactId>jandex-maven-plugin</artifactId>
+          <version>${jandex.plugin.version}</version>
+          <executions>
+            <execution>
+              <id>make-index</id>
+              <goals>
+                <goal>jandex</goal>
+              </goals>
+              <inherited>true</inherited>
+            </execution>
+          </executions>
+          <dependencies>
+            <dependency>
+              <groupId>org.jboss</groupId>
+              <artifactId>jandex</artifactId>
+              <version>${jandex.version}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+      </plugin>
       <!-- Create jandex index for faster performance in environments that use it -->
       <plugin>
         <groupId>org.jboss.jandex</groupId>
         <artifactId>jandex-maven-plugin</artifactId>
-        <version>${jandex.plugin.version}</version>
-        <executions>
-          <execution>
-            <id>make-index</id>
-            <goals>
-              <goal>jandex</goal>
-            </goals>
-            <inherited>true</inherited>
-          </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>org.jboss</groupId>
-            <artifactId>jandex</artifactId>
-            <version>2.1.1.Final</version>
-          </dependency>
-        </dependencies>
       </plugin>
       <plugin>
         <groupId>org.jacoco</groupId>
@@ -333,7 +437,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <inherited>true</inherited>
-        <version>${maven.surefire.plugin.version}</version>
         <configuration>
           <environmentVariables>
             <ENV_VAR_EXISTS>value</ENV_VAR_EXISTS>
@@ -481,7 +584,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>1.6</version>
+            <version>${maven.gpg.plugin.version}</version>
             <configuration>
               <passphrase>4uds0n</passphrase>
               <useAgent>true</useAgent>
@@ -499,7 +602,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-release-plugin</artifactId>
-            <version>2.5.3</version>
+            <version>${maven.release.plugin.version}</version>
             <configuration>
               <autoVersionSubmodules>true</autoVersionSubmodules>
               <pushChanges>false</pushChanges>
@@ -509,7 +612,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-enforcer-plugin</artifactId>
-            <version>1.4.1</version>
+            <version>${maven.enforcer.plugin.version}</version>
             <executions>
               <execution>
                 <id>enforce-no-snapshots</id>
@@ -530,7 +633,6 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.1.1</version>
             <configuration>
               <includeDependencySources>${javadoc.include.deps}</includeDependencySources>
               <dependencySourceIncludes>
@@ -553,15 +655,6 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
-            <version>3.0.1</version>
-            <executions>
-              <execution>
-                <id>attach-sources</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>

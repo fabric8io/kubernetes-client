@@ -17,27 +17,24 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
-    <parent>
-        <groupId>io.fabric8</groupId>
-        <artifactId>kubernetes-extensions</artifactId>
-        <version>4.7-SNAPSHOT</version>
-    </parent>
-
-    <modelVersion>4.0.0</modelVersion>
-
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
     <groupId>io.fabric8</groupId>
-    <artifactId>tekton-extension-pom</artifactId>
-    <packaging>pom</packaging>
-    <name>Fabric8 :: Tekton :: Extension</name>
+    <artifactId>kubernetes-extensions</artifactId>
+    <version>4.7-SNAPSHOT</version>
+  </parent>
 
-    <modules>
-        <module>annotator</module>
-        <module>model</module>
-        <module>client</module>
-        <module>mock</module>
-        <module>examples</module>
-        <module>tests</module>
-    </modules>
+  <artifactId>tekton-extension-pom</artifactId>
+  <packaging>pom</packaging>
+  <name>Fabric8 :: Tekton :: Extension</name>
+
+  <modules>
+    <module>annotator</module>
+    <module>model</module>
+    <module>client</module>
+    <module>mock</module>
+    <module>examples</module>
+    <module>tests</module>
+  </modules>
 
 </project>

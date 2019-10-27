@@ -17,14 +17,13 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-client-project</artifactId>
     <version>4.7-SNAPSHOT</version>
   </parent>
-  <modelVersion>4.0.0</modelVersion>
 
-  <groupId>io.fabric8</groupId>
   <artifactId>kubernetes-examples</artifactId>
   <packaging>jar</packaging>
   <name>Fabric8 :: Kubernetes :: Client Examples</name>
@@ -34,11 +33,11 @@
     <masterUrl>https://localhost:8443/</masterUrl>
     <namespace>default</namespace>
   </properties>
+
   <dependencies>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>openshift-client</artifactId>
-      <version>${project.version}</version>
     </dependency>
 
     <dependency>
@@ -50,14 +49,12 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>${junit.version}</version>
       <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-migrationsupport</artifactId>
-      <version>${junit.version}</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>

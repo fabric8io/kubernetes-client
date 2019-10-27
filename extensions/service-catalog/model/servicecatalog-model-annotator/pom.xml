@@ -17,55 +17,52 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>servicecatalog-model-generator</artifactId>
     <version>4.7-SNAPSHOT</version>
-    <relativePath>../</relativePath>
   </parent>
-    <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.fabric8</groupId>
-    <artifactId>servicecatalog-model-annotator</artifactId>
-    <name>Fabric8 :: Service Catalog :: Model :: Annotator</name>
-    <packaging>jar</packaging>
+  <artifactId>servicecatalog-model-annotator</artifactId>
+  <packaging>jar</packaging>
+  <name>Fabric8 :: Service Catalog :: Model :: Annotator</name>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.jsonschema2pojo</groupId>
-            <artifactId>jsonschema2pojo-core</artifactId>
-            <version>${jsonschema2pojo.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>io.fabric8</groupId>
-          <artifactId>kubernetes-model-common</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.module</groupId>
-            <artifactId>jackson-module-jaxb-annotations</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>io.sundr</groupId>
-          <artifactId>builder-annotations</artifactId>
-          <scope>compile</scope>
-          <exclusions>
-            <exclusion>
-              <groupId>com.sun</groupId>
-              <artifactId>tools</artifactId>
-            </exclusion>
-          </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>io.sundr</groupId>
-            <artifactId>transform-annotations</artifactId>
-            <scope>compile</scope>
-        </dependency>
-    </dependencies>
+  <dependencies>
+    <dependency>
+      <groupId>org.jsonschema2pojo</groupId>
+      <artifactId>jsonschema2pojo-core</artifactId>
+      <version>${jsonschema2pojo.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-model-common</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.module</groupId>
+      <artifactId>jackson-module-jaxb-annotations</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.sundr</groupId>
+      <artifactId>builder-annotations</artifactId>
+      <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>com.sun</groupId>
+          <artifactId>tools</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>io.sundr</groupId>
+      <artifactId>transform-annotations</artifactId>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
 
 </project>

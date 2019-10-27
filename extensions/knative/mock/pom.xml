@@ -17,20 +17,17 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <groupId>io.fabric8</groupId>
-        <artifactId>knative-extension-pom</artifactId>
-        <version>4.7-SNAPSHOT</version>
-        <relativePath>../</relativePath>
-    </parent>
-
   <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.fabric8</groupId>
+    <artifactId>knative-extension-pom</artifactId>
+    <version>4.7-SNAPSHOT</version>
+  </parent>
 
   <artifactId>knative-mock</artifactId>
   <name>Fabric8 :: Knative :: Server Mock</name>
 
   <dependencies>
-
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-server-mock</artifactId>
@@ -39,19 +36,16 @@
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>knative-client</artifactId>
-      <version>${project.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>${junit.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-migrationsupport</artifactId>
-      <version>${junit.version}</version>
     </dependency>
   </dependencies>
 
