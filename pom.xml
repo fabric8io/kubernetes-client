@@ -228,6 +228,7 @@
     <module>httpclient-okhttp</module>
     <module>httpclient-vertx</module>
     <module>kubernetes-client-deps-compatibility-tests</module>
+    <module>log4j</module>
   </modules>
 
   <dependencyManagement>

@@ -1,0 +1,177 @@
+{
+  "apiVersion": "v1",
+  "kind": "Pod",
+  "metadata": {
+    "annotations": {
+      "cni.projectcalico.org/podIP": "172.16.55.101/32",
+      "cni.projectcalico.org/podIPs": "172.16.55.101/32",
+      "flagger-id": "94d53b7b-cc06-41b3-bbac-a2d14a16d95d",
+      "prometheus.io/port": "9797",
+      "prometheus.io/scrape": "true"
+    },
+    "creationTimestamp": "2020-06-15T15:44:16Z",
+    "generateName": "platform-forms-service-primary-5ddfc4f9b8-",
+    "labels": {
+      "app": "platform-forms-service-primary",
+      "pod-template-hash": "5ddfc4f9b8"
+    },
+    "name": "platform-forms-service-primary-5ddfc4f9b8-kfpzv",
+    "namespace": "default",
+    "ownerReferences": [
+      {
+        "apiVersion": "apps/v1",
+        "kind": "ReplicaSet",
+        "blockOwnerDeletion": true,
+        "controller": true,
+        "name": "platform-forms-service-primary-5ddfc4f9b8",
+        "uid": "d2e89c56-7623-439e-a9ee-4a67e2f3a81a"
+      }],
+    "resourceVersion": "37382150",
+    "selfLink": "/api/v1/namespaces/default/pods/platform-forms-service-primary-5ddfc4f9b8-kfpzv",
+    "uid": "df8cbac1-129c-4cd3-b5bc-65d72d8ba5f0"
+  },
+  "spec": {
+    "containers": [
+      {
+        "env": [
+          {
+            "name": "APACHE_ENV",
+            "value": "tmpcrm"
+          },
+          {
+            "name": "SPRING_PROFILES_ACTIVE",
+            "value": "tmpcrm"
+          },
+          {
+            "name": "JAVA_OPTS",
+            "value": "-Dlogging.label=crm"
+          }],
+        "image": "docker.apache.xyz/platform-forms-service:0.15.0",
+        "imagePullPolicy": "Always",
+        "livenessProbe": {
+          "failureThreshold": 3,
+          "httpGet": {
+            "path": "/info",
+            "port": "http",
+            "scheme": "HTTP"
+          },
+          "periodSeconds": 10,
+          "successThreshold": 1,
+          "timeoutSeconds": 1
+        },
+        "name": "platform-forms-service",
+        "ports": [
+          {
+            "containerPort": 8080,
+            "name": "http",
+            "protocol": "TCP"
+          }],
+        "readinessProbe": {
+          "failureThreshold": 3,
+          "httpGet": {
+            "path": "/health",
+            "port": "http",
+            "scheme": "HTTP"
+          },
+          "periodSeconds": 10,
+          "successThreshold": 1,
+          "timeoutSeconds": 1
+        },
+        "resources": {
+        },
+        "securityContext": {
+        },
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File",
+        "volumeMounts": [
+          {
+            "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+            "name": "default-token-2nqlw",
+            "readOnly": true
+          }]
+      }],
+    "dnsPolicy": "ClusterFirst",
+    "enableServiceLinks": true,
+    "nodeName": "k8s-tmpcrm-worker-s03-04",
+    "priority": 0,
+    "restartPolicy": "Always",
+    "schedulerName": "default-scheduler",
+    "securityContext": {
+    },
+    "serviceAccount": "default",
+    "serviceAccountName": "default",
+    "terminationGracePeriodSeconds": 30,
+    "tolerations": [
+      {
+        "effect": "NoExecute",
+        "key": "node.kubernetes.io/not-ready",
+        "operator": "Exists",
+        "tolerationSeconds": 300
+      },
+      {
+        "effect": "NoExecute",
+        "key": "node.kubernetes.io/unreachable",
+        "operator": "Exists",
+        "tolerationSeconds": 300
+      }],
+    "volumes": [
+      {
+        "name": "default-token-2nqlw",
+        "secret": {
+          "defaultMode": 420,
+          "secretName": "default-token-2nqlw"
+        }
+      }]
+  },
+  "status": {
+    "conditions": [
+      {
+        "lastTransitionTime": "2020-06-15T15:44:16Z",
+        "status": "True",
+        "type": "Initialized"
+      },
+      {
+        "lastTransitionTime": "2020-06-15T15:44:46Z",
+        "status": "True",
+        "type": "Ready"
+      },
+      {
+        "lastTransitionTime": "2020-06-15T15:44:46Z",
+        "status": "True",
+        "type": "ContainersReady"
+      },
+      {
+        "lastTransitionTime": "2020-06-15T15:44:16Z",
+        "status": "True",
+        "type": "PodScheduled"
+      }],
+    "containerStatuses": [
+      {
+        "containerID": "docker://2b7c2a93dfb48334aa549e29fdd38039ddd256eec43ba64c145fa4b75a1542f0",
+        "image": "docker.apache.xyz/platform-forms-service:0.15.0",
+        "imageID":
+        "docker-pullable://docker.apache.xyz/platform-forms-service@sha256:45fd19ccd99e218a7685c4cee5bc5b16aeae1cdb8e8773f9c066d4cfb22ee195",
+        "lastState": {
+        },
+        "name": "platform-forms-service",
+        "ready": true,
+        "restartCount": 0,
+        "state": {
+          "running": {
+            "startedAt": "2020-06-15T15:44:21Z"
+          }
+        },
+        "started": true
+      }],
+    "hostIP": "10.103.220.170",
+    "phase": "Running",
+    "podIP": "172.16.55.101",
+    "qosClass": "BestEffort",
+    "startTime": "2020-06-15T15:44:16Z",
+    "podIPs": [
+      {
+        "ip": "172.16.55.101"
+      }]
+  }
+}
+

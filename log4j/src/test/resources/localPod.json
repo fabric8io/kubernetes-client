@@ -1,0 +1,141 @@
+{
+  "apiVersion": "v1",
+  "kind": "Pod",
+  "metadata": {
+    "creationTimestamp": "2020-06-14T21:50:09Z",
+    "generateName": "sampleapp-584f99476d-",
+    "labels": {
+      "app": "sampleapp",
+      "pod-template-hash": "584f99476d"
+    },
+    "name": "sampleapp-584f99476d-mnrp4",
+    "namespace": "default",
+    "ownerReferences": [
+      {
+        "apiVersion": "apps/v1",
+        "kind": "ReplicaSet",
+        "blockOwnerDeletion": true,
+        "controller": true,
+        "name": "sampleapp-584f99476d",
+        "uid": "d68146d1-17c4-486e-aa8d-07d7d5d38b94"
+      }],
+    "resourceVersion": "1200430",
+    "selfLink": "/api/v1/namespaces/default/pods/sampleapp-584f99476d-mnrp4",
+    "uid": "9213879a-479c-42ce-856b-7e2666d21829"
+  },
+  "spec": {
+    "containers": [
+      {
+        "env": [
+          {
+            "name": "JAVA_OPTS",
+            "value": "-Delastic.search.host=host.docker.internal"
+          }],
+        "image": "localhost:5000/sampleapp:latest",
+        "imagePullPolicy": "Always",
+        "name": "sampleapp",
+        "ports": [
+          {
+            "containerPort": 8080,
+            "protocol": "TCP"
+          },
+          {
+            "containerPort": 5005,
+            "protocol": "TCP"
+          }],
+        "resources": {
+        },
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File",
+        "volumeMounts": [
+          {
+            "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+            "name": "default-token-jzq7d",
+            "readOnly": true
+          }]
+      }],
+    "dnsPolicy": "ClusterFirst",
+    "nodeName": "docker-desktop",
+    "priority": 0,
+    "restartPolicy": "Always",
+    "schedulerName": "default-scheduler",
+    "securityContext": {
+    },
+    "serviceAccount": "default",
+    "serviceAccountName": "default",
+    "terminationGracePeriodSeconds": 30,
+    "tolerations": [
+      {
+        "effect": "NoExecute",
+        "key": "node.kubernetes.io/not-ready",
+        "operator": "Exists",
+        "tolerationSeconds": 300
+      },
+      {
+        "effect": "NoExecute",
+        "key": "node.kubernetes.io/unreachable",
+        "operator": "Exists",
+        "tolerationSeconds": 300
+      }],
+    "volumes": [
+      {
+        "name": "default-token-jzq7d",
+        "secret": {
+          "defaultMode": 420,
+          "secretName": "default-token-jzq7d"
+        }
+      }],
+    "enableServiceLinks": true
+  },
+  "status": {
+    "conditions": [
+      {
+        "lastTransitionTime": "2020-06-14T21:50:09Z",
+        "status": "True",
+        "type": "Initialized"
+      },
+      {
+        "lastTransitionTime": "2020-06-14T21:50:10Z",
+        "status": "True",
+        "type": "Ready"
+      },
+      {
+        "lastTransitionTime": "2020-06-14T21:50:10Z",
+        "status": "True",
+        "type": "ContainersReady"
+      },
+      {
+        "lastTransitionTime": "2020-06-14T21:50:09Z",
+        "status": "True",
+        "type": "PodScheduled"
+      }],
+    "containerStatuses": [
+      {
+        "containerID": "docker://818b0098946c67e6ac56cb7c0934b7c2a9f50feb7244b422b2a7f566f7e5d0df",
+        "image": "sampleapp:latest",
+        "imageID":
+        "docker-pullable://localhost:5000/sampleapp@sha256:3cefb2db514db73c69854fee8abd072f27240519432d08aad177a57ee34b7d39",
+        "lastState": {
+        },
+        "name": "sampleapp",
+        "ready": true,
+        "restartCount": 0,
+        "state": {
+          "running": {
+            "startedAt": "2020-06-14T21:50:10Z"
+          }
+        },
+        "started": true
+      }],
+    "hostIP": "192.168.65.3",
+    "phase": "Running",
+    "podIP": "10.1.0.47",
+    "qosClass": "BestEffort",
+    "startTime": "2020-06-14T21:50:09Z",
+    "podIPs": [
+      {
+        "ip": "10.1.0.47"
+      }]
+  }
+}
+
