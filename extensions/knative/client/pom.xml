@@ -17,68 +17,64 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <groupId>io.fabric8</groupId>
-        <artifactId>knative-extension-pom</artifactId>
-        <version>4.7-SNAPSHOT</version>
-        <relativePath>..</relativePath>
-    </parent>
-    <modelVersion>4.0.0</modelVersion>
-
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
     <groupId>io.fabric8</groupId>
-    <artifactId>knative-client</artifactId>
-    <name>Fabric8 :: Knative :: Client</name>
-    <packaging>bundle</packaging>
+    <artifactId>knative-extension-pom</artifactId>
+    <version>4.7-SNAPSHOT</version>
+  </parent>
 
-    <properties>
-        <osgi.import>
-            io.fabric8.kubernetes.api.builder,
-            !io.fabric8.knative.client.*,
-            *
-        </osgi.import>
-        <osgi.export>
-            io.fabric8.knative.client.*
-        </osgi.export>
-    </properties>
+  <artifactId>knative-client</artifactId>
+  <packaging>bundle</packaging>
+  <name>Fabric8 :: Knative :: Client</name>
 
-    <dependencies>
-        <dependency>
-            <groupId>io.sundr</groupId>
-            <artifactId>builder-annotations</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.sundr</groupId>
-            <artifactId>transform-annotations</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.fabric8</groupId>
-            <artifactId>knative-model</artifactId>
-          </dependency>
-        <dependency>
-          <groupId>io.fabric8</groupId>
-          <artifactId>kubernetes-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.module</groupId>
-            <artifactId>jackson-module-jaxb-annotations</artifactId>
-        </dependency>
-      <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter-engine</artifactId>
-        <version>${junit.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter-migrationsupport</artifactId>
-        <version>${junit.version}</version>
-        <scope>test</scope>
-      </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
+  <properties>
+    <osgi.import>
+      io.fabric8.kubernetes.api.builder,
+      !io.fabric8.knative.client.*,
+      *
+    </osgi.import>
+    <osgi.export>
+      io.fabric8.knative.client.*
+    </osgi.export>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.sundr</groupId>
+      <artifactId>builder-annotations</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.sundr</groupId>
+      <artifactId>transform-annotations</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>knative-model</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.module</groupId>
+      <artifactId>jackson-module-jaxb-annotations</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-migrationsupport</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
 
 </project>
