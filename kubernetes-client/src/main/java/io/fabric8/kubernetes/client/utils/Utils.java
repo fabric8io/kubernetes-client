@@ -29,6 +29,7 @@ import java.net.URLEncoder;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
@@ -65,7 +66,7 @@ public class Utils {
   }
 
   public static String convertSystemPropertyNameToEnvVar(String systemPropertyName) {
-    return systemPropertyName.toUpperCase().replaceAll("[.-]", "_");
+    return systemPropertyName.toUpperCase(Locale.ROOT).replaceAll("[.-]", "_");
   }
 
   public static String getEnvVar(String envVarName, String defaultValue) {
@@ -323,7 +324,7 @@ public class Utils {
   }
 
   public static String getPluralFromKind(String kind) {
-    StringBuffer pluralBuffer = new StringBuffer(kind.toLowerCase());
+    StringBuffer pluralBuffer = new StringBuffer(kind.toLowerCase(Locale.ROOT));
     switch (kind) {
       case "ComponentStatus":
       case "Ingress":

@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -47,7 +48,7 @@ public class URLFromOpenshiftRouteImpl implements ServiceToURLProvider {
         OpenShiftClient openShiftClient = client.adapt(OpenShiftClient.class);
         Route route = openShiftClient.routes().inNamespace(namespace).withName(service.getMetadata().getName()).get();
         if (route != null) {
-          return (serviceProtocol + "://" + route.getSpec().getHost()).toLowerCase();
+          return (serviceProtocol + "://" + route.getSpec().getHost()).toLowerCase(Locale.ROOT);
         }
       } catch (KubernetesClientException e) {
         if(e.getCode() == HttpURLConnection.HTTP_FORBIDDEN) {
