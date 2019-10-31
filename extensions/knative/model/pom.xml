@@ -109,13 +109,13 @@
         <artifactId>jsonschema2pojo-maven-plugin</artifactId>
         <version>${jsonschema2pojo.version}</version>
         <configuration>
-          <sourceDirectory>${basedir}/src/main/resources/schema</sourceDirectory>
+          <sourceDirectory>${project.basedir}/src/main/resources/schema</sourceDirectory>
           <targetPackage>io.fabric8.knative.api.model</targetPackage>
           <includeConstructors>true</includeConstructors>
           <includeJsr303Annotations>false</includeJsr303Annotations>
           <includeToString>false</includeToString>
           <includeHashcodeAndEquals>false</includeHashcodeAndEquals>
-          <outputDirectory>${basedir}/target/generated-sources</outputDirectory>
+          <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
           <customAnnotator>io.fabric8.knative.KnativeTypeAnnotator</customAnnotator>
         </configuration>
         <executions>

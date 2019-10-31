@@ -94,13 +94,13 @@
           <artifactId>jsonschema2pojo-maven-plugin</artifactId>
           <version>${jsonschema2pojo.version}</version>
           <configuration>
-            <sourceDirectory>${basedir}/src/main/resources/schema</sourceDirectory>
+            <sourceDirectory>${project.basedir}/src/main/resources/schema</sourceDirectory>
             <targetPackage>io.fabric8.tekton.api.model</targetPackage>
             <includeConstructors>true</includeConstructors>
             <includeJsr303Annotations>false</includeJsr303Annotations>
             <includeToString>false</includeToString>
             <includeHashcodeAndEquals>false</includeHashcodeAndEquals>
-            <outputDirectory>${basedir}/target/generated-sources</outputDirectory>
+            <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
             <customAnnotator>io.fabric8.tekton.TektonTypeAnnotator</customAnnotator>
           </configuration>
           <executions>
@@ -128,9 +128,9 @@
               <configuration>
                 <target>
                   <echo>removing the duplicate generated calss</echo>
-                  <delete file="${basedir}/target/generated-sources/io/fabric8/tekton/pipeline/v1alpha1/ArrayOrString.java" verbose="true" />
+                  <delete file="${project.build.directory}/generated-sources/io/fabric8/tekton/pipeline/v1alpha1/ArrayOrString.java" verbose="true" />
                   <delete verbose="true">
-                    <fileset dir="${basedir}/target/generated-sources">
+                    <fileset dir="${project.build.directory}/generated-sources">
                       <include name="*.java" />
                     </fileset>
                   </delete>
