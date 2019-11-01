@@ -23,6 +23,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import static okhttp3.TlsVersion.TLS_1_0;
 
@@ -40,7 +41,7 @@ public class MasterProtocolTest {
                 .withTlsVersions(TLS_1_0)
                 .withTrustCerts(true)
                 .build();
-        assertTrue(config.getMasterUrl().toLowerCase().startsWith(Config.HTTPS_PROTOCOL_PREFIX));
+        assertTrue(config.getMasterUrl().toLowerCase(Locale.ROOT).startsWith(Config.HTTPS_PROTOCOL_PREFIX));
 
         sslServer.destroy();
     }
@@ -54,7 +55,7 @@ public class MasterProtocolTest {
         Config config = new ConfigBuilder()
                 .withMasterUrl(host + ":" +port)
                 .build();
-        assertTrue(config.getMasterUrl().toLowerCase().startsWith(Config.HTTP_PROTOCOL_PREFIX));
+        assertTrue(config.getMasterUrl().toLowerCase(Locale.ROOT).startsWith(Config.HTTP_PROTOCOL_PREFIX));
         plainServer.destroy();
     }
 }

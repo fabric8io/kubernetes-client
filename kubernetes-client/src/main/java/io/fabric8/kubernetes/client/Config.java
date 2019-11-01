@@ -48,6 +48,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static okhttp3.TlsVersion.TLS_1_2;
@@ -226,7 +227,7 @@ public class Config {
     }
     configFromSysPropsOrEnvVars(config);
 
-    if (!config.masterUrl.toLowerCase().startsWith(HTTP_PROTOCOL_PREFIX) && !config.masterUrl.toLowerCase().startsWith(HTTPS_PROTOCOL_PREFIX)) {
+    if (!config.masterUrl.toLowerCase(Locale.ROOT).startsWith(HTTP_PROTOCOL_PREFIX) && !config.masterUrl.toLowerCase(Locale.ROOT).startsWith(HTTPS_PROTOCOL_PREFIX)) {
       config.masterUrl = (SSLUtils.isHttpsAvailable(config) ? HTTPS_PROTOCOL_PREFIX : HTTP_PROTOCOL_PREFIX) + config.masterUrl;
     }
 
@@ -272,7 +273,7 @@ public class Config {
     this.userAgent = userAgent;
     this.tlsVersions = tlsVersions;
 
-    if (!this.masterUrl.toLowerCase().startsWith(HTTP_PROTOCOL_PREFIX) && !this.masterUrl.startsWith(HTTPS_PROTOCOL_PREFIX)) {
+    if (!this.masterUrl.toLowerCase(Locale.ROOT).startsWith(HTTP_PROTOCOL_PREFIX) && !this.masterUrl.startsWith(HTTPS_PROTOCOL_PREFIX)) {
       this.masterUrl = (SSLUtils.isHttpsAvailable(this) ? HTTPS_PROTOCOL_PREFIX : HTTP_PROTOCOL_PREFIX) + this.masterUrl;
     }
 
@@ -622,7 +623,7 @@ public class Config {
   }
 
   private static String getHomeDir() {
-    String osName = System.getProperty("os.name").toLowerCase();
+    String osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);
     if (osName.startsWith("win")) {
       String homeDrive = System.getenv("HOMEDRIVE");
       String homePath = System.getenv("HOMEPATH");

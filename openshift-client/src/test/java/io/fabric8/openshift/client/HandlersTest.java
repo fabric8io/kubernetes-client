@@ -53,6 +53,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Locale;
+
 public class HandlersTest {
 
   @Test
@@ -76,7 +78,7 @@ public class HandlersTest {
   }
 
   private void checkHandler(HasMetadata hasMetadata, ResourceHandler handler) {
-    assertEquals(hasMetadata.getKind().toLowerCase(), handler.getKind().toLowerCase());
-    assertEquals(hasMetadata.getApiVersion().toLowerCase(), handler.getApiVersion().toLowerCase());
+    assertEquals(hasMetadata.getKind().toLowerCase(Locale.ROOT), handler.getKind().toLowerCase(Locale.ROOT));
+    assertEquals(hasMetadata.getApiVersion().toLowerCase(Locale.ROOT), handler.getApiVersion().toLowerCase(Locale.ROOT));
   }
 }

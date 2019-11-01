@@ -22,6 +22,7 @@ import static io.fabric8.mockwebserver.crud.AttributeType.WITHOUT;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -130,7 +131,7 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
   public AttributeSet extract(HasMetadata o) {
     AttributeSet attributes = new AttributeSet();
     if (!Utils.isNullOrEmpty(o.getKind())) {
-      attributes = attributes.add(new Attribute(KIND, o.getKind().toLowerCase()));
+      attributes = attributes.add(new Attribute(KIND, o.getKind().toLowerCase(Locale.ROOT)));
     }
 
     if (!Utils.isNullOrEmpty(o.getMetadata().getName())) {
