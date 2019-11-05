@@ -18,8 +18,6 @@ package io.fabric8.kubernetes.client.mock;
 
 import static org.junit.Assert.assertTrue;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.Status;
@@ -57,8 +55,6 @@ public class WatchTest {
           "401: The event in requested index is outdated and cleared (the requested history has been cleared [3/1]) [2]")
       .build();
   static final WatchEvent outdatedEvent = new WatchEventBuilder().withStatusObject(outdatedStatus).build();
-
-  private static final ObjectMapper mapper = new ObjectMapper();
 
   @Test
   public void testDeletedOutdatedAndAdded() throws InterruptedException {
@@ -106,45 +102,6 @@ public class WatchTest {
       assertTrue(addLatch.await(10, TimeUnit.SECONDS));
     }
     assertTrue(onCloseCalled[0]);
-  }
-
-  @Test
-  public void testHttpOutdatedAndModified() throws InterruptedException,
-                                                   JsonProcessingException {
-    KubernetesClient client = server.getClient().inNamespace("test");
-
-    final String path = "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true";
-    final String pathWithoutResourceVersion = "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&watch=true";
-
-    server.expect()
-        .withPath(path)
-        .andReturn(200, new StatusBuilder().withCode(200).build()).once();
-    server.expect()
-        .withPath(path)
-        .andReturn(200, mapper.writeValueAsString(outdatedEvent) + '\n').once();
-    server.expect()
-        .withPath(pathWithoutResourceVersion)
-        .andReturn(201, mapper.writeValueAsString(pod1) + '\n').once();
-
-    final CountDownLatch modifyLatch = new CountDownLatch(1);
-    try (Watch watch = client.pods().withName("pod1").withResourceVersion("1").watch(new Watcher<Pod>() {
-      @Override
-      public void eventReceived(Action action, Pod resource) {
-        switch (action) {
-          case MODIFIED:
-            modifyLatch.countDown();
-            break;
-          default:
-            throw new AssertionFailedError();
-        }
-      }
-
-      @Override
-      public void onClose(KubernetesClientException cause) {
-      }
-    })) /* autoclose */ {
-      assertTrue(modifyLatch.await(10, TimeUnit.SECONDS));
-    }
   }
 
   @Test
