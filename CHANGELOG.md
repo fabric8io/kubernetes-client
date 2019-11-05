@@ -18,6 +18,7 @@
 * Fix #1827: Fix `withGracePeriod` and `withPropagationPolicy` return type to safely chain further DSL methods and default GracePeriod to 30s
 * Fix #1828: VersionInfo date parsing of year
 * Fix #1844: KubernetesDeserializer can now handle ArrayNode.
+* Fix #1853: Reverts changes introduced by #1800
 
 #### Improvements
 * Cleanup log4j dependency from project

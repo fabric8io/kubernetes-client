@@ -16,8 +16,6 @@
 
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import static java.net.HttpURLConnection.HTTP_GONE;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -30,28 +28,22 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.Utils;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.HttpUrl;
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
 import okhttp3.logging.HttpLoggingInterceptor;
 import okio.BufferedSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static java.net.HttpURLConnection.HTTP_GONE;
 
 public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourceList<T>> implements
   Watch {
@@ -273,14 +265,16 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
         }
       } else if (object instanceof Status) {
         Status status = (Status) object;
-
+        // The resource version no longer exists - this has to be handled by the caller.
         if (status.getCode() == HTTP_GONE) {
-          logger.info("The resource version {} no longer exists. Scheduling a reconnect.", resourceVersion.get());
-          resourceVersion.set(null);
-          scheduleReconnect();
-        } else {
-          logger.error("Error received: {}", status.toString());
+          // exception
+          // shut down executor, etc.
+          close();
+          watcher.onClose(new KubernetesClientException(status));
+          return;
         }
+
+        logger.error("Error received: {}", status.toString());
       } else {
         logger.error("Unknown message received: {}", messageSource);
       }
