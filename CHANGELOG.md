@@ -2,10 +2,21 @@
 
 ### 4.7-SNAPSHOT
 #### Bugs
+* Fix #1838: Use the correct apiGroup for Knative in KnativeResourceMappingProvider
+
+#### Improvements
+
+#### Dependency Upgrade
+* chore(deps): bump maven-jar-plugin from 3.1.2 to 3.2.0
+* chore(deps): bump maven-source-plugin from 3.1.0 to 3.2.0
+
+#### New Feature
+
+### 4.6.2 (01-11-2019)
+#### Bugs
 * Fix #1833: Respect the termination grace period from the Kubernetes resource by default
 * Fix #1827: Fix `withGracePeriod` and `withPropagationPolicy` return type to safely chain further DSL methods and default GracePeriod to 30s
 * Fix #1828: VersionInfo date parsing of year
-* Fix #1838: Use the correct apiGroup for Knative in KnativeResourceMappingProvider
 * Fix #1844: KubernetesDeserializer can now handle ArrayNode.
 
 #### Improvements

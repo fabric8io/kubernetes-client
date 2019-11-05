@@ -15,14 +15,25 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.model.OwnerReference;
+import io.fabric8.kubernetes.api.model.apps.DoneableReplicaSet;
+import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
+import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
+import io.fabric8.kubernetes.client.dsl.LogWatch;
+import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.ReplicaSetOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
+import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.OutputStream;
+import java.io.Reader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -260,5 +271,66 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
         poller.cancel(true);
         executor.shutdown();
       }
+  }
+
+  public String getLog() {
+    return getLog(false);
+  }
+
+  public String getLog(Boolean isPretty) {
+    StringBuilder stringBuilder = new StringBuilder();
+    List<RollableScalableResource<ReplicaSet, DoneableReplicaSet>> rcList = doGetLog();
+    for (RollableScalableResource<ReplicaSet, DoneableReplicaSet> rcOperation : rcList) {
+      stringBuilder.append(rcOperation.getLog(isPretty));
+    }
+    return stringBuilder.toString();
+  }
+
+  private List<RollableScalableResource<ReplicaSet, DoneableReplicaSet>> doGetLog() {
+    List<RollableScalableResource<ReplicaSet, DoneableReplicaSet>> rcs = new ArrayList<>();
+    DeploymentConfig deploymentConfig = fromServer().get();
+    String rcUid = deploymentConfig.getMetadata().getUid();
+
+    ReplicaSetOperationsImpl rsOperations = new ReplicaSetOperationsImpl((RollingOperationContext) context);
+    ReplicaSetList rcList = rsOperations.withLabels(deploymentConfig.getMetadata().getLabels()).list();
+
+    for (ReplicaSet rs : rcList.getItems()) {
+      OwnerReference ownerReference = KubernetesResourceUtil.getControllerUid(rs);
+      if (ownerReference != null && ownerReference.getUid().equals(rcUid)) {
+        rcs.add(rsOperations.withName(rs.getMetadata().getName()));
+      }
+    }
+    return rcs;
+  }
+
+  /**
+   * Returns an unclosed Reader. It's the caller responsibility to close it.
+   * @return Reader
+   */
+  @Override
+  public Reader getLogReader() {
+    List<RollableScalableResource<ReplicaSet, DoneableReplicaSet>> podResources = doGetLog();
+    if (podResources.size() > 1) {
+      throw new KubernetesClientException("Reading logs is not supported for multicontainer jobs");
+    } else if (podResources.size() == 1) {
+      return podResources.get(0).getLogReader();
+    }
+    return null;
+  }
+
+  @Override
+  public LogWatch watchLog() {
+    return watchLog(null);
+  }
+
+  @Override
+  public LogWatch watchLog(OutputStream out) {
+    List<RollableScalableResource<ReplicaSet, DoneableReplicaSet>> podResources = doGetLog();
+    if (podResources.size() > 1) {
+      throw new KubernetesClientException("Watching logs is not supported for multicontainer jobs");
+    } else if (podResources.size() == 1) {
+      return podResources.get(0).watchLog(out);
+    }
+    return null;
   }
 }
