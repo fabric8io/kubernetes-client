@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.mock;
 
 import static org.junit.Assert.assertTrue;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
@@ -108,6 +109,45 @@ public class WatchTest {
   }
 
   @Test
+  public void testHttpOutdatedAndModified() throws InterruptedException,
+                                                   JsonProcessingException {
+    KubernetesClient client = server.getClient().inNamespace("test");
+
+    final String path = "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true";
+    final String pathWithoutResourceVersion = "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&watch=true";
+
+    server.expect()
+        .withPath(path)
+        .andReturn(200, new StatusBuilder().withCode(200).build()).once();
+    server.expect()
+        .withPath(path)
+        .andReturn(200, mapper.writeValueAsString(outdatedEvent) + '\n').once();
+    server.expect()
+        .withPath(pathWithoutResourceVersion)
+        .andReturn(201, mapper.writeValueAsString(pod1) + '\n').once();
+
+    final CountDownLatch modifyLatch = new CountDownLatch(1);
+    try (Watch watch = client.pods().withName("pod1").withResourceVersion("1").watch(new Watcher<Pod>() {
+      @Override
+      public void eventReceived(Action action, Pod resource) {
+        switch (action) {
+          case MODIFIED:
+            modifyLatch.countDown();
+            break;
+          default:
+            throw new AssertionFailedError();
+        }
+      }
+
+      @Override
+      public void onClose(KubernetesClientException cause) {
+      }
+    })) /* autoclose */ {
+      assertTrue(modifyLatch.await(10, TimeUnit.SECONDS));
+    }
+  }
+
+  @Test
   public void testHttpErrorWithOutdated() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       logger.info("testHttpErrorWithOutdated");
@@ -142,7 +182,7 @@ public class WatchTest {
     // accept watch and disconnect
     server.expect().withPath(path).andUpgradeToWebSocket().open().done().once();
     // refuse reconnect attempts 6 times
-    server.expect().withPath(path).andReturn(503, new StatusBuilder().withCode(503).build()).times(1);
+    server.expect().withPath(path).andReturn(503, new StatusBuilder().withCode(503).build()).times(6);
     // accept next reconnect and send ADDED event
     server.expect().withPath(path)
         .andUpgradeToWebSocket().open(new WatchEvent(pod1, "ADDED")).done().once();
