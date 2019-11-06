@@ -104,7 +104,8 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
 
   @Override
   int getCurrentReplicas(ReplicaSet current) {
-    return current.getStatus().getReplicas();
+    return (current != null && current.getStatus() != null && current.getStatus().getReplicas() != null)
+      ? current.getStatus().getReplicas() : -1;
   }
 
   @Override

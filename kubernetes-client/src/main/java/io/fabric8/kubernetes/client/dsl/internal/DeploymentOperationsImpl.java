@@ -139,7 +139,8 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
 
   @Override
   int getCurrentReplicas(Deployment current) {
-    return current.getStatus().getReplicas();
+    return (current != null && current.getStatus() != null && current.getStatus().getReplicas() != null)
+      ? current.getStatus().getReplicas() : -1;
   }
 
   @Override

@@ -80,7 +80,8 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
 
   @Override
   int getCurrentReplicas(StatefulSet current) {
-    return current.getStatus().getReplicas();
+    return (current != null && current.getStatus() != null && current.getStatus().getCurrentReplicas() != null)
+      ? current.getStatus().getCurrentReplicas() : -1;
   }
 
   @Override
