@@ -3,7 +3,7 @@
 ### 4.7-SNAPSHOT
 #### Bugs
 * Fix #1838: Use the correct apiGroup for Knative in KnativeResourceMappingProvider
-* Fix #1856L Make test for current replica null safe.
+* Fix #1856: Make test for current replica null safe.
 
 #### Improvements
 
