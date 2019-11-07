@@ -641,7 +641,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   public Boolean delete() {
     if (item != null || (name != null && !name.isEmpty())) {
       try {
-        if (cascading && !isReaping()) {
+        if (reloadingFromServer && cascading && !isReaping()) {
           if (reaper != null) {
             setReaping(true);
             //If the reaper also removes the target resource, we can return asap.

@@ -3,6 +3,7 @@
 ### 4.7-SNAPSHOT
 #### Bugs
 * Fix #1838: Use the correct apiGroup for Knative in KnativeResourceMappingProvider
+* Fix #1856: Prevent NPE loop when deleting locally loaded scaleable resource (e.g. statefulset).
 
 #### Improvements
 
