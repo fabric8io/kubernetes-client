@@ -3,7 +3,7 @@
   <parent>
     <artifactId>annotations</artifactId>
     <groupId>io.dekorate</groupId>
-    <version>0.9-SNAPSHOT</version>
+    <version>0.10-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -18,10 +18,20 @@
       <version>${project.version}</version>
     </dependency>
 
+    <!-- This is the only case in dekorate where we are not using sundrio just for generating own code!
+         This module does call sundrio functions directly, so we can make sundrio dependencies optional here.
+     -->
     <dependency>
       <groupId>io.sundr</groupId>
       <artifactId>builder-annotations</artifactId>
+      <scope>compile</scope>
     </dependency>
+
+    <dependency>
+      <groupId>io.sundr</groupId>
+      <artifactId>sundr-codegen</artifactId>
+    </dependency>
+
     <!-- Testing -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>

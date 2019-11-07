@@ -17,7 +17,7 @@ package io.dekorate.crd.configurator;
 
 import io.dekorate.crd.config.CustomResourceConfigBuilder;
 import io.dekorate.crd.util.CamelCase;
-import io.dekorate.crd.util.Pluralize;
+import io.dekorate.utils.Pluralize;
 import io.dekorate.kubernetes.config.Configurator;
 import io.dekorate.utils.Strings;
 
