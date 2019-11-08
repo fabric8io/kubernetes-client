@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.apps.StatefulSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetList;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.Deletable;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
@@ -139,6 +140,17 @@ public class StatefulSetTest {
 
     deleted = client.apps().statefulSets().inNamespace("ns1").withName("repl2").delete();
     assertTrue(deleted);
+  }
+
+  @Test
+  public void testDeleteLoadedResource() {
+    StatefulSet response = server.getClient().apps().statefulSets().load(getClass().getResourceAsStream("/test-statefulset.yml")).get();
+    server.expect().delete().withPath("/apis/apps/v1beta1/namespaces/test/statefulsets/example").andReturn(200, response).once();
+
+    KubernetesClient client = server.getClient();
+
+    Deletable<Boolean> items = client.load(getClass().getResourceAsStream("/test-statefulset.yml"));
+    assertTrue(items.delete());
   }
 
   @Test
