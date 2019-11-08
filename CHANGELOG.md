@@ -2,16 +2,28 @@
 
 ### 4.7-SNAPSHOT
 #### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+### 4.6.3 (09-11-2019)
+#### Bugs
 * Fix #1838: Use the correct apiGroup for Knative in KnativeResourceMappingProvider
 * Fix #1856: Prevent NPE loop when deleting locally loaded scaleable resource (e.g. statefulset).
+* Fix #1853: Revert #1800 due to the concern pointed out [here](https://github.com/fabric8io/kubernetes-client/pull/1800#issuecomment-549561724)
 
 #### Improvements
 
 #### Dependency Upgrade
 * chore(deps): bump maven-jar-plugin from 3.1.2 to 3.2.0
 * chore(deps): bump maven-source-plugin from 3.1.0 to 3.2.0
+* chore(deps): bump jackson-bom from 2.9.10 to 2.10.0
 
 #### New Feature
+* Fix #1188: Support for logs for Jobs
 
 ### 4.6.2 (01-11-2019)
 #### Bugs
