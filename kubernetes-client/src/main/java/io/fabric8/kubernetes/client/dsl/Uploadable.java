@@ -15,6 +15,9 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface CopyOrReadable<B, I, UB> extends Copiable<B>, Readable<I>, Uploadable<UB> {
+import java.nio.file.Path;
 
+public interface Uploadable<T> {
+
+  T upload(Path path);
 }

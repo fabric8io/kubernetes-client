@@ -5,6 +5,7 @@
 * Fix #1838: Use the correct apiGroup for Knative in KnativeResourceMappingProvider
 
 #### Improvements
+* Fix #1765 Ability to upload files to a pod
 
 #### Dependency Upgrade
 * chore(deps): bump maven-jar-plugin from 3.1.2 to 3.2.0

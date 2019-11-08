@@ -1,0 +1,185 @@
+/**
+ * Copyright (C) 2015 Red Hat, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.fabric8.kubernetes.client.dsl.internal.uploadable;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Optional;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.ObjIntConsumer;
+import java.util.zip.GZIPOutputStream;
+
+import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
+import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
+import io.fabric8.kubernetes.client.utils.URLUtils;
+import io.fabric8.kubernetes.client.utils.Utils;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import org.apache.commons.codec.binary.Base64InputStream;
+import org.apache.commons.codec.binary.Base64OutputStream;
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
+
+public class PodUpload {
+
+  private static final int DEFAULT_BUFFER_SIZE = 8192;
+  private static final int DEFAULT_CONNECTION_TIMEOUT_SECONDS = 10;
+  private static final int DEFAULT_COMPLETE_REQUEST_TIMEOUT_SECONDS = 120;
+  private static final String TAR_PATH_DELIMITER = "/";
+
+  private PodUpload() {
+  }
+
+  public static boolean upload(OkHttpClient client, PodOperationContext context,
+    OperationSupport operationSupport, Path pathToUpload)
+    throws IOException, InterruptedException {
+
+    if (Utils.isNotNullOrEmpty(context.getFile()) && pathToUpload.toFile().isFile()) {
+      return uploadFile(client, context, operationSupport, pathToUpload);
+    } else if (Utils.isNotNullOrEmpty(context.getDir()) && pathToUpload.toFile().isDirectory()) {
+      return uploadDirectory(client, context, operationSupport, pathToUpload);
+    }
+    throw new IllegalArgumentException("Provided arguments are not valid (file, directory, path)");
+  }
+
+  private static boolean uploadFile(OkHttpClient client, PodOperationContext context,
+    OperationSupport operationSupport, Path pathToUpload)
+    throws IOException, InterruptedException {
+
+    final String file = context.getFile();
+    final String directory = file.substring(0, file.lastIndexOf('/'));
+    final String command = String.format(
+      "mkdir -p %s && base64 -d - > %s", directory, file);
+    final PodUploadWebSocketListener podUploadWebSocketListener = initWebSocket(
+      buildCommandUrl(command, context, operationSupport), client);
+    try (
+      final FileInputStream fis = new FileInputStream(pathToUpload.toFile());
+      final Base64InputStream b64In = new Base64InputStream(fis, true, 0, new byte[]{'\r', '\n'})
+    ) {
+      podUploadWebSocketListener.waitUntilReady(DEFAULT_CONNECTION_TIMEOUT_SECONDS);
+      copy(b64In, podUploadWebSocketListener::send);
+      podUploadWebSocketListener.waitUntilComplete(DEFAULT_COMPLETE_REQUEST_TIMEOUT_SECONDS);
+      return true;
+    }
+  }
+
+  private static boolean uploadDirectory(OkHttpClient client, PodOperationContext context,
+    OperationSupport operationSupport, Path pathToUpload)
+    throws IOException, InterruptedException {
+
+    final String command = String.format(
+      "mkdir -p %1$s && base64 -d - | tar -C %1$s -xzf -", context.getDir());
+    final PodUploadWebSocketListener podUploadWebSocketListener = initWebSocket(
+      buildCommandUrl(command, context, operationSupport), client);
+    try (
+      final PipedOutputStream pos = new PipedOutputStream();
+      final PipedInputStream pis = new PipedInputStream(pos);
+      final Base64OutputStream b64Out = new Base64OutputStream(pos, true, 0, new byte[]{'\r', '\n'});
+      final GZIPOutputStream gzip = new GZIPOutputStream(b64Out)
+
+    ) {
+      final CountDownLatch done = new CountDownLatch(1);
+      final AtomicReference<IOException> readFileException = new AtomicReference<>(null);
+      podUploadWebSocketListener.waitUntilReady(DEFAULT_CONNECTION_TIMEOUT_SECONDS);
+      final Runnable readFiles = () -> {
+        try (final TarArchiveOutputStream tar = new TarArchiveOutputStream(gzip)) {
+          for (File file : pathToUpload.toFile().listFiles()) {
+            addFileToTar(null, file, tar);
+          }
+          tar.flush();
+        } catch (IOException ex) {
+          readFileException.set(ex);
+        } finally {
+          done.countDown();
+        }
+      };
+      final ExecutorService es = Executors.newSingleThreadExecutor();
+      es.submit(readFiles);
+      copy(pis, podUploadWebSocketListener::send);
+      podUploadWebSocketListener.waitUntilComplete(DEFAULT_COMPLETE_REQUEST_TIMEOUT_SECONDS);
+      final boolean doneGracefully = done.await(100, TimeUnit.SECONDS);
+      es.shutdown();
+      if (readFileException.get() != null) {
+        throw readFileException.get();
+      }
+      return doneGracefully;
+    }
+  }
+
+  static void copy(InputStream inputStream, ObjIntConsumer<byte[]> consumer) throws IOException {
+    final byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+    int n;
+    while (-1 != (n = inputStream.read(buffer))) {
+      consumer.accept(buffer, n);
+    }
+  }
+
+  private static void addFileToTar(String rootTarPath, File file, TarArchiveOutputStream tar)
+    throws IOException {
+
+    final String fileName =
+      Optional.ofNullable(rootTarPath).orElse("") + TAR_PATH_DELIMITER + file.getName();
+    tar.putArchiveEntry(new TarArchiveEntry(file, fileName));
+    if (file.isFile()) {
+      Files.copy(file.toPath(), tar);
+      tar.closeArchiveEntry();
+    } else if (file.isDirectory()) {
+      tar.closeArchiveEntry();
+      for (File fileInDirectory : file.listFiles()) {
+        addFileToTar(fileName, fileInDirectory, tar);
+      }
+    }
+  }
+
+  private static PodUploadWebSocketListener initWebSocket(URL url, OkHttpClient client) {
+    final PodUploadWebSocketListener podUploadWebSocketListener = new PodUploadWebSocketListener();
+    final Request.Builder request = new Request.Builder().url(url)
+      .header("Sec-WebSocket-Protocol", "v4.channel.k8s.io").get();
+    final OkHttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
+    clone.newWebSocket(request.build(), podUploadWebSocketListener);
+    return podUploadWebSocketListener;
+  }
+
+  private static URL buildCommandUrl(String command, PodOperationContext context, OperationSupport operationSupport)
+    throws UnsupportedEncodingException, MalformedURLException {
+
+    final StringBuilder commandBuilder = new StringBuilder();
+    commandBuilder.append("exec?");
+    commandBuilder.append("command=sh&command=-c");
+    commandBuilder.append("&command=");
+    commandBuilder.append(URLUtils.encodeToUTF(command));
+    if (context.getContainerId() != null && !context.getContainerId().isEmpty()) {
+      commandBuilder.append("&container=").append(context.getContainerId());
+    }
+    commandBuilder.append("&stdin=true");
+    commandBuilder.append("&stderr=true");
+    return new URL(
+      URLUtils.join(operationSupport.getResourceUrl().toString(), commandBuilder.toString()));
+  }
+}
