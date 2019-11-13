@@ -25,6 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.fabric8.kubernetes.api.model.DeleteOptions;
+import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Rule;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -175,6 +177,58 @@ public class CustomResourceTest {
     KubernetesClient client = server.getClient();
     Map<String, Object> result = client.customResource(customResourceDefinitionContext).delete("ns1", "example-hello");
     assertEquals("Success", result.get("status"));
+  }
+
+  @Test
+  public void testCascadingDeletion() throws IOException, InterruptedException {
+    server.expect().delete().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello").andReturn(HttpURLConnection.HTTP_OK, "{\"metadata\":{},\"apiVersion\":\"v1\",\"kind\":\"Status\",\"details\":{\"name\":\"prometheus-example-rules\",\"group\":\"monitoring.coreos.com\",\"kind\":\"prometheusrules\",\"uid\":\"b3d085bd-6a5c-11e9-8787-525400b18c1d\"},\"status\":\"Success\"}").once();
+
+    KubernetesClient client = server.getClient();
+    Map<String, Object> result = client.customResource(customResourceDefinitionContext)
+      .delete("ns1", "example-hello", true);
+    assertEquals("Success", result.get("status"));
+    DeleteOptions expectedDeleteOptions = new DeleteOptions();
+    expectedDeleteOptions.setPropagationPolicy("Orphan");
+
+    RecordedRequest request = server.getLastRequest();
+    assertEquals("DELETE", request.getMethod());
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"orphanDependents\":false}",
+      request.getBody().readUtf8());
+  }
+
+  @Test
+  public void testPropagationPolicy() throws IOException, InterruptedException {
+    server.expect().delete().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello").andReturn(HttpURLConnection.HTTP_OK, "{\"metadata\":{},\"apiVersion\":\"v1\",\"kind\":\"Status\",\"details\":{\"name\":\"prometheus-example-rules\",\"group\":\"monitoring.coreos.com\",\"kind\":\"prometheusrules\",\"uid\":\"b3d085bd-6a5c-11e9-8787-525400b18c1d\"},\"status\":\"Success\"}").once();
+
+    KubernetesClient client = server.getClient();
+    Map<String, Object> result = client.customResource(customResourceDefinitionContext)
+      .delete("ns1", "example-hello", "Orphan");
+    assertEquals("Success", result.get("status"));
+
+    RecordedRequest request = server.getLastRequest();
+    assertEquals("DELETE", request.getMethod());
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}",
+      request.getBody().readUtf8());
+  }
+
+  @Test
+  public void testDeleteOptions() throws InterruptedException, IOException {
+    server.expect().delete().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello").andReturn(HttpURLConnection.HTTP_OK, "{\"metadata\":{},\"apiVersion\":\"v1\",\"kind\":\"Status\",\"details\":{\"name\":\"prometheus-example-rules\",\"group\":\"monitoring.coreos.com\",\"kind\":\"prometheusrules\",\"uid\":\"b3d085bd-6a5c-11e9-8787-525400b18c1d\"},\"status\":\"Success\"}").once();
+
+    KubernetesClient client = server.getClient();
+
+    DeleteOptions deleteOptions = new DeleteOptions();
+    deleteOptions.setGracePeriodSeconds(0L);
+    deleteOptions.setPropagationPolicy("Orphan");
+    Map<String, Object> result = client.customResource(customResourceDefinitionContext)
+      .delete("ns1", "example-hello", deleteOptions);
+
+    assertEquals("Success", result.get("status"));
+
+    RecordedRequest request = server.getLastRequest();
+    assertEquals("DELETE", request.getMethod());
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"gracePeriodSeconds\":0,\"propagationPolicy\":\"Orphan\"}",
+      request.getBody().readUtf8());;
   }
 
   @Test

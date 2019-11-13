@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.fabric8.kubernetes.api.model.DeleteOptions;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -72,7 +73,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException exception in case any read operation fails.
    */
   public Map<String, Object> load(InputStream fileInputStream) throws IOException {
-    return convertJsonStringToMap(IOHelpers.readFully(fileInputStream));
+    return convertJsonOrYamlStringToMap(IOHelpers.readFully(fileInputStream));
   }
 
   /**
@@ -83,7 +84,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException exception in case any problem in reading json.
    */
   public Map<String, Object> load(String objectAsJsonString) throws IOException {
-    return convertJsonStringToMap(objectAsJsonString);
+    return convertJsonOrYamlStringToMap(objectAsJsonString);
   }
 
   /**
@@ -370,6 +371,32 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
   }
 
   /**
+   * Delete all custom resources in a specific namespace
+   *
+   * @param namespace desired namespace
+   * @param cascading whether dependent object need to be orphaned or not.  If true/false, the "orphan"
+   *                   finalizer will be added to/removed from the object's finalizers list.
+   * @return deleted objects as HashMap
+   * @throws IOException in case of any network/parsing exception
+   */
+  public Map<String, Object> delete(String namespace, boolean cascading) throws IOException {
+    return makeCall(fetchUrl(namespace, null), objectMapper.writeValueAsString(fetchDeleteOptions(cascading, null)), HttpCallMethod.DELETE);
+  }
+
+  /**
+   * Delete all custom resources in a specific namespace
+   *
+   * @param namespace desired namespace
+   * @param deleteOptions object provided by Kubernetes API for more fine grained control over deletion.
+   *                       For more information please see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.16/#deleteoptions-v1-meta
+   * @return deleted object as HashMap
+   * @throws IOException in case of any network/object parse problems
+   */
+  public Map<String, Object> delete(String namespace, DeleteOptions deleteOptions) throws IOException {
+    return makeCall(fetchUrl(namespace, null), objectMapper.writeValueAsString(deleteOptions), HttpCallMethod.DELETE);
+  }
+
+  /**
    * Delete a custom resource in a specific namespace
    *
    * @param namespace desired namespace
@@ -378,6 +405,53 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    */
   public Map<String, Object> delete(String namespace, String name) {
     return makeCall(fetchUrl(namespace, null) + name, null, HttpCallMethod.DELETE);
+  }
+
+  /**
+   * Delete a custom resource in a specific namespace
+   *
+   * @param namespace required namespace
+   * @param name required name of custom resource
+   * @param cascading whether dependent object need to be orphaned or not.  If true/false, the "orphan"
+   *                   finalizer will be added to/removed from the object's finalizers list.
+   * @return deleted objects as HashMap
+   * @throws IOException exception related to network/object parsing
+   */
+  public Map<String, Object> delete(String namespace, String name, boolean cascading) throws IOException {
+    return makeCall(fetchUrl(namespace, null) + name, objectMapper.writeValueAsString(fetchDeleteOptions(cascading, null)), HttpCallMethod.DELETE);
+  }
+
+  /**
+   * Delete a custom resource in a specific namespace
+   *
+   * @param namespace required namespace
+   * @param name required name of custom resource
+   * @param propagationPolicy Whether and how garbage collection will be performed. Either this field or OrphanDependents
+   *                            may be set, but not both. The default policy is decided by the existing finalizer set in
+   *                            the metadata.finalizers and the resource-specific default policy.
+   *                            Acceptable values are:
+   *                            'Orphan' - orphan the dependents;
+   *                            'Background' - allow the garbage collector to delete the dependents in the background;
+   *                            'Foreground' - a cascading policy that deletes all dependents in the foreground.
+   * @return deleted object as HashMap
+   * @throws IOException in case of network/object parse exception
+   */
+  public Map<String, Object> delete(String namespace, String name, String propagationPolicy) throws IOException {
+    return makeCall(fetchUrl(namespace, null) + name, objectMapper.writeValueAsString(fetchDeleteOptions(false, propagationPolicy)) , HttpCallMethod.DELETE);
+  }
+
+  /**
+   * Delete a custom resource in a specific namespace
+   *
+   * @param namespace required namespace
+   * @param name name of custom resource
+   * @param deleteOptions object provided by Kubernetes API for more fine grained control over deletion.
+   *                       For more information please see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.16/#deleteoptions-v1-meta
+   * @return deleted object as HashMap
+   * @throws IOException in case of any network/object parse exception
+   */
+  public Map<String, Object> delete(String namespace, String name, DeleteOptions deleteOptions) throws IOException {
+    return makeCall(fetchUrl(namespace, null) + name, objectMapper.writeValueAsString(deleteOptions), HttpCallMethod.DELETE);
   }
 
   /**
@@ -516,7 +590,15 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
     return ret;
   }
 
-  private Map<String, Object> convertJsonStringToMap(String objectAsString) throws IOException {
+  /**
+   * Converts yaml/json object as string to a HashMap.
+   * This method checks whether
+   *
+   * @param objectAsString JSON or Yaml object as plain string
+   * @return object being deserialized to a HashMap
+   * @throws IOException in case of any parsing error
+   */
+  private Map<String, Object> convertJsonOrYamlStringToMap(String objectAsString) throws IOException {
     HashMap<String, Object> retVal = null;
     if (IOHelpers.isJSONValid(objectAsString)) {
       retVal =  objectMapper.readValue(objectAsString, HashMap.class);
@@ -577,9 +659,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
       if (response.isSuccessful()) {
         return objectMapper.readValue(response.body().string(), HashMap.class);
       } else {
-        String message = String.format("Error while performing the call to %s. Response code: %s", url, response.code());
-        Status status = createStatus(response);
-        throw new KubernetesClientException(message, response.code(), status);
+        throw requestFailure(request, createStatus(response));
       }
     } catch(Exception e) {
       throw KubernetesClientException.launderThrowable(e);
@@ -612,6 +692,8 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
     Request.Builder requestBuilder = new Request.Builder();
     RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), body);
     switch(httpCallMethod) {
+      case DELETE:
+        return requestBuilder.delete(requestBody).url(url).build();
       case POST:
         return requestBuilder.post(requestBody).url(url).build();
       case PUT:
@@ -624,9 +706,19 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
     Map<String, Object> oldObject = get(namespace, customResourceName);
     String resourceVersion = ((Map<String, Object>)oldObject.get("metadata")).get("resourceVersion").toString();
 
-    Map<String, Object> newObject = convertJsonStringToMap(customResourceAsJsonString);
+    Map<String, Object> newObject = convertJsonOrYamlStringToMap(customResourceAsJsonString);
     ((Map<String, Object>)newObject.get("metadata")).put("resourceVersion", resourceVersion);
 
     return objectMapper.writeValueAsString(newObject);
+  }
+
+  private DeleteOptions fetchDeleteOptions(boolean cascading, String propagationPolicy) {
+    DeleteOptions deleteOptions = new DeleteOptions();
+    if (propagationPolicy != null) {
+      deleteOptions.setPropagationPolicy(propagationPolicy);
+    } else {
+      deleteOptions.setOrphanDependents(!cascading);
+    }
+    return deleteOptions;
   }
 }
