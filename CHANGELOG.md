@@ -8,6 +8,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Fix #1041: Support cascading delete on custom resources
 
 ### 4.6.3 (09-11-2019)
 #### Bugs

@@ -187,8 +187,6 @@ public class CustomResourceTest {
     Map<String, Object> result = client.customResource(customResourceDefinitionContext)
       .delete("ns1", "example-hello", true);
     assertEquals("Success", result.get("status"));
-    DeleteOptions expectedDeleteOptions = new DeleteOptions();
-    expectedDeleteOptions.setPropagationPolicy("Orphan");
 
     RecordedRequest request = server.getLastRequest();
     assertEquals("DELETE", request.getMethod());
