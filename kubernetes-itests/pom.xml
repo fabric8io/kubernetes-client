@@ -31,14 +31,10 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-migrationsupport</artifactId>
-      <scope>test</scope>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <!-- Arquillian is still not compatible with Junit 5, so using Junit 4 here -->
+      <version>${junit.compatible-with-arquillian.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
