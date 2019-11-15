@@ -2,6 +2,7 @@
 
 ### 4.7-SNAPSHOT
 #### Bugs
+* Fix disabled Integration tests
 
 #### Improvements
 

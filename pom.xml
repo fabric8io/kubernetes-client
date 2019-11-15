@@ -29,6 +29,7 @@
 
   <url>http://fabric8.io/</url>
   <inceptionYear>2015</inceptionYear>
+  <description>Java client for Kubernetes and OpenShift</description>
 
   <organization>
     <name>Red Hat</name>
@@ -104,6 +105,7 @@
     <automaton.bundle.version>1.11-8_1</automaton.bundle.version>
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
     <junit.version>5.5.2</junit.version>
+    <junit.compatible-with-arquillian.version>4.12</junit.compatible-with-arquillian.version>
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
     <arquillian.cube.version>1.18.2</arquillian.cube.version>
     <slf4j.version>1.7.29</slf4j.version>
