@@ -57,15 +57,14 @@ public class IOHelpers {
         }
     }
 
-  public static boolean isJSONValid(String json) throws IOException {
-    boolean valid = true;
+  public static boolean isJSONValid(String json) {
     try{
       ObjectMapper objectMapper = Serialization.jsonMapper();
       objectMapper.readTree(json);
     } catch(JsonProcessingException e){
-      valid = false;
+      return false;
     }
-    return valid;
+    return true;
   }
 
   public static String convertYamlToJson(String yaml) throws IOException {
