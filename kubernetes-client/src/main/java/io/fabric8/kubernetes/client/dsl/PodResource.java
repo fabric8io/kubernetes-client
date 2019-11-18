@@ -27,7 +27,7 @@ import io.fabric8.kubernetes.client.PortForward;
 
 public interface PodResource<T, D> extends Resource<T, D>,
         Loggable<String, LogWatch>,
-        Containerable<String, ContainerResource<String, LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch, Boolean, InputStream>>,
-        ContainerResource<String, LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch, Boolean, InputStream>,
+        Containerable<String, ContainerResource<String, LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch, Boolean, InputStream, Boolean>>,
+        ContainerResource<String, LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch, Boolean, InputStream, Boolean>,
         PortForwardable<PortForward, LocalPortForward, ReadableByteChannel, WritableByteChannel> {
 }

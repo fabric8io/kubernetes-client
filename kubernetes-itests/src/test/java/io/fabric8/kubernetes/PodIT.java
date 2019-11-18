@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import okhttp3.Response;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
@@ -45,17 +46,20 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 @RunWith(ArquillianConditionalRunner.class)
 @RequiresKubernetes
@@ -175,6 +179,66 @@ public class PodIT {
       String result = new BufferedReader(new InputStreamReader(is)).lines().collect(Collectors.joining("\n"));
       assertEquals("hello", result);
     }
+  }
+
+  @Test
+  public void uploadFile() throws IOException {
+    // Wait for resources to get ready
+    ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(), currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(podReady);
+
+    final File tmpDir = Files.createTempDir();
+    final File tmpFile = new File(tmpDir, "toBeUploaded");
+    tmpFile.createNewFile();
+    Files.write("I'm uploaded", tmpFile, StandardCharsets.UTF_8);
+
+    client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName())
+      .file("/tmp/toBeUploaded").upload(tmpFile.toPath());
+
+    try (
+      final InputStream checkIs = client.pods().inNamespace(currentNamespace)
+        .withName(pod1.getMetadata().getName()).file("/tmp/toBeUploaded").read();
+      final ByteArrayOutputStream resultOs = new ByteArrayOutputStream()
+    ) {
+      IOUtils.copy(checkIs, resultOs);
+      assertEquals(resultOs.toString(StandardCharsets.UTF_8.name()),"I'm uploaded");
+    }
+  }
+
+  @Test
+  public void uploadDir() throws IOException {
+    // Wait for resources to get ready
+    ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(), currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(podReady);
+
+    final String[] files = new String[]{"1", "2"};
+    final File tmpDir = Files.createTempDir();
+    final File uploadDir = new File(tmpDir, "uploadDir");
+    assertTrue(uploadDir.mkdir());
+    Stream.of(files).map(fileName -> new File(uploadDir, fileName)).forEach(f -> {
+      try {
+        assertTrue(f.createNewFile());
+        Files.write("I'm uploaded", f, StandardCharsets.UTF_8);
+      } catch (IOException ex) {
+        fail(ex.getMessage());
+      }
+    });
+
+    client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName())
+      .dir("/tmp/uploadDir").upload(uploadDir.toPath());
+
+    Stream.of(files).forEach(fileName -> {
+      try (
+        final InputStream checkIs = client.pods().inNamespace(currentNamespace)
+          .withName(pod1.getMetadata().getName()).file("/tmp/uploadDir/"+fileName).read();
+        final ByteArrayOutputStream resultOs = new ByteArrayOutputStream()
+      ) {
+        IOUtils.copy(checkIs, resultOs);
+        assertEquals(resultOs.toString(StandardCharsets.UTF_8.name()),"I'm uploaded");
+      } catch(IOException ex) {
+        fail(ex.getMessage());
+      }
+    });
   }
 
   @Test

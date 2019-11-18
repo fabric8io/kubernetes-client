@@ -16,8 +16,8 @@
 package io.fabric8.kubernetes.client.dsl;
 
 
-public interface ContainerResource<S,W, I, PI, O, PO, X, T, B, IS>
+public interface ContainerResource<S,W, I, PI, O, PO, X, T, B, IS, UB>
         extends TtyExecInputOutputErrorable<X, O, PO, I, PI, T>,
-                FileSelector<CopyOrReadable<B, IS>>,
+                FileSelector<CopyOrReadable<B, IS, UB>>,
   TimestampBytesLimitTerminateTimeTailPrettyLoggable<S, W> {
 }

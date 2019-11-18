@@ -16,17 +16,8 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.client.utils.Utils;
-import org.assertj.core.util.Files;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -38,12 +29,12 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.api.model.WatchEvent;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.LocalPortForward;
@@ -52,17 +43,22 @@ import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
-
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import io.fabric8.kubernetes.client.server.mock.OutputStreamMessage;
-
+import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.Response;
 import okio.ByteString;
+import org.assertj.core.util.Files;
+import org.junit.Assert;
+import org.junit.Rule;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableRuleMigrationSupport
 public class PodTest {
@@ -477,6 +473,13 @@ public class PodTest {
     assertEquals("Hello World!", got);
   }
 
+  @Test
+  public void testOptionalUpload() {
+    Assertions.assertThrows(KubernetesClientException.class, () -> {
+      KubernetesClient client = server.getClient();
+      client.pods().inNamespace("ns1").withName("pod2").dir("/etc/hosts/dir").upload(Files.temporaryFolder().toPath());
+    });
+  }
 
   @Test
   public void testOptionalCopy() {

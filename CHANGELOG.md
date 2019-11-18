@@ -18,6 +18,7 @@
 * Fix #1853: Revert #1800 due to the concern pointed out [here](https://github.com/fabric8io/kubernetes-client/pull/1800#issuecomment-549561724)
 
 #### Improvements
+* Fix #1765 Ability to upload files to a pod
 
 #### Dependency Upgrade
 * chore(deps): bump maven-jar-plugin from 3.1.2 to 3.2.0
