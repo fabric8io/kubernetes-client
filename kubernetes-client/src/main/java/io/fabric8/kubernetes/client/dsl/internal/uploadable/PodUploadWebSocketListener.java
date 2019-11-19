@@ -27,8 +27,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static org.apache.commons.lang.StringUtils.isBlank;
-
 public class PodUploadWebSocketListener extends WebSocketListener {
 
   private static final byte FLAG_STDIN = (byte) 0;
@@ -86,7 +84,7 @@ public class PodUploadWebSocketListener extends WebSocketListener {
   }
 
   final void checkError() {
-    if (!isBlank(error.get())) {
+    if (error.get() != null && !error.get().trim().isEmpty()) {
       throw new KubernetesClientException(error.get());
     }
   }
