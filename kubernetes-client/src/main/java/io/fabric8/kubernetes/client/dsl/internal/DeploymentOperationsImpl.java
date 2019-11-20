@@ -290,10 +290,18 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
       if (selector == null || (selector.getMatchLabels() == null && selector.getMatchExpressions() == null)) {
         return;
       }
-      ReplicaSetOperationsImpl rsOper = new ReplicaSetOperationsImpl(new RollingOperationContext()
+      RollingOperationContext context = new RollingOperationContext()
         .withOkhttpClient(oper.client)
         .withConfig(oper.config)
-        .withNamespace(oper.getNamespace()));
+        .withNamespace(oper.getNamespace());
+
+      if (oper.getPropagationPolicy() != null) {
+        context = context.withPropagationPolicy(oper.getPropagationPolicy());
+      } else if (oper.isCascading()) {
+        context = context.withCascading(oper.isCascading());
+      }
+
+      ReplicaSetOperationsImpl rsOper = new ReplicaSetOperationsImpl(context);
       rsOper.inNamespace(oper.getNamespace()).withLabelSelector(selector).delete();
     }
   }
