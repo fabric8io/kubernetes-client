@@ -3,6 +3,7 @@
 ### 4.7-SNAPSHOT
 #### Bugs
 * Fix disabled Integration tests
+* Fix #1859 - Pass caller's propagation-policy/cascade options to the underlying replicaset when deleting a deployment
 
 #### Improvements
 
