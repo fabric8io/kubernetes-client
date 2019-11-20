@@ -2,15 +2,28 @@
 
 ### 4.7-SNAPSHOT
 #### Bugs
-* Fix disabled Integration tests
-* Fix #1859 - Pass caller's propagation-policy/cascade options to the underlying replicaset when deleting a deployment
 
 #### Improvements
 
 #### Dependency Upgrade
 
 #### New Features
+
+### 4.6.4 (20-11-2019)
+#### Bugs
+* Fix #1866: fix disabled Integration tests
+* Fix #1859 - Pass caller's propagation-policy/cascade options to the underlying replicaset when deleting a deployment
+
+#### Improvements
+* Fix #1832: chore: refactor poms and update some dependencies
+
+#### Dependency Upgrade
+* Fix #1869: chore(deps): bump maven.surefire.plugin.version from 3.0.0-M3 to 3.0.0-M4
+* Fix #1864: chore(deps): bump jackson-bom from 2.10.0 to 2.10.1
+
+#### New Features
 * Fix #1041: Support cascading delete on custom resources
+* Fix #1765 Ability to upload files to a pod
 
 ### 4.6.3 (09-11-2019)
 #### Bugs
@@ -19,7 +32,6 @@
 * Fix #1853: Revert #1800 due to the concern pointed out [here](https://github.com/fabric8io/kubernetes-client/pull/1800#issuecomment-549561724)
 
 #### Improvements
-* Fix #1765 Ability to upload files to a pod
 
 #### Dependency Upgrade
 * chore(deps): bump maven-jar-plugin from 3.1.2 to 3.2.0
