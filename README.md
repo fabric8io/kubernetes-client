@@ -52,6 +52,7 @@ This will use settings from different sources in the following order of priority
 
 System properties are preferred over environment variables. The following system properties & environment variables can be used for configuration:
 
+* `kubeconfig` / `KUBECONFIG`: Name of the kubernetes config file to read (defaults to `~/.kube/config`)
 * `kubernetes.master` / `KUBERNETES_MASTER`
 * `kubernetes.api.version` / `KUBERNETES_API_VERSION`
 * `kubernetes.oapi.version` / `KUBERNETES_OAPI_VERSION`
