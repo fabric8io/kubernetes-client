@@ -43,6 +43,19 @@ public class LoadMultipleDocumentsFromFileExample {
     for (HasMetadata meta : list) {
       System.out.println(display(meta));
     }
+
+    list = client.load(LoadMultipleDocumentsFromFileExample.class.getResourceAsStream("/multiple-document-template.yml"))
+      .accept(new Visitor<ObjectMetaBuilder>() {
+        @Override
+        public void visit(ObjectMetaBuilder item) {
+          item.addToLabels("visitorkey", "visitorvalue");
+        }
+      }).get();
+
+    System.out.println("Visited:" + list.size() + " items.");
+    for (HasMetadata meta : list) {
+      System.out.println(display(meta));
+    }
   }
 
   private static String display(HasMetadata item) {
