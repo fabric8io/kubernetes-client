@@ -19,9 +19,11 @@ package io.fabric8.kubernetes.client.utils;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.OwnerReference;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -274,5 +276,27 @@ public class KubernetesResourceUtil {
       }
     }
     return true;
+  }
+
+  /**
+   * Checks whether the resource has some controller(parent) or not.
+   *
+   * @param resource resource
+   * @return boolean value indicating whether it's a child or not.
+   */
+  public static boolean hasController(HasMetadata resource) {
+    return getControllerUid(resource) != null;
+  }
+
+  public static OwnerReference getControllerUid(HasMetadata resource) {
+    if (resource.getMetadata() != null) {
+      List<OwnerReference> ownerReferenceList = resource.getMetadata().getOwnerReferences();
+      for (OwnerReference ownerReference : ownerReferenceList) {
+        if (Boolean.TRUE.equals(ownerReference.getController())) {
+          return ownerReference;
+        }
+      }
+    }
+    return null;
   }
 }

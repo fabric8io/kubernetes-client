@@ -17,6 +17,10 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerBuilder;
+import io.fabric8.kubernetes.api.model.DoneablePod;
+import io.fabric8.kubernetes.api.model.OwnerReference;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.apps.DoneableStatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetBuilder;
@@ -24,12 +28,19 @@ import io.fabric8.kubernetes.api.model.apps.StatefulSetList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ImageEditReplacePatchable;
+import io.fabric8.kubernetes.client.dsl.LogWatch;
+import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import okhttp3.OkHttpClient;
 
+import java.io.OutputStream;
+import java.io.Reader;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class StatefulSetOperationsImpl extends RollableScalableResourceOperation<StatefulSet, StatefulSetList, DoneableStatefulSet, RollableScalableResource<StatefulSet, DoneableStatefulSet>>
@@ -121,5 +132,72 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
   @Override
   public ImageEditReplacePatchable<StatefulSet, StatefulSet, DoneableStatefulSet> withTimeoutInMillis(long timeoutInMillis) {
     return new StatefulSetOperationsImpl(((RollingOperationContext)context).withRollingTimeout(timeoutInMillis));
+  }
+
+  public String getLog() {
+    return getLog(false);
+  }
+
+  public String getLog(Boolean isPretty) {
+    StringBuilder stringBuilder = new StringBuilder();
+    List<PodResource<Pod, DoneablePod>> podOperationList = doGetLog(isPretty);
+    for (PodResource<Pod, DoneablePod> podOperation : podOperationList) {
+      stringBuilder.append(podOperation.getLog(isPretty));
+    }
+    return stringBuilder.toString();
+  }
+
+  private List<PodResource<Pod, DoneablePod>> doGetLog(boolean isPretty) {
+    List<PodResource<Pod, DoneablePod>> pods = new ArrayList<>();
+    StatefulSet statefulSet = fromServer().get();
+    String rcUid = statefulSet.getMetadata().getUid();
+
+    PodOperationsImpl podOperations = new PodOperationsImpl(new PodOperationContext(context.getClient(),
+      context.getConfig(), context.getPlural(), context.getNamespace(), context.getName(), null,
+      "v1", context.getCascading(), context.getItem(), context.getLabels(), context.getLabelsNot(),
+      context.getLabelsIn(), context.getLabelsNotIn(), context.getFields(), context.getFieldsNot(), context.getResourceVersion(),
+      context.getReloadingFromServer(), context.getGracePeriodSeconds(), context.getPropagationPolicy(), null, null, null, null, null,
+      null, null, null, null, false, false, false, null, null,
+      null, isPretty, null, null, null, null, null));
+    PodList jobPodList = podOperations.withLabels(statefulSet.getMetadata().getLabels()).list();
+
+    for (Pod pod : jobPodList.getItems()) {
+      OwnerReference ownerReference = KubernetesResourceUtil.getControllerUid(pod);
+      if (ownerReference != null && ownerReference.getUid().equals(rcUid)) {
+        pods.add(podOperations.withName(pod.getMetadata().getName()));
+      }
+    }
+    return pods;
+  }
+
+  /**
+   * Returns an unclosed Reader. It's the caller responsibility to close it.
+   * @return Reader
+   */
+  @Override
+  public Reader getLogReader() {
+    List<PodResource<Pod, DoneablePod>> podResources = doGetLog(false);
+    if (podResources.size() > 1) {
+      throw new KubernetesClientException("Reading logs is not supported for multicontainer jobs");
+    } else if (podResources.size() == 1) {
+      return podResources.get(0).getLogReader();
+    }
+    return null;
+  }
+
+  @Override
+  public LogWatch watchLog() {
+    return watchLog(null);
+  }
+
+  @Override
+  public LogWatch watchLog(OutputStream out) {
+    List<PodResource<Pod, DoneablePod>> podResources = doGetLog(false);
+    if (podResources.size() > 1) {
+      throw new KubernetesClientException("Watching logs is not supported for multicontainer jobs");
+    } else if (podResources.size() == 1) {
+      return podResources.get(0).watchLog(out);
+    }
+    return null;
   }
 }

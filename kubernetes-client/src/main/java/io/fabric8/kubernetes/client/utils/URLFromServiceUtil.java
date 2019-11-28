@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -93,7 +94,7 @@ public class URLFromServiceUtil {
   }
 
   public static String toEnvVariable(String serviceName) {
-    return serviceName.toUpperCase().replaceAll("-", "_");
+    return serviceName.toUpperCase(Locale.ROOT).replaceAll("-", "_");
   }
 
   public static String getURLFromIngressList(List<Ingress> ingressList, String namespace, String serviceName, ServicePort port) {

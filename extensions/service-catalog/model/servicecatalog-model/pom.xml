@@ -43,7 +43,6 @@
     </osgi.include.resources>
 
     <clone-kube>true</clone-kube>
-    <kube.dir>${basedir}/src/main/resources</kube.dir>
   </properties>
 
   <dependencies>
@@ -103,7 +102,7 @@
               <goal>process</goal>
             </goals>
             <configuration>
-              <outputDirectory>target/generated-sources</outputDirectory>
+              <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
               <processor>io.sundr.builder.internal.processor.BuildableProcessor</processor>
             </configuration>
           </execution>
@@ -114,13 +113,13 @@
         <artifactId>jsonschema2pojo-maven-plugin</artifactId>
         <version>${jsonschema2pojo.version}</version>
         <configuration>
-          <sourceDirectory>${basedir}/src/main/resources/schema</sourceDirectory>
+          <sourceDirectory>${project.basedir}/src/main/resources/schema</sourceDirectory>
           <targetPackage>io.fabric8.servicecatalog.api.model</targetPackage>
           <includeConstructors>true</includeConstructors>
           <includeJsr303Annotations>false</includeJsr303Annotations>
           <includeToString>false</includeToString>
           <includeHashcodeAndEquals>false</includeHashcodeAndEquals>
-          <outputDirectory>${basedir}/target/generated-sources</outputDirectory>
+          <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
           <customAnnotator>io.fabric8.servicecatalog.annotator.ServiceCatalogTypeAnnotator</customAnnotator>
         </configuration>
         <executions>

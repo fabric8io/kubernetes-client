@@ -30,7 +30,6 @@
 
   <properties>
     <clone-kube>true</clone-kube>
-    <kube.dir>${basedir}/src/main/resources</kube.dir>
   </properties>
 
   <dependencies>
@@ -89,14 +88,14 @@
         <version>${jsonschema2pojo.version}</version>
         <configuration>
           <sourcePaths>
-            <sourcePath>${kube.dir}/schema/kube-schema.json</sourcePath>
+            <sourcePath>${project.basedir}/src/main/resources/schema/kube-schema.json</sourcePath>
           </sourcePaths>
           <targetPackage>io.fabric8.kubernetes.api.model</targetPackage>
           <includeConstructors>true</includeConstructors>
           <includeJsr303Annotations>false</includeJsr303Annotations>
           <includeToString>false</includeToString>
           <includeHashcodeAndEquals>false</includeHashcodeAndEquals>
-          <outputDirectory>${basedir}/target/generated-sources</outputDirectory>
+          <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
           <customAnnotator>io.fabric8.kubernetes.annotator.KubernetesTypeAnnotator</customAnnotator>
           <annotationStyle>none</annotationStyle>
         </configuration>
@@ -123,13 +122,13 @@
             <configuration>
               <target>
                 <echo>removing the duplicate generated calss</echo>
-                <delete file="${basedir}/target/generated-sources/io/fabric8/kubernetes/api/model/IntOrString.java" verbose="true" />
-                <delete file="${basedir}/target/generated-sources/io/fabric8/kubernetes/api/model/Quantity.java" verbose="true" />
-                <delete file="${basedir}/target/generated-sources/io/fabric8/openshift/api/model/Template.java" verbose="true" />
-                <delete file="${basedir}/target/generated-sources/io/fabric8/kubernetes/api/model/HasMetadata.java" verbose="true" />
-                <delete file="${basedir}/target/generated-sources/io/fabric8/kubernetes/api/model/WatchEvent.java" verbose="true" />
+                <delete file="${project.build.directory}/generated-sources/io/fabric8/kubernetes/api/model/IntOrString.java" verbose="true" />
+                <delete file="${project.build.directory}/generated-sources/io/fabric8/kubernetes/api/model/Quantity.java" verbose="true" />
+                <delete file="${project.build.directory}/generated-sources/io/fabric8/openshift/api/model/Template.java" verbose="true" />
+                <delete file="${project.build.directory}/generated-sources/io/fabric8/kubernetes/api/model/HasMetadata.java" verbose="true" />
+                <delete file="${project.build.directory}/generated-sources/io/fabric8/kubernetes/api/model/WatchEvent.java" verbose="true" />
                 <delete verbose="true">
-                  <fileset dir="${basedir}/target/generated-sources">
+                  <fileset dir="${project.build.directory}/generated-sources">
                     <include name="*.java" />
                   </fileset>
                 </delete>
@@ -217,14 +216,14 @@
             <version>${jsonschema2pojo.version}</version>
             <configuration>
               <sourcePaths>
-                <sourcePath>${kube.dir}/schema/kube-schema.json</sourcePath>
+                <sourcePath>${project.basedir}/src/main/resources/schema/kube-schema.json</sourcePath>
               </sourcePaths>
               <targetPackage>io.fabric8.kubernetes.api.model</targetPackage>
               <includeConstructors>true</includeConstructors>
               <includeJsr303Annotations>false</includeJsr303Annotations>
               <includeToString>false</includeToString>
               <includeHashcodeAndEquals>false</includeHashcodeAndEquals>
-              <outputDirectory>${basedir}/target/generated-sources</outputDirectory>
+              <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
               <customAnnotator>io.fabric8.kubernetes.annotator.KubernetesTypeAnnotator</customAnnotator>
               <annotationStyle>none</annotationStyle>
             </configuration>

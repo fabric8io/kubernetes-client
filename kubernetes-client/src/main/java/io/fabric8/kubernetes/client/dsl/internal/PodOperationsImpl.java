@@ -25,15 +25,11 @@ import java.io.PipedOutputStream;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.file.Path;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
-
-import io.fabric8.kubernetes.client.dsl.CopyOrReadable;
-import io.fabric8.kubernetes.client.utils.Utils;
 
 import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.Pod;
@@ -43,29 +39,37 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.LocalPortForward;
 import io.fabric8.kubernetes.client.PortForward;
-import io.fabric8.kubernetes.client.dsl.PodResource;
+import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.ContainerResource;
+import io.fabric8.kubernetes.client.dsl.CopyOrReadable;
 import io.fabric8.kubernetes.client.dsl.ExecListenable;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.dsl.Execable;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.Loggable;
+import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.PrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TtyExecErrorChannelable;
-import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TtyExecErrorable;
 import io.fabric8.kubernetes.client.dsl.TtyExecOutputErrorable;
 import io.fabric8.kubernetes.client.dsl.TtyExecable;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.uploadable.PodUpload;
 import io.fabric8.kubernetes.client.utils.BlockingInputStreamPumper;
 import io.fabric8.kubernetes.client.utils.URLUtils;
-import okhttp3.*;
+import io.fabric8.kubernetes.client.utils.Utils;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
-public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, DoneablePod, PodResource<Pod, DoneablePod>> implements PodResource<Pod, DoneablePod>,CopyOrReadable<Boolean,InputStream> {
+import static io.fabric8.kubernetes.client.utils.OptionalDependencyWrapper.wrapRunWithOptionalDependency;
+
+public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, DoneablePod, PodResource<Pod, DoneablePod>> implements PodResource<Pod, DoneablePod>,CopyOrReadable<Boolean,InputStream, Boolean> {
 
     private static final String[] EMPTY_COMMAND = {"/bin/sh", "-i"};
 
@@ -130,91 +134,91 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
     return new PodOperationsImpl((PodOperationContext) context);
   }
 
- public PodOperationContext getContext() {
+  public PodOperationContext getContext() {
     return (PodOperationContext) context;
- }
-    protected String getLogParameters() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("log?pretty=").append(withPrettyOutput);
-        if (containerId != null && !containerId.isEmpty()) {
-            sb.append("&container=").append(containerId);
-        }
-        if (withTerminatedStatus) {
-            sb.append("&previous=true");
-        }
-        if (sinceSeconds != null) {
-            sb.append("&sinceSeconds=").append(sinceSeconds);
-        } else if (sinceTimestamp != null) {
-            sb.append("&sinceTime=").append(sinceTimestamp);
-        }
-        if (withTailingLines != null) {
-            sb.append("&tailLines=").append(withTailingLines);
-        }
-        if (limitBytes != null) {
-          sb.append("&limitBytes=").append(limitBytes);
-        }
-        if (withTimestamps) {
-          sb.append("&timestamps=true");
-        }
-        return sb.toString();
+  }
+  protected String getLogParameters() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("log?pretty=").append(withPrettyOutput);
+    if (containerId != null && !containerId.isEmpty()) {
+      sb.append("&container=").append(containerId);
     }
+    if (withTerminatedStatus) {
+      sb.append("&previous=true");
+    }
+    if (sinceSeconds != null) {
+      sb.append("&sinceSeconds=").append(sinceSeconds);
+    } else if (sinceTimestamp != null) {
+      sb.append("&sinceTime=").append(sinceTimestamp);
+    }
+    if (withTailingLines != null) {
+      sb.append("&tailLines=").append(withTailingLines);
+    }
+    if (limitBytes != null) {
+      sb.append("&limitBytes=").append(limitBytes);
+    }
+    if (withTimestamps) {
+      sb.append("&timestamps=true");
+    }
+    return sb.toString();
+  }
 
-    protected ResponseBody doGetLog(){
-      try {
-        URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters()));
-        Request.Builder requestBuilder = new Request.Builder().get().url(url);
-        Request request = requestBuilder.build();
-        Response response = client.newCall(request).execute();
-        ResponseBody body = response.body();
-        assertResponseCode(request, response);
-        return body;
-      } catch (Throwable t) {
-        throw KubernetesClientException.launderThrowable(forOperationType("doGetLog"), t);
-      }
+  protected ResponseBody doGetLog(){
+    try {
+      URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters()));
+      Request.Builder requestBuilder = new Request.Builder().get().url(url);
+      Request request = requestBuilder.build();
+      Response response = client.newCall(request).execute();
+      ResponseBody body = response.body();
+      assertResponseCode(request, response);
+      return body;
+    } catch (Throwable t) {
+      throw KubernetesClientException.launderThrowable(forOperationType("doGetLog"), t);
     }
+  }
 
-    @Override
-    public String getLog() {
-      try(ResponseBody body = doGetLog()) {
-        return body.string();
-      } catch (IOException e) {
-        throw KubernetesClientException.launderThrowable(forOperationType("getLog"), e);
-      }
+  @Override
+  public String getLog() {
+    try(ResponseBody body = doGetLog()) {
+      return body.string();
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(forOperationType("getLog"), e);
     }
+  }
 
   /**
    * Returns an unclosed Reader. It's the caller responsibility to close it.
-   * @return Reader                                                                                                                                                             
+   * @return Reader
    */
   @Override
-    public Reader getLogReader() {
-        return doGetLog().charStream();
-    }
+  public Reader getLogReader() {
+    return doGetLog().charStream();
+  }
 
-    @Override
-    public String getLog(Boolean isPretty) {
-        return new PodOperationsImpl(getContext().withPrettyOutput(isPretty)).getLog();
-    }
+  @Override
+  public String getLog(Boolean isPretty) {
+    return new PodOperationsImpl(getContext().withPrettyOutput(isPretty)).getLog();
+  }
 
-    @Override
-    public LogWatch watchLog() {
-        return watchLog(null);
-    }
+  @Override
+  public LogWatch watchLog() {
+    return watchLog(null);
+  }
 
-    @Override
-    public LogWatch watchLog(OutputStream out) {
-        try {
-            URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters() + "&follow=true"));
-            Request request = new Request.Builder().url(url).get().build();
-            final LogWatchCallback callback = new LogWatchCallback(out);
-            OkHttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
-            clone.newCall(request).enqueue(callback);
-            callback.waitUntilReady();
-            return callback;
-        } catch (Throwable t) {
-            throw KubernetesClientException.launderThrowable(forOperationType("watchLog"), t);
-        }
+  @Override
+  public LogWatch watchLog(OutputStream out) {
+    try {
+      URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters() + "&follow=true"));
+      Request request = new Request.Builder().url(url).get().build();
+      final LogWatchCallback callback = new LogWatchCallback(out);
+      OkHttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
+      clone.newCall(request).enqueue(callback);
+      callback.waitUntilReady();
+      return callback;
+    } catch (Throwable t) {
+      throw KubernetesClientException.launderThrowable(forOperationType("watchLog"), t);
     }
+  }
 
   @Override
   public PortForward portForward(int port, ReadableByteChannel in, WritableByteChannel out) {
@@ -244,7 +248,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
   }
 
   @Override
-    public ContainerResource<String, LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch, Boolean, InputStream> inContainer(String containerId) {
+    public ContainerResource<String, LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch, Boolean, InputStream, Boolean> inContainer(String containerId) {
         return new PodOperationsImpl(getContext().withContainerId(containerId));
     }
 
@@ -262,7 +266,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
             } else {
                 sb.append("&command=");
             }
-          
+
             try {
             	cmd = URLUtils.encodeToUTF(cmd);
             } catch (UnsupportedEncodingException encodEx) {
@@ -304,12 +308,12 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
 
 
     @Override
-    public CopyOrReadable<Boolean, InputStream> file(String file) {
+    public CopyOrReadable<Boolean, InputStream, Boolean> file(String file) {
       return new PodOperationsImpl(getContext().withFile(file));
     }
 
     @Override
-    public CopyOrReadable<Boolean, InputStream> dir(String dir) {
+    public CopyOrReadable<Boolean, InputStream, Boolean> dir(String dir) {
       return new PodOperationsImpl(getContext().withDir(dir));
     }
 
@@ -328,6 +332,18 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
       throw KubernetesClientException.launderThrowable(e);
     }
    }
+
+  @Override
+  public Boolean upload(Path path) {
+    return wrapRunWithOptionalDependency(() -> {
+      try {
+        return PodUpload.upload(client, getContext(), this, path);
+      } catch (Exception ex) {
+        Thread.currentThread().interrupt();
+        throw KubernetesClientException.launderThrowable(ex);
+      }
+    }, "Base64InputStream class is provided by commons-codec, TarArchiveOutputStream is provided by commons-compress");
+  }
 
   @Override
   public InputStream read() {

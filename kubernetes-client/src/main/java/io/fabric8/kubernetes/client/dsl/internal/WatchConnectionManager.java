@@ -255,13 +255,17 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
             } else if (object instanceof Status) {
               Status status = (Status) object;
 
+              // The resource version no longer exists - this has to be handled by the caller.
               if (status.getCode() == HTTP_GONE) {
-                logger.info("The resource version {} no longer exists. Scheduling a reconnect.", resourceVersion.get());
-                resourceVersion.set(null);
-                scheduleReconnect();
-              } else {
-                logger.error("Error received: {}", status.toString());
+                webSocketRef.set(null); // lose the ref: closing in close() would only generate a Broken pipe
+                // exception
+                // shut down executor, etc.
+                closeEvent(new KubernetesClientException(status));
+                close();
+                return;
               }
+
+              logger.error("Error received: {}", status.toString());
             } else {
               logger.error("Unknown message received: {}", message);
             }

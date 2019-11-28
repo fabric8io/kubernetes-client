@@ -40,53 +40,34 @@ public class JobExample {
 
         final Config config = new ConfigBuilder().withMasterUrl(master).build();
         try (final KubernetesClient client = new DefaultKubernetesClient(config)) {
-            final String namespace = "default";
-            final Job job = new JobBuilder()
-                    .withApiVersion("batch/v1")
-                    .withNewMetadata()
-                    .withName("pi")
-                    .withLabels(Collections.singletonMap("label1", "maximum-length-of-63-characters"))
-                    .withAnnotations(Collections.singletonMap("annotation1", "some-very-long-annotation"))
-                    .endMetadata()
-                    .withNewSpec()
-                    .withNewTemplate()
-                    .withNewSpec()
-                    .addNewContainer()
-                    .withName("pi")
-                    .withImage("perl")
-                    .withArgs("perl", "-Mbignum=bpi", "-wle", "print bpi(2000)")
-                    .endContainer()
-                    .withRestartPolicy("Never")
-                    .endSpec()
-                    .endTemplate()
-                    .endSpec()
-                    .build();
+          final String namespace = "default";
+          final Job job = new JobBuilder()
+            .withApiVersion("batch/v1")
+            .withNewMetadata()
+            .withName("pi")
+            .withLabels(Collections.singletonMap("label1", "maximum-length-of-63-characters"))
+            .withAnnotations(Collections.singletonMap("annotation1", "some-very-long-annotation"))
+            .endMetadata()
+            .withNewSpec()
+            .withNewTemplate()
+            .withNewSpec()
+            .addNewContainer()
+            .withName("pi")
+            .withImage("perl")
+            .withArgs("perl", "-Mbignum=bpi", "-wle", "print bpi(2000)")
+            .endContainer()
+            .withRestartPolicy("Never")
+            .endSpec()
+            .endTemplate()
+            .endSpec()
+            .build();
 
-            logger.info("Creating job pi.");
-            client.batch().jobs().inNamespace(namespace).create(job);
-            logger.info("Job pi is created, waiting for result...");
+          logger.info("Creating job pi.");
+          client.batch().jobs().inNamespace(namespace).create(job);
 
-            final CountDownLatch watchLatch = new CountDownLatch(1);
-            try (final Watch ignored = client.pods().inNamespace(namespace).withLabel("job-name").watch(new Watcher<Pod>() {
-                @Override
-                public void eventReceived(final Action action, Pod pod) {
-                    if (pod.getStatus().getPhase().equals("Succeeded")) {
-                        logger.info("Job pi is completed!");
-                        logger.info(client.pods().inNamespace(namespace).withName(pod.getMetadata().getName()).getLog());
-                        watchLatch.countDown();
-                    }
-                }
+          String joblog = client.batch().jobs().inNamespace(namespace).withName("pi").getLog();
+          logger.info(joblog);
 
-                @Override
-                public void onClose(final KubernetesClientException e) {
-                    logger.info("Cleaning up job pi.");
-                    client.batch().jobs().inNamespace(namespace).delete(job);
-                }
-            })) {
-                watchLatch.await(2, TimeUnit.MINUTES);
-            } catch (final KubernetesClientException | InterruptedException e) {
-                logger.error("Could not watch pod", e);
-            }
         } catch (final KubernetesClientException e) {
             logger.error("Unable to create job", e);
         }

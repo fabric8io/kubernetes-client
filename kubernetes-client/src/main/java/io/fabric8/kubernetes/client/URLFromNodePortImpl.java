@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Locale;
 
 public class URLFromNodePortImpl implements ServiceToURLProvider {
   public static Logger logger = LoggerFactory.getLogger(URLFromNodePortImpl.class);
@@ -47,7 +48,7 @@ public class URLFromNodePortImpl implements ServiceToURLProvider {
       }
     }
 
-    return urlComponents != null ? (serviceProto + "://" + urlComponents.getClusterIP() + ":" + urlComponents.getPortNumber()).toLowerCase() : null;
+    return urlComponents != null ? (serviceProto + "://" + urlComponents.getClusterIP() + ":" + urlComponents.getPortNumber()).toLowerCase(Locale.ROOT) : null;
   }
 
   private NodePortUrlComponents getUrlComponentsFromNodeList(NodeStatus nodeStatus, Integer nodePort) {

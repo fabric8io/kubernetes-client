@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.Set;
@@ -40,11 +41,11 @@ public final class Handlers {
   }
 
   public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> void register(ResourceHandler<T,V> handler) {
-    RESOURCE_HANDLER_MAP.put(new ResourceHandler.Key(handler.getKind().toLowerCase(), handler.getApiVersion()), handler);
+    RESOURCE_HANDLER_MAP.put(new ResourceHandler.Key(handler.getKind().toLowerCase(Locale.ROOT), handler.getApiVersion()), handler);
   }
 
   public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> void unregister(ResourceHandler<T,V> handler) {
-    RESOURCE_HANDLER_MAP.remove(new ResourceHandler.Key(handler.getKind().toLowerCase(), handler.getApiVersion()));
+    RESOURCE_HANDLER_MAP.remove(new ResourceHandler.Key(handler.getKind().toLowerCase(Locale.ROOT), handler.getApiVersion()));
   }
 
   public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> get(String kind, String apiVersion) {
@@ -52,7 +53,7 @@ public final class Handlers {
   }
 
   public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> get(String kind, String apiVersion, ClassLoader classLoader) {
-   return get(new ResourceHandler.Key(kind.toLowerCase(), apiVersion), classLoader);
+   return get(new ResourceHandler.Key(kind.toLowerCase(Locale.ROOT), apiVersion), classLoader);
   }
 
   public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> get(ResourceHandler.Key key) {
@@ -65,13 +66,13 @@ public final class Handlers {
     } else {
       //1st pass: match kind and apiVersion
       for (ResourceHandler handler : ServiceLoader.load(ResourceHandler.class, classLoader)) {
-        if (handler.getKind().toLowerCase().equals(key.getKind()) && handler.getApiVersion().equals(key.getApiVersion())) {
+        if (handler.getKind().toLowerCase(Locale.ROOT).equals(key.getKind()) && handler.getApiVersion().equals(key.getApiVersion())) {
           return handler;
         }
       }
       //2nd pass: match kind.
       for (ResourceHandler handler : ServiceLoader.load(ResourceHandler.class, classLoader)) {
-        if (handler.getKind().toLowerCase().equals(key.getKind())) {
+        if (handler.getKind().toLowerCase(Locale.ROOT).equals(key.getKind())) {
           return handler;
         }
       }

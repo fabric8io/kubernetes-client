@@ -15,20 +15,28 @@
  */
 package io.fabric8.kubernetes.internal;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.List;
+import java.util.Map;
+import java.util.ServiceLoader;
+import java.util.concurrent.ConcurrentHashMap;
+
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.fabric8.kubernetes.api.KubernetesResourceMappingProvider;
-import io.fabric8.kubernetes.api.model.KubernetesResource;
 
-import java.io.IOException;
-import java.util.Map;
-import java.util.ServiceLoader;
-import java.util.concurrent.ConcurrentHashMap;
+import io.fabric8.kubernetes.api.KubernetesResourceMappingProvider;
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 
 public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource> {
 
@@ -70,17 +78,38 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
 
     @Override
     public KubernetesResource deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-        ObjectNode node = jp.readValueAsTree();
-        String key = getKey(node);
-        if (key != null) {
-            Class<? extends KubernetesResource> resourceType = getTypeForKey(key);
-            if (resourceType == null) {
-                throw JsonMappingException.from(jp,"No resource type found for:" + key);
-            } else {
-                return jp.getCodec().treeToValue(node, resourceType);
+        JsonNode node = jp.readValueAsTree();
+        if (node instanceof ObjectNode) {
+          return fromObjectNode(jp, (ObjectNode) node);
+        } else if (node instanceof ArrayNode) {
+          ArrayNode arrayNode = (ArrayNode) node;
+          Iterator<JsonNode> iterator = arrayNode.elements();
+          List<HasMetadata> list = new ArrayList();
+          while (iterator.hasNext()) {
+            JsonNode jsonNode = iterator.next();
+            if (jsonNode instanceof ObjectNode) {
+              KubernetesResource resource = fromObjectNode(jp, (ObjectNode) jsonNode);
+              if (resource instanceof HasMetadata) {
+                list.add((HasMetadata)resource);
+              }
             }
+          }
+          return new KubernetesListBuilder().withItems(list).build();
         }
         return null;
+    }
+
+  private static KubernetesResource fromObjectNode(JsonParser jp, ObjectNode node) throws IOException, JsonProcessingException {
+      String key = getKey(node);
+      if (key != null) {
+        Class<? extends KubernetesResource> resourceType = getTypeForKey(key);
+        if (resourceType == null) {
+          throw JsonMappingException.from(jp,"No resource type found for:" + key);
+        } else {
+          return jp.getCodec().treeToValue(node, resourceType);
+        }
+      }
+    return null;
     }
 
     /**

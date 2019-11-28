@@ -2,8 +2,52 @@
 
 ### 4.7-SNAPSHOT
 #### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+### 4.6.4 (20-11-2019)
+#### Bugs
+* Fix #1866: fix disabled Integration tests
+* Fix #1859 - Pass caller's propagation-policy/cascade options to the underlying replicaset when deleting a deployment
+
+#### Improvements
+* Fix #1832: chore: refactor poms and update some dependencies
+
+#### Dependency Upgrade
+* Fix #1869: chore(deps): bump maven.surefire.plugin.version from 3.0.0-M3 to 3.0.0-M4
+* Fix #1864: chore(deps): bump jackson-bom from 2.10.0 to 2.10.1
+
+#### New Features
+* Fix #1041: Support cascading delete on custom resources
+* Fix #1765 Ability to upload files to a pod
+
+### 4.6.3 (09-11-2019)
+#### Bugs
+* Fix #1838: Use the correct apiGroup for Knative in KnativeResourceMappingProvider
+* Fix #1856: Prevent NPE loop when deleting locally loaded scaleable resource (e.g. statefulset).
+* Fix #1853: Revert #1800 due to the concern pointed out [here](https://github.com/fabric8io/kubernetes-client/pull/1800#issuecomment-549561724)
+
+#### Improvements
+
+#### Dependency Upgrade
+* chore(deps): bump maven-jar-plugin from 3.1.2 to 3.2.0
+* chore(deps): bump maven-source-plugin from 3.1.0 to 3.2.0
+* chore(deps): bump jackson-bom from 2.9.10 to 2.10.0
+
+#### New Feature
+* Fix #1188: Support for logs for Jobs
+
+### 4.6.2 (01-11-2019)
+#### Bugs
+* Fix #1833: Respect the termination grace period from the Kubernetes resource by default
 * Fix #1827: Fix `withGracePeriod` and `withPropagationPolicy` return type to safely chain further DSL methods and default GracePeriod to 30s
 * Fix #1828: VersionInfo date parsing of year
+* Fix #1844: KubernetesDeserializer can now handle ArrayNode.
+* Fix #1853: Reverts changes introduced by #1800
 
 #### Improvements
 * Cleanup log4j dependency from project
