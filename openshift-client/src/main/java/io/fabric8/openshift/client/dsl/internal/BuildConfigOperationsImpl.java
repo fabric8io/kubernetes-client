@@ -18,8 +18,6 @@ package io.fabric8.openshift.client.dsl.internal;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.client.dsl.Gettable;
-import io.fabric8.kubernetes.client.dsl.Reaper;
 import io.fabric8.kubernetes.client.dsl.Triggerable;
 import io.fabric8.kubernetes.client.dsl.Typeable;
 import io.fabric8.kubernetes.client.dsl.Watchable;
@@ -60,12 +58,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.BUILD;
-import static io.fabric8.openshift.client.OpenShiftAPIGroups.USER;
 
 public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, BuildConfigList, DoneableBuildConfig,
   BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build>>
@@ -111,8 +106,6 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
     this.asFile = context.getAsFile();
     this.timeout = context.getTimeout();
     this.timeoutUnit = context.getTimeoutUnit();
-
-    reaper = new BuildConfigReaper(this);
   }
 
   @Override
@@ -341,17 +334,4 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
     return new BuildConfigOperationsImpl(getContext().withSecret(secret));
   }
 
-  private static class BuildConfigReaper implements Reaper {
-    private BuildConfigOperationsImpl oper;
-
-    public BuildConfigReaper(BuildConfigOperationsImpl oper) {
-      this.oper = oper;
-    }
-
-    @Override
-    public boolean reap() {
-      oper.deleteBuilds();
-      return false;
-    }
-  }
 }

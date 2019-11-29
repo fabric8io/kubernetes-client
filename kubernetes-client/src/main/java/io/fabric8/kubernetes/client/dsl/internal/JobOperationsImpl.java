@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.api.model.OwnerReference;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
-import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
@@ -31,9 +30,7 @@ import io.fabric8.kubernetes.api.model.batch.JobList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ScalableResource;
-import io.fabric8.kubernetes.client.dsl.Reaper;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
-import okhttp3.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -214,19 +211,5 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
       return podResources.get(0).watchLog(out);
     }
     return null;
-  }
-
-  private static class JobReaper implements Reaper {
-    private JobOperationsImpl oper;
-
-    public JobReaper(JobOperationsImpl oper) {
-      this.oper = oper;
-    }
-
-    @Override
-    public boolean reap() {
-      oper.scale(0, true);
-      return false;
-    }
   }
 }

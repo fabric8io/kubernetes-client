@@ -74,8 +74,6 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
     this.type = Deployment .class;
     this.listType = DeploymentList.class;
     this.doneableType = DoneableDeployment.class;
-
-    reaper = new DeploymentReaper(this);
   }
 
   @Override
@@ -239,70 +237,6 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
     } finally {
       poller.cancel(true);
       executor.shutdown();
-    }
-  }
-
-  private static class DeploymentReaper implements Reaper {
-    private DeploymentOperationsImpl oper;
-
-    public DeploymentReaper(DeploymentOperationsImpl oper) {
-      this.oper = oper;
-    }
-
-    @Override
-    public boolean reap() {
-      Deployment deployment = oper.cascading(false).edit().editSpec().withReplicas(0).endSpec().done();
-
-      //TODO: These checks shouldn't be used as they are not realistic. We just use them to support mock/crud tests. Need to find a cleaner way to do so.
-      if (deployment.getStatus() != null) {
-        waitForObservedGeneration(deployment.getStatus().getObservedGeneration());
-      }
-
-      if (deployment.getSpec().getSelector() != null) {
-        reapMatchingReplicaSets(deployment.getSpec().getSelector());
-      }
-      return false;
-    }
-
-    private void waitForObservedGeneration(final long observedGeneration) {
-      final CountDownLatch countDownLatch = new CountDownLatch(1);
-
-      final Runnable deploymentPoller = () -> {
-        Deployment deployment = oper.getMandatory();
-        if (observedGeneration <= deployment.getStatus().getObservedGeneration()) {
-          countDownLatch.countDown();
-        }
-      };
-
-      ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-      ScheduledFuture poller = executor.scheduleWithFixedDelay(deploymentPoller, 0, 10, TimeUnit.MILLISECONDS);
-      try {
-        countDownLatch.await(30, TimeUnit.SECONDS);
-        executor.shutdown();
-      } catch (InterruptedException e) {        
-        poller.cancel(true);
-        executor.shutdown();
-        throw KubernetesClientException.launderThrowable(e);
-      }
-    }
-
-    private void reapMatchingReplicaSets(LabelSelector selector) {
-      if (selector == null || (selector.getMatchLabels() == null && selector.getMatchExpressions() == null)) {
-        return;
-      }
-      RollingOperationContext context = new RollingOperationContext()
-        .withOkhttpClient(oper.client)
-        .withConfig(oper.config)
-        .withNamespace(oper.getNamespace());
-
-      if (oper.getPropagationPolicy() != null) {
-        context = context.withPropagationPolicy(oper.getPropagationPolicy());
-      } else if (oper.isCascading()) {
-        context = context.withCascading(oper.isCascading());
-      }
-
-      ReplicaSetOperationsImpl rsOper = new ReplicaSetOperationsImpl(context);
-      rsOper.inNamespace(oper.getNamespace()).withLabelSelector(selector).delete();
     }
   }
 

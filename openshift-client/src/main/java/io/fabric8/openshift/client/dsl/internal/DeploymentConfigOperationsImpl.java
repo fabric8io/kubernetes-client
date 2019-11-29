@@ -46,7 +46,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.Reaper;
 import io.fabric8.kubernetes.client.dsl.internal.ReplicationControllerOperationsImpl;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.DeploymentConfig;
@@ -72,7 +71,6 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
     this.type = DeploymentConfig.class;
     this.listType = DeploymentConfigList.class;
     this.doneableType = DoneableDeploymentConfig.class;
-    reaper = new DeploymentConfigReaper(this, client);
   }
 
   @Override
@@ -121,89 +119,6 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
       deployment = getMandatory();
     }
     return deployment;
-  }
-
-  private static class DeploymentConfigReaper implements Reaper {
-
-    private final DeploymentConfigOperationsImpl operation;
-    private final OkHttpClient client;
-
-    public DeploymentConfigReaper(DeploymentConfigOperationsImpl operation, OkHttpClient client) {
-      this.operation = operation;
-      this.client = client;
-    }
-
-    @Override
-    public boolean reap() {
-      DeploymentConfig deployment = operation.cascading(false).edit().editSpec().withReplicas(0).endSpec().done();
-
-      //TODO: These checks shouldn't be used as they are not realistic. We just use them to support mock/crud tests. Need to find a cleaner way to do so.
-      if (deployment.getStatus() != null) {
-        waitForObservedGeneration(deployment.getStatus().getObservedGeneration());
-      }
-
-      //We are deleting the DC before reaping the replication controller, because the RC's won't go otherwise.
-      Boolean reaped = operation.cascading(false).delete();
-
-      // Waiting for the DC to be completely deleted before removing the replication controller (error in Openshift 3.9)
-      waitForDeletion();
-
-      Map<String, String> selector = new HashMap<>();
-      selector.put(DEPLOYMENT_CONFIG_REF, deployment.getMetadata().getName());
-      if (selector != null && !selector.isEmpty()) {
-        Boolean deleted = new ReplicationControllerOperationsImpl(client, operation.getConfig())
-          .inNamespace(operation.namespace)
-          .withLabels(selector)
-          .delete();
-      }
-
-      return reaped;
-    }
-
-    private void waitForObservedGeneration(final long observedGeneration) {
-      final CountDownLatch countDownLatch = new CountDownLatch(1);
-
-      final Runnable deploymentPoller = () -> {
-        DeploymentConfig deployment = operation.getMandatory();
-        if (observedGeneration <= deployment.getStatus().getObservedGeneration()) {
-          countDownLatch.countDown();
-        }
-      };
-
-      ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-      ScheduledFuture poller = executor.scheduleWithFixedDelay(deploymentPoller, 0, 10, TimeUnit.MILLISECONDS);
-      try {
-        countDownLatch.await(1, TimeUnit.MINUTES);
-        executor.shutdown();
-      } catch (InterruptedException e) {
-        poller.cancel(true);
-        executor.shutdown();
-        throw KubernetesClientException.launderThrowable(e);
-      }
-    }
-
-    private void waitForDeletion() {
-      final CountDownLatch countDownLatch = new CountDownLatch(1);
-
-      final Runnable deploymentPoller = () -> {
-        DeploymentConfig deployment = operation.get();
-        if (deployment == null) {
-          countDownLatch.countDown();
-        }
-      };
-
-      ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-      ScheduledFuture poller = executor.scheduleWithFixedDelay(deploymentPoller, 0, 10, TimeUnit.MILLISECONDS);
-      try {
-        countDownLatch.await(1, TimeUnit.MINUTES);
-        executor.shutdown();
-      } catch (InterruptedException e) {
-        poller.cancel(true);
-        executor.shutdown();
-        throw KubernetesClientException.launderThrowable(e);
-      }
-    }
-
   }
 
   @Override
