@@ -44,12 +44,6 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   public D edit() throws KubernetesClientException {
     final Function<T, T> visitor = resource -> {
       try {
-        if (isCascading() && !isReaping()) {
-          if (reaper != null) {
-            setReaping(true);
-            reaper.reap();
-          }
-        }
         return patch(resource);
       } catch (Exception e) {
         throw KubernetesClientException.launderThrowable(forOperationType("edit"), e);
@@ -71,13 +65,6 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     int maxTries = 10;
     for (int i = 0; i < maxTries; i++) {
       try {
-        if (isCascading()) {
-          if (reaper != null && !isReaping()) {
-            setReaping(true);
-            reaper.reap();
-          }
-        }
-
         final String resourceVersion;
         if (fixedResourceVersion != null) {
           resourceVersion = fixedResourceVersion;
@@ -130,12 +117,6 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     int maxTries = 10;
     for (int i = 0; i < maxTries; i++) {
       try {
-        if (isCascading()) {
-          if (reaper != null && !isReaping()) {
-            setReaping(true);
-            reaper.reap();
-          }
-        }
         String resourceVersion;
         final T got = fromServer().get();
         if (got == null) {

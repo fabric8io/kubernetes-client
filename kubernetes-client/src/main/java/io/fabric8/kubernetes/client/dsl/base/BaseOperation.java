@@ -29,13 +29,11 @@ import io.fabric8.kubernetes.client.OperationInfo;
 import io.fabric8.kubernetes.client.ResourceNotFoundException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.client.dsl.Deletable;
 import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
-import io.fabric8.kubernetes.client.dsl.Reaper;
 import io.fabric8.kubernetes.client.dsl.Replaceable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.Watchable;
@@ -89,8 +87,6 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   private final long gracePeriodSeconds;
   private final String propagationPolicy;
 
-  private boolean reaping;
-  protected Reaper reaper;
   protected String apiVersion;
 
   protected Class<T> type;
@@ -111,7 +107,6 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     this.labelsNotIn = ctx.getLabelsNotIn();
     this.fields = ctx.getFields();
     this.fieldsNot = ctx.getFieldsNot();
-    this.reaper = null;
   }
 
   /**
@@ -641,15 +636,6 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   public Boolean delete() {
     if (item != null || (name != null && !name.isEmpty())) {
       try {
-        if (reloadingFromServer && cascading && !isReaping()) {
-          if (reaper != null) {
-            setReaping(true);
-            //If the reaper also removes the target resource, we can return asap.
-            if (reaper.reap()) {
-              return true;
-            }
-          }
-        }
         deleteThis();
         return true;
       } catch (KubernetesClientException e) {
@@ -878,14 +864,6 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   public Class<D> getDoneableType() {
     return doneableType;
-  }
-
-  protected boolean isReaping() {
-    return reaping;
-  }
-
-  protected void setReaping(boolean reaping) {
-    this.reaping = reaping;
   }
 
   protected Map<String, String> getLabels() {

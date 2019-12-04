@@ -53,7 +53,6 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
     this.rolling = context.getRolling();
     this.rollingTimeout = context.getRollingTimeout();
     this.rollingTimeUnit = context.getRollingTimeUnit();
-    reaper = new ScalableReaper(this);
   }
 
   abstract T withReplicas(int count);
