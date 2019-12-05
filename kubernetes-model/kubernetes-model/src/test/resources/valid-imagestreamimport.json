@@ -2,8 +2,6 @@
   "apiVersion": "image.openshift.io/v1",
   "kind": "ImageStreamImport",
   "metadata": {
-    "annotations": {
-    },
     "labels": {
       "key": "value"
     },
