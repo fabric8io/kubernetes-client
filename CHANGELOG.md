@@ -5,6 +5,7 @@
 
 #### Improvements
 * Fix #1880: Remove use of reapers manually doing cascade deletion of resources, leave it upto Kubernetes APIServer
+* Test coverage for ServiceCatalog
 
 #### Dependency Upgrade
 
