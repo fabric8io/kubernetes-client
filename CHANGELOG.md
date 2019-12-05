@@ -7,6 +7,7 @@
 * Fix #1880: Remove use of reapers manually doing cascade deletion of resources, leave it upto Kubernetes APIServer
 
 #### Dependency Upgrade
+* Fix #1889: update tekton from v0.7.0 to v0.9.0
 
 #### New Features
 
