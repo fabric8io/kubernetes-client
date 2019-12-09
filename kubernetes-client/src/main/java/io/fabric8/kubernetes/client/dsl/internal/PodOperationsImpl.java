@@ -664,5 +664,10 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
     return new PodOperationsImpl(getContext().withTimestamps(true));
   }
 
+  @Override
+  public BytesLimitTerminateTimeTailPrettyLoggable<String, LogWatch> withoutUsingTimestamps() {
+    return new PodOperationsImpl(getContext().withTimestamps(false));
+  }
+
 }
 

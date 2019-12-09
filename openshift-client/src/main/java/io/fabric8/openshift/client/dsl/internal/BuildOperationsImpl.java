@@ -128,8 +128,10 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
     if (limitBytes != null) {
       sb.append("&limitBytes=").append(limitBytes);
     }
-    if (withTimestamps) {
+    if (Boolean.TRUE.equals(withTimestamps)) {
       sb.append("&timestamps=true");
+    } else {
+      sb.append("&timestamps=false");
     }
     return sb.toString();
   }
@@ -225,5 +227,10 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
   @Override
   public BytesLimitTerminateTimeTailPrettyLoggable<String, LogWatch> usingTimestamps() {
     return new BuildOperationsImpl(getContext().withTimestamps(true));
+  }
+
+  @Override
+  public BytesLimitTerminateTimeTailPrettyLoggable<String, LogWatch> withoutUsingTimestamps() {
+    return new BuildOperationsImpl(getContext().withTimestamps(false));
   }
 }

@@ -58,7 +58,7 @@ public class BuildOperationContext extends OperationContext {
     this.errPipe = errPipe;
     this.tty = tty;
     this.terminatedStatus = terminatedStatus;
-    this.timestamps = true;
+    this.timestamps = timestampes;
     this.sinceTimestamp = sinceTimestamp;
     this.sinceSeconds = sinceSeconds;
     this.tailingLines = tailingLines;
