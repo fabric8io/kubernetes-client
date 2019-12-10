@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.PrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TimeTailPrettyLoggable;
-import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.LogWatchCallback;
 import io.fabric8.kubernetes.client.utils.URLUtils;
@@ -43,8 +42,6 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.Reader;
 import java.net.URL;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.BUILD;
@@ -128,10 +125,8 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
     if (limitBytes != null) {
       sb.append("&limitBytes=").append(limitBytes);
     }
-    if (Boolean.TRUE.equals(withTimestamps)) {
+    if (withTimestamps) {
       sb.append("&timestamps=true");
-    } else {
-      sb.append("&timestamps=false");
     }
     return sb.toString();
   }
@@ -229,8 +224,4 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
     return new BuildOperationsImpl(getContext().withTimestamps(true));
   }
 
-  @Override
-  public BytesLimitTerminateTimeTailPrettyLoggable<String, LogWatch> withoutUsingTimestamps() {
-    return new BuildOperationsImpl(getContext().withTimestamps(false));
-  }
 }

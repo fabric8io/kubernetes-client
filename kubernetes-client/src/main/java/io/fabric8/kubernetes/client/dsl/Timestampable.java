@@ -20,6 +20,4 @@ public interface Timestampable<T> {
 
     T usingTimestamps();
 
-    T withoutUsingTimestamps();
-
 }

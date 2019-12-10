@@ -29,10 +29,10 @@ public class BuildTest {
 
   @Test
   public void testLogWithoutTimestamps() {
-    server.expect().withPath("/apis/build.openshift.io/v1/namespaces/ns1/builds/test-build/log?pretty=false&timestamps=false").andReturn(200, "test build output").times(2);
+    server.expect().withPath("/apis/build.openshift.io/v1/namespaces/ns1/builds/test-build/log?pretty=false").andReturn(200, "test build output").times(2);
     OpenShiftClient openShiftClient = server.getOpenshiftClient();
 
-    String log = openShiftClient.builds().inNamespace("ns1").withName("test-build").withoutUsingTimestamps().getLog();
+    String log = openShiftClient.builds().inNamespace("ns1").withName("test-build").getLog();
     assertEquals("test build output", log);
   }
 

@@ -48,7 +48,7 @@ public class BuildOperationContext extends OperationContext {
   public BuildOperationContext() {
   }
 
-  public BuildOperationContext(OkHttpClient client, Config config, String plural, String namespace, String name, String apiGroupName, String apiGroupVersion, Boolean cascading, Object item, Map<String, String> labels, Map<String, String[]> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, Map<String, String[]> fieldsNot,String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, String propagationPolicy, InputStream in, OutputStream out, OutputStream err, PipedOutputStream inPipe, PipedInputStream outPipe, PipedInputStream errPipe, Boolean tty, Boolean terminatedStatus, Boolean timestampes, String sinceTimestamp, Integer sinceSeconds, Integer tailingLines, Boolean prettyOutput, Integer limitBytes, String version) {
+  public BuildOperationContext(OkHttpClient client, Config config, String plural, String namespace, String name, String apiGroupName, String apiGroupVersion, Boolean cascading, Object item, Map<String, String> labels, Map<String, String[]> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, Map<String, String[]> fieldsNot,String resourceVersion, Boolean reloadingFromServer, long gracePeriodSeconds, String propagationPolicy, InputStream in, OutputStream out, OutputStream err, PipedOutputStream inPipe, PipedInputStream outPipe, PipedInputStream errPipe, Boolean tty, Boolean terminatedStatus, Boolean timestamps, String sinceTimestamp, Integer sinceSeconds, Integer tailingLines, Boolean prettyOutput, Integer limitBytes, String version) {
     super(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading, item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot,resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy);
     this.in = in;
     this.out = out;
@@ -58,7 +58,7 @@ public class BuildOperationContext extends OperationContext {
     this.errPipe = errPipe;
     this.tty = tty;
     this.terminatedStatus = terminatedStatus;
-    this.timestamps = timestampes;
+    this.timestamps = timestamps;
     this.sinceTimestamp = sinceTimestamp;
     this.sinceSeconds = sinceSeconds;
     this.tailingLines = tailingLines;
