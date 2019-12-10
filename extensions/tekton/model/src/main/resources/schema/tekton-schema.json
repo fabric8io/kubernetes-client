@@ -3076,6 +3076,37 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList"
       ]
     },
+    "tekton_v1alpha1_Condition": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "tekton.dev/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "Condition",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_meta_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/tekton_v1alpha1_ConditionSpec",
+          "javaType": "io.fabric8.tekton.pipeline.v1alpha1.ConditionSpec"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.tekton.pipeline.v1alpha1.Condition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
     "tekton_v1alpha1_ConditionCheckStatus": {
       "type": "object",
       "description": "",
@@ -3113,6 +3144,75 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.tekton.pipeline.v1alpha1.ConditionCheckStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "tekton_v1alpha1_ConditionList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "tekton.dev/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/tekton_v1alpha1_Condition",
+            "javaType": "io.fabric8.tekton.pipeline.v1alpha1.Condition"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ConditionList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_meta_ListMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.tekton.pipeline.v1alpha1.ConditionList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList"
+      ]
+    },
+    "tekton_v1alpha1_ConditionSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "check": {
+          "$ref": "#/definitions/kubernetes_Container",
+          "javaType": "io.fabric8.kubernetes.api.model.Container"
+        },
+        "params": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/tekton_v1alpha1_ParamSpec",
+            "javaType": "io.fabric8.tekton.pipeline.v1alpha1.ParamSpec"
+          }
+        },
+        "resources": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/tekton_v1alpha1_ResourceDeclaration",
+            "javaType": "io.fabric8.tekton.pipeline.v1alpha1.ResourceDeclaration"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.tekton.pipeline.v1alpha1.ConditionSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -4631,6 +4731,14 @@
     "clusterTaskList": {
       "$ref": "#/definitions/tekton_v1alpha1_ClusterTaskList",
       "javaType": "io.fabric8.tekton.pipeline.v1alpha1.ClusterTaskList"
+    },
+    "condition": {
+      "$ref": "#/definitions/tekton_v1alpha1_Condition",
+      "javaType": "io.fabric8.tekton.pipeline.v1alpha1.Condition"
+    },
+    "conditionList": {
+      "$ref": "#/definitions/tekton_v1alpha1_ConditionList",
+      "javaType": "io.fabric8.tekton.pipeline.v1alpha1.ConditionList"
     },
     "pipeline": {
       "$ref": "#/definitions/tekton_v1alpha1_Pipeline",

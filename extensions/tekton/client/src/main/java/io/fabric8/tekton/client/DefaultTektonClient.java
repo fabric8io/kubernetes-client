@@ -79,6 +79,9 @@ public class DefaultTektonClient extends BaseClient implements NamespacedTektonC
   public MixedOperation<TaskRun, TaskRunList, DoneableTaskRun, Resource<TaskRun, DoneableTaskRun>> taskRuns() {
     return new TaskRunOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
+  public MixedOperation<Condition, ConditionList, DoneableCondition, Resource<Condition, DoneableCondition>> conditions() {
+    return new ConditionOperationsImpl(this.getHttpClient(), this.getConfiguration());
+  }
 
   public NonNamespaceOperation<ClusterTask, ClusterTaskList, DoneableClusterTask, Resource<ClusterTask, DoneableClusterTask>> clusterTasks() {
     return new ClusterTaskOperationsImpl(this.getHttpClient(), this.getConfiguration());
