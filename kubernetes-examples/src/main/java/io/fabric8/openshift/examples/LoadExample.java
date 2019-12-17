@@ -91,7 +91,7 @@ public class LoadExample {
         }
 
         if (item.getMetadata().getLabels()!=null && !item.getMetadata().getLabels().isEmpty()) {
-            sb.append("Lables: [ ");
+            sb.append("Labels: [ ");
             for (Map.Entry<String,String> entry : item.getMetadata().getLabels().entrySet()) {
                 sb.append(entry.getKey()).append(":").append(entry.getValue()).append(" ");
             }
