@@ -3,6 +3,7 @@
 ### 4.7-SNAPSHOT
 #### Bugs
 * Fix #1850: Add option to disable timestamps in build logs on Openshift
+* Fix #1902: Fix the usage of reflection, so that `getMetadata` is detected properly
 
 #### Improvements
 * Fix #1880: Remove use of reapers manually doing cascade deletion of resources, leave it upto Kubernetes APIServer
