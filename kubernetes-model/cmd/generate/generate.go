@@ -39,7 +39,9 @@ import (
   batchapiv1 "k8s.io/api/batch/v1"
   batchapiv1beta1 "k8s.io/api/batch/v1beta1"
   certificates "k8s.io/api/certificates/v1beta1"
+  coordination "k8s.io/api/coordination/v1beta1"
   kapi "k8s.io/api/core/v1"
+  discovery "k8s.io/api/discovery/v1alpha1"
   events "k8s.io/api/events/v1beta1"
   extensions "k8s.io/api/extensions/v1beta1"
   networking "k8s.io/api/networking/v1"
@@ -48,6 +50,7 @@ import (
   scheduling "k8s.io/api/scheduling/v1beta1"
   settings "k8s.io/api/settings/v1alpha1"
   storageclassapi "k8s.io/api/storage/v1"
+  storageclassapiv1beta1 "k8s.io/api/storage/v1beta1"
   apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
   "k8s.io/apimachinery/pkg/api/resource"
   apimachineryapis "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -102,6 +105,11 @@ type Schema struct {
   LimitRangeList                    kapi.LimitRangeList
   ListOptions                       metav1.ListOptions
   DeleteOptions                     metav1.DeleteOptions
+  CreateOptions                     metav1.CreateOptions
+  UpdateOptions                     metav1.UpdateOptions
+  GetOptions                        metav1.GetOptions
+  PatchOptions                      metav1.PatchOptions
+  Time                              metav1.Time
   Quantity                          resource.Quantity
   BuildRequest                      buildapi.BuildRequest
   BuildList                         buildapi.BuildList
@@ -231,6 +239,16 @@ type Schema struct {
   CertificateSigningRequestStatus    certificates.CertificateSigningRequestStatus
   CertificateSigningRequestCondition certificates.CertificateSigningRequestCondition
   CertificateSigningRequestList      certificates.CertificateSigningRequestList
+  EndpointSlice                      discovery.EndpointSlice
+  EndpointSliceList                  discovery.EndpointSliceList
+  VolumeAttachment                   storageclassapi.VolumeAttachment
+  VolumeAttachmentList               storageclassapi.VolumeAttachmentList
+  CSIDriver                          storageclassapiv1beta1.CSIDriver
+  CSIDriverList                      storageclassapiv1beta1.CSIDriverList
+  CSINode                            storageclassapiv1beta1.CSINode
+  CSINodeList                        storageclassapiv1beta1.CSINodeList
+  Lease                              coordination.Lease
+  LeaseList                          coordination.LeaseList
 }
 
 func main() {
@@ -257,11 +275,13 @@ func main() {
     {"github.com/openshift/api/security/v1", "", "io.fabric8.openshift.api.model", "os_security_"},
     {"github.com/openshift/api/network/v1", "", "io.fabric8.openshift.api.model", "os_network_"},
     {"k8s.io/kubernetes/pkg/api/unversioned", "", "io.fabric8.kubernetes.api.model", "api_"},
+    {"k8s.io/api/discovery/v1alpha1", "", "io.fabric8.kubernetes.api.model.discovery", "kubernetes_discovery_"},
     {"k8s.io/api/extensions/v1beta1", "", "io.fabric8.kubernetes.api.model.extensions", "kubernetes_extensions_"},
     {"k8s.io/api/policy/v1beta1", "", "io.fabric8.kubernetes.api.model.policy", "kubernetes_policy_"},
     {"k8s.io/api/authentication/v1", "authentication.k8s.io", "io.fabric8.kubernetes.api.model.authentication", "kubernetes_authentication_"},
     {"k8s.io/api/authorization/v1", "authorization.k8s.io", "io.fabric8.kubernetes.api.model.authorization", "kubernetes_authorization_"},
     {"k8s.io/api/apps/v1", "", "io.fabric8.kubernetes.api.model.apps", "kubernetes_apps_"},
+    {"k8s.io/api/apps/v1beta1", "", "io.fabric8.kubernetes.api.model.apps.v1beta1", "kubernetes_apps_v1beta1_"},
     {"k8s.io/api/batch/v1beta1", "", "io.fabric8.kubernetes.api.model.batch", "kubernetes_batch_"},
     {"k8s.io/api/batch/v1", "", "io.fabric8.kubernetes.api.model.batch", "kubernetes_batch_"},
     {"k8s.io/api/autoscaling/v2beta1", "autoscaling", "io.fabric8.kubernetes.api.model", "kubernetes_autoscaling_"},
@@ -269,6 +289,7 @@ func main() {
     {"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_"},
     {"k8s.io/api/networking/v1", "networking.k8s.io", "io.fabric8.kubernetes.api.model.networking", "kubernetes_networking_"},
     {"k8s.io/api/storage/v1", "storage.k8s.io", "io.fabric8.kubernetes.api.model.storage", "kubernetes_storageclass_"},
+    {"k8s.io/api/storage/v1beta1", "storage.k8s.io", "io.fabric8.kubernetes.api.model.storage.v1beta1", "kubernetes_storageclass_v1beta1_"},
     {"k8s.io/api/rbac/v1", "rbac.authorization.k8s.io", "io.fabric8.kubernetes.api.model.rbac", "kubernetes_rbac_"},
     {"k8s.io/api/settings/v1alpha1", "settings.k8s.io", "io.fabric8.kubernetes.api.model.settings", "kubernetes_settings_"},
     {"k8s.io/api/scheduling/v1beta1", "scheduling.k8s.io", "io.fabric8.kubernetes.api.model.scheduling", "kubernetes_scheduling_"},
@@ -276,6 +297,7 @@ func main() {
     {"k8s.io/api/admission/v1beta1", "admission.k8s.io", "io.fabric8.kubernetes.api.model.admission", "kubernetes_admission_"},
     {"k8s.io/api/admissionregistration/v1beta1", "admissionregistration.k8s.io", "io.fabric8.kubernetes.api.model.admissionregistration", "kubernetes_admissionregistration_"},
     {"k8s.io/api/certificates/v1beta1", "certificates.k8s.io", "io.fabric8.kubernetes.api.model.certificates", "kubernetes_certificates_"},
+    {"k8s.io/api/coordination/v1beta1", "coordination.k8s.io", "io.fabric8.kubernetes.api.model.coordination.v1beta1", "kubernetes_certificates_v1beta1_"},
   }
 
   typeMap := map[reflect.Type]reflect.Type{
