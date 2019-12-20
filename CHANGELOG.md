@@ -12,6 +12,7 @@
 
 #### Dependency Upgrade
 * Fix #1889: update tekton from v0.7.0 to v0.9.0
+* Fix #1872: Support for kubernetes 1.17
 
 #### New Features
 
