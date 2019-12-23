@@ -15,12 +15,14 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.client.GracePeriodConfigurable;
-import io.fabric8.kubernetes.client.PropagationPolicyConfigurable;
-
-public interface WatchListDeletable<T, L, B, H, W> extends VersionWatchable<H, W>, Listable<L>, Deletable<B>,
-                                                           GracePeriodConfigurable<Deletable<B>>,
-                                                           StatusUpdatable<T>,
-                                                           PropagationPolicyConfigurable<Deletable<B>>
-{
+public interface StatusUpdatable<T> {
+  /**
+   * When the status subresource is enabled, the /status subresource for the custom resource is exposed.
+   * It does a PUT requests to the /status subresource take a resource object and ignore changes
+   * to anything except the status stanza.
+   *
+   * @param item kubernetes object
+   * @return updated object
+   */
+  T updateStatus(T item);
 }

@@ -279,6 +279,12 @@ public class OperationSupport {
     return handleResponse(requestBuilder, type, parameters);
   }
 
+  protected <T> T handleStatusUpdate(T updated, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+    RequestBody body = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(updated));
+    Request.Builder requestBuilder = new Request.Builder().put(body).url(getResourceUrl(checkNamespace(updated), checkName(updated)) + "/status");
+    return handleResponse(requestBuilder, type);
+  }
+
   /**
    * Send an http patch and handle the response.
    *

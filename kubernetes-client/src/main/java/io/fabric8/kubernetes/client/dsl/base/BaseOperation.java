@@ -694,6 +694,15 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     return deleted;
   }
 
+  @Override
+  public T updateStatus(T item) throws KubernetesClientException {
+    try {
+      return handleStatusUpdate(item, getType());
+    } catch (InterruptedException | ExecutionException | IOException e) {
+      throw KubernetesClientException.launderThrowable(forOperationType("statusUpdate"), e);
+    }
+  }
+
   public BaseOperation<T,L,D,R> withItem(T item) {
     return newInstance(context.withItem(item));
   }
