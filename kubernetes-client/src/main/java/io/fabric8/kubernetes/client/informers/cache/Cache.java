@@ -31,7 +31,7 @@ import java.util.function.Function;
 /**
  * It basically saves and indexes all the entries.
  *
- * @param <T>
+ * @param <T> type for cache object
  */
 public class Cache<T> implements Indexer<T> {
   // Defines how to map objects into indices

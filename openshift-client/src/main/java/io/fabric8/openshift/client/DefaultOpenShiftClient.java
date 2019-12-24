@@ -79,6 +79,10 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
+/**
+ * Class for Default Openshift Client implementing KubernetesClient interface.
+ * It is thread safe.
+ */
 public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpenShiftClient {
 
   private static final String API_GROUPS_ENABLED = "API_GROUPS_ENABLED";

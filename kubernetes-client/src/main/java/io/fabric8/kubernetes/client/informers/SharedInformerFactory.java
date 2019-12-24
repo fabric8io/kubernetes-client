@@ -55,6 +55,8 @@ public class SharedInformerFactory extends BaseOperation {
    * Constructor with thread pool specified.
    *
    * @param threadPool specified thread pool.
+   * @param okHttpClient OkHttp client
+   * @param configuration configuration for client
    */
   public SharedInformerFactory(ExecutorService threadPool, OkHttpClient okHttpClient, Config configuration) {
     super(new OperationContext().withOkhttpClient(okHttpClient).withConfig(configuration));
@@ -102,6 +104,7 @@ public class SharedInformerFactory extends BaseOperation {
    *
    * @param apiTypeClass apiType class
    * @param apiListTypeClass api list type class
+   * @param operationContext operation context
    * @param resyncPeriodInMillis resync period in milliseconds
    * @param <T> the type parameter
    * @param <TList> the type's list parameter
@@ -141,9 +144,9 @@ public class SharedInformerFactory extends BaseOperation {
    * Gets existing shared index informer, return null if the requesting informer
    * is never constructed.
    *
-   * @param apiTypeClass
-   * @param <T>
-   * @return
+   * @param apiTypeClass API type class
+   * @param <T> type of API type
+   * @return SharedIndexInformer object
    */
   public synchronized <T> SharedIndexInformer<T> getExistingSharedIndexInformer(Class<T> apiTypeClass) {
     return this.informers.get(apiTypeClass);
