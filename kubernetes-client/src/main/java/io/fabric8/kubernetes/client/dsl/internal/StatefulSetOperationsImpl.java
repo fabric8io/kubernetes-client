@@ -21,10 +21,12 @@ import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.OwnerReference;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.apps.DoneableStatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetList;
+import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ImageEditReplacePatchable;
@@ -132,6 +134,11 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
   @Override
   public ImageEditReplacePatchable<StatefulSet, StatefulSet, DoneableStatefulSet> withTimeoutInMillis(long timeoutInMillis) {
     return new StatefulSetOperationsImpl(((RollingOperationContext)context).withRollingTimeout(timeoutInMillis));
+  }
+
+  @Override
+  public Status rollback(DeploymentRollback deploymentRollback) {
+    throw new KubernetesClientException("rollback not supported in case of StatefulSets");
   }
 
   public String getLog() {

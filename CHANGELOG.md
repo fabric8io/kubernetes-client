@@ -19,6 +19,7 @@
 * Fix #1872: Support for kubernetes 1.17
 
 #### New Features
+* Fix #417: Support Subresources
 * Fix #1548: Allow user to update the status on CustomResources
 * Fix #1282: Add Support for fetching Kubernetes metrics
 

@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.OwnerReference;
 import io.fabric8.kubernetes.api.model.apps.DoneableReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
+import io.fabric8.kubernetes.api.model.v1.Scale;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
@@ -134,6 +135,16 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
       deployment = getMandatory();
     }
     return deployment;
+  }
+
+  @Override
+  public Scale scale() {
+    return handleScale(null);
+  }
+
+  @Override
+  public Scale scale(Scale scale) {
+    return handleScale(scale);
   }
 
   /**

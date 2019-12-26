@@ -18,10 +18,12 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerBuilder;
 import io.fabric8.kubernetes.api.model.OwnerReference;
+import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.apps.DoneableReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
+import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
@@ -123,6 +125,11 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
   @Override
   public DeploymentOperationsImpl rolling() {
     return new DeploymentOperationsImpl(((RollingOperationContext)context).withRolling(true));
+  }
+
+  @Override
+  public Status rollback(DeploymentRollback rollback) {
+    return handleDeploymentRollback(rollback);
   }
 
   @Override
