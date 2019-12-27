@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.api.model.DeleteOptions;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
+import io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetrics;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.internal.VersionUsageUtils;
@@ -196,6 +197,12 @@ public class OperationSupport {
     throw new KubernetesClientException("Name mismatch. Item name:" + itemName + ". Operation name:" + operationName + ".");
   }
 
+  protected <T> T handleMetric(String resourceUrl, Class<T> type) throws InterruptedException, IOException, ExecutionException {
+      Request.Builder requestBuilder = new Request.Builder()
+        .get()
+        .url(resourceUrl);
+      return handleResponse(requestBuilder, type);
+  }
 
   protected <T> void handleDelete(T resource, long gracePeriodSeconds, String propagationPolicy, boolean cascading) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     handleDelete(getResourceUrl(checkNamespace(resource), checkName(resource)), gracePeriodSeconds, propagationPolicy, cascading);

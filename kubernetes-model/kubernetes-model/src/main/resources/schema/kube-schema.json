@@ -1516,6 +1516,22 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_apimachinery_Duration": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "Duration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.Duration",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_apimachinery_FieldsV1": {
       "type": "object",
       "description": "",
@@ -13062,6 +13078,189 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_metrics_v1beta1_ContainerMetrics": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "usage": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "$ref": "#/definitions/kubernetes_resource_Quantity",
+            "javaType": "io.fabric8.kubernetes.api.model.Quantity"
+          },
+          "javaType": "java.util.Map\u003cString,io.fabric8.kubernetes.api.model.Quantity\u003e"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.metrics.v1beta1.ContainerMetrics",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_metrics_v1beta1_NodeMetrics": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "metrics.k8s.io/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "NodeMetrics",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "timestamp": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "javaType": "String"
+        },
+        "usage": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "$ref": "#/definitions/kubernetes_resource_Quantity",
+            "javaType": "io.fabric8.kubernetes.api.model.Quantity"
+          },
+          "javaType": "java.util.Map\u003cString,io.fabric8.kubernetes.api.model.Quantity\u003e"
+        },
+        "window": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Duration",
+          "javaType": "io.fabric8.kubernetes.api.model.Duration"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetrics",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "kubernetes_metrics_v1beta1_NodeMetricsList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "metrics.k8s.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/kubernetes_metrics_v1beta1_NodeMetrics",
+            "javaType": "io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetrics"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "NodeMetricsList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetricsList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetrics\u003e"
+      ]
+    },
+    "kubernetes_metrics_v1beta1_PodMetrics": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "metrics.k8s.io/v1beta1",
+          "required": true
+        },
+        "containers": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/kubernetes_metrics_v1beta1_ContainerMetrics",
+            "javaType": "io.fabric8.kubernetes.api.model.metrics.v1beta1.ContainerMetrics"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "PodMetrics",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "timestamp": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "javaType": "String"
+        },
+        "window": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Duration",
+          "javaType": "io.fabric8.kubernetes.api.model.Duration"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetrics",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "kubernetes_metrics_v1beta1_PodMetricsList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "metrics.k8s.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/kubernetes_metrics_v1beta1_PodMetrics",
+            "javaType": "io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetrics"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "PodMetricsList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetricsList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetrics\u003e"
+      ]
+    },
     "kubernetes_networking_IPBlock": {
       "type": "object",
       "description": "",
@@ -20300,6 +20499,14 @@
       "$ref": "#/definitions/kubernetes_core_NodeList",
       "javaType": "io.fabric8.kubernetes.api.model.NodeList"
     },
+    "NodeMetrics": {
+      "$ref": "#/definitions/kubernetes_metrics_v1beta1_NodeMetrics",
+      "javaType": "io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetrics"
+    },
+    "NodeMetricsList": {
+      "$ref": "#/definitions/kubernetes_metrics_v1beta1_NodeMetricsList",
+      "javaType": "io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetricsList"
+    },
     "OAuthAccessToken": {
       "$ref": "#/definitions/os_oauth_OAuthAccessToken",
       "javaType": "io.fabric8.openshift.api.model.OAuthAccessToken"
@@ -20411,6 +20618,14 @@
     "PodList": {
       "$ref": "#/definitions/kubernetes_core_PodList",
       "javaType": "io.fabric8.kubernetes.api.model.PodList"
+    },
+    "PodMetrics": {
+      "$ref": "#/definitions/kubernetes_metrics_v1beta1_PodMetrics",
+      "javaType": "io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetrics"
+    },
+    "PodMetricsList": {
+      "$ref": "#/definitions/kubernetes_metrics_v1beta1_PodMetricsList",
+      "javaType": "io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetricsList"
     },
     "PodPreset": {
       "$ref": "#/definitions/kubernetes_settings_PodPreset",

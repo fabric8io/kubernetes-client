@@ -87,6 +87,7 @@ import io.fabric8.kubernetes.client.dsl.BatchAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.KubernetesListMixedOperation;
+import io.fabric8.kubernetes.client.dsl.MetricAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
@@ -377,6 +378,9 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public BatchAPIGroupDSL batch() { return delegate.batch(); }
+
+  @Override
+  public MetricAPIGroupDSL top() { return delegate.top(); }
 
   @Override
   public PolicyAPIGroupDSL policy() { return delegate.policy(); }
