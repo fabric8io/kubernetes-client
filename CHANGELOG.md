@@ -16,6 +16,7 @@
 * Fix #1872: Support for kubernetes 1.17
 
 #### New Features
+* Fix #1548: Allow user to update the status on CustomResources
 
 ### 4.6.4 (20-11-2019)
 #### Bugs

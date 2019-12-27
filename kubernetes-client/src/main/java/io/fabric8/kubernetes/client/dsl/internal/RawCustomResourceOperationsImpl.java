@@ -310,6 +310,93 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
   }
 
   /**
+   * Update status related to a CustomResource, this method does a PUT request on /status endpoint related
+   * to the CustomResource
+   *
+   * @param name name of custom resource
+   * @param objectAsMap custom resource as a HashMap
+   * @return updated CustomResource as HashMap
+   * @throws IOException in case any failure to parse Map
+   * @throws KubernetesClientException in case any failure from Kubernetes APIs
+   */
+  public Map<String, Object> updateStatus(String name, Map<String, Object> objectAsMap) throws IOException, KubernetesClientException {
+    return validateAndSubmitRequest(fetchUrl(null, null) + (name != null ? name : "") + "/status", objectMapper.writeValueAsString(objectAsMap), HttpCallMethod.PUT);
+  }
+
+  /**
+   * Update status related to a CustomResource, this method does a PUT request on /status endpoint related
+   * to the CustomResource
+   *
+   * @param name name of CustomResource
+   * @param objectAsJsonString CustomResource as a JSON string
+   * @return updated CustomResource as a HashMap
+   * @throws IOException in case any failure to parse Map
+   * @throws KubernetesClientException in case any failure from Kubernetes APIs
+   */
+  public Map<String, Object> updateStatus(String name, String objectAsJsonString) throws IOException, KubernetesClientException {
+    return validateAndSubmitRequest(fetchUrl(null, null) + (name != null ? name : "") + "/status", objectAsJsonString, HttpCallMethod.PUT);
+  }
+
+  /**
+   * Update status related to a CustomResource, this method does a PUT request on /status endpoint related
+   * to the CustomResource
+   *
+   * @param namespace namespace of CustomResource
+   * @param name name of CustomResource
+   * @param objectAsMap CustomResource as a HashMap
+   * @return updated CustomResource as a HashMap
+   * @throws IOException in case any failure to parse Map
+   * @throws KubernetesClientException in case any failure from Kubernetes APIs
+   */
+  public Map<String, Object> updateStatus(String namespace, String name, Map<String, Object> objectAsMap) throws IOException, KubernetesClientException {
+    return validateAndSubmitRequest(fetchUrl(namespace, null) + (name != null ? name : "") + "/status", objectMapper.writeValueAsString(objectAsMap), HttpCallMethod.PUT);
+  }
+
+  /**
+   * Update status related to a CustomResource, this method does a PUT request on /status endpoint related
+   * to the CustomResource
+   *
+   * @param name name of CustomResource
+   * @param objectAsStream stream pointing to CustomResource
+   * @return updated CustomResource as a HashMap
+   * @throws IOException in case any failure to parse Map
+   * @throws KubernetesClientException in case any failure from Kubernetes APIs
+   */
+  public Map<String, Object> updateStatus(String name, InputStream objectAsStream) throws IOException, KubernetesClientException {
+    return validateAndSubmitRequest(fetchUrl(null, null) + (name != null ? name : "") + "/status", IOHelpers.readFully(objectAsStream), HttpCallMethod.PUT);
+  }
+
+  /**
+   * Update status related to a CustomResource, this method does a PUT request on /status endpoint related
+   * to the CustomResource
+   *
+   * @param namespace namespace of CustomResource
+   * @param name name of CustomResource
+   * @param objectAsStream CustomResource object as a stream
+   * @return updated CustomResource as a HashMap
+   * @throws IOException in case any failure to parse Map
+   * @throws KubernetesClientException in case any failure from Kubernetes APIs
+   */
+  public Map<String, Object> updateStatus(String namespace, String name, InputStream objectAsStream) throws IOException, KubernetesClientException {
+    return validateAndSubmitRequest(fetchUrl(namespace, null) + (name != null ? name : "") + "/status", IOHelpers.readFully(objectAsStream), HttpCallMethod.PUT);
+  }
+
+  /**
+   * Update status related to a CustomResource, this method does a PUT request on /status endpoint related
+   * to the CustomResource
+   *
+   * @param namespace namespace of CustomResource
+   * @param name name of CustomResource
+   * @param objectAsJsonString CustomResource object as a JSON string
+   * @return updated CustomResource as a HashMap
+   * @throws IOException in case any failure to parse Map
+   * @throws KubernetesClientException in case any failure from Kubernetes APIs
+   */
+  public Map<String, Object> updateStatus(String namespace, String name, String objectAsJsonString) throws IOException, KubernetesClientException {
+    return validateAndSubmitRequest(fetchUrl(namespace, null) + (name != null ? name : "") + "/status", objectAsJsonString, HttpCallMethod.PUT);
+  }
+
+  /**
    * Get a custom resource from the cluster which is non-namespaced.
    *
    * @param name name of custom resource
@@ -668,10 +755,14 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
   }
 
   private Map<String, Object> validateAndSubmitRequest(String namespace, String name, String objectAsString, HttpCallMethod httpCallMethod) throws IOException {
+    return validateAndSubmitRequest(fetchUrl(namespace, null) + (name != null ? name : ""), objectAsString, httpCallMethod);
+  }
+
+  private Map<String, Object> validateAndSubmitRequest(String resourceUrl, String objectAsString, HttpCallMethod httpCallMethod) throws IOException {
     if (IOHelpers.isJSONValid(objectAsString)) {
-      return makeCall(fetchUrl(namespace, null) + (name != null ? name : ""), objectAsString, httpCallMethod);
+      return makeCall(resourceUrl, objectAsString, httpCallMethod);
     } else {
-      return makeCall(fetchUrl(namespace, null) + (name != null ? name : ""), IOHelpers.convertYamlToJson(objectAsString), httpCallMethod);
+      return makeCall(resourceUrl, IOHelpers.convertYamlToJson(objectAsString), httpCallMethod);
     }
   }
 
