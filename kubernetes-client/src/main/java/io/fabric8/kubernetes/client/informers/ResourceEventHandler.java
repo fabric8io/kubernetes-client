@@ -50,8 +50,8 @@ public interface ResourceEventHandler<T> {
    * happen if the watch is closed and misses the delete event and
    * we don't notice the deletion until the subsequent re-list.
    *
-   * @param obj
-   * @param deletedFinalStateUnknown
+   * @param obj object to delete
+   * @param deletedFinalStateUnknown get final state of item if it is known or not.
    */
   void onDelete(T obj, boolean deletedFinalStateUnknown);
 }

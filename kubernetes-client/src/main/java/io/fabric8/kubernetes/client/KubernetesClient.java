@@ -78,13 +78,37 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 
+/**
+ * Main interface for Kubernetes client library.
+ */
 public interface KubernetesClient extends Client {
 
+  /**
+   * API entrypoint for CustomResourcedefinition(CRDs). This offers basic operations like
+   * load, get, create, update, delete and watch for APIGroup apiextensions/v1beta1
+   *
+   * @return NonNamespaceOperation object for CustomResourceDefinition
+   */
   NonNamespaceOperation<CustomResourceDefinition, CustomResourceDefinitionList, DoneableCustomResourceDefinition, Resource<CustomResourceDefinition, DoneableCustomResourceDefinition>> customResourceDefinitions();
 
+  /**
+   * Typed API for managing CustomResources. You would need to provide POJOs for
+   * CustomResource into this and with it you would be able to instantiate a client
+   * specific to CustomResource.
+   *
+   * @param crd CustomResourceDefinition object on basic of which this CustomResource was created
+   * @param resourceType Class for CustomResource
+   * @param listClass Class for list object for CustomResource
+   * @param doneClass Class for Doneable CustomResource object
+   * @param <T> T type represents CustomResource type
+   * @param <L> L type represents CustomResourceList type
+   * @param <D> D type represents DoneableCustomResource type
+   * @return returns a MixedOperation object with which you can do basic CustomResource operations
+   */
   <T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResources(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass);
 
   /**
+   * Old API for dealing with CustomResources.
    *
    * @deprecated Use {@link #customResources(CustomResourceDefinition, Class, Class, Class)} instead.
    * @param crd Custom Resource Definition
@@ -98,82 +122,295 @@ public interface KubernetesClient extends Client {
    */
   <T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResource(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass);
 
+  /**
+   * Extensions API entrypoint for APIGroup extensions/v1beta1
+   *
+   * @return ExtensionsAPIGroupDSL with which you can access entrypoints for extension objects
+   */
   ExtensionsAPIGroupDSL extensions();
 
+  /**
+   * Get Kubernetes API server version
+   *
+   * @return VersionInfo object containing versioning information
+   */
   VersionInfo getVersion();
 
+  /**
+   * Typeless API for interacting with CustomResources. You can do basic operations with CustomResources
+   * without having any model. You just need to pass an object providing basic information of
+   * CustomResource. CustomResource objects are parsed as HashMaps.
+   *
+   * @param customResourceDefinition CustomResourceDefinitionContext - information about CustomResource like versioning, namespaced or not and group etc
+   * @return a RawCustomResourceOperations object which offers several functions for creating, deleting, updating, watching CustomResources.
+   */
   RawCustomResourceOperationsImpl customResource(CustomResourceDefinitionContext customResourceDefinition);
 
+  /**
+   * API entrypoint for kubernetes resources with APIGroup apps/v1
+   *
+   * @return AppsAPIGroupDSL which offers entrypoints to specific resources in this API group
+   */
   AppsAPIGroupDSL apps();
 
+  /**
+   * API entrypoint for kubernetes resources with APIGroup autoscaling/v2beta1
+   *
+   * @return AutoScalingAPIGroupDSL which offers entrypoints to specific resources in this API group
+   */
   AutoscalingAPIGroupDSL autoscaling();
 
+  /**
+   * API entrypoint for kubernetes resources with APIGroup networking/v1
+   *
+   * @return NetworkAPIGroupDSL which offers entrypoints to specific resources in this APIGroup
+   */
   NetworkAPIGroupDSL network();
 
+  /**
+   * API entrypoint for kubernetes resources with APIGroup storage/v1
+   *
+   * @return StorageAPIGroupDSL which offers entrypoints to specific resources in this APIGroup
+   */
   StorageAPIGroupDSL storage();
 
+  /**
+   * API entrypoint for kubernetes resources with APIGroup settings/v1alpha1
+   *
+   * @return SettingsAPIGroupDSL which offers entrypoint to specific resources in this APIGroup
+   */
   SettingsAPIGroupDSL settings();
 
+  /**
+   * API entrypoint for kubernetes resources with APIGroup batch/v1beta1
+   *
+   * @return BatchAPIGroupDSL which offers entrypoint to specific resources in this APIGroup
+   */
   BatchAPIGroupDSL batch();
 
+  /**
+   * API entrypoint for kubernetes resources with APIGroup policy/v1beta1
+   *
+   * @return PolicyAPIGroupDSL which offers entrypoint to specific resources in this APIGroup
+   */
   PolicyAPIGroupDSL policy();
 
+  /**
+   * API entrypoint for kubernetes resources with APIGroup rbac/v1
+   *
+   * @return RbacAPIGroupDSL which offers entrypoint to specific resources in this APIGroup
+   */
   RbacAPIGroupDSL rbac();
 
+  /**
+   * API entrypoint for kubernetes resources with APIGroup scheduling/v1beta1
+   *
+   * @return SchedulingAPIGroupDSL which offers entrypoint to specific resources in this APIGroup
+   */
   SchedulingAPIGroupDSL scheduling();
 
+  /**
+   * API entrypoint for dealing with core/v1/ComponentStatus
+   *
+   * @return MixedOperation object with which you can do basic operations for ComponentStatus
+   */
   MixedOperation<ComponentStatus, ComponentStatusList, DoneableComponentStatus, Resource<ComponentStatus, DoneableComponentStatus>> componentstatuses();
 
+  /**
+   * Load a Kubernetes resource object from file InputStream
+   *
+   * @param is File input stream object containing json/yaml content
+   * @return deserialized object
+   */
   ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata,Boolean> load(InputStream is);
 
+  /**
+   * Load a Kubernetes list object
+   *
+   * @param s kubernetes list as string
+   * @return deserialized KubernetesList object
+   */
   ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(String s);
 
+  /**
+   * KubernetesResourceList operations
+   *
+   * @param list KubernetesResourceList object containing kubernetes resource items
+   * @return operations object for KubernetesResourceList
+   */
   NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(KubernetesResourceList list);
 
+  /**
+   * KubernetesResourceList operations
+   *
+   * @param items array of HasMetadata values
+   * @return operations object for Kubernetes list
+   */
   NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(HasMetadata... items);
 
+  /**
+   * KubernetesResourceList operations
+   *
+   * @param items a collection containing HasMetadata values
+   * @return operations object for Kubernetes list
+   */
   NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(Collection<HasMetadata> items);
 
+  /**
+   * KubernetesResource operations. You can pass any Kubernetes resource as a HasMetadata object and do
+   * all operations
+   *
+   * @param is Kubernetes resource object
+   * @param <T> type of Kubernetes resource
+   * @return operations object for Kubernetes resource
+   */
   <T extends HasMetadata> NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<T ,Boolean> resource(T is);
 
+  /**
+   * KubernetesResource operations. You can pass any Kubernetes resource as string object and do
+   * all operations
+   *
+   * @param s Kubernetes resource object as string
+   * @return operations object for Kubernetes resource
+   */
   NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata,Boolean> resource(String s);
 
+  /**
+   * Operations for Binding resource in APIgroup core/v1
+   *
+   * @return MixedOperation object for doing operations for Binding
+   */
   MixedOperation<Binding, KubernetesResourceList, DoneableBinding, Resource<Binding, DoneableBinding>> bindings();
 
+  /**
+   * API entrypoint for Endpoints with APIGroup core/v1
+   *
+   * @return MixedOperation object for doing operations for Endpoints
+   */
   MixedOperation<Endpoints, EndpointsList, DoneableEndpoints, Resource<Endpoints, DoneableEndpoints>> endpoints();
 
+  /**
+   * API entrypoint for getting events in Kubernetes. Events (events/v1beta1)
+   *
+   * @return MixedOperation object for doing operations for Events
+   */
   MixedOperation<Event, EventList, DoneableEvent, Resource<Event, DoneableEvent>> events();
 
+  /**
+   * API entrypoint for namespace related operations in Kubernetes. Namespace (core/v1)
+   *
+   * @return NonNamespaceOperation object for Namespace related operations
+   */
   NonNamespaceOperation< Namespace, NamespaceList, DoneableNamespace, Resource<Namespace, DoneableNamespace>> namespaces();
 
+  /**
+   * API entrypoint for node related operations in Kubernetes. Node (core/v1)
+   *
+   * @return NonNamespaceOperation object for Node related operations
+   */
   NonNamespaceOperation<Node, NodeList, DoneableNode, Resource<Node, DoneableNode>> nodes();
 
+  /**
+   * API entrypoint for PersistentVolume related operations. PersistentVolume (core/v1)
+   *
+   * @return NonNamespaceOperation object for PersistentVolume related operations.
+   */
   NonNamespaceOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, Resource<PersistentVolume, DoneablePersistentVolume>> persistentVolumes();
 
+  /**
+   * API entrypoint for PersistentVolumeClaim related operations. PersistentVolumeClaim (core/v1)
+   *
+   * @return MixedOperation object for PersistentVolumeClaim related operations.
+   */
   MixedOperation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, Resource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> persistentVolumeClaims();
 
+  /**
+   * API entrypoint for Pod related operations. Pod (core/v1)
+   *
+   * @return MixedOperation object for Pod related operations
+   */
   MixedOperation<Pod, PodList, DoneablePod, PodResource<Pod, DoneablePod>> pods();
 
+  /**
+   * API entrypoint for ReplicationController related operations. ReplicationController (core/v1)
+   *
+   * @return MixedOperation object for ReplicationController related operations.
+   */
   MixedOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, RollableScalableResource<ReplicationController, DoneableReplicationController>> replicationControllers();
 
+  /**
+   * API entrypoint for ResourceQuota related operations. ResourceQuota (core/v1)
+   *
+   * @return MixedOperation object for ResourceQuota related operations.
+   */
   MixedOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota, Resource<ResourceQuota, DoneableResourceQuota>> resourceQuotas();
 
+  /**
+   * API entrypoint for Secret related operations. Secret (core/v1)
+   *
+   * @return MixedOperation object for Secret related operations.
+   */
   MixedOperation<Secret, SecretList, DoneableSecret, Resource<Secret, DoneableSecret>> secrets();
 
+  /**
+   * API entrypoint for Service related operations. Service (core/v1)
+   *
+   * @return MixedOperation object for Service related operations.
+   */
   MixedOperation<Service, ServiceList, DoneableService, ServiceResource<Service, DoneableService>> services();
 
+  /**
+   * API entrypoint for ServiceAccount related operations. ServiceAccount (core/v1)
+   *
+   * @return MixedOperation object for ServiceAccount related operations.
+   */
   MixedOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, Resource<ServiceAccount, DoneableServiceAccount>> serviceAccounts();
 
+  /**
+   * List related operations.
+   *
+   * @return KubernetesListMixedOperations object for Kubernetes List
+   */
   KubernetesListMixedOperation lists();
 
+  /**
+   * API entrypoint for ConfigMap related operations. ConfigMap (core/v1)
+   *
+   * @return MixedOperation object for ConfigMap related operations.
+   */
   MixedOperation<ConfigMap, ConfigMapList, DoneableConfigMap, Resource<ConfigMap, DoneableConfigMap>> configMaps();
 
+  /**
+   * API entrypoint for LimitRange related operations. LimitRange (core/v1)
+   *
+   * @return MixedOperation object for LimitRange related operations.
+   */
   MixedOperation<LimitRange, LimitRangeList, DoneableLimitRange, Resource<LimitRange, DoneableLimitRange>> limitRanges();
 
+  /**
+   * SubjectAccessReview operations. (authorization/v1)
+   *
+   * @return SubjectAccessReviewDSL object for dealing with SubjectAccessReviewOperations
+   */
   SubjectAccessReviewDSL subjectAccessReviewAuth();
 
+  /**
+   * Get an instance of Kubernetes Client informer factory. It allows you to construct and
+   * cache informers for API types. With it you can subscribe to all the events related to
+   * your Kubernetes type. It's like watch but a bit organized.
+   *
+   * @return SharedInformerFactory object
+   */
   SharedInformerFactory informers();
 
+  /**
+   * Get an instance of Kubernetes Client informer factory. It allows you to construct and
+   * cache informers for API types. With it you can subscribe to all the events related to
+   * your Kubernetes type. It's like watch but a bit organized.
+   *
+   * @param executorService thread pool for informer factory
+   * @return SharedInformerFactory object
+   */
   SharedInformerFactory informers(ExecutorService executorService);
 
 }

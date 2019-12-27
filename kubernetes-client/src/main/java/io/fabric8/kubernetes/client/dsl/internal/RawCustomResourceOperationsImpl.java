@@ -502,6 +502,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @param labels HashMap containing labels (optional)
    * @param resourceVersion resource version since when to watch (optional)
    * @param watcher watcher object which reports events
+   * @return watch object for watching resource
    * @throws IOException in case of network error
    */
   public Watch watch(String namespace, String name, Map<String, String> labels, String resourceVersion, Watcher<String> watcher) throws IOException {

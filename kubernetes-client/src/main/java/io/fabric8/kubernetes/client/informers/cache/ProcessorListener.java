@@ -31,7 +31,7 @@ import java.util.concurrent.BlockingQueue;
  * This has been taken from official client: https://github.com/kubernetes-client/java/blob/master/util/src/main/java/io/kubernetes/client/informer/cache/ProcessorListener.java
  * which has been ported from official go client: https://github.com/kubernetes/client-go/blob/master/tools/cache/shared_informer.go#L570
  *
- * @param <T>
+ * @param <T> type of ProcessorListener
  */
 public class ProcessorListener<T> implements Runnable {
   private static final Logger log = LoggerFactory.getLogger(ProcessorListener.class);
