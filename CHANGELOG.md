@@ -6,6 +6,7 @@
 * Fix #1902: Fix the usage of reflection, so that `getMetadata` is detected properly
 * Fix #1486: Creating CRDs with schema validation is broken
 * Fix #1707: HorizontalPodAutoscalerSpecBuilder found no metric method
+* Fix #885: Quantity doesn't honour the unit
 
 #### Improvements
 * Fix #1880: Remove use of reapers manually doing cascade deletion of resources, leave it upto Kubernetes APIServer

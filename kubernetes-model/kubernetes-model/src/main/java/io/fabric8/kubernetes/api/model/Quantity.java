@@ -108,8 +108,15 @@ public class Quantity  implements Serializable {
 
         @Override
         public void serialize(Quantity value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
-            if (value != null && value.getAmount() != null) {
-                jgen.writeString(value.getAmount());
+            if (value != null) {
+              StringBuilder objAsStringBuilder = new StringBuilder();
+              if (value.getAmount() != null) {
+                objAsStringBuilder.append(value.getAmount());
+              }
+              if (value.getFormat() != null) {
+                objAsStringBuilder.append(value.getFormat());
+              }
+              jgen.writeString(objAsStringBuilder.toString());
             } else {
                 jgen.writeNull();
             }
