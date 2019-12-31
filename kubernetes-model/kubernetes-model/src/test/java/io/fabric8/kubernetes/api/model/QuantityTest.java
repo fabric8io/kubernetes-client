@@ -17,9 +17,12 @@ package io.fabric8.kubernetes.api.model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import java.math.BigDecimal;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class QuantityTest {
   private final ObjectMapper mapper = new ObjectMapper();
@@ -28,13 +31,39 @@ public class QuantityTest {
   public void testAmountUnitSeparately() throws JsonProcessingException {
     Quantity quantity = new Quantity("256", "Mi");
     String serializedObj = mapper.writeValueAsString(quantity);
-    assertEquals("256Mi", serializedObj);
+    assertEquals("\"256Mi\"", serializedObj);
   }
 
   @Test
   public void testAmount() throws JsonProcessingException {
     Quantity quantity = new Quantity("256Mi");
     String serializedObj = mapper.writeValueAsString(quantity);
-    assertEquals("256Mi", serializedObj);
+    assertEquals("\"256Mi\"", serializedObj);
+  }
+
+  @Test
+  public void testQuantityObj() {
+    Quantity quantity = new Quantity("32Mi");
+    assertEquals("32", quantity.getAmount());
+    assertEquals("Mi", quantity.getFormat());
+  }
+
+  @Test
+  public void testNormalization() {
+    Quantity quantity = new Quantity(".5Mi");
+    assertEquals(new BigDecimal("524288.0"), Quantity.getAmountInBytes(quantity));
+
+    Quantity quantity1 =  new Quantity("512Ki");
+    assertEquals(Quantity.getAmountInBytes(quantity1).toBigInteger(), Quantity.getAmountInBytes(quantity).toBigInteger());
+  }
+
+  @Test
+  public void testEquality() {
+    assertTrue(new Quantity(".5Mi").equals( new Quantity("512Ki")));
+  }
+
+  @Test
+  public void testExponent() {
+    assertEquals("10000", Quantity.getAmountInBytes(new Quantity("1e4")).toString());
   }
 }
