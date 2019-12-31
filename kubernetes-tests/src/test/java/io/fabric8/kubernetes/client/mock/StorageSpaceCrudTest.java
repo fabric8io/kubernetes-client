@@ -32,6 +32,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @EnableRuleMigrationSupport
 public class StorageSpaceCrudTest {
@@ -71,7 +72,7 @@ public class StorageSpaceCrudTest {
     assertEquals(1, storageClassList.getItems().size());
     assertEquals("kubernetes.io/aws-ebs", storageClassList.getItems().get(0).getProvisioner());
     assertEquals("value", storageClassList.getItems().get(0).getParameters().get("key"));
-    assertEquals(0, storageClassList.getItems().get(0).getMetadata().getLabels().size());
+    assertNull(storageClassList.getItems().get(0).getMetadata().getLabels());
 
     //test update
     storageClass = client.storage().storageClasses().withName(name).edit().editOrNewMetadata()

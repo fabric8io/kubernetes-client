@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.client.mock.crd.DoneablePodSet;
 import io.fabric8.kubernetes.client.mock.crd.PodSet;
 import io.fabric8.kubernetes.client.mock.crd.PodSetList;
 import io.fabric8.kubernetes.client.mock.crd.PodSetSpec;
+import io.fabric8.kubernetes.client.mock.crd.PodSetStatus;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Before;
@@ -131,6 +132,23 @@ public class TypedCustomResourceApiTest {
     RecordedRequest recordedRequest = server.getLastRequest();
     assertEquals("DELETE", recordedRequest.getMethod());
     assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}", recordedRequest.getBody().readUtf8());
+  }
+
+  @Test
+  public void testStatusUpdation() throws InterruptedException {
+    PodSet updatedPodSet = getPodSet();
+    PodSetStatus podSetStatus = new PodSetStatus();
+    podSetStatus.setAvailableReplicas(4);
+    updatedPodSet.setStatus(podSetStatus);
+
+    server.expect().put().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/test/podsets/example-podset/status").andReturn(200, updatedPodSet).once();
+    podSetClient = server.getClient().customResources(podSetCrd, PodSet.class, PodSetList.class, DoneablePodSet.class);
+
+    podSetClient.inNamespace("test").updateStatus(updatedPodSet);
+    RecordedRequest recordedRequest = server.getLastRequest();
+    assertEquals("PUT", recordedRequest.getMethod());
+    assertEquals("{\"kind\":\"PodSet\",\"apiVersion\":\"demo.k8s.io/v1alpha1\",\"metadata\":{\"name\":\"example-podset\"},\"spec\":{\"replicas\":5},\"status\":{\"availableReplicas\":4}}", recordedRequest.getBody().readUtf8());
+    System.out.println(recordedRequest.getBody().readUtf8());
   }
 
   private PodSet getPodSet() {

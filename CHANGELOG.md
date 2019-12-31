@@ -2,14 +2,22 @@
 
 ### 4.7-SNAPSHOT
 #### Bugs
+* Fix #1850: Add option to disable timestamps in build logs on Openshift
+* Fix #1902: Fix the usage of reflection, so that `getMetadata` is detected properly
+* Fix #1486: Creating CRDs with schema validation is broken
+* Fix #1707: HorizontalPodAutoscalerSpecBuilder found no metric method
 
 #### Improvements
 * Fix #1880: Remove use of reapers manually doing cascade deletion of resources, leave it upto Kubernetes APIServer
 * Test coverage for ServiceCatalog
+* Fix #1772: Add Javadocs for KubernetesClient class
 
 #### Dependency Upgrade
+* Fix #1889: update tekton from v0.7.0 to v0.9.0
+* Fix #1872: Support for kubernetes 1.17
 
 #### New Features
+* Fix #1548: Allow user to update the status on CustomResources
 
 ### 4.6.4 (20-11-2019)
 #### Bugs

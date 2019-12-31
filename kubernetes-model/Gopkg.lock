@@ -22,7 +22,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:08983e1cceaabc068e7a907cf00788b5b5dfd900e2a8159753f4908acafa045b"
+  digest = "1:91d7cd34ea6ce39307fb0849ea2758c92c271b09e7dc331e7c8ca9a8b6b6dc5d"
   name = "github.com/openshift/api"
   packages = [
     "apps/v1",
@@ -41,7 +41,7 @@
     "user/v1",
   ]
   pruneopts = "UT"
-  revision = "eeefa3cc91cdea3e8667e1901e61336e70a9658f"
+  revision = "d4eabe2e9a66c8cd11d486335b157d33ea22a86c"
 
 [[projects]]
   digest = "1:ef03a648cc87c8f1a350ff49b2df30a9b8ad03ca71c388d2c2554997cdfbb2b4"
@@ -97,7 +97,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:9458692c7e06cf71a8d390dcdb274b02a4961c1eef66205083ee8bb563011993"
+  digest = "1:4cd2f6cab7b4d001fb678173cfdf0ee44cc7623647bb0fab65f8839f3655b9f5"
   name = "k8s.io/api"
   packages = [
     "admission/v1beta1",
@@ -106,11 +106,13 @@
     "apps/v1beta1",
     "authentication/v1",
     "authorization/v1",
-    "autoscaling/v1",
+    "autoscaling/v2beta1",
     "batch/v1",
     "batch/v1beta1",
     "certificates/v1beta1",
+    "coordination/v1beta1",
     "core/v1",
+    "discovery/v1alpha1",
     "events/v1beta1",
     "extensions/v1beta1",
     "networking/v1",
@@ -119,24 +121,24 @@
     "scheduling/v1beta1",
     "settings/v1alpha1",
     "storage/v1",
+    "storage/v1beta1",
   ]
   pruneopts = "UT"
-  revision = "3544db3b9e4494309507e02eced5cd9dcff47e6a"
+  revision = "16d7abae0d2a8ab2a6a7ad1bf3300eaacd541f56"
 
 [[projects]]
-  digest = "1:0ea1db306fea54c4883d4210d39c6db8fa8107f3cf8cea3f83e28ec623c1607b"
+  digest = "1:ad57ea49823c0ab40848c591dae05093b2ebefe6167b28fd9be2b1f57d72f754"
   name = "k8s.io/apiextensions-apiserver"
   packages = [
     "pkg/apis/apiextensions",
     "pkg/apis/apiextensions/v1beta1",
   ]
   pruneopts = "UT"
-  revision = "0dbe462fe92dfa8b56cc9facf0658a17d0c70fc5"
-  version = "kubernetes-1.15.3"
+  revision = "ea07e0496fdfc3befebe481bd6f850febc41cdae"
+  version = "kubernetes-1.17.0"
 
 [[projects]]
-  branch = "master"
-  digest = "1:7d6190f555d0331fdf288f53b5563707c95ab1f2128fb333a255b3b95b52ac42"
+  digest = "1:ba9700142930076eab3068db1d06c779b4941ee5b688aa4a0a45763e362e8a09"
   name = "k8s.io/apimachinery"
   packages = [
     "pkg/api/resource",
@@ -164,18 +166,19 @@
     "third_party/forked/golang/reflect",
   ]
   pruneopts = "UT"
-  revision = "a891081239f5a13b1e612412e1e55c458036b88e"
+  revision = "79c2a76c473a20cdc4ce59cae4b72529b5d9d16b"
+  version = "kubernetes-1.17.0"
 
 [[projects]]
-  digest = "1:59b8297446afe8d5b763b0fb6938952316764215d60db743d0b4cf45cc0254fb"
+  digest = "1:ba55bd0be4fc3e2acd5b240ae546291f25da9f8963eb41b0a9590eb967a27100"
   name = "k8s.io/client-go"
   packages = [
     "tools/clientcmd/api",
     "tools/clientcmd/api/v1",
   ]
   pruneopts = "UT"
-  revision = "e14f31a72a77f7aa82a95eaf542d1194fb027d04"
-  version = "kubernetes-1.15.3"
+  revision = "c68b62b1efa14564a47d67c07f013dc3553937b9"
+  version = "kubernetes-1.17.0"
 
 [[projects]]
   digest = "1:c283ca5951eb7d723d3300762f96ff94c2ea11eaceb788279e2b7327f92e4f2a"
@@ -186,12 +189,12 @@
   version = "v0.3.3"
 
 [[projects]]
-  digest = "1:b1a6326598d2189e26402a701c2e449ee7f333a103fd0c5cf519262a7f14041f"
+  digest = "1:dfee5e11b4f9cc3a66c023f89d6da6225a17be61782af4104f28efec6b682d7d"
   name = "k8s.io/kubernetes"
   packages = ["pkg/watch/json"]
   pruneopts = "UT"
-  revision = "e8462b5b5dc2584fdcd18e6bcfe9f1e4d970a529"
-  version = "v1.15.3"
+  revision = "70132b0f130acc0bed193d9ba59dd186f0e634cf"
+  version = "v1.17.0"
 
 [[projects]]
   branch = "master"
@@ -199,7 +202,7 @@
   name = "k8s.io/utils"
   packages = ["pointer"]
   pruneopts = "UT"
-  revision = "3d4f5b7dea0b7c63c77d7fb1f0ee433ad8d54667"
+  revision = "6ca3b61696b65b0e81f1a39b4937fc2d2994ed6a"
 
 [solve-meta]
   analyzer-name = "dep"
@@ -222,11 +225,13 @@
     "k8s.io/api/apps/v1",
     "k8s.io/api/authentication/v1",
     "k8s.io/api/authorization/v1",
-    "k8s.io/api/autoscaling/v1",
+    "k8s.io/api/autoscaling/v2beta1",
     "k8s.io/api/batch/v1",
     "k8s.io/api/batch/v1beta1",
     "k8s.io/api/certificates/v1beta1",
+    "k8s.io/api/coordination/v1beta1",
     "k8s.io/api/core/v1",
+    "k8s.io/api/discovery/v1alpha1",
     "k8s.io/api/events/v1beta1",
     "k8s.io/api/extensions/v1beta1",
     "k8s.io/api/networking/v1",
@@ -235,6 +240,7 @@
     "k8s.io/api/scheduling/v1beta1",
     "k8s.io/api/settings/v1alpha1",
     "k8s.io/api/storage/v1",
+    "k8s.io/api/storage/v1beta1",
     "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1",
     "k8s.io/apimachinery/pkg/api/resource",
     "k8s.io/apimachinery/pkg/apis/meta/v1",

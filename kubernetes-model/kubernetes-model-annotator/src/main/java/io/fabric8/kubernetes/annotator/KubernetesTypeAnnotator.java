@@ -76,6 +76,7 @@ public class KubernetesTypeAnnotator extends Jackson2Annotator {
                     .param("editableEnabled", false)
                     .param("validationEnabled", false)
                     .param("generateBuilderPackage", true)
+                    .param("lazyCollectionInitEnabled", false)
                     .param("builderPackage", "io.fabric8.kubernetes.api.builder")
                     .annotationParam("inline", Inline.class)
                     .param("type", new JCodeModel()._class("io.fabric8.kubernetes.api.model.Doneable"))

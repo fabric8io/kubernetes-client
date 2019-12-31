@@ -29,7 +29,9 @@ public class OptionalDependencyWrapper {
    *
    * @param supplier implementation to safely run
    * @param message to display for caught exceptions (e.g. "Base64InputStream class is provided by
-   * commons-codec"
+   *                 commons-codec"
+   * @param <R> type of supplier
+   * @return run object
    */
   public static <R> R wrapRunWithOptionalDependency(Supplier<R> supplier, String message) {
 

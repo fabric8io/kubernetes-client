@@ -83,6 +83,10 @@ import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
+/**
+ * Class for Default Kubernetes Client implementing KubernetesClient interface.
+ * It is thread safe.
+ */
 public class DefaultKubernetesClient extends BaseClient implements NamespacedKubernetesClient {
 
   public DefaultKubernetesClient() throws KubernetesClientException {

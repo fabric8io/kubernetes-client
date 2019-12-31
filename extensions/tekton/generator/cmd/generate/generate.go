@@ -44,6 +44,8 @@ type Schema struct {
 	TaskRunList                     v1alpha1.TaskRunList
 	ClusterTask                     v1alpha1.ClusterTask
 	ClusterTaskList                 v1alpha1.ClusterTaskList
+	Condition                       v1alpha1.Condition
+	ConditionList                   v1alpha1.ConditionList
 }
 
 func main() {

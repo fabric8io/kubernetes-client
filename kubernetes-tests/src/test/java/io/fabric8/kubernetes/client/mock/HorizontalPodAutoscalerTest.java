@@ -42,8 +42,8 @@ public class HorizontalPodAutoscalerTest {
 
   @Test
   public void testList() {
-    server.expect().withPath("/apis/autoscaling/v1/namespaces/test/horizontalpodautoscalers").andReturn(200, new HorizontalPodAutoscalerListBuilder().build()).once();
-    server.expect().withPath("/apis/autoscaling/v1/namespaces/ns1/horizontalpodautoscalers").andReturn(200, new HorizontalPodAutoscalerListBuilder()
+    server.expect().withPath("/apis/autoscaling/v2beta1/namespaces/test/horizontalpodautoscalers").andReturn(200, new HorizontalPodAutoscalerListBuilder().build()).once();
+    server.expect().withPath("/apis/autoscaling/v2beta1/namespaces/ns1/horizontalpodautoscalers").andReturn(200, new HorizontalPodAutoscalerListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .build()).once();
@@ -60,8 +60,8 @@ public class HorizontalPodAutoscalerTest {
 
   @Test
   public void testListWithLabels() {
-    server.expect().withPath("/apis/autoscaling/v1/namespaces/test/horizontalpodautoscalers?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new HorizontalPodAutoscalerListBuilder().build()).once();
-    server.expect().withPath("/apis/autoscaling/v1/namespaces/ns1/horizontalpodautoscalers?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new HorizontalPodAutoscalerListBuilder()
+    server.expect().withPath("/apis/autoscaling/v2beta1/namespaces/test/horizontalpodautoscalers?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new HorizontalPodAutoscalerListBuilder().build()).once();
+    server.expect().withPath("/apis/autoscaling/v2beta1/namespaces/ns1/horizontalpodautoscalers?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new HorizontalPodAutoscalerListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .addNewItem().and()
@@ -86,8 +86,8 @@ public class HorizontalPodAutoscalerTest {
 
   @Test
   public void testGet() {
-    server.expect().withPath("/apis/autoscaling/v1/namespaces/test/horizontalpodautoscalers/horizontalpodautoscaler1").andReturn(200, new HorizontalPodAutoscalerBuilder().build()).once();
-    server.expect().withPath("/apis/autoscaling/v1/namespaces/ns1/horizontalpodautoscalers/horizontalpodautoscaler2").andReturn(200, new HorizontalPodAutoscalerBuilder().build()).once();
+    server.expect().withPath("/apis/autoscaling/v2beta1/namespaces/test/horizontalpodautoscalers/horizontalpodautoscaler1").andReturn(200, new HorizontalPodAutoscalerBuilder().build()).once();
+    server.expect().withPath("/apis/autoscaling/v2beta1/namespaces/ns1/horizontalpodautoscalers/horizontalpodautoscaler2").andReturn(200, new HorizontalPodAutoscalerBuilder().build()).once();
 
     KubernetesClient client = server.getClient();
     HorizontalPodAutoscaler horizontalPodAutoscaler = client.autoscaling().horizontalPodAutoscalers().inNamespace("test").withName("horizontalpodautoscaler1").get();
@@ -104,7 +104,7 @@ public class HorizontalPodAutoscalerTest {
   public void testEditMissing() {
 
     Assertions.assertThrows(KubernetesClientException.class, () -> {
-      server.expect().withPath("/apis/autoscaling/v1/namespaces/test/horizontalpodautoscalers/horizontalpodautoscaler").andReturn(404, "error message from kubernetes").always();
+      server.expect().withPath("/apis/autoscaling/v2beta1/namespaces/test/horizontalpodautoscalers/horizontalpodautoscaler").andReturn(404, "error message from kubernetes").always();
       KubernetesClient client = server.getClient();
 
       client.autoscaling().horizontalPodAutoscalers().inNamespace("test").withName("horizontalpodautoscaler").edit();
@@ -113,8 +113,8 @@ public class HorizontalPodAutoscalerTest {
 
   @Test
   public void testDelete() {
-    server.expect().withPath("/apis/autoscaling/v1/namespaces/test/horizontalpodautoscalers/horizontalpodautoscaler1").andReturn(200, new HorizontalPodAutoscalerBuilder().build()).once();
-    server.expect().withPath("/apis/autoscaling/v1/namespaces/ns1/horizontalpodautoscalers/horizontalpodautoscaler2").andReturn(200, new HorizontalPodAutoscalerBuilder().build()).once();
+    server.expect().withPath("/apis/autoscaling/v2beta1/namespaces/test/horizontalpodautoscalers/horizontalpodautoscaler1").andReturn(200, new HorizontalPodAutoscalerBuilder().build()).once();
+    server.expect().withPath("/apis/autoscaling/v2beta1/namespaces/ns1/horizontalpodautoscalers/horizontalpodautoscaler2").andReturn(200, new HorizontalPodAutoscalerBuilder().build()).once();
 
     KubernetesClient client = server.getClient();
     Boolean deleted = client.autoscaling().horizontalPodAutoscalers().inNamespace("test").withName("horizontalpodautoscaler1").delete();
@@ -133,8 +133,8 @@ public class HorizontalPodAutoscalerTest {
     HorizontalPodAutoscaler horizontalPodAutoscaler2 = new HorizontalPodAutoscalerBuilder().withNewMetadata().withName("horizontalpodautoscaler2").withNamespace("ns1").endMetadata().build();
     HorizontalPodAutoscaler horizontalPodAutoscaler3 = new HorizontalPodAutoscalerBuilder().withNewMetadata().withName("horizontalpodautoscaler3").withNamespace("any").endMetadata().build();
 
-    server.expect().withPath("/apis/autoscaling/v1/namespaces/test/horizontalpodautoscalers/horizontalpodautoscaler1").andReturn(200, horizontalPodAutoscaler1).once();
-    server.expect().withPath("/apis/autoscaling/v1/namespaces/ns1/horizontalpodautoscalers/horizontalpodautoscaler2").andReturn(200, horizontalPodAutoscaler2).once();
+    server.expect().withPath("/apis/autoscaling/v2beta1/namespaces/test/horizontalpodautoscalers/horizontalpodautoscaler1").andReturn(200, horizontalPodAutoscaler1).once();
+    server.expect().withPath("/apis/autoscaling/v2beta1/namespaces/ns1/horizontalpodautoscalers/horizontalpodautoscaler2").andReturn(200, horizontalPodAutoscaler2).once();
 
     KubernetesClient client = server.getClient();
     Boolean deleted = client.autoscaling().horizontalPodAutoscalers().inAnyNamespace().delete(horizontalPodAutoscaler1, horizontalPodAutoscaler2);
@@ -172,11 +172,10 @@ public class HorizontalPodAutoscalerTest {
       .endScaleTargetRef()
       .withMinReplicas(1)
       .withMaxReplicas(10)
-      .withTargetCPUUtilizationPercentage(50)
       .endSpec()
       .build();
 
-    server.expect().withPath("/apis/autoscaling/v1/namespaces/test/horizontalpodautoscalers/test-hpa").andReturn(200, horizontalPodAutoscaler).once();
+    server.expect().withPath("/apis/autoscaling/v2beta1/namespaces/test/horizontalpodautoscalers/test-hpa").andReturn(200, horizontalPodAutoscaler).once();
 
     KubernetesClient client = server.getClient();
     horizontalPodAutoscaler = client.autoscaling().horizontalPodAutoscalers().inNamespace("test").withName("test-hpa").get();
