@@ -38,12 +38,12 @@ public class WaitUntilReadyExample {
         .addNewContainer()
         .withName("myapp-container")
         .withImage("busybox:1.28")
-        .withCommand("sh", "-c", "echo The app is running!; sleep 10")
+        .withCommand("sh", "-c", "echo 'The app is running!'; sleep 10")
         .endContainer()
         .addNewInitContainer()
         .withName("init-myservice")
         .withImage("busybox:1.28")
-        .withCommand("sh", "-c", "echo inititalizing...; sleep 5")
+        .withCommand("sh", "-c", "echo 'inititalizing...'; sleep 5")
         .endInitContainer()
         .endSpec()
         .build();
@@ -53,10 +53,10 @@ public class WaitUntilReadyExample {
       log("Pod created, waiting for it to get ready");
       client.resource(pod).inNamespace(namespace).waitUntilReady(10, TimeUnit.SECONDS);
       log("Pod is ready now.");
-
-      LogWatch watch = client.pods().inNamespace(namespace).withName(pod.getMetadata().getName()).watchLog(System.out);
-      watch.wait(10);
+      client.pods().inNamespace(namespace).withName(pod.getMetadata().getName()).watchLog(System.out);
+      client.resource(pod).inNamespace(namespace).delete();
     }
+    System.exit(0);
   }
 
   private static void log(String action, Object obj) {
