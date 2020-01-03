@@ -30,13 +30,16 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.io.Serializable;
 
 
 /**
- *
+ * Quantity is fixed point representation of a number.
+ * It provides convenient marshalling/unmarshalling in JSON or YAML,
+ * in addition to String or getAmountInBytes accessors.
  *
  */
 @JsonDeserialize(using = Quantity.Deserializer.class)
@@ -46,86 +49,206 @@ import java.io.Serializable;
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage=true, builderPackage = "io.fabric8.kubernetes.api.builder", inline = @Inline(type = Doneable.class, prefix = "Doneable", value = "done"))
 public class Quantity  implements Serializable {
 
-    private String amount;
-    private String format;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  private String amount;
+  private String format;
+  private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    /**
-     * No args constructor for use in serialization
-     *
-     */
-    public Quantity() {
+  /**
+   * No args constructor for use in serialization
+   *
+   */
+  public Quantity() {
+  }
+
+  /**
+   * Single argument constructor for setting amount.
+   *
+   * @param amount amount of quantity specified.
+   */
+  public Quantity(String amount) {
+    Quantity parsedQuantity = parse(amount);
+    this.amount = parsedQuantity.getAmount();
+    this.format = parsedQuantity.getFormat();
+  }
+
+  /**
+   * Double argument constructor for setting amount along with format.
+   *
+   * @param amount amount of quantity specified
+   * @param format format for the amount.
+   */
+  public Quantity(String amount, String format) {
+    this.amount = amount;
+    this.format = format;
+  }
+
+  public String getAmount() {
+    return amount;
+  }
+
+  public void setAmount(String amount) {
+    this.amount = amount;
+  }
+
+  public String getFormat() {
+    return format;
+  }
+
+  public void setFormat(String format) {
+    this.format = format;
+  }
+
+  public static BigDecimal getAmountInBytes(Quantity quantity) {
+    String value = "";
+    if (quantity.getAmount() != null && quantity.getFormat() != null) {
+      value = quantity.getAmount() + quantity.getFormat();
+    } else if (quantity.getAmount() != null) {
+      value = quantity.getAmount();
     }
 
-    /**
-     * Single argument constructor for setting amount.
-     *
-     * @param amount amount of quantity specified.
-     */
-    public Quantity(String amount) {
-        this.amount = amount;
+    if (value == null || value.isEmpty()) {
+      throw new IllegalArgumentException("Invalid quantity value passed to parse");
+    }
+    // Append Extra zeroes if starting with decimal
+    if (!Character.isDigit(value.indexOf(0)) && value.startsWith(".")) {
+        value = "0" + value;
     }
 
-    /**
-     * Double argument constructor for setting amount along with format.
-     *
-     * @param amount amount of quantity specified
-     * @param format format for the amount.
-     */
-    public Quantity(String amount, String format) {
-        this.amount = amount;
-        this.format = format;
+    Quantity amountFormatPair = parse(value);
+    String formatStr = amountFormatPair.getFormat();
+    // Handle Decimal exponent case
+    if ((formatStr.startsWith("e") || formatStr.startsWith("E")) &&
+        formatStr.length() > 1) {
+      int exponent = Integer.parseInt(formatStr.substring(1));
+      return new BigDecimal("10").pow(exponent);
     }
 
-    public String getAmount() {
-        return amount;
+    BigDecimal digit = new BigDecimal(amountFormatPair.getAmount());
+    BigDecimal multiple = new BigDecimal("1");
+    BigDecimal binaryFactor = new BigDecimal("2");
+    BigDecimal decimalFactor = new BigDecimal("10");
+
+    switch (formatStr) {
+      case "Ki":
+        multiple = binaryFactor.pow(10);
+        break;
+      case "Mi":
+        multiple = binaryFactor.pow(20);
+        break;
+      case "Gi":
+        multiple = binaryFactor.pow(30);
+        break;
+      case "Ti":
+        multiple = binaryFactor.pow(40);
+        break;
+      case "Pi":
+        multiple = binaryFactor.pow(50);
+        break;
+      case "Ei":
+        multiple = binaryFactor.pow(60);
+        break;
+      case "n":
+        multiple = decimalFactor.pow(-9);
+        break;
+      case "u":
+        multiple = decimalFactor.pow(-6);
+        break;
+      case "m":
+        multiple = decimalFactor.pow(-3);
+        break;
+      case "k":
+        multiple = decimalFactor.pow(3);
+        break;
+      case "M":
+        multiple = decimalFactor.pow(6);
+        break;
+      case "G":
+        multiple = decimalFactor.pow(9);
+        break;
+      case "T":
+        multiple = decimalFactor.pow(12);
+        break;
+      case "P":
+        multiple = decimalFactor.pow(15);
+        break;
+      case "E":
+        multiple = decimalFactor.pow(18);
+        break;
     }
 
-    public void setAmount(String amount) {
-        this.amount = amount;
+    return digit.multiply(multiple);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
 
-    public String getFormat() {
-        return format;
+    if (o == null || getClass() != o.getClass()) {
+      return false;
     }
 
-    public void setFormat(String format) {
-        this.format = format;
+    Quantity quantity = (Quantity) o;
+    return getAmountInBytes(this)
+      .toBigInteger()
+      .equals(getAmountInBytes(quantity).toBigInteger());
+  }
+
+  @Override
+  public int hashCode() {
+    return getAmountInBytes(this).toBigInteger().hashCode();
+  }
+
+  public static Quantity parse(String quantityAsString) {
+    String quantityComponents[] = quantityAsString.split("[eEinumkKMGTP]+");
+    if (quantityComponents.length == 0) {
+      throw new IllegalArgumentException("Invalid quantity string format passed.");
     }
+    String amountStr = quantityComponents[0];
+    String formatStr = quantityAsString.substring(quantityComponents[0].length());
+    return new Quantity(amountStr, formatStr);
+  }
 
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() {
+    return this.additionalProperties;
+  }
 
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
+  @JsonAnySetter
+  public void setAdditionalProperty(String name, Object value) {
+    this.additionalProperties.put(name, value);
+  }
 
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
+  public static class Serializer extends JsonSerializer<Quantity> {
 
-    public static class Serializer extends JsonSerializer<Quantity> {
-
-        @Override
-        public void serialize(Quantity value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
-            if (value != null && value.getAmount() != null) {
-                jgen.writeString(value.getAmount());
-            } else {
-                jgen.writeNull();
-            }
+    @Override
+    public void serialize(Quantity value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
+      if (value != null) {
+        StringBuilder objAsStringBuilder = new StringBuilder();
+        if (value.getAmount() != null) {
+          objAsStringBuilder.append(value.getAmount());
         }
-    }
-
-    public static class Deserializer extends JsonDeserializer<Quantity> {
-
-        @Override
-        public Quantity deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-            ObjectCodec oc = jsonParser.getCodec();
-            JsonNode node = oc.readTree(jsonParser);
-            Quantity quantity = new Quantity(node.asText());
-            return quantity;
+        if (value.getFormat() != null) {
+          objAsStringBuilder.append(value.getFormat());
         }
-
+        jgen.writeString(objAsStringBuilder.toString());
+      } else {
+        jgen.writeNull();
+      }
     }
+  }
+
+  public static class Deserializer extends JsonDeserializer<Quantity> {
+
+    @Override
+    public Quantity deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+      ObjectCodec oc = jsonParser.getCodec();
+      JsonNode node = oc.readTree(jsonParser);
+      Quantity quantity = new Quantity(node.asText());
+      return quantity;
+    }
+
+  }
 
 }
