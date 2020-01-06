@@ -317,6 +317,9 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   public BatchAPIGroupDSL batch() { return adapt(BatchAPIGroupClient.class); }
 
   @Override
+  public MetricAPIGroupDSL top() { return adapt(MetricAPIGroupClient.class); }
+
+  @Override
   public PolicyAPIGroupDSL policy() { return adapt(PolicyAPIGroupClient.class); }
 
   @Override

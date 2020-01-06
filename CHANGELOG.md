@@ -20,6 +20,7 @@
 
 #### New Features
 * Fix #1548: Allow user to update the status on CustomResources
+* Fix #1282: Add Support for fetching Kubernetes metrics
 
 ### 4.6.4 (20-11-2019)
 #### Bugs
