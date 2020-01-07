@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.informers;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
@@ -28,7 +29,7 @@ import io.fabric8.kubernetes.client.dsl.base.OperationContext;
  * @param <T> type
  * @param <TList> list for that type
  */
-public interface ListerWatcher<T, TList> {
+public interface ListerWatcher<T extends HasMetadata, TList> {
   Watch watch(ListOptions params, String namespace, OperationContext context, Watcher<T> watcher) throws KubernetesClientException;
 
   TList list(ListOptions params, String namespace, OperationContext context) throws KubernetesClientException;

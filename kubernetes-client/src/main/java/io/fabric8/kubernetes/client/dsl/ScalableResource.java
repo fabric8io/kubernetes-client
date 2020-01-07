@@ -15,7 +15,9 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface ScalableResource<T, D> extends Resource<T, D>,
+import io.fabric8.kubernetes.api.model.HasMetadata;
+
+public interface ScalableResource<T extends HasMetadata, D> extends Resource<T, D>,
   Scaleable<T>
   , Loggable<String, LogWatch> {
 }

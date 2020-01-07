@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 
@@ -25,7 +26,7 @@ import io.fabric8.kubernetes.client.Watcher;
  * @param <D>   The doneable variant of the Kubernetes resource type.
  * @param <R>   The resource operations.
  */
-public interface Operation<T, L, D, R>
+public interface Operation<T extends HasMetadata, L, D, R>
   extends
   AnyNamespaceable<FilterWatchListMultiDeletable<T, L, Boolean, Watch, Watcher<T>>>,
   Namespaceable<NonNamespaceOperation<T, L, D, R>>,

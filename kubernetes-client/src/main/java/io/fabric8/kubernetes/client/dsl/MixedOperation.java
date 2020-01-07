@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
+
 /**
  * A Client Namespace or Non Namespace Operation. This acts as an umbrella for {@link Operation} and {@link NonNamespaceOperation}.
  * Its not intended to be exposed directly into the client and is only usable as a convenient interface internally.
@@ -25,7 +27,7 @@ package io.fabric8.kubernetes.client.dsl;
  * @param <D> The doneable variant of the Kubernetes resource type.
  * @param <R> The resource operations.
  */
-public interface MixedOperation<T, L, D, R extends Resource<T, D>>
+public interface MixedOperation<T extends HasMetadata, L, D, R extends Resource<T, D>>
   extends Operation<T, L, D, R>,
   NonNamespaceOperation<T, L, D, R> {
 }

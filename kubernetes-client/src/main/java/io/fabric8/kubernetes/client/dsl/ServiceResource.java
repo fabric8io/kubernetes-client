@@ -15,13 +15,14 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.LocalPortForward;
 import io.fabric8.kubernetes.client.PortForward;
 
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 
-public interface ServiceResource<T, D> extends Resource<T, D> ,
+public interface ServiceResource<T extends HasMetadata, D> extends Resource<T, D> ,
   PortForwardable<PortForward, LocalPortForward, ReadableByteChannel, WritableByteChannel> {
 
   String getURL(String portName);

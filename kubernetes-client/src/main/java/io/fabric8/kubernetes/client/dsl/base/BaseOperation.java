@@ -64,7 +64,7 @@ import java.util.function.Predicate;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 
-public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
+public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
   extends OperationSupport
   implements
   OperationInfo,

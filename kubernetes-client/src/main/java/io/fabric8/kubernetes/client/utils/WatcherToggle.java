@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.client.utils;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watcher;
 
@@ -24,7 +25,7 @@ import java.util.Objects;
 /**
  * A utility class to enable and disable callbacks to a watcher instance.
  */
-public class WatcherToggle<T> implements Watcher<T> {
+public class WatcherToggle<T extends HasMetadata> implements Watcher<T> {
 
   private Watcher<T> delegate;
 

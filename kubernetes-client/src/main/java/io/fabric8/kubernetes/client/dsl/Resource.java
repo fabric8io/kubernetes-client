@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 
@@ -24,7 +25,7 @@ import io.fabric8.kubernetes.client.Watcher;
  * @param <T>   The resource type.
  * @param <D>   The "Inlineable / Doneable" type of the resource.
  */
-public interface Resource<T, D> extends CreateOrReplaceable<T, T, D>, CreateFromServerGettable<T, T, D>,
+public interface Resource<T extends HasMetadata, D> extends CreateOrReplaceable<T, T, D>, CreateFromServerGettable<T, T, D>,
   CascadingEditReplacePatchDeletable<T, T, D, Boolean>,
   VersionWatchable<Watch, Watcher<T>>,
   Waitable<T, T>, Requirable<T>, Readiable {

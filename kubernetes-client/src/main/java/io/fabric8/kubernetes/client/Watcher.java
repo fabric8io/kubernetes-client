@@ -15,9 +15,9 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.model.Status;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 
-public interface Watcher<T> {
+public interface Watcher<T extends HasMetadata> {
 
   void eventReceived(Action action, T resource);
 

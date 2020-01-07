@@ -20,10 +20,12 @@ package io.fabric8.kubernetes.client;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
+
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 
-public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
+public interface ResourceHandler<T extends HasMetadata, V extends VisitableBuilder<T, V>> {
 
   class Key {
     private final String kind;
