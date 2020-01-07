@@ -19,6 +19,8 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ContainerBuilder;
 import io.fabric8.kubernetes.api.model.ContainerPortBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
+import io.fabric8.kubernetes.api.model.Status;
+import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.apps.DeploymentList;
@@ -26,6 +28,10 @@ import io.fabric8.kubernetes.api.model.apps.DeploymentListBuilder;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetListBuilder;
+import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
+import io.fabric8.kubernetes.api.model.extensions.DeploymentRollbackBuilder;
+import io.fabric8.kubernetes.api.model.v1.Scale;
+import io.fabric8.kubernetes.api.model.v1.ScaleBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
@@ -385,5 +391,58 @@ public class DeploymentTest {
     assertEquals(1, fromServerDeployment.getStatus().getConditions().size());
     assertEquals("Ready", fromServerDeployment.getStatus().getConditions().get(0).getType());
     assertEquals("True", fromServerDeployment.getStatus().getConditions().get(0).getStatus());
+  }
+
+  @Test
+  public void testScaleGet() {
+    Scale scaleObj = new ScaleBuilder()
+      .withNewMetadata().addToLabels("foo", "bar").endMetadata()
+      .withNewSpec().withReplicas(Integer.parseInt("2")).endSpec()
+      .build();
+
+    server.expect()
+      .get()
+      .withPath("/apis/apps/v1/namespaces/test/deployments/deployment1/scale")
+      .andReturn(200, scaleObj).once();
+
+    KubernetesClient client = server.getClient();
+    Scale scaleResponse  = client.apps().deployments().inNamespace("test").withName("deployment1").scale();
+    assertEquals("bar", scaleResponse.getMetadata().getLabels().get("foo"));
+  }
+
+  @Test
+  public void testScaleUpdate() {
+    Scale scaleObj = new ScaleBuilder()
+      .withNewMetadata().addToLabels("foo", "bar").endMetadata()
+      .withNewSpec().withReplicas(Integer.parseInt("2")).endSpec()
+      .build();
+
+    server.expect()
+      .put()
+      .withPath("/apis/apps/v1/namespaces/test/deployments/deployment1/scale")
+      .andReturn(200, scaleObj).once();
+
+    KubernetesClient client = server.getClient();
+
+    Scale scaleResponse  = client.apps().deployments().inNamespace("test").withName("deployment1").scale(scaleObj);
+    assertEquals("bar", scaleResponse.getMetadata().getLabels().get("foo"));
+  }
+
+  @Test
+  public void testRollback() {
+    DeploymentRollback deploymentRollback = new DeploymentRollbackBuilder()
+      .withName("deployment1")
+      .withNewRollbackTo().withRevision(1l).endRollbackTo()
+      .withUpdatedAnnotations(Collections.singletonMap("foo", "bar"))
+      .build();
+
+    Status status = new StatusBuilder().build();
+    KubernetesClient client = server.getClient();
+    server.expect()
+      .post()
+      .withPath("/apis/extensions/v1beta1/namespaces/test/deployments/deployment1/rollback")
+      .andReturn(201, status).once();
+
+    client.extensions().deployments().inNamespace("test").withName("deployment1").rollback(deploymentRollback);
   }
 }
