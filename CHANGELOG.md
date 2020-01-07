@@ -4,6 +4,7 @@
 #### Bugs
 * Fix #1850: Add option to disable timestamps in build logs on Openshift
 * Fix #1902: Fix the usage of reflection, so that `getMetadata` is detected properly
+* Fix #1925: Client should always read services from server during replace
 * Fix #1486: Creating CRDs with schema validation is broken
 * Fix #1707: HorizontalPodAutoscalerSpecBuilder found no metric method
 * Fix #885: Quantity doesn't honour the unit

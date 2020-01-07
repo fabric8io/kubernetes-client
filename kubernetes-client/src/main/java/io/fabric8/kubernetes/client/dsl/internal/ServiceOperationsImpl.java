@@ -62,7 +62,7 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
   @Override
   public Service replace(Service item) {
       try {
-        Service old = getMandatory();
+        Service old = fromServer().get();
         return super.replace(new ServiceBuilder(item)
           .editSpec()
           .withClusterIP(old.getSpec().getClusterIP())
