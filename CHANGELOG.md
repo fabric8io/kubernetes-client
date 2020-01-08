@@ -2,6 +2,15 @@
 
 ### 4.7-SNAPSHOT
 #### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+### 4.7.0 (08-01-2020)
+#### Bugs
 * Fix #1850: Add option to disable timestamps in build logs on Openshift
 * Fix #1902: Fix the usage of reflection, so that `getMetadata` is detected properly
 * Fix #1925: Client should always read services from server during replace
