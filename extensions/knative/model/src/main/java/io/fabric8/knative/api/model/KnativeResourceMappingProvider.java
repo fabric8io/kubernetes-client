@@ -26,10 +26,10 @@ public class KnativeResourceMappingProvider implements KubernetesResourceMapping
     public final Map<String, Class<? extends KubernetesResource>> mappings = new HashMap<>();
 
     public KnativeResourceMappingProvider () {
-        mappings.put("knative.dev/v1alpha1#Configuration", Configuration.class);
-        mappings.put("knative.dev/v1alpha1#Revision", Revision.class);
-        mappings.put("knative.dev/v1alpha1#Service", Service.class);
-        mappings.put("knative.dev/v1alpha1#Route", Route.class);
+        mappings.put("serving.knative.dev/v1alpha1#Configuration", Configuration.class);
+        mappings.put("serving.knative.dev/v1alpha1#Revision", Revision.class);
+        mappings.put("serving.knative.dev/v1alpha1#Service", Service.class);
+        mappings.put("serving.knative.dev/v1alpha1#Route", Route.class);
     }
      
     public Map<String, Class<? extends KubernetesResource>> getMappings() {
