@@ -37,24 +37,24 @@ public class InformerExample {
   public static void main(String args[]) throws IOException, InterruptedException {
     try (final KubernetesClient client = new DefaultKubernetesClient()) {
       SharedInformerFactory sharedInformerFactory = client.informers();
-      SharedIndexInformer<Pod> podInformer = sharedInformerFactory.sharedIndexInformerFor(Pod.class, PodList.class, 15 *60 * 1000);
+      SharedIndexInformer<Pod> podInformer = sharedInformerFactory.sharedIndexInformerFor(Pod.class, PodList.class, 15 * 60 * 1000);
       log("Informer factory initialized.");
 
       podInformer.addEventHandler(
         new ResourceEventHandler<Pod>() {
           @Override
           public void onAdd(Pod pod) {
-            System.out.printf("%s pod added\n", pod.getMetadata().getName());
+            log(pod.getMetadata().getName() + " pod added\n");
           }
 
           @Override
           public void onUpdate(Pod oldPod, Pod newPod) {
-            System.out.printf("%s pod updated\n", oldPod.getMetadata().getName());
+            log(oldPod.getMetadata().getName() + " pod updated\n");
           }
 
           @Override
           public void onDelete(Pod pod, boolean deletedFinalStateUnknown) {
-            System.out.printf("%s pod deleted \n", pod.getMetadata().getName());
+            log(pod.getMetadata().getName() + " pod deleted \n");
           }
         }
       );
@@ -86,17 +86,13 @@ public class InformerExample {
       log("PodLister has " + podLister.list().size());
 
       if (myPod != null) {
-        System.out.printf("***** myapp-pod created %s", myPod.getMetadata().getCreationTimestamp());
+        log("***** myapp-pod created %s", myPod.getMetadata().getCreationTimestamp());
       }
 
       // Wait for some time now
       TimeUnit.MINUTES.sleep(15);
 
       sharedInformerFactory.stopAllRegisteredInformers();
-//      Thread.sleep(3000);
-//      log("All informers stoppped");
-//      log("Deleting myapp-pod now..");
-//      client.pods().inNamespace("default").withName("myapp-pod").delete();
     }
   }
 

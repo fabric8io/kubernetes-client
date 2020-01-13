@@ -34,6 +34,7 @@ import java.util.AbstractMap;
 import java.util.Deque;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 public class DefaultSharedIndexInformer<T extends HasMetadata, TList extends KubernetesResourceList<T>> implements SharedIndexInformer<T> {
   private static final Logger log = LoggerFactory.getLogger(DefaultSharedIndexInformer.class);
@@ -70,7 +71,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, TList extends Kub
     DeltaFIFO<T> fifo = new DeltaFIFO<T>(Cache::metaNamespaceKeyFunc, this.indexer);
 
     this.controller = new Controller<T, TList>(apiTypeClass, fifo, listerWatcher, this::handleDeltas, processor::shouldResync, resyncCheckPeriodMillis, context);
-    controllerThread = new Thread(controller::run);
+    controllerThread = new Thread(controller::run, "informer-controller-" + apiTypeClass.getSimpleName());
   }
 
   /**
@@ -199,8 +200,11 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, TList extends Kub
   }
 
   @Override
-  public void addIndexers(Map indexers) {
-    throw new RuntimeException("unimplemented!");
+  public void addIndexers(Map<String, Function<T, List<String>>> indexers) {
+    if (started) {
+      throw new IllegalStateException("Cannot add indexers to a running informer.");
+    }
+    indexer.addIndexers(indexers);
   }
 
 

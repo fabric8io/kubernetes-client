@@ -723,14 +723,10 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   public Watch watch(final Watcher<T> watcher) throws KubernetesClientException {
-    return watch(resourceVersion, watcher, false);
+    return watch(resourceVersion, watcher);
   }
 
   public Watch watch(String resourceVersion, final Watcher<T> watcher) throws KubernetesClientException {
-    return watch(resourceVersion, watcher, false);
-  }
-
-  public Watch watch(String resourceVersion, final Watcher<T> watcher, boolean deserializeWithoutTypeCheck) throws KubernetesClientException {
     WatcherToggle<T> watcherToggle = new WatcherToggle<>(watcher, true);
     WatchConnectionManager watch = null;
     try {
@@ -741,8 +737,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
         watcherToggle,
         config.getWatchReconnectInterval(),
         config.getWatchReconnectLimit(),
-        config.getWebsocketTimeout(),
-        deserializeWithoutTypeCheck
+        config.getWebsocketTimeout()
       );
       watch.waitUntilReady();
       return watch;

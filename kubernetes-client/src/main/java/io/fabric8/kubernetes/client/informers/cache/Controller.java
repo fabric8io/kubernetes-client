@@ -46,6 +46,13 @@ public class Controller<T extends HasMetadata, TList extends KubernetesResourceL
   private static final long DEFAULT_PERIOD = 5000L;
 
   /**
+   * Period controls the timing between one watch ending
+   * and the beginning of the next one in milliseconds.
+   * It's one second by default as done in go client
+   */
+  private static final long DEFAULT_DELAY_PERIOD = 1000L;
+
+  /**
    * resync fifo internals in millis
    */
   private long fullResyncPeriod;
@@ -110,9 +117,9 @@ public class Controller<T extends HasMetadata, TList extends KubernetesResourceL
       reflector = new ReflectorRunnable<T, TList>(apiTypeClass, listerWatcher, queue, operationContext);
       try {
         if (fullResyncPeriod > 0) {
-          reflectorFuture = reflectExecutor.scheduleWithFixedDelay(reflector::run, 0L, fullResyncPeriod, TimeUnit.MILLISECONDS);
+          reflectorFuture = reflectExecutor.scheduleWithFixedDelay(reflector::run, DEFAULT_DELAY_PERIOD, fullResyncPeriod, TimeUnit.MILLISECONDS);
         } else {
-          reflectorFuture = reflectExecutor.scheduleWithFixedDelay(reflector::run, 0L, DEFAULT_PERIOD, TimeUnit.MILLISECONDS);
+          reflectorFuture = reflectExecutor.scheduleWithFixedDelay(reflector::run, DEFAULT_DELAY_PERIOD, DEFAULT_PERIOD, TimeUnit.MILLISECONDS);
         }
       } catch (RejectedExecutionException e) {
         log.warn("reflector list-watching job exiting because the thread-pool is shutting down");
@@ -165,6 +172,9 @@ public class Controller<T extends HasMetadata, TList extends KubernetesResourceL
         this.queue.pop(this.processFunc);
       } catch (InterruptedException t) {
         log.error("DefaultController#processLoop got interrupted {}", t.getMessage(), t);
+        return;
+      } catch (Throwable t) {
+        log.error("DefaultController#processLoop recovered from crashing {} ", t.getMessage(), t);
       }
     }
   }

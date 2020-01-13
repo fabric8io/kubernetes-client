@@ -20,8 +20,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.ZonedDateTime;
-import java.util.concurrent.ArrayBlockingQueue;
+import java.time.temporal.ChronoUnit;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * ProcessorListener implements Runnable interface. It's supposed to run in background
@@ -35,20 +36,15 @@ import java.util.concurrent.BlockingQueue;
  */
 public class ProcessorListener<T> implements Runnable {
   private static final Logger log = LoggerFactory.getLogger(ProcessorListener.class);
-
-  private static final int DEFAULT_QUEUE_CAPACITY = 1000;
-
-  private long resyncPeriod;
+  private long resyncPeriodInMillis;
   private ZonedDateTime nextResync;
-
   private BlockingQueue<Notification> queue;
-
   private ResourceEventHandler<T> handler;
 
-  public ProcessorListener(ResourceEventHandler<T> handler, long resyncPeriod) {
-    this.resyncPeriod = resyncPeriod;
+  public ProcessorListener(ResourceEventHandler<T> handler, long resyncPeriodInMillis) {
+    this.resyncPeriodInMillis = resyncPeriodInMillis;
     this.handler = handler;
-    this.queue = new ArrayBlockingQueue<>(DEFAULT_QUEUE_CAPACITY);
+    this.queue = new LinkedBlockingQueue<>();
 
     determineNextResync(ZonedDateTime.now());
   }
@@ -56,27 +52,39 @@ public class ProcessorListener<T> implements Runnable {
   @Override
   public void run() {
     while (true) {
+      Boolean isValidNotification = Boolean.FALSE;
+      String operationType = "";
       try {
         Notification obj = queue.take();
         if (obj instanceof UpdateNotification) {
+          isValidNotification = Boolean.TRUE;
+          operationType = "UPDATE";
           UpdateNotification notification = (UpdateNotification) obj;
           this.handler.onUpdate((T) notification.getOldObj(), (T) notification.getNewObj());
         } else if (obj instanceof AddNotification) {
+          isValidNotification = Boolean.TRUE;
+          operationType = "ADD";
           AddNotification notification = (AddNotification) obj;
           this.handler.onAdd((T) notification.getNewObj());
         } else if (obj instanceof DeleteNotification) {
+          isValidNotification = Boolean.TRUE;
+          operationType = "DELETE";
           Object deletedObj = ((DeleteNotification) obj).getOldObj();
           if (deletedObj instanceof  DeltaFIFO.DeletedFinalStateUnknown) {
             this.handler.onDelete(((DeltaFIFO.DeletedFinalStateUnknown<T>) deletedObj).getObj(), true);
           } else {
             this.handler.onDelete((T) deletedObj, false);
           }
-        } else {
-          throw new RuntimeException("unrecognized notification");
         }
       } catch (InterruptedException e) {
         log.error("processor interrupted: {}", e.getMessage());
         return;
+      } catch (Throwable t) {
+        log.error("Failed invoking " + operationType + " event handler: {}", t.getMessage());
+      }
+
+      if (Boolean.FALSE.equals(isValidNotification)) {
+        throw new RuntimeException("Unrecognized notification.");
       }
     }
   }
@@ -89,11 +97,11 @@ public class ProcessorListener<T> implements Runnable {
   }
 
   public void determineNextResync(ZonedDateTime now) {
-    this.nextResync = now.plusSeconds(this.resyncPeriod);
+    this.nextResync = now.plus(this.resyncPeriodInMillis, ChronoUnit.MILLIS);
   }
 
   public boolean shouldResync(ZonedDateTime now) {
-    return this.resyncPeriod != 0 && (now.isAfter(this.nextResync) || now.equals(this.nextResync));
+    return this.resyncPeriodInMillis != 0 && (now.isAfter(this.nextResync) || now.equals(this.nextResync));
   }
 
   public static class Notification<T> {}

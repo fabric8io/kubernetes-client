@@ -5,6 +5,7 @@
 * `Quantity.getAmountInBytes()` should be able to handle negative exponents
 
 #### Improvements
+* Fix #1894: SharedInformer Improvements
 
 #### Dependency Upgrade
 

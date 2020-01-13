@@ -391,20 +391,13 @@ public class DeltaFIFO<T> implements Store<Object> {
   private void queueActionLocked(DeltaType actionType, Object obj) {
     String id = this.keyOf(obj);
 
-    // if object is supposed to be deleted (last event is Deleted),
-    // then we should ignore Sync events, because it would result in
-    // recreation of this object.
-    if (actionType == DeltaType.SYNCHRONIZATION && this.willObjectBeDeletedLocked(id)) {
-      return;
-    }
-
     Deque<AbstractMap.SimpleEntry<DeltaType, Object>> deltas = items.get(id);
     if (deltas == null) {
       Deque<AbstractMap.SimpleEntry<DeltaType, Object>> deltaList = new LinkedList<>();
       deltaList.add(new AbstractMap.SimpleEntry<>(actionType, obj));
       deltas = new LinkedList<>(deltaList);
     } else {
-      deltas.add(new AbstractMap.SimpleEntry<DeltaType, Object>(actionType, obj));
+      deltas.add(new AbstractMap.SimpleEntry<>(actionType, obj));
     }
 
     Deque<AbstractMap.SimpleEntry<DeltaType, Object>> combinedDeltaList =
@@ -420,23 +413,6 @@ public class DeltaFIFO<T> implements Store<Object> {
     } else {
       this.items.remove(id);
     }
-  }
-
-  /**
-   * Returns true only if the last delta for the given object is Deleted.
-   * Caller must hold the lock.
-   *
-   * @param id id of the object
-   * @return boolean value
-   */
-  private boolean willObjectBeDeletedLocked(String id) {
-    if (!this.items.containsKey(id)) {
-      return false;
-    }
-
-    Deque<AbstractMap.SimpleEntry<DeltaType, Object>> deltas = this.items.get(id);
-    return !(deltas == null || deltas.isEmpty())
-      && deltas.peekLast().getKey().equals(DeltaType.DELETION);
   }
 
   /**

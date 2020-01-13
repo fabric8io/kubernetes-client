@@ -19,12 +19,11 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import org.junit.Test;
 
-import java.util.AbstractMap;
-import java.util.Arrays;
-import java.util.Deque;
-import java.util.LinkedList;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 
 public class DeltaFIFOTest {
   @Test
@@ -133,5 +132,31 @@ public class DeltaFIFOTest {
     assertEquals(1, deltas.size());
     assertEquals(foo1, deltas.peekLast().getValue());
     assertEquals(DeltaFIFO.DeltaType.SYNCHRONIZATION, deltas.peekLast().getKey());
+  }
+
+  @Test
+  public void testReplaceWithDeleteDeltaIn() throws InterruptedException {
+    Pod oldPod = new PodBuilder().withNewMetadata().withNamespace("default").withName("foo1").endMetadata().build();
+    Pod newPod = new PodBuilder().withNewMetadata().withNamespace("default").withName("foo2").endMetadata().build();
+
+    Cache mockCache = mock(Cache.class);
+    doReturn(oldPod).when(mockCache).getByKey(Cache.deletionHandlingMetaNamespaceKeyFunc(oldPod));
+    DeltaFIFO<Pod> deltaFIFO =
+      new DeltaFIFO<>(Cache::deletionHandlingMetaNamespaceKeyFunc, mockCache);
+
+    deltaFIFO.delete(oldPod);
+    deltaFIFO.replace(Collections.singletonList(newPod), "0");
+
+    deltaFIFO.pop(
+      (deltas) -> {
+        assertEquals(DeltaFIFO.DeltaType.DELETION, deltas.getFirst().getKey());
+        assertEquals(oldPod, deltas.getFirst().getValue());
+      });
+
+    deltaFIFO.pop(
+      (deltas) -> {
+        assertEquals(DeltaFIFO.DeltaType.SYNCHRONIZATION, deltas.getFirst().getKey());
+        assertEquals(newPod, deltas.getFirst().getValue());
+      });
   }
 }

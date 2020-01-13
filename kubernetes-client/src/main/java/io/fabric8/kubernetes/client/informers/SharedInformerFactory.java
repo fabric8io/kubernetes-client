@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.informers.impl.DefaultSharedIndexInformer;
+import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 import okhttp3.OkHttpClient;
 
 import java.lang.reflect.Type;
@@ -135,7 +136,13 @@ public class SharedInformerFactory extends BaseOperation {
         watchBaseOperation.setType(apiTypeClass);
         watchBaseOperation.setListType(apiListTypeClass);
 
-        return watchBaseOperation.watch(params.getResourceVersion(), resourceWatcher, true);
+        // Register Custom Kind in case of CustomResource
+        if (context.getApiGroupName() != null && context.getApiGroupVersion() != null) {
+          String apiGroupNameAndVersion = context.getApiGroupName() +
+            (context.getApiGroupName().endsWith("/") ? context.getApiGroupVersion() : ("/" + context.getApiGroupVersion()));
+          KubernetesDeserializer.registerCustomKind(apiGroupNameAndVersion, apiTypeClass.getSimpleName(), apiTypeClass);
+        }
+        return watchBaseOperation.watch(params.getResourceVersion(), resourceWatcher);
       }
     };
   }
@@ -161,27 +168,34 @@ public class SharedInformerFactory extends BaseOperation {
     }
 
     informers.forEach(
-      (informerType, informer) -> {
-        if (!startedInformers.containsKey(informerType)) {
-          startedInformers.put(informerType, informerExecutor.submit(informer::run));
-        }
-      });
+      (informerType, informer) ->
+          startedInformers.computeIfAbsent(informerType, key -> informerExecutor.submit(informer::run)));
   }
 
   /**
-   * Stop all registered informers.
+   * Stop all registered informers and shut down thread pool.
    */
   public synchronized void stopAllRegisteredInformers() {
+    stopAllRegisteredInformers(true);
+  }
+
+  /**
+   * Stop all registered informers
+   *
+   * @param shutDownThreadPool Whether to shut down thread pool or not.
+   */
+  public synchronized void stopAllRegisteredInformers(boolean shutDownThreadPool) {
     if (informers == null || informers.isEmpty()) {
       return;
     }
     informers.forEach(
       (informerType, informer) -> {
-        if (startedInformers.containsKey(informerType)) {
-          startedInformers.remove(informerType);
+        if (startedInformers.remove(informerType) != null) {
           informer.stop();
         }
       });
-    informerExecutor.shutdown();
+    if (shutDownThreadPool) {
+      informerExecutor.shutdown();
+    }
   }
 }
