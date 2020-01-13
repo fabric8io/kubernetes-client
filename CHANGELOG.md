@@ -2,6 +2,7 @@
 
 ### 4.7-SNAPSHOT
 #### Bugs
+* `Quantity.getAmountInBytes()` should be able to handle negative exponents
 
 #### Improvements
 

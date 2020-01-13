@@ -58,6 +58,15 @@ public class QuantityTest {
   }
 
   @Test
+  public void testNegativeExponents() {
+    Quantity quantity1 = new Quantity("100001m");
+    Quantity quantity2 = new Quantity("1n");
+
+    assertEquals("100.001", Quantity.getAmountInBytes(quantity1).toString());
+    assertEquals("1E-9", Quantity.getAmountInBytes(quantity2).toString());
+  }
+
+  @Test
   public void testEquality() {
     assertTrue(new Quantity(".5Mi").equals( new Quantity("512Ki")));
   }
