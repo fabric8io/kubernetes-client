@@ -38,6 +38,7 @@ import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
@@ -182,6 +183,16 @@ public class HttpClientUtils {
             if(additionalConfig != null) {
                 additionalConfig.accept(httpClientBuilder);
             }
+
+          if (config.getCustomHeaders() != null && !config.getCustomHeaders().isEmpty()) {
+            httpClientBuilder.addNetworkInterceptor(chain -> {
+              Request.Builder agent = chain.request().newBuilder();
+              for (Map.Entry<String, String> entry : config.getCustomHeaders().entrySet()) {
+                agent.addHeader(entry.getKey(),entry.getValue());
+              }
+              return chain.proceed(agent.build());
+            });
+          }
 
             return httpClientBuilder.build();
         } catch (Exception e) {

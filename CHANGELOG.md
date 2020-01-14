@@ -20,6 +20,7 @@
 
 #### New Features
 * Fix #1548: Allow user to update the status on CustomResources
+* Fix #1917 Allow user to add custom headers to client
 
 ### 4.6.4 (20-11-2019)
 #### Bugs
