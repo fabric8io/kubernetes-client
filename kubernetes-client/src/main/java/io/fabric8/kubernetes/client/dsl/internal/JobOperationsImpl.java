@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.OwnerReference;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.api.model.v1.Scale;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
@@ -93,6 +94,16 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
   @Override
   public Job scale(int count) {
     return scale(count, false);
+  }
+
+  @Override
+  public Scale scale() {
+    return handleScale(null);
+  }
+
+  @Override
+  public Scale scale(Scale scale) {
+    return handleScale(scale);
   }
 
   @Override

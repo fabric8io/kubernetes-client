@@ -97,7 +97,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:4cd2f6cab7b4d001fb678173cfdf0ee44cc7623647bb0fab65f8839f3655b9f5"
+  digest = "1:f34b3ebd31fbb88be6b79210efccca4b2acda21ddc5375d59b9540730af13288"
   name = "k8s.io/api"
   packages = [
     "admission/v1beta1",
@@ -107,6 +107,7 @@
     "authentication/v1",
     "authorization/v1",
     "autoscaling/v2beta1",
+    "autoscaling/v1",
     "batch/v1",
     "batch/v1beta1",
     "certificates/v1beta1",
@@ -197,6 +198,17 @@
   version = "v1.17.0"
 
 [[projects]]
+  digest = "1:7814e7cc39cdcb500eafc02de1ec5ca87a5fd69c117f5225eb93ad79a83a7ff8"
+  name = "k8s.io/metrics"
+  packages = [
+    "pkg/apis/metrics",
+    "pkg/apis/metrics/v1beta1",
+  ]
+  pruneopts = "UT"
+  revision = ""
+  version = "kubernetes-1.17.0"
+
+[[projects]]
   branch = "master"
   digest = "1:533745b9452e27599b73ffa11c5248d44116e6d92b325fd7f400abab761187b9"
   name = "k8s.io/utils"
@@ -225,6 +237,7 @@
     "k8s.io/api/apps/v1",
     "k8s.io/api/authentication/v1",
     "k8s.io/api/authorization/v1",
+    "k8s.io/api/autoscaling/v1",
     "k8s.io/api/autoscaling/v2beta1",
     "k8s.io/api/batch/v1",
     "k8s.io/api/batch/v1beta1",
@@ -247,6 +260,7 @@
     "k8s.io/apimachinery/pkg/version",
     "k8s.io/client-go/tools/clientcmd/api/v1",
     "k8s.io/kubernetes/pkg/watch/json",
+    "k8s.io/metrics/pkg/apis/metrics/v1beta1",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

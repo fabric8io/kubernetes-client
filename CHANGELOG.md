@@ -2,8 +2,19 @@
 
 ### 4.7-SNAPSHOT
 #### Bugs
+* `Quantity.getAmountInBytes()` should be able to handle negative exponents
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+### 4.7.0 (08-01-2020)
+#### Bugs
 * Fix #1850: Add option to disable timestamps in build logs on Openshift
 * Fix #1902: Fix the usage of reflection, so that `getMetadata` is detected properly
+* Fix #1925: Client should always read services from server during replace
 * Fix #1486: Creating CRDs with schema validation is broken
 * Fix #1707: HorizontalPodAutoscalerSpecBuilder found no metric method
 * Fix #885: Quantity doesn't honour the unit
@@ -19,7 +30,9 @@
 * Fix #1872: Support for kubernetes 1.17
 
 #### New Features
+* Fix #417: Support Subresources
 * Fix #1548: Allow user to update the status on CustomResources
+* Fix #1282: Add Support for fetching Kubernetes metrics
 * Fix #1917 Allow user to add custom headers to client
 
 ### 4.6.4 (20-11-2019)

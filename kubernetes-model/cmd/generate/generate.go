@@ -36,6 +36,7 @@ import (
   authenticationapi "k8s.io/api/authentication/v1"
   k8sauthapi "k8s.io/api/authorization/v1"
   autoscalingapi "k8s.io/api/autoscaling/v2beta1"
+  autoscalingapiv1 "k8s.io/api/autoscaling/v1"
   batchapiv1 "k8s.io/api/batch/v1"
   batchapiv1beta1 "k8s.io/api/batch/v1beta1"
   certificates "k8s.io/api/certificates/v1beta1"
@@ -53,8 +54,8 @@ import (
   storageclassapiv1beta1 "k8s.io/api/storage/v1beta1"
   apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
   "k8s.io/apimachinery/pkg/api/resource"
-  apimachineryapis "k8s.io/apimachinery/pkg/apis/meta/v1"
   metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+  metrics "k8s.io/metrics/pkg/apis/metrics/v1beta1"
   apimachineryversion "k8s.io/apimachinery/pkg/version"
   configapi "k8s.io/client-go/tools/clientcmd/api/v1"
   watch "k8s.io/kubernetes/pkg/watch/json"
@@ -70,8 +71,8 @@ import (
 
 type Schema struct {
   Info                              apimachineryversion.Info
-  APIGroup                          apimachineryapis.APIGroup
-  APIGroupList                      apimachineryapis.APIGroupList
+  APIGroup                          metav1.APIGroup
+  APIGroupList                      metav1.APIGroupList
   BaseKubernetesList                metav1.List
   ObjectMeta                        metav1.ObjectMeta
   TypeMeta                          metav1.TypeMeta
@@ -167,7 +168,7 @@ type Schema struct {
   JobList                           batchapiv1.JobList
   CronJob                           batchapiv1beta1.CronJob
   CronJobList                       batchapiv1beta1.CronJobList
-  Scale                             extensions.Scale
+  Scale                             autoscalingapiv1.Scale
   HorizontalPodAutoscaler           autoscalingapi.HorizontalPodAutoscaler
   HorizontalPodAutoscalerList       autoscalingapi.HorizontalPodAutoscalerList
   Deployment                        k8sappsapi.Deployment
@@ -249,6 +250,10 @@ type Schema struct {
   CSINodeList                        storageclassapiv1beta1.CSINodeList
   Lease                              coordination.Lease
   LeaseList                          coordination.LeaseList
+  PodMetrics                         metrics.PodMetrics
+  PodMetricsList                     metrics.PodMetricsList
+  NodeMetrics                        metrics.NodeMetrics
+  NodeMetricsList                    metrics.NodeMetricsList
 }
 
 func main() {
@@ -285,6 +290,7 @@ func main() {
     {"k8s.io/api/batch/v1beta1", "", "io.fabric8.kubernetes.api.model.batch", "kubernetes_batch_"},
     {"k8s.io/api/batch/v1", "", "io.fabric8.kubernetes.api.model.batch", "kubernetes_batch_"},
     {"k8s.io/api/autoscaling/v2beta1", "autoscaling", "io.fabric8.kubernetes.api.model", "kubernetes_autoscaling_"},
+    {"k8s.io/api/autoscaling/v1", "autoscaling", "io.fabric8.kubernetes.api.model.v1", "kubernetes_autoscaling_v1_"},
     {"k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1", "", "io.fabric8.kubernetes.api.model.apiextensions", "kubernetes_apiextensions_"},
     {"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_"},
     {"k8s.io/api/networking/v1", "networking.k8s.io", "io.fabric8.kubernetes.api.model.networking", "kubernetes_networking_"},
@@ -298,6 +304,7 @@ func main() {
     {"k8s.io/api/admissionregistration/v1beta1", "admissionregistration.k8s.io", "io.fabric8.kubernetes.api.model.admissionregistration", "kubernetes_admissionregistration_"},
     {"k8s.io/api/certificates/v1beta1", "certificates.k8s.io", "io.fabric8.kubernetes.api.model.certificates", "kubernetes_certificates_"},
     {"k8s.io/api/coordination/v1beta1", "coordination.k8s.io", "io.fabric8.kubernetes.api.model.coordination.v1beta1", "kubernetes_certificates_v1beta1_"},
+    {"k8s.io/metrics/pkg/apis/metrics/v1beta1", "metrics.k8s.io", "io.fabric8.kubernetes.api.model.metrics.v1beta1", "kubernetes_metrics_v1beta1_"},
   }
 
   typeMap := map[reflect.Type]reflect.Type{

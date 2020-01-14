@@ -22,6 +22,9 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
 import io.fabric8.kubernetes.api.model.RootPaths;
+import io.fabric8.kubernetes.api.model.Status;
+import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
+import io.fabric8.kubernetes.api.model.v1.Scale;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -207,17 +210,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
       return item;
     }
     try {
-      URL requestUrl = null;
-      if (item != null) {
-        requestUrl = getNamespacedUrl(item);
-      } else {
-        requestUrl = getNamespacedUrl();
-      }
-      if (name != null) {
-        requestUrl = new URL(URLUtils.join(requestUrl.toString(), name));
-      } else if (item != null && reloadingFromServer) {
-        requestUrl = new URL(URLUtils.join(requestUrl.toString(), checkName(item)));
-      }
+      URL requestUrl = getCompleteResourceUrl();
       return handleGet(requestUrl);
     } catch (KubernetesClientException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("get"), e);
@@ -824,10 +817,41 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     return handlePatch(current, updated, getType());
   }
 
+  protected Scale handleScale(Scale scaleParam) {
+    try {
+      return handleScale(getCompleteResourceUrl().toString(), scaleParam);
+    } catch (InterruptedException | ExecutionException | IOException e) {
+      throw KubernetesClientException.launderThrowable(forOperationType("scale"), e);
+    }
+  }
+
+  protected Status handleDeploymentRollback(DeploymentRollback deploymentRollback) {
+    try {
+      return handleDeploymentRollback(getCompleteResourceUrl().toString(), deploymentRollback);
+    } catch (InterruptedException | ExecutionException | IOException e) {
+      throw KubernetesClientException.launderThrowable(forOperationType("rollback"), e);
+    }
+  }
+
   protected T handleGet(URL resourceUrl) throws InterruptedException, ExecutionException, IOException {
     T answer = handleGet(resourceUrl, getType());
     updateApiVersionResource(answer);
     return answer;
+  }
+
+  private URL getCompleteResourceUrl() throws MalformedURLException {
+    URL requestUrl = null;
+    if (item != null) {
+      requestUrl = getNamespacedUrl(item);
+    } else {
+      requestUrl = getNamespacedUrl();
+    }
+    if (name != null) {
+      requestUrl = new URL(URLUtils.join(requestUrl.toString(), name));
+    } else if (item != null && reloadingFromServer) {
+      requestUrl = new URL(URLUtils.join(requestUrl.toString(), checkName(item)));
+    }
+    return requestUrl;
   }
 
   public Boolean isCascading() {

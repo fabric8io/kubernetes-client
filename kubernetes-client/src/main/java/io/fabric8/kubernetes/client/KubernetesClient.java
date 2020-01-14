@@ -189,6 +189,13 @@ public interface KubernetesClient extends Client {
   BatchAPIGroupDSL batch();
 
   /**
+   * API entrypoint for kubernetes metrics
+   *
+   * @return MetricAPIGroupDSL which offers for fetching metrics
+   */
+  MetricAPIGroupDSL top();
+
+  /**
    * API entrypoint for kubernetes resources with APIGroup policy/v1beta1
    *
    * @return PolicyAPIGroupDSL which offers entrypoint to specific resources in this APIGroup
