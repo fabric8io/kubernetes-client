@@ -21,10 +21,12 @@ import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.OwnerReference;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.apps.DoneableReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
+import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ImageEditReplacePatchable;
@@ -120,6 +122,11 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
   @Override
   public TimeoutImageEditReplacePatchable rolling() {
     return new ReplicaSetOperationsImpl(((RollingOperationContext)context).withRolling(true));
+  }
+
+  @Override
+  public Status rollback(DeploymentRollback deploymentRollback) {
+    throw new KubernetesClientException("rollback not supported in case of ReplicaSets");
   }
 
   @Override

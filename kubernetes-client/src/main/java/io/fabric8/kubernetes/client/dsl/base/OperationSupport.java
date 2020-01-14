@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.base;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,6 +24,9 @@ import io.fabric8.kubernetes.api.model.DeleteOptions;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
+import io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetrics;
+import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
+import io.fabric8.kubernetes.api.model.v1.Scale;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.internal.VersionUsageUtils;
@@ -196,6 +200,12 @@ public class OperationSupport {
     throw new KubernetesClientException("Name mismatch. Item name:" + itemName + ". Operation name:" + operationName + ".");
   }
 
+  protected <T> T handleMetric(String resourceUrl, Class<T> type) throws InterruptedException, IOException, ExecutionException {
+      Request.Builder requestBuilder = new Request.Builder()
+        .get()
+        .url(resourceUrl);
+      return handleResponse(requestBuilder, type);
+  }
 
   protected <T> void handleDelete(T resource, long gracePeriodSeconds, String propagationPolicy, boolean cascading) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     handleDelete(getResourceUrl(checkNamespace(resource), checkName(resource)), gracePeriodSeconds, propagationPolicy, cascading);
@@ -306,6 +316,48 @@ public class OperationSupport {
     return handleResponse(requestBuilder, type, Collections.<String, String>emptyMap());
   }
 
+  /**
+   * Replace Scale of specified Kubernetes Resource
+   *
+   * @param resourceUrl Kubernetes resource URL
+   * @param scale Scale object which we want to inject
+   * @return updated Scale object
+   * @throws ExecutionException in case of any execution exception
+   * @throws InterruptedException in case thread is interrupted
+   * @throws KubernetesClientException in case error from Kubernetes API
+   * @throws MalformedURLException in case URL formed in invalid
+   * @throws JsonProcessingException in case Json processing fails
+   * @throws IOException in some other I/O problem
+   */
+  protected Scale handleScale(String resourceUrl, Scale scale) throws ExecutionException, InterruptedException, KubernetesClientException, MalformedURLException, JsonProcessingException, IOException {
+    Request.Builder requestBuilder;
+    if (scale != null) {
+      RequestBody body = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(scale));
+      requestBuilder = new Request.Builder().put(body).url(resourceUrl + "/scale");
+    } else {
+      requestBuilder = new Request.Builder().get().url(resourceUrl + "/scale");
+    }
+    return handleResponse(requestBuilder, Scale.class);
+  }
+
+  /**
+   * Create rollback of a Deployment
+   *
+   * @param resourceUrl resource url
+   * @param deploymentRollback DeploymentRollback resource
+   * @return Status
+   * @throws ExecutionException in case of any execution exception
+   * @throws InterruptedException in case thread is interrupted
+   * @throws KubernetesClientException in case error from Kubernetes API
+   * @throws MalformedURLException in case URL formed in invalid
+   * @throws JsonProcessingException in case Json processing fails
+   * @throws IOException in some other I/O problem
+   */
+  protected Status handleDeploymentRollback(String resourceUrl, DeploymentRollback deploymentRollback) throws ExecutionException, InterruptedException, KubernetesClientException, MalformedURLException, JsonProcessingException, IOException {
+    RequestBody body = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(deploymentRollback));
+    Request.Builder requestBuilder = new Request.Builder().post(body).url(resourceUrl + "/rollback");
+    return handleResponse(requestBuilder, Status.class);
+  }
 
   /**
    * Send an http get.

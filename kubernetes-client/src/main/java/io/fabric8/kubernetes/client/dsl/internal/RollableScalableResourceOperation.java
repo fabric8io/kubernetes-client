@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.api.model.v1.Scale;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
@@ -76,6 +77,16 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
       res = getMandatory();
     }
     return res;
+  }
+
+  @Override
+  public Scale scale() {
+    return handleScale(null);
+  }
+
+  @Override
+  public Scale scale(Scale scaleParam) {
+    return handleScale(scaleParam);
   }
 
   /**

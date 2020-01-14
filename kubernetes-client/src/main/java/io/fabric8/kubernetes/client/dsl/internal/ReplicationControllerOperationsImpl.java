@@ -25,6 +25,8 @@ import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
+import io.fabric8.kubernetes.api.model.Status;
+import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ImageEditReplacePatchable;
@@ -129,6 +131,11 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
   @Override
   public TimeoutImageEditReplacePatchable rolling() {
     return new ReplicaSetOperationsImpl(((RollingOperationContext)context).withRolling(true));
+  }
+
+  @Override
+  public Status rollback(DeploymentRollback deploymentRollback) {
+    throw new KubernetesClientException("rollback not supported in case of ReplicationControllers");
   }
 
   @Override

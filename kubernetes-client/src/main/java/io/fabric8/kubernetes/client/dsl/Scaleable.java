@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.api.model.v1.Scale;
+
 public interface Scaleable<T> {
 
   int POLL_INTERVAL_MS = 100;
@@ -23,4 +25,8 @@ public interface Scaleable<T> {
   T scale(int count);
 
   T scale(int count, boolean wait);
+
+  Scale scale();
+
+  Scale scale(Scale scale);
 }
