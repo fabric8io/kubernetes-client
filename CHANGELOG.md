@@ -3,6 +3,7 @@
 ### 4.7-SNAPSHOT
 #### Bugs
 * `Quantity.getAmountInBytes()` should be able to handle negative exponents
+* Fix #1805: Unable to create Template on OCP4
 
 #### Improvements
 
