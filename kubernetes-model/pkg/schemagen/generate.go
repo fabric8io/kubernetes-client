@@ -30,23 +30,27 @@ type PackageDescriptor struct {
 }
 
 type schemaGenerator struct {
-	types    map[reflect.Type]*JSONObjectDescriptor
-	packages map[string]PackageDescriptor
-	typeMap  map[reflect.Type]reflect.Type
+	types              map[reflect.Type]*JSONObjectDescriptor
+	typeNames          map[reflect.Type]string
+	customTypeNames    map[string]string
+	packages           map[string]PackageDescriptor
+	typeMap            map[reflect.Type]reflect.Type
 }
 
-func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type) (*JSONSchema, error) {
-	g := newSchemaGenerator(packages, typeMap)
+func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, customTypeNames  map[string]string) (*JSONSchema, error) {
+	g := newSchemaGenerator(packages, typeMap, customTypeNames)
 	return g.generate(t)
 }
 
-func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type) *schemaGenerator {
+func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, customTypeNames  map[string]string) *schemaGenerator {
 	pkgMap := make(map[string]PackageDescriptor)
 	for _, p := range packages {
 		pkgMap[p.GoPackage] = p
 	}
 	g := schemaGenerator{
 		types:    make(map[reflect.Type]*JSONObjectDescriptor),
+		typeNames: make(map[reflect.Type]string),
+		customTypeNames: customTypeNames,
 		packages: pkgMap,
 		typeMap:  typeMap,
 	}
@@ -147,28 +151,20 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 	//openShift RunAsUserStrategyOptions and project give compilation error
 	//because both classes are different
 
-	//Added a special case for Kubernetes RBAC resources
-	//because they are conflicting with OpenShift RBAC resources
-	//as the name of Resources are same in both places.
-
 	if t.Kind() == reflect.Struct && ok {
-		if g.qualifiedName(t) == "kubernetes_extensions_RunAsUserStrategyOptions" {
-			return pkgDesc.JavaPackage + "." + "Kubernetes" + t.Name()
-		}
-		if g.qualifiedName(t) == "os_oauth_ClusterRoleScopeRestriction" ||
-			(strings.HasPrefix(g.qualifiedName(t), "os_authorization_") && strings.Contains(g.qualifiedName(t), "Role")) {
-			return pkgDesc.JavaPackage + "." + "Openshift" + t.Name()
-		}
 		switch t.Name() {
-		case "Time":
-			return "String"
-		case "RawExtension":
-			return "io.fabric8.kubernetes.api.model.HasMetadata"
-		case "List":
-			return pkgDesc.JavaPackage + ".BaseKubernetesList"
-		default:
-			return pkgDesc.JavaPackage + "." + t.Name()
+			case "Time":
+				return "String"
+			case "RawExtension":
+				return "io.fabric8.kubernetes.api.model.HasMetadata"
+			case "List":
+				return pkgDesc.JavaPackage + ".BaseKubernetesList"
 		}
+		typeName, ok := g.typeNames[t]
+		if ok {
+			return pkgDesc.JavaPackage + "." + typeName
+		}
+		return pkgDesc.JavaPackage + "." + t.Name()
 	}
 	switch t.Kind() {
 	case reflect.Bool:
@@ -216,10 +212,23 @@ func (g *schemaGenerator) javaInterfaces(t reflect.Type) []string {
 	return []string{"io.fabric8.kubernetes.api.model.KubernetesResource"}
 }
 
+func (g *schemaGenerator) initializeTypeNames(t reflect.Type) {
+	for it := 0; it < t.NumField(); it++ {
+		field := t.Field(it)
+		fieldName, isCustomized := g.customTypeNames[field.Name]
+		if isCustomized {
+			g.typeNames[field.Type] = fieldName
+		} else {
+			g.typeNames[field.Type] = field.Name
+		}
+	}
+}
+
 func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error) {
 	if t.Kind() != reflect.Struct {
 		return nil, fmt.Errorf("Only struct types can be converted.")
 	}
+	g.initializeTypeNames(t)
 
 	s := JSONSchema{
 		ID:     "http://fabric8.io/fabric8/v2/" + t.Name() + "#",
@@ -488,17 +497,12 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 }
 
 func (g *schemaGenerator) generateObjectDescriptor(t reflect.Type) *JSONObjectDescriptor {
-	// Added special case for JSONSchemaProps becuase it has
+	// Added special case for JSONSchemaProps because it has
 	// already a field by name additionalProperty
-
-	if t.Name() == "JSONSchemaProps" {
-		desc := JSONObjectDescriptor{AdditionalProperties: false}
-		desc.Properties = g.getStructProperties(t)
-		return &desc
-	}
-	desc := JSONObjectDescriptor{AdditionalProperties: true}
-	desc.Properties = g.getStructProperties(t)
-	return &desc
+  additionalProperties := t.Name() != "JSONSchemaProps"
+  desc := JSONObjectDescriptor{AdditionalProperties: additionalProperties}
+  desc.Properties = g.getStructProperties(t)
+  return &desc
 }
 
 func (g *schemaGenerator) addConstraints(objectName string, propName string, prop *JSONPropertyDescriptor) {

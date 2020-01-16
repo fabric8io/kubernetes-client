@@ -35,14 +35,14 @@ import (
   k8sappsapi "k8s.io/api/apps/v1"
   authenticationapi "k8s.io/api/authentication/v1"
   k8sauthapi "k8s.io/api/authorization/v1"
-  autoscalingapi "k8s.io/api/autoscaling/v2beta1"
   autoscalingapiv1 "k8s.io/api/autoscaling/v1"
+  autoscalingapi "k8s.io/api/autoscaling/v2beta1"
   batchapiv1 "k8s.io/api/batch/v1"
   batchapiv1beta1 "k8s.io/api/batch/v1beta1"
   certificates "k8s.io/api/certificates/v1beta1"
   coordination "k8s.io/api/coordination/v1beta1"
   kapi "k8s.io/api/core/v1"
-  discovery "k8s.io/api/discovery/v1alpha1"
+  discovery "k8s.io/api/discovery/v1beta1"
   events "k8s.io/api/events/v1beta1"
   extensions "k8s.io/api/extensions/v1beta1"
   networking "k8s.io/api/networking/v1"
@@ -55,10 +55,10 @@ import (
   apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
   "k8s.io/apimachinery/pkg/api/resource"
   metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-  metrics "k8s.io/metrics/pkg/apis/metrics/v1beta1"
   apimachineryversion "k8s.io/apimachinery/pkg/version"
   configapi "k8s.io/client-go/tools/clientcmd/api/v1"
   watch "k8s.io/kubernetes/pkg/watch/json"
+  metrics "k8s.io/metrics/pkg/apis/metrics/v1beta1"
   "log"
   "reflect"
   "strings"
@@ -70,193 +70,203 @@ import (
 )
 
 type Schema struct {
-  Info                              apimachineryversion.Info
-  APIGroup                          metav1.APIGroup
-  APIGroupList                      metav1.APIGroupList
-  BaseKubernetesList                metav1.List
-  ObjectMeta                        metav1.ObjectMeta
-  TypeMeta                          metav1.TypeMeta
-  PodList                           kapi.PodList
-  PodTemplateList                   kapi.PodTemplateList
-  ReplicationControllerList         kapi.ReplicationControllerList
-  ServiceList                       kapi.ServiceList
-  Endpoints                         kapi.Endpoints
-  EndpointsList                     kapi.EndpointsList
-  EventList                         kapi.EventList
-  Node                              kapi.Node
-  NodeList                          kapi.NodeList
-  EnvVar                            kapi.EnvVar
-  Namespace                         kapi.Namespace
-  NamespaceList                     kapi.NamespaceList
-  PersistentVolume                  kapi.PersistentVolume
-  PersistentVolumeList              kapi.PersistentVolumeList
-  PersistentVolumeClaim             kapi.PersistentVolumeClaim
-  PersistentVolumeClaimList         kapi.PersistentVolumeClaimList
-  ResourceQuota                     kapi.ResourceQuota
-  ResourceQuotaList                 kapi.ResourceQuotaList
-  Secret                            kapi.Secret
-  SecretList                        kapi.SecretList
-  SecurityContextConstraints        securityapi.SecurityContextConstraints
-  SecurityContextConstraintsList    securityapi.SecurityContextConstraintsList
-  ServiceAccount                    kapi.ServiceAccount
-  ServiceAccountList                kapi.ServiceAccountList
-  Status                            metav1.Status
-  Patch                             metav1.Patch
-  Binding                           kapi.Binding
-  LimitRangeList                    kapi.LimitRangeList
-  ListOptions                       metav1.ListOptions
-  DeleteOptions                     metav1.DeleteOptions
-  CreateOptions                     metav1.CreateOptions
-  UpdateOptions                     metav1.UpdateOptions
-  GetOptions                        metav1.GetOptions
-  PatchOptions                      metav1.PatchOptions
-  Time                              metav1.Time
-  Quantity                          resource.Quantity
-  BuildRequest                      buildapi.BuildRequest
-  BuildList                         buildapi.BuildList
-  BuildConfigList                   buildapi.BuildConfigList
-  ImageList                         imageapi.ImageList
-  ImageStreamList                   imageapi.ImageStreamList
-  ImageStreamTagList                imageapi.ImageStreamTagList
-  ImageStreamImport                 imageapi.ImageStreamImport
-  DeploymentConfig                  appsapi.DeploymentConfig
-  DeploymentConfigList              appsapi.DeploymentConfigList
-  Route                             routeapi.Route
-  RouteList                         routeapi.RouteList
-  ComponentStatusList               kapi.ComponentStatusList
-  ContainerStatus                   kapi.ContainerStatus
-  Template                          templateapi.Template
-  TemplateList                      templateapi.TemplateList
-  TagEvent                          imageapi.TagEvent
-  OAuthClient                       oauthapi.OAuthClient
-  OAuthAccessToken                  oauthapi.OAuthAccessToken
-  OAuthAuthorizeToken               oauthapi.OAuthAuthorizeToken
-  OAuthClientAuthorization          oauthapi.OAuthClientAuthorization
-  OAuthAccessTokenList              oauthapi.OAuthAccessTokenList
-  OAuthAuthorizeTokenList           oauthapi.OAuthAuthorizeTokenList
-  OAuthClientList                   oauthapi.OAuthClientList
-  OAuthClientAuthorizationList      oauthapi.OAuthClientAuthorizationList
-  TokenReview                       authenticationapi.TokenReview
-  K8sSubjectAccessReview            k8sauthapi.SubjectAccessReview
-  K8sLocalSubjectAccessReview       k8sauthapi.LocalSubjectAccessReview
-  SelfSubjectRulesReview            k8sauthapi.SelfSubjectRulesReview
-  SelfSubjectAccessReview           k8sauthapi.SelfSubjectAccessReview
-  OpenshiftRole                     authapi.Role
-  OpenshiftRoleList                 authapi.RoleList
-  OpenshiftRoleBinding              authapi.RoleBinding
-  OpenshiftRoleBindingList          authapi.RoleBindingList
-  OpenshiftRoleBindingRestriction   authapi.RoleBindingRestriction
-  LocalSubjectAccessReview          authapi.LocalSubjectAccessReview
-  SubjectAccessReview               authapi.SubjectAccessReview
-  SubjectAccessReviewResponse       authapi.SubjectAccessReviewResponse
-  OpenshiftClusterRole              authapi.ClusterRole
-  OpenshiftClusterRoleBinding       authapi.ClusterRoleBinding
-  OpenshiftClusterRoleBindingList   authapi.ClusterRoleBindingList
-  User                              userapi.User
-  UserList                          userapi.UserList
-  Group                             userapi.Group
-  GroupList                         userapi.GroupList
-  Identity                          userapi.Identity
-  IdentityList                      userapi.IdentityList
-  Config                            configapi.Config
-  WatchEvent                        watch.WatchEvent
-  RootPaths                         metav1.RootPaths
-  Project                           projectapi.Project
-  ProjectList                       projectapi.ProjectList
-  ProjectRequest                    projectapi.ProjectRequest
-  Job                               batchapiv1.Job
-  JobList                           batchapiv1.JobList
-  CronJob                           batchapiv1beta1.CronJob
-  CronJobList                       batchapiv1beta1.CronJobList
-  Scale                             autoscalingapiv1.Scale
-  HorizontalPodAutoscaler           autoscalingapi.HorizontalPodAutoscaler
-  HorizontalPodAutoscalerList       autoscalingapi.HorizontalPodAutoscalerList
-  Deployment                        k8sappsapi.Deployment
-  DeploymentList                    k8sappsapi.DeploymentList
-  DeploymentRollback                extensions.DeploymentRollback
-  PodSecurityPolicy                 extensions.PodSecurityPolicy
-  PodSecurityPolicyList             extensions.PodSecurityPolicyList
-  PodDisruptionBudget               policy.PodDisruptionBudget
-  PodDisruptionBudgetList           policy.PodDisruptionBudgetList
-  StatefulSet                       k8sappsapi.StatefulSet
-  StatefulSetList                   k8sappsapi.StatefulSetList
-  DaemonSet                         k8sappsapi.DaemonSet
-  DaemonSetList                     k8sappsapi.DaemonSetList
-  Ingress                           extensions.Ingress
-  IngressList                       extensions.IngressList
-  ReplicaSet                        k8sappsapi.ReplicaSet
-  ReplicaSetList                    k8sappsapi.ReplicaSetList
-  ControllerRevision                k8sappsapi.ControllerRevision
-  ControllerRevisionList            k8sappsapi.ControllerRevisionList
-  NetworkPolicy                     networking.NetworkPolicy
-  NetworkPolicyList                 networking.NetworkPolicyList
-  ConfigMap                         kapi.ConfigMap
-  ConfigMapList                     kapi.ConfigMapList
-  Toleration                        kapi.Toleration
-  CustomResourceDefinition          apiextensions.CustomResourceDefinition
-  CustomResourceDefinitionList      apiextensions.CustomResourceDefinitionList
-  CustomResourceDefinitionSpec      apiextensions.CustomResourceDefinitionSpec
-  CustomResourceDefinitionNames     apiextensions.CustomResourceDefinitionNames
-  CustomResourceDefinitionCondition apiextensions.CustomResourceDefinitionCondition
-  CustomResourceDefinitionStatus    apiextensions.CustomResourceDefinitionStatus
+  Info                                     apimachineryversion.Info
+  APIGroup                                 metav1.APIGroup
+  APIGroupList                             metav1.APIGroupList
+  BaseKubernetesList                       metav1.List
+  ObjectMeta                               metav1.ObjectMeta
+  TypeMeta                                 metav1.TypeMeta
+  PodList                                  kapi.PodList
+  PodTemplateList                          kapi.PodTemplateList
+  ReplicationControllerList                kapi.ReplicationControllerList
+  ServiceList                              kapi.ServiceList
+  EndpointPort                             kapi.EndpointPort
+  Endpoints                                kapi.Endpoints
+  EndpointsList                            kapi.EndpointsList
+  EventList                                kapi.EventList
+  Node                                     kapi.Node
+  NodeList                                 kapi.NodeList
+  EnvVar                                   kapi.EnvVar
+  Namespace                                kapi.Namespace
+  NamespaceList                            kapi.NamespaceList
+  PersistentVolume                         kapi.PersistentVolume
+  PersistentVolumeList                     kapi.PersistentVolumeList
+  PersistentVolumeClaim                    kapi.PersistentVolumeClaim
+  PersistentVolumeClaimList                kapi.PersistentVolumeClaimList
+  ResourceQuota                            kapi.ResourceQuota
+  ResourceQuotaList                        kapi.ResourceQuotaList
+  Secret                                   kapi.Secret
+  SecretList                               kapi.SecretList
+  SecurityContextConstraints               securityapi.SecurityContextConstraints
+  SecurityContextConstraintsList           securityapi.SecurityContextConstraintsList
+  ServiceAccount                           kapi.ServiceAccount
+  ServiceAccountList                       kapi.ServiceAccountList
+  Status                                   metav1.Status
+  Patch                                    metav1.Patch
+  Binding                                  kapi.Binding
+  LimitRangeList                           kapi.LimitRangeList
+  ListOptions                              metav1.ListOptions
+  DeleteOptions                            metav1.DeleteOptions
+  CreateOptions                            metav1.CreateOptions
+  UpdateOptions                            metav1.UpdateOptions
+  GetOptions                               metav1.GetOptions
+  PatchOptions                             metav1.PatchOptions
+  Time                                     metav1.Time
+  Quantity                                 resource.Quantity
+  BuildRequest                             buildapi.BuildRequest
+  BuildList                                buildapi.BuildList
+  BuildConfigList                          buildapi.BuildConfigList
+  ImageList                                imageapi.ImageList
+  ImageStreamList                          imageapi.ImageStreamList
+  ImageStreamTagList                       imageapi.ImageStreamTagList
+  ImageStreamImport                        imageapi.ImageStreamImport
+  DeploymentConfig                         appsapi.DeploymentConfig
+  DeploymentConfigList                     appsapi.DeploymentConfigList
+  Route                                    routeapi.Route
+  RouteList                                routeapi.RouteList
+  ComponentStatusList                      kapi.ComponentStatusList
+  ContainerStatus                          kapi.ContainerStatus
+  Template                                 templateapi.Template
+  TemplateList                             templateapi.TemplateList
+  TagEvent                                 imageapi.TagEvent
+  OAuthClient                              oauthapi.OAuthClient
+  OAuthAccessToken                         oauthapi.OAuthAccessToken
+  OAuthAuthorizeToken                      oauthapi.OAuthAuthorizeToken
+  OAuthClientAuthorization                 oauthapi.OAuthClientAuthorization
+  OAuthAccessTokenList                     oauthapi.OAuthAccessTokenList
+  OAuthAuthorizeTokenList                  oauthapi.OAuthAuthorizeTokenList
+  OAuthClientList                          oauthapi.OAuthClientList
+  OAuthClientAuthorizationList             oauthapi.OAuthClientAuthorizationList
+  OpenshiftClusterRoleScopeRestriction     oauthapi.ClusterRoleScopeRestriction
+  TokenReview                              authenticationapi.TokenReview
+  K8sSubjectAccessReview                   k8sauthapi.SubjectAccessReview
+  K8sLocalSubjectAccessReview              k8sauthapi.LocalSubjectAccessReview
+  SelfSubjectRulesReview                   k8sauthapi.SelfSubjectRulesReview
+  SelfSubjectAccessReview                  k8sauthapi.SelfSubjectAccessReview
+  OpenshiftRole                            authapi.Role
+  OpenshiftRoleList                        authapi.RoleList
+  OpenshiftRoleBinding                     authapi.RoleBinding
+  OpenshiftRoleBindingList                 authapi.RoleBindingList
+  OpenshiftRoleBindingRestriction          authapi.RoleBindingRestriction
+  OpenshiftRoleBindingRestrictionSpec      authapi.RoleBindingRestrictionSpec
+  LocalSubjectAccessReview                 authapi.LocalSubjectAccessReview
+  SubjectAccessReview                      authapi.SubjectAccessReview
+  SubjectAccessReviewResponse              authapi.SubjectAccessReviewResponse
+  OpenshiftClusterRole                     authapi.ClusterRole
+  OpenshiftClusterRoleBinding              authapi.ClusterRoleBinding
+  OpenshiftClusterRoleBindingList          authapi.ClusterRoleBindingList
+  User                                     userapi.User
+  UserList                                 userapi.UserList
+  Group                                    userapi.Group
+  GroupList                                userapi.GroupList
+  Identity                                 userapi.Identity
+  IdentityList                             userapi.IdentityList
+  Config                                   configapi.Config
+  WatchEvent                               watch.WatchEvent
+  RootPaths                                metav1.RootPaths
+  Project                                  projectapi.Project
+  ProjectList                              projectapi.ProjectList
+  ProjectRequest                           projectapi.ProjectRequest
+  Job                                      batchapiv1.Job
+  JobList                                  batchapiv1.JobList
+  CronJob                                  batchapiv1beta1.CronJob
+  CronJobList                              batchapiv1beta1.CronJobList
+  Scale                                    autoscalingapiv1.Scale
+  HorizontalPodAutoscaler                  autoscalingapi.HorizontalPodAutoscaler
+  HorizontalPodAutoscalerList              autoscalingapi.HorizontalPodAutoscalerList
+  Deployment                               k8sappsapi.Deployment
+  DeploymentList                           k8sappsapi.DeploymentList
+  DeploymentRollback                       extensions.DeploymentRollback
+  PodSecurityPolicy                        extensions.PodSecurityPolicy
+  PodSecurityPolicyList                    extensions.PodSecurityPolicyList
+  KubernetesRunAsUserStrategyOptions       extensions.RunAsUserStrategyOptions
+  PodDisruptionBudget                      policy.PodDisruptionBudget
+  PodDisruptionBudgetList                  policy.PodDisruptionBudgetList
+  StatefulSet                              k8sappsapi.StatefulSet
+  StatefulSetList                          k8sappsapi.StatefulSetList
+  DaemonSet                                k8sappsapi.DaemonSet
+  DaemonSetList                            k8sappsapi.DaemonSetList
+  Ingress                                  extensions.Ingress
+  IngressList                              extensions.IngressList
+  ReplicaSet                               k8sappsapi.ReplicaSet
+  ReplicaSetList                           k8sappsapi.ReplicaSetList
+  ControllerRevision                       k8sappsapi.ControllerRevision
+  ControllerRevisionList                   k8sappsapi.ControllerRevisionList
+  NetworkPolicy                            networking.NetworkPolicy
+  NetworkPolicyList                        networking.NetworkPolicyList
+  ConfigMap                                kapi.ConfigMap
+  ConfigMapList                            kapi.ConfigMapList
+  Toleration                               kapi.Toleration
+  CustomResourceDefinition                 apiextensions.CustomResourceDefinition
+  CustomResourceDefinitionList             apiextensions.CustomResourceDefinitionList
+  CustomResourceDefinitionSpec             apiextensions.CustomResourceDefinitionSpec
+  CustomResourceDefinitionNames            apiextensions.CustomResourceDefinitionNames
+  CustomResourceDefinitionCondition        apiextensions.CustomResourceDefinitionCondition
+  CustomResourceDefinitionStatus           apiextensions.CustomResourceDefinitionStatus
   // Added JSONSchemaPropsorStringArray here because of
   // https://github.com/joelittlejohn/jsonschema2pojo/issues/866
-  JSONSchemaPropsorStringArray       apiextensions.JSONSchemaPropsOrStringArray
-  StorageClass                       storageclassapi.StorageClass
-  StorageClassList                   storageclassapi.StorageClassList
-  AggregationRule                    rbac.AggregationRule
-  Role                               rbac.Role
-  RoleList                           rbac.RoleList
-  RoleBinding                        rbac.RoleBinding
-  RoleBindingList                    rbac.RoleBindingList
-  NetNameSpace                       networkapi.NetNamespace
-  NetNameSpaceList                   networkapi.NetNamespaceList
-  ClusterRole                        rbac.ClusterRole
-  ClusterRoleList                    rbac.ClusterRoleList
-  ClusterRoleBinding                 rbac.ClusterRoleBinding
-  ClusterRoleBindingList             rbac.ClusterRoleBindingList
-  PodPreset                          settings.PodPreset
-  PodPresetSpec                      settings.PodPresetSpec
-  PodPresetList                      settings.PodPresetList
-  PriorityClass                      scheduling.PriorityClass
-  PriorityClassList                  scheduling.PriorityClassList
-  Event                              events.Event
-  EventSeries                        events.EventSeries
-  EventSeriesState                   events.EventSeriesState
-  AdmissionReview                    admission.AdmissionReview
-  AdmissionRequest                   admission.AdmissionRequest
-  AdmissionResponse                  admission.AdmissionResponse
-  PatchType                          admission.PatchType
-  Operation                          admission.Operation
-  Rule                               admissionregistration.Rule
-  ValidatingWebhookConfiguration     admissionregistration.ValidatingWebhookConfiguration
-  ValidatingWebhookConfigurationList admissionregistration.ValidatingWebhookConfigurationList
-  MutatingWebhookConfiguration       admissionregistration.MutatingWebhookConfiguration
-  MutatingWebhookConfigurationList   admissionregistration.MutatingWebhookConfigurationList
-  RuleWithOperations                 admissionregistration.RuleWithOperations
-  ServiceReference                   admissionregistration.ServiceReference
-  CertificateSigningRequest          certificates.CertificateSigningRequest
-  CertificateSigningRequestSpec      certificates.CertificateSigningRequestSpec
-  CertificateSigningRequestStatus    certificates.CertificateSigningRequestStatus
-  CertificateSigningRequestCondition certificates.CertificateSigningRequestCondition
-  CertificateSigningRequestList      certificates.CertificateSigningRequestList
-  EndpointSlice                      discovery.EndpointSlice
-  EndpointSliceList                  discovery.EndpointSliceList
-  VolumeAttachment                   storageclassapi.VolumeAttachment
-  VolumeAttachmentList               storageclassapi.VolumeAttachmentList
-  CSIDriver                          storageclassapiv1beta1.CSIDriver
-  CSIDriverList                      storageclassapiv1beta1.CSIDriverList
-  CSINode                            storageclassapiv1beta1.CSINode
-  CSINodeList                        storageclassapiv1beta1.CSINodeList
-  Lease                              coordination.Lease
-  LeaseList                          coordination.LeaseList
-  PodMetrics                         metrics.PodMetrics
-  PodMetricsList                     metrics.PodMetricsList
-  NodeMetrics                        metrics.NodeMetrics
-  NodeMetricsList                    metrics.NodeMetricsList
+  JSONSchemaPropsorStringArray             apiextensions.JSONSchemaPropsOrStringArray
+  StorageClass                             storageclassapi.StorageClass
+  StorageClassList                         storageclassapi.StorageClassList
+  AggregationRule                          rbac.AggregationRule
+  Role                                     rbac.Role
+  RoleList                                 rbac.RoleList
+  RoleBinding                              rbac.RoleBinding
+  RoleBindingList                          rbac.RoleBindingList
+  NetNamespace                             networkapi.NetNamespace
+  NetNamespaceList                         networkapi.NetNamespaceList
+  ClusterRole                              rbac.ClusterRole
+  ClusterRoleList                          rbac.ClusterRoleList
+  ClusterRoleBinding                       rbac.ClusterRoleBinding
+  ClusterRoleBindingList                   rbac.ClusterRoleBindingList
+  PodPreset                                settings.PodPreset
+  PodPresetSpec                            settings.PodPresetSpec
+  PodPresetList                            settings.PodPresetList
+  PriorityClass                            scheduling.PriorityClass
+  PriorityClassList                        scheduling.PriorityClassList
+  Event                                    events.Event
+  EventSeries                              events.EventSeries
+  EventSeriesState                         events.EventSeriesState
+  AdmissionReview                          admission.AdmissionReview
+  AdmissionRequest                         admission.AdmissionRequest
+  AdmissionResponse                        admission.AdmissionResponse
+  PatchType                                admission.PatchType
+  Operation                                admission.Operation
+  Rule                                     admissionregistration.Rule
+  ValidatingWebhookConfiguration           admissionregistration.ValidatingWebhookConfiguration
+  ValidatingWebhookConfigurationList       admissionregistration.ValidatingWebhookConfigurationList
+  MutatingWebhookConfiguration             admissionregistration.MutatingWebhookConfiguration
+  MutatingWebhookConfigurationList         admissionregistration.MutatingWebhookConfigurationList
+  RuleWithOperations                       admissionregistration.RuleWithOperations
+  ServiceReference                         admissionregistration.ServiceReference
+  CertificateSigningRequest                certificates.CertificateSigningRequest
+  CertificateSigningRequestSpec            certificates.CertificateSigningRequestSpec
+  CertificateSigningRequestStatus          certificates.CertificateSigningRequestStatus
+  CertificateSigningRequestCondition       certificates.CertificateSigningRequestCondition
+  CertificateSigningRequestList            certificates.CertificateSigningRequestList
+  DiscoveryEndpointPort                    discovery.EndpointPort
+  EndpointSlice                            discovery.EndpointSlice
+  EndpointSliceList                        discovery.EndpointSliceList
+  VolumeAttachment                         storageclassapi.VolumeAttachment
+  VolumeAttachmentList                     storageclassapi.VolumeAttachmentList
+  CSIDriver                                storageclassapiv1beta1.CSIDriver
+  CSIDriverList                            storageclassapiv1beta1.CSIDriverList
+  CSINode                                  storageclassapiv1beta1.CSINode
+  CSINodeList                              storageclassapiv1beta1.CSINodeList
+  Lease                                    coordination.Lease
+  LeaseList                                coordination.LeaseList
+  PodMetrics                               metrics.PodMetrics
+  PodMetricsList                           metrics.PodMetricsList
+  NodeMetrics                              metrics.NodeMetrics
+  NodeMetricsList                          metrics.NodeMetricsList
 }
 
 func main() {
+  customTypeNames := map[string]string{
+    "K8sSubjectAccessReview": "SubjectAccessReview",
+    "K8sLocalSubjectAccessReview":  "LocalSubjectAccessReview",
+    "JSONSchemaPropsorStringArray": "JSONSchemaPropsOrStringArray",
+  }
   packages := []schemagen.PackageDescriptor{
     {"k8s.io/api/core/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_core_"},
     {"k8s.io/apimachinery/pkg/api/resource", "", "io.fabric8.kubernetes.api.model", "kubernetes_resource_"},
@@ -268,6 +278,8 @@ func main() {
     {"k8s.io/kubernetes/pkg/watch/json", "", "io.fabric8.kubernetes.api.model", "kubernetes_watch_"},
     {"k8s.io/kubernetes/pkg/api/errors", "", "io.fabric8.kubernetes.api.model", "kubernetes_errors_"},
     {"k8s.io/client-go/tools/clientcmd/api/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_config_"},
+    {"k8s.io/client-go/tools/leaderelection", "", "io.fabric8.kubernetes.api.model.leaderelection", "kubernetes_leaderelection_"},
+    {"k8s.io/client-go/tools/leaderelection/resourcelock", "", "io.fabric8.kubernetes.api.model.leaderelection.resourcelock", "kubernetes_leaderelection_resourcelock_"},
     {"github.com/openshift/api/build/v1", "", "io.fabric8.openshift.api.model", "os_build_"},
     {"github.com/openshift/api/apps/v1", "", "io.fabric8.openshift.api.model", "os_deploy_"},
     {"github.com/openshift/api/image/v1", "", "io.fabric8.openshift.api.model", "os_image_"},
@@ -280,7 +292,7 @@ func main() {
     {"github.com/openshift/api/security/v1", "", "io.fabric8.openshift.api.model", "os_security_"},
     {"github.com/openshift/api/network/v1", "", "io.fabric8.openshift.api.model", "os_network_"},
     {"k8s.io/kubernetes/pkg/api/unversioned", "", "io.fabric8.kubernetes.api.model", "api_"},
-    {"k8s.io/api/discovery/v1alpha1", "", "io.fabric8.kubernetes.api.model.discovery", "kubernetes_discovery_"},
+    {"k8s.io/api/discovery/v1beta1", "", "io.fabric8.kubernetes.api.model.discovery", "kubernetes_discovery_"},
     {"k8s.io/api/extensions/v1beta1", "", "io.fabric8.kubernetes.api.model.extensions", "kubernetes_extensions_"},
     {"k8s.io/api/policy/v1beta1", "", "io.fabric8.kubernetes.api.model.policy", "kubernetes_policy_"},
     {"k8s.io/api/authentication/v1", "authentication.k8s.io", "io.fabric8.kubernetes.api.model.authentication", "kubernetes_authentication_"},
@@ -311,7 +323,7 @@ func main() {
     reflect.TypeOf(time.Time{}): reflect.TypeOf(""),
     reflect.TypeOf(struct{}{}):  reflect.TypeOf(""),
   }
-  schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap)
+  schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, customTypeNames)
   if err != nil {
     fmt.Fprintf(os.Stderr, "An error occurred: %v", err)
     return
