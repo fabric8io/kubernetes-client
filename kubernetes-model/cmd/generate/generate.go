@@ -42,7 +42,7 @@ import (
   certificates "k8s.io/api/certificates/v1beta1"
   coordination "k8s.io/api/coordination/v1beta1"
   kapi "k8s.io/api/core/v1"
-  discovery "k8s.io/api/discovery/v1alpha1"
+  discovery "k8s.io/api/discovery/v1beta1"
   events "k8s.io/api/events/v1beta1"
   extensions "k8s.io/api/extensions/v1beta1"
   networking "k8s.io/api/networking/v1"
@@ -58,6 +58,8 @@ import (
   metrics "k8s.io/metrics/pkg/apis/metrics/v1beta1"
   apimachineryversion "k8s.io/apimachinery/pkg/version"
   configapi "k8s.io/client-go/tools/clientcmd/api/v1"
+  leaderelection "k8s.io/client-go/tools/leaderelection"
+  leaderelectionresourcelock "k8s.io/client-go/tools/leaderelection/resourcelock"
   watch "k8s.io/kubernetes/pkg/watch/json"
   "log"
   "reflect"
@@ -159,6 +161,14 @@ type Schema struct {
   Identity                          userapi.Identity
   IdentityList                      userapi.IdentityList
   Config                            configapi.Config
+  LeaderElectionConfig              leaderelection.LeaderElectionConfig
+  LeaderElectionRecord              leaderelectionresourcelock.LeaderElectionRecord
+  LeaderCallbacks                   leaderelection.LeaderCallbacks
+  LeaderElector                     leaderelection.LeaderElector
+  ConfigMapLock                     leaderelectionresourcelock.ConfigMapLock
+  EndpointsLock                     leaderelectionresourcelock.EndpointsLock
+  LeaseLock                         leaderelectionresourcelock.LeaseLock
+  MultiLock                         leaderelectionresourcelock.MultiLock
   WatchEvent                        watch.WatchEvent
   RootPaths                         metav1.RootPaths
   Project                           projectapi.Project
@@ -268,6 +278,8 @@ func main() {
     {"k8s.io/kubernetes/pkg/watch/json", "", "io.fabric8.kubernetes.api.model", "kubernetes_watch_"},
     {"k8s.io/kubernetes/pkg/api/errors", "", "io.fabric8.kubernetes.api.model", "kubernetes_errors_"},
     {"k8s.io/client-go/tools/clientcmd/api/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_config_"},
+    {"k8s.io/client-go/tools/leaderelection", "", "io.fabric8.kubernetes.api.model.leaderelection", "kubernetes_leaderelection_"},
+    {"k8s.io/client-go/tools/leaderelection/resourcelock", "", "io.fabric8.kubernetes.api.model.leaderelection.resourcelock", "kubernetes_leaderelection_resourcelock_"},
     {"github.com/openshift/api/build/v1", "", "io.fabric8.openshift.api.model", "os_build_"},
     {"github.com/openshift/api/apps/v1", "", "io.fabric8.openshift.api.model", "os_deploy_"},
     {"github.com/openshift/api/image/v1", "", "io.fabric8.openshift.api.model", "os_image_"},
@@ -280,7 +292,7 @@ func main() {
     {"github.com/openshift/api/security/v1", "", "io.fabric8.openshift.api.model", "os_security_"},
     {"github.com/openshift/api/network/v1", "", "io.fabric8.openshift.api.model", "os_network_"},
     {"k8s.io/kubernetes/pkg/api/unversioned", "", "io.fabric8.kubernetes.api.model", "api_"},
-    {"k8s.io/api/discovery/v1alpha1", "", "io.fabric8.kubernetes.api.model.discovery", "kubernetes_discovery_"},
+    {"k8s.io/api/discovery/v1beta1", "", "io.fabric8.kubernetes.api.model.discovery", "kubernetes_discovery_"},
     {"k8s.io/api/extensions/v1beta1", "", "io.fabric8.kubernetes.api.model.extensions", "kubernetes_extensions_"},
     {"k8s.io/api/policy/v1beta1", "", "io.fabric8.kubernetes.api.model.policy", "kubernetes_policy_"},
     {"k8s.io/api/authentication/v1", "authentication.k8s.io", "io.fabric8.kubernetes.api.model.authentication", "kubernetes_authentication_"},
