@@ -45,7 +45,7 @@ public class DefaultSharedIndexInformerTest {
     .withMessage(
       "401: The event in requested index is outdated and cleared (the requested history has been cleared [3/1]) [2]")
     .build();
-  static final WatchEvent outdatedEvent = new WatchEventBuilder().withStatusObject(outdatedStatus).build();
+  static final WatchEvent outdatedEvent = new WatchEventBuilder().withObject(outdatedStatus).build();
 
   @Test
   public void testNamespacedPodInformer() throws InterruptedException {

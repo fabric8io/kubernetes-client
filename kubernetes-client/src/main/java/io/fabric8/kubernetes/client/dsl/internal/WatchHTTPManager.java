@@ -241,7 +241,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
   public void onMessage(String messageSource) throws IOException {
     try {
       WatchEvent event = readWatchEvent(messageSource);
-      KubernetesResource object = event.getObject();
+      Object object = event.getObject();
       if (object instanceof HasMetadata) {
         @SuppressWarnings("unchecked")
         T obj = (T) object;
@@ -289,7 +289,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
 
   protected static WatchEvent readWatchEvent(String messageSource) throws IOException {
     WatchEvent event = mapper.readValue(messageSource, WatchEvent.class);
-    KubernetesResource object = null;
+    Object object = null;
     if (event != null) {
       object = event.getObject();;
     }
