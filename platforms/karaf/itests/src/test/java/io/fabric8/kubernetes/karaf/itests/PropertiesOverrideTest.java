@@ -95,7 +95,7 @@ public class PropertiesOverrideTest extends TestBase {
                                 editConfigurationFileExtend(
                                     "etc/org.ops4j.pax.url.mvn.cfg",
                                     "org.ops4j.pax.url.mvn.repositories",
-                                    "file:"+System.getProperty("features.repo")+"@snapshots@releases"),
+                                  "https://repo1.maven.org/maven2/"),
                                 keepRuntimeFolder(),
                                 systemProperty("kubernetes.namespace").value("my-namespace"),
                                 systemProperty("kubernetes.master").value("http://my.kube.master:8443"),
@@ -137,7 +137,7 @@ public class PropertiesOverrideTest extends TestBase {
                 editConfigurationFileExtend(
                     "etc/org.ops4j.pax.url.mvn.cfg",
                     "org.ops4j.pax.url.mvn.repositories",
-                    "file:"+System.getProperty("features.repo")+"@snapshots@releases"),
+                  "https://repo1.maven.org/maven2/"),
                 keepRuntimeFolder(),
                 systemProperty("kubernetes.namespace").value("my-namespace"),
                 systemProperty("kubernetes.master").value("http://my.kube.master:8443"),

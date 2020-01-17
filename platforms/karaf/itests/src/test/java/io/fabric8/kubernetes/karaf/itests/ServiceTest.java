@@ -97,7 +97,7 @@ public class ServiceTest extends TestBase {
                                 editConfigurationFileExtend(
                                     "etc/org.ops4j.pax.url.mvn.cfg",
                                     "org.ops4j.pax.url.mvn.repositories",
-                                    "file:"+System.getProperty("features.repo")+"@id=local@snapshots@releases"),
+                                  "https://repo1.maven.org/maven2/"),
                                 keepRuntimeFolder(),
                                 logLevel(LogLevelOption.LogLevel.INFO),
                                 new VMOption("--add-exports=java.base/"
@@ -135,9 +135,9 @@ public class ServiceTest extends TestBase {
                 editConfigurationFileExtend(
                     "etc/org.ops4j.pax.url.mvn.cfg",
                     "org.ops4j.pax.url.mvn.repositories",
-                    "file:"+System.getProperty("features.repo")+"@id=local@snapshots@releases"),
+                  "https://repo1.maven.org/maven2/"),
                 keepRuntimeFolder(),
-                logLevel(LogLevelOption.LogLevel.INFO),
+                logLevel(LogLevelOption.LogLevel.INFO)
             };
         }
     }

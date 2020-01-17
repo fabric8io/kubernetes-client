@@ -71,7 +71,7 @@ public class FeatureInstallationTest extends TestBase {
                                 editConfigurationFileExtend(
                                     "etc/org.ops4j.pax.url.mvn.cfg",
                                     "org.ops4j.pax.url.mvn.repositories",
-                                    "file:"+System.getProperty("features.repo")+"@id=local@snapshots@releases"),
+                                  "https://repo1.maven.org/maven2/"),
                                 logLevel(LogLevelOption.LogLevel.INFO),new VMOption("--add-reads=java.xml=java.logging"),
                                 new VMOption("--add-exports=java.base/"
                                     + "org.apache.karaf.specs.locator=java.xml,ALL-UNNAMED"),
@@ -109,7 +109,7 @@ public class FeatureInstallationTest extends TestBase {
                 editConfigurationFileExtend(
                     "etc/org.ops4j.pax.url.mvn.cfg",
                     "org.ops4j.pax.url.mvn.repositories",
-                    "file:"+System.getProperty("features.repo")+"@id=local@snapshots@releases"),
+                  "https://repo1.maven.org/maven2/"),
                 logLevel(LogLevelOption.LogLevel.INFO),
             };
         }
