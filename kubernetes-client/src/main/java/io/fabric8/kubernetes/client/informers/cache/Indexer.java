@@ -16,6 +16,8 @@
 package io.fabric8.kubernetes.client.informers.cache;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 /**
  * Indexer extends Store interface and add index/de-index methods.
@@ -52,4 +54,18 @@ public interface Indexer<T> extends Store<T> {
    * @return matched objects
    */
   List<T> byIndex(String indexName, String indexKey);
+
+  /**
+   * Return the indexers registered with the store.
+   *
+   * @return registered indexers
+   */
+  Map<String, Function<T, List<String>>> getIndexers();
+
+  /**
+   * Add additional indexers to the store.
+   *
+   * @param indexers indexers to add
+   */
+  void addIndexers(Map<String, Function<T, List<String>>> indexers);
 }

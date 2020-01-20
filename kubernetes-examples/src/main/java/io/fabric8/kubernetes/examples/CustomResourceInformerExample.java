@@ -41,7 +41,7 @@ public class CustomResourceInformerExample {
         .build();
 
       SharedInformerFactory sharedInformerFactory = client.informers();
-      SharedIndexInformer<Dummy> podInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(crdContext, Dummy.class, DummyList.class, 15 *60 * 1000);
+      SharedIndexInformer<Dummy> podInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(crdContext, Dummy.class, DummyList.class, 15 * 60 * 1000);
       logger.info("Informer factory initialized.");
 
       podInformer.addEventHandler(

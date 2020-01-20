@@ -57,7 +57,6 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   private final BaseOperation<T, L, ?, ?> baseOperation;
   private final Watcher<T> watcher;
   private final int reconnectLimit;
-  private boolean deserializeWithoutTypeCheck;
   private final int reconnectInterval;
   private int maxIntervalExponent;
   private final long websocketTimeout;
@@ -75,7 +74,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   private WebSocket webSocket;
   private OkHttpClient clonedClient;
 
-  public WatchConnectionManager(final OkHttpClient client, final BaseOperation<T, L, ?, ?> baseOperation, final String version, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit, long websocketTimeout, int maxIntervalExponent, boolean deserializeWithoutTypeCheck) throws MalformedURLException {
+  public WatchConnectionManager(final OkHttpClient client, final BaseOperation<T, L, ?, ?> baseOperation, final String version, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit, long websocketTimeout, int maxIntervalExponent) throws MalformedURLException {
     this.resourceVersion = new AtomicReference<>(version); // may be a reference to null
     this.baseOperation = baseOperation;
     this.watcher = watcher;
@@ -83,7 +82,6 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
     this.reconnectLimit = reconnectLimit;
     this.websocketTimeout = websocketTimeout;
     this.maxIntervalExponent = maxIntervalExponent;
-    this.deserializeWithoutTypeCheck = deserializeWithoutTypeCheck;
 
     this.clonedClient = client.newBuilder()
       .readTimeout(this.websocketTimeout, TimeUnit.MILLISECONDS)
@@ -103,9 +101,9 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
     runWatch();
   }
 
-  public WatchConnectionManager(final OkHttpClient client, final BaseOperation<T, L, ?, ?> baseOperation, final String version, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit, long websocketTimeout, boolean deserializeWithoutTypeCheck) throws MalformedURLException {
+  public WatchConnectionManager(final OkHttpClient client, final BaseOperation<T, L, ?, ?> baseOperation, final String version, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit, long websocketTimeout) throws MalformedURLException {
     // Default max 32x slowdown from base interval
-    this(client, baseOperation, version, watcher, reconnectInterval, reconnectLimit, websocketTimeout, 5, deserializeWithoutTypeCheck);
+    this(client, baseOperation, version, watcher, reconnectInterval, reconnectLimit, websocketTimeout, 5);
   }
 
   private final void runWatch() {
@@ -229,54 +227,44 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
       @Override
       public void onMessage(WebSocket webSocket, String message) {
         try {
-          if (!deserializeWithoutTypeCheck) { // Normal scenario
-            WatchEvent event = readWatchEvent(message);
-            Object object = event.getObject();
-            if (object instanceof HasMetadata) {
-              @SuppressWarnings("unchecked")
-              T obj = (T) object;
-              // Dirty cast - should always be valid though
-              resourceVersion.set(((HasMetadata) obj).getMetadata().getResourceVersion());
-              Watcher.Action action = Watcher.Action.valueOf(event.getType());
-              watcher.eventReceived(action, obj);
-            } else if (object instanceof KubernetesResourceList) {
-              @SuppressWarnings("unchecked")
+          WatchEvent event = readWatchEvent(message);
+          Object object = event.getObject();
+          if (object instanceof HasMetadata) {
+            @SuppressWarnings("unchecked")
+            T obj = (T) object;
+            // Dirty cast - should always be valid though
+            resourceVersion.set(((HasMetadata) obj).getMetadata().getResourceVersion());
+            Watcher.Action action = Watcher.Action.valueOf(event.getType());
+            watcher.eventReceived(action, obj);
+          } else if (object instanceof KubernetesResourceList) {
+            @SuppressWarnings("unchecked")
 
-              KubernetesResourceList list = (KubernetesResourceList) object;
-              // Dirty cast - should always be valid though
-              resourceVersion.set(list.getMetadata().getResourceVersion());
-              Watcher.Action action = Watcher.Action.valueOf(event.getType());
-              List<HasMetadata> items = list.getItems();
-              if (items != null) {
-                for (HasMetadata item : items) {
-                  watcher.eventReceived(action, (T) item);
-                }
+            KubernetesResourceList list = (KubernetesResourceList) object;
+            // Dirty cast - should always be valid though
+            resourceVersion.set(list.getMetadata().getResourceVersion());
+            Watcher.Action action = Watcher.Action.valueOf(event.getType());
+            List<HasMetadata> items = list.getItems();
+            if (items != null) {
+              for (HasMetadata item : items) {
+                watcher.eventReceived(action, (T) item);
               }
-            } else if (object instanceof Status) {
-              Status status = (Status) object;
-
-              // The resource version no longer exists - this has to be handled by the caller.
-              if (status.getCode() == HTTP_GONE) {
-                webSocketRef.set(null); // lose the ref: closing in close() would only generate a Broken pipe
-                // exception
-                // shut down executor, etc.
-                closeEvent(new KubernetesClientException(status));
-                close();
-                return;
-              }
-
-              logger.error("Error received: {}", status.toString());
-            } else {
-              logger.error("Unknown message received: {}", message);
             }
-          } else { // In case of custom resources, extract object directly without deserializing to WatchEvent.class
-            Map<String, Object> watchObjectAsMap = mapper.readValue(message, HashMap.class);
-            if (watchObjectAsMap == null) {
+          } else if (object instanceof Status) {
+            Status status = (Status) object;
+
+            // The resource version no longer exists - this has to be handled by the caller.
+            if (status.getCode() == HTTP_GONE) {
+              webSocketRef.set(null); // lose the ref: closing in close() would only generate a Broken pipe
+              // exception
+              // shut down executor, etc.
+              closeEvent(new KubernetesClientException(status));
+              close();
               return;
             }
-            String watchEventType = watchObjectAsMap.get("type").toString();
-            String watchObjectAsString = mapper.writeValueAsString(watchObjectAsMap.get("object"));
-            watcher.eventReceived(Watcher.Action.valueOf(watchEventType), mapper.readValue(watchObjectAsString, baseOperation.getType()));
+
+            logger.error("Error received: {}", status.toString());
+          } else {
+            logger.error("Unknown message received: {}", message);
           }
         } catch (IOException e) {
           logger.error("Could not deserialize watch event: {}", message, e);

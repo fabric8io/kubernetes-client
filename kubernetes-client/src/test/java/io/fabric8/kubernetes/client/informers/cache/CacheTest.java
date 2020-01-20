@@ -20,7 +20,10 @@ import io.fabric8.kubernetes.api.model.PodBuilder;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
 
@@ -85,6 +88,34 @@ public class CacheTest {
 
     cache.add(testPodObj);
     assertEquals("default/test-pod4", Cache.metaNamespaceKeyFunc(testPodObj));
+  }
+
+  @Test
+  public void testAddIndexers() {
+    Cache<Pod> podCache = new Cache<>();
+    String nodeIndex = "node-index";
+    String clusterIndex = "cluster-index";
+
+    Map<String, Function<Pod, List<String>>> indexers = new HashMap<>();
+    indexers.put(nodeIndex, (Pod pod) -> Arrays.asList(pod.getSpec().getNodeName()));
+    indexers.put(clusterIndex, (Pod pod) -> Arrays.asList(pod.getMetadata().getClusterName()));
+
+    podCache.addIndexers(indexers);
+
+    Pod testPod = new PodBuilder()
+      .withNewMetadata().withNamespace("test").withName("test-pod").withClusterName("test-cluster").endMetadata()
+      .withNewSpec().withNodeName("test-node").endSpec()
+      .build();
+    podCache.add(testPod);
+
+    List<Pod> namespaceIndexedPods = podCache.byIndex(Cache.NAMESPACE_INDEX, "test");
+    assertEquals(1, namespaceIndexedPods.size());
+
+    List<Pod> nodeNameIndexedPods = podCache.byIndex(nodeIndex, "test-node");
+    assertEquals(1, nodeNameIndexedPods.size());
+
+    List<Pod> clusterNameIndexedPods = podCache.byIndex(clusterIndex, "test-cluster");
+    assertEquals(1, clusterNameIndexedPods.size());
   }
 
   private static List<String> mockIndexFunction(Object obj) {

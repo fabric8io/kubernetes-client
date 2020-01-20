@@ -73,6 +73,33 @@ public class Cache<T> implements Indexer<T> {
   }
 
   /**
+   * Returns the indexers registered with the cache.
+   *
+   * @return registered indexers
+   */
+  @Override
+  public Map<String, Function<T, List<String>>> getIndexers() {
+    return indexers;
+  }
+
+  @Override
+  public void addIndexers(Map<String, Function<T, List<String>>> indexersNew) {
+    if (!items.isEmpty()) {
+      throw new IllegalStateException("Cannot add indexers to a Cache which is not empty");
+    }
+
+    Set<String> intersection = new HashSet<>(indexers.keySet());
+    intersection.retainAll(indexersNew.keySet());
+    if (!intersection.isEmpty()) {
+      throw new IllegalArgumentException("Indexer conflict: " + intersection);
+    }
+
+    for (Map.Entry<String, Function<T, List<String>>> indexEntry : indexersNew.entrySet()) {
+      addIndexFunc(indexEntry.getKey(), indexEntry.getValue());
+    }
+  }
+
+  /**
    * Update the object.
    *
    * @param obj the object
@@ -318,6 +345,17 @@ public class Cache<T> implements Indexer<T> {
         }
       }
     }
+  }
+
+  /**
+   * Add index func.
+   *
+   * @param indexName the index name
+   * @param indexFunc the index func
+   */
+  public void addIndexFunc(String indexName, Function<T, List<String>> indexFunc) {
+    this.indices.put(indexName, new HashMap<>());
+    this.indexers.put(indexName, indexFunc);
   }
 
   /**
