@@ -346,6 +346,21 @@ public class ConfigTest {
     assertEquals("testns2", config.getNamespace());
   }
 
+
+  @Test
+  public void testWithCustomHeader() {
+    Map<String,String> customHeaders = new HashMap();
+    customHeaders.put("user-id","test-user");
+    customHeaders.put("cluster-id","test-cluster");
+    Config config = new ConfigBuilder()
+      .withCustomHeaders(customHeaders)
+      .build();
+
+    assertNotNull(config);
+    assertNotNull(config.getCustomHeaders());
+    assertEquals(2,config.getCustomHeaders().size());
+  }
+
   @Test
   public void shouldSetImpersonateUsernameAndGroupFromSystemProperty() {
 
