@@ -8,6 +8,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Fix #1948: LeaderElection Implementation (Lock Implementations: ConfigMap & Lease)
 
 
 ### 4.7.1 (24-01-2020)

@@ -4923,104 +4923,6 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_certificates_v1beta1_Lease": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "apiVersion": {
-          "type": "string",
-          "description": "",
-          "default": "coordination.k8s.io/v1beta1",
-          "required": true
-        },
-        "kind": {
-          "type": "string",
-          "description": "",
-          "default": "Lease",
-          "required": true
-        },
-        "metadata": {
-          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
-        },
-        "spec": {
-          "$ref": "#/definitions/kubernetes_certificates_v1beta1_LeaseSpec",
-          "javaType": "io.fabric8.kubernetes.api.model.coordination.v1beta1.LeaseSpec"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.coordination.v1beta1.Lease",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
-      ]
-    },
-    "kubernetes_certificates_v1beta1_LeaseList": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "apiVersion": {
-          "type": "string",
-          "description": "",
-          "default": "coordination.k8s.io/v1beta1",
-          "required": true
-        },
-        "items": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "$ref": "#/definitions/kubernetes_certificates_v1beta1_Lease",
-            "javaType": "io.fabric8.kubernetes.api.model.coordination.v1beta1.Lease"
-          }
-        },
-        "kind": {
-          "type": "string",
-          "description": "",
-          "default": "LeaseList",
-          "required": true
-        },
-        "metadata": {
-          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.coordination.v1beta1.LeaseList",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.coordination.v1beta1.Lease\u003e"
-      ]
-    },
-    "kubernetes_certificates_v1beta1_LeaseSpec": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "acquireTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_MicroTime",
-          "javaType": "io.fabric8.kubernetes.api.model.MicroTime"
-        },
-        "holderIdentity": {
-          "type": "string",
-          "description": ""
-        },
-        "leaseDurationSeconds": {
-          "type": "integer",
-          "description": ""
-        },
-        "leaseTransitions": {
-          "type": "integer",
-          "description": ""
-        },
-        "renewTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_MicroTime",
-          "javaType": "io.fabric8.kubernetes.api.model.MicroTime"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.coordination.v1beta1.LeaseSpec",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
     "kubernetes_config_AuthInfo": {
       "type": "object",
       "description": "",
@@ -5409,6 +5311,104 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.Preferences",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_coordination_Lease": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "coordination.k8s.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "Lease",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/kubernetes_coordination_LeaseSpec",
+          "javaType": "io.fabric8.kubernetes.api.model.coordination.v1.LeaseSpec"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.coordination.v1.Lease",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "kubernetes_coordination_LeaseList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "coordination.k8s.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/kubernetes_coordination_Lease",
+            "javaType": "io.fabric8.kubernetes.api.model.coordination.v1.Lease"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "LeaseList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.coordination.v1.LeaseList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.coordination.v1.Lease\u003e"
+      ]
+    },
+    "kubernetes_coordination_LeaseSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "acquireTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_MicroTime",
+          "javaType": "io.fabric8.kubernetes.api.model.MicroTime"
+        },
+        "holderIdentity": {
+          "type": "string",
+          "description": ""
+        },
+        "leaseDurationSeconds": {
+          "type": "integer",
+          "description": ""
+        },
+        "leaseTransitions": {
+          "type": "integer",
+          "description": ""
+        },
+        "renewTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_MicroTime",
+          "javaType": "io.fabric8.kubernetes.api.model.MicroTime"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.coordination.v1.LeaseSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -20456,12 +20456,12 @@
       "javaType": "io.fabric8.kubernetes.api.model.extensions.KubernetesRunAsUserStrategyOptions"
     },
     "Lease": {
-      "$ref": "#/definitions/kubernetes_certificates_v1beta1_Lease",
-      "javaType": "io.fabric8.kubernetes.api.model.coordination.v1beta1.Lease"
+      "$ref": "#/definitions/kubernetes_coordination_Lease",
+      "javaType": "io.fabric8.kubernetes.api.model.coordination.v1.Lease"
     },
     "LeaseList": {
-      "$ref": "#/definitions/kubernetes_certificates_v1beta1_LeaseList",
-      "javaType": "io.fabric8.kubernetes.api.model.coordination.v1beta1.LeaseList"
+      "$ref": "#/definitions/kubernetes_coordination_LeaseList",
+      "javaType": "io.fabric8.kubernetes.api.model.coordination.v1.LeaseList"
     },
     "LimitRangeList": {
       "$ref": "#/definitions/kubernetes_core_LimitRangeList",
@@ -22334,7 +22334,7 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "authorization.openshift.io/v1",
+          "default": "rbac.authorization.k8s.io/v1",
           "required": true
         },
         "kind": {
@@ -22351,8 +22351,8 @@
           "type": "array",
           "description": "",
           "items": {
-            "$ref": "#/definitions/os_authorization_PolicyRule",
-            "javaType": "io.fabric8.openshift.api.model.PolicyRule"
+            "$ref": "#/definitions/kubernetes_rbac_PolicyRule",
+            "javaType": "io.fabric8.kubernetes.api.model.rbac.PolicyRule"
           }
         }
       },
@@ -22363,16 +22363,8 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "authorization.openshift.io/v1",
+          "default": "rbac.authorization.k8s.io/v1",
           "required": true
-        },
-        "groupNames": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
-          }
         },
         "kind": {
           "type": "string",
@@ -22385,23 +22377,16 @@
           "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "roleRef": {
-          "$ref": "#/definitions/kubernetes_core_ObjectReference",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+          "$ref": "#/definitions/kubernetes_rbac_RoleRef",
+          "javaType": "io.fabric8.kubernetes.api.model.rbac.RoleRef"
         },
         "subjects": {
           "type": "array",
           "description": "",
+          "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_core_ObjectReference",
-            "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
-          }
-        },
-        "userNames": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
+            "$ref": "#/definitions/kubernetes_rbac_Subject",
+            "javaType": "io.fabric8.kubernetes.api.model.rbac.Subject"
           }
         }
       },
@@ -24940,6 +24925,10 @@
     },
     "endpointport": {
       "properties": {
+        "appProtocol": {
+          "type": "string",
+          "description": ""
+        },
         "name": {
           "type": "string",
           "description": "",
@@ -25834,11 +25823,11 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/os_security_IDRange",
-            "javaType": "io.fabric8.openshift.api.model.IDRange"
+            "$ref": "#/definitions/kubernetes_extensions_IDRange",
+            "javaType": "io.fabric8.kubernetes.api.model.extensions.IDRange"
           }
         },
-        "type": {
+        "rule": {
           "type": "string",
           "description": ""
         }
@@ -27968,7 +27957,7 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "coordination.k8s.io/v1beta1",
+          "default": "coordination.k8s.io/v1",
           "required": true
         },
         "kind": {
@@ -27982,8 +27971,8 @@
           "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_certificates_v1beta1_LeaseSpec",
-          "javaType": "io.fabric8.kubernetes.api.model.coordination.v1beta1.LeaseSpec"
+          "$ref": "#/definitions/kubernetes_coordination_LeaseSpec",
+          "javaType": "io.fabric8.kubernetes.api.model.coordination.v1.LeaseSpec"
         }
       },
       "additionalProperties": true
@@ -27993,15 +27982,15 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "coordination.k8s.io/v1beta1",
+          "default": "coordination.k8s.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
           "description": "",
           "items": {
-            "$ref": "#/definitions/kubernetes_certificates_v1beta1_Lease",
-            "javaType": "io.fabric8.kubernetes.api.model.coordination.v1beta1.Lease"
+            "$ref": "#/definitions/kubernetes_coordination_Lease",
+            "javaType": "io.fabric8.kubernetes.api.model.coordination.v1.Lease"
           }
         },
         "kind": {
@@ -31795,14 +31784,11 @@
         "apiGroups": {
           "type": "array",
           "description": "",
+          "javaOmitEmpty": true,
           "items": {
             "type": "string",
             "description": ""
           }
-        },
-        "attributeRestrictions": {
-          "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         },
         "nonResourceURLs": {
           "type": "array",
@@ -31825,6 +31811,7 @@
         "resources": {
           "type": "array",
           "description": "",
+          "javaOmitEmpty": true,
           "items": {
             "type": "string",
             "description": ""
@@ -32923,16 +32910,8 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "authorization.openshift.io/v1",
+          "default": "rbac.authorization.k8s.io/v1",
           "required": true
-        },
-        "groupNames": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
-          }
         },
         "kind": {
           "type": "string",
@@ -32945,23 +32924,16 @@
           "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "roleRef": {
-          "$ref": "#/definitions/kubernetes_core_ObjectReference",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+          "$ref": "#/definitions/kubernetes_rbac_RoleRef",
+          "javaType": "io.fabric8.kubernetes.api.model.rbac.RoleRef"
         },
         "subjects": {
           "type": "array",
           "description": "",
+          "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_core_ObjectReference",
-            "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
-          }
-        },
-        "userNames": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
+            "$ref": "#/definitions/kubernetes_rbac_Subject",
+            "javaType": "io.fabric8.kubernetes.api.model.rbac.Subject"
           }
         }
       },
@@ -33043,15 +33015,15 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "rbac.authorization.k8s.io/v1",
+          "default": "authorization.openshift.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
           "description": "",
           "items": {
-            "$ref": "#/definitions/kubernetes_rbac_Role",
-            "javaType": "io.fabric8.kubernetes.api.model.rbac.Role"
+            "$ref": "#/definitions/os_authorization_Role",
+            "javaType": "io.fabric8.openshift.api.model.OpenshiftRole"
           }
         },
         "kind": {
@@ -33469,18 +33441,24 @@
     },
     "runasuserstrategyoptions": {
       "properties": {
-        "ranges": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_extensions_IDRange",
-            "javaType": "io.fabric8.kubernetes.api.model.extensions.IDRange"
-          }
-        },
-        "rule": {
+        "type": {
           "type": "string",
           "description": ""
+        },
+        "uid": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "uidRangeMax": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "uidRangeMin": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
         }
       },
       "additionalProperties": true
@@ -35242,8 +35220,24 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "authorization.k8s.io/v1",
+          "default": "authorization.openshift.io/v1",
           "required": true
+        },
+        "content": {
+          "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
+          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+        },
+        "groups": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "isNonResourceURL": {
+          "type": "boolean",
+          "description": ""
         },
         "kind": {
           "type": "string",
@@ -35251,17 +35245,45 @@
           "default": "SubjectAccessReview",
           "required": true
         },
-        "metadata": {
-          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        "namespace": {
+          "type": "string",
+          "description": ""
         },
-        "spec": {
-          "$ref": "#/definitions/kubernetes_authorization_SubjectAccessReviewSpec",
-          "javaType": "io.fabric8.kubernetes.api.model.authorization.SubjectAccessReviewSpec"
+        "path": {
+          "type": "string",
+          "description": ""
         },
-        "status": {
-          "$ref": "#/definitions/kubernetes_authorization_SubjectAccessReviewStatus",
-          "javaType": "io.fabric8.kubernetes.api.model.authorization.SubjectAccessReviewStatus"
+        "resource": {
+          "type": "string",
+          "description": ""
+        },
+        "resourceAPIGroup": {
+          "type": "string",
+          "description": ""
+        },
+        "resourceAPIVersion": {
+          "type": "string",
+          "description": ""
+        },
+        "resourceName": {
+          "type": "string",
+          "description": ""
+        },
+        "scopes": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "user": {
+          "type": "string",
+          "description": ""
+        },
+        "verb": {
+          "type": "string",
+          "description": ""
         }
       },
       "additionalProperties": true

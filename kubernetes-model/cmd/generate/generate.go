@@ -40,7 +40,7 @@ import (
   batchapiv1 "k8s.io/api/batch/v1"
   batchapiv1beta1 "k8s.io/api/batch/v1beta1"
   certificates "k8s.io/api/certificates/v1beta1"
-  coordination "k8s.io/api/coordination/v1beta1"
+  coordination "k8s.io/api/coordination/v1"
   kapi "k8s.io/api/core/v1"
   discovery "k8s.io/api/discovery/v1beta1"
   events "k8s.io/api/events/v1beta1"
@@ -315,7 +315,7 @@ func main() {
     {"k8s.io/api/admission/v1beta1", "admission.k8s.io", "io.fabric8.kubernetes.api.model.admission", "kubernetes_admission_"},
     {"k8s.io/api/admissionregistration/v1beta1", "admissionregistration.k8s.io", "io.fabric8.kubernetes.api.model.admissionregistration", "kubernetes_admissionregistration_"},
     {"k8s.io/api/certificates/v1beta1", "certificates.k8s.io", "io.fabric8.kubernetes.api.model.certificates", "kubernetes_certificates_"},
-    {"k8s.io/api/coordination/v1beta1", "coordination.k8s.io", "io.fabric8.kubernetes.api.model.coordination.v1beta1", "kubernetes_certificates_v1beta1_"},
+    {"k8s.io/api/coordination/v1", "coordination.k8s.io", "io.fabric8.kubernetes.api.model.coordination.v1", "kubernetes_coordination_"},
     {"k8s.io/metrics/pkg/apis/metrics/v1beta1", "metrics.k8s.io", "io.fabric8.kubernetes.api.model.metrics.v1beta1", "kubernetes_metrics_v1beta1_"},
   }
 

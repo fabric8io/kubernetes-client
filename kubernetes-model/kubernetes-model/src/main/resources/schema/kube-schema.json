@@ -4923,104 +4923,6 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_certificates_v1beta1_Lease": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "apiVersion": {
-          "type": "string",
-          "description": "",
-          "default": "coordination.k8s.io/v1beta1",
-          "required": true
-        },
-        "kind": {
-          "type": "string",
-          "description": "",
-          "default": "Lease",
-          "required": true
-        },
-        "metadata": {
-          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
-        },
-        "spec": {
-          "$ref": "#/definitions/kubernetes_certificates_v1beta1_LeaseSpec",
-          "javaType": "io.fabric8.kubernetes.api.model.coordination.v1beta1.LeaseSpec"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.coordination.v1beta1.Lease",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
-      ]
-    },
-    "kubernetes_certificates_v1beta1_LeaseList": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "apiVersion": {
-          "type": "string",
-          "description": "",
-          "default": "coordination.k8s.io/v1beta1",
-          "required": true
-        },
-        "items": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "$ref": "#/definitions/kubernetes_certificates_v1beta1_Lease",
-            "javaType": "io.fabric8.kubernetes.api.model.coordination.v1beta1.Lease"
-          }
-        },
-        "kind": {
-          "type": "string",
-          "description": "",
-          "default": "LeaseList",
-          "required": true
-        },
-        "metadata": {
-          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.coordination.v1beta1.LeaseList",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.coordination.v1beta1.Lease\u003e"
-      ]
-    },
-    "kubernetes_certificates_v1beta1_LeaseSpec": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "acquireTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_MicroTime",
-          "javaType": "io.fabric8.kubernetes.api.model.MicroTime"
-        },
-        "holderIdentity": {
-          "type": "string",
-          "description": ""
-        },
-        "leaseDurationSeconds": {
-          "type": "integer",
-          "description": ""
-        },
-        "leaseTransitions": {
-          "type": "integer",
-          "description": ""
-        },
-        "renewTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_MicroTime",
-          "javaType": "io.fabric8.kubernetes.api.model.MicroTime"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.coordination.v1beta1.LeaseSpec",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
     "kubernetes_config_AuthInfo": {
       "type": "object",
       "description": "",
@@ -5409,6 +5311,104 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.Preferences",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_coordination_Lease": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "coordination.k8s.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "Lease",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/kubernetes_coordination_LeaseSpec",
+          "javaType": "io.fabric8.kubernetes.api.model.coordination.v1.LeaseSpec"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.coordination.v1.Lease",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "kubernetes_coordination_LeaseList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "coordination.k8s.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/kubernetes_coordination_Lease",
+            "javaType": "io.fabric8.kubernetes.api.model.coordination.v1.Lease"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "LeaseList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.coordination.v1.LeaseList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.coordination.v1.Lease\u003e"
+      ]
+    },
+    "kubernetes_coordination_LeaseSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "acquireTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_MicroTime",
+          "javaType": "io.fabric8.kubernetes.api.model.MicroTime"
+        },
+        "holderIdentity": {
+          "type": "string",
+          "description": ""
+        },
+        "leaseDurationSeconds": {
+          "type": "integer",
+          "description": ""
+        },
+        "leaseTransitions": {
+          "type": "integer",
+          "description": ""
+        },
+        "renewTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_MicroTime",
+          "javaType": "io.fabric8.kubernetes.api.model.MicroTime"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.coordination.v1.LeaseSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -20456,12 +20456,12 @@
       "javaType": "io.fabric8.kubernetes.api.model.extensions.KubernetesRunAsUserStrategyOptions"
     },
     "Lease": {
-      "$ref": "#/definitions/kubernetes_certificates_v1beta1_Lease",
-      "javaType": "io.fabric8.kubernetes.api.model.coordination.v1beta1.Lease"
+      "$ref": "#/definitions/kubernetes_coordination_Lease",
+      "javaType": "io.fabric8.kubernetes.api.model.coordination.v1.Lease"
     },
     "LeaseList": {
-      "$ref": "#/definitions/kubernetes_certificates_v1beta1_LeaseList",
-      "javaType": "io.fabric8.kubernetes.api.model.coordination.v1beta1.LeaseList"
+      "$ref": "#/definitions/kubernetes_coordination_LeaseList",
+      "javaType": "io.fabric8.kubernetes.api.model.coordination.v1.LeaseList"
     },
     "LimitRangeList": {
       "$ref": "#/definitions/kubernetes_core_LimitRangeList",

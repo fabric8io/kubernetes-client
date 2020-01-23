@@ -70,9 +70,13 @@ import io.fabric8.kubernetes.api.model.DoneableService;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.DoneableServiceAccount;
+import io.fabric8.kubernetes.api.model.coordination.v1.DoneableLease;
+import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
+import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
 import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.*;
+import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import okhttp3.OkHttpClient;
@@ -343,4 +347,19 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
     return new SharedInformerFactory(executorService, httpClient, getConfiguration());
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public LeaderElectorBuilder<NamespacedKubernetesClient> leaderElector() {
+    return new LeaderElectorBuilder<>(this);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public MixedOperation<Lease, LeaseList, DoneableLease, Resource<Lease, DoneableLease>> leases() {
+    return new LeaseOperationsImpl(httpClient, getConfiguration());
+  }
 }

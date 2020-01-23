@@ -124,6 +124,21 @@
       </build>
     </profile>
     <profile>
+      <id>leader-election</id>
+      <build>
+        <defaultGoal>test-compile exec:java</defaultGoal>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <configuration>
+              <mainClass>io.fabric8.kubernetes.examples.LeaderElectionExamples$ConcurrentExample</mainClass>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>list-dc</id>
       <build>
         <defaultGoal>test-compile exec:java</defaultGoal>

@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.ContextBuilder;
 import io.fabric8.mockwebserver.DefaultMockServer;
@@ -37,15 +38,14 @@ import static okhttp3.TlsVersion.TLS_1_0;
 
 public class KubernetesMockServer extends DefaultMockServer {
 
-    private static final Context context = new ContextBuilder()
-            .build();
+    private static final Context context = new ContextBuilder().withMapper(Serialization.jsonMapper()).build();
 
     public KubernetesMockServer() {
         this(true);
     }
 
     public KubernetesMockServer(boolean useHttps) {
-        this(new MockWebServer(), new HashMap(), useHttps);
+        this(new MockWebServer(), new HashMap<>(), useHttps);
     }
 
     public KubernetesMockServer(MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, boolean useHttps) {

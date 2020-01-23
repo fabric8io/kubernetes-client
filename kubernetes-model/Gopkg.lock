@@ -96,7 +96,7 @@
   version = "v0.9.1"
 
 [[projects]]
-  digest = "1:e7d9576fe880247577e8951cdf4596200dacd43c327d03724aa60d049c992d9d"
+  digest = "1:e76ccb0c18c8738b099947c076b671b28e67aefe9f07f44b12015fd4bb2610db"
   name = "k8s.io/api"
   packages = [
     "admission/v1beta1",
@@ -110,6 +110,7 @@
     "batch/v1",
     "batch/v1beta1",
     "certificates/v1beta1",
+    "coordination/v1",
     "coordination/v1beta1",
     "core/v1",
     "discovery/v1beta1",
@@ -198,7 +199,7 @@
   version = "v1.17.0"
 
 [[projects]]
-  digest = "0:"
+  digest = "1:7814e7cc39cdcb500eafc02de1ec5ca87a5fd69c117f5225eb93ad79a83a7ff8"
   name = "k8s.io/metrics"
   packages = [
     "pkg/apis/metrics",
@@ -242,6 +243,7 @@
     "k8s.io/api/batch/v1",
     "k8s.io/api/batch/v1beta1",
     "k8s.io/api/certificates/v1beta1",
+    "k8s.io/api/coordination/v1",
     "k8s.io/api/coordination/v1beta1",
     "k8s.io/api/core/v1",
     "k8s.io/api/discovery/v1beta1",
