@@ -27,6 +27,7 @@ import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.*;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -288,7 +289,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
   }
 
   protected static WatchEvent readWatchEvent(String messageSource) throws IOException {
-    WatchEvent event = mapper.readValue(messageSource, WatchEvent.class);
+    WatchEvent event = Serialization.unmarshal(messageSource, WatchEvent.class);
     KubernetesResource object = null;
     if (event != null) {
       object = event.getObject();;
