@@ -2,15 +2,31 @@
 
 ### 4.7-SNAPSHOT
 #### Bugs
-* `Quantity.getAmountInBytes()` should be able to handle negative exponents
-* Fix #1805: Unable to create Template on OCP4
 
 #### Improvements
-* Fix #1894: SharedInformer Improvements
 
 #### Dependency Upgrade
 
 #### New Features
+
+
+### 4.7.1 (24-01-2020)
+#### Bugs
+* Fix #1937: `Quantity.getAmountInBytes()` should be able to handle negative exponents
+* Fix #1805: Unable to create Template on OCP4
+
+#### Improvements
+* Fix #1894: SharedInformer Improvements
+* Fix #1963: Use Serialization not a default ObjectMapper in Watch
+* Fix #1957: Build Failing on CI due to Central repository moving to HTTPS
+
+#### Dependency Upgrade
+* Fix #1962: chore(deps): bump karaf.version from 4.2.7 to 4.2.8
+* Fix #1960: chore(deps): bump junit-bom from 5.5.2 to 5.6.0
+* Fix #1939: chore(deps): bump sundrio.version from 0.20.0 to 0.21.0
+
+#### New Features
+* Fix #1917: Allow user to add custom Headers to client
 
 ### 4.7.0 (08-01-2020)
 #### Bugs
