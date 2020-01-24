@@ -16,7 +16,6 @@
 
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
@@ -27,6 +26,7 @@ import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.*;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -48,7 +48,6 @@ import static java.net.HttpURLConnection.HTTP_GONE;
 public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourceList<T>> implements
   Watch {
   private static final Logger logger = LoggerFactory.getLogger(WatchHTTPManager.class);
-  private static final ObjectMapper mapper = new ObjectMapper();
 
   private final BaseOperation<T, L, ?, ?> baseOperation;
   private final Watcher<T> watcher;
@@ -288,7 +287,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
   }
 
   protected static WatchEvent readWatchEvent(String messageSource) throws IOException {
-    WatchEvent event = mapper.readValue(messageSource, WatchEvent.class);
+    WatchEvent event = Serialization.unmarshal(messageSource, WatchEvent.class);
     KubernetesResource object = null;
     if (event != null) {
       object = event.getObject();;
@@ -298,7 +297,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
     // so lets try parse the message as a KubernetesResource
     // as it will probably be a list of resources like a BuildList
     if (object == null) {
-      object = mapper.readValue(messageSource, KubernetesResource.class);
+      object = Serialization.unmarshal(messageSource, KubernetesResource.class);
       if (event == null) {
         event = new WatchEvent(object, "MODIFIED");
       } else {

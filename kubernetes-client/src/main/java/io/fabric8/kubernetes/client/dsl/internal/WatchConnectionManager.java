@@ -51,7 +51,6 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
 
   private static final Logger logger = LoggerFactory.getLogger(WatchConnectionManager.class);
 
-  private static final ObjectMapper mapper = new ObjectMapper();
   private final AtomicBoolean forceClosed = new AtomicBoolean();
   private final AtomicReference<String> resourceVersion;
   private final BaseOperation<T, L, ?, ?> baseOperation;
