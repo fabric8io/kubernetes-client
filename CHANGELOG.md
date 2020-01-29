@@ -6,6 +6,7 @@
 #### Improvements
 
 #### Dependency Upgrade
+* Update Jackson Bom to 2.10.2
 
 #### New Features
 
