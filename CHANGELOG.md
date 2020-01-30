@@ -2,6 +2,7 @@
 
 ### 4.7-SNAPSHOT
 #### Bugs
+* Fix #1847: Remove resource-\*.vm files from \*-client.jar
 
 #### Improvements
 
@@ -208,155 +209,138 @@
 #### New Feature
 
 ### 4.4.0 (05-08-2019)
-  Bugs
+#### Bugs
   * Fix #1592: Corrected type returned by Config.builder()
   * Fix #1565: CRD's Enums are prefixed with Raw keyword
   * Fixed user/password authentication bug in OpenShift 4
   * Fix #1667: Origin header for watch requests had a port of -1 when no port specified
 
-  Improvements
+#### Improvements
    * Test coverage for PersistentVolumeClaim
    * Fix #1589: Move HorizontalPodAutoscaler to autoscaling/v1
    * Fix #1553: Allow to explicitly set non-matching field selectors using `withoutField`
    * Cleaned up kubernetes-model pom.xml
    * Removed deprecated KubernetesKind enum
 
-  Dependency Upgrade
+#### Dependency Upgrade
 
-  New Feature
+#### New Feature
   * Knative extension
   * Tekton extension
   * Increased OpenShift 4.x compatibility
 
 ### 4.3.1 (19-07-2019)
-  Bugs
-   * Fix #1592: Corrected type returned by Config.builder()
-   * Set cascade deletion to true in case of list operations
-   * Fix #1617: Multiple CA certificates with non-unique Subject DN not loaded
-   * Fix #1634: Make map backing KubernetesDeserializer thread-safe
+#### Bugs
+  * Fix #1592: Corrected type returned by Config.builder()
+  * Set cascade deletion to true in case of list operations
+  * Fix #1617: Multiple CA certificates with non-unique Subject DN not loaded
+  * Fix #1634: Make map backing KubernetesDeserializer thread-safe
 
-  Improvements
-    * Test coverage for Namespace.
-    * Example added for NamespaceQuota
-    * Example added for Endpoints.
-    * Test coverage for Endpoints.
-    * Fix #1589: Move HorizontalPodAutoscaler to autoscaling/v1
-    * Fix #1553: Allow to explicitly set non-matching field selectors using withoutField
-    * assertNotNull replaced with assertTrue for boolean statements in unit tests
-    * Test coverage for PodPreset
-    * Added test coverage for PersistentVolume
-    * Fix #1290: Added github stale bot.
-    * Add type parameter to make CustomResourceList.getItems() return a typed List.
+#### Improvements
+  * Test coverage for Namespace.
+  * Example added for NamespaceQuota
+  * Example added for Endpoints.
+  * Test coverage for Endpoints.
+  * Fix #1589: Move HorizontalPodAutoscaler to autoscaling/v1
+  * Fix #1553: Allow to explicitly set non-matching field selectors using withoutField
+  * assertNotNull replaced with assertTrue for boolean statements in unit tests
+  * Test coverage for PodPreset
+  * Added test coverage for PersistentVolume
+  * Fix #1290: Added github stale bot.
+  * Add type parameter to make CustomResourceList.getItems() return a typed List.
 
-  Dependency Upgrade
-    * Upgrade Jackson to version 2.9.9
+#### Dependency Upgrade
+  * Upgrade Jackson to version 2.9.9
 
-  New Feature
-    * Fixes #973: added support for service catalog client
-    * Added support for SelfSubjectAccessReview
-    * Added support for SelfSubjectRulesReview
+#### New Feature
+  * Fixes #973: added support for service catalog client
+  * Added support for SelfSubjectAccessReview
+  * Added support for SelfSubjectRulesReview
 
-#### 4.3.0 (10-06-2019)
+### 4.3.0 (10-06-2019)
+#### Bugs
+  * Fix #1500: exec `redirectingInput` was not correctly setting the input pipe (since 4.2.0).
+  * Fix #1507: remove unnecessary OutputStream copying a directory and return the directory object instead the file object when a directory is copied or read
+  * Fix #758: Deleting Deployments with `.cascading(true)` creates a new Replica Set
+  * Fix #1515: HasMetadataOperation.periodicWatchUntilReady is broken
+  * Fix #1550: MutatingWebhookConfigurationOperationsImpl should be a NonNamespaceOperation
+  
+#### Improvements
+  * Added example for raw custom resources.
 
-  Bugs
+#### Dependency Upgrade
 
-    * Fix #1500: exec `redirectingInput` was not correctly setting the input pipe (since 4.2.0).
-    * Fix #1507: remove unnecessary OutputStream copying a directory and return the directory object instead the file object when a directory is copied or read
-    * Fix #758: Deleting Deployments with `.cascading(true)` creates a new Replica Set
-    * Fix #1515: HasMetadataOperation.periodicWatchUntilReady is broken
-    * Fix #1550: MutatingWebhookConfigurationOperationsImpl should be a NonNamespaceOperation
+#### New Feature
+  * Fix #1523: Added createOrReplace() method to RawCustomResourceOperations dsl
+  * Feature #1374 Add support for resizeChannel in ExecWebSocketListener
 
-  Improvements
+### 4.2.2 (17-04-2019)
+#### Bugs
+  * Fix #1297: wrong result produced when exec in used and params contains '&'. Url string not encoded properly.
+  * Fix #1449: System.currentTimeMillis() replaced with System.nanoTime()
+  * Fix #1495: avoid runtime dependency on Commons Collections
 
-    * Added example for raw custom resources.
+#### Improvements
 
-  Dependency Upgrade
+#### Dependency Upgrade
 
-  New Feature
-   * Fix #1523: Added createOrReplace() method to RawCustomResourceOperations dsl
-   * Feature #1374 Add support for resizeChannel in ExecWebSocketListener
+#### New Feature
 
-#### 4.2.2 (17-04-2019)
+### 4.2.1 (15-04-2019)
+#### Bugs
+  * Fix #1297: wrong result produced when exec in used and params contains '&'. Url string not encoded properly.
+  * Fix #1473: Use correct plural form in OpenshiftRole
+  * Fix #1480: The kubernetes-client is not optionally depending on bouncycastle.
+  * Fix #1490: Resource could not be loaded
+  * Fix #1468: Taking labels into consideration when comparing resources for equality.
 
-  Bugs
+#### Improvements
+  * Fix #1455: Use SubjectAccessReview and LocalSubjectAccessReview in kubernetes client using subjectAccessReviewAuth()
 
-    * Fix #1297: wrong result produced when exec in used and params contains '&'. Url string not encoded properly.
-    * Fix #1449: System.currentTimeMillis() replaced with System.nanoTime()
-    * Fix #1495: avoid runtime dependency on Commons Collections
+#### Dependency Upgrade
 
-  Improvements
+#### New Feature
+  * First Draft of Custom Resource Improvements (#1472)
 
-  Dependency Upgrade
+### 4.2.0 (29-03-2019)
+#### Bugs
+  * Fix #1387: ValidatingWebhookConfigurationOperationsImpl should be a NonNamespaceOperation
+  * Fix #1429: Fixes JsonMappingException: No resource type found for:v1#List when reading a Kubernetes List YAML
+  * Fix #760: Api get pod from yaml issue
+  * Fix #807: Loading a deployment from server with a config file throws exception
 
-  New Feature
+#### Improvements
+  * Fix #1425: Preserve labels and fields when using CRD's withResourceVersion()
+  * Service DSL now includes methods for port forwarding
+  * Introduce file and dir read / copy from pods
 
-#### 4.2.1 (15-04-2019)
+#### Dependency Upgrade
+  * Upgrade Sundrio to 0.17.2
+  * Upgrade to Bean Validation 2.0
 
-  Bugs
+#### New Feature
 
-    * Fix #1297: wrong result produced when exec in used and params contains '&'. Url string not encoded properly.
-    * Fix #1473: Use correct plural form in OpenshiftRole
-    * Fix #1480: The kubernetes-client is not optionally depending on bouncycastle.
-    * Fix #1490: Resource could not be loaded
-    * Fix #1468: Taking labels into consideration when comparing resources for equality.
+### 4.1.3 (02-03-2019)
+#### Bugs
+  * Fix nanosecond conversion using waitUntilReady
+  * Fix #1008: Use a reasonable buffer size for exec stdin
+  * Fix #1005: Loading a template from file and processing it locally by passing parameters map is broken
 
-  Improvements
+#### Improvements
+  * Fix #1362: store exceptions thrown in port forwarder websocket
+  * Generate Jandex index file for faster lookup performance
+  * Fix #1361: Relax restrictions on environment variable names
+  * Refactor: Use lambdas wherever possible across project
+  * Fix #1371: Add an example for Job Controller
 
-    * Fix #1455: Use SubjectAccessReview and LocalSubjectAccessReview in kubernetes client using subjectAccessReviewAuth()
+#### Dependency Upgrade
+  * Bump Snakeyaml to version 1.24
 
-  Dependency Upgrade
+#### New Feature
+  * Feature 213: Added require( ) method to Resource object class.
+  * Fix #1064: Make Deployments rollable
 
-
-  New Feature
-
-    * First Draft of Custom Resource Improvements (#1472)
-
-#### 4.2.0 (29-03-2019)
-
-  Bugs
-
-    * Fix #1387: ValidatingWebhookConfigurationOperationsImpl should be a NonNamespaceOperation
-    * Fix #1429: Fixes JsonMappingException: No resource type found for:v1#List when reading a Kubernetes List YAML
-    * Fix #760: Api get pod from yaml issue
-    * Fix #807: Loading a deployment from server with a config file throws exception
-
-  Improvements
-
-    * Fix #1425: Preserve labels and fields when using CRD's withResourceVersion()
-    * Service DSL now includes methods for port forwarding
-    * Introduce file and dir read / copy from pods
-
-  Dependency Upgrade
-
-    * Upgrade Sundrio to 0.17.2
-    * Upgrade to Bean Validation 2.0
-
-  New Feature
-
-#### 4.1.3 (02-03-2019)
-
-  Bugs
-
-   * Fix nanosecond conversion using waitUntilReady
-   * Fix #1008: Use a reasonable buffer size for exec stdin
-   * Fix #1005: Loading a template from file and processing it locally by passing parameters map is broken
-
-  Improvements
-
-    * Fix #1362: store exceptions thrown in port forwarder websocket
-    * Generate Jandex index file for faster lookup performance
-    * Fix #1361: Relax restrictions on environment variable names
-    * Refactor: Use lambdas wherever possible across project
-    * Fix #1371: Add an example for Job Controller
-
-  Dependency Upgrade
-    * Bump Snakeyaml to version 1.24
-
-  New Feature
-    * Feature 213: Added require( ) method to Resource object class.
-    * Fix #1064: Make Deployments rollable
-
-#### 4.1.2
+### 4.1.2
   Bugs
 
     * Fix #1271: Issue deploying ReplicaSet to extensions/v1beta1

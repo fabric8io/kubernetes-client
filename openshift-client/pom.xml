@@ -139,6 +139,11 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>resource-*.vm</exclude>
+          </excludes>
+        </configuration>
         <executions>
           <execution>
             <goals>
