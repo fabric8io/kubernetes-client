@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.Quantity;
-import io.fabric8.kubernetes.api.model.QuantityBuilder;
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetrics;
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetricsBuilder;
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetricsList;
@@ -41,7 +41,7 @@ public class MetricsTest {
   public KubernetesServer server = new KubernetesServer();
 
   @Test
-  public void testPodMetricsAllNamespace() {
+  public void testPodMetricsAllNamespace() throws Exception {
     server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/pods")
       .andReturn(200, new PodMetricsListBuilder().withItems(getPodMetric()).build()).once();
 
@@ -53,7 +53,7 @@ public class MetricsTest {
   }
 
   @Test
-  public void testPodMetricsNamespace() {
+  public void testPodMetricsNamespace() throws Exception {
     server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/namespaces/test/pods")
       .andReturn(200, new PodMetricsListBuilder().withItems(getPodMetric()).build()).once();
 
@@ -65,7 +65,7 @@ public class MetricsTest {
   }
 
   @Test
-  public void testPodMetricsNamespaceWithName() {
+  public void testPodMetricsNamespaceWithName() throws Exception {
     server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/namespaces/test/pods/test-pod")
       .andReturn(200, getPodMetric()).once();
 
@@ -96,10 +96,10 @@ public class MetricsTest {
     assertEquals("foo", nodeMetrics.getMetadata().getName());
   }
 
-  private PodMetrics getPodMetric() {
+  private PodMetrics getPodMetric() throws Exception {
     return new PodMetricsBuilder()
       .withNewMetadata().withName("foo").endMetadata()
-      .withNewWindow("1m0s")
+      .withWindow(Duration.parse("1m0s"))
       .addNewContainer()
       .withName("test-container")
       .withUsage(Collections.singletonMap("cpu", new Quantity("38m")))
@@ -110,7 +110,7 @@ public class MetricsTest {
   private NodeMetrics getNodeMetric() {
     return new NodeMetricsBuilder()
       .withNewMetadata().withName("foo").endMetadata()
-      .withNewWindow("1m0s")
+      .withWindow(new Duration(java.time.Duration.ofMinutes(1L)))
       .withUsage(Collections.singletonMap("cpu", new Quantity("38m")))
       .build();
   }
