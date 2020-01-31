@@ -3,6 +3,7 @@
 ### 4.7-SNAPSHOT
 #### Bugs
 * Fix #1847: Remove resource-\*.vm files from \*-client.jar
+* Fix #959: Support for double braced `${{ }}` template placeholders
 
 #### Improvements
 * Fix #1874: Added unit tests verifying windows line-ends (CRLF) work

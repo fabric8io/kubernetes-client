@@ -24,37 +24,61 @@ import io.fabric8.openshift.client.OpenShiftClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
+import java.util.Collections;
 
 public class TemplateExample {
   private static final Logger logger = LoggerFactory.getLogger(TemplateExample.class);
 
-  public static void main(String[] args) throws IOException {
+  private static final String NAMESPACE = "template-example-ns";
+  private static final String TEST_TEMPLATE_RESOURCE = "/test-template.yml";
+  private static final String DEFAULT_NAME_OF_TEMPLATE = "eap6-basic-sti";
+
+  public static void main(String[] args) {
     try (OpenShiftClient client = new DefaultOpenShiftClient()) {
       try {
-        client.namespaces().createNew().withNewMetadata().withName("thisisatest").endMetadata().done();
+        logger.info("Creating temporary namespace '{}' for example", NAMESPACE);
+        client.namespaces().createNew().withNewMetadata().withName(NAMESPACE).endMetadata().done();
 
-        Template t = client.templates().load(TemplateExample.class.getResourceAsStream("/test-template.yml")).get();
-        for (Parameter p : t.getParameters()) {
-          System.out.println(p.getName());
+        final Template loadedTemplate = client.templates()
+          .load(TemplateExample.class.getResourceAsStream(TEST_TEMPLATE_RESOURCE)).get();
+        for (Parameter p : loadedTemplate.getParameters()) {
+          final String required = Boolean.TRUE.equals(p.getRequired()) ? "*" : "";
+          logger.info("Loaded parameter from template: {}{} - '{}' ({})",
+            p.getName(), required, p.getValue(), p.getGenerate());
         }
 
-        t = client.templates().load(TemplateExample.class.getResourceAsStream("/test-template.yml")).get();
-        t = client.templates().inNamespace("thisisatest").load(TemplateExample.class.getResourceAsStream("/test-template.yml")).create();
-        t = client.templates().inNamespace("thisisatest").withName("eap6-basic-sti").get();
-        System.out.println(t.getMetadata().getName());
+        final Template serverUploadedTemplate = client.templates()
+          .inNamespace(NAMESPACE)
+          .load(TemplateExample.class.getResourceAsStream(TEST_TEMPLATE_RESOURCE))
+          .create();
+        logger.info("Template {} successfully created on server", serverUploadedTemplate.getMetadata().getName());
+        final Template serverDownloadedTemplate = client.templates().inNamespace(NAMESPACE).withName(DEFAULT_NAME_OF_TEMPLATE).get();
+        logger.info("Template {} successfully downloaded from server", serverDownloadedTemplate.getMetadata().getName());
 
-        KubernetesList l = client.templates().inNamespace("thisisatest").withName("eap6-basic-sti").process();
-        System.out.println(l.getItems().size());
+        final KubernetesList processedTemplateWithDefaultParameters = client.templates()
+          .inNamespace(NAMESPACE).withName(DEFAULT_NAME_OF_TEMPLATE).process();
+        logger.info("Template {} successfully processed to list with {} items, and requiredBoolean = {}",
+          processedTemplateWithDefaultParameters.getItems().get(0).getMetadata().getLabels().get("template"),
+          processedTemplateWithDefaultParameters.getItems().size(),
+          processedTemplateWithDefaultParameters.getItems().get(0).getMetadata().getLabels().get("requiredBoolean"));
 
-        l = client.lists().load(TemplateExample.class.getResourceAsStream("/test-list.yml")).get();
-        System.out.println(l.getItems().size());
+        final KubernetesList processedTemplateWithCustomParameters = client.templates()
+          .inNamespace(NAMESPACE).withName(DEFAULT_NAME_OF_TEMPLATE).process(Collections.singletonMap("REQUIRED_BOOLEAN", "true"));
+        logger.info("Template {} successfully processed to list with {} items, and requiredBoolean = {}",
+          processedTemplateWithCustomParameters.getItems().get(0).getMetadata().getLabels().get("template"),
+          processedTemplateWithCustomParameters.getItems().size(),
+          processedTemplateWithCustomParameters.getItems().get(0).getMetadata().getLabels().get("requiredBoolean"));
 
-        l = client.lists().inNamespace("thisisatest").load(TemplateExample.class.getResourceAsStream("/test-list.yml")).create();
+        KubernetesList l = client.lists().load(TemplateExample.class.getResourceAsStream("/test-list.yml")).get();
+        logger.info("{}", l.getItems().size());
+
+        final boolean templateDeleted = client.templates().inNamespace(NAMESPACE).withName(DEFAULT_NAME_OF_TEMPLATE).delete();
+        logger.info("Template {} was {}deleted", DEFAULT_NAME_OF_TEMPLATE, templateDeleted ? "" : "**NOT** ");
+        client.lists().inNamespace(NAMESPACE).load(TemplateExample.class.getResourceAsStream("/test-list.yml")).create();
       } finally {
         // And finally clean up the namespace
-        client.namespaces().withName("thisisatest").delete();
-        logger.info("Deleted namespace");
+        client.namespaces().withName(NAMESPACE).delete();
+        logger.info("Deleted namespace {}", NAMESPACE);
       }
     }
   }

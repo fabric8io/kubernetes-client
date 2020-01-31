@@ -15,10 +15,15 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
+import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
+import java.io.File;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -35,12 +40,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
 public class LoadAsTemplateTest {
 
+  private OpenShiftClient client;
+
+  @BeforeEach
+  public void setUp() {
+    client = createOpenShiftClientWithNoServer();
+  }
+
+  @AfterEach
+  public void tearDown() {
+    client.close();
+    client = null;
+  }
+
   @Test
-  public void shouldLoadPodAsTemplate() throws Exception {
-    OpenShiftClient client = createOpenShiftClientWithNoServer();
+  public void shouldLoadPodAsTemplate() {
     KubernetesList list = client.templates().load(getClass().getResourceAsStream("/test-pod-create-from-load.yml")).processLocally();
     assertNotNull(list);
     assertNotNull(list.getItems());
@@ -48,8 +64,7 @@ public class LoadAsTemplateTest {
   }
 
   @Test
-  public void shouldProcessLocally() throws Exception {
-    OpenShiftClient client = createOpenShiftClientWithNoServer();
+  public void shouldProcessLocally() {
     Map<String, String> map = new HashMap<>();
     map.put("USERNAME", "root");
     map.put("REQUIRED", "requiredValue");
@@ -59,14 +74,49 @@ public class LoadAsTemplateTest {
   }
 
   @Test
-  public void shouldProcessLocallyWithParametersInYaml() throws Exception {
-    OpenShiftClient client = createOpenShiftClientWithNoServer();
-
-    KubernetesList list = client.templates().load(getClass().getResourceAsStream("/template-with-params.yml")).processLocally(getClass().getResourceAsStream("/parameters.yml"));
+  public void shouldProcessLocallyWithParametersInYaml() {
+    KubernetesList list = client.templates().load(getClass().getResourceAsStream("/template-with-params.yml"))
+      .processLocally(new File(getClass().getResource("/parameters.yml").getFile()));
     assertListIsProcessed(list);
   }
 
-  protected DefaultOpenShiftClient createOpenShiftClientWithNoServer() {
+  @Test
+  public void shouldProcessLocallyDoubleBracedParameters() {
+    // Given
+    final Map<String, String> nonStringParamsToBeAbleToLoad = Collections.singletonMap("CONTAINER_PORT", "8080");
+    final Map<String, String> localRequiredParameters = new HashMap<>();
+    localRequiredParameters.put("USERNAME", "notTheOneInYaml");
+    localRequiredParameters.put("REQUIRED", "requiredValue");
+    localRequiredParameters.put("REQUIRED_BOOLEAN", "true");
+    // When
+    final KubernetesList result = client.templates().withParameters(nonStringParamsToBeAbleToLoad)
+      .load(getClass().getResourceAsStream("/template-with-json-params.yml"))
+      .processLocally(localRequiredParameters);
+    // Then
+    final Container containerToAssert = ((Pod)result.getItems().get(0)).getSpec().getContainers().get(0);
+    assertTrue(containerToAssert.getEnv().stream()
+      .anyMatch(e -> e.getName().equals("USERNAME") && e.getValue().equals("notTheOneInYaml")));
+    assertTrue(containerToAssert.getEnv().stream()
+      .anyMatch(e -> e.getName().equals("REQUIRED_BOOLEAN") && e.getValue().equals("true")));
+    assertTrue(containerToAssert.getPorts().stream().allMatch(p -> p.getContainerPort() == 8080));
+  }
+
+  @Test
+  public void shouldProcessLocallyWithDoubleBracedParametersAndParametersInYaml() {
+    // Given
+    final Map<String, String> nonStringParamsToBeAbleToLoad = Collections.singletonMap("CONTAINER_PORT", "8080");
+    // When
+    final KubernetesList result = client.templates().withParameters(nonStringParamsToBeAbleToLoad)
+      .load(getClass().getResourceAsStream("/template-with-json-params.yml"))
+      .processLocally(getClass().getResourceAsStream("/parameters.yml"));
+    // Then
+    assertListIsProcessed(result);
+    final Container containerToAssert = ((Pod)result.getItems().get(0)).getSpec().getContainers().get(0);
+    assertTrue(containerToAssert.getEnv().stream()
+      .anyMatch(e -> e.getName().equals("REQUIRED_BOOLEAN") && e.getValue().equals("false")));
+  }
+
+  private static DefaultOpenShiftClient createOpenShiftClientWithNoServer() {
     return new DefaultOpenShiftClient(new OpenShiftConfigBuilder().build());
   }
 

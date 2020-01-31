@@ -93,7 +93,7 @@ public class Serialization {
    * @throws KubernetesClientException KubernetesClientException
    */
   @SuppressWarnings("unchecked")
-  public static <T> T unmarshal(InputStream is, Map<String, String> parameters) throws KubernetesClientException {
+  public static <T> T unmarshal(InputStream is, Map<String, String> parameters) {
     String specFile = readSpecFileFromInputStream(is);
     if (containsMultipleDocuments(specFile)) {
       return (T) getKubernetesResourceList(parameters, specFile);
@@ -107,7 +107,6 @@ public class Serialization {
    * @param mapper  The {@link ObjectMapper} to use.
    * @param <T>     The target type.
    * @return returns de-serialized object
-   * @throws KubernetesClientException KubernetesClientException
    */
   public static <T> T unmarshal(InputStream is, ObjectMapper mapper) {
    return unmarshal(is, mapper, Collections.emptyMap());
@@ -120,11 +119,12 @@ public class Serialization {
    * @param parameters  A {@link Map} with parameters for placeholder substitution.
    * @param <T>         The target type.
    * @return returns de-serialized object
-   * @throws KubernetesClientException KubernetesClientException
    */
   public static <T> T unmarshal(InputStream is, ObjectMapper mapper, Map<String, String> parameters) {
-    InputStream wrapped = parameters != null && !parameters.isEmpty() ? new ReplaceValueStream(parameters).createInputStream(is) : is;
-    try (BufferedInputStream bis = new BufferedInputStream(wrapped)) {
+    try (
+      InputStream wrapped = parameters != null && !parameters.isEmpty() ? ReplaceValueStream.replaceValues(is, parameters) : is;
+      BufferedInputStream bis = new BufferedInputStream(wrapped)
+    ) {
       bis.mark(-1);
       int intch;
       do {
@@ -147,9 +147,8 @@ public class Serialization {
    * @param type  The target type.
    * @param <T>   template argument denoting type
    * @return returns de-serialized object
-   * @throws KubernetesClientException KubernetesClientException
    */
-  public static<T> T unmarshal(String str, final Class<T> type) throws KubernetesClientException {
+  public static<T> T unmarshal(String str, final Class<T> type) {
     return unmarshal(str, type, Collections.emptyMap());
   }
 
@@ -182,9 +181,8 @@ public class Serialization {
    * @param type            The type.
    * @param <T>           Template argument denoting type
    * @return returns de-serialized object
-   * @throws KubernetesClientException KubernetesClientException
    */
-  public static <T> T unmarshal(InputStream is, final Class<T> type) throws KubernetesClientException {
+  public static <T> T unmarshal(InputStream is, final Class<T> type) {
     return unmarshal(is, type, Collections.emptyMap());
   }
 
@@ -213,10 +211,9 @@ public class Serialization {
    * @param type          The {@link TypeReference}.
    * @param <T>           Template argument denoting type
    * @return returns de-serialized object
-   * @throws KubernetesClientException KubernetesClientException
    */
-  public static <T> T unmarshal(InputStream is, TypeReference<T> type) throws KubernetesClientException {
-   return unmarshal(is, type, Collections.<String, String>emptyMap());
+  public static <T> T unmarshal(InputStream is, TypeReference<T> type) {
+   return unmarshal(is, type, Collections.emptyMap());
   }
 
   /**
@@ -230,9 +227,11 @@ public class Serialization {
    * @return returns de-serialized object
    * @throws KubernetesClientException KubernetesClientException
    */
-  public static <T> T unmarshal(InputStream is, TypeReference<T> type, Map<String, String> parameters) throws KubernetesClientException {
-    InputStream wrapped = parameters != null && !parameters.isEmpty() ? new ReplaceValueStream(parameters).createInputStream(is) : is;
-    try (BufferedInputStream bis = new BufferedInputStream(wrapped)) {
+  public static <T> T unmarshal(InputStream is, TypeReference<T> type, Map<String, String> parameters) {
+    try (
+      InputStream wrapped = parameters != null && !parameters.isEmpty() ? ReplaceValueStream.replaceValues(is, parameters) : is;
+      BufferedInputStream bis = new BufferedInputStream(wrapped)
+    ) {
       bis.mark(-1);
       int intch;
       do {
