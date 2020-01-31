@@ -46,7 +46,6 @@ public class CustomResourceHandler implements Handler<CustomResourceConfig> {
       .withApiVersion("apiextensions.k8s.io/v1beta1")
       .withNewMetadata()
         .withName(config.getPlural() + "." + config.getGroup())
-        .withLabels(resources.getLabels())
       .endMetadata()
       .withNewSpec()
       .withScope(config.getScope().name())
