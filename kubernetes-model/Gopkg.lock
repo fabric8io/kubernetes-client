@@ -96,7 +96,7 @@
   version = "v0.9.1"
 
 [[projects]]
-  digest = "1:bf97eb07c437778788e80aa2c69e36425b663f174b00b916f031ba31a3a1a43e"
+  digest = "1:7f81def0a402b320c8f60b5187b59beb22d2ebc62d0de703c2e7e6c6857dc075"
   name = "k8s.io/api"
   packages = [
     "admission/v1beta1",
@@ -106,7 +106,7 @@
     "authentication/v1",
     "authorization/v1",
     "autoscaling/v1",
-    "autoscaling/v2beta1",
+    "autoscaling/v2beta2",
     "batch/v1",
     "batch/v1beta1",
     "certificates/v1beta1",
@@ -198,7 +198,7 @@
   version = "v1.17.0"
 
 [[projects]]
-  digest = "1:7814e7cc39cdcb500eafc02de1ec5ca87a5fd69c117f5225eb93ad79a83a7ff8"
+  digest = "0:"
   name = "k8s.io/metrics"
   packages = [
     "pkg/apis/metrics",
@@ -238,7 +238,7 @@
     "k8s.io/api/authentication/v1",
     "k8s.io/api/authorization/v1",
     "k8s.io/api/autoscaling/v1",
-    "k8s.io/api/autoscaling/v2beta1",
+    "k8s.io/api/autoscaling/v2beta2",
     "k8s.io/api/batch/v1",
     "k8s.io/api/batch/v1beta1",
     "k8s.io/api/certificates/v1beta1",

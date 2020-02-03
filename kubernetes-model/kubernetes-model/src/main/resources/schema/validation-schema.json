@@ -3890,21 +3890,13 @@
       "type": "object",
       "description": "",
       "properties": {
-        "metricName": {
-          "type": "string",
-          "description": ""
+        "metric": {
+          "$ref": "#/definitions/kubernetes_autoscaling_MetricIdentifier",
+          "javaType": "io.fabric8.kubernetes.api.model.MetricIdentifier"
         },
-        "metricSelector": {
-          "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
-          "javaType": "io.fabric8.kubernetes.api.model.LabelSelector"
-        },
-        "targetAverageValue": {
-          "$ref": "#/definitions/kubernetes_resource_Quantity",
-          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
-        },
-        "targetValue": {
-          "$ref": "#/definitions/kubernetes_resource_Quantity",
-          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
+        "target": {
+          "$ref": "#/definitions/kubernetes_autoscaling_MetricTarget",
+          "javaType": "io.fabric8.kubernetes.api.model.MetricTarget"
         }
       },
       "additionalProperties": true,
@@ -3917,21 +3909,13 @@
       "type": "object",
       "description": "",
       "properties": {
-        "currentAverageValue": {
-          "$ref": "#/definitions/kubernetes_resource_Quantity",
-          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
+        "current": {
+          "$ref": "#/definitions/kubernetes_autoscaling_MetricValueStatus",
+          "javaType": "io.fabric8.kubernetes.api.model.MetricValueStatus"
         },
-        "currentValue": {
-          "$ref": "#/definitions/kubernetes_resource_Quantity",
-          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
-        },
-        "metricName": {
-          "type": "string",
-          "description": ""
-        },
-        "metricSelector": {
-          "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
-          "javaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        "metric": {
+          "$ref": "#/definitions/kubernetes_autoscaling_MetricIdentifier",
+          "javaType": "io.fabric8.kubernetes.api.model.MetricIdentifier"
         }
       },
       "additionalProperties": true,
@@ -3947,7 +3931,7 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "autoscaling/v2beta1",
+          "default": "autoscaling/v2beta2",
           "required": true
         },
         "kind": {
@@ -4013,7 +3997,7 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "autoscaling/v2beta1",
+          "default": "autoscaling/v2beta2",
           "required": true
         },
         "items": {
@@ -4118,6 +4102,25 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_autoscaling_MetricIdentifier": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "selector": {
+          "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
+          "javaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.MetricIdentifier",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_autoscaling_MetricSpec": {
       "type": "object",
       "description": "",
@@ -4180,29 +4183,71 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_autoscaling_ObjectMetricSource": {
+    "kubernetes_autoscaling_MetricTarget": {
       "type": "object",
       "description": "",
       "properties": {
+        "averageUtilization": {
+          "type": "integer",
+          "description": ""
+        },
         "averageValue": {
           "$ref": "#/definitions/kubernetes_resource_Quantity",
           "javaType": "io.fabric8.kubernetes.api.model.Quantity"
         },
-        "metricName": {
+        "type": {
           "type": "string",
           "description": ""
         },
-        "selector": {
-          "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
-          "javaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        "value": {
+          "$ref": "#/definitions/kubernetes_resource_Quantity",
+          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.MetricTarget",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_autoscaling_MetricValueStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "averageUtilization": {
+          "type": "integer",
+          "description": ""
         },
-        "target": {
+        "averageValue": {
+          "$ref": "#/definitions/kubernetes_resource_Quantity",
+          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
+        },
+        "value": {
+          "$ref": "#/definitions/kubernetes_resource_Quantity",
+          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.MetricValueStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_autoscaling_ObjectMetricSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "describedObject": {
           "$ref": "#/definitions/kubernetes_autoscaling_CrossVersionObjectReference",
           "javaType": "io.fabric8.kubernetes.api.model.CrossVersionObjectReference"
         },
-        "targetValue": {
-          "$ref": "#/definitions/kubernetes_resource_Quantity",
-          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
+        "metric": {
+          "$ref": "#/definitions/kubernetes_autoscaling_MetricIdentifier",
+          "javaType": "io.fabric8.kubernetes.api.model.MetricIdentifier"
+        },
+        "target": {
+          "$ref": "#/definitions/kubernetes_autoscaling_MetricTarget",
+          "javaType": "io.fabric8.kubernetes.api.model.MetricTarget"
         }
       },
       "additionalProperties": true,
@@ -4215,25 +4260,17 @@
       "type": "object",
       "description": "",
       "properties": {
-        "averageValue": {
-          "$ref": "#/definitions/kubernetes_resource_Quantity",
-          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
+        "current": {
+          "$ref": "#/definitions/kubernetes_autoscaling_MetricValueStatus",
+          "javaType": "io.fabric8.kubernetes.api.model.MetricValueStatus"
         },
-        "currentValue": {
-          "$ref": "#/definitions/kubernetes_resource_Quantity",
-          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
-        },
-        "metricName": {
-          "type": "string",
-          "description": ""
-        },
-        "selector": {
-          "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
-          "javaType": "io.fabric8.kubernetes.api.model.LabelSelector"
-        },
-        "target": {
+        "describedObject": {
           "$ref": "#/definitions/kubernetes_autoscaling_CrossVersionObjectReference",
           "javaType": "io.fabric8.kubernetes.api.model.CrossVersionObjectReference"
+        },
+        "metric": {
+          "$ref": "#/definitions/kubernetes_autoscaling_MetricIdentifier",
+          "javaType": "io.fabric8.kubernetes.api.model.MetricIdentifier"
         }
       },
       "additionalProperties": true,
@@ -4246,17 +4283,13 @@
       "type": "object",
       "description": "",
       "properties": {
-        "metricName": {
-          "type": "string",
-          "description": ""
+        "metric": {
+          "$ref": "#/definitions/kubernetes_autoscaling_MetricIdentifier",
+          "javaType": "io.fabric8.kubernetes.api.model.MetricIdentifier"
         },
-        "selector": {
-          "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
-          "javaType": "io.fabric8.kubernetes.api.model.LabelSelector"
-        },
-        "targetAverageValue": {
-          "$ref": "#/definitions/kubernetes_resource_Quantity",
-          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
+        "target": {
+          "$ref": "#/definitions/kubernetes_autoscaling_MetricTarget",
+          "javaType": "io.fabric8.kubernetes.api.model.MetricTarget"
         }
       },
       "additionalProperties": true,
@@ -4269,17 +4302,13 @@
       "type": "object",
       "description": "",
       "properties": {
-        "currentAverageValue": {
-          "$ref": "#/definitions/kubernetes_resource_Quantity",
-          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
+        "current": {
+          "$ref": "#/definitions/kubernetes_autoscaling_MetricValueStatus",
+          "javaType": "io.fabric8.kubernetes.api.model.MetricValueStatus"
         },
-        "metricName": {
-          "type": "string",
-          "description": ""
-        },
-        "selector": {
-          "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
-          "javaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        "metric": {
+          "$ref": "#/definitions/kubernetes_autoscaling_MetricIdentifier",
+          "javaType": "io.fabric8.kubernetes.api.model.MetricIdentifier"
         }
       },
       "additionalProperties": true,
@@ -4296,13 +4325,9 @@
           "type": "string",
           "description": ""
         },
-        "targetAverageUtilization": {
-          "type": "integer",
-          "description": ""
-        },
-        "targetAverageValue": {
-          "$ref": "#/definitions/kubernetes_resource_Quantity",
-          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
+        "target": {
+          "$ref": "#/definitions/kubernetes_autoscaling_MetricTarget",
+          "javaType": "io.fabric8.kubernetes.api.model.MetricTarget"
         }
       },
       "additionalProperties": true,
@@ -4315,13 +4340,9 @@
       "type": "object",
       "description": "",
       "properties": {
-        "currentAverageUtilization": {
-          "type": "integer",
-          "description": ""
-        },
-        "currentAverageValue": {
-          "$ref": "#/definitions/kubernetes_resource_Quantity",
-          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
+        "current": {
+          "$ref": "#/definitions/kubernetes_autoscaling_MetricValueStatus",
+          "javaType": "io.fabric8.kubernetes.api.model.MetricValueStatus"
         },
         "name": {
           "type": "string",
@@ -20395,6 +20416,10 @@
       "$ref": "#/definitions/kubernetes_autoscaling_HorizontalPodAutoscalerList",
       "javaType": "io.fabric8.kubernetes.api.model.HorizontalPodAutoscalerList"
     },
+    "HorizontalPodAutoscalerSpec": {
+      "$ref": "#/definitions/kubernetes_autoscaling_HorizontalPodAutoscalerSpec",
+      "javaType": "io.fabric8.kubernetes.api.model.HorizontalPodAutoscalerSpec"
+    },
     "Identity": {
       "$ref": "#/definitions/os_user_Identity",
       "javaType": "io.fabric8.openshift.api.model.Identity"
@@ -22363,16 +22388,8 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "authorization.openshift.io/v1",
+          "default": "rbac.authorization.k8s.io/v1",
           "required": true
-        },
-        "groupNames": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
-          }
         },
         "kind": {
           "type": "string",
@@ -22385,23 +22402,16 @@
           "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "roleRef": {
-          "$ref": "#/definitions/kubernetes_core_ObjectReference",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+          "$ref": "#/definitions/kubernetes_rbac_RoleRef",
+          "javaType": "io.fabric8.kubernetes.api.model.rbac.RoleRef"
         },
         "subjects": {
           "type": "array",
           "description": "",
+          "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_core_ObjectReference",
-            "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
-          }
-        },
-        "userNames": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
+            "$ref": "#/definitions/kubernetes_rbac_Subject",
+            "javaType": "io.fabric8.kubernetes.api.model.rbac.Subject"
           }
         }
       },
@@ -22412,15 +22422,15 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "authorization.openshift.io/v1",
+          "default": "rbac.authorization.k8s.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
           "description": "",
           "items": {
-            "$ref": "#/definitions/os_authorization_ClusterRoleBinding",
-            "javaType": "io.fabric8.openshift.api.model.OpenshiftClusterRoleBinding"
+            "$ref": "#/definitions/kubernetes_rbac_ClusterRoleBinding",
+            "javaType": "io.fabric8.kubernetes.api.model.rbac.ClusterRoleBinding"
           }
         },
         "kind": {
@@ -24683,9 +24693,44 @@
     },
     "deploymentstrategy": {
       "properties": {
-        "rollingUpdate": {
-          "$ref": "#/definitions/kubernetes_apps_RollingUpdateDeployment",
-          "javaType": "io.fabric8.kubernetes.api.model.apps.RollingUpdateDeployment"
+        "activeDeadlineSeconds": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "annotations": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "string",
+            "description": ""
+          },
+          "javaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "customParams": {
+          "$ref": "#/definitions/os_deploy_CustomDeploymentStrategyParams",
+          "javaType": "io.fabric8.openshift.api.model.CustomDeploymentStrategyParams"
+        },
+        "labels": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": {
+            "type": "string",
+            "description": ""
+          },
+          "javaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "recreateParams": {
+          "$ref": "#/definitions/os_deploy_RecreateDeploymentStrategyParams",
+          "javaType": "io.fabric8.openshift.api.model.RecreateDeploymentStrategyParams"
+        },
+        "resources": {
+          "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
+          "javaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
+        },
+        "rollingParams": {
+          "$ref": "#/definitions/os_deploy_RollingDeploymentStrategyParams",
+          "javaType": "io.fabric8.openshift.api.model.RollingDeploymentStrategyParams"
         },
         "type": {
           "type": "string",
@@ -24940,10 +24985,6 @@
     },
     "endpointport": {
       "properties": {
-        "appProtocol": {
-          "type": "string",
-          "description": ""
-        },
         "name": {
           "type": "string",
           "description": "",
@@ -25447,24 +25488,28 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "v1",
+          "default": "events.k8s.io/v1beta1",
           "required": true
         },
-        "count": {
+        "deprecatedCount": {
           "type": "integer",
           "description": ""
+        },
+        "deprecatedFirstTimestamp": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "javaType": "String"
+        },
+        "deprecatedLastTimestamp": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "javaType": "String"
+        },
+        "deprecatedSource": {
+          "$ref": "#/definitions/kubernetes_core_EventSource",
+          "javaType": "io.fabric8.kubernetes.api.model.EventSource"
         },
         "eventTime": {
           "$ref": "#/definitions/kubernetes_apimachinery_MicroTime",
           "javaType": "io.fabric8.kubernetes.api.model.MicroTime"
-        },
-        "firstTimestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "javaType": "String"
-        },
-        "involvedObject": {
-          "$ref": "#/definitions/kubernetes_core_ObjectReference",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
         },
         "kind": {
           "type": "string",
@@ -25472,27 +25517,27 @@
           "default": "Event",
           "required": true
         },
-        "lastTimestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "javaType": "String"
-        },
-        "message": {
-          "type": "string",
-          "description": ""
-        },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
           "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "note": {
+          "type": "string",
+          "description": ""
         },
         "reason": {
           "type": "string",
           "description": ""
         },
+        "regarding": {
+          "$ref": "#/definitions/kubernetes_core_ObjectReference",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        },
         "related": {
           "$ref": "#/definitions/kubernetes_core_ObjectReference",
           "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
         },
-        "reportingComponent": {
+        "reportingController": {
           "type": "string",
           "description": ""
         },
@@ -25501,12 +25546,8 @@
           "description": ""
         },
         "series": {
-          "$ref": "#/definitions/kubernetes_core_EventSeries",
-          "javaType": "io.fabric8.kubernetes.api.model.EventSeries"
-        },
-        "source": {
-          "$ref": "#/definitions/kubernetes_core_EventSource",
-          "javaType": "io.fabric8.kubernetes.api.model.EventSource"
+          "$ref": "#/definitions/kubernetes_events_EventSeries",
+          "javaType": "io.fabric8.kubernetes.api.model.events.EventSeries"
         },
         "type": {
           "type": "string",
@@ -25680,42 +25721,26 @@
     },
     "externalmetricsource": {
       "properties": {
-        "metricName": {
-          "type": "string",
-          "description": ""
+        "metric": {
+          "$ref": "#/definitions/kubernetes_autoscaling_MetricIdentifier",
+          "javaType": "io.fabric8.kubernetes.api.model.MetricIdentifier"
         },
-        "metricSelector": {
-          "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
-          "javaType": "io.fabric8.kubernetes.api.model.LabelSelector"
-        },
-        "targetAverageValue": {
-          "$ref": "#/definitions/kubernetes_resource_Quantity",
-          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
-        },
-        "targetValue": {
-          "$ref": "#/definitions/kubernetes_resource_Quantity",
-          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
+        "target": {
+          "$ref": "#/definitions/kubernetes_autoscaling_MetricTarget",
+          "javaType": "io.fabric8.kubernetes.api.model.MetricTarget"
         }
       },
       "additionalProperties": true
     },
     "externalmetricstatus": {
       "properties": {
-        "currentAverageValue": {
-          "$ref": "#/definitions/kubernetes_resource_Quantity",
-          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
+        "current": {
+          "$ref": "#/definitions/kubernetes_autoscaling_MetricValueStatus",
+          "javaType": "io.fabric8.kubernetes.api.model.MetricValueStatus"
         },
-        "currentValue": {
-          "$ref": "#/definitions/kubernetes_resource_Quantity",
-          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
-        },
-        "metricName": {
-          "type": "string",
-          "description": ""
-        },
-        "metricSelector": {
-          "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
-          "javaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        "metric": {
+          "$ref": "#/definitions/kubernetes_autoscaling_MetricIdentifier",
+          "javaType": "io.fabric8.kubernetes.api.model.MetricIdentifier"
         }
       },
       "additionalProperties": true
@@ -26179,7 +26204,7 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "autoscaling/v2beta1",
+          "default": "autoscaling/v2beta2",
           "required": true
         },
         "kind": {
@@ -26233,7 +26258,7 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "autoscaling/v2beta1",
+          "default": "autoscaling/v2beta2",
           "required": true
         },
         "items": {
@@ -28345,24 +28370,8 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "authorization.openshift.io/v1",
+          "default": "authorization.k8s.io/v1",
           "required": true
-        },
-        "content": {
-          "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
-        },
-        "groups": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
-          }
-        },
-        "isNonResourceURL": {
-          "type": "boolean",
-          "description": ""
         },
         "kind": {
           "type": "string",
@@ -28370,45 +28379,17 @@
           "default": "LocalSubjectAccessReview",
           "required": true
         },
-        "namespace": {
-          "type": "string",
-          "description": ""
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
-        "path": {
-          "type": "string",
-          "description": ""
+        "spec": {
+          "$ref": "#/definitions/kubernetes_authorization_SubjectAccessReviewSpec",
+          "javaType": "io.fabric8.kubernetes.api.model.authorization.SubjectAccessReviewSpec"
         },
-        "resource": {
-          "type": "string",
-          "description": ""
-        },
-        "resourceAPIGroup": {
-          "type": "string",
-          "description": ""
-        },
-        "resourceAPIVersion": {
-          "type": "string",
-          "description": ""
-        },
-        "resourceName": {
-          "type": "string",
-          "description": ""
-        },
-        "scopes": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
-          }
-        },
-        "user": {
-          "type": "string",
-          "description": ""
-        },
-        "verb": {
-          "type": "string",
-          "description": ""
+        "status": {
+          "$ref": "#/definitions/kubernetes_authorization_SubjectAccessReviewStatus",
+          "javaType": "io.fabric8.kubernetes.api.model.authorization.SubjectAccessReviewStatus"
         }
       },
       "additionalProperties": true
@@ -28451,6 +28432,19 @@
         "time": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
           "javaType": "String"
+        }
+      },
+      "additionalProperties": true
+    },
+    "metricidentifier": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "selector": {
+          "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
+          "javaType": "io.fabric8.kubernetes.api.model.LabelSelector"
         }
       },
       "additionalProperties": true
@@ -28501,6 +28495,44 @@
         "type": {
           "type": "string",
           "description": ""
+        }
+      },
+      "additionalProperties": true
+    },
+    "metrictarget": {
+      "properties": {
+        "averageUtilization": {
+          "type": "integer",
+          "description": ""
+        },
+        "averageValue": {
+          "$ref": "#/definitions/kubernetes_resource_Quantity",
+          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
+        },
+        "type": {
+          "type": "string",
+          "description": ""
+        },
+        "value": {
+          "$ref": "#/definitions/kubernetes_resource_Quantity",
+          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
+        }
+      },
+      "additionalProperties": true
+    },
+    "metricvaluestatus": {
+      "properties": {
+        "averageUtilization": {
+          "type": "integer",
+          "description": ""
+        },
+        "averageValue": {
+          "$ref": "#/definitions/kubernetes_resource_Quantity",
+          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
+        },
+        "value": {
+          "$ref": "#/definitions/kubernetes_resource_Quantity",
+          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
         }
       },
       "additionalProperties": true
@@ -30029,50 +30061,34 @@
     },
     "objectmetricsource": {
       "properties": {
-        "averageValue": {
-          "$ref": "#/definitions/kubernetes_resource_Quantity",
-          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
-        },
-        "metricName": {
-          "type": "string",
-          "description": ""
-        },
-        "selector": {
-          "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
-          "javaType": "io.fabric8.kubernetes.api.model.LabelSelector"
-        },
-        "target": {
+        "describedObject": {
           "$ref": "#/definitions/kubernetes_autoscaling_CrossVersionObjectReference",
           "javaType": "io.fabric8.kubernetes.api.model.CrossVersionObjectReference"
         },
-        "targetValue": {
-          "$ref": "#/definitions/kubernetes_resource_Quantity",
-          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
+        "metric": {
+          "$ref": "#/definitions/kubernetes_autoscaling_MetricIdentifier",
+          "javaType": "io.fabric8.kubernetes.api.model.MetricIdentifier"
+        },
+        "target": {
+          "$ref": "#/definitions/kubernetes_autoscaling_MetricTarget",
+          "javaType": "io.fabric8.kubernetes.api.model.MetricTarget"
         }
       },
       "additionalProperties": true
     },
     "objectmetricstatus": {
       "properties": {
-        "averageValue": {
-          "$ref": "#/definitions/kubernetes_resource_Quantity",
-          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
+        "current": {
+          "$ref": "#/definitions/kubernetes_autoscaling_MetricValueStatus",
+          "javaType": "io.fabric8.kubernetes.api.model.MetricValueStatus"
         },
-        "currentValue": {
-          "$ref": "#/definitions/kubernetes_resource_Quantity",
-          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
-        },
-        "metricName": {
-          "type": "string",
-          "description": ""
-        },
-        "selector": {
-          "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
-          "javaType": "io.fabric8.kubernetes.api.model.LabelSelector"
-        },
-        "target": {
+        "describedObject": {
           "$ref": "#/definitions/kubernetes_autoscaling_CrossVersionObjectReference",
           "javaType": "io.fabric8.kubernetes.api.model.CrossVersionObjectReference"
+        },
+        "metric": {
+          "$ref": "#/definitions/kubernetes_autoscaling_MetricIdentifier",
+          "javaType": "io.fabric8.kubernetes.api.model.MetricIdentifier"
         }
       },
       "additionalProperties": true
@@ -31460,34 +31476,26 @@
     },
     "podsmetricsource": {
       "properties": {
-        "metricName": {
-          "type": "string",
-          "description": ""
+        "metric": {
+          "$ref": "#/definitions/kubernetes_autoscaling_MetricIdentifier",
+          "javaType": "io.fabric8.kubernetes.api.model.MetricIdentifier"
         },
-        "selector": {
-          "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
-          "javaType": "io.fabric8.kubernetes.api.model.LabelSelector"
-        },
-        "targetAverageValue": {
-          "$ref": "#/definitions/kubernetes_resource_Quantity",
-          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
+        "target": {
+          "$ref": "#/definitions/kubernetes_autoscaling_MetricTarget",
+          "javaType": "io.fabric8.kubernetes.api.model.MetricTarget"
         }
       },
       "additionalProperties": true
     },
     "podsmetricstatus": {
       "properties": {
-        "currentAverageValue": {
-          "$ref": "#/definitions/kubernetes_resource_Quantity",
-          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
+        "current": {
+          "$ref": "#/definitions/kubernetes_autoscaling_MetricValueStatus",
+          "javaType": "io.fabric8.kubernetes.api.model.MetricValueStatus"
         },
-        "metricName": {
-          "type": "string",
-          "description": ""
-        },
-        "selector": {
-          "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
-          "javaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        "metric": {
+          "$ref": "#/definitions/kubernetes_autoscaling_MetricIdentifier",
+          "javaType": "io.fabric8.kubernetes.api.model.MetricIdentifier"
         }
       },
       "additionalProperties": true
@@ -31843,11 +31851,14 @@
         "apiGroups": {
           "type": "array",
           "description": "",
-          "javaOmitEmpty": true,
           "items": {
             "type": "string",
             "description": ""
           }
+        },
+        "attributeRestrictions": {
+          "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
+          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         },
         "nonResourceURLs": {
           "type": "array",
@@ -31870,7 +31881,6 @@
         "resources": {
           "type": "array",
           "description": "",
-          "javaOmitEmpty": true,
           "items": {
             "type": "string",
             "description": ""
@@ -32736,26 +32746,18 @@
           "type": "string",
           "description": ""
         },
-        "targetAverageUtilization": {
-          "type": "integer",
-          "description": ""
-        },
-        "targetAverageValue": {
-          "$ref": "#/definitions/kubernetes_resource_Quantity",
-          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
+        "target": {
+          "$ref": "#/definitions/kubernetes_autoscaling_MetricTarget",
+          "javaType": "io.fabric8.kubernetes.api.model.MetricTarget"
         }
       },
       "additionalProperties": true
     },
     "resourcemetricstatus": {
       "properties": {
-        "currentAverageUtilization": {
-          "type": "integer",
-          "description": ""
-        },
-        "currentAverageValue": {
-          "$ref": "#/definitions/kubernetes_resource_Quantity",
-          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
+        "current": {
+          "$ref": "#/definitions/kubernetes_autoscaling_MetricValueStatus",
+          "javaType": "io.fabric8.kubernetes.api.model.MetricValueStatus"
         },
         "name": {
           "type": "string",
@@ -32969,16 +32971,8 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "authorization.openshift.io/v1",
+          "default": "rbac.authorization.k8s.io/v1",
           "required": true
-        },
-        "groupNames": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
-          }
         },
         "kind": {
           "type": "string",
@@ -32991,23 +32985,16 @@
           "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "roleRef": {
-          "$ref": "#/definitions/kubernetes_core_ObjectReference",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+          "$ref": "#/definitions/kubernetes_rbac_RoleRef",
+          "javaType": "io.fabric8.kubernetes.api.model.rbac.RoleRef"
         },
         "subjects": {
           "type": "array",
           "description": "",
+          "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_core_ObjectReference",
-            "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
-          }
-        },
-        "userNames": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
+            "$ref": "#/definitions/kubernetes_rbac_Subject",
+            "javaType": "io.fabric8.kubernetes.api.model.rbac.Subject"
           }
         }
       },
@@ -33089,15 +33076,15 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "rbac.authorization.k8s.io/v1",
+          "default": "authorization.openshift.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
           "description": "",
           "items": {
-            "$ref": "#/definitions/kubernetes_rbac_Role",
-            "javaType": "io.fabric8.kubernetes.api.model.rbac.Role"
+            "$ref": "#/definitions/os_authorization_Role",
+            "javaType": "io.fabric8.openshift.api.model.OpenshiftRole"
           }
         },
         "kind": {
@@ -33515,18 +33502,24 @@
     },
     "runasuserstrategyoptions": {
       "properties": {
-        "ranges": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_policy_IDRange",
-            "javaType": "io.fabric8.kubernetes.api.model.policy.IDRange"
-          }
-        },
-        "rule": {
+        "type": {
           "type": "string",
           "description": ""
+        },
+        "uid": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "uidRangeMax": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "uidRangeMin": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
         }
       },
       "additionalProperties": true
@@ -35288,24 +35281,8 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "authorization.openshift.io/v1",
+          "default": "authorization.k8s.io/v1",
           "required": true
-        },
-        "content": {
-          "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
-        },
-        "groups": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
-          }
-        },
-        "isNonResourceURL": {
-          "type": "boolean",
-          "description": ""
         },
         "kind": {
           "type": "string",
@@ -35313,45 +35290,17 @@
           "default": "SubjectAccessReview",
           "required": true
         },
-        "namespace": {
-          "type": "string",
-          "description": ""
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
-        "path": {
-          "type": "string",
-          "description": ""
+        "spec": {
+          "$ref": "#/definitions/kubernetes_authorization_SubjectAccessReviewSpec",
+          "javaType": "io.fabric8.kubernetes.api.model.authorization.SubjectAccessReviewSpec"
         },
-        "resource": {
-          "type": "string",
-          "description": ""
-        },
-        "resourceAPIGroup": {
-          "type": "string",
-          "description": ""
-        },
-        "resourceAPIVersion": {
-          "type": "string",
-          "description": ""
-        },
-        "resourceName": {
-          "type": "string",
-          "description": ""
-        },
-        "scopes": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
-          }
-        },
-        "user": {
-          "type": "string",
-          "description": ""
-        },
-        "verb": {
-          "type": "string",
-          "description": ""
+        "status": {
+          "$ref": "#/definitions/kubernetes_authorization_SubjectAccessReviewStatus",
+          "javaType": "io.fabric8.kubernetes.api.model.authorization.SubjectAccessReviewStatus"
         }
       },
       "additionalProperties": true
@@ -35489,11 +35438,11 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_policy_IDRange",
-            "javaType": "io.fabric8.kubernetes.api.model.policy.IDRange"
+            "$ref": "#/definitions/os_security_IDRange",
+            "javaType": "io.fabric8.openshift.api.model.IDRange"
           }
         },
-        "rule": {
+        "type": {
           "type": "string",
           "description": ""
         }
@@ -36739,8 +36688,8 @@
           "description": ""
         },
         "service": {
-          "$ref": "#/definitions/kubernetes_admissionregistration_ServiceReference",
-          "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.ServiceReference"
+          "$ref": "#/definitions/kubernetes_apiextensions_ServiceReference",
+          "javaType": "io.fabric8.kubernetes.api.model.apiextensions.ServiceReference"
         },
         "url": {
           "type": "string",
