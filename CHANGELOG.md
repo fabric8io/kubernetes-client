@@ -5,6 +5,7 @@
 * Fix #1847: Remove resource-\*.vm files from \*-client.jar
 
 #### Improvements
+* Fix #1874: Added unit tests verifying windows line-ends (CRLF) work
 
 #### Dependency Upgrade
 * Update Jackson Bom to 2.10.2
