@@ -1,18 +1,17 @@
 # JSON Schema Generator for OpenShift v3 Origin API Objects
 
 Uses [Go reflection](https://blog.golang.org/laws-of-reflection) to generate a JSON schema that describes one or more
-API resources in OpenShift Origin.
+API resources in Kubernetes and OpenShift.
 
 ## Prerequisites
 
 - Install [Go](https://golang.org/doc/install)
-- Install [Glide](https://github.com/Masterminds/glide#install)
 
 
 ## Getting the code
 
   ```
-  git clone https://github.com/fabric8io/kubernetes-model $GOPATH/src/github.com/fabric8io/kubernetes-model
+  git clone https://github.com/fabric8io/kubernetes-client $GOPATH/src/github.com/fabric8io/kubernetes-client
   ```
 
 
@@ -21,7 +20,7 @@ API resources in OpenShift Origin.
 - Navigate into the cloned repo:
 
   ```
-  cd $GOPATH/src/github.com/fabric8io/kubernetes-model
+  cd $GOPATH/src/github.com/fabric8io/kubernetes-client/kubernetes-model
   ```
 
 - Run:
@@ -48,6 +47,35 @@ After modifying just run:
 ```
 make
 ```
-If you face any conflicts with the currect `vendor/` directory, you can simple remove it and next `make` would rebuild it.
+If you face any conflicts with the current `vendor/` directory, you can simple remove it and next `make` would rebuild it.
 
 If everything works well, you would have model upgraded to specified Kubernetes/Openshift models.
+
+ ## Project Structure
+ 
+ The project contains the following "modules":
+ 
+ ### Go Schema Generator
+ 
+ This is the module that must be run first to generate the schema files that will be consumed
+ by Java (jsonschema2pojo and after sundr.io).
+ 
+ - `cmd/generate/generate.go` contains the main entry point and the descriptor of the schema.
+   Add new entries to the `Schema` struct and `schemagen.PackageDescriptor` to generate
+   an entry for any additional Go structs.
+ - `pkg/schenage` package contains the source files with the logic to generate the schema.
+ 
+ ### Kubernetes-Model-Annotator
+ 
+ Defines a `KubernetesTypeAnnotator` with the sundr.io configuration.
+ 
+ jsonschema2pojo annotates all of the generated classes with this custom annotator
+ that is consumed by sundr.io.
+ 
+ ### Kubernetes-Model
+ 
+ This is the main project, its generated artifacts will be consumed by the rest of the
+ kubernetes-client modules.
+ 
+ The pom.xml file contains the necessary configuration to process the Go generated
+ schema and build the model with jsonschema2pojo and sundr.io.

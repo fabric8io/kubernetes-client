@@ -19,6 +19,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 
@@ -39,6 +40,9 @@ import java.util.regex.Pattern;
 public class Serialization {
 
   private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
+  static {
+    JSON_MAPPER.registerModule(new JavaTimeModule());
+  }
   private static final ObjectMapper YAML_MAPPER = new ObjectMapper(new YAMLFactory());
   private static final String DOCUMENT_DELIMITER = "---";
 
@@ -104,7 +108,7 @@ public class Serialization {
    * @throws KubernetesClientException KubernetesClientException
    */
   public static <T> T unmarshal(InputStream is, ObjectMapper mapper) {
-   return unmarshal(is, mapper, Collections.<String, String>emptyMap());
+   return unmarshal(is, mapper, Collections.emptyMap());
   }
 
   /**
@@ -144,7 +148,7 @@ public class Serialization {
    * @throws KubernetesClientException KubernetesClientException
    */
   public static<T> T unmarshal(String str, final Class<T> type) throws KubernetesClientException {
-    return unmarshal(str, type, Collections.<String, String>emptyMap());
+    return unmarshal(str, type, Collections.emptyMap());
   }
 
   /**
@@ -158,7 +162,7 @@ public class Serialization {
    * @throws KubernetesClientException KubernetesClientException
    */
   public static <T> T unmarshal(String str, final Class<T> type, Map<String, String> parameters) throws KubernetesClientException {
-    try (InputStream is = new ByteArrayInputStream(str.getBytes(StandardCharsets.UTF_8));) {
+    try (InputStream is = new ByteArrayInputStream(str.getBytes(StandardCharsets.UTF_8))) {
       return unmarshal(is, new TypeReference<T>() {
         @Override
         public Type getType() {
@@ -179,7 +183,7 @@ public class Serialization {
    * @throws KubernetesClientException KubernetesClientException
    */
   public static <T> T unmarshal(InputStream is, final Class<T> type) throws KubernetesClientException {
-    return unmarshal(is, type, Collections.<String, String>emptyMap());
+    return unmarshal(is, type, Collections.emptyMap());
   }
 
   /**
@@ -278,7 +282,7 @@ public class Serialization {
     while(nLine < lines.length) {
       if((lines[nLine].length() >= DOCUMENT_DELIMITER.length()
           && !lines[nLine].substring(0, DOCUMENT_DELIMITER.length()).equals(DOCUMENT_DELIMITER)) || (lines[nLine].length() < DOCUMENT_DELIMITER.length())) {
-        builder.append(lines[nLine] + System.lineSeparator());
+        builder.append(lines[nLine]).append(System.lineSeparator());
       } else {
         documents.add(builder.toString());
         builder.setLength(0);
