@@ -17,9 +17,9 @@
 package io.fabric8.kubernetes;
 
 import io.fabric8.commons.DeleteEntity;
-import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicy;
-import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicyBuilder;
-import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicyList;
+import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicy;
+import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicyBuilder;
+import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicyList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
@@ -67,13 +67,13 @@ public class PodSecurityPolicyIT {
       .endSpec()
       .build();
 
-    client.extensions().podSecurityPolicies().create(podSecurityPolicy);
+    client.policy().podSecurityPolicies().create(podSecurityPolicy);
   }
 
   @Test
   public void load() {
 
-    PodSecurityPolicy loadedPodSecurityPolicy = client.extensions().podSecurityPolicies()
+    PodSecurityPolicy loadedPodSecurityPolicy = client.policy().podSecurityPolicies()
       .load(getClass().getResourceAsStream("/test-podsecuritypolicy.yml")).get();
 
     assertNotNull(loadedPodSecurityPolicy);
@@ -88,7 +88,7 @@ public class PodSecurityPolicyIT {
   @Test
   public void get() {
 
-    PodSecurityPolicy getPodSecurityPolicy = client.extensions().podSecurityPolicies()
+    PodSecurityPolicy getPodSecurityPolicy = client.policy().podSecurityPolicies()
       .withName("test-example").get();
     assertNotNull(getPodSecurityPolicy);
     assertEquals("test-example", getPodSecurityPolicy.getMetadata().getName());
@@ -97,7 +97,7 @@ public class PodSecurityPolicyIT {
   @Test
   public void list() {
 
-    PodSecurityPolicyList podSecurityPolicyList = client.extensions().podSecurityPolicies()
+    PodSecurityPolicyList podSecurityPolicyList = client.policy().podSecurityPolicies()
       .withLabels(Collections.singletonMap("foo","bar")).list();
     assertNotNull(podSecurityPolicyList);
     assertEquals(1,podSecurityPolicyList.getItems().size());
@@ -111,7 +111,7 @@ public class PodSecurityPolicyIT {
   @Test
   public void update(){
 
-    podSecurityPolicy = client.extensions().podSecurityPolicies().withName("test-example").edit()
+    podSecurityPolicy = client.policy().podSecurityPolicies().withName("test-example").edit()
       .editSpec().withPrivileged(true).endSpec()
       .done();
 
@@ -126,18 +126,18 @@ public class PodSecurityPolicyIT {
 
   @Test
   public void delete(){
-    boolean deleted = client.extensions().podSecurityPolicies().delete(podSecurityPolicy);
+    boolean deleted = client.policy().podSecurityPolicies().delete(podSecurityPolicy);
     assertTrue(deleted);
 
     DeleteEntity<PodSecurityPolicy> deleteEntity = new DeleteEntity<>(PodSecurityPolicy.class, client, "test-example", null);
     await().atMost(30, TimeUnit.SECONDS).until(deleteEntity);
-    PodSecurityPolicyList podSecurityPolicyList = client.extensions().podSecurityPolicies().list();
+    PodSecurityPolicyList podSecurityPolicyList = client.policy().podSecurityPolicies().list();
     assertEquals(0,podSecurityPolicyList.getItems().size());
   }
 
   @After
   public void cleanup() {
-    client.extensions().podSecurityPolicies().withName("test-example").delete();
+    client.policy().podSecurityPolicies().withName("test-example").delete();
     DeleteEntity<PodSecurityPolicy> deleteEntity = new DeleteEntity<>(PodSecurityPolicy.class, client, "test-example", null);
     await().atMost(30, TimeUnit.SECONDS).until(deleteEntity);
   }

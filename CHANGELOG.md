@@ -9,6 +9,7 @@
 
 #### Dependency Upgrade
 * Update Jackson Bom to 2.10.2
+* Fix #1968: Support for PodSecurityPolicies in Kubernetes 1.17
 
 #### New Features
 * Fix #1948: LeaderElection Implementation (Lock Implementations: ConfigMap & Lease)
