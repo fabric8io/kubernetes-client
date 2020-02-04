@@ -136,6 +136,7 @@ public class Config {
   public static final String HTTPS_PROTOCOL_PREFIX = "https://";
 
   private static final String ACCESS_TOKEN = "access-token";
+  private static final String ID_TOKEN = "id-token";
 
   private boolean trustCerts;
   private boolean disableHostnameVerification;
@@ -537,8 +538,14 @@ public class Config {
           config.setUsername(currentAuthInfo.getUsername());
           config.setPassword(currentAuthInfo.getPassword());
 
-          if (Utils.isNullOrEmpty(config.getOauthToken()) && currentAuthInfo.getAuthProvider() != null && !Utils.isNullOrEmpty(currentAuthInfo.getAuthProvider().getConfig().get(ACCESS_TOKEN))) {
-            config.setOauthToken(currentAuthInfo.getAuthProvider().getConfig().get(ACCESS_TOKEN));
+          if (Utils.isNullOrEmpty(config.getOauthToken()) && currentAuthInfo.getAuthProvider() != null) {
+            if (!Utils.isNullOrEmpty(currentAuthInfo.getAuthProvider().getConfig().get(ACCESS_TOKEN))) {
+              // GKE token
+              config.setOauthToken(currentAuthInfo.getAuthProvider().getConfig().get(ACCESS_TOKEN));
+            } else if (!Utils.isNullOrEmpty(currentAuthInfo.getAuthProvider().getConfig().get(ID_TOKEN))) {
+              // OpenID Connect token
+              config.setOauthToken(currentAuthInfo.getAuthProvider().getConfig().get(ID_TOKEN));
+            }
           } else if (config.getOauthTokenProvider() == null) {  // https://kubernetes.io/docs/reference/access-authn-authz/authentication/#client-go-credential-plugins
             ExecConfig exec = currentAuthInfo.getExec();
             if (exec != null) {
