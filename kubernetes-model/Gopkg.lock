@@ -96,7 +96,7 @@
   version = "v0.9.1"
 
 [[projects]]
-  digest = "1:e76ccb0c18c8738b099947c076b671b28e67aefe9f07f44b12015fd4bb2610db"
+  digest = "1:bf97eb07c437778788e80aa2c69e36425b663f174b00b916f031ba31a3a1a43e"
   name = "k8s.io/api"
   packages = [
     "admission/v1beta1",
@@ -111,7 +111,6 @@
     "batch/v1beta1",
     "certificates/v1beta1",
     "coordination/v1",
-    "coordination/v1beta1",
     "core/v1",
     "discovery/v1beta1",
     "events/v1beta1",
@@ -244,7 +243,6 @@
     "k8s.io/api/batch/v1beta1",
     "k8s.io/api/certificates/v1beta1",
     "k8s.io/api/coordination/v1",
-    "k8s.io/api/coordination/v1beta1",
     "k8s.io/api/core/v1",
     "k8s.io/api/discovery/v1beta1",
     "k8s.io/api/events/v1beta1",

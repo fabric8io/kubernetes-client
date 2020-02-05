@@ -177,9 +177,9 @@ type Schema struct {
   Deployment                               k8sappsapi.Deployment
   DeploymentList                           k8sappsapi.DeploymentList
   DeploymentRollback                       extensions.DeploymentRollback
-  PodSecurityPolicy                        extensions.PodSecurityPolicy
-  PodSecurityPolicyList                    extensions.PodSecurityPolicyList
-  KubernetesRunAsUserStrategyOptions       extensions.RunAsUserStrategyOptions
+  PodSecurityPolicy                        policy.PodSecurityPolicy
+  PodSecurityPolicyList                    policy.PodSecurityPolicyList
+  KubernetesRunAsUserStrategyOptions       policy.RunAsUserStrategyOptions
   PodDisruptionBudget                      policy.PodDisruptionBudget
   PodDisruptionBudgetList                  policy.PodDisruptionBudgetList
   StatefulSet                              k8sappsapi.StatefulSet

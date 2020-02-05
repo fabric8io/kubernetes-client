@@ -15,67 +15,61 @@
  */
 package io.fabric8.kubernetes.examples;
 
-import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicy;
-import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicyBuilder;
+import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicy;
+import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicyBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-
-import java.io.FileInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.InputStream;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+
 public class PodSecurityPolicyExample {
 
-    //You need to be login as admin on OpenShift for this Example
-    //command for that is
-    //oc login -u system:admin
+  //You need to be login as admin on OpenShift for this Example
+  //command for that is
+  //oc login -u system:admin
 
-    private static final Logger logger = LoggerFactory.getLogger(PodSecurityPolicyExample.class);
+  private static final Logger logger = LoggerFactory.getLogger(PodSecurityPolicyExample.class);
 
-    public static void main(String args[]) throws InterruptedException {
+  public static void main(String args[]) {
+    try (final KubernetesClient client = new DefaultKubernetesClient()) {
+      final String localYamlToCreate = "/PodSecurityPolicy.yml";
+      logger.info("Creating PodSecurityPolicy from Yaml file: {}", localYamlToCreate);
+      try (final InputStream localYamlStream = PodSecurityPolicyExample.class.getResourceAsStream(localYamlToCreate)) {
+        final PodSecurityPolicy podSecurityPolicy = client.policy().podSecurityPolicies().load(localYamlStream).get();
+        client.policy().podSecurityPolicies().withName(podSecurityPolicy.getMetadata().getName()).delete();
+        client.policy().podSecurityPolicies().withName(podSecurityPolicy.getMetadata().getName())
+          .waitUntilCondition(Objects::isNull, 5, TimeUnit.SECONDS);
+        client.policy().podSecurityPolicies().create(podSecurityPolicy);
+        logger.info("PodSecurityPolicy created with Name : {}", podSecurityPolicy.getMetadata().getName());
+      }
 
-        String sample = System.getProperty("user.dir") + "/kubernetes-examples/src/main/resources/PodSecurityPolicy.yml";
-
-        try {
-            final KubernetesClient client = new DefaultKubernetesClient();
-
-            //Creating PodSecurityPolicy from Yaml file
-
-            logger.info("Loading File : {}", sample);
-            PodSecurityPolicy podSecurityPolicy = client.extensions().podSecurityPolicies().load(new FileInputStream(sample)).get();
-            client.extensions().podSecurityPolicies().create(podSecurityPolicy);
-            logger.info("PodSecurityPolicy created with Name : {}", podSecurityPolicy.getMetadata().getName());
-
-            //Creating PodSecurityPolicy from Builder
-
-            logger.info("Starting creating PodSecurityPolicy from Builder ");
-
-            PodSecurityPolicy podSecurityPolicy1 = new PodSecurityPolicyBuilder().withNewMetadata()
-                    .withName("example2")
-                    .endMetadata()
-                    .withNewSpec()
-                    .withPrivileged(false)
-                    .withNewRunAsUser().withRule("RunAsAny").endRunAsUser()
-                    .withNewFsGroup().withRule("RunAsAny").endFsGroup()
-                    .withNewSeLinux().withRule("RunAsAny").endSeLinux()
-                    .withNewSupplementalGroups().withRule("RunAsAny").endSupplementalGroups()
-                    .endSpec()
-                    .build();
-
-            client.extensions().podSecurityPolicies().create(podSecurityPolicy1);
-            logger.info("PodSecurityPolicy created with Name : {}",
-                    podSecurityPolicy1.getMetadata().getName());
-
-            client.close();
-
-        } catch (KubernetesClientException ClientException) {
-            logger.error("Problem encountered with Kubernetes client!!", ClientException);
-
-        } catch (Exception e) {
-            logger.error("Exception encountered : {}", e.getMessage());
-        }
-
-
+      logger.info("Starting creating PodSecurityPolicy programmatically");
+      final String podSecurityPolicyName = "example2";
+      client.policy().podSecurityPolicies().withName(podSecurityPolicyName).delete();
+      client.policy().podSecurityPolicies().withName(podSecurityPolicyName)
+        .waitUntilCondition(Objects::isNull, 5, TimeUnit.SECONDS);
+      final PodSecurityPolicy programmaticPodSecurityPolicy = new PodSecurityPolicyBuilder().withNewMetadata()
+        .withName(podSecurityPolicyName)
+        .endMetadata()
+        .withNewSpec()
+        .withPrivileged(false)
+        .withNewRunAsUser().withRule("RunAsAny").endRunAsUser()
+        .withNewFsGroup().withRule("RunAsAny").endFsGroup()
+        .withNewSeLinux().withRule("RunAsAny").endSeLinux()
+        .withNewSupplementalGroups().withRule("RunAsAny").endSupplementalGroups()
+        .endSpec()
+        .build();
+      client.policy().podSecurityPolicies().create(programmaticPodSecurityPolicy);
+      logger.info("PodSecurityPolicy created with Name: {}", programmaticPodSecurityPolicy.getMetadata().getName());
+    } catch (KubernetesClientException clientException) {
+      logger.error("Problem encountered with Kubernetes client!!", clientException);
+    } catch (Exception e) {
+      logger.error("Exception encountered : {}", e.getMessage(), e);
     }
+  }
 }

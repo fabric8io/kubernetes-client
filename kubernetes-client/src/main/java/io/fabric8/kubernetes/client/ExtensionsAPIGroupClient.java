@@ -30,12 +30,12 @@ import io.fabric8.kubernetes.api.model.batch.DoneableJob;
 import io.fabric8.kubernetes.api.model.extensions.Ingress;
 import io.fabric8.kubernetes.api.model.extensions.IngressList;
 import io.fabric8.kubernetes.api.model.extensions.DoneableIngress;
-import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicy;
-import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicyList;
-import io.fabric8.kubernetes.api.model.extensions.DoneablePodSecurityPolicy;
 import io.fabric8.kubernetes.api.model.networking.NetworkPolicy;
 import io.fabric8.kubernetes.api.model.networking.NetworkPolicyList;
 import io.fabric8.kubernetes.api.model.networking.DoneableNetworkPolicy;
+import io.fabric8.kubernetes.api.model.policy.DoneablePodSecurityPolicy;
+import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicy;
+import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicyList;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.ScalableResource;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -96,6 +96,10 @@ public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAP
   }
 
   @Override
+  @Deprecated
+  /**
+   * @deprecated Replaced by {@link PolicyAPIGroupClient#podSecurityPolicies()}
+   */
   public MixedOperation<PodSecurityPolicy, PodSecurityPolicyList, DoneablePodSecurityPolicy, Resource<PodSecurityPolicy, DoneablePodSecurityPolicy>> podSecurityPolicies() {
     return new PodSecurityPolicyOperationsImpl(httpClient, getConfiguration());
   }

@@ -16,21 +16,27 @@
 package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.api.model.policy.DoneablePodDisruptionBudget;
+import io.fabric8.kubernetes.api.model.policy.DoneablePodSecurityPolicy;
 import io.fabric8.kubernetes.api.model.policy.PodDisruptionBudget;
 import io.fabric8.kubernetes.api.model.policy.PodDisruptionBudgetList;
+import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicy;
+import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicyList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.PolicyAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.internal.PodDisruptionBudgetOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.PodSecurityPolicyOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class PolicyAPIGroupClient extends BaseClient implements PolicyAPIGroupDSL {
-  public PolicyAPIGroupClient() throws KubernetesClientException {
-    super();
+
+  public PolicyAPIGroupClient(OkHttpClient httpClient, final Config config) {
+    super(httpClient, config);
   }
 
-  public PolicyAPIGroupClient(OkHttpClient httpClient, final Config config) throws KubernetesClientException {
-    super(httpClient, config);
+  @Override
+  public MixedOperation<PodSecurityPolicy, PodSecurityPolicyList, DoneablePodSecurityPolicy, Resource<PodSecurityPolicy, DoneablePodSecurityPolicy>> podSecurityPolicies() {
+    return new PodSecurityPolicyOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override

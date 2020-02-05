@@ -16,9 +16,9 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicy;
-import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicyBuilder;
-import io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicyList;
+import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicy;
+import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicyBuilder;
+import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicyList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Rule;
@@ -59,7 +59,7 @@ public class PodSecurityPolicyCrudTest {
 
     //test of Creation
 
-    podSecurityPolicy = client.extensions().podSecurityPolicies().create(podSecurityPolicy);
+    podSecurityPolicy = client.policy().podSecurityPolicies().create(podSecurityPolicy);
     assertNotNull(podSecurityPolicy);
     assertEquals("test-example",podSecurityPolicy.getMetadata().getName());
     assertFalse(podSecurityPolicy.getSpec().getPrivileged());
@@ -69,7 +69,7 @@ public class PodSecurityPolicyCrudTest {
     assertEquals("RunAsAny",podSecurityPolicy.getSpec().getSupplementalGroups().getRule());
 
     //test of list
-    PodSecurityPolicyList podSecurityPolicyList = client.extensions().podSecurityPolicies().list();
+    PodSecurityPolicyList podSecurityPolicyList = client.policy().podSecurityPolicies().list();
     logger.info(podSecurityPolicyList.toString());
 
     assertNotNull(podSecurityPolicyList);
@@ -82,7 +82,7 @@ public class PodSecurityPolicyCrudTest {
     assertEquals("RunAsAny",podSecurityPolicyList.getItems().get(0).getSpec().getSupplementalGroups().getRule());
 
     //test of updation
-    podSecurityPolicy = client.extensions().podSecurityPolicies().withName("test-example").edit()
+    podSecurityPolicy = client.policy().podSecurityPolicies().withName("test-example").edit()
         .editSpec().withPrivileged(true).endSpec()
         .done();
 
@@ -97,9 +97,9 @@ public class PodSecurityPolicyCrudTest {
     assertEquals("RunAsAny",podSecurityPolicy.getSpec().getSupplementalGroups().getRule());
 
     //test of deletion
-    boolean deleted = client.extensions().podSecurityPolicies().delete(podSecurityPolicy);
+    boolean deleted = client.policy().podSecurityPolicies().delete(podSecurityPolicy);
     assertTrue(deleted);
-    podSecurityPolicyList = client.extensions().podSecurityPolicies().list();
+    podSecurityPolicyList = client.policy().podSecurityPolicies().list();
     assertEquals(0,podSecurityPolicyList.getItems().size());
 
   }
