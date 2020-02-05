@@ -28,13 +28,14 @@ import java.nio.file.Files;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class SerializationTest {
 
   @Test
   @DisplayName("unmarshal, String containing List with windows like line-ends (CRLF), all list items should be available")
-  public void unmarshalListWithWindowsLineSeparatorsString() throws Exception {
+  void unmarshalListWithWindowsLineSeparatorsString() throws Exception {
     // Given
     final List<String> fileLines = Files.readAllLines(
       new File(SerializationTest.class.getResource("/test-list.yml").getFile()).toPath(), StandardCharsets.UTF_8);
@@ -47,5 +48,49 @@ public class SerializationTest {
     assertEquals(2, kubernetesList.getItems().size());
     assertTrue(kubernetesList.getItems().get(0) instanceof Service);
     assertTrue(kubernetesList.getItems().get(1) instanceof Deployment);
+  }
+
+  @Test
+  @DisplayName("containsMultipleDocuments, multiple documents with windows line ends, should return true")
+  void containsMultipleDocumentsWithMultipleDocumentsAndWindowsLineEnds() {
+    // Given
+    final String multiDocument = "---\r\napiVersion: v1\r\nKind: Something\r\n\r\n---\r\napiVersion: v2\r\nKind: Other";
+    // When
+    final boolean result = Serialization.containsMultipleDocuments(multiDocument);
+    // Then
+    assertTrue(result);
+  }
+
+  @Test
+  @DisplayName("containsMultipleDocuments, single document with windows line ends, should return false")
+  void containsMultipleDocumentsWithSingleDocumentAndWindowsLineEnds() {
+    // Given
+    final String multiDocument = "---\r\napiVersion: v1\r\nKind: Something\r\n\r\n";
+    // When
+    final boolean result = Serialization.containsMultipleDocuments(multiDocument);
+    // Then
+    assertFalse(result);
+  }
+
+  @Test
+  @DisplayName("containsMultipleDocuments, multiple documents with linux line ends, should return true")
+  void containsMultipleDocumentsWithMultipleDocumentsAndLinuxLineEnds() {
+    // Given
+    final String multiDocument = "---\napiVersion: v1\nKind: Something\n\n---\napiVersion: v2\nKind: Other";
+    // When
+    final boolean result = Serialization.containsMultipleDocuments(multiDocument);
+    // Then
+    assertTrue(result);
+  }
+
+  @Test
+  @DisplayName("containsMultipleDocuments, single document with linux line ends, should return false")
+  void containsMultipleDocumentsWithSingleDocumentAndLinuxLineEnds() {
+    // Given
+    final String multiDocument = "---\napiVersion: v1\nKind: Something\n\n";
+    // When
+    final boolean result = Serialization.containsMultipleDocuments(multiDocument);
+    // Then
+    assertFalse(result);
   }
 }
