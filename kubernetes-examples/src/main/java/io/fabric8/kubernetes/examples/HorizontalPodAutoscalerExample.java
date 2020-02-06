@@ -31,27 +31,31 @@ public class HorizontalPodAutoscalerExample {
   private static final Logger logger = LoggerFactory.getLogger(HorizontalPodAutoscalerExample.class);
 
   public static void main(String[] args) {
-    String master = "https://192.168.42.193:8443/";
-    if (args.length == 1) {
-      master = args[0];
+    final ConfigBuilder configBuilder = new ConfigBuilder();
+    if (args.length > 0) {
+      configBuilder.withMasterUrl(args[0]);
     }
-
-    Config config = new ConfigBuilder().withMasterUrl(master).build();
-    try (final KubernetesClient client = new DefaultKubernetesClient(config)) {
+    try (final KubernetesClient client = new DefaultKubernetesClient(configBuilder.build())) {
       HorizontalPodAutoscaler horizontalPodAutoscaler = new HorizontalPodAutoscalerBuilder()
         .withNewMetadata().withName("the-hpa").withNamespace("default").endMetadata()
         .withNewSpec()
-        .withNewScaleTargetRef()
-        .withApiVersion("apps/v1")
-        .withKind("Deployment")
-        .withName("the-deployment")
-        .endScaleTargetRef()
-        .withMinReplicas(1)
-        .withMaxReplicas(10)
-        .addToMetrics(new MetricSpecBuilder()
-          .withType("Resource")
-          .withNewResource().withName("cpu").withTargetAverageUtilization(50).endResource()
-          .build())
+          .withNewScaleTargetRef()
+            .withApiVersion("apps/v1")
+            .withKind("Deployment")
+            .withName("the-deployment")
+          .endScaleTargetRef()
+          .withMinReplicas(1)
+          .withMaxReplicas(10)
+          .addToMetrics(new MetricSpecBuilder()
+            .withType("Resource")
+            .withNewResource()
+              .withName("cpu")
+              .withNewTarget()
+                .withType("Utilization")
+                .withAverageUtilization(50)
+              .endTarget()
+            .endResource()
+            .build())
         .endSpec()
         .build();
 
