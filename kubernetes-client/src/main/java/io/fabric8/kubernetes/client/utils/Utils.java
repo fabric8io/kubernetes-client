@@ -27,14 +27,20 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.file.Paths;
+import java.util.AbstractMap;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
 
@@ -43,6 +49,9 @@ public class Utils {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(Utils.class);
   private static final String ALL_CHARS = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+  private Utils() {
+  }
 
   public static <T> T checkNotNull(T ref, String message) {
     if (ref == null) {
@@ -251,8 +260,6 @@ public class Utils {
   }
 
   /**
-   */
-  /**
    * Replaces all occurrences of the from text with to text without any regular expressions
    *
    * @param text text string
@@ -341,5 +348,39 @@ public class Utils {
         pluralBuffer.append("s");
     }
     return pluralBuffer.toString();
+  }
+
+  /**
+   * Interpolates a String containing variable placeholders with the values provided in the valuesMap.
+   *
+   * <p> This method is intended to interpolate templates loaded from YAML and JSON files.
+   *
+   * <p> Placeholders are indicated by the dollar sign and curly braces ({@code ${VARIABLE_KEY}}).
+   *
+   * <p> Placeholders can also be indicated by the dollar sign and double curly braces ({@code ${{VARIABLE_KEY}}}),
+   * when this notation is used, the resulting value will be unquoted (if applicable), expected values should be JSON
+   * compatible.
+   *
+   * @see <a href="https://docs.openshift.com/container-platform/4.3/openshift_images/using-templates.html#templates-writing-parameters_using-templates">OpenShift Templates</a>
+   * @param valuesMap to interpolate in the String
+   * @param templateInput raw input containing a String with placeholders ready to be interpolated
+   * @return the interpolated String
+   */
+  public static String interpolateString(String templateInput, Map<String, String> valuesMap) {
+    return Optional.ofNullable(valuesMap).orElse(Collections.emptyMap()).entrySet().stream()
+      .filter(entry -> entry.getKey() != null)
+      .filter(entry -> entry.getValue() != null)
+      .flatMap(entry -> {
+        final String key = entry.getKey();
+        final String value = entry.getValue();
+        return Stream.of(
+          new AbstractMap.SimpleEntry<>("${" + key + "}", value),
+          new AbstractMap.SimpleEntry<>("\"${{" + key + "}}\"", value),
+          new AbstractMap.SimpleEntry<>("${{" + key + "}}", value)
+        );
+      })
+      .map(explodedParam -> (Function<String, String>) s -> s.replace(explodedParam.getKey(), explodedParam.getValue()))
+      .reduce(Function.identity(), Function::andThen)
+      .apply(Objects.requireNonNull(templateInput, "templateInput is required"));
   }
 }

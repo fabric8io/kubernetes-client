@@ -81,9 +81,10 @@ public class TemplateIT {
 
   @Test
   public void load() {
-    Template template = client.templates().inNamespace(currentNamespace).load(replaceValues(
-      getClass().getResourceAsStream("/test-template.yml"), Collections.singletonMap("REDIS_PASSWORD", "secret"))
-    ).get();
+    Template template = client.templates()
+      .withParameters(Collections.singletonMap("REDIS_PASSWORD", "secret"))
+      .inNamespace(currentNamespace)
+      .load(getClass().getResourceAsStream("/test-template.yml")).get();
     assertThat(template).isNotNull();
     assertEquals(1, template.getObjects().size());
   }

@@ -16,7 +16,12 @@
 package io.fabric8.kubernetes.client.internal;
 
 import io.fabric8.kubernetes.client.utils.Utils;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -55,4 +60,54 @@ public class UtilsTest {
     assertEquals(true, Utils.getSystemPropertyOrEnvVar("DONT_EXIST", true));
   }
 
+  @Test
+  @DisplayName("interpolateString, String with no placeholders and empty parameters, should return input")
+  public void interpolateStringTest() {
+    // Given
+    final String input = "I don't have placeholders";
+    // When
+    final String result = Utils.interpolateString(input, Collections.emptyMap());
+    // Then
+    assertEquals("I don't have placeholders", result);
+  }
+
+  @Test
+  @DisplayName("interpolateString, String with no placeholders and null parameters, should return input")
+  public void interpolateStringNullParametersTest() {
+    // Given
+    final String input = "I don't have placeholders";
+    // When
+    final String result = Utils.interpolateString(input, null);
+    // Then
+    assertEquals("I don't have placeholders", result);
+  }
+
+  @Test
+  @DisplayName("interpolateString, String with no placeholders and null parameter values, should return input")
+  public void interpolateStringNullParameterValuesTest() {
+    // Given
+    final String input = "I don't have placeholders";
+    // When
+    final String result = Utils.interpolateString(input, Collections.singletonMap("KEY", null));
+    // Then
+    assertEquals("I don't have placeholders", result);
+  }
+
+  @Test
+  @DisplayName("interpolateString, String with mixed placeholders and parameters, should return interpolated input")
+  public void interpolateStringWithParametersTest() {
+    // Given
+    final String input = "This is a \"${SINGLE_CURLY_BRACE}\" and the following is code ${NOT_REPLACED}: \"${{RENDER_UNQUOTED}}\" ${{ALREADY_UNQUOTED}}";
+    final Map<String, String> parameters = new HashMap<>();
+    parameters.put("SINGLE_CURLY_BRACE", "template string");
+    parameters.put("RENDER_UNQUOTED", "'1' === '1';");
+    parameters.put("ALREADY_UNQUOTED", "/* END */");
+    parameters.put("NOT_THERE", "/* END */");
+    parameters.put(null, "NULL key is ignored");
+    parameters.put("NULL_VALUE", null);
+    // When
+    final String result = Utils.interpolateString(input, parameters);
+    // Then
+    assertEquals("This is a \"template string\" and the following is code ${NOT_REPLACED}: '1' === '1'; /* END */", result);
+  }
 }

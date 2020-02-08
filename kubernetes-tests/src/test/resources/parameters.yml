@@ -16,3 +16,4 @@
 
 USERNAME: root
 REQUIRED: requiredValue
+REQUIRED_BOOLEAN: false
