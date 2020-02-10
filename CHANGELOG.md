@@ -4,6 +4,7 @@
 #### Bugs
 * Fix #1847: Remove resource-\*.vm files from \*-client.jar
 * Fix #959: Support for double braced `${{ }}` template placeholders
+* Fix #703: Fix NullPointerException in Config.tryKubeConfig
 
 #### Improvements
 * Fix #1874: Added unit tests verifying windows line-ends (CRLF) work
