@@ -15,18 +15,12 @@
  */
 package io.fabric8.kubernetes.examples;
 
-import io.fabric8.kubernetes.api.model.metrics.v1beta1.ContainerMetrics;
-import io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetrics;
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetricsList;
-import io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetrics;
-import io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetricsList;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 public class TopExample {
 
@@ -36,48 +30,39 @@ public class TopExample {
     try (KubernetesClient client = new DefaultKubernetesClient()) {
       NodeMetricsList nodeMetricList = client.top().nodes().metrics();
 
-      log("name CPU(cores) CPU(%) Memory(Bytes) Memory(%)");
-      for (NodeMetrics nodeMetrics : nodeMetricList.getItems()) {
-        log(nodeMetrics.getMetadata().getName() +
-          " " + nodeMetrics.getUsage().get("cpu") +
-          " " + nodeMetrics.getUsage().get("memory"));
-      }
+      logger.info("==== Node Metrics  ====");
+      nodeMetricList.getItems().forEach(nodeMetrics ->
+        logger.info("{}\tCPU: {}{}\tMemory: {}{}",
+          nodeMetrics.getMetadata().getName(),
+          nodeMetrics.getUsage().get("cpu").getAmount(), nodeMetrics.getUsage().get("cpu").getFormat(),
+          nodeMetrics.getUsage().get("memory").getAmount(), nodeMetrics.getUsage().get("memory").getFormat()
+        ));
 
-      log("==== Pod Metrics ====");
-      log("name CPU(cores) CPU(%) Memory(Bytes) Memory(%)");
-      PodMetricsList podMetricsList = client.top().pods().metrics("default");
-      for (PodMetrics podMetrics : podMetricsList.getItems()) {
-        log(podMetrics.getMetadata().getName());
+      logger.info("==== Pod Metrics ====");
+      client.top().pods().metrics("default").getItems().forEach(podMetrics ->
+        podMetrics.getContainers().forEach(containerMetrics ->
+          logger.info("{}\t{}\tCPU: {}{}\tMemory: {}{}",
+            podMetrics.getMetadata().getName(), containerMetrics.getName(),
+            containerMetrics.getUsage().get("cpu").getAmount(), containerMetrics.getUsage().get("cpu").getFormat(),
+            containerMetrics.getUsage().get("memory").getAmount(), containerMetrics.getUsage().get("memory").getFormat()
+          ))
+      );
 
-        List<ContainerMetrics> containerMetricsList = podMetrics.getContainers();
-        for(ContainerMetrics containerMetric :  containerMetricsList) {
-          log(podMetrics.getMetadata().getName() +
-            " " + containerMetric.getUsage().get("cpu") +
-            " " + containerMetric.getUsage().get("memory"));
-        }
-      }
-
-      PodMetrics podMetrics = client.top().pods().metrics("default", "nginx-deployment-54f57cf6bf-gcvzx");
-      log(" ===== Individual Pod Metrics =====");
-      log("Pod Name: " + podMetrics.getMetadata().getName());
-      List<ContainerMetrics> containerMetricsList = podMetrics.getContainers();
-      for(ContainerMetrics containerMetric :  containerMetricsList) {
-        log(podMetrics.getMetadata().getName() +
-          " " + containerMetric.getUsage().get("cpu") +
-          " " + containerMetric.getUsage().get("memory"));
-      }
+      final String defaultNamespace = "default";
+      client.pods().inNamespace(defaultNamespace).list().getItems().stream().findFirst().map(pod -> {
+        logger.info("==== Individual Pod Metrics ({}) ====", pod.getMetadata().getName());
+        return client.top().pods().metrics(defaultNamespace, pod.getMetadata().getName());
+      }).ifPresent(podMetrics ->
+        podMetrics.getContainers().forEach(containerMetrics ->
+          logger.info("{}\t{}\tCPU: {}{}\tMemory: {}{}",
+            podMetrics.getMetadata().getName(), containerMetrics.getName(),
+            containerMetrics.getUsage().get("cpu").getAmount(), containerMetrics.getUsage().get("cpu").getFormat(),
+            containerMetrics.getUsage().get("memory").getAmount(), containerMetrics.getUsage().get("memory").getFormat()
+          ))
+      );
 
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);
-    } finally {
     }
-  }
-
-  private static void log(String action, Object obj) {
-    logger.info("{}: {}", action, obj);
-  }
-
-  private static void log(String action) {
-    logger.info(action);
   }
 }

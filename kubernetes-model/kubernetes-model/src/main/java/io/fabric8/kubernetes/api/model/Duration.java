@@ -16,153 +16,216 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.ObjectCodec;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.fabric8.kubernetes.api.model.Doneable;
-import io.sundr.builder.annotations.Buildable;
-import io.sundr.builder.annotations.Inline;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import java.io.Serializable;
+import java.io.IOException;
+import java.text.ParseException;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.Temporal;
+import java.time.temporal.TemporalUnit;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 
 /**
- * Duration is wrapper around duration variable which just stores the
- * amount of time in seconds. It supports correct marshaling to YAML
- * and JSON. In particular, it marshals into strings, which can be used
- * as map keys in json.
- * 
+ * Duration represents a duration
+ *
+ * <p> Duration stores a period of time as a valid {@link java.time.Duration}.
+ *
+ * @see <a href="https://github.com/kubernetes/kubernetes/blob/a38096a0696514a034de7f8d0cc5a3ec5e7da8ff/vendor/github.com/go-openapi/strfmt/duration.go#L74">github.com/go-openapi/strfmt/duration.go</a>
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonDeserialize(using = Duration.Deserializer.class)
+@JsonDeserialize
 @JsonSerialize(using = Duration.Serializer.class)
 @ToString
 @EqualsAndHashCode
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", inline = @Inline(type = Doneable.class, prefix = "Doneable", value = "done"))
-public class Duration implements Serializable
-{
+public class Duration implements KubernetesResource {
 
-    /**
-     * 
-     * 
-     */
-    @JsonProperty("Duration")
-    private Long duration;
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  private static final long serialVersionUID = -2326157920610452294L;
 
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public Duration() {
+
+  private static final String DURATION_REGEX = "(\\d+)\\s*([A-Za-zµ]+)";
+  private static final Pattern DURATION_PATTERN = Pattern.compile(DURATION_REGEX);
+  private java.time.Duration javaDuration;
+
+  /**
+   * No args constructor for use in serialization
+   */
+  public Duration() {
+  }
+
+  public Duration(java.time.Duration javaDuration) {
+    this.javaDuration = javaDuration;
+  }
+
+  public java.time.Duration getDuration() {
+    return javaDuration;
+  }
+
+  public void setDuration(java.time.Duration javaDuration) {
+    this.javaDuration = javaDuration;
+  }
+
+  /**
+   * Converts Duration to a primitive value ready to be written to a database.
+   *
+   * @return duration value in nanoseconds
+   */
+  public Long getValue() {
+    return Optional.ofNullable(javaDuration).map(java.time.Duration::toNanos).orElse(0L);
+  }
+
+  /**
+   * Tests if the provided string represents a valid Duration.
+   *
+   * @param durationToTest String with a possible Duration value
+   * @return true if the provided String is a Duration, false otherwise
+   */
+  public static boolean isDuration(String durationToTest) {
+    try {
+      Duration.parse(durationToTest);
+      return true;
+    } catch (ParseException e) {
+      return false;
     }
+  }
 
-    /**
-     * 
-     * @param duration
-     */
-    public Duration(Long duration) {
-        this.duration = duration;
+  /**
+   * Parses {@link String} into Duration.
+   *
+   * <p> Valid time abbreviations
+   * <table>
+   *   <thead>
+   *     <tr><th>Abbreviation</th><th>Time Unit</th></tr>
+   *   </thead>
+   *   <tbody>
+   *   <tr><td>ns, nano, nanos</td><td>Nanosecond</td></tr>
+   *   <tr><td>us, µs, micro, micros</td><td>Microseconds</td></tr>
+   *   <tr><td>ms, milli, millis</td><td>Millisecond</td></tr>
+   *   <tr><td>s, sec, secs</td><td>Second</td></tr>
+   *   <tr><td>m, min, mins</td><td>Minute</td></tr>
+   *   <tr><td>h, hr, hour, hours</td><td>Hour</td></tr>
+   *   <tr><td>d, day, days</td><td>Day</td></tr>
+   *   <tr><td>w, wk, week, weeks</td><td>Week</td></tr>
+   *   </tbody>
+   * </table>
+   * <br/>
+   * <p>Example:
+   *
+   * <pre>{@code
+   *   Duration.parse("1min1s");
+   * }</pre>
+   *
+   * @param duration String to be parsed
+   * @return the parsed Duration
+   * @throws ParseException if format is not parsable
+   */
+  @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+  public static Duration parse(String duration) throws ParseException {
+    java.time.Duration accumulator = java.time.Duration.ZERO;
+    boolean found = false;
+    final Matcher matcher = Optional.ofNullable(duration).map(String::trim).map(DURATION_PATTERN::matcher).orElse(null);
+    while(matcher != null && matcher.find()) {
+      found = true;
+      final java.time.Duration durationToken = Optional.ofNullable(TimeUnits.from(matcher.group(2)))
+        .map(tu -> java.time.Duration.of(Long.parseLong(matcher.group(1)), tu.timeUnit))
+        .orElseThrow(() -> new ParseException(String.format("Invalid duration token (%s)", matcher.group()), 0));
+      accumulator = accumulator.plus(durationToken);
     }
-
-    public Duration(String duration) {
-      Pattern p = Pattern.compile("\\d+");
-      Matcher m = p.matcher(duration);
-      long totalSeconds = 0;
-
-      while (m.find()) {
-        String digit = m.group();
-        int digitIndex = duration.indexOf(digit);
-        if (digitIndex + 1 < duration.length()) {
-          char unit = duration.charAt(digitIndex + 1);
-          if (unit == 'h') {
-            totalSeconds += (3600 * Integer.parseInt(digit));
-          } else if (unit == 'm') {
-            totalSeconds += (60 * Integer.parseInt(digit));
-          } else if (unit == 's') {
-            totalSeconds += (Integer.parseInt(digit));
-          }
-        }
-      }
-      this.duration = totalSeconds;
+    if (!found) {
+      throw new ParseException(String.format("Provided duration string (%s) is invalid", duration), 0);
     }
-
-    /**
-     * 
-     * 
-     * @return
-     *     The duration
-     */
-    @JsonProperty("Duration")
-    public Long getDuration() {
-        return duration;
-    }
-
-    /**
-     * 
-     * 
-     * @param duration
-     *     The Duration
-     */
-    @JsonProperty("Duration")
-    public void setDuration(Long duration) {
-        this.duration = duration;
-    }
-
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
+    return new Duration(accumulator);
+  }
 
   public static class Serializer extends JsonSerializer<Duration> {
 
     @Override
-    public void serialize(Duration value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
-      if (value != null && value.getDuration() != null) {
-        jgen.writeString(value.getDuration().toString());
-      } else {
-        jgen.writeNull();
-      }
+    public void serialize(Duration duration, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+      jgen.writeString(String.format("%sns", duration.getValue()));
     }
   }
 
-  public static class Deserializer extends JsonDeserializer<Duration> {
+  private enum TimeUnits {
+
+    NANOSECOND(ChronoUnit.NANOS, "ns", "nano", "nanos"),
+    MICROSECOND(ChronoUnit.MICROS, "us", "µs", "micro", "micros"),
+    MILLISECOND(ChronoUnit.MILLIS, "ms", "milli", "millis"),
+    SECOND(ChronoUnit.SECONDS, "s", "sec", "secs"),
+    MINUTE(ChronoUnit.MINUTES, "m", "min", "mins"),
+    HOUR(ChronoUnit.HOURS, "h", "hr", "hour", "hours"),
+    DAY(ChronoUnit.DAYS, "d", "day", "days"),
+    WEEK(SevenDayWeek.INSTANCE, "w", "wk", "week", "weeks");
+
+    private final Set<String> abbreviations;
+    private final TemporalUnit timeUnit;
+
+    TimeUnits(TemporalUnit timeUnit, String... abbreviations) {
+      this.timeUnit = timeUnit;
+      this.abbreviations = new HashSet<>(Arrays.asList(abbreviations));
+    }
+
+    static TimeUnits from(String abbreviation) {
+      return Stream.of(values()).filter(tu -> tu.abbreviations.contains(abbreviation.toLowerCase())).findAny()
+        .orElse(null);
+    }
+  }
+
+  /**
+   * Provides an <strong>exact</strong> {@link TemporalUnit} implementation
+   * of a 7 day week.
+   */
+  private static class SevenDayWeek implements TemporalUnit {
+
+    private static final SevenDayWeek INSTANCE = new SevenDayWeek();
+
+    private static final java.time.Duration SEVEN_DAYS = java.time.Duration.ofDays(7L);
+
+    private SevenDayWeek() {
+    }
 
     @Override
-    public Duration deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-      ObjectCodec oc = jsonParser.getCodec();
-      JsonNode node = oc.readTree(jsonParser);
-      Duration duration = new Duration(node.asText());
-      return duration;
+    public java.time.Duration getDuration() {
+      return SEVEN_DAYS;
     }
 
-  }
+    @Override
+    public boolean isDurationEstimated() {
+      return false;
+    }
 
+    @Override
+    public boolean isDateBased() {
+      return true;
+    }
+
+    @Override
+    public boolean isTimeBased() {
+      return false;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <R extends Temporal> R addTo(R temporal, long amount) {
+      return (R) temporal.plus(amount, this);
+    }
+
+    @Override
+    public long between(Temporal temporal1Inclusive, Temporal temporal2Exclusive) {
+      return temporal1Inclusive.until(temporal2Exclusive, this);
+    }
+  }
 }

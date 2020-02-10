@@ -4,6 +4,7 @@
 #### Bugs
 * Fix #1847: Remove resource-\*.vm files from \*-client.jar
 * Fix #959: Support for double braced `${{ }}` template placeholders
+* Fix #1964: Refactor Duration
 * Fix #703: Fix NullPointerException in Config.tryKubeConfig
 
 #### Improvements
