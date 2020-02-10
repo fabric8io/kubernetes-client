@@ -539,12 +539,14 @@ public class Config {
           config.setPassword(currentAuthInfo.getPassword());
 
           if (Utils.isNullOrEmpty(config.getOauthToken()) && currentAuthInfo.getAuthProvider() != null) {
-            if (!Utils.isNullOrEmpty(currentAuthInfo.getAuthProvider().getConfig().get(ACCESS_TOKEN))) {
-              // GKE token
-              config.setOauthToken(currentAuthInfo.getAuthProvider().getConfig().get(ACCESS_TOKEN));
-            } else if (!Utils.isNullOrEmpty(currentAuthInfo.getAuthProvider().getConfig().get(ID_TOKEN))) {
-              // OpenID Connect token
-              config.setOauthToken(currentAuthInfo.getAuthProvider().getConfig().get(ID_TOKEN));
+            if (currentAuthInfo.getAuthProvider().getConfig() != null) {
+              if (!Utils.isNullOrEmpty(currentAuthInfo.getAuthProvider().getConfig().get(ACCESS_TOKEN))) {
+                // GKE token
+                config.setOauthToken(currentAuthInfo.getAuthProvider().getConfig().get(ACCESS_TOKEN));
+              } else if (!Utils.isNullOrEmpty(currentAuthInfo.getAuthProvider().getConfig().get(ID_TOKEN))) {
+                // OpenID Connect token
+                config.setOauthToken(currentAuthInfo.getAuthProvider().getConfig().get(ID_TOKEN));
+              }
             }
           } else if (config.getOauthTokenProvider() == null) {  // https://kubernetes.io/docs/reference/access-authn-authz/authentication/#client-go-credential-plugins
             ExecConfig exec = currentAuthInfo.getExec();
