@@ -357,6 +357,15 @@ public class DeltaFIFO<T> implements Store<Object> {
     }
   }
 
+  @Override
+  public void isPopulated(boolean isPopulated) {
+    lock.writeLock().lock();
+    try {
+      this.populated = isPopulated;
+    } finally {
+      lock.writeLock().unlock();
+    }
+  }
 
 
   /**

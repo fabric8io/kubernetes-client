@@ -29,7 +29,8 @@ import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 import java.util.Arrays;
@@ -37,6 +38,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.Assert.assertEquals;
 
+@EnableRuleMigrationSupport
 public class DefaultSharedIndexInformerTest {
   @Rule
   public KubernetesServer server = new KubernetesServer(false);
@@ -51,9 +53,9 @@ public class DefaultSharedIndexInformerTest {
   public void testNamespacedPodInformer() throws InterruptedException {
     String startResourceVersion = "1000", endResourceVersion = "1001";
 
-    server.expect().withPath("/api/v1/pods")
+    server.expect().withPath("/api/v1/namespaces/test/pods")
       .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata().withItems(Arrays.asList()).build()).once();
-    server.expect().withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&watch=true")
+    server.expect().withPath("/api/v1/namespaces/test/pods?resourceVersion=" + startResourceVersion + "&watch=true")
       .andUpgradeToWebSocket()
       .open()
       .waitFor(1000)
@@ -63,7 +65,7 @@ public class DefaultSharedIndexInformerTest {
 
     KubernetesClient client = server.getClient();
     SharedInformerFactory factory = client.informers();
-    SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, PodList.class, 4000L);
+    SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, PodList.class,4000L);
 
     AtomicBoolean foundExistingPod = new AtomicBoolean(false);
     podInformer.addEventHandler(
@@ -81,10 +83,10 @@ public class DefaultSharedIndexInformerTest {
         @Override
         public void onDelete(Pod oldObj, boolean deletedFinalStateUnknown) { }
       });
-    Thread.sleep(1000);
+    Thread.sleep(1000L);
     factory.startAllRegisteredInformers();
 
-    Thread.sleep(3000L);
+    Thread.sleep(5000L);
     assertEquals(true, foundExistingPod.get());
     assertEquals(endResourceVersion, podInformer.lastSyncResourceVersion());
 
@@ -95,13 +97,13 @@ public class DefaultSharedIndexInformerTest {
   public void testAllNamespacedInformer() throws InterruptedException {
     String startResourceVersion = "1000", endResourceVersion = "1001";
 
-    server.expect().withPath("/api/v1/pods")
+    server.expect().withPath("/api/v1/namespaces/test/pods")
       .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata().withItems(Arrays.asList()).build()).once();
-    server.expect().withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&watch=true")
+    server.expect().withPath("/api/v1/namespaces/test/pods?resourceVersion=" + startResourceVersion + "&watch=true")
       .andUpgradeToWebSocket()
       .open()
       .waitFor(1000)
-      .andEmit(new WatchEvent(new PodBuilder().withNewMetadata().withNamespace("default").withName("pod1").withResourceVersion(endResourceVersion).endMetadata().build(), "ADDED"))
+      .andEmit(new WatchEvent(new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1").withResourceVersion(endResourceVersion).endMetadata().build(), "ADDED"))
       .waitFor(2000)
       .andEmit(outdatedEvent).done().always();
 
@@ -114,7 +116,7 @@ public class DefaultSharedIndexInformerTest {
       new ResourceEventHandler<Pod>() {
         @Override
         public void onAdd(Pod obj) {
-          if (obj.getMetadata().getName().equalsIgnoreCase("pod1") && obj.getMetadata().getNamespace().equalsIgnoreCase("default")) {
+          if (obj.getMetadata().getName().equalsIgnoreCase("pod1") && obj.getMetadata().getNamespace().equalsIgnoreCase("test")) {
             foundExistingPod.set(true);
           }
         }
@@ -125,12 +127,105 @@ public class DefaultSharedIndexInformerTest {
         @Override
         public void onDelete(Pod oldObj, boolean deletedFinalStateUnknown) { }
       });
-    Thread.sleep(1000);
+    Thread.sleep(1000L);
     factory.startAllRegisteredInformers();
 
-    Thread.sleep(3000L);
+    Thread.sleep(5000L);
     assertEquals(true, foundExistingPod.get());
     assertEquals(endResourceVersion, podInformer.lastSyncResourceVersion());
+
+    factory.stopAllRegisteredInformers();
+  }
+
+  @Test
+  public void shouldReconnectInCaseOf410() throws InterruptedException {
+    String startResourceVersion = "1000", midResourceVersion = "1001", mid2ResourceVersion = "1002", endResourceVersion = "1003";
+
+    server.expect().withPath("/api/v1/namespaces/test/pods")
+      .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata().withItems(Arrays.asList()).build()).once();
+    server.expect().withPath("/api/v1/namespaces/test/pods?resourceVersion=" + startResourceVersion + "&watch=true")
+      .andUpgradeToWebSocket()
+      .open()
+      .waitFor(1000)
+      .andEmit(new WatchEvent(new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1").withResourceVersion(midResourceVersion).endMetadata().build(), "ADDED"))
+      .waitFor(2000)
+      .andEmit(outdatedEvent)
+      .done().always();
+    server.expect().withPath("/api/v1/namespaces/test/pods")
+      .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(mid2ResourceVersion).endMetadata().withItems(Arrays.asList()).build()).times(2);
+    server.expect().withPath("/api/v1/namespaces/test/pods?resourceVersion=" + mid2ResourceVersion + "&watch=true")
+      .andUpgradeToWebSocket()
+      .open()
+      .waitFor(1000)
+      .andEmit(new WatchEvent(new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1").withResourceVersion(endResourceVersion).endMetadata().build(), "MODIFIED"))
+      .done()
+      .always();
+
+    KubernetesClient client = server.getClient();
+    SharedInformerFactory factory = client.informers();
+    SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, PodList.class, 10000L);
+
+    AtomicBoolean relistSuccessful = new AtomicBoolean(false);
+    podInformer.addEventHandler(
+      new ResourceEventHandler<Pod>() {
+        @Override
+        public void onAdd(Pod obj) { }
+
+        @Override
+        public void onUpdate(Pod oldObj, Pod newObj) {
+          if (newObj.getMetadata().getName().equalsIgnoreCase("pod1") &&
+            newObj.getMetadata().getResourceVersion().equalsIgnoreCase(endResourceVersion)) {
+            relistSuccessful.set(true);
+          }
+        }
+
+        @Override
+        public void onDelete(Pod oldObj, boolean deletedFinalStateUnknown) { }
+      });
+    Thread.sleep(1000L);
+    factory.startAllRegisteredInformers();
+
+    Thread.sleep(10000L);
+    assertEquals(true, relistSuccessful.get());
+    assertEquals(endResourceVersion, podInformer.lastSyncResourceVersion());
+
+    factory.stopAllRegisteredInformers();
+  }
+
+  @Test
+  public void testHasSynced() throws InterruptedException {
+    String startResourceVersion = "1000", endResourceVersion = "1001";
+    server.expect().withPath("/api/v1/namespaces/test/pods")
+      .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata().withItems(Arrays.asList()).build()).once();
+    server.expect().withPath("/api/v1/namespaces/test/pods?resourceVersion=" + startResourceVersion + "&watch=true")
+      .andUpgradeToWebSocket()
+      .open()
+      .waitFor(1000)
+      .andEmit(new WatchEvent(new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1").withResourceVersion(endResourceVersion).endMetadata().build(), "ADDED"))
+      .waitFor(2000)
+      .andEmit(outdatedEvent).done().once();
+
+    KubernetesClient client = server.getClient();
+    SharedInformerFactory factory = client.informers();
+    SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, PodList.class, 4000L);
+
+    podInformer.addEventHandler(
+      new ResourceEventHandler<Pod>() {
+        @Override
+        public void onAdd(Pod obj) { }
+
+        @Override
+        public void onUpdate(Pod oldObj, Pod newObj) { }
+
+        @Override
+        public void onDelete(Pod oldObj, boolean deletedFinalStateUnknown) { }
+      });
+    Thread.sleep(1000L);
+    factory.startAllRegisteredInformers();
+
+    // Wait for resync period of pass
+    Thread.sleep(8000L);
+    assertEquals(false, podInformer.hasSynced());
 
     factory.stopAllRegisteredInformers();
   }

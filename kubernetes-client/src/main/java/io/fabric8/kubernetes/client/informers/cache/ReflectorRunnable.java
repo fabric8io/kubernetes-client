@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
@@ -28,6 +29,7 @@ import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -41,6 +43,9 @@ public class ReflectorRunnable<T extends HasMetadata, TList extends KubernetesRe
   private Class<T> apiTypeClass;
   private AtomicBoolean isActive = new AtomicBoolean(true);
   private OperationContext operationContext;
+  // isLastSyncResourceVersionGone is true if the previous list or watch request with lastSyncResourceVersion
+  // failed with an HTTP 410 (Gone) status code.
+  private boolean isLastSyncResourceVersionGone = false;
 
   public ReflectorRunnable(Class<T> apiTypeClass, ListerWatcher listerWatcher, Store store, OperationContext operationContext) {
     this.listerWatcher = listerWatcher;
@@ -55,6 +60,7 @@ public class ReflectorRunnable<T extends HasMetadata, TList extends KubernetesRe
    */
   public void run() {
     try {
+      Thread.currentThread().setName("Reflector-" + apiTypeClass.getSimpleName());
       log.info("{}#Start listing and watching...", apiTypeClass);
 
       TList list = listerWatcher.list(new ListOptionsBuilder().withWatch(Boolean.FALSE).withResourceVersion(null).withTimeoutSeconds(null).build(), null, operationContext);
@@ -68,6 +74,7 @@ public class ReflectorRunnable<T extends HasMetadata, TList extends KubernetesRe
       }
       this.syncWith(items, resourceVersion);
       this.lastSyncResourceVersion = resourceVersion;
+      this.isLastSyncResourceVersionGone = false;
 
       if (log.isDebugEnabled()) {
         log.debug("{}#Start watching with {}...", apiTypeClass, lastSyncResourceVersion);
@@ -123,8 +130,16 @@ public class ReflectorRunnable<T extends HasMetadata, TList extends KubernetesRe
             public void onClose(KubernetesClientException exception) {
               log.error("Watch closing.");
               if (exception != null) {
-                exception.printStackTrace();
                 log.error("watch closed due to  " + exception.getMessage());
+                // Relist when HTTP_GONE is received
+                Status returnStatus = exception.getStatus();
+                if (returnStatus.getCode().equals(HttpURLConnection.HTTP_GONE)) {
+                  isLastSyncResourceVersionGone = true;
+                  log.info("410(HTTP_GONE) recieved, initiating re-list and re-watch");
+                  run();
+                } else {
+                  log.debug("exception received during watch", exception);
+                }
               }
             }
           });
@@ -132,8 +147,10 @@ public class ReflectorRunnable<T extends HasMetadata, TList extends KubernetesRe
         log.info("{}#Watch connection got exception {}", apiTypeClass, t.getMessage());
       }
     } catch (Exception exception) {
-      log.error("Failure in list-watch: {}", exception.getMessage());
-      exception.printStackTrace();
+      log.error("Failure in list-watch: {}, cause: {}", exception.getMessage(), exception.getCause());
+      log.debug("exception in listing and watching", exception);
+      // Update store sync status to false
+      store.isPopulated(false);
     }
   }
 
@@ -147,6 +164,10 @@ public class ReflectorRunnable<T extends HasMetadata, TList extends KubernetesRe
 
   public String getLastSyncResourceVersion() {
     return lastSyncResourceVersion;
+  }
+
+  public boolean isLastSyncResourceVersionGone() {
+    return isLastSyncResourceVersionGone;
   }
 
 }

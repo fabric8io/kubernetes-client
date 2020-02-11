@@ -98,4 +98,11 @@ public interface Store<T> {
    */
   void resync();
 
+  /**
+   * Updates the status of cache in case of any API error from Kubernetes server
+   *
+   * @param isPopulated boolean value indicating whether cache is populated or not
+   */
+  void isPopulated(boolean isPopulated);
+
 }

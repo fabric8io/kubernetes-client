@@ -2,6 +2,7 @@
 
 ### 4.8-SNAPSHOT
 #### Bugs
+* Fix #1961: Two SharedInformer issues related to kube-apiserver unavailable and relisting
 
 #### Improvements
 
