@@ -10,6 +10,7 @@
 #### Improvements
 * Fix #1874: Added unit tests verifying windows line-ends (CRLF) work
 * Fix #1177: Added support for OpenID Connect token in kubeconfig
+* SelfSubjectAccessReview test coverage
 
 #### Dependency Upgrade
 * Update Jackson Bom to 2.10.2
