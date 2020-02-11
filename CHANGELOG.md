@@ -69,6 +69,7 @@
 
 #### Improvements
 * Fix #1832: chore: refactor poms and update some dependencies
+* SelfSubjectRulesReview test coverage
 
 #### Dependency Upgrade
 * Fix #1869: chore(deps): bump maven.surefire.plugin.version from 3.0.0-M3 to 3.0.0-M4

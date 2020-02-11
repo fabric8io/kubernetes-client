@@ -15,106 +15,127 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.authorization.LocalSubjectAccessReview;
 import io.fabric8.kubernetes.api.model.authorization.LocalSubjectAccessReviewBuilder;
+import io.fabric8.kubernetes.api.model.authorization.ResourceRuleBuilder;
+import io.fabric8.kubernetes.api.model.authorization.SelfSubjectRulesReview;
+import io.fabric8.kubernetes.api.model.authorization.SelfSubjectRulesReviewBuilder;
 import io.fabric8.kubernetes.api.model.authorization.SubjectAccessReview;
 import io.fabric8.kubernetes.api.model.authorization.SubjectAccessReviewBuilder;
 import io.fabric8.kubernetes.api.model.authorization.SubjectAccessReviewStatus;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.Rule;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.nio.charset.Charset;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableRuleMigrationSupport
 public class SubjectAccessReviewAuthTest {
 
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+    @Rule
+    public KubernetesServer server = new KubernetesServer();
 
-  private static final Logger logger = LoggerFactory.getLogger(ClusterRoleBindingCrudTest.class);
+    @Test
+    public void createSubjectRulesReviewTest() {
+        KubernetesClient client = server.getClient();
 
-  @Test
-  public void createSubjectAccessReviewTest() {
+        createSubjectAccessReviewTest();
 
+        SelfSubjectRulesReview selfSubjectRulesReview = new SelfSubjectRulesReviewBuilder()
+                .withNewSpec()
+                .withNamespace("test")
+                .endSpec()
+                .withNewStatus()
+                .withResourceRules(new ResourceRuleBuilder()
+                        .withResourceNames("pod")
+                        .withVerbs("create", "list", "get", "delete").build()).endStatus().build();
 
-    KubernetesClient client = server.getClient();
+        SelfSubjectRulesReview rulesReviewResponse = client.subjectAccessReviewAuth().list().create(selfSubjectRulesReview);
 
-    SubjectAccessReview review = new SubjectAccessReviewBuilder().withNewSpec()
-      .withUser("admin-user")
-      .withNewResourceAttributes()
-      .withResource("pod")
-      .withVerb("create")
-      .endResourceAttributes()
-      .endSpec()
-      .build();
+        assertNotNull(rulesReviewResponse);
+    }
 
-    server.expect().post().withPath("/apis/authorization.k8s.io/v1/subjectaccessreviews").andReply(200, recordedRequest -> {
-      ObjectMapper mapper = new ObjectMapper();
-      SubjectAccessReview reviewResponse = null;
-      try {
-        reviewResponse = mapper.readValue(recordedRequest.getBody().readString(Charset.defaultCharset()), SubjectAccessReview.class);
+    @Test
+    public void createSubjectRulesReviewFromFileTest() {
+        KubernetesClient client = server.getClient();
 
-        reviewResponse.setStatus(new SubjectAccessReviewStatus(true, false, "",""));
-      } catch (IOException e) {
-        logger.error("Invalid response received", e);
-      }
+        createSubjectAccessReviewTest();
 
-      return reviewResponse;
-    }).once();
+        SelfSubjectRulesReview reviewFromFile = Serialization.unmarshal(getClass().getResourceAsStream("/test-selfsubjectrulesreview.yml"), SelfSubjectRulesReview.class);
 
-    SubjectAccessReview reviewResponse = client.subjectAccessReviewAuth().create(review);
+        SelfSubjectRulesReview rulesReviewFromFileResponse = client.subjectAccessReviewAuth().list().create(reviewFromFile);
 
-    assertNotNull(reviewResponse);
-    assertEquals(true, reviewResponse.getStatus().getAllowed());
+        assertAll(() -> {
+            assertNotNull(reviewFromFile);
+            assertNotNull(rulesReviewFromFileResponse);
+        });
+    }
 
-  }
+    @Test
+    public void createSubjectAccessReviewTest() {
+        KubernetesClient client = server.getClient();
 
-  @Test
-  public void createLocalSubjectAccessReviewTest() {
+        SubjectAccessReview review = new SubjectAccessReviewBuilder().withNewSpec()
+                .withUser("admin-user")
+                .withNewResourceAttributes()
+                .withResource("pod")
+                .withVerb("create")
+                .endResourceAttributes()
+                .endSpec()
+                .build();
 
+        server.expect().post().withPath("/apis/authorization.k8s.io/v1/subjectaccessreviews").andReply(200, recordedRequest -> {
+            SubjectAccessReview reviewResponse = Serialization.unmarshal(recordedRequest.getBody().readString(Charset.defaultCharset()), SubjectAccessReview.class);
 
-    KubernetesClient client = server.getClient();
+            reviewResponse.setStatus(new SubjectAccessReviewStatus(true, false, "", ""));
 
-    LocalSubjectAccessReview review = new LocalSubjectAccessReviewBuilder().withNewSpec()
-      .withUser("admin-user")
-      .withNewResourceAttributes()
-      .withResource("pod")
-      .withVerb("create")
-      .endResourceAttributes()
-      .endSpec()
-      .build();
+            return reviewResponse;
+        }).always();
 
-    server.expect().post().withPath("/apis/authorization.k8s.io/v1/namespaces/test/localsubjectaccessreviews").andReply(200, recordedRequest -> {
-      ObjectMapper mapper = new ObjectMapper();
-      LocalSubjectAccessReview reviewResponse = null;
-      try {
-        reviewResponse = mapper.readValue(recordedRequest.getBody().readString(Charset.defaultCharset()), LocalSubjectAccessReview.class);
-        reviewResponse.setStatus(new SubjectAccessReviewStatus(true, false, "",""));
-      } catch (IOException e) {
-        logger.error("Invalid response received", e);
-      }
+        SubjectAccessReview reviewResponse = client.subjectAccessReviewAuth().create(review);
 
-      return reviewResponse;
-    }).once();
+        assertAll(() -> {
+            assertNotNull(reviewResponse);
+            assertEquals(true, reviewResponse.getStatus().getAllowed());
+        });
+    }
 
-    LocalSubjectAccessReview reviewResponse = client.subjectAccessReviewAuth()
-      .inNamespace("test").create(review);
+    @Test
+    public void createLocalSubjectAccessReviewTest() {
+        KubernetesClient client = server.getClient();
 
-    assertNotNull(reviewResponse);
-    assertNotNull(reviewResponse.getMetadata());
-    assertEquals("test", reviewResponse.getMetadata().getNamespace());
-    assertEquals("test", reviewResponse.getSpec().getResourceAttributes().getNamespace());
-    assertEquals(true, reviewResponse.getStatus().getAllowed());
+        LocalSubjectAccessReview review = new LocalSubjectAccessReviewBuilder().withNewSpec()
+                .withUser("admin-user")
+                .withNewResourceAttributes()
+                .withResource("pod")
+                .withVerb("create")
+                .endResourceAttributes()
+                .endSpec()
+                .build();
 
-  }
+        server.expect().post().withPath("/apis/authorization.k8s.io/v1/namespaces/test/localsubjectaccessreviews").andReply(200, recordedRequest -> {
+            LocalSubjectAccessReview reviewResponse = Serialization.unmarshal(recordedRequest.getBody().readString(Charset.defaultCharset()), LocalSubjectAccessReview.class);
+            reviewResponse.setStatus(new SubjectAccessReviewStatus(true, false, "", ""));
+
+            return reviewResponse;
+        }).once();
+
+        LocalSubjectAccessReview reviewResponse = client.subjectAccessReviewAuth()
+                .inNamespace("test").create(review);
+
+        assertAll(() -> {
+            assertNotNull(reviewResponse);
+            assertNotNull(reviewResponse.getMetadata());
+            assertEquals("test", reviewResponse.getMetadata().getNamespace());
+            assertEquals("test", reviewResponse.getSpec().getResourceAttributes().getNamespace());
+            assertEquals(true, reviewResponse.getStatus().getAllowed());
+        });
+    }
 }
