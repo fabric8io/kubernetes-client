@@ -35,7 +35,7 @@ public class PodSecurityPolicyOperationsImpl extends HasMetadataOperation<PodSec
   }
 
   public PodSecurityPolicyOperationsImpl(OperationContext context) {
-    super(context.withApiGroupName("extensions")
+    super(context.withApiGroupName("policy")
       .withApiGroupVersion("v1beta1")
       .withPlural("podsecuritypolicies"));
     this.type = PodSecurityPolicy.class;
