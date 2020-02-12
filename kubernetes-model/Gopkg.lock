@@ -41,15 +41,14 @@
     "user/v1",
   ]
   pruneopts = "UT"
-  revision = "d4eabe2e9a66c8cd11d486335b157d33ea22a86c"
+  revision = "a0e53e94816b9a26ceb82e248e63e0666c377f44"
 
 [[projects]]
   digest = "1:ef03a648cc87c8f1a350ff49b2df30a9b8ad03ca71c388d2c2554997cdfbb2b4"
   name = "github.com/openshift/origin"
   packages = ["."]
   pruneopts = "UT"
-  revision = "0cbc58b117403b9d9169dbafdfac59ef104bb997"
-  version = "v4.1.0"
+  revision = "a7570ddacd8dbbb8158be230d802e07427d49c50"
 
 [[projects]]
   branch = "master"

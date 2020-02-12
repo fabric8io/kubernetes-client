@@ -15629,6 +15629,41 @@
         "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
     },
+    "os_build_BuildCondition": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "lastTransitionTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "javaType": "String"
+        },
+        "lastUpdateTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "javaType": "String"
+        },
+        "message": {
+          "type": "string",
+          "description": ""
+        },
+        "reason": {
+          "type": "string",
+          "description": ""
+        },
+        "status": {
+          "type": "string",
+          "description": ""
+        },
+        "type": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.BuildCondition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_build_BuildConfig": {
       "type": "object",
       "description": "",
@@ -16093,6 +16128,15 @@
         "completionTimestamp": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
           "javaType": "String"
+        },
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_build_BuildCondition",
+            "javaType": "io.fabric8.openshift.api.model.BuildCondition"
+          }
         },
         "config": {
           "$ref": "#/definitions/kubernetes_core_ObjectReference",
