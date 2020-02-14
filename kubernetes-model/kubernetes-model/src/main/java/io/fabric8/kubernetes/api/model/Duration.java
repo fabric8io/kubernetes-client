@@ -106,8 +106,8 @@ public class Duration implements KubernetesResource {
   /**
    * Parses {@link String} into Duration.
    *
-   * <p> Valid time abbreviations
    * <table>
+   *   <caption>Valid time abbreviations</caption>
    *   <thead>
    *     <tr><th>Abbreviation</th><th>Time Unit</th></tr>
    *   </thead>
@@ -122,7 +122,7 @@ public class Duration implements KubernetesResource {
    *   <tr><td>w, wk, week, weeks</td><td>Week</td></tr>
    *   </tbody>
    * </table>
-   * <br/>
+   * <br>
    * <p>Example:
    *
    * <pre>{@code
