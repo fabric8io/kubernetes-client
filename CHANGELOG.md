@@ -6,6 +6,7 @@
 * Fix #959: Support for double braced `${{ }}` template placeholders
 * Fix #1964: Refactor Duration
 * Fix #703: Fix NullPointerException in Config.tryKubeConfig
+* Fix #2000: Unable to create jobs in OSGi environments
 
 #### Improvements
 * Fix #1874: Added unit tests verifying windows line-ends (CRLF) work
