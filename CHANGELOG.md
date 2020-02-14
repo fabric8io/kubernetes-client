@@ -1,6 +1,15 @@
 ## CHANGELOG
 
-### 4.7-SNAPSHOT
+### 4.8-SNAPSHOT
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+### 4.8.0 (14-02-2020)
 #### Bugs
 * Fix #1847: Remove resource-\*.vm files from \*-client.jar
 * Fix #959: Support for double braced `${{ }}` template placeholders
