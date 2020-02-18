@@ -17,7 +17,6 @@ package io.fabric8.kubernetes.client.informers.cache;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import io.fabric8.kubernetes.client.informers.ResyncRunnable;
@@ -40,17 +39,10 @@ import java.util.function.Supplier;
  * This is taken from https://github.com/kubernetes-client/java/blob/master/util/src/main/java/io/kubernetes/client/informer/cache/Controller.java
  * which has been ported from official go client: https://github.com/kubernetes/client-go/blob/master/tools/cache/controller.go
  */
-public class Controller<T extends HasMetadata, TList extends KubernetesResourceList<T>> {
+public class Controller<T extends HasMetadata, L extends KubernetesResourceList<T>> {
   private static final Logger log = LoggerFactory.getLogger(Controller.class);
 
   private static final long DEFAULT_PERIOD = 5000L;
-
-  /**
-   * Period controls the timing between one watch ending
-   * and the beginning of the next one in milliseconds.
-   * It's one second by default as done in go client
-   */
-  private static final long DEFAULT_DELAY_PERIOD = 1000L;
 
   /**
    * resync fifo internals in millis
@@ -62,9 +54,9 @@ public class Controller<T extends HasMetadata, TList extends KubernetesResourceL
    */
   private DeltaFIFO<T> queue;
 
-  private ListerWatcher<T, TList> listerWatcher;
+  private ListerWatcher<T, L> listerWatcher;
 
-  private ReflectorRunnable<T, TList> reflector;
+  private Reflector<T, L> reflector;
 
   private Supplier<Boolean> resyncFunc;
 
@@ -80,9 +72,7 @@ public class Controller<T extends HasMetadata, TList extends KubernetesResourceL
 
   private Class<T> apiTypeClass;
 
-  private ScheduledFuture reflectorFuture;
-
-  public Controller(Class<T> apiTypeClass, DeltaFIFO<T> queue, ListerWatcher<T, TList> listerWatcher, Consumer<Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>>> processFunc, Supplier<Boolean> resyncFunc, long fullResyncPeriod, OperationContext context) {
+  public Controller(Class<T> apiTypeClass, DeltaFIFO<T> queue, ListerWatcher<T, L> listerWatcher, Consumer<Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>>> processFunc, Supplier<Boolean> resyncFunc, long fullResyncPeriod, OperationContext context) {
     this.queue = queue;
     this.listerWatcher = listerWatcher;
     this.apiTypeClass = apiTypeClass;
@@ -98,7 +88,7 @@ public class Controller<T extends HasMetadata, TList extends KubernetesResourceL
     this.resyncExecutor = Executors.newSingleThreadScheduledExecutor();
   }
 
-  public Controller(Class<T> apiTypeClass, DeltaFIFO<T> queue, ListerWatcher<T, TList> listerWatcher, Consumer<Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>>> popProcessFunc, OperationContext context) {
+  public Controller(Class<T> apiTypeClass, DeltaFIFO<T> queue, ListerWatcher<T, L> listerWatcher, Consumer<Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>>> popProcessFunc, OperationContext context) {
     this(apiTypeClass, queue, listerWatcher, popProcessFunc, null, 0, context);
   }
 
@@ -108,23 +98,21 @@ public class Controller<T extends HasMetadata, TList extends KubernetesResourceL
     // Start the resync runnable
     if (fullResyncPeriod > 0) {
       ResyncRunnable resyncRunnable = new ResyncRunnable(queue, resyncFunc);
-      resyncFuture = resyncExecutor.scheduleAtFixedRate(resyncRunnable::run, fullResyncPeriod, fullResyncPeriod, TimeUnit.MILLISECONDS);
+      resyncFuture = resyncExecutor.scheduleAtFixedRate(resyncRunnable, fullResyncPeriod, fullResyncPeriod, TimeUnit.MILLISECONDS);
     } else {
       log.info("informer#Controller: resync skipped due to 0 full resync period");
     }
 
-    synchronized (this) {
-      reflector = new ReflectorRunnable<T, TList>(apiTypeClass, listerWatcher, queue, operationContext);
-      try {
-        if (fullResyncPeriod > 0) {
-          reflectorFuture = reflectExecutor.scheduleWithFixedDelay(reflector::run, DEFAULT_DELAY_PERIOD, fullResyncPeriod, TimeUnit.MILLISECONDS);
-        } else {
-          reflectorFuture = reflectExecutor.scheduleWithFixedDelay(reflector::run, DEFAULT_DELAY_PERIOD, DEFAULT_PERIOD, TimeUnit.MILLISECONDS);
-        }
-      } catch (RejectedExecutionException e) {
-        log.warn("reflector list-watching job exiting because the thread-pool is shutting down");
-        return;
+    try {
+      if (fullResyncPeriod > 0) {
+        reflector = new Reflector<>(apiTypeClass, listerWatcher, queue, operationContext, fullResyncPeriod);
+      } else {
+        reflector = new Reflector<>(apiTypeClass, listerWatcher, queue, operationContext, DEFAULT_PERIOD);
       }
+      reflector.watch();
+    } catch (RejectedExecutionException e) {
+      log.warn("Reflector list-watching job exiting because the thread-pool is shutting down", e);
+      return;
     }
 
     // Start the process loop
@@ -136,10 +124,7 @@ public class Controller<T extends HasMetadata, TList extends KubernetesResourceL
    */
   public void stop() {
     synchronized (this) {
-      if (reflectorFuture != null) {
-        reflector.stop();
-        reflectorFuture.cancel(true);
-      }
+      reflector.stop();
       reflectExecutor.shutdown();
     }
   }

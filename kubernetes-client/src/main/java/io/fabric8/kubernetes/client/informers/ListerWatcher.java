@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.informers;
 
 import io.fabric8.kubernetes.api.model.ListOptions;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
@@ -26,10 +25,10 @@ import io.fabric8.kubernetes.client.dsl.base.OperationContext;
  * start a watch on a resource.
  *
  * @param <T> type
- * @param <TList> list for that type
+ * @param <L> list for that type
  */
-public interface ListerWatcher<T, TList> {
-  Watch watch(ListOptions params, String namespace, OperationContext context, Watcher<T> watcher) throws KubernetesClientException;
+public interface ListerWatcher<T, L> {
+  Watch watch(ListOptions params, String namespace, OperationContext context, Watcher<T> watcher);
 
-  TList list(ListOptions params, String namespace, OperationContext context) throws KubernetesClientException;
+  L list(ListOptions params, String namespace, OperationContext context);
 }

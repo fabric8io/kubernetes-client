@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-public class DefaultSharedIndexInformer<T extends HasMetadata, TList extends KubernetesResourceList<T>> implements SharedIndexInformer<T> {
+public class DefaultSharedIndexInformer<T extends HasMetadata, L extends KubernetesResourceList<T>> implements SharedIndexInformer<T> {
   private static final Logger log = LoggerFactory.getLogger(DefaultSharedIndexInformer.class);
 
   private static final long MINIMUM_RESYNC_PERIOD_MILLIS = 1000L;
@@ -54,23 +54,23 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, TList extends Kub
 
   private SharedProcessor<T> processor;
 
-  private Controller<T, TList> controller;
+  private Controller<T, L> controller;
 
   private Thread controllerThread;
 
   private volatile boolean started = false;
   private volatile boolean stopped = false;
 
-  public DefaultSharedIndexInformer(Class<T> apiTypeClass, ListerWatcher listerWatcher, long resyncPeriod, OperationContext context) {
+  public DefaultSharedIndexInformer(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, long resyncPeriod, OperationContext context) {
     this.resyncCheckPeriodMillis = resyncPeriod;
     this.defaultEventHandlerResyncPeriod = resyncPeriod;
 
     this.processor = new SharedProcessor<>();
     this.indexer = new Cache();
 
-    DeltaFIFO<T> fifo = new DeltaFIFO<T>(Cache::metaNamespaceKeyFunc, this.indexer);
+    DeltaFIFO<T> fifo = new DeltaFIFO<>(Cache::metaNamespaceKeyFunc, this.indexer);
 
-    this.controller = new Controller<T, TList>(apiTypeClass, fifo, listerWatcher, this::handleDeltas, processor::shouldResync, resyncCheckPeriodMillis, context);
+    this.controller = new Controller<>(apiTypeClass, fifo, listerWatcher, this::handleDeltas, processor::shouldResync, resyncCheckPeriodMillis, context);
     controllerThread = new Thread(controller::run, "informer-controller-" + apiTypeClass.getSimpleName());
   }
 

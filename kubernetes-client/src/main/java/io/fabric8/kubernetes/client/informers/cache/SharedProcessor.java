@@ -92,7 +92,7 @@ public class SharedProcessor<T> {
       if (listeners == null || listeners.isEmpty()) {
         return;
       }
-      for (ProcessorListener listener : listeners) {
+      for (ProcessorListener<T> listener : listeners) {
         executorService.submit(listener);
       }
     } finally {
@@ -130,7 +130,7 @@ public class SharedProcessor<T> {
       this.syncingListeners = new ArrayList<>();
 
       ZonedDateTime now = ZonedDateTime.now();
-      for (ProcessorListener listener : this.listeners) {
+      for (ProcessorListener<T> listener : this.listeners) {
         if (listener.shouldResync(now)) {
           resyncNeeded = true;
           this.syncingListeners.add(listener);

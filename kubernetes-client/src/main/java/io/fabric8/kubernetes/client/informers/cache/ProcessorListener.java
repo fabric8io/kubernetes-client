@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -38,7 +39,7 @@ public class ProcessorListener<T> implements Runnable {
   private static final Logger log = LoggerFactory.getLogger(ProcessorListener.class);
   private long resyncPeriodInMillis;
   private ZonedDateTime nextResync;
-  private BlockingQueue<Notification> queue;
+  private BlockingQueue<Notification<T>> queue;
   private ResourceEventHandler<T> handler;
 
   public ProcessorListener(ResourceEventHandler<T> handler, long resyncPeriodInMillis) {
@@ -52,48 +53,20 @@ public class ProcessorListener<T> implements Runnable {
   @Override
   public void run() {
     while (true) {
-      Boolean isValidNotification = Boolean.FALSE;
-      String operationType = "";
       try {
-        Notification obj = queue.take();
-        if (obj instanceof UpdateNotification) {
-          isValidNotification = Boolean.TRUE;
-          operationType = "UPDATE";
-          UpdateNotification notification = (UpdateNotification) obj;
-          this.handler.onUpdate((T) notification.getOldObj(), (T) notification.getNewObj());
-        } else if (obj instanceof AddNotification) {
-          isValidNotification = Boolean.TRUE;
-          operationType = "ADD";
-          AddNotification notification = (AddNotification) obj;
-          this.handler.onAdd((T) notification.getNewObj());
-        } else if (obj instanceof DeleteNotification) {
-          isValidNotification = Boolean.TRUE;
-          operationType = "DELETE";
-          Object deletedObj = ((DeleteNotification) obj).getOldObj();
-          if (deletedObj instanceof  DeltaFIFO.DeletedFinalStateUnknown) {
-            this.handler.onDelete(((DeltaFIFO.DeletedFinalStateUnknown<T>) deletedObj).getObj(), true);
-          } else {
-            this.handler.onDelete((T) deletedObj, false);
-          }
-        }
-      } catch (InterruptedException e) {
-        log.error("processor interrupted: {}", e.getMessage());
+        queue.take().handle(handler);
+      } catch(InterruptedException ex) {
+        log.error("Processor thread interrupted: {}", ex.getMessage());
+        Thread.currentThread().interrupt();
         return;
-      } catch (Throwable t) {
-        log.error("Failed invoking " + operationType + " event handler: {}", t.getMessage());
-      }
-
-      if (Boolean.FALSE.equals(isValidNotification)) {
-        throw new RuntimeException("Unrecognized notification.");
+      } catch (Exception ex) {
+        log.error("Failed invoking {} event handler: {}", ex.getMessage());
       }
     }
   }
 
   public void add(Notification<T> obj) {
-    if (obj == null) {
-      return;
-    }
-    this.queue.add(obj);
+    Optional.ofNullable(obj).ifPresent(this.queue::add);
   }
 
   public void determineNextResync(ZonedDateTime now) {
@@ -104,45 +77,60 @@ public class ProcessorListener<T> implements Runnable {
     return this.resyncPeriodInMillis != 0 && (now.isAfter(this.nextResync) || now.equals(this.nextResync));
   }
 
-  public static class Notification<T> {}
+  public abstract static class Notification<T> {
+    private final T oldObject;
+    private final T newObject;
+
+    public Notification(T oldObject, T newObject) {
+      this.oldObject = oldObject;
+      this.newObject = newObject;
+    }
+
+    public T getOldObject() {
+      return oldObject;
+    }
+
+    public T getNewObject() {
+      return newObject;
+    }
+
+    public abstract void handle(ResourceEventHandler<T> resourceEventHandler);
+  }
 
   public static final class UpdateNotification<T> extends Notification<T> {
-    private T oldObj;
-    private T newObj;
-
-    public UpdateNotification(T oldObj, T newObj) {
-      this.oldObj = oldObj;
-      this.newObj = newObj;
+    public UpdateNotification(T oldObject, T newObject) {
+      super(oldObject, newObject);
     }
 
-    T getOldObj() {
-      return oldObj;
-    }
-
-    T getNewObj() {
-      return newObj;
+    @Override
+    public void handle(ResourceEventHandler<T> resourceEventHandler) {
+      resourceEventHandler.onUpdate(getOldObject(), getNewObject());
     }
   }
 
   public static final class AddNotification<T> extends Notification<T> {
-    private T newObj;
-
-    public AddNotification(T newObj) {
-      this.newObj = newObj;
+    public AddNotification(T newObject) {
+      super(null, newObject);
     }
 
-    T getNewObj() { return newObj; }
+    @Override
+    public void handle(ResourceEventHandler<T> resourceEventHandler) {
+      resourceEventHandler.onAdd(getNewObject());
+    }
   }
 
   public static final class DeleteNotification<T> extends Notification<T> {
-    private T oldObj;
-
-    public DeleteNotification(T oldObj) {
-      this.oldObj = oldObj;
+    public DeleteNotification(T oldObject) {
+      super(oldObject, null);
     }
 
-    T getOldObj() {
-      return oldObj;
+    @Override
+    public void handle(ResourceEventHandler<T> resourceEventHandler) {
+      if (getOldObject() instanceof  DeltaFIFO.DeletedFinalStateUnknown) {
+        resourceEventHandler.onDelete(((DeltaFIFO.DeletedFinalStateUnknown<T>) getOldObject()).getObj(), true);
+      } else {
+        resourceEventHandler.onDelete(getOldObject(), false);
+      }
     }
   }
 }
