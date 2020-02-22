@@ -6,6 +6,7 @@
 #### Improvements
 
 #### Dependency Upgrade
++ Updated Knative model to v0.12.0
 
 #### New Features
 

@@ -23,8 +23,13 @@ import (
 	eventingv1alpha1 "github.com/knative/eventing/pkg/apis/eventing/v1alpha1"
 	messagingv1alpha1 "github.com/knative/eventing/pkg/apis/messaging/v1alpha1"
 	servingv1 "github.com/knative/serving/pkg/apis/serving/v1"
+  flowsv1alpha1 "github.com/knative/eventing/pkg/apis/flows/v1alpha1"
 	servingv1alpha1 "github.com/knative/serving/pkg/apis/serving/v1alpha1"
 	servingv1beta1 "github.com/knative/serving/pkg/apis/serving/v1beta1"
+  duckv1alpha1 "github.com/knative/eventing/pkg/apis/duck/v1alpha1"
+  duckv1beta1 "github.com/knative/eventing/pkg/apis/duck/v1beta1"
+  legacysourcesv1alpha1 "github.com/knative/eventing/pkg/apis/legacysources/v1alpha1"
+
 	"log"
 	"os"
 	"reflect"
@@ -67,20 +72,53 @@ type Schema struct {
 	BrokerList                    eventingv1alpha1.BrokerList
 	Trigger                       eventingv1alpha1.Trigger
 	TriggerList                   eventingv1alpha1.TriggerList
-	Channel                       eventingv1alpha1.Channel
-	ChannelList                   eventingv1alpha1.ChannelList
-	ClusterChannelProvisioner     eventingv1alpha1.ClusterChannelProvisioner
-	ClusterChannelProvisionerList eventingv1alpha1.ClusterChannelProvisionerList
-	Subscription                  eventingv1alpha1.Subscription
-	SubscriptionList              eventingv1alpha1.SubscriptionList
 	EventType                     eventingv1alpha1.EventType
 	EventTypeList                 eventingv1alpha1.EventTypeList
 
 	//Eventing - Messaging
-	Sequence            messagingv1alpha1.Sequence
-	SequenceList        messagingv1alpha1.SequenceList
-	InMemoryChannel     messagingv1alpha1.InMemoryChannel
-	InMemoryChannelList messagingv1alpha1.InMemoryChannelList
+  Channel             messagingv1alpha1.Channel
+  ChannelList         messagingv1alpha1.ChannelList
+  Subscription        messagingv1alpha1.Subscription
+  SubscriptionList    messagingv1alpha1.SubscriptionList
+  InMemoryChannel     messagingv1alpha1.InMemoryChannel
+  InMemoryChannelList messagingv1alpha1.InMemoryChannelList
+
+  Sequence                   flowsv1alpha1.Sequence
+  SequenceList               flowsv1alpha1.SequenceList
+  Parallel                   flowsv1alpha1.Parallel
+  ParallelList               flowsv1alpha1.ParallelList
+  ParallelBranch             flowsv1alpha1.ParallelBranch
+  ParallelBranchStatus       flowsv1alpha1.ParallelBranchStatus
+  ParallelChannelStatus      flowsv1alpha1.ParallelChannelStatus
+  ParallelSubscriptionStatus flowsv1alpha1.ParallelSubscriptionStatus
+
+  V1alpha1Resource             duckv1alpha1.Resource
+  V1alpha1ResourceList         duckv1alpha1.ResourceList
+  V1alpha1Channelable          duckv1alpha1.Channelable
+  V1alpha1ChanalableList       duckv1alpha1.ChannelableList
+  V1alpha1Subscribable         duckv1alpha1.Subscribable
+  V1alpha1SubscribableTypeList duckv1alpha1.SubscribableTypeList
+  V1alpha1SubscribableType     duckv1alpha1.SubscribableType
+
+  V1beta1Subscribable         duckv1beta1.Subscribable
+  V1beta1SubscribableList     duckv1beta1.SubscribableList
+  V1beta1Channelable          duckv1beta1.Channelable
+  V1beta1ChanalableList       duckv1beta1.ChannelableList
+  V1beta1BackoffPolicyType    duckv1beta1.BackoffPolicyType
+  V1beta1DeliverySpec         duckv1beta1.DeliverySpec
+  V1beta1SubscriberStatus     duckv1beta1.SubscriberStatus
+  V1beta1SubscribableStatus   duckv1beta1.SubscribableStatus
+
+
+  ApiServerSource     legacysourcesv1alpha1.ApiServerSource
+  ApiServerResource   legacysourcesv1alpha1.ApiServerResource
+  ApiServerSourceList legacysourcesv1alpha1.ApiServerSourceList
+  ContainerSource     legacysourcesv1alpha1.ContainerSource
+  ContainerSourceList legacysourcesv1alpha1.ContainerSourceList
+  CronJobSource       legacysourcesv1alpha1.CronJobSource
+  CronJobSourceList   legacysourcesv1alpha1.CronJobSourceList
+  SinkBinding         legacysourcesv1alpha1.SinkBinding
+  SinkBindingList     legacysourcesv1alpha1.SinkBindingList
 }
 
 func main() {
@@ -92,20 +130,28 @@ func main() {
 		{"k8s.io/apimachinery/pkg/runtime", "v1", "io.fabric8.kubernetes.api.model", "kubernetes_uti_"},
 		{"net/url", "v1", "io.fabric8.knative.net", "knative_"},
 		{"knative.dev/pkg/apis", "v1", "io.fabric8.knative.v1", "knative_"},
+		{"knative.dev/pkg/apis/v1alpha1", "v1alpha1", "io.fabric8.knative.v1", "knative_v1alpha1_"},
+		{"knative.dev/pkg/tracker", "tracker", "io.fabric8.knative.tracker", "knative_tracker_"},
 		{"github.com/knative/pkg/apis", "v1", "io.fabric8.knative.v1", "knative_"},
-		{"knative.dev/pkg/apis/duck/v1beta1", "duck", "io.fabric8.knative.duck.v1beta1", "knative_duck_v1beta1_"},
-		{"github.com/knative/pkg/apis/duck/v1beta1", "duck", "io.fabric8.knative.duck.v1beta1", "knative_duck_v1beta1_"},
-		{"knative.dev/pkg/apis/duck/v1alpha1", "duck", "io.fabric8.knative.duck.v1alpha1", "knative_duck_v1alpha1_"},
-		{"github.com/knative/pkg/apis/duck/v1alpha1", "duck", "io.fabric8.knative.duck.v1alpha1", "knative_duck_v1alpha1_"},
-		{"knative.dev/pkg/apis/duck/v1", "duck", "io.fabric8.knative.duck.v1", "knative_duck_v1_"},
+		{"knative.dev/eventing/pkg/apis/duck/v1beta1", "duck", "io.fabric8.knative.dev.duck.v1beta1", "knative_dev_duck_v1beta1_"},
+		{"knative.dev/eventing/pkg/apis/duck/v1alpha1", "duck", "io.fabric8.knative.dev.duck.v1alpha1", "knative_dev_duck_v1alpha1_"},
+		{"knative.dev/pkg/apis/duck/v1", "duck", "io.fabric8.knative.duck.v1", "knative_dev_duck_v1_"},
+    {"knative.dev/pkg/apis/duck/v1beta1", "duck", "io.fabric8.knative.duck.v1beta1", "knative_dev_duck_v1beta1_"},
+    {"knative.dev/pkg/apis/duck/v1alpha1", "duck", "io.fabric8.knative.duck.v1alpha1", "knative_dev_duck_v1alpha1_"},
 		{"github.com/knative/pkg/apis/duck/v1", "duck", "io.fabric8.knative.duck.v1", "knative_duck_v1_"},
 		{"github.com/knative/serving/pkg/apis/serving/v1alpha1", "serving", "io.fabric8.knative.serving.v1alpha1", "knative_serving_v1alpha1_"},
 		{"github.com/knative/serving/pkg/apis/serving/v1beta1", "serving", "io.fabric8.knative.serving.v1beta1", "knative_serving_v1beta1_"},
 		{"github.com/knative/serving/pkg/apis/serving/v1", "serving", "io.fabric8.knative.serving.v1", "knative_serving_v1_"},
 		{"knative.dev/serving/pkg/apis/serving/v1", "serving", "io.fabric8.knative.serving.v1", "knative_serving_v1_"},
+		{"knative.dev/eventing/pkg/apis/messaging/v1beta1", "messaging", "io.fabric8.knative.dev.messaging.v1beta1", "knative_dev_messaging_v1beta1_"},
+		{"knative.dev/eventing/pkg/apis/duck/v1beta1", "duck", "io.fabric8.knative.dev.duck.v1beta1", "knative_dev_duck_v1beta1_"},
 		{"github.com/knative/eventing/pkg/apis/eventing/v1alpha1", "eventing", "io.fabric8.knative.eventing.v1alpha1", "knative_eventing_v1alpha1_"},
 		{"github.com/knative/eventing/pkg/apis/messaging/v1alpha1", "messaging", "io.fabric8.knative.messaging.v1alpha1", "knative_messaging_v1alpha1_"},
+    {"github.com/knative/eventing/pkg/apis/messaging/v1beta1", "messaging", "io.fabric8.knative.messaging.v1beta1", "knative_messaging_v1beta1_"},
 		{"github.com/knative/eventing/pkg/apis/duck/v1alpha1", "duck", "io.fabric8.knative.duck.v1alpha1", "knative_duck_v1alpha1_"},
+    {"github.com/knative/eventing/pkg/apis/duck/v1beta1", "duck", "io.fabric8.knative.duck.v1beta1", "knative_duck_v1beta1_"},
+    {"github.com/knative/eventing/pkg/apis/flows/v1alpha1", "flows", "io.fabric8.knative.flows.v1alpha1", "knative_flows_v1alpha1_"},
+    {"github.com/knative/eventing/pkg/apis/legacysources/v1alpha1", "legacysources", "io.fabric8.knative.legacysources.v1alpha1", "knative_legacysources_v1alpha1_"},
 	}
 
 	typeMap := map[reflect.Type]reflect.Type{
