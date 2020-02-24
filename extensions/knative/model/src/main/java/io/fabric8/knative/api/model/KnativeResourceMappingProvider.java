@@ -41,14 +41,13 @@ public class KnativeResourceMappingProvider implements KubernetesResourceMapping
         mappings.put("serving.knative.dev/v1#Route", io.fabric8.knative.serving.v1.Route.class);
 
         mappings.put("eventing.knative.dev/v1alpha1#Broker", io.fabric8.knative.eventing.v1alpha1.Broker.class);
-        mappings.put("eventing.knative.dev/v1alpha1#Channel", io.fabric8.knative.eventing.v1alpha1.Channel.class);
-        mappings.put("eventing.knative.dev/v1alpha1#ClusterChannelProvisioner", io.fabric8.knative.eventing.v1alpha1.ClusterChannelProvisioner.class);
+        mappings.put("eventing.knative.dev/v1alpha1#Channel", io.fabric8.knative.messaging.v1alpha1.Channel.class);
         mappings.put("eventing.knative.dev/v1alpha1#EventType", io.fabric8.knative.eventing.v1alpha1.EventType.class);
         mappings.put("eventing.knative.dev/v1alpha1#Trigger", io.fabric8.knative.eventing.v1alpha1.Trigger.class);
-        mappings.put("eventing.knative.dev/v1alpha1#Subscription", io.fabric8.knative.eventing.v1alpha1.Subscription.class);
+        mappings.put("eventing.knative.dev/v1alpha1#Subscription", io.fabric8.knative.messaging.v1alpha1.Subscription.class);
 
         mappings.put("messaging.knative.dev/v1alpha1#InMemoryChannel", io.fabric8.knative.messaging.v1alpha1.InMemoryChannel.class);
-        mappings.put("messaging.knative.dev/v1alpha1#Sequence", io.fabric8.knative.messaging.v1alpha1.Sequence.class);
+        mappings.put("messaging.knative.dev/v1alpha1#Sequence", io.fabric8.knative.flows.v1alpha1.Sequence.class);
     }
      
     public Map<String, Class<? extends KubernetesResource>> getMappings() {

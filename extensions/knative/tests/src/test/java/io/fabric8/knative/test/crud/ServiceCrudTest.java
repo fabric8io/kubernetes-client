@@ -15,10 +15,12 @@
  */
 package io.fabric8.knative.test.crud;
 
-import io.fabric8.knative.serving.v1alpha1.*;
 import io.fabric8.knative.client.KnativeClient;
 import io.fabric8.knative.mock.KnativeServer;
 
+import io.fabric8.knative.serving.v1.Service;
+import io.fabric8.knative.serving.v1.ServiceBuilder;
+import io.fabric8.knative.serving.v1.ServiceList;
 import org.junit.Rule;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;

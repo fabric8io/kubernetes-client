@@ -121,7 +121,7 @@
             <phase>generate-sources</phase>
             <configuration>
               <target>
-                <echo>removing the duplicate generated calss</echo>
+                <echo>removing the duplicate generated class</echo>
                 <delete file="${project.build.directory}/generated-sources/io/fabric8/kubernetes/api/model/coordination/v1/LeaseSpec.java" verbose="true" />
                 <delete file="${project.build.directory}/generated-sources/io/fabric8/kubernetes/api/model/Duration.java" verbose="true" />
                 <delete file="${project.build.directory}/generated-sources/io/fabric8/kubernetes/api/model/HasMetadata.java" verbose="true" />
