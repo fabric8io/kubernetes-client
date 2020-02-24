@@ -15,6 +15,34 @@
  */
 package io.fabric8.tekton.client;
 
+import io.fabric8.tekton.client.internal.ClusterTaskOperationsImpl;
+import io.fabric8.tekton.client.internal.ConditionOperationsImpl;
+import io.fabric8.tekton.client.internal.PipelineOperationsImpl;
+import io.fabric8.tekton.client.internal.PipelineResourceOperationsImpl;
+import io.fabric8.tekton.client.internal.PipelineRunOperationsImpl;
+import io.fabric8.tekton.client.internal.TaskOperationsImpl;
+import io.fabric8.tekton.client.internal.TaskRunOperationsImpl;
+import io.fabric8.tekton.pipeline.v1alpha1.ClusterTask;
+import io.fabric8.tekton.pipeline.v1alpha1.ClusterTaskList;
+import io.fabric8.tekton.pipeline.v1alpha1.Condition;
+import io.fabric8.tekton.pipeline.v1alpha1.ConditionList;
+import io.fabric8.tekton.pipeline.v1alpha1.DoneableClusterTask;
+import io.fabric8.tekton.pipeline.v1alpha1.DoneableCondition;
+import io.fabric8.tekton.pipeline.v1alpha1.DoneablePipeline;
+import io.fabric8.tekton.pipeline.v1alpha1.DoneablePipelineRun;
+import io.fabric8.tekton.pipeline.v1alpha1.DoneableTask;
+import io.fabric8.tekton.pipeline.v1alpha1.DoneableTaskRun;
+import io.fabric8.tekton.pipeline.v1alpha1.Pipeline;
+import io.fabric8.tekton.pipeline.v1alpha1.PipelineList;
+import io.fabric8.tekton.pipeline.v1alpha1.PipelineRun;
+import io.fabric8.tekton.pipeline.v1alpha1.PipelineRunList;
+import io.fabric8.tekton.pipeline.v1alpha1.Task;
+import io.fabric8.tekton.pipeline.v1alpha1.TaskList;
+import io.fabric8.tekton.pipeline.v1alpha1.TaskRun;
+import io.fabric8.tekton.pipeline.v1alpha1.TaskRunList;
+import io.fabric8.tekton.resource.v1alpha1.DoneablePipelineResource;
+import io.fabric8.tekton.resource.v1alpha1.PipelineResource;
+import io.fabric8.tekton.resource.v1alpha1.PipelineResourceList;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.RequestConfig;
@@ -25,9 +53,6 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-
-import io.fabric8.tekton.pipeline.v1alpha1.*;
-import io.fabric8.tekton.client.internal.*;
 
 public class DefaultTektonClient extends BaseClient implements NamespacedTektonClient {
 

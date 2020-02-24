@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 package io.fabric8.tekton.api.examples;
-import io.fabric8.tekton.pipeline.v1alpha1.*;
+
 import io.fabric8.tekton.client.*;
+import io.fabric8.tekton.resource.v1alpha1.PipelineResource;
+import io.fabric8.tekton.resource.v1alpha1.PipelineResourceBuilder;
 
 public class PipelineResourceCreate {
   

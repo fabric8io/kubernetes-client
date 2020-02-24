@@ -16,43 +16,58 @@
 package main
 
 import (
-	"bytes"
-	"encoding/json"
-	"fmt"
-	"github.com/fabric8io/tekton/generator/pkg/schemagen"
-	"github.com/tektoncd/pipeline/pkg/apis/pipeline/v1alpha1"
-	"log"
-	"os"
-	"reflect"
-	"strings"
-	"time"
+  "bytes"
+  "encoding/json"
+  "fmt"
+  "github.com/fabric8io/tekton/generator/pkg/schemagen"
+  "github.com/tektoncd/pipeline/pkg/apis/pipeline/pod"
+  "github.com/tektoncd/pipeline/pkg/apis/pipeline/v1alpha1"
+  "github.com/tektoncd/pipeline/pkg/apis/pipeline/v1beta1"
+  resource "github.com/tektoncd/pipeline/pkg/apis/resource/v1alpha1"
+  "log"
+  "os"
+  "reflect"
+  "strings"
+  "time"
 )
 
 //A Schema with the core types of the Service Catalog
 type Schema struct {
-	Pipeline                        v1alpha1.Pipeline
-	PipelineList                    v1alpha1.PipelineList
-	PipelineRun                     v1alpha1.PipelineRun
-	PipelineRunList                 v1alpha1.PipelineRunList
-	PipelineResource                v1alpha1.PipelineResource
-	PipelineResourceList            v1alpha1.PipelineResourceList
-	PipelineRunTaskRunStatus        v1alpha1.PipelineRunTaskRunStatus
-	PipelineRunConditionCheckStatus v1alpha1.PipelineRunConditionCheckStatus
-	Task                            v1alpha1.Task
-	TaskList                        v1alpha1.TaskList
-	TaskRun                         v1alpha1.TaskRun
-	TaskRunList                     v1alpha1.TaskRunList
-	ClusterTask                     v1alpha1.ClusterTask
-	ClusterTaskList                 v1alpha1.ClusterTaskList
-	Condition                       v1alpha1.Condition
-	ConditionList                   v1alpha1.ConditionList
+	V1alpha1Pipeline                        v1alpha1.Pipeline
+  V1alpha1PipelineList                    v1alpha1.PipelineList
+  V1alpha1PipelineRun                     v1alpha1.PipelineRun
+  V1alpha1PipelineRunList                 v1alpha1.PipelineRunList
+  V1alpha1PipelineResource                v1alpha1.PipelineResource
+  V1alpha1PipelineResourceList            v1alpha1.PipelineResourceList
+  V1alpha1PipelineRunTaskRunStatus        v1alpha1.PipelineRunTaskRunStatus
+  V1alpha1PipelineRunConditionCheckStatus v1alpha1.PipelineRunConditionCheckStatus
+  V1alpha1Task                            v1alpha1.Task
+  V1alpha1TaskList                        v1alpha1.TaskList
+  V1alpha1TaskRun                         v1alpha1.TaskRun
+	V1alpha1TaskRef                         v1alpha1.TaskRef
+  V1alpha1TaskRunList                     v1alpha1.TaskRunList
+  V1alpha1ClusterTask                     v1alpha1.ClusterTask
+  V1alpha1ClusterTaskList                 v1alpha1.ClusterTaskList
+  V1alpha1Condition                       v1alpha1.Condition
+  V1alpha1ConditionList                   v1alpha1.ConditionList
+  V1alpha1PipelineTask                    v1alpha1.PipelineTask
+  V1alpha1PipelineTaskResource            v1alpha1.PipelineTaskResources
+  V1alpha1ResourceDeclaration             v1alpha1.ResourceDeclaration
+	V1beta1Step                            v1beta1.Step
+	Template                                pod.Template
+	ResourceDeclaration                     resource.ResourceDeclaration
+	resource                                resource.PipelineResource
+
 }
 
 func main() {
 	packages := []schemagen.PackageDescriptor{
 		//"$ref": "#/definitions/github_com_tektoncd_pipeline_vendor_k8s_io_api_core_v1_Probe",
 		{"github.com/tektoncd/pipeline/pkg/apis/pipeline/v1alpha1", "tekton.dev", "io.fabric8.tekton.pipeline.v1alpha1", "tekton_v1alpha1_"},
-		{"github.com/knative/pkg/apis", "v1", "io.fabric8.knative.v1", "knative_"},
+    {"github.com/tektoncd/pipeline/pkg/apis/pipeline/v1beta1", "tekton.dev", "io.fabric8.tekton.pipeline.v1beta1", "tekton_v1alpha2_"},
+    {"github.com/tektoncd/pipeline/pkg/apis/resource/v1alpha1", "tekton.dev", "io.fabric8.tekton.resource.v1alpha1", "tekton_resource_v1alpha1_"},
+    {"github.com/tektoncd/pipeline/pkg/apis/pipeline/pod", "tekton.dev", "io.fabric8.tekton.pipeline.pod", "tekton_pod_"},
+    {"github.com/knative/pkg/apis", "v1", "io.fabric8.knative.v1", "knative_"},
 		{"knative.dev/pkg/apis", "v1", "io.fabric8.knative.v1", "knative_"},
 		{"github.com/knative/pkg/apis/duck/v1beta1", "duck", "io.fabric8.knative.duck.v1beta1", "knative_duck_v1beta1_"},
 		{"knative.dev/pkg/apis/duck/v1beta1", "duck", "io.fabric8.knative.duck.v1beta1", "knative_duck_v1beta1_"},
