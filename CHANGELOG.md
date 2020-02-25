@@ -5,6 +5,8 @@
 
 #### Improvements
 
+* Fix #2012: osgi: Allow the ManagedKubernetesClient to consume an available OAuthTokenProvider
+
 #### Dependency Upgrade
 + Updated Knative model to v0.12.0
 

@@ -77,6 +77,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
+import io.fabric8.kubernetes.client.OAuthTokenProvider;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
@@ -118,6 +119,7 @@ import org.apache.felix.scr.annotations.Deactivate;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.ReferenceCardinality;
 import org.apache.felix.scr.annotations.ReferencePolicy;
+import org.apache.felix.scr.annotations.ReferencePolicyOption;
 import org.apache.felix.scr.annotations.References;
 import org.apache.felix.scr.annotations.Service;
 
@@ -133,11 +135,14 @@ import static io.fabric8.kubernetes.client.Config.*;
 @Service({KubernetesClient.class,NamespacedKubernetesClient.class})
 @References({
   @Reference(referenceInterface = io.fabric8.kubernetes.client.ResourceHandler.class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC, bind = "bindResourceHandler", unbind = "unbindResourceHandler"),
-  @Reference(referenceInterface = ExtensionAdapter.class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC, bind = "bindExtensionAdapter", unbind = "unbindExtensionAdapter")
+  @Reference(referenceInterface = ExtensionAdapter.class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC, bind = "bindExtensionAdapter", unbind = "unbindExtensionAdapter"),
+  @Reference(referenceInterface = OAuthTokenProvider.class ,cardinality = ReferenceCardinality.OPTIONAL_UNARY, policyOption = ReferencePolicyOption.GREEDY, bind = "bindOAuthTokenProvider", unbind="unbindOAuthTokenProvider")
 })
 public class ManagedKubernetesClient extends BaseClient implements NamespacedKubernetesClient {
 
   private NamespacedKubernetesClient delegate;
+
+  private OAuthTokenProvider provider;
 
   @Activate
   public void activate(Map<String, Object> properties) {
@@ -221,6 +226,9 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
     }
     if (properties.containsKey(KUBERNETES_KEYSTORE_PASSPHRASE_PROPERTY)) {
       builder.withKeyStorePassphrase((String) properties.get(KUBERNETES_KEYSTORE_PASSPHRASE_PROPERTY));
+    }
+    if (provider != null ) {
+      builder.withOauthTokenProvider(provider);
     }
 
     delegate = new DefaultKubernetesClient(builder.build());
@@ -476,6 +484,16 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
 
   public void unbindExtensionAdapter(ExtensionAdapter adapter) {
     Adapters.unregister(adapter);
+  }
+
+  public void bindOAuthTokenProvider(OAuthTokenProvider provider) {
+      this.provider = provider;
+  }
+
+  public void unbindOAuthTokenProvider(OAuthTokenProvider provider) {
+      if ( this.provider == provider ) {
+          this.provider = null;
+      }
   }
 
   @Override
