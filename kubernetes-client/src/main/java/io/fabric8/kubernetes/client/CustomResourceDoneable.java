@@ -17,9 +17,11 @@ package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.api.builder.Function;
 import io.fabric8.kubernetes.api.model.Doneable;
+import lombok.ToString;
 
 /**
  */
+@ToString
 public class CustomResourceDoneable<T extends CustomResource> implements Doneable<T> {
   private final T resource;
   private final Function<T,T> function;
