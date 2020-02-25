@@ -73,6 +73,8 @@ public class InputStreamPumper implements Runnable, Closeable {
           } else {
             LOGGER.debug("Interrupted while pumping stream.");
           }
+        } finally {
+          close();
         }
     }
 

@@ -136,6 +136,7 @@ public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
         }
 
         LOGGER.error("Log Callback Failure.", ioe);
+        cleanUp();
         //We only need to queue startup failures.
         if (!started.get()) {
             queue.add(ioe);
@@ -150,7 +151,10 @@ public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
            } catch (IOException e) {
                throw KubernetesClientException.launderThrowable(e);
            }
-       }, () -> response.close());
+       }, () -> {
+         cleanUp();
+         response.close();
+       });
         executorService.submit(pumper);
         started.set(true);
         queue.add(true);
