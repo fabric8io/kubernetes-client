@@ -139,6 +139,7 @@
     <maven.install.plugin.version>3.0.0-M1</maven.install.plugin.version>
     <jandex.plugin.version>1.0.7</jandex.plugin.version>
     <jandex.version>2.1.2.Final</jandex.version>
+    <sonar-maven-plugin.version>3.6.1.1688</sonar-maven-plugin.version>
 
     <!-- Other options -->
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -412,6 +413,11 @@
             </dependency>
           </dependencies>
         </plugin>
+        <plugin>
+          <groupId>org.sonarsource.scanner.maven</groupId>
+          <artifactId>sonar-maven-plugin</artifactId>
+          <version>${sonar-maven-plugin.version}</version>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
@@ -529,6 +535,7 @@
               <name>Fabric8 :: Kubernetes :: Bom</name>
               <properties>
                 <skipStagingRepositoryClose>true</skipStagingRepositoryClose>
+                <sonar.skip>true</sonar.skip>
               </properties>
             </bom>
             <bom>
@@ -543,6 +550,7 @@
               </dependencies>
               <properties>
                 <skipStagingRepositoryClose>true</skipStagingRepositoryClose>
+                <sonar.skip>true</sonar.skip>
               </properties>
             </bom>
           </boms>
@@ -755,6 +763,24 @@
       <properties>
         <javadoc.opts>-Xdoclint:none</javadoc.opts>
       </properties>
+    </profile>
+    <profile>
+      <id>sonar</id>
+      <properties>
+        <sonar.projectKey>fabric8io_kubernetes-client</sonar.projectKey>
+        <sonar.moduleKey>${artifactId}</sonar.moduleKey>
+        <sonar.organization>fabric8io</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.login>${env.SONAR_LOGIN_TOKEN}</sonar.login>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.sonarsource.scanner.maven</groupId>
+            <artifactId>sonar-maven-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
 </project>
