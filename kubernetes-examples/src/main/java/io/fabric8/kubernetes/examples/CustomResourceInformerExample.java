@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
+import io.fabric8.kubernetes.client.informers.SharedInformerEventListener;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import io.fabric8.kubernetes.examples.crds.Dummy;
 import io.fabric8.kubernetes.examples.crds.DummyList;
@@ -63,6 +64,13 @@ public class CustomResourceInformerExample {
           }
         }
       );
+
+      sharedInformerFactory.addSharedInformerEventListener(new SharedInformerEventListener() {
+        @Override
+        public void onException(Exception exception) {
+          System.out.println("Exception occurred, but caught");
+        }
+      });
 
       logger.info("Starting all registered informers");
       sharedInformerFactory.startAllRegisteredInformers();

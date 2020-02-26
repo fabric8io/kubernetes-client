@@ -32,6 +32,7 @@ import okhttp3.OkHttpClient;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
@@ -52,6 +53,8 @@ public class SharedInformerFactory extends BaseOperation {
 
   private BaseOperation baseOperation;
 
+  private ConcurrentLinkedQueue<SharedInformerEventListener> eventListeners;
+
   /**
    * Constructor with thread pool specified.
    *
@@ -65,6 +68,7 @@ public class SharedInformerFactory extends BaseOperation {
     this.informers = new HashMap<>();
     this.startedInformers = new HashMap<>();
     this.baseOperation = this.newInstance(context);
+    this.eventListeners = new ConcurrentLinkedQueue<>();
   }
 
   /**
@@ -113,7 +117,7 @@ public class SharedInformerFactory extends BaseOperation {
    */
   public synchronized <T extends HasMetadata, TList extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerFor(Class<T> apiTypeClass, Class<TList> apiListTypeClass, OperationContext operationContext, long resyncPeriodInMillis) {
     ListerWatcher<T, TList> listerWatcher = listerWatcherFor(apiTypeClass, apiListTypeClass);
-    SharedIndexInformer<T> informer = new DefaultSharedIndexInformer<T, TList>(apiTypeClass, listerWatcher, resyncPeriodInMillis, operationContext);
+    SharedIndexInformer<T> informer = new DefaultSharedIndexInformer<T, TList>(apiTypeClass, listerWatcher, resyncPeriodInMillis, operationContext, eventListeners);
     this.informers.put(apiTypeClass, informer);
     return informer;
   }
@@ -197,5 +201,9 @@ public class SharedInformerFactory extends BaseOperation {
     if (shutDownThreadPool) {
       informerExecutor.shutdown();
     }
+  }
+
+  public void addSharedInformerEventListener(SharedInformerEventListener event) {
+    this.eventListeners.add(event);
   }
 }

@@ -229,4 +229,45 @@ public class DefaultSharedIndexInformerTest {
 
     factory.stopAllRegisteredInformers();
   }
+
+  @Test
+  public void testEventListeners() throws InterruptedException {
+    String startResourceVersion = "1000", endResourceVersion = "1001";
+    server.expect().withPath("/api/v1/namespaces/test/pods")
+      .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata().withItems(Arrays.asList()).build()).once();
+    server.expect().withPath("/api/v1/namespaces/test/pods?resourceVersion=" + startResourceVersion + "&watch=true")
+      .andUpgradeToWebSocket()
+      .open()
+      .waitFor(1000)
+      .andEmit(new WatchEvent(new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1").withResourceVersion(endResourceVersion).endMetadata().build(), "ADDED"))
+      .waitFor(2000)
+      .andEmit(outdatedEvent).done().once();
+
+    KubernetesClient client = server.getClient();
+    SharedInformerFactory factory = client.informers();
+    SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, PodList.class, 4000L);
+    AtomicBoolean failureCallbackReceived = new AtomicBoolean(false);
+
+    podInformer.addEventHandler(
+      new ResourceEventHandler<Pod>() {
+        @Override
+        public void onAdd(Pod obj) { }
+
+        @Override
+        public void onUpdate(Pod oldObj, Pod newObj) { }
+
+        @Override
+        public void onDelete(Pod oldObj, boolean deletedFinalStateUnknown) { }
+      });
+
+    factory.addSharedInformerEventListener(exception -> failureCallbackReceived.set(true));
+    Thread.sleep(1000L);
+    factory.startAllRegisteredInformers();
+
+    // Wait for resync period of pass
+    Thread.sleep(8000L);
+    assertEquals(false, failureCallbackReceived.get());
+
+    factory.stopAllRegisteredInformers();
+  }
 }

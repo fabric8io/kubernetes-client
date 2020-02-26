@@ -74,7 +74,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     }
   }
 
-  public void watch() {
+  public void listAndWatch() throws Exception {
     try {
       log.info("Started ReflectorRunnable watch for {}", apiTypeClass);
       reListAndSync();

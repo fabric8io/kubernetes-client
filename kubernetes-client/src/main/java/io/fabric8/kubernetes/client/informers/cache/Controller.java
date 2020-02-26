@@ -20,13 +20,14 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import io.fabric8.kubernetes.client.informers.ResyncRunnable;
+import io.fabric8.kubernetes.client.informers.SharedInformerEventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.AbstractMap;
 import java.util.Deque;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executors;
-import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -70,9 +71,11 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
 
   private OperationContext operationContext;
 
+  private ConcurrentLinkedQueue<SharedInformerEventListener> eventListeners;
+
   private Class<T> apiTypeClass;
 
-  public Controller(Class<T> apiTypeClass, DeltaFIFO<T> queue, ListerWatcher<T, L> listerWatcher, Consumer<Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>>> processFunc, Supplier<Boolean> resyncFunc, long fullResyncPeriod, OperationContext context) {
+  public Controller(Class<T> apiTypeClass, DeltaFIFO<T> queue, ListerWatcher<T, L> listerWatcher, Consumer<Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>>> processFunc, Supplier<Boolean> resyncFunc, long fullResyncPeriod, OperationContext context, ConcurrentLinkedQueue<SharedInformerEventListener> eventListeners) {
     this.queue = queue;
     this.listerWatcher = listerWatcher;
     this.apiTypeClass = apiTypeClass;
@@ -80,16 +83,13 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
     this.resyncFunc = resyncFunc;
     this.fullResyncPeriod = fullResyncPeriod;
     this.operationContext = context;
+    this.eventListeners = eventListeners;
 
     // Starts one daemon thread for reflector
     this.reflectExecutor = Executors.newSingleThreadScheduledExecutor();
 
     // Starts one daemon thread for resync
     this.resyncExecutor = Executors.newSingleThreadScheduledExecutor();
-  }
-
-  public Controller(Class<T> apiTypeClass, DeltaFIFO<T> queue, ListerWatcher<T, L> listerWatcher, Consumer<Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>>> popProcessFunc, OperationContext context) {
-    this(apiTypeClass, queue, listerWatcher, popProcessFunc, null, 0, context);
   }
 
   public void run() {
@@ -104,19 +104,19 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
     }
 
     try {
-      if (fullResyncPeriod > 0) {
-        reflector = new Reflector<>(apiTypeClass, listerWatcher, queue, operationContext, fullResyncPeriod);
-      } else {
-        reflector = new Reflector<>(apiTypeClass, listerWatcher, queue, operationContext, DEFAULT_PERIOD);
-      }
-      reflector.watch();
-    } catch (RejectedExecutionException e) {
-      log.warn("Reflector list-watching job exiting because the thread-pool is shutting down", e);
-      return;
-    }
+        if (fullResyncPeriod > 0) {
+          reflector = new Reflector<>(apiTypeClass, listerWatcher, queue, operationContext, fullResyncPeriod);
+        } else {
+          reflector = new Reflector<>(apiTypeClass, listerWatcher, queue, operationContext, DEFAULT_PERIOD);
+        }
+        reflector.listAndWatch();
 
-    // Start the process loop
-    this.processLoop();
+      // Start the process loop
+      this.processLoop();
+    } catch (Exception exception) {
+      log.warn("Reflector list-watching job exiting because the thread-pool is shutting down", exception);
+      this.eventListeners.forEach(listener -> listener.onException(exception));
+    }
   }
 
   /**
@@ -151,15 +151,16 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
   /**
    * drains the work queue.
    */
-  private void processLoop() {
+  private void processLoop() throws Exception {
     while (true) {
       try {
         this.queue.pop(this.processFunc);
       } catch (InterruptedException t) {
         log.error("DefaultController#processLoop got interrupted {}", t.getMessage(), t);
         return;
-      } catch (Throwable t) {
-        log.error("DefaultController#processLoop recovered from crashing {} ", t.getMessage(), t);
+      } catch (Exception e) {
+        log.error("DefaultController#processLoop recovered from crashing {} ", e.getMessage(), e);
+        throw e;
       }
     }
   }
