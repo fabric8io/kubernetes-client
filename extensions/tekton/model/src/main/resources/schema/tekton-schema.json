@@ -4224,11 +4224,128 @@
       "type": "object",
       "description": "",
       "properties": {
-        "container": {
-          "$ref": "#/definitions/kubernetes_Container",
-          "javaType": "io.fabric8.kubernetes.api.model.Container"
+        "args": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "command": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "env": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_EnvVar",
+            "javaType": "io.fabric8.kubernetes.api.model.EnvVar"
+          }
+        },
+        "envFrom": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_EnvFromSource",
+            "javaType": "io.fabric8.kubernetes.api.model.EnvFromSource"
+          }
+        },
+        "image": {
+          "type": "string",
+          "description": ""
+        },
+        "imagePullPolicy": {
+          "type": "string",
+          "description": ""
+        },
+        "lifecycle": {
+          "$ref": "#/definitions/kubernetes_Lifecycle",
+          "javaType": "io.fabric8.kubernetes.api.model.Lifecycle"
+        },
+        "livenessProbe": {
+          "$ref": "#/definitions/kubernetes_Probe",
+          "javaType": "io.fabric8.kubernetes.api.model.Probe"
+        },
+        "name": {
+          "type": "string",
+          "description": "",
+          "maxLength": 63,
+          "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+        },
+        "ports": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_ContainerPort",
+            "javaType": "io.fabric8.kubernetes.api.model.ContainerPort"
+          }
+        },
+        "readinessProbe": {
+          "$ref": "#/definitions/kubernetes_Probe",
+          "javaType": "io.fabric8.kubernetes.api.model.Probe"
+        },
+        "resources": {
+          "$ref": "#/definitions/kubernetes_ResourceRequirements",
+          "javaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
         },
         "script": {
+          "type": "string",
+          "description": ""
+        },
+        "securityContext": {
+          "$ref": "#/definitions/kubernetes_SecurityContext",
+          "javaType": "io.fabric8.kubernetes.api.model.SecurityContext"
+        },
+        "stdin": {
+          "type": "boolean",
+          "description": ""
+        },
+        "stdinOnce": {
+          "type": "boolean",
+          "description": ""
+        },
+        "terminationMessagePath": {
+          "type": "string",
+          "description": ""
+        },
+        "terminationMessagePolicy": {
+          "type": "string",
+          "description": ""
+        },
+        "tty": {
+          "type": "boolean",
+          "description": ""
+        },
+        "volumeDevices": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_VolumeDevice",
+            "javaType": "io.fabric8.kubernetes.api.model.VolumeDevice"
+          }
+        },
+        "volumeMounts": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_VolumeMount",
+            "javaType": "io.fabric8.kubernetes.api.model.VolumeMount"
+          }
+        },
+        "workingDir": {
           "type": "string",
           "description": ""
         }
