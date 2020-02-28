@@ -745,7 +745,11 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
     Request request = (body == null) ? getRequest(url, callMethod) : getRequest(url, body, callMethod);
     try (Response response = client.newCall(request).execute()) {
       if (response.isSuccessful()) {
-        return objectMapper.readValue(response.body().string(), HashMap.class);
+        String respBody = response.body().string();
+        if(Utils.isNullOrEmpty(respBody))
+          return new HashMap<>();
+        else
+          return objectMapper.readValue(respBody, HashMap.class);
       } else {
         throw requestFailure(request, createStatus(response));
       }
