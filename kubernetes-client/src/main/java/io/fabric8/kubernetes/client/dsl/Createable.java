@@ -19,5 +19,7 @@ public interface Createable<I, T, D>  {
 
   T create(I... item);
 
+  T create(I item);
+
   D createNew();
 }

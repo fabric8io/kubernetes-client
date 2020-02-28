@@ -62,6 +62,11 @@ public class SubjectAccessReviewOperationImpl extends OperationSupport implement
   }
 
   @Override
+  public SubjectAccessReviewResponse create(SubjectAccessReview item) {
+    return create(new SubjectAccessReview[] {item});
+  }
+
+  @Override
   public CreateableSubjectAccessReview createNew() {
     return new CreateableSubjectAccessReviewImpl(client).createNew();
   }
@@ -131,6 +136,11 @@ public class SubjectAccessReviewOperationImpl extends OperationSupport implement
     }
 
     @Override
+    public SubjectAccessReviewResponse create(LocalSubjectAccessReview resource) {
+      return create(new LocalSubjectAccessReview[]{resource});
+    }
+
+    @Override
     public CreateableLocalSubjectAccessReview createNew() {
       return this;
     }
@@ -192,6 +202,11 @@ public class SubjectAccessReviewOperationImpl extends OperationSupport implement
     }
 
     @Override
+    public SubjectAccessReviewResponse create(SubjectAccessReview resource) {
+      return create(new SubjectAccessReview[]{resource});
+    }
+
+    @Override
     public CreateableSubjectAccessReview createNew() {
       return this;
     }
@@ -229,6 +244,11 @@ public class SubjectAccessReviewOperationImpl extends OperationSupport implement
       } catch (InterruptedException | ExecutionException | IOException e) {
         throw KubernetesClientException.launderThrowable(e);
       }
+    }
+
+    @Override
+    public SubjectAccessReviewResponse create(SelfSubjectAccessReview resource) {
+      return create(new SelfSubjectAccessReview[]{resource});
     }
 
     @Override

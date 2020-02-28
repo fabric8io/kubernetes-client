@@ -69,6 +69,11 @@ public class SubjectAccessReviewDSLImpl extends OperationSupport implements Subj
   }
 
   @Override
+  public SubjectAccessReview create(SubjectAccessReview resource) {
+    return create(new SubjectAccessReview[]{resource});
+  }
+
+  @Override
   public DoneableSubjectAccessReview createNew() {
     return new CreatableSubjectAccessReview().createNew();
   }
@@ -128,6 +133,11 @@ public class SubjectAccessReviewDSLImpl extends OperationSupport implements Subj
       }
     }
 
+    @Override
+    public LocalSubjectAccessReview create(LocalSubjectAccessReview resource) {
+      return create(new LocalSubjectAccessReview[]{resource});
+    }
+
     private void setNamespace(LocalSubjectAccessReview resource) {
       ObjectMeta meta = resource.getMetadata();
 
@@ -173,6 +183,11 @@ public class SubjectAccessReviewDSLImpl extends OperationSupport implements Subj
     }
 
     @Override
+    public SubjectAccessReview create(SubjectAccessReview resource) {
+      return create(new SubjectAccessReview[]{resource});
+    }
+
+    @Override
     public DoneableSubjectAccessReview createNew() {
       return new DoneableSubjectAccessReview(this::create);
     }
@@ -196,6 +211,11 @@ public class SubjectAccessReviewDSLImpl extends OperationSupport implements Subj
     }
 
     @Override
+    public SelfSubjectAccessReview create(SelfSubjectAccessReview resource) {
+      return create(new SelfSubjectAccessReview[]{resource});
+    }
+
+    @Override
     public DoneableSelfSubjectAccessReview createNew() {
       return new DoneableSelfSubjectAccessReview(this::create);
     }
@@ -216,6 +236,11 @@ public class SubjectAccessReviewDSLImpl extends OperationSupport implements Subj
       } catch (InterruptedException | ExecutionException | IOException e) {
         throw KubernetesClientException.launderThrowable(e);
       }
+    }
+
+    @Override
+    public SelfSubjectRulesReview create(SelfSubjectRulesReview resource) {
+      return create(new SelfSubjectRulesReview[]{resource});
     }
 
     @Override

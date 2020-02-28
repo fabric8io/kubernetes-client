@@ -15,12 +15,11 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.client.dsl.KubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.KubernetesListOperation;
 import io.fabric8.kubernetes.client.dsl.Loadable;
-import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
-import io.fabric8.kubernetes.api.builder.Function;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.DoneableKubernetesList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -79,15 +78,17 @@ public class KubernetesListOperationsImpl
       items = new KubernetesList[]{get()};
     }
     for (KubernetesList i : items) {
-      for (HasMetadata r : i.getItems()) {
-        HasMetadata created = create(r);
-        createdItems.add(created);
-      }
+      createdItems.addAll(createItemsInKubernetesList(i));
     }
 
     KubernetesList createdList = new KubernetesList();
     createdList.setItems(createdItems);
     return createdList;
+  }
+
+  @Override
+  public KubernetesList create(KubernetesList list) {
+    return create(new KubernetesList[]{list});
   }
 
   @Override
@@ -168,5 +169,14 @@ public class KubernetesListOperationsImpl
   @Override
   public Createable<KubernetesList, KubernetesList, DoneableKubernetesList> deletingExisting() {
     return new KubernetesListOperationsImpl(client, config, namespace, null, false, fromServer, true, item, null);
+  }
+
+  private List<HasMetadata> createItemsInKubernetesList(KubernetesList list) {
+    List<HasMetadata> createdItems = new ArrayList<>();
+    for (HasMetadata r : list.getItems()) {
+      HasMetadata created = create(r);
+      createdItems.add(created);
+    }
+    return createdItems;
   }
 }
