@@ -28,7 +28,11 @@
   <packaging>jar</packaging>
   <name>Fabric8 :: Kubernetes and Openshift :: UberJar</name>
 
-<dependencies>
+  <properties>
+    <skip.sonar>true</skip.sonar>
+  </properties>
+
+  <dependencies>
     <!-- For inclusion -->
     <dependency>
       <groupId>io.fabric8</groupId>

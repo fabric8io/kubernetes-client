@@ -16,7 +16,7 @@
 package io.fabric8.kubernetes.clnt;
 
 /**
- * This is just used so that we can force the genration of xxx-soruces.jar and xxx-javadoc.jar.
+ * This is just used so that we can force the generation of xxx-sources.jar and xxx-javadoc.jar.
  */
 public interface Uberjar {
 }

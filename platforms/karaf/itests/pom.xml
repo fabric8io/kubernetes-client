@@ -27,6 +27,10 @@
   <artifactId>kubernetes-karaf-itests</artifactId>
   <name>Fabric8 :: Kubernetes :: Platforms :: Karaf :: Tests</name>
 
+  <properties>
+    <sonar.skip>true</sonar.skip>
+  </properties>
+
   <dependencies>
 
     <dependency>
