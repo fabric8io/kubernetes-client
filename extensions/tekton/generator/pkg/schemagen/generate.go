@@ -421,7 +421,7 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 		desc := getFieldDescription(field)
 		omitEmpty := isOmitEmpty(field)
 		prop := g.getPropertyDescriptor(field.Type, desc, omitEmpty)
-		if field.Anonymous && field.Type.Kind() == reflect.Struct && (len(name) == 0 || strings.HasPrefix(name, "Common") || name == "PlanReference" || name == "TypeMeta") {
+		if field.Anonymous && field.Type.Kind() == reflect.Struct && (len(name) == 0 || strings.HasPrefix(name, "Common") || name == "PlanReference" || name == "TypeMeta" || name == "Container") {
 			var newProps map[string]JSONPropertyDescriptor
 			if prop.JSONReferenceDescriptor != nil {
 				pType := field.Type
