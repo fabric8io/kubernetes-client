@@ -417,19 +417,15 @@ public class Config {
       }
       try {
         String serviceTokenCandidate = new String(Files.readAllBytes(new File(KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH).toPath()));
-        if (serviceTokenCandidate != null) {
-          LOGGER.debug("Found service account token at: ["+KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH+"].");
-          config.setOauthToken(serviceTokenCandidate);
-          String txt = "Configured service account doesn't have access. Service account may have been revoked.";
-          config.getErrorMessages().put(401, "Unauthorized! " + txt);
-          config.getErrorMessages().put(403, "Forbidden!" + txt);
-          return true;
-        } else {
-          LOGGER.debug("Did not find service account token at: ["+KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH+"].");
-        }
+        LOGGER.debug("Found service account token at: ["+KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH+"].");
+        config.setOauthToken(serviceTokenCandidate);
+        String txt = "Configured service account doesn't have access. Service account may have been revoked.";
+        config.getErrorMessages().put(401, "Unauthorized! " + txt);
+        config.getErrorMessages().put(403, "Forbidden!" + txt);
+        return true;
       } catch (IOException e) {
         // No service account token available...
-        LOGGER.warn("Error reading service account token from: ["+KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH+"]. Ignoring.");
+        LOGGER.warn("Error reading service account token from: [{}]. Ignoring.", KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH);
       }
     }
     return false;
