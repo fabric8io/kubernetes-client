@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
 
-    Copyright (C) 2015 Red Hat, Inc.
+    Copyright (C) 2015 Fabric8 Authors.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -468,9 +468,6 @@
         <configuration>
           <aggregate>true</aggregate>
           <header>header.txt</header>
-          <properties>
-            <owner>Red Hat, Inc.</owner>
-          </properties>
           <excludes>
             <exclude>.editorconfig</exclude>
             <exclude>license.txt</exclude>
