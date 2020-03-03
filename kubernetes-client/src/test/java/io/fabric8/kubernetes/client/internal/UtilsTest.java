@@ -72,6 +72,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -162,6 +164,7 @@ public class UtilsTest {
 
   @Test
   public void testGetPluralFromKind() {
+    // Given
     Map<String, Class> pluralToKubernetesResourceMap = new HashMap<>();
     pluralToKubernetesResourceMap.put("bindings", Binding.class);
     pluralToKubernetesResourceMap.put("componentstatuses", ComponentStatus.class);
@@ -213,6 +216,73 @@ public class UtilsTest {
     pluralToKubernetesResourceMap.put("storageclasses", StorageClass.class);
     pluralToKubernetesResourceMap.put("volumeattachments", VolumeAttachment.class);
 
-    pluralToKubernetesResourceMap.forEach( (plural, kubernetesResource) -> assertEquals(plural, Utils.getPluralFromKind(kubernetesResource.getSimpleName())));
+    // When & Then
+    pluralToKubernetesResourceMap.forEach((plural, kubernetesResource)
+      -> assertEquals(plural, Utils.getPluralFromKind(kubernetesResource.getSimpleName())));
+  }
+
+  @Test
+  @DisplayName("isNotNullOrEmpty, null, should return false")
+  public void isNotNullOrEmpty() {
+    // When
+    final boolean result1 = Utils.isNotNullOrEmpty((Map)null);
+    final boolean result2 = Utils.isNotNullOrEmpty((String)null);
+    final boolean result3 = Utils.isNotNullOrEmpty("");
+
+    // Then
+    assertFalse(result1);
+    assertFalse(result2);
+    assertFalse(result3);
+  }
+
+  @Test
+  @DisplayName("isNotNull, null, should return false")
+  public void isNotNull() {
+    // Given
+    String[] emptyArray = new String[] {};
+
+    // When
+    final boolean result = Utils.isNotNull(emptyArray);
+
+    // Then
+    assertTrue(result);
+  }
+
+  @Test
+  @DisplayName("isNotNullOrEmpty, some null values, should return true")
+  public void isNotNullOrEmptySomeAreNullTest() {
+    // Given
+    String[] testSample = new String[] {"notNullObj", null, null};
+
+    // When
+    final boolean result = Utils.isNotNullOrEmpty(testSample);
+
+    // Then
+    assertTrue(result);
+  }
+
+  @Test
+  @DisplayName("isNotNull, some null values, should return true")
+  public void isNotNullSomeAreNullTest() {
+    // Given
+    String[] testSample = new String[] {"notNullObj", null, null};
+
+    // When
+    final boolean result = Utils.isNotNull(testSample);
+
+    // Then
+    assertFalse(result);
+  }
+
+  @Test
+  @DisplayName("isNotNull, no null values, should return true")
+  public void isNotNullNoneAreNullTest() {
+    String[] testSample = new String[] {"Not null", "Not null either"};
+
+    // When
+    final boolean result = Utils.isNotNull(testSample);
+
+    // Then
+    assertTrue(result);
   }
 }

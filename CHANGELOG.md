@@ -41,6 +41,7 @@ like the delete of a custom resource.
 * Fix #1964: Refactor Duration
 * Fix #703: Fix NullPointerException in Config.tryKubeConfig
 * Fix #2000: Unable to create jobs in OSGi environments
+* Fix #2009: Regression `withoutLabel()` stopped to work
 
 #### Improvements
 * Fix #1874: Added unit tests verifying windows line-ends (CRLF) work

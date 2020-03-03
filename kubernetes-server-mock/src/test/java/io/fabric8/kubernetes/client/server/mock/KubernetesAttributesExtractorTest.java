@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.server.mock;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -351,7 +352,7 @@ public class KubernetesAttributesExtractorTest {
     kubernetesClient.apps().deployments().create(deployment2);
 
     List<Deployment> deployments = kubernetesClient.apps().deployments().withoutLabel("keepUntil").list().getItems();
-    assertFalse(deployments.stream().noneMatch(d -> d.getMetadata().getName().equals("withKeepUntil")));
-    assertTrue(deployments.stream().anyMatch(d -> d.getMetadata().getName().equals("withoutKeepUntil")));
+    assertEquals(1, deployments.size());
+    assertEquals("withoutKeepUntil", deployments.get(0).getMetadata().getName());
   }
 }

@@ -553,7 +553,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
           sb.append(",");
         }
         Map.Entry<String, String[]> entry = iter.next();
-        if (entry.getValue() != null) {
+        if (Utils.isNotNull(entry.getValue())) {
           for (int i = 0; i < entry.getValue().length; i++) {
             if (i > 0) {
               sb.append(",");
