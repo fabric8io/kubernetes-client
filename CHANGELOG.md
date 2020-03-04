@@ -13,9 +13,10 @@ like the delete of a custom resource.
 * Fix #2012: osgi: Allow the ManagedKubernetesClient to consume an available OAuthTokenProvider
 
 #### Dependency Upgrade
-+ Updated Knative model to v0.12.0
+* Updated Knative model to v0.12.0
 
 #### New Features
+* Fix #1820: Override Createable.create(T) to avoid generic array creation
 
 ### 4.8.0 (14-02-2020)
 #### Bugs

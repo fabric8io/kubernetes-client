@@ -327,6 +327,19 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   @Override
+  public T create(T resource) {
+    try {
+      if (resource != null) {
+        return handleCreate(resource);
+      } else {
+        throw new IllegalArgumentException("Nothing to create.");
+      }
+    } catch (InterruptedException | ExecutionException | IOException e) {
+      throw KubernetesClientException.launderThrowable(forOperationType("create"), e);
+    }
+  }
+
+  @Override
   public D createNew() throws KubernetesClientException {
     final Function<T, T> visitor = resource -> {
       try {

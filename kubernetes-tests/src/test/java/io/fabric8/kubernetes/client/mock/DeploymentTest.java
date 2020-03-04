@@ -47,6 +47,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -279,7 +280,7 @@ public class DeploymentTest {
 
   @Test
   public void testDeleteWithNamespaceMismatch() {
-    Assertions.assertThrows(KubernetesClientException.class, () -> {
+    assertThrows(KubernetesClientException.class, () -> {
       Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test").endMetadata()
         .withNewSpec()
         .withReplicas(1)
@@ -294,7 +295,7 @@ public class DeploymentTest {
 
   @Test
   public void testCreateWithNameMismatch() {
-    Assertions.assertThrows(KubernetesClientException.class, () -> {
+    assertThrows(KubernetesClientException.class, () -> {
       Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test").and().build();
       Deployment deployment2 = new DeploymentBuilder().withNewMetadata().withName("deployment2").withNamespace("ns1").and().build();
       KubernetesClient client = server.getClient();
@@ -444,5 +445,49 @@ public class DeploymentTest {
       .andReturn(201, status).once();
 
     client.extensions().deployments().inNamespace("test").withName("deployment1").rollback(deploymentRollback);
+  }
+
+  @Test
+  public void testCreate() {
+    Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test").endMetadata()
+      .withNewSpec()
+      .withReplicas(1)
+      .endSpec()
+      .build();
+
+    server.expect().post().withPath("/apis/apps/v1/namespaces/test/deployments")
+      .andReturn(200, deployment1)
+      .once();
+
+    KubernetesClient client = server.getClient();
+    Deployment result = client.apps().deployments().inNamespace("test").create(deployment1);
+    assertNotNull(result);
+    assertEquals("deployment1", result.getMetadata().getName());
+  }
+
+  @Test
+  public void testCreateMulti() {
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+      Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test").endMetadata()
+        .withNewSpec()
+        .withReplicas(1)
+        .endSpec()
+        .build();
+      Deployment deployment2 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test").endMetadata()
+        .withNewSpec()
+        .withReplicas(1)
+        .endSpec()
+        .build();
+
+      server.expect().post().withPath("/apis/apps/v1/namespaces/test/deployments")
+        .andReturn(200, deployment1)
+        .once();
+
+      KubernetesClient client = server.getClient();
+      // Will throw exception
+      client.apps().deployments().inNamespace("test").create(deployment1, deployment2);
+    });
+
+    assertEquals("Too many items to create.", exception.getMessage());
   }
 }

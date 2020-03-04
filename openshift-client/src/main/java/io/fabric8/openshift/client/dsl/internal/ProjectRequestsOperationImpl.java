@@ -91,6 +91,11 @@ public class ProjectRequestsOperationImpl extends OperationSupport implements Pr
   }
 
   @Override
+  public ProjectRequest create(ProjectRequest resource) {
+    return create(new ProjectRequest[]{resource});
+  }
+
+  @Override
   public DoneableProjectRequest createNew() {
     return new DoneableProjectRequest(item -> {
       try {
