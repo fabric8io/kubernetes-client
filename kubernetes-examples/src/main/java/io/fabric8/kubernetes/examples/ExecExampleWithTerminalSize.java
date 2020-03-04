@@ -59,7 +59,7 @@ public class ExecExampleWithTerminalSize {
                 .writingError(System.err)
                 .withTTY()
                 .usingListener(new SimpleListener())
-                .exec("env", "TERM%3Dxterm", "COLUMNS%3D" + columns, "LINES%3D" + lines, "bash")){
+                .exec("env", "TERM=xterm", "COLUMNS=" + columns, "LINES=" + lines, "bash")){
 
             Thread.sleep(10 * 1000);
         }
