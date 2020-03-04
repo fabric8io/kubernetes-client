@@ -27,39 +27,38 @@ import io.fabric8.kubernetes.client.informers.cache.Lister;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 public class InformerExample {
   private static Logger logger = LoggerFactory.getLogger(InformerExample.class);
 
-  public static void main(String args[]) throws IOException, InterruptedException {
+  public static void main(String[] args) throws InterruptedException {
     try (final KubernetesClient client = new DefaultKubernetesClient()) {
       SharedInformerFactory sharedInformerFactory = client.informers();
-      SharedIndexInformer<Pod> podInformer = sharedInformerFactory.sharedIndexInformerFor(Pod.class, PodList.class, 15 * 60 * 1000);
-      log("Informer factory initialized.");
+      SharedIndexInformer<Pod> podInformer = sharedInformerFactory.sharedIndexInformerFor(Pod.class, PodList.class, 30 * 1000L);
+      logger.info("Informer factory initialized.");
 
       podInformer.addEventHandler(
         new ResourceEventHandler<Pod>() {
           @Override
           public void onAdd(Pod pod) {
-            log(pod.getMetadata().getName() + " pod added\n");
+            logger.info("{} pod added", pod.getMetadata().getName());
           }
 
           @Override
           public void onUpdate(Pod oldPod, Pod newPod) {
-            log(oldPod.getMetadata().getName() + " pod updated\n");
+            logger.info("{} pod updated", oldPod.getMetadata().getName());
           }
 
           @Override
           public void onDelete(Pod pod, boolean deletedFinalStateUnknown) {
-            log(pod.getMetadata().getName() + " pod deleted \n");
+            logger.info("{} pod deleted", pod.getMetadata().getName());
           }
         }
       );
 
-      log("Starting all registered informers");
+      logger.info("Starting all registered informers");
       sharedInformerFactory.startAllRegisteredInformers();
       Pod testPod = new PodBuilder()
         .withNewMetadata().withName("myapp-pod").withLabels(Collections.singletonMap("app", "myapp-pod")).endMetadata()
@@ -78,29 +77,21 @@ public class InformerExample {
         .build();
 
       client.pods().inNamespace("default").create(testPod);
-      log("Pod created");
+      logger.info("Pod created");
       Thread.sleep(3000L);
 
       Lister<Pod> podLister = new Lister<> (podInformer.getIndexer(), "default");
       Pod myPod = podLister.get("myapp-pod");
-      log("PodLister has " + podLister.list().size());
+      logger.info("PodLister has {}", podLister.list().size());
 
       if (myPod != null) {
-        log("***** myapp-pod created %s", myPod.getMetadata().getCreationTimestamp());
+        logger.info("***** myapp-pod created {}", myPod.getMetadata().getCreationTimestamp());
       }
 
       // Wait for some time now
-      TimeUnit.MINUTES.sleep(15);
+      TimeUnit.MINUTES.sleep(3);
 
       sharedInformerFactory.stopAllRegisteredInformers();
     }
-  }
-
-  private static void log(String action, Object obj) {
-    logger.info("{}: {}", action, obj);
-  }
-
-  private static void log(String action) {
-    logger.info(action);
   }
 }

@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
+import io.fabric8.kubernetes.client.informers.SharedInformerEventListener;
 import io.fabric8.kubernetes.client.informers.cache.Cache;
 import io.fabric8.kubernetes.client.informers.cache.Controller;
 import io.fabric8.kubernetes.client.informers.cache.DeltaFIFO;
@@ -34,9 +35,10 @@ import java.util.AbstractMap;
 import java.util.Deque;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Function;
 
-public class DefaultSharedIndexInformer<T extends HasMetadata, TList extends KubernetesResourceList<T>> implements SharedIndexInformer<T> {
+public class DefaultSharedIndexInformer<T extends HasMetadata, L extends KubernetesResourceList<T>> implements SharedIndexInformer<T> {
   private static final Logger log = LoggerFactory.getLogger(DefaultSharedIndexInformer.class);
 
   private static final long MINIMUM_RESYNC_PERIOD_MILLIS = 1000L;
@@ -54,23 +56,23 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, TList extends Kub
 
   private SharedProcessor<T> processor;
 
-  private Controller<T, TList> controller;
+  private Controller<T, L> controller;
 
   private Thread controllerThread;
 
   private volatile boolean started = false;
   private volatile boolean stopped = false;
 
-  public DefaultSharedIndexInformer(Class<T> apiTypeClass, ListerWatcher listerWatcher, long resyncPeriod, OperationContext context) {
+  public DefaultSharedIndexInformer(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, long resyncPeriod, OperationContext context, ConcurrentLinkedQueue<SharedInformerEventListener> eventListeners) {
     this.resyncCheckPeriodMillis = resyncPeriod;
     this.defaultEventHandlerResyncPeriod = resyncPeriod;
 
     this.processor = new SharedProcessor<>();
     this.indexer = new Cache();
 
-    DeltaFIFO<T> fifo = new DeltaFIFO<T>(Cache::metaNamespaceKeyFunc, this.indexer);
+    DeltaFIFO<T> fifo = new DeltaFIFO<>(Cache::metaNamespaceKeyFunc, this.indexer);
 
-    this.controller = new Controller<T, TList>(apiTypeClass, fifo, listerWatcher, this::handleDeltas, processor::shouldResync, resyncCheckPeriodMillis, context);
+    this.controller = new Controller<>(apiTypeClass, fifo, listerWatcher, this::handleDeltas, processor::shouldResync, resyncCheckPeriodMillis, context, eventListeners);
     controllerThread = new Thread(controller::run, "informer-controller-" + apiTypeClass.getSimpleName());
   }
 

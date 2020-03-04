@@ -17,17 +17,17 @@ package io.fabric8.kubernetes.client.informers.cache;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import io.fabric8.kubernetes.client.informers.ResyncRunnable;
+import io.fabric8.kubernetes.client.informers.SharedInformerEventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.AbstractMap;
 import java.util.Deque;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executors;
-import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -40,17 +40,10 @@ import java.util.function.Supplier;
  * This is taken from https://github.com/kubernetes-client/java/blob/master/util/src/main/java/io/kubernetes/client/informer/cache/Controller.java
  * which has been ported from official go client: https://github.com/kubernetes/client-go/blob/master/tools/cache/controller.go
  */
-public class Controller<T extends HasMetadata, TList extends KubernetesResourceList<T>> {
+public class Controller<T extends HasMetadata, L extends KubernetesResourceList<T>> {
   private static final Logger log = LoggerFactory.getLogger(Controller.class);
 
   private static final long DEFAULT_PERIOD = 5000L;
-
-  /**
-   * Period controls the timing between one watch ending
-   * and the beginning of the next one in milliseconds.
-   * It's one second by default as done in go client
-   */
-  private static final long DEFAULT_DELAY_PERIOD = 1000L;
 
   /**
    * resync fifo internals in millis
@@ -62,9 +55,9 @@ public class Controller<T extends HasMetadata, TList extends KubernetesResourceL
    */
   private DeltaFIFO<T> queue;
 
-  private ListerWatcher<T, TList> listerWatcher;
+  private ListerWatcher<T, L> listerWatcher;
 
-  private ReflectorRunnable<T, TList> reflector;
+  private Reflector<T, L> reflector;
 
   private Supplier<Boolean> resyncFunc;
 
@@ -78,11 +71,11 @@ public class Controller<T extends HasMetadata, TList extends KubernetesResourceL
 
   private OperationContext operationContext;
 
+  private ConcurrentLinkedQueue<SharedInformerEventListener> eventListeners;
+
   private Class<T> apiTypeClass;
 
-  private ScheduledFuture reflectorFuture;
-
-  public Controller(Class<T> apiTypeClass, DeltaFIFO<T> queue, ListerWatcher<T, TList> listerWatcher, Consumer<Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>>> processFunc, Supplier<Boolean> resyncFunc, long fullResyncPeriod, OperationContext context) {
+  public Controller(Class<T> apiTypeClass, DeltaFIFO<T> queue, ListerWatcher<T, L> listerWatcher, Consumer<Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>>> processFunc, Supplier<Boolean> resyncFunc, long fullResyncPeriod, OperationContext context, ConcurrentLinkedQueue<SharedInformerEventListener> eventListeners) {
     this.queue = queue;
     this.listerWatcher = listerWatcher;
     this.apiTypeClass = apiTypeClass;
@@ -90,6 +83,7 @@ public class Controller<T extends HasMetadata, TList extends KubernetesResourceL
     this.resyncFunc = resyncFunc;
     this.fullResyncPeriod = fullResyncPeriod;
     this.operationContext = context;
+    this.eventListeners = eventListeners;
 
     // Starts one daemon thread for reflector
     this.reflectExecutor = Executors.newSingleThreadScheduledExecutor();
@@ -98,37 +92,31 @@ public class Controller<T extends HasMetadata, TList extends KubernetesResourceL
     this.resyncExecutor = Executors.newSingleThreadScheduledExecutor();
   }
 
-  public Controller(Class<T> apiTypeClass, DeltaFIFO<T> queue, ListerWatcher<T, TList> listerWatcher, Consumer<Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>>> popProcessFunc, OperationContext context) {
-    this(apiTypeClass, queue, listerWatcher, popProcessFunc, null, 0, context);
-  }
-
   public void run() {
     log.info("informer#Controller: ready to run resync and reflector runnable");
 
     // Start the resync runnable
     if (fullResyncPeriod > 0) {
       ResyncRunnable resyncRunnable = new ResyncRunnable(queue, resyncFunc);
-      resyncFuture = resyncExecutor.scheduleAtFixedRate(resyncRunnable::run, fullResyncPeriod, fullResyncPeriod, TimeUnit.MILLISECONDS);
+      resyncFuture = resyncExecutor.scheduleAtFixedRate(resyncRunnable, fullResyncPeriod, fullResyncPeriod, TimeUnit.MILLISECONDS);
     } else {
       log.info("informer#Controller: resync skipped due to 0 full resync period");
     }
 
-    synchronized (this) {
-      reflector = new ReflectorRunnable<T, TList>(apiTypeClass, listerWatcher, queue, operationContext);
-      try {
+    try {
         if (fullResyncPeriod > 0) {
-          reflectorFuture = reflectExecutor.scheduleWithFixedDelay(reflector::run, DEFAULT_DELAY_PERIOD, fullResyncPeriod, TimeUnit.MILLISECONDS);
+          reflector = new Reflector<>(apiTypeClass, listerWatcher, queue, operationContext, fullResyncPeriod);
         } else {
-          reflectorFuture = reflectExecutor.scheduleWithFixedDelay(reflector::run, DEFAULT_DELAY_PERIOD, DEFAULT_PERIOD, TimeUnit.MILLISECONDS);
+          reflector = new Reflector<>(apiTypeClass, listerWatcher, queue, operationContext, DEFAULT_PERIOD);
         }
-      } catch (RejectedExecutionException e) {
-        log.warn("reflector list-watching job exiting because the thread-pool is shutting down");
-        return;
-      }
-    }
+        reflector.listAndWatch();
 
-    // Start the process loop
-    this.processLoop();
+      // Start the process loop
+      this.processLoop();
+    } catch (Exception exception) {
+      log.warn("Reflector list-watching job exiting because the thread-pool is shutting down", exception);
+      this.eventListeners.forEach(listener -> listener.onException(exception));
+    }
   }
 
   /**
@@ -136,10 +124,7 @@ public class Controller<T extends HasMetadata, TList extends KubernetesResourceL
    */
   public void stop() {
     synchronized (this) {
-      if (reflectorFuture != null) {
-        reflector.stop();
-        reflectorFuture.cancel(true);
-      }
+      reflector.stop();
       reflectExecutor.shutdown();
     }
   }
@@ -166,15 +151,16 @@ public class Controller<T extends HasMetadata, TList extends KubernetesResourceL
   /**
    * drains the work queue.
    */
-  private void processLoop() {
+  private void processLoop() throws Exception {
     while (true) {
       try {
         this.queue.pop(this.processFunc);
       } catch (InterruptedException t) {
         log.error("DefaultController#processLoop got interrupted {}", t.getMessage(), t);
         return;
-      } catch (Throwable t) {
-        log.error("DefaultController#processLoop recovered from crashing {} ", t.getMessage(), t);
+      } catch (Exception e) {
+        log.error("DefaultController#processLoop recovered from crashing {} ", e.getMessage(), e);
+        throw e;
       }
     }
   }

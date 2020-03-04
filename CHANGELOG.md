@@ -2,6 +2,7 @@
 
 ### 4.8-SNAPSHOT
 #### Bugs
+* Fix #1961: Two SharedInformer issues related to kube-apiserver unavailable and relisting
 
 * Fix #2023: Class RawCustomResourceOperationsImpl can't handle HTTP responses with empty body coming from the k8s 
 cluster (Jackson deserialization error was throwed). This kind of response can be returned after executing operations 

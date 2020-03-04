@@ -30,7 +30,7 @@ public class DeltaFIFOTest {
   public void testBasic() throws InterruptedException {
     Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>> receivingDeltas = new LinkedList<>();
     Pod foo1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("default").endMetadata().build();
-    Cache cache = new Cache();
+    Cache<Pod> cache = new Cache<>();
 
     DeltaFIFO<Pod> deltaFIFO = new DeltaFIFO<>(Cache::deletionHandlingMetaNamespaceKeyFunc, cache);
     AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object> receivingDelta;
@@ -91,7 +91,7 @@ public class DeltaFIFOTest {
   @Test
   public void testDeduplication() {
     Pod foo1 = new PodBuilder().withNewMetadata().withName("foo1").withNamespace("default").endMetadata().build();
-    Cache cache = new Cache();
+    Cache<Pod> cache = new Cache<>();
     DeltaFIFO<Pod> deltaFIFO = new DeltaFIFO<>(Cache::deletionHandlingMetaNamespaceKeyFunc, cache);
     Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>> deltas;
 
@@ -139,7 +139,7 @@ public class DeltaFIFOTest {
     Pod oldPod = new PodBuilder().withNewMetadata().withNamespace("default").withName("foo1").endMetadata().build();
     Pod newPod = new PodBuilder().withNewMetadata().withNamespace("default").withName("foo2").endMetadata().build();
 
-    Cache mockCache = mock(Cache.class);
+    Cache<Pod> mockCache = mock(Cache.class);
     doReturn(oldPod).when(mockCache).getByKey(Cache.deletionHandlingMetaNamespaceKeyFunc(oldPod));
     DeltaFIFO<Pod> deltaFIFO =
       new DeltaFIFO<>(Cache::deletionHandlingMetaNamespaceKeyFunc, mockCache);

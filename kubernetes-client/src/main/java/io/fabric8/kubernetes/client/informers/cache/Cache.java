@@ -288,6 +288,11 @@ public class Cache<T> implements Indexer<T> {
     return items;
   }
 
+  @Override
+  public void isPopulated(boolean isPopulated) {
+    // Do nothing
+  }
+
   /**
    * UpdateIndices modifies the objects location in the managed indexes, if there is
    * an update, you must provide an oldObj
