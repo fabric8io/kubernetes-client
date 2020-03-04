@@ -2,6 +2,7 @@
 
 ### 4.8-SNAPSHOT
 #### Bugs
+* Fix #1247: URL parameters are not escaped.
 
 #### Improvements
 

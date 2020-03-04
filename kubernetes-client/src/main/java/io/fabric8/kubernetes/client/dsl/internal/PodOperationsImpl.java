@@ -66,6 +66,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import okhttp3.HttpUrl;
 
 import static io.fabric8.kubernetes.client.utils.OptionalDependencyWrapper.wrapRunWithOptionalDependency;
 
@@ -140,6 +141,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
   protected String getLogParameters() {
     StringBuilder sb = new StringBuilder();
     sb.append("log?pretty=").append(withPrettyOutput);
+
     if (containerId != null && !containerId.isEmpty()) {
       sb.append("&container=").append(containerId);
     }
@@ -254,46 +256,38 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
 
     @Override
     public ExecWatch exec(String... command) {
-        StringBuilder sb = new StringBuilder();
         String[] actualCommands = command.length >= 1 ? command : EMPTY_COMMAND;
 
-        sb.append("exec?command=");
+        try {
+            HttpUrl.Builder httpUrlBuilder = HttpUrl.get(getResourceUrl()).newBuilder();
+            httpUrlBuilder.addPathSegment("exec");
 
-        boolean first = true;
-        for (String cmd : actualCommands) {
-            if (first) {
-                first = false;
-            } else {
-                sb.append("&command=");
+            for (String cmd : actualCommands) {
+              try {
+                cmd = URLUtils.encodeToUTF(cmd);
+              } catch (UnsupportedEncodingException encodEx) {
+              // Do nothing to fail gracefully as before.
+              }
+              httpUrlBuilder.addEncodedQueryParameter("command", cmd);
             }
 
-            try {
-            	cmd = URLUtils.encodeToUTF(cmd);
-            } catch (UnsupportedEncodingException encodEx) {
-            	// Do nothing to fail gracefully as before.
-			}
+            if (containerId != null && !containerId.isEmpty()) {
+              httpUrlBuilder.addQueryParameter("container", containerId);
+            }
+            if (withTTY) {
+              httpUrlBuilder.addQueryParameter("tty", "true");
+            }
+            if (in != null || inPipe != null) {
+              httpUrlBuilder.addQueryParameter("stdin", "true");
+            }
+            if (out != null || outPipe != null) {
+              httpUrlBuilder.addQueryParameter("stdout", "true");
+            }
+            if (err != null || errPipe != null) {
+              httpUrlBuilder.addQueryParameter("stderr", "true");
+            }
 
-            sb.append(cmd);
-        }
-
-        if (containerId != null && !containerId.isEmpty()) {
-            sb.append("&container=").append(containerId);
-        }
-        if (withTTY) {
-            sb.append("&tty=true");
-        }
-        if (in != null || inPipe != null) {
-            sb.append("&stdin=true");
-        }
-        if (out != null || outPipe != null) {
-            sb.append("&stdout=true");
-        }
-        if (err != null || errPipe != null) {
-            sb.append("&stderr=true");
-        }
-
-        try {
-            URL url = new URL(URLUtils.join(getResourceUrl().toString(), sb.toString()));
+            URL url  = httpUrlBuilder.build().url();
             Request.Builder r = new Request.Builder().url(url).header("Sec-WebSocket-Protocol", "v4.channel.k8s.io").get();
             OkHttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
             final ExecWebSocketListener execWebSocketListener = new ExecWebSocketListener(getConfig(), in, out, err, errChannel, inPipe, outPipe, errPipe, errChannelPipe, execListener, bufferSize);
