@@ -30,11 +30,11 @@ public class IntOrStringTest {
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(is);
         IntOrString is2 = mapper.readValue(json, IntOrString.class);
-        assertEquals(is, is2);
+        assertEquals(is.getIntVal(), is2.getIntVal());
 
         is = new IntOrString("3000");
         json = mapper.writeValueAsString(is);
         is2 = mapper.readValue(json, IntOrString.class);
-        assertEquals(is, is2);
+        assertEquals(is.getIntVal(), is2.getIntVal());
     }
 }

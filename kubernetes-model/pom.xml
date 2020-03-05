@@ -123,6 +123,7 @@
         <inherited>true</inherited>
         <configuration>
           <skipTests>${skipTests}</skipTests>
+          <argLine>--add-modules=java.xml.ws</argLine>
           <excludes>
             <exclude>${testExclusionPattern}</exclude>
           </excludes>
