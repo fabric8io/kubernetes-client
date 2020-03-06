@@ -182,6 +182,18 @@ public class PodIT {
   }
 
   @Test
+  public void readFileEscapedParams() throws IOException {
+    // Wait for resources to get ready
+    ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(), currentNamespace);
+    await().atMost(30, TimeUnit.SECONDS).until(podReady);
+    ExecWatch watch = client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).writingOutput(System.out).exec("sh", "-c", "echo 'H$ll* (W&RLD}' > /msg");
+    try (InputStream is = client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).file("/msg").read())  {
+      String result = new BufferedReader(new InputStreamReader(is)).lines().collect(Collectors.joining("\n"));
+      assertEquals("H$ll* (W&RLD}", result);
+    }
+  }
+
+  @Test
   public void uploadFile() throws IOException {
     // Wait for resources to get ready
     ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(), currentNamespace);
