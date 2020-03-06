@@ -3,6 +3,7 @@
 ### 4.8-SNAPSHOT
 #### Bugs
 
+* Fix #2047: Readiness#isReady is unreliable for StatefulSet
 * Fix #1247: URL parameters are not escaped.
 * Fix #1961: Two SharedInformer issues related to kube-apiserver unavailable and relisting
 * Fix #2023: Class RawCustomResourceOperationsImpl can't handle HTTP responses with empty body coming from the k8s 

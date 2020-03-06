@@ -1,0 +1,97 @@
+/**
+ * Copyright (C) 2015 Red Hat, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.fabric8.kubernetes.client.internal.readiness;
+
+import io.fabric8.kubernetes.api.model.apps.StatefulSet;
+import io.fabric8.kubernetes.api.model.apps.StatefulSetSpec;
+import io.fabric8.kubernetes.api.model.apps.StatefulSetStatus;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class ReadinessTest {
+
+  @Test
+  public void testStatefulSetReadinessNoSpecNoStatus() {
+    StatefulSet statefulSet = new StatefulSet();
+    assertFalse(Readiness.isReady(statefulSet));
+    assertFalse(Readiness.isStatefulSetReady(statefulSet));
+  }
+
+  @Test
+  public void testStatefulSetReadinessNoSpec() {
+    StatefulSetStatus status = new StatefulSetStatus();
+
+    StatefulSet statefulSet = new StatefulSet();
+    statefulSet.setStatus(status);
+
+    assertFalse(Readiness.isReady(statefulSet));
+    assertFalse(Readiness.isStatefulSetReady(statefulSet));
+
+    status.setReadyReplicas(1);
+
+    assertFalse(Readiness.isReady(statefulSet));
+    assertFalse(Readiness.isStatefulSetReady(statefulSet));
+  }
+
+  @Test
+  public void testStatefulSetReadinessNoStatus() {
+    StatefulSetSpec spec = new StatefulSetSpec();
+    spec.setReplicas(1);
+
+    StatefulSet statefulSet = new StatefulSet();
+    statefulSet.setSpec(spec);
+
+    assertFalse(Readiness.isReady(statefulSet));
+    assertFalse(Readiness.isStatefulSetReady(statefulSet));
+
+  }
+
+  @Test
+  public void testStatefulSetReadinessNotEnoughReadyReplicas() {
+    StatefulSetStatus status = new StatefulSetStatus();
+    status.setReadyReplicas(1);
+    status.setReplicas(2);
+
+    StatefulSetSpec spec = new StatefulSetSpec();
+    spec.setReplicas(2);
+
+    StatefulSet statefulSet = new StatefulSet();
+    statefulSet.setStatus(status);
+    statefulSet.setSpec(spec);
+
+    assertFalse(Readiness.isReady(statefulSet));
+    assertFalse(Readiness.isStatefulSetReady(statefulSet));
+  }
+
+  @Test
+  public void testStatefulSetReadiness() {
+    StatefulSetStatus status = new StatefulSetStatus();
+    status.setReadyReplicas(2);
+    status.setReplicas(2);
+
+    StatefulSetSpec spec = new StatefulSetSpec();
+    spec.setReplicas(2);
+
+    StatefulSet statefulSet = new StatefulSet();
+    statefulSet.setStatus(status);
+    statefulSet.setSpec(spec);
+
+    assertTrue(Readiness.isReady(statefulSet));
+    assertTrue(Readiness.isStatefulSetReady(statefulSet));
+  }
+}
