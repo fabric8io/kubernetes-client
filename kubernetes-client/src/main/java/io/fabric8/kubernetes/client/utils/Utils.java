@@ -342,7 +342,11 @@ public class Utils {
         break;
       case "NetworkPolicy":
       case "PodSecurityPolicy":
+        // Delete last character
+        pluralBuffer.deleteCharAt(pluralBuffer.length() - 1);
         pluralBuffer.append("ies");
+        break;
+      case "Endpoints":
         break;
       default:
         pluralBuffer.append("s");
