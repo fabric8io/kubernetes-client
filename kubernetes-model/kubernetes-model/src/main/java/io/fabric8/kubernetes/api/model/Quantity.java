@@ -121,7 +121,7 @@ public class Quantity  implements Serializable {
     if ((formatStr.startsWith("e") || formatStr.startsWith("E")) &&
         formatStr.length() > 1) {
       int exponent = Integer.parseInt(formatStr.substring(1));
-      return new BigDecimal("10").pow(exponent);
+      return new BigDecimal("10").pow(exponent).multiply(new BigDecimal(amountFormatPair.getAmount()));
     }
 
     BigDecimal digit = new BigDecimal(amountFormatPair.getAmount());

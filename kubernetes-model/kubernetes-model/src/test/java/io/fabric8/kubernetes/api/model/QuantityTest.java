@@ -67,6 +67,15 @@ public class QuantityTest {
   }
 
   @Test
+  public void testExponents() {
+    Quantity quantity1 = new Quantity("129e6");
+    Quantity quantity2 = new Quantity("129e+6");
+
+    assertEquals("129000000", Quantity.getAmountInBytes(quantity1).toString());
+    assertEquals("129000000", Quantity.getAmountInBytes(quantity2).toString());
+  }
+
+  @Test
   public void testEquality() {
     assertTrue(new Quantity(".5Mi").equals( new Quantity("512Ki")));
   }
