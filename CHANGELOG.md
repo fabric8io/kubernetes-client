@@ -16,6 +16,7 @@ like the delete of a custom resource.
 
 #### Dependency Upgrade
 * Updated Knative model to v0.12.0
+* Updated Commons-Compress to v1.20 to avoid https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-12402
 
 #### New Features
 * Fix #1820: Override Createable.create(T) to avoid generic array creation
