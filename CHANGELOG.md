@@ -9,6 +9,7 @@
 cluster (Jackson deserialization error was throwed). This kind of response can be returned after executing operations 
 like the delete of a custom resource.
 * Fix #2017: Incorrect plural form for Endpoints kind
+* Fix #2053: Fixed parsing of exponential values. Added multiplication to the amount during parsing exponential values.
 
 #### Improvements
 
