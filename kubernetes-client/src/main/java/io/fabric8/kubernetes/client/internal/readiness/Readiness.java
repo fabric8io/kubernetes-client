@@ -83,9 +83,9 @@ public class Readiness {
   public static boolean isStatefulSetReady(StatefulSet ss) {
     Utils.checkNotNull(ss, "StatefulSet can't be null.");
     StatefulSetSpec spec = ss.getSpec();
-    StatefulSetStatus status =ss.getStatus();
+    StatefulSetStatus status = ss.getStatus();
 
-    if (status == null || status.getReplicas() == null) {
+    if (status == null || status.getReplicas() == null || status.getReadyReplicas() == null) {
       return false;
     }
 
@@ -94,7 +94,8 @@ public class Readiness {
       return false;
     }
 
-    return spec.getReplicas().intValue() == status.getReplicas();
+    return spec.getReplicas().intValue() == status.getReplicas()
+      && spec.getReplicas().intValue() == status.getReadyReplicas();
   }
 
 
