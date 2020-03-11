@@ -65,16 +65,19 @@ public class PodUploadWebSocketListener extends WebSocketListener {
 
   @Override
   public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-    final String responseBody = Optional.ofNullable(response.body())
-      .map(rb -> {
-        try {
-          return rb.string();
-        } catch (IOException e) {
-          return e.getMessage();
-        }
-      }).orElse("");
-    error.set(String.format("%s - %s%n%s", response.code(), response.message(), responseBody));
-
+    if (response != null) {
+      final String responseBody = Optional.ofNullable(response.body())
+        .map(rb -> {
+          try {
+            return rb.string();
+          } catch (IOException e) {
+            return e.getMessage();
+          }
+        }).orElse("");
+      error.set(String.format("%s - %s%n%s", response.code(), response.message(), responseBody));
+    } else {
+      error.set("PodUploadWebSocketListener failed with no response");
+    }
     while (readyLatch.getCount() > 0) {
       readyLatch.countDown();
     }
