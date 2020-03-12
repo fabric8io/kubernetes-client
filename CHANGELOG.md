@@ -3,6 +3,15 @@
 ### 4.8-SNAPSHOT
 #### Bugs
 
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+### 4.9.0 (2020-03-12)
+#### Bugs
+
 * Fix #2047: Readiness#isReady is unreliable for StatefulSet
 * Fix #1247: URL parameters are not escaped.
 * Fix #1961: Two SharedInformer issues related to kube-apiserver unavailable and relisting
