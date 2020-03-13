@@ -37,6 +37,10 @@
     <osgi.export>
       io.fabric8.tekton.client.*
     </osgi.export>
+    <osgi.include.resources>
+      /META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter=target/classes/META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter,
+      /META-INF/services/io.fabric8.kubernetes.client.ResourceHandler=target/classes/META-INF/services/io.fabric8.kubernetes.client.ResourceHandler
+    </osgi.include.resources>
   </properties>
 
   <dependencies>
