@@ -14,5 +14,5 @@
  * limitations under the License.
  *#
 #foreach ($m in ${model.values()})
-e.snowdrop.tekton.client.handlers.${m.name}Handler
+io.fabric8.tekton.client.handlers.${m.name}Handler
 #end

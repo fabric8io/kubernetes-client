@@ -2,6 +2,7 @@
 
 ### 4.8-SNAPSHOT
 #### Bugs
+Fix #2057: Fix jar and osgi bundle generation for extensions
 
 #### Improvements
 

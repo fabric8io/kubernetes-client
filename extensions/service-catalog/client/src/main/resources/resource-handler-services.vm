@@ -14,5 +14,5 @@
  * limitations under the License.
  *#
 #foreach ($i in ${model.values()})
-o.fabric8.servicecatalog.client.handlers.${i.name}Handler
+io.fabric8.servicecatalog.client.handlers.${i.name}Handler
 #end
