@@ -302,6 +302,12 @@ public class Utils {
     return !(array == null || array.length == 0);
   }
 
+  public static <T> boolean isNotNull(T ...refList) {
+    return Optional.ofNullable(refList)
+      .map(refs -> Stream.of(refs).allMatch(Objects::nonNull))
+      .orElse(false);
+  }
+
   public static String getProperty(Map<String, Object> properties, String propertyName, String defaultValue) {
     String answer = (String) properties.get(propertyName);
     if (!isNullOrEmpty(answer)) {
