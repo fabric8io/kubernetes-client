@@ -17,6 +17,7 @@ package io.fabric8.tekton.pipeline.v1alpha1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.tekton.pipeline.v1beta1.Step;
+import io.fabric8.tekton.pipeline.v1beta1.Task;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

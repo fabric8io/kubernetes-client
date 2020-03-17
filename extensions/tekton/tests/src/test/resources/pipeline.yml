@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-apiVersion: tekton.dev/v1alpha1
+apiVersion: tekton.dev/v1beta1
 kind: PipelineResource
 metadata:
   name: skaffold-git-output-pipelinerun

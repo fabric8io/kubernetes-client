@@ -33,30 +33,37 @@ import (
 
 //A Schema with the core types of the Service Catalog
 type Schema struct {
-	V1alpha1Pipeline                        v1alpha1.Pipeline
-  V1alpha1PipelineList                    v1alpha1.PipelineList
-  V1alpha1PipelineRun                     v1alpha1.PipelineRun
-  V1alpha1PipelineRunList                 v1alpha1.PipelineRunList
-  V1alpha1PipelineResource                v1alpha1.PipelineResource
-  V1alpha1PipelineResourceList            v1alpha1.PipelineResourceList
-  V1alpha1PipelineRunTaskRunStatus        v1alpha1.PipelineRunTaskRunStatus
-  V1alpha1PipelineRunConditionCheckStatus v1alpha1.PipelineRunConditionCheckStatus
-  V1alpha1Task                            v1alpha1.Task
-  V1alpha1TaskList                        v1alpha1.TaskList
-  V1alpha1TaskRun                         v1alpha1.TaskRun
-	V1alpha1TaskRef                         v1alpha1.TaskRef
-  V1alpha1TaskRunList                     v1alpha1.TaskRunList
-  V1alpha1ClusterTask                     v1alpha1.ClusterTask
-  V1alpha1ClusterTaskList                 v1alpha1.ClusterTaskList
   V1alpha1Condition                       v1alpha1.Condition
   V1alpha1ConditionList                   v1alpha1.ConditionList
-  V1alpha1PipelineTask                    v1alpha1.PipelineTask
-  V1alpha1PipelineTaskResource            v1alpha1.PipelineTaskResources
-  V1alpha1ResourceDeclaration             v1alpha1.ResourceDeclaration
+  V1alpha1PipelineResource                v1alpha1.PipelineResource
+  V1alpha1PipelineResourceList            v1alpha1.PipelineResourceList
+
+  V1beta1Pipeline                        v1beta1.Pipeline
+  V1beta1PipelineList                    v1beta1.PipelineList
+  V1beta1PipelineRun                     v1beta1.PipelineRun
+  V1beta1PipelineRunList                 v1beta1.PipelineRunList
+  V1beta1PipelineRunTaskRunStatus        v1beta1.PipelineRunTaskRunStatus
+  V1beta1PipelineRunConditionCheckStatus v1beta1.PipelineRunConditionCheckStatus
+  V1beta1Task                            v1beta1.Task
+  V1beta1TaskList                        v1beta1.TaskList
+  V1beta1TaskRun                         v1beta1.TaskRun
+  V1beta1TaskRef                         v1beta1.TaskRef
+  V1beta1TaskRunList                     v1beta1.TaskRunList
+  V1beta1ClusterTask                     v1beta1.ClusterTask
+  V1beta1ClusterTaskList                 v1beta1.ClusterTaskList
+  V1beta1PipelineTask                    v1beta1.PipelineTask
+  V1beta1PipelineTaskResource            v1beta1.PipelineTaskResources
+  V1beta1ResourceDeclaration             v1beta1.ResourceDeclaration
+	V1beta1Sidecar                         v1beta1.Sidecar
+	V1beta1SidecarState                    v1beta1.SidecarState
+	V1beta1PodTemplate                     v1beta1.PodTemplate
 	V1beta1Step                            v1beta1.Step
-	Template                                pod.Template
-	ResourceDeclaration                     resource.ResourceDeclaration
-	resource                                resource.PipelineResource
+	V1beta1TaskResource                    v1beta1.TaskResource
+	V1beta1TaskResourceBinding             v1beta1.TaskResourceBinding
+
+	Template                               pod.Template
+	ResourceDeclaration                    resource.ResourceDeclaration
+	resource                               resource.PipelineResource
 
 }
 
