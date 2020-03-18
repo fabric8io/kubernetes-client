@@ -2,9 +2,11 @@
 
 ### 4.9-SNAPSHOT
 #### Bugs
-Fix #2057: Fix jar and osgi bundle generation for extensions
-Fix #2075: KubernetesDeserializer registration for CustomResources 
-Fix #2078: watchLog for Deployment and StatefulSet 
+* Fix #2034: Quantity.equals mishandles fractions
+* Fix #2009: Regression `withoutLabel()` stopped to work
+* Fix #2057: Fix jar and osgi bundle generation for extensions
+* Fix #2075: KubernetesDeserializer registration for CustomResources
+* Fix #2078: watchLog for Deployment and StatefulSet
 
 #### Improvements
 * Fix #2019: Added CustomResourceCrudTest
@@ -44,7 +46,6 @@ like the delete of a custom resource.
 * Fix #1964: Refactor Duration
 * Fix #703: Fix NullPointerException in Config.tryKubeConfig
 * Fix #2000: Unable to create jobs in OSGi environments
-* Fix #2009: Regression `withoutLabel()` stopped to work
 
 #### Improvements
 * Fix #1874: Added unit tests verifying windows line-ends (CRLF) work

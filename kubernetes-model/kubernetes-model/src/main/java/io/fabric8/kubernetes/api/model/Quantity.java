@@ -50,6 +50,7 @@ import java.io.Serializable;
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage=true, builderPackage = "io.fabric8.kubernetes.api.builder", inline = @Inline(type = Doneable.class, prefix = "Doneable", value = "done"))
 public class Quantity  implements Serializable {
 
+  private static final String AT_LEAST_ONE_DIGIT_REGEX = ".*\\d+.*";
   private String amount;
   private String format;
   private Map<String, Object> additionalProperties = new HashMap<String, Object>();
@@ -118,10 +119,9 @@ public class Quantity  implements Serializable {
     Quantity amountFormatPair = parse(value);
     String formatStr = amountFormatPair.getFormat();
     // Handle Decimal exponent case
-    if ((formatStr.startsWith("e") || formatStr.startsWith("E")) &&
-        formatStr.length() > 1) {
+    if ((formatStr.matches(AT_LEAST_ONE_DIGIT_REGEX)) && formatStr.length() > 1) {
       int exponent = Integer.parseInt(formatStr.substring(1));
-      return new BigDecimal("10").pow(exponent).multiply(new BigDecimal(amountFormatPair.getAmount()));
+      return new BigDecimal("10").pow(exponent, MathContext.DECIMAL64).multiply(new BigDecimal(amountFormatPair.getAmount()));
     }
 
     BigDecimal digit = new BigDecimal(amountFormatPair.getAmount());
@@ -192,8 +192,7 @@ public class Quantity  implements Serializable {
 
     Quantity quantity = (Quantity) o;
     return getAmountInBytes(this)
-      .toBigInteger()
-      .equals(getAmountInBytes(quantity).toBigInteger());
+      .compareTo(getAmountInBytes(quantity)) == 0;
   }
 
   @Override
@@ -201,13 +200,30 @@ public class Quantity  implements Serializable {
     return getAmountInBytes(this).toBigInteger().hashCode();
   }
 
+  @Override
+  public String toString() {
+    StringBuilder b = new StringBuilder();
+    if (getAmount() != null) {
+      b.append(getAmount());
+    }
+    if (getFormat() != null) {
+      b.append(getFormat());
+    }
+    return b.toString();
+  }
+
   public static Quantity parse(String quantityAsString) {
-    String quantityComponents[] = quantityAsString.split("[eEinumkKMGTP]+");
-    if (quantityComponents.length == 0) {
+    if (quantityAsString == null || quantityAsString.isEmpty()) {
       throw new IllegalArgumentException("Invalid quantity string format passed.");
     }
+    String[] quantityComponents = quantityAsString.split("[eEinumkKMGTP]+");
     String amountStr = quantityComponents[0];
     String formatStr = quantityAsString.substring(quantityComponents[0].length());
+    // For cases like 4e9 or 129e-6, formatStr would be e9 and e-6 respectively
+    // we need to check whether this is valid too. It must not end with character.
+    if (formatStr.matches(AT_LEAST_ONE_DIGIT_REGEX) && Character.isAlphabetic(formatStr.charAt(formatStr.length() - 1))) {
+      throw new IllegalArgumentException("Invalid quantity string format passed");
+    }
     return new Quantity(amountStr, formatStr);
   }
 
@@ -246,7 +262,14 @@ public class Quantity  implements Serializable {
     public Quantity deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException, JsonProcessingException {
       ObjectCodec oc = jsonParser.getCodec();
       JsonNode node = oc.readTree(jsonParser);
-      Quantity quantity = new Quantity(node.asText());
+      Quantity quantity = null;
+      if (node.get("amount") != null && node.get("format") != null) {
+        quantity = new Quantity(node.get("amount").toString(), node.get("format").toString());
+      } else if (node.get("amount") != null) {
+        quantity = new Quantity(node.get("amount").toString());
+      } else {
+        quantity = new Quantity(node.asText());
+      }
       return quantity;
     }
 
