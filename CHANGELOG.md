@@ -1,8 +1,9 @@
 ## CHANGELOG
 
-### 4.8-SNAPSHOT
+### 4.9-SNAPSHOT
 #### Bugs
 Fix #2057: Fix jar and osgi bundle generation for extensions
+Fix #2075: KubernetesDeserializer registration for CustomResources 
 
 #### Improvements
 

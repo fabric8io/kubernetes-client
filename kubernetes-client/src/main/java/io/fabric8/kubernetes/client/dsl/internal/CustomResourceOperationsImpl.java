@@ -64,7 +64,7 @@ public class CustomResourceOperationsImpl<T extends HasMetadata, L extends Kuber
 
     CustomResourceDefinition crd = (CustomResourceDefinition) context.getCrd();
 
-    KubernetesDeserializer.registerCustomKind(crd.getApiVersion(), crd.getKind(), type);
+    KubernetesDeserializer.registerCustomKind(crd.getSpec().getGroup() + "/" + crd.getSpec().getVersion(), crd.getSpec().getNames().getKind(), type);
     if (KubernetesResource.class.isAssignableFrom(listType)) {
       KubernetesDeserializer.registerCustomKind(listType.getSimpleName(), (Class<? extends KubernetesResource>) listType);
     }

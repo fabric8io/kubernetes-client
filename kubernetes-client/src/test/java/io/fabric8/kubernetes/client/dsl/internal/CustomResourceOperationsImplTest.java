@@ -43,8 +43,6 @@ public class CustomResourceOperationsImplTest {
   }
 
   private final CustomResourceDefinition crd = new CustomResourceDefinitionBuilder()
-    .withApiVersion("custom.group/v1alpha1")
-    .withKind("MyCustomResource")
     .withNewMetadata()
       .withName("custom.name")
     .endMetadata()
