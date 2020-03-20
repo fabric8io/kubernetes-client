@@ -7,6 +7,7 @@ Fix #2075: KubernetesDeserializer registration for CustomResources
 Fix #2078: watchLog for Deployment and StatefulSet 
 
 #### Improvements
+* Fix #2019: Added CustomResourceCrudTest
 
 #### Dependency Upgrade
 
