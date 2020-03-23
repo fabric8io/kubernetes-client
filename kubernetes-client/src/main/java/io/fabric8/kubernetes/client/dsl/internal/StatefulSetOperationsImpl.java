@@ -166,7 +166,7 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
       context.getReloadingFromServer(), context.getGracePeriodSeconds(), context.getPropagationPolicy(), null, null, null, null, null,
       null, null, null, null, false, false, false, null, null,
       null, isPretty, null, null, null, null, null));
-    PodList jobPodList = podOperations.withLabels(statefulSet.getMetadata().getLabels()).list();
+    PodList jobPodList = podOperations.withLabels(statefulSet.getSpec().getTemplate().getMetadata().getLabels()).list();
 
     for (Pod pod : jobPodList.getItems()) {
       OwnerReference ownerReference = KubernetesResourceUtil.getControllerUid(pod);

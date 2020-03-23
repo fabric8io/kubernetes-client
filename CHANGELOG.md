@@ -4,6 +4,7 @@
 #### Bugs
 Fix #2057: Fix jar and osgi bundle generation for extensions
 Fix #2075: KubernetesDeserializer registration for CustomResources 
+Fix #2078: watchLog for Deployment and StatefulSet 
 
 #### Improvements
 

@@ -266,7 +266,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
     String rcUid = deployment.getMetadata().getUid();
 
     ReplicaSetOperationsImpl rsOperations = new ReplicaSetOperationsImpl((RollingOperationContext) context);
-    ReplicaSetList rcList = rsOperations.withLabels(deployment.getMetadata().getLabels()).list();
+    ReplicaSetList rcList = rsOperations.withLabels(deployment.getSpec().getTemplate().getMetadata().getLabels()).list();
 
     for (ReplicaSet rs : rcList.getItems()) {
       OwnerReference ownerReference = KubernetesResourceUtil.getControllerUid(rs);
