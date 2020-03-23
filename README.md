@@ -5,7 +5,7 @@ This client provides access to the full [Kubernetes](http://kubernetes.io/) &
 [![CircleCI](https://img.shields.io/circleci/project/github/fabric8io/kubernetes-client/master.svg)](https://circleci.com/gh/fabric8io/kubernetes-client)
 [![Release](https://img.shields.io/github/v/release/fabric8io/kubernetes-client)](https://search.maven.org/search?q=g:io.fabric8%20a:kubernetes-client)
 [![Twitter](https://img.shields.io/twitter/follow/fabric8io?style=social)](https://twitter.com/jkubeio)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=kubernetes_client&metric=bugs)](https://sonarcloud.io/dashboard?id=kubernetes_client)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=fabric8io_kubernetes-client&metric=bugs)](https://sonarcloud.io/dashboard?id=fabric8io_kubernetes-client)
 
 
 * kubernetes-client: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-client.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-client)
