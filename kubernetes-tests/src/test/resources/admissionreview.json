@@ -1,0 +1,83 @@
+{
+  "kind": "AdmissionReview",
+  "apiVersion": "admission.k8s.io/v1beta1",
+  "request": {
+    "uid": "66105089-3471-46ff-b4c8-293546c2aa6c",
+    "kind": {
+      "group": "",
+      "version": "v1",
+      "kind": "Pod"
+    },
+    "resource": {
+      "group": "",
+      "version": "v1",
+      "resource": "pods"
+    },
+    "requestKind": {
+      "group": "",
+      "version": "v1",
+      "kind": "Pod"
+    },
+    "requestResource": {
+      "group": "",
+      "version": "v1",
+      "resource": "pods"
+    },
+    "namespace": "myNamespace",
+    "operation": "CREATE",
+    "userInfo": {
+      "username": "III#John.Doe@something.com",
+      "groups": [
+        "Group2"
+      ]
+    },
+    "object": {
+      "kind": "Pod",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "example-pod",
+        "namespace": "myNamespace",
+        "creationTimestamp": null,
+        "annotations": {
+        }
+      },
+      "spec": {
+        "volumes": [
+        ],
+        "containers": [
+
+        ],
+        "restartPolicy": "Always",
+        "terminationGracePeriodSeconds": 30,
+        "dnsPolicy": "ClusterFirst",
+        "serviceAccountName": "default",
+        "serviceAccount": "default",
+        "securityContext": {},
+        "schedulerName": "default-scheduler",
+        "tolerations": [
+          {
+            "key": "node.kubernetes.io/not-ready",
+            "operator": "Exists",
+            "effect": "NoExecute",
+            "tolerationSeconds": 600
+          },
+          {
+            "key": "node.kubernetes.io/unreachable",
+            "operator": "Exists",
+            "effect": "NoExecute",
+            "tolerationSeconds": 600
+          }
+        ],
+        "priority": 0,
+        "enableServiceLinks": true
+      },
+      "status": {}
+    },
+    "oldObject": null,
+    "dryRun": false,
+    "options": {
+      "kind": "CreateOptions",
+      "apiVersion": "meta.k8s.io/v1"
+    }
+  }
+}
