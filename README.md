@@ -4,7 +4,7 @@ This client provides access to the full [Kubernetes](http://kubernetes.io/) &
 
 [![CircleCI](https://img.shields.io/circleci/project/github/fabric8io/kubernetes-client/master.svg)](https://circleci.com/gh/fabric8io/kubernetes-client)
 [![Release](https://img.shields.io/github/v/release/fabric8io/kubernetes-client)](https://search.maven.org/search?q=g:io.fabric8%20a:kubernetes-client)
-[![Twitter](https://img.shields.io/twitter/follow/fabric8io?style=social)](https://twitter.com/jkubeio)
+[![Twitter](https://img.shields.io/twitter/follow/fabric8io?style=social)](https://twitter.com/fabric8io)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=fabric8io_kubernetes-client&metric=bugs)](https://sonarcloud.io/dashboard?id=fabric8io_kubernetes-client)
 
 
@@ -268,7 +268,7 @@ Calling close() on any of the adapt() managed instances or the original instance
 
 ## Mocking Kubernetes
 
-Along with the client this project also provide a kubernetes mock server that you can use for testing purposes.
+Along with the client this project also provides a kubernetes mock server that you can use for testing purposes.
 The mock server is based on `https://github.com/square/okhttp/tree/master/mockwebserver` but is empowered by the DSL and features provided by `https://github.com/fabric8io/mockwebserver`.
 
 The Mock Web Server has two modes of operation:
@@ -399,7 +399,7 @@ All the resource objects used here will be according to OpenShift 3.9.0  and Kub
 * DaemonSet dsl is in both `apps` and `extensions`(Extensions is deprecated)
 * Deployment dsl is in both `apps` and `extensions`(Extensions is deprecated)
 * ReplicaSet dsl is in both `apps` and `extensions`(Extensions is deprecated)
-* NetworkPolicy dsl is in both `network` and `extensiosn`(Extensions is deprecated)
+* NetworkPolicy dsl is in both `network` and `extensions`(Extensions is deprecated)
 * Storage Class moved from `client base DSL` to `storage` DSL
 * PodSecurityPolicies moved from `client base DSL` and `extensions` to only `extensions`
 * ThirdPartyResource has been removed.
@@ -431,6 +431,7 @@ All the resource objects used here will be according to OpenShift 3.9.0  and Kub
   
   Build Tools:
   - [Fabric8 Maven Plugin](https://github.com/fabric8io/fabric8-maven-plugin)
+  - [Eclipse JKube](https://github.com/eclipse/jkube)
   - [Gradle Kubernetes Plugin](https://github.com/bmuschko/gradle-kubernetes-plugin)
   
   Platforms:
