@@ -17046,6 +17046,283 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "os_config_ClusterOperatorStatusCondition": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "lastTransitionTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "javaType": "String"
+        },
+        "message": {
+          "type": "string",
+          "description": ""
+        },
+        "reason": {
+          "type": "string",
+          "description": ""
+        },
+        "status": {
+          "type": "string",
+          "description": ""
+        },
+        "type": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.ClusterOperatorStatusCondition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_ClusterVersion": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "config.openshift.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ClusterVersion",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/os_config_ClusterVersionSpec",
+          "javaType": "io.fabric8.openshift.api.model.ClusterVersionSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/os_config_ClusterVersionStatus",
+          "javaType": "io.fabric8.openshift.api.model.ClusterVersionStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.ClusterVersion",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "os_config_ClusterVersionList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "config.openshift.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/os_config_ClusterVersion",
+            "javaType": "io.fabric8.openshift.api.model.ClusterVersion"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ClusterVersionList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.ClusterVersionList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openshift.api.model.ClusterVersion\u003e"
+      ]
+    },
+    "os_config_ClusterVersionSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "channel": {
+          "type": "string",
+          "description": ""
+        },
+        "clusterID": {
+          "type": "string",
+          "description": ""
+        },
+        "desiredUpdate": {
+          "$ref": "#/definitions/os_config_Update",
+          "javaType": "io.fabric8.openshift.api.model.Update"
+        },
+        "overrides": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_config_ComponentOverride",
+            "javaType": "io.fabric8.openshift.api.model.ComponentOverride"
+          }
+        },
+        "upstream": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.ClusterVersionSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_ClusterVersionStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "availableUpdates": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/os_config_Update",
+            "javaType": "io.fabric8.openshift.api.model.Update"
+          }
+        },
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_config_ClusterOperatorStatusCondition",
+            "javaType": "io.fabric8.openshift.api.model.ClusterOperatorStatusCondition"
+          }
+        },
+        "desired": {
+          "$ref": "#/definitions/os_config_Update",
+          "javaType": "io.fabric8.openshift.api.model.Update"
+        },
+        "history": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_config_UpdateHistory",
+            "javaType": "io.fabric8.openshift.api.model.UpdateHistory"
+          }
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "versionHash": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.ClusterVersionStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_ComponentOverride": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "group": {
+          "type": "string",
+          "description": ""
+        },
+        "kind": {
+          "type": "string",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "namespace": {
+          "type": "string",
+          "description": ""
+        },
+        "unmanaged": {
+          "type": "boolean",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.ComponentOverride",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_Update": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "force": {
+          "type": "boolean",
+          "description": ""
+        },
+        "image": {
+          "type": "string",
+          "description": ""
+        },
+        "version": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.Update",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_UpdateHistory": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "completionTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "javaType": "String"
+        },
+        "image": {
+          "type": "string",
+          "description": ""
+        },
+        "startedTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "javaType": "String"
+        },
+        "state": {
+          "type": "string",
+          "description": ""
+        },
+        "verified": {
+          "type": "boolean",
+          "description": ""
+        },
+        "version": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.UpdateHistory",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_deploy_CustomDeploymentStrategyParams": {
       "type": "object",
       "description": "",
@@ -20299,6 +20576,14 @@
     "ClusterRoleList": {
       "$ref": "#/definitions/kubernetes_rbac_ClusterRoleList",
       "javaType": "io.fabric8.kubernetes.api.model.rbac.ClusterRoleList"
+    },
+    "ClusterVersion": {
+      "$ref": "#/definitions/os_config_ClusterVersion",
+      "javaType": "io.fabric8.openshift.api.model.ClusterVersion"
+    },
+    "ClusterVersionList": {
+      "$ref": "#/definitions/os_config_ClusterVersionList",
+      "javaType": "io.fabric8.openshift.api.model.ClusterVersionList"
     },
     "ComponentStatusList": {
       "$ref": "#/definitions/kubernetes_core_ComponentStatusList",

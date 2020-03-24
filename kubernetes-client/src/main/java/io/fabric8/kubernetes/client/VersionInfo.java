@@ -16,14 +16,14 @@
 
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.openshift.api.model.ClusterVersion;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
 
 public class VersionInfo {
-  private Map<String, String> data;
-  private final class VERSION_KEYS {
+  public final class VERSION_KEYS {
     public static final String BUILD_DATE = "buildDate";
     public static final String GIT_COMMIT = "gitCommit";
     public static final String GIT_VERSION = "gitVersion";
@@ -81,18 +81,85 @@ public class VersionInfo {
     return compiler;
   }
 
-  public VersionInfo(Map<String, String> jsonData) throws ParseException {
-      this.data = jsonData;
-      this.buildDate = new SimpleDateFormat(VERSION_KEYS.BUILD_DATE_FORMAT).parse(jsonData.get(VERSION_KEYS.BUILD_DATE));
-      this.gitCommit = jsonData.get(VERSION_KEYS.GIT_COMMIT);
-      this.gitVersion = jsonData.get(VERSION_KEYS.GIT_VERSION);
-      this.major = jsonData.get(VERSION_KEYS.MAJOR);
-      this.minor = jsonData.get(VERSION_KEYS.MINOR);
-      this.gitTreeState = jsonData.get(VERSION_KEYS.GIT_TREE_STATE);
-      this.platform = jsonData.get(VERSION_KEYS.PLATFORM);
-      this.goVersion = jsonData.get(VERSION_KEYS.GO_VERSION);
-      this.compiler = jsonData.get(VERSION_KEYS.COMPILER);
+  private VersionInfo() { }
+
+  public static VersionInfo parseVersionInfoFromClusterVersion(ClusterVersion clusterVersion) throws ParseException {
+    String[] versionParts = clusterVersion.getStatus().getDesired().getVersion().split("\\.");
+    VersionInfo.Builder versionInfoBuilder = new VersionInfo.Builder();
+    if (versionParts.length == 3) {
+      versionInfoBuilder.withMajor(versionParts[0]);
+      versionInfoBuilder.withMinor(versionParts[1] + "." + versionParts[2]);
+    }
+    versionInfoBuilder.withBuildDate(clusterVersion.getMetadata().getCreationTimestamp());
+    return versionInfoBuilder.build();
   }
 
-  public Map<String, String> getData() { return data; }
+  public static class Builder {
+    private VersionInfo versionInfo = new VersionInfo();
+
+    public Builder() { }
+
+    public Builder(VersionInfo versionInfo) {
+      if (versionInfo != null) {
+        this.versionInfo.buildDate = versionInfo.getBuildDate();
+        this.versionInfo.gitCommit = versionInfo.getGitCommit();
+        this.versionInfo.gitVersion = versionInfo.getGitVersion();
+        this.versionInfo.major = versionInfo.getMajor();
+        this.versionInfo.minor = versionInfo.getMinor();
+        this.versionInfo.gitTreeState = versionInfo.getGitTreeState();
+        this.versionInfo.platform = versionInfo.getPlatform();
+        this.versionInfo.goVersion = versionInfo.getGoVersion();
+        this.versionInfo.compiler = versionInfo.getCompiler();
+      }
+    }
+
+    public Builder withBuildDate(String buildDate) throws ParseException {
+      this.versionInfo.buildDate = new SimpleDateFormat(VERSION_KEYS.BUILD_DATE_FORMAT).parse(buildDate);
+      return this;
+    }
+
+    public Builder withGitCommit(String gitCommit) {
+      this.versionInfo.gitCommit = gitCommit;
+      return this;
+    }
+
+    public Builder withGitVersion(String gitVersion) {
+      this.versionInfo.gitVersion = gitVersion;
+      return this;
+    }
+
+    public Builder withMajor(String major) {
+      this.versionInfo.major = major;
+      return this;
+    }
+
+    public Builder withMinor(String minor) {
+      this.versionInfo.minor = minor;
+      return this;
+    }
+
+    public Builder withGitTreeState(String gitTreeState) {
+      this.versionInfo.gitTreeState = gitTreeState;
+      return this;
+    }
+
+    public Builder withPlatform(String platform) {
+      this.versionInfo.platform = platform;
+      return this;
+    }
+
+    public Builder withGoVersion(String goVersion) {
+      this.versionInfo.goVersion = goVersion;
+      return this;
+    }
+
+    public Builder withCompiler(String compiler) {
+      this.versionInfo.compiler = compiler;
+      return this;
+    }
+
+    public VersionInfo build() {
+      return versionInfo;
+    }
+  }
 }

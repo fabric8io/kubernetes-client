@@ -30,6 +30,7 @@ import (
   securityapi "github.com/openshift/api/security/v1"
   templateapi "github.com/openshift/api/template/v1"
   userapi "github.com/openshift/api/user/v1"
+  openshiftconfigapi "github.com/openshift/api/config/v1"
   admission "k8s.io/api/admission/v1beta1"
   admissionregistration "k8s.io/api/admissionregistration/v1beta1"
   k8sappsapi "k8s.io/api/apps/v1"
@@ -260,6 +261,8 @@ type Schema struct {
   PodMetricsList                           metrics.PodMetricsList
   NodeMetrics                              metrics.NodeMetrics
   NodeMetricsList                          metrics.NodeMetricsList
+  ClusterVersion                           openshiftconfigapi.ClusterVersion
+  ClusterVersionList                       openshiftconfigapi.ClusterVersionList
 }
 
 func main() {
@@ -292,6 +295,7 @@ func main() {
     {"github.com/openshift/api/project/v1", "", "io.fabric8.openshift.api.model", "os_project_"},
     {"github.com/openshift/api/security/v1", "", "io.fabric8.openshift.api.model", "os_security_"},
     {"github.com/openshift/api/network/v1", "", "io.fabric8.openshift.api.model", "os_network_"},
+    {"github.com/openshift/api/config/v1", "", "io.fabric8.openshift.api.model", "os_config_"},
     {"k8s.io/kubernetes/pkg/api/unversioned", "", "io.fabric8.kubernetes.api.model", "api_"},
     {"k8s.io/api/discovery/v1beta1", "", "io.fabric8.kubernetes.api.model.discovery", "kubernetes_discovery_"},
     {"k8s.io/api/extensions/v1beta1", "", "io.fabric8.kubernetes.api.model.extensions", "kubernetes_extensions_"},

@@ -22,12 +22,13 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:91d7cd34ea6ce39307fb0849ea2758c92c271b09e7dc331e7c8ca9a8b6b6dc5d"
+  digest = "1:5b930e5385c3ec853e421c6db74c917cf4ac09d77c534c5c6a10c59786866091"
   name = "github.com/openshift/api"
   packages = [
     "apps/v1",
     "authorization/v1",
     "build/v1",
+    "config/v1",
     "image/docker10",
     "image/dockerpre012",
     "image/v1",
@@ -44,7 +45,7 @@
   revision = "a0e53e94816b9a26ceb82e248e63e0666c377f44"
 
 [[projects]]
-  digest = "1:ef03a648cc87c8f1a350ff49b2df30a9b8ad03ca71c388d2c2554997cdfbb2b4"
+  digest = "1:335519f138c02d5f5bd35c859d466a349674cf024e6db0fdaa571bb3488350aa"
   name = "github.com/openshift/origin"
   packages = ["."]
   pruneopts = "UT"
@@ -197,7 +198,7 @@
   version = "v1.17.0"
 
 [[projects]]
-  digest = "0:"
+  digest = "1:7814e7cc39cdcb500eafc02de1ec5ca87a5fd69c117f5225eb93ad79a83a7ff8"
   name = "k8s.io/metrics"
   packages = [
     "pkg/apis/metrics",
@@ -222,6 +223,7 @@
     "github.com/openshift/api/apps/v1",
     "github.com/openshift/api/authorization/v1",
     "github.com/openshift/api/build/v1",
+    "github.com/openshift/api/config/v1",
     "github.com/openshift/api/image/v1",
     "github.com/openshift/api/network/v1",
     "github.com/openshift/api/oauth/v1",

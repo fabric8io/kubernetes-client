@@ -434,7 +434,7 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
 
   @Override
   public VersionInfo getVersion() {
-    return new ClusterOperationsImpl(httpClient, getConfiguration(), "version/openshift").fetchVersion();
+    return new ClusterOperationsImpl(httpClient, getConfiguration(), ClusterOperationsImpl.OPENSHIFT_VERSION_ENDPOINT).fetchVersion();
   }
 
   @Override

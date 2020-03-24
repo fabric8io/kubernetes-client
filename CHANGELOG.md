@@ -7,6 +7,7 @@
 * Fix #2057: Fix jar and osgi bundle generation for extensions
 * Fix #2075: KubernetesDeserializer registration for CustomResources
 * Fix #2078: watchLog for Deployment and StatefulSet
+* Fix #2046: OpenshiftClient getVersion returns null for Openshift ContainerPlatform v4
 
 #### Improvements
 * Fix #2019: Added CustomResourceCrudTest
