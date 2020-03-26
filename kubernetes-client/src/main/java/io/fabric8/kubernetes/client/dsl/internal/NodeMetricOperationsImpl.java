@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import java.util.Map;
+
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetrics;
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetricsList;
 import io.fabric8.kubernetes.client.Config;
@@ -25,31 +27,31 @@ import io.fabric8.kubernetes.client.utils.URLUtils;
 import okhttp3.OkHttpClient;
 
 public class NodeMetricOperationsImpl extends OperationSupport {
-  private static String METRIC_ENDPOINT_URL = "apis/metrics.k8s.io/v1beta1/nodes";
+	private static String METRIC_ENDPOINT_URL = "apis/metrics.k8s.io/v1beta1/nodes";
 
-  public NodeMetricOperationsImpl(OkHttpClient client, Config config) {
-    super(new OperationContext().withOkhttpClient(client).withConfig(config));
-  }
+	public NodeMetricOperationsImpl(OkHttpClient client, Config config) {
+		super(new OperationContext().withOkhttpClient(client).withConfig(config));
+	}
 
-  public NodeMetricsList metrics() {
-    try {
-      String resourceUrl = URLUtils.join(config.getMasterUrl(), METRIC_ENDPOINT_URL);
-      return handleMetric(resourceUrl, NodeMetricsList.class);
-    } catch(Exception e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
-  }
+	public NodeMetricsList metrics() {
+		try {
+			String resourceUrl = URLUtils.join(config.getMasterUrl(), METRIC_ENDPOINT_URL);
+			return handleMetric(resourceUrl, NodeMetricsList.class);
+		} catch(Exception e) {
+			throw KubernetesClientException.launderThrowable(e);
+		}
+	}
 
-  public NodeMetrics metrics(String nodeName) {
-    try {
-      String resourceUrl = URLUtils.join(config.getMasterUrl(), METRIC_ENDPOINT_URL, nodeName);
-      return handleMetric(resourceUrl, NodeMetrics.class);
-    } catch(Exception e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
-  }
-  
-  public NodeMetricsList metrics(Map<String ,Object> labelsMap) {
+	public NodeMetrics metrics(String nodeName) {
+		try {
+			String resourceUrl = URLUtils.join(config.getMasterUrl(), METRIC_ENDPOINT_URL, nodeName);
+			return handleMetric(resourceUrl, NodeMetrics.class);
+		} catch(Exception e) {
+			throw KubernetesClientException.launderThrowable(e);
+		}
+	}
+
+	public NodeMetricsList metrics(Map<String ,Object> labelsMap) {
 		try {
 			
 			StringBuilder sb = new StringBuilder();
@@ -64,5 +66,6 @@ public class NodeMetricOperationsImpl extends OperationSupport {
 		} catch(Exception e) {
 			throw KubernetesClientException.launderThrowable(e);
 		}
-  }
+	}
+
 }
