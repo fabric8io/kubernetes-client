@@ -48,5 +48,21 @@ public class NodeMetricOperationsImpl extends OperationSupport {
       throw KubernetesClientException.launderThrowable(e);
     }
   }
-
+  
+  public NodeMetricsList metrics(Map<String ,Object> labelsMap) {
+		try {
+			
+			StringBuilder sb = new StringBuilder();
+			sb.append("?labelSelector=");
+			for(Map.Entry<String, Object> entry : labelsMap.entrySet()) {
+				sb.append(entry.getKey()).append("=").append(entry.getValue().toString()).append(",");
+			}
+			String paras = sb.toString().substring(0, sb.toString().length() - 1);
+			
+			String resourceUrl = URLUtils.join(config.getMasterUrl(), METRIC_ENDPOINT_URL, paras);
+			return handleMetric(resourceUrl, NodeMetricsList.class);
+		} catch(Exception e) {
+			throw KubernetesClientException.launderThrowable(e);
+		}
+  }
 }
