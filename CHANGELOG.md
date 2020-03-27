@@ -13,6 +13,7 @@
 #### Improvements
 * Fix #2019: Added CustomResourceCrudTest
 * Fix #2054: JobExample doesn't work
+* Fix #2082:  Added filter node metrics via labels
 
 #### Dependency Upgrade
 
