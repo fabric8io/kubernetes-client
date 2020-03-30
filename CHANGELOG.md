@@ -11,6 +11,7 @@
 
 #### Improvements
 * Fix #2019: Added CustomResourceCrudTest
+* Fix #2054: JobExample doesn't work
 
 #### Dependency Upgrade
 
