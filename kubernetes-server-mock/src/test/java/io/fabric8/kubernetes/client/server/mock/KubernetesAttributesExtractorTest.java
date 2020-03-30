@@ -91,7 +91,6 @@ public class KubernetesAttributesExtractorTest {
 		expected = expected.add(new Attribute("namespace", "myns"));
 		expected = expected.add(new Attribute("name", "mypod"));
 		assertTrue(attributes.matches(expected));
-
 	}
 
 	@Test

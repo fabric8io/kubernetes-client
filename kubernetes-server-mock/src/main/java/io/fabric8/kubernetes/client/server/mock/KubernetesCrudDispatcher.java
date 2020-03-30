@@ -35,7 +35,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
   private static final Logger LOGGER = LoggerFactory.getLogger(KubernetesCrudDispatcher.class);
 
   public KubernetesCrudDispatcher() {
-    this(new KubernetesAttributesExtractor(), new KubernetesResponseComposer());
+    this(new KubernetesCrudAttributesExtractor(), new KubernetesResponseComposer());
   }
 
   public KubernetesCrudDispatcher(AttributeExtractor attributeExtractor, ResponseComposer responseComposer) {
