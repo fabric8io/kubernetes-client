@@ -17,7 +17,13 @@ package io.fabric8.tekton;
 
 import io.fabric8.kubernetes.api.KubernetesResourceMappingProvider;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
-import io.fabric8.tekton.pipeline.v1alpha1.*;
+import io.fabric8.tekton.pipeline.v1beta1.ClusterTask;
+import io.fabric8.tekton.pipeline.v1beta1.Pipeline;
+import io.fabric8.tekton.pipeline.v1beta1.PipelineRun;
+import io.fabric8.tekton.pipeline.v1beta1.Task;
+import io.fabric8.tekton.pipeline.v1beta1.TaskRun;
+import io.fabric8.tekton.resource.v1alpha1.PipelineResource;
+
 import java.util.HashMap;
 import java.util.Map;
 
