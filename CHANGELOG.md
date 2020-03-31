@@ -2,6 +2,7 @@
 
 ### 4.9-SNAPSHOT
 #### Bugs
+* Fix #1586: Replace of Job should add extra selector property to the resource
 * Fix #2034: Quantity.equals mishandles fractions
 * Fix #2009: Regression `withoutLabel()` stopped to work
 * Fix #2057: Fix jar and osgi bundle generation for extensions
