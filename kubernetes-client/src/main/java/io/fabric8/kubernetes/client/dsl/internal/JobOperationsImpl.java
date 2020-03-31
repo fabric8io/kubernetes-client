@@ -223,4 +223,24 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
     }
     return null;
   }
+
+  @Override
+  public Job replace(Job job) {
+    if (job == null) {
+      job = getItem();
+    }
+    // Fetch item from server and patch Selector and PodTemplate
+    // metadata in case not present already in order to avoid 422
+    Job jobFromServer = fromServer().get();
+    if (job.getSpec().getSelector() == null) {
+      job.getSpec().setSelector(jobFromServer.getSpec().getSelector());
+    }
+    if (job.getSpec().getTemplate().getMetadata() != null) {
+      job.getSpec().getTemplate().getMetadata().setLabels(jobFromServer.getSpec().getTemplate().getMetadata().getLabels());
+    } else {
+      job.getSpec().getTemplate().setMetadata(jobFromServer.getSpec().getTemplate().getMetadata());
+    }
+
+    return super.replace(job);
+  }
 }
