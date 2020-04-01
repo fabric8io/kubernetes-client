@@ -5231,6 +5231,14 @@
   },
   "type": "object",
   "properties": {
+    "pipelineResource": {
+      "$ref": "#/definitions/tekton_resource_v1alpha1_PipelineResource",
+      "javaType": "io.fabric8.tekton.resource.v1alpha1.PipelineResource"
+    },
+    "pipelineResourceList": {
+      "$ref": "#/definitions/tekton_resource_v1alpha1_PipelineResourceList",
+      "javaType": "io.fabric8.tekton.resource.v1alpha1.PipelineResourceList"
+    },
     "resourceDeclaration": {
       "$ref": "#/definitions/tekton_resource_v1alpha1_ResourceDeclaration",
       "javaType": "io.fabric8.tekton.resource.v1alpha1.ResourceDeclaration"
@@ -5247,13 +5255,13 @@
       "$ref": "#/definitions/tekton_v1alpha1_ConditionList",
       "javaType": "io.fabric8.tekton.pipeline.v1alpha1.ConditionList"
     },
-    "v1alpha1PipelineResource": {
-      "$ref": "#/definitions/tekton_resource_v1alpha1_PipelineResource",
-      "javaType": "io.fabric8.tekton.resource.v1alpha1.PipelineResource"
+    "v1alpha1PipelineRunConditionCheckStatus": {
+      "$ref": "#/definitions/tekton_v1alpha2_PipelineRunConditionCheckStatus",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineRunConditionCheckStatus"
     },
-    "v1alpha1PipelineResourceList": {
-      "$ref": "#/definitions/tekton_resource_v1alpha1_PipelineResourceList",
-      "javaType": "io.fabric8.tekton.resource.v1alpha1.PipelineResourceList"
+    "v1alpha1PipelineRunTaskRunStatus": {
+      "$ref": "#/definitions/tekton_v1alpha2_PipelineRunTaskRunStatus",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineRunTaskRunStatus"
     },
     "v1beta1ClusterTask": {
       "$ref": "#/definitions/tekton_v1alpha2_ClusterTask",
@@ -5618,29 +5626,25 @@
     },
     "condition": {
       "properties": {
-        "lastTransitionTime": {
-          "$ref": "#/definitions/knative_VolatileTime",
-          "javaType": "io.fabric8.knative.v1.VolatileTime"
-        },
-        "message": {
+        "apiVersion": {
           "type": "string",
-          "description": "human-readable message indicating details about last transition"
+          "description": "",
+          "default": "tekton.dev/v1alpha1",
+          "required": true
         },
-        "reason": {
+        "kind": {
           "type": "string",
-          "description": "one-word CamelCase reason for the condition's last transition"
+          "description": "",
+          "default": "Condition",
+          "required": true
         },
-        "severity": {
-          "type": "string",
-          "description": "how to interpret failures of this condition"
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_meta_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
-        "status": {
-          "type": "string",
-          "description": "status of the condition"
-        },
-        "type": {
-          "type": "string",
-          "description": "type of status condition"
+        "spec": {
+          "$ref": "#/definitions/tekton_v1alpha1_ConditionSpec",
+          "javaType": "io.fabric8.tekton.pipeline.v1alpha1.ConditionSpec"
         }
       },
       "additionalProperties": true
