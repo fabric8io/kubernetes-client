@@ -162,6 +162,25 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "knative_dev_duck_v1_CloudEventAttributes": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "source": {
+          "type": "string",
+          "description": ""
+        },
+        "type": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.duck.v1.CloudEventAttributes",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "knative_dev_duck_v1_CloudEventOverrides": {
       "type": "object",
       "description": "",
@@ -251,6 +270,15 @@
       "type": "object",
       "description": "",
       "properties": {
+        "ceAttributes": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_duck_v1_CloudEventAttributes",
+            "javaType": "io.fabric8.knative.duck.v1.CloudEventAttributes"
+          }
+        },
         "conditions": {
           "type": "array",
           "description": "",
@@ -2768,6 +2796,15 @@
       "type": "object",
       "description": "",
       "properties": {
+        "ceAttributes": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_duck_v1_CloudEventAttributes",
+            "javaType": "io.fabric8.knative.duck.v1.CloudEventAttributes"
+          }
+        },
         "conditions": {
           "type": "array",
           "description": "",

@@ -10,9 +10,9 @@ require (
 	github.com/gregjones/httpcache v0.0.0-20190611155906-901d90724c79 // indirect
 	github.com/imdario/mergo v0.3.7 // indirect
 	github.com/knative/build v0.7.0 // indirect
-	github.com/knative/eventing v0.12.1-0.20200221224007-41eb2f9dbd30
-	github.com/knative/pkg v0.0.0-20200221214207-3a272190c3e2 // indirect
-	github.com/knative/serving v0.12.0
+	github.com/knative/eventing v0.13.0
+	github.com/knative/pkg v0.0.0-20200401184317-55250e6aab62 // indirect
+	github.com/knative/serving v0.13.0
 	github.com/knative/test-infra v0.0.0-20190702025031-91d37e4abc30 // indirect
 	github.com/markbates/inflect v1.0.4 // indirect
 	github.com/mattbaird/jsonpatch v0.0.0-20171005235357-81af80346b1a // indirect
@@ -26,9 +26,9 @@ require (
 	google.golang.org/api v0.17.0 // indirect
 	gotest.tools v2.2.0+incompatible // indirect
 	k8s.io/cli-runtime v0.17.3 // indirect
-	knative.dev/eventing v0.12.1-0.20200221224007-41eb2f9dbd30 // indirect
-	knative.dev/pkg v0.0.0-20200221214207-3a272190c3e2 // indirect
-	knative.dev/serving v0.12.0 // indirect
+	knative.dev/eventing v0.13.0 // indirect
+	knative.dev/pkg v0.0.0-20200401184317-55250e6aab62 // indirect
+	knative.dev/serving v0.13.0 // indirect
 )
 
 go 1.13
