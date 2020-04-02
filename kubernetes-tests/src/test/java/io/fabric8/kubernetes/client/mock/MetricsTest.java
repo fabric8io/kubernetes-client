@@ -27,11 +27,14 @@ import io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetricsList;
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetricsListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
@@ -94,6 +97,24 @@ public class MetricsTest {
 
     NodeMetrics nodeMetrics = client.top().nodes().metrics("test-node");
     assertEquals("foo", nodeMetrics.getMetadata().getName());
+  }
+
+  @Test
+  public void testNodeMetricWithLabels() {
+    // Given
+    server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/nodes?labelSelector=" + Utils.toUrlEncoded("ss=true,cs=true"))
+      .andReturn(200, new NodeMetricsListBuilder().withItems(getNodeMetric()).build()).once();
+
+    KubernetesClient client = server.getClient();
+    Map<String,Object> lablesMap = new HashMap();
+    lablesMap.put("ss", "true");
+    lablesMap.put("cs", "true");
+
+    // When
+    NodeMetricsList nodeMetricList = client.top().nodes().metrics(lablesMap);
+
+    // Then
+    assertEquals(1, nodeMetricList.getItems().size());
   }
 
   private PodMetrics getPodMetric() throws Exception {

@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.URLUtils;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 
 public class NodeMetricOperationsImpl extends OperationSupport {
@@ -51,18 +52,16 @@ public class NodeMetricOperationsImpl extends OperationSupport {
 		}
 	}
 
-	public NodeMetricsList metrics(Map<String ,Object> labelsMap) {
+	public NodeMetricsList metrics(Map<String, Object> labelsMap) {
 		try {
-			
-			StringBuilder sb = new StringBuilder();
-			sb.append("?labelSelector=");
+      HttpUrl.Builder httpUrlBuilder = HttpUrl.get(URLUtils.join(config.getMasterUrl(), METRIC_ENDPOINT_URL)).newBuilder();
+
+      StringBuilder sb = new StringBuilder();
 			for(Map.Entry<String, Object> entry : labelsMap.entrySet()) {
 				sb.append(entry.getKey()).append("=").append(entry.getValue().toString()).append(",");
 			}
-			String paras = sb.toString().substring(0, sb.toString().length() - 1);
-			
-			String resourceUrl = URLUtils.join(config.getMasterUrl(), METRIC_ENDPOINT_URL, paras);
-			return handleMetric(resourceUrl, NodeMetricsList.class);
+      httpUrlBuilder.addQueryParameter("labelSelector", sb.toString().substring(0, sb.toString().length() - 1));
+			return handleMetric(httpUrlBuilder.build().toString(), NodeMetricsList.class);
 		} catch(Exception e) {
 			throw KubernetesClientException.launderThrowable(e);
 		}
