@@ -35,8 +35,8 @@ import (
 type Schema struct {
   V1alpha1Condition                       v1alpha1.Condition
   V1alpha1ConditionList                   v1alpha1.ConditionList
-  V1alpha1PipelineResource                v1alpha1.PipelineResource
-  V1alpha1PipelineResourceList            v1alpha1.PipelineResourceList
+  V1alpha1PipelineRunTaskRunStatus        v1alpha1.PipelineRunTaskRunStatus
+  V1alpha1PipelineRunConditionCheckStatus v1alpha1.PipelineRunConditionCheckStatus
 
   V1beta1Pipeline                        v1beta1.Pipeline
   V1beta1PipelineList                    v1beta1.PipelineList
@@ -63,7 +63,8 @@ type Schema struct {
 
 	Template                               pod.Template
 	ResourceDeclaration                    resource.ResourceDeclaration
-	resource                               resource.PipelineResource
+	PipelineResource                       resource.PipelineResource
+	PipelineResourceList                   resource.PipelineResourceList
 
 }
 
