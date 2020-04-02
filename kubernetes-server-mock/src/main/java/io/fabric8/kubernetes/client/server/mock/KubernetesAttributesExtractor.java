@@ -129,25 +129,29 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
 
   @Override
   public AttributeSet extract(HasMetadata o) {
-    AttributeSet attributes = new AttributeSet();
+    AttributeSet attributes = extractMetadataAttributes(o);
     if (!Utils.isNullOrEmpty(o.getKind())) {
-      attributes = attributes.add(new Attribute(KIND, o.getKind().toLowerCase(Locale.ROOT)));
-    }
-
-    if (!Utils.isNullOrEmpty(o.getMetadata().getName())) {
-      attributes = attributes.add(new Attribute(NAME, o.getMetadata().getName()));
-    }
-
-    if (!Utils.isNullOrEmpty(o.getMetadata().getNamespace())) {
-      attributes = attributes.add(new Attribute(NAMESPACE, o.getMetadata().getNamespace()));
-    }
-
-    if (o.getMetadata().getLabels() != null) {
-      for (Map.Entry<String, String> label : o.getMetadata().getLabels().entrySet()) {
-        attributes = attributes.add(new Attribute(LABEL_KEY_PREFIX + label.getKey(), label.getValue()));
-      }
+        attributes = attributes.add(new Attribute(KIND, o.getKind().toLowerCase(Locale.ROOT)));
     }
     return attributes;
+  }
+
+  protected AttributeSet extractMetadataAttributes(HasMetadata hasMetadata) {
+      AttributeSet metadataAttributes = new AttributeSet();
+      if (!Utils.isNullOrEmpty(hasMetadata.getMetadata().getName())) {
+        metadataAttributes = metadataAttributes.add(new Attribute(NAME, hasMetadata.getMetadata().getName()));
+      }
+
+      if (!Utils.isNullOrEmpty(hasMetadata.getMetadata().getNamespace())) {
+          metadataAttributes = metadataAttributes.add(new Attribute(NAMESPACE, hasMetadata.getMetadata().getNamespace()));
+      }
+
+    if (hasMetadata.getMetadata().getLabels() != null) {
+      for (Map.Entry<String, String> label : hasMetadata.getMetadata().getLabels().entrySet()) {
+        metadataAttributes = metadataAttributes.add(new Attribute(LABEL_KEY_PREFIX + label.getKey(), label.getValue()));
+      }
+    }
+    return metadataAttributes;
   }
 
   private static AttributeSet extract(Matcher m) {
