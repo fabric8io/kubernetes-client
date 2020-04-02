@@ -15,6 +15,7 @@
 * Fix #2054: JobExample doesn't work
 
 #### Dependency Upgrade
+* Updated Knative model to v0.13.0
 
 #### New Features
 

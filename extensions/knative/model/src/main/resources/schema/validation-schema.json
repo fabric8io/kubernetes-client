@@ -162,6 +162,25 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "knative_dev_duck_v1_CloudEventAttributes": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "source": {
+          "type": "string",
+          "description": ""
+        },
+        "type": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.knative.duck.v1.CloudEventAttributes",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "knative_dev_duck_v1_CloudEventOverrides": {
       "type": "object",
       "description": "",
@@ -251,6 +270,15 @@
       "type": "object",
       "description": "",
       "properties": {
+        "ceAttributes": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_duck_v1_CloudEventAttributes",
+            "javaType": "io.fabric8.knative.duck.v1.CloudEventAttributes"
+          }
+        },
         "conditions": {
           "type": "array",
           "description": "",
@@ -2768,6 +2796,15 @@
       "type": "object",
       "description": "",
       "properties": {
+        "ceAttributes": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_duck_v1_CloudEventAttributes",
+            "javaType": "io.fabric8.knative.duck.v1.CloudEventAttributes"
+          }
+        },
         "conditions": {
           "type": "array",
           "description": "",
@@ -8990,10 +9027,6 @@
   "resources": {
     "addressable": {
       "properties": {
-        "hostname": {
-          "type": "string",
-          "description": ""
-        },
         "url": {
           "$ref": "#/definitions/knative_URL",
           "javaType": "io.fabric8.knative.v1.URL"
@@ -9430,7 +9463,7 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "duck.knative.dev/v1alpha1",
+          "default": "duck.knative.dev/v1beta1",
           "required": true
         },
         "kind": {
@@ -9444,12 +9477,12 @@
           "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/knative_duck_v1alpha1_ChannelableSpec",
-          "javaType": "io.fabric8.knative.duck.v1alpha1.ChannelableSpec"
+          "$ref": "#/definitions/knative_duck_v1beta1_ChannelableSpec",
+          "javaType": "io.fabric8.knative.duck.v1beta1.ChannelableSpec"
         },
         "status": {
-          "$ref": "#/definitions/knative_duck_v1alpha1_ChannelableStatus",
-          "javaType": "io.fabric8.knative.duck.v1alpha1.ChannelableStatus"
+          "$ref": "#/definitions/knative_duck_v1beta1_ChannelableStatus",
+          "javaType": "io.fabric8.knative.duck.v1beta1.ChannelableStatus"
         }
       },
       "additionalProperties": true
@@ -9459,15 +9492,15 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "duck.knative.dev/v1alpha1",
+          "default": "duck.knative.dev/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
           "description": "",
           "items": {
-            "$ref": "#/definitions/knative_duck_v1alpha1_Channelable",
-            "javaType": "io.fabric8.knative.duck.v1alpha1.Channelable"
+            "$ref": "#/definitions/knative_duck_v1beta1_Channelable",
+            "javaType": "io.fabric8.knative.duck.v1beta1.Channelable"
           }
         },
         "kind": {
@@ -9486,17 +9519,12 @@
     "channelablespec": {
       "properties": {
         "delivery": {
-          "$ref": "#/definitions/knative_duck_v1beta1_DeliverySpec",
-          "javaType": "io.fabric8.knative.duck.v1beta1.DeliverySpec"
+          "$ref": "#/definitions/knative_dev_duck_v1beta1_DeliverySpec",
+          "javaType": "io.fabric8.knative.dev.duck.v1beta1.DeliverySpec"
         },
-        "subscribers": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/knative_duck_v1beta1_SubscriberSpec",
-            "javaType": "io.fabric8.knative.duck.v1beta1.SubscriberSpec"
-          }
+        "subscribable": {
+          "$ref": "#/definitions/knative_duck_v1alpha1_Subscribable",
+          "javaType": "io.fabric8.knative.duck.v1alpha1.Subscribable"
         }
       },
       "additionalProperties": true
@@ -9656,6 +9684,19 @@
       },
       "additionalProperties": true
     },
+    "cloudeventattributes": {
+      "properties": {
+        "source": {
+          "type": "string",
+          "description": ""
+        },
+        "type": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true
+    },
     "cloudeventoverrides": {
       "properties": {
         "extensions": {
@@ -9782,7 +9823,7 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "serving.knative.dev/v1beta1",
+          "default": "serving.knative.dev/v1",
           "required": true
         },
         "kind": {
@@ -10368,25 +10409,9 @@
     },
     "destination": {
       "properties": {
-        "apiVersion": {
-          "type": "string",
-          "description": ""
-        },
-        "kind": {
-          "type": "string",
-          "description": ""
-        },
-        "name": {
-          "type": "string",
-          "description": ""
-        },
-        "namespace": {
-          "type": "string",
-          "description": ""
-        },
         "ref": {
-          "$ref": "#/definitions/kubernetes_ObjectReference",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+          "$ref": "#/definitions/knative_dev_duck_v1_KReference",
+          "javaType": "io.fabric8.knative.duck.v1.KReference"
         },
         "uri": {
           "$ref": "#/definitions/knative_URL",
@@ -12917,8 +12942,8 @@
           "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/knative_serving_v1alpha1_RevisionSpec",
-          "javaType": "io.fabric8.knative.serving.v1alpha1.RevisionSpec"
+          "$ref": "#/definitions/knative_serving_v1_RevisionSpec",
+          "javaType": "io.fabric8.knative.serving.v1.RevisionSpec"
         }
       },
       "additionalProperties": true
@@ -12957,15 +12982,15 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "serving.knative.dev/v1",
+          "default": "serving.knative.dev/v1alpha1",
           "required": true
         },
         "items": {
           "type": "array",
           "description": "",
           "items": {
-            "$ref": "#/definitions/knative_serving_v1_Route",
-            "javaType": "io.fabric8.knative.serving.v1.Route"
+            "$ref": "#/definitions/knative_serving_v1alpha1_Route",
+            "javaType": "io.fabric8.knative.serving.v1alpha1.Route"
           }
         },
         "kind": {
@@ -12983,18 +13008,13 @@
     },
     "routespec": {
       "properties": {
-        "generation": {
-          "type": "integer",
-          "description": "",
-          "javaType": "Long"
-        },
         "traffic": {
           "type": "array",
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/knative_serving_v1alpha1_TrafficTarget",
-            "javaType": "io.fabric8.knative.serving.v1alpha1.TrafficTarget"
+            "$ref": "#/definitions/knative_serving_v1_TrafficTarget",
+            "javaType": "io.fabric8.knative.serving.v1.TrafficTarget"
           }
         }
       },
@@ -13039,24 +13059,16 @@
     "routestatusfields": {
       "properties": {
         "address": {
-          "$ref": "#/definitions/knative_dev_duck_v1alpha1_Addressable",
-          "javaType": "io.fabric8.knative.duck.v1alpha1.Addressable"
-        },
-        "domain": {
-          "type": "string",
-          "description": ""
-        },
-        "domainInternal": {
-          "type": "string",
-          "description": ""
+          "$ref": "#/definitions/knative_dev_duck_v1_Addressable",
+          "javaType": "io.fabric8.knative.duck.v1.Addressable"
         },
         "traffic": {
           "type": "array",
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/knative_serving_v1alpha1_TrafficTarget",
-            "javaType": "io.fabric8.knative.serving.v1alpha1.TrafficTarget"
+            "$ref": "#/definitions/knative_serving_v1_TrafficTarget",
+            "javaType": "io.fabric8.knative.serving.v1.TrafficTarget"
           }
         },
         "url": {
@@ -13432,7 +13444,7 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "serving.knative.dev/v1",
+          "default": "serving.knative.dev/v1beta1",
           "required": true
         },
         "kind": {
@@ -13479,15 +13491,15 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "serving.knative.dev/v1",
+          "default": "serving.knative.dev/v1alpha1",
           "required": true
         },
         "items": {
           "type": "array",
           "description": "",
           "items": {
-            "$ref": "#/definitions/knative_serving_v1_Service",
-            "javaType": "io.fabric8.knative.serving.v1.Service"
+            "$ref": "#/definitions/knative_serving_v1alpha1_Service",
+            "javaType": "io.fabric8.knative.serving.v1alpha1.Service"
           }
         },
         "kind": {
@@ -13524,8 +13536,8 @@
     "servicestatus": {
       "properties": {
         "address": {
-          "$ref": "#/definitions/knative_dev_duck_v1alpha1_Addressable",
-          "javaType": "io.fabric8.knative.duck.v1alpha1.Addressable"
+          "$ref": "#/definitions/knative_dev_duck_v1_Addressable",
+          "javaType": "io.fabric8.knative.duck.v1.Addressable"
         },
         "conditions": {
           "type": "array",
@@ -13535,14 +13547,6 @@
             "$ref": "#/definitions/knative_Condition",
             "javaType": "io.fabric8.knative.v1.Condition"
           }
-        },
-        "domain": {
-          "type": "string",
-          "description": ""
-        },
-        "domainInternal": {
-          "type": "string",
-          "description": ""
         },
         "latestCreatedRevisionName": {
           "type": "string",
@@ -13562,8 +13566,8 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/knative_serving_v1alpha1_TrafficTarget",
-            "javaType": "io.fabric8.knative.serving.v1alpha1.TrafficTarget"
+            "$ref": "#/definitions/knative_serving_v1_TrafficTarget",
+            "javaType": "io.fabric8.knative.serving.v1.TrafficTarget"
           }
         },
         "url": {
@@ -13654,6 +13658,15 @@
     },
     "sinkbindingstatus": {
       "properties": {
+        "ceAttributes": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_duck_v1_CloudEventAttributes",
+            "javaType": "io.fabric8.knative.duck.v1.CloudEventAttributes"
+          }
+        },
         "conditions": {
           "type": "array",
           "description": "",
@@ -13690,6 +13703,15 @@
     },
     "sourcestatus": {
       "properties": {
+        "ceAttributes": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_duck_v1_CloudEventAttributes",
+            "javaType": "io.fabric8.knative.duck.v1.CloudEventAttributes"
+          }
+        },
         "conditions": {
           "type": "array",
           "description": "",
@@ -13819,8 +13841,8 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/knative_dev_duck_v1alpha1_SubscriberStatus",
-            "javaType": "io.fabric8.knative.dev.duck.v1alpha1.SubscriberStatus"
+            "$ref": "#/definitions/knative_duck_v1beta1_SubscriberStatus",
+            "javaType": "io.fabric8.knative.duck.v1beta1.SubscriberStatus"
           }
         }
       },
@@ -13896,32 +13918,28 @@
     "subscribabletypestatus": {
       "properties": {
         "subscribableStatus": {
-          "$ref": "#/definitions/knative_dev_duck_v1alpha1_SubscribableStatus",
-          "javaType": "io.fabric8.knative.dev.duck.v1alpha1.SubscribableStatus"
+          "$ref": "#/definitions/knative_duck_v1alpha1_SubscribableStatus",
+          "javaType": "io.fabric8.knative.duck.v1alpha1.SubscribableStatus"
         }
       },
       "additionalProperties": true
     },
     "subscriberspec": {
       "properties": {
-        "deadLetterSink": {
-          "$ref": "#/definitions/knative_URL",
-          "javaType": "io.fabric8.knative.v1.URL"
-        },
         "delivery": {
-          "$ref": "#/definitions/knative_dev_duck_v1beta1_DeliverySpec",
-          "javaType": "io.fabric8.knative.dev.duck.v1beta1.DeliverySpec"
+          "$ref": "#/definitions/knative_duck_v1beta1_DeliverySpec",
+          "javaType": "io.fabric8.knative.duck.v1beta1.DeliverySpec"
         },
         "generation": {
           "type": "integer",
           "description": "",
           "javaType": "Long"
         },
-        "replyURI": {
+        "replyUri": {
           "$ref": "#/definitions/knative_URL",
           "javaType": "io.fabric8.knative.v1.URL"
         },
-        "subscriberURI": {
+        "subscriberUri": {
           "$ref": "#/definitions/knative_URL",
           "javaType": "io.fabric8.knative.v1.URL"
         },
@@ -14168,10 +14186,6 @@
         },
         "latestRevision": {
           "type": "boolean",
-          "description": ""
-        },
-        "name": {
-          "type": "string",
           "description": ""
         },
         "percent": {
