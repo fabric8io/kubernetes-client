@@ -5626,25 +5626,29 @@
     },
     "condition": {
       "properties": {
-        "apiVersion": {
+        "lastTransitionTime": {
+          "$ref": "#/definitions/knative_VolatileTime",
+          "javaType": "io.fabric8.knative.v1.VolatileTime"
+        },
+        "message": {
           "type": "string",
-          "description": "",
-          "default": "tekton.dev/v1alpha1",
-          "required": true
+          "description": "human-readable message indicating details about last transition"
         },
-        "kind": {
+        "reason": {
           "type": "string",
-          "description": "",
-          "default": "Condition",
-          "required": true
+          "description": "one-word CamelCase reason for the condition's last transition"
         },
-        "metadata": {
-          "$ref": "#/definitions/kubernetes_meta_ObjectMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        "severity": {
+          "type": "string",
+          "description": "how to interpret failures of this condition"
         },
-        "spec": {
-          "$ref": "#/definitions/tekton_v1alpha1_ConditionSpec",
-          "javaType": "io.fabric8.tekton.pipeline.v1alpha1.ConditionSpec"
+        "status": {
+          "type": "string",
+          "description": "status of the condition"
+        },
+        "type": {
+          "type": "string",
+          "description": "type of status condition"
         }
       },
       "additionalProperties": true

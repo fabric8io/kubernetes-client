@@ -12,11 +12,13 @@
 * Fix #2046: OpenshiftClient getVersion returns null for Openshift ContainerPlatform v4
 
 #### Improvements
+* Fix #1987: Added an example for Task and TaskRun with updated model
 * Fix #2019: Added CustomResourceCrudTest
 * Fix #2054: JobExample doesn't work
 
 #### Dependency Upgrade
 * Updated Knative model to v0.13.0
+* Updated Tekton Model to v0.11.0
 
 #### New Features
 

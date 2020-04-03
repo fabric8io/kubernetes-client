@@ -23,6 +23,7 @@ public class PipelineResourceCreate {
   
   public static void main(String[] args) {
     try ( TektonClient client = ClientFactory.newClient(args)) {
+      String namespace = "default";
       PipelineResource resource = new PipelineResourceBuilder()
         .withNewMetadata()
         .withName("client-repo")
@@ -40,7 +41,7 @@ public class PipelineResourceCreate {
         .endSpec()
         .build();
       
-      System.out.println("Created:" + client.pipelineResources().create(resource).getMetadata().getName());
+      System.out.println("Created:" + client.pipelineResources().inNamespace(namespace).create(resource).getMetadata().getName());
     }
     System.exit(0);
   }
