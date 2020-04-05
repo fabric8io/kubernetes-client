@@ -1,0 +1,52 @@
+{
+  "apiVersion": "route.openshift.io/v1",
+  "kind": "Route",
+  "metadata": {
+    "labels": {
+      "expose": "true",
+      "app": "fabric8-maven-sample-zero-config",
+      "provider": "fabric8",
+      "version": "3.5-SNAPSHOT",
+      "group": "io.fabric8"
+    },
+    "name": "fabric8-maven-sample-zero-config"
+  },
+  "spec": {
+    "host": "www.example.com",
+    "path": "/test",
+    "port": {
+      "targetPort": 8080
+    },
+    "to": {
+      "kind": "Service",
+      "name": "fabric8-maven-sample-zero-config",
+      "weight": 5
+    },
+    "alternateBackends": [
+      {
+        "name": "test1",
+        "kind": "Service",
+        "weight": 0
+      },
+      {
+        "name": "test2",
+        "kind": "Service",
+        "weight": 0
+      },
+      {
+        "name": "test3",
+        "kind": "Service",
+        "weight": 0
+      }
+    ],
+    "tls": {
+      "termination": "edge",
+      "key": "$(perl -pe 's/\n/\\n/' example-test.key)",
+      "certificate": "$(perl -pe 's/\n/\\n/' example-test.cert)",
+      "caCertificate": "$(perl -pe 's/\n/\\n/' example-test.cert)",
+      "destinationCACertificate": "$(perl -pe 's/\n/\\n/' example-test.cert)",
+      "insecureEdgeTerminationPolicy": "Allow"
+    },
+    "wildCardPolicy": "Subdomain"
+  }
+}

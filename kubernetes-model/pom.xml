@@ -39,7 +39,25 @@
   <modules>
     <module>kubernetes-model-common</module>
     <module>kubernetes-model-annotator</module>
-    <module>kubernetes-model</module>
+    <module>kubernetes-model-core</module>
+    <module>kubernetes-model-rbac</module>
+    <module>kubernetes-model-admissionregistration</module>
+    <module>kubernetes-model-apiextensions</module>
+    <module>kubernetes-model-apps</module>
+    <module>kubernetes-model-autoscaling</module>
+    <module>kubernetes-model-batch</module>
+    <module>kubernetes-model-certificates</module>
+    <module>kubernetes-model-coordination</module>
+    <module>kubernetes-model-discovery</module>
+    <module>kubernetes-model-events</module>
+    <module>kubernetes-model-extensions</module>
+    <module>kubernetes-model-networking</module>
+    <module>kubernetes-model-metrics</module>
+    <module>kubernetes-model-policy</module>
+    <module>kubernetes-model-scheduling</module>
+    <module>kubernetes-model-settings</module>
+    <module>kubernetes-model-storageclass</module>
+    <module>openshift-model</module>
   </modules>
 
   <build>

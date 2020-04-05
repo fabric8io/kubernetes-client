@@ -37,9 +37,9 @@ type schemaGenerator struct {
 	typeMap            map[reflect.Type]reflect.Type
 }
 
-func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, customTypeNames  map[string]string) (*JSONSchema, error) {
+func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, customTypeNames  map[string]string, moduleName string) (*JSONSchema, error) {
 	g := newSchemaGenerator(packages, typeMap, customTypeNames)
-	return g.generate(t)
+	return g.generate(t, moduleName)
 }
 
 func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, customTypeNames  map[string]string) *schemaGenerator {
@@ -224,7 +224,7 @@ func (g *schemaGenerator) initializeTypeNames(t reflect.Type) {
 	}
 }
 
-func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error) {
+func (g *schemaGenerator) generate(t reflect.Type, moduleName string) (*JSONSchema, error) {
 	if t.Kind() != reflect.Struct {
 		return nil, fmt.Errorf("Only struct types can be converted.")
 	}
@@ -233,6 +233,7 @@ func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error) {
 	s := JSONSchema{
 		ID:     "http://fabric8.io/fabric8/v2/" + t.Name() + "#",
 		Schema: "http://json-schema.org/schema#",
+		Module: moduleName,
 		JSONDescriptor: JSONDescriptor{
 			Type: "object",
 		},
@@ -284,7 +285,7 @@ func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error) {
 						JavaInterfaces: g.javaInterfaces(k),
 					},
 				}
-				dockermetadata_value.JavaType = "io.fabric8.kubernetes.api.model.runtime.RawExtension"
+				dockermetadata_value.JavaType = "io.fabric8.openshift.api.model.runtime.RawExtension"
 				s.Definitions[dockermetadata_name] = dockermetadata_value
 				s.Resources[dockermetadata_resource] = v
 			}

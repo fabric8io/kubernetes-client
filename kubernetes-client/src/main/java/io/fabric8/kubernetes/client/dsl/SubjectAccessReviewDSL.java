@@ -15,7 +15,10 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.model.authorization.*;
+import io.fabric8.kubernetes.api.model.authorization.SubjectAccessReview;
+import io.fabric8.kubernetes.api.model.authorization.LocalSubjectAccessReview;
+import io.fabric8.kubernetes.api.model.authorization.SelfSubjectAccessReview;
+import io.fabric8.kubernetes.api.model.authorization.SelfSubjectRulesReview;
 import io.fabric8.kubernetes.api.model.authorization.DoneableLocalSubjectAccessReview;
 import io.fabric8.kubernetes.api.model.authorization.DoneableSelfSubjectAccessReview;
 import io.fabric8.kubernetes.api.model.authorization.DoneableSelfSubjectRulesReview;

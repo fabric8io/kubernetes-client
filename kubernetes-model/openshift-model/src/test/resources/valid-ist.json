@@ -1,0 +1,53 @@
+{
+  "apiVersion": "v1",
+  "generation": 2,
+  "image": {
+    "dockerImageLayers": [
+      {
+        "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+        "name": "sha256:8111c19639475fb11ffa928f9e5e2dc05cbbe143363889355d2fee66a9f5664c",
+        "size": 1160
+      }
+    ],
+    "dockerImageMetadata": {
+      "ContainerConfig": {},
+      "Created": null,
+      "Id": "",
+      "apiVersion": "1.0",
+      "kind": "DockerImage"
+    },
+    "dockerImageMetadataVersion": "1.0",
+    "dockerImageReference": "docker.io/openshift/jenkins-slave-maven-centos7@sha256:df7bb31ff8f3ae0918b2e8b5c29b3deed04c547142abbc49ad133e9451ebb660",
+    "metadata": {
+      "creationTimestamp": "2018-04-12T09:22:41Z",
+      "name": "sha256:df7bb31ff8f3ae0918b2e8b5c29b3deed04c547142abbc49ad133e9451ebb660"
+    }
+  },
+  "kind": "ImageStreamTag",
+  "lookupPolicy": {
+    "local": false
+  },
+  "metadata": {
+    "creationTimestamp": "2018-04-12T09:22:41Z",
+    "name": "bar1:1.0.12",
+    "namespace": "myproject",
+    "resourceVersion": "1523",
+    "selfLink": "/oapi/v1/namespaces/myproject/imagestreamtags/bar1%3A1.0.12"
+  },
+  "tag": {
+    "annotations": {
+      "role": "jenkins-slave",
+      "slave-label": "jenkins-slave"
+    },
+    "from": {
+      "kind": "DockerImage",
+      "name": "docker.io/openshift/jenkins-slave-maven-centos7:latest"
+    },
+    "generation": 2,
+    "importPolicy": {},
+    "name": "1.0.12",
+    "referencePolicy": {
+      "type": "Source"
+    }
+  }
+}

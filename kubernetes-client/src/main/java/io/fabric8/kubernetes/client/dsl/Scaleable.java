@@ -16,7 +16,7 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.model.v1.Scale;
+import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 
 public interface Scaleable<T> {
 
