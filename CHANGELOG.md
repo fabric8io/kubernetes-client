@@ -15,6 +15,7 @@
 * Fix #1987: Added an example for Task and TaskRun with updated model
 * Fix #2019: Added CustomResourceCrudTest
 * Fix #2054: JobExample doesn't work
+* Fix #2082:  Added filter node metrics via labels
 
 #### Dependency Upgrade
 * Updated Knative model to v0.13.0
