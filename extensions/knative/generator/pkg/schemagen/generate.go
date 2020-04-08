@@ -231,15 +231,19 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 	}
 }
 
+func (g *schemaGenerator) resourceListWithGeneric(t reflect.Type) string {
+	return "io.fabric8.kubernetes.api.model.KubernetesResourceList<" + g.javaType(t.Elem()) + ">"
+}
+
 func (g *schemaGenerator) javaInterfaces(t reflect.Type) []string {
 	if _, ok := t.FieldByName("ObjectMeta"); t.Name() != "JobTemplateSpec" && t.Name() != "PodTemplateSpec" && t.Name() != "RevisionTemplateSpec" && ok {
 		return []string{"io.fabric8.kubernetes.api.model.HasMetadata"}
 	}
 
-	_, hasItems := t.FieldByName("Items")
+	itemsField, hasItems := t.FieldByName("Items")
 	_, hasListMeta := t.FieldByName("ListMeta")
 	if hasItems && hasListMeta {
-		return []string{"io.fabric8.kubernetes.api.model.KubernetesResource", "io.fabric8.kubernetes.api.model.KubernetesResourceList"}
+		return []string{"io.fabric8.kubernetes.api.model.KubernetesResource", g.resourceListWithGeneric(itemsField.Type)}
 	}
 	return []string{"io.fabric8.kubernetes.api.model.KubernetesResource"}
 }
@@ -303,6 +307,17 @@ func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string, omi
 	if ok {
 		t = tt
 	}
+
+	// Knative URL is serialized as a plain String -> map to java String :)
+	if t.PkgPath() == "knative.dev/pkg/apis" && t.Name() == "URL" {
+		return JSONPropertyDescriptor{
+			JSONDescriptor: &JSONDescriptor{
+				Type:        "string",
+				Description: desc,
+			},
+		}
+	}
+
 	switch t.Kind() {
 	case reflect.Bool:
 		return JSONPropertyDescriptor{
