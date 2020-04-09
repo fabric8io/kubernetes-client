@@ -10,12 +10,14 @@
 * Fix #2075: KubernetesDeserializer registration for CustomResources
 * Fix #2078: watchLog for Deployment and StatefulSet
 * Fix #2046: OpenshiftClient getVersion returns null for Openshift ContainerPlatform v4
+* Fix #2117: Knative Service.status is always null
 
 #### Improvements
 * Fix #1987: Added an example for Task and TaskRun with updated model
 * Fix #2019: Added CustomResourceCrudTest
 * Fix #2054: JobExample doesn't work
 * Fix #2082:  Added filter node metrics via labels
+* Generated *List classes for Knative implement proper KubernetesResourceList interface
 
 #### Dependency Upgrade
 * Updated Knative model to v0.13.0
