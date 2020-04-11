@@ -4,6 +4,7 @@
 #### Bugs
 * Fix #2144: CRD's schema Default fields do not handle boolean and are prefixed with Raw keyword
 * KubernetesAttributeExtractor: handle possible /status subpath due to using status subresource on crd
+* Fix #2124: Raw Watch on CustomResource does not work if name specified
 
 #### Improvements
 #### Dependency Upgrade
@@ -27,7 +28,7 @@
 * Fix #2019: Added CustomResourceCrudTest
 * Fix #2054: JobExample doesn't work
 * Fix #2082:  Added filter node metrics via labels
-* Generated *List classes for Knative implement proper KubernetesResourceList interface
+* Generated List classes for Knative implement proper KubernetesResourceList interface
 * Modify the dependency management of the generator of kubernetes-model to golang module
 
 #### Dependency Upgrade
