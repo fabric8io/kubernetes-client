@@ -26,8 +26,11 @@ import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.Rule;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
+
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -238,5 +241,76 @@ public class JobTest {
 
       client.batch().jobs().inNamespace("test1").withName("myjob1").create(job1);
     });
+  }
+
+  @Test
+  @DisplayName("Should append Selector and MatchLabels from exiting job instance while patching a Job")
+  public void testCreateOrReplaceWithExistingJob() {
+    // Given
+    Job jobExistingInServer = getJobBuilder()
+      .editSpec()
+      .editOrNewTemplate().editOrNewMetadata()
+      .addToLabels("controller-uid", "df842342-33bb-4f6c-9707-f76a86748ee6")
+      .addToLabels("job-name", "job1")
+      .endMetadata()
+      .endTemplate()
+      .editOrNewSelector().addToMatchLabels("controller-uid", "df842342-33bb-4f6c-9707-f76a86748ee6").endSelector()
+      .endSpec()
+      .build();
+
+    server.expect().get().withPath("/apis/batch/v1/namespaces/test/jobs/job1")
+      .andReturn(200, jobExistingInServer).always();
+    server.expect().put().withPath("/apis/batch/v1/namespaces/test/jobs/job1")
+      .andReturn(200, getJobBuilder()
+        .editOrNewMetadata().addToLabels("foo", "bar").addToLabels("foo1", "bar1").endMetadata()
+        .editSpec()
+        .editOrNewTemplate().editOrNewMetadata()
+        .addToLabels("controller-uid", "df842342-33bb-4f6c-9707-f76a86748ee6")
+        .addToLabels("job-name", "job1")
+        .endMetadata()
+        .endTemplate()
+        .editOrNewSelector().addToMatchLabels("controller-uid", "df842342-33bb-4f6c-9707-f76a86748ee6").endSelector()
+        .endSpec()
+        .build()).once();
+
+    Job job = getJobBuilder()
+      .editOrNewMetadata().addToLabels("foo", "bar").addToLabels("foo1", "bar1").endMetadata()
+      .build();
+
+    KubernetesClient client = server.getClient();
+
+    // When
+    job = client.batch().jobs().inNamespace("test").createOrReplace(job);
+
+    // Then
+    assertNotNull(job);
+    assertNotNull(job.getMetadata().getLabels());
+    assertEquals("bar", job.getMetadata().getLabels().get("foo"));
+    assertEquals("bar1", job.getMetadata().getLabels().get("foo1"));
+    assertEquals("df842342-33bb-4f6c-9707-f76a86748ee6", job.getSpec().getSelector().getMatchLabels().get("controller-uid"));
+    assertEquals("job1", job.getSpec().getTemplate().getMetadata().getLabels().get("job-name"));
+    assertEquals("df842342-33bb-4f6c-9707-f76a86748ee6", job.getSpec().getTemplate().getMetadata().getLabels().get("controller-uid"));
+  }
+
+  private JobBuilder getJobBuilder() {
+    return new JobBuilder()
+      .withApiVersion("batch/v1")
+      .withNewMetadata()
+      .withName("job1")
+      .withLabels(Collections.singletonMap("label1", "maximum-length-of-63-characters"))
+      .withAnnotations(Collections.singletonMap("annotation1", "some-very-long-annotation"))
+      .endMetadata()
+      .withNewSpec()
+      .withNewTemplate()
+      .withNewSpec()
+      .addNewContainer()
+      .withName("pi")
+      .withImage("perl")
+      .withArgs("perl", "-Mbignum=bpi", "-wle", "print bpi(2000)")
+      .endContainer()
+      .withRestartPolicy("Never")
+      .endSpec()
+      .endTemplate()
+      .endSpec();
   }
 }

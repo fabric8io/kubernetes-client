@@ -2,6 +2,9 @@
 
 ### 4.9-SNAPSHOT
 #### Bugs
+* Fix #2071: Fixed pvc example issue #2071
+* Fix #1109: something drops '-' from Singular/Plural forms of CustomResources
+* Fix #1586: Replace of Job should add extra selector property to the resource
 * Fix #2034: Quantity.equals mishandles fractions
 * Fix #2009: Regression `withoutLabel()` stopped to work
 * Fix #2057: Fix jar and osgi bundle generation for extensions
@@ -11,6 +14,7 @@
 
 #### Improvements
 * Fix #2019: Added CustomResourceCrudTest
+* Fix #2054: JobExample doesn't work
 
 #### Dependency Upgrade
 

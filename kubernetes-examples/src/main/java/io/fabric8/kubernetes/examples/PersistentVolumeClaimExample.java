@@ -1,3 +1,4 @@
+
 /**
  * Copyright (C) 2015 Red Hat, Inc.
  *
@@ -39,7 +40,9 @@ public class PersistentVolumeClaimExample {
   private static final Logger logger = LoggerFactory.getLogger(PersistentVolumeClaimExample.class);
 
   public static void main(String[] args) {
-    String master = "https://localhost:8443/";
+    String master = "https://localhost:8443";
+    String namespace = "default";
+    String storageClassName = "my-local-storage";
     if (args.length == 1) {
       master = args[0];
     }
@@ -59,7 +62,7 @@ public class PersistentVolumeClaimExample {
           .addToCapacity(Collections.singletonMap("storage", new Quantity("500Gi")))
           .withAccessModes("ReadWriteOnce")
           .withPersistentVolumeReclaimPolicy("Retain")
-          .withStorageClassName("my-local-storage")
+          .withStorageClassName(storageClassName)
           .withNewLocal()
           .withPath("/mnt/disks/vol1")
           .endLocal()
@@ -80,14 +83,13 @@ public class PersistentVolumeClaimExample {
 
         client.persistentVolumes().create(pv);
 
-        client.persistentVolumes().create(pv);
         log("Successfully created PersistentVolume object");
 
         log("Creating PersistentVolumeClaim object");
         PersistentVolumeClaim persistentVolumeClaim = new PersistentVolumeClaimBuilder()
-          .withNewMetadata().withName("test-pv-claim").endMetadata()
+          .withNewMetadata().withName("test-pv-claim").withNamespace(namespace).endMetadata()
           .withNewSpec()
-          .withStorageClassName("my-local-storage")
+          .withStorageClassName(storageClassName)
           .withAccessModes("ReadWriteOnce")
           .withNewResources()
           .addToRequests("storage", new Quantity("500Gi"))
@@ -99,12 +101,15 @@ public class PersistentVolumeClaimExample {
         log("Successfully created PersistentVolumeClaim object");
 
         log("Creating pod");
-        Pod pod = client.pods().load(PersistentVolumeClaimExample.class.getResourceAsStream("/test-pv-pod.yml")).get();
-        client.pods().create(pod);
+        Pod pod = client.pods().inNamespace(namespace).load(PersistentVolumeClaimExample.class.getResourceAsStream("/test-pv-pod.yml")).get();
+        client.pods().inNamespace(namespace).create(pod);
+
         log("Successfully created pod");
       } finally {
-        client.persistentVolumeClaims().withName("test-pv-claim").delete();
-        client.persistentVolumes().withName("test-pv").delete();
+        client.persistentVolumeClaims().inNamespace(namespace).withName("test-pv-claim").delete();
+        client.persistentVolumes().withName("test-local-pv").delete(); //fixed the name
+        client.pods().inNamespace("default").withName("test-pv-pod").delete(); // you forgot to remove the pod
+        client.storage().storageClasses().withName(storageClassName).delete();
       }
     } catch (KubernetesClientException e) {
       log("Could not create resource", e.getMessage());
@@ -119,4 +124,3 @@ public class PersistentVolumeClaimExample {
     logger.info(action);
   }
 }
-

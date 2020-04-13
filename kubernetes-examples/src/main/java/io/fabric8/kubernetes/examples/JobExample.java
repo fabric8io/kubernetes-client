@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.examples;
 
-import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.batch.Job;
 import io.fabric8.kubernetes.api.model.batch.JobBuilder;
 import io.fabric8.kubernetes.client.*;
@@ -23,7 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 /*
@@ -65,11 +64,21 @@ public class JobExample {
           logger.info("Creating job pi.");
           client.batch().jobs().inNamespace(namespace).create(job);
 
+          // Get All pods created by the job
+          PodList podList = client.pods().inNamespace(namespace).withLabel("job-name", job.getMetadata().getName()).list();
+          // Wait for pod to complete
+          client.pods().inNamespace(namespace).withName(podList.getItems().get(0).getMetadata().getName())
+            .waitUntilCondition(pod -> pod.getStatus().getPhase().equals("Succeeded"), 1, TimeUnit.MINUTES);
+
+          // Print Job's log
           String joblog = client.batch().jobs().inNamespace(namespace).withName("pi").getLog();
           logger.info(joblog);
 
         } catch (final KubernetesClientException e) {
             logger.error("Unable to create job", e);
+        } catch (InterruptedException interruptedException) {
+          logger.warn("Thread interrupted!");
+          Thread.currentThread().interrupt();
         }
     }
 }
