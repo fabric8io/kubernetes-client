@@ -22,7 +22,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:5b930e5385c3ec853e421c6db74c917cf4ac09d77c534c5c6a10c59786866091"
+  digest = "1:5d64583d5a67bf5aa88b9e1a28c8f91e1a1f9b1a29ea0169b3f0d90d504e2ede"
   name = "github.com/openshift/api"
   packages = [
     "apps/v1",

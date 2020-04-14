@@ -163,7 +163,8 @@
               {maven-resources},
               /META-INF/jandex.idx=target/classes/META-INF/jandex.idx,
               /kubernetes.properties=target/classes/kubernetes.properties,
-              /openshift.properties=target/classes/openshift.properties
+              /openshift.properties=target/classes/openshift.properties,
+              module-info.class=target/classes/module-info.class
             </Include-Resource>
           </instructions>
         </configuration>

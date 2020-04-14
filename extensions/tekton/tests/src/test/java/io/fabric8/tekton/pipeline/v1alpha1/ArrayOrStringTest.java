@@ -31,12 +31,12 @@ class ArrayOrStringTest {
     ObjectMapper mapper = new ObjectMapper();
     String json = mapper.writeValueAsString(is);
     ArrayOrString is2 = mapper.readValue(json, ArrayOrString.class);
-    assertEquals(is, is2);
+    assertEquals(is.getStringVal(), is2.getStringVal());
 
     is = new ArrayOrString(Arrays.asList("a", "b"));
     json = mapper.writeValueAsString(is);
     is2 = mapper.readValue(json, ArrayOrString.class);
-    assertEquals(is, is2);
+    assertEquals(is.getArrayVal(), is2.getArrayVal());
   }
 
 }
