@@ -15,13 +15,13 @@
  */
 package io.fabric8.tekton.client;
 
-import io.fabric8.tekton.client.internal.ClusterTaskOperationsImpl;
-import io.fabric8.tekton.client.internal.ConditionOperationsImpl;
-import io.fabric8.tekton.client.internal.PipelineOperationsImpl;
-import io.fabric8.tekton.client.internal.PipelineResourceOperationsImpl;
-import io.fabric8.tekton.client.internal.PipelineRunOperationsImpl;
-import io.fabric8.tekton.client.internal.TaskOperationsImpl;
-import io.fabric8.tekton.client.internal.TaskRunOperationsImpl;
+import io.fabric8.tekton.client.internal.v1beta1.ClusterTaskOperationsImpl;
+import io.fabric8.tekton.client.internal.v1alpha1.ConditionOperationsImpl;
+import io.fabric8.tekton.client.internal.v1beta1.PipelineOperationsImpl;
+import io.fabric8.tekton.client.internal.v1alpha1.PipelineResourceOperationsImpl;
+import io.fabric8.tekton.client.internal.v1beta1.PipelineRunOperationsImpl;
+import io.fabric8.tekton.client.internal.v1beta1.TaskOperationsImpl;
+import io.fabric8.tekton.client.internal.v1beta1.TaskRunOperationsImpl;
 import io.fabric8.tekton.pipeline.v1beta1.ClusterTask;
 import io.fabric8.tekton.pipeline.v1beta1.ClusterTaskList;
 import io.fabric8.tekton.pipeline.v1alpha1.Condition;

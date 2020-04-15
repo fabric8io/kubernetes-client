@@ -34,11 +34,18 @@ func main() {
 	// no other types need to be defined as they are auto discovered
 	crdLists := []reflect.Type{
 		reflect.TypeOf(v1alpha1.ConditionList{}),
+		reflect.TypeOf(v1alpha1.PipelineList{}),
+		reflect.TypeOf(v1alpha1.PipelineRunList{}),
+		reflect.TypeOf(v1alpha1.TaskList{}),
+		reflect.TypeOf(v1alpha1.TaskRunList{}),
+		reflect.TypeOf(v1alpha1.ClusterTaskList{}),
+
 		reflect.TypeOf(v1beta1.PipelineList{}),
 		reflect.TypeOf(v1beta1.PipelineRunList{}),
 		reflect.TypeOf(v1beta1.TaskList{}),
 		reflect.TypeOf(v1beta1.TaskRunList{}),
 		reflect.TypeOf(v1beta1.ClusterTaskList{}),
+
 		reflect.TypeOf(resource.PipelineResourceList{}),
 	}
 
