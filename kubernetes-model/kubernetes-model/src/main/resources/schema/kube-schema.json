@@ -3924,6 +3924,57 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_autoscaling_HPAScalingPolicy": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "periodSeconds": {
+          "type": "integer",
+          "description": ""
+        },
+        "type": {
+          "type": "string",
+          "description": ""
+        },
+        "value": {
+          "type": "integer",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.HPAScalingPolicy",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_autoscaling_HPAScalingRules": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "policies": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_autoscaling_HPAScalingPolicy",
+            "javaType": "io.fabric8.kubernetes.api.model.HPAScalingPolicy"
+          }
+        },
+        "selectPolicy": {
+          "type": "string",
+          "description": ""
+        },
+        "stabilizationWindowSeconds": {
+          "type": "integer",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.HPAScalingRules",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_autoscaling_HorizontalPodAutoscaler": {
       "type": "object",
       "description": "",
@@ -3957,6 +4008,25 @@
       "javaType": "io.fabric8.kubernetes.api.model.HorizontalPodAutoscaler",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "kubernetes_autoscaling_HorizontalPodAutoscalerBehavior": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "scaleDown": {
+          "$ref": "#/definitions/kubernetes_autoscaling_HPAScalingRules",
+          "javaType": "io.fabric8.kubernetes.api.model.HPAScalingRules"
+        },
+        "scaleUp": {
+          "$ref": "#/definitions/kubernetes_autoscaling_HPAScalingRules",
+          "javaType": "io.fabric8.kubernetes.api.model.HPAScalingRules"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.HorizontalPodAutoscalerBehavior",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
     "kubernetes_autoscaling_HorizontalPodAutoscalerCondition": {
@@ -4030,6 +4100,10 @@
       "type": "object",
       "description": "",
       "properties": {
+        "behavior": {
+          "$ref": "#/definitions/kubernetes_autoscaling_HorizontalPodAutoscalerBehavior",
+          "javaType": "io.fabric8.kubernetes.api.model.HorizontalPodAutoscalerBehavior"
+        },
         "maxReplicas": {
           "type": "integer",
           "description": ""
@@ -4893,6 +4967,10 @@
           }
         },
         "request": {
+          "type": "string",
+          "description": ""
+        },
+        "signerName": {
           "type": "string",
           "description": ""
         },
@@ -6010,6 +6088,10 @@
           },
           "javaType": "java.util.Map\u003cString,String\u003e"
         },
+        "immutable": {
+          "type": "boolean",
+          "description": ""
+        },
         "kind": {
           "type": "string",
           "description": "",
@@ -6670,6 +6752,10 @@
       "type": "object",
       "description": "",
       "properties": {
+        "appProtocol": {
+          "type": "string",
+          "description": ""
+        },
         "name": {
           "type": "string",
           "description": "",
@@ -9618,6 +9704,10 @@
           "description": "",
           "javaType": "Long"
         },
+        "fsGroupChangePolicy": {
+          "type": "string",
+          "description": ""
+        },
         "runAsGroup": {
           "type": "integer",
           "description": "",
@@ -10836,6 +10926,10 @@
           },
           "javaType": "java.util.Map\u003cString,String\u003e"
         },
+        "immutable": {
+          "type": "boolean",
+          "description": ""
+        },
         "kind": {
           "type": "string",
           "description": "",
@@ -11260,6 +11354,10 @@
       "type": "object",
       "description": "",
       "properties": {
+        "appProtocol": {
+          "type": "string",
+          "description": ""
+        },
         "name": {
           "type": "string",
           "description": "",
@@ -12408,6 +12506,10 @@
         "path": {
           "type": "string",
           "description": ""
+        },
+        "pathType": {
+          "type": "string",
+          "description": ""
         }
       },
       "additionalProperties": true,
@@ -12474,6 +12576,10 @@
       "type": "object",
       "description": "",
       "properties": {
+        "resource": {
+          "$ref": "#/definitions/kubernetes_core_TypedLocalObjectReference",
+          "javaType": "io.fabric8.kubernetes.api.model.TypedLocalObjectReference"
+        },
         "serviceName": {
           "type": "string",
           "description": ""
@@ -12566,6 +12672,10 @@
         "backend": {
           "$ref": "#/definitions/kubernetes_extensions_IngressBackend",
           "javaType": "io.fabric8.kubernetes.api.model.extensions.IngressBackend"
+        },
+        "ingressClassName": {
+          "type": "string",
+          "description": ""
         },
         "rules": {
           "type": "array",
@@ -15095,6 +15205,7 @@
         "apiGroups": {
           "type": "array",
           "description": "",
+          "javaOmitEmpty": true,
           "items": {
             "type": "string",
             "description": ""
@@ -15796,6 +15907,7 @@
         "triggers": {
           "type": "array",
           "description": "",
+          "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_build_BuildTriggerPolicy",
             "javaType": "io.fabric8.openshift.api.model.BuildTriggerPolicy"
@@ -19702,6 +19814,7 @@
         "ingress": {
           "type": "array",
           "description": "",
+          "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_route_RouteIngress",
             "javaType": "io.fabric8.openshift.api.model.RouteIngress"
