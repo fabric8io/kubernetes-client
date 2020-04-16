@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 package io.fabric8.tekton.api.examples;
-import io.fabric8.tekton.pipeline.v1alpha1.*;
+
 import io.fabric8.tekton.client.*;
+import io.fabric8.tekton.resource.v1alpha1.PipelineResource;
+import io.fabric8.tekton.resource.v1alpha1.PipelineResourceBuilder;
 
 public class PipelineResourceCreate {
   
   public static void main(String[] args) {
     try ( TektonClient client = ClientFactory.newClient(args)) {
+      String namespace = "default";
       PipelineResource resource = new PipelineResourceBuilder()
         .withNewMetadata()
         .withName("client-repo")
@@ -38,7 +41,7 @@ public class PipelineResourceCreate {
         .endSpec()
         .build();
       
-      System.out.println("Created:" + client.pipelineResources().create(resource).getMetadata().getName());
+      System.out.println("Created:" + client.pipelineResources().inNamespace(namespace).create(resource).getMetadata().getName());
     }
     System.exit(0);
   }

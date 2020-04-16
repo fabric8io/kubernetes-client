@@ -16,11 +16,12 @@
 package io.fabric8.tekton.pipeline.v1alpha1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.fabric8.tekton.pipeline.v1beta1.Step;
+import io.fabric8.tekton.pipeline.v1beta1.Task;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
