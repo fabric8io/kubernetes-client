@@ -34,20 +34,6 @@
 
   <dependencies>
     <dependency>
-      <groupId>io.sundr</groupId>
-      <artifactId>builder-annotations</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>com.sun</groupId>
-          <artifactId>tools</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>io.sundr</groupId>
-      <artifactId>transform-annotations</artifactId>
-    </dependency>
-    <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-common</artifactId>
       <version>${project.version}</version>

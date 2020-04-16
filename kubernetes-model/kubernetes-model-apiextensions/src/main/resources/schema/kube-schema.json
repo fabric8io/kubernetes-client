@@ -499,8 +499,7 @@
           }
         },
         "default": {
-          "$ref": "#/definitions/kubernetes_apiextensions_JSON",
-          "javaType": "io.fabric8.kubernetes.api.model.apiextensions.JSON"
+          "javaType": "com.fasterxml.jackson.databind.JsonNode"
         },
         "definitions": {
           "type": "object",
@@ -529,12 +528,11 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string"
+            "javaType": "com.fasterxml.jackson.databind.JsonNode"
           }
         },
         "example": {
-          "$ref": "#/definitions/kubernetes_apiextensions_JSON",
-          "javaType": "io.fabric8.kubernetes.api.model.apiextensions.JSON"
+          "javaType": "com.fasterxml.jackson.databind.JsonNode"
         },
         "exclusiveMaximum": {
           "type": "boolean",

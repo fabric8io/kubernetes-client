@@ -15,5 +15,33 @@
  */
 package io.fabric8.kubernetes.api.model;
 
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class StatusTest {
+  @Test
+  public void testBuilder() {
+    Status status = new io.fabric8.kubernetes.api.model.StatusBuilder()
+      .withNewMetadata().withContinue("2343212").endMetadata()
+      .withStatus("Some status")
+      .withMessage("Some message")
+      .withCode(200)
+      .withNewDetails()
+      .withGroup("apps")
+      .withKind("Deployment")
+      .withName("nginx-deploy")
+      .addNewCause()
+      .withField("spec.replicas")
+      .withMessage("Detailed message")
+      .endCause()
+      .endDetails()
+      .build();
+
+    assertEquals("2343212", status.getMetadata().getContinue());
+    assertEquals("Some status", status.getStatus());
+    assertEquals("Some message", status.getMessage());
+    assertEquals(200, status.getCode());
+    assertEquals(1, status.getDetails().getCauses().size());
+  }
 }

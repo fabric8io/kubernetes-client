@@ -15,5 +15,21 @@
  */
 package io.fabric8.kubernetes.api.model;
 
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class ListOptionsTest {
+  @Test
+  public void testBuilder() {
+    ListOptions listOptions = new io.fabric8.kubernetes.api.model.ListOptionsBuilder()
+      .withLimit(100L)
+      .withContinue("23243434")
+      .withFieldSelector("metadata.name=my-service")
+      .build();
+
+    assertEquals(100L, listOptions.getLimit());
+    assertEquals("23243434", listOptions.getContinue());
+    assertEquals("metadata.name=my-service", listOptions.getFieldSelector());
+  }
 }
