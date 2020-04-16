@@ -22,9 +22,6 @@ build: gobuild
 	mvn clean install
 
 gobuild:
-	# modify the dependence manager to golang module，so remove the original
-	# dependency management tool that is dep
-	# dep ensure -v
 	CGO_ENABLED=0 GO15VENDOREXPERIMENT=1 go build -mod=vendor -a ./cmd/generate/generate.go
 	./generate > kubernetes-model/src/main/resources/schema/kube-schema.json
 	./generate validation > kubernetes-model/src/main/resources/schema/validation-schema.json
