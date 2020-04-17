@@ -145,6 +145,7 @@
     <!-- Other options -->
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.release>8</maven.compiler.release>
     <svc.version>1.1.1</svc.version>
 
     <exec.master>https://localhost:8443</exec.master>
