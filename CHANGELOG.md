@@ -19,6 +19,7 @@
 * Fix #2054: JobExample doesn't work
 * Fix #2082:  Added filter node metrics via labels
 * Generated *List classes for Knative implement proper KubernetesResourceList interface
+* Modify the dependency management of the generator of kubernetes-model to golang module
 
 #### Dependency Upgrade
 * Updated Knative model to v0.13.0
