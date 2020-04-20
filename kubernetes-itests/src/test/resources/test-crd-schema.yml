@@ -32,8 +32,6 @@ spec:
       served: true
       storage: true
   preserveUnknownFields: false
-  subresources:
-    status: {}
   validation:
     openAPIV3Schema:
       type: object
