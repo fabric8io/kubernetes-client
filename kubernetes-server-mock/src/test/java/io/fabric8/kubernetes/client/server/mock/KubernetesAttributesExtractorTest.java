@@ -35,7 +35,7 @@ import io.fabric8.mockwebserver.crud.AttributeSet;
 
 public class KubernetesAttributesExtractorTest {
 
-	@Test
+  @Test
 	public void shouldHandleNamespacedPathWithResource() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 		AttributeSet attributes = extractor.extract("/api/v1/namespaces/myns/pods/mypod");
@@ -186,6 +186,19 @@ public class KubernetesAttributesExtractorTest {
 		expected = expected.add(new Attribute("name", "mycrd"));
 		assertTrue(attributes.matches(expected));
 	}
+
+
+  @Test
+  void shouldHandleCrdStatusSubresource() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor.extract("/apis/test.com/v1/namespaces/myns/crds/mycrd/status");
+
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("kind", "crd"));
+    expected = expected.add(new Attribute("namespace", "myns"));
+    expected = expected.add(new Attribute("name", "mycrd"));
+    assertTrue(attributes.matches(expected));
+  }
 
 	@Test
 	public void shouldHandleLabelSelectorsWithOneLabel() {
