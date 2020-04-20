@@ -134,11 +134,11 @@ public class RawCustomResourceIT {
     assertThat(ret).isNotNull();
     assertThat(((Map<String, Object>)ret.get("metadata")).get("name")).isEqualTo("test-widget");
     assertThat(((Map<String, Object>)ret.get("spec")).get("builderName")).isEqualTo("builder-foo");
-    assertThat(((Map<String, Object>)ret.get("spec")).get("hollow")).isFalse();
+    assertThat(((Map<String, Object>)ret.get("spec")).get("hollow")).isEqualTo(false);
     assertThat(((Map<String, Object>)((Map<String, Object>)ret.get("spec")).get("dimensions")).get("y")).isEqualTo(10);
     assertThat(((List <Map<String, Object>>)((Map<String, Object>)ret.get("spec")).get("edgeTemplates"))).hasSize(1);
     assertThat(((List <Map<String, Object>>)((Map<String, Object>)ret.get("spec")).get("edgeTemplates")).get(0).get("name")).isEqualTo("edge-bar");
-    assertThat(((List <Map<String, Object>>)((Map<String, Object>)ret.get("spec")).get("edgeTemplates")).get(0).get("spiky")).isTrue();
+    assertThat(((List <Map<String, Object>>)((Map<String, Object>)ret.get("spec")).get("edgeTemplates")).get(0).get("spiky")).isEqualTo(true);
 
     // Test Delete:
     client.customResource(customResourceDefinitionContext).delete(currentNamespace, "otter");
