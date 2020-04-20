@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -49,7 +50,9 @@ public class RawCustomResourceIT {
 
   private CustomResourceDefinitionContext customResourceDefinitionContext;
 
-  private CustomResourceDefinitionContext customResourceDefinitionContextWithOpenAPIV3Schema;
+  private CustomResourceDefinitionContext crdWithComplexOpenAPIV3Schema;
+
+  private CustomResourceDefinitionContext crdWithSimpleOpenAPIV3Schema;
 
   @Before
   public void initCustomResourceDefinition() {
@@ -71,10 +74,22 @@ public class RawCustomResourceIT {
     CustomResourceDefinition aComplexCrd = client.customResourceDefinitions().load(getClass().getResourceAsStream("/kafka-crd.yml")).get();
     client.customResourceDefinitions().create(aComplexCrd);
 
-    customResourceDefinitionContextWithOpenAPIV3Schema = new CustomResourceDefinitionContext.Builder()
+    crdWithComplexOpenAPIV3Schema = new CustomResourceDefinitionContext.Builder()
       .withName("kafkas.kafka.strimzi.io")
       .withGroup("kafka.strimzi.io")
       .withPlural("kafkas")
+      .withScope("Namespaced")
+      .withVersion("v1beta1")
+      .build();
+
+    // Create a Custom Resource Definition with OpenAPIV3 validation schema
+    aComplexCrd = client.customResourceDefinitions().load(getClass().getResourceAsStream("/test-crd-schema.yml")).get();
+    client.customResourceDefinitions().create(aComplexCrd);
+
+    crdWithSimpleOpenAPIV3Schema = new CustomResourceDefinitionContext.Builder()
+      .withName("widgets.test.fabric8.io")
+      .withGroup("test.fabric8.io")
+      .withPlural("widgets")
       .withScope("Namespaced")
       .withVersion("v1beta1")
       .build();
@@ -110,14 +125,24 @@ public class RawCustomResourceIT {
     object = client.customResource(customResourceDefinitionContext).edit(currentNamespace, "walrus", new ObjectMapper().writeValueAsString(object));
     assertThat(((HashMap<String, Object>)object.get("spec")).get("image")).isEqualTo("my-updated-awesome-walrus-image");
 
-    // Test creation with openAPIV3Schema
-    Map<String, Object> ret = client.customResource(customResourceDefinitionContextWithOpenAPIV3Schema).create(currentNamespace, getClass().getResourceAsStream("/kafka-cr.yml"));
+    // Test creation with complex openAPIV3Schema
+    Map<String, Object> ret = client.customResource(crdWithComplexOpenAPIV3Schema).create(currentNamespace, getClass().getResourceAsStream("/kafka-cr.yml"));
     assertThat(ret).isNotNull();
     assertThat(((Map<String, Object>)ret.get("metadata")).get("name")).isEqualTo("kafka-single");
 
+    ret = client.customResource(crdWithSimpleOpenAPIV3Schema).create(currentNamespace, getClass().getResourceAsStream("/test-crd-schema-cr.yml"));
+    assertThat(ret).isNotNull();
+    assertThat(((Map<String, Object>)ret.get("metadata")).get("name")).isEqualTo("test-widget");
+    assertThat(((Map<String, Object>)ret.get("spec")).get("builderName")).isEqualTo("builder-foo");
+    assertThat(((Map<String, Object>)ret.get("spec")).get("hollow")).isFalse();
+    assertThat(((Map<String, Object>)((Map<String, Object>)ret.get("spec")).get("dimensions")).get("y")).isEqualTo(10);
+    assertThat(((List <Map<String, Object>>)((Map<String, Object>)ret.get("spec")).get("edgeTemplates"))).hasSize(1);
+    assertThat(((List <Map<String, Object>>)((Map<String, Object>)ret.get("spec")).get("edgeTemplates")).get(0).get("name")).isEqualTo("edge-bar");
+    assertThat(((List <Map<String, Object>>)((Map<String, Object>)ret.get("spec")).get("edgeTemplates")).get(0).get("spiky")).isTrue();
+
     // Test Delete:
     client.customResource(customResourceDefinitionContext).delete(currentNamespace, "otter");
-    client.customResource(customResourceDefinitionContextWithOpenAPIV3Schema).delete(currentNamespace, "kafka-single");
+    client.customResource(crdWithComplexOpenAPIV3Schema).delete(currentNamespace, "kafka-single");
     client.customResource(customResourceDefinitionContext).delete(currentNamespace);
   }
 
@@ -125,6 +150,6 @@ public class RawCustomResourceIT {
   public void cleanup() {
     // Delete Custom Resource Definition Animals:
     client.customResourceDefinitions().withName(customResourceDefinitionContext.getName()).delete();
-    client.customResourceDefinitions().withName(customResourceDefinitionContextWithOpenAPIV3Schema.getName()).delete();
+    client.customResourceDefinitions().withName(crdWithComplexOpenAPIV3Schema.getName()).delete();
   }
 }
