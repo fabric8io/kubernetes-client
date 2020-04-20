@@ -48,6 +48,7 @@ spec:
             builderName:
               type: string
               pattern: "^builder-"
+              example: builder-example
             edges:
               type: integer
             hollow:
