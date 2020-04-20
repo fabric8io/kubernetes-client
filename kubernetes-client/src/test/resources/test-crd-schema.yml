@@ -1,0 +1,82 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+---
+apiVersion: "apiextensions.k8s.io/v1beta1"
+kind: "CustomResourceDefinition"
+metadata:
+  name: "widgets.test.fabric8.io"
+spec:
+  group: "test.fabric8.io"
+  names:
+    kind: "Widget"
+    listKind: "WidgetList"
+    plural: "widgets"
+    singular: "widget"
+  preserveUnknownFields: false
+  scope: "Namespaced"
+  validation:
+    openAPIV3Schema:
+      properties:
+        spec:
+          properties:
+            builderName:
+              example: "builder-example"
+              pattern: "^builder-"
+              type: "string"
+            edges:
+              type: "integer"
+            hollow:
+              default: false
+              type: "boolean"
+            dimensions:
+              properties:
+                x:
+                  default: 10
+                  maximum: 100.0
+                  minimum: 0.0
+                  type: "integer"
+                y:
+                  default: 10
+                  maximum: 100.0
+                  minimum: 0.0
+                  type: "integer"
+                zoom:
+                  default: false
+                  type: "boolean"
+              type: "object"
+            edgeTemplates:
+              items:
+                JSONSchemas: []
+                type: "object"
+                properties:
+                  name:
+                    type: "string"
+                    pattern: "^edge-"
+                  spiky:
+                    type: "boolean"
+                    default: true
+              type: "array"
+          required:
+          - "builderName"
+          - "edges"
+          - "dimensions"
+          type: "object"
+      type: "object"
+  version: "v1"
+  versions:
+  - name: "v1"
+    served: true
+    storage: true
