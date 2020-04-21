@@ -347,17 +347,14 @@ func main() {
   result = strings.Replace(result, "\"additionalProperty\":", "\"additionalProperties\":", -1)
 
   /**
-   * Hack to fix https://github.com/fabric8io/kubernetes-client/issues/1565
+   * Hack to fix https://github.com/fabric8io/kubernetes-client/issues/1565 and https://github.com/fabric8io/kubernetes-client/issues/2144
    *
-   * Right now enums are having body as array of jsons rather than being array of strings.
-   * (See https://user-images.githubusercontent.com/13834498/59852204-00d25680-938c-11e9-91b6-74f6bc3ae65b.png)
-   *
-   * I could not find any other way of fixing this since I'm not sure where it's coming from.
-   * So doing this search and replace of whole enum json object block hence converting it to an array of plain
-   * strings rather than of json objects.
+   * The source golang code uses a type JSON which has a custom serializer and deserializer to ensure that it gets properly
+   * translated to and from a string. This gets compiled into a JSON.java class which does not have any such serialization support.
+   * This JSON type sounds a lot like JsonNode, which encapsulates any json value. Use that instead.
    */
-  result = strings.Replace(result, "\"enum\":{\"type\":\"array\",\"description\":\"\",\"javaOmitEmpty\":true,\"items\":{\"$ref\":\"#/definitions/kubernetes_apiextensions_JSON\",\"javaType\":\"io.fabric8.kubernetes.api.model.apiextensions.JSON\"}},",
-    "\"enum\":{\"type\":\"array\",\"description\":\"\",\"javaOmitEmpty\":true,\"items\":{\"type\": \"string\"}},", -1)
+  result = strings.Replace(result, "{\"$ref\":\"#/definitions/kubernetes_apiextensions_JSON\",\"javaType\":\"io.fabric8.kubernetes.api.model.apiextensions.JSON\"}",
+  "{\"javaType\":\"com.fasterxml.jackson.databind.JsonNode\"}", -1)
 
   var out bytes.Buffer
   err = json.Indent(&out, []byte(result), "", "  ")

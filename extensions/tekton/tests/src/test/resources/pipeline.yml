@@ -15,13 +15,12 @@
 #
 
 apiVersion: tekton.dev/v1beta1
-kind: PipelineResource
+kind: Pipeline
 metadata:
-  name: skaffold-git-output-pipelinerun
+  name: pipeline-with-parameters
 spec:
-  type: git
   params:
-    - name: revision
-      value: v0.32.0
-    - name: url
-      value: https://github.com/GoogleContainerTools/skaffold
+    - name: context
+      type: string
+      description: Path to context
+      default: /some/where/or/other

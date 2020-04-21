@@ -16,86 +16,71 @@
 package main
 
 import (
-  "bytes"
-  "encoding/json"
-  "fmt"
-  "github.com/fabric8io/tekton/generator/pkg/schemagen"
-  "github.com/tektoncd/pipeline/pkg/apis/pipeline/pod"
-  "github.com/tektoncd/pipeline/pkg/apis/pipeline/v1alpha1"
-  "github.com/tektoncd/pipeline/pkg/apis/pipeline/v1beta1"
-  resource "github.com/tektoncd/pipeline/pkg/apis/resource/v1alpha1"
-  "log"
-  "os"
-  "reflect"
-  "strings"
-  "time"
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"github.com/fabric8io/kubernetes-client/extensions/tekton/generator/pkg/schemagen"
+	"github.com/tektoncd/pipeline/pkg/apis/pipeline/v1alpha1"
+	"github.com/tektoncd/pipeline/pkg/apis/pipeline/v1beta1"
+	resource "github.com/tektoncd/pipeline/pkg/apis/resource/v1alpha1"
+	machinery "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"log"
+	"reflect"
 )
 
-//A Schema with the core types of the Service Catalog
-type Schema struct {
-  V1alpha1Condition                       v1alpha1.Condition
-  V1alpha1ConditionList                   v1alpha1.ConditionList
-  V1alpha1PipelineRunTaskRunStatus        v1alpha1.PipelineRunTaskRunStatus
-  V1alpha1PipelineRunConditionCheckStatus v1alpha1.PipelineRunConditionCheckStatus
-
-  V1beta1Pipeline                        v1beta1.Pipeline
-  V1beta1PipelineList                    v1beta1.PipelineList
-  V1beta1PipelineRun                     v1beta1.PipelineRun
-  V1beta1PipelineRunList                 v1beta1.PipelineRunList
-  V1beta1PipelineRunTaskRunStatus        v1beta1.PipelineRunTaskRunStatus
-  V1beta1PipelineRunConditionCheckStatus v1beta1.PipelineRunConditionCheckStatus
-  V1beta1Task                            v1beta1.Task
-  V1beta1TaskList                        v1beta1.TaskList
-  V1beta1TaskRun                         v1beta1.TaskRun
-  V1beta1TaskRef                         v1beta1.TaskRef
-  V1beta1TaskRunList                     v1beta1.TaskRunList
-  V1beta1ClusterTask                     v1beta1.ClusterTask
-  V1beta1ClusterTaskList                 v1beta1.ClusterTaskList
-  V1beta1PipelineTask                    v1beta1.PipelineTask
-  V1beta1PipelineTaskResource            v1beta1.PipelineTaskResources
-  V1beta1ResourceDeclaration             v1beta1.ResourceDeclaration
-	V1beta1Sidecar                         v1beta1.Sidecar
-	V1beta1SidecarState                    v1beta1.SidecarState
-	V1beta1PodTemplate                     v1beta1.PodTemplate
-	V1beta1Step                            v1beta1.Step
-	V1beta1TaskResource                    v1beta1.TaskResource
-	V1beta1TaskResourceBinding             v1beta1.TaskResourceBinding
-
-	Template                               pod.Template
-	ResourceDeclaration                    resource.ResourceDeclaration
-	PipelineResource                       resource.PipelineResource
-	PipelineResourceList                   resource.PipelineResourceList
-
-}
-
 func main() {
-	packages := []schemagen.PackageDescriptor{
-		//"$ref": "#/definitions/github_com_tektoncd_pipeline_vendor_k8s_io_api_core_v1_Probe",
-		{"github.com/tektoncd/pipeline/pkg/apis/pipeline/v1alpha1", "tekton.dev", "io.fabric8.tekton.pipeline.v1alpha1", "tekton_v1alpha1_"},
-    {"github.com/tektoncd/pipeline/pkg/apis/pipeline/v1beta1", "tekton.dev", "io.fabric8.tekton.pipeline.v1beta1", "tekton_v1alpha2_"},
-    {"github.com/tektoncd/pipeline/pkg/apis/resource/v1alpha1", "tekton.dev", "io.fabric8.tekton.resource.v1alpha1", "tekton_resource_v1alpha1_"},
-    {"github.com/tektoncd/pipeline/pkg/apis/pipeline/pod", "tekton.dev", "io.fabric8.tekton.pipeline.pod", "tekton_pod_"},
-    {"github.com/knative/pkg/apis", "v1", "io.fabric8.knative.v1", "knative_"},
-		{"knative.dev/pkg/apis", "v1", "io.fabric8.knative.v1", "knative_"},
-		{"github.com/knative/pkg/apis/duck/v1beta1", "duck", "io.fabric8.knative.duck.v1beta1", "knative_duck_v1beta1_"},
-		{"knative.dev/pkg/apis/duck/v1beta1", "duck", "io.fabric8.knative.duck.v1beta1", "knative_duck_v1beta1_"},
-		{"k8s.io/api/core/v1", "v1", "io.fabric8.kubernetes.api.model", "kubernetes_"},
-		{"k8s.io/apimachinery/pkg/apis/meta/v1", "v1", "io.fabric8.kubernetes.api.model", "kubernetes_meta_"},
-		{"k8s.io/apimachinery/pkg/util", "v1", "io.fabric8.kubernetes.api.model", "kubernetes_uti_"},
+
+	// the CRD List types for which the model should be generated
+	// no other types need to be defined as they are auto discovered
+	crdLists := []reflect.Type{
+		reflect.TypeOf(v1alpha1.ConditionList{}),
+		reflect.TypeOf(v1beta1.PipelineList{}),
+		reflect.TypeOf(v1beta1.PipelineRunList{}),
+		reflect.TypeOf(v1beta1.TaskList{}),
+		reflect.TypeOf(v1beta1.TaskRunList{}),
+		reflect.TypeOf(v1beta1.ClusterTaskList{}),
+		reflect.TypeOf(resource.PipelineResourceList{}),
 	}
 
-	typeMap := map[reflect.Type]reflect.Type{
-		reflect.TypeOf(time.Time{}): reflect.TypeOf(""),
-		reflect.TypeOf(struct{}{}):  reflect.TypeOf(""),
+	// constraints and patterns for fields
+	constraints := map[reflect.Type]map[string]*schemagen.Constraint{
+		reflect.TypeOf(v1alpha1.Step{}): {"Name": &schemagen.Constraint{MaxLength: 63, Pattern: "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"}},
+		reflect.TypeOf(v1beta1.Step{}):  {"Name": &schemagen.Constraint{MaxLength: 63, Pattern: "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"}},
 	}
-	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap)
+
+	// types that are manually defined in the model
+	providedTypes := []schemagen.ProvidedType{
+		{GoType: reflect.TypeOf(v1beta1.ArrayOrString{}), JavaClass: "io.fabric8.tekton.pipeline.v1beta1.ArrayOrString"},
+	}
+
+	// go packages that are provided and where no generation is required and their corresponding java package
+	providedPackages := map[string]string{
+		// external
+		"k8s.io/api/core/v1":                   "io.fabric8.kubernetes.api.model",
+		"knative.dev/pkg/apis":                 "io.fabric8.knative.v1",
+		"k8s.io/apimachinery/pkg/apis/meta/v1": "io.fabric8.kubernetes.api.model",
+	}
+
+	// mapping of go packages of this module to the resulting java package
+	// optional ApiGroup and ApiVersion for the go package (which is added to the generated java class)
+	versionInformation := map[string]schemagen.VersionInformation{
+		// v1alpha1
+		"github.com/tektoncd/pipeline/pkg/apis/pipeline/v1alpha1": {JavaPackage: "io.fabric8.tekton.pipeline.v1alpha1", ApiGroup: "tekton.dev", ApiVersion: "v1alpha1"},
+		"github.com/tektoncd/pipeline/pkg/apis/resource/v1alpha1": {JavaPackage: "io.fabric8.tekton.resource.v1alpha1", ApiGroup: "tekton.dev", ApiVersion: "v1alpha1"},
+		// v1beta1
+		"github.com/tektoncd/pipeline/pkg/apis/pipeline/v1beta1": {JavaPackage: "io.fabric8.tekton.pipeline.v1beta1", ApiGroup: "tekton.dev", ApiVersion: "v1beta1"},
+		// strange...
+		"github.com/tektoncd/pipeline/pkg/apis/pipeline/pod": {JavaPackage: "io.fabric8.tekton.pipeline.pod"},
+	}
+
+	// overwriting some times
+	manualTypeMap := map[reflect.Type]string{
+		reflect.TypeOf(machinery.Time{}): "java.lang.String",
+	}
+
+	schema, err := schemagen.GenerateSchema(crdLists, providedPackages, manualTypeMap, versionInformation, providedTypes, constraints)
 	if err != nil {
 		log.Fatal(err)
-	}
-
-	args := os.Args[1:]
-	if len(args) < 1 || args[0] != "validation" {
-		schema.Resources = nil
 	}
 
 	b, err := json.Marshal(&schema)
@@ -103,7 +88,6 @@ func main() {
 		log.Fatal(err)
 	}
 	result := string(b)
-	result = strings.Replace(result, "\"additionalProperty\":", "\"additionalProperties\":", -1)
 	var out bytes.Buffer
 	err = json.Indent(&out, []byte(result), "", "  ")
 	if err != nil {

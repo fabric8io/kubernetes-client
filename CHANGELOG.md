@@ -2,6 +2,8 @@
 
 ### 4.9-SNAPSHOT
 #### Bugs
+* Fix #2144: CRD's schema Default fields do not handle boolean and are prefixed with Raw keyword
+
 #### Improvements
 #### Dependency Upgrade
 #### New Features

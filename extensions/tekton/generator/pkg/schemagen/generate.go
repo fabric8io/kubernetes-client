@@ -16,45 +16,66 @@
 package schemagen
 
 import (
-	"fmt"
-	"path/filepath"
 	"reflect"
 	"strings"
-	"unicode"
 )
+
+type ProvidedPackageDescriptor struct {
+	Package     string
+	JavaPackage string
+}
+
+type ProvidedType struct {
+	GoType    reflect.Type
+	JavaClass string
+}
 
 type PackageDescriptor struct {
 	GoPackage   string
 	ApiGroup    string
+	ApiVersion  string
 	JavaPackage string
 	Prefix      string
 }
 
+type VersionInformation struct {
+	ApiGroup    string
+	ApiVersion  string
+	JavaPackage string
+}
+
 type schemaGenerator struct {
-	types    map[reflect.Type]*JSONObjectDescriptor
-	packages map[string]PackageDescriptor
-	typeMap  map[reflect.Type]reflect.Type
+	types              map[reflect.Type]*JSONObjectDescriptor
+	providedPackages   map[string]string
+	manualTypeMap      map[reflect.Type]string
+	versionInformation map[string]VersionInformation
+	providedTypes      []ProvidedType
+	constraints        map[reflect.Type]map[string]*Constraint // type -> field name -> constraint
 }
 
-func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type) (*JSONSchema, error) {
-	g := newSchemaGenerator(packages, typeMap)
-	return g.generate(t)
+type Constraint struct {
+	MaxLength int
+	Pattern   string
 }
 
-func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type) *schemaGenerator {
-	pkgMap := make(map[string]PackageDescriptor)
-	for _, p := range packages {
-		pkgMap[p.GoPackage] = p
-	}
+func GenerateSchema(crdLists []reflect.Type, providedPackages map[string]string, manualTypeMap map[reflect.Type]string, versionInformation map[string]VersionInformation, providedTypes []ProvidedType, constraints map[reflect.Type]map[string]*Constraint) (*JSONSchema, error) {
+	g := newSchemaGenerator(providedPackages, manualTypeMap, versionInformation, providedTypes, constraints)
+	return g.generate(crdLists)
+}
+
+func newSchemaGenerator(providedPackages map[string]string, manualTypeMap map[reflect.Type]string, versionInformation map[string]VersionInformation, providedTypes []ProvidedType, constraints map[reflect.Type]map[string]*Constraint) *schemaGenerator {
 	g := schemaGenerator{
-		types:    make(map[reflect.Type]*JSONObjectDescriptor),
-		packages: pkgMap,
-		typeMap:  typeMap,
+		types:              make(map[reflect.Type]*JSONObjectDescriptor),
+		providedPackages:   providedPackages,
+		manualTypeMap:      manualTypeMap,
+		versionInformation: versionInformation,
+		providedTypes:      providedTypes,
+		constraints:        constraints,
 	}
 	return &g
 }
 
-func getFieldName(f reflect.StructField) string {
+func (g *schemaGenerator) jsonFieldName(f reflect.StructField) string {
 	json := f.Tag.Get("json")
 	if len(json) > 0 {
 		parts := strings.Split(json, ",")
@@ -63,20 +84,7 @@ func getFieldName(f reflect.StructField) string {
 	return f.Name
 }
 
-func isOmitEmpty(f reflect.StructField) bool {
-	json := f.Tag.Get("json")
-	if len(json) > 0 {
-		parts := strings.Split(json, ",")
-		for _, part := range parts {
-			if part == "omitempty" {
-				return true
-			}
-		}
-	}
-	return false
-}
-
-func getFieldDescription(f reflect.StructField) string {
+func (g *schemaGenerator) fieldDescription(f reflect.StructField) string {
 	json := f.Tag.Get("description")
 	if len(json) > 0 {
 		parts := strings.Split(json, ",")
@@ -86,145 +94,87 @@ func getFieldDescription(f reflect.StructField) string {
 }
 
 func (g *schemaGenerator) qualifiedName(t reflect.Type) string {
-	pkgDesc, ok := g.packages[pkgPath(t)]
-	if !ok {
-		prefix := strings.Replace(pkgPath(t), "/", "_", -1)
-		prefix = strings.Replace(prefix, ".", "_", -1)
-		prefix = strings.Replace(prefix, "-", "_", -1)
-		return prefix + "_" + t.Name()
-	} else {
-		return pkgDesc.Prefix + t.Name()
-	}
-}
-
-func (g *schemaGenerator) resourceDetails(t reflect.Type) string {
-	var name = strings.ToLower(t.Name())
-	return name
+	path := t.PkgPath()
+	name := t.Name()
+	return strings.NewReplacer(".", "_", "/", "_").Replace(path) + "_" + name
 }
 
 func (g *schemaGenerator) generateReference(t reflect.Type) string {
 	return "#/definitions/" + g.qualifiedName(t)
 }
 
-func (g *schemaGenerator) javaTypeArrayList(t reflect.Type) string {
-	typeName := g.javaTypeWrapPrimitive(t)
-	switch typeName {
-	case "Byte", "Integer":
-		return "String"
-	default:
-		return "java.util.ArrayList<" + typeName + ">"
+func (g *schemaGenerator) resolvePointer(t reflect.Type) reflect.Type {
+	if t.Kind() == reflect.Ptr {
+		t = t.Elem()
 	}
+	return t
 }
 
-func (g *schemaGenerator) javaTypeWrapPrimitive(t reflect.Type) string {
-	typeName := g.javaType(t)
-	switch typeName {
-	case "bool":
-		return "Boolean"
-	case "char":
-		return "Character"
-	case "short":
-		return "Short"
-	case "int":
-		return "Integer"
-	case "long":
-		return "Long"
-	case "float":
-		return "Float"
-	case "double":
-		return "Double"
-	default:
-		return typeName
+func (g *schemaGenerator) jsonDescriptor(t reflect.Type) *JSONDescriptor {
+	t = g.resolvePointer(t)
+
+	switch t.Kind() {
+	case reflect.Int, reflect.Int32, reflect.Int64:
+		return &JSONDescriptor{Type: "integer"}
+	case reflect.Bool:
+		return &JSONDescriptor{Type: "boolean"}
+	case reflect.String:
+		return &JSONDescriptor{Type: "string"}
+	}
+
+	panic("Nothing for " + t.Name())
+}
+
+func (g *schemaGenerator) javaTypeDescriptor(t reflect.Type) *JavaTypeDescriptor {
+
+	// no type information required for simple java types
+	// if provided, this breaks default value for fields ?! wtf?
+	if isSimpleJavaType(t) && !hasDifferentSimpleJavaTypeMapping(t) {
+		return nil
+	}
+	return &JavaTypeDescriptor{
+		JavaType: g.javaType(t),
 	}
 }
 
 func (g *schemaGenerator) javaType(t reflect.Type) string {
-	if t.Kind() == reflect.Ptr {
-		t = t.Elem()
+
+	// follow pointer
+	t = g.resolvePointer(t)
+
+	manualType, ok := g.manualTypeMap[t]
+	if ok {
+		return manualType
 	}
-	pkgDesc, ok := g.packages[pkgPath(t)]
 
-	//Added a special case for RunAsUserStrategyOptions
-	//If i don't add a prefix it get conflict with
-	//openShift RunAsUserStrategyOptions and project give compilation error
-	//because both classes are different
-
-	if t.Kind() == reflect.Struct && ok {
-		if g.qualifiedName(t) == "kubernetes_extensions_RunAsUserStrategyOptions" {
-			return pkgDesc.JavaPackage + "." + "Kubernetes" + t.Name()
-		} else {
-			switch t.Name() {
-			case "Time":
-				return "java.lang.String"
-			case "Duration":
-				return "java.lang.String"
-			case "RawExtension":
-				return "java.util.Map<String, Object>"
-			case "List":
-				return pkgDesc.JavaPackage + ".BaseKubernetesList"
-			default:
-				return pkgDesc.JavaPackage + "." + t.Name()
-			}
-		}
-	} else {
+	if isSimpleJavaType(t) {
 		switch t.Kind() {
 		case reflect.Bool:
-			return "bool"
-		case reflect.Int, reflect.Int8, reflect.Int16,
-			reflect.Int32, reflect.Uint,
-			reflect.Uint8, reflect.Uint16, reflect.Uint32:
-			return "int"
-		case reflect.Int64, reflect.Uint64:
-			return "Long"
-		case reflect.Float32, reflect.Float64, reflect.Complex64,
-			reflect.Complex128:
-			return "double"
+			return "Boolean"
+		case reflect.Int, reflect.Int32:
+			return "Integer"
 		case reflect.String:
 			return "String"
-		case reflect.Array, reflect.Slice:
-			return g.javaTypeArrayList(t.Elem())
-		case reflect.Map:
-			return "java.util.Map<String," + g.javaTypeWrapPrimitive(t.Elem()) + ">"
-		default:
-			if t.Name() == "Time" {
-				return "java.lang.String"
-			}
-			if t.Name() == "Duration" {
-				return "java.lang.String"
-			}
-			if t.Name() == "RawExtension" {
-				return "java.util.Map<String, Object>"
-			}
-			if t.Name() == "ObjectMeta" {
-				return "io.fabric8.kubernetes.api.model.ObjectMeta"
-			}
-			if t.Name() == "TypeMeta" {
-				return "io.fabric8.kubernetes.api.model.TypeMeta"
-			}
-			if t.Name() == "ListMeta" {
-				return "io.fabric8.kubernetes.api.model.ListMeta"
-			}
-			if t.Name() == "OwnerReference" {
-				return "io.fabric8.kubernetes.api.model.OwnerReference"
-			}
-			if t.Name() == "StatusCause" {
-				return "io.fabric8.kubernetes.api.model.StatusCause"
-			}
-			if t.Name() == "StatusDetail" {
-				return "io.fabric8.kubernetes.api.model.StatusDetail"
-			}
-			if t.Name() == "Initializer" {
-				return "io.fabric8.kubernetes.api.model.Initializer"
-			}
-			if t.Name() == "Initializers" {
-				return "io.fabric8.kubernetes.api.model.Initializers"
-			}
-			if len(t.Name()) == 0 && t.NumField() == 0 {
-				return "Object"
-			}
-			return t.Name()
+		case reflect.Int64:
+			return "Long"
 		}
 	}
+
+	// part of provided packages?
+	if g.isPartOfProvidedPackage(t) {
+		return g.resolveJavaClassUsingProvidedPackages(t)
+	}
+
+	// part of own packages?
+	if g.isPartOfOwnPackage(t) {
+		return g.resolveJavaClassUsingOwnPackages(t)
+	}
+
+	if t.Kind() == reflect.Map {
+		return "java.util.Map<" + g.javaType(t.Key()) + "," + g.javaType(t.Elem()) + ">"
+	}
+
+	panic("No type mapping for " + t.PkgPath() + "." + t.Name())
 }
 
 func (g *schemaGenerator) javaInterfaces(t reflect.Type) []string {
@@ -235,305 +185,380 @@ func (g *schemaGenerator) javaInterfaces(t reflect.Type) []string {
 	_, hasItems := t.FieldByName("Items")
 	_, hasListMeta := t.FieldByName("ListMeta")
 	if hasItems && hasListMeta {
-		return []string{"io.fabric8.kubernetes.api.model.KubernetesResource", "io.fabric8.kubernetes.api.model.KubernetesResourceList"}
+		return []string{"io.fabric8.kubernetes.api.model.KubernetesResource", g.resourceListInterface(t)}
 	}
 	return []string{"io.fabric8.kubernetes.api.model.KubernetesResource"}
 }
 
-func (g *schemaGenerator) javaExtends(t reflect.Type) *JavaExtendsDescriptor {
-	if _, ok := t.FieldByName("TypeMeta"); ok {
-		return &JavaExtendsDescriptor{
-			Reference: "#/definitions/github_com_kubernetes_incubator_service_catalog_vendor_k8s_io_apimachinery_pkg_apis_meta_v1_TypeMeta",
-			JavaType:  "io.fabric8.kubernetes.api.model.TypeMeta",
-		}
-	}
-	return &JavaExtendsDescriptor{}
+func (g *schemaGenerator) resourceListInterface(listType reflect.Type) string {
+	itemsField, _ := listType.FieldByName("Items")
+	itemType := itemsField.Type.Elem()
+	return "io.fabric8.kubernetes.api.model.KubernetesResourceList<" + g.javaType(itemType) + ">"
 }
 
-func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error) {
-	if t.Kind() != reflect.Struct {
-		return nil, fmt.Errorf("Only struct types can be converted.")
-	}
+func (g *schemaGenerator) generate(crdLists []reflect.Type) (*JSONSchema, error) {
 
 	s := JSONSchema{
-		ID:     "http://fabric8.io/tekton/v1alpha1/" + t.Name() + "#",
+		ID:     "http://fabric8.io/tekton/v1alpha1/TektonSchema#",
 		Schema: "http://json-schema.org/schema#",
 		JSONDescriptor: JSONDescriptor{
 			Type: "object",
 		},
+		Definitions: make(map[string]JSONPropertyDescriptor),
+		JSONObjectDescriptor: &JSONObjectDescriptor{
+			Properties:           make(map[string]JSONPropertyDescriptor),
+			AdditionalProperties: false,
+		},
 	}
-	s.JSONObjectDescriptor = g.generateObjectDescriptor(t)
-	if len(g.types) > 0 {
-		s.Definitions = make(map[string]JSONPropertyDescriptor)
-		s.Resources = make(map[string]*JSONObjectDescriptor)
 
-		for k, v := range g.types {
-			name := g.qualifiedName(k)
-			resource := g.resourceDetails(k)
-			value := JSONPropertyDescriptor{
-				JSONDescriptor: &JSONDescriptor{
-					Type: "object",
-				},
-				JSONObjectDescriptor: v,
-				JavaTypeDescriptor: &JavaTypeDescriptor{
-					JavaType: g.javaType(k),
-				},
-				JavaInterfacesDescriptor: &JavaInterfacesDescriptor{
-					JavaInterfaces: g.javaInterfaces(k),
-				},
-				//JavaExtends: g.javaExtends(k),
-			}
-			s.Definitions[name] = value
-			s.Resources[resource] = v
+	for _, crd := range crdLists {
+		g.handleType(crd)
+	}
+
+	for k, v := range g.types {
+
+		name := g.qualifiedName(k)
+		value := JSONPropertyDescriptor{
+			JSONDescriptor: &JSONDescriptor{
+				Type: "object",
+			},
+			JSONObjectDescriptor: v,
+			JavaTypeDescriptor: &JavaTypeDescriptor{
+				JavaType: g.javaType(k),
+			},
+			JavaInterfacesDescriptor: &JavaInterfacesDescriptor{
+				JavaInterfaces: g.javaInterfaces(k),
+			},
 		}
+		s.Definitions[name] = value
+
+		s.Properties[name] = JSONPropertyDescriptor{
+			JSONReferenceDescriptor: &JSONReferenceDescriptor{
+				Reference: g.generateReference(k),
+			},
+			JavaTypeDescriptor: &JavaTypeDescriptor{
+				JavaType: g.javaType(k),
+			},
+		}
+
 	}
 
 	return &s, nil
 }
 
-func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string, omitEmpty bool) JSONPropertyDescriptor {
-	if t.Kind() == reflect.Ptr {
-		t = t.Elem()
-	}
-	tt, ok := g.typeMap[t]
-	if ok {
-		t = tt
-	}
-	switch t.Kind() {
-	case reflect.Bool:
-		return JSONPropertyDescriptor{
-			JSONDescriptor: &JSONDescriptor{
-				Type:        "boolean",
-				Description: desc,
-			},
-		}
-	case reflect.Int, reflect.Int8, reflect.Int16,
-		reflect.Int32, reflect.Uint,
-		reflect.Uint8, reflect.Uint16, reflect.Uint32:
-		return JSONPropertyDescriptor{
-			JSONDescriptor: &JSONDescriptor{
-				Type:        "integer",
-				Description: desc,
-			},
-		}
-	case reflect.Int64, reflect.Uint64:
-		return JSONPropertyDescriptor{
-			JSONDescriptor: &JSONDescriptor{
-				Type:        "integer",
-				Description: desc,
-			},
-			JavaTypeDescriptor: &JavaTypeDescriptor{
-				JavaType: "Long",
-			},
-		}
-	case reflect.Float32, reflect.Float64, reflect.Complex64,
-		reflect.Complex128:
-		return JSONPropertyDescriptor{
-			JSONDescriptor: &JSONDescriptor{
-				Type:        "number",
-				Description: desc,
-			},
-		}
-	case reflect.String:
-		return JSONPropertyDescriptor{
-			JSONDescriptor: &JSONDescriptor{
-				Type:        "string",
-				Description: desc,
-			},
-		}
-	case reflect.Array:
-	case reflect.Slice:
-		if g.javaTypeArrayList(t.Elem()) == "String" {
-			return JSONPropertyDescriptor{
-				JSONDescriptor: &JSONDescriptor{
-					Type:        "string",
-					Description: desc,
-				},
+type FieldType string
+
+const (
+	EMBEDDED FieldType = "E"
+	OBJECT   FieldType = "O"
+	MAP      FieldType = "M"
+	SIMPLE   FieldType = "S"
+	LIST     FieldType = "L"
+)
+
+func (g *schemaGenerator) getFields(t reflect.Type) []reflect.StructField {
+
+	var fields = make([]reflect.StructField, 0)
+
+	for i := 0; i < t.NumField(); i++ {
+		field := t.Field(i)
+
+		fieldType := g.fieldCategory(field)
+
+		if fieldType == EMBEDDED {
+			// flatten embedded fields
+			embeddedFields := g.getFields(field.Type)
+			for _, ef := range embeddedFields {
+				fields = append(fields, ef)
 			}
 		} else {
-			return JSONPropertyDescriptor{
-				JSONDescriptor: &JSONDescriptor{
-					Type:          "array",
-					Description:   desc,
-					JavaOmitEmpty: omitEmpty,
-				},
-				JSONArrayDescriptor: &JSONArrayDescriptor{
-					Items: g.getPropertyDescriptor(t.Elem(), desc, false),
-				},
-			}
+			fields = append(fields, field)
 		}
-	case reflect.Map:
-		return JSONPropertyDescriptor{
-			JSONDescriptor: &JSONDescriptor{
-				Type:        "object",
-				Description: desc,
-			},
-			JSONMapDescriptor: &JSONMapDescriptor{
-				MapValueType: g.getPropertyDescriptor(t.Elem(), desc, false),
-			},
-			JavaTypeDescriptor: &JavaTypeDescriptor{
-				JavaType: "java.util.Map<String," + g.javaTypeWrapPrimitive(t.Elem()) + ">",
-			},
-		}
-	case reflect.Struct:
-		definedType, ok := g.types[t]
-		if !ok {
-			g.types[t] = &JSONObjectDescriptor{}
-			definedType = g.generateObjectDescriptor(t)
-			g.types[t] = definedType
-		}
-		return JSONPropertyDescriptor{
-			JSONReferenceDescriptor: &JSONReferenceDescriptor{
-				Reference: g.generateReference(t),
-			},
-			JavaTypeDescriptor: &JavaTypeDescriptor{
-				JavaType: g.javaType(t),
-			},
-		}
+
 	}
 
-	return JSONPropertyDescriptor{}
+	return fields
 }
 
 func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPropertyDescriptor {
-	props := map[string]JSONPropertyDescriptor{}
-	for i := 0; i < t.NumField(); i++ {
-		field := t.Field(i)
-		if len(field.PkgPath) > 0 { // Skip private fields
-			continue
-		}
-		name := getFieldName(field)
-		//TypeMeta is the base clsas, so we skip that.
-		//if name == "TypeMeta" {
-		//continue
-		//}
 
-		// Skip unserialized fields
-		if name == "-" {
-			continue
-		}
-		// Skip dockerImageMetadata field
-		path := pkgPath(t)
-		if path == "github.com/openshift/origin/pkg/image/api/v1" && t.Name() == "Image" && name == "dockerImageMetadata" {
-			continue
+	// follow pointer
+	t = g.resolvePointer(t)
+
+	result := map[string]JSONPropertyDescriptor{}
+
+	fieldList := g.getFields(t)
+	for _, field := range fieldList {
+
+		fieldCategory := g.fieldCategory(field)
+
+		fieldType := field.Type
+		fieldType = g.resolvePointer(fieldType)
+
+		if fieldCategory == SIMPLE {
+			jsonName := g.jsonFieldName(field)
+			result[jsonName] = g.propertyDescriptorForSimpleField(field, t)
 		}
 
-		desc := getFieldDescription(field)
-		omitEmpty := isOmitEmpty(field)
-		prop := g.getPropertyDescriptor(field.Type, desc, omitEmpty)
+		if fieldCategory == MAP {
+			jsonName := g.jsonFieldName(field)
+			result[jsonName] = g.propertyDescriptorForMap(field)
+		}
 
-		if field.Anonymous && field.Type.Kind() == reflect.Struct && (len(name) == 0 || strings.HasPrefix(name, "Common") || name == "PlanReference" || name == "TypeMeta" || name == "Container" || name == "PipelineResourceBinding" || name == "ContainerState") {
-			var newProps map[string]JSONPropertyDescriptor
-			if prop.JSONReferenceDescriptor != nil {
-				pType := field.Type
-				if pType.Kind() == reflect.Ptr {
-					pType = pType.Elem()
-				}
-				newProps = g.types[pType].Properties
-			} else {
-				newProps = prop.Properties
-			}
-			for k, v := range newProps {
-				switch k {
-				case "kind":
-					v = JSONPropertyDescriptor{
-						JSONDescriptor: &JSONDescriptor{
-							Type:     "string",
-							Default:  t.Name(),
-							Required: true,
-						},
-					}
-				case "apiVersion":
-					apiVersion := filepath.Base(path)
+		if fieldCategory == OBJECT {
+			jsonName := g.jsonFieldName(field)
+			result[jsonName] = g.propertyDescriptorForObject(field)
+		}
 
-					//Tune version for service catalog
-					apiGroup := filepath.Base(strings.TrimSuffix(path, apiVersion))
-					pkgDesc, ok := g.packages[path]
-
-					if apiVersion == "tekton.dev/v1beta1" {
-						apiVersion = "tekton.dev/v1alpha1"
-					}
-					if ok && pkgDesc.ApiGroup != "" {
-						apiGroup = pkgDesc.ApiGroup
-					}
-
-					if apiGroup != "api" {
-						groupPostfix := ""
-						if strings.HasPrefix(path, "github.com/openshift/origin/pkg/") {
-							groupPostfix = ".openshift.io"
-						}
-
-						//Added a special case for SecurityContextConstraints and SecurityContextConstraintsList
-						//Because its fetching "security.openshift.io/v1"
-						//and "v1" is working with kubernetes-client
-
-						if t.Name() != "SecurityContextConstraints" && t.Name() != "SecurityContextConstraintsList" {
-							apiVersion = apiGroup + groupPostfix + "/" + apiVersion
-						}
-					}
-					v = JSONPropertyDescriptor{
-						JSONDescriptor: &JSONDescriptor{
-							Type: "string",
-						},
-					}
-					if apiVersion != "unversioned" {
-						v.Required = true
-						v.Default = apiVersion
-					}
-				default:
-					g.addConstraints(t.Name(), k, &v)
-				}
-				props[decapitalize(k)] = v
-			}
-		} else {
-			g.addConstraints(t.Name(), name, &prop)
-			switch name {
-			case "ObjectMeta":
-				name = "metadata"
-			case "ListMeta":
-				name = "metadata"
-			default:
-			}
-			props[decapitalize(name)] = prop
+		if fieldCategory == LIST {
+			jsonName := g.jsonFieldName(field)
+			result[jsonName] = g.propertyDescriptorForList(field)
 		}
 	}
-	return props
+
+	// setting api version default values
+	apiVersionPropertyDescriptor, hasApiVersion := result["apiVersion"]
+	if hasApiVersion {
+		g.setApiVersion(apiVersionPropertyDescriptor, t)
+	}
+
+	kindPropertyDescriptor, hasKind := result["kind"]
+	if hasKind {
+		kindPropertyDescriptor.Default = t.Name()
+		kindPropertyDescriptor.Required = true
+	}
+
+	return result
 }
 
-func (g *schemaGenerator) generateObjectDescriptor(t reflect.Type) *JSONObjectDescriptor {
-	desc := JSONObjectDescriptor{AdditionalProperties: true}
-	desc.Properties = g.getStructProperties(t)
-	return &desc
+func (g *schemaGenerator) referenceDescriptor(valueType reflect.Type) *JSONReferenceDescriptor {
+	if g.isPartOfGeneratedClasses(valueType) {
+		return &JSONReferenceDescriptor{
+			Reference: g.generateReference(valueType),
+		}
+	}
+	return nil
 }
 
-func (g *schemaGenerator) addConstraints(objectName string, propName string, prop *JSONPropertyDescriptor) {
-	switch objectName {
-	case "ObjectMeta":
-		switch propName {
-		case "namespace":
-			prop.Pattern = `^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$`
-			prop.MaxLength = 253
-		}
-	case "EnvVar":
-		switch propName {
-		case "name":
-			prop.Pattern = `^[A-Za-z_][A-Za-z0-9_]*$`
-		}
-	case "Container", "Volume", "ContainePort", "ContainerStatus", "ServicePort", "EndpointPort":
-		switch propName {
-		case "name":
-			prop.Pattern = `^[a-z0-9]([-a-z0-9]*[a-z0-9])?$`
-			prop.MaxLength = 63
-		}
+func (g *schemaGenerator) setApiVersion(apiVersionPropertyDescriptor JSONPropertyDescriptor, t reflect.Type) {
+	versionInfo, ok := g.versionInformation[t.PkgPath()]
+	if !ok {
+		panic("Not able to set api version for " + t.PkgPath() + "/" + t.Name())
+	}
+	apiVersionPropertyDescriptor.Default = versionInfo.ApiGroup + "/" + versionInfo.ApiVersion
+	apiVersionPropertyDescriptor.Required = true
+}
+
+func (g *schemaGenerator) fieldCategory(field reflect.StructField) FieldType {
+
+	// follow pointer
+	fieldType := g.resolvePointer(field.Type)
+
+	jsonTag := field.Tag.Get("json")
+
+	// embedded examples:
+	// - metav1.TypeMeta `json:",inline"` => anonymous = True
+	// - PipelineResourceBinding => anonymous = True
+	// NOT embedded
+	// - metav1.ObjectMeta `json:"metadata,omitempty"`  => anonymous = True (!)
+
+	if field.Anonymous && (jsonTag == "" || strings.Contains(jsonTag, "inline")) {
+		return EMBEDDED
+	}
+
+	switch fieldType.Kind() {
+	case reflect.Array:
+		return LIST
+	case reflect.Slice:
+		return LIST
+	case reflect.Struct:
+		return OBJECT
+	case reflect.Map:
+		return MAP
+
+	default:
+		return SIMPLE
 	}
 }
 
-func pkgPath(t reflect.Type) string {
-	return strings.TrimPrefix(strings.TrimPrefix(t.PkgPath(), "github.com/fabric8io/tekton/generator/vendor/"), "github.com/tektoncd/pipeline/vendor/")
+func hasDifferentSimpleJavaTypeMapping(t reflect.Type) bool {
+	switch t.Kind() {
+
+	// -> mapped to Long instead
+	case reflect.Int64:
+		return true
+	}
+	return false
 }
 
-func decapitalize(s string) string {
-	a := []rune(s)
-	a[0] = unicode.ToLower(a[0])
-	return string(a)
+func isSimpleJavaType(fieldType reflect.Type) bool {
+
+	// simple = primitive + String
+
+	switch fieldType.Kind() {
+	case reflect.Bool:
+		return true
+	case reflect.Int, reflect.Int32:
+		return true
+	case reflect.String:
+		return true
+	case reflect.Int64:
+		return true
+	}
+
+	return false
+}
+
+func (g *schemaGenerator) handleType(t reflect.Type) {
+
+	t = g.resolvePointer(t)
+
+	// no need to include simple types or excluded types
+	if !g.isPartOfGeneratedClasses(t) || isSimpleJavaType(t) {
+		return
+	}
+
+	definedType, ok := g.types[t]
+	if !ok {
+		g.types[t] = &JSONObjectDescriptor{} // avoid recursion issue
+
+		nestedProperties := g.getStructProperties(t)
+
+		definedType = &JSONObjectDescriptor{
+			Properties:           nestedProperties,
+			AdditionalProperties: true,
+		}
+		g.types[t] = definedType
+	}
+}
+
+func (g *schemaGenerator) isPartOfProvidedPackage(t reflect.Type) bool {
+	_, ok := g.providedPackages[t.PkgPath()]
+	return ok
+}
+
+func (g *schemaGenerator) isProvidedType(t reflect.Type) bool {
+	for _, pt := range g.providedTypes {
+		if pt.GoType == t {
+			return true
+		}
+	}
+	return false
+}
+
+func (g *schemaGenerator) isPartOfOwnPackage(t reflect.Type) bool {
+	_, ok := g.versionInformation[t.PkgPath()]
+	return ok
+}
+
+func (g *schemaGenerator) resolveJavaClassUsingOwnPackages(t reflect.Type) string {
+	return g.versionInformation[t.PkgPath()].JavaPackage + "." + t.Name()
+}
+
+func (g *schemaGenerator) resolveJavaClassUsingProvidedPackages(t reflect.Type) string {
+	return g.providedPackages[t.PkgPath()] + "." + t.Name()
+}
+
+func (g *schemaGenerator) isPartOfGeneratedClasses(t reflect.Type) bool {
+	if g.isPartOfProvidedPackage(t) {
+		return false
+	}
+
+	if g.isProvidedType(t) {
+		return false
+	}
+
+	return true
+}
+
+func (g *schemaGenerator) propertyDescriptorForSimpleField(field reflect.StructField, parentType reflect.Type) JSONPropertyDescriptor {
+	propertyDescriptor := g.propertyDescriptorForSimple(field.Type)
+
+	// check if there are constraint defined
+	typeConstraints := g.constraints[parentType]
+	if typeConstraints != nil {
+		constraint := typeConstraints[field.Name]
+		if constraint != nil {
+			propertyDescriptor.MaxLength = constraint.MaxLength
+			propertyDescriptor.Pattern = constraint.Pattern
+		}
+	}
+
+	// add description
+	propertyDescriptor.Description = g.fieldDescription(field)
+
+	return propertyDescriptor
+}
+
+func (g *schemaGenerator) propertyDescriptorForSimple(t reflect.Type) JSONPropertyDescriptor {
+	return JSONPropertyDescriptor{
+		JSONDescriptor:     g.jsonDescriptor(t),
+		JavaTypeDescriptor: g.javaTypeDescriptor(t),
+	}
+}
+
+func (g *schemaGenerator) propertyDescriptorForMap(f reflect.StructField) JSONPropertyDescriptor {
+	fieldType := g.resolvePointer(f.Type)
+	mapValueType := g.resolvePointer(f.Type.Elem())
+
+	// auto discovery
+	g.handleType(mapValueType)
+
+	return JSONPropertyDescriptor{
+		JSONDescriptor: &JSONDescriptor{
+			Type: "object",
+		},
+		JSONMapDescriptor: &JSONMapDescriptor{
+			MapValueType: JSONPropertyDescriptor{
+				JSONReferenceDescriptor: g.referenceDescriptor(mapValueType),
+				JavaTypeDescriptor:      g.javaTypeDescriptor(fieldType),
+			},
+		},
+		JavaTypeDescriptor: g.javaTypeDescriptor(fieldType),
+	}
+}
+
+func (g *schemaGenerator) propertyDescriptorForObject(field reflect.StructField) JSONPropertyDescriptor {
+	fieldType := g.resolvePointer(field.Type)
+
+	// "type discovery"
+	g.handleType(fieldType)
+
+	return JSONPropertyDescriptor{
+		JSONReferenceDescriptor: g.referenceDescriptor(fieldType),
+		JavaTypeDescriptor:      g.javaTypeDescriptor(fieldType),
+	}
+}
+
+func (g *schemaGenerator) propertyDescriptorForList(field reflect.StructField) JSONPropertyDescriptor {
+
+	listValueType := g.resolvePointer(field.Type.Elem())
+
+	// "type discovery"
+	g.handleType(listValueType)
+
+	if isSimpleJavaType(listValueType) {
+		return JSONPropertyDescriptor{
+			JSONDescriptor: &JSONDescriptor{
+				Type: "array",
+			},
+			JSONArrayDescriptor: &JSONArrayDescriptor{
+				Items: g.propertyDescriptorForSimple(listValueType),
+			},
+		}
+
+	} else {
+		return JSONPropertyDescriptor{
+			JSONDescriptor: &JSONDescriptor{
+				Type: "array",
+			},
+			JSONArrayDescriptor: &JSONArrayDescriptor{
+				Items: JSONPropertyDescriptor{
+					JSONReferenceDescriptor: g.referenceDescriptor(listValueType),
+					JavaTypeDescriptor:      g.javaTypeDescriptor(listValueType),
+				},
+			},
+		}
+	}
+
 }
