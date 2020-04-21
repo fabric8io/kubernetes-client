@@ -32,6 +32,7 @@ import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.mockwebserver.crud.Attribute;
 import io.fabric8.mockwebserver.crud.AttributeSet;
+import io.fabric8.zjsonpatch.internal.guava.Lists;
 
 public class KubernetesAttributesExtractorTest {
 
@@ -187,17 +188,26 @@ public class KubernetesAttributesExtractorTest {
 		assertTrue(attributes.matches(expected));
 	}
 
-
   @Test
-  void shouldHandleCrdStatusSubresource() {
+  void shouldHandleCrdSubresources() {
     KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-    AttributeSet attributes = extractor.extract("/apis/test.com/v1/namespaces/myns/crds/mycrd/status");
+    String[] subresources = new String[]{"status", "scale"};
 
-    AttributeSet expected = new AttributeSet();
-    expected = expected.add(new Attribute("kind", "crd"));
-    expected = expected.add(new Attribute("namespace", "myns"));
-    expected = expected.add(new Attribute("name", "mycrd"));
-    assertTrue(attributes.matches(expected));
+    String basePath = "/apis/test.com/v1/namespaces/myns/crds/mycrd/";
+    for (String subresource : subresources) {
+      AttributeSet attributes = extractor.extract(basePath + subresource);
+
+      AttributeSet expected = new AttributeSet();
+      expected = expected.add(new Attribute("kind", "crd"));
+      expected = expected.add(new Attribute("namespace", "myns"));
+      expected = expected.add(new Attribute("name", "mycrd"));
+      assertTrue(attributes.matches(expected),
+        "extracted attributes match for " + subresource + " expectation: " + expected);
+    }
+
+    AttributeSet attributes = extractor.extract(basePath + "somethingRandom");
+    assertTrue(attributes.matches(new AttributeSet()),
+      "should extract nothing from an unsupported crd subresource");
   }
 
 	@Test
