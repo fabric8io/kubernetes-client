@@ -20,10 +20,9 @@ all: build
 
 build: gobuild
 	pushd ../model && \
-	mvn clean install && \
+	mvn clean install -o && \
 	popd
 
 gobuild:
 	CGO_ENABLED=0 GO111MODULE=on GO15VENDOREXPERIMENT=1 go build -a ./cmd/generate/generate.go
 	./generate > ../model/src/main/resources/schema/tekton-schema.json
-	./generate validation > ../model/src/main/resources/schema/validation-schema.json
