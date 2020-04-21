@@ -15,11 +15,23 @@
  */
 package io.fabric8.tekton.client;
 
+import io.fabric8.kubernetes.client.APIGroupExtensionAdapter;
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.tekton.client.dsl.V1alpha1APIGroupDSL;
-import io.fabric8.tekton.client.dsl.V1beta1APIGroupDSL;
+import okhttp3.OkHttpClient;
 
-public interface TektonClient extends Client {
-  V1beta1APIGroupDSL v1beta1();
-  V1alpha1APIGroupDSL v1alpha1();
+public class V1alpha1APIGroupExtensionAdapter extends APIGroupExtensionAdapter<V1alpha1APIGroupClient> {
+  @Override
+  protected String getAPIGroupName() {
+    return "v1alpha1";
+  }
+
+  @Override
+  public Class<V1alpha1APIGroupClient> getExtensionType() {
+    return V1alpha1APIGroupClient.class;
+  }
+
+  @Override
+  protected V1alpha1APIGroupClient newInstance(Client client) {
+    return new V1alpha1APIGroupClient(client.adapt(OkHttpClient.class), client.getConfiguration());
+  }
 }

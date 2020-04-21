@@ -17,15 +17,6 @@ package io.fabric8.tekton;
 
 import io.fabric8.kubernetes.api.KubernetesResourceMappingProvider;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
-import io.fabric8.tekton.pipeline.v1alpha1.Condition;
-import io.fabric8.tekton.pipeline.v1beta1.ClusterTask;
-import io.fabric8.tekton.pipeline.v1beta1.Pipeline;
-import io.fabric8.tekton.pipeline.v1beta1.PipelineRun;
-import io.fabric8.tekton.pipeline.v1beta1.SidecarState;
-import io.fabric8.tekton.pipeline.v1beta1.Task;
-import io.fabric8.tekton.pipeline.v1beta1.TaskRef;
-import io.fabric8.tekton.pipeline.v1beta1.TaskRun;
-import io.fabric8.tekton.resource.v1alpha1.PipelineResource;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,18 +26,22 @@ public class TektonResourceMappingProvider implements KubernetesResourceMappingP
     public final Map<String, Class<? extends KubernetesResource>> mappings = new HashMap<>();
 
     public TektonResourceMappingProvider() {
-        mappings.put("tekton.dev/v1alpha1#PipelineResource", PipelineResource.class);
-        mappings.put("tekton.dev/v1alpha1#Condition", Condition.class);
-        mappings.put("tekton.dev/v1beta1#Pipeline", Pipeline.class);
-        mappings.put("tekton.dev/v1beta1#PipelineRun", PipelineRun.class);
-        mappings.put("tekton.dev/v1beta1#Task", Task.class);
-        mappings.put("tekton.dev/v1beta1#TaskRun", TaskRun.class);
-        mappings.put("tekton.dev/v1beta1#TaskRef", TaskRef.class);
-        mappings.put("tekton.dev/v1beta1#ClusterTask", ClusterTask.class);
-        mappings.put("tekton.dev/v1beta1#SidecarState", SidecarState.class);
+        mappings.put("tekton.dev/v1alpha1#PipelineResource", io.fabric8.tekton.resource.v1alpha1.PipelineResource.class);
+        mappings.put("tekton.dev/v1alpha1#Condition", io.fabric8.tekton.pipeline.v1alpha1.Condition.class);
+        mappings.put("tekton.dev/v1beta1#Pipeline", io.fabric8.tekton.pipeline.v1beta1.Pipeline.class);
+        mappings.put("tekton.dev/v1alpha1#Pipeline", io.fabric8.tekton.pipeline.v1alpha1.Pipeline.class);
+        mappings.put("tekton.dev/v1beta1#PipelineRun", io.fabric8.tekton.pipeline.v1beta1.PipelineRun.class);
+        mappings.put("tekton.dev/v1alpha1#PipelineRun", io.fabric8.tekton.pipeline.v1alpha1.PipelineRun.class);
+        mappings.put("tekton.dev/v1beta1#Task", io.fabric8.tekton.pipeline.v1beta1.Task.class);
+        mappings.put("tekton.dev/v1alpha1#Task", io.fabric8.tekton.pipeline.v1alpha1.Task.class);
+        mappings.put("tekton.dev/v1beta1#TaskRun", io.fabric8.tekton.pipeline.v1beta1.TaskRun.class);
+        mappings.put("tekton.dev/v1alpha#TaskRun", io.fabric8.tekton.pipeline.v1alpha1.TaskRun.class);
+        mappings.put("tekton.dev/v1beta1#TaskRef", io.fabric8.tekton.pipeline.v1beta1.TaskRef.class);
+        mappings.put("tekton.dev/v1beta1#ClusterTask", io.fabric8.tekton.pipeline.v1beta1.ClusterTask.class);
+        mappings.put("tekton.dev/v1alpha1#ClusterTask", io.fabric8.tekton.pipeline.v1alpha1.ClusterTask.class);
+        mappings.put("tekton.dev/v1beta1#SidecarState", io.fabric8.tekton.pipeline.v1beta1.SidecarState.class);
     }
 
     public Map<String, Class<? extends KubernetesResource>> getMappings() {
         return mappings;
-    }
-}
+    }}

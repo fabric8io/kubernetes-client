@@ -51,7 +51,7 @@ public class ArrayOrString implements KubernetesResource {
   private static final String TYPE_ARRAY = "array";
 
   @JsonProperty("arrayVal")
-  private List<String> arrayVal = new ArrayList<String>();
+  private List<String> arrayVal = new ArrayList<>();
 
   @JsonProperty("stringVal")
   private String stringVal;
@@ -60,7 +60,7 @@ public class ArrayOrString implements KubernetesResource {
   private String type;
 
   @JsonIgnore
-  private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  private Map<String, Object> additionalProperties = new HashMap<>();
 
   /**
    * No args constructor for use in serialization
@@ -127,7 +127,7 @@ public class ArrayOrString implements KubernetesResource {
   public static class Serializer extends JsonSerializer<ArrayOrString> {
 
     @Override
-    public void serialize(ArrayOrString value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
+    public void serialize(ArrayOrString value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
       if (value != null) {
         if (value.getType() == null) {
           String stringVal = value.getStringVal();
