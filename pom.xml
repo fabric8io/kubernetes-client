@@ -166,6 +166,7 @@
   </properties>
 
   <modules>
+    <module>model-annotator</module>
     <module>kubernetes-model</module>
     <module>kubernetes-client</module>
     <module>kubernetes-server-mock</module>
@@ -308,7 +309,12 @@
       </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
-        <artifactId>tekton-model</artifactId>
+        <artifactId>tekton-model-v1alpha1</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>tekton-model-v1beta1</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

@@ -29,8 +29,8 @@
   <name>Fabric8 :: Tekton :: Extension</name>
 
   <modules>
-    <module>annotator</module>
-    <module>model</module>
+    <module>model-v1alpha1</module>
+    <module>model-v1beta1</module>
     <module>client</module>
     <module>mock</module>
     <module>examples</module>

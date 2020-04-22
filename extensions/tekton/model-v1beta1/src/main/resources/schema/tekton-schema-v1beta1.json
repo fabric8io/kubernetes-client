@@ -1,0 +1,1972 @@
+{
+  "id": "http://fabric8.io/tekton/v1alpha1/TektonSchema#",
+  "$schema": "http://json-schema.org/schema#",
+  "definitions": {
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_pod_Template": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "affinity": {
+          "javaType": "io.fabric8.kubernetes.api.model.Affinity"
+        },
+        "automountServiceAccountToken": {
+          "type": "boolean",
+          "description": "",
+          "javaType": "Boolean"
+        },
+        "dnsConfig": {
+          "javaType": "io.fabric8.kubernetes.api.model.PodDNSConfig"
+        },
+        "dnsPolicy": {
+          "type": "string",
+          "description": "",
+          "javaType": "String"
+        },
+        "enableServiceLinks": {
+          "type": "boolean",
+          "description": "",
+          "javaType": "Boolean"
+        },
+        "nodeSelector": {
+          "type": "object",
+          "description": "",
+          "javaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "priorityClassName": {
+          "type": "string",
+          "description": "",
+          "javaType": "String"
+        },
+        "runtimeClassName": {
+          "type": "string",
+          "description": "",
+          "javaType": "String"
+        },
+        "schedulerName": {
+          "type": "string",
+          "description": ""
+        },
+        "securityContext": {
+          "javaType": "io.fabric8.kubernetes.api.model.PodSecurityContext"
+        },
+        "tolerations": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "javaType": "io.fabric8.kubernetes.api.model.Toleration"
+          }
+        },
+        "volumes": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "javaType": "io.fabric8.kubernetes.api.model.Volume"
+          }
+        }
+      },
+      "javaType": "io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.pipeline.pod.Template",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_CloudEventDelivery": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_CloudEventDeliveryState",
+          "javaType": "io.fabric8.tekton.pipeline.v1beta1.CloudEventDeliveryState"
+        },
+        "target": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.CloudEventDelivery",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_CloudEventDeliveryState": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "condition": {
+          "type": "string",
+          "description": ""
+        },
+        "message": {
+          "type": "string",
+          "description": ""
+        },
+        "retryCount": {
+          "type": "integer",
+          "description": ""
+        },
+        "sentAt": {
+          "javaType": "java.lang.String"
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.CloudEventDeliveryState",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_ClusterTask": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "tekton.dev/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ClusterTask",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskSpec",
+          "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskSpec"
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.ClusterTask",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_ClusterTaskList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "tekton.dev/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_ClusterTask",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.ClusterTask"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ClusterTaskList",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.ClusterTaskList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.tekton.pipeline.v1beta1.ClusterTask\u003e"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_ConditionCheckStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "check": {
+          "javaType": "io.fabric8.kubernetes.api.model.ContainerState"
+        },
+        "completionTime": {
+          "javaType": "java.lang.String"
+        },
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "javaType": "io.fabric8.knative.v1.Condition"
+          }
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "podName": {
+          "type": "string",
+          "description": ""
+        },
+        "startTime": {
+          "javaType": "java.lang.String"
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.ConditionCheckStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Param": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "value": {
+          "javaType": "io.fabric8.tekton.pipeline.v1beta1.ArrayOrString"
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.Param",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_ParamSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "default": {
+          "javaType": "io.fabric8.tekton.pipeline.v1beta1.ArrayOrString"
+        },
+        "description": {
+          "type": "string",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "type": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.ParamSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Pipeline": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "tekton.dev/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "Pipeline",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineSpec",
+          "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineSpec"
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.Pipeline",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineDeclaredResource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "optional": {
+          "type": "boolean",
+          "description": ""
+        },
+        "type": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineDeclaredResource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "tekton.dev/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Pipeline",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.Pipeline"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "PipelineList",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.tekton.pipeline.v1beta1.Pipeline\u003e"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRef": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineRef",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineResourceBinding": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "resourceRef": {
+          "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineResourceRef",
+          "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineResourceRef"
+        },
+        "resourceSpec": {
+          "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_resource_v1alpha1_PipelineResourceSpec",
+          "javaType": "io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.resource.v1alpha1.PipelineResourceSpec"
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineResourceBinding",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineResourceRef": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineResourceRef",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineResourceResult": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": ""
+        },
+        "resourceRef": {
+          "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineResourceRef",
+          "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineResourceRef"
+        },
+        "type": {
+          "type": "string",
+          "description": ""
+        },
+        "value": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineResourceResult",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRun": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "tekton.dev/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "PipelineRun",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunSpec",
+          "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineRunSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunStatus",
+          "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineRunStatus"
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineRun",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunConditionCheckStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "conditionName": {
+          "type": "string",
+          "description": ""
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_ConditionCheckStatus",
+          "javaType": "io.fabric8.tekton.pipeline.v1beta1.ConditionCheckStatus"
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineRunConditionCheckStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "tekton.dev/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRun",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineRun"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "PipelineRunList",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineRunList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.tekton.pipeline.v1beta1.PipelineRun\u003e"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "params": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Param",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.Param"
+          }
+        },
+        "pipelineRef": {
+          "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRef",
+          "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineRef"
+        },
+        "pipelineSpec": {
+          "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineSpec",
+          "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineSpec"
+        },
+        "podTemplate": {
+          "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_pod_Template",
+          "javaType": "io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.pipeline.pod.Template"
+        },
+        "resources": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineResourceBinding",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineResourceBinding"
+          }
+        },
+        "serviceAccountName": {
+          "type": "string",
+          "description": ""
+        },
+        "serviceAccountNames": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunSpecServiceAccountName",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineRunSpecServiceAccountName"
+          }
+        },
+        "status": {
+          "type": "string",
+          "description": ""
+        },
+        "timeout": {
+          "javaType": "io.fabric8.kubernetes.api.model.Duration"
+        },
+        "workspaces": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WorkspaceBinding",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.WorkspaceBinding"
+          }
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineRunSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunSpecServiceAccountName": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "serviceAccountName": {
+          "type": "string",
+          "description": ""
+        },
+        "taskName": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineRunSpecServiceAccountName",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "completionTime": {
+          "javaType": "java.lang.String"
+        },
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "javaType": "io.fabric8.knative.v1.Condition"
+          }
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "startTime": {
+          "javaType": "java.lang.String"
+        },
+        "taskRuns": {
+          "type": "object",
+          "description": "",
+          "javaType": "java.util.Map\u003cString,io.fabric8.tekton.pipeline.v1beta1.PipelineRunTaskRunStatus\u003e"
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineRunStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunTaskRunStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "conditionChecks": {
+          "type": "object",
+          "description": "",
+          "javaType": "java.util.Map\u003cString,io.fabric8.tekton.pipeline.v1beta1.PipelineRunConditionCheckStatus\u003e"
+        },
+        "pipelineTaskName": {
+          "type": "string",
+          "description": ""
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunStatus",
+          "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskRunStatus"
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineRunTaskRunStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": ""
+        },
+        "params": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_ParamSpec",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.ParamSpec"
+          }
+        },
+        "resources": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineDeclaredResource",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineDeclaredResource"
+          }
+        },
+        "tasks": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTask",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineTask"
+          }
+        },
+        "workspaces": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WorkspacePipelineDeclaration",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.WorkspacePipelineDeclaration"
+          }
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTask": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTaskCondition",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineTaskCondition"
+          }
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "params": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Param",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.Param"
+          }
+        },
+        "resources": {
+          "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTaskResources",
+          "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineTaskResources"
+        },
+        "retries": {
+          "type": "integer",
+          "description": ""
+        },
+        "runAfter": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "taskRef": {
+          "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRef",
+          "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskRef"
+        },
+        "taskSpec": {
+          "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskSpec",
+          "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskSpec"
+        },
+        "timeout": {
+          "javaType": "io.fabric8.kubernetes.api.model.Duration"
+        },
+        "workspaces": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WorkspacePipelineTaskBinding",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.WorkspacePipelineTaskBinding"
+          }
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineTask",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTaskCondition": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "conditionRef": {
+          "type": "string",
+          "description": ""
+        },
+        "params": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Param",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.Param"
+          }
+        },
+        "resources": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTaskInputResource",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineTaskInputResource"
+          }
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineTaskCondition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTaskInputResource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "from": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "resource": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineTaskInputResource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTaskOutputResource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "resource": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineTaskOutputResource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTaskResources": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "inputs": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTaskInputResource",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineTaskInputResource"
+          }
+        },
+        "outputs": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTaskOutputResource",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineTaskOutputResource"
+          }
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineTaskResources",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_SidecarState": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "container": {
+          "type": "string",
+          "description": ""
+        },
+        "imageID": {
+          "type": "string",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "running": {
+          "javaType": "io.fabric8.kubernetes.api.model.ContainerStateRunning"
+        },
+        "terminated": {
+          "javaType": "io.fabric8.kubernetes.api.model.ContainerStateTerminated"
+        },
+        "waiting": {
+          "javaType": "io.fabric8.kubernetes.api.model.ContainerStateWaiting"
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.SidecarState",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Step": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "args": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "command": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "env": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "javaType": "io.fabric8.kubernetes.api.model.EnvVar"
+          }
+        },
+        "envFrom": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "javaType": "io.fabric8.kubernetes.api.model.EnvFromSource"
+          }
+        },
+        "image": {
+          "type": "string",
+          "description": ""
+        },
+        "imagePullPolicy": {
+          "type": "string",
+          "description": ""
+        },
+        "lifecycle": {
+          "javaType": "io.fabric8.kubernetes.api.model.Lifecycle"
+        },
+        "livenessProbe": {
+          "javaType": "io.fabric8.kubernetes.api.model.Probe"
+        },
+        "name": {
+          "type": "string",
+          "description": "",
+          "maxLength": 63,
+          "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+        },
+        "ports": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "javaType": "io.fabric8.kubernetes.api.model.ContainerPort"
+          }
+        },
+        "readinessProbe": {
+          "javaType": "io.fabric8.kubernetes.api.model.Probe"
+        },
+        "resources": {
+          "javaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
+        },
+        "script": {
+          "type": "string",
+          "description": ""
+        },
+        "securityContext": {
+          "javaType": "io.fabric8.kubernetes.api.model.SecurityContext"
+        },
+        "startupProbe": {
+          "javaType": "io.fabric8.kubernetes.api.model.Probe"
+        },
+        "stdin": {
+          "type": "boolean",
+          "description": ""
+        },
+        "stdinOnce": {
+          "type": "boolean",
+          "description": ""
+        },
+        "terminationMessagePath": {
+          "type": "string",
+          "description": ""
+        },
+        "terminationMessagePolicy": {
+          "type": "string",
+          "description": ""
+        },
+        "tty": {
+          "type": "boolean",
+          "description": ""
+        },
+        "volumeDevices": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "javaType": "io.fabric8.kubernetes.api.model.VolumeDevice"
+          }
+        },
+        "volumeMounts": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "javaType": "io.fabric8.kubernetes.api.model.VolumeMount"
+          }
+        },
+        "workingDir": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.Step",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_StepState": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "container": {
+          "type": "string",
+          "description": ""
+        },
+        "imageID": {
+          "type": "string",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "running": {
+          "javaType": "io.fabric8.kubernetes.api.model.ContainerStateRunning"
+        },
+        "terminated": {
+          "javaType": "io.fabric8.kubernetes.api.model.ContainerStateTerminated"
+        },
+        "waiting": {
+          "javaType": "io.fabric8.kubernetes.api.model.ContainerStateWaiting"
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.StepState",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Task": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "tekton.dev/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "Task",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskSpec",
+          "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskSpec"
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.Task",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "tekton.dev/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Task",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.Task"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "TaskList",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.tekton.pipeline.v1beta1.Task\u003e"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRef": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": ""
+        },
+        "kind": {
+          "type": "string",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskRef",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskResource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "optional": {
+          "type": "boolean",
+          "description": ""
+        },
+        "targetPath": {
+          "type": "string",
+          "description": ""
+        },
+        "type": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskResource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskResourceBinding": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "paths": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "resourceRef": {
+          "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineResourceRef",
+          "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineResourceRef"
+        },
+        "resourceSpec": {
+          "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_resource_v1alpha1_PipelineResourceSpec",
+          "javaType": "io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.resource.v1alpha1.PipelineResourceSpec"
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskResourceBinding",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskResources": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "inputs": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskResource",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskResource"
+          }
+        },
+        "outputs": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskResource",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskResource"
+          }
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskResources",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskResult": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskResult",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRun": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "tekton.dev/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "TaskRun",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunSpec",
+          "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskRunSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunStatus",
+          "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskRunStatus"
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskRun",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "tekton.dev/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRun",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskRun"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "TaskRunList",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskRunList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.tekton.pipeline.v1beta1.TaskRun\u003e"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunResources": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "inputs": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskResourceBinding",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskResourceBinding"
+          }
+        },
+        "outputs": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskResourceBinding",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskResourceBinding"
+          }
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskRunResources",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunResult": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "value": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskRunResult",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "params": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Param",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.Param"
+          }
+        },
+        "podTemplate": {
+          "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_pod_Template",
+          "javaType": "io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.pipeline.pod.Template"
+        },
+        "resources": {
+          "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunResources",
+          "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskRunResources"
+        },
+        "serviceAccountName": {
+          "type": "string",
+          "description": ""
+        },
+        "status": {
+          "type": "string",
+          "description": ""
+        },
+        "taskRef": {
+          "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRef",
+          "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskRef"
+        },
+        "taskSpec": {
+          "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskSpec",
+          "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskSpec"
+        },
+        "timeout": {
+          "javaType": "io.fabric8.kubernetes.api.model.Duration"
+        },
+        "workspaces": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WorkspaceBinding",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.WorkspaceBinding"
+          }
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskRunSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "cloudEvents": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_CloudEventDelivery",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.CloudEventDelivery"
+          }
+        },
+        "completionTime": {
+          "javaType": "java.lang.String"
+        },
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "javaType": "io.fabric8.knative.v1.Condition"
+          }
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "podName": {
+          "type": "string",
+          "description": ""
+        },
+        "resourcesResult": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineResourceResult",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineResourceResult"
+          }
+        },
+        "retriesStatus": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunStatus",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskRunStatus"
+          }
+        },
+        "sidecars": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_SidecarState",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.SidecarState"
+          }
+        },
+        "startTime": {
+          "javaType": "java.lang.String"
+        },
+        "steps": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_StepState",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.StepState"
+          }
+        },
+        "taskResults": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunResult",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskRunResult"
+          }
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskRunStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": ""
+        },
+        "params": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_ParamSpec",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.ParamSpec"
+          }
+        },
+        "resources": {
+          "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskResources",
+          "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskResources"
+        },
+        "results": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskResult",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskResult"
+          }
+        },
+        "sidecars": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Step",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.Step"
+          }
+        },
+        "stepTemplate": {
+          "javaType": "io.fabric8.kubernetes.api.model.Container"
+        },
+        "steps": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Step",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.Step"
+          }
+        },
+        "volumes": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "javaType": "io.fabric8.kubernetes.api.model.Volume"
+          }
+        },
+        "workspaces": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WorkspaceDeclaration",
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.WorkspaceDeclaration"
+          }
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WorkspaceBinding": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "configMap": {
+          "javaType": "io.fabric8.kubernetes.api.model.ConfigMapVolumeSource"
+        },
+        "emptyDir": {
+          "javaType": "io.fabric8.kubernetes.api.model.EmptyDirVolumeSource"
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "persistentVolumeClaim": {
+          "javaType": "io.fabric8.kubernetes.api.model.PersistentVolumeClaimVolumeSource"
+        },
+        "secret": {
+          "javaType": "io.fabric8.kubernetes.api.model.SecretVolumeSource"
+        },
+        "subPath": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.WorkspaceBinding",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WorkspaceDeclaration": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": ""
+        },
+        "mountPath": {
+          "type": "string",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "readOnly": {
+          "type": "boolean",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.WorkspaceDeclaration",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WorkspacePipelineDeclaration": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.WorkspacePipelineDeclaration",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WorkspacePipelineTaskBinding": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "workspace": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.WorkspacePipelineTaskBinding",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_resource_v1alpha1_PipelineResourceSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": ""
+        },
+        "params": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_resource_v1alpha1_ResourceParam",
+            "javaType": "io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.resource.v1alpha1.ResourceParam"
+          }
+        },
+        "secrets": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_resource_v1alpha1_SecretParam",
+            "javaType": "io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.resource.v1alpha1.SecretParam"
+          }
+        },
+        "type": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.resource.v1alpha1.PipelineResourceSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_resource_v1alpha1_ResourceParam": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "value": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.resource.v1alpha1.ResourceParam",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_resource_v1alpha1_SecretParam": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "fieldName": {
+          "type": "string",
+          "description": ""
+        },
+        "secretKey": {
+          "type": "string",
+          "description": ""
+        },
+        "secretName": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.resource.v1alpha1.SecretParam",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_pod_Template": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_pod_Template",
+      "javaType": "io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.pipeline.pod.Template"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_CloudEventDelivery": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_CloudEventDelivery",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.CloudEventDelivery"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_CloudEventDeliveryState": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_CloudEventDeliveryState",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.CloudEventDeliveryState"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_ClusterTask": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_ClusterTask",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.ClusterTask"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_ClusterTaskList": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_ClusterTaskList",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.ClusterTaskList"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_ConditionCheckStatus": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_ConditionCheckStatus",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.ConditionCheckStatus"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Param": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Param",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.Param"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_ParamSpec": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_ParamSpec",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.ParamSpec"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Pipeline": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Pipeline",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.Pipeline"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineDeclaredResource": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineDeclaredResource",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineDeclaredResource"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineList": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineList",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineList"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRef": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRef",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineRef"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineResourceBinding": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineResourceBinding",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineResourceBinding"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineResourceRef": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineResourceRef",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineResourceRef"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineResourceResult": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineResourceResult",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineResourceResult"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRun": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRun",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineRun"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunConditionCheckStatus": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunConditionCheckStatus",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineRunConditionCheckStatus"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunList": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunList",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineRunList"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunSpec": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunSpec",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineRunSpec"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunSpecServiceAccountName": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunSpecServiceAccountName",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineRunSpecServiceAccountName"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunStatus": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunStatus",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineRunStatus"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunTaskRunStatus": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunTaskRunStatus",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineRunTaskRunStatus"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineSpec": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineSpec",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineSpec"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTask": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTask",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineTask"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTaskCondition": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTaskCondition",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineTaskCondition"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTaskInputResource": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTaskInputResource",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineTaskInputResource"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTaskOutputResource": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTaskOutputResource",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineTaskOutputResource"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTaskResources": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTaskResources",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineTaskResources"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_SidecarState": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_SidecarState",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.SidecarState"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Step": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Step",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.Step"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_StepState": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_StepState",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.StepState"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Task": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Task",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.Task"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskList": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskList",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskList"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRef": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRef",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskRef"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskResource": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskResource",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskResource"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskResourceBinding": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskResourceBinding",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskResourceBinding"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskResources": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskResources",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskResources"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskResult": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskResult",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskResult"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRun": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRun",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskRun"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunList": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunList",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskRunList"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunResources": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunResources",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskRunResources"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunResult": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunResult",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskRunResult"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunSpec": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunSpec",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskRunSpec"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunStatus": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunStatus",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskRunStatus"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskSpec": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskSpec",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskSpec"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WorkspaceBinding": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WorkspaceBinding",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.WorkspaceBinding"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WorkspaceDeclaration": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WorkspaceDeclaration",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.WorkspaceDeclaration"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WorkspacePipelineDeclaration": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WorkspacePipelineDeclaration",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.WorkspacePipelineDeclaration"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WorkspacePipelineTaskBinding": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WorkspacePipelineTaskBinding",
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.WorkspacePipelineTaskBinding"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_resource_v1alpha1_PipelineResourceSpec": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_resource_v1alpha1_PipelineResourceSpec",
+      "javaType": "io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.resource.v1alpha1.PipelineResourceSpec"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_resource_v1alpha1_ResourceParam": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_resource_v1alpha1_ResourceParam",
+      "javaType": "io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.resource.v1alpha1.ResourceParam"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_resource_v1alpha1_SecretParam": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_resource_v1alpha1_SecretParam",
+      "javaType": "io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.resource.v1alpha1.SecretParam"
+    }
+  },
+  "additionalProperties": false
+}

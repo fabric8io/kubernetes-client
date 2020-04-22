@@ -17,10 +17,10 @@ package io.fabric8.tekton.test.crud;
 
 import io.fabric8.tekton.client.TektonClient;
 import io.fabric8.tekton.mock.TektonServer;
-import io.fabric8.tekton.pipeline.v1beta1.Param;
 import io.fabric8.tekton.pipeline.v1alpha1.Pipeline;
 import io.fabric8.tekton.pipeline.v1alpha1.PipelineBuilder;
 import io.fabric8.tekton.pipeline.v1alpha1.PipelineList;
+import io.fabric8.tekton.v1alpha1.internal.pipeline.pkg.apis.pipeline.v1alpha2.Param;
 import org.junit.Rule;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
