@@ -14,5 +14,10 @@
  * limitations under the License.
  *#
 #foreach ($m in ${model.values()})
-io.fabric8.tekton.client.handlers.${m.name}Handler
+#foreach ($annotation in $m.annotations)
+#if ($annotation.getClassRef().getName().equals("ApiVersion"))
+#set ($apiVersion = $annotation.getParameters().get("value"))
+#end
+#end
+io.fabric8.tekton.client.handlers.${apiVersion}.${m.name}Handler
 #end

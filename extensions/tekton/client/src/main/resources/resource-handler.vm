@@ -26,7 +26,7 @@
 #end
 
 
-package io.fabric8.tekton.client.handlers;
+package io.fabric8.tekton.client.handlers.$apiVersion;
 
 import java.util.function.Predicate;
 
@@ -34,7 +34,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.tekton.client.internal.${model.name}OperationsImpl;
+import io.fabric8.tekton.client.internal.$apiVersion.${model.name}OperationsImpl;
 
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;

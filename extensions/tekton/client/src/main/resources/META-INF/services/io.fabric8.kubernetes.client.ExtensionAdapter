@@ -15,3 +15,5 @@
 #
 
 io.fabric8.tekton.client.TektonExtensionAdapter
+io.fabric8.tekton.client.V1beta1APIGroupExtensionAdapter
+io.fabric8.tekton.client.V1alpha1APIGroupExtensionAdapter

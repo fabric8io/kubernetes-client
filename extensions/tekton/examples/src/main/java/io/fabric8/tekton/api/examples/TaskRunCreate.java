@@ -49,11 +49,11 @@ public class TaskRunCreate {
         .build();
 
       // Create TaskRun
-      taskRun = tektonClient.taskRuns().inNamespace(namespace).create(taskRun);
+      taskRun = tektonClient.v1beta1().taskRuns().inNamespace(namespace).create(taskRun);
       System.out.println("Created: " + taskRun.getMetadata().getName());
 
       // List TaskRun
-      TaskRunList taskRunList = tektonClient.taskRuns().inNamespace(namespace).list();
+      TaskRunList taskRunList = tektonClient.v1beta1().taskRuns().inNamespace(namespace).list();
       System.out.println("There are " + taskRunList.getItems().size() + " TaskRun objects in " + namespace);
     }
   }
