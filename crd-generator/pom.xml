@@ -3,7 +3,7 @@
   <parent>
     <artifactId>annotations</artifactId>
     <groupId>io.dekorate</groupId>
-    <version>0.11-SNAPSHOT</version>
+    <version>0.12-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -91,6 +91,7 @@
                   <artifact>*:*</artifact>
                   <includes>
                     <include>io/dekorate/crd/annotation/**</include>
+                    <include>META-INF/MANIFEST.MF</include>
                   </includes>
                 </filter>
               </filters>
@@ -118,6 +119,7 @@
                     <include>io/dekorate/crd/handler/**</include>
                     <include>io/dekorate/crd/util/**</include>
                     <include>META-INF/services/javax.annotation.processing.Processor</include>
+                    <include>META-INF/MANIFEST.MF</include>
                   </includes>
                 </filter>
               </filters>
@@ -142,6 +144,7 @@
                     <include>io/dekorate/crd/generator/**</include>
                     <include>io/dekorate/crd/handler/**</include>
                     <include>io/dekorate/crd/util/**</include>
+                    <include>META-INF/MANIFEST.MF</include>
                   </includes>
                 </filter>
               </filters>
