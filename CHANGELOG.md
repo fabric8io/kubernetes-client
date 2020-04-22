@@ -3,6 +3,7 @@
 ### 4.9-SNAPSHOT
 #### Bugs
 * Fix #2144: CRD's schema Default fields do not handle boolean and are prefixed with Raw keyword
+* KubernetesAttributeExtractor: handle possible /status subpath due to using status subresource on crd
 
 #### Improvements
 #### Dependency Upgrade

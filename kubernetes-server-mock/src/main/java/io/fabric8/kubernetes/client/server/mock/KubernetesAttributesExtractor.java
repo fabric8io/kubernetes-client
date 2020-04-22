@@ -53,9 +53,10 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
   private static final String KIND_GROUP = "/(?<kind>[^/?]+)";
   private static final String NAME_GROUP = "(/(?<name>[^/?]+))?";
   private static final String NAMESPACE_GROUP = "(/namespaces/(?<namespace>[^/]+))?";
+  private static final String SUBRESOURCE_MAYBE_GROUP = "(/(status|scale))?";
   private static final String END_GROUP = "[^ /]*";
 
-  protected static final Pattern PATTERN = Pattern.compile(API_GROUP + VERSION_GROUP + NAMESPACE_GROUP + KIND_GROUP + NAME_GROUP + END_GROUP);
+  protected static final Pattern PATTERN = Pattern.compile(API_GROUP + VERSION_GROUP + NAMESPACE_GROUP + KIND_GROUP + NAME_GROUP + SUBRESOURCE_MAYBE_GROUP + END_GROUP);
 
   private static final String LABEL_KEY_PREFIX = "labels:";
   private static final String KEY_GROUP = "(?<key>[a-zA-Z0-9-_./]+)";
