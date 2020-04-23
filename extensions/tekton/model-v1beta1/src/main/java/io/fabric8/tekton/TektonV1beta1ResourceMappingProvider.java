@@ -30,9 +30,7 @@ public class TektonV1beta1ResourceMappingProvider implements KubernetesResourceM
       mappings.put("tekton.dev/v1beta1#PipelineRun", io.fabric8.tekton.pipeline.v1beta1.PipelineRun.class);
       mappings.put("tekton.dev/v1beta1#Task", io.fabric8.tekton.pipeline.v1beta1.Task.class);
       mappings.put("tekton.dev/v1beta1#TaskRun", io.fabric8.tekton.pipeline.v1beta1.TaskRun.class);
-      mappings.put("tekton.dev/v1beta1#TaskRef", io.fabric8.tekton.pipeline.v1beta1.TaskRef.class);
       mappings.put("tekton.dev/v1beta1#ClusterTask", io.fabric8.tekton.pipeline.v1beta1.ClusterTask.class);
-      mappings.put("tekton.dev/v1beta1#SidecarState", io.fabric8.tekton.pipeline.v1beta1.SidecarState.class);
     }
 
     public Map<String, Class<? extends KubernetesResource>> getMappings() {
