@@ -17,7 +17,6 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.DeleteOptions;
-import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
@@ -37,6 +36,7 @@ import okhttp3.Response;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -593,21 +593,16 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of network error
    */
   public Watch watch(String namespace, String name, Map<String, String> labels, String resourceVersion, Watcher<String> watcher) throws IOException {
-    URL url = new URL(fetchUrl(name, namespace, labels));
-    HttpUrl.Builder httpUrlBuilder = HttpUrl.get(url).newBuilder();
-    if (resourceVersion != null) {
-      httpUrlBuilder.addQueryParameter("resourceVersion", resourceVersion);
-    }
+    HttpUrl watchUrl = fetchWatchUrl(namespace, name, labels, resourceVersion);
 
-    httpUrlBuilder.addQueryParameter("watch", "true");
-    String origin = url.getProtocol() + "://" + url.getHost();
-    if (url.getPort() != -1) {
-      origin += ":" + url.getPort();
+    String origin = watchUrl.url().getProtocol() + "://" + watchUrl.url().getHost();
+    if (watchUrl.url().getPort() != -1) {
+      origin += ":" + watchUrl.url().getPort();
     }
 
     Request request = new Request.Builder()
       .get()
-      .url(httpUrlBuilder.build())
+      .url(watchUrl)
       .addHeader("Origin", origin)
       .build();
 
@@ -696,13 +691,24 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
     return retVal;
   }
 
-  private String fetchUrl(String name, String namespace, Map<String, String> labels) {
-    String url = fetchUrl(namespace, labels);
-    if (name != null) {
-      return url + name;
-    } else {
-      return url.substring(0, url.length() - 1);
+  protected HttpUrl fetchWatchUrl(String namespace, String name, Map<String, String> labels, String resourceVersion) throws MalformedURLException {
+    String resourceUrl = fetchUrl(namespace, labels);
+    if (resourceUrl.endsWith("/")) {
+      resourceUrl = resourceUrl.substring(0, resourceUrl.length() - 1);
     }
+    URL url = new URL(resourceUrl);
+    HttpUrl.Builder httpUrlBuilder = HttpUrl.get(url).newBuilder();
+
+    if (name != null) {
+      httpUrlBuilder.addQueryParameter("fieldSelector", "metadata.name=" + name);
+    }
+
+    if (resourceVersion != null) {
+      httpUrlBuilder.addQueryParameter("resourceVersion", resourceVersion);
+    }
+
+    httpUrlBuilder.addQueryParameter("watch", "true");
+    return httpUrlBuilder.build();
   }
 
   private String fetchUrl(String namespace, Map<String, String> labels) {
