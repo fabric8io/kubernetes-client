@@ -10,6 +10,7 @@
 #### Dependency Upgrade
 #### New Features
 * Fix #2115: Keep tekton v1alpha1 api
+* Fix #2002: DSL Support for PodTemplate 
 
 ### 4.9.1 (2020-04-17)
 #### Bugs

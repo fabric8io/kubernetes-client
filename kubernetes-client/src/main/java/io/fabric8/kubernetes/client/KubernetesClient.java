@@ -438,4 +438,6 @@ public interface KubernetesClient extends Client {
    * @return MixedOperation object for Lease related operations.
    */
   MixedOperation<Lease, LeaseList, DoneableLease, Resource<Lease, DoneableLease>> leases();
+
+  V1APIGroupDSL v1();
 }
