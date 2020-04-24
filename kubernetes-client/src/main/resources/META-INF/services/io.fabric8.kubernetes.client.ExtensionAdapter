@@ -25,3 +25,4 @@ io.fabric8.kubernetes.client.RbacAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.SchedulingAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.SettingsAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.StorageAPIGroupExtensionAdapter
+io.fabric8.kubernetes.client.V1APIGroupExtensionAdapter

@@ -464,6 +464,11 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
+  public V1APIGroupDSL v1() {
+    return delegate.v1();
+  }
+
+  @Override
   public AppsAPIGroupDSL apps() {
     return delegate.apps();
   }

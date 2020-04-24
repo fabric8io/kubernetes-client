@@ -108,6 +108,7 @@ import io.fabric8.kubernetes.client.dsl.ServiceResource;
 import io.fabric8.kubernetes.client.dsl.SettingsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.SubjectAccessReviewDSL;
+import io.fabric8.kubernetes.client.dsl.V1APIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
@@ -363,6 +364,11 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   @Override
   public VersionInfo getVersion() {
     return delegate.getVersion();
+  }
+
+  @Override
+  public V1APIGroupDSL v1() {
+    return delegate.v1();
   }
 
   @Override

@@ -491,6 +491,11 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
+  public V1APIGroupDSL v1() {
+    return adapt(V1APIGroupDSL.class);
+  }
+
+  @Override
   public AppsAPIGroupDSL apps() {
     return adapt(AppsAPIGroupClient.class);
   }
