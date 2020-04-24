@@ -18,6 +18,7 @@ package schemagen
 type JSONSchema struct {
 	ID          string                            `json:"id"`
 	Schema      string                            `json:"$schema"`
+	Module      string                            `json:"$module"`
 	Description string                            `json:"description,omitempty"`
 	Definitions map[string]JSONPropertyDescriptor `json:"definitions"`
 	JSONDescriptor

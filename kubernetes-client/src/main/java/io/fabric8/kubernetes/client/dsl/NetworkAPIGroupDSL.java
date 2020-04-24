@@ -20,7 +20,7 @@ import io.fabric8.kubernetes.api.model.networking.NetworkPolicy;
 import io.fabric8.kubernetes.api.model.networking.NetworkPolicyList;
 import io.fabric8.kubernetes.client.Client;
 
-public interface NetworkAPIGroupDSL extends Client{
+public interface NetworkAPIGroupDSL extends Client {
 
   MixedOperation<NetworkPolicy, NetworkPolicyList, DoneableNetworkPolicy, Resource<NetworkPolicy, DoneableNetworkPolicy>> networkPolicies();
 }

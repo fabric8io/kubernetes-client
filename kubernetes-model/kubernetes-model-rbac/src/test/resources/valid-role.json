@@ -1,0 +1,29 @@
+{
+  "kind": "Role",
+  "apiVersion": "rbac.authorization.k8s.io/v1",
+  "metadata": {
+    "namespace": "default",
+    "name": "job-reader"
+  },
+  "rules": [
+    {
+      "apiGroups": [
+        "batch"
+      ],
+      "resources": [
+        "jobs"
+      ],
+      "resourceNames": [
+        "my-job"
+      ],
+      "nonResourceURLs": [
+        "/healthz"
+      ],
+      "verbs": [
+        "get",
+        "watch",
+        "list"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,162 @@
+{
+  "kind": "BuildConfig",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "ruby-sample-build"
+  },
+  "spec": {
+    "triggers": [
+      {
+        "type": "GitHub",
+        "github": {
+          "secret": "secret101"
+        }
+      },
+      {
+        "type": "Generic",
+        "generic": {
+          "secret": "secret101",
+          "allowEnv": true
+        }
+      },
+      {
+        "type": "ImageChange",
+        "imageChange": {
+          "lastTriggeredImageID": "triggeredID",
+          "from": {
+            "kind": "ImageStreamTag",
+            "name": "custom-image:latest",
+            "apiVersion": "v1",
+            "namespace": "default",
+            "uid": "16161",
+            "fieldPath": "/path/field"
+          }
+        }
+      }
+    ],
+    "runPolicy": "Parallel",
+    "serviceAccount": "build-ServiceAccount",
+    "source": {
+      "type": "Git",
+      "binary": {
+        "asFile": "webapp.war"
+      },
+      "git": {
+        "uri": "https://github.com/openshift/ruby-hello-world",
+        "ref": "master",
+        "httpProxy": "http://proxy.example.com",
+        "httpsProxy": "https://proxy.example.com",
+        "noProxy": "http://proxy.example2.com"
+      },
+      "dockerfile": "FROM openshift/ruby-22-centos7\nUSER example",
+      "contextDir": "app/dir",
+      "sourceSecret": {
+        "name": "basicsecret"
+      },
+      "images": [
+        {
+          "from": {
+            "kind": "ImageStreamTag",
+            "name": "myinputimage:latest",
+            "namespace": "mynamespace"
+          },
+          "paths": [
+            {
+              "destinationDir": "app/dir/injected/dir",
+              "sourcePath": "/usr/lib/somefile.jar"
+            }
+          ],
+          "pullSecret": {
+            "name": "pullsecret"
+          }
+        }
+      ],
+      "secrets": [
+        {
+          "secret": {
+            "name": "secret-npmrc"
+          },
+          "destinationDir": "app/dir/secret/dir"
+        }
+      ]
+    },
+    "revision": {
+      "type": "Source",
+      "git": {
+        "commit": "d75775",
+        "author": {
+          "name": "Author",
+          "email": "author@gmail.com"
+        },
+        "committer": {
+          "name:": "Committer",
+          "email": "commiter@gmail.com"
+        },
+        "message": "Commit Git"
+      }
+    },
+    "strategy": {
+      "type": "Source",
+      "sourceStrategy": {
+        "from": {
+          "kind": "ImageStreamTag",
+          "name": "ruby-20-centos7:latest"
+        },
+        "pullSecret": {
+          "name": "pullsecret"
+        },
+        "env": [
+          {
+            "name": "BUILD_LOGLEVEL",
+            "value": "2"
+          }
+        ],
+        "scripts": "/scripts",
+        "incremental": true,
+        "forcePull": true
+      }
+    },
+    "output": {
+      "to": {
+        "kind": "DockerImage",
+        "name": "private.registry.com/org/private-image:latest"
+      },
+      "pushSecret": {
+        "name": "dockerhub"
+      },
+      "imageLabels": [
+        {
+          "name": "imageLabelName",
+          "value": "imagelabelValue"
+        }
+      ]
+    },
+    "resources": {
+      "limits": {
+        "cpu": "100m",
+        "memory": "256Mi"
+      },
+      "requests": {
+        "cpu": "50m",
+        "memory": "126Mi"
+      }
+    },
+    "postCommit": {
+      "script": "bundle exec rake test",
+      "args": [
+        "bundle",
+        "exec",
+        "rake",
+        "test",
+        "--verbose"
+      ]
+    },
+    "completionDeadlineSeconds": 1800,
+    "nodeSelector": {
+      "key1": "value1",
+      "key2": "value2"
+    },
+    "successfulBuildsHistoryLimit": 5,
+    "failedBuildsHistoryLimit": 5
+  }
+}
