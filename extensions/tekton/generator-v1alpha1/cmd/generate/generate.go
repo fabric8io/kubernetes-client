@@ -26,9 +26,6 @@ import (
 
 func main() {
 
-	// continue from here -> somehow the ArrayOrString is fucked up
-	// and local changes of common part are not considered ?!
-
 	// the CRD List types for which the model should be generated
 	// no other types need to be defined as they are auto discovered
 	crdLists := []reflect.Type{
