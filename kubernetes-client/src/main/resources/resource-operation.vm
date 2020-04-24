@@ -39,10 +39,13 @@
   #if ($annotation.getClassRef().getName().equals("ApiGroup"))
     #set ($apiGroupName = $annotation.getParameters().get("value"))
   #end
+  #if ($annotation.getClassRef().getName().equals("PackageSuffix"))
+    #set ($packageSuffix = $annotation.getParameters().get("value"))
+  #end
 #end
 
 
-package io.fabric8.kubernetes.client.dsl.internal;
+package io.fabric8.kubernetes.client.dsl.internal$packageSuffix;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.Resource;

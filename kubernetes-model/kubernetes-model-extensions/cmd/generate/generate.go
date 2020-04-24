@@ -60,6 +60,14 @@ type Schema struct {
   Ingress                                  extensions.Ingress
   IngressList                              extensions.IngressList
   DeploymentRollback                       extensions.DeploymentRollback
+  DaemonSet                                extensions.DaemonSet
+  DaemonSetList                            extensions.DaemonSetList
+  NetworkPolicy                            extensions.NetworkPolicy
+  NetworkPolicyList                        extensions.NetworkPolicyList
+  Deployment                               extensions.Deployment
+  DeploymentList                           extensions.DeploymentList
+  ReplicaSet                               extensions.ReplicaSet
+  ReplicaSetList                           extensions.ReplicaSetList
 }
 
 func main() {

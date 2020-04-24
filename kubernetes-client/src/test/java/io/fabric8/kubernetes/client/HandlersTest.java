@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.client.handlers.DeploymentHandler;
+import io.fabric8.kubernetes.client.handlers.apps.v1.DeploymentHandler;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNull;

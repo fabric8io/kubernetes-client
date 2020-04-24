@@ -26,6 +26,7 @@ import (
   kapi "k8s.io/api/core/v1"
 
   networking "k8s.io/api/networking/v1"
+  networkingv1beta1 "k8s.io/api/networking/v1beta1"
 
   "log"
   "reflect"
@@ -59,6 +60,8 @@ type Schema struct {
 
   NetworkPolicy                            networking.NetworkPolicy
   NetworkPolicyList                        networking.NetworkPolicyList
+  Ingress                                  networkingv1beta1.Ingress
+  IngressList                              networkingv1beta1.IngressList
 }
 
 func main() {
@@ -74,6 +77,7 @@ func main() {
     {"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_"},
     {"k8s.io/api/core/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_core_"},
     {"k8s.io/api/networking/v1", "networking.k8s.io", "io.fabric8.kubernetes.api.model.networking", "kubernetes_networking_"},
+    {"k8s.io/api/networking/v1beta1", "networking.k8s.io", "io.fabric8.kubernetes.api.model.networking.v1beta1", "kubernetes_networking_v1beta1_"},
   }
 
   typeMap := map[reflect.Type]reflect.Type{

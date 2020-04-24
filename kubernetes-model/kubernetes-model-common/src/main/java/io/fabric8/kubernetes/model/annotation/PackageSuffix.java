@@ -1,4 +1,4 @@
-#*
+/**
  * Copyright (C) 2015 Red Hat, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,12 +12,9 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *#
-#foreach ($m in ${model.values()})
-  #foreach ($annotation in $m.annotations)
-    #if ($annotation.getClassRef().getName().equals("PackageSuffix"))
-      #set ($packageSuffix = $annotation.getParameters().get("value"))
-    #end
-  #end
-  io.fabric8.kubernetes.client.handlers${packageSuffix}.${m.name}Handler
-#end
+ */
+package io.fabric8.kubernetes.model.annotation;
+
+public @interface PackageSuffix {
+  String value();
+}

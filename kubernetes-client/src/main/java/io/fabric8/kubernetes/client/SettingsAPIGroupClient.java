@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.api.model.settings.PodPresetList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.SettingsAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.internal.PodPresetOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.settings.v1alpha1.PodPresetOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class SettingsAPIGroupClient extends BaseClient implements SettingsAPIGroupDSL {

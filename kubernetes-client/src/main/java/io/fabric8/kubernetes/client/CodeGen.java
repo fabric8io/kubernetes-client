@@ -26,7 +26,7 @@ import io.sundr.transform.annotations.VelocityTransformations;
     @VelocityTransformation(value = "/resource-handler-services.vm", gather = true, outputPath = "META-INF/services/io.fabric8.kubernetes.client.ResourceHandler")
   },
   resources = {
-    @ResourceSelector("kubernetes.properties"),
+    @ResourceSelector("core.properties"),
     @ResourceSelector("rbac.properties"),
     @ResourceSelector("admissionregistration.properties"),
     @ResourceSelector("apiextensions.properties"),

@@ -24,7 +24,7 @@ import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicyList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.PolicyAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.internal.PodDisruptionBudgetOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.policy.v1beta1.PodDisruptionBudgetOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.PodSecurityPolicyOperationsImpl;
 import okhttp3.OkHttpClient;
 

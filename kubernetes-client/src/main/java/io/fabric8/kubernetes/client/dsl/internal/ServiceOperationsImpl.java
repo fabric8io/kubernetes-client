@@ -28,7 +28,7 @@ import io.fabric8.kubernetes.client.dsl.ServiceResource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.utils.URLUtils;
-import io.fabric8.kubernetes.client.utils.Utils;
+import io.fabric8.kubernetes.client.dsl.internal.core.v1.EndpointsOperationsImpl;
 import okhttp3.OkHttpClient;
 
 

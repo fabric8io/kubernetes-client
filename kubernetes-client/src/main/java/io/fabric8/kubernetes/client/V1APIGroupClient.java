@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.api.model.PodTemplateList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.V1APIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.internal.PodTemplateOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodTemplateOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class V1APIGroupClient extends BaseClient implements V1APIGroupDSL {

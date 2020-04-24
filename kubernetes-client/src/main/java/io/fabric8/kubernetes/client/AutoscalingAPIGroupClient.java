@@ -19,7 +19,7 @@ import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.DoneableHorizontalPod
 import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscaler;
 import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscalerList;
 import io.fabric8.kubernetes.client.dsl.*;
-import io.fabric8.kubernetes.client.dsl.internal.HorizontalPodAutoscalerOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.autoscaling.v2beta2.HorizontalPodAutoscalerOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class AutoscalingAPIGroupClient extends BaseClient implements AutoscalingAPIGroupDSL {

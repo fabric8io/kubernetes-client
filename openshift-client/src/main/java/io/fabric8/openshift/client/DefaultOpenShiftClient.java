@@ -46,6 +46,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.*;
+import io.fabric8.kubernetes.client.dsl.internal.coordination.v1.LeaseOperationsImpl;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
 import io.fabric8.kubernetes.client.utils.BackwardsCompatibilityInterceptor;
 import io.fabric8.kubernetes.client.utils.ImpersonatorInterceptor;
