@@ -311,6 +311,14 @@
           <configuration>
             <showDeprecation>true</showDeprecation>
             <showWarnings>true</showWarnings>
+
+            <useIncrementalCompilation>false</useIncrementalCompilation>
+
+            <fork>true</fork>
+            <meminitial>512m</meminitial>
+            <!-- 如果不够读者可以加大 -->
+            <maxmem>3072m</maxmem>
+            <source>1.8</source>
           </configuration>
         </plugin>
         <plugin>
