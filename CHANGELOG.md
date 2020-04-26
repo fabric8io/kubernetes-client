@@ -2,6 +2,7 @@
 
 ### 4.9-SNAPSHOT
 #### Bugs
+* Fix #2163: fix kubernetes-client not support cert chain
 * Fix #2144: CRD's schema Default fields do not handle boolean and are prefixed with Raw keyword
 * KubernetesAttributeExtractor: handle possible /status subpath due to using status subresource on crd
 * Fix #2124: Raw Watch on CustomResource does not work if name specified

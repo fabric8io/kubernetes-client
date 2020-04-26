@@ -46,7 +46,9 @@ import java.security.cert.X509Certificate;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.RSAPrivateCrtKeySpec;
+import java.util.Collection;
 import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
 
 public class CertUtils {
 
@@ -107,7 +109,7 @@ public class CertUtils {
 
   public static KeyStore createKeyStore(InputStream certInputStream, InputStream keyInputStream, String clientKeyAlgo, char[] clientKeyPassphrase, String keyStoreFile, char[] keyStorePassphrase) throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeySpecException, KeyStoreException {
       CertificateFactory certFactory = CertificateFactory.getInstance("X509");
-      X509Certificate cert = (X509Certificate) certFactory.generateCertificate(certInputStream);
+      Collection<? extends Certificate> certificates = certFactory.generateCertificates(certInputStream);
       PrivateKey privateKey = loadKey(keyInputStream, clientKeyAlgo);
 
       KeyStore keyStore = KeyStore.getInstance("JKS");
@@ -117,8 +119,8 @@ public class CertUtils {
         loadDefaultKeyStoreFile(keyStore, keyStorePassphrase);
       }
 
-      String alias = cert.getSubjectX500Principal().getName();
-      keyStore.setKeyEntry(alias, privateKey, clientKeyPassphrase, new Certificate[]{cert});
+      String alias = certificates.stream().map(cert->((X509Certificate)cert).getIssuerX500Principal().getName()).collect(Collectors.joining("_"));
+      keyStore.setKeyEntry(alias, privateKey, clientKeyPassphrase, certificates.toArray(new Certificate[0]));
 
       return keyStore;
   }
