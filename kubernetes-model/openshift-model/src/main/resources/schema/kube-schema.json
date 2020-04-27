@@ -1219,6 +1219,10 @@
         "server": {
           "type": "string",
           "description": ""
+        },
+        "tls-server-name": {
+          "type": "string",
+          "description": ""
         }
       },
       "additionalProperties": true,
@@ -3262,6 +3266,10 @@
           "type": "integer",
           "description": "",
           "javaType": "Long"
+        },
+        "fsGroupChangePolicy": {
+          "type": "string",
+          "description": ""
         },
         "runAsGroup": {
           "type": "integer",
@@ -5326,6 +5334,7 @@
         "apiGroups": {
           "type": "array",
           "description": "",
+          "javaOmitEmpty": true,
           "items": {
             "type": "string",
             "description": ""
@@ -6027,6 +6036,7 @@
         "triggers": {
           "type": "array",
           "description": "",
+          "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_build_BuildTriggerPolicy",
             "javaType": "io.fabric8.openshift.api.model.BuildTriggerPolicy"
@@ -9933,6 +9943,7 @@
         "ingress": {
           "type": "array",
           "description": "",
+          "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_route_RouteIngress",
             "javaType": "io.fabric8.openshift.api.model.RouteIngress"

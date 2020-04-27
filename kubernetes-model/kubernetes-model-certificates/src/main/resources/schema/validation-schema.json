@@ -1011,6 +1011,10 @@
           "type": "string",
           "description": ""
         },
+        "signerName": {
+          "type": "string",
+          "description": ""
+        },
         "uid": {
           "type": "string",
           "description": ""
@@ -1324,6 +1328,10 @@
           }
         },
         "request": {
+          "type": "string",
+          "description": ""
+        },
+        "signerName": {
           "type": "string",
           "description": ""
         },

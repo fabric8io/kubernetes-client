@@ -1148,6 +1148,10 @@
         "server": {
           "type": "string",
           "description": ""
+        },
+        "tls-server-name": {
+          "type": "string",
+          "description": ""
         }
       },
       "additionalProperties": true,

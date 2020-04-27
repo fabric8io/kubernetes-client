@@ -1,0 +1,32 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+declare -a modules=("kubernetes-model-core" "kubernetes-model-rbac" "kubernetes-model-admissionregistration"
+    "kubernetes-model-apiextensions" "kubernetes-model-apps" "kubernetes-model-autoscaling"
+    "kubernetes-model-batch" "kubernetes-model-certificates" "kubernetes-model-coordination"
+    "kubernetes-model-discovery" "kubernetes-model-events" "kubernetes-model-extensions"
+    "kubernetes-model-networking" "kubernetes-model-metrics" "kubernetes-model-policy"
+    "kubernetes-model-scheduling" "kubernetes-model-settings" "kubernetes-model-storageclass"
+    "openshift-model"
+)
+
+for module in ${modules[*]}
+do
+    echo "Compiling ${module}"
+    cd $module
+    make
+    cd ..
+done    

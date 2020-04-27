@@ -3067,6 +3067,10 @@
           "description": "",
           "javaType": "Long"
         },
+        "fsGroupChangePolicy": {
+          "type": "string",
+          "description": ""
+        },
         "runAsGroup": {
           "type": "integer",
           "description": "",

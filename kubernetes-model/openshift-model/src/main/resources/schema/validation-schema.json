@@ -1219,6 +1219,10 @@
         "server": {
           "type": "string",
           "description": ""
+        },
+        "tls-server-name": {
+          "type": "string",
+          "description": ""
         }
       },
       "additionalProperties": true,
@@ -3262,6 +3266,10 @@
           "type": "integer",
           "description": "",
           "javaType": "Long"
+        },
+        "fsGroupChangePolicy": {
+          "type": "string",
+          "description": ""
         },
         "runAsGroup": {
           "type": "integer",
@@ -5326,6 +5334,7 @@
         "apiGroups": {
           "type": "array",
           "description": "",
+          "javaOmitEmpty": true,
           "items": {
             "type": "string",
             "description": ""
@@ -6027,6 +6036,7 @@
         "triggers": {
           "type": "array",
           "description": "",
+          "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_build_BuildTriggerPolicy",
             "javaType": "io.fabric8.openshift.api.model.BuildTriggerPolicy"
@@ -9933,6 +9943,7 @@
         "ingress": {
           "type": "array",
           "description": "",
+          "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_route_RouteIngress",
             "javaType": "io.fabric8.openshift.api.model.RouteIngress"
@@ -11541,6 +11552,7 @@
         "triggers": {
           "type": "array",
           "description": "",
+          "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_build_BuildTriggerPolicy",
             "javaType": "io.fabric8.openshift.api.model.BuildTriggerPolicy"
@@ -12087,6 +12099,10 @@
         "server": {
           "type": "string",
           "description": ""
+        },
+        "tls-server-name": {
+          "type": "string",
+          "description": ""
         }
       },
       "additionalProperties": true
@@ -12154,16 +12170,8 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "authorization.openshift.io/v1",
+          "default": "rbac.authorization.k8s.io/v1",
           "required": true
-        },
-        "groupNames": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
-          }
         },
         "kind": {
           "type": "string",
@@ -12176,23 +12184,16 @@
           "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "roleRef": {
-          "$ref": "#/definitions/kubernetes_core_ObjectReference",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+          "$ref": "#/definitions/kubernetes_rbac_RoleRef",
+          "javaType": "io.fabric8.kubernetes.api.model.rbac.RoleRef"
         },
         "subjects": {
           "type": "array",
           "description": "",
+          "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_core_ObjectReference",
-            "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
-          }
-        },
-        "userNames": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "string",
-            "description": ""
+            "$ref": "#/definitions/kubernetes_rbac_Subject",
+            "javaType": "io.fabric8.kubernetes.api.model.rbac.Subject"
           }
         }
       },
@@ -12203,15 +12204,15 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "rbac.authorization.k8s.io/v1",
+          "default": "authorization.openshift.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
           "description": "",
           "items": {
-            "$ref": "#/definitions/kubernetes_rbac_ClusterRoleBinding",
-            "javaType": "io.fabric8.kubernetes.api.model.rbac.ClusterRoleBinding"
+            "$ref": "#/definitions/os_authorization_ClusterRoleBinding",
+            "javaType": "io.fabric8.openshift.api.model.OpenshiftClusterRoleBinding"
           }
         },
         "kind": {
@@ -16406,6 +16407,10 @@
           "description": "",
           "javaType": "Long"
         },
+        "fsGroupChangePolicy": {
+          "type": "string",
+          "description": ""
+        },
         "runAsGroup": {
           "type": "integer",
           "description": "",
@@ -16665,6 +16670,7 @@
         "apiGroups": {
           "type": "array",
           "description": "",
+          "javaOmitEmpty": true,
           "items": {
             "type": "string",
             "description": ""
@@ -17159,7 +17165,7 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "rbac.authorization.k8s.io/v1",
+          "default": "authorization.openshift.io/v1",
           "required": true
         },
         "kind": {
@@ -17176,8 +17182,8 @@
           "type": "array",
           "description": "",
           "items": {
-            "$ref": "#/definitions/kubernetes_rbac_PolicyRule",
-            "javaType": "io.fabric8.kubernetes.api.model.rbac.PolicyRule"
+            "$ref": "#/definitions/os_authorization_PolicyRule",
+            "javaType": "io.fabric8.openshift.api.model.PolicyRule"
           }
         }
       },
@@ -17237,15 +17243,15 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "authorization.openshift.io/v1",
+          "default": "rbac.authorization.k8s.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
           "description": "",
           "items": {
-            "$ref": "#/definitions/os_authorization_RoleBinding",
-            "javaType": "io.fabric8.openshift.api.model.OpenshiftRoleBinding"
+            "$ref": "#/definitions/kubernetes_rbac_RoleBinding",
+            "javaType": "io.fabric8.kubernetes.api.model.rbac.RoleBinding"
           }
         },
         "kind": {
@@ -17308,15 +17314,15 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "rbac.authorization.k8s.io/v1",
+          "default": "authorization.openshift.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
           "description": "",
           "items": {
-            "$ref": "#/definitions/kubernetes_rbac_Role",
-            "javaType": "io.fabric8.kubernetes.api.model.rbac.Role"
+            "$ref": "#/definitions/os_authorization_Role",
+            "javaType": "io.fabric8.openshift.api.model.OpenshiftRole"
           }
         },
         "kind": {
@@ -17567,6 +17573,7 @@
         "ingress": {
           "type": "array",
           "description": "",
+          "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_route_RouteIngress",
             "javaType": "io.fabric8.openshift.api.model.RouteIngress"
