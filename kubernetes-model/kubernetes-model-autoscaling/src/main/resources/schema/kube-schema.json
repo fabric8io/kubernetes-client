@@ -986,6 +986,57 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_autoscaling_HPAScalingPolicy": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "periodSeconds": {
+          "type": "integer",
+          "description": ""
+        },
+        "type": {
+          "type": "string",
+          "description": ""
+        },
+        "value": {
+          "type": "integer",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HPAScalingPolicy",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_autoscaling_HPAScalingRules": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "policies": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_autoscaling_HPAScalingPolicy",
+            "javaType": "io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HPAScalingPolicy"
+          }
+        },
+        "selectPolicy": {
+          "type": "string",
+          "description": ""
+        },
+        "stabilizationWindowSeconds": {
+          "type": "integer",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HPAScalingRules",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_autoscaling_HorizontalPodAutoscaler": {
       "type": "object",
       "description": "",
@@ -1019,6 +1070,25 @@
       "javaType": "io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscaler",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "kubernetes_autoscaling_HorizontalPodAutoscalerBehavior": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "scaleDown": {
+          "$ref": "#/definitions/kubernetes_autoscaling_HPAScalingRules",
+          "javaType": "io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HPAScalingRules"
+        },
+        "scaleUp": {
+          "$ref": "#/definitions/kubernetes_autoscaling_HPAScalingRules",
+          "javaType": "io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HPAScalingRules"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscalerBehavior",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
     "kubernetes_autoscaling_HorizontalPodAutoscalerCondition": {
@@ -1092,6 +1162,10 @@
       "type": "object",
       "description": "",
       "properties": {
+        "behavior": {
+          "$ref": "#/definitions/kubernetes_autoscaling_HorizontalPodAutoscalerBehavior",
+          "javaType": "io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscalerBehavior"
+        },
         "maxReplicas": {
           "type": "integer",
           "description": ""

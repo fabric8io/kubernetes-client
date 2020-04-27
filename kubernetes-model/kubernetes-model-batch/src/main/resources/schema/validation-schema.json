@@ -3067,6 +3067,10 @@
           "description": "",
           "javaType": "Long"
         },
+        "fsGroupChangePolicy": {
+          "type": "string",
+          "description": ""
+        },
         "runAsGroup": {
           "type": "integer",
           "description": "",
@@ -6784,6 +6788,10 @@
           "type": "integer",
           "description": "",
           "javaType": "Long"
+        },
+        "fsGroupChangePolicy": {
+          "type": "string",
+          "description": ""
         },
         "runAsGroup": {
           "type": "integer",

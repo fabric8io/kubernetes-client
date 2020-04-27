@@ -10,6 +10,8 @@
 * Fix #2088: Support networking.k8s.io/v1beta1 alongside extensions/v1beta1
 
 #### Dependency Upgrade
+* Updated Kubernetes Model to v1.18.0
+
 #### New Features
 * Fix #2115: Keep tekton v1alpha1 api
 * Fix #2002: DSL Support for PodTemplate 
