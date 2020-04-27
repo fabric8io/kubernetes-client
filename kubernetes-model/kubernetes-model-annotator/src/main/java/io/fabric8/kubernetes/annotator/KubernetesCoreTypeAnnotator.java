@@ -27,6 +27,7 @@ import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JFieldVar;
 import io.fabric8.kubernetes.model.annotation.ApiGroup;
 import io.fabric8.kubernetes.model.annotation.ApiVersion;
+import io.fabric8.kubernetes.model.annotation.PackageSuffix;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.Inline;
 import io.sundr.transform.annotations.VelocityTransformation;
@@ -86,10 +87,14 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
           apiGroup = apiVersion.substring(0, apiVersion.lastIndexOf("/"));
           apiVersion = apiVersion.substring(apiGroup.length() + 1);
         }
+        String packageSuffix = getPackageSuffix(apiVersion);
+
         resourceClass.annotate(ApiVersion.class).param("value", apiVersion);
         resourceClass.annotate(ApiGroup.class).param("value", apiGroup);
+        resourceClass.annotate(PackageSuffix.class).param("value", packageSuffix);
         resourceListClass.annotate(ApiVersion.class).param("value", apiVersion);
         resourceListClass.annotate(ApiGroup.class).param("value", apiGroup);
+        resourceListClass.annotate(PackageSuffix.class).param("value", packageSuffix);
         pendingLists.remove(resourceName);
         pendingResources.remove(resourceName);
       }
@@ -147,7 +152,7 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
       return null;
     }
     if (packageName.equals("io.fabric8.kubernetes.api.model")) {
-      return "kubernetes";
+      return "core";
     } else if (packageName.equals("io.fabric8.openshift.api.model")) {
       return "openshift";
     }
@@ -183,5 +188,14 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
       className.equals("RouteIngress") ||
       className.equals("ProjectRequest") ||
       className.equals("WebhookClientConfig"));
+  }
+
+  private String getPackageSuffix(String apiVersion) {
+    StringBuilder packageSuffixBuilder = new StringBuilder();
+    packageSuffixBuilder.append(".");
+    packageSuffixBuilder.append(moduleName);
+    packageSuffixBuilder.append(".");
+    packageSuffixBuilder.append(apiVersion);
+    return packageSuffixBuilder.toString();
   }
 }

@@ -7,6 +7,8 @@
 * Fix #2124: Raw Watch on CustomResource does not work if name specified
 
 #### Improvements
+* Fix #2088: Support networking.k8s.io/v1beta1 alongside extensions/v1beta1
+
 #### Dependency Upgrade
 #### New Features
 * Fix #2115: Keep tekton v1alpha1 api

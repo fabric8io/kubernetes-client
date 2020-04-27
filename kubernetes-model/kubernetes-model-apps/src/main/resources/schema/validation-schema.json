@@ -2479,6 +2479,10 @@
           },
           "javaType": "java.util.Map\u003cString,String\u003e"
         },
+        "immutable": {
+          "type": "boolean",
+          "description": ""
+        },
         "kind": {
           "type": "string",
           "description": "",
@@ -3139,6 +3143,10 @@
       "type": "object",
       "description": "",
       "properties": {
+        "appProtocol": {
+          "type": "string",
+          "description": ""
+        },
         "name": {
           "type": "string",
           "description": "",
@@ -5926,6 +5934,10 @@
           "description": "",
           "javaType": "Long"
         },
+        "fsGroupChangePolicy": {
+          "type": "string",
+          "description": ""
+        },
         "runAsGroup": {
           "type": "integer",
           "description": "",
@@ -7144,6 +7156,10 @@
           },
           "javaType": "java.util.Map\u003cString,String\u003e"
         },
+        "immutable": {
+          "type": "boolean",
+          "description": ""
+        },
         "kind": {
           "type": "string",
           "description": "",
@@ -7568,6 +7584,10 @@
       "type": "object",
       "description": "",
       "properties": {
+        "appProtocol": {
+          "type": "string",
+          "description": ""
+        },
         "name": {
           "type": "string",
           "description": "",
@@ -9035,6 +9055,10 @@
           },
           "javaType": "java.util.Map\u003cString,String\u003e"
         },
+        "immutable": {
+          "type": "boolean",
+          "description": ""
+        },
         "kind": {
           "type": "string",
           "description": "",
@@ -10128,6 +10152,10 @@
     },
     "endpointport": {
       "properties": {
+        "appProtocol": {
+          "type": "string",
+          "description": ""
+        },
         "name": {
           "type": "string",
           "description": "",
@@ -12873,6 +12901,10 @@
           "description": "",
           "javaType": "Long"
         },
+        "fsGroupChangePolicy": {
+          "type": "string",
+          "description": ""
+        },
         "runAsGroup": {
           "type": "integer",
           "description": "",
@@ -14101,6 +14133,10 @@
           },
           "javaType": "java.util.Map\u003cString,String\u003e"
         },
+        "immutable": {
+          "type": "boolean",
+          "description": ""
+        },
         "kind": {
           "type": "string",
           "description": "",
@@ -14478,6 +14514,10 @@
     },
     "serviceport": {
       "properties": {
+        "appProtocol": {
+          "type": "string",
+          "description": ""
+        },
         "name": {
           "type": "string",
           "description": "",

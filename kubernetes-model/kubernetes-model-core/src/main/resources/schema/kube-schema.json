@@ -1,7 +1,7 @@
 {
   "id": "http://fabric8.io/fabric8/v2/Schema#",
   "$schema": "http://json-schema.org/schema#",
-  "$module": "kubernetes",
+  "$module": "core",
   "definitions": {
     "kubernetes_apimachinery_pkg_apis_APIGroup": {
       "type": "object",
@@ -1978,6 +1978,10 @@
           },
           "javaType": "java.util.Map\u003cString,String\u003e"
         },
+        "immutable": {
+          "type": "boolean",
+          "description": ""
+        },
         "kind": {
           "type": "string",
           "description": "",
@@ -2638,6 +2642,10 @@
       "type": "object",
       "description": "",
       "properties": {
+        "appProtocol": {
+          "type": "string",
+          "description": ""
+        },
         "name": {
           "type": "string",
           "description": "",
@@ -5444,6 +5452,10 @@
           "description": "",
           "javaType": "Long"
         },
+        "fsGroupChangePolicy": {
+          "type": "string",
+          "description": ""
+        },
         "runAsGroup": {
           "type": "integer",
           "description": "",
@@ -6662,6 +6674,10 @@
           },
           "javaType": "java.util.Map\u003cString,String\u003e"
         },
+        "immutable": {
+          "type": "boolean",
+          "description": ""
+        },
         "kind": {
           "type": "string",
           "description": "",
@@ -7086,6 +7102,10 @@
       "type": "object",
       "description": "",
       "properties": {
+        "appProtocol": {
+          "type": "string",
+          "description": ""
+        },
         "name": {
           "type": "string",
           "description": "",

@@ -18,10 +18,14 @@ package io.fabric8.kubernetes.client;
 import io.fabric8.kubernetes.api.model.networking.DoneableNetworkPolicy;
 import io.fabric8.kubernetes.api.model.networking.NetworkPolicy;
 import io.fabric8.kubernetes.api.model.networking.NetworkPolicyList;
+import io.fabric8.kubernetes.api.model.networking.v1beta1.DoneableIngress;
+import io.fabric8.kubernetes.api.model.networking.v1beta1.Ingress;
+import io.fabric8.kubernetes.api.model.networking.v1beta1.IngressList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NetworkAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.internal.NetworkPolicyOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.networking.v1.NetworkPolicyOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.networking.v1beta1.IngressOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class NetworkAPIGroupClient extends BaseClient implements NetworkAPIGroupDSL {
@@ -37,5 +41,15 @@ public class NetworkAPIGroupClient extends BaseClient implements NetworkAPIGroup
   @Override
   public MixedOperation<NetworkPolicy, NetworkPolicyList, DoneableNetworkPolicy, Resource<NetworkPolicy, DoneableNetworkPolicy>> networkPolicies() {
     return new NetworkPolicyOperationsImpl(httpClient, getConfiguration());
+  }
+
+  @Override
+  public MixedOperation<Ingress, IngressList, DoneableIngress, Resource<Ingress, DoneableIngress>> ingress() {
+    return ingresses();
+  }
+
+  @Override
+  public MixedOperation<Ingress, IngressList, DoneableIngress, Resource<Ingress, DoneableIngress>> ingresses() {
+    return new IngressOperationsImpl(httpClient, getConfiguration());
   }
 }
