@@ -159,6 +159,8 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 				return "io.fabric8.kubernetes.api.model.HasMetadata"
 			case "List":
 				return pkgDesc.JavaPackage + ".BaseKubernetesList"
+      default:
+        return pkgDesc.JavaPackage + "." + t.Name()
 		}
 		typeName, ok := g.typeNames[t]
 		if ok {

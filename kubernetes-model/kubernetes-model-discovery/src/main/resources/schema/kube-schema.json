@@ -1001,7 +1001,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.discovery.DiscoveryEndpointPort",
+      "javaType": "io.fabric8.kubernetes.api.model.discovery.EndpointPort",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1043,7 +1043,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_discovery_EndpointPort",
-            "javaType": "io.fabric8.kubernetes.api.model.discovery.DiscoveryEndpointPort"
+            "javaType": "io.fabric8.kubernetes.api.model.discovery.EndpointPort"
           }
         }
       },
@@ -1114,7 +1114,7 @@
     },
     "DiscoveryEndpointPort": {
       "$ref": "#/definitions/kubernetes_discovery_EndpointPort",
-      "javaType": "io.fabric8.kubernetes.api.model.discovery.DiscoveryEndpointPort"
+      "javaType": "io.fabric8.kubernetes.api.model.discovery.EndpointPort"
     },
     "EndpointSlice": {
       "$ref": "#/definitions/kubernetes_discovery_EndpointSlice",

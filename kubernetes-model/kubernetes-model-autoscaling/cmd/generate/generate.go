@@ -25,7 +25,8 @@ import (
   apimachineryversion "k8s.io/apimachinery/pkg/version"
 
   autoscalingapiv1 "k8s.io/api/autoscaling/v1"
-  autoscalingapi "k8s.io/api/autoscaling/v2beta2"
+  autoscalingapiv2beta1 "k8s.io/api/autoscaling/v2beta1"
+  autoscalingapiv2beta2 "k8s.io/api/autoscaling/v2beta2"
 
   "log"
   "reflect"
@@ -57,9 +58,12 @@ type Schema struct {
   Quantity                                 resource.Quantity
 
   Scale                                    autoscalingapiv1.Scale
-  HorizontalPodAutoscaler                  autoscalingapi.HorizontalPodAutoscaler
-  HorizontalPodAutoscalerSpec              autoscalingapi.HorizontalPodAutoscalerSpec
-  HorizontalPodAutoscalerList              autoscalingapi.HorizontalPodAutoscalerList
+  V1HorizontalPodAutoscaler                autoscalingapiv1.HorizontalPodAutoscaler
+  V1HorizontalPodAutoscalerList            autoscalingapiv1.HorizontalPodAutoscalerList
+  V2beta1HorizontalPodAutoscaler           autoscalingapiv2beta1.HorizontalPodAutoscaler
+  V2beta1HorizontalPodAutoscalerList       autoscalingapiv2beta1.HorizontalPodAutoscalerList
+  V2beta2HorizontalPodAutoscaler           autoscalingapiv2beta2.HorizontalPodAutoscaler
+  V2beta2HorizontalPodAutoscalerList       autoscalingapiv2beta2.HorizontalPodAutoscalerList
 }
 
 func main() {
@@ -74,7 +78,8 @@ func main() {
     {"k8s.io/apimachinery/pkg/version", "", "io.fabric8.kubernetes.api.model.version", "kubernetes_apimachinery_pkg_version_"},
     {"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_"},
     {"k8s.io/apimachinery/pkg/api/resource", "", "io.fabric8.kubernetes.api.model", "kubernetes_resource_"},
-    {"k8s.io/api/autoscaling/v2beta2", "autoscaling", "io.fabric8.kubernetes.api.model.autoscaling.v2beta2", "kubernetes_autoscaling_"},
+    {"k8s.io/api/autoscaling/v2beta2", "autoscaling", "io.fabric8.kubernetes.api.model.autoscaling.v2beta2", "kubernetes_autoscaling_v2beta2_"},
+    {"k8s.io/api/autoscaling/v2beta1", "autoscaling", "io.fabric8.kubernetes.api.model.autoscaling.v2beta1", "kubernetes_autoscaling_v2beta1_"},
     {"k8s.io/api/autoscaling/v1", "autoscaling", "io.fabric8.kubernetes.api.model.autoscaling.v1", "kubernetes_autoscaling_v1_"},
   }
 

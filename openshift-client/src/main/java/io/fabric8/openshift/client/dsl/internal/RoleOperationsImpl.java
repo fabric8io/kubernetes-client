@@ -17,29 +17,30 @@ package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.openshift.api.model.DoneableOpenshiftRole;
-import io.fabric8.openshift.api.model.OpenshiftRole;
-import io.fabric8.openshift.api.model.OpenshiftRoleList;
+import io.fabric8.openshift.api.model.DoneableRole;
+import io.fabric8.openshift.api.model.Role;
+import io.fabric8.openshift.api.model.RoleList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import okhttp3.OkHttpClient;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.AUTHORIZATION;
 
-public class OpenshiftRoleOperationsImpl extends OpenShiftOperation<OpenshiftRole, OpenshiftRoleList, DoneableOpenshiftRole, Resource<OpenshiftRole, DoneableOpenshiftRole>> {
+public class RoleOperationsImpl extends OpenShiftOperation<Role, RoleList, DoneableRole, Resource<Role, DoneableRole>> {
 
-  public OpenshiftRoleOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
+  public RoleOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
     this((new OperationContext()).withOkhttpClient(client).withConfig(config));
   }
 
-  public OpenshiftRoleOperationsImpl(OperationContext context) {
+  public RoleOperationsImpl(OperationContext context) {
     super(context.withApiGroupName(AUTHORIZATION).withApiGroupVersion("v1").withPlural("roles"));
-    this.type = OpenshiftRole.class;
-    this.listType = OpenshiftRoleList.class;
-    this.doneableType = DoneableOpenshiftRole.class;
+    this.type = Role.class;
+    this.listType = RoleList.class;
+    this.doneableType = DoneableRole.class;
   }
 
-  public OpenshiftRoleOperationsImpl newInstance(OperationContext context) {
-    return new OpenshiftRoleOperationsImpl(context);
+  @Override
+  public RoleOperationsImpl newInstance(OperationContext context) {
+    return new RoleOperationsImpl(context);
   }
 
 }

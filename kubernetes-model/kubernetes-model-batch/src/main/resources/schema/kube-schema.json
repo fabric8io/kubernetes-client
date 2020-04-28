@@ -3348,7 +3348,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.PodTemplateList",
+      "javaType": "io.fabric8.kubernetes.api.model.PodTemplate",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
@@ -4466,7 +4466,7 @@
     },
     "PodTemplateList": {
       "$ref": "#/definitions/kubernetes_core_PodTemplate",
-      "javaType": "io.fabric8.kubernetes.api.model.PodTemplateList"
+      "javaType": "io.fabric8.kubernetes.api.model.PodTemplate"
     },
     "Quantity": {
       "$ref": "#/definitions/k8s_io_apimachinery_pkg_api_resource_Quantity",

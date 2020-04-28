@@ -16,6 +16,7 @@
 #### New Features
 * Fix #2115: Keep tekton v1alpha1 api
 * Fix #2002: DSL Support for PodTemplate 
+* Fix #2015: Add Support for v1, v2beta1, and v2beta2 apiVersions in case of HorizontalPodAutoscaler
 
 ### 4.9.1 (2020-04-17)
 #### Bugs

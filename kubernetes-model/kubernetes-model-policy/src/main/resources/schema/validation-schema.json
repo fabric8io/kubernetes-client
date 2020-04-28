@@ -1477,7 +1477,7 @@
         },
         "runAsUser": {
           "$ref": "#/definitions/kubernetes_policy_RunAsUserStrategyOptions",
-          "javaType": "io.fabric8.kubernetes.api.model.policy.KubernetesRunAsUserStrategyOptions"
+          "javaType": "io.fabric8.kubernetes.api.model.policy.RunAsUserStrategyOptions"
         },
         "runtimeClass": {
           "$ref": "#/definitions/kubernetes_policy_RuntimeClassStrategyOptions",
@@ -1550,7 +1550,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.policy.KubernetesRunAsUserStrategyOptions",
+      "javaType": "io.fabric8.kubernetes.api.model.policy.RunAsUserStrategyOptions",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1654,7 +1654,7 @@
     },
     "KubernetesRunAsUserStrategyOptions": {
       "$ref": "#/definitions/kubernetes_policy_RunAsUserStrategyOptions",
-      "javaType": "io.fabric8.kubernetes.api.model.policy.KubernetesRunAsUserStrategyOptions"
+      "javaType": "io.fabric8.kubernetes.api.model.policy.RunAsUserStrategyOptions"
     },
     "ListOptions": {
       "$ref": "#/definitions/kubernetes_apimachinery_ListOptions",
@@ -2702,7 +2702,7 @@
         },
         "runAsUser": {
           "$ref": "#/definitions/kubernetes_policy_RunAsUserStrategyOptions",
-          "javaType": "io.fabric8.kubernetes.api.model.policy.KubernetesRunAsUserStrategyOptions"
+          "javaType": "io.fabric8.kubernetes.api.model.policy.RunAsUserStrategyOptions"
         },
         "runtimeClass": {
           "$ref": "#/definitions/kubernetes_policy_RuntimeClassStrategyOptions",

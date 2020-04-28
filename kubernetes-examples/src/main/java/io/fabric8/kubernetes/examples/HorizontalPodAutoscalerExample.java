@@ -19,7 +19,6 @@ package io.fabric8.kubernetes.examples;
 import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscaler;
 import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscalerBuilder;
 import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.MetricSpecBuilder;
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -39,27 +38,41 @@ public class HorizontalPodAutoscalerExample {
       HorizontalPodAutoscaler horizontalPodAutoscaler = new HorizontalPodAutoscalerBuilder()
         .withNewMetadata().withName("the-hpa").withNamespace("default").endMetadata()
         .withNewSpec()
-          .withNewScaleTargetRef()
-            .withApiVersion("apps/v1")
-            .withKind("Deployment")
-            .withName("the-deployment")
-          .endScaleTargetRef()
-          .withMinReplicas(1)
-          .withMaxReplicas(10)
-          .addToMetrics(new MetricSpecBuilder()
-            .withType("Resource")
-            .withNewResource()
-              .withName("cpu")
-              .withNewTarget()
-                .withType("Utilization")
-                .withAverageUtilization(50)
-              .endTarget()
-            .endResource()
-            .build())
+        .withNewScaleTargetRef()
+        .withApiVersion("apps/v1")
+        .withKind("Deployment")
+        .withName("the-deployment")
+        .endScaleTargetRef()
+        .withMinReplicas(1)
+        .withMaxReplicas(10)
+        .addToMetrics(new MetricSpecBuilder()
+          .withType("Resource")
+          .withNewResource()
+          .withName("cpu")
+          .withNewTarget()
+          .withType("Utilization")
+          .withAverageUtilization(50)
+          .endTarget()
+          .endResource()
+          .build())
+        .withNewBehavior()
+        .withNewScaleDown()
+        .addNewPolicy()
+        .withType("Pods")
+        .withValue(4)
+        .withPeriodSeconds(60)
+        .endPolicy()
+        .addNewPolicy()
+        .withType("Percent")
+        .withValue(10)
+        .withPeriodSeconds(60)
+        .endPolicy()
+        .endScaleDown()
+        .endBehavior()
         .endSpec()
         .build();
 
-      client.autoscaling().horizontalPodAutoscalers().inNamespace("default").create(horizontalPodAutoscaler);
+      client.autoscaling().v2beta2().horizontalPodAutoscalers().inNamespace("default").create(horizontalPodAutoscaler);
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);
     }

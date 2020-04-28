@@ -13,16 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.fabric8.kubernetes.client;
 
-package io.fabric8.kubernetes.client.dsl;
+import okhttp3.OkHttpClient;
 
-import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.V1AutoscalingAPIGroupDSL;
-import io.fabric8.kubernetes.client.V2beta1AutoscalingAPIGroupDSL;
-import io.fabric8.kubernetes.client.V2beta2AutoscalingAPIGroupDSL;
+public class V1AutoscalingAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<V1AutoscalingAPIGroupClient> {
 
-public interface AutoscalingAPIGroupDSL extends Client {
-  V1AutoscalingAPIGroupDSL v1();
-  V2beta1AutoscalingAPIGroupDSL v2beta1();
-  V2beta2AutoscalingAPIGroupDSL v2beta2();
+  @Override
+  protected String getAPIGroupName() {
+    return "autoscaling/v1";
+  }
+
+  @Override
+  public Class<V1AutoscalingAPIGroupClient> getExtensionType() {
+    return V1AutoscalingAPIGroupClient.class;
+  }
+
+  @Override
+  protected V1AutoscalingAPIGroupClient newInstance(Client client) {
+    return new V1AutoscalingAPIGroupClient(client.adapt(OkHttpClient.class), client.getConfiguration());
+  }
+
 }

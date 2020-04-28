@@ -117,16 +117,8 @@ type Schema struct {
   // Added JSONSchemaPropsorStringArray here because of
   // https://github.com/joelittlejohn/jsonschema2pojo/issues/866
   AggregationRule                          rbac.AggregationRule
-  Role                                     rbac.Role
-  RoleList                                 rbac.RoleList
-  RoleBinding                              rbac.RoleBinding
-  RoleBindingList                          rbac.RoleBindingList
   NetNamespace                             networkapi.NetNamespace
   NetNamespaceList                         networkapi.NetNamespaceList
-  ClusterRole                              rbac.ClusterRole
-  ClusterRoleList                          rbac.ClusterRoleList
-  ClusterRoleBinding                       rbac.ClusterRoleBinding
-  ClusterRoleBindingList                   rbac.ClusterRoleBindingList
   ClusterVersion                           openshiftconfigapi.ClusterVersion
   ClusterVersionList                       openshiftconfigapi.ClusterVersionList
 }

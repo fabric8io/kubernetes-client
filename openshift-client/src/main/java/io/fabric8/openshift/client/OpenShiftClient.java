@@ -22,6 +22,23 @@ import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.VersionInfo;
 import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.openshift.api.model.*;
+import io.fabric8.openshift.api.model.DoneableBuild;
+import io.fabric8.openshift.api.model.DoneableBuildConfig;
+import io.fabric8.openshift.api.model.DoneableClusterRoleBinding;
+import io.fabric8.openshift.api.model.DoneableDeploymentConfig;
+import io.fabric8.openshift.api.model.DoneableGroup;
+import io.fabric8.openshift.api.model.DoneableImageStream;
+import io.fabric8.openshift.api.model.DoneableImageStreamTag;
+import io.fabric8.openshift.api.model.DoneableOAuthAccessToken;
+import io.fabric8.openshift.api.model.DoneableOAuthAuthorizeToken;
+import io.fabric8.openshift.api.model.DoneableOAuthClient;
+import io.fabric8.openshift.api.model.DoneableProject;
+import io.fabric8.openshift.api.model.DoneableRole;
+import io.fabric8.openshift.api.model.DoneableRoleBinding;
+import io.fabric8.openshift.api.model.DoneableRoute;
+import io.fabric8.openshift.api.model.DoneableSecurityContextConstraints;
+import io.fabric8.openshift.api.model.DoneableTemplate;
+import io.fabric8.openshift.api.model.DoneableUser;
 import io.fabric8.openshift.client.dsl.*;
 
 import java.net.URL;
@@ -72,9 +89,9 @@ public interface OpenShiftClient extends KubernetesClient {
 
   ProjectRequestOperation projectrequests();
 
-  MixedOperation<OpenshiftRole, OpenshiftRoleList, DoneableOpenshiftRole, Resource<OpenshiftRole, DoneableOpenshiftRole>> roles();
+  MixedOperation<Role, RoleList, DoneableRole, Resource<Role, DoneableRole>> roles();
 
-  MixedOperation<OpenshiftRoleBinding, OpenshiftRoleBindingList, DoneableOpenshiftRoleBinding, Resource<OpenshiftRoleBinding, DoneableOpenshiftRoleBinding>>
+  MixedOperation<RoleBinding, RoleBindingList, DoneableRoleBinding, Resource<RoleBinding, DoneableRoleBinding>>
   roleBindings();
 
   MixedOperation<Route, RouteList, DoneableRoute, Resource<Route, DoneableRoute>> routes();
@@ -87,7 +104,7 @@ public interface OpenShiftClient extends KubernetesClient {
 
   SubjectAccessReviewOperation<CreateableSubjectAccessReview, CreateableLocalSubjectAccessReview, CreateableSelfSubjectAccessReview, CreateableSelfSubjectRulesReview> subjectAccessReviews();
 
-  MixedOperation<OpenshiftClusterRoleBinding, OpenshiftClusterRoleBindingList, DoneableOpenshiftClusterRoleBinding, Resource<OpenshiftClusterRoleBinding, DoneableOpenshiftClusterRoleBinding>> clusterRoleBindings();
+  MixedOperation<ClusterRoleBinding, ClusterRoleBindingList, DoneableClusterRoleBinding, Resource<ClusterRoleBinding, DoneableClusterRoleBinding>> clusterRoleBindings();
 
   FunctionCallable<NamespacedOpenShiftClient> withRequestConfig(RequestConfig requestConfig);
 
