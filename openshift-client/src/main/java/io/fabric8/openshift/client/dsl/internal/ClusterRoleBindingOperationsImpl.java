@@ -18,29 +18,29 @@ package io.fabric8.openshift.client.dsl.internal;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
-import io.fabric8.openshift.api.model.OpenshiftClusterRoleBinding;
-import io.fabric8.openshift.api.model.OpenshiftClusterRoleBindingList;
-import io.fabric8.openshift.api.model.DoneableOpenshiftClusterRoleBinding;
+import io.fabric8.openshift.api.model.ClusterRoleBinding;
+import io.fabric8.openshift.api.model.ClusterRoleBindingList;
+import io.fabric8.openshift.api.model.DoneableClusterRoleBinding;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.AUTHORIZATION;
 
-public class OpenshiftClusterRoleBindingOperationsImpl extends OpenShiftOperation<OpenshiftClusterRoleBinding, OpenshiftClusterRoleBindingList, DoneableOpenshiftClusterRoleBinding, Resource<OpenshiftClusterRoleBinding, DoneableOpenshiftClusterRoleBinding>> {
+public class ClusterRoleBindingOperationsImpl extends OpenShiftOperation<ClusterRoleBinding, ClusterRoleBindingList, DoneableClusterRoleBinding, Resource<ClusterRoleBinding, DoneableClusterRoleBinding>> {
 
-  public OpenshiftClusterRoleBindingOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
+  public ClusterRoleBindingOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
     this(new OperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public OpenshiftClusterRoleBindingOperationsImpl(OperationContext context) {
+  public ClusterRoleBindingOperationsImpl(OperationContext context) {
     super(context.withApiGroupName(AUTHORIZATION)
       .withPlural("clusterrolebindings"));
-    this.type = OpenshiftClusterRoleBinding.class;
-    this.listType = OpenshiftClusterRoleBindingList.class;
-    this.doneableType = DoneableOpenshiftClusterRoleBinding.class;
+    this.type = ClusterRoleBinding.class;
+    this.listType = ClusterRoleBindingList.class;
+    this.doneableType = DoneableClusterRoleBinding.class;
   }
 
   @Override
-  public OpenshiftClusterRoleBindingOperationsImpl newInstance(OperationContext context) {
-    return new OpenshiftClusterRoleBindingOperationsImpl(context);
+  public ClusterRoleBindingOperationsImpl newInstance(OperationContext context) {
+    return new ClusterRoleBindingOperationsImpl(context);
   }
 }

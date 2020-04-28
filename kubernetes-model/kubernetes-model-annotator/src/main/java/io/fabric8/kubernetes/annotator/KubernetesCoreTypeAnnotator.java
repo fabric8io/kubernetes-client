@@ -181,7 +181,7 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
       className.equals("BuildRequest") ||
       className.equals("ImageSignature") ||
       className.equals("ImageStreamImport") ||
-      className.equals("OpenshiftRoleBindingRestriction") ||
+      className.equals("RoleBindingRestriction") ||
       className.equals("Scale") ||
       className.equals("Status") ||
       className.equals("TokenReview") ||

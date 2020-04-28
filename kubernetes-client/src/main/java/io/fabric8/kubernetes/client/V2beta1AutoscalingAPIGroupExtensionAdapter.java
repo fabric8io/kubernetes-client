@@ -15,31 +15,23 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.client.dsl.*;
 import okhttp3.OkHttpClient;
 
-public class AutoscalingAPIGroupClient extends BaseClient implements AutoscalingAPIGroupDSL {
+public class V2beta1AutoscalingAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<V2beta1AutoscalingAPIGroupClient> {
 
-  public AutoscalingAPIGroupClient() {
-    super();
-  }
-
-  public AutoscalingAPIGroupClient(OkHttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  @Override
+  protected String getAPIGroupName() {
+    return "autoscaling/v2beta1";
   }
 
   @Override
-  public V1AutoscalingAPIGroupDSL v1() {
-    return adapt(V1AutoscalingAPIGroupClient.class);
+  public Class<V2beta1AutoscalingAPIGroupClient> getExtensionType() {
+    return V2beta1AutoscalingAPIGroupClient.class;
   }
 
   @Override
-  public V2beta1AutoscalingAPIGroupDSL v2beta1() {
-    return adapt(V2beta1AutoscalingAPIGroupClient.class);
+  protected V2beta1AutoscalingAPIGroupClient newInstance(Client client) {
+    return new V2beta1AutoscalingAPIGroupClient(client.adapt(OkHttpClient.class), client.getConfiguration());
   }
 
-  @Override
-  public V2beta2AutoscalingAPIGroupDSL v2beta2() {
-    return adapt(V2beta2AutoscalingAPIGroupClient.class);
-  }
 }

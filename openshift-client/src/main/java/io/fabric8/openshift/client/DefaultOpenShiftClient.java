@@ -67,9 +67,9 @@ import io.fabric8.openshift.api.model.DoneableImageStreamTag;
 import io.fabric8.openshift.api.model.DoneableOAuthAccessToken;
 import io.fabric8.openshift.api.model.DoneableOAuthAuthorizeToken;
 import io.fabric8.openshift.api.model.DoneableOAuthClient;
-import io.fabric8.openshift.api.model.DoneableOpenshiftClusterRoleBinding;
-import io.fabric8.openshift.api.model.DoneableOpenshiftRole;
-import io.fabric8.openshift.api.model.DoneableOpenshiftRoleBinding;
+import io.fabric8.openshift.api.model.DoneableClusterRoleBinding;
+import io.fabric8.openshift.api.model.DoneableRole;
+import io.fabric8.openshift.api.model.DoneableRoleBinding;
 import io.fabric8.openshift.api.model.DoneableProject;
 import io.fabric8.openshift.api.model.DoneableRoute;
 import io.fabric8.openshift.api.model.DoneableSecurityContextConstraints;
@@ -87,12 +87,12 @@ import io.fabric8.openshift.api.model.OAuthAuthorizeToken;
 import io.fabric8.openshift.api.model.OAuthAuthorizeTokenList;
 import io.fabric8.openshift.api.model.OAuthClient;
 import io.fabric8.openshift.api.model.OAuthClientList;
-import io.fabric8.openshift.api.model.OpenshiftClusterRoleBinding;
-import io.fabric8.openshift.api.model.OpenshiftClusterRoleBindingList;
-import io.fabric8.openshift.api.model.OpenshiftRole;
-import io.fabric8.openshift.api.model.OpenshiftRoleBinding;
-import io.fabric8.openshift.api.model.OpenshiftRoleBindingList;
-import io.fabric8.openshift.api.model.OpenshiftRoleList;
+import io.fabric8.openshift.api.model.ClusterRoleBinding;
+import io.fabric8.openshift.api.model.ClusterRoleBindingList;
+import io.fabric8.openshift.api.model.Role;
+import io.fabric8.openshift.api.model.RoleBinding;
+import io.fabric8.openshift.api.model.RoleBindingList;
+import io.fabric8.openshift.api.model.RoleList;
 import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.ProjectList;
 import io.fabric8.openshift.api.model.Route;
@@ -107,6 +107,7 @@ import io.fabric8.openshift.client.dsl.*;
 import io.fabric8.openshift.client.dsl.internal.*;
 import io.fabric8.openshift.client.dsl.internal.BuildConfigOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.BuildOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.ClusterRoleBindingOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.DeploymentConfigOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.GroupOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.ImageStreamOperationsImpl;
@@ -114,9 +115,6 @@ import io.fabric8.openshift.client.dsl.internal.ImageStreamTagOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.OAuthAccessTokenOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.OAuthAuthorizeTokenOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.OAuthClientOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.OpenshiftClusterRoleBindingOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.OpenshiftRoleBindingOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.OpenshiftRoleOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.ProjectOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.RouteOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.SecurityContextConstraintsOperationsImpl;
@@ -433,13 +431,13 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public MixedOperation<OpenshiftRole, OpenshiftRoleList, DoneableOpenshiftRole, Resource<OpenshiftRole, DoneableOpenshiftRole>> roles() {
-    return new OpenshiftRoleOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+  public MixedOperation<Role, RoleList, DoneableRole, Resource<Role, DoneableRole>> roles() {
+    return new RoleOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public MixedOperation<OpenshiftRoleBinding, OpenshiftRoleBindingList, DoneableOpenshiftRoleBinding, Resource<OpenshiftRoleBinding, DoneableOpenshiftRoleBinding>> roleBindings() {
-    return new OpenshiftRoleBindingOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+  public MixedOperation<RoleBinding, RoleBindingList, DoneableRoleBinding, Resource<RoleBinding, DoneableRoleBinding>> roleBindings() {
+    return new RoleBindingOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
@@ -463,8 +461,8 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public MixedOperation<OpenshiftClusterRoleBinding, OpenshiftClusterRoleBindingList, DoneableOpenshiftClusterRoleBinding, Resource<OpenshiftClusterRoleBinding, DoneableOpenshiftClusterRoleBinding>> clusterRoleBindings() {
-    return new OpenshiftClusterRoleBindingOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+  public MixedOperation<ClusterRoleBinding, ClusterRoleBindingList, DoneableClusterRoleBinding, Resource<ClusterRoleBinding, DoneableClusterRoleBinding>> clusterRoleBindings() {
+    return new ClusterRoleBindingOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override

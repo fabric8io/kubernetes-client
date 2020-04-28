@@ -16,10 +16,10 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscaler;
-import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscalerList;
-import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscalerBuilder;
-import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscalerListBuilder;
+import io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscaler;
+import io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscalerList;
+import io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscalerBuilder;
+import io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscalerListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
@@ -36,39 +36,39 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @EnableRuleMigrationSupport
-public class HorizontalPodAutoscalerTest {
+public class V1HorizontalPodAutoscalerTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
 
   @Test
   public void testList() {
-    server.expect().withPath("/apis/autoscaling/v2beta2/namespaces/test/horizontalpodautoscalers").andReturn(200, new HorizontalPodAutoscalerListBuilder().build()).once();
-    server.expect().withPath("/apis/autoscaling/v2beta2/namespaces/ns1/horizontalpodautoscalers").andReturn(200, new HorizontalPodAutoscalerListBuilder()
+    server.expect().withPath("/apis/autoscaling/v1/namespaces/test/horizontalpodautoscalers").andReturn(200, new HorizontalPodAutoscalerListBuilder().build()).once();
+    server.expect().withPath("/apis/autoscaling/v1/namespaces/ns1/horizontalpodautoscalers").andReturn(200, new HorizontalPodAutoscalerListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .build()).once();
 
     KubernetesClient client = server.getClient();
-    HorizontalPodAutoscalerList horizontalPodAutoscalerList = client.autoscaling().horizontalPodAutoscalers().inNamespace("test").list();
+    HorizontalPodAutoscalerList horizontalPodAutoscalerList = client.autoscaling().v1().horizontalPodAutoscalers().inNamespace("test").list();
     assertNotNull(horizontalPodAutoscalerList);
     assertEquals(0, horizontalPodAutoscalerList.getItems().size());
 
-    horizontalPodAutoscalerList = client.autoscaling().horizontalPodAutoscalers().inNamespace("ns1").list();
+    horizontalPodAutoscalerList = client.autoscaling().v1().horizontalPodAutoscalers().inNamespace("ns1").list();
     assertNotNull(horizontalPodAutoscalerList);
     assertEquals(2, horizontalPodAutoscalerList.getItems().size());
   }
 
   @Test
   public void testListWithLabels() {
-    server.expect().withPath("/apis/autoscaling/v2beta2/namespaces/test/horizontalpodautoscalers?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new HorizontalPodAutoscalerListBuilder().build()).once();
-    server.expect().withPath("/apis/autoscaling/v2beta2/namespaces/ns1/horizontalpodautoscalers?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new HorizontalPodAutoscalerListBuilder()
+    server.expect().withPath("/apis/autoscaling/v1/namespaces/test/horizontalpodautoscalers?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new HorizontalPodAutoscalerListBuilder().build()).once();
+    server.expect().withPath("/apis/autoscaling/v1/namespaces/ns1/horizontalpodautoscalers?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new HorizontalPodAutoscalerListBuilder()
       .addNewItem().and()
       .addNewItem().and()
       .addNewItem().and()
       .build()).once();
 
     KubernetesClient client = server.getClient();
-    HorizontalPodAutoscalerList horizontalPodAutoscalerList = client.autoscaling().horizontalPodAutoscalers()
+    HorizontalPodAutoscalerList horizontalPodAutoscalerList = client.autoscaling().v1().horizontalPodAutoscalers()
       .withLabel("key1", "value1")
       .withLabel("key2","value2")
       .withLabel("key3","value3")
@@ -76,7 +76,7 @@ public class HorizontalPodAutoscalerTest {
     assertNotNull(horizontalPodAutoscalerList);
     assertEquals(0, horizontalPodAutoscalerList.getItems().size());
 
-    horizontalPodAutoscalerList = client.autoscaling().horizontalPodAutoscalers().inNamespace("ns1")
+    horizontalPodAutoscalerList = client.autoscaling().v1().horizontalPodAutoscalers().inNamespace("ns1")
       .withLabel("key1", "value1")
       .withLabel("key2","value2")
       .list();
@@ -86,17 +86,17 @@ public class HorizontalPodAutoscalerTest {
 
   @Test
   public void testGet() {
-    server.expect().withPath("/apis/autoscaling/v2beta2/namespaces/test/horizontalpodautoscalers/horizontalpodautoscaler1").andReturn(200, new HorizontalPodAutoscalerBuilder().build()).once();
-    server.expect().withPath("/apis/autoscaling/v2beta2/namespaces/ns1/horizontalpodautoscalers/horizontalpodautoscaler2").andReturn(200, new HorizontalPodAutoscalerBuilder().build()).once();
+    server.expect().withPath("/apis/autoscaling/v1/namespaces/test/horizontalpodautoscalers/horizontalpodautoscaler1").andReturn(200, new HorizontalPodAutoscalerBuilder().build()).once();
+    server.expect().withPath("/apis/autoscaling/v1/namespaces/ns1/horizontalpodautoscalers/horizontalpodautoscaler2").andReturn(200, new HorizontalPodAutoscalerBuilder().build()).once();
 
     KubernetesClient client = server.getClient();
-    HorizontalPodAutoscaler horizontalPodAutoscaler = client.autoscaling().horizontalPodAutoscalers().inNamespace("test").withName("horizontalpodautoscaler1").get();
+    HorizontalPodAutoscaler horizontalPodAutoscaler = client.autoscaling().v1().horizontalPodAutoscalers().inNamespace("test").withName("horizontalpodautoscaler1").get();
     assertNotNull(horizontalPodAutoscaler);
 
-    horizontalPodAutoscaler = client.autoscaling().horizontalPodAutoscalers().withName("horizontalpodautoscaler2").get();
+    horizontalPodAutoscaler = client.autoscaling().v1().horizontalPodAutoscalers().withName("horizontalpodautoscaler2").get();
     assertNull(horizontalPodAutoscaler);
 
-    horizontalPodAutoscaler = client.autoscaling().horizontalPodAutoscalers().inNamespace("ns1").withName("horizontalpodautoscaler2").get();
+    horizontalPodAutoscaler = client.autoscaling().v1().horizontalPodAutoscalers().inNamespace("ns1").withName("horizontalpodautoscaler2").get();
     assertNotNull(horizontalPodAutoscaler);
   }
 
@@ -104,26 +104,26 @@ public class HorizontalPodAutoscalerTest {
   public void testEditMissing() {
 
     Assertions.assertThrows(KubernetesClientException.class, () -> {
-      server.expect().withPath("/apis/autoscaling/v2beta2/namespaces/test/horizontalpodautoscalers/horizontalpodautoscaler").andReturn(404, "error message from kubernetes").always();
+      server.expect().withPath("/apis/autoscaling/v1/namespaces/test/horizontalpodautoscalers/horizontalpodautoscaler").andReturn(404, "error message from kubernetes").always();
       KubernetesClient client = server.getClient();
 
-      client.autoscaling().horizontalPodAutoscalers().inNamespace("test").withName("horizontalpodautoscaler").edit();
+      client.autoscaling().v1().horizontalPodAutoscalers().inNamespace("test").withName("horizontalpodautoscaler").edit();
     });
   }
 
   @Test
   public void testDelete() {
-    server.expect().withPath("/apis/autoscaling/v2beta2/namespaces/test/horizontalpodautoscalers/horizontalpodautoscaler1").andReturn(200, new HorizontalPodAutoscalerBuilder().build()).once();
-    server.expect().withPath("/apis/autoscaling/v2beta2/namespaces/ns1/horizontalpodautoscalers/horizontalpodautoscaler2").andReturn(200, new HorizontalPodAutoscalerBuilder().build()).once();
+    server.expect().withPath("/apis/autoscaling/v1/namespaces/test/horizontalpodautoscalers/horizontalpodautoscaler1").andReturn(200, new HorizontalPodAutoscalerBuilder().build()).once();
+    server.expect().withPath("/apis/autoscaling/v1/namespaces/ns1/horizontalpodautoscalers/horizontalpodautoscaler2").andReturn(200, new HorizontalPodAutoscalerBuilder().build()).once();
 
     KubernetesClient client = server.getClient();
-    Boolean deleted = client.autoscaling().horizontalPodAutoscalers().inNamespace("test").withName("horizontalpodautoscaler1").delete();
+    Boolean deleted = client.autoscaling().v1().horizontalPodAutoscalers().inNamespace("test").withName("horizontalpodautoscaler1").delete();
     assertTrue(deleted);
 
-    deleted = client.autoscaling().horizontalPodAutoscalers().withName("horizontalpodautoscaler2").delete();
+    deleted = client.autoscaling().v1().horizontalPodAutoscalers().withName("horizontalpodautoscaler2").delete();
     assertFalse(deleted);
 
-    deleted = client.autoscaling().horizontalPodAutoscalers().inNamespace("ns1").withName("horizontalpodautoscaler2").delete();
+    deleted = client.autoscaling().v1().horizontalPodAutoscalers().inNamespace("ns1").withName("horizontalpodautoscaler2").delete();
     assertTrue(deleted);
   }
 
@@ -133,14 +133,14 @@ public class HorizontalPodAutoscalerTest {
     HorizontalPodAutoscaler horizontalPodAutoscaler2 = new HorizontalPodAutoscalerBuilder().withNewMetadata().withName("horizontalpodautoscaler2").withNamespace("ns1").endMetadata().build();
     HorizontalPodAutoscaler horizontalPodAutoscaler3 = new HorizontalPodAutoscalerBuilder().withNewMetadata().withName("horizontalpodautoscaler3").withNamespace("any").endMetadata().build();
 
-    server.expect().withPath("/apis/autoscaling/v2beta2/namespaces/test/horizontalpodautoscalers/horizontalpodautoscaler1").andReturn(200, horizontalPodAutoscaler1).once();
-    server.expect().withPath("/apis/autoscaling/v2beta2/namespaces/ns1/horizontalpodautoscalers/horizontalpodautoscaler2").andReturn(200, horizontalPodAutoscaler2).once();
+    server.expect().withPath("/apis/autoscaling/v1/namespaces/test/horizontalpodautoscalers/horizontalpodautoscaler1").andReturn(200, horizontalPodAutoscaler1).once();
+    server.expect().withPath("/apis/autoscaling/v1/namespaces/ns1/horizontalpodautoscalers/horizontalpodautoscaler2").andReturn(200, horizontalPodAutoscaler2).once();
 
     KubernetesClient client = server.getClient();
-    Boolean deleted = client.autoscaling().horizontalPodAutoscalers().inAnyNamespace().delete(horizontalPodAutoscaler1, horizontalPodAutoscaler2);
+    Boolean deleted = client.autoscaling().v1().horizontalPodAutoscalers().inAnyNamespace().delete(horizontalPodAutoscaler1, horizontalPodAutoscaler2);
     assertTrue(deleted);
 
-    deleted = client.autoscaling().horizontalPodAutoscalers().inAnyNamespace().delete(horizontalPodAutoscaler3);
+    deleted = client.autoscaling().v1().horizontalPodAutoscalers().inAnyNamespace().delete(horizontalPodAutoscaler3);
     assertFalse(deleted);
   }
 
@@ -149,14 +149,14 @@ public class HorizontalPodAutoscalerTest {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       HorizontalPodAutoscaler horizontalPodAutoscaler1 = new HorizontalPodAutoscalerBuilder().withNewMetadata().withName("horizontalpodautoscaler1").withNamespace("test").endMetadata().build();
       KubernetesClient client = server.getClient();
-      client.autoscaling().horizontalPodAutoscalers().inNamespace("test").withName("horizontalpodautoscaler1").create(horizontalPodAutoscaler1);
+      client.autoscaling().v1().horizontalPodAutoscalers().inNamespace("test").withName("horizontalpodautoscaler1").create(horizontalPodAutoscaler1);
     });
   }
 
   @Test
   public void testLoadFromFile() {
     KubernetesClient client = server.getClient();
-    HorizontalPodAutoscaler horizontalPodAutoscaler = client.autoscaling().horizontalPodAutoscalers().load(getClass().getResourceAsStream("/test-horizontalpodautoscaler.yml")).get();
+    HorizontalPodAutoscaler horizontalPodAutoscaler = client.autoscaling().v1().horizontalPodAutoscalers().load(getClass().getResourceAsStream("/test-horizontalpodautoscaler.yml")).get();
     assertEquals("php-apache", horizontalPodAutoscaler.getMetadata().getName());
   }
 
@@ -175,10 +175,10 @@ public class HorizontalPodAutoscalerTest {
       .endSpec()
       .build();
 
-    server.expect().withPath("/apis/autoscaling/v2beta2/namespaces/test/horizontalpodautoscalers/test-hpa").andReturn(200, horizontalPodAutoscaler).once();
+    server.expect().withPath("/apis/autoscaling/v1/namespaces/test/horizontalpodautoscalers/test-hpa").andReturn(200, horizontalPodAutoscaler).once();
 
     KubernetesClient client = server.getClient();
-    horizontalPodAutoscaler = client.autoscaling().horizontalPodAutoscalers().inNamespace("test").withName("test-hpa").get();
+    horizontalPodAutoscaler = client.autoscaling().v1().horizontalPodAutoscalers().inNamespace("test").withName("test-hpa").get();
     assertNotNull(horizontalPodAutoscaler);
   }
 
