@@ -57,6 +57,7 @@ import io.fabric8.openshift.client.OpenShiftConfig;
 
 import okhttp3.OkHttpClient;
 
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import ${model.fullyQualifiedName};
 import ${model.fullyQualifiedName}Builder;
 
@@ -100,12 +101,8 @@ public class ${model.name}Handler implements ResourceHandler<${model.name}, ${mo
   }
 
   @Override
-  public Boolean delete(OkHttpClient client, Config config, String namespace, Boolean cascading, ${model.name} item) {
-    if (cascading) {
-      return new ${model.name}OperationsImpl(client, OpenShiftConfig.wrap(config)).withItem(item).cascading(true).delete();
-    } else {
-      return new ${model.name}OperationsImpl(client, OpenShiftConfig.wrap(config)).withItem(item).inNamespace(namespace).delete(item);
-    }
+  public Boolean delete(OkHttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy, ${model.name} item) {
+    return new ${model.name}OperationsImpl(client, OpenShiftConfig.wrap(config)).withItem(item).withPropagationPolicy(propagationPolicy).delete();
   }
 
   @Override

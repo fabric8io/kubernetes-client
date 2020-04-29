@@ -58,7 +58,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
   }
 
   public JobOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withCascading(true));
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public JobOperationsImpl(OperationContext context) {

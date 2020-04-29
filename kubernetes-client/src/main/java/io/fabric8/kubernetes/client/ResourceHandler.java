@@ -20,6 +20,8 @@ package io.fabric8.kubernetes.client;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
+
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 
@@ -117,11 +119,11 @@ public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
    * @param client        An instance of the http client.
    * @param config        The client config.
    * @param namespace     The target namespace.
-   * @param cascading     Whether deletion needs to be cascading or not
+   * @param propagationPolicy  Whether and how garbage collection will be performed.
    * @param item          The resource to delete.
    * @return              The true if the resource was successfully deleted.
    */
-  Boolean delete(OkHttpClient client, Config config, String namespace, Boolean cascading, T item);
+  Boolean delete(OkHttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy, T item);
 
 
     /**

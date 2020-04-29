@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.knative.client.duck.v1alpha1.internal.ResourceOperationsImpl;
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 
 import okhttp3.OkHttpClient;
 
@@ -63,12 +64,8 @@ public class ResourceHandler implements io.fabric8.kubernetes.client.ResourceHan
   }
 
   @Override
-  public Boolean delete(OkHttpClient client, Config config, String namespace, Boolean cascading, Resource item) {
-    if(Boolean.TRUE.equals(cascading)) {
-      return new ResourceOperationsImpl(client, config).withItem(item).cascading(cascading).delete();
-    } else {
-      return new ResourceOperationsImpl(client, config).withItem(item).inNamespace(namespace).delete(item);
-    }
+  public Boolean delete(OkHttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy, Resource item) {
+    return new ResourceOperationsImpl(client, config).withItem(item).inNamespace(namespace).withPropagationPolicy(propagationPolicy).delete();
   }
 
   @Override

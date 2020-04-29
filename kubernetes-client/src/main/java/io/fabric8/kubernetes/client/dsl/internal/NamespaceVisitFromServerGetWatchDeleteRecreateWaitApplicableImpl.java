@@ -15,9 +15,10 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.client.utils.Utils;
 import java.util.function.Predicate;
-import org.apache.commons.lang.NotImplementedException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,7 +72,7 @@ Waitable<HasMetadata, HasMetadata>,
   private final Object item;
   private final ResourceHandler handler;
   private final long gracePeriodSeconds;
-  private final String propagationPolicy;
+  private final DeletionPropagation propagationPolicy;
   private final Boolean cascading;
 
   /**
@@ -103,7 +104,7 @@ Waitable<HasMetadata, HasMetadata>,
     this(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, unmarshal(is), -1, null, cascading);
   }
 
-  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item, long gracePeriodSeconds, String propagationPolicy, Boolean cascading) {
+  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item, long gracePeriodSeconds, DeletionPropagation propagationPolicy, Boolean cascading) {
     super(client, config);
     this.fallbackNamespace = namespace;
     this.explicitNamespace = explicitNamespace;
@@ -136,7 +137,7 @@ Waitable<HasMetadata, HasMetadata>,
     if (r == null) {
       return h.create(client, config, namespaceToUse, meta);
     } else if (deletingExisting) {
-      Boolean deleted = h.delete(client, config, namespaceToUse, cascading, meta);
+      Boolean deleted = h.delete(client, config, namespaceToUse, propagationPolicy, meta);
       if (!deleted) {
         throw new KubernetesClientException("Failed to delete existing item:" + meta);
       }
@@ -159,7 +160,7 @@ Waitable<HasMetadata, HasMetadata>,
     //First pass check before deleting
     HasMetadata meta = acceptVisitors(asHasMetadata(item), visitors);
     ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
-    return h.delete(client, config, meta.getMetadata().getNamespace(), cascading, meta);
+    return h.delete(client, config, meta.getMetadata().getNamespace(), propagationPolicy, meta);
   }
 
   @Override
@@ -210,7 +211,7 @@ Waitable<HasMetadata, HasMetadata>,
   }
 
   @Override
-  public CascadingDeletable<Boolean> withPropagationPolicy(String propagationPolicy) {
+  public CascadingDeletable<Boolean> withPropagationPolicy(DeletionPropagation propagationPolicy) {
     return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, propagationPolicy, cascading);
   }
 

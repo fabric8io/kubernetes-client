@@ -99,7 +99,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
   }
 
   public PodOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new PodOperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withCascading(true));
+    this(new PodOperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public PodOperationsImpl(PodOperationContext context) {

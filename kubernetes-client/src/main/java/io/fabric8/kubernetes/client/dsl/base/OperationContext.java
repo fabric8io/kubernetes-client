@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.dsl.base;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -41,7 +42,7 @@ public class OperationContext {
 
   // Default to -1 to respect the value set in the resource or the Kubernetes default (30 seconds)
   protected long gracePeriodSeconds = -1L;
-  protected String propagationPolicy;
+  protected DeletionPropagation propagationPolicy;
 
   protected Map<String, String> labels;
   protected Map<String, String[]> labelsNot;
@@ -54,7 +55,7 @@ public class OperationContext {
   public OperationContext() {
   }
 
-  public OperationContext(OkHttpClient client, Config config, String plural, String namespace, String name, String apiGroupName, String apiGroupVersion, boolean cascading, Object item, Map<String, String> labels, Map<String, String[]> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, Map<String, String[]> fieldsNot, String resourceVersion, boolean reloadingFromServer, long gracePeriodSeconds, String propagationPolicy) {
+  public OperationContext(OkHttpClient client, Config config, String plural, String namespace, String name, String apiGroupName, String apiGroupVersion, boolean cascading, Object item, Map<String, String> labels, Map<String, String[]> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, Map<String, String[]> fieldsNot, String resourceVersion, boolean reloadingFromServer, long gracePeriodSeconds, DeletionPropagation propagationPolicy) {
     this.client = client;
     this.config = config;
     this.plural = plural;
@@ -148,7 +149,7 @@ public class OperationContext {
     return gracePeriodSeconds;
   }
 
-  public String getPropagationPolicy() {
+  public DeletionPropagation getPropagationPolicy() {
     return propagationPolicy;
   }
 
@@ -225,7 +226,7 @@ public class OperationContext {
     return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy);
   }
 
-  public OperationContext withPropagationPolicy(String propagationPolicy) {
+  public OperationContext withPropagationPolicy(DeletionPropagation propagationPolicy) {
     return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy);
   }
 }

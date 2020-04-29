@@ -32,7 +32,7 @@ public class MutatingWebhookConfigurationOperationsImpl extends HasMetadataOpera
   }
 
   public MutatingWebhookConfigurationOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace));
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public MutatingWebhookConfigurationOperationsImpl(OperationContext context) {

@@ -30,7 +30,7 @@ public class BindingOperationsImpl extends HasMetadataOperation<Binding, Kuberne
   }
 
   public BindingOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace));
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public BindingOperationsImpl(OperationContext context) {

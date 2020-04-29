@@ -24,6 +24,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import org.junit.jupiter.api.Test;
 
 import io.fabric8.kubernetes.client.Watch;
@@ -81,10 +82,10 @@ public class BaseOperationTest {
   public void testChainingGracePeriodAndPropagationPolicy() {
     final BaseOperation operation = new BaseOperation(new OperationContext());
     FilterWatchListDeletable<?, ?, Boolean, Watch, Watcher<?>> operationWithGracePeriod = operation.withGracePeriod(10L);
-    FilterWatchListDeletable<?, ?, Boolean, Watch, Watcher<?>> operationWithPropagationPolicy = operation.withPropagationPolicy("Foreground");
+    FilterWatchListDeletable<?, ?, Boolean, Watch, Watcher<?>> operationWithPropagationPolicy = operation.withPropagationPolicy(DeletionPropagation.FOREGROUND);
 
     Object chainedGracePeriod = operationWithPropagationPolicy.withGracePeriod(10);
-    Object chainedPropagationPolicy = operationWithGracePeriod.withPropagationPolicy("Foreground");
+    Object chainedPropagationPolicy = operationWithGracePeriod.withPropagationPolicy(DeletionPropagation.FOREGROUND);
 
     assertThat(chainedGracePeriod, is(notNullValue()));
     assertThat(chainedPropagationPolicy, is(notNullValue()));

@@ -31,7 +31,7 @@ public class PodSecurityPolicyOperationsImpl extends HasMetadataOperation<PodSec
   }
 
   public PodSecurityPolicyOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace));
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public PodSecurityPolicyOperationsImpl(OperationContext context) {

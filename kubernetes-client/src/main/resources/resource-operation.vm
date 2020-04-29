@@ -72,7 +72,7 @@ public class ${model.name}OperationsImpl extends HasMetadataOperation<${model.na
   }
 
   public ${model.name}OperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace));
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public ${model.name}OperationsImpl(OperationContext context) {

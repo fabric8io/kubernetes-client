@@ -32,7 +32,7 @@ public class PersistentVolumeOperationsImpl
   }
 
   public PersistentVolumeOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace));
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public PersistentVolumeOperationsImpl(OperationContext context) {

@@ -53,7 +53,7 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
   }
 
   public StatefulSetOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new RollingOperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withCascading(true));
+    this(new RollingOperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public StatefulSetOperationsImpl(RollingOperationContext context) {

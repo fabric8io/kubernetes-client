@@ -31,7 +31,7 @@ public class NamespaceOperationsImpl  extends HasMetadataOperation<Namespace, Na
   }
 
   public NamespaceOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(null));
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(null).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public NamespaceOperationsImpl(OperationContext context) {

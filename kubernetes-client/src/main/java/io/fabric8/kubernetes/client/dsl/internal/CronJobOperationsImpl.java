@@ -27,8 +27,6 @@ import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
 
 import java.io.InputStream;
-import java.util.Map;
-import java.util.TreeMap;
 
 public class CronJobOperationsImpl extends HasMetadataOperation<CronJob, CronJobList, DoneableCronJob, Resource<CronJob, DoneableCronJob>> {
 
@@ -37,7 +35,7 @@ public class CronJobOperationsImpl extends HasMetadataOperation<CronJob, CronJob
   }
 
   public CronJobOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace));
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public CronJobOperationsImpl(OperationContext context) {

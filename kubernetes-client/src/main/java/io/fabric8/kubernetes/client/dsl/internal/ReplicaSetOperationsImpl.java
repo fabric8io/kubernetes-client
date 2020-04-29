@@ -53,7 +53,7 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
   }
 
   public ReplicaSetOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new RollingOperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withCascading(true));
+    this(new RollingOperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public ReplicaSetOperationsImpl(RollingOperationContext context) {

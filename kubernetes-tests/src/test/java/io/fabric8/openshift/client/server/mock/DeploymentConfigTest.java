@@ -25,7 +25,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
 import io.fabric8.kubernetes.api.model.ContainerFluent;
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.openshift.api.model.DeploymentConfigSpecFluent;
+import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Rule;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
@@ -106,7 +108,7 @@ public class DeploymentConfigTest {
   }
 
   @Test
-  public void testDelete() {
+  public void testDelete() throws InterruptedException {
     DeploymentConfig dc1 = new DeploymentConfigBuilder()
       .withNewMetadata()
         .withName("dc1")
@@ -153,15 +155,30 @@ public class DeploymentConfigTest {
 
     Boolean deleted = client.deploymentConfigs().withName("dc1").delete();
     assertNotNull(deleted);
-
     deleted = client.deploymentConfigs().withName("dc2").delete();
     assertFalse(deleted);
 
     deleted = client.deploymentConfigs().inNamespace("ns1").withName("dc2").delete();
     assertTrue(deleted);
+    RecordedRequest recordedRequest = server.getLastRequest();
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Background\"}", recordedRequest.getBody().readUtf8());
   }
 
-	@Test
+  @Test
+  public void testDeleteWithPropagationPolicy() throws InterruptedException {
+    server.expect().delete()
+      .withPath("/apis/apps.openshift.io/v1/namespaces/test/deploymentconfigs/dc1")
+      .andReturn(200, new DeploymentConfigBuilder().build())
+      .once();
+    OpenShiftClient client = server.getOpenshiftClient();
+
+    Boolean isDeleted = client.deploymentConfigs().inNamespace("test").withName("dc1").withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
+    assertTrue(isDeleted);
+    RecordedRequest recordedRequest = server.getLastRequest();
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}", recordedRequest.getBody().readUtf8());
+  }
+
+  @Test
 	public void testDeployingLatest() {
 		server.expect().withPath("/apis/apps.openshift.io/v1/namespaces/test/deploymentconfigs/dc1")
 				.andReturn(200, new DeploymentConfigBuilder().withNewMetadata().withName("dc1").endMetadata()

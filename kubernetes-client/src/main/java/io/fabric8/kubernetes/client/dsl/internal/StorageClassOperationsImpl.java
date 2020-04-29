@@ -31,7 +31,7 @@ public class StorageClassOperationsImpl extends HasMetadataOperation<StorageClas
   }
 
   public StorageClassOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace));
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public StorageClassOperationsImpl(OperationContext context) {
