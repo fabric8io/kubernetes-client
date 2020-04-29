@@ -112,7 +112,6 @@
       <artifactId>bcpkix-jdk15on</artifactId>
       <version>${bouncycastle.version}</version>
     </dependency>
-
   </dependencies>
 
   <build>
