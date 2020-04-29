@@ -12,6 +12,7 @@
 
 #### Dependency Upgrade
 * Updated Kubernetes Model to v1.18.0
+* Fix #2145: Updated OkHttp to v3.12.11
 
 #### New Features
 * Fix #2115: Keep tekton v1alpha1 api
