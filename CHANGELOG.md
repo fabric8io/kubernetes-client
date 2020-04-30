@@ -8,6 +8,7 @@
 * Fix #2124: Raw Watch on CustomResource does not work if name specified
 
 #### Improvements
+* Fix #2174: Change log level to warn for multiple `kubeconfig` warning
 * Fix #2088: Support networking.k8s.io/v1beta1 alongside extensions/v1beta1
 
 #### Dependency Upgrade
