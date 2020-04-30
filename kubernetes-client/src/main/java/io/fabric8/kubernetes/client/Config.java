@@ -474,13 +474,13 @@ public class Config {
       String[] fileNames = fileName.split(File.pathSeparator);
 
       if (fileNames.length > 1) {
-        LOGGER.debug("Found multiple Kubernetes config files [{}], using the first one: [{}].", fileNames, fileNames[0]);
+        LOGGER.warn("Found multiple Kubernetes config files [{}], using the first one: [{}]. If not desired file, please change it by doing `export KUBECONFIG=/path/to/kubeconfig` on Unix systems or `$Env:KUBECONFIG=/path/to/kubeconfig` on Windows.", fileNames, fileNames[0]);
         fileName = fileNames[0];
       }
 
       File kubeConfigFile = new File(fileName);
       if (kubeConfigFile.isFile()) {
-        LOGGER.debug("Found for Kubernetes config at: ["+kubeConfigFile.getPath()+"].");
+        LOGGER.debug("Found for Kubernetes config at: [{}].", kubeConfigFile.getPath());
         String kubeconfigContents;
         try (FileReader reader = new FileReader(kubeConfigFile)){
           kubeconfigContents = IOHelpers.readFully(reader);
