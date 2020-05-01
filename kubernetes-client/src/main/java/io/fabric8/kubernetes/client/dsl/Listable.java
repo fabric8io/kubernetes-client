@@ -15,7 +15,28 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.api.model.ListOptions;
+
 public interface Listable<T> {
   T list();
+
+  /**
+   * List resources from APIServer.
+   * @deprecated : Please use {@link #list(ListOptions)} instead
+   *
+   *
+   * @param limitVal number of resources to list
+   * @param continueVal an offset to pick listing from
+   * @return resource list
+   */
+  @Deprecated
   T list(Integer limitVal, String continueVal);
+
+  /**
+   * List resource from Kubernetes API server.
+   *
+   * @param listOptions ListOptions is the query options to a standard REST list call.
+   * @return list of resource type
+   */
+  T list(ListOptions listOptions);
 }
