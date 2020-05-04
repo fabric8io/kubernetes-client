@@ -42,12 +42,12 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1.DaemonSetOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.DeploymentOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.apps.v1.DeploymentOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1.IngressOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.JobOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.batch.v1.JobOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1.NetworkPolicyOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.PodSecurityPolicyOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.ReplicaSetOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.policy.v1beta1.PodSecurityPolicyOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.apps.v1.ReplicaSetOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAPIGroupDSL {

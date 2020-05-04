@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.api.model.scheduling.PriorityClassList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.SchedulingAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.internal.PriorityClassOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.scheduling.v1beta1.PriorityClassOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class SchedulingAPIGroupClient extends BaseClient implements SchedulingAPIGroupDSL {
