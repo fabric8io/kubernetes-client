@@ -26,9 +26,9 @@ public interface PropagationPolicyConfigurable<T>
    * <p>The default policy is decided by the existing finalizer set in the metadata.finalizers and the resource-specific default policy.
    *
    * <p>Acceptable values are:
-   * <br>'Orphan' - orphan the dependents;</li>
-   * <br>'Background' - allow the garbage collector to delete the dependents in the background;</li>
-   * <br>'Foreground' - a cascading policy that deletes all dependents in the foreground.</li>
+   * <br>'Orphan' - orphan the dependents;
+   * <br>'Background' - allow the garbage collector to delete the dependents in the background;
+   * <br>'Foreground' - a cascading policy that deletes all dependents in the foreground.
    *
    * @param propagationPolicy propagation policy in form of string {@link DeletionPropagation}
    * @return resource

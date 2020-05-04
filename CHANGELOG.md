@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 4.9-SNAPSHOT
+### 4.10.0 (2020-05-04)
 #### Bugs
 * Fix #2163: fix kubernetes-client not support cert chain
 * Fix #2144: CRD's schema Default fields do not handle boolean and are prefixed with Raw keyword
