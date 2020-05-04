@@ -21,7 +21,7 @@
   <parent>
     <artifactId>kubernetes-model-generator</artifactId>
     <groupId>io.fabric8</groupId>
-    <version>4.10.0</version>
+    <version>4.10-SNAPSHOT</version>
   </parent>
 
   <artifactId>kubernetes-model-common</artifactId>
