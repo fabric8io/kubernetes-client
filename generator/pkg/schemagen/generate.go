@@ -35,7 +35,7 @@ type PackageInformation struct {
 }
 
 type schemaGenerator struct {
-	crdLists         []reflect.Type
+	crdLists         map[reflect.Type]CrdScope
 	types            map[reflect.Type]*JSONObjectDescriptor
 	providedPackages map[string]string
 	manualTypeMap    map[reflect.Type]string
@@ -50,7 +50,14 @@ type Constraint struct {
 	Pattern   string
 }
 
-func GenerateSchema(crdLists []reflect.Type, providedPackages map[string]string, manualTypeMap map[reflect.Type]string, packageMapping map[string]PackageInformation, mappingSchema map[string]string, providedTypes []ProvidedType, constraints map[reflect.Type]map[string]*Constraint) string {
+type CrdScope int32
+
+const (
+	Namespaced CrdScope = 0
+	Cluster    CrdScope = 1
+)
+
+func GenerateSchema(crdLists map[reflect.Type]CrdScope, providedPackages map[string]string, manualTypeMap map[reflect.Type]string, packageMapping map[string]PackageInformation, mappingSchema map[string]string, providedTypes []ProvidedType, constraints map[reflect.Type]map[string]*Constraint) string {
 	g := newSchemaGenerator(crdLists, providedPackages, manualTypeMap, packageMapping, mappingSchema, providedTypes, constraints)
 	schema, err := g.generate(crdLists)
 
@@ -72,7 +79,7 @@ func GenerateSchema(crdLists []reflect.Type, providedPackages map[string]string,
 	return out.String()
 }
 
-func newSchemaGenerator(crdLists []reflect.Type, providedPackages map[string]string, manualTypeMap map[reflect.Type]string, packageMapping map[string]PackageInformation, mappingSchema map[string]string, providedTypes []ProvidedType, constraints map[reflect.Type]map[string]*Constraint) *schemaGenerator {
+func newSchemaGenerator(crdLists map[reflect.Type]CrdScope, providedPackages map[string]string, manualTypeMap map[reflect.Type]string, packageMapping map[string]PackageInformation, mappingSchema map[string]string, providedTypes []ProvidedType, constraints map[reflect.Type]map[string]*Constraint) *schemaGenerator {
 	g := schemaGenerator{
 		crdLists:         crdLists,
 		types:            make(map[reflect.Type]*JSONObjectDescriptor),
@@ -212,6 +219,13 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 func (g *schemaGenerator) javaInterfaces(t reflect.Type) []string {
 
 	if g.isCRD(t) {
+
+		scope := g.crdScope(t)
+
+		if scope == Namespaced {
+			return []string{"io.fabric8.kubernetes.api.model.HasMetadata", "io.fabric8.kubernetes.api.model.Namespaced"}
+		}
+
 		return []string{"io.fabric8.kubernetes.api.model.HasMetadata"}
 	}
 
@@ -228,7 +242,7 @@ func (g *schemaGenerator) resourceListInterface(listType reflect.Type) string {
 	return "io.fabric8.kubernetes.api.model.KubernetesResourceList<" + g.javaType(itemType) + ">"
 }
 
-func (g *schemaGenerator) generate(crdLists []reflect.Type) (*JSONSchema, error) {
+func (g *schemaGenerator) generate(crdLists map[reflect.Type]CrdScope) (*JSONSchema, error) {
 
 	s := JSONSchema{
 		ID:     "http://fabric8.io/tekton/v1alpha1/TektonSchema#",
@@ -243,7 +257,7 @@ func (g *schemaGenerator) generate(crdLists []reflect.Type) (*JSONSchema, error)
 		},
 	}
 
-	for _, crd := range crdLists {
+	for crd, _ := range crdLists {
 		g.handleType(crd)
 	}
 
@@ -650,7 +664,7 @@ func (g *schemaGenerator) isCRD(t reflect.Type) bool {
 
 	typeName := t.PkgPath() + "." + t.Name() + "List"
 
-	for _, crd := range g.crdLists {
+	for crd, _ := range g.crdLists {
 		// provided are CRDList as an entry point
 		crdListName := crd.PkgPath() + "." + crd.Name()
 
@@ -663,11 +677,29 @@ func (g *schemaGenerator) isCRD(t reflect.Type) bool {
 	return false
 }
 
+func (g *schemaGenerator) crdScope(t reflect.Type) CrdScope {
+
+	typeName := t.PkgPath() + "." + t.Name() + "List"
+
+	for crd, scope := range g.crdLists {
+		// provided are CRDList as an entry point
+		crdListName := crd.PkgPath() + "." + crd.Name()
+
+		if typeName == crdListName {
+			return scope
+		}
+
+	}
+
+	panic("No CRD scope information for " + t.Name())
+
+}
+
 func (g *schemaGenerator) isCRDList(t reflect.Type) bool {
 
 	typeName := t.PkgPath() + "." + t.Name()
 
-	for _, crd := range g.crdLists {
+	for crd, _ := range g.crdLists {
 		// provided are CRDList as an entry point
 		crdListName := crd.PkgPath() + "." + crd.Name()
 
