@@ -57,9 +57,9 @@ const (
 	Cluster    CrdScope = 1
 )
 
-func GenerateSchema(crdLists map[reflect.Type]CrdScope, providedPackages map[string]string, manualTypeMap map[reflect.Type]string, packageMapping map[string]PackageInformation, mappingSchema map[string]string, providedTypes []ProvidedType, constraints map[reflect.Type]map[string]*Constraint) string {
+func GenerateSchema(schemaId string, crdLists map[reflect.Type]CrdScope, providedPackages map[string]string, manualTypeMap map[reflect.Type]string, packageMapping map[string]PackageInformation, mappingSchema map[string]string, providedTypes []ProvidedType, constraints map[reflect.Type]map[string]*Constraint) string {
 	g := newSchemaGenerator(crdLists, providedPackages, manualTypeMap, packageMapping, mappingSchema, providedTypes, constraints)
-	schema, err := g.generate(crdLists)
+	schema, err := g.generate(schemaId, crdLists)
 
 	if err != nil {
 		log.Fatal(err)
@@ -242,10 +242,10 @@ func (g *schemaGenerator) resourceListInterface(listType reflect.Type) string {
 	return "io.fabric8.kubernetes.api.model.KubernetesResourceList<" + g.javaType(itemType) + ">"
 }
 
-func (g *schemaGenerator) generate(crdLists map[reflect.Type]CrdScope) (*JSONSchema, error) {
+func (g *schemaGenerator) generate(schemaId string, crdLists map[reflect.Type]CrdScope) (*JSONSchema, error) {
 
 	s := JSONSchema{
-		ID:     "http://fabric8.io/tekton/v1alpha1/TektonSchema#",
+		ID:     schemaId,
 		Schema: "http://json-schema.org/schema#",
 		JSONDescriptor: JSONDescriptor{
 			Type: "object",
