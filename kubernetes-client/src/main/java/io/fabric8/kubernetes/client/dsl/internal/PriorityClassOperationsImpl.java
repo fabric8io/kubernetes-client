@@ -32,7 +32,7 @@ public class PriorityClassOperationsImpl extends HasMetadataOperation<PriorityCl
   }
 
   public PriorityClassOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace));
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public PriorityClassOperationsImpl(OperationContext context) {

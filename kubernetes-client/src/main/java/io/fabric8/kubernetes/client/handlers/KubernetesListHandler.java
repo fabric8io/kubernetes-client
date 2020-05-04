@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.handlers;
 
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import java.util.function.Predicate;
@@ -54,7 +55,7 @@ public class KubernetesListHandler implements ResourceHandler<KubernetesList, Ku
 
   @Override
   public KubernetesList create(OkHttpClient client, Config config, String namespace, KubernetesList item) {
-    return new KubernetesListOperationsImpl(client, config, namespace, null, true, false, false, item, null).create();
+    return new KubernetesListOperationsImpl(client, config, namespace, null, DeletionPropagation.BACKGROUND, false, false, item, null).create();
   }
 
   @Override
@@ -93,8 +94,8 @@ public class KubernetesListHandler implements ResourceHandler<KubernetesList, Ku
   }
 
   @Override
-  public Boolean delete(OkHttpClient client, Config config, String namespace, Boolean cascading, KubernetesList item) {
-    return new KubernetesListOperationsImpl(client, config, namespace, null, cascading, false, false, item, null).delete(item);
+  public Boolean delete(OkHttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy, KubernetesList item) {
+    return new KubernetesListOperationsImpl(client, config, namespace, null, propagationPolicy, false, false, item, null).delete(item);
   }
 
   @Override

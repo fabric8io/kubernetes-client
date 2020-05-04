@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionBuilder;
@@ -126,7 +127,7 @@ public class TypedCustomResourceApiTest {
 
     podSetClient = server.getClient().customResources(podSetCrd, PodSet.class, PodSetList.class, DoneablePodSet.class);
 
-    boolean isDeleted = podSetClient.inNamespace("test").withName("example-podset").withPropagationPolicy("Orphan").delete();
+    boolean isDeleted = podSetClient.inNamespace("test").withName("example-podset").withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
     assertTrue(isDeleted);
 
     RecordedRequest recordedRequest = server.getLastRequest();

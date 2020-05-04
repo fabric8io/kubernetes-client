@@ -35,7 +35,7 @@ public class CustomResourceDefinitionOperationsImpl extends HasMetadataOperation
   }
 
   public CustomResourceDefinitionOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace));
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public CustomResourceDefinitionOperationsImpl(OperationContext context) {

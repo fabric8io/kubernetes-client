@@ -40,7 +40,7 @@ public class ValidatingWebhookConfigurationOperationsImpl extends HasMetadataOpe
   }
 
   public ValidatingWebhookConfigurationOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace));
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public ValidatingWebhookConfigurationOperationsImpl(OperationContext context) {

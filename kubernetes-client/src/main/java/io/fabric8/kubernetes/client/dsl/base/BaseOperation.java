@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.base;
 
 import io.fabric8.kubernetes.api.builder.Function;
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
@@ -88,7 +89,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   private final String resourceVersion;
   private final Boolean reloadingFromServer;
   private final long gracePeriodSeconds;
-  private final String propagationPolicy;
+  private final DeletionPropagation propagationPolicy;
 
   protected String apiVersion;
 
@@ -887,7 +888,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     return gracePeriodSeconds;
   }
 
-  public String getPropagationPolicy() {
+  public DeletionPropagation getPropagationPolicy() {
     return propagationPolicy;
   }
 
@@ -953,7 +954,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withPropagationPolicy(String propagationPolicy)
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withPropagationPolicy(DeletionPropagation propagationPolicy)
   {
     return newInstance(context.withPropagationPolicy(propagationPolicy));
   }

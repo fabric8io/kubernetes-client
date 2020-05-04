@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.DeleteOptions;
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
@@ -490,8 +491,8 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @param name custom resource's name
    * @return object as HashMap
    */
-  public Map<String, Object> delete(String namespace, String name) {
-    return makeCall(fetchUrl(namespace, null) + name, null, HttpCallMethod.DELETE);
+  public Map<String, Object> delete(String namespace, String name) throws IOException {
+    return makeCall(fetchUrl(namespace, null) + name, objectMapper.writeValueAsString(fetchDeleteOptions(false, DeletionPropagation.BACKGROUND.toString())), HttpCallMethod.DELETE);
   }
 
   /**

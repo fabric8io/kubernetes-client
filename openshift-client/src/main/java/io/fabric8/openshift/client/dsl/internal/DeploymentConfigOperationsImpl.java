@@ -64,7 +64,7 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
   private static final String DEPLOYMENT_CONFIG_REF = "openshift.io/deployment-config.name";
 
   public DeploymentConfigOperationsImpl(OkHttpClient client, Config config) {
-    this(new RollingOperationContext().withOkhttpClient(client).withConfig(config).withCascading(true));
+    this(new RollingOperationContext().withOkhttpClient(client).withConfig(config).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public DeploymentConfigOperationsImpl(RollingOperationContext context) {

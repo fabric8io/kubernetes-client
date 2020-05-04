@@ -54,7 +54,7 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
   }
 
   public ReplicationControllerOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new RollingOperationContext().withOkhttpClient(client).withConfig(config).withCascading(true));
+    this(new RollingOperationContext().withOkhttpClient(client).withConfig(config).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public ReplicationControllerOperationsImpl(RollingOperationContext context) {

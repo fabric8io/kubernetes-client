@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.client.dsl.KubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.KubernetesListOperation;
 import io.fabric8.kubernetes.client.dsl.Loadable;
@@ -59,8 +59,8 @@ public class KubernetesListOperationsImpl
     this(client, config, namespace, null, null, false, false, null, null);
   }
 
-  public KubernetesListOperationsImpl(OkHttpClient client, Config config, String namespace, String name, Boolean cascading, Boolean fromServer, Boolean deletingExisting, KubernetesList item, String resourceVersion) {
-    super(client, config, namespace);
+  public KubernetesListOperationsImpl(OkHttpClient client, Config config, String namespace, String name, DeletionPropagation propagationPolicy, Boolean fromServer, Boolean deletingExisting, KubernetesList item, String resourceVersion) {
+    super(client, config, namespace, propagationPolicy);
     this.fromServer = fromServer;
     this.deletingExisting = deletingExisting;
     this.item = item;
@@ -127,7 +127,7 @@ public class KubernetesListOperationsImpl
 
   @Override
   public RecreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList> load(InputStream is) {
-    return new KubernetesListOperationsImpl(client, config, namespace, null, false, fromServer, deletingExisting, unmarshal(is, KubernetesList.class), null);
+    return new KubernetesListOperationsImpl(client, config, namespace, null, DeletionPropagation.BACKGROUND, fromServer, deletingExisting, unmarshal(is, KubernetesList.class), null);
   }
 
   @Override
@@ -153,7 +153,7 @@ public class KubernetesListOperationsImpl
     for (KubernetesList list : lists) {
       for (HasMetadata item : list.getItems()) {
         ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> handler = Handlers.get(item.getKind(), item.getApiVersion());
-        if (!handler.delete(client, config, namespace, false, item)) {
+        if (!handler.delete(client, config, namespace, DeletionPropagation.BACKGROUND, item)) {
           return false;
         }
       }
@@ -163,12 +163,12 @@ public class KubernetesListOperationsImpl
 
   @Override
   public Gettable<KubernetesList> fromServer() {
-    return new KubernetesListOperationsImpl(client, config, namespace, null, false, true, deletingExisting, item, null);
+    return new KubernetesListOperationsImpl(client, config, namespace, null, DeletionPropagation.BACKGROUND, true, deletingExisting, item, null);
   }
 
   @Override
   public Createable<KubernetesList, KubernetesList, DoneableKubernetesList> deletingExisting() {
-    return new KubernetesListOperationsImpl(client, config, namespace, null, false, fromServer, true, item, null);
+    return new KubernetesListOperationsImpl(client, config, namespace, null, DeletionPropagation.BACKGROUND, fromServer, true, item, null);
   }
 
   private List<HasMetadata> createItemsInKubernetesList(KubernetesList list) {

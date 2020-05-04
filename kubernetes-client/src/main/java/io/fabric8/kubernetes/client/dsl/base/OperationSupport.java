@@ -21,11 +21,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.DeleteOptions;
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
-import io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetrics;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -53,7 +53,6 @@ import static io.fabric8.kubernetes.client.internal.PatchUtils.patchMapper;
 
 public class OperationSupport {
 
-
   public static final MediaType JSON = MediaType.parse("application/json");
   public static final MediaType JSON_PATCH = MediaType.parse("application/json-patch+json");
   protected static final ObjectMapper JSON_MAPPER = Serialization.jsonMapper();
@@ -77,8 +76,8 @@ public class OperationSupport {
     this(new OperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public OperationSupport(OkHttpClient client, Config config, String namespace) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace));
+  public OperationSupport(OkHttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(propagationPolicy));
   }
 
   public OperationSupport(OperationContext ctx) {
@@ -207,11 +206,11 @@ public class OperationSupport {
       return handleResponse(requestBuilder, type);
   }
 
-  protected <T> void handleDelete(T resource, long gracePeriodSeconds, String propagationPolicy, boolean cascading) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+  protected <T> void handleDelete(T resource, long gracePeriodSeconds, DeletionPropagation propagationPolicy, boolean cascading) throws ExecutionException, InterruptedException, IOException {
     handleDelete(getResourceUrl(checkNamespace(resource), checkName(resource)), gracePeriodSeconds, propagationPolicy, cascading);
   }
 
-  protected void handleDelete(URL requestUrl, long gracePeriodSeconds, String propagationPolicy, boolean cascading) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+  protected void handleDelete(URL requestUrl, long gracePeriodSeconds, DeletionPropagation propagationPolicy, boolean cascading) throws ExecutionException, InterruptedException, IOException {
     RequestBody requestBody = null;
     DeleteOptions deleteOptions = new DeleteOptions();
     if (gracePeriodSeconds >= 0) {
@@ -221,7 +220,7 @@ public class OperationSupport {
      * Either the propagation policy or the orphan dependent (deprecated) property must be set, but not both.
      */
     if (propagationPolicy != null) {
-      deleteOptions.setPropagationPolicy(propagationPolicy);
+      deleteOptions.setPropagationPolicy(propagationPolicy.toString());
     } else {
       deleteOptions.setOrphanDependents(!cascading);
     }
@@ -230,6 +229,7 @@ public class OperationSupport {
     Request.Builder requestBuilder = new Request.Builder().delete(requestBody).url(requestUrl);
     handleResponse(requestBuilder, null, Collections.<String, String>emptyMap());
   }
+
 
   /**
    * Create a resource.

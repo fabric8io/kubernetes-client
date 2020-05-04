@@ -10,6 +10,8 @@
 #### Improvements
 * Fix #2174: Change log level to warn for multiple `kubeconfig` warning
 * Fix #2088: Support networking.k8s.io/v1beta1 alongside extensions/v1beta1
+* Fix #2107: Set PropagationPolicy to Background by default
+  (_Note: Deletion option `cascading(..)` has been marked as deprecated_)
 
 #### Dependency Upgrade
 * Updated Kubernetes Model to v1.18.0

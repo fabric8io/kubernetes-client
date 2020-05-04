@@ -31,7 +31,7 @@ public class NodeOperationsImpl extends HasMetadataOperation<Node, NodeList, Don
   }
 
   public NodeOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace));
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public NodeOperationsImpl(OperationContext context) {

@@ -63,7 +63,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
   }
 
   public DeploymentOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new RollingOperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withCascading(true));
+    this(new RollingOperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
     if (config.getNamespace() != null) {
       this.namespace = config.getNamespace();
     }
