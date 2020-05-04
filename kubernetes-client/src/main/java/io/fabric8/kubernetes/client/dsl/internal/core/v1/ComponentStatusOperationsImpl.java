@@ -48,8 +48,8 @@ public class ComponentStatusOperationsImpl extends HasMetadataOperation<Componen
     return new ComponentStatusOperationsImpl(context);
   }
 
-	@Override
-	public boolean isResourceNamespaced() {
-		return false;
-	}
+  @Override
+  public boolean isResourceNamespaced() {
+    return false;
+  }
 }
