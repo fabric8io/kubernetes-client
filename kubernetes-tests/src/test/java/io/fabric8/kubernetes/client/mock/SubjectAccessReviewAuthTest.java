@@ -43,42 +43,6 @@ public class SubjectAccessReviewAuthTest {
     public KubernetesServer server = new KubernetesServer();
 
     @Test
-    public void createSubjectRulesReviewTest() {
-        KubernetesClient client = server.getClient();
-
-        createSubjectAccessReviewTest();
-
-        SelfSubjectRulesReview selfSubjectRulesReview = new SelfSubjectRulesReviewBuilder()
-                .withNewSpec()
-                .withNamespace("test")
-                .endSpec()
-                .withNewStatus()
-                .withResourceRules(new ResourceRuleBuilder()
-                        .withResourceNames("pod")
-                        .withVerbs("create", "list", "get", "delete").build()).endStatus().build();
-
-        SelfSubjectRulesReview rulesReviewResponse = client.subjectAccessReviewAuth().list().create(selfSubjectRulesReview);
-
-        assertNotNull(rulesReviewResponse);
-    }
-
-    @Test
-    public void createSubjectRulesReviewFromFileTest() {
-        KubernetesClient client = server.getClient();
-
-        createSubjectAccessReviewTest();
-
-        SelfSubjectRulesReview reviewFromFile = Serialization.unmarshal(getClass().getResourceAsStream("/test-selfsubjectrulesreview.yml"), SelfSubjectRulesReview.class);
-
-        SelfSubjectRulesReview rulesReviewFromFileResponse = client.subjectAccessReviewAuth().list().create(reviewFromFile);
-
-        assertAll(() -> {
-            assertNotNull(reviewFromFile);
-            assertNotNull(rulesReviewFromFileResponse);
-        });
-    }
-
-    @Test
     public void createSubjectAccessReviewTest() {
         KubernetesClient client = server.getClient();
 

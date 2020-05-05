@@ -8,6 +8,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Fix #2165: Support for setting ListOptions while listing objects
 
 ### 4.10.0 (2020-05-04)
 #### Bugs
