@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.api.model.NamespaceList;
@@ -28,6 +29,8 @@ import org.junit.Rule;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -51,6 +54,22 @@ public class NamespaceTest {
     NamespaceList namespaceList = client.namespaces().list();
     assertNotNull(namespaceList);
     assertEquals(2, namespaceList.getItems().size());
+  }
+
+  @Test
+  public void testCreateWithHandler() {
+    server.expect().post().withPath("/api/v1/namespaces")
+      .andReturn(200, new NamespaceBuilder()
+        .withNewMetadata()
+        .withName("namespace-test")
+        .endMetadata()
+        .build()).once();
+
+    KubernetesClient client = server.getClient();
+    List<HasMetadata> nsList = client.load(getClass().getResourceAsStream("/test-namespace.yml")).createOrReplace();
+    assertNotNull(nsList);
+    assertEquals(1, nsList.size());
+    assertEquals("namespace-test", nsList.get(0).getMetadata().getName());
   }
 
   @Test

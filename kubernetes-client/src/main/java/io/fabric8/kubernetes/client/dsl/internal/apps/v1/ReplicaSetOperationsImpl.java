@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl.internal;
+package io.fabric8.kubernetes.client.dsl.internal.apps.v1;
 
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerBuilder;
 import io.fabric8.kubernetes.api.model.DoneablePod;
-import io.fabric8.kubernetes.api.model.DoneableReplicationController;
 import io.fabric8.kubernetes.api.model.OwnerReference;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
-import io.fabric8.kubernetes.api.model.ReplicationController;
-import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
-import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.api.model.Status;
+import io.fabric8.kubernetes.api.model.apps.DoneableReplicaSet;
+import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
+import io.fabric8.kubernetes.api.model.apps.ReplicaSetBuilder;
+import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -35,10 +35,12 @@ import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import okhttp3.OkHttpClient;
 
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.util.ArrayList;
@@ -46,71 +48,37 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class ReplicationControllerOperationsImpl extends RollableScalableResourceOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, RollableScalableResource<ReplicationController, DoneableReplicationController>>
-  implements TimeoutImageEditReplacePatchable<ReplicationController, ReplicationController, DoneableReplicationController> {
+public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, RollableScalableResource<ReplicaSet, DoneableReplicaSet>>
+  implements TimeoutImageEditReplacePatchable<ReplicaSet, ReplicaSet, DoneableReplicaSet> {
 
-  public ReplicationControllerOperationsImpl(OkHttpClient client, Config config) {
+  public ReplicaSetOperationsImpl(OkHttpClient client, Config config) {
     this(client, config, null);
   }
 
-  public ReplicationControllerOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new RollingOperationContext().withOkhttpClient(client).withConfig(config).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+  public ReplicaSetOperationsImpl(OkHttpClient client, Config config, String namespace) {
+    this(new RollingOperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
-  public ReplicationControllerOperationsImpl(RollingOperationContext context) {
-    super(context.withPlural("replicationcontrollers"));
-    this.type = ReplicationController.class;
-    this.listType = ReplicationControllerList.class;
-    this.doneableType = DoneableReplicationController.class;
-  }
-
-  @Override
-  public ReplicationControllerOperationsImpl newInstance(OperationContext context) {
-    return new ReplicationControllerOperationsImpl((RollingOperationContext) context);
+  public ReplicaSetOperationsImpl(RollingOperationContext context) {
+    super(context.withApiGroupName("apps")
+      .withApiGroupVersion("v1")
+      .withPlural("replicasets"));
+    this.type = ReplicaSet.class;
+    this.listType = ReplicaSetList.class;
+    this.doneableType = DoneableReplicaSet.class;
   }
 
   @Override
-  public RollableScalableResource<ReplicationController, DoneableReplicationController> load(InputStream is) {
-    try {
-      ReplicationController item = unmarshal(is, ReplicationController.class);
-      return new ReplicationControllerOperationsImpl((RollingOperationContext) context.withItem(item));
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(t);
-    }
+  public ReplicaSetOperationsImpl newInstance(OperationContext context) {
+    return new ReplicaSetOperationsImpl((RollingOperationContext) context);
   }
 
   @Override
-  ReplicationController withReplicas(int count) {
-    return cascading(false).edit().editSpec().withReplicas(count).endSpec().done();
-  }
-
-  @Override
-  RollingUpdater<ReplicationController, ReplicationControllerList, DoneableReplicationController> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit) {
-    return new ReplicationControllerRollingUpdater(client, config, namespace, rollingTimeUnit.toMillis(rollingTimeout), config.getLoggingInterval());
-  }
-
-  @Override
-  int getCurrentReplicas(ReplicationController current) {
-    return current.getStatus().getReplicas();
-  }
-
-  @Override
-  int getDesiredReplicas(ReplicationController item) {
-    return item.getSpec().getReplicas();
-  }
-
-  @Override
-  long getObservedGeneration(ReplicationController current) {
-    return (current != null && current.getStatus() != null
-      && current.getStatus().getObservedGeneration() != null) ? current.getStatus().getObservedGeneration() : -1;
-  }
-
-  @Override
-  public ReplicationController updateImage(String image) {
-    ReplicationController oldRC = get();
+  public ReplicaSet updateImage(String image) {
+    ReplicaSet oldRC = get();
 
     if (oldRC == null) {
-      throw new KubernetesClientException("Existing replication controller doesn't exist");
+      throw new KubernetesClientException("Existing replica set doesn't exist");
     }
     if (oldRC.getSpec().getTemplate().getSpec().getContainers().size() > 1) {
       throw new KubernetesClientException("Image update is not supported for multicontainer pods");
@@ -121,13 +89,40 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
 
     Container updatedContainer = new ContainerBuilder(oldRC.getSpec().getTemplate().getSpec().getContainers().iterator().next()).withImage(image).build();
 
-    ReplicationControllerBuilder newRCBuilder = new ReplicationControllerBuilder(oldRC);
+    ReplicaSetBuilder newRCBuilder = new ReplicaSetBuilder(oldRC);
     newRCBuilder.editMetadata().withResourceVersion(null).endMetadata()
       .editSpec().editTemplate().editSpec().withContainers(Collections.singletonList(updatedContainer))
       .endSpec().endTemplate().endSpec();
 
-    return new ReplicationControllerRollingUpdater(client, config, namespace).rollUpdate(oldRC, newRCBuilder.build());
+    return new ReplicaSetRollingUpdater(client, config, namespace).rollUpdate(oldRC, newRCBuilder.build());
   }
+
+  @Override
+  public ReplicaSet withReplicas(int count) {
+    return cascading(false).edit().editSpec().withReplicas(count).endSpec().done();
+  }
+
+  @Override
+  public RollingUpdater<ReplicaSet, ReplicaSetList, DoneableReplicaSet> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit) {
+    return new ReplicaSetRollingUpdater(client, config, getNamespace(), rollingTimeUnit.toMillis(rollingTimeout), config.getLoggingInterval());
+  }
+
+  @Override
+  public int getCurrentReplicas(ReplicaSet current) {
+    return current.getStatus().getReplicas();
+  }
+
+  @Override
+  public int getDesiredReplicas(ReplicaSet item) {
+    return item.getSpec().getReplicas();
+  }
+
+  @Override
+  public long getObservedGeneration(ReplicaSet current) {
+    return (current != null && current.getStatus() != null
+      && current.getStatus().getObservedGeneration() != null)? current.getStatus().getObservedGeneration() : -1;
+  }
+
   @Override
   public TimeoutImageEditReplacePatchable rolling() {
     return new ReplicaSetOperationsImpl(((RollingOperationContext)context).withRolling(true));
@@ -135,17 +130,17 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
 
   @Override
   public Status rollback(DeploymentRollback deploymentRollback) {
-    throw new KubernetesClientException("rollback not supported in case of ReplicationControllers");
+    throw new KubernetesClientException("rollback not supported in case of ReplicaSets");
   }
 
   @Override
-  public ImageEditReplacePatchable<ReplicationController, ReplicationController, DoneableReplicationController> withTimeout(long timeout, TimeUnit unit) {
-    return new ReplicationControllerOperationsImpl(((RollingOperationContext)context).withRollingTimeout(unit.toMillis(timeout)).withRollingTimeUnit(TimeUnit.MILLISECONDS));
+  public ImageEditReplacePatchable<ReplicaSet, ReplicaSet, DoneableReplicaSet> withTimeout(long timeout, TimeUnit unit) {
+    return new ReplicaSetOperationsImpl(((RollingOperationContext)context).withRollingTimeout(unit.toMillis(timeout)).withRollingTimeUnit(TimeUnit.MILLISECONDS));
   }
 
   @Override
-  public ImageEditReplacePatchable<ReplicationController, ReplicationController, DoneableReplicationController> withTimeoutInMillis(long timeoutInMillis) {
-    return new ReplicationControllerOperationsImpl(((RollingOperationContext)context).withRollingTimeout(timeoutInMillis));
+  public ImageEditReplacePatchable<ReplicaSet, ReplicaSet, DoneableReplicaSet> withTimeoutInMillis(long timeoutInMillis) {
+    return new ReplicaSetOperationsImpl(((RollingOperationContext)context).withRollingTimeout(timeoutInMillis));
   }
 
   public String getLog() {
@@ -163,8 +158,8 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
 
   private List<PodResource<Pod, DoneablePod>> doGetLog(boolean isPretty) {
     List<PodResource<Pod, DoneablePod>> pods = new ArrayList<>();
-    ReplicationController rc = fromServer().get();
-    String rcUid = rc.getMetadata().getUid();
+    ReplicaSet replicaSet = fromServer().get();
+    String rcUid = replicaSet.getMetadata().getUid();
 
     PodOperationsImpl podOperations = new PodOperationsImpl(new PodOperationContext(context.getClient(),
       context.getConfig(), context.getPlural(), context.getNamespace(), context.getName(), null,
@@ -173,7 +168,7 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
       context.getReloadingFromServer(), context.getGracePeriodSeconds(), context.getPropagationPolicy(), null, null, null, null, null,
       null, null, null, null, false, false, false, null, null,
       null, isPretty, null, null, null, null, null));
-    PodList jobPodList = podOperations.withLabels(rc.getMetadata().getLabels()).list();
+    PodList jobPodList = podOperations.withLabels(replicaSet.getMetadata().getLabels()).list();
 
     for (Pod pod : jobPodList.getItems()) {
       OwnerReference ownerReference = KubernetesResourceUtil.getControllerUid(pod);

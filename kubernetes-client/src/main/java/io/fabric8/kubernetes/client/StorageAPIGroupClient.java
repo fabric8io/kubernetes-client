@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.api.model.storage.StorageClassList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.internal.StorageClassOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.storage.v1.StorageClassOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class StorageAPIGroupClient extends BaseClient implements StorageAPIGroupDSL {

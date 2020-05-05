@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl.internal;
+package io.fabric8.kubernetes.client.dsl.internal.apps.v1;
 
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Doneable;
@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
+import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,13 +57,13 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
     this.rollingTimeUnit = context.getRollingTimeUnit();
   }
 
-  abstract T withReplicas(int count);
-  abstract RollingUpdater<T, L, D> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit);
+  protected abstract T withReplicas(int count);
+  protected abstract RollingUpdater<T, L, D> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit);
 
   // There are no common interfaces through which we could get these values.
-  abstract int getCurrentReplicas(T current);
-  abstract int getDesiredReplicas(T item);
-  abstract long getObservedGeneration(T current);
+  protected abstract int getCurrentReplicas(T current);
+  protected abstract int getDesiredReplicas(T item);
+  protected abstract long getObservedGeneration(T current);
 
   @Override
   public T scale(int count) {

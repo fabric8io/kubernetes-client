@@ -27,6 +27,7 @@ import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JFieldVar;
 import io.fabric8.kubernetes.model.annotation.ApiGroup;
 import io.fabric8.kubernetes.model.annotation.ApiVersion;
+import io.fabric8.kubernetes.model.annotation.Namespaced;
 import io.fabric8.kubernetes.model.annotation.PackageSuffix;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.Inline;
@@ -36,26 +37,41 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.jsonschema2pojo.Jackson2Annotator;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
+  protected static final String ANNOTATION_VALUE = "value";
+  protected static final String API_VERSION = "apiVersion";
+  protected static final String METADATA = "metadata";
+  protected static final String KIND = "kind";
+  public static final String CORE_PACKAGE = "core";
+  public static final String OPENSHIFT_PACKAGE = "openshift";
   protected final Map<String, JDefinedClass> pendingResources = new HashMap<>();
   protected final Map<String, JDefinedClass> pendingLists = new HashMap<>();
   protected String moduleName = null;
+  protected static final Set<String> NON_NAMESPACED_RESOURCES = new HashSet<>(Arrays.asList(
+    "MutatingWebhookConfiguration", "ValidatingWebhookConfiguration"
+    , "CustomResourceDefinition" ,"ComponentStatus", "Namespace", "Node"
+    , "PersistentVolume", "PodSecurityPolicy"
+    ,"ClusterRoleBinding", "ClusterRole"
+    , "PriorityClass", "StorageClass"));
 
   @Override
   public void propertyOrder(JDefinedClass clazz, JsonNode propertiesNode) {
-    JAnnotationArrayMember annotationValue = clazz.annotate(JsonPropertyOrder.class).paramArray("value");
+    JAnnotationArrayMember annotationValue = clazz.annotate(JsonPropertyOrder.class).paramArray(ANNOTATION_VALUE);
 
-    annotationValue.param("apiVersion");
-    annotationValue.param("kind");
-    annotationValue.param("metadata");
+    annotationValue.param(API_VERSION);
+    annotationValue.param(KIND);
+    annotationValue.param(METADATA);
     for (Iterator<String> properties = propertiesNode.fieldNames(); properties.hasNext();) {
       String next = properties.next();
-      if (!next.equals("apiVersion") && !next.equals("kind") && !next.equals("metadata")) {
+      if (!next.equals(API_VERSION) && !next.equals(KIND) && !next.equals(METADATA)) {
         annotationValue.param(next);
       }
     }
@@ -67,7 +83,7 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
     clazz.annotate(EqualsAndHashCode.class);
     processBuildable(clazz);
 
-    if (clazz.fields().containsKey("kind") && clazz.fields().containsKey("metadata")) {
+    if (clazz.fields().containsKey(KIND) && clazz.fields().containsKey(METADATA)) {
       String resourceName;
 
       if (clazz.name().endsWith("List")) {
@@ -81,25 +97,30 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
         JDefinedClass resourceClass = pendingResources.get(resourceName);
         JDefinedClass resourceListClass = pendingLists.get(resourceName);
 
-        String apiVersion = propertiesNode.get("apiVersion").get("default").toString().replaceAll(Pattern.quote("\""), "");
+        String apiVersion = propertiesNode.get(API_VERSION).get("default").toString().replaceAll(Pattern.quote("\""), "");
         String apiGroup = "";
         if (apiVersion.contains("/")) {
-          apiGroup = apiVersion.substring(0, apiVersion.lastIndexOf("/"));
+          apiGroup = apiVersion.substring(0, apiVersion.lastIndexOf('/'));
           apiVersion = apiVersion.substring(apiGroup.length() + 1);
         }
         String packageSuffix = getPackageSuffix(apiVersion);
 
-        resourceClass.annotate(ApiVersion.class).param("value", apiVersion);
-        resourceClass.annotate(ApiGroup.class).param("value", apiGroup);
-        resourceClass.annotate(PackageSuffix.class).param("value", packageSuffix);
-        resourceListClass.annotate(ApiVersion.class).param("value", apiVersion);
-        resourceListClass.annotate(ApiGroup.class).param("value", apiGroup);
-        resourceListClass.annotate(PackageSuffix.class).param("value", packageSuffix);
+        resourceClass.annotate(ApiVersion.class).param(ANNOTATION_VALUE, apiVersion);
+        resourceClass.annotate(ApiGroup.class).param(ANNOTATION_VALUE, apiGroup);
+        resourceClass.annotate(PackageSuffix.class).param(ANNOTATION_VALUE, packageSuffix);
+        resourceClass.annotate(Namespaced.class).param(ANNOTATION_VALUE, isResourceNamespaced(resourceClass));
+        resourceListClass.annotate(ApiVersion.class).param(ANNOTATION_VALUE, apiVersion);
+        resourceListClass.annotate(ApiGroup.class).param(ANNOTATION_VALUE, apiGroup);
+        resourceListClass.annotate(PackageSuffix.class).param(ANNOTATION_VALUE, packageSuffix);
         pendingLists.remove(resourceName);
         pendingResources.remove(resourceName);
+        addClassesToPropertyFiles(resourceClass);
       }
-      addClassesToPropertyFiles(clazz);
     }
+  }
+
+  private boolean isResourceNamespaced(JDefinedClass resourceClass) {
+    return !NON_NAMESPACED_RESOURCES.contains(resourceClass.name());
   }
 
   @Override
@@ -115,7 +136,7 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
     super.propertyField(field, clazz, propertyName, propertyNode);
 
     if (propertyNode.has("javaOmitEmpty") && propertyNode.get("javaOmitEmpty").asBoolean(false)) {
-      field.annotate(JsonInclude.class).param("value", JsonInclude.Include.NON_EMPTY);
+      field.annotate(JsonInclude.class).param(ANNOTATION_VALUE, JsonInclude.Include.NON_EMPTY);
     }
   }
 
@@ -130,7 +151,7 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
         .annotationParam("inline", Inline.class)
         .param("type", new JCodeModel()._class("io.fabric8.kubernetes.api.model.Doneable"))
         .param("prefix", "Doneable")
-        .param("value", "done");
+        .param(ANNOTATION_VALUE, "done");
 
     } catch (JClassAlreadyExistsException e) {
       e.printStackTrace();
@@ -139,10 +160,10 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
 
   protected void addClassesToPropertyFiles(JDefinedClass clazz) {
     String packageCategory = getPackageCategory(clazz.getPackage().name());
-    if (moduleName.equals(packageCategory) && shouldIncludeClass(clazz.name())) {
+    if (moduleName.equals(packageCategory) /*&& shouldIncludeClass(clazz.name())*/) {
       JAnnotationArrayMember arrayMember = clazz.annotate(VelocityTransformations.class)
-        .paramArray("value");
-      arrayMember.annotate(VelocityTransformation.class).param("value", "/manifest.vm")
+        .paramArray(ANNOTATION_VALUE);
+      arrayMember.annotate(VelocityTransformation.class).param(ANNOTATION_VALUE, "/manifest.vm")
         .param("outputPath", moduleName + ".properties").param("gather", true);
     }
   }
@@ -152,9 +173,9 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
       return null;
     }
     if (packageName.equals("io.fabric8.kubernetes.api.model")) {
-      return "core";
+      return CORE_PACKAGE;
     } else if (packageName.equals("io.fabric8.openshift.api.model")) {
-      return "openshift";
+      return OPENSHIFT_PACKAGE;
     }
     // append whatever is after io.fabric8.kubernetes.api.model whether it's
     // io.fabric8.kubernetes.api.model.apps or
@@ -166,36 +187,10 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
     return parts[5];
   }
 
-  public boolean shouldIncludeClass(String className) {
-    return !(className.contains("ServiceReference") ||
-      className.equals("AllowedFlexVolume") ||
-      className.equals("DeploymentCondition") ||
-      className.equals("FSGroupStrategyOptions") ||
-      className.equals("PolicyRule") ||
-      className.equals("IDRange") ||
-      className.equals("SupplementalGroupsStrategyOptions") ||
-      className.equals("PodIP") ||
-      className.equals("VolumeAttachmentSource") ||
-      className.equals("DeploymentStrategy") ||
-      className.contains("List") ||
-      className.equals("BuildRequest") ||
-      className.equals("ImageSignature") ||
-      className.equals("ImageStreamImport") ||
-      className.equals("RoleBindingRestriction") ||
-      className.equals("Scale") ||
-      className.equals("Status") ||
-      className.equals("TokenReview") ||
-      className.equals("RouteIngress") ||
-      className.equals("ProjectRequest") ||
-      className.equals("WebhookClientConfig"));
-  }
-
   private String getPackageSuffix(String apiVersion) {
-    StringBuilder packageSuffixBuilder = new StringBuilder();
-    packageSuffixBuilder.append(".");
-    packageSuffixBuilder.append(moduleName);
-    packageSuffixBuilder.append(".");
-    packageSuffixBuilder.append(apiVersion);
-    return packageSuffixBuilder.toString();
+    return "." +
+      moduleName +
+      "." +
+      apiVersion;
   }
 }

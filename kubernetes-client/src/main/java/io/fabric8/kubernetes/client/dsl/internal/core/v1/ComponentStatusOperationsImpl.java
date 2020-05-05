@@ -13,37 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl.internal;
+package io.fabric8.kubernetes.client.dsl.internal.core.v1;
 
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
-import io.fabric8.kubernetes.api.model.DoneableNode;
-import io.fabric8.kubernetes.api.model.Node;
-import io.fabric8.kubernetes.api.model.NodeList;
+
+import io.fabric8.kubernetes.api.model.ComponentStatus;
+import io.fabric8.kubernetes.api.model.ComponentStatusList;
+import io.fabric8.kubernetes.api.model.DoneableComponentStatus;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 
-public class NodeOperationsImpl extends HasMetadataOperation<Node, NodeList, DoneableNode, Resource<Node, DoneableNode>> {
+public class ComponentStatusOperationsImpl extends HasMetadataOperation<ComponentStatus, ComponentStatusList, DoneableComponentStatus,
+  Resource<ComponentStatus, DoneableComponentStatus>> {
 
-  public NodeOperationsImpl(OkHttpClient client, Config config) {
+  public ComponentStatusOperationsImpl(OkHttpClient client, Config config) {
     this(client, config, null);
   }
 
-  public NodeOperationsImpl(OkHttpClient client, Config config, String namespace) {
+  public ComponentStatusOperationsImpl(OkHttpClient client, Config config, String namespace) {
     this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
-  public NodeOperationsImpl(OperationContext context) {
-    super(context.withPlural("nodes"));
-    this.type = Node.class;
-    this.listType = NodeList.class;
-    this.doneableType = DoneableNode.class;
+  public ComponentStatusOperationsImpl(OperationContext context) {
+    super(context.withPlural("componentstatuses"));
+    this.type = ComponentStatus.class;
+    this.listType = ComponentStatusList.class;
+    this.doneableType = DoneableComponentStatus.class;
   }
 
   @Override
-  public NodeOperationsImpl newInstance(OperationContext context) {
-    return new NodeOperationsImpl(context);
+  public ComponentStatusOperationsImpl newInstance(OperationContext context) {
+    return new ComponentStatusOperationsImpl(context);
   }
 
   @Override

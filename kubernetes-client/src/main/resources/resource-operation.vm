@@ -42,6 +42,9 @@
   #if ($annotation.getClassRef().getName().equals("PackageSuffix"))
     #set ($packageSuffix = $annotation.getParameters().get("value"))
   #end
+  #if ($annotation.getClassRef().getName().equals("Namespaced"))
+    #set ($isResourceNamespacedFlag = $annotation.getParameters().get("value"))
+  #end
 #end
 
 
@@ -86,5 +89,10 @@ public class ${model.name}OperationsImpl extends HasMetadataOperation<${model.na
 
   public ${model.name}OperationsImpl newInstance(OperationContext context) {
     return new ${model.name}OperationsImpl(context);
+  }
+
+  @Override
+  public boolean isResourceNamespaced() {
+    return $isResourceNamespacedFlag;
   }
 }

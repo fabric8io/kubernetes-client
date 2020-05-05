@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl.internal;
+package io.fabric8.kubernetes.client.dsl.internal.apps.v1;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.DoneablePod;
@@ -45,8 +46,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static io.fabric8.kubernetes.client.internal.SerializationUtils.dumpWithoutRuntimeStateAsYaml;
 
-abstract class RollingUpdater<T extends HasMetadata, L, D extends Doneable<T>> {
-  static final String DEPLOYMENT_KEY = "deployment";
+public abstract class RollingUpdater<T extends HasMetadata, L, D extends Doneable<T>> {
+  public static final String DEPLOYMENT_KEY = "deployment";
 
   private static final Long DEFAULT_ROLLING_TIMEOUT = 15 * 60 * 1000L; // 15 mins
 
@@ -60,11 +61,11 @@ abstract class RollingUpdater<T extends HasMetadata, L, D extends Doneable<T>> {
   private final long rollingTimeoutMillis;
   private final long loggingIntervalMillis;
 
-  RollingUpdater(OkHttpClient client, Config config, String namespace) {
+  public RollingUpdater(OkHttpClient client, Config config, String namespace) {
     this(client, config, namespace, DEFAULT_ROLLING_TIMEOUT, Config.DEFAULT_LOGGING_INTERVAL);
   }
 
-  RollingUpdater(OkHttpClient client, Config config, String namespace, long rollingTimeoutMillis, long loggingIntervalMillis) {
+  public RollingUpdater(OkHttpClient client, Config config, String namespace, long rollingTimeoutMillis, long loggingIntervalMillis) {
     this.client = client;
     this.config = config;
     this.namespace = namespace;
@@ -84,7 +85,7 @@ abstract class RollingUpdater<T extends HasMetadata, L, D extends Doneable<T>> {
 
   protected abstract T setReplicas(T obj, int replicas);
 
-  T rollUpdate(T oldObj, T newObj) {
+  public T rollUpdate(T oldObj, T newObj) {
     try {
       // Get what namespace we're working in
       String namespace = oldObj.getMetadata().getNamespace();

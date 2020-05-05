@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.sun.codemodel.*;
 import io.fabric8.kubernetes.model.annotation.ApiGroup;
 import io.fabric8.kubernetes.model.annotation.ApiVersion;
+import io.fabric8.kubernetes.model.annotation.Namespaced;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import io.sundr.builder.annotations.Inline;
@@ -31,12 +32,14 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.jsonschema2pojo.AbstractAnnotator;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 public class ModelAnnotator extends AbstractAnnotator {
 
   private final Set<String> handledClasses = new HashSet<>();
+  protected static final Set<String> NON_NAMESPACED_RESOURCES = new HashSet<>(Collections.singletonList("ClusterTask"));
 
   @Override
   public void propertyOrder(JDefinedClass clazz, JsonNode propertiesNode) {
@@ -70,6 +73,7 @@ public class ModelAnnotator extends AbstractAnnotator {
         String apiVersion = getApiVersion(propertiesNode);
         clazz.annotate(ApiVersion.class).param("value", extractVersion(apiVersion));
         clazz.annotate(ApiGroup.class).param("value", extractGroup(apiVersion));
+        clazz.annotate(Namespaced.class).param("value", isResourceNamespaced(clazz));
       }
 
       if (isCRD(clazz, propertiesNode)) { // include in model.properties (only CRDs not Lists!)
@@ -126,6 +130,10 @@ public class ModelAnnotator extends AbstractAnnotator {
 
   private String getApiVersion(JsonNode propertiesNode) {
     return propertiesNode.get("apiVersion").get("default").textValue();
+  }
+
+  private boolean isResourceNamespaced(JDefinedClass resourceClass) {
+    return !NON_NAMESPACED_RESOURCES.contains(resourceClass.name());
   }
 
 }

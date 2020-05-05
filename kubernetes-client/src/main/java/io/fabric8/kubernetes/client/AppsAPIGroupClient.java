@@ -32,9 +32,9 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.AppsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.DaemonSetOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.DeploymentOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.ReplicaSetOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.StatefulSetOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.apps.v1.DeploymentOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.apps.v1.ReplicaSetOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.apps.v1.StatefulSetOperationsImpl;
 
 import okhttp3.OkHttpClient;
 

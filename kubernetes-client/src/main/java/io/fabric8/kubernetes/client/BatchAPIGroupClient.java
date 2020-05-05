@@ -25,8 +25,8 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.BatchAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.ScalableResource;
-import io.fabric8.kubernetes.client.dsl.internal.CronJobOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.JobOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.batch.v1beta1.CronJobOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.batch.v1.JobOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class BatchAPIGroupClient extends BaseClient implements BatchAPIGroupDSL {

@@ -15,8 +15,10 @@
  */
 package io.fabric8.knative;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -32,6 +34,7 @@ import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JMethod;
 import io.fabric8.kubernetes.model.annotation.ApiGroup;
 import io.fabric8.kubernetes.model.annotation.ApiVersion;
+import io.fabric8.kubernetes.model.annotation.Namespaced;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.Inline;
 import io.sundr.transform.annotations.VelocityTransformation;
@@ -43,6 +46,8 @@ import org.jsonschema2pojo.Jackson2Annotator;
 
 public class KnativeTypeAnnotator extends Jackson2Annotator {
 
+    // As per my knowledge, there are no Cluster Scoped resources are there in Knative
+    protected static final Set<String> NON_NAMESPACED_RESOURCES = Collections.EMPTY_SET;
     private final Map<String, JDefinedClass> pendingResources = new HashMap<>();
     private final Map<String, JDefinedClass> pendingLists = new HashMap<>();
 
@@ -95,6 +100,7 @@ public class KnativeTypeAnnotator extends Jackson2Annotator {
             apiGroup = apiVersion.substring(0, apiVersion.lastIndexOf("/"));
             apiVersion = apiVersion.substring(apiGroup.length() + 1);
           }
+          resourceClass.annotate(Namespaced.class).param("value", isResourceNamespaced(resourceClass));
           resourceClass.annotate(ApiVersion.class).param("value", apiVersion);
           resourceClass.annotate(ApiGroup.class).param("value", apiGroup);
           resourceListClass.annotate(ApiVersion.class).param("value", apiVersion);
@@ -165,4 +171,8 @@ public class KnativeTypeAnnotator extends Jackson2Annotator {
     public void additionalPropertiesField(JFieldVar field, JDefinedClass clazz, String propertyName) {
 
     }
+
+  private boolean isResourceNamespaced(JDefinedClass resourceClass) {
+    return !NON_NAMESPACED_RESOURCES.contains(resourceClass.name());
+  }
 }

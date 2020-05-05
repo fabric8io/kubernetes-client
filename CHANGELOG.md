@@ -2,6 +2,7 @@
 
 ### 4.10-SNAPSHOT
 #### Bugs
+* Fix #2189: Change package names of Resource Operation classes in order to avoid duplicates Operation classes
 
 #### Improvements
 
