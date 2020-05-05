@@ -47,7 +47,7 @@ import java.util.function.Predicate;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.openshift.client.OpenShiftConfig;
-import io.fabric8.kubernetes.client.ResourceHandler;
+import io.fabric8.openshift.client.OpenShiftResourceHandler;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.openshift.client.dsl.internal.${model.name}OperationsImpl;
@@ -64,7 +64,7 @@ import ${model.fullyQualifiedName}Builder;
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
-public class ${model.name}Handler implements ResourceHandler<${model.name}, ${model.name}Builder> {
+public class ${model.name}Handler implements OpenShiftResourceHandler<${model.name}, ${model.name}Builder> {
 
   @Override
   public String getKind() {

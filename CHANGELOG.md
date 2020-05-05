@@ -2,6 +2,7 @@
 
 ### 4.10-SNAPSHOT
 #### Bugs
+* Fix #2066: Separated Kubernetes and OpenShift Handler interfaces to avoid collission in uberjar
 
 #### Improvements
 

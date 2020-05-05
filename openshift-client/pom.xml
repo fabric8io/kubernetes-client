@@ -190,7 +190,7 @@
                 <Bundle-Activator>${osgi.activator}</Bundle-Activator>
                 <Export-Service>${osgi.export.service}</Export-Service>
                 <Include-Resource>
-                  /META-INF/services/io.fabric8.kubernetes.client.ResourceHandler=target/classes/META-INF/services/io.fabric8.kubernetes.client.ResourceHandler
+                  /META-INF/services/io.fabric8.openshift.client.OpenShiftResourceHandler=target/classes/META-INF/services/io.fabric8.openshift.client.OpenShiftResourceHandler
                 </Include-Resource>
               </instructions>
               <classifier>bundle</classifier>

@@ -23,7 +23,7 @@ import io.sundr.transform.annotations.VelocityTransformations;
         value = {
                 @VelocityTransformation("/resource-operation.vm"),
                 @VelocityTransformation("/resource-handler.vm"),
-                @VelocityTransformation(value = "/resource-handler-services.vm", gather = true, outputPath = "META-INF/services/io.fabric8.kubernetes.client.ResourceHandler")
+                @VelocityTransformation(value = "/resource-handler-services.vm", gather = true, outputPath = "META-INF/services/io.fabric8.openshift.client.OpenShiftResourceHandler")
         },
         resources = {
                 @ResourceSelector("openshift.properties")

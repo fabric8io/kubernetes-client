@@ -16,6 +16,7 @@
 package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;
@@ -52,6 +53,7 @@ import io.fabric8.openshift.client.handlers.UserHandler;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Locale;
 
@@ -75,6 +77,40 @@ public class HandlersTest {
     checkHandler(new Route(), new RouteHandler());
     checkHandler(new SecurityContextConstraints(), new SecurityContextConstraintsHandler());
     checkHandler(new User(), new UserHandler());
+  }
+
+  @Test
+  public void shouldLoadKubernetesResourceFromResourceHandler() {
+    assertNotNull(Handlers.get("Deployment", "apps/v1"));
+    assertNotNull(Handlers.get("StatefulSet", "apps/v1"));
+    assertNotNull(Handlers.get("DaemonSet", "apps/v1"));
+    assertNotNull(Handlers.get("ReplicaSet", "apps/v1"));
+    assertNotNull(Handlers.get("Service", "v1"));
+    assertNotNull(Handlers.get("Pod", "v1"));
+  }
+
+  @Test
+  public void shouldLoadOpenShiftResourceFromOpenShiftResourceHandler() {
+    assertNotNull(OpenShiftHandlers.get("DeploymentConfig", "v1"));
+    assertNotNull(OpenShiftHandlers.get("Build", "v1"));
+    assertNotNull(OpenShiftHandlers.get("BuildConfig", "v1"));
+    assertNotNull(OpenShiftHandlers.get("Group", "v1"));
+    assertNotNull(OpenShiftHandlers.get("ImageStream", "v1"));
+    assertNotNull(OpenShiftHandlers.get("ImageStreamTag", "v1"));
+    assertNotNull(OpenShiftHandlers.get("Project", "v1"));
+    assertNotNull(OpenShiftHandlers.get("Route", "v1"));
+    assertNotNull(OpenShiftHandlers.get("SecurityContextConstraints", "v1"));
+    assertNotNull(OpenShiftHandlers.get("User", "v1"));
+  }
+
+  @Test
+  public void shouldLoadKubernetesResourceFromOpenShiftResourceHandler() {
+    assertNotNull(OpenShiftHandlers.get("Deployment", "apps/v1"));
+    assertNotNull(OpenShiftHandlers.get("StatefulSet", "apps/v1"));
+    assertNotNull(OpenShiftHandlers.get("DaemonSet", "apps/v1"));
+    assertNotNull(OpenShiftHandlers.get("ReplicaSet", "apps/v1"));
+    assertNotNull(OpenShiftHandlers.get("Service", "v1"));
+    assertNotNull(OpenShiftHandlers.get("Pod", "v1"));
   }
 
   private void checkHandler(HasMetadata hasMetadata, ResourceHandler handler) {

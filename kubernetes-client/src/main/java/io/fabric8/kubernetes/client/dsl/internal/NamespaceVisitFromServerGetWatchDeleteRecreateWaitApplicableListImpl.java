@@ -325,7 +325,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
         }
     }
 
-    private static List<HasMetadata> acceptVisitors(List<HasMetadata> list, List<Visitor> visitors) {
+    public List<HasMetadata> acceptVisitors(List<HasMetadata> list, List<Visitor> visitors) {
         List<HasMetadata> result = new ArrayList<>();
         for (HasMetadata item : list) {
             ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(item);
@@ -410,7 +410,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
     return result;
   }
 
-  private static <T> ResourceHandler handlerOf(T item) {
+  public <T> ResourceHandler handlerOf(T item) {
     if (item instanceof HasMetadata) {
       return Handlers.<HasMetadata, HasMetadataVisitiableBuilder>get(((HasMetadata) item).getKind(), ((HasMetadata) item).getApiVersion());
     } else if (item instanceof KubernetesList) {

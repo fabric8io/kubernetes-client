@@ -256,7 +256,7 @@ Waitable<HasMetadata, HasMetadata>,
   }
 
 
-  private static HasMetadata acceptVisitors(HasMetadata item, List<Visitor> visitors) {
+  protected HasMetadata acceptVisitors(HasMetadata item, List<Visitor> visitors) {
     ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(item);
     VisitableBuilder<HasMetadata, ?> builder = h.edit(item);
 
@@ -267,7 +267,7 @@ Waitable<HasMetadata, HasMetadata>,
     return builder.build();
   }
 
-  private static List<HasMetadata> acceptVisitors(List<HasMetadata> list, List<Visitor> visitors) {
+  protected List<HasMetadata> acceptVisitors(List<HasMetadata> list, List<Visitor> visitors) {
     List<HasMetadata> result = new ArrayList<>();
     for (HasMetadata item : list) {
       ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(item);
@@ -282,7 +282,7 @@ Waitable<HasMetadata, HasMetadata>,
     return result;
   }
 
-  private static <T> HasMetadata asHasMetadata(T item) {
+  protected  <T> HasMetadata asHasMetadata(T item) {
     if (item instanceof HasMetadata) {
       return (HasMetadata) item;
     } else if (item instanceof String) {
@@ -295,7 +295,7 @@ Waitable<HasMetadata, HasMetadata>,
     throw new IllegalArgumentException("Item needs to be an instance of HasMetadata or String.");
   }
 
-  private static <T> ResourceHandler handlerOf(T item) {
+  protected  <T> ResourceHandler handlerOf(T item) {
     if (item instanceof HasMetadata) {
       return Handlers.<HasMetadata, HasMetadataVisitiableBuilder>get(((HasMetadata) item).getKind(), ((HasMetadata) item).getApiVersion());
     } else if (item instanceof KubernetesList) {
