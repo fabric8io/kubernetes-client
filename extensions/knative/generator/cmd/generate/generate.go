@@ -32,32 +32,31 @@ func main() {
 
 	// the CRD List types for which the model should be generated
 	// no other types need to be defined as they are auto discovered
-	crdLists := []reflect.Type{
-
+	crdLists := map[reflect.Type]schemagen.CrdScope{
 		// serving v1
-		reflect.TypeOf(serving_v1.ServiceList{}),
-		reflect.TypeOf(serving_v1.RouteList{}),
-		reflect.TypeOf(serving_v1.RevisionList{}),
-		reflect.TypeOf(serving_v1.ConfigurationList{}),
+		reflect.TypeOf(serving_v1.ServiceList{}):       schemagen.Namespaced,
+		reflect.TypeOf(serving_v1.RouteList{}):         schemagen.Namespaced,
+		reflect.TypeOf(serving_v1.RevisionList{}):      schemagen.Namespaced,
+		reflect.TypeOf(serving_v1.ConfigurationList{}): schemagen.Namespaced,
 
 		// serving v1beta1
-		reflect.TypeOf(serving_v1beta1.ServiceList{}),
-		reflect.TypeOf(serving_v1beta1.RouteList{}),
-		reflect.TypeOf(serving_v1beta1.RevisionList{}),
-		reflect.TypeOf(serving_v1beta1.ConfigurationList{}),
+		reflect.TypeOf(serving_v1beta1.ServiceList{}):       schemagen.Namespaced,
+		reflect.TypeOf(serving_v1beta1.RouteList{}):         schemagen.Namespaced,
+		reflect.TypeOf(serving_v1beta1.RevisionList{}):      schemagen.Namespaced,
+		reflect.TypeOf(serving_v1beta1.ConfigurationList{}): schemagen.Namespaced,
 
 		// eventing v1alpha1
-		reflect.TypeOf(eventing_v1alpha1.BrokerList{}),
-		reflect.TypeOf(eventing_v1alpha1.TriggerList{}),
-		reflect.TypeOf(eventing_v1alpha1.EventTypeList{}),
+		reflect.TypeOf(eventing_v1alpha1.BrokerList{}):    schemagen.Namespaced,
+		reflect.TypeOf(eventing_v1alpha1.TriggerList{}):   schemagen.Namespaced,
+		reflect.TypeOf(eventing_v1alpha1.EventTypeList{}): schemagen.Namespaced,
 
 		// messaging v1alpha1
-		reflect.TypeOf(messaging_v1alpha1.ChannelList{}),
-		reflect.TypeOf(messaging_v1alpha1.SubscriptionList{}),
-		reflect.TypeOf(messaging_v1alpha1.InMemoryChannelList{}),
+		reflect.TypeOf(messaging_v1alpha1.ChannelList{}):         schemagen.Namespaced,
+		reflect.TypeOf(messaging_v1alpha1.SubscriptionList{}):    schemagen.Namespaced,
+		reflect.TypeOf(messaging_v1alpha1.InMemoryChannelList{}): schemagen.Namespaced,
 
 		// flows v1alpha1
-		reflect.TypeOf(flows_v1alpha1.SequenceList{}),
+		reflect.TypeOf(flows_v1alpha1.SequenceList{}): schemagen.Namespaced,
 	}
 
 	// constraints and patterns for fields

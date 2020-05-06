@@ -32,7 +32,8 @@
       },
       "javaType": "io.fabric8.knative.eventing.v1alpha1.Broker",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_BrokerList": {
@@ -152,7 +153,8 @@
       },
       "javaType": "io.fabric8.knative.eventing.v1alpha1.EventType",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_EventTypeList": {
@@ -273,7 +275,8 @@
       },
       "javaType": "io.fabric8.knative.eventing.v1alpha1.Trigger",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_TriggerFilter": {
@@ -426,7 +429,8 @@
       },
       "javaType": "io.fabric8.knative.serving.v1.Configuration",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "github_com_knative_serving_pkg_apis_serving_v1_ConfigurationList": {
@@ -539,7 +543,8 @@
       },
       "javaType": "io.fabric8.knative.serving.v1.Revision",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "github_com_knative_serving_pkg_apis_serving_v1_RevisionList": {
@@ -857,7 +862,8 @@
       },
       "javaType": "io.fabric8.knative.serving.v1.Route",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "github_com_knative_serving_pkg_apis_serving_v1_RouteList": {
@@ -983,7 +989,8 @@
       },
       "javaType": "io.fabric8.knative.serving.v1.Service",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "github_com_knative_serving_pkg_apis_serving_v1_ServiceList": {
@@ -1156,7 +1163,8 @@
       },
       "javaType": "io.fabric8.knative.serving.v1beta1.Configuration",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "github_com_knative_serving_pkg_apis_serving_v1beta1_ConfigurationList": {
@@ -1223,7 +1231,8 @@
       },
       "javaType": "io.fabric8.knative.serving.v1beta1.Revision",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "github_com_knative_serving_pkg_apis_serving_v1beta1_RevisionList": {
@@ -1290,7 +1299,8 @@
       },
       "javaType": "io.fabric8.knative.serving.v1beta1.Route",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "github_com_knative_serving_pkg_apis_serving_v1beta1_RouteList": {
@@ -1357,7 +1367,8 @@
       },
       "javaType": "io.fabric8.knative.serving.v1beta1.Service",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "github_com_knative_serving_pkg_apis_serving_v1beta1_ServiceList": {
@@ -1550,7 +1561,8 @@
       },
       "javaType": "io.fabric8.knative.flows.v1alpha1.Sequence",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "knative_dev_eventing_pkg_apis_flows_v1alpha1_SequenceChannelStatus": {
@@ -1742,7 +1754,8 @@
       },
       "javaType": "io.fabric8.knative.messaging.v1alpha1.Channel",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "knative_dev_eventing_pkg_apis_messaging_v1alpha1_ChannelList": {
@@ -1866,7 +1879,8 @@
       },
       "javaType": "io.fabric8.knative.messaging.v1alpha1.InMemoryChannel",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "knative_dev_eventing_pkg_apis_messaging_v1alpha1_InMemoryChannelList": {
@@ -1983,7 +1997,8 @@
       },
       "javaType": "io.fabric8.knative.messaging.v1alpha1.Subscription",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "knative_dev_eventing_pkg_apis_messaging_v1alpha1_SubscriptionList": {
