@@ -38,6 +38,5 @@
     <module>client</module>
     <!--<module>mock</module>
     <module>examples</module>-->
-    <module>tests</module>
   </modules>
 </project>

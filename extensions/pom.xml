@@ -32,6 +32,7 @@
     <module>knative</module>
     <module>tekton</module>
     <module>service-catalog</module>
+    <module>kudo</module>
   </modules>
 
 </project>
