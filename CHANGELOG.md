@@ -1,5 +1,14 @@
 ## CHANGELOG
 
+### 4.10-SNAPSHOT
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
 ### 4.10.1 (2020-05-06)
 #### Bugs
 * Fix #2189: Change package names of Resource Operation classes in order to avoid duplicates Operation classes
