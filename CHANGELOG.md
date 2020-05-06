@@ -25,6 +25,7 @@
 * Updated Tekton Model to v0.11.0
 
 #### New Features
+* KUDO extension suport KUDO v0.10.0
 
 ### 4.9.0 (2020-03-12)
 #### Bugs
