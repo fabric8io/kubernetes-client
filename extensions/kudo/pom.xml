@@ -29,7 +29,7 @@
   <name>Fabric8 :: Kudo :: Extension</name>
 
   <properties>
-    <fabric-version>4.9.1</fabric-version>
+    <fabric-version>4.9-SNAPSHOT</fabric-version>
   </properties>
 
   <modules>
