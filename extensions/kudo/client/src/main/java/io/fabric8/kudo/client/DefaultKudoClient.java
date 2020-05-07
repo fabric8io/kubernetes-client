@@ -5,13 +5,13 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kudo.api.model.v1beta1.*;
-import io.fabric8.kudo.api.model.v1beta1.DoneableInstance;
-import io.fabric8.kudo.api.model.v1beta1.DoneableOperator;
-import io.fabric8.kudo.api.model.v1beta1.DoneableOperatorVersion;
 import io.fabric8.kudo.client.operations.InstanceOperationsImpl;
 import io.fabric8.kudo.client.operations.OperatorOperationsImpl;
 import io.fabric8.kudo.client.operations.OperatorVersionOperationsImpl;
+import io.fabric8.kudo.v1beta1.*;
+import io.fabric8.kudo.v1beta1.DoneableInstance;
+import io.fabric8.kudo.v1beta1.DoneableOperator;
+import io.fabric8.kudo.v1beta1.DoneableOperatorVersion;
 import okhttp3.OkHttpClient;
 
 /**

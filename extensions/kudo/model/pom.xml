@@ -30,20 +30,6 @@
     <name>Fabric8 :: Kudo :: Model</name>
 
     <dependencies>
-        <!--<dependency>
-          <groupId>io.sundr</groupId>
-          <artifactId>builder-annotations</artifactId>
-          <exclusions>
-            <exclusion>
-              <groupId>com.sun</groupId>
-              <artifactId>tools</artifactId>
-            </exclusion>
-          </exclusions>
-        </dependency>
-        <dependency>
-          <groupId>io.sundr</groupId>
-          <artifactId>transform-annotations</artifactId>
-        </dependency>-->
         <dependency>
             <groupId>io.fabric8</groupId>
             <artifactId>kudo-model-annotator</artifactId>
@@ -52,7 +38,7 @@
         <dependency>
             <groupId>io.fabric8</groupId>
             <artifactId>kubernetes-model</artifactId>
-            <version>4.9.1</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

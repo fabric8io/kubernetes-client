@@ -300,7 +300,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.AggregatedStatus",
+      "javaType": "io.fabric8.kudo.v1beta1.AggregatedStatus",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -323,7 +323,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.DummyTaskSpec",
+      "javaType": "io.fabric8.kudo.v1beta1.DummyTaskSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -350,15 +350,15 @@
         },
         "spec": {
           "$ref": "#/definitions/kudo_api_v1beta1_InstanceSpec",
-          "javaType": "io.fabric8.kudo.api.model.v1beta1.InstanceSpec"
+          "javaType": "io.fabric8.kudo.v1beta1.InstanceSpec"
         },
         "status": {
           "$ref": "#/definitions/kudo_api_v1beta1_InstanceStatus",
-          "javaType": "io.fabric8.kudo.api.model.v1beta1.InstanceStatus"
+          "javaType": "io.fabric8.kudo.v1beta1.InstanceStatus"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.Instance",
+      "javaType": "io.fabric8.kudo.v1beta1.Instance",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
@@ -374,7 +374,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.InstanceError",
+      "javaType": "io.fabric8.kudo.v1beta1.InstanceError",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -394,7 +394,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_Instance",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.Instance"
+            "javaType": "io.fabric8.kudo.v1beta1.Instance"
           }
         },
         "kind": {
@@ -409,10 +409,10 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.InstanceList",
+      "javaType": "io.fabric8.kudo.v1beta1.InstanceList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kudo.api.model.v1beta1.Instance\u003e"
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kudo.v1beta1.Instance\u003e"
       ]
     },
     "kudo_api_v1beta1_InstanceSpec": {
@@ -434,11 +434,11 @@
         },
         "planExecution": {
           "$ref": "#/definitions/kudo_api_v1beta1_PlanExecution",
-          "javaType": "io.fabric8.kudo.api.model.v1beta1.PlanExecution"
+          "javaType": "io.fabric8.kudo.v1beta1.PlanExecution"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.InstanceSpec",
+      "javaType": "io.fabric8.kudo.v1beta1.InstanceSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -449,20 +449,20 @@
       "properties": {
         "aggregatedStatus": {
           "$ref": "#/definitions/kudo_api_v1beta1_AggregatedStatus",
-          "javaType": "io.fabric8.kudo.api.model.v1beta1.AggregatedStatus"
+          "javaType": "io.fabric8.kudo.v1beta1.AggregatedStatus"
         },
         "planStatus": {
           "type": "object",
           "description": "",
           "additionalProperties": {
             "$ref": "#/definitions/kudo_api_v1beta1_PlanStatus",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.PlanStatus"
+            "javaType": "io.fabric8.kudo.v1beta1.PlanStatus"
           },
-          "javaType": "java.util.Map\u003cString,io.fabric8.kudo.api.model.v1beta1.PlanStatus\u003e"
+          "javaType": "java.util.Map\u003cString,io.fabric8.kudo.v1beta1.PlanStatus\u003e"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.InstanceStatus",
+      "javaType": "io.fabric8.kudo.v1beta1.InstanceStatus",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -481,7 +481,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.Maintainer",
+      "javaType": "io.fabric8.kudo.v1beta1.Maintainer",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -508,15 +508,15 @@
         },
         "spec": {
           "$ref": "#/definitions/kudo_api_v1beta1_OperatorSpec",
-          "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorSpec"
+          "javaType": "io.fabric8.kudo.v1beta1.OperatorSpec"
         },
         "status": {
           "$ref": "#/definitions/kudo_api_v1beta1_OperatorStatus",
-          "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorStatus"
+          "javaType": "io.fabric8.kudo.v1beta1.OperatorStatus"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.Operator",
+      "javaType": "io.fabric8.kudo.v1beta1.Operator",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
@@ -567,7 +567,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorDependency",
+      "javaType": "io.fabric8.kudo.v1beta1.OperatorDependency",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -587,7 +587,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_Operator",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.Operator"
+            "javaType": "io.fabric8.kudo.v1beta1.Operator"
           }
         },
         "kind": {
@@ -602,10 +602,10 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorList",
+      "javaType": "io.fabric8.kudo.v1beta1.OperatorList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kudo.api.model.v1beta1.Operator\u003e"
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kudo.v1beta1.Operator\u003e"
       ]
     },
     "kudo_api_v1beta1_OperatorSpec": {
@@ -630,7 +630,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_Maintainer",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.Maintainer"
+            "javaType": "io.fabric8.kudo.v1beta1.Maintainer"
           }
         },
         "url": {
@@ -639,7 +639,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorSpec",
+      "javaType": "io.fabric8.kudo.v1beta1.OperatorSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -648,7 +648,7 @@
       "type": "object",
       "description": "",
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorStatus",
+      "javaType": "io.fabric8.kudo.v1beta1.OperatorStatus",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -675,15 +675,15 @@
         },
         "spec": {
           "$ref": "#/definitions/kudo_api_v1beta1_OperatorVersionSpec",
-          "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorVersionSpec"
+          "javaType": "io.fabric8.kudo.v1beta1.OperatorVersionSpec"
         },
         "status": {
           "$ref": "#/definitions/kudo_api_v1beta1_OperatorVersionStatus",
-          "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorVersionStatus"
+          "javaType": "io.fabric8.kudo.v1beta1.OperatorVersionStatus"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorVersion",
+      "javaType": "io.fabric8.kudo.v1beta1.OperatorVersion",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
@@ -703,7 +703,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_OperatorVersion",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorVersion"
+            "javaType": "io.fabric8.kudo.v1beta1.OperatorVersion"
           }
         },
         "kind": {
@@ -718,10 +718,10 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorVersionList",
+      "javaType": "io.fabric8.kudo.v1beta1.OperatorVersionList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kudo.api.model.v1beta1.OperatorVersion\u003e"
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kudo.v1beta1.OperatorVersion\u003e"
       ]
     },
     "kudo_api_v1beta1_OperatorVersionSpec": {
@@ -742,7 +742,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_OperatorDependency",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorDependency"
+            "javaType": "io.fabric8.kudo.v1beta1.OperatorDependency"
           }
         },
         "operator": {
@@ -755,7 +755,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_Parameter",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.Parameter"
+            "javaType": "io.fabric8.kudo.v1beta1.Parameter"
           }
         },
         "plans": {
@@ -763,9 +763,9 @@
           "description": "",
           "additionalProperties": {
             "$ref": "#/definitions/kudo_api_v1beta1_Plan",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.Plan"
+            "javaType": "io.fabric8.kudo.v1beta1.Plan"
           },
-          "javaType": "java.util.Map\u003cString,io.fabric8.kudo.api.model.v1beta1.Plan\u003e"
+          "javaType": "java.util.Map\u003cString,io.fabric8.kudo.v1beta1.Plan\u003e"
         },
         "tasks": {
           "type": "array",
@@ -773,7 +773,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_Task",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.Task"
+            "javaType": "io.fabric8.kudo.v1beta1.Task"
           }
         },
         "templates": {
@@ -800,7 +800,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorVersionSpec",
+      "javaType": "io.fabric8.kudo.v1beta1.OperatorVersionSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -809,7 +809,7 @@
       "type": "object",
       "description": "",
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorVersionStatus",
+      "javaType": "io.fabric8.kudo.v1beta1.OperatorVersionStatus",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -848,7 +848,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.Parameter",
+      "javaType": "io.fabric8.kudo.v1beta1.Parameter",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -866,7 +866,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_Step",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.Step"
+            "javaType": "io.fabric8.kudo.v1beta1.Step"
           }
         },
         "strategy": {
@@ -875,7 +875,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.Phase",
+      "javaType": "io.fabric8.kudo.v1beta1.Phase",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -902,12 +902,12 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_StepStatus",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.StepStatus"
+            "javaType": "io.fabric8.kudo.v1beta1.StepStatus"
           }
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.PhaseStatus",
+      "javaType": "io.fabric8.kudo.v1beta1.PhaseStatus",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -930,7 +930,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.PipeSpec",
+      "javaType": "io.fabric8.kudo.v1beta1.PipeSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -945,7 +945,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_PipeSpec",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.PipeSpec"
+            "javaType": "io.fabric8.kudo.v1beta1.PipeSpec"
           }
         },
         "pod": {
@@ -954,7 +954,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.PipeTaskSpec",
+      "javaType": "io.fabric8.kudo.v1beta1.PipeTaskSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -968,7 +968,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_Phase",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.Phase"
+            "javaType": "io.fabric8.kudo.v1beta1.Phase"
           }
         },
         "strategy": {
@@ -977,7 +977,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.Plan",
+      "javaType": "io.fabric8.kudo.v1beta1.Plan",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1000,7 +1000,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.PlanExecution",
+      "javaType": "io.fabric8.kudo.v1beta1.PlanExecution",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1027,7 +1027,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_PhaseStatus",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.PhaseStatus"
+            "javaType": "io.fabric8.kudo.v1beta1.PhaseStatus"
           }
         },
         "status": {
@@ -1040,7 +1040,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.PlanStatus",
+      "javaType": "io.fabric8.kudo.v1beta1.PlanStatus",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1060,7 +1060,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.ResourceTaskSpec",
+      "javaType": "io.fabric8.kudo.v1beta1.ResourceTaskSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1083,7 +1083,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.Step",
+      "javaType": "io.fabric8.kudo.v1beta1.Step",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1106,7 +1106,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.StepStatus",
+      "javaType": "io.fabric8.kudo.v1beta1.StepStatus",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1125,11 +1125,11 @@
         },
         "spec": {
           "$ref": "#/definitions/kudo_api_v1beta1_TaskSpec",
-          "javaType": "io.fabric8.kudo.api.model.v1beta1.TaskSpec"
+          "javaType": "io.fabric8.kudo.v1beta1.TaskSpec"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.Task",
+      "javaType": "io.fabric8.kudo.v1beta1.Task",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1156,7 +1156,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_PipeSpec",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.PipeSpec"
+            "javaType": "io.fabric8.kudo.v1beta1.PipeSpec"
           }
         },
         "pod": {
@@ -1178,7 +1178,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.TaskSpec",
+      "javaType": "io.fabric8.kudo.v1beta1.TaskSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1193,7 +1193,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.ToggleTaskSpec",
+      "javaType": "io.fabric8.kudo.v1beta1.ToggleTaskSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1204,11 +1204,11 @@
       "properties": {
         "Operator": {
           "$ref": "#/definitions/kudo_kubectl_OperatorFile",
-          "javaType": "io.fabric8.kudo.api.model.kubectl.OperatorFile"
+          "javaType": "io.fabric8.kudo.kubectl.OperatorFile"
         },
         "Params": {
           "$ref": "#/definitions/kudo_kubectl_ParamsFile",
-          "javaType": "io.fabric8.kudo.api.model.kubectl.ParamsFile"
+          "javaType": "io.fabric8.kudo.kubectl.ParamsFile"
         },
         "Templates": {
           "type": "object",
@@ -1221,7 +1221,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.kubectl.Files",
+      "javaType": "io.fabric8.kudo.kubectl.Files",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1256,7 +1256,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_Maintainer",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.Maintainer"
+            "javaType": "io.fabric8.kudo.v1beta1.Maintainer"
           }
         },
         "name": {
@@ -1272,16 +1272,16 @@
           "description": "",
           "additionalProperties": {
             "$ref": "#/definitions/kudo_api_v1beta1_Plan",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.Plan"
+            "javaType": "io.fabric8.kudo.v1beta1.Plan"
           },
-          "javaType": "java.util.Map\u003cString,io.fabric8.kudo.api.model.v1beta1.Plan\u003e"
+          "javaType": "java.util.Map\u003cString,io.fabric8.kudo.v1beta1.Plan\u003e"
         },
         "tasks": {
           "type": "array",
           "description": "",
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_Task",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.Task"
+            "javaType": "io.fabric8.kudo.v1beta1.Task"
           }
         },
         "url": {
@@ -1290,7 +1290,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.kubectl.OperatorFile",
+      "javaType": "io.fabric8.kudo.kubectl.OperatorFile",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1301,15 +1301,15 @@
       "properties": {
         "Files": {
           "$ref": "#/definitions/kudo_kubectl_Files",
-          "javaType": "io.fabric8.kudo.api.model.kubectl.Files"
+          "javaType": "io.fabric8.kudo.kubectl.Files"
         },
         "Resources": {
           "$ref": "#/definitions/kudo_kubectl_Resources",
-          "javaType": "io.fabric8.kudo.api.model.kubectl.Resources"
+          "javaType": "io.fabric8.kudo.kubectl.Resources"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.kubectl.Package",
+      "javaType": "io.fabric8.kudo.kubectl.Package",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1345,7 +1345,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.kubectl.FileParameter",
+      "javaType": "io.fabric8.kudo.kubectl.FileParameter",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1363,12 +1363,12 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/kudo_kubectl_Parameter",
-            "javaType": "io.fabric8.kudo.api.model.kubectl.FileParameter"
+            "javaType": "io.fabric8.kudo.kubectl.FileParameter"
           }
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.kubectl.ParamsFile",
+      "javaType": "io.fabric8.kudo.kubectl.ParamsFile",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1379,19 +1379,19 @@
       "properties": {
         "Instance": {
           "$ref": "#/definitions/kudo_api_v1beta1_Instance",
-          "javaType": "io.fabric8.kudo.api.model.v1beta1.Instance"
+          "javaType": "io.fabric8.kudo.v1beta1.Instance"
         },
         "Operator": {
           "$ref": "#/definitions/kudo_api_v1beta1_Operator",
-          "javaType": "io.fabric8.kudo.api.model.v1beta1.Operator"
+          "javaType": "io.fabric8.kudo.v1beta1.Operator"
         },
         "OperatorVersion": {
           "$ref": "#/definitions/kudo_api_v1beta1_OperatorVersion",
-          "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorVersion"
+          "javaType": "io.fabric8.kudo.v1beta1.OperatorVersion"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kudo.api.model.kubectl.Resources",
+      "javaType": "io.fabric8.kudo.kubectl.Resources",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1401,11 +1401,11 @@
   "properties": {
     "AggregatedStatus": {
       "$ref": "#/definitions/kudo_api_v1beta1_AggregatedStatus",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.AggregatedStatus"
+      "javaType": "io.fabric8.kudo.v1beta1.AggregatedStatus"
     },
     "DummyTaskSpec": {
       "$ref": "#/definitions/kudo_api_v1beta1_DummyTaskSpec",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.DummyTaskSpec"
+      "javaType": "io.fabric8.kudo.v1beta1.DummyTaskSpec"
     },
     "ExecutionStatus": {
       "type": "string",
@@ -1413,75 +1413,75 @@
     },
     "FileParameter": {
       "$ref": "#/definitions/kudo_kubectl_Parameter",
-      "javaType": "io.fabric8.kudo.api.model.kubectl.FileParameter"
+      "javaType": "io.fabric8.kudo.kubectl.FileParameter"
     },
     "Files": {
       "$ref": "#/definitions/kudo_kubectl_Files",
-      "javaType": "io.fabric8.kudo.api.model.kubectl.Files"
+      "javaType": "io.fabric8.kudo.kubectl.Files"
     },
     "Instance": {
       "$ref": "#/definitions/kudo_api_v1beta1_Instance",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.Instance"
+      "javaType": "io.fabric8.kudo.v1beta1.Instance"
     },
     "InstanceError": {
       "$ref": "#/definitions/kudo_api_v1beta1_InstanceError",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.InstanceError"
+      "javaType": "io.fabric8.kudo.v1beta1.InstanceError"
     },
     "InstanceList": {
       "$ref": "#/definitions/kudo_api_v1beta1_InstanceList",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.InstanceList"
+      "javaType": "io.fabric8.kudo.v1beta1.InstanceList"
     },
     "InstanceSpec": {
       "$ref": "#/definitions/kudo_api_v1beta1_InstanceSpec",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.InstanceSpec"
+      "javaType": "io.fabric8.kudo.v1beta1.InstanceSpec"
     },
     "InstanceStatus": {
       "$ref": "#/definitions/kudo_api_v1beta1_InstanceStatus",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.InstanceStatus"
+      "javaType": "io.fabric8.kudo.v1beta1.InstanceStatus"
     },
     "Maintainer": {
       "$ref": "#/definitions/kudo_api_v1beta1_Maintainer",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.Maintainer"
+      "javaType": "io.fabric8.kudo.v1beta1.Maintainer"
     },
     "Operator": {
       "$ref": "#/definitions/kudo_api_v1beta1_Operator",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.Operator"
+      "javaType": "io.fabric8.kudo.v1beta1.Operator"
     },
     "OperatorDependency": {
       "$ref": "#/definitions/kudo_api_v1beta1_OperatorDependency",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorDependency"
+      "javaType": "io.fabric8.kudo.v1beta1.OperatorDependency"
     },
     "OperatorFile": {
       "$ref": "#/definitions/kudo_kubectl_OperatorFile",
-      "javaType": "io.fabric8.kudo.api.model.kubectl.OperatorFile"
+      "javaType": "io.fabric8.kudo.kubectl.OperatorFile"
     },
     "OperatorList": {
       "$ref": "#/definitions/kudo_api_v1beta1_OperatorList",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorList"
+      "javaType": "io.fabric8.kudo.v1beta1.OperatorList"
     },
     "OperatorSpec": {
       "$ref": "#/definitions/kudo_api_v1beta1_OperatorSpec",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorSpec"
+      "javaType": "io.fabric8.kudo.v1beta1.OperatorSpec"
     },
     "OperatorStatus": {
       "$ref": "#/definitions/kudo_api_v1beta1_OperatorStatus",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorStatus"
+      "javaType": "io.fabric8.kudo.v1beta1.OperatorStatus"
     },
     "OperatorVersion": {
       "$ref": "#/definitions/kudo_api_v1beta1_OperatorVersion",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorVersion"
+      "javaType": "io.fabric8.kudo.v1beta1.OperatorVersion"
     },
     "OperatorVersionList": {
       "$ref": "#/definitions/kudo_api_v1beta1_OperatorVersionList",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorVersionList"
+      "javaType": "io.fabric8.kudo.v1beta1.OperatorVersionList"
     },
     "OperatorVersionSpec": {
       "$ref": "#/definitions/kudo_api_v1beta1_OperatorVersionSpec",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorVersionSpec"
+      "javaType": "io.fabric8.kudo.v1beta1.OperatorVersionSpec"
     },
     "OperatorVersionStatus": {
       "$ref": "#/definitions/kudo_api_v1beta1_OperatorVersionStatus",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorVersionStatus"
+      "javaType": "io.fabric8.kudo.v1beta1.OperatorVersionStatus"
     },
     "Ordering": {
       "type": "string",
@@ -1489,11 +1489,11 @@
     },
     "Package": {
       "$ref": "#/definitions/kudo_kubectl_Package",
-      "javaType": "io.fabric8.kudo.api.model.kubectl.Package"
+      "javaType": "io.fabric8.kudo.kubectl.Package"
     },
     "Parameter": {
       "$ref": "#/definitions/kudo_api_v1beta1_Parameter",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.Parameter"
+      "javaType": "io.fabric8.kudo.v1beta1.Parameter"
     },
     "ParameterType": {
       "type": "string",
@@ -1504,64 +1504,64 @@
       "description": "",
       "items": {
         "$ref": "#/definitions/kudo_kubectl_Parameter",
-        "javaType": "io.fabric8.kudo.api.model.kubectl.FileParameter"
+        "javaType": "io.fabric8.kudo.kubectl.FileParameter"
       }
     },
     "ParamsFile": {
       "$ref": "#/definitions/kudo_kubectl_ParamsFile",
-      "javaType": "io.fabric8.kudo.api.model.kubectl.ParamsFile"
+      "javaType": "io.fabric8.kudo.kubectl.ParamsFile"
     },
     "Phase": {
       "$ref": "#/definitions/kudo_api_v1beta1_Phase",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.Phase"
+      "javaType": "io.fabric8.kudo.v1beta1.Phase"
     },
     "PhaseStatus": {
       "$ref": "#/definitions/kudo_api_v1beta1_PhaseStatus",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.PhaseStatus"
+      "javaType": "io.fabric8.kudo.v1beta1.PhaseStatus"
     },
     "PipeSpec": {
       "$ref": "#/definitions/kudo_api_v1beta1_PipeSpec",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.PipeSpec"
+      "javaType": "io.fabric8.kudo.v1beta1.PipeSpec"
     },
     "PipeTaskSpec": {
       "$ref": "#/definitions/kudo_api_v1beta1_PipeTaskSpec",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.PipeTaskSpec"
+      "javaType": "io.fabric8.kudo.v1beta1.PipeTaskSpec"
     },
     "Plan": {
       "$ref": "#/definitions/kudo_api_v1beta1_Plan",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.Plan"
+      "javaType": "io.fabric8.kudo.v1beta1.Plan"
     },
     "PlanExecution": {
       "$ref": "#/definitions/kudo_api_v1beta1_PlanExecution",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.PlanExecution"
+      "javaType": "io.fabric8.kudo.v1beta1.PlanExecution"
     },
     "PlanStatus": {
       "$ref": "#/definitions/kudo_api_v1beta1_PlanStatus",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.PlanStatus"
+      "javaType": "io.fabric8.kudo.v1beta1.PlanStatus"
     },
     "ResourceTaskSpec": {
       "$ref": "#/definitions/kudo_api_v1beta1_ResourceTaskSpec",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.ResourceTaskSpec"
+      "javaType": "io.fabric8.kudo.v1beta1.ResourceTaskSpec"
     },
     "Resources": {
       "$ref": "#/definitions/kudo_kubectl_Resources",
-      "javaType": "io.fabric8.kudo.api.model.kubectl.Resources"
+      "javaType": "io.fabric8.kudo.kubectl.Resources"
     },
     "Step": {
       "$ref": "#/definitions/kudo_api_v1beta1_Step",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.Step"
+      "javaType": "io.fabric8.kudo.v1beta1.Step"
     },
     "StepStatus": {
       "$ref": "#/definitions/kudo_api_v1beta1_StepStatus",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.StepStatus"
+      "javaType": "io.fabric8.kudo.v1beta1.StepStatus"
     },
     "Task": {
       "$ref": "#/definitions/kudo_api_v1beta1_Task",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.Task"
+      "javaType": "io.fabric8.kudo.v1beta1.Task"
     },
     "TaskSpec": {
       "$ref": "#/definitions/kudo_api_v1beta1_TaskSpec",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.TaskSpec"
+      "javaType": "io.fabric8.kudo.v1beta1.TaskSpec"
     },
     "Templates": {
       "type": "object",
@@ -1574,7 +1574,7 @@
     },
     "ToggleTaskSpec": {
       "$ref": "#/definitions/kudo_api_v1beta1_ToggleTaskSpec",
-      "javaType": "io.fabric8.kudo.api.model.v1beta1.ToggleTaskSpec"
+      "javaType": "io.fabric8.kudo.v1beta1.ToggleTaskSpec"
     }
   },
   "additionalProperties": true,
@@ -1616,11 +1616,11 @@
       "properties": {
         "Operator": {
           "$ref": "#/definitions/kudo_kubectl_OperatorFile",
-          "javaType": "io.fabric8.kudo.api.model.kubectl.OperatorFile"
+          "javaType": "io.fabric8.kudo.kubectl.OperatorFile"
         },
         "Params": {
           "$ref": "#/definitions/kudo_kubectl_ParamsFile",
-          "javaType": "io.fabric8.kudo.api.model.kubectl.ParamsFile"
+          "javaType": "io.fabric8.kudo.kubectl.ParamsFile"
         },
         "Templates": {
           "type": "object",
@@ -1654,11 +1654,11 @@
         },
         "spec": {
           "$ref": "#/definitions/kudo_api_v1beta1_InstanceSpec",
-          "javaType": "io.fabric8.kudo.api.model.v1beta1.InstanceSpec"
+          "javaType": "io.fabric8.kudo.v1beta1.InstanceSpec"
         },
         "status": {
           "$ref": "#/definitions/kudo_api_v1beta1_InstanceStatus",
-          "javaType": "io.fabric8.kudo.api.model.v1beta1.InstanceStatus"
+          "javaType": "io.fabric8.kudo.v1beta1.InstanceStatus"
         }
       },
       "additionalProperties": true
@@ -1686,7 +1686,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_Instance",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.Instance"
+            "javaType": "io.fabric8.kudo.v1beta1.Instance"
           }
         },
         "kind": {
@@ -1719,7 +1719,7 @@
         },
         "planExecution": {
           "$ref": "#/definitions/kudo_api_v1beta1_PlanExecution",
-          "javaType": "io.fabric8.kudo.api.model.v1beta1.PlanExecution"
+          "javaType": "io.fabric8.kudo.v1beta1.PlanExecution"
         }
       },
       "additionalProperties": true
@@ -1728,16 +1728,16 @@
       "properties": {
         "aggregatedStatus": {
           "$ref": "#/definitions/kudo_api_v1beta1_AggregatedStatus",
-          "javaType": "io.fabric8.kudo.api.model.v1beta1.AggregatedStatus"
+          "javaType": "io.fabric8.kudo.v1beta1.AggregatedStatus"
         },
         "planStatus": {
           "type": "object",
           "description": "",
           "additionalProperties": {
             "$ref": "#/definitions/kudo_api_v1beta1_PlanStatus",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.PlanStatus"
+            "javaType": "io.fabric8.kudo.v1beta1.PlanStatus"
           },
-          "javaType": "java.util.Map\u003cString,io.fabric8.kudo.api.model.v1beta1.PlanStatus\u003e"
+          "javaType": "java.util.Map\u003cString,io.fabric8.kudo.v1beta1.PlanStatus\u003e"
         }
       },
       "additionalProperties": true
@@ -1957,11 +1957,11 @@
         },
         "spec": {
           "$ref": "#/definitions/kudo_api_v1beta1_OperatorSpec",
-          "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorSpec"
+          "javaType": "io.fabric8.kudo.v1beta1.OperatorSpec"
         },
         "status": {
           "$ref": "#/definitions/kudo_api_v1beta1_OperatorStatus",
-          "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorStatus"
+          "javaType": "io.fabric8.kudo.v1beta1.OperatorStatus"
         }
       },
       "additionalProperties": true
@@ -2039,7 +2039,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_Maintainer",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.Maintainer"
+            "javaType": "io.fabric8.kudo.v1beta1.Maintainer"
           }
         },
         "name": {
@@ -2055,16 +2055,16 @@
           "description": "",
           "additionalProperties": {
             "$ref": "#/definitions/kudo_api_v1beta1_Plan",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.Plan"
+            "javaType": "io.fabric8.kudo.v1beta1.Plan"
           },
-          "javaType": "java.util.Map\u003cString,io.fabric8.kudo.api.model.v1beta1.Plan\u003e"
+          "javaType": "java.util.Map\u003cString,io.fabric8.kudo.v1beta1.Plan\u003e"
         },
         "tasks": {
           "type": "array",
           "description": "",
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_Task",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.Task"
+            "javaType": "io.fabric8.kudo.v1beta1.Task"
           }
         },
         "url": {
@@ -2087,7 +2087,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_Operator",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.Operator"
+            "javaType": "io.fabric8.kudo.v1beta1.Operator"
           }
         },
         "kind": {
@@ -2123,7 +2123,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_Maintainer",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.Maintainer"
+            "javaType": "io.fabric8.kudo.v1beta1.Maintainer"
           }
         },
         "url": {
@@ -2156,11 +2156,11 @@
         },
         "spec": {
           "$ref": "#/definitions/kudo_api_v1beta1_OperatorVersionSpec",
-          "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorVersionSpec"
+          "javaType": "io.fabric8.kudo.v1beta1.OperatorVersionSpec"
         },
         "status": {
           "$ref": "#/definitions/kudo_api_v1beta1_OperatorVersionStatus",
-          "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorVersionStatus"
+          "javaType": "io.fabric8.kudo.v1beta1.OperatorVersionStatus"
         }
       },
       "additionalProperties": true
@@ -2178,7 +2178,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_OperatorVersion",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorVersion"
+            "javaType": "io.fabric8.kudo.v1beta1.OperatorVersion"
           }
         },
         "kind": {
@@ -2210,7 +2210,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_OperatorDependency",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorDependency"
+            "javaType": "io.fabric8.kudo.v1beta1.OperatorDependency"
           }
         },
         "operator": {
@@ -2223,7 +2223,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_Parameter",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.Parameter"
+            "javaType": "io.fabric8.kudo.v1beta1.Parameter"
           }
         },
         "plans": {
@@ -2231,9 +2231,9 @@
           "description": "",
           "additionalProperties": {
             "$ref": "#/definitions/kudo_api_v1beta1_Plan",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.Plan"
+            "javaType": "io.fabric8.kudo.v1beta1.Plan"
           },
-          "javaType": "java.util.Map\u003cString,io.fabric8.kudo.api.model.v1beta1.Plan\u003e"
+          "javaType": "java.util.Map\u003cString,io.fabric8.kudo.v1beta1.Plan\u003e"
         },
         "tasks": {
           "type": "array",
@@ -2241,7 +2241,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_Task",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.Task"
+            "javaType": "io.fabric8.kudo.v1beta1.Task"
           }
         },
         "templates": {
@@ -2305,21 +2305,18 @@
       "properties": {
         "Files": {
           "$ref": "#/definitions/kudo_kubectl_Files",
-          "javaType": "io.fabric8.kudo.api.model.kubectl.Files"
+          "javaType": "io.fabric8.kudo.kubectl.Files"
         },
         "Resources": {
           "$ref": "#/definitions/kudo_kubectl_Resources",
-          "javaType": "io.fabric8.kudo.api.model.kubectl.Resources"
+          "javaType": "io.fabric8.kudo.kubectl.Resources"
         }
       },
       "additionalProperties": true
     },
     "parameter": {
       "properties": {
-        "default": {
-          "type": "string",
-          "description": ""
-        },
+        "default": {},
         "description": {
           "type": "string",
           "description": ""
@@ -2340,7 +2337,7 @@
           "type": "string",
           "description": ""
         },
-        "value-type": {
+        "type": {
           "type": "string",
           "description": ""
         }
@@ -2358,7 +2355,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/kudo_kubectl_Parameter",
-            "javaType": "io.fabric8.kudo.api.model.kubectl.FileParameter"
+            "javaType": "io.fabric8.kudo.kubectl.FileParameter"
           }
         }
       },
@@ -2375,7 +2372,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_Step",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.Step"
+            "javaType": "io.fabric8.kudo.v1beta1.Step"
           }
         },
         "strategy": {
@@ -2405,7 +2402,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_StepStatus",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.StepStatus"
+            "javaType": "io.fabric8.kudo.v1beta1.StepStatus"
           }
         }
       },
@@ -2436,7 +2433,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_PipeSpec",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.PipeSpec"
+            "javaType": "io.fabric8.kudo.v1beta1.PipeSpec"
           }
         },
         "pod": {
@@ -2453,7 +2450,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_Phase",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.Phase"
+            "javaType": "io.fabric8.kudo.v1beta1.Phase"
           }
         },
         "strategy": {
@@ -2500,7 +2497,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_PhaseStatus",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.PhaseStatus"
+            "javaType": "io.fabric8.kudo.v1beta1.PhaseStatus"
           }
         },
         "status": {
@@ -2518,15 +2515,15 @@
       "properties": {
         "Instance": {
           "$ref": "#/definitions/kudo_api_v1beta1_Instance",
-          "javaType": "io.fabric8.kudo.api.model.v1beta1.Instance"
+          "javaType": "io.fabric8.kudo.v1beta1.Instance"
         },
         "Operator": {
           "$ref": "#/definitions/kudo_api_v1beta1_Operator",
-          "javaType": "io.fabric8.kudo.api.model.v1beta1.Operator"
+          "javaType": "io.fabric8.kudo.v1beta1.Operator"
         },
         "OperatorVersion": {
           "$ref": "#/definitions/kudo_api_v1beta1_OperatorVersion",
-          "javaType": "io.fabric8.kudo.api.model.v1beta1.OperatorVersion"
+          "javaType": "io.fabric8.kudo.v1beta1.OperatorVersion"
         }
       },
       "additionalProperties": true
@@ -2591,7 +2588,7 @@
         },
         "spec": {
           "$ref": "#/definitions/kudo_api_v1beta1_TaskSpec",
-          "javaType": "io.fabric8.kudo.api.model.v1beta1.TaskSpec"
+          "javaType": "io.fabric8.kudo.v1beta1.TaskSpec"
         }
       },
       "additionalProperties": true
@@ -2616,7 +2613,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kudo_api_v1beta1_PipeSpec",
-            "javaType": "io.fabric8.kudo.api.model.v1beta1.PipeSpec"
+            "javaType": "io.fabric8.kudo.v1beta1.PipeSpec"
           }
         },
         "pod": {

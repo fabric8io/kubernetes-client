@@ -6,19 +6,20 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectReferenceBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.utils.Serialization;
-import io.fabric8.kudo.api.model.kubectl.*;
-import io.fabric8.kudo.api.model.kubectl.ResourcesBuilder;
-import io.fabric8.kudo.api.model.v1beta1.*;
-import io.fabric8.kudo.api.model.v1beta1.InstanceBuilder;
-import io.fabric8.kudo.api.model.v1beta1.InstanceSpecBuilder;
-import io.fabric8.kudo.api.model.v1beta1.OperatorBuilder;
-import io.fabric8.kudo.api.model.v1beta1.OperatorSpecBuilder;
-import io.fabric8.kudo.api.model.v1beta1.OperatorVersionBuilder;
-import io.fabric8.kudo.api.model.v1beta1.OperatorVersionSpecBuilder;
-import io.fabric8.kudo.api.model.v1beta1.ParameterBuilder;
+import io.fabric8.kudo.kubectl.*;
+import io.fabric8.kudo.kubectl.ResourcesBuilder;
+import io.fabric8.kudo.v1beta1.*;
+import io.fabric8.kudo.v1beta1.InstanceBuilder;
+import io.fabric8.kudo.v1beta1.InstanceSpecBuilder;
+import io.fabric8.kudo.v1beta1.OperatorBuilder;
+import io.fabric8.kudo.v1beta1.OperatorSpecBuilder;
+import io.fabric8.kudo.v1beta1.OperatorVersionBuilder;
+import io.fabric8.kudo.v1beta1.OperatorVersionSpecBuilder;
+import io.fabric8.kudo.v1beta1.ParameterBuilder;
 import io.fabric8.kudo.client.exception.InstanceVersionException;
 import io.fabric8.kudo.client.exception.OperatorCreateException;
 import io.fabric8.kudo.client.exception.OperatorVersionException;
+import io.fabric8.kudo.v1beta1.Parameter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -114,24 +115,6 @@ public class InstanceKudoClient {
     }
 
     private Resources convertToResource(String name, OperatorFile operatorFile, ParamsFile paramsFile, Map<String, String> tpls) {
-        /**
-         * operator := &v1beta1.Operator{
-         * 		TypeMeta: metav1.TypeMeta{
-         * 			Kind:       "Operator",
-         * 			APIVersion: packages.APIVersion,
-         *        },
-         * 		ObjectMeta: metav1.ObjectMeta{
-         * 			Name: files.Operator.Name,
-         *    },
-         * 		Spec: v1beta1.OperatorSpec{
-         * 			Description:       files.Operator.Description,
-         * 			KudoVersion:       files.Operator.KUDOVersion,
-         * 			KubernetesVersion: files.Operator.KubernetesVersion,
-         * 			Maintainers:       files.Operator.Maintainers,
-         * 			URL:               files.Operator.URL,
-         *    },
-         * 		Status: v1beta1.OperatorStatus{},* 	}
-         */
         // 1. convert the Operator
         Operator operator = new OperatorBuilder()
                 .withKind("Operator")
@@ -150,30 +133,6 @@ public class InstanceKudoClient {
                         .build()
                 )
                 .build();
-        /**    fv := &v1beta1.OperatorVersion{
-         * 		TypeMeta: metav1.TypeMeta{
-         * 			Kind:       "OperatorVersion",
-         * 			APIVersion: packages.APIVersion,
-         *        }    ,
-         * 		ObjectMeta: metav1.ObjectMeta{
-         * 			Name: fmt.Sprintf("%s-%s", files.Operator.Name, files.Operator.OperatorVersion),
-         *    },
-         * 		Spec: v1beta1.OperatorVersionSpec{
-         * 			Operator: corev1.ObjectReference{
-         * 				Name: files.Operator.Name,
-         * 				Kind: "Operator",
-         *      },
-         * 			AppVersion:     files.Operator.AppVersion,
-         * 			Version:        files.Operator.OperatorVersion,
-         * 			Templates:      files.Templates,
-         * 			Tasks:          files.Operator.Tasks,
-         * 			Parameters:     parameters,
-         * 			Plans:          files.Operator.Plans,
-         * 			UpgradableFrom: nil,
-         *    },
-         * 		Status: v1beta1.OperatorVersionStatus{},
-         *  }
-         */
         // 2. convert the OperatorVersion
         OperatorVersion ov = new OperatorVersionBuilder()
                 .withApiVersion(KUDO_APIVERSION)
@@ -197,24 +156,6 @@ public class InstanceKudoClient {
                         .build())
                 .build();
 
-        /**
-         * 	instance := &v1beta1.Instance{
-         * 		TypeMeta: metav1.TypeMeta{
-         * 			Kind:       "Instance",
-         * 			APIVersion: packages.APIVersion,
-         *    },
-         * 		ObjectMeta: metav1.ObjectMeta{
-         * 			Name:   fmt.Sprintf("%s-instance", files.Operator.Name),
-         * 			Labels: map[string]string{kudo.OperatorLabel: files.Operator.Name},
-         *    },
-         * 		Spec: v1beta1.InstanceSpec{
-         * 			OperatorVersion: corev1.ObjectReference{
-         * 				Name: fmt.Sprintf("%s-%s", files.Operator.Name, files.Operator.OperatorVersion),
-         *      },
-         *    },
-         * 		Status: v1beta1.InstanceStatus{},
-         *  }
-         */
         // 3. convert the instance
         Map<String, String> lables = new HashMap<>();
         lables.put(operatorFile.getName(), operatorFile.getOperatorVersion());
@@ -247,23 +188,6 @@ public class InstanceKudoClient {
     }
 
     private List<Parameter> convertToParameter(List<FileParameter> parameters) {
-        /**
-         * for _, parameter := range parameters {
-         * 		d, err := utilconvert.WrapParamValue(parameter.Default, parameter.Type)
-         * 		if err != nil {
-         * 			return nil, fmt.Errorf("failed to convert %s default for parameter '%s': %w", parameter.Type, parameter.Name, err)
-         *        }
-         *
-         * 		result = append(result, kudov1beta1.Parameter{
-         * 			DisplayName: parameter.DisplayName,
-         * 			Name:        parameter.Name,
-         * 			Description: parameter.Description,
-         * 			Required:    parameter.Required,
-         * 			Default:     d,
-         * 			Trigger:     parameter.Trigger,
-         * 			Type:        parameter.Type,
-         *    })* 	}
-         */
         List<Parameter> rs = new ArrayList<>();
         for (FileParameter fp : parameters) {
             rs.add(new ParameterBuilder()

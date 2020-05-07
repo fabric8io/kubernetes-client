@@ -91,8 +91,8 @@ func main() {
     {"k8s.io/apimachinery/pkg/util", "v1", "io.fabric8.kubernetes.api.model", "kubernetes_uti_"},
     {"k8s.io/apimachinery/pkg/runtime", "v1", "io.fabric8.kubernetes.api.model", "kubernetes_uti_"},
 
-    {"github.com/kudobuilder/kudo/pkg/apis/kudo/v1beta1", "kudo.dev", "io.fabric8.kudo.api.model.v1beta1", "kudo_api_v1beta1_"},
-    {"github.com/kudobuilder/kudo/pkg/kudoctl/packages", "kudo.dev", "io.fabric8.kudo.api.model.kubectl", "kudo_kubectl_"},
+    {"github.com/kudobuilder/kudo/pkg/apis/kudo/v1beta1", "kudo.dev", "io.fabric8.kudo.v1beta1", "kudo_api_v1beta1_"},
+    {"github.com/kudobuilder/kudo/pkg/kudoctl/packages", "kudo.dev", "io.fabric8.kudo.kubectl", "kudo_kubectl_"},
   }
 
   typeMap := map[reflect.Type]reflect.Type{

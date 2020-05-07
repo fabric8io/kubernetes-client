@@ -25,31 +25,12 @@ public class KudoResourceMappingProvider implements KubernetesResourceMappingPro
     public final Map<String, Class<? extends KubernetesResource>> mappings = new HashMap<>();
 
     public KudoResourceMappingProvider () {
-        /*mappings.put("serving.knative.dev/v1alpha1#Configuration", io.fabric8.knative.serving.v1alpha1.Configuration.class);
-        mappings.put("serving.knative.dev/v1alpha1#Revision", io.fabric8.knative.serving.v1alpha1.Revision.class);
-        mappings.put("serving.knative.dev/v1alpha1#Service", io.fabric8.knative.serving.v1alpha1.Service.class);
-        mappings.put("serving.knative.dev/v1alpha1#Route", io.fabric8.knative.serving.v1alpha1.Route.class);
-
-        mappings.put("serving.knative.dev/v1beta1#Configuration", io.fabric8.knative.serving.v1beta1.Configuration.class);
-        mappings.put("serving.knative.dev/v1beta1#Revision", io.fabric8.knative.serving.v1beta1.Revision.class);
-        mappings.put("serving.knative.dev/v1beta1#Service", io.fabric8.knative.serving.v1beta1.Service.class);
-        mappings.put("serving.knative.dev/v1beta1#Route", io.fabric8.knative.serving.v1beta1.Route.class);
-
-        mappings.put("serving.knative.dev/v1#Configuration", io.fabric8.knative.serving.v1.Configuration.class);
-        mappings.put("serving.knative.dev/v1#Revision", io.fabric8.knative.serving.v1.Revision.class);
-        mappings.put("serving.knative.dev/v1#Service", io.fabric8.knative.serving.v1.Service.class);
-        mappings.put("serving.knative.dev/v1#Route", io.fabric8.knative.serving.v1.Route.class);
-
-        mappings.put("eventing.knative.dev/v1alpha1#Broker", io.fabric8.knative.eventing.v1alpha1.Broker.class);
-        mappings.put("eventing.knative.dev/v1alpha1#Channel", io.fabric8.knative.messaging.v1alpha1.Channel.class);
-        mappings.put("eventing.knative.dev/v1alpha1#EventType", io.fabric8.knative.eventing.v1alpha1.EventType.class);
-        mappings.put("eventing.knative.dev/v1alpha1#Trigger", io.fabric8.knative.eventing.v1alpha1.Trigger.class);
-        mappings.put("eventing.knative.dev/v1alpha1#Subscription", io.fabric8.knative.messaging.v1alpha1.Subscription.class);
-
-        mappings.put("messaging.knative.dev/v1alpha1#InMemoryChannel", io.fabric8.knative.messaging.v1alpha1.InMemoryChannel.class);
-        mappings.put("messaging.knative.dev/v1alpha1#Sequence", io.fabric8.knative.flows.v1alpha1.Sequence.class);*/
-      mappings.put("kudo.dev/v1beta1#InstanceList", io.fabric8.kudo.api.model.v1beta1.InstanceList.class);
-      mappings.put("kudo.dev/v1beta1#Instance", io.fabric8.kudo.api.model.v1beta1.Instance.class);
+      mappings.put("kudo.dev/v1beta1#InstanceList", io.fabric8.kudo.v1beta1.InstanceList.class);
+      mappings.put("kudo.dev/v1beta1#Instance", io.fabric8.kudo.v1beta1.Instance.class);
+      mappings.put("kudo.dev/v1beta1#OperatorVersion", io.fabric8.kudo.v1beta1.OperatorVersion.class);
+      mappings.put("kudo.dev/v1beta1#OperatorVersionList", io.fabric8.kudo.v1beta1.OperatorVersionList.class);
+      mappings.put("kudo.dev/v1beta1#Operator", io.fabric8.kudo.v1beta1.Operator.class);
+      mappings.put("kudo.dev/v1beta1#OperatorList", io.fabric8.kudo.v1beta1.OperatorList.class);
     }
      
     public Map<String, Class<? extends KubernetesResource>> getMappings() {

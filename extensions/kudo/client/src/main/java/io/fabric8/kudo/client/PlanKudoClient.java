@@ -1,12 +1,12 @@
 package io.fabric8.kudo.client;
 
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kudo.api.model.v1beta1.*;
-import io.fabric8.kudo.api.model.v1beta1.InstanceBuilder;
-import io.fabric8.kudo.api.model.v1beta1.InstanceSpecBuilder;
+import io.fabric8.kudo.v1beta1.*;
+import io.fabric8.kudo.v1beta1.PlanExecutionBuilder;
 import io.fabric8.kudo.client.entity.Tree;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -31,23 +31,6 @@ public class PlanKudoClient {
             return null;
         }
         Map<String, PlanStatus> plansStatus = historyStruct(ns, name);
-        // TODO tree print the status
-        /**
-         * for _, p := range plans {
-         * 		plan := instance.Status.PlanStatus[p]
-         * 		msg := "never run" // this is for the cases when status was not yet populated
-         *
-         * 		if plan.LastUpdatedTimestamp != nil && !plan.LastUpdatedTimestamp.IsZero() { // plan already finished
-         * 			t := plan.LastUpdatedTimestamp.Format(timeLayout)
-         * 			msg = fmt.Sprintf("last finished run at %s (%s)", t, string(plan.Status))
-         *                } else if plan.Status.IsRunning() {
-         * 			msg = "is running"
-         *        } else if plan.Status != "" {
-         * 			msg = string(plan.Status)
-         *        }
-         * 		historyDisplay := fmt.Sprintf("%s (%s)", plan.Name, msg)
-         * 		tree.AddBranch(historyDisplay)* 	}
-         */
 
         if(plansStatus == null) {
             return "";
@@ -124,21 +107,6 @@ public class PlanKudoClient {
 
         for(Map.Entry<String, Plan> pe: ov.getSpec().getPlans().entrySet()) {
             if(pe.getKey().equals(lastPlanStatus.getName())) {
-                /**
-                 * planDisplay := fmt.Sprintf("Plan %s (%s strategy) [%s]%s", plan, ov.Spec.Plans[plan].Strategy, lastPlanStatus.Status, printMessageIfAvailable(lastPlanStatus.Message))
-                 * 				if lastPlanStatus.LastUpdatedTimestamp != nil {
-                 * 					planDisplay = fmt.Sprintf("%s, last updated %s", planDisplay, lastPlanStatus.LastUpdatedTimestamp.Format("2006-01-02 15:04:05"))
-                 *                                }
-                 * 				planBranchName := rootBranchName.AddBranch(planDisplay)
-                 * 				for _, phase := range lastPlanStatus.Phases {
-                 * 					phaseDisplay := fmt.Sprintf("Phase %s (%s strategy) [%s]%s", phase.Name, getPhaseStrategy(phase.Name), phase.Status, printMessageIfAvailable(phase.Message))
-                 * 					phaseBranchName := planBranchName.AddBranch(phaseDisplay)
-                 * 					for _, steps := range phase.Steps {
-                 * 						stepsDisplay := fmt.Sprintf("Step %s [%s]%s", steps.Name, steps.Status, printMessageIfAvailable(steps.Message))
-                 * 						phaseBranchName.AddBranch(stepsDisplay)
-                 *                    }
-                 *                }
-                 */
                 String planName = String.format("Plan %s (%s strategy) [%s]%s", pe.getKey(),
                         pe.getValue().getStrategy(), lastPlanStatus.getStatus(),
                         printMessageIfAvailable(lastPlanStatus.getMessage()));
@@ -158,17 +126,6 @@ public class PlanKudoClient {
                     }
                 }
             } else {
-                /**
-                 * planDisplay := fmt.Sprintf("Plan %s (%s strategy) [NOT ACTIVE]", plan, ov.Spec.Plans[plan].Strategy)
-                 * 				planBranchName := rootBranchName.AddBranch(planDisplay)
-                 * 				for _, phase := range ov.Spec.Plans[plan].Phases {
-                 * 					phaseDisplay := fmt.Sprintf("Phase %s (%s strategy) [NOT ACTIVE]", phase.Name, phase.Strategy)
-                 * 					phaseBranchName := planBranchName.AddBranch(phaseDisplay)
-                 * 					for _, steps := range phase.Steps {
-                 * 						stepDisplay := fmt.Sprintf("Step %s [NOT ACTIVE]", steps.Name)
-                 * 						phaseBranchName.AddBranch(stepDisplay)
-                 *                                        }* 				}
-                 */
                 String planName = String.format("Plan %s (%s strategy) [NOT ACTIVE]", pe.getKey(), ov.getSpec().getPlans().get(pe.getKey()).getStrategy());
                 Tree planBranch = tree.nodeNode(planName);
                 for(PhaseStatus ps :lastPlanStatus.getPhases()){
@@ -183,50 +140,32 @@ public class PlanKudoClient {
                 }
             }
         }
-
         return root;
-
     }
 
     public void trigger(String ns, String instanceName, String planName){
+        Instance instance = cmdClient.getClient()
+                .instances()
+                .inNamespace(ns)
+                .withName(instanceName).get();
+        if(instance == null) {
+            throw new RuntimeException("Not Found the instance");
+        }
+        // add the executionplan into the plan
+        instance.getSpec().setPlanExecution(
+                new PlanExecutionBuilder()
+                        .withNewPlanName(planName)
+                        .withNewUid(UUID.randomUUID().toString())
+                        .build());
 
         cmdClient.getClient()
                 .instances()
                 .inNamespace(ns)
                 .withName(instanceName)
-                .patch(new InstanceBuilder()
-                        .withSpec(new InstanceSpecBuilder().withNewPlanExecution()
-                                .withNewPlanName(planName)
-                                .withNewUid(UUID.randomUUID().toString())
-                                .endPlanExecution()
-                                .build())
-                        .build());
-
+                .patch(instance);
     }
 
     public PlanStatus lastExecutedPlanStatus(Instance instance) {
-        /**
-         * if i.NoPlanEverExecuted() {
-         * 		return nil
-         *        }
-         * 	activePlan := i.GetPlanInProgress()
-         * 	if activePlan != nil {
-         * 		return activePlan
-         *    }
-         * 	var lastExecutedPlan *PlanStatus
-         * 	for n := range i.Status.PlanStatus {
-         * 		p := i.Status.PlanStatus[n]
-         * 		if p.Status == ExecutionNeverRun {
-         * 			continue // only interested in plans that run
-         *        }
-         * 		if lastExecutedPlan == nil {
-         * 			lastExecutedPlan = &p // first plan that was run and we're iterating over
-         *        } else if wasRunAfter(p, *lastExecutedPlan) {
-         * 			lastExecutedPlan = &p // this plan was run after the plan we have chosen before
-         *        }
-         *    }
-         * 	return lastExecutedPlan
-         */
 
         if(this.NoPlanEverExecuted(instance)) {
             // if the instance is Even excuted then return null;
@@ -266,13 +205,6 @@ public class PlanKudoClient {
     }
 
     private boolean NoPlanEverExecuted(Instance instance){
-        /**
-         * for _, p := range i.Status.PlanStatus {
-         * 		if p.Status != ExecutionNeverRun {
-         * 			return false
-         *                }* 	}
-         * 	return true
-         */
 
         if(instance == null || instance.getStatus() == null) {
             // if the install is null or the status is null, then return null
@@ -294,11 +226,6 @@ public class PlanKudoClient {
     }
 
     private PlanStatus getPlanInProgress(Instance i) {
-        /*for _, p := range i.Status.PlanStatus {
-            if p.Status.IsRunning() {
-                return &p
-            }
-        }*/
         for(PlanStatus ps: i.getStatus().getPlanStatus().values()) {
             if(this.isRunning(ps)) {
                 return ps;

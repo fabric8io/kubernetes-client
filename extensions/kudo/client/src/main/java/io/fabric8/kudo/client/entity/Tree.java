@@ -12,10 +12,18 @@ public class Tree {
 
     private String msg;
 
+    private int index = 0;
+
     private List<Tree> nodes = new ArrayList<>();
 
     private Tree(String msg) {
         this.msg = msg;
+        this.index = 0;
+    }
+
+    private Tree(String msg, int index) {
+        this.msg = msg;
+        this.index = index;
     }
 
     public static Tree craeteRoot(String name) {
@@ -23,13 +31,17 @@ public class Tree {
     }
 
     public Tree nodeNode(String name) {
-        Tree node = new Tree(name);
+        Tree node = new Tree(name, this.index++);
         this.nodes.add(node);
         return node;
     }
 
     public String msg() {
         return msg;
+    }
+
+    public int index() {
+        return this.index;
     }
 
     public String printTree() {
@@ -42,12 +54,21 @@ public class Tree {
             //出栈
             Tree node = stack.pop();
             // 添加节点信息
-            sb.append(String.format("%s \r\n", node.msg()));
+            sb.append(String.format("%s \r\n", addTabForMsg(node.msg(), node.index())));
 
             if (node.nodes != null && node.nodes.size() > 0) {
                 node.nodes.forEach(n -> stack.push(n));
             }
         }
         return sb.toString();
+    }
+
+    private static final String Tab = " ";
+    private String addTabForMsg(String msg, int index) {
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < index; i++) {
+            sb.append(Tab);
+        }
+        return sb.toString() + msg;
     }
 }

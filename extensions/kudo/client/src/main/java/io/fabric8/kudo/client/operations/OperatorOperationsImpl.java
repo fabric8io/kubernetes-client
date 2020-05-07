@@ -4,9 +4,9 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kudo.api.model.v1beta1.DoneableOperator;
-import io.fabric8.kudo.api.model.v1beta1.Operator;
-import io.fabric8.kudo.api.model.v1beta1.OperatorList;
+import io.fabric8.kudo.v1beta1.DoneableOperator;
+import io.fabric8.kudo.v1beta1.Operator;
+import io.fabric8.kudo.v1beta1.OperatorList;
 import io.fabric8.kudo.client.Constance;
 import okhttp3.OkHttpClient;
 
