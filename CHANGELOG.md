@@ -2,6 +2,7 @@
 
 ### 4.10-SNAPSHOT
 #### Bugs
+* Fix #2201: Uberjar doesn't contain model classes anymore
 
 #### Improvements
 
