@@ -3127,6 +3127,148 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_core_Event": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "action": {
+          "type": "string",
+          "description": ""
+        },
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "v1",
+          "required": true
+        },
+        "count": {
+          "type": "integer",
+          "description": ""
+        },
+        "eventTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_MicroTime",
+          "javaType": "io.fabric8.kubernetes.api.model.MicroTime"
+        },
+        "firstTimestamp": {
+          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_Time",
+          "javaType": "String"
+        },
+        "involvedObject": {
+          "$ref": "#/definitions/kubernetes_core_ObjectReference",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "Event",
+          "required": true
+        },
+        "lastTimestamp": {
+          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_Time",
+          "javaType": "String"
+        },
+        "message": {
+          "type": "string",
+          "description": ""
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "reason": {
+          "type": "string",
+          "description": ""
+        },
+        "related": {
+          "$ref": "#/definitions/kubernetes_core_ObjectReference",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        },
+        "reportingComponent": {
+          "type": "string",
+          "description": ""
+        },
+        "reportingInstance": {
+          "type": "string",
+          "description": ""
+        },
+        "series": {
+          "$ref": "#/definitions/kubernetes_core_EventSeries",
+          "javaType": "io.fabric8.kubernetes.api.model.EventSeries"
+        },
+        "source": {
+          "$ref": "#/definitions/kubernetes_core_EventSource",
+          "javaType": "io.fabric8.kubernetes.api.model.EventSource"
+        },
+        "type": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.Event",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "kubernetes_core_EventList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_Event",
+            "javaType": "io.fabric8.kubernetes.api.model.Event"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "EventList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_ListMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.EventList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.Event\u003e"
+      ]
+    },
+    "kubernetes_core_EventSeries": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "description": ""
+        },
+        "lastObservedTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_MicroTime",
+          "javaType": "io.fabric8.kubernetes.api.model.MicroTime"
+        },
+        "state": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.EventSeries",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_core_EventSource": {
       "type": "object",
       "description": "",
@@ -8034,6 +8176,18 @@
     "EnvVar": {
       "$ref": "#/definitions/kubernetes_core_EnvVar",
       "javaType": "io.fabric8.kubernetes.api.model.EnvVar"
+    },
+    "Event": {
+      "$ref": "#/definitions/kubernetes_core_Event",
+      "javaType": "io.fabric8.kubernetes.api.model.Event"
+    },
+    "EventList": {
+      "$ref": "#/definitions/kubernetes_core_EventList",
+      "javaType": "io.fabric8.kubernetes.api.model.EventList"
+    },
+    "EventSeries": {
+      "$ref": "#/definitions/kubernetes_core_EventSeries",
+      "javaType": "io.fabric8.kubernetes.api.model.EventSeries"
     },
     "EventSource": {
       "$ref": "#/definitions/kubernetes_core_EventSource",

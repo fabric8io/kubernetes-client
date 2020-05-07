@@ -2,6 +2,7 @@
 
 ### 4.10-SNAPSHOT
 #### Bugs
+* Fix #2205: Event model classes from core v1 have been lost
 
 #### Improvements
 

@@ -30,9 +30,9 @@ import io.fabric8.kubernetes.api.model.DoneableComponentStatus;
 import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsList;
 import io.fabric8.kubernetes.api.model.DoneableEndpoints;
-import io.fabric8.kubernetes.api.model.events.Event;
-import io.fabric8.kubernetes.api.model.events.EventList;
-import io.fabric8.kubernetes.api.model.events.DoneableEvent;
+import io.fabric8.kubernetes.api.model.Event;
+import io.fabric8.kubernetes.api.model.EventList;
+import io.fabric8.kubernetes.api.model.DoneableEvent;
 import io.fabric8.kubernetes.api.model.LimitRange;
 import io.fabric8.kubernetes.api.model.LimitRangeList;
 import io.fabric8.kubernetes.api.model.DoneableLimitRange;
@@ -301,8 +301,9 @@ public interface KubernetesClient extends Client {
   MixedOperation<Endpoints, EndpointsList, DoneableEndpoints, Resource<Endpoints, DoneableEndpoints>> endpoints();
 
   /**
-   * API entrypoint for getting events in Kubernetes. Events (events/v1beta1)
+   * API entrypoint for getting events in Kubernetes. Events (core/v1)
    *
+   * @deprecated Use {@link #v1().events() } instead.
    * @return MixedOperation object for doing operations for Events
    */
   MixedOperation<Event, EventList, DoneableEvent, Resource<Event, DoneableEvent>> events();
@@ -439,5 +440,12 @@ public interface KubernetesClient extends Client {
    */
   MixedOperation<Lease, LeaseList, DoneableLease, Resource<Lease, DoneableLease>> leases();
 
+  /**
+   * API entrypoint for Core Kubernetes Resources (core/v1). Right now other core
+   * resources have their own DSL entrypoints. But in future, all core/v1 resources
+   * would be added here.
+   *
+   * @return V1APIGroupDSL DSL object for core v1 resources
+   */
   V1APIGroupDSL v1();
 }
