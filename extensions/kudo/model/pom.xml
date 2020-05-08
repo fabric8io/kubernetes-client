@@ -38,7 +38,7 @@
         <dependency>
             <groupId>io.fabric8</groupId>
             <artifactId>kubernetes-model</artifactId>
-            <version>${project.version}</version>
+            <version>4.9.1</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

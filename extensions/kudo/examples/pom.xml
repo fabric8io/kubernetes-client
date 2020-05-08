@@ -20,24 +20,18 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>io.fabric8</groupId>
-    <artifactId>kubernetes-extensions</artifactId>
+    <artifactId>kudo-extension-pom</artifactId>
     <version>4.9-SNAPSHOT</version>
   </parent>
 
-  <artifactId>kudo-extension-pom</artifactId>
-  <packaging>pom</packaging>
-  <name>Fabric8 :: Kudo :: Extension</name>
+  <artifactId>kudo-examples</artifactId>
+  <name>Fabric8 :: KUDO :: Examples</name>
 
-  <properties>
-    <fabric-version>4.9-SNAPSHOT</fabric-version>
-  </properties>
-
-  <modules>
-    <module>annotator</module>
-    <module>model</module>
-    <module>client</module>
-    <module>mock</module>
-    <module>examples</module>
-    <module>tests</module>
-  </modules>
+  <dependencies>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kudo-client</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
 </project>

@@ -1,0 +1,39 @@
+apiVersion: kudo.dev/v1beta1
+name: redis
+operatorVersion: 0.2.0
+kudoVersion: 0.10.0
+kubernetesVersion: 1.15.0
+appVersion: 5.0.1
+maintainers:
+  - name: Denis Jannot
+    email: djannot@mesosphere.io
+  - name: Fabian Baier
+    email: fabian@mesosphere.io
+url: https://redis.io/
+tasks:
+  - name: deploy
+    kind: Apply
+    spec:
+      resources:
+        - service.yaml
+        - pdb.yaml
+        - configmap.yaml
+        - statefulset.yaml
+  - name: init
+    kind: Apply
+    spec:
+      resources:
+        - init.yaml
+plans:
+  deploy:
+    strategy: serial
+    phases:
+      - name: deploy-redis
+        strategy: serial
+        steps:
+          - name: deploy
+            tasks:
+              - deploy
+          - name: init
+            tasks:
+              - init

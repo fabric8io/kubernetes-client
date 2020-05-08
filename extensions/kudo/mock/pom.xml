@@ -20,24 +20,35 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>io.fabric8</groupId>
-    <artifactId>kubernetes-extensions</artifactId>
+    <artifactId>kudo-extension-pom</artifactId>
     <version>4.9-SNAPSHOT</version>
   </parent>
 
-  <artifactId>kudo-extension-pom</artifactId>
-  <packaging>pom</packaging>
-  <name>Fabric8 :: Kudo :: Extension</name>
+  <artifactId>kudo-mock</artifactId>
+  <name>Fabric8 :: KUDO :: Server Mock</name>
 
-  <properties>
-    <fabric-version>4.9-SNAPSHOT</fabric-version>
-  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-server-mock</artifactId>
+      <version>${project.version}</version>
+    </dependency>
 
-  <modules>
-    <module>annotator</module>
-    <module>model</module>
-    <module>client</module>
-    <module>mock</module>
-    <module>examples</module>
-    <module>tests</module>
-  </modules>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kudo-client</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-migrationsupport</artifactId>
+    </dependency>
+  </dependencies>
+
 </project>

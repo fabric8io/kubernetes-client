@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  namespace: {{ .Namespace }}
+  name: {{ .PlanName }}-{{ .Name }}-{{ .OperatorName }}-job
+  labels:
+    app: redis
+    redis: {{ .OperatorName }}
+    instance: {{ .Name }}
+    plan: {{ .PlanName }}
+spec:
+  template:
+    metadata:
+      name: {{ .PlanName }}-{{ .Name }}-{{ .OperatorName }}-job
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: {{ .PlanName }}
+        image: redis:5.0.1-alpine
+        imagePullPolicy: IfNotPresent
+        command:
+        - /bin/sh
+        - -c
+        - 'echo yes | redis-cli -x -h {{ .Name }}-{{ .OperatorName }}-svc --cluster create --cluster-replicas 1 $(i=0; while [ $i -lt {{ .Params.masters | mul 2 }} ]; do printf $(nslookup {{ .Name }}-{{ .OperatorName }}-${i}.{{ .Name }}-{{ .OperatorName }}-svc | grep "Address" | awk "{ print \$3 }")":{{ .Params.client_port }} "; i=$((i+1)); done)'
