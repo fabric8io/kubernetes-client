@@ -218,7 +218,7 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "javaType": "io.fabric8.knative.v1.Condition"
+            "javaType": "io.fabric8.knative.internal.pkg.apis.Condition"
           }
         },
         "observedGeneration": {
@@ -707,7 +707,7 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "javaType": "io.fabric8.knative.v1.Condition"
+            "javaType": "io.fabric8.knative.internal.pkg.apis.Condition"
           }
         },
         "observedGeneration": {
@@ -1250,7 +1250,7 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "javaType": "io.fabric8.knative.v1.Condition"
+            "javaType": "io.fabric8.knative.internal.pkg.apis.Condition"
           }
         },
         "observedGeneration": {

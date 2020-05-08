@@ -29,7 +29,6 @@
   <name>Fabric8 :: Knative :: Extension</name>
 
   <modules>
-    <module>annotator</module>
     <module>model</module>
     <module>client</module>
     <module>mock</module>

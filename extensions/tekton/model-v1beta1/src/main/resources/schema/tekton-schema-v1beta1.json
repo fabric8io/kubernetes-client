@@ -1,5 +1,5 @@
 {
-  "id": "http://fabric8.io/tekton/v1alpha1/TektonSchema#",
+  "id": "http://fabric8.io/tekton/v1beta1/TektonSchema#",
   "$schema": "http://json-schema.org/schema#",
   "definitions": {
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_pod_Template": {
@@ -192,7 +192,7 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "javaType": "io.fabric8.knative.v1.Condition"
+            "javaType": "io.fabric8.knative.internal.pkg.apis.Condition"
           }
         },
         "observedGeneration": {
@@ -611,7 +611,7 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "javaType": "io.fabric8.knative.v1.Condition"
+            "javaType": "io.fabric8.knative.internal.pkg.apis.Condition"
           }
         },
         "observedGeneration": {
@@ -1453,7 +1453,7 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "javaType": "io.fabric8.knative.v1.Condition"
+            "javaType": "io.fabric8.knative.internal.pkg.apis.Condition"
           }
         },
         "observedGeneration": {
