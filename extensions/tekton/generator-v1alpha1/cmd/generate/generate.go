@@ -28,16 +28,16 @@ func main() {
 
 	// the CRD List types for which the model should be generated
 	// no other types need to be defined as they are auto discovered
-	crdLists := []reflect.Type{
+	crdLists := map[reflect.Type]schemagen.CrdScope{
 		// v1alpha1
-		reflect.TypeOf(v1alpha1.ConditionList{}),
-		reflect.TypeOf(v1alpha1.PipelineList{}),
-		reflect.TypeOf(v1alpha1.PipelineRunList{}),
-		reflect.TypeOf(v1alpha1.TaskList{}),
-		reflect.TypeOf(v1alpha1.TaskRunList{}),
-		reflect.TypeOf(v1alpha1.ClusterTaskList{}),
+		reflect.TypeOf(v1alpha1.ConditionList{}):   schemagen.Namespaced,
+		reflect.TypeOf(v1alpha1.PipelineList{}):    schemagen.Namespaced,
+		reflect.TypeOf(v1alpha1.PipelineRunList{}): schemagen.Namespaced,
+		reflect.TypeOf(v1alpha1.TaskList{}):        schemagen.Namespaced,
+		reflect.TypeOf(v1alpha1.TaskRunList{}):     schemagen.Namespaced,
+		reflect.TypeOf(v1alpha1.ClusterTaskList{}): schemagen.Cluster,
 
-		reflect.TypeOf(resource.PipelineResourceList{}),
+		reflect.TypeOf(resource.PipelineResourceList{}): schemagen.Namespaced,
 	}
 
 	// constraints and patterns for fields
