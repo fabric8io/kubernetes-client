@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.api.model.apiextensions.JSONSchemaProps;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.mock.crd.CronTabSpec;
 import io.fabric8.kubernetes.client.mock.crd.DoneableCronTab;
 import io.fabric8.kubernetes.client.mock.crd.CronTab;
@@ -57,8 +58,9 @@ public class CustomResourceCrudTest {
     CustomResourceDefinition cronTabCrd = client.customResourceDefinitions().load(getClass().getResourceAsStream("/crontab-crd.yml")).get();
     client.customResourceDefinitions().create(cronTabCrd);
 
+    CustomResourceDefinitionContext crdContext = CustomResourceDefinitionContext.fromCrd(cronTabCrd);
     MixedOperation<CronTab, CronTabList, DoneableCronTab, Resource<CronTab, DoneableCronTab>> cronTabClient = client
-      .customResources(cronTabCrd, CronTab.class, CronTabList.class, DoneableCronTab.class);
+      .customResources(crdContext, CronTab.class, CronTabList.class, DoneableCronTab.class);
 
     cronTabClient.inNamespace("test-ns").create(cronTab1);
     cronTabClient.inNamespace("test-ns").create(cronTab2);

@@ -1560,7 +1560,7 @@ Boolean deleted = client.customResourceDefinitions().withName("sparkclusters.rad
 ```
 
 ### CustomResource Typed API
-CustomResources are available in Kubernetes API via the `client.customResources(...)`. In order to use typed API, you need to provide POJOs for your Custom Resource which client can use for serialization/deserialization. `client.customResources(...)` take things like definition of `CustomResourceDefinition`, `CustomResource` class, it's list class etc. It returns an instance of a client which you can use for your `CustomResource` related operations. In order to get some idea of how POJOs should look like. Here's an example of POJO for `CronTab` CustomResource specified in [Kubernetes CustomResource docs](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/)
+CustomResources are available in Kubernetes API via the `client.customResources(...)`. In order to use typed API, you need to provide POJOs for your Custom Resource which client can use for serialization/deserialization. `client.customResources(...)` take things like `CustomResourceDefinitionContext` for locating the CustomResources, `CustomResource` class, it's list class etc. It returns an instance of a client which you can use for your `CustomResource` related operations. In order to get some idea of how POJOs should look like. Here's an example of POJO for `CronTab` CustomResource specified in [Kubernetes CustomResource docs](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/)
 *my-crontab.yml*
 ```
 apiVersion: "stable.example.com/v1"
@@ -1638,7 +1638,15 @@ You can find other helper classes related to `CronTab` in our [tests](https://gi
 
 - Get Instance of client for our `CustomResource`:
 ```
-CustomResourceDefinition cronTabCrd = client.customResourceDefinitions().load(new FileInputStream("crontab-crd.yml")).get();
+// Alternatively use CustomResourceDefinitionContext.fromCrd(crd) if you already have a CustomResourceDefinition
+CustomResourceDefinitionContext context = new CustomResourceDefinitionContext.Builder()
+      .withGroup("stable.example.com)
+      .withVersion("v1")
+      .withScope("Namespaced")
+      .withName("crontabs.stable.example.com)
+      .withPlural("crontabs")
+      .withKind("CronTab")
+      .build()
 MixedOperation<CronTab, CronTabList, DoneableCronTab, Resource<CronTab, DoneableCronTab>> cronTabClient = client
   .customResources(cronTabCrd, CronTab.class, CronTabList.class, DoneableCronTab.class);
 ```

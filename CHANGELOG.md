@@ -4,6 +4,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #2199: KubernetesClient#customResources now accepts CustomResourceDefinitionContext
 
 #### Dependency Upgrade
 
