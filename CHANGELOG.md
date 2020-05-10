@@ -12,6 +12,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Added DSL support for `admissionregistration.k8s.io/v1beta1` resources
 
 ### 4.10.1 (2020-05-06)
 #### Bugs

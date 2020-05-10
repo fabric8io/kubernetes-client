@@ -173,6 +173,13 @@ public interface KubernetesClient extends Client {
   RawCustomResourceOperationsImpl customResource(CustomResourceDefinitionContext customResourceDefinition);
 
   /**
+   * API entrypoint for kubernetes resources with APIGroup admissionregistration.k8s.io/v1beta1
+   *
+   * @return AdmissionRegistrationAPIGroupDSL which offers entrypoints to specific resources in this API group
+   */
+  AdmissionRegistrationAPIGroupDSL admissionRegistration();
+
+  /**
    * API entrypoint for kubernetes resources with APIGroup apps/v1
    *
    * @return AppsAPIGroupDSL which offers entrypoints to specific resources in this API group

@@ -15,6 +15,9 @@
 #
 
 io.fabric8.kubernetes.client.AppsAPIGroupExtensionAdapter
+io.fabric8.kubernetes.client.AdmissionRegistrationAPIGroupExtensionAdapter
+io.fabric8.kubernetes.client.V1AdmissionRegistrationAPIGroupExtensionAdapter
+io.fabric8.kubernetes.client.V1beta1AdmissionRegistrationAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.AutoscalingAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.V1AutoscalingAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.V2beta1AutoscalingAPIGroupExtensionAdapter

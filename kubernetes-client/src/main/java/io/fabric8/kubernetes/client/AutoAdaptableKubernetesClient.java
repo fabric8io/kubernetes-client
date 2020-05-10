@@ -122,6 +122,11 @@ public class AutoAdaptableKubernetesClient extends DefaultKubernetesClient {
   }
 
   @Override
+  public AdmissionRegistrationAPIGroupDSL admissionRegistration() {
+    return delegate.admissionRegistration();
+  }
+
+  @Override
   public AppsAPIGroupDSL apps() {
     return delegate.apps();
   }

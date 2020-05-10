@@ -28,6 +28,7 @@ import io.fabric8.kubernetes.api.model.apiextensions.DoneableCustomResourceDefin
 import io.fabric8.kubernetes.api.model.coordination.v1.DoneableLease;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
+import io.fabric8.kubernetes.client.AdmissionRegistrationAPIGroupDSL;
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.RequestConfig;
@@ -473,6 +474,11 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public V1APIGroupDSL v1() {
     return delegate.v1();
+  }
+
+  @Override
+  public AdmissionRegistrationAPIGroupDSL admissionRegistration() {
+    return delegate.admissionRegistration();
   }
 
   @Override

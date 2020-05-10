@@ -342,6 +342,11 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   @Override
+  public AdmissionRegistrationAPIGroupDSL admissionRegistration() {
+    return adapt(AdmissionRegistrationAPIGroupClient.class);
+  }
+
+  @Override
   public AppsAPIGroupDSL apps() {
     return adapt(AppsAPIGroupClient.class);
   }
