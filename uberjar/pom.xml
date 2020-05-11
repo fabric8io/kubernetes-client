@@ -193,7 +193,28 @@
             <configuration>
               <artifactSet>
                 <includes>
+                  <include>io.fabric8:kubernetes-model-common</include>
+                  <include>io.fabric8:kubernetes-model-annotator</include>
                   <include>io.fabric8:kubernetes-model</include>
+                  <include>io.fabric8:kubernetes-model-core</include>
+                  <include>io.fabric8:kubernetes-model-rbac</include>
+                  <include>io.fabric8:kubernetes-model-admissionregistration</include>
+                  <include>io.fabric8:kubernetes-model-apiextensions</include>
+                  <include>io.fabric8:kubernetes-model-apps</include>
+                  <include>io.fabric8:kubernetes-model-autoscaling</include>
+                  <include>io.fabric8:kubernetes-model-batch</include>
+                  <include>io.fabric8:kubernetes-model-certificates</include>
+                  <include>io.fabric8:kubernetes-model-coordination</include>
+                  <include>io.fabric8:kubernetes-model-discovery</include>
+                  <include>io.fabric8:kubernetes-model-events</include>
+                  <include>io.fabric8:kubernetes-model-extensions</include>
+                  <include>io.fabric8:kubernetes-model-networking</include>
+                  <include>io.fabric8:kubernetes-model-metrics</include>
+                  <include>io.fabric8:kubernetes-model-policy</include>
+                  <include>io.fabric8:kubernetes-model-scheduling</include>
+                  <include>io.fabric8:kubernetes-model-settings</include>
+                  <include>io.fabric8:kubernetes-model-storageclass</include>
+                  <include>io.fabric8:openshift-model</include>
                   <include>io.fabric8:kubernetes-client</include>
                   <include>io.fabric8:kubernetes-server-mock</include>
                   <include>io.fabric8:openshift-client</include>
@@ -216,7 +237,28 @@
               <shadedClassifierName>versioned</shadedClassifierName>
               <artifactSet>
                 <includes>
+                  <include>io.fabric8:kubernetes-model-common</include>
+                  <include>io.fabric8:kubernetes-model-annotator</include>
                   <include>io.fabric8:kubernetes-model</include>
+                  <include>io.fabric8:kubernetes-model-core</include>
+                  <include>io.fabric8:kubernetes-model-rbac</include>
+                  <include>io.fabric8:kubernetes-model-admissionregistration</include>
+                  <include>io.fabric8:kubernetes-model-apiextensions</include>
+                  <include>io.fabric8:kubernetes-model-apps</include>
+                  <include>io.fabric8:kubernetes-model-autoscaling</include>
+                  <include>io.fabric8:kubernetes-model-batch</include>
+                  <include>io.fabric8:kubernetes-model-certificates</include>
+                  <include>io.fabric8:kubernetes-model-coordination</include>
+                  <include>io.fabric8:kubernetes-model-discovery</include>
+                  <include>io.fabric8:kubernetes-model-events</include>
+                  <include>io.fabric8:kubernetes-model-extensions</include>
+                  <include>io.fabric8:kubernetes-model-networking</include>
+                  <include>io.fabric8:kubernetes-model-metrics</include>
+                  <include>io.fabric8:kubernetes-model-policy</include>
+                  <include>io.fabric8:kubernetes-model-scheduling</include>
+                  <include>io.fabric8:kubernetes-model-settings</include>
+                  <include>io.fabric8:kubernetes-model-storageclass</include>
+                  <include>io.fabric8:openshift-model</include>
                   <include>io.fabric8:kubernetes-client</include>
                   <include>io.fabric8:kubernetes-server-mock</include>
                   <include>io.fabric8:openshift-client</include>
@@ -232,6 +274,70 @@
                 <relocation>
                   <pattern>io.fabric8.kubernetes.api.model</pattern>
                   <shadedPattern>io.fabric8.kubernetes.api.model.v${parsedVersion.majorVersion}_${parsedVersion.minorVersion}</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>io.fabric8.kubernetes.api.model.apps</pattern>
+                  <shadedPattern>io.fabric8.kubernetes.api.model.apps.v${parsedVersion.majorVersion}_${parsedVersion.minorVersion}</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>io.fabric8.kubernetes.api.model.rbac</pattern>
+                  <shadedPattern>io.fabric8.kubernetes.api.model.rbacv${parsedVersion.majorVersion}_${parsedVersion.minorVersion}</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>io.fabric8.kubernetes.api.model.admissionregistration</pattern>
+                  <shadedPattern>io.fabric8.kubernetes.api.model.admissionregistration.v${parsedVersion.majorVersion}_${parsedVersion.minorVersion}</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>io.fabric8.kubernetes.api.model.apiextensions</pattern>
+                  <shadedPattern>io.fabric8.kubernetes.api.model.apiextensions.v${parsedVersion.majorVersion}_${parsedVersion.minorVersion}</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>io.fabric8.kubernetes.api.model.autoscaling</pattern>
+                  <shadedPattern>io.fabric8.kubernetes.api.model.autoscaling.v${parsedVersion.majorVersion}_${parsedVersion.minorVersion}</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>io.fabric8.kubernetes.api.model.batch</pattern>
+                  <shadedPattern>io.fabric8.kubernetes.api.model.batch.v${parsedVersion.majorVersion}_${parsedVersion.minorVersion}</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>io.fabric8.kubernetes.api.model.certificates</pattern>
+                  <shadedPattern>io.fabric8.kubernetes.api.model.certificates.v${parsedVersion.majorVersion}_${parsedVersion.minorVersion}</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>io.fabric8.kubernetes.api.model.coordination</pattern>
+                  <shadedPattern>io.fabric8.kubernetes.api.model.cordination.v${parsedVersion.majorVersion}_${parsedVersion.minorVersion}</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>io.fabric8.kubernetes.api.model.discovery</pattern>
+                  <shadedPattern>io.fabric8.kubernetes.api.model.discovery.v${parsedVersion.majorVersion}_${parsedVersion.minorVersion}</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>io.fabric8.kubernetes.api.model.events</pattern>
+                  <shadedPattern>io.fabric8.kubernetes.api.model.events.v${parsedVersion.majorVersion}_${parsedVersion.minorVersion}</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>io.fabric8.kubernetes.api.model.extensions</pattern>
+                  <shadedPattern>io.fabric8.kubernetes.api.model.extensions.v${parsedVersion.majorVersion}_${parsedVersion.minorVersion}</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>io.fabric8.kubernetes.api.model.networking</pattern>
+                  <shadedPattern>io.fabric8.kubernetes.api.model.networking.v${parsedVersion.majorVersion}_${parsedVersion.minorVersion}</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>io.fabric8.kubernetes.api.model.metrics</pattern>
+                  <shadedPattern>io.fabric8.kubernetes.api.model.metrics.v${parsedVersion.majorVersion}_${parsedVersion.minorVersion}</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>io.fabric8.kubernetes.api.model.policy</pattern>
+                  <shadedPattern>io.fabric8.kubernetes.api.model.policy.v${parsedVersion.majorVersion}_${parsedVersion.minorVersion}</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>io.fabric8.kubernetes.api.model.scheduling</pattern>
+                  <shadedPattern>io.fabric8.kubernetes.api.model.scheduling.v${parsedVersion.majorVersion}_${parsedVersion.minorVersion}</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>io.fabric8.kubernetes.api.model.storageclass</pattern>
+                  <shadedPattern>io.fabric8.kubernetes.api.model.storageclass.v${parsedVersion.majorVersion}_${parsedVersion.minorVersion}</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>io.fabric8.kubernetes.api.builder</pattern>
