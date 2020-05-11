@@ -3,8 +3,11 @@
 ### 4.10-SNAPSHOT
 #### Bugs
 * Fix #2205: Event model classes from core v1 have been lost
+* Fix #2201: Uberjar doesn't contain model classes anymore
+* Fix #2066: Uber Jar includes merged service entry for multiple implementations of the same interface
 
 #### Improvements
+* Fix #2199: KubernetesClient#customResources now accepts CustomResourceDefinitionContext
 
 #### Dependency Upgrade
 

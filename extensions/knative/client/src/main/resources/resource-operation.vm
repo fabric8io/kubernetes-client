@@ -24,11 +24,14 @@
   #if ($annotation.getClassRef().getName().equals("ApiGroup"))
     #set ($apiGroup = $annotation.getParameters().get("value"))
   #end
-  #if ($annotation.getClassRef().getName().equals("Namespaced"))
-    #set ($isResourceNamespacedFlag = $annotation.getParameters().get("value"))
-  #end
 #end
 
+#set ($isResourceNamespacedFlag = false)
+#foreach ($impl in $model.getImplementsList())
+  #if ($impl.getFullyQualifiedName().equals("io.fabric8.kubernetes.api.model.Namespaced"))
+    #set ($isResourceNamespacedFlag = true)
+  #end
+#end
 
 package io.fabric8.knative.client.${group}.${apiVersion}.internal;
 
