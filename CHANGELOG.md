@@ -5,6 +5,7 @@
 * Fix #2066: Uber Jar includes merged service entry for multiple implementations of the same interface
 
 #### Improvements
+* Fix #2199: KubernetesClient#customResources now accepts CustomResourceDefinitionContext
 
 #### Dependency Upgrade
 

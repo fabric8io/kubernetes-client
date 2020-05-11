@@ -15,12 +15,15 @@
  */
 package io.fabric8.kubernetes.client.dsl.base;
 
+import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
+
 public class CustomResourceDefinitionContext {
   private String name;
   private String group;
   private String scope;
   private String plural;
   private String version;
+  private String kind;
 
   public String getName() { return name; }
 
@@ -40,8 +43,23 @@ public class CustomResourceDefinitionContext {
     return version;
   }
 
+  public String getKind() {
+    return kind;
+  }
+
+  public static CustomResourceDefinitionContext fromCrd(CustomResourceDefinition crd) {
+    return new CustomResourceDefinitionContext.Builder()
+      .withGroup(crd.getSpec().getGroup())
+      .withVersion(crd.getSpec().getVersion())
+      .withScope(crd.getSpec().getScope())
+      .withName(crd.getMetadata().getName())
+      .withPlural(crd.getSpec().getNames().getPlural())
+      .withKind(crd.getSpec().getNames().getKind())
+      .build();
+  }
+
   public static class Builder {
-    private CustomResourceDefinitionContext customResourceDefinitionContext;
+    private final CustomResourceDefinitionContext customResourceDefinitionContext;
 
     public Builder() {
       this.customResourceDefinitionContext = new CustomResourceDefinitionContext();
@@ -69,6 +87,11 @@ public class CustomResourceDefinitionContext {
 
     public Builder withVersion(String version) {
       this.customResourceDefinitionContext.version = version;
+      return this;
+    }
+
+    public Builder withKind(String kind) {
+      this.customResourceDefinitionContext.kind = kind;
       return this;
     }
 

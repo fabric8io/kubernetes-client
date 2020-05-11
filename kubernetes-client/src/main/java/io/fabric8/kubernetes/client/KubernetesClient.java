@@ -100,6 +100,25 @@ public interface KubernetesClient extends Client {
    * CustomResource into this and with it you would be able to instantiate a client
    * specific to CustomResource.
    *
+   * @param crdContext CustomResourceDefinitionContext describes the core fields used to search for CustomResources
+   * @param resourceType Class for CustomResource
+   * @param listClass Class for list object for CustomResource
+   * @param doneClass Class for Doneable CustomResource object
+   * @param <T> T type represents CustomResource type
+   * @param <L> L type represents CustomResourceList type
+   * @param <D> D type represents DoneableCustomResource type
+   * @return returns a MixedOperation object with which you can do basic CustomResource operations
+   */
+  <T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResources(CustomResourceDefinitionContext crdContext, Class<T> resourceType, Class<L> listClass, Class<D> doneClass);
+
+  /**
+   * Typed API for managing CustomResources. You would need to provide POJOs for
+   * CustomResource into this and with it you would be able to instantiate a client
+   * specific to CustomResource.
+   *
+   * @deprecated use {@link #customResources(CustomResourceDefinitionContext, Class, Class, Class)}, which takes a {@link CustomResourceDefinitionContext}
+   * instead of a full {@link CustomResourceDefinition}.
+   *
    * @param crd CustomResourceDefinition object on basic of which this CustomResource was created
    * @param resourceType Class for CustomResource
    * @param listClass Class for list object for CustomResource
@@ -109,12 +128,15 @@ public interface KubernetesClient extends Client {
    * @param <D> D type represents DoneableCustomResource type
    * @return returns a MixedOperation object with which you can do basic CustomResource operations
    */
+  @Deprecated
   <T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResources(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass);
 
   /**
    * Old API for dealing with CustomResources.
    *
-   * @deprecated Use {@link #customResources(CustomResourceDefinition, Class, Class, Class)} instead.
+   * @deprecated use {@link #customResources(CustomResourceDefinitionContext, Class, Class, Class)}, which takes a {@link CustomResourceDefinitionContext}
+   * instead of a full {@link CustomResourceDefinition}.
+   *
    * @param crd Custom Resource Definition
    * @param resourceType resource type Pojo
    * @param listClass list class Pojo
