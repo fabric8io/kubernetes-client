@@ -67,6 +67,9 @@ type Schema struct {
   Node                                     kapi.Node
   NodeList                                 kapi.NodeList
   EnvVar                                   kapi.EnvVar
+  Event                                    kapi.Event
+  EventList                                kapi.EventList
+  EventSeries                              kapi.EventSeries
   EventSource                              kapi.EventSource
   Namespace                                kapi.Namespace
   NamespaceList                            kapi.NamespaceList
