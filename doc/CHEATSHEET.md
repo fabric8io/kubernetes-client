@@ -42,6 +42,10 @@ This document contains common usages of different resources using Fabric8 Kubern
   * [Project](#project)
   * [ImageStream](#imagestream)
 
+* [Tekton Client](#tekton-client)
+  * [Initializing Tekton Client](#initializing-tekton-client)
+  * [Tekton Client DSL Usage](#tekton-client-dsl-usage)
+
 ### Initializing Kubernetes Client
 Typically, we create Kubernetes Client like this:
 ```
@@ -2167,4 +2171,52 @@ ImageStreamList isList = client.imageStreams().inNamespace("default").withLabel(
 - Delete `ImageStream`:
 ```
 Boolean bDeleted = client.imageStreams().inNamespace("default").withName("example-camel-cdi").delete();
+```
+
+### Tekton Client
+Fabric8 Kubernetes Client also has an extension for Tekton. 
+It is pretty much the same as Kubernetes Client but has support for some additional Tekton resources.
+
+#### Initializing Tekton Client
+Initializing Tekton client is the same as Kubernetes Client. You
+```
+try (final TektonClient client = new DefaultTektonClient()) {
+  // Do stuff with client
+}
+```
+This would pick up default settings, reading your `kubeconfig` file from `~/.kube/config` directory or whatever is defined inside `KUBECONFIG` environment variable.
+But if you want to customize creation of client, you can also pass a `Config` object inside `DefaultTektonClient`.
+You can also create `TektonClient` from an existing instance of `KubernetesClient`. 
+There is a method called `adapt(..)` for this.
+Here is an example:
+```
+KubernetesClient client = new DefaultKubernetesClient();
+TektonClient tektonClient = client.adapt(TektonClient.class);
+```
+
+#### Tekton Client DSL Usage
+The Tekton client supports CRD API version `tekton.dev/v1alpha1` as well as `tekton.dev/v1beta1`.
+`tekton.dev/v1alpha1` includes the CRDs  `Pipeline`, `PipelineRun`, `PipelineResource`, `Task`, `TaskRun`, `Condition` and `ClusterTask`.
+All `tekton.dev/v1alpha1` resources are available using the DSL `tektonClient.v1alpha1()`.
+`tekton.dev/v1beta1` includes the CRDs  `Pipeline`, `PipelineRun`, `Task`, `TaskRun` and `ClusterTask`.
+All `tekton.dev/v1beta1` resources are available using the DSL `tektonClient.v1beta1()`.
+
+The usage of the resources follows the same pattern as for K8s resources like Pods or Deployments.
+Here are some common examples:
+
+- Listing all `PipelineRun` objects in some specific namespace:
+```
+PipelineRunList list = tektonClient.v1beta1().pipelineRuns().inNamespace("default").list();
+```
+- Create a `PipelineRun`:
+```
+PipelineRun pipelineRun = new PipelineRunBuilder()
+        .withNewMetadata().withName("demo-run-1").endMetadata()
+        .withNewSpec()
+        .withNewPipelineRef().withName("demo-pipeline").endPipelineRef()
+        .addNewParam().withName("greeting").withNewValue("Hello World!").endParam()
+        .endSpec()
+        .build();
+
+tektonClient.v1beta1().pipelineRuns().inNamespace("default").create(pipelineRun);
 ```
