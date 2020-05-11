@@ -14,15 +14,13 @@
 # limitations under the License.
 #
 
-SHELL := /bin/bash
+declare -a modules=("generator-v1alpha1" "generator-v1beta1"
+)
 
-all: build
-
-build: gobuild
-	pushd ../model && \
-	mvn clean install -o && \
-  popd
-
-gobuild:
-	go mod vendor
-	CGO_ENABLED=0 GO111MODULE=on GO15VENDOREXPERIMENT=1 go run -mod=vendor -a ./cmd/generate/generate.go > ../model/src/main/resources/schema/knative-schema.json
+for module in ${modules[*]}
+do
+    echo "Compiling ${module}"
+    cd $module
+    make
+    cd ..
+done    

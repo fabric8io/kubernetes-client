@@ -27,13 +27,13 @@ func main() {
 
 	// the CRD List types for which the model should be generated
 	// no other types need to be defined as they are auto discovered
-	crdLists := []reflect.Type{
+	crdLists := map[reflect.Type]schemagen.CrdScope{
 		// v1beta1
-		reflect.TypeOf(v1beta1.PipelineList{}),
-		reflect.TypeOf(v1beta1.PipelineRunList{}),
-		reflect.TypeOf(v1beta1.TaskList{}),
-		reflect.TypeOf(v1beta1.TaskRunList{}),
-		reflect.TypeOf(v1beta1.ClusterTaskList{}),
+		reflect.TypeOf(v1beta1.PipelineList{}):    schemagen.Namespaced,
+		reflect.TypeOf(v1beta1.PipelineRunList{}): schemagen.Namespaced,
+		reflect.TypeOf(v1beta1.TaskList{}):        schemagen.Namespaced,
+		reflect.TypeOf(v1beta1.TaskRunList{}):     schemagen.Namespaced,
+		reflect.TypeOf(v1beta1.ClusterTaskList{}): schemagen.Cluster,
 	}
 
 	// constraints and patterns for fields
@@ -50,7 +50,7 @@ func main() {
 	providedPackages := map[string]string{
 		// external
 		"k8s.io/api/core/v1":                   "io.fabric8.kubernetes.api.model",
-		"knative.dev/pkg/apis":                 "io.fabric8.knative.v1",
+		"knative.dev/pkg/apis":                 "io.fabric8.knative.internal.pkg.apis",
 		"k8s.io/apimachinery/pkg/apis/meta/v1": "io.fabric8.kubernetes.api.model",
 	}
 
@@ -74,7 +74,7 @@ func main() {
 		reflect.TypeOf(machinery.Time{}): "java.lang.String",
 	}
 
-	json := schemagen.GenerateSchema(crdLists, providedPackages, manualTypeMap, packageMapping, mappingSchema, providedTypes, constraints)
+	json := schemagen.GenerateSchema("http://fabric8.io/tekton/v1beta1/TektonSchema#", crdLists, providedPackages, manualTypeMap, packageMapping, mappingSchema, providedTypes, constraints)
 
 	fmt.Println(json)
 }

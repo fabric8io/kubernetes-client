@@ -1,5 +1,5 @@
 {
-  "id": "http://fabric8.io/tekton/v1alpha1/TektonSchema#",
+  "id": "http://fabric8.io/tekton/v1beta1/TektonSchema#",
   "$schema": "http://json-schema.org/schema#",
   "definitions": {
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_pod_Template": {
@@ -192,7 +192,7 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "javaType": "io.fabric8.knative.v1.Condition"
+            "javaType": "io.fabric8.knative.internal.pkg.apis.Condition"
           }
         },
         "observedGeneration": {
@@ -281,7 +281,8 @@
       },
       "javaType": "io.fabric8.tekton.pipeline.v1beta1.Pipeline",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineDeclaredResource": {
@@ -454,7 +455,8 @@
       },
       "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineRun",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunConditionCheckStatus": {
@@ -609,7 +611,7 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "javaType": "io.fabric8.knative.v1.Condition"
+            "javaType": "io.fabric8.knative.internal.pkg.apis.Condition"
           }
         },
         "observedGeneration": {
@@ -1094,7 +1096,8 @@
       },
       "javaType": "io.fabric8.tekton.pipeline.v1beta1.Task",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskList": {
@@ -1290,7 +1293,8 @@
       },
       "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskRun",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunList": {
@@ -1449,7 +1453,7 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "javaType": "io.fabric8.knative.v1.Condition"
+            "javaType": "io.fabric8.knative.internal.pkg.apis.Condition"
           }
         },
         "observedGeneration": {

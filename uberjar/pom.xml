@@ -221,6 +221,9 @@
                   <include>io.fabric8:openshift-server-mock</include>
                 </includes>
               </artifactSet>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+              </transformers>
             </configuration>
           </execution>
           <execution>
