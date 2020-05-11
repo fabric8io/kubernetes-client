@@ -21,12 +21,12 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kudo-extension-pom</artifactId>
-    <version>4.9-SNAPSHOT</version>
+    <version>4.10-SNAPSHOT</version>
   </parent>
 
   <artifactId>kudo-model-annotator</artifactId>
   <packaging>jar</packaging>
-  <name>Fabric8 :: Kudo :: Model :: Annotator</name>
+  <name>Fabric8 :: KUDO :: Model :: Annotator</name>
 
   <dependencies>
     <dependency>

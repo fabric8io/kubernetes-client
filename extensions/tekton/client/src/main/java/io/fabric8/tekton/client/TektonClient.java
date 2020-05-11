@@ -15,41 +15,11 @@
  */
 package io.fabric8.tekton.client;
 
-
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.dsl.MixedOperation;
-import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
-import io.fabric8.tekton.pipeline.v1alpha1.Condition;
-import io.fabric8.tekton.pipeline.v1alpha1.ConditionList;
-import io.fabric8.tekton.pipeline.v1alpha1.DoneableCondition;
-import io.fabric8.tekton.pipeline.v1beta1.ClusterTask;
-import io.fabric8.tekton.pipeline.v1beta1.ClusterTaskList;
-import io.fabric8.tekton.pipeline.v1beta1.DoneableClusterTask;
-import io.fabric8.tekton.pipeline.v1beta1.DoneablePipeline;
-import io.fabric8.tekton.pipeline.v1beta1.DoneablePipelineRun;
-import io.fabric8.tekton.pipeline.v1beta1.DoneableTask;
-import io.fabric8.tekton.pipeline.v1beta1.DoneableTaskRun;
-import io.fabric8.tekton.pipeline.v1beta1.Pipeline;
-import io.fabric8.tekton.pipeline.v1beta1.PipelineList;
-import io.fabric8.tekton.pipeline.v1beta1.PipelineRun;
-import io.fabric8.tekton.pipeline.v1beta1.PipelineRunList;
-import io.fabric8.tekton.pipeline.v1beta1.Task;
-import io.fabric8.tekton.pipeline.v1beta1.TaskList;
-import io.fabric8.tekton.pipeline.v1beta1.TaskRun;
-import io.fabric8.tekton.pipeline.v1beta1.TaskRunList;
-import io.fabric8.tekton.resource.v1alpha1.DoneablePipelineResource;
-import io.fabric8.tekton.resource.v1alpha1.PipelineResource;
-import io.fabric8.tekton.resource.v1alpha1.PipelineResourceList;
+import io.fabric8.tekton.client.dsl.V1alpha1APIGroupDSL;
+import io.fabric8.tekton.client.dsl.V1beta1APIGroupDSL;
 
 public interface TektonClient extends Client {
-  
-  MixedOperation<Pipeline, PipelineList, DoneablePipeline, Resource<Pipeline, DoneablePipeline>> pipelines();
-  MixedOperation<PipelineRun, PipelineRunList, DoneablePipelineRun, Resource<PipelineRun, DoneablePipelineRun>> pipelineRuns();
-  MixedOperation<PipelineResource, PipelineResourceList, DoneablePipelineResource, Resource<PipelineResource, DoneablePipelineResource>> pipelineResources();
-  MixedOperation<Task, TaskList, DoneableTask, Resource<Task, DoneableTask>> tasks();
-  MixedOperation<TaskRun, TaskRunList, DoneableTaskRun, Resource<TaskRun, DoneableTaskRun>> taskRuns();
-  MixedOperation<Condition, ConditionList, DoneableCondition, Resource<Condition, DoneableCondition>> conditions();
-
-  NonNamespaceOperation<ClusterTask, ClusterTaskList, DoneableClusterTask, Resource<ClusterTask, DoneableClusterTask>> clusterTasks();
+  V1beta1APIGroupDSL v1beta1();
+  V1alpha1APIGroupDSL v1alpha1();
 }

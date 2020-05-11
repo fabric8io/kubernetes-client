@@ -21,7 +21,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-extensions</artifactId>
-    <version>4.9-SNAPSHOT</version>
+    <version>4.10-SNAPSHOT</version>
   </parent>
 
   <artifactId>knative-extension-pom</artifactId>
@@ -29,7 +29,6 @@
   <name>Fabric8 :: Knative :: Extension</name>
 
   <modules>
-    <module>annotator</module>
     <module>model</module>
     <module>client</module>
     <module>mock</module>

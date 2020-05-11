@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
@@ -208,7 +209,7 @@ public class PodTest {
 
     KubernetesClient client = server.getClient();
 
-    Boolean deleted = client.pods().inNamespace("test").withName("pod1").withPropagationPolicy("Foreground").delete();
+    Boolean deleted = client.pods().inNamespace("test").withName("pod1").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
     assertTrue(deleted);
   }
 

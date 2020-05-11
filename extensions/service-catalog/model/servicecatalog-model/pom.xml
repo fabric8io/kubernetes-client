@@ -21,7 +21,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>servicecatalog-model-generator</artifactId>
-    <version>4.9-SNAPSHOT</version>
+    <version>4.10-SNAPSHOT</version>
   </parent>
 
   <artifactId>servicecatalog-model</artifactId>
@@ -62,7 +62,7 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-model</artifactId>
+      <artifactId>kubernetes-model-core</artifactId>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>

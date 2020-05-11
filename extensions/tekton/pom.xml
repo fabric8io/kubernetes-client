@@ -21,7 +21,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-extensions</artifactId>
-    <version>4.9-SNAPSHOT</version>
+    <version>4.10-SNAPSHOT</version>
   </parent>
 
   <artifactId>tekton-extension-pom</artifactId>
@@ -29,8 +29,8 @@
   <name>Fabric8 :: Tekton :: Extension</name>
 
   <modules>
-    <module>annotator</module>
-    <module>model</module>
+    <module>model-v1alpha1</module>
+    <module>model-v1beta1</module>
     <module>client</module>
     <module>mock</module>
     <module>examples</module>

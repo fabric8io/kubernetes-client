@@ -53,7 +53,8 @@ public class CustomResourceOperationsImpl<T extends HasMetadata, L extends Kuber
   public CustomResourceOperationsImpl(CustomResourceOperationContext context) {
     super(context.withApiGroupName(apiGroup((CustomResourceDefinition) context.getCrd()))
       .withApiGroupVersion(apiVersion((CustomResourceDefinition) context.getCrd()))
-      .withPlural(resourceT((CustomResourceDefinition) context.getCrd())));
+      .withPlural(resourceT((CustomResourceDefinition) context.getCrd()))
+      .withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
 
     this.type = context.getType();
     this.listType = context.getListType();

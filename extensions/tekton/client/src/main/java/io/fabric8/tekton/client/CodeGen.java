@@ -26,9 +26,9 @@ import io.sundr.transform.annotations.VelocityTransformations;
                 @VelocityTransformation(value = "/resource-handler-services.vm", gather = true, outputPath = "META-INF/services/io.fabric8.kubernetes.client.ResourceHandler")
         },
         resources = {
-                @ResourceSelector("tekton.properties")
+                @ResourceSelector("tekton-v1alpha1.properties"),
+                @ResourceSelector("tekton-v1beta1.properties")
         }
-
 )
 public class CodeGen {
 }

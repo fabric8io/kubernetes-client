@@ -1,0 +1,93 @@
+/**
+ * Copyright (C) 2015 Red Hat, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.fabric8.knative.test;
+
+import io.fabric8.knative.client.KnativeClient;
+import io.fabric8.knative.mock.KnativeServer;
+import io.fabric8.knative.serving.v1.Service;
+import io.fabric8.knative.serving.v1.ServiceBuilder;
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import okhttp3.mockwebserver.RecordedRequest;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
+
+import java.net.HttpURLConnection;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+@EnableRuleMigrationSupport
+public class ServiceTest {
+  @Rule
+  public KnativeServer server = new KnativeServer();
+
+  @Test
+  @DisplayName("Should get a Knative Service")
+  public void testGet() {
+    Service service2 = new ServiceBuilder().withNewMetadata().withName("service2").endMetadata().build();
+    server.expect().get().withPath("/apis/serving.knative.dev/v1/namespaces/ns2/services/service2")
+      .andReturn(HttpURLConnection.HTTP_OK, service2)
+      .once();
+    KnativeClient client = server.getKnativeClient();
+
+    Service service = client.services().inNamespace("ns2").withName("service2").get();
+    assertNotNull(service);
+    assertEquals("service2", service.getMetadata().getName());
+  }
+
+  @Test
+  @DisplayName("Should Create a Knative Service")
+  public void testCreate() {
+    Service service = new ServiceBuilder().withNewMetadata().withName("service").endMetadata().build();
+    server.expect().post().withPath("/apis/serving.knative.dev/v1/namespaces/ns2/services")
+      .andReturn(HttpURLConnection.HTTP_OK, service)
+      .once();
+    KnativeClient client = server.getKnativeClient();
+    service = client.services().inNamespace("ns2").create(service);
+    assertNotNull(service);
+  }
+
+  @Test
+  @DisplayName("Should Delete a Knative Service")
+  public void testDelete() throws InterruptedException {
+    server.expect().delete().withPath("/apis/serving.knative.dev/v1/namespaces/ns3/services/service3")
+      .andReturn(HttpURLConnection.HTTP_OK, new ServiceBuilder().build())
+      .once();
+    KnativeClient client = server.getKnativeClient();
+    Boolean deleted = client.services().inNamespace("ns3").withName("service3").delete();
+    assertTrue(deleted);
+
+    RecordedRequest recordedRequest = server.getMockServer().takeRequest();
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Background\"}", recordedRequest.getBody().readUtf8());
+  }
+
+  @Test
+  @DisplayName("Should delete with PropagationPolicy=Orphan")
+  public void testDeleteOrphan() throws InterruptedException {
+    server.expect().delete().withPath("/apis/serving.knative.dev/v1/namespaces/ns3/services/service3")
+      .andReturn(HttpURLConnection.HTTP_OK, new ServiceBuilder().build())
+      .once();
+    KnativeClient client = server.getKnativeClient();
+    Boolean deleted = client.services().inNamespace("ns3").withName("service3").withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
+    assertTrue(deleted);
+
+    RecordedRequest recordedRequest = server.getMockServer().takeRequest();
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}", recordedRequest.getBody().readUtf8());
+  }
+}

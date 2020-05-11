@@ -21,7 +21,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>tekton-extension-pom</artifactId>
-    <version>4.9-SNAPSHOT</version>
+    <version>4.10-SNAPSHOT</version>
   </parent>
 
   <artifactId>tekton-client</artifactId>
@@ -54,7 +54,11 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>tekton-model</artifactId>
+      <artifactId>tekton-model-v1alpha1</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>tekton-model-v1beta1</artifactId>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>

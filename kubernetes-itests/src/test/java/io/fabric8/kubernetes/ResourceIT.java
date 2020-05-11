@@ -17,6 +17,7 @@ package io.fabric8.kubernetes;
 
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesList;
@@ -174,7 +175,7 @@ public class ResourceIT {
   }
 
   @Test
-  public void testCascadeDeletion() throws InterruptedException {
+  public void testDeletionWithOrphanDeletion() throws InterruptedException {
     // Create Deployment
     client.resource(deployment).inNamespace(currentNamespace).createOrReplace();
     await().atMost(30, TimeUnit.SECONDS).until(resourceIsReady(deployment));
@@ -182,7 +183,7 @@ public class ResourceIT {
     assertEquals(1, client.apps().replicaSets().inNamespace(currentNamespace).withLabel("run", "deploy1").list().getItems().size());
 
     // Delete deployment
-    Boolean deleted = client.resource(deployment).inNamespace(currentNamespace).withGracePeriod(0).cascading(true).delete();
+    Boolean deleted = client.resource(deployment).inNamespace(currentNamespace).withPropagationPolicy(DeletionPropagation.BACKGROUND).delete();
     assertTrue(deleted);
 
     // Check whether child resources are also deleted
@@ -191,7 +192,7 @@ public class ResourceIT {
   }
 
   @Test
-  public void testDisabledCascadeDeletion() throws InterruptedException {
+  public void testDeletionWithoutOrphanDeletion() throws InterruptedException {
     // Create Deployment
     client.resource(deployment).inNamespace(currentNamespace).createOrReplace();
     await().atMost(30, TimeUnit.SECONDS).until(resourceIsReady(deployment));
@@ -199,7 +200,7 @@ public class ResourceIT {
     assertEquals(1, client.apps().replicaSets().inNamespace(currentNamespace).withLabel("run", "deploy1").list().getItems().size());
 
     // Delete deployment
-    Boolean deleted = client.resource(deployment).inNamespace(currentNamespace).withGracePeriod(0).cascading(false).delete();
+    Boolean deleted = client.resource(deployment).inNamespace(currentNamespace).withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
     assertTrue(deleted);
 
     // wait till deployment is deleted

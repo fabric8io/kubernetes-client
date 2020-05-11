@@ -1,7 +1,51 @@
 ## CHANGELOG
 
-### 4.9-SNAPSHOT
+### 4.10-SNAPSHOT
 #### Bugs
+* Fix #2066: Uber Jar includes merged service entry for multiple implementations of the same interface
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+### 4.10.1 (2020-05-06)
+#### Bugs
+* Fix #2189: Change package names of Resource Operation classes in order to avoid duplicates Operation classes
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+* Fix #2165: Support for setting ListOptions while listing objects
+
+### 4.10.0 (2020-05-04)
+#### Bugs
+* Fix #2163: fix kubernetes-client not support cert chain
+* Fix #2144: CRD's schema Default fields do not handle boolean and are prefixed with Raw keyword
+* KubernetesAttributeExtractor: handle possible /status subpath due to using status subresource on crd
+* Fix #2124: Raw Watch on CustomResource does not work if name specified
+
+#### Improvements
+* Fix #2174: Change log level to warn for multiple `kubeconfig` warning
+* Fix #2088: Support networking.k8s.io/v1beta1 alongside extensions/v1beta1
+* Fix #2107: Set PropagationPolicy to Background by default
+  (_Note: Deletion option `cascading(..)` has been marked as deprecated_)
+
+#### Dependency Upgrade
+* Updated Kubernetes Model to v1.18.0
+* Fix #2145: Updated OkHttp to v3.12.11
+
+#### New Features
+* Fix #2115: Keep tekton v1alpha1 api
+* Fix #2002: DSL Support for PodTemplate 
+* Fix #2015: Add Support for v1, v2beta1, and v2beta2 apiVersions in case of HorizontalPodAutoscaler
+
+### 4.9.1 (2020-04-17)
+#### Bugs
+* Fix #2071: Fixed pvc example issue #2071
 * Fix #1109: something drops '-' from Singular/Plural forms of CustomResources
 * Fix #1586: Replace of Job should add extra selector property to the resource
 * Fix #2034: Quantity.equals mishandles fractions
@@ -17,7 +61,7 @@
 * Fix #2019: Added CustomResourceCrudTest
 * Fix #2054: JobExample doesn't work
 * Fix #2082:  Added filter node metrics via labels
-* Generated *List classes for Knative implement proper KubernetesResourceList interface
+* Generated List classes for Knative implement proper KubernetesResourceList interface
 * Modify the dependency management of the generator of kubernetes-model to golang module
 
 #### Dependency Upgrade
@@ -25,7 +69,6 @@
 * Updated Tekton Model to v0.11.0
 
 #### New Features
-* KUDO extension suport KUDO v0.10.0
 
 ### 4.9.0 (2020-03-12)
 #### Bugs
@@ -50,6 +93,7 @@ like the delete of a custom resource.
 
 #### New Features
 * Fix #1820: Override Createable.create(T) to avoid generic array creation
+* KUDO extension suport KUDO v0.10.0
 
 ### 4.8.0 (14-02-2020)
 #### Bugs

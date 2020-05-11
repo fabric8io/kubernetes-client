@@ -78,3 +78,30 @@ atlassian-ide-plugin.xml
 com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
+
+# Ignore vendor
+kubernetes-model/vendor/
+
+# Ignore generator binary output file
+kubernetes-model/kubernetes-model-discovery/generate
+kubernetes-model/kubernetes-model-scheduling/generate
+kubernetes-model/kubernetes-model-rbac/generate
+kubernetes-model/kubernetes-model-coordination/generate
+kubernetes-model/kubernetes-model-metrics/generate
+kubernetes-model/kubernetes-model-admissionregistration/generate
+kubernetes-model/kubernetes-model-apiextensions/generate
+kubernetes-model/kubernetes-model-certificates/generate
+kubernetes-model/kubernetes-model-policy/generate
+kubernetes-model/kubernetes-model-storageclass/generate
+kubernetes-model/kubernetes-model-events/generate
+kubernetes-model/kubernetes-model-settings/generate
+kubernetes-model/openshift-model/generate
+kubernetes-model/kubernetes-model-autoscaling/generate
+kubernetes-model/kubernetes-model-extensions/generate
+kubernetes-model/kubernetes-model-batch/generate
+kubernetes-model/generate
+kubernetes-model/kubernetes-model-networking/generate
+kubernetes-model/kubernetes-model-core/generate
+kubernetes-model/kubernetes-model-apps/generate
+extensions/tekton/generator/generate
+extensions/knative/generator/generate

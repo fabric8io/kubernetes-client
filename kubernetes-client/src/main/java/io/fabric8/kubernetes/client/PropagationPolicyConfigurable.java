@@ -15,7 +15,23 @@
  */
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
+
 public interface PropagationPolicyConfigurable<T>
 {
-    T withPropagationPolicy(String propagationPolicy);
+  /**
+   * Whether and how garbage collection will be performed.
+   * Either this field or OrphanDependents may be set, but not both.
+   *
+   * <p>The default policy is decided by the existing finalizer set in the metadata.finalizers and the resource-specific default policy.
+   *
+   * <p>Acceptable values are:
+   * <br>'Orphan' - orphan the dependents;
+   * <br>'Background' - allow the garbage collector to delete the dependents in the background;
+   * <br>'Foreground' - a cascading policy that deletes all dependents in the foreground.
+   *
+   * @param propagationPolicy propagation policy in form of string {@link DeletionPropagation}
+   * @return resource
+   */
+    T withPropagationPolicy(DeletionPropagation propagationPolicy);
 }

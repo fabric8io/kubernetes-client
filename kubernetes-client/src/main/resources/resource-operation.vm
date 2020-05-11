@@ -39,10 +39,16 @@
   #if ($annotation.getClassRef().getName().equals("ApiGroup"))
     #set ($apiGroupName = $annotation.getParameters().get("value"))
   #end
+  #if ($annotation.getClassRef().getName().equals("PackageSuffix"))
+    #set ($packageSuffix = $annotation.getParameters().get("value"))
+  #end
+  #if ($annotation.getClassRef().getName().equals("Namespaced"))
+    #set ($isResourceNamespacedFlag = $annotation.getParameters().get("value"))
+  #end
 #end
 
 
-package io.fabric8.kubernetes.client.dsl.internal;
+package io.fabric8.kubernetes.client.dsl.internal$packageSuffix;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -69,7 +75,7 @@ public class ${model.name}OperationsImpl extends HasMetadataOperation<${model.na
   }
 
   public ${model.name}OperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace));
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public ${model.name}OperationsImpl(OperationContext context) {
@@ -83,5 +89,10 @@ public class ${model.name}OperationsImpl extends HasMetadataOperation<${model.na
 
   public ${model.name}OperationsImpl newInstance(OperationContext context) {
     return new ${model.name}OperationsImpl(context);
+  }
+
+  @Override
+  public boolean isResourceNamespaced() {
+    return $isResourceNamespacedFlag;
   }
 }

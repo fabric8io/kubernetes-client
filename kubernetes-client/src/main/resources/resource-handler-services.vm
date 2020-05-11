@@ -14,5 +14,10 @@
  * limitations under the License.
  *#
 #foreach ($m in ${model.values()})
-io.fabric8.kubernetes.client.handlers.${m.name}Handler
+  #foreach ($annotation in $m.annotations)
+    #if ($annotation.getClassRef().getName().equals("PackageSuffix"))
+      #set ($packageSuffix = $annotation.getParameters().get("value"))
+    #end
+  #end
+  io.fabric8.kubernetes.client.handlers${packageSuffix}.${m.name}Handler
 #end

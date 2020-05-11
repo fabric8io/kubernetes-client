@@ -25,14 +25,14 @@ API resources in Kubernetes and OpenShift.
 
 - Run:
   ```
-  make
+  sh generateModel.sh
   ```
 
   You should now be able to view the generated schema in `kube-schema.json`
 
 ## Update dependency API's/ Updating Kubernetes/Openshift model
 
-You need to modify `Gopkg.lock`/`Gopkg.toml` files. We fetch go sources from Kubernetes Github repos and make a
+You need to modify `go.mod` files. We fetch go sources from Kubernetes Github repos and make a
 JSON schema from it, which is then fed to jsonschema2pojo maven plugin. In order to upgrade you need to update
 tags/references from these repos:
 
@@ -45,9 +45,8 @@ tags/references from these repos:
 
 After modifying just run:
 ```
-make
+sh generateModel.sh
 ```
-If you face any conflicts with the current `vendor/` directory, you can simple remove it and next `make` would rebuild it.
 
 If everything works well, you would have model upgraded to specified Kubernetes/Openshift models.
 

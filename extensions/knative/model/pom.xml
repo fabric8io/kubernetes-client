@@ -21,7 +21,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>knative-extension-pom</artifactId>
-    <version>4.9-SNAPSHOT</version>
+    <version>4.10-SNAPSHOT</version>
   </parent>
 
   <artifactId>knative-model</artifactId>
@@ -39,7 +39,7 @@
     </osgi.export>
     <osgi.include.resources>
       {maven-resources},
-      /knative.properties=target/classes/knative.properties
+      /model.properties=target/classes/model.properties
     </osgi.include.resources>
   </properties>
 
@@ -54,7 +54,7 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-model</artifactId>
+      <artifactId>kubernetes-model-core</artifactId>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
@@ -100,7 +100,7 @@
           <includeToString>false</includeToString>
           <includeHashcodeAndEquals>false</includeHashcodeAndEquals>
           <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
-          <customAnnotator>io.fabric8.knative.KnativeTypeAnnotator</customAnnotator>
+          <customAnnotator>io.fabric8.kubernetes.ModelAnnotator</customAnnotator>
         </configuration>
         <executions>
           <execution>
@@ -114,10 +114,29 @@
         <dependencies>
           <dependency>
             <groupId>io.fabric8</groupId>
-            <artifactId>knative-model-annotator</artifactId>
+            <artifactId>model-annotator</artifactId>
             <version>${project.version}</version>
           </dependency>
         </dependencies>
+      </plugin>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <configuration>
+              <target>
+                <!-- removing the generated Schema class -->
+                <delete
+                  file="${project.build.directory}/generated-sources/io/fabric8/knative/api/model/KnativeSchema.java"
+                  verbose="true"/>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>

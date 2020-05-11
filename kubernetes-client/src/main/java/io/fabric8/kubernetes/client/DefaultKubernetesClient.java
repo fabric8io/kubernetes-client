@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Binding;
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.DoneableBinding;
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -34,9 +35,9 @@ import io.fabric8.kubernetes.api.model.DoneableComponentStatus;
 import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsList;
 import io.fabric8.kubernetes.api.model.DoneableEndpoints;
-import io.fabric8.kubernetes.api.model.Event;
-import io.fabric8.kubernetes.api.model.EventList;
-import io.fabric8.kubernetes.api.model.DoneableEvent;
+import io.fabric8.kubernetes.api.model.events.Event;
+import io.fabric8.kubernetes.api.model.events.EventList;
+import io.fabric8.kubernetes.api.model.events.DoneableEvent;
 import io.fabric8.kubernetes.api.model.LimitRange;
 import io.fabric8.kubernetes.api.model.LimitRangeList;
 import io.fabric8.kubernetes.api.model.DoneableLimitRange;
@@ -75,7 +76,32 @@ import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
 import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
-import io.fabric8.kubernetes.client.dsl.internal.*;
+import io.fabric8.kubernetes.client.dsl.internal.ClusterOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.apiextensions.v1beta1.CustomResourceDefinitionOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.CustomResourceOperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.CustomResourceOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.KubernetesListOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.core.v1.ComponentStatusOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.core.v1.NamespaceOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl;
+import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
+import io.fabric8.kubernetes.client.dsl.internal.core.v1.NodeOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.core.v1.PersistentVolumeOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.core.v1.ReplicationControllerOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.core.v1.ServiceOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.SubjectAccessReviewDSLImpl;
+import io.fabric8.kubernetes.client.dsl.internal.coordination.v1.LeaseOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.core.v1.BindingOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.core.v1.ConfigMapOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.core.v1.EndpointsOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.core.v1.LimitRangeOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.core.v1.PersistentVolumeClaimOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.core.v1.ResourceQuotaOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.core.v1.SecretOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.core.v1.ServiceAccountOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.events.v1beta1.EventOperationsImpl;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
@@ -125,13 +151,13 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> load(InputStream is) {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<>(), is, null, true) {
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<>(), is, null, true, DeletionPropagation.BACKGROUND) {
     };
   }
 
   @Override
   public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(KubernetesResourceList item) {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<Visitor>(), item, null, null, -1, null, true) {
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<Visitor>(), item, null, null, -1, DeletionPropagation.BACKGROUND, true) {
     };
   }
 
@@ -147,20 +173,20 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(String s) {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<Visitor>(), s, null, null, -1, null, true) {
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<Visitor>(), s, null, null, -1, DeletionPropagation.BACKGROUND, true) {
     };
   }
 
 
   @Override
   public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean> resource(HasMetadata item) {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<Visitor>(), item, -1, null, true) {
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<Visitor>(), item, -1, DeletionPropagation.BACKGROUND, true) {
     };
   }
 
   @Override
   public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean> resource(String s) {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<Visitor>(), s, -1, null, true) {
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<Visitor>(), s, -1, DeletionPropagation.BACKGROUND, true) {
     };
   }
 
@@ -299,6 +325,11 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   @Override
   public VersionInfo getVersion() {
     return new ClusterOperationsImpl(httpClient, getConfiguration(), ClusterOperationsImpl.KUBERNETES_VERSION_ENDPOINT).fetchVersion();
+  }
+
+  @Override
+  public V1APIGroupDSL v1() {
+    return adapt(V1APIGroupClient.class);
   }
 
   @Override

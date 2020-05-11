@@ -17,11 +17,11 @@
 package io.fabric8.kubernetes.client.dsl.base;
 
 import io.fabric8.kubernetes.api.builder.Function;
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ReplicationController;
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.Watch;
@@ -29,19 +29,18 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.client.internal.readiness.ReadinessWatcher;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import okhttp3.OkHttpClient;
 
 public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
   extends BaseOperation< T, L, D, R> {
+  protected static final DeletionPropagation DEFAULT_PROPAGATION_POLICY = DeletionPropagation.BACKGROUND;
 
   public HasMetadataOperation(OperationContext ctx) {
     super(ctx);
   }
 
   @Override
-  public D edit() throws KubernetesClientException {
+  public D edit() {
     final Function<T, T> visitor = resource -> {
       try {
         return patch(resource);
@@ -52,7 +51,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
 
     try {
       T item = getMandatory();
-      return (D) getDoneableType().getDeclaredConstructor(getType(), Function.class).newInstance(item, visitor);
+      return getDoneableType().getDeclaredConstructor(getType(), Function.class).newInstance(item, visitor);
     } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("edit"), e);
     }
@@ -88,7 +87,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
             throw KubernetesClientException.launderThrowable(forOperationType("replace"), e);
           }
         };
-        D doneable = (D) getDoneableType().getDeclaredConstructor(getType(), Function.class).newInstance(item, visitor);
+        D doneable = getDoneableType().getDeclaredConstructor(getType(), Function.class).newInstance(item, visitor);
         return doneable.done();
       } catch (KubernetesClientException e) {
         caught = e;
@@ -135,7 +134,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
             throw KubernetesClientException.launderThrowable(forOperationType("patch"), e);
           }
         };
-        D doneable = (D) getDoneableType().getDeclaredConstructor(getType(), Function.class).newInstance(item, visitor);
+        D doneable = getDoneableType().getDeclaredConstructor(getType(), Function.class).newInstance(item, visitor);
         return doneable.done();
       } catch (KubernetesClientException e) {
         caught = e;

@@ -16,15 +16,18 @@
 package io.fabric8.kubernetes.client.dsl.base;
 
 import io.fabric8.kubernetes.api.builder.Function;
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
+import io.fabric8.kubernetes.api.model.ListOptions;
+import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.api.model.Status;
+import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
-import io.fabric8.kubernetes.api.model.v1.Scale;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -88,7 +91,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   private final String resourceVersion;
   private final Boolean reloadingFromServer;
   private final long gracePeriodSeconds;
-  private final String propagationPolicy;
+  private final DeletionPropagation propagationPolicy;
 
   protected String apiVersion;
 
@@ -154,6 +157,38 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     } catch (InterruptedException | ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
     }
+  }
+
+  protected URL fetchListUrl(URL url, ListOptions listOptions) throws MalformedURLException {
+    HttpUrl.Builder urlBuilder = HttpUrl.get(url.toString()).newBuilder();
+    if(listOptions.getLimit() != null) {
+      urlBuilder.addQueryParameter("limit", listOptions.getLimit().toString());
+    }
+    if(listOptions.getContinue() != null) {
+      urlBuilder.addQueryParameter("continue", listOptions.getContinue());
+    }
+
+    if (listOptions.getResourceVersion() != null) {
+      urlBuilder.addQueryParameter("resourceVersion", listOptions.getResourceVersion());
+    }
+
+    if (listOptions.getFieldSelector() != null) {
+      urlBuilder.addQueryParameter("fieldSelector", listOptions.getFieldSelector());
+    }
+
+    if (listOptions.getLabelSelector() != null) {
+      urlBuilder.addQueryParameter("labelSelector", listOptions.getLabelSelector());
+    }
+
+    if (listOptions.getTimeoutSeconds() != null) {
+      urlBuilder.addQueryParameter("timeoutSeconds", listOptions.getTimeoutSeconds().toString());
+    }
+
+    if (listOptions.getAllowWatchBookmarks() != null) {
+      urlBuilder.addQueryParameter("allowWatchBookmarks", listOptions.getAllowWatchBookmarks().toString());
+    }
+
+    return new URL(urlBuilder.toString());
   }
 
   private void addQueryStringParam(HttpUrl.Builder requestUrlBuilder, String name, String value) {
@@ -624,15 +659,13 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     }
   }
 
-  public L list(Integer limitVal, String continueVal) throws KubernetesClientException {
+  public L list(Integer limitVal, String continueVal) {
+    return list(new ListOptionsBuilder().withLimit(Long.parseLong(limitVal.toString())).withContinue(continueVal).build());
+  }
+
+  public L list(ListOptions listOptions) {
     try {
-      URL url = getNamespacedUrl();
-      if(limitVal != null && continueVal == null) {
-        url = new URL(URLUtils.join(url.toString(), "?limit=" + limitVal.toString()));
-      } else if(continueVal != null) {
-        url = new URL(URLUtils.join(url.toString(), "?continue=" + continueVal + "&limit=" + limitVal.toString() ));
-      }
-      return listRequestHelper(url);
+      return listRequestHelper(fetchListUrl(getNamespacedUrl(), listOptions));
     } catch (MalformedURLException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
     }
@@ -887,7 +920,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     return gracePeriodSeconds;
   }
 
-  public String getPropagationPolicy() {
+  public DeletionPropagation getPropagationPolicy() {
     return propagationPolicy;
   }
 
@@ -953,7 +986,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withPropagationPolicy(String propagationPolicy)
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withPropagationPolicy(DeletionPropagation propagationPolicy)
   {
     return newInstance(context.withPropagationPolicy(propagationPolicy));
   }

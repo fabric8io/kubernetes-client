@@ -17,6 +17,7 @@
 package io.fabric8.openshift.client.server.mock;
 
 import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.openshift.api.model.Group;
 import io.fabric8.openshift.api.model.GroupBuilder;
 import io.fabric8.openshift.api.model.GroupList;
@@ -119,13 +120,13 @@ public class GroupTest {
 
     OpenShiftClient client = server.getOpenshiftClient();
 
-    Boolean deleted = client.groups().withName("group1").withPropagationPolicy("Foreground").delete();
+    Boolean deleted = client.groups().withName("group1").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
     assertNotNull(deleted);
 
-    deleted = client.groups().withName("Group2").withPropagationPolicy("Foreground").delete();
+    deleted = client.groups().withName("Group2").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
     assertTrue(deleted);
 
-    deleted = client.groups().withName("Group3").withPropagationPolicy("Foreground").delete();
+    deleted = client.groups().withName("Group3").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
     assertFalse(deleted);
   }
 }

@@ -22,12 +22,12 @@
     <parent>
         <groupId>io.fabric8</groupId>
         <artifactId>kudo-extension-pom</artifactId>
-        <version>4.9-SNAPSHOT</version>
+        <version>4.10-SNAPSHOT</version>
     </parent>
 
     <artifactId>kudo-model</artifactId>
     <packaging>jar</packaging>
-    <name>Fabric8 :: Kudo :: Model</name>
+    <name>Fabric8 :: KUDO :: Model</name>
 
     <dependencies>
         <dependency>

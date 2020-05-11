@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.examples;
 
+import io.fabric8.kubernetes.api.model.ListOptions;
+import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.Config;
@@ -71,6 +73,8 @@ public class ListExamples {
       podList.getItems().forEach((obj) -> { System.out.println(obj.getMetadata().getName()); });
 
       Integer services = client.services().inNamespace("myproject").list(1, null).getItems().size();
+
+      client.services().inNamespace("myproject").list(new ListOptionsBuilder().withLimit(1L).withContinue(null).build());
       System.out.println(services);
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);

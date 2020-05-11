@@ -30,8 +30,8 @@ import io.fabric8.kubernetes.api.model.apps.ReplicaSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetListBuilder;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollbackBuilder;
-import io.fabric8.kubernetes.api.model.v1.Scale;
-import io.fabric8.kubernetes.api.model.v1.ScaleBuilder;
+import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
+import io.fabric8.kubernetes.api.model.autoscaling.v1.ScaleBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
@@ -319,8 +319,8 @@ public class DeploymentTest {
       .withNewStrategy()
       .withType("RollingUpdate")
       .withNewRollingUpdate()
-      .withNewMaxSurge().withIntVal(1).endMaxSurge()
-      .withNewMaxUnavailable().withIntVal(1).endMaxUnavailable()
+      .withNewMaxSurge(1)
+      .withNewMaxUnavailable(1)
       .endRollingUpdate()
       .endStrategy()
       .withMinReadySeconds(5)

@@ -21,15 +21,15 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-extensions</artifactId>
-    <version>4.9-SNAPSHOT</version>
+    <version>4.10-SNAPSHOT</version>
   </parent>
 
   <artifactId>kudo-extension-pom</artifactId>
   <packaging>pom</packaging>
-  <name>Fabric8 :: Kudo :: Extension</name>
+  <name>Fabric8 :: KUDO :: Extension</name>
 
   <properties>
-    <fabric-version>4.9-SNAPSHOT</fabric-version>
+    <fabric-version>4.10-SNAPSHOT</fabric-version>
   </properties>
 
   <modules>

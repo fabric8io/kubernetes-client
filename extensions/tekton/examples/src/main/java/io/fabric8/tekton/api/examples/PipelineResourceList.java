@@ -22,7 +22,7 @@ public class PipelineResourceList {
   public static void main(String[] args) {
     try ( TektonClient client = ClientFactory.newClient(args)) {
       System.out.println("Pipeline resources:");
-      client.pipelineResources().list().getItems().forEach(System.out::println);
+      client.v1alpha1().pipelineResources().list().getItems().forEach(System.out::println);
       System.out.println("done.");
     }
     System.exit(0);

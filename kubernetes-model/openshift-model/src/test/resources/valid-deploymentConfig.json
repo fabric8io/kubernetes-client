@@ -1,0 +1,300 @@
+{
+  "apiVersion": "apps.openshift.io/v1",
+  "kind": "DeploymentConfig",
+  "metadata": {
+    "annotations": {
+      "fabric8.io/iconUrl": "img/icons/spring-boot.svg",
+      "fabric8.io/metrics-path": "dashboard/file/kubernetes-pods.json/?var-project=fabric8-maven-sample-zero-config&var-version=3.5-SNAPSHOT",
+      "fabric8.io/scm-url": "https://github.com/spring-projects/spring-boot/spring-boot-starter-parent/fabric8-maven-sample-zero-config"
+    },
+    "labels": {
+      "app": "fabric8-maven-sample-zero-config",
+      "provider": "fabric8",
+      "version": "3.5-SNAPSHOT",
+      "group": "io.fabric8"
+    },
+    "name": "fabric8-maven-sample-zero-config",
+    "clusterName": "kubernetes",
+    "creationTimestamp": "2017-11-01 13:21:22 UTC",
+    "deletionTimestamp": "2017-11-02 13:21:22 UTC",
+    "namespace": "myproject",
+    "generateName": "zero-config-test",
+    "initializers": {
+      "pending": [
+        {
+          "name": "initializer.testproject.io"
+        }
+      ]
+    },
+    "ownerReference": null
+  },
+  "spec": {
+    "minReadySeconds": 5,
+    "paused": false,
+    "replicas": 5,
+    "revisionHistoryLimit": 3,
+    "selector": {
+      "app": "fabric8-maven-sample-zero-config",
+      "provider": "fabric8",
+      "group": "io.fabric8"
+    },
+    "strategy": {
+      "activeDeadlineSeconds": 100,
+      "type": "Rolling",
+      "rollingParams": {
+        "timeoutSeconds": 3600,
+        "updatePeriodSeconds": 30,
+        "intervalSeconds": 600,
+        "maxSurge": "20%",
+        "maxUnavailable": "20%",
+        "pre": {
+          "failurePolicy": "Abort"
+        },
+        "post": {
+          "failurePolicy": "Abort",
+          "execNewPod": {
+            "containerName": "helloworld",
+            "command": [
+              "/usr/bin/command",
+              "arg1",
+              "arg2"
+            ],
+            "env": [
+              {
+                "name": "CUSTOM_VAR1",
+                "value": "custom_value1"
+              }
+            ],
+            "volumes": [
+              "data"
+            ]
+          }
+        }
+      }
+    },
+    "triggers": [
+      {
+        "type": "ConfigChange"
+      },
+      {
+        "type": "ImageChange",
+        "imageChangeParams": {
+          "automatic": true,
+          "containerNames": [
+            "helloworld"
+          ],
+          "from": {
+            "kind": "ImageStreamTag",
+            "name": "origin-ruby-sample:latest"
+          }
+        }
+      }
+    ],
+    "test": true,
+    "template": {
+      "metadata": {
+        "annotations": {
+          "fabric8.io/metrics-path": "dashboard/file/kubernetes-pods.json/?var-project=fabric8-maven-sample-zero-config&var-version=3.5-SNAPSHOT",
+          "fabric8.io/scm-url": "https://github.com/spring-projects/spring-boot/spring-boot-starter-parent/fabric8-maven-sample-zero-config",
+          "fabric8.io/iconUrl": "img/icons/spring-boot.svg"
+        },
+        "labels": {
+          "app": "fabric8-maven-sample-zero-config",
+          "provider": "fabric8",
+          "version": "3.5-SNAPSHOT",
+          "group": "io.fabric8"
+        }
+      },
+      "spec": {
+        "activeDeadlineSeconds": 10,
+        "automountServiceAccountToken": true,
+        "containers": [
+          {
+            "command": [
+              "printenv"
+            ],
+            "args": [
+              "HOSTNAME",
+              "KUBERNETES_PORT"
+            ],
+            "env": [
+              {
+                "name": "KUBERNETES_NAMESPACE",
+                "valueFrom": {
+                  "fieldRef": {
+                    "fieldPath": "metadata.namespace"
+                  }
+                }
+              }
+            ],
+            "image": "fabric8/fabric8-maven-sample-zero-config:snapshot-171129-120114-0102",
+            "imagePullPolicy": "IfNotPresent",
+            "name": "spring-boot",
+            "envFrom": [
+              {
+                "secretRef": {
+                  "name": "my-app-secret"
+                }
+              },
+              {
+                "fieldRef": {
+                  "name": "metadata.name"
+                }
+              }
+            ],
+            "lifecycle": {
+              "postStart": {
+                "exec": {
+                  "command": [
+                    "/bin/sh",
+                    "-c",
+                    "echo Hello from the postStart handler > /usr/share/message"
+                  ]
+                }
+              },
+              "preStop": {
+                "exec": {
+                  "command": [
+                    "/usr/sbin/nginx",
+                    "-s",
+                    "quit"
+                  ]
+                }
+              }
+            },
+            "livenessProbe": {
+              "httpGet": {
+                "path": "/healthz",
+                "port": 8080,
+                "httpHeaders": [
+                  {
+                    "name": "X-Custom-Header",
+                    "value": "Awesome"
+                  }
+                ]
+              },
+              "initialDelaySeconds": 5,
+              "periodSeconds": 5,
+              "timeoutSeconds": 5,
+              "failureThreshold": 5,
+              "successThreshold": 5
+            },
+            "readinessProbe": {
+              "exec": {
+                "command": [
+                  "cat",
+                  "/tmp/healthy"
+                ]
+              },
+              "initialDelaySeconds": 5,
+              "periodSeconds": 5,
+              "failureThreshold": 5,
+              "successThreshold": 5,
+              "timeoutSeconds": 5
+            },
+            "ports": [
+              {
+                "containerPort": 8080,
+                "name": "http",
+                "protocol": "TCP",
+                "hostIP": "127.0.0.1",
+                "hostPort": 50
+              },
+              {
+                "containerPort": 9779,
+                "name": "prometheus",
+                "protocol": "TCP"
+              },
+              {
+                "containerPort": 8778,
+                "name": "jolokia",
+                "protocol": "TCP"
+              }
+            ],
+            "securityContext": {
+              "privileged": false
+            },
+            "stdin": false,
+            "stdinOnce": false,
+            "resources": {
+              "requests": {
+                "memory": "64Mi",
+                "cpu": "250m"
+              },
+              "limits": {
+                "memory": "128Mi",
+                "cpu": "500m"
+              }
+            },
+            "terminationMessagePath": "/tmp/my-log",
+            "terminationMessagePolicy": "FallbackToLogsOnError",
+            "tty": false,
+            "volumeMounts": [
+              {
+                "mountPath": "/cache",
+                "name": "cache-volume"
+              }
+            ],
+            "workingDir": "/workdir"
+          }
+        ],
+        "dnsPolicy": "ClusterFirst",
+        "hostAliases": [
+          {
+            "ip": "127.0.0.1",
+            "hostnames": [
+              "foo.local",
+              "bar.local"
+            ]
+          },
+          {
+            "ip": "10.1.2.3",
+            "hostnames": [
+              "foo.remote",
+              "bar.remote"
+            ]
+          }
+        ],
+        "hostIPC": false,
+        "hostNetwork": false,
+        "hostPID": false,
+        "hostName": "localhost",
+        "imagePullSecrets": [
+          {
+            "name": "regsecret"
+          }
+        ],
+        "initContainers": [
+          {
+            "name": "init-mydb",
+            "image": "busybox",
+            "command": [
+              "sh",
+              "-c",
+              "until nslookup mydb; do echo waiting for mydb; sleep 2; done;"
+            ]
+          }
+        ],
+        "nodeName": "node1",
+        "nodeSelector": {
+          "disktype": "ssd"
+        },
+        "serviceAccount": "robot",
+        "serviceAccountName": "robot",
+        "subdomain": "test",
+        "restartPolicy": "Always",
+        "schedulerName": "default",
+        "terminationGracePeriodSeconds": 30,
+        "volumes": [
+          {
+            "name": "site-data",
+            "persistentVolumeClaim": {
+              "claimName": "my-site-data",
+              "readOnly": false
+            }
+          }
+        ]
+      }
+    }
+  }
+}

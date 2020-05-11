@@ -40,11 +40,11 @@ public class TaskCreate {
         .build();
 
       // Create Task
-      task = tektonClient.tasks().inNamespace(namespace).create(task);
+      task = tektonClient.v1beta1().tasks().inNamespace(namespace).create(task);
       System.out.println("Created: " + task.getMetadata().getName());
 
       // List Task
-      TaskList taskList = tektonClient.tasks().inNamespace(namespace).list();
+      TaskList taskList = tektonClient.v1beta1().tasks().inNamespace(namespace).list();
       System.out.println("There are " + taskList.getItems().size() + " Tasks in " + namespace);
     }
   }

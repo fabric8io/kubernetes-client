@@ -16,6 +16,8 @@
 
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.model.ListOptions;
+import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.authorization.SelfSubjectAccessReview;
 import io.fabric8.kubernetes.api.model.authorization.SelfSubjectAccessReviewBuilder;
 import io.fabric8.kubernetes.api.model.authorization.SelfSubjectRulesReview;
@@ -96,14 +98,32 @@ public class SubjectAccessReviewOperationImpl extends OperationSupport implement
 
   @Override
   public Createable<SelfSubjectRulesReview, SelfSubjectRulesReview, CreateableSelfSubjectRulesReview> list() {
-    // WIP
-    return null;
+    throw new KubernetesClientException(new StatusBuilder()
+      .withStatus("Failure")
+      .withMessage("the server does not allow this method on the requested resource")
+      .withReason("MethodNotAllowed")
+      .withCode(405)
+      .build());
   }
 
   @Override
   public Createable<SelfSubjectRulesReview, SelfSubjectRulesReview, CreateableSelfSubjectRulesReview> list(Integer limitVal, String continueVal) {
-    // WIP
-    return null;
+    throw new KubernetesClientException(new StatusBuilder()
+      .withStatus("Failure")
+      .withMessage("the server does not allow this method on the requested resource")
+      .withReason("MethodNotAllowed")
+      .withCode(405)
+      .build());
+  }
+
+  @Override
+  public Createable<SelfSubjectRulesReview, SelfSubjectRulesReview, CreateableSelfSubjectRulesReview> list(ListOptions listOptions) {
+    throw new KubernetesClientException(new StatusBuilder()
+      .withStatus("Failure")
+      .withMessage("the server does not allow this method on the requested resource")
+      .withReason("MethodNotAllowed")
+      .withCode(405)
+      .build());
   }
 
   private class CreateableLocalSubjectAccessReviewImpl extends CreateableLocalSubjectAccessReview {

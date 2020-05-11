@@ -51,7 +51,7 @@ public class MutatingWebhookConfigurationTest {
     server.expect().post().withPath("/apis/admissionregistration.k8s.io/v1beta1/mutatingwebhookconfigurations").andReturn(201, mutatingWebhookConfiguration).once();
 
     KubernetesClient client = server.getClient();
-    HasMetadata response = client.resource(mutatingWebhookConfiguration).createOrReplace();
+    HasMetadata response = client.resource(mutatingWebhookConfiguration).inNamespace("test").createOrReplace();
     assertEquals(mutatingWebhookConfiguration, response);
   }
 }

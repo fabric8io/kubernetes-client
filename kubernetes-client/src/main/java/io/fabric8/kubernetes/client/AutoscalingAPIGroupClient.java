@@ -15,24 +15,31 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.model.DoneableHorizontalPodAutoscaler;
-import io.fabric8.kubernetes.api.model.HorizontalPodAutoscaler;
-import io.fabric8.kubernetes.api.model.HorizontalPodAutoscalerList;
 import io.fabric8.kubernetes.client.dsl.*;
-import io.fabric8.kubernetes.client.dsl.internal.HorizontalPodAutoscalerOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class AutoscalingAPIGroupClient extends BaseClient implements AutoscalingAPIGroupDSL {
 
-  public AutoscalingAPIGroupClient() throws KubernetesClientException {
+  public AutoscalingAPIGroupClient() {
     super();
   }
 
-  public AutoscalingAPIGroupClient(OkHttpClient httpClient, final Config config) throws KubernetesClientException {
+  public AutoscalingAPIGroupClient(OkHttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 
-  public MixedOperation<HorizontalPodAutoscaler, HorizontalPodAutoscalerList, DoneableHorizontalPodAutoscaler, Resource<HorizontalPodAutoscaler, DoneableHorizontalPodAutoscaler>> horizontalPodAutoscalers() {
-    return new HorizontalPodAutoscalerOperationsImpl(httpClient, getConfiguration());
+  @Override
+  public V1AutoscalingAPIGroupDSL v1() {
+    return adapt(V1AutoscalingAPIGroupClient.class);
+  }
+
+  @Override
+  public V2beta1AutoscalingAPIGroupDSL v2beta1() {
+    return adapt(V2beta1AutoscalingAPIGroupClient.class);
+  }
+
+  @Override
+  public V2beta2AutoscalingAPIGroupDSL v2beta2() {
+    return adapt(V2beta2AutoscalingAPIGroupClient.class);
   }
 }

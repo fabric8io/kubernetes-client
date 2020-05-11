@@ -16,10 +16,11 @@
 package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.api.model.*;
+import io.fabric8.kubernetes.api.model.DoneableBinding;
 import io.fabric8.kubernetes.api.model.DoneableComponentStatus;
 import io.fabric8.kubernetes.api.model.DoneableConfigMap;
 import io.fabric8.kubernetes.api.model.DoneableEndpoints;
-import io.fabric8.kubernetes.api.model.DoneableEvent;
+import io.fabric8.kubernetes.api.model.events.DoneableEvent;
 import io.fabric8.kubernetes.api.model.DoneableLimitRange;
 import io.fabric8.kubernetes.api.model.DoneableNamespace;
 import io.fabric8.kubernetes.api.model.DoneableNode;
@@ -38,17 +39,27 @@ import io.fabric8.kubernetes.api.model.apiextensions.DoneableCustomResourceDefin
 import io.fabric8.kubernetes.api.model.coordination.v1.DoneableLease;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
+import io.fabric8.kubernetes.api.model.events.Event;
+import io.fabric8.kubernetes.api.model.events.EventList;
 import io.fabric8.kubernetes.client.*;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.*;
+import io.fabric8.kubernetes.client.dsl.internal.apiextensions.v1beta1.CustomResourceDefinitionOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.coordination.v1.LeaseOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.core.v1.ComponentStatusOperationsImpl;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
 import io.fabric8.kubernetes.client.utils.BackwardsCompatibilityInterceptor;
 import io.fabric8.kubernetes.client.utils.ImpersonatorInterceptor;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
-import io.fabric8.openshift.api.model.*;
+import io.fabric8.openshift.api.model.Build;
+import io.fabric8.openshift.api.model.BuildConfig;
+import io.fabric8.openshift.api.model.BuildConfigList;
+import io.fabric8.openshift.api.model.BuildList;
+import io.fabric8.openshift.api.model.DeploymentConfig;
+import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.api.model.DoneableBuild;
 import io.fabric8.openshift.api.model.DoneableBuildConfig;
 import io.fabric8.openshift.api.model.DoneableDeploymentConfig;
@@ -58,16 +69,59 @@ import io.fabric8.openshift.api.model.DoneableImageStreamTag;
 import io.fabric8.openshift.api.model.DoneableOAuthAccessToken;
 import io.fabric8.openshift.api.model.DoneableOAuthAuthorizeToken;
 import io.fabric8.openshift.api.model.DoneableOAuthClient;
-import io.fabric8.openshift.api.model.DoneableOpenshiftClusterRoleBinding;
-import io.fabric8.openshift.api.model.DoneableOpenshiftRole;
-import io.fabric8.openshift.api.model.DoneableOpenshiftRoleBinding;
+import io.fabric8.openshift.api.model.DoneableClusterRoleBinding;
+import io.fabric8.openshift.api.model.DoneableRole;
+import io.fabric8.openshift.api.model.DoneableRoleBinding;
 import io.fabric8.openshift.api.model.DoneableProject;
 import io.fabric8.openshift.api.model.DoneableRoute;
 import io.fabric8.openshift.api.model.DoneableSecurityContextConstraints;
 import io.fabric8.openshift.api.model.DoneableTemplate;
 import io.fabric8.openshift.api.model.DoneableUser;
+import io.fabric8.openshift.api.model.Group;
+import io.fabric8.openshift.api.model.GroupList;
+import io.fabric8.openshift.api.model.ImageStream;
+import io.fabric8.openshift.api.model.ImageStreamList;
+import io.fabric8.openshift.api.model.ImageStreamTag;
+import io.fabric8.openshift.api.model.ImageStreamTagList;
+import io.fabric8.openshift.api.model.OAuthAccessToken;
+import io.fabric8.openshift.api.model.OAuthAccessTokenList;
+import io.fabric8.openshift.api.model.OAuthAuthorizeToken;
+import io.fabric8.openshift.api.model.OAuthAuthorizeTokenList;
+import io.fabric8.openshift.api.model.OAuthClient;
+import io.fabric8.openshift.api.model.OAuthClientList;
+import io.fabric8.openshift.api.model.ClusterRoleBinding;
+import io.fabric8.openshift.api.model.ClusterRoleBindingList;
+import io.fabric8.openshift.api.model.Role;
+import io.fabric8.openshift.api.model.RoleBinding;
+import io.fabric8.openshift.api.model.RoleBindingList;
+import io.fabric8.openshift.api.model.RoleList;
+import io.fabric8.openshift.api.model.Project;
+import io.fabric8.openshift.api.model.ProjectList;
+import io.fabric8.openshift.api.model.Route;
+import io.fabric8.openshift.api.model.RouteList;
+import io.fabric8.openshift.api.model.SecurityContextConstraints;
+import io.fabric8.openshift.api.model.SecurityContextConstraintsList;
+import io.fabric8.openshift.api.model.Template;
+import io.fabric8.openshift.api.model.TemplateList;
+import io.fabric8.openshift.api.model.User;
+import io.fabric8.openshift.api.model.UserList;
 import io.fabric8.openshift.client.dsl.*;
 import io.fabric8.openshift.client.dsl.internal.*;
+import io.fabric8.openshift.client.dsl.internal.BuildConfigOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.BuildOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.ClusterRoleBindingOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.DeploymentConfigOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.GroupOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.ImageStreamOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.ImageStreamTagOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.OAuthAccessTokenOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.OAuthAuthorizeTokenOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.OAuthClientOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.ProjectOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.RouteOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.SecurityContextConstraintsOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.TemplateOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.UserOperationsImpl;
 import io.fabric8.openshift.client.internal.OpenShiftOAuthInterceptor;
 import okhttp3.Authenticator;
 import okhttp3.OkHttpClient;
@@ -379,13 +433,13 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public MixedOperation<OpenshiftRole, OpenshiftRoleList, DoneableOpenshiftRole, Resource<OpenshiftRole, DoneableOpenshiftRole>> roles() {
-    return new OpenshiftRoleOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+  public MixedOperation<Role, RoleList, DoneableRole, Resource<Role, DoneableRole>> roles() {
+    return new RoleOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public MixedOperation<OpenshiftRoleBinding, OpenshiftRoleBindingList, DoneableOpenshiftRoleBinding, Resource<OpenshiftRoleBinding, DoneableOpenshiftRoleBinding>> roleBindings() {
-    return new OpenshiftRoleBindingOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+  public MixedOperation<RoleBinding, RoleBindingList, DoneableRoleBinding, Resource<RoleBinding, DoneableRoleBinding>> roleBindings() {
+    return new RoleBindingOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
@@ -409,8 +463,8 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public MixedOperation<OpenshiftClusterRoleBinding, OpenshiftClusterRoleBindingList, DoneableOpenshiftClusterRoleBinding, Resource<OpenshiftClusterRoleBinding, DoneableOpenshiftClusterRoleBinding>> clusterRoleBindings() {
-    return new OpenshiftClusterRoleBindingOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+  public MixedOperation<ClusterRoleBinding, ClusterRoleBindingList, DoneableClusterRoleBinding, Resource<ClusterRoleBinding, DoneableClusterRoleBinding>> clusterRoleBindings() {
+    return new ClusterRoleBindingOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
@@ -435,6 +489,11 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public VersionInfo getVersion() {
     return new ClusterOperationsImpl(httpClient, getConfiguration(), ClusterOperationsImpl.OPENSHIFT_VERSION_ENDPOINT).fetchVersion();
+  }
+
+  @Override
+  public V1APIGroupDSL v1() {
+    return adapt(V1APIGroupDSL.class);
   }
 
   @Override

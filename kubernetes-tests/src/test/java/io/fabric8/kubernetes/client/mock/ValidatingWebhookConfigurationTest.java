@@ -51,7 +51,7 @@ public class ValidatingWebhookConfigurationTest {
     server.expect().post().withPath("/apis/admissionregistration.k8s.io/v1beta1/validatingwebhookconfigurations").andReturn(201, validatingWebhookConfiguration).once();
 
     KubernetesClient client = server.getClient();
-    HasMetadata response = client.resource(validatingWebhookConfiguration).createOrReplace();
+    HasMetadata response = client.resource(validatingWebhookConfiguration).inNamespace("test").createOrReplace();
     assertEquals(validatingWebhookConfiguration, response);
   }
 }

@@ -15,7 +15,9 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.authorization.*;
 import io.fabric8.kubernetes.api.model.authorization.DoneableLocalSubjectAccessReview;
 import io.fabric8.kubernetes.api.model.authorization.DoneableSelfSubjectRulesReview;
@@ -99,13 +101,32 @@ public class SubjectAccessReviewDSLImpl extends OperationSupport implements Subj
 
   @Override
   public Createable<SelfSubjectRulesReview, SelfSubjectRulesReview, DoneableSelfSubjectRulesReview> list() {
-    return new CreatableSelfSubjectRulesReview();
+    throw new KubernetesClientException(new StatusBuilder()
+      .withStatus("Failure")
+      .withMessage("the server does not allow this method on the requested resource")
+      .withReason("MethodNotAllowed")
+      .withCode(405)
+      .build());
   }
 
   @Override
   public Createable<SelfSubjectRulesReview, SelfSubjectRulesReview, DoneableSelfSubjectRulesReview> list(Integer limitVal, String continueVal) {
-    // WIP
-    return null;
+    throw new KubernetesClientException(new StatusBuilder()
+      .withStatus("Failure")
+      .withMessage("the server does not allow this method on the requested resource")
+      .withReason("MethodNotAllowed")
+      .withCode(405)
+      .build());
+  }
+
+  @Override
+  public Createable<SelfSubjectRulesReview, SelfSubjectRulesReview, DoneableSelfSubjectRulesReview> list(ListOptions listOptions) {
+    throw new KubernetesClientException(new StatusBuilder()
+      .withStatus("Failure")
+      .withMessage("the server does not allow this method on the requested resource")
+      .withReason("MethodNotAllowed")
+      .withCode(405)
+      .build());
   }
 
 

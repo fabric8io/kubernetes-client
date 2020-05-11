@@ -238,7 +238,7 @@ public class ReplicaSetTest {
 
   @Test
   public void testDeprecatedApiVersion() {
-    ReplicaSet repl1 = new ReplicaSetBuilder()
+    io.fabric8.kubernetes.api.model.extensions.ReplicaSet repl1 = new io.fabric8.kubernetes.api.model.extensions.ReplicaSetBuilder()
       .withApiVersion("extensions/v1beta1")
       .withNewMetadata()
       .withName("repl1")

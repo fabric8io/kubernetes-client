@@ -26,7 +26,7 @@
 #end
 
 
-package io.fabric8.tekton.client.handlers;
+package io.fabric8.tekton.client.handlers.$apiVersion;
 
 import java.util.function.Predicate;
 
@@ -34,11 +34,12 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.tekton.client.internal.${model.name}OperationsImpl;
+import io.fabric8.tekton.client.internal.$apiVersion.${model.name}OperationsImpl;
 
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
 
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import ${model.fullyQualifiedName};
 import ${model.fullyQualifiedName}Builder;
 
@@ -82,12 +83,8 @@ public class ${model.name}Handler implements ResourceHandler<${model.name}, ${mo
   }
 
   @Override
-  public Boolean delete(OkHttpClient client, Config config, String namespace, Boolean cascading, ${model.name} item) {
-    if(cascading) {
-      return new ${model.name}OperationsImpl(client, config).withItem(item).cascading(cascading).delete();
-    } else {
-      return new ${model.name}OperationsImpl(client, config).withItem(item).inNamespace(namespace).delete(item);
-    }
+  public Boolean delete(OkHttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy, ${model.name} item) {
+    return new ${model.name}OperationsImpl(client, config).withItem(item).inNamespace(namespace).withPropagationPolicy(propagationPolicy).delete();
   }
 
   @Override

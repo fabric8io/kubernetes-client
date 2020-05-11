@@ -37,9 +37,9 @@ type schemaGenerator struct {
 	typeMap            map[reflect.Type]reflect.Type
 }
 
-func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, customTypeNames  map[string]string) (*JSONSchema, error) {
+func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, customTypeNames  map[string]string, moduleName string) (*JSONSchema, error) {
 	g := newSchemaGenerator(packages, typeMap, customTypeNames)
-	return g.generate(t)
+	return g.generate(t, moduleName)
 }
 
 func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, customTypeNames  map[string]string) *schemaGenerator {
@@ -159,6 +159,8 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 				return "io.fabric8.kubernetes.api.model.HasMetadata"
 			case "List":
 				return pkgDesc.JavaPackage + ".BaseKubernetesList"
+      default:
+        return pkgDesc.JavaPackage + "." + t.Name()
 		}
 		typeName, ok := g.typeNames[t]
 		if ok {
@@ -224,7 +226,7 @@ func (g *schemaGenerator) initializeTypeNames(t reflect.Type) {
 	}
 }
 
-func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error) {
+func (g *schemaGenerator) generate(t reflect.Type, moduleName string) (*JSONSchema, error) {
 	if t.Kind() != reflect.Struct {
 		return nil, fmt.Errorf("Only struct types can be converted.")
 	}
@@ -233,6 +235,7 @@ func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error) {
 	s := JSONSchema{
 		ID:     "http://fabric8.io/fabric8/v2/" + t.Name() + "#",
 		Schema: "http://json-schema.org/schema#",
+		Module: moduleName,
 		JSONDescriptor: JSONDescriptor{
 			Type: "object",
 		},
@@ -269,6 +272,7 @@ func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error) {
 			for DockerImageData which will be of Raw Extension Java Type and the problem of marshalling
 			get Resolved. This will be applied to DockerMetadata only and all the other will refer to
 			original RawExtension which is of HasMetadata Java Type.*/
+
 			if name == "kubernetes_apimachinery_pkg_runtime_RawExtension" {
 				dockermetadata_name := "kubernetes_apimachinery_pkg_runtime_ImageRawExtension"
 				dockermetadata_resource := "imagerawextension"
@@ -284,7 +288,14 @@ func (g *schemaGenerator) generate(t reflect.Type) (*JSONSchema, error) {
 						JavaInterfaces: g.javaInterfaces(k),
 					},
 				}
-				dockermetadata_value.JavaType = "io.fabric8.kubernetes.api.model.runtime.RawExtension"
+				javaTypeStr := "io.fabric8.";
+				if (moduleName == "openshift") {
+				  javaTypeStr = javaTypeStr + "openshift";
+        } else {
+          javaTypeStr = javaTypeStr + "kubernetes";
+        }
+        javaTypeStr = javaTypeStr + ".api.model.runtime.RawExtension";
+				dockermetadata_value.JavaType = javaTypeStr;
 				s.Definitions[dockermetadata_name] = dockermetadata_value
 				s.Resources[dockermetadata_resource] = v
 			}

@@ -31,7 +31,25 @@
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.okhttp/${okhttp.bundle.version}</bundle>
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.okio/${okio.bundle.version}</bundle>
     <bundle>mvn:io.fabric8/zjsonpatch/${zjsonpatch.version}</bundle>
-    <bundle>mvn:io.fabric8/kubernetes-model/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/kubernetes-model-core/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/kubernetes-model-rbac/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/kubernetes-model-admissionregistration/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/kubernetes-model-apiextensions/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/kubernetes-model-apps/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/kubernetes-model-autoscaling/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/kubernetes-model-batch/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/kubernetes-model-certificates/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/kubernetes-model-coordination/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/kubernetes-model-discovery/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/kubernetes-model-events/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/kubernetes-model-extensions/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/kubernetes-model-networking/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/kubernetes-model-metrics/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/kubernetes-model-policy/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/kubernetes-model-scheduling/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/kubernetes-model-settings/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/kubernetes-model-storageclass/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/openshift-model/${project.version}</bundle>
     <bundle>mvn:io.fabric8/kubernetes-client/${project.version}/jar/bundle</bundle>
   </feature>
 

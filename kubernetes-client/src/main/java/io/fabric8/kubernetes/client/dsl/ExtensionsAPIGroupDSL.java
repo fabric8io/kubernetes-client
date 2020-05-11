@@ -16,9 +16,9 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.model.apps.DaemonSet;
-import io.fabric8.kubernetes.api.model.apps.DaemonSetList;
-import io.fabric8.kubernetes.api.model.apps.DoneableDaemonSet;
+import io.fabric8.kubernetes.api.model.extensions.DaemonSet;
+import io.fabric8.kubernetes.api.model.extensions.DaemonSetList;
+import io.fabric8.kubernetes.api.model.extensions.DoneableDaemonSet;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentList;
 import io.fabric8.kubernetes.api.model.apps.DoneableDeployment;
@@ -31,9 +31,9 @@ import io.fabric8.kubernetes.api.model.batch.DoneableJob;
 import io.fabric8.kubernetes.api.model.extensions.Ingress;
 import io.fabric8.kubernetes.api.model.extensions.IngressList;
 import io.fabric8.kubernetes.api.model.extensions.DoneableIngress;
-import io.fabric8.kubernetes.api.model.networking.NetworkPolicy;
-import io.fabric8.kubernetes.api.model.networking.NetworkPolicyList;
-import io.fabric8.kubernetes.api.model.networking.DoneableNetworkPolicy;
+import io.fabric8.kubernetes.api.model.extensions.NetworkPolicy;
+import io.fabric8.kubernetes.api.model.extensions.NetworkPolicyList;
+import io.fabric8.kubernetes.api.model.extensions.DoneableNetworkPolicy;
 import io.fabric8.kubernetes.api.model.policy.DoneablePodSecurityPolicy;
 import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicy;
 import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicyList;
