@@ -61,33 +61,6 @@
     <module>openshift-model</module>
   </modules>
 
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>io.sundr</groupId>
-        <artifactId>builder-annotations</artifactId>
-        <version>${sundrio.version}</version>
-        <scope>compile</scope>
-        <exclusions>
-          <exclusion>
-            <groupId>com.sun</groupId>
-            <artifactId>tools</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>io.sundr</groupId>
-        <artifactId>transform-annotations</artifactId>
-        <version>${sundrio.version}</version>
-        <scope>compile</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.jsonschema2pojo</groupId>
-        <artifactId>jsonschema2pojo-core</artifactId>
-        <version>${jsonschema2pojo.version}</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
   <dependencies>
     <dependency>
       <groupId>io.sundr</groupId>
