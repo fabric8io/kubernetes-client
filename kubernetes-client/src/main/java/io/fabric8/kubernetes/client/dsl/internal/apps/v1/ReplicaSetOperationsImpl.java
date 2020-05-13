@@ -165,7 +165,8 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
       context.getConfig(), context.getPlural(), context.getNamespace(), context.getName(), null,
       "v1", context.getCascading(), context.getItem(), context.getLabels(), context.getLabelsNot(),
       context.getLabelsIn(), context.getLabelsNotIn(), context.getFields(), context.getFieldsNot(), context.getResourceVersion(),
-      context.getReloadingFromServer(), context.getGracePeriodSeconds(), context.getPropagationPolicy(), null, null, null, null, null,
+      context.getReloadingFromServer(), context.getGracePeriodSeconds(), context.getPropagationPolicy(),
+      context.getWatchRetryInitialBackoffMillis(), context.getWatchRetryBackoffMultiplier(), null, null, null, null, null,
       null, null, null, null, false, false, false, null, null,
       null, isPretty, null, null, null, null, null));
     PodList jobPodList = podOperations.withLabels(replicaSet.getMetadata().getLabels()).list();
