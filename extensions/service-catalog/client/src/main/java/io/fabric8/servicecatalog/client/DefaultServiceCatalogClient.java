@@ -19,60 +19,84 @@ import io.fabric8.kubernetes.client.*;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.servicecatalog.api.model.DoneableClusterServiceBroker;
 import io.fabric8.servicecatalog.api.model.DoneableClusterServiceClass;
 import io.fabric8.servicecatalog.api.model.DoneableClusterServicePlan;
 import io.fabric8.servicecatalog.api.model.DoneableServiceBinding;
+import io.fabric8.servicecatalog.api.model.DoneableServiceBroker;
+import io.fabric8.servicecatalog.api.model.DoneableServiceClass;
 import io.fabric8.servicecatalog.api.model.DoneableServiceInstance;
+import io.fabric8.servicecatalog.api.model.DoneableServicePlan;
 import io.fabric8.servicecatalog.client.internal.*;
 import io.fabric8.servicecatalog.api.model.*;
 import okhttp3.OkHttpClient;
 
 public class DefaultServiceCatalogClient extends BaseClient implements NamespacedServiceCatalogClient {
 
-    public DefaultServiceCatalogClient() {
-        super();
-    }
+  public DefaultServiceCatalogClient() {
+    super();
+  }
 
-    public DefaultServiceCatalogClient(Config configuration) {
-        super(configuration);
-    }
+  public DefaultServiceCatalogClient(Config configuration) {
+    super(configuration);
+  }
 
-    public DefaultServiceCatalogClient(OkHttpClient httpClient, Config configuration) {
-        super(httpClient, configuration);
-    }
+  public DefaultServiceCatalogClient(OkHttpClient httpClient, Config configuration) {
+    super(httpClient, configuration);
+  }
 
-   public NonNamespaceOperation<ClusterServiceBroker, ClusterServiceBrokerList, DoneableClusterServiceBroker, ClusterServiceBrokerResource> clusterServiceBrokers(){
-        return new ClusterServiceBrokerOperationsImpl(this.getHttpClient(), this.getConfiguration());
-    }
-    public NonNamespaceOperation<ClusterServiceClass, ClusterServiceClassList, DoneableClusterServiceClass, ClusterServiceClassResource> clusterServiceClasses() {
-        return new ClusterServiceClassOperationsImpl(this.getHttpClient(), this.getConfiguration());
-    }
-    public NonNamespaceOperation<ClusterServicePlan, ClusterServicePlanList, DoneableClusterServicePlan, ClusterServicePlanResource> clusterServicePlans() {
-        return new ClusterServicePlanOperationsImpl(this.getHttpClient(), this.getConfiguration());
-    }
-    public MixedOperation<ServiceInstance, ServiceInstanceList, DoneableServiceInstance, ServiceInstanceResource> serviceInstances() {
-        return new ServiceInstanceOperationsImpl(this.getHttpClient(), this.getConfiguration());
-    }
-    public MixedOperation<ServiceBinding, ServiceBindingList, DoneableServiceBinding, ServiceBindingResource> serviceBindings() {
-        return new ServiceBindingOperationsImpl(this.getHttpClient(), this.getConfiguration());
-    }
+  public NonNamespaceOperation<ClusterServiceBroker, ClusterServiceBrokerList, DoneableClusterServiceBroker, ClusterServiceBrokerResource> clusterServiceBrokers() {
+    return new ClusterServiceBrokerOperationsImpl(this.getHttpClient(), this.getConfiguration());
+  }
 
-    @Override
-    public NamespacedServiceCatalogClient inAnyNamespace() {
-        return inNamespace(null);
-    }
+  public NonNamespaceOperation<ClusterServiceClass, ClusterServiceClassList, DoneableClusterServiceClass, ClusterServiceClassResource> clusterServiceClasses() {
+    return new ClusterServiceClassOperationsImpl(this.getHttpClient(), this.getConfiguration());
+  }
 
-    @Override
-    public NamespacedServiceCatalogClient inNamespace(String namespace) {
-        Config updated = new ConfigBuilder(getConfiguration())
-                .withNamespace(namespace)
-                .build();
+  public NonNamespaceOperation<ClusterServicePlan, ClusterServicePlanList, DoneableClusterServicePlan, ClusterServicePlanResource> clusterServicePlans() {
+    return new ClusterServicePlanOperationsImpl(this.getHttpClient(), this.getConfiguration());
+  }
 
-        return new DefaultServiceCatalogClient(getHttpClient(), updated);
-    }
+  public MixedOperation<ServiceInstance, ServiceInstanceList, DoneableServiceInstance, ServiceInstanceResource> serviceInstances() {
+    return new ServiceInstanceOperationsImpl(this.getHttpClient(), this.getConfiguration());
+  }
+
+  public MixedOperation<ServiceBinding, ServiceBindingList, DoneableServiceBinding, ServiceBindingResource> serviceBindings() {
+    return new ServiceBindingOperationsImpl(this.getHttpClient(), this.getConfiguration());
+  }
+
+  @Override
+  public MixedOperation<ServiceBroker, ServiceBrokerList, DoneableServiceBroker, Resource<ServiceBroker, DoneableServiceBroker>> serviceBrokers() {
+    return new ServiceBrokerOperationsImpl(this.getHttpClient(), this.getConfiguration());
+  }
+
+  @Override
+  public MixedOperation<ServiceClass, ServiceClassList, DoneableServiceClass, Resource<ServiceClass, DoneableServiceClass>> serviceClasses() {
+    return new ServiceClassOperationsImpl(this.getHttpClient(), this.getConfiguration());
+  }
+
+  @Override
+  public MixedOperation<ServicePlan, ServicePlanList, DoneableServicePlan, Resource<ServicePlan, DoneableServicePlan>> servicePlans() {
+    return new ServicePlanOperationsImpl(this.getHttpClient(), this.getConfiguration());
+  }
+
+  @Override
+  public NamespacedServiceCatalogClient inAnyNamespace() {
+    return inNamespace(null);
+  }
+
+  @Override
+  public NamespacedServiceCatalogClient inNamespace(String namespace) {
+    Config updated = new ConfigBuilder(getConfiguration())
+      .withNamespace(namespace)
+      .build();
+
+    return new DefaultServiceCatalogClient(getHttpClient(), updated);
+  }
+
   @Override
   public FunctionCallable<NamespacedServiceCatalogClient> withRequestConfig(RequestConfig requestConfig) {
-    return new WithRequestCallable<NamespacedServiceCatalogClient>(this, requestConfig);
+    return new WithRequestCallable<>(this, requestConfig);
   }
 }
