@@ -653,7 +653,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   public L list() throws KubernetesClientException {
     try {
-      return listRequestHelper(getNamespacedUrl());
+      return listRequestHelper(getResourceUrl(namespace, name));
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
     }
