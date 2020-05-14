@@ -47,6 +47,7 @@ import io.fabric8.kubernetes.client.dsl.internal.DefaultOperationInfo;
 import io.fabric8.kubernetes.client.dsl.internal.WatchConnectionManager;
 import io.fabric8.kubernetes.client.dsl.internal.WatchHTTPManager;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
+import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.client.utils.WatcherToggle;
@@ -160,35 +161,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   }
 
   protected URL fetchListUrl(URL url, ListOptions listOptions) throws MalformedURLException {
-    HttpUrl.Builder urlBuilder = HttpUrl.get(url.toString()).newBuilder();
-    if(listOptions.getLimit() != null) {
-      urlBuilder.addQueryParameter("limit", listOptions.getLimit().toString());
-    }
-    if(listOptions.getContinue() != null) {
-      urlBuilder.addQueryParameter("continue", listOptions.getContinue());
-    }
-
-    if (listOptions.getResourceVersion() != null) {
-      urlBuilder.addQueryParameter("resourceVersion", listOptions.getResourceVersion());
-    }
-
-    if (listOptions.getFieldSelector() != null) {
-      urlBuilder.addQueryParameter("fieldSelector", listOptions.getFieldSelector());
-    }
-
-    if (listOptions.getLabelSelector() != null) {
-      urlBuilder.addQueryParameter("labelSelector", listOptions.getLabelSelector());
-    }
-
-    if (listOptions.getTimeoutSeconds() != null) {
-      urlBuilder.addQueryParameter("timeoutSeconds", listOptions.getTimeoutSeconds().toString());
-    }
-
-    if (listOptions.getAllowWatchBookmarks() != null) {
-      urlBuilder.addQueryParameter("allowWatchBookmarks", listOptions.getAllowWatchBookmarks().toString());
-    }
-
-    return new URL(urlBuilder.toString());
+    return new URL(HttpClientUtils.appendListOptionParams(HttpUrl.get(url.toString()).newBuilder(), listOptions).toString());
   }
 
   private void addQueryStringParam(HttpUrl.Builder requestUrlBuilder, String name, String value) {
@@ -768,18 +741,29 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     return newInstance(context.withResourceVersion(resourceVersion));
   }
 
-  public Watch watch(final Watcher<T> watcher) throws KubernetesClientException {
-    return watch(resourceVersion, watcher);
+  public Watch watch(final Watcher<T> watcher) {
+    return watch(new ListOptionsBuilder()
+      .withResourceVersion(resourceVersion)
+      .build(), watcher);
   }
 
-  public Watch watch(String resourceVersion, final Watcher<T> watcher) throws KubernetesClientException {
+  @Override
+  public Watch watch(String resourceVersion, Watcher<T> watcher) {
+    return watch(new ListOptionsBuilder()
+      .withResourceVersion(resourceVersion)
+      .build(), watcher);
+  }
+
+  @Override
+  public Watch watch(ListOptions options, final Watcher<T> watcher) {
     WatcherToggle<T> watcherToggle = new WatcherToggle<>(watcher, true);
+    options.setWatch(Boolean.TRUE);
     WatchConnectionManager watch = null;
     try {
       watch = new WatchConnectionManager(
         client,
         this,
-        resourceVersion,
+        options,
         watcherToggle,
         config.getWatchReconnectInterval(),
         config.getWatchReconnectLimit(),
@@ -813,7 +797,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
         return new WatchHTTPManager(
           client,
           this,
-          resourceVersion,
+          options,
           watcher,
           config.getWatchReconnectInterval(),
           config.getWatchReconnectLimit(),

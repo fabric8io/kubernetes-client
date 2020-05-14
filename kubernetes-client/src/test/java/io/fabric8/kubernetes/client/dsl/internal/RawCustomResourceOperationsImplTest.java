@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
@@ -55,7 +56,7 @@ public class RawCustomResourceOperationsImplTest {
     RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
 
     // When
-    HttpUrl url = rawCustomResourceOperations.fetchWatchUrl("test", null, null, null);
+    HttpUrl url = rawCustomResourceOperations.fetchWatchUrl("test", null, null, new ListOptionsBuilder().withWatch(true).build()).build();
 
     // Then
     assertEquals("https://localhost:8443/apis/test.fabric8.io/v1alpha1/namespaces/test/hellos?watch=true", url.url().toString());
@@ -67,7 +68,7 @@ public class RawCustomResourceOperationsImplTest {
     RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
 
     // When
-    HttpUrl url = rawCustomResourceOperations.fetchWatchUrl("test", "example-resource", null, null);
+    HttpUrl url = rawCustomResourceOperations.fetchWatchUrl("test", "example-resource", null, new ListOptionsBuilder().withWatch(true).build()).build();
 
     // Then
     assertEquals("https://localhost:8443/apis/test.fabric8.io/v1alpha1/namespaces/test/hellos?fieldSelector=metadata.name%3Dexample-resource&watch=true", url.url().toString());
@@ -79,7 +80,7 @@ public class RawCustomResourceOperationsImplTest {
     RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
 
     // When
-    HttpUrl url = rawCustomResourceOperations.fetchWatchUrl("test", "example-resource", null, "100069");
+    HttpUrl url = rawCustomResourceOperations.fetchWatchUrl("test", "example-resource", null, new ListOptionsBuilder().withResourceVersion("100069").withWatch(true).build()).build();
 
     // Then
     assertEquals("https://localhost:8443/apis/test.fabric8.io/v1alpha1/namespaces/test/hellos?fieldSelector=metadata.name%3Dexample-resource&resourceVersion=100069&watch=true", url.url().toString());
@@ -91,7 +92,7 @@ public class RawCustomResourceOperationsImplTest {
     RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
 
     // When
-    HttpUrl url = rawCustomResourceOperations.fetchWatchUrl(null, null, null, null);
+    HttpUrl url = rawCustomResourceOperations.fetchWatchUrl(null, null, null, new ListOptionsBuilder().withWatch(true).build()).build();
 
     // Then
     assertEquals("https://localhost:8443/apis/test.fabric8.io/v1alpha1/hellos?watch=true", url.url().toString());
@@ -107,7 +108,7 @@ public class RawCustomResourceOperationsImplTest {
     labels.put("foo", "bar");
     labels.put("foo1", "bar1");
 
-    HttpUrl url = rawCustomResourceOperations.fetchWatchUrl(null, null, labels, null);
+    HttpUrl url = rawCustomResourceOperations.fetchWatchUrl(null, null, labels, new ListOptionsBuilder().withWatch(true).build()).build();
 
     // Then
     assertEquals("https://localhost:8443/apis/test.fabric8.io/v1alpha1/hellos?labelSelector=" + Utils.toUrlEncoded("foo=bar") + "," + Utils.toUrlEncoded("foo1=bar1") + "&watch=true", url.url().toString());
@@ -123,7 +124,7 @@ public class RawCustomResourceOperationsImplTest {
     labels.put("foo", "bar");
     labels.put("foo1", "bar1");
 
-    HttpUrl url = rawCustomResourceOperations.fetchWatchUrl("test", null, labels, null);
+    HttpUrl url = rawCustomResourceOperations.fetchWatchUrl("test", null, labels, new ListOptionsBuilder().withWatch(true).build()).build();
 
     // Then
     assertEquals("https://localhost:8443/apis/test.fabric8.io/v1alpha1/namespaces/test/hellos?labelSelector=" + Utils.toUrlEncoded("foo=bar") + "," + Utils.toUrlEncoded("foo1=bar1") + "&watch=true", url.url().toString());

@@ -15,6 +15,7 @@
 
 #### New Features
 * Add support for Namespaced SharedInformers, fixed probelms with OperationContext argument
+* Fix #1821: ListOptions now supported when watching a Kubernetes Resource
 
 ### 4.10.1 (2020-05-06)
 #### Bugs
