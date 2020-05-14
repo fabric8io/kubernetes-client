@@ -1,3 +1,4 @@
+
 # Kubernetes & OpenShift Java Client [![Join the chat at https://gitter.im/fabric8io/kubernetes-client](https://badges.gitter.im/fabric8io/kubernetes-client.svg)](https://gitter.im/fabric8io/kubernetes-client?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 This client provides access to the full [Kubernetes](http://kubernetes.io/) &
 [OpenShift](http://openshift.org/) REST APIs via a fluent DSL.
@@ -303,6 +304,9 @@ Then you can use the server like:
     @Test
     public void testInCrudMode() {
     KubernetesClient client = server.getClient();
+    final CountDownLatch deleteLatch = new CountDownLatch(1);
+    final CountDownLatch closeLatch = new CountDownLatch(1);
+
       //CREATE
       client.pods().inNamespace("ns1").create(new PodBuilder().withNewMetadata().withName("pod1").endMetadata().build());
 
@@ -311,6 +315,25 @@ Then you can use the server like:
       assertNotNull(podList);
       assertEquals(1, podList.getItems().size());
 
+      //WATCH
+      Watch watch = client.pods().inNamespace("ns1").withName("pod1").watch(new Watcher<Pod>() {
+          @Override
+          public void eventReceived(Action action, Pod resource) {
+            switch (action) {
+              case DELETED:
+                deleteLatch.countDown();
+                break;
+              default:
+                throw new AssertionFailedError(action.toString().concat(" isn't recognised."));
+            }
+          }
+      
+          @Override
+          public void onClose(KubernetesClientException cause) {
+            closeLatch.countDown();
+          }
+      });
+
       //DELETE
       client.pods().inNamespace("ns1").withName("pod1").delete();
 
@@ -318,6 +341,10 @@ Then you can use the server like:
       podList = client.pods().inNamespace("ns1").list();
       assertNotNull(podList);
       assertEquals(0, podList.getItems().size());
+
+      assertTrue(deleteLatch.await(1, TimeUnit.MINUTES));
+      watch.close();
+      assertTrue(closeLatch.await(1, TimeUnit.MINUTES));
     }
 
 
