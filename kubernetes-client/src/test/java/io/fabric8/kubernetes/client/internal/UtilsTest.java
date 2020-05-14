@@ -222,6 +222,60 @@ public class UtilsTest {
   }
 
   @Test
+  @DisplayName("Should test whether resource is namespaced or not")
+  public void testWhetherNamespacedOrNot() {
+    assertTrue(Utils.isResourceNamespaced(Binding.class));
+    assertFalse(Utils.isResourceNamespaced(ComponentStatus.class));
+    assertTrue(Utils.isResourceNamespaced(ConfigMap.class));
+    assertTrue(Utils.isResourceNamespaced(Endpoints.class));
+    assertTrue(Utils.isResourceNamespaced(Event.class));
+    assertTrue(Utils.isResourceNamespaced(LimitRange.class));
+    assertFalse(Utils.isResourceNamespaced(Namespace.class));
+    assertFalse(Utils.isResourceNamespaced(Node.class));
+    assertTrue(Utils.isResourceNamespaced(PersistentVolumeClaim.class));
+    assertFalse(Utils.isResourceNamespaced(PersistentVolume.class));
+    assertTrue(Utils.isResourceNamespaced(Pod.class));
+    assertTrue(Utils.isResourceNamespaced(PodTemplate.class));
+    assertTrue(Utils.isResourceNamespaced(ReplicationController.class));
+    assertTrue(Utils.isResourceNamespaced(ResourceQuota.class));
+    assertTrue(Utils.isResourceNamespaced(Secret.class));
+    assertTrue(Utils.isResourceNamespaced(ServiceAccount.class));
+    assertTrue(Utils.isResourceNamespaced(Service.class));
+    assertFalse(Utils.isResourceNamespaced(MutatingWebhookConfiguration.class));
+    assertFalse(Utils.isResourceNamespaced(ValidatingWebhookConfiguration.class));
+    assertFalse(Utils.isResourceNamespaced(CustomResourceDefinition.class));
+    assertTrue(Utils.isResourceNamespaced(ControllerRevision.class));
+    assertTrue(Utils.isResourceNamespaced(DaemonSet.class));
+    assertTrue(Utils.isResourceNamespaced(Deployment.class));
+    assertTrue(Utils.isResourceNamespaced(ReplicaSet.class));
+    assertTrue(Utils.isResourceNamespaced(StatefulSet.class));
+    assertTrue(Utils.isResourceNamespaced(TokenReview.class));
+    assertTrue(Utils.isResourceNamespaced(LocalSubjectAccessReview.class));
+    assertTrue(Utils.isResourceNamespaced(SelfSubjectAccessReview.class));
+    assertTrue(Utils.isResourceNamespaced(SelfSubjectRulesReview.class));
+    assertTrue(Utils.isResourceNamespaced(SubjectAccessReview.class));
+    assertTrue(Utils.isResourceNamespaced(HorizontalPodAutoscaler.class));
+    assertTrue(Utils.isResourceNamespaced(CronJob.class));
+    assertTrue(Utils.isResourceNamespaced(Job.class));
+    assertTrue(Utils.isResourceNamespaced(CertificateSigningRequest.class));
+    assertTrue(Utils.isResourceNamespaced(Lease.class));
+    assertTrue(Utils.isResourceNamespaced(EndpointSlice.class));
+    assertTrue(Utils.isResourceNamespaced(Ingress.class));
+    assertTrue(Utils.isResourceNamespaced(NetworkPolicy.class));
+    assertTrue(Utils.isResourceNamespaced(PodDisruptionBudget.class));
+    assertFalse(Utils.isResourceNamespaced(PodSecurityPolicy.class));
+    assertFalse(Utils.isResourceNamespaced(ClusterRoleBinding.class));
+    assertFalse(Utils.isResourceNamespaced(ClusterRole.class));
+    assertTrue(Utils.isResourceNamespaced(RoleBinding.class));
+    assertTrue(Utils.isResourceNamespaced(Role.class));
+    assertFalse(Utils.isResourceNamespaced(PriorityClass.class));
+    assertTrue(Utils.isResourceNamespaced(CSIDriver.class));
+    assertTrue(Utils.isResourceNamespaced(CSINode.class));
+    assertFalse(Utils.isResourceNamespaced(StorageClass.class));
+    assertTrue(Utils.isResourceNamespaced(VolumeAttachment.class));
+  }
+
+  @Test
   @DisplayName("isNotNullOrEmpty, null, should return false")
   public void isNotNullOrEmpty() {
     // When

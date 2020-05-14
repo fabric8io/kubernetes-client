@@ -25,7 +25,28 @@
   </parent>
 
   <artifactId>kubernetes-model-common</artifactId>
-  <packaging>jar</packaging>
+  <packaging>bundle</packaging>
   <name>Fabric8 :: Kubernetes Model :: Common</name>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>${maven.bundle.plugin.version}</version>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+            <Import-Package>*</Import-Package>
+            <Export-Package>
+              io.fabric8.kubernetes.model.annotation,
+              io.fabric8.kubernetes.model.util
+            </Export-Package>
+          </instructions>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
