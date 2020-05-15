@@ -19,11 +19,15 @@ package io.fabric8.servicecatalog.client;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.servicecatalog.api.model.DoneableClusterServiceBroker;
 import io.fabric8.servicecatalog.api.model.DoneableClusterServiceClass;
 import io.fabric8.servicecatalog.api.model.DoneableClusterServicePlan;
 import io.fabric8.servicecatalog.api.model.DoneableServiceBinding;
+import io.fabric8.servicecatalog.api.model.DoneableServiceBroker;
+import io.fabric8.servicecatalog.api.model.DoneableServiceClass;
 import io.fabric8.servicecatalog.api.model.DoneableServiceInstance;
+import io.fabric8.servicecatalog.api.model.DoneableServicePlan;
 import io.fabric8.servicecatalog.client.internal.*;
 import io.fabric8.servicecatalog.api.model.*;
 
@@ -38,4 +42,11 @@ public interface ServiceCatalogClient extends Client {
     MixedOperation<ServiceInstance, ServiceInstanceList, DoneableServiceInstance, ServiceInstanceResource> serviceInstances();
 
     MixedOperation<ServiceBinding, ServiceBindingList, DoneableServiceBinding, ServiceBindingResource> serviceBindings();
+
+    MixedOperation<ServiceBroker, ServiceBrokerList, DoneableServiceBroker, Resource<ServiceBroker, DoneableServiceBroker>> serviceBrokers();
+
+    MixedOperation<ServiceClass, ServiceClassList, DoneableServiceClass, Resource<ServiceClass, DoneableServiceClass>> serviceClasses();
+
+    MixedOperation<ServicePlan, ServicePlanList, DoneableServicePlan, Resource<ServicePlan, DoneableServicePlan>> servicePlans();
+
 }

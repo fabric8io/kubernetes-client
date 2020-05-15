@@ -1,0 +1,1952 @@
+{
+  "id": "http://fabric8.io/knative/ServiceCatalogSchema#",
+  "$schema": "http://json-schema.org/schema#",
+  "definitions": {
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_AddKeyTransform": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "jsonPathExpression": {
+          "type": "string",
+          "description": "",
+          "javaType": "String"
+        },
+        "key": {
+          "type": "string",
+          "description": ""
+        },
+        "stringValue": {
+          "type": "string",
+          "description": "",
+          "javaType": "String"
+        },
+        "value": {
+          "javaType": "java.lang.String"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.AddKeyTransform",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_AddKeysFromTransform": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "secretRef": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ObjectReference",
+          "javaType": "io.fabric8.servicecatalog.api.model.ObjectReference"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.AddKeysFromTransform",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_BasicAuthConfig": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "secretRef": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_LocalObjectReference",
+          "javaType": "io.fabric8.servicecatalog.api.model.LocalObjectReference"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.BasicAuthConfig",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_BearerTokenAuthConfig": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "secretRef": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_LocalObjectReference",
+          "javaType": "io.fabric8.servicecatalog.api.model.LocalObjectReference"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.BearerTokenAuthConfig",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_CatalogRestrictions": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "serviceClass": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "servicePlan": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.CatalogRestrictions",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterBasicAuthConfig": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "secretRef": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ObjectReference",
+          "javaType": "io.fabric8.servicecatalog.api.model.ObjectReference"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterBasicAuthConfig",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterBearerTokenAuthConfig": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "secretRef": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ObjectReference",
+          "javaType": "io.fabric8.servicecatalog.api.model.ObjectReference"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterBearerTokenAuthConfig",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterObjectReference": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterObjectReference",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceBroker": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "servicecatalog.k8s.io/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ClusterServiceBroker",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceBrokerSpec",
+          "javaType": "io.fabric8.servicecatalog.api.model.ClusterServiceBrokerSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceBrokerStatus",
+          "javaType": "io.fabric8.servicecatalog.api.model.ClusterServiceBrokerStatus"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterServiceBroker",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceBrokerAuthInfo": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "basic": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterBasicAuthConfig",
+          "javaType": "io.fabric8.servicecatalog.api.model.ClusterBasicAuthConfig"
+        },
+        "bearer": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterBearerTokenAuthConfig",
+          "javaType": "io.fabric8.servicecatalog.api.model.ClusterBearerTokenAuthConfig"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterServiceBrokerAuthInfo",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceBrokerList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "servicecatalog.k8s.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceBroker",
+            "javaType": "io.fabric8.servicecatalog.api.model.ClusterServiceBroker"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ClusterServiceBrokerList",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterServiceBrokerList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.servicecatalog.api.model.ClusterServiceBroker\u003e"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceBrokerSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "authInfo": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceBrokerAuthInfo",
+          "javaType": "io.fabric8.servicecatalog.api.model.ClusterServiceBrokerAuthInfo"
+        },
+        "caBundle": {
+          "javaType": "java.lang.String"
+        },
+        "catalogRestrictions": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_CatalogRestrictions",
+          "javaType": "io.fabric8.servicecatalog.api.model.CatalogRestrictions"
+        },
+        "insecureSkipTLSVerify": {
+          "type": "boolean",
+          "description": ""
+        },
+        "relistBehavior": {
+          "type": "string",
+          "description": ""
+        },
+        "relistDuration": {
+          "javaType": "io.fabric8.kubernetes.api.model.Duration"
+        },
+        "relistRequests": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "url": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterServiceBrokerSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceBrokerStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBrokerCondition",
+            "javaType": "io.fabric8.servicecatalog.api.model.ServiceBrokerCondition"
+          }
+        },
+        "lastCatalogRetrievalTime": {
+          "javaType": "java.lang.String"
+        },
+        "operationStartTime": {
+          "javaType": "java.lang.String"
+        },
+        "reconciledGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterServiceBrokerStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceClass": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "servicecatalog.k8s.io/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ClusterServiceClass",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceClassSpec",
+          "javaType": "io.fabric8.servicecatalog.api.model.ClusterServiceClassSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceClassStatus",
+          "javaType": "io.fabric8.servicecatalog.api.model.ClusterServiceClassStatus"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterServiceClass",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceClassList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "servicecatalog.k8s.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceClass",
+            "javaType": "io.fabric8.servicecatalog.api.model.ClusterServiceClass"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ClusterServiceClassList",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterServiceClassList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.servicecatalog.api.model.ClusterServiceClass\u003e"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceClassSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "bindable": {
+          "type": "boolean",
+          "description": ""
+        },
+        "bindingRetrievable": {
+          "type": "boolean",
+          "description": ""
+        },
+        "clusterServiceBrokerName": {
+          "type": "string",
+          "description": ""
+        },
+        "defaultProvisionParameters": {
+          "javaType": "Map\u003cString, Object\u003e"
+        },
+        "description": {
+          "type": "string",
+          "description": ""
+        },
+        "externalID": {
+          "type": "string",
+          "description": ""
+        },
+        "externalMetadata": {
+          "javaType": "Map\u003cString, Object\u003e"
+        },
+        "externalName": {
+          "type": "string",
+          "description": ""
+        },
+        "planUpdatable": {
+          "type": "boolean",
+          "description": ""
+        },
+        "requires": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "tags": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterServiceClassSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceClassStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "removedFromBrokerCatalog": {
+          "type": "boolean",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterServiceClassStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServicePlan": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "servicecatalog.k8s.io/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ClusterServicePlan",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServicePlanSpec",
+          "javaType": "io.fabric8.servicecatalog.api.model.ClusterServicePlanSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServicePlanStatus",
+          "javaType": "io.fabric8.servicecatalog.api.model.ClusterServicePlanStatus"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterServicePlan",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServicePlanList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "servicecatalog.k8s.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServicePlan",
+            "javaType": "io.fabric8.servicecatalog.api.model.ClusterServicePlan"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ClusterServicePlanList",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterServicePlanList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.servicecatalog.api.model.ClusterServicePlan\u003e"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServicePlanSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "bindable": {
+          "type": "boolean",
+          "description": "",
+          "javaType": "Boolean"
+        },
+        "clusterServiceBrokerName": {
+          "type": "string",
+          "description": ""
+        },
+        "clusterServiceClassRef": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterObjectReference",
+          "javaType": "io.fabric8.servicecatalog.api.model.ClusterObjectReference"
+        },
+        "defaultProvisionParameters": {
+          "javaType": "Map\u003cString, Object\u003e"
+        },
+        "description": {
+          "type": "string",
+          "description": ""
+        },
+        "externalID": {
+          "type": "string",
+          "description": ""
+        },
+        "externalMetadata": {
+          "javaType": "Map\u003cString, Object\u003e"
+        },
+        "externalName": {
+          "type": "string",
+          "description": ""
+        },
+        "free": {
+          "type": "boolean",
+          "description": ""
+        },
+        "instanceCreateParameterSchema": {
+          "javaType": "Map\u003cString, Object\u003e"
+        },
+        "instanceUpdateParameterSchema": {
+          "javaType": "Map\u003cString, Object\u003e"
+        },
+        "serviceBindingCreateParameterSchema": {
+          "javaType": "Map\u003cString, Object\u003e"
+        },
+        "serviceBindingCreateResponseSchema": {
+          "javaType": "Map\u003cString, Object\u003e"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterServicePlanSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServicePlanStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "removedFromBrokerCatalog": {
+          "type": "boolean",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterServicePlanStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_LocalObjectReference": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.LocalObjectReference",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ObjectReference": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "namespace": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ObjectReference",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ParametersFromSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "secretKeyRef": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_SecretKeyReference",
+          "javaType": "io.fabric8.servicecatalog.api.model.SecretKeyReference"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ParametersFromSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_RemoveKeyTransform": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.RemoveKeyTransform",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_RenameKeyTransform": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "from": {
+          "type": "string",
+          "description": ""
+        },
+        "to": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.RenameKeyTransform",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_SecretKeyReference": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.SecretKeyReference",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_SecretTransform": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "addKey": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_AddKeyTransform",
+          "javaType": "io.fabric8.servicecatalog.api.model.AddKeyTransform"
+        },
+        "addKeysFrom": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_AddKeysFromTransform",
+          "javaType": "io.fabric8.servicecatalog.api.model.AddKeysFromTransform"
+        },
+        "removeKey": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_RemoveKeyTransform",
+          "javaType": "io.fabric8.servicecatalog.api.model.RemoveKeyTransform"
+        },
+        "renameKey": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_RenameKeyTransform",
+          "javaType": "io.fabric8.servicecatalog.api.model.RenameKeyTransform"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.SecretTransform",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBinding": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "servicecatalog.k8s.io/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ServiceBinding",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBindingSpec",
+          "javaType": "io.fabric8.servicecatalog.api.model.ServiceBindingSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBindingStatus",
+          "javaType": "io.fabric8.servicecatalog.api.model.ServiceBindingStatus"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceBinding",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBindingCondition": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "lastTransitionTime": {
+          "javaType": "java.lang.String"
+        },
+        "message": {
+          "type": "string",
+          "description": ""
+        },
+        "reason": {
+          "type": "string",
+          "description": ""
+        },
+        "status": {
+          "type": "string",
+          "description": ""
+        },
+        "type": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceBindingCondition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBindingList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "servicecatalog.k8s.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBinding",
+            "javaType": "io.fabric8.servicecatalog.api.model.ServiceBinding"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ServiceBindingList",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceBindingList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.servicecatalog.api.model.ServiceBinding\u003e"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBindingPropertiesState": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "parameterChecksum": {
+          "type": "string",
+          "description": ""
+        },
+        "parameters": {
+          "javaType": "Map\u003cString, Object\u003e"
+        },
+        "userInfo": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_UserInfo",
+          "javaType": "io.fabric8.servicecatalog.api.model.UserInfo"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceBindingPropertiesState",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBindingSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "externalID": {
+          "type": "string",
+          "description": ""
+        },
+        "instanceRef": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_LocalObjectReference",
+          "javaType": "io.fabric8.servicecatalog.api.model.LocalObjectReference"
+        },
+        "parameters": {
+          "javaType": "Map\u003cString, Object\u003e"
+        },
+        "parametersFrom": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ParametersFromSource",
+            "javaType": "io.fabric8.servicecatalog.api.model.ParametersFromSource"
+          }
+        },
+        "secretName": {
+          "type": "string",
+          "description": ""
+        },
+        "secretTransforms": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_SecretTransform",
+            "javaType": "io.fabric8.servicecatalog.api.model.SecretTransform"
+          }
+        },
+        "userInfo": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_UserInfo",
+          "javaType": "io.fabric8.servicecatalog.api.model.UserInfo"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceBindingSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBindingStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "asyncOpInProgress": {
+          "type": "boolean",
+          "description": ""
+        },
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBindingCondition",
+            "javaType": "io.fabric8.servicecatalog.api.model.ServiceBindingCondition"
+          }
+        },
+        "currentOperation": {
+          "type": "string",
+          "description": ""
+        },
+        "externalProperties": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBindingPropertiesState",
+          "javaType": "io.fabric8.servicecatalog.api.model.ServiceBindingPropertiesState"
+        },
+        "inProgressProperties": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBindingPropertiesState",
+          "javaType": "io.fabric8.servicecatalog.api.model.ServiceBindingPropertiesState"
+        },
+        "lastOperation": {
+          "type": "string",
+          "description": "",
+          "javaType": "String"
+        },
+        "operationStartTime": {
+          "javaType": "java.lang.String"
+        },
+        "orphanMitigationInProgress": {
+          "type": "boolean",
+          "description": ""
+        },
+        "reconciledGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "unbindStatus": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceBindingStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBroker": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "servicecatalog.k8s.io/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ServiceBroker",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBrokerSpec",
+          "javaType": "io.fabric8.servicecatalog.api.model.ServiceBrokerSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBrokerStatus",
+          "javaType": "io.fabric8.servicecatalog.api.model.ServiceBrokerStatus"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceBroker",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBrokerAuthInfo": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "basic": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_BasicAuthConfig",
+          "javaType": "io.fabric8.servicecatalog.api.model.BasicAuthConfig"
+        },
+        "bearer": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_BearerTokenAuthConfig",
+          "javaType": "io.fabric8.servicecatalog.api.model.BearerTokenAuthConfig"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceBrokerAuthInfo",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBrokerCondition": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "lastTransitionTime": {
+          "javaType": "java.lang.String"
+        },
+        "message": {
+          "type": "string",
+          "description": ""
+        },
+        "reason": {
+          "type": "string",
+          "description": ""
+        },
+        "status": {
+          "type": "string",
+          "description": ""
+        },
+        "type": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceBrokerCondition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBrokerList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "servicecatalog.k8s.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBroker",
+            "javaType": "io.fabric8.servicecatalog.api.model.ServiceBroker"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ServiceBrokerList",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceBrokerList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.servicecatalog.api.model.ServiceBroker\u003e"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBrokerSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "authInfo": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBrokerAuthInfo",
+          "javaType": "io.fabric8.servicecatalog.api.model.ServiceBrokerAuthInfo"
+        },
+        "caBundle": {
+          "javaType": "java.lang.String"
+        },
+        "catalogRestrictions": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_CatalogRestrictions",
+          "javaType": "io.fabric8.servicecatalog.api.model.CatalogRestrictions"
+        },
+        "insecureSkipTLSVerify": {
+          "type": "boolean",
+          "description": ""
+        },
+        "relistBehavior": {
+          "type": "string",
+          "description": ""
+        },
+        "relistDuration": {
+          "javaType": "io.fabric8.kubernetes.api.model.Duration"
+        },
+        "relistRequests": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "url": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceBrokerSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBrokerStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBrokerCondition",
+            "javaType": "io.fabric8.servicecatalog.api.model.ServiceBrokerCondition"
+          }
+        },
+        "lastCatalogRetrievalTime": {
+          "javaType": "java.lang.String"
+        },
+        "operationStartTime": {
+          "javaType": "java.lang.String"
+        },
+        "reconciledGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceBrokerStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceClass": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "servicecatalog.k8s.io/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ServiceClass",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceClassSpec",
+          "javaType": "io.fabric8.servicecatalog.api.model.ServiceClassSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceClassStatus",
+          "javaType": "io.fabric8.servicecatalog.api.model.ServiceClassStatus"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceClass",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceClassList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "servicecatalog.k8s.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceClass",
+            "javaType": "io.fabric8.servicecatalog.api.model.ServiceClass"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ServiceClassList",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceClassList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.servicecatalog.api.model.ServiceClass\u003e"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceClassSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "bindable": {
+          "type": "boolean",
+          "description": ""
+        },
+        "bindingRetrievable": {
+          "type": "boolean",
+          "description": ""
+        },
+        "defaultProvisionParameters": {
+          "javaType": "Map\u003cString, Object\u003e"
+        },
+        "description": {
+          "type": "string",
+          "description": ""
+        },
+        "externalID": {
+          "type": "string",
+          "description": ""
+        },
+        "externalMetadata": {
+          "javaType": "Map\u003cString, Object\u003e"
+        },
+        "externalName": {
+          "type": "string",
+          "description": ""
+        },
+        "planUpdatable": {
+          "type": "boolean",
+          "description": ""
+        },
+        "requires": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "serviceBrokerName": {
+          "type": "string",
+          "description": ""
+        },
+        "tags": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceClassSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceClassStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "removedFromBrokerCatalog": {
+          "type": "boolean",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceClassStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstance": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "servicecatalog.k8s.io/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ServiceInstance",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstanceSpec",
+          "javaType": "io.fabric8.servicecatalog.api.model.ServiceInstanceSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstanceStatus",
+          "javaType": "io.fabric8.servicecatalog.api.model.ServiceInstanceStatus"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceInstance",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstanceCondition": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "lastTransitionTime": {
+          "javaType": "java.lang.String"
+        },
+        "message": {
+          "type": "string",
+          "description": ""
+        },
+        "reason": {
+          "type": "string",
+          "description": ""
+        },
+        "status": {
+          "type": "string",
+          "description": ""
+        },
+        "type": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceInstanceCondition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstanceList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "servicecatalog.k8s.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstance",
+            "javaType": "io.fabric8.servicecatalog.api.model.ServiceInstance"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ServiceInstanceList",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceInstanceList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.servicecatalog.api.model.ServiceInstance\u003e"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstancePropertiesState": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "clusterServicePlanExternalID": {
+          "type": "string",
+          "description": ""
+        },
+        "clusterServicePlanExternalName": {
+          "type": "string",
+          "description": ""
+        },
+        "parameterChecksum": {
+          "type": "string",
+          "description": ""
+        },
+        "parameters": {
+          "javaType": "Map\u003cString, Object\u003e"
+        },
+        "servicePlanExternalID": {
+          "type": "string",
+          "description": ""
+        },
+        "servicePlanExternalName": {
+          "type": "string",
+          "description": ""
+        },
+        "userInfo": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_UserInfo",
+          "javaType": "io.fabric8.servicecatalog.api.model.UserInfo"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceInstancePropertiesState",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstanceSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "clusterServiceClassExternalID": {
+          "type": "string",
+          "description": ""
+        },
+        "clusterServiceClassExternalName": {
+          "type": "string",
+          "description": ""
+        },
+        "clusterServiceClassName": {
+          "type": "string",
+          "description": ""
+        },
+        "clusterServiceClassRef": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterObjectReference",
+          "javaType": "io.fabric8.servicecatalog.api.model.ClusterObjectReference"
+        },
+        "clusterServicePlanExternalID": {
+          "type": "string",
+          "description": ""
+        },
+        "clusterServicePlanExternalName": {
+          "type": "string",
+          "description": ""
+        },
+        "clusterServicePlanName": {
+          "type": "string",
+          "description": ""
+        },
+        "clusterServicePlanRef": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterObjectReference",
+          "javaType": "io.fabric8.servicecatalog.api.model.ClusterObjectReference"
+        },
+        "externalID": {
+          "type": "string",
+          "description": ""
+        },
+        "parameters": {
+          "javaType": "Map\u003cString, Object\u003e"
+        },
+        "parametersFrom": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ParametersFromSource",
+            "javaType": "io.fabric8.servicecatalog.api.model.ParametersFromSource"
+          }
+        },
+        "serviceClassExternalID": {
+          "type": "string",
+          "description": ""
+        },
+        "serviceClassExternalName": {
+          "type": "string",
+          "description": ""
+        },
+        "serviceClassName": {
+          "type": "string",
+          "description": ""
+        },
+        "serviceClassRef": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_LocalObjectReference",
+          "javaType": "io.fabric8.servicecatalog.api.model.LocalObjectReference"
+        },
+        "servicePlanExternalID": {
+          "type": "string",
+          "description": ""
+        },
+        "servicePlanExternalName": {
+          "type": "string",
+          "description": ""
+        },
+        "servicePlanName": {
+          "type": "string",
+          "description": ""
+        },
+        "servicePlanRef": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_LocalObjectReference",
+          "javaType": "io.fabric8.servicecatalog.api.model.LocalObjectReference"
+        },
+        "updateRequests": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "userInfo": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_UserInfo",
+          "javaType": "io.fabric8.servicecatalog.api.model.UserInfo"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceInstanceSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstanceStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "asyncOpInProgress": {
+          "type": "boolean",
+          "description": ""
+        },
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstanceCondition",
+            "javaType": "io.fabric8.servicecatalog.api.model.ServiceInstanceCondition"
+          }
+        },
+        "currentOperation": {
+          "type": "string",
+          "description": ""
+        },
+        "dashboardURL": {
+          "type": "string",
+          "description": "",
+          "javaType": "String"
+        },
+        "defaultProvisionParameters": {
+          "javaType": "Map\u003cString, Object\u003e"
+        },
+        "deprovisionStatus": {
+          "type": "string",
+          "description": ""
+        },
+        "externalProperties": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstancePropertiesState",
+          "javaType": "io.fabric8.servicecatalog.api.model.ServiceInstancePropertiesState"
+        },
+        "inProgressProperties": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstancePropertiesState",
+          "javaType": "io.fabric8.servicecatalog.api.model.ServiceInstancePropertiesState"
+        },
+        "lastOperation": {
+          "type": "string",
+          "description": "",
+          "javaType": "String"
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "operationStartTime": {
+          "javaType": "java.lang.String"
+        },
+        "orphanMitigationInProgress": {
+          "type": "boolean",
+          "description": ""
+        },
+        "provisionStatus": {
+          "type": "string",
+          "description": ""
+        },
+        "reconciledGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceInstanceStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServicePlan": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "servicecatalog.k8s.io/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ServicePlan",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServicePlanSpec",
+          "javaType": "io.fabric8.servicecatalog.api.model.ServicePlanSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServicePlanStatus",
+          "javaType": "io.fabric8.servicecatalog.api.model.ServicePlanStatus"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ServicePlan",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServicePlanList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "servicecatalog.k8s.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServicePlan",
+            "javaType": "io.fabric8.servicecatalog.api.model.ServicePlan"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ServicePlanList",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ServicePlanList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.servicecatalog.api.model.ServicePlan\u003e"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServicePlanSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "bindable": {
+          "type": "boolean",
+          "description": "",
+          "javaType": "Boolean"
+        },
+        "defaultProvisionParameters": {
+          "javaType": "Map\u003cString, Object\u003e"
+        },
+        "description": {
+          "type": "string",
+          "description": ""
+        },
+        "externalID": {
+          "type": "string",
+          "description": ""
+        },
+        "externalMetadata": {
+          "javaType": "Map\u003cString, Object\u003e"
+        },
+        "externalName": {
+          "type": "string",
+          "description": ""
+        },
+        "free": {
+          "type": "boolean",
+          "description": ""
+        },
+        "instanceCreateParameterSchema": {
+          "javaType": "Map\u003cString, Object\u003e"
+        },
+        "instanceUpdateParameterSchema": {
+          "javaType": "Map\u003cString, Object\u003e"
+        },
+        "serviceBindingCreateParameterSchema": {
+          "javaType": "Map\u003cString, Object\u003e"
+        },
+        "serviceBindingCreateResponseSchema": {
+          "javaType": "Map\u003cString, Object\u003e"
+        },
+        "serviceBrokerName": {
+          "type": "string",
+          "description": ""
+        },
+        "serviceClassRef": {
+          "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_LocalObjectReference",
+          "javaType": "io.fabric8.servicecatalog.api.model.LocalObjectReference"
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ServicePlanSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServicePlanStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "removedFromBrokerCatalog": {
+          "type": "boolean",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.ServicePlanStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_UserInfo": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "extra": {
+          "type": "object",
+          "description": "",
+          "javaType": "java.util.Map\u003cString,java.util.List\u003cString\u003e\u003e"
+        },
+        "groups": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "uid": {
+          "type": "string",
+          "description": ""
+        },
+        "username": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.servicecatalog.api.model.UserInfo",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_AddKeyTransform": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_AddKeyTransform",
+      "javaType": "io.fabric8.servicecatalog.api.model.AddKeyTransform"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_AddKeysFromTransform": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_AddKeysFromTransform",
+      "javaType": "io.fabric8.servicecatalog.api.model.AddKeysFromTransform"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_BasicAuthConfig": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_BasicAuthConfig",
+      "javaType": "io.fabric8.servicecatalog.api.model.BasicAuthConfig"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_BearerTokenAuthConfig": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_BearerTokenAuthConfig",
+      "javaType": "io.fabric8.servicecatalog.api.model.BearerTokenAuthConfig"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_CatalogRestrictions": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_CatalogRestrictions",
+      "javaType": "io.fabric8.servicecatalog.api.model.CatalogRestrictions"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterBasicAuthConfig": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterBasicAuthConfig",
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterBasicAuthConfig"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterBearerTokenAuthConfig": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterBearerTokenAuthConfig",
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterBearerTokenAuthConfig"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterObjectReference": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterObjectReference",
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterObjectReference"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceBroker": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceBroker",
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterServiceBroker"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceBrokerAuthInfo": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceBrokerAuthInfo",
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterServiceBrokerAuthInfo"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceBrokerList": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceBrokerList",
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterServiceBrokerList"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceBrokerSpec": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceBrokerSpec",
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterServiceBrokerSpec"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceBrokerStatus": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceBrokerStatus",
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterServiceBrokerStatus"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceClass": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceClass",
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterServiceClass"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceClassList": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceClassList",
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterServiceClassList"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceClassSpec": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceClassSpec",
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterServiceClassSpec"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceClassStatus": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceClassStatus",
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterServiceClassStatus"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServicePlan": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServicePlan",
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterServicePlan"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServicePlanList": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServicePlanList",
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterServicePlanList"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServicePlanSpec": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServicePlanSpec",
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterServicePlanSpec"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServicePlanStatus": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServicePlanStatus",
+      "javaType": "io.fabric8.servicecatalog.api.model.ClusterServicePlanStatus"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_LocalObjectReference": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_LocalObjectReference",
+      "javaType": "io.fabric8.servicecatalog.api.model.LocalObjectReference"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ObjectReference": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ObjectReference",
+      "javaType": "io.fabric8.servicecatalog.api.model.ObjectReference"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ParametersFromSource": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ParametersFromSource",
+      "javaType": "io.fabric8.servicecatalog.api.model.ParametersFromSource"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_RemoveKeyTransform": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_RemoveKeyTransform",
+      "javaType": "io.fabric8.servicecatalog.api.model.RemoveKeyTransform"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_RenameKeyTransform": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_RenameKeyTransform",
+      "javaType": "io.fabric8.servicecatalog.api.model.RenameKeyTransform"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_SecretKeyReference": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_SecretKeyReference",
+      "javaType": "io.fabric8.servicecatalog.api.model.SecretKeyReference"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_SecretTransform": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_SecretTransform",
+      "javaType": "io.fabric8.servicecatalog.api.model.SecretTransform"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBinding": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBinding",
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceBinding"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBindingCondition": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBindingCondition",
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceBindingCondition"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBindingList": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBindingList",
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceBindingList"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBindingPropertiesState": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBindingPropertiesState",
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceBindingPropertiesState"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBindingSpec": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBindingSpec",
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceBindingSpec"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBindingStatus": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBindingStatus",
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceBindingStatus"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBroker": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBroker",
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceBroker"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBrokerAuthInfo": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBrokerAuthInfo",
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceBrokerAuthInfo"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBrokerCondition": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBrokerCondition",
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceBrokerCondition"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBrokerList": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBrokerList",
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceBrokerList"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBrokerSpec": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBrokerSpec",
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceBrokerSpec"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBrokerStatus": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBrokerStatus",
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceBrokerStatus"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceClass": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceClass",
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceClass"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceClassList": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceClassList",
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceClassList"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceClassSpec": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceClassSpec",
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceClassSpec"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceClassStatus": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceClassStatus",
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceClassStatus"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstance": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstance",
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceInstance"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstanceCondition": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstanceCondition",
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceInstanceCondition"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstanceList": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstanceList",
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceInstanceList"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstancePropertiesState": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstancePropertiesState",
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceInstancePropertiesState"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstanceSpec": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstanceSpec",
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceInstanceSpec"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstanceStatus": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstanceStatus",
+      "javaType": "io.fabric8.servicecatalog.api.model.ServiceInstanceStatus"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServicePlan": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServicePlan",
+      "javaType": "io.fabric8.servicecatalog.api.model.ServicePlan"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServicePlanList": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServicePlanList",
+      "javaType": "io.fabric8.servicecatalog.api.model.ServicePlanList"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServicePlanSpec": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServicePlanSpec",
+      "javaType": "io.fabric8.servicecatalog.api.model.ServicePlanSpec"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServicePlanStatus": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServicePlanStatus",
+      "javaType": "io.fabric8.servicecatalog.api.model.ServicePlanStatus"
+    },
+    "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_UserInfo": {
+      "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_UserInfo",
+      "javaType": "io.fabric8.servicecatalog.api.model.UserInfo"
+    }
+  },
+  "additionalProperties": false
+}
