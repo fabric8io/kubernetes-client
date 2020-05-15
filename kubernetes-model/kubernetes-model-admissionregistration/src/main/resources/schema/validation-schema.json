@@ -160,22 +160,21 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_admissionregistration_MutatingWebhook": {
+    "kubernetes_admissionregistration_v1_MutatingWebhook": {
       "type": "object",
       "description": "",
       "properties": {
         "admissionReviewVersions": {
           "type": "array",
           "description": "",
-          "javaOmitEmpty": true,
           "items": {
             "type": "string",
             "description": ""
           }
         },
         "clientConfig": {
-          "$ref": "#/definitions/kubernetes_admissionregistration_WebhookClientConfig",
-          "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.WebhookClientConfig"
+          "$ref": "#/definitions/kubernetes_admissionregistration_v1_WebhookClientConfig",
+          "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.WebhookClientConfig"
         },
         "failurePolicy": {
           "type": "string",
@@ -206,8 +205,8 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_admissionregistration_RuleWithOperations",
-            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.RuleWithOperations"
+            "$ref": "#/definitions/kubernetes_admissionregistration_v1_RuleWithOperations",
+            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.RuleWithOperations"
           }
         },
         "sideEffects": {
@@ -220,19 +219,19 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.MutatingWebhook",
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhook",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_admissionregistration_MutatingWebhookConfiguration": {
+    "kubernetes_admissionregistration_v1_MutatingWebhookConfiguration": {
       "type": "object",
       "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "admissionregistration.k8s.io/v1beta1",
+          "default": "admissionregistration.k8s.io/v1",
           "required": true
         },
         "kind": {
@@ -250,33 +249,33 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_admissionregistration_MutatingWebhook",
-            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.MutatingWebhook"
+            "$ref": "#/definitions/kubernetes_admissionregistration_v1_MutatingWebhook",
+            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhook"
           }
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.MutatingWebhookConfiguration",
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhookConfiguration",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
     },
-    "kubernetes_admissionregistration_MutatingWebhookConfigurationList": {
+    "kubernetes_admissionregistration_v1_MutatingWebhookConfigurationList": {
       "type": "object",
       "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "admissionregistration.k8s.io/v1beta1",
+          "default": "admissionregistration.k8s.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
           "description": "",
           "items": {
-            "$ref": "#/definitions/kubernetes_admissionregistration_MutatingWebhookConfiguration",
-            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.MutatingWebhookConfiguration"
+            "$ref": "#/definitions/kubernetes_admissionregistration_v1_MutatingWebhookConfiguration",
+            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhookConfiguration"
           }
         },
         "kind": {
@@ -291,13 +290,13 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.MutatingWebhookConfigurationList",
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhookConfigurationList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.admissionregistration.MutatingWebhookConfiguration\u003e"
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhookConfiguration\u003e"
       ]
     },
-    "kubernetes_admissionregistration_Rule": {
+    "kubernetes_admissionregistration_v1_Rule": {
       "type": "object",
       "description": "",
       "properties": {
@@ -334,12 +333,12 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.Rule",
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.Rule",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_admissionregistration_RuleWithOperations": {
+    "kubernetes_admissionregistration_v1_RuleWithOperations": {
       "type": "object",
       "description": "",
       "properties": {
@@ -385,12 +384,12 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.RuleWithOperations",
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.RuleWithOperations",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_admissionregistration_ServiceReference": {
+    "kubernetes_admissionregistration_v1_ServiceReference": {
       "type": "object",
       "description": "",
       "properties": {
@@ -412,27 +411,26 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.ServiceReference",
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.ServiceReference",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_admissionregistration_ValidatingWebhook": {
+    "kubernetes_admissionregistration_v1_ValidatingWebhook": {
       "type": "object",
       "description": "",
       "properties": {
         "admissionReviewVersions": {
           "type": "array",
           "description": "",
-          "javaOmitEmpty": true,
           "items": {
             "type": "string",
             "description": ""
           }
         },
         "clientConfig": {
-          "$ref": "#/definitions/kubernetes_admissionregistration_WebhookClientConfig",
-          "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.WebhookClientConfig"
+          "$ref": "#/definitions/kubernetes_admissionregistration_v1_WebhookClientConfig",
+          "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.WebhookClientConfig"
         },
         "failurePolicy": {
           "type": "string",
@@ -459,8 +457,8 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_admissionregistration_RuleWithOperations",
-            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.RuleWithOperations"
+            "$ref": "#/definitions/kubernetes_admissionregistration_v1_RuleWithOperations",
+            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.RuleWithOperations"
           }
         },
         "sideEffects": {
@@ -473,12 +471,425 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.ValidatingWebhook",
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhook",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_admissionregistration_ValidatingWebhookConfiguration": {
+    "kubernetes_admissionregistration_v1_ValidatingWebhookConfiguration": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "admissionregistration.k8s.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ValidatingWebhookConfiguration",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "webhooks": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_admissionregistration_v1_ValidatingWebhook",
+            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhook"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhookConfiguration",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "kubernetes_admissionregistration_v1_ValidatingWebhookConfigurationList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "admissionregistration.k8s.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/kubernetes_admissionregistration_v1_ValidatingWebhookConfiguration",
+            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhookConfiguration"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ValidatingWebhookConfigurationList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhookConfigurationList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhookConfiguration\u003e"
+      ]
+    },
+    "kubernetes_admissionregistration_v1_WebhookClientConfig": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "caBundle": {
+          "type": "string",
+          "description": ""
+        },
+        "service": {
+          "$ref": "#/definitions/kubernetes_admissionregistration_v1_ServiceReference",
+          "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.ServiceReference"
+        },
+        "url": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.WebhookClientConfig",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_admissionregistration_v1beta1_MutatingWebhook": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "admissionReviewVersions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "clientConfig": {
+          "$ref": "#/definitions/kubernetes_admissionregistration_v1beta1_WebhookClientConfig",
+          "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.WebhookClientConfig"
+        },
+        "failurePolicy": {
+          "type": "string",
+          "description": ""
+        },
+        "matchPolicy": {
+          "type": "string",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "namespaceSelector": {
+          "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
+          "javaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        },
+        "objectSelector": {
+          "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
+          "javaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        },
+        "reinvocationPolicy": {
+          "type": "string",
+          "description": ""
+        },
+        "rules": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_admissionregistration_v1beta1_RuleWithOperations",
+            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.RuleWithOperations"
+          }
+        },
+        "sideEffects": {
+          "type": "string",
+          "description": ""
+        },
+        "timeoutSeconds": {
+          "type": "integer",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhook",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_admissionregistration_v1beta1_MutatingWebhookConfiguration": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "admissionregistration.k8s.io/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "MutatingWebhookConfiguration",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "webhooks": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_admissionregistration_v1beta1_MutatingWebhook",
+            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhook"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfiguration",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "kubernetes_admissionregistration_v1beta1_MutatingWebhookConfigurationList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "admissionregistration.k8s.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/kubernetes_admissionregistration_v1beta1_MutatingWebhookConfiguration",
+            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfiguration"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "MutatingWebhookConfigurationList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfigurationList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfiguration\u003e"
+      ]
+    },
+    "kubernetes_admissionregistration_v1beta1_Rule": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiGroups": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "apiVersions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "resources": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "scope": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.Rule",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_admissionregistration_v1beta1_RuleWithOperations": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiGroups": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "apiVersions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "operations": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "resources": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "scope": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.RuleWithOperations",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_admissionregistration_v1beta1_ServiceReference": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "namespace": {
+          "type": "string",
+          "description": ""
+        },
+        "path": {
+          "type": "string",
+          "description": ""
+        },
+        "port": {
+          "type": "integer",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ServiceReference",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_admissionregistration_v1beta1_ValidatingWebhook": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "admissionReviewVersions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "clientConfig": {
+          "$ref": "#/definitions/kubernetes_admissionregistration_v1beta1_WebhookClientConfig",
+          "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.WebhookClientConfig"
+        },
+        "failurePolicy": {
+          "type": "string",
+          "description": ""
+        },
+        "matchPolicy": {
+          "type": "string",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "namespaceSelector": {
+          "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
+          "javaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        },
+        "objectSelector": {
+          "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
+          "javaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        },
+        "rules": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_admissionregistration_v1beta1_RuleWithOperations",
+            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.RuleWithOperations"
+          }
+        },
+        "sideEffects": {
+          "type": "string",
+          "description": ""
+        },
+        "timeoutSeconds": {
+          "type": "integer",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhook",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_admissionregistration_v1beta1_ValidatingWebhookConfiguration": {
       "type": "object",
       "description": "",
       "properties": {
@@ -503,18 +914,18 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_admissionregistration_ValidatingWebhook",
-            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.ValidatingWebhook"
+            "$ref": "#/definitions/kubernetes_admissionregistration_v1beta1_ValidatingWebhook",
+            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhook"
           }
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.ValidatingWebhookConfiguration",
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfiguration",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
     },
-    "kubernetes_admissionregistration_ValidatingWebhookConfigurationList": {
+    "kubernetes_admissionregistration_v1beta1_ValidatingWebhookConfigurationList": {
       "type": "object",
       "description": "",
       "properties": {
@@ -528,8 +939,8 @@
           "type": "array",
           "description": "",
           "items": {
-            "$ref": "#/definitions/kubernetes_admissionregistration_ValidatingWebhookConfiguration",
-            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.ValidatingWebhookConfiguration"
+            "$ref": "#/definitions/kubernetes_admissionregistration_v1beta1_ValidatingWebhookConfiguration",
+            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfiguration"
           }
         },
         "kind": {
@@ -544,13 +955,13 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.ValidatingWebhookConfigurationList",
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfigurationList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.admissionregistration.ValidatingWebhookConfiguration\u003e"
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfiguration\u003e"
       ]
     },
-    "kubernetes_admissionregistration_WebhookClientConfig": {
+    "kubernetes_admissionregistration_v1beta1_WebhookClientConfig": {
       "type": "object",
       "description": "",
       "properties": {
@@ -559,8 +970,8 @@
           "description": ""
         },
         "service": {
-          "$ref": "#/definitions/kubernetes_admissionregistration_ServiceReference",
-          "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.ServiceReference"
+          "$ref": "#/definitions/kubernetes_admissionregistration_v1beta1_ServiceReference",
+          "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ServiceReference"
         },
         "url": {
           "type": "string",
@@ -568,7 +979,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.WebhookClientConfig",
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.WebhookClientConfig",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -2146,12 +2557,12 @@
       "javaType": "io.fabric8.kubernetes.api.model.ListOptions"
     },
     "MutatingWebhookConfiguration": {
-      "$ref": "#/definitions/kubernetes_admissionregistration_MutatingWebhookConfiguration",
-      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.MutatingWebhookConfiguration"
+      "$ref": "#/definitions/kubernetes_admissionregistration_v1beta1_MutatingWebhookConfiguration",
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfiguration"
     },
     "MutatingWebhookConfigurationList": {
-      "$ref": "#/definitions/kubernetes_admissionregistration_MutatingWebhookConfigurationList",
-      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.MutatingWebhookConfigurationList"
+      "$ref": "#/definitions/kubernetes_admissionregistration_v1beta1_MutatingWebhookConfigurationList",
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfigurationList"
     },
     "ObjectMeta": {
       "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
@@ -2182,12 +2593,12 @@
       "javaType": "io.fabric8.kubernetes.api.model.RootPaths"
     },
     "Rule": {
-      "$ref": "#/definitions/kubernetes_admissionregistration_Rule",
-      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.Rule"
+      "$ref": "#/definitions/kubernetes_admissionregistration_v1beta1_Rule",
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.Rule"
     },
     "RuleWithOperations": {
-      "$ref": "#/definitions/kubernetes_admissionregistration_RuleWithOperations",
-      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.RuleWithOperations"
+      "$ref": "#/definitions/kubernetes_admissionregistration_v1beta1_RuleWithOperations",
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.RuleWithOperations"
     },
     "SelfSubjectAccessReview": {
       "$ref": "#/definitions/kubernetes_authorization_SelfSubjectAccessReview",
@@ -2198,8 +2609,8 @@
       "javaType": "io.fabric8.kubernetes.api.model.authorization.SelfSubjectRulesReview"
     },
     "ServiceReference": {
-      "$ref": "#/definitions/kubernetes_admissionregistration_ServiceReference",
-      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.ServiceReference"
+      "$ref": "#/definitions/kubernetes_admissionregistration_v1beta1_ServiceReference",
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ServiceReference"
     },
     "Status": {
       "$ref": "#/definitions/kubernetes_apimachinery_Status",
@@ -2221,13 +2632,41 @@
       "$ref": "#/definitions/kubernetes_apimachinery_UpdateOptions",
       "javaType": "io.fabric8.kubernetes.api.model.UpdateOptions"
     },
+    "V1MutatingWebhookConfiguration": {
+      "$ref": "#/definitions/kubernetes_admissionregistration_v1_MutatingWebhookConfiguration",
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhookConfiguration"
+    },
+    "V1MutatingWebhookConfigurationList": {
+      "$ref": "#/definitions/kubernetes_admissionregistration_v1_MutatingWebhookConfigurationList",
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhookConfigurationList"
+    },
+    "V1Rule": {
+      "$ref": "#/definitions/kubernetes_admissionregistration_v1_Rule",
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.Rule"
+    },
+    "V1RuleWithOperations": {
+      "$ref": "#/definitions/kubernetes_admissionregistration_v1_RuleWithOperations",
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.RuleWithOperations"
+    },
+    "V1ServiceReference": {
+      "$ref": "#/definitions/kubernetes_admissionregistration_v1_ServiceReference",
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.ServiceReference"
+    },
+    "V1ValidatingWebhookConfiguration": {
+      "$ref": "#/definitions/kubernetes_admissionregistration_v1_ValidatingWebhookConfiguration",
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhookConfiguration"
+    },
+    "V1ValidatingWebhookConfigurationList": {
+      "$ref": "#/definitions/kubernetes_admissionregistration_v1_ValidatingWebhookConfigurationList",
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhookConfigurationList"
+    },
     "ValidatingWebhookConfiguration": {
-      "$ref": "#/definitions/kubernetes_admissionregistration_ValidatingWebhookConfiguration",
-      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.ValidatingWebhookConfiguration"
+      "$ref": "#/definitions/kubernetes_admissionregistration_v1beta1_ValidatingWebhookConfiguration",
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfiguration"
     },
     "ValidatingWebhookConfigurationList": {
-      "$ref": "#/definitions/kubernetes_admissionregistration_ValidatingWebhookConfigurationList",
-      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.ValidatingWebhookConfigurationList"
+      "$ref": "#/definitions/kubernetes_admissionregistration_v1beta1_ValidatingWebhookConfigurationList",
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfigurationList"
     }
   },
   "additionalProperties": true,
@@ -2821,15 +3260,14 @@
         "admissionReviewVersions": {
           "type": "array",
           "description": "",
-          "javaOmitEmpty": true,
           "items": {
             "type": "string",
             "description": ""
           }
         },
         "clientConfig": {
-          "$ref": "#/definitions/kubernetes_admissionregistration_WebhookClientConfig",
-          "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.WebhookClientConfig"
+          "$ref": "#/definitions/kubernetes_admissionregistration_v1_WebhookClientConfig",
+          "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.WebhookClientConfig"
         },
         "failurePolicy": {
           "type": "string",
@@ -2860,8 +3298,8 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_admissionregistration_RuleWithOperations",
-            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.RuleWithOperations"
+            "$ref": "#/definitions/kubernetes_admissionregistration_v1_RuleWithOperations",
+            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.RuleWithOperations"
           }
         },
         "sideEffects": {
@@ -2880,7 +3318,7 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "admissionregistration.k8s.io/v1beta1",
+          "default": "admissionregistration.k8s.io/v1",
           "required": true
         },
         "kind": {
@@ -2898,8 +3336,8 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_admissionregistration_MutatingWebhook",
-            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.MutatingWebhook"
+            "$ref": "#/definitions/kubernetes_admissionregistration_v1_MutatingWebhook",
+            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhook"
           }
         }
       },
@@ -2917,8 +3355,8 @@
           "type": "array",
           "description": "",
           "items": {
-            "$ref": "#/definitions/kubernetes_admissionregistration_MutatingWebhookConfiguration",
-            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.MutatingWebhookConfiguration"
+            "$ref": "#/definitions/kubernetes_admissionregistration_v1beta1_MutatingWebhookConfiguration",
+            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfiguration"
           }
         },
         "kind": {
@@ -3825,8 +4263,8 @@
           }
         },
         "clientConfig": {
-          "$ref": "#/definitions/kubernetes_admissionregistration_WebhookClientConfig",
-          "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.WebhookClientConfig"
+          "$ref": "#/definitions/kubernetes_admissionregistration_v1beta1_WebhookClientConfig",
+          "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.WebhookClientConfig"
         },
         "failurePolicy": {
           "type": "string",
@@ -3853,8 +4291,8 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_admissionregistration_RuleWithOperations",
-            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.RuleWithOperations"
+            "$ref": "#/definitions/kubernetes_admissionregistration_v1beta1_RuleWithOperations",
+            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.RuleWithOperations"
           }
         },
         "sideEffects": {
@@ -3873,7 +4311,7 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "admissionregistration.k8s.io/v1beta1",
+          "default": "admissionregistration.k8s.io/v1",
           "required": true
         },
         "kind": {
@@ -3891,8 +4329,8 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_admissionregistration_ValidatingWebhook",
-            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.ValidatingWebhook"
+            "$ref": "#/definitions/kubernetes_admissionregistration_v1_ValidatingWebhook",
+            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhook"
           }
         }
       },
@@ -3910,8 +4348,8 @@
           "type": "array",
           "description": "",
           "items": {
-            "$ref": "#/definitions/kubernetes_admissionregistration_ValidatingWebhookConfiguration",
-            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.ValidatingWebhookConfiguration"
+            "$ref": "#/definitions/kubernetes_admissionregistration_v1beta1_ValidatingWebhookConfiguration",
+            "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfiguration"
           }
         },
         "kind": {
@@ -3934,8 +4372,8 @@
           "description": ""
         },
         "service": {
-          "$ref": "#/definitions/kubernetes_admissionregistration_ServiceReference",
-          "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.ServiceReference"
+          "$ref": "#/definitions/kubernetes_admissionregistration_v1_ServiceReference",
+          "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.ServiceReference"
         },
         "url": {
           "type": "string",

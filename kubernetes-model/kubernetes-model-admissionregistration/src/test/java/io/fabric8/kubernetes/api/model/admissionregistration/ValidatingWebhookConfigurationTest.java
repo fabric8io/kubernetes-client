@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.api.model.admissionregistration;
 
+import io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhookConfiguration;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -22,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ValidatingWebhookConfigurationTest {
   @Test
   public void testBuilder() {
-    ValidatingWebhookConfiguration vwc = new io.fabric8.kubernetes.api.model.admissionregistration.ValidatingWebhookConfigurationBuilder()
+    ValidatingWebhookConfiguration vwc = new io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhookConfigurationBuilder()
       .withNewMetadata().withName("pod-policy.example.com").endMetadata()
       .addNewWebhook()
       .withName("pod-policy.example.com")

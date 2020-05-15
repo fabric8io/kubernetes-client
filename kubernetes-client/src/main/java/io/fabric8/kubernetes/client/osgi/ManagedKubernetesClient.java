@@ -73,6 +73,7 @@ import io.fabric8.kubernetes.api.model.coordination.v1.DoneableLease;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
 import io.fabric8.kubernetes.client.Adapters;
+import io.fabric8.kubernetes.client.AdmissionRegistrationAPIGroupDSL;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -369,6 +370,11 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   @Override
   public V1APIGroupDSL v1() {
     return delegate.v1();
+  }
+
+  @Override
+  public AdmissionRegistrationAPIGroupDSL admissionRegistration() {
+    return delegate.admissionRegistration();
   }
 
   @Override
