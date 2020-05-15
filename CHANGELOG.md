@@ -5,6 +5,8 @@
 * Fix #2205: Event model classes from core v1 have been lost
 * Fix #2201: Uberjar doesn't contain model classes anymore
 * Fix #2066: Uber Jar includes merged service entry for multiple implementations of the same interface
+* Fix #2195: Annotation processors and build time dependencies transitive
+* Fix #2212: JDK8 always uses http/1.1 protocol (Prevent OkHttp from wrongly enabling http/2)
 
 #### Improvements
 * Fix #2199: KubernetesClient#customResources now accepts CustomResourceDefinitionContext
@@ -13,6 +15,7 @@
 
 #### New Features
 * Added DSL support for `admissionregistration.k8s.io/v1beta1` resources
+* Add support for Namespaced SharedInformers, fixed probelms with OperationContext argument
 
 ### 4.10.1 (2020-05-06)
 #### Bugs
@@ -27,6 +30,7 @@
 
 ### 4.10.0 (2020-05-04)
 #### Bugs
+* Feature #1456: Added Watch support on MockServer in Crud mode
 * Fix #2163: fix kubernetes-client not support cert chain
 * Fix #2144: CRD's schema Default fields do not handle boolean and are prefixed with Raw keyword
 * KubernetesAttributeExtractor: handle possible /status subpath due to using status subresource on crd

@@ -229,4 +229,110 @@ public class OperationContext {
   public OperationContext withPropagationPolicy(DeletionPropagation propagationPolicy) {
     return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy);
   }
+
+  /**
+   * Returns an OperationContext object merged with current object
+   *
+   * @param operationContext object with modifications
+   * @return a merged object between passed argument and current object
+   */
+  public OperationContext withOperationContext(OperationContext operationContext) {
+    OkHttpClient clientCloned = getClient();
+    Config configCloned = getConfig();
+    Object itemCloned = getItem();
+    String resourceVersionCloned = getResourceVersion();
+    String pluralCloned = getPlural();
+    String apiGroupNameCloned = getApiGroupName();
+    String apiGroupVersionCloned = getApiGroupVersion();
+    String namespaceCloned = getNamespace();
+    String nameCloned = getName();
+    boolean cascadingCloned = getCascading();
+    boolean reloadingFromServerCloned = getReloadingFromServer();
+    long gracePeriodSecondsCloned = getGracePeriodSeconds();
+    DeletionPropagation propagationPolicyCloned = getPropagationPolicy();
+    Map<String, String> labelsCloned = getLabels();
+    Map<String, String[]> labelsNotCloned = getLabelsNot();
+    Map<String, String[]> labelsInCloned = getLabelsIn();
+    Map<String, String[]> labelsNotInCloned = getLabelsNotIn();
+    Map<String, String> fieldsCloned = getFields();
+    Map<String, String[]> fieldsNotCloned = getFieldsNot();
+
+    if (operationContext.getApiGroupVersion() != null) {
+      apiGroupVersionCloned = operationContext.getApiGroupVersion();
+    }
+
+    if (operationContext.getClient() != null) {
+      clientCloned = operationContext.getClient();
+    }
+
+    if (operationContext.getConfig() != null) {
+      configCloned = operationContext.getConfig();
+    }
+
+    if (operationContext.getPlural() != null) {
+      pluralCloned = operationContext.getPlural();
+    }
+
+    if (operationContext.getNamespace() != null) {
+      namespaceCloned = operationContext.getNamespace();
+    }
+
+    if (operationContext.getName() != null) {
+      nameCloned = operationContext.getName();
+    }
+
+    if (operationContext.getApiGroupName() != null) {
+      apiGroupNameCloned = operationContext.getApiGroupName();
+    }
+
+    if (operationContext.getCascading()) {
+      cascadingCloned = operationContext.getCascading();
+    }
+
+    if (operationContext.getItem() != null) {
+      itemCloned = operationContext.getItem();
+    }
+
+    if (operationContext.getLabels() != null) {
+      labelsCloned = operationContext.getLabels();
+    }
+
+    if (operationContext.getLabelsNot() != null) {
+      labelsNotCloned = operationContext.getLabelsNot();
+    }
+
+    if (operationContext.getLabelsIn() != null) {
+      labelsInCloned = operationContext.getLabelsIn();
+    }
+
+    if (operationContext.getLabelsNotIn() != null) {
+      labelsNotInCloned = operationContext.getLabelsNotIn();
+    }
+
+    if (operationContext.getFields() != null) {
+      fieldsCloned = operationContext.getFields();
+    }
+
+    if (operationContext.getFieldsNot() != null) {
+      fieldsNotCloned = operationContext.getFieldsNot();
+    }
+
+    if (operationContext.getResourceVersion() != null) {
+      resourceVersionCloned = operationContext.getResourceVersion();
+    }
+
+    if (operationContext.getReloadingFromServer()) {
+      reloadingFromServerCloned = operationContext.getReloadingFromServer();
+    }
+
+    if (operationContext.getGracePeriodSeconds() > 0) {
+      gracePeriodSecondsCloned = operationContext.getGracePeriodSeconds();
+    }
+
+    if (operationContext.getPropagationPolicy() != null) {
+      propagationPolicyCloned = operationContext.getPropagationPolicy();
+    }
+
+    return new OperationContext(clientCloned, configCloned, pluralCloned, namespaceCloned, nameCloned, apiGroupNameCloned, apiGroupVersionCloned, cascadingCloned, itemCloned, labelsCloned, labelsNotCloned, labelsInCloned, labelsNotInCloned, fieldsCloned, fieldsNotCloned, resourceVersionCloned, reloadingFromServerCloned, gracePeriodSecondsCloned, propagationPolicyCloned);
+  }
 }

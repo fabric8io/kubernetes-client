@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.ListMetaBuilder;
+import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
@@ -24,9 +26,14 @@ import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.api.model.WatchEventBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
+import io.fabric8.kubernetes.client.mock.crd.PodSet;
+import io.fabric8.kubernetes.client.mock.crd.PodSetList;
+import io.fabric8.kubernetes.client.mock.crd.PodSetSpec;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Rule;
 import org.junit.jupiter.api.Test;
@@ -37,6 +44,7 @@ import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @EnableRuleMigrationSupport
 public class DefaultSharedIndexInformerTest {
@@ -269,5 +277,117 @@ public class DefaultSharedIndexInformerTest {
     assertEquals(false, failureCallbackReceived.get());
 
     factory.stopAllRegisteredInformers();
+  }
+
+  @Test
+  public void testWithOperationContextArgument() throws InterruptedException {
+    String startResourceVersion = "1000", endResourceVersion = "1001";
+
+    server.expect().withPath("/api/v1/namespaces/ns1/pods")
+      .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata().withItems(Arrays.asList()).build()).once();
+    server.expect().withPath("/api/v1/namespaces/ns1/pods?resourceVersion=" + startResourceVersion + "&watch=true")
+      .andUpgradeToWebSocket()
+      .open()
+      .waitFor(1000)
+      .andEmit(new WatchEvent(new PodBuilder().withNewMetadata().withName("pod1").withResourceVersion(endResourceVersion).endMetadata().build(), "ADDED"))
+      .waitFor(2000)
+      .andEmit(outdatedEvent).done().always();
+
+    KubernetesClient client = server.getClient();
+    SharedInformerFactory factory = client.informers();
+    SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(
+      Pod.class, PodList.class,
+      new OperationContext().withNamespace("ns1"),
+      4000L);
+
+    AtomicBoolean foundExistingPod = new AtomicBoolean(false);
+    podInformer.addEventHandler(
+      new ResourceEventHandler<Pod>() {
+        @Override
+        public void onAdd(Pod obj) {
+          if (obj.getMetadata().getName().equalsIgnoreCase("pod1")) {
+            foundExistingPod.set(true);
+          }
+        }
+
+        @Override
+        public void onUpdate(Pod oldObj, Pod newObj) { }
+
+        @Override
+        public void onDelete(Pod oldObj, boolean deletedFinalStateUnknown) { }
+      });
+    Thread.sleep(1000L);
+    factory.startAllRegisteredInformers();
+
+    Thread.sleep(5000L);
+    assertTrue(foundExistingPod.get());
+    assertEquals(endResourceVersion, podInformer.lastSyncResourceVersion());
+
+    factory.stopAllRegisteredInformers();
+  }
+
+  @Test
+  public void testWithOperationContextArgumentForCustomResource() throws InterruptedException {
+    String startResourceVersion = "1000", endResourceVersion = "1001";
+    PodSetList podSetList = new PodSetList();
+    podSetList.setMetadata(new ListMetaBuilder().withResourceVersion(startResourceVersion).build());
+
+    server.expect().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/ns1/podsets")
+      .andReturn(200, podSetList).once();
+
+    server.expect().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/ns1/podsets?resourceVersion=" + startResourceVersion + "&watch=true")
+      .andUpgradeToWebSocket()
+      .open()
+      .waitFor(1000)
+      .andEmit(new WatchEvent(getPodSet("podset1", endResourceVersion), "ADDED"))
+      .waitFor(2000)
+      .andEmit(outdatedEvent).done().always();
+    KubernetesClient client = server.getClient();
+
+    CustomResourceDefinitionContext crdContext = new CustomResourceDefinitionContext.Builder()
+      .withVersion("v1alpha1")
+      .withScope("Namespaced")
+      .withGroup("demo.k8s.io")
+      .withPlural("podsets")
+      .build();
+
+    SharedInformerFactory sharedInformerFactory = client.informers();
+    SharedIndexInformer<PodSet> podInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(crdContext, PodSet.class, PodSetList.class, new OperationContext().withNamespace("ns1"), 1 * 60 * 1000);
+    AtomicBoolean foundExistingPodSet = new AtomicBoolean(false);
+    podInformer.addEventHandler(
+      new ResourceEventHandler<PodSet>() {
+        @Override
+        public void onAdd(PodSet podSet) {
+          if (podSet.getMetadata().getName().equalsIgnoreCase("podset1")) {
+            foundExistingPodSet.set(true);
+          }
+        }
+
+        @Override
+        public void onUpdate(PodSet oldPodSet, PodSet newPodSet) { }
+
+        @Override
+        public void onDelete(PodSet podSet, boolean deletedFinalStateUnknown) { }
+      });
+    Thread.sleep(1000L);
+    sharedInformerFactory.startAllRegisteredInformers();
+
+    Thread.sleep(5000L);
+    assertTrue(foundExistingPodSet.get());
+    assertEquals(endResourceVersion, podInformer.lastSyncResourceVersion());
+
+    sharedInformerFactory.stopAllRegisteredInformers();
+  }
+
+  private PodSet getPodSet(String name, String resourceVersion) {
+    PodSetSpec podSetSpec = new PodSetSpec();
+    podSetSpec.setReplicas(5);
+
+    PodSet podSet = new PodSet();
+    podSet.setApiVersion("demo.k8s.io/v1alpha1");
+    podSet.setMetadata(new ObjectMetaBuilder().withName(name).withResourceVersion(resourceVersion).build());
+    podSet.setSpec(podSetSpec);
+
+    return podSet;
   }
 }

@@ -23,13 +23,10 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.Proxy;
@@ -176,7 +173,7 @@ public class HttpClientUtils {
               httpClientBuilder.connectionSpecs(Arrays.asList(spec, CLEARTEXT));
             }
 
-            if (config.isHttp2Disable()) {
+            if (shouldDisableHttp2() || config.isHttp2Disable()) {
                 httpClientBuilder.protocols(Collections.singletonList(Protocol.HTTP_1_1));
             }
 
@@ -229,5 +226,16 @@ public class HttpClientUtils {
     private static boolean isIpAddress(String ipAddress) {
         Matcher ipMatcher = VALID_IPV4_PATTERN.matcher(ipAddress);
         return ipMatcher.matches();
+    }
+
+  /**
+   * OkHttp wrongfully detects >JDK8u251 as {@link okhttp3.internal.platform.Jdk9Platform} which enables Http2
+   * unsupported for JDK8.
+   *
+   * @return true if JDK8 is detected, false otherwise-
+   * @see <a href="https://github.com/fabric8io/kubernetes-client/issues/2212">#2212</a>
+   */
+  private static boolean shouldDisableHttp2() {
+      return System.getProperty("java.version", "").startsWith("1.8");
     }
 }
