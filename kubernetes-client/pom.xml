@@ -340,7 +340,11 @@
                 <Require-Bundle>${osgi.bundles}</Require-Bundle>
                 <Bundle-Activator>${osgi.activator}</Bundle-Activator>
                 <Export-Service>${osgi.export.service}</Export-Service>
-                <Include-Resource>/META-INF/services/io.fabric8.kubernetes.client.ResourceHandler=target/classes/META-INF/services/io.fabric8.kubernetes.client.ResourceHandler</Include-Resource>
+                <Include-Resource>
+                  /META-INF/services/io.fabric8.kubernetes.client.ResourceHandler=target/classes/META-INF/services/io.fabric8.kubernetes.client.ResourceHandler,
+                  /META-INF/services/io.fabric8.kubernetes.client.ServiceToURLProvider=target/classes/META-INF/services/io.fabric8.kubernetes.client.ServiceToURLProvider,
+                  /META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter=target/classes/META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter
+                </Include-Resource>
               </instructions>
               <classifier>bundle</classifier>
             </configuration>
