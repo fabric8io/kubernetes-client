@@ -1588,7 +1588,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.Binding",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_core_CSIPersistentVolumeSource": {
@@ -2000,7 +2001,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.ConfigMap",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_core_ConfigMapEnvSource": {
@@ -2742,7 +2744,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.Endpoints",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_core_EndpointsList": {
@@ -3207,7 +3210,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.Event",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_core_EventList": {
@@ -3851,7 +3855,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.LimitRange",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_core_LimitRangeItem": {
@@ -4808,7 +4813,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.PersistentVolumeClaim",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_core_PersistentVolumeClaimCondition": {
@@ -5342,7 +5348,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.Pod",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_core_PodAffinity": {
@@ -5969,7 +5976,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.PodTemplate",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_core_PodTemplateList": {
@@ -6296,7 +6304,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.ReplicationController",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_core_ReplicationControllerCondition": {
@@ -6494,7 +6503,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.ResourceQuota",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_core_ResourceQuotaList": {
@@ -6851,7 +6861,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.Secret",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_core_SecretEnvSource": {
@@ -7096,7 +7107,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.Service",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_core_ServiceAccount": {
@@ -7145,7 +7157,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.ServiceAccount",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_core_ServiceAccountList": {

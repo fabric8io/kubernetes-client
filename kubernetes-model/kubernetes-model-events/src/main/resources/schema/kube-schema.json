@@ -1036,7 +1036,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.events.Event",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_events_EventList": {

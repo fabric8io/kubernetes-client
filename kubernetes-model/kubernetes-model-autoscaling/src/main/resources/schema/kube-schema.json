@@ -980,7 +980,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscaler",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_autoscaling_v1_HorizontalPodAutoscalerList": {
@@ -1110,7 +1111,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.autoscaling.v1.Scale",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_autoscaling_v1_ScaleSpec": {
@@ -1256,7 +1258,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.autoscaling.v2beta1.HorizontalPodAutoscaler",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_autoscaling_v2beta1_HorizontalPodAutoscalerCondition": {
@@ -1762,7 +1765,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscaler",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_autoscaling_v2beta2_HorizontalPodAutoscalerBehavior": {

@@ -16,9 +16,9 @@
 
 package io.fabric8.kubernetes.client.utils;
 
+import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.model.annotation.ApiGroup;
 import io.fabric8.kubernetes.model.annotation.ApiVersion;
-import io.fabric8.kubernetes.model.annotation.Namespaced;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -372,11 +372,7 @@ public class Utils {
    * @return boolean value indicating it's namespaced or not
    */
   public static boolean isResourceNamespaced(Class kubernetesResourceType) {
-    Annotation namespacedAnnotation = getAnnotation(kubernetesResourceType, Namespaced.class);
-    if (namespacedAnnotation != null) {
-      return ((Namespaced) namespacedAnnotation).value();
-    }
-    return true;
+    return  Namespaced.class.isAssignableFrom(kubernetesResourceType);
   }
 
   public static String getAnnotationValue(Class kubernetesResourceType, Class annotationClass) {

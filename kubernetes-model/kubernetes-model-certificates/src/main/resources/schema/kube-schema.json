@@ -915,7 +915,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequest",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_certificates_CertificateSigningRequestCondition": {

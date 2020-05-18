@@ -26,8 +26,12 @@
   #if ($annotation.getClassRef().getName().equals("PackageSuffix"))
     #set ($packageSuffix = $annotation.getParameters().get("value"))
   #end
-  #if ($annotation.getClassRef().getName().equals("Namespaced"))
-    #set ($isResourceNamespacedFlag = $annotation.getParameters().get("value"))
+#end
+
+#set ($isResourceNamespacedFlag = false)
+#foreach ($impl in $model.getImplementsList())
+  #if ($impl.getFullyQualifiedName().equals("io.fabric8.kubernetes.api.model.Namespaced"))
+    #set ($isResourceNamespacedFlag = true)
   #end
 #end
 

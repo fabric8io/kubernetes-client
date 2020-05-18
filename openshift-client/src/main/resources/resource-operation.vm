@@ -25,6 +25,13 @@
   #end
 #end
 
+#set ($isResourceNamespacedFlag = false)
+#foreach ($impl in $model.getImplementsList())
+  #if ($impl.getFullyQualifiedName().equals("io.fabric8.kubernetes.api.model.Namespaced"))
+    #set ($isResourceNamespacedFlag = true)
+  #end
+#end
+
 
 package io.fabric8.openshift.client.dsl.internal;
 
@@ -64,5 +71,10 @@ public class ${model.name}OperationsImpl extends OpenShiftOperation<${model.name
 
   public ${model.name}OperationsImpl newInstance(OperationContext context) {
     return new ${model.name}OperationsImpl(context);
+  }
+  
+  @Override
+  public boolean isResourceNamespaced() {
+    return $isResourceNamespacedFlag;
   }
 }
