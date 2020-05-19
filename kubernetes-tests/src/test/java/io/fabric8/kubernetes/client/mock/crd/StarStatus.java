@@ -13,28 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.fabric8.kubernetes.client.mock.crd;
 
-package io.fabric8.openshift.client;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 
-import org.junit.Assert;
-import org.junit.jupiter.api.Test;
+public class StarStatus implements KubernetesResource {
+  private String location;
 
-class OpenShiftExtensionAdapterTest {
-
-  @Test
-  void testHasCustomConfig() {
-    OpenShiftConfig config = new OpenShiftConfigBuilder()
-      .withMasterUrl("http://host1:80")
-      .build();
-
-    Assert.assertFalse(OpenShiftExtensionAdapter.hasCustomOpenShiftUrl(config));
-
-    config = new OpenShiftConfigBuilder()
-      .withMasterUrl("http://host1:80")
-      .withOpenShiftUrl("http://host2:80/oapi/v1")
-      .build();
-
-    Assert.assertTrue(OpenShiftExtensionAdapter.hasCustomOpenShiftUrl(config));
+  public String getLocation() {
+    return location;
   }
 
+  public void setLocation(String location) {
+    this.location = location;
+  }
+
+  @Override
+  public String toString() {
+    return "StarStatus{" +
+      " location=" + location +
+      "}";
+  }
 }

@@ -29,19 +29,20 @@ import io.fabric8.kubernetes.client.mock.crd.PodSetSpec;
 import io.fabric8.kubernetes.client.mock.crd.PodSetStatus;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import okhttp3.mockwebserver.RecordedRequest;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.Collections;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import org.junit.Rule;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableRuleMigrationSupport
-public class TypedCustomResourceApiTest {
+class TypedCustomResourceApiTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
 
@@ -50,8 +51,8 @@ public class TypedCustomResourceApiTest {
   private CustomResourceDefinition podSetCrd;
   private CustomResourceDefinitionContext crdContext;
 
-  @Before
-  public void setupCrd() {
+  @BeforeEach
+  void setupCrd() {
     podSetCrd = new CustomResourceDefinitionBuilder()
       .withNewMetadata().withName("podsets.demo.k8s.io").endMetadata()
       .withNewSpec()
@@ -66,7 +67,7 @@ public class TypedCustomResourceApiTest {
   }
 
   @Test
-  public void create() {
+  void create() {
     server.expect().post().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/test/podsets").andReturn(200, getPodSet()).once();
 
     podSetClient = server.getClient().customResources(crdContext, PodSet.class, PodSetList.class, DoneablePodSet.class);
@@ -77,7 +78,7 @@ public class TypedCustomResourceApiTest {
   }
 
   @Test
-  public void list() {
+  void list() {
     PodSetList podSetList = new PodSetList();
     podSetList.setItems(Collections.singletonList(getPodSet()));
     server.expect().get().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/test/podsets").andReturn(200, podSetList).once();
@@ -90,7 +91,7 @@ public class TypedCustomResourceApiTest {
   }
 
   @Test
-  public void createOrReplace() {
+  void createOrReplace() {
     server.expect().get().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/test/podsets/example-podset").andReturn(200, getPodSet()).times(2);
     server.expect().put().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/test/podsets/example-podset").andReturn(200, getPodSet()).once();
 
@@ -102,7 +103,7 @@ public class TypedCustomResourceApiTest {
   }
 
   @Test
-  public void delete() {
+  void delete() {
     server.expect().delete().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/test/podsets/example-podset").andReturn(200, getPodSet()).once();
 
     podSetClient = server.getClient().customResources(crdContext, PodSet.class, PodSetList.class, DoneablePodSet.class);
@@ -112,7 +113,7 @@ public class TypedCustomResourceApiTest {
   }
 
   @Test
-  public void testCascadingDeletion() throws InterruptedException {
+  void testCascadingDeletion() throws InterruptedException {
     server.expect().delete().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/test/podsets/example-podset").andReturn(200, getPodSet()).once();
 
     podSetClient = server.getClient().customResources(crdContext, PodSet.class, PodSetList.class, DoneablePodSet.class);
@@ -126,7 +127,7 @@ public class TypedCustomResourceApiTest {
   }
 
   @Test
-  public void testPropagationPolicyDeletion() throws InterruptedException {
+  void testPropagationPolicyDeletion() throws InterruptedException {
     server.expect().delete().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/test/podsets/example-podset").andReturn(200, getPodSet()).once();
 
     podSetClient = server.getClient().customResources(crdContext, PodSet.class, PodSetList.class, DoneablePodSet.class);
@@ -140,7 +141,7 @@ public class TypedCustomResourceApiTest {
   }
 
   @Test
-  public void testStatusUpdation() throws InterruptedException {
+  void testStatusUpdation() throws InterruptedException {
     PodSet updatedPodSet = getPodSet();
     PodSetStatus podSetStatus = new PodSetStatus();
     podSetStatus.setAvailableReplicas(4);

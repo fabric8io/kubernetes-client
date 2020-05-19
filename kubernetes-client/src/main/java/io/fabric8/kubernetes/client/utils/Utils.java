@@ -372,7 +372,7 @@ public class Utils {
    * @return boolean value indicating it's namespaced or not
    */
   public static boolean isResourceNamespaced(Class kubernetesResourceType) {
-    return  Namespaced.class.isAssignableFrom(kubernetesResourceType);
+    return Namespaced.class.isAssignableFrom(kubernetesResourceType);
   }
 
   public static String getAnnotationValue(Class kubernetesResourceType, Class annotationClass) {

@@ -31,7 +31,6 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.jsonschema2pojo.AbstractAnnotator;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 

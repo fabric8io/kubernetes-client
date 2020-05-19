@@ -22,8 +22,8 @@ import io.fabric8.knative.serving.v1.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
@@ -33,13 +33,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableRuleMigrationSupport
-public class ServiceTest {
+class ServiceTest {
   @Rule
   public KnativeServer server = new KnativeServer();
 
   @Test
   @DisplayName("Should get a Knative Service")
-  public void testGet() {
+  void testGet() {
     Service service2 = new ServiceBuilder().withNewMetadata().withName("service2").endMetadata().build();
     server.expect().get().withPath("/apis/serving.knative.dev/v1/namespaces/ns2/services/service2")
       .andReturn(HttpURLConnection.HTTP_OK, service2)
@@ -53,7 +53,7 @@ public class ServiceTest {
 
   @Test
   @DisplayName("Should Create a Knative Service")
-  public void testCreate() {
+  void testCreate() {
     Service service = new ServiceBuilder().withNewMetadata().withName("service").endMetadata().build();
     server.expect().post().withPath("/apis/serving.knative.dev/v1/namespaces/ns2/services")
       .andReturn(HttpURLConnection.HTTP_OK, service)
@@ -65,7 +65,7 @@ public class ServiceTest {
 
   @Test
   @DisplayName("Should Delete a Knative Service")
-  public void testDelete() throws InterruptedException {
+  void testDelete() throws InterruptedException {
     server.expect().delete().withPath("/apis/serving.knative.dev/v1/namespaces/ns3/services/service3")
       .andReturn(HttpURLConnection.HTTP_OK, new ServiceBuilder().build())
       .once();
@@ -79,7 +79,7 @@ public class ServiceTest {
 
   @Test
   @DisplayName("Should delete with PropagationPolicy=Orphan")
-  public void testDeleteOrphan() throws InterruptedException {
+  void testDeleteOrphan() throws InterruptedException {
     server.expect().delete().withPath("/apis/serving.knative.dev/v1/namespaces/ns3/services/service3")
       .andReturn(HttpURLConnection.HTTP_OK, new ServiceBuilder().build())
       .once();

@@ -77,43 +77,43 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class UtilsTest {
+class UtilsTest {
 
   @Test
-  public void existingSysPropShouldReturnValue() {
+  void existingSysPropShouldReturnValue() {
     System.setProperty("something", "value");
     assertEquals("value", Utils.getSystemPropertyOrEnvVar("something"));
     System.getProperties().remove("something");
   }
 
   @Test
-  public void missingSysPropAndEnvVarShouldReturnNull() {
+  void missingSysPropAndEnvVarShouldReturnNull() {
     assertNull(Utils.getSystemPropertyOrEnvVar("doesn't exist"));
   }
 
   @Test
-  public void existingEnvVarShouldReturnValue() {
+  void existingEnvVarShouldReturnValue() {
     assertEquals("value", Utils.getSystemPropertyOrEnvVar("ENV_VAR_EXISTS"));
   }
 
   @Test
-  public void existingEnvVarShouldReturnValueFromConvertedSysPropName() {
+  void existingEnvVarShouldReturnValueFromConvertedSysPropName() {
     assertEquals("value", Utils.getSystemPropertyOrEnvVar("env.var.exists"));
   }
 
   @Test
-  public void existingEnvVarShouldReturnBooleanValueFromConvertedSysPropName() {
+  void existingEnvVarShouldReturnBooleanValueFromConvertedSysPropName() {
     assertEquals(true, Utils.getSystemPropertyOrEnvVar("env.var.exists.boolean", false));
   }
 
   @Test
-  public void missingEnvVarShouldReturnDefaultValue() {
+  void missingEnvVarShouldReturnDefaultValue() {
     assertEquals(true, Utils.getSystemPropertyOrEnvVar("DONT_EXIST", true));
   }
 
   @Test
   @DisplayName("interpolateString, String with no placeholders and empty parameters, should return input")
-  public void interpolateStringTest() {
+  void interpolateStringTest() {
     // Given
     final String input = "I don't have placeholders";
     // When
@@ -124,7 +124,7 @@ public class UtilsTest {
 
   @Test
   @DisplayName("interpolateString, String with no placeholders and null parameters, should return input")
-  public void interpolateStringNullParametersTest() {
+  void interpolateStringNullParametersTest() {
     // Given
     final String input = "I don't have placeholders";
     // When
@@ -135,7 +135,7 @@ public class UtilsTest {
 
   @Test
   @DisplayName("interpolateString, String with no placeholders and null parameter values, should return input")
-  public void interpolateStringNullParameterValuesTest() {
+  void interpolateStringNullParameterValuesTest() {
     // Given
     final String input = "I don't have placeholders";
     // When
@@ -146,7 +146,7 @@ public class UtilsTest {
 
   @Test
   @DisplayName("interpolateString, String with mixed placeholders and parameters, should return interpolated input")
-  public void interpolateStringWithParametersTest() {
+  void interpolateStringWithParametersTest() {
     // Given
     final String input = "This is a \"${SINGLE_CURLY_BRACE}\" and the following is code ${NOT_REPLACED}: \"${{RENDER_UNQUOTED}}\" ${{ALREADY_UNQUOTED}}";
     final Map<String, String> parameters = new HashMap<>();
@@ -163,7 +163,7 @@ public class UtilsTest {
   }
 
   @Test
-  public void testGetPluralFromKind() {
+  void testGetPluralFromKind() {
     // Given
     Map<String, Class> pluralToKubernetesResourceMap = new HashMap<>();
     pluralToKubernetesResourceMap.put("bindings", Binding.class);
@@ -223,7 +223,7 @@ public class UtilsTest {
 
   @Test
   @DisplayName("Should test whether resource is namespaced or not")
-  public void testWhetherNamespacedOrNot() {
+  void testWhetherNamespacedOrNot() {
     assertTrue(Utils.isResourceNamespaced(Binding.class));
     assertFalse(Utils.isResourceNamespaced(ComponentStatus.class));
     assertTrue(Utils.isResourceNamespaced(ConfigMap.class));
@@ -277,7 +277,7 @@ public class UtilsTest {
 
   @Test
   @DisplayName("isNotNullOrEmpty, null, should return false")
-  public void isNotNullOrEmpty() {
+  void isNotNullOrEmpty() {
     // When
     final boolean result1 = Utils.isNotNullOrEmpty((Map)null);
     final boolean result2 = Utils.isNotNullOrEmpty((String)null);
@@ -291,7 +291,7 @@ public class UtilsTest {
 
   @Test
   @DisplayName("isNotNull, null, should return false")
-  public void isNotNull() {
+  void isNotNull() {
     // Given
     String[] emptyArray = new String[] {};
 
@@ -304,7 +304,7 @@ public class UtilsTest {
 
   @Test
   @DisplayName("isNotNullOrEmpty, some null values, should return true")
-  public void isNotNullOrEmptySomeAreNullTest() {
+  void isNotNullOrEmptySomeAreNullTest() {
     // Given
     String[] testSample = new String[] {"notNullObj", null, null};
 
@@ -317,7 +317,7 @@ public class UtilsTest {
 
   @Test
   @DisplayName("isNotNull, some null values, should return true")
-  public void isNotNullSomeAreNullTest() {
+  void isNotNullSomeAreNullTest() {
     // Given
     String[] testSample = new String[] {"notNullObj", null, null};
 
@@ -330,7 +330,7 @@ public class UtilsTest {
 
   @Test
   @DisplayName("isNotNull, no null values, should return true")
-  public void isNotNullNoneAreNullTest() {
+  void isNotNullNoneAreNullTest() {
     String[] testSample = new String[] {"Not null", "Not null either"};
 
     // When

@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.internal.HasMetadataComparator;
 import io.fabric8.kubernetes.model.annotation.ApiGroup;
@@ -67,7 +68,7 @@ import java.util.Map;
 @VelocityTransformations({
     @VelocityTransformation(value = "/manifest.vm", outputPath = "openshift.properties", gather = true)
 })
-public class Template implements HasMetadata {
+public class Template implements HasMetadata, Namespaced {
 
     /**
      * (Required)

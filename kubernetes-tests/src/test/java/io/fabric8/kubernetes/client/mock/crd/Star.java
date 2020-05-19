@@ -13,35 +13,48 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.examples.crds;
+package io.fabric8.kubernetes.client.mock.crd;
 
-import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.CustomResource;
 
-/**
- */
-public class Dummy extends CustomResource implements Namespaced {
-  private DummySpec spec;
-
+public class Star extends CustomResource {
+  private StarSpec spec;
+  private StarStatus status;
 
   @Override
-  public String toString() {
-    return "Dummy{" +
-        "apiVersion='" + getApiVersion() + '\'' +
-        ", metadata=" + getMetadata() +
-        ", spec=" + spec +
-        '}';
+  public ObjectMeta getMetadata() {
+    return super.getMetadata();
   }
 
-  public DummySpec getSpec() {
+  public StarSpec getSpec() {
     return spec;
   }
 
-  public void setSpec(DummySpec spec) {
+  public void setSpec(StarSpec spec) {
     this.spec = spec;
   }
 
+  public StarStatus getStatus() {
+    return status;
+  }
+
+  public void setStatus(StarStatus status) {
+    this.status = status;
+  }
+
   @Override
-  public ObjectMeta getMetadata() { return super.getMetadata(); }
+  public String getApiVersion() {
+    return "example.crd.com/v1alpha1";
+  }
+
+  @Override
+  public String toString() {
+    return "Star{" +
+      "apiVersion='" + getApiVersion() + "'" +
+      ", metadata=" + getMetadata() +
+      ", spec=" + spec +
+      ", status=" + status +
+      "}";
+  }
 }

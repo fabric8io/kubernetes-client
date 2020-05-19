@@ -17,7 +17,7 @@ package io.fabric8.kubernetes.client.informers.cache;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
@@ -25,9 +25,9 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
-public class DeltaFIFOTest {
+class DeltaFIFOTest {
   @Test
-  public void testBasic() throws InterruptedException {
+  void testBasic() throws InterruptedException {
     Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>> receivingDeltas = new LinkedList<>();
     Pod foo1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("default").endMetadata().build();
     Cache<Pod> cache = new Cache<>();
@@ -89,7 +89,7 @@ public class DeltaFIFOTest {
   }
 
   @Test
-  public void testDeduplication() {
+  void testDeduplication() {
     Pod foo1 = new PodBuilder().withNewMetadata().withName("foo1").withNamespace("default").endMetadata().build();
     Cache<Pod> cache = new Cache<>();
     DeltaFIFO<Pod> deltaFIFO = new DeltaFIFO<>(Cache::deletionHandlingMetaNamespaceKeyFunc, cache);
@@ -119,7 +119,7 @@ public class DeltaFIFOTest {
   }
 
   @Test
-  public void testResync() {
+  void testResync() {
     Pod foo1 = new PodBuilder().withNewMetadata().withName("foo1").withNamespace("default").endMetadata().build();
     Cache cache = new Cache();
     DeltaFIFO<Pod> deltaFIFO = new DeltaFIFO<>(Cache::deletionHandlingMetaNamespaceKeyFunc, cache);
@@ -135,7 +135,7 @@ public class DeltaFIFOTest {
   }
 
   @Test
-  public void testReplaceWithDeleteDeltaIn() throws InterruptedException {
+  void testReplaceWithDeleteDeltaIn() throws InterruptedException {
     Pod oldPod = new PodBuilder().withNewMetadata().withNamespace("default").withName("foo1").endMetadata().build();
     Pod newPod = new PodBuilder().withNewMetadata().withNamespace("default").withName("foo2").endMetadata().build();
 

@@ -281,7 +281,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   @Override
   public EditReplacePatchDeletable<T, T, D, Boolean> cascading(boolean cascading) {
-    return newInstance(context.withCascading(cascading));
+    return newInstance(context.withCascading(cascading).withPropagationPolicy(null));
   }
 
   @Override

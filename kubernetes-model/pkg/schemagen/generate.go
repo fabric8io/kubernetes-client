@@ -40,8 +40,8 @@ type schemaGenerator struct {
 type CrdScope int32
 
 const (
-	Namespaced CrdScope = 0
-	Cluster    CrdScope = 1
+	Namespaced CrdScope = iota
+	Cluster    CrdScope = iota
 )
 
 func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, customTypeNames map[string]string, moduleName string) (*JSONSchema, error) {
@@ -569,6 +569,7 @@ func (g *schemaGenerator) crdScope(t reflect.Type) CrdScope {
 		"PriorityClass",
 		"StorageClass":
 		return Cluster
+	default:
+		return Namespaced
 	}
-	return Namespaced
 }

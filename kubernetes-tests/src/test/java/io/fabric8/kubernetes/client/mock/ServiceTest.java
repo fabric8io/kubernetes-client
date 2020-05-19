@@ -15,37 +15,32 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import okhttp3.mockwebserver.RecordedRequest;
-import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.Collections;
-import java.util.List;
 
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 @EnableRuleMigrationSupport
-public class ServiceTest {
+class ServiceTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
 
-  public Service service;
+  Service service;
 
-  @Before
-  public void prepareService() {
+  @BeforeEach
+  void prepareService() {
     service = new ServiceBuilder()
       .withNewMetadata()
       .withName("httpbin")
@@ -63,7 +58,7 @@ public class ServiceTest {
   }
 
   @Test
-  public void testLoad() {
+  void testLoad() {
     KubernetesClient client = server.getClient();
     Service svc = client.services().load(getClass().getResourceAsStream("/test-service.yml")).get();
     assertNotNull(svc);
@@ -71,7 +66,7 @@ public class ServiceTest {
   }
 
   @Test
-  public void testCreate() {
+  void testCreate() {
     server.expect().post()
       .withPath("/api/v1/namespaces/test/services")
       .andReturn(200, service)
@@ -84,7 +79,7 @@ public class ServiceTest {
   }
 
   @Test
-  public void testReplace() throws InterruptedException {
+  void testReplace() throws InterruptedException {
     Service serviceFromServer = new ServiceBuilder(service)
       .editOrNewSpec().withClusterIP("10.96.129.1").endSpec().build();
 
@@ -110,7 +105,7 @@ public class ServiceTest {
   }
 
   @Test
-  public void testDelete() {
+  void testDelete() {
     server.expect().delete()
       .withPath("/api/v1/namespaces/test/services/httpbin")
       .andReturn(200, service)
@@ -122,7 +117,7 @@ public class ServiceTest {
   }
 
   @Test
-  public void testUpdate() {
+  void testUpdate() {
     Service serviceFromServer = new ServiceBuilder(service)
       .editOrNewMetadata().addToLabels("foo", "bar").endMetadata()
       .editOrNewSpec().withClusterIP("10.96.129.1").endSpec().build();
