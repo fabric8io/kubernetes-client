@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.mock;
 
 import static org.junit.Assert.assertTrue;
 
+import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.Status;
@@ -57,6 +58,7 @@ public class WatchTest {
           "401: The event in requested index is outdated and cleared (the requested history has been cleared [3/1]) [2]")
       .build();
   static final WatchEvent outdatedEvent = new WatchEventBuilder().withStatusObject(outdatedStatus).build();
+  static final Long EVENT_WAIT_PERIOD = 10L;
 
   @Test
   public void testDeletedAndOutdated() throws InterruptedException {
@@ -66,7 +68,7 @@ public class WatchTest {
     // DELETED event, then history outdated
     server.expect()
         .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true")
-        .andUpgradeToWebSocket().open().waitFor(2000).andEmit(new WatchEvent(pod1, "DELETED")).waitFor(2000)
+        .andUpgradeToWebSocket().open().waitFor(EVENT_WAIT_PERIOD).andEmit(new WatchEvent(pod1, "DELETED")).waitFor(EVENT_WAIT_PERIOD)
         .andEmit(outdatedEvent).done().once();
 
     final CountDownLatch deleteLatch = new CountDownLatch(1);
@@ -121,6 +123,31 @@ public class WatchTest {
   }
 
   @Test
+  public void testWithTimeoutSeconds() throws InterruptedException {
+    // Given
+    server.expect()
+      .withPath("/api/v1/namespaces/test/pods?timeoutSeconds=30&watch=true")
+      .andUpgradeToWebSocket().open().waitFor(EVENT_WAIT_PERIOD).andEmit(new WatchEvent(pod1, "DELETED")).waitFor(EVENT_WAIT_PERIOD)
+      .andEmit(outdatedEvent).done().once();
+
+    KubernetesClient client = server.getClient();
+
+    // When
+    final CountDownLatch eventRecievedLatch = new CountDownLatch(1);
+    Watch watch = client.pods().watch(new ListOptionsBuilder().withTimeoutSeconds(30L).build(), new Watcher<Pod>() {
+      @Override
+      public void eventReceived(Action action, Pod resource) { eventRecievedLatch.countDown(); }
+
+      @Override
+      public void onClose(KubernetesClientException cause) { }
+    });
+
+    // Then
+    assertTrue(eventRecievedLatch.await(3, TimeUnit.SECONDS));
+    watch.close();
+  }
+
+  @Test
   public void testHttpErrorReconnect() throws InterruptedException {
     logger.info("testHttpErrorReconnect");
     String path = "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true";
@@ -158,7 +185,7 @@ public class WatchTest {
 
     server.expect()
       .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true")
-      .andUpgradeToWebSocket().open().waitFor(2000).andEmit(new WatchEvent(pod1, "MODIFIED")).waitFor(2000)
+      .andUpgradeToWebSocket().open().waitFor(EVENT_WAIT_PERIOD).andEmit(new WatchEvent(pod1, "MODIFIED")).waitFor(EVENT_WAIT_PERIOD)
       .andEmit(new WatchEvent(pod1, "MODIFIED")).done().once();
 
     Watch watch = client.pods().withName("pod1").withResourceVersion("1").watch(new Watcher<Pod>() {
@@ -197,8 +224,8 @@ public class WatchTest {
     server.expect()
       .withPath(path)
       .andUpgradeToWebSocket().open()
-      .waitFor(2000).andEmit(new WatchEvent(pod1initial, "MODIFIED"))
-      .waitFor(2000).andEmit(new WatchEvent(pod1update, "MODIFIED"))
+      .waitFor(EVENT_WAIT_PERIOD).andEmit(new WatchEvent(pod1initial, "MODIFIED"))
+      .waitFor(EVENT_WAIT_PERIOD).andEmit(new WatchEvent(pod1update, "MODIFIED"))
       .done().once();
 
     final String reconnectPath = "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=10&watch=true";
@@ -206,7 +233,7 @@ public class WatchTest {
     server.expect()
       .withPath(reconnectPath)
       .andUpgradeToWebSocket().open()
-      .waitFor(2000).andEmit(new WatchEvent(pod1update, "MODIFIED"))
+      .waitFor(EVENT_WAIT_PERIOD).andEmit(new WatchEvent(pod1update, "MODIFIED"))
       .done().once();
 
 

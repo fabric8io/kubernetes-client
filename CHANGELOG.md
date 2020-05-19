@@ -17,6 +17,7 @@
 #### New Features
 * Added DSL support for `admissionregistration.k8s.io/v1beta1` resources
 * Add support for Namespaced SharedInformers, fixed probelms with OperationContext argument
+* Fix #1821: ListOptions now supported when watching a Kubernetes Resource
 
 ### 4.10.1 (2020-05-06)
 #### Bugs

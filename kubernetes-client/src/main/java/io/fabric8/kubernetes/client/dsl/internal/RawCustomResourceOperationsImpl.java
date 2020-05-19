@@ -18,12 +18,15 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.DeleteOptions;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.api.model.ListOptions;
+import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
+import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -551,7 +554,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of network error
    */
   public void watch(String namespace, Watcher<String> watcher) throws IOException {
-    watch(namespace, null, null, null, watcher);
+    watch(namespace, null, null, new ListOptionsBuilder().build(), watcher);
   }
 
   /**
@@ -564,7 +567,20 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of network error
    */
   public void watch(String namespace, String resourceVersion, Watcher<String> watcher) throws IOException {
-    watch(namespace, null, null, resourceVersion, watcher);
+    watch(namespace, null, null, new ListOptionsBuilder().withResourceVersion(resourceVersion).build(), watcher);
+  }
+
+  /**
+   * Watch a custom resource in a specific namespace with some resourceVersion. Here
+   * watcher is provided from string type only. User has to deserialize object itself.
+   *
+   * @param namespace namespace to watch
+   * @param options {@link ListOptions} list options for watching
+   * @param watcher watcher object which reports updates
+   * @throws IOException in case of network error
+   */
+  public void watch(String namespace, ListOptions options, Watcher<String> watcher) throws IOException {
+    watch(namespace, null, null, options, watcher);
   }
 
   /**
@@ -575,7 +591,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of network error
    */
   public void watch(Watcher<String> watcher) throws IOException {
-    watch(null, null, null, null, watcher);
+    watch(null, null, null, new ListOptionsBuilder().build(), watcher);
   }
 
   /**
@@ -588,24 +604,35 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @param namespace namespace to watch (optional
    * @param name name of custom resource (optional)
    * @param labels HashMap containing labels (optional)
-   * @param resourceVersion resource version since when to watch (optional)
+   * @param resourceVersion resource version to start watch from
+   * @param watcher watcher object which reports events
+   * @throws IOException in case of network error
+   */
+  public Watch watch(String namespace, String name, Map<String, String> labels, String resourceVersion, Watcher<String> watcher) throws IOException {
+    return watch(namespace, name, labels, new ListOptionsBuilder().withResourceVersion(resourceVersion).build(), watcher);
+  }
+
+  /**
+   * Watch custom resources in the parameters specified.
+   *
+   * Most of the parameters except watcher are optional, they would be
+   * skipped if passed null. Here watcher is provided for string type
+   * only. User has to deserialize the object itself.
+   *
+   * @param namespace namespace to watch (optional
+   * @param name name of custom resource (optional)
+   * @param labels HashMap containing labels (optional)
+   * @param options {@link ListOptions} list options for watch
    * @param watcher watcher object which reports events
    * @return watch object for watching resource
    * @throws IOException in case of network error
    */
-  public Watch watch(String namespace, String name, Map<String, String> labels, String resourceVersion, Watcher<String> watcher) throws IOException {
-    HttpUrl watchUrl = fetchWatchUrl(namespace, name, labels, resourceVersion);
-
-    String origin = watchUrl.url().getProtocol() + "://" + watchUrl.url().getHost();
-    if (watchUrl.url().getPort() != -1) {
-      origin += ":" + watchUrl.url().getPort();
+  public Watch watch(String namespace, String name, Map<String, String> labels, ListOptions options, Watcher<String> watcher) throws IOException {
+    if (options == null) {
+      options = new ListOptions();
     }
-
-    Request request = new Request.Builder()
-      .get()
-      .url(watchUrl)
-      .addHeader("Origin", origin)
-      .build();
+    options.setWatch(true);
+    HttpUrl.Builder watchUrlBuilder = fetchWatchUrl(namespace, name, labels, options);
 
     OkHttpClient.Builder clonedClientBuilder = client.newBuilder();
       clonedClientBuilder.readTimeout(getConfig() != null ?
@@ -618,7 +645,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
     RawWatchConnectionManager watch = null;
     try {
       watch = new RawWatchConnectionManager(
-        clonedOkHttpClient, request, resourceVersion, objectMapper, watcher,
+        clonedOkHttpClient, watchUrlBuilder, options, objectMapper, watcher,
         getConfig() != null ? getConfig().getWatchReconnectLimit() : -1,
         getConfig() != null ? getConfig().getWatchReconnectInterval() : 1000,
         5);
@@ -645,7 +672,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
       // HTTP GET. This is meant to handle cases like kubectl local proxy which does not support
       // websockets. Issue: https://github.com/kubernetes/kubernetes/issues/25126
       return new RawWatchConnectionManager(
-        clonedOkHttpClient, request, resourceVersion, objectMapper, watcher,
+        clonedOkHttpClient, watchUrlBuilder, options, objectMapper, watcher,
         getConfig() != null ? getConfig().getWatchReconnectLimit() : -1,
         getConfig() != null ? getConfig().getWatchReconnectInterval() : 1000,
         5);
@@ -692,7 +719,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
     return retVal;
   }
 
-  protected HttpUrl fetchWatchUrl(String namespace, String name, Map<String, String> labels, String resourceVersion) throws MalformedURLException {
+  protected HttpUrl.Builder fetchWatchUrl(String namespace, String name, Map<String, String> labels, ListOptions options) throws MalformedURLException {
     String resourceUrl = fetchUrl(namespace, labels);
     if (resourceUrl.endsWith("/")) {
       resourceUrl = resourceUrl.substring(0, resourceUrl.length() - 1);
@@ -704,12 +731,8 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
       httpUrlBuilder.addQueryParameter("fieldSelector", "metadata.name=" + name);
     }
 
-    if (resourceVersion != null) {
-      httpUrlBuilder.addQueryParameter("resourceVersion", resourceVersion);
-    }
-
-    httpUrlBuilder.addQueryParameter("watch", "true");
-    return httpUrlBuilder.build();
+    HttpClientUtils.appendListOptionParams(httpUrlBuilder, options);
+    return httpUrlBuilder;
   }
 
   private String fetchUrl(String namespace, Map<String, String> labels) {

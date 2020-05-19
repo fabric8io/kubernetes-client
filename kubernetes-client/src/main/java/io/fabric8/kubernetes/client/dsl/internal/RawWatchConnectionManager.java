@@ -16,12 +16,14 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.Utils;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -55,7 +57,7 @@ public class RawWatchConnectionManager implements Watch {
   private static final Logger logger = LoggerFactory.getLogger(RawWatchConnectionManager.class);
   private ObjectMapper objectMapper;
   private Watcher<String> watcher;
-  private Request watchRequest;
+  private HttpUrl.Builder watchUrlBuilder;
 
   private final AtomicBoolean forceClosed = new AtomicBoolean();
   private final AtomicReference<String> resourceVersion;
@@ -75,14 +77,14 @@ public class RawWatchConnectionManager implements Watch {
   private WebSocket webSocket;
   private OkHttpClient clonedClient;
 
-  public RawWatchConnectionManager(OkHttpClient okHttpClient, Request watchRequest, String resourceVersion, ObjectMapper objectMapper, final Watcher<String> watcher, int reconnectLimit, int reconnectInterval, int maxIntervalExponent)  {
+  public RawWatchConnectionManager(OkHttpClient okHttpClient, HttpUrl.Builder watchUrlBuilder, ListOptions listOptions, ObjectMapper objectMapper, final Watcher<String> watcher, int reconnectLimit, int reconnectInterval, int maxIntervalExponent)  {
     this.clonedClient = okHttpClient;
-    this.watchRequest = watchRequest;
+    this.watchUrlBuilder = watchUrlBuilder;
     this.objectMapper = objectMapper;
     this.watcher = watcher;
     this.reconnectLimit = reconnectLimit;
     this.reconnectInterval = reconnectInterval;
-    this.resourceVersion = new AtomicReference<>(resourceVersion);
+    this.resourceVersion = new AtomicReference<>(listOptions.getResourceVersion());
     this.maxIntervalExponent = maxIntervalExponent;
     executor = Executors.newSingleThreadScheduledExecutor(r -> {
       Thread ret = new Thread(r, "Executor for Watch " + System.identityHashCode(RawWatchConnectionManager.this));
@@ -94,7 +96,22 @@ public class RawWatchConnectionManager implements Watch {
   }
 
   private void runWatch() {
-    webSocket = clonedClient.newWebSocket(watchRequest, new WebSocketListener() {
+    if (resourceVersion.get() != null) {
+      watchUrlBuilder.removeAllQueryParameters("resourceVersion");
+      watchUrlBuilder.addQueryParameter("resourceVersion", resourceVersion.get());
+    }
+    HttpUrl watchUrl = watchUrlBuilder.build();
+    String origin = watchUrl.url().getProtocol() + "://" + watchUrl.url().getHost();
+    if (watchUrl.url().getPort() != -1) {
+      origin += ":" + watchUrl.url().getPort();
+    }
+
+    Request request = new Request.Builder()
+      .get()
+      .url(watchUrl)
+      .addHeader("Origin", origin)
+      .build();
+    webSocket = clonedClient.newWebSocket(request, new WebSocketListener() {
       @Override
       public void onOpen(WebSocket webSocket, Response response) {
         logger.info("Websocket opened");

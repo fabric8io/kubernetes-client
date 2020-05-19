@@ -33,6 +33,7 @@ This document contains common usages of different resources using Fabric8 Kubern
   * [SharedInformers](#sharedinformers)
   * [List Options](#list-options)
   * [Delete Options](#delete-options)
+  * [Watch Options](#watch-options)
 
 * [OpenShift Client DSL Usage](#openshift-client-dsl-usage)  
   * [Initializing OpenShift Client](#initializing-openshift-client)
@@ -1817,6 +1818,42 @@ dummyInformer.addEventHandler(new ResourceEventHandler<Dummy>() {
 });
 
 ```
+- Create namespaced `SharedIndexInformer` (informers specific to a particular `Namespace`):
+```
+SharedInformerFactory sharedInformerFactory = client.informers();
+SharedIndexInformer<Pod> podInformer = sharedInformerFactory.sharedIndexInformerFor(
+        Pod.class,
+        PodList.class,
+        new OperationContext().withNamespace("default"),
+        30 * 1000L);
+logger.info("Informer factory initialized.");
+
+podInformer.addEventHandler(new ResourceEventHandler<Pod>() {
+    @Override
+    public void onAdd(Pod pod) {
+        logger.info("Pod " + pod.getMetadata().getName() + " got added");
+    }
+
+    @Override
+    public void onUpdate(Pod oldPod, Pod newPod) {
+        logger.info("Pod " + oldPod.getMetadata().getName() + " got updated");
+    }
+
+    @Override
+    public void onDelete(Pod pod, boolean deletedFinalStateUnknown) {
+        logger.info("Pod " + pod.getMetadata().getName() + " got deleted");
+    }
+});
+```
+- Start all registered informers:
+```
+sharedInformerFactory.startAllRegisteredInformers();
+```
+- Stop all registered informers:
+```
+sharedInformerFactory.stopAllRegisteredInformers();
+```
+
 ### List Options
 There are various options provided by Kubernetes Client API when it comes to listing resources. Here are some of the common examples provided:
 - List with pagination, comes with limit and continue parameters. The continue option should be set when retrieving more results from the server. Since this value is server defined, clients may only use the continue value from a previous query result with identical query parameters (except for the value of continue) and the server may reject a continue value it does not recognize.
@@ -1865,6 +1902,13 @@ PodList podList = client.pods().inNamespace("default").withoutField("foo", "bar"
 ```
 PodList podList = client.pods().inNamespace("default").withoutFields(Collections.singletonMap("foo", "bar")).list();
 ```
+- List resources with `ListOptions`:
+```
+PodList podList = client.pods().inNamespace("default").list(new ListOptionsBuilder()
+  .withLimit(1L)
+  .withContinue(null)
+  .build());
+```
 
 ### Delete Options
 Kubernetes Client also provides way to delete dependents of some Kubernetes resource. Here are some examples:
@@ -1875,6 +1919,86 @@ Boolean isDeleted = client.apps().deployments().inNamespace("default").withName(
 - Providing `propagationPolicy(..)` to specify how deletion should be performed:
 ```
 Boolean isDeleted = client.apps().deployments().inNamespace("default").withName("nginx-deploy").withPropagationPolicy("Foreground").delete();
+```
+
+### Watch Options
+Kubernetes Client provides namely three different ways of using `Watch`:
+- Plain `Watch` without any arguments:
+```
+client.pods().inNamespace(namespace).watch(new Watcher<Pod>() {
+    @Override
+    public void eventReceived(Action action, Pod pod) {
+        logger.log(Level.INFO, action.name() + " " + pod.getMetadata().getName());
+        switch (action.name()) {
+            case "ADDED":
+                logger.log(Level.INFO, pod.getMetadata().getName() + "got added");
+                break;
+            case "DELETED":
+                logger.log(Level.INFO, pod.getMetadata().getName() + "got deleted");
+                break;
+            case "MODIFIED":
+                logger.log(Level.INFO, pod.getMetadata().getName() + "got modified");
+                break;
+            default:
+                logger.log(Level.SEVERE, "Unrecognized event: " + action.name());
+        }
+    }
+
+    @Override
+    public void onClose(KubernetesClientException e) {
+        logger.log(Level.INFO, "Closed");
+        isWatchClosed.countDown();
+    }
+});
+
+// Wait till watch gets closed
+isWatchClosed.await();
+```
+- _Deprecated_ : Watching with `resourceVersion` provided:
+```
+String resourceVersion = "20012";
+client.pods().inNamespace(namespace).watch(resourceVersion, new Watcher<Pod>() {
+    @Override
+    public void eventReceived(Action action, Pod pod) {
+        logger.log(Level.INFO, action.name() + " " + pod.getMetadata().getName());
+        switch (action.name()) {
+            case "ADDED":
+                logger.log(Level.INFO, pod.getMetadata().getName() + "got added");
+                break;
+            case "DELETED":
+                logger.log(Level.INFO, pod.getMetadata().getName() + "got deleted");
+                break;
+            case "MODIFIED":
+                logger.log(Level.INFO, pod.getMetadata().getName() + "got modified");
+                break;
+            default:
+                logger.log(Level.SEVERE, "Unrecognized event: " + action.name());
+        }
+    }
+
+    @Override
+    public void onClose(KubernetesClientException e) {
+        logger.log(Level.INFO, "Closed");
+        isWatchClosed.countDown();
+    }
+});
+
+// Wait till watch gets closed
+isWatchClosed.await();
+} catch (InterruptedException interruptedException) {
+logger.log(Level.INFO, "Thread Interrupted!");
+Thread.currentThread().interrupt();
+}
+```
+- Watching with `ListOptions` object:
+```
+client.pods().watch(new ListOptionsBuilder().withTimeoutSeconds(30L).build(), new Watcher<Pod>() {
+  @Override
+  public void eventReceived(Action action, Pod resource) { }
+
+  @Override
+  public void onClose(KubernetesClientException cause) { }
+});
 ```
 
 ### OpenShift Client DSL Usage

@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.utils.Utils;
 import java.util.function.Predicate;
 
@@ -232,7 +233,14 @@ Waitable<HasMetadata, HasMetadata>,
   public Watch watch(String resourceVersion, Watcher<HasMetadata> watcher) {
     HasMetadata meta = acceptVisitors(asHasMetadata(item), visitors);
     ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
-    return h.watch(client, config, meta.getMetadata().getNamespace(), meta, watcher);
+    return h.watch(client, config, meta.getMetadata().getNamespace(), meta, resourceVersion, watcher);
+  }
+
+  @Override
+  public Watch watch(ListOptions options, Watcher<HasMetadata> watcher) {
+    HasMetadata meta = acceptVisitors(asHasMetadata(item), visitors);
+    ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
+    return h.watch(client, config, meta.getMetadata().getNamespace(), meta, options, watcher);
   }
 
   @Override
