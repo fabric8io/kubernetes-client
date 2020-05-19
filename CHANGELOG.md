@@ -52,6 +52,16 @@
 * Fix #2002: DSL Support for PodTemplate 
 * Fix #2015: Add Support for v1, v2beta1, and v2beta2 apiVersions in case of HorizontalPodAutoscaler
 
+### 4.9.2 (2020-05-19)
+#### Bugs
+* Fix #2212: JDK8 always uses http/1.1 protocol (Prevent OkHttp from wrongly enabling http/2)
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
 ### 4.9.1 (2020-04-17)
 #### Bugs
 * Fix #2071: Fixed pvc example issue #2071

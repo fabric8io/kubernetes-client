@@ -1,4 +1,3 @@
-
 # Kubernetes & OpenShift Java Client [![Join the chat at https://gitter.im/fabric8io/kubernetes-client](https://badges.gitter.im/fabric8io/kubernetes-client.svg)](https://gitter.im/fabric8io/kubernetes-client?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 This client provides access to the full [Kubernetes](http://kubernetes.io/) &
 [OpenShift](http://openshift.org/) REST APIs via a fluent DSL.
@@ -384,6 +383,7 @@ Then you can use the server like:
 | kubernetes-client 4.8.0   | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 |
 | kubernetes-client 4.9.0   | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 |
 | kubernetes-client 4.9.1   | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 |
+| kubernetes-client 4.9.2   | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 |
 | kubernetes-client 4.10.0  | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 |
 | kubernetes-client 4.10.1  | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 |
 
@@ -421,6 +421,7 @@ Then you can use the server like:
 | openshift-client 4.8.0    | -                | -                 | ✓                 | ✓                | ✓                | ✓                | ✓              |
 | openshift-client 4.9.0    | -                | -                 | ✓                 | ✓                | ✓                | ✓                | ✓              |
 | openshift-client 4.9.1    | -                | -                 | ✓                 | ✓                | ✓                | ✓                | ✓              |
+| openshift-client 4.9.2    | -                | -                 | ✓                 | ✓                | ✓                | ✓                | ✓              |
 | openshift-client 4.10.0   | -                | -                 | ✓                 | ✓                | ✓                | ✓                | ✓              |
 | openshift-client 4.10.1   | -                | -                 | ✓                 | ✓                | ✓                | ✓                | ✓              |
 
