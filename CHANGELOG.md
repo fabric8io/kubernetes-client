@@ -1,5 +1,15 @@
 ## CHANGELOG
 
+### 4.9.2 (2020-05-19)
+#### Bugs
+* Fix #2212: JDK8 always uses http/1.1 protocol (Prevent OkHttp from wrongly enabling http/2)
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
 ### 4.9.1 (2020-04-17)
 #### Bugs
 * Fix #2071: Fixed pvc example issue #2071
@@ -18,7 +28,7 @@
 * Fix #2019: Added CustomResourceCrudTest
 * Fix #2054: JobExample doesn't work
 * Fix #2082:  Added filter node metrics via labels
-* Generated *List classes for Knative implement proper KubernetesResourceList interface
+* Generated List classes for Knative implement proper KubernetesResourceList interface
 * Modify the dependency management of the generator of kubernetes-model to golang module
 
 #### Dependency Upgrade
