@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
-import io.fabric8.kubernetes.client.dsl.WatchingWaitableWithBackoff;
 import io.fabric8.kubernetes.client.utils.Utils;
 import java.util.function.Predicate;
 
@@ -59,7 +58,7 @@ import io.fabric8.kubernetes.client.utils.ResourceCompare;
 import okhttp3.OkHttpClient;
 
 public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl extends OperationSupport implements NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean>,
-  WatchingWaitableWithBackoff<HasMetadata, HasMetadata>,
+  Waitable<HasMetadata, HasMetadata>,
   Readiable {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl.class);
@@ -227,7 +226,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
   }
 
   @Override
-  public WatchingWaitableWithBackoff<HasMetadata, HasMetadata> withWaitRetryBackoff(long initialBackoff, TimeUnit backoffUnit, double backoffMultiplier) {
+  public Waitable<HasMetadata, HasMetadata> withWaitRetryBackoff(long initialBackoff, TimeUnit backoffUnit, double backoffMultiplier) {
     long watchRetryInitialBackoffMillis = backoffUnit.toMillis(initialBackoff);
     return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, backoffMultiplier);
   }
