@@ -17,7 +17,7 @@ package io.fabric8.kubernetes.client.informers.cache;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,11 +27,11 @@ import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
 
-public class CacheTest {
+class CacheTest {
   private static Cache cache = new Cache("mock", CacheTest::mockIndexFunction, CacheTest::mockKeyFunction);
 
   @Test
-  public void testCacheIndex() {
+  void testCacheIndex() {
     Pod testPodObj = new PodBuilder().withNewMetadata().withName("test-pod").endMetadata().build();
 
     cache.add(testPodObj);
@@ -52,7 +52,7 @@ public class CacheTest {
   }
 
   @Test
-  public void testCacheStore() {
+  void testCacheStore() {
     Pod testPodObj = new PodBuilder().withNewMetadata().withName("test-pod2").endMetadata().build();
     String index = mockIndexFunction(testPodObj).get(0);
 
@@ -74,7 +74,7 @@ public class CacheTest {
   }
 
   @Test
-  public void testDefaultNamespaceIndex() {
+  void testDefaultNamespaceIndex() {
     Pod testPodObj = new PodBuilder().withNewMetadata().withName("test-pod3").withNamespace("default").endMetadata().build();
 
     cache.add(testPodObj);
@@ -83,7 +83,7 @@ public class CacheTest {
   }
 
   @Test
-  public void testDefaultNamespaceKey() {
+  void testDefaultNamespaceKey() {
     Pod testPodObj = new PodBuilder().withNewMetadata().withName("test-pod4").withNamespace("default").endMetadata().build();
 
     cache.add(testPodObj);
@@ -91,7 +91,7 @@ public class CacheTest {
   }
 
   @Test
-  public void testAddIndexers() {
+  void testAddIndexers() {
     Cache<Pod> podCache = new Cache<>();
     String nodeIndex = "node-index";
     String clusterIndex = "cluster-index";

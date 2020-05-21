@@ -22,9 +22,9 @@ import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import io.fabric8.kubernetes.client.utils.Utils;
-import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.HashMap;
@@ -34,14 +34,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @EnableRuleMigrationSupport
-public class LabelTest {
+class LabelTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
 
-  public static Pod pod1 = null, pod2 = null;
+  static Pod pod1 = null, pod2 = null;
 
-  @Before
-  public void init() {
+  @BeforeEach
+  void init() {
     pod1 = new PodBuilder()
       .withNewMetadata().withName("pod1").addToLabels("foo", "bar").endMetadata()
       .withNewSpec()
@@ -69,7 +69,7 @@ public class LabelTest {
 
 
   @Test
-  public void testBasicList() {
+  void testBasicList() {
     server.expect().get().withPath("/api/v1/namespaces/test/pods")
       .andReturn(200, new PodListBuilder().withItems(pod1, pod2).build())
       .once();
@@ -82,7 +82,7 @@ public class LabelTest {
   }
 
   @Test
-  public void testWithLabels() {
+  void testWithLabels() {
     server.expect().get().withPath("/api/v1/namespaces/test/pods?labelSelector=" + Utils.toUrlEncoded("foo=bar"))
       .andReturn(200, new PodListBuilder().withItems(pod1).build())
       .once();
@@ -115,7 +115,7 @@ public class LabelTest {
   }
 
   @Test
-  public void testWithLabel() {
+  void testWithLabel() {
     server.expect().get().withPath("/api/v1/namespaces/test/pods?labelSelector=foo")
       .andReturn(200, new PodListBuilder().withItems(pod1).build())
       .once();
@@ -135,7 +135,7 @@ public class LabelTest {
   }
 
   @Test
-  public void testWithoutLabels() {
+  void testWithoutLabels() {
     server.expect().get().withPath("/api/v1/namespaces/test/pods?labelSelector=" + Utils.toUrlEncoded("foo!=bar"))
       .andReturn(200, new PodListBuilder().withItems(pod2).build())
       .once();
@@ -168,7 +168,7 @@ public class LabelTest {
   }
 
   @Test
-  public void testWithoutLabel() {
+  void testWithoutLabel() {
     server.expect().get().withPath("/api/v1/namespaces/test/pods?labelSelector=" + Utils.toUrlEncoded("!foo"))
       .andReturn(200, new PodListBuilder().withItems(pod2).build())
       .once();
@@ -188,7 +188,7 @@ public class LabelTest {
   }
 
   @Test
-  public void testLabelsIn() {
+  void testLabelsIn() {
     server.expect().get().withPath("/api/v1/namespaces/test/pods?labelSelector=foo%20in%20%28bar%29")
       .andReturn(200, new PodListBuilder().withItems(pod1).build())
       .once();
@@ -211,7 +211,7 @@ public class LabelTest {
   }
 
   @Test
-  public void testLabelsNotIn() {
+  void testLabelsNotIn() {
     server.expect().get().withPath("/api/v1/namespaces/test/pods?labelSelector=foo%20notin%20%28bar%29")
       .andReturn(200, new PodListBuilder().withItems(pod2).build())
       .once();

@@ -20,8 +20,8 @@ import io.fabric8.tekton.client.TektonClient;
 import io.fabric8.tekton.mock.TektonServer;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
@@ -31,13 +31,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableRuleMigrationSupport
-public class PipelineTest {
+class PipelineTest {
   @Rule
   public TektonServer server = new TektonServer();
 
   @Test
   @DisplayName("Should get a pipeline")
-  public void testGet() {
+  void testGet() {
     server.expect().get().withPath("/apis/tekton.dev/v1beta1/namespaces/ns1/pipelines/pipeline")
       .andReturn(HttpURLConnection.HTTP_OK, new io.fabric8.tekton.pipeline.v1beta1.PipelineBuilder()
         .withNewMetadata()
@@ -52,7 +52,7 @@ public class PipelineTest {
 
   @Test
   @DisplayName("Should create a pipeline")
-  public void testCreate() {
+  void testCreate() {
     Pipeline pipeline = new io.fabric8.tekton.pipeline.v1beta1.PipelineBuilder().withNewMetadata().withName("pipeline").endMetadata().build();
     server.expect().post().withPath("/apis/tekton.dev/v1beta1/namespaces/ns1/pipelines")
       .andReturn(HttpURLConnection.HTTP_OK, pipeline).once();
@@ -64,7 +64,7 @@ public class PipelineTest {
 
   @Test
   @DisplayName("Should delete a pipeline")
-  public void testDelete() throws InterruptedException {
+  void testDelete() throws InterruptedException {
     server.expect().delete().withPath("/apis/tekton.dev/v1beta1/namespaces/ns1/pipelines/pipeline")
       .andReturn(HttpURLConnection.HTTP_OK, new io.fabric8.tekton.pipeline.v1beta1.PipelineBuilder().build())
       .once();
@@ -79,7 +79,7 @@ public class PipelineTest {
 
   @Test
   @DisplayName("Should delete pipeline with some explicit propagationpolicy")
-  public void testDeleteOrphan() throws InterruptedException {
+  void testDeleteOrphan() throws InterruptedException {
     server.expect().delete().withPath("/apis/tekton.dev/v1beta1/namespaces/ns1/pipelines/pipeline")
       .andReturn(HttpURLConnection.HTTP_OK, new io.fabric8.tekton.pipeline.v1beta1.PipelineBuilder().build())
       .once();

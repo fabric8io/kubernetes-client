@@ -988,7 +988,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetrics",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_metrics_v1beta1_NodeMetricsList": {
@@ -1067,7 +1068,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetrics",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_metrics_v1beta1_PodMetricsList": {

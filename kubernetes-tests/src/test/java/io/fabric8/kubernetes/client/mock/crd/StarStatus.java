@@ -13,14 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.fabric8.kubernetes.client.mock.crd;
 
-package io.fabric8.kubernetes.model.annotation;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+public class StarStatus implements KubernetesResource {
+  private String location;
 
-@Retention(RetentionPolicy.RUNTIME)
-public @interface ApiGroup {
+  public String getLocation() {
+    return location;
+  }
 
-  String value();
+  public void setLocation(String location) {
+    this.location = location;
+  }
+
+  @Override
+  public String toString() {
+    return "StarStatus{" +
+      " location=" + location +
+      "}";
+  }
 }

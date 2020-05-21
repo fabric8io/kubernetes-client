@@ -18,13 +18,13 @@ package io.fabric8.kubernetes.client.informers.cache;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static junit.framework.TestCase.assertTrue;
 
-public class SharedProcessorTest {
+class SharedProcessorTest {
   @Test
-  public void testListenerAddition() throws InterruptedException {
+  void testListenerAddition() throws InterruptedException {
     SharedProcessor<Pod> sharedProcessor = new SharedProcessor<>();
 
     Pod foo1 = new PodBuilder().withNewMetadata().withName("foo1").withNamespace("default").endMetadata().build();
@@ -52,7 +52,7 @@ public class SharedProcessorTest {
   }
 
   private static class ExpectingNotificationHandler<T> extends ProcessorListener<T> {
-    public ExpectingNotificationHandler(Notification<T> notification) {
+    ExpectingNotificationHandler(Notification<T> notification) {
       this(new ResourceEventHandler<T>() {
         @Override
         public void onAdd(T obj) { }
@@ -66,7 +66,7 @@ public class SharedProcessorTest {
       this.expectingNotification = notification;
     }
 
-    public ExpectingNotificationHandler(ResourceEventHandler<T> handler, long resyncPeriod) {
+    ExpectingNotificationHandler(ResourceEventHandler<T> handler, long resyncPeriod) {
       super(handler, resyncPeriod);
     }
 
@@ -82,7 +82,7 @@ public class SharedProcessorTest {
       }
     }
 
-    public boolean isSatisfied() {
+    boolean isSatisfied() {
       return satisfied;
     }
   }

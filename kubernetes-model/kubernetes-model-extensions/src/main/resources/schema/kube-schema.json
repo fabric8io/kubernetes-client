@@ -4120,7 +4120,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.extensions.DaemonSet",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_extensions_DaemonSetCondition": {
@@ -4334,7 +4335,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.extensions.Deployment",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_extensions_DeploymentCondition": {
@@ -4661,7 +4663,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.extensions.Ingress",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_extensions_IngressBackend": {
@@ -4861,7 +4864,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.extensions.NetworkPolicy",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_extensions_NetworkPolicyEgressRule": {
@@ -5074,7 +5078,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.extensions.ReplicaSet",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_extensions_ReplicaSetCondition": {

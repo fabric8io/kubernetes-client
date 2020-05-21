@@ -30,29 +30,36 @@ type PackageDescriptor struct {
 }
 
 type schemaGenerator struct {
-	types              map[reflect.Type]*JSONObjectDescriptor
-	typeNames          map[reflect.Type]string
-	customTypeNames    map[string]string
-	packages           map[string]PackageDescriptor
-	typeMap            map[reflect.Type]reflect.Type
+	types           map[reflect.Type]*JSONObjectDescriptor
+	typeNames       map[reflect.Type]string
+	customTypeNames map[string]string
+	packages        map[string]PackageDescriptor
+	typeMap         map[reflect.Type]reflect.Type
 }
 
-func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, customTypeNames  map[string]string, moduleName string) (*JSONSchema, error) {
+type CrdScope int32
+
+const (
+	Namespaced CrdScope = iota
+	Cluster    CrdScope = iota
+)
+
+func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, customTypeNames map[string]string, moduleName string) (*JSONSchema, error) {
 	g := newSchemaGenerator(packages, typeMap, customTypeNames)
 	return g.generate(t, moduleName)
 }
 
-func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, customTypeNames  map[string]string) *schemaGenerator {
+func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, customTypeNames map[string]string) *schemaGenerator {
 	pkgMap := make(map[string]PackageDescriptor)
 	for _, p := range packages {
 		pkgMap[p.GoPackage] = p
 	}
 	g := schemaGenerator{
-		types:    make(map[reflect.Type]*JSONObjectDescriptor),
-		typeNames: make(map[reflect.Type]string),
+		types:           make(map[reflect.Type]*JSONObjectDescriptor),
+		typeNames:       make(map[reflect.Type]string),
 		customTypeNames: customTypeNames,
-		packages: pkgMap,
-		typeMap:  typeMap,
+		packages:        pkgMap,
+		typeMap:         typeMap,
 	}
 	return &g
 }
@@ -153,14 +160,14 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 
 	if t.Kind() == reflect.Struct && ok {
 		switch t.Name() {
-			case "Time":
-				return "String"
-			case "RawExtension":
-				return "io.fabric8.kubernetes.api.model.HasMetadata"
-			case "List":
-				return pkgDesc.JavaPackage + ".BaseKubernetesList"
-      default:
-        return pkgDesc.JavaPackage + "." + t.Name()
+		case "Time":
+			return "String"
+		case "RawExtension":
+			return "io.fabric8.kubernetes.api.model.HasMetadata"
+		case "List":
+			return pkgDesc.JavaPackage + ".BaseKubernetesList"
+		default:
+			return pkgDesc.JavaPackage + "." + t.Name()
 		}
 		typeName, ok := g.typeNames[t]
 		if ok {
@@ -203,6 +210,11 @@ func (g *schemaGenerator) resourceListWithGeneric(t reflect.Type) string {
 
 func (g *schemaGenerator) javaInterfaces(t reflect.Type) []string {
 	if _, ok := t.FieldByName("ObjectMeta"); t.Name() != "JobTemplateSpec" && t.Name() != "PodTemplateSpec" && ok {
+		scope := g.crdScope(t)
+
+		if scope == Namespaced {
+			return []string{"io.fabric8.kubernetes.api.model.HasMetadata", "io.fabric8.kubernetes.api.model.Namespaced"}
+		}
 		return []string{"io.fabric8.kubernetes.api.model.HasMetadata"}
 	}
 
@@ -288,14 +300,14 @@ func (g *schemaGenerator) generate(t reflect.Type, moduleName string) (*JSONSche
 						JavaInterfaces: g.javaInterfaces(k),
 					},
 				}
-				javaTypeStr := "io.fabric8.";
-				if (moduleName == "openshift") {
-				  javaTypeStr = javaTypeStr + "openshift";
-        } else {
-          javaTypeStr = javaTypeStr + "kubernetes";
-        }
-        javaTypeStr = javaTypeStr + ".api.model.runtime.RawExtension";
-				dockermetadata_value.JavaType = javaTypeStr;
+				javaTypeStr := "io.fabric8."
+				if moduleName == "openshift" {
+					javaTypeStr = javaTypeStr + "openshift"
+				} else {
+					javaTypeStr = javaTypeStr + "kubernetes"
+				}
+				javaTypeStr = javaTypeStr + ".api.model.runtime.RawExtension"
+				dockermetadata_value.JavaType = javaTypeStr
 				s.Definitions[dockermetadata_name] = dockermetadata_value
 				s.Resources[dockermetadata_resource] = v
 			}
@@ -510,10 +522,10 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 func (g *schemaGenerator) generateObjectDescriptor(t reflect.Type) *JSONObjectDescriptor {
 	// Added special case for JSONSchemaProps because it has
 	// already a field by name additionalProperty
-  additionalProperties := t.Name() != "JSONSchemaProps"
-  desc := JSONObjectDescriptor{AdditionalProperties: additionalProperties}
-  desc.Properties = g.getStructProperties(t)
-  return &desc
+	additionalProperties := t.Name() != "JSONSchemaProps"
+	desc := JSONObjectDescriptor{AdditionalProperties: additionalProperties}
+	desc.Properties = g.getStructProperties(t)
+	return &desc
 }
 
 func (g *schemaGenerator) addConstraints(objectName string, propName string, prop *JSONPropertyDescriptor) {
@@ -540,4 +552,24 @@ func (g *schemaGenerator) addConstraints(objectName string, propName string, pro
 
 func pkgPath(t reflect.Type) string {
 	return strings.TrimPrefix(t.PkgPath(), "github.com/fabric8io/kubernetes-client/kubernetes-model/vendor/")
+}
+
+func (g *schemaGenerator) crdScope(t reflect.Type) CrdScope {
+	switch t.Name() {
+	case "MutatingWebhookConfiguration",
+		"ValidatingWebhookConfiguration",
+		"CustomResourceDefinition",
+		"ComponentStatus",
+		"Namespace",
+		"Node",
+		"PersistentVolume",
+		"PodSecurityPolicy",
+		"ClusterRoleBinding",
+		"ClusterRole",
+		"PriorityClass",
+		"StorageClass":
+		return Cluster
+	default:
+		return Namespaced
+	}
 }

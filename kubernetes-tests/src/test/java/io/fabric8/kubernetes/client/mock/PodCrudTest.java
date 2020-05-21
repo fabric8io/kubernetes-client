@@ -156,7 +156,7 @@ public class PodCrudTest {
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").addToLabels("testKey", "testValue").endMetadata().build();
 
     final CountDownLatch deleteLatch = new CountDownLatch(3);
-    final CountDownLatch closeLatch = new CountDownLatch(3);
+    final CountDownLatch closeLatch = new CountDownLatch(1);
     final CountDownLatch addLatch = new CountDownLatch(3);
     final CountDownLatch editLatch = new CountDownLatch(2);
 
@@ -184,28 +184,6 @@ public class PodCrudTest {
       }
     });
 
-    Watch watch1 = client.pods().inNamespace("ns1").watch(new Watcher<Pod>() {
-      @Override
-      public void eventReceived(Action action, Pod resource) {
-        switch (action) {
-          case DELETED:
-            deleteLatch.countDown();
-            break;
-          case MODIFIED:
-            editLatch.countDown();
-            break;
-          case ADDED:
-            addLatch.countDown();
-            break;
-          default:
-            throw new AssertionFailedError(action.toString().concat(" isn't recognised."));
-        }
-      }
-      @Override
-      public void onClose(KubernetesClientException cause) {
-        closeLatch.countDown();
-      }
-    });
 
     client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName())
       .patch(new PodBuilder().withNewMetadataLike(pod1.getMetadata()).endMetadata().build());
@@ -217,42 +195,13 @@ public class PodCrudTest {
       .build());
 
     assertEquals(1, client.pods().inNamespace("ns1").list().getItems().size());
-    watch.close();
 
     client.pods().inNamespace("ns1").withName("pod-new").delete();
 
     assertEquals(0, client.pods().inNamespace("ns1").list().getItems().size());
 
-    watch1.close();
-
-    Watch watch2 = client.pods().inNamespace("ns1").watch(new Watcher<Pod>() {
-      @Override
-      public void eventReceived(Action action, Pod resource) {
-        switch (action) {
-          case ADDED:
-            addLatch.countDown();
-            break;
-          default:
-            throw new AssertionFailedError(action.toString().concat(" isn't recognised."));
-        }
-      }
-      @Override
-      public void onClose(KubernetesClientException cause) {
-        closeLatch.countDown();
-      }
-    });
-
-    client.pods().inNamespace("ns1").create(new PodBuilder()
-      .withNewMetadata().withName("pod-new").endMetadata()
-      .build());
-
-    assertEquals(1, client.pods().inNamespace("ns1").list().getItems().size());
-
-    assertTrue(addLatch.await(1, TimeUnit.MINUTES));
-
-    watch2.close();
-
-    assertTrue(closeLatch.await(1, TimeUnit.MINUTES));
+    watch.close();
+    assertTrue(closeLatch.await(2, TimeUnit.MINUTES));
   }
 
   @Test
@@ -360,9 +309,7 @@ public class PodCrudTest {
 
         @Override
         public void onClose(KubernetesClientException e) {
-          if (e != null) {
             closeLatch.countDown();
-          }
         }
       })) {
         client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName())
@@ -373,11 +320,11 @@ public class PodCrudTest {
         client.pods().inNamespace("ns1").create(new PodBuilder().withNewMetadata().withName("pod1").addToLabels("testKey", "testValue").endMetadata().build());
 
         assertEquals(1, client.pods().inNamespace("ns1").list().getItems().size());
-        assertTrue(addLatch.await(1, TimeUnit.MINUTES));
-        assertTrue(editLatch.await(1, TimeUnit.MINUTES));
-        assertTrue(deleteLatch.await(1, TimeUnit.MINUTES));
+        assertTrue(addLatch.await(1, TimeUnit.SECONDS));
+        assertTrue(editLatch.await(1, TimeUnit.SECONDS));
+        assertTrue(deleteLatch.await(1, TimeUnit.SECONDS));
       } finally {
-        closeLatch.await(10, TimeUnit.SECONDS);
+        assertTrue(closeLatch.await(3, TimeUnit.SECONDS));
       }
     }
 }

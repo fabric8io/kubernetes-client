@@ -13,14 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.fabric8.kubernetes.client.mock.crd;
 
-package io.fabric8.kubernetes.model.annotation;
+import io.fabric8.kubernetes.api.builder.Function;
+import io.fabric8.kubernetes.client.CustomResourceDoneable;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
-@Retention(RetentionPolicy.RUNTIME)
-public @interface ApiGroup {
-
-  String value();
+public class DoneableStar extends CustomResourceDoneable<Star> {
+  public DoneableStar(Star resource, Function function) { super(resource, function); }
 }

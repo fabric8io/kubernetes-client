@@ -49,16 +49,16 @@ import io.fabric8.openshift.client.handlers.ProjectHandler;
 import io.fabric8.openshift.client.handlers.RouteHandler;
 import io.fabric8.openshift.client.handlers.SecurityContextConstraintsHandler;
 import io.fabric8.openshift.client.handlers.UserHandler;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertEquals;
 
 import java.util.Locale;
 
-public class HandlersTest {
+class HandlersTest {
 
   @Test
-  public void checkHandlers() {
+  void checkHandlers() {
     checkHandler(new BuildConfig(), new BuildConfigHandler());
     checkHandler(new Build(), new BuildHandler());
     checkHandler(new DeploymentConfig(), new DeploymentConfigHandler());

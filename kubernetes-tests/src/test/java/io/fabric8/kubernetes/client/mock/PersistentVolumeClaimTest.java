@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.DoneablePersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaimBuilder;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -23,24 +24,28 @@ import io.fabric8.kubernetes.api.model.PersistentVolumeClaimList;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaimListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import io.fabric8.kubernetes.client.utils.Utils;
 
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class PersistentVolumeClaimTest {
+@EnableRuleMigrationSupport
+class PersistentVolumeClaimTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
 
   @Test
-  public void testList() {
+  void testList() {
     server.expect().withPath("/api/v1/namespaces/test/persistentvolumeclaims").andReturn(200, new PersistentVolumeClaimListBuilder().build()).once();
 
     server.expect().withPath("/api/v1/namespaces/ns1/persistentvolumeclaims").andReturn(200, new PersistentVolumeClaimListBuilder()
@@ -59,7 +64,7 @@ public class PersistentVolumeClaimTest {
   }
 
   @Test
-  public void testListWithlabels() {
+  void testListWithlabels() {
     server.expect().withPath("/api/v1/namespaces/test/persistentvolumeclaims?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new PersistentVolumeClaimListBuilder().build()).once();
 
     server.expect().withPath("/api/v1/namespaces/test/persistentvolumeclaims?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new PersistentVolumeClaimListBuilder()
@@ -86,7 +91,7 @@ public class PersistentVolumeClaimTest {
   }
 
   @Test
-  public void testGet() {
+  void testGet() {
     server.expect().withPath("/api/v1/namespaces/test/persistentvolumeclaims/persistentvolumeclaim1").andReturn(200, new PersistentVolumeClaimBuilder().build()).once();
     server.expect().withPath("/api/v1/namespaces/ns1/persistentvolumeclaims/persistentvolumeclaim2").andReturn(200, new PersistentVolumeClaimBuilder().build()).once();
 
@@ -101,16 +106,16 @@ public class PersistentVolumeClaimTest {
     assertNotNull(persistentVolumeClaim);
   }
 
-  @Test(expected = KubernetesClientException.class)
-  public void testEditMissing() {
+  @Test
+  void testEditMissing() {
     server.expect().withPath("/api/v1/namespaces/test/persistentvolumeclaims/persistentvolumeclaim").andReturn(404, "error message from kubernetes").always();
     KubernetesClient client = server.getClient();
-
-    client.persistentVolumeClaims().inNamespace("test").withName("persistentvolumeclaim").edit();
+    Resource<PersistentVolumeClaim, DoneablePersistentVolumeClaim> pvcResource =  client.persistentVolumeClaims().inNamespace("test").withName("persistentvolumeclaim");
+    Assertions.assertThrows(KubernetesClientException.class, pvcResource::edit);
   }
 
   @Test
-  public void testDelete() {
+  void testDelete() {
     server.expect().withPath("/api/v1/namespaces/test/persistentvolumeclaims/persistentvolumeclaim1").andReturn(200, new PersistentVolumeClaimBuilder().build()).once();
     server.expect().withPath("/api/v1/namespaces/ns1/persistentvolumeclaims/persistentvolumeclaim2").andReturn(200, new PersistentVolumeClaimBuilder().build()).once();
 
@@ -126,7 +131,7 @@ public class PersistentVolumeClaimTest {
   }
 
   @Test
-  public void testDeleteMulti() {
+  void testDeleteMulti() {
     PersistentVolumeClaim persistentVolumeClaim1 = new PersistentVolumeClaimBuilder().withNewMetadata().withName("persistentvolumeclaim1").withNamespace("test").endMetadata().build();
     PersistentVolumeClaim persistentVolumeClaim2 = new PersistentVolumeClaimBuilder().withNewMetadata().withName("persistentvolumeclaim2").withNamespace("ns1").endMetadata().build();
     PersistentVolumeClaim persistentVolumeClaim3 = new PersistentVolumeClaimBuilder().withNewMetadata().withName("persistentvolumeclaim3").withNamespace("any").endMetadata().build();
@@ -143,14 +148,14 @@ public class PersistentVolumeClaimTest {
   }
 
   @Test
-  public void testLoadFromFile() {
+  void testLoadFromFile() {
     KubernetesClient client = server.getClient();
     PersistentVolumeClaim persistentVolumeClaim = client.persistentVolumeClaims().load(getClass().getResourceAsStream("/test-persistentvolumeclaim.yml")).get();
     assertEquals("task-pv-claim", persistentVolumeClaim.getMetadata().getName());
   }
 
   @Test
-  public void testBuild() {
+  void testBuild() {
     PersistentVolumeClaim persistentVolumeClaim = new PersistentVolumeClaimBuilder()
       .withNewMetadata().withName("test-pv-claim").withNamespace("test").endMetadata()
       .withNewSpec()

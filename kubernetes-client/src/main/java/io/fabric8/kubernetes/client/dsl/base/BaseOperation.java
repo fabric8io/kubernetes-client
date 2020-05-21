@@ -281,7 +281,7 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
 
   @Override
   public EditReplacePatchDeletable<T, T, D, Boolean> cascading(boolean cascading) {
-    return newInstance(context.withCascading(cascading));
+    return newInstance(context.withCascading(cascading).withPropagationPolicy(null));
   }
 
   @Override
@@ -819,8 +819,9 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     throw new KubernetesClientException("Cannot update read-only resources");
   }
 
+  @Override
   public boolean isResourceNamespaced() {
-    return true;
+    return Utils.isResourceNamespaced(getType());
   }
 
   protected T handleResponse(Request.Builder requestBuilder) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {

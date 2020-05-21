@@ -23,9 +23,9 @@ import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionLis
 import io.fabric8.kubernetes.api.model.apiextensions.JSONSchemaProps;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.io.IOException;
@@ -37,14 +37,14 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @EnableRuleMigrationSupport
-public class CustomResourceDefinitionTest {
+class CustomResourceDefinitionTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
 
   private CustomResourceDefinition customResourceDefinition;
 
-  @Before
-  public void setupCrd() throws IOException {
+  @BeforeEach
+  void setupCrd() throws IOException {
     customResourceDefinition = new CustomResourceDefinitionBuilder()
       .withApiVersion("apiextensions.k8s.io/v1beta1")
       .withNewMetadata().withName("sparkclusters.radanalytics.io")
@@ -66,7 +66,7 @@ public class CustomResourceDefinitionTest {
   }
 
   @Test
-  public void testLoad() {
+  void testLoad() {
     KubernetesClient client = server.getClient();
     CustomResourceDefinition customResourceDefinition = client.customResourceDefinitions().load(getClass().getResourceAsStream("/sparkapplication-crd.yml")).get();
     assertNotNull(customResourceDefinition);
@@ -74,7 +74,7 @@ public class CustomResourceDefinitionTest {
   }
 
   @Test
-  public void testGet() {
+  void testGet() {
     server.expect().get().withPath("/apis/apiextensions.k8s.io/v1beta1/customresourcedefinitions/sparkclusters.radanalytics.io").andReturn(200, customResourceDefinition).once();
     KubernetesClient client = server.getClient();
 
@@ -84,7 +84,7 @@ public class CustomResourceDefinitionTest {
   }
 
   @Test
-  public void testCreate() {
+  void testCreate() {
     server.expect().post().withPath("/apis/apiextensions.k8s.io/v1beta1/customresourcedefinitions").andReturn(200, customResourceDefinition).once();
     KubernetesClient client = server.getClient();
 
@@ -96,7 +96,7 @@ public class CustomResourceDefinitionTest {
   }
 
   @Test
-  public void testList() {
+  void testList() {
     server.expect().get().withPath("/apis/apiextensions.k8s.io/v1beta1/customresourcedefinitions").andReturn(200, new KubernetesListBuilder().withItems(customResourceDefinition).build()).once();
     KubernetesClient client = server.getClient();
 
@@ -107,7 +107,7 @@ public class CustomResourceDefinitionTest {
   }
 
   @Test
-  public void testDelete() {
+  void testDelete() {
     server.expect().delete().withPath("/apis/apiextensions.k8s.io/v1beta1/customresourcedefinitions/sparkclusters.radanalytics.io").andReturn(200, customResourceDefinition).once();
     KubernetesClient client = server.getClient();
 
@@ -115,7 +115,7 @@ public class CustomResourceDefinitionTest {
     assertTrue(deleted);
   }
 
-  public JSONSchemaProps readSchema() throws IOException {
+  JSONSchemaProps readSchema() throws IOException {
     ObjectMapper mapper = new ObjectMapper();
     final URL resource = getClass().getResource("/test-crd-validation-schema.json");
 

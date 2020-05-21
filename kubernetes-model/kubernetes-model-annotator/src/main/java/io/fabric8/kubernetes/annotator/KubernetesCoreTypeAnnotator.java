@@ -27,7 +27,6 @@ import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JFieldVar;
 import io.fabric8.kubernetes.model.annotation.ApiGroup;
 import io.fabric8.kubernetes.model.annotation.ApiVersion;
-import io.fabric8.kubernetes.model.annotation.Namespaced;
 import io.fabric8.kubernetes.model.annotation.PackageSuffix;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.Inline;
@@ -37,12 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.jsonschema2pojo.Jackson2Annotator;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
@@ -55,12 +51,6 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
   protected final Map<String, JDefinedClass> pendingResources = new HashMap<>();
   protected final Map<String, JDefinedClass> pendingLists = new HashMap<>();
   protected String moduleName = null;
-  protected static final Set<String> NON_NAMESPACED_RESOURCES = new HashSet<>(Arrays.asList(
-    "MutatingWebhookConfiguration", "ValidatingWebhookConfiguration"
-    , "CustomResourceDefinition" ,"ComponentStatus", "Namespace", "Node"
-    , "PersistentVolume", "PodSecurityPolicy"
-    ,"ClusterRoleBinding", "ClusterRole"
-    , "PriorityClass", "StorageClass"));
 
   @Override
   public void propertyOrder(JDefinedClass clazz, JsonNode propertiesNode) {
@@ -108,7 +98,6 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
         resourceClass.annotate(ApiVersion.class).param(ANNOTATION_VALUE, apiVersion);
         resourceClass.annotate(ApiGroup.class).param(ANNOTATION_VALUE, apiGroup);
         resourceClass.annotate(PackageSuffix.class).param(ANNOTATION_VALUE, packageSuffix);
-        resourceClass.annotate(Namespaced.class).param(ANNOTATION_VALUE, isResourceNamespaced(resourceClass));
         resourceListClass.annotate(ApiVersion.class).param(ANNOTATION_VALUE, apiVersion);
         resourceListClass.annotate(ApiGroup.class).param(ANNOTATION_VALUE, apiGroup);
         resourceListClass.annotate(PackageSuffix.class).param(ANNOTATION_VALUE, packageSuffix);
@@ -117,10 +106,6 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
         addClassesToPropertyFiles(resourceClass);
       }
     }
-  }
-
-  private boolean isResourceNamespaced(JDefinedClass resourceClass) {
-    return !NON_NAMESPACED_RESOURCES.contains(resourceClass.name());
   }
 
   @Override

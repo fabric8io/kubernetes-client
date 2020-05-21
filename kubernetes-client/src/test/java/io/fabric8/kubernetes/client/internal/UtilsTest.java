@@ -77,43 +77,43 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class UtilsTest {
+class UtilsTest {
 
   @Test
-  public void existingSysPropShouldReturnValue() {
+  void existingSysPropShouldReturnValue() {
     System.setProperty("something", "value");
     assertEquals("value", Utils.getSystemPropertyOrEnvVar("something"));
     System.getProperties().remove("something");
   }
 
   @Test
-  public void missingSysPropAndEnvVarShouldReturnNull() {
+  void missingSysPropAndEnvVarShouldReturnNull() {
     assertNull(Utils.getSystemPropertyOrEnvVar("doesn't exist"));
   }
 
   @Test
-  public void existingEnvVarShouldReturnValue() {
+  void existingEnvVarShouldReturnValue() {
     assertEquals("value", Utils.getSystemPropertyOrEnvVar("ENV_VAR_EXISTS"));
   }
 
   @Test
-  public void existingEnvVarShouldReturnValueFromConvertedSysPropName() {
+  void existingEnvVarShouldReturnValueFromConvertedSysPropName() {
     assertEquals("value", Utils.getSystemPropertyOrEnvVar("env.var.exists"));
   }
 
   @Test
-  public void existingEnvVarShouldReturnBooleanValueFromConvertedSysPropName() {
+  void existingEnvVarShouldReturnBooleanValueFromConvertedSysPropName() {
     assertEquals(true, Utils.getSystemPropertyOrEnvVar("env.var.exists.boolean", false));
   }
 
   @Test
-  public void missingEnvVarShouldReturnDefaultValue() {
+  void missingEnvVarShouldReturnDefaultValue() {
     assertEquals(true, Utils.getSystemPropertyOrEnvVar("DONT_EXIST", true));
   }
 
   @Test
   @DisplayName("interpolateString, String with no placeholders and empty parameters, should return input")
-  public void interpolateStringTest() {
+  void interpolateStringTest() {
     // Given
     final String input = "I don't have placeholders";
     // When
@@ -124,7 +124,7 @@ public class UtilsTest {
 
   @Test
   @DisplayName("interpolateString, String with no placeholders and null parameters, should return input")
-  public void interpolateStringNullParametersTest() {
+  void interpolateStringNullParametersTest() {
     // Given
     final String input = "I don't have placeholders";
     // When
@@ -135,7 +135,7 @@ public class UtilsTest {
 
   @Test
   @DisplayName("interpolateString, String with no placeholders and null parameter values, should return input")
-  public void interpolateStringNullParameterValuesTest() {
+  void interpolateStringNullParameterValuesTest() {
     // Given
     final String input = "I don't have placeholders";
     // When
@@ -146,7 +146,7 @@ public class UtilsTest {
 
   @Test
   @DisplayName("interpolateString, String with mixed placeholders and parameters, should return interpolated input")
-  public void interpolateStringWithParametersTest() {
+  void interpolateStringWithParametersTest() {
     // Given
     final String input = "This is a \"${SINGLE_CURLY_BRACE}\" and the following is code ${NOT_REPLACED}: \"${{RENDER_UNQUOTED}}\" ${{ALREADY_UNQUOTED}}";
     final Map<String, String> parameters = new HashMap<>();
@@ -163,7 +163,7 @@ public class UtilsTest {
   }
 
   @Test
-  public void testGetPluralFromKind() {
+  void testGetPluralFromKind() {
     // Given
     Map<String, Class> pluralToKubernetesResourceMap = new HashMap<>();
     pluralToKubernetesResourceMap.put("bindings", Binding.class);
@@ -222,8 +222,62 @@ public class UtilsTest {
   }
 
   @Test
+  @DisplayName("Should test whether resource is namespaced or not")
+  void testWhetherNamespacedOrNot() {
+    assertTrue(Utils.isResourceNamespaced(Binding.class));
+    assertFalse(Utils.isResourceNamespaced(ComponentStatus.class));
+    assertTrue(Utils.isResourceNamespaced(ConfigMap.class));
+    assertTrue(Utils.isResourceNamespaced(Endpoints.class));
+    assertTrue(Utils.isResourceNamespaced(Event.class));
+    assertTrue(Utils.isResourceNamespaced(LimitRange.class));
+    assertFalse(Utils.isResourceNamespaced(Namespace.class));
+    assertFalse(Utils.isResourceNamespaced(Node.class));
+    assertTrue(Utils.isResourceNamespaced(PersistentVolumeClaim.class));
+    assertFalse(Utils.isResourceNamespaced(PersistentVolume.class));
+    assertTrue(Utils.isResourceNamespaced(Pod.class));
+    assertTrue(Utils.isResourceNamespaced(PodTemplate.class));
+    assertTrue(Utils.isResourceNamespaced(ReplicationController.class));
+    assertTrue(Utils.isResourceNamespaced(ResourceQuota.class));
+    assertTrue(Utils.isResourceNamespaced(Secret.class));
+    assertTrue(Utils.isResourceNamespaced(ServiceAccount.class));
+    assertTrue(Utils.isResourceNamespaced(Service.class));
+    assertFalse(Utils.isResourceNamespaced(MutatingWebhookConfiguration.class));
+    assertFalse(Utils.isResourceNamespaced(ValidatingWebhookConfiguration.class));
+    assertFalse(Utils.isResourceNamespaced(CustomResourceDefinition.class));
+    assertTrue(Utils.isResourceNamespaced(ControllerRevision.class));
+    assertTrue(Utils.isResourceNamespaced(DaemonSet.class));
+    assertTrue(Utils.isResourceNamespaced(Deployment.class));
+    assertTrue(Utils.isResourceNamespaced(ReplicaSet.class));
+    assertTrue(Utils.isResourceNamespaced(StatefulSet.class));
+    assertTrue(Utils.isResourceNamespaced(TokenReview.class));
+    assertTrue(Utils.isResourceNamespaced(LocalSubjectAccessReview.class));
+    assertTrue(Utils.isResourceNamespaced(SelfSubjectAccessReview.class));
+    assertTrue(Utils.isResourceNamespaced(SelfSubjectRulesReview.class));
+    assertTrue(Utils.isResourceNamespaced(SubjectAccessReview.class));
+    assertTrue(Utils.isResourceNamespaced(HorizontalPodAutoscaler.class));
+    assertTrue(Utils.isResourceNamespaced(CronJob.class));
+    assertTrue(Utils.isResourceNamespaced(Job.class));
+    assertTrue(Utils.isResourceNamespaced(CertificateSigningRequest.class));
+    assertTrue(Utils.isResourceNamespaced(Lease.class));
+    assertTrue(Utils.isResourceNamespaced(EndpointSlice.class));
+    assertTrue(Utils.isResourceNamespaced(Ingress.class));
+    assertTrue(Utils.isResourceNamespaced(NetworkPolicy.class));
+    assertTrue(Utils.isResourceNamespaced(PodDisruptionBudget.class));
+    assertFalse(Utils.isResourceNamespaced(PodSecurityPolicy.class));
+    assertFalse(Utils.isResourceNamespaced(ClusterRoleBinding.class));
+    assertFalse(Utils.isResourceNamespaced(ClusterRole.class));
+    assertTrue(Utils.isResourceNamespaced(RoleBinding.class));
+    assertTrue(Utils.isResourceNamespaced(Role.class));
+    assertFalse(Utils.isResourceNamespaced(PriorityClass.class));
+    assertTrue(Utils.isResourceNamespaced(CSIDriver.class));
+    assertTrue(Utils.isResourceNamespaced(CSINode.class));
+    assertFalse(Utils.isResourceNamespaced(StorageClass.class));
+    assertTrue(Utils.isResourceNamespaced(VolumeAttachment.class));
+  }
+
+  @Test
   @DisplayName("isNotNullOrEmpty, null, should return false")
-  public void isNotNullOrEmpty() {
+  void isNotNullOrEmpty() {
     // When
     final boolean result1 = Utils.isNotNullOrEmpty((Map)null);
     final boolean result2 = Utils.isNotNullOrEmpty((String)null);
@@ -237,7 +291,7 @@ public class UtilsTest {
 
   @Test
   @DisplayName("isNotNull, null, should return false")
-  public void isNotNull() {
+  void isNotNull() {
     // Given
     String[] emptyArray = new String[] {};
 
@@ -250,7 +304,7 @@ public class UtilsTest {
 
   @Test
   @DisplayName("isNotNullOrEmpty, some null values, should return true")
-  public void isNotNullOrEmptySomeAreNullTest() {
+  void isNotNullOrEmptySomeAreNullTest() {
     // Given
     String[] testSample = new String[] {"notNullObj", null, null};
 
@@ -263,7 +317,7 @@ public class UtilsTest {
 
   @Test
   @DisplayName("isNotNull, some null values, should return true")
-  public void isNotNullSomeAreNullTest() {
+  void isNotNullSomeAreNullTest() {
     // Given
     String[] testSample = new String[] {"notNullObj", null, null};
 
@@ -276,7 +330,7 @@ public class UtilsTest {
 
   @Test
   @DisplayName("isNotNull, no null values, should return true")
-  public void isNotNullNoneAreNullTest() {
+  void isNotNullNoneAreNullTest() {
     String[] testSample = new String[] {"Not null", "Not null either"};
 
     // When

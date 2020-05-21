@@ -29,7 +29,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.Collections;
@@ -39,12 +39,12 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 
 @EnableRuleMigrationSupport
-public class MetricsTest {
+class MetricsTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
 
   @Test
-  public void testPodMetricsAllNamespace() throws Exception {
+  void testPodMetricsAllNamespace() throws Exception {
     server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/pods")
       .andReturn(200, new PodMetricsListBuilder().withItems(getPodMetric()).build()).once();
 
@@ -56,7 +56,7 @@ public class MetricsTest {
   }
 
   @Test
-  public void testPodMetricsNamespace() throws Exception {
+  void testPodMetricsNamespace() throws Exception {
     server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/namespaces/test/pods")
       .andReturn(200, new PodMetricsListBuilder().withItems(getPodMetric()).build()).once();
 
@@ -68,7 +68,7 @@ public class MetricsTest {
   }
 
   @Test
-  public void testPodMetricsNamespaceWithName() throws Exception {
+  void testPodMetricsNamespaceWithName() throws Exception {
     server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/namespaces/test/pods/test-pod")
       .andReturn(200, getPodMetric()).once();
 
@@ -79,7 +79,7 @@ public class MetricsTest {
   }
 
   @Test
-  public void testAllNodeMetrics() {
+  void testAllNodeMetrics() {
     server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/nodes")
       .andReturn(200, new NodeMetricsListBuilder().withItems(getNodeMetric()).build()).once();
     KubernetesClient client = server.getClient();
@@ -90,7 +90,7 @@ public class MetricsTest {
   }
 
   @Test
-  public void testNodeMetric() {
+  void testNodeMetric() {
     server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/nodes/test-node")
       .andReturn(200, getNodeMetric()).once();
     KubernetesClient client = server.getClient();
@@ -100,7 +100,7 @@ public class MetricsTest {
   }
 
   @Test
-  public void testNodeMetricWithLabels() {
+  void testNodeMetricWithLabels() {
     // Given
     server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/nodes?labelSelector=" + Utils.toUrlEncoded("ss=true,cs=true"))
       .andReturn(200, new NodeMetricsListBuilder().withItems(getNodeMetric()).build()).once();

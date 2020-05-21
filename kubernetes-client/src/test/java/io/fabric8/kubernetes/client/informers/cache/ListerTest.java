@@ -17,16 +17,16 @@ package io.fabric8.kubernetes.client.informers.cache;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class ListerTest {
+class ListerTest {
   @Test
-  public void testListerBasic() {
+  void testListerBasic() {
     Cache<Pod> podCache = new Cache<>();
 
     Lister<Pod> namespacedPodLister = new Lister<>(podCache, "default");

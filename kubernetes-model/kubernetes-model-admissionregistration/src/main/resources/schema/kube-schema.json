@@ -1984,7 +1984,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.authentication.TokenReview",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_authentication_TokenReviewSpec": {
@@ -2116,7 +2117,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.authorization.LocalSubjectAccessReview",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_authorization_NonResourceAttributes": {
@@ -2283,7 +2285,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.authorization.SelfSubjectAccessReview",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_authorization_SelfSubjectAccessReviewSpec": {
@@ -2337,7 +2340,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.authorization.SelfSubjectRulesReview",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_authorization_SelfSubjectRulesReviewSpec": {
@@ -2387,7 +2391,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.authorization.SubjectAccessReview",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_authorization_SubjectAccessReviewSpec": {
