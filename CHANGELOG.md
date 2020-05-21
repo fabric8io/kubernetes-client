@@ -7,6 +7,7 @@
 * Fix #2066: Uber Jar includes merged service entry for multiple implementations of the same interface
 * Fix #2195: Annotation processors and build time dependencies transitive
 * Fix #1760: The bundle version of kubernetes-client is missing ServiceLoader files
+* Fix #2218: Uberjar: Package rewrite issues in `META-INF/services`
 * Fix #2212: JDK8 always uses http/1.1 protocol (Prevent OkHttp from wrongly enabling http/2)
 
 #### Improvements

@@ -19,5 +19,6 @@
       #set ($packageSuffix = $annotation.getParameters().get("value"))
     #end
   #end
-  io.fabric8.kubernetes.client.handlers${packageSuffix}.${m.name}Handler
+
+io.fabric8.kubernetes.client.handlers${packageSuffix}.${m.name}Handler
 #end
