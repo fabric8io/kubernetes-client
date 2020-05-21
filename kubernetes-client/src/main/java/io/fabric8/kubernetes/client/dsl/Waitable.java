@@ -20,8 +20,8 @@ import java.util.function.Predicate;
 
 public interface Waitable<T, P> {
 
-  long DEFAULT_INITIAL_BACKOFF_MILLIS = 5;
-  double DEFAULT_BACKOFF_MULTIPLIER = 2;
+  long DEFAULT_INITIAL_BACKOFF_MILLIS = 5L;
+  double DEFAULT_BACKOFF_MULTIPLIER = 2d;
 
   T waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException;
 
