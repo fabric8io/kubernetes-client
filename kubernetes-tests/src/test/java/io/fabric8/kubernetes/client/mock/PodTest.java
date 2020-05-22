@@ -397,7 +397,7 @@ public class PodTest {
       .endMetadata()
       .withItems(notReady).build()).once();
 
-    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&watch=true").andUpgradeToWebSocket()
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
       .open()
       .waitFor(1000).andEmit(new WatchEvent(ready, "MODIFIED"))
       .done()

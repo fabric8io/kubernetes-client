@@ -15,6 +15,9 @@
  */
 package io.fabric8.kubernetes.client.dsl.base;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.fabric8.kubernetes.api.builder.Function;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.Doneable;
@@ -43,6 +46,7 @@ import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Replaceable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.Watchable;
+import io.fabric8.kubernetes.client.dsl.base.WaitForConditionWatcher.WatchException;
 import io.fabric8.kubernetes.client.dsl.internal.DefaultOperationInfo;
 import io.fabric8.kubernetes.client.dsl.internal.WatchConnectionManager;
 import io.fabric8.kubernetes.client.dsl.internal.WatchHTTPManager;
@@ -67,16 +71,19 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Predicate;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 
-public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
+public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
   extends OperationSupport
   implements
   OperationInfo,
   MixedOperation<T, L, D, R>,
   Resource<T,D> {
+
+  private static final Logger LOG = LoggerFactory.getLogger(BaseOperation.class);
 
   private final Boolean cascading;
   private final T item;
@@ -93,6 +100,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
   private final Boolean reloadingFromServer;
   private final long gracePeriodSeconds;
   private final DeletionPropagation propagationPolicy;
+  private final long watchRetryInitialBackoffMillis;
+  private final double watchRetryBackoffMultiplier;
 
   protected String apiVersion;
 
@@ -114,6 +123,8 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     this.labelsNotIn = ctx.getLabelsNotIn();
     this.fields = ctx.getFields();
     this.fieldsNot = ctx.getFieldsNot();
+    this.watchRetryInitialBackoffMillis = ctx.getWatchRetryInitialBackoffMillis();
+    this.watchRetryBackoffMultiplier = ctx.getWatchRetryBackoffMultiplier();
   }
 
   /**
@@ -976,6 +987,11 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     return newInstance(context.withPropagationPolicy(propagationPolicy));
   }
 
+  @Override
+  public BaseOperation<T, L, D, R> withWaitRetryBackoff(long initialBackoff, TimeUnit backoffUnit, double backoffMultiplier) {
+    return newInstance(context.withWatchRetryInitialBackoffMillis(backoffUnit.toMillis(initialBackoff)).withWatchRetryBackoffMultiplier(backoffMultiplier));
+  }
+
   protected Class<? extends Config> getConfigType() {
     return Config.class;
   }
@@ -1053,61 +1069,53 @@ public class BaseOperation<T, L extends KubernetesResourceList, D extends Doneab
     return i instanceof HasMetadata && Readiness.isReady((HasMetadata)i);
   }
 
-  protected T waitUntilExists(long amount, TimeUnit timeUnit) throws InterruptedException {
-    return waitUntilCondition(Objects::nonNull, amount, timeUnit);
-  }
-
   @Override
   public T waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
-
-    long timeoutInNanos = timeUnit.toNanos(amount);
-    long end = System.nanoTime() + timeoutInNanos;
-
-    while (System.nanoTime() < end) {
-      T item = fromServer().get();
-      try {
-        if (Readiness.isReady((HasMetadata) item)) {
-          return item;
-        }
-
-        Thread.sleep(500);
-      } catch (IllegalArgumentException illegalArgumentException) {
-        // This might be thrown if Resource passed doesn't comply with concept of "readiness"
-        throw illegalArgumentException;
-      }
-    }
-
-    T item = fromServer().get();
-    if (Readiness.isReady((HasMetadata) item)) {
-      return item;
-    }
-
-    throw new IllegalStateException(type.getSimpleName() + " with name:[" + name + "] in namespace:[" + namespace + "] not ready!");
+    return waitUntilCondition(resource -> Objects.nonNull(resource) && Readiness.isReady(resource), amount, timeUnit);
   }
 
   @Override
   public T waitUntilCondition(Predicate<T> condition, long amount, TimeUnit timeUnit)
     throws InterruptedException {
+    return waitUntilConditionWithRetries(condition, timeUnit.toNanos(amount), watchRetryInitialBackoffMillis);
+  }
 
-    long timeoutInMillis = timeUnit.toNanos(amount);
+  private T waitUntilConditionWithRetries(Predicate<T> condition, long timeoutNanos, long backoffMillis)
+    throws InterruptedException {
 
-    long end = System.nanoTime() + timeoutInMillis;
-    while (System.nanoTime() < end) {
-      T item = get();
-      if (condition.test(item)) {
-        return item;
-      }
-
-      // in the future, this should probably be more intelligent
-      Thread.sleep(500);
-    }
-
-    T item = get();
+    T item = fromServer().get();
     if (condition.test(item)) {
       return item;
     }
 
-    throw new IllegalArgumentException(type.getSimpleName() + " with name:[" + name + "] in namespace:[" + namespace + "] not found!");
+    long end = System.nanoTime() + timeoutNanos;
+
+    WaitForConditionWatcher<T> watcher = new WaitForConditionWatcher<>(condition);
+    Watch watch = item == null
+      ? watch(new ListOptionsBuilder()
+          .withResourceVersion(null)
+          .build(), watcher)
+      : watch(item.getMetadata().getResourceVersion(), watcher);
+
+    try {
+      return watcher.getFuture()
+        .get(timeoutNanos, TimeUnit.NANOSECONDS);
+    } catch (ExecutionException e) {
+      if (e.getCause() instanceof WatchException && ((WatchException) e.getCause()).isShouldRetry()) {
+        watch.close();
+        LOG.debug("retryable watch exception encountered, retrying after {} millis", backoffMillis, e.getCause());
+        Thread.sleep(backoffMillis);
+        long newTimeout = end - System.nanoTime();
+        long newBackoff = (long) (backoffMillis * watchRetryBackoffMultiplier);
+        return waitUntilConditionWithRetries(condition, newTimeout, newBackoff);
+      }
+      throw KubernetesClientException.launderThrowable(e.getCause());
+    } catch (TimeoutException e) {
+      LOG.debug("ran out of time waiting for watcher, wait condition not met");
+      throw new IllegalArgumentException(type.getSimpleName() + " with name:[" + name + "] in namespace:[" + namespace + "] matching condition not found!");
+    } finally {
+      watch.close();
+    }
   }
 
   public void setType(Class<T> type) {

@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.Watcher.Action;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
@@ -261,6 +262,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
               return;
             }
 
+            watcher.eventReceived(Action.ERROR, null);
             logger.error("Error received: {}", status.toString());
           } else {
             logger.error("Unknown message received: {}", message);
