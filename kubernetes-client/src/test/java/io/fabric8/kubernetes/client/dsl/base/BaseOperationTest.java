@@ -153,11 +153,24 @@ public class BaseOperationTest {
         .withTimeoutSeconds(10L)
         .withAllowWatchBookmarks(true)
         .build()).toString());
+    assertEquals(URLUtils.join(url.toString(), "?limit=5&continue=eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ&resourceVersion=210448&labelSelector=%21node-role.kubernetes.io%2Fmaster&timeoutSeconds=10&allowWatchBookmarks=true&watch=true"),
+      operation.fetchListUrl(url, new ListOptionsBuilder()
+        .withLimit(5L)
+        .withContinue("eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ")
+        .withLabelSelector("!node-role.kubernetes.io/master")
+        .withResourceVersion("210448")
+        .withTimeoutSeconds(10L)
+        .withAllowWatchBookmarks(true)
+        .withWatch(true)
+        .build()).toString());
     assertEquals(URLUtils.join(url.toString(), "?resourceVersion=210448"), operation.fetchListUrl(url, new ListOptionsBuilder()
       .withResourceVersion("210448")
       .build()).toString());
     assertEquals(URLUtils.join(url.toString(), "?timeoutSeconds=10"), operation.fetchListUrl(url, new ListOptionsBuilder()
       .withTimeoutSeconds(10L)
+      .build()).toString());
+    assertEquals(URLUtils.join(url.toString(), "?watch=true"), operation.fetchListUrl(url, new ListOptionsBuilder()
+      .withWatch(true)
       .build()).toString());
   }
 }

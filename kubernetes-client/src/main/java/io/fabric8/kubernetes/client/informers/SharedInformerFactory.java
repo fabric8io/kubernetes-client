@@ -26,7 +26,10 @@ import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.informers.impl.DefaultSharedIndexInformer;
+import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
+import io.fabric8.kubernetes.model.annotation.ApiGroup;
+import io.fabric8.kubernetes.model.annotation.ApiVersion;
 import okhttp3.OkHttpClient;
 
 import java.lang.reflect.Type;
@@ -83,7 +86,9 @@ public class SharedInformerFactory extends BaseOperation {
    * @return the shared index informer
    */
   public synchronized <T extends HasMetadata, L extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerFor(Class<T> apiTypeClass, Class<L> apiListTypeClass, long resyncPeriodInMillis) {
-    return sharedIndexInformerFor(apiTypeClass, apiListTypeClass, context.withPlural(getPluralFromKind(apiTypeClass.getSimpleName())), resyncPeriodInMillis);
+    return sharedIndexInformerFor(apiTypeClass, apiListTypeClass, context.withApiGroupName(Utils.getAnnotationValue(apiTypeClass, ApiGroup.class))
+      .withApiGroupVersion(Utils.getAnnotationValue(apiTypeClass, ApiVersion.class))
+      .withPlural(getPluralFromKind(apiTypeClass.getSimpleName())), resyncPeriodInMillis);
   }
 
   /**
@@ -136,7 +141,10 @@ public class SharedInformerFactory extends BaseOperation {
    */
   public synchronized <T extends HasMetadata, L extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerFor(Class<T> apiTypeClass, Class<L> apiListTypeClass, OperationContext operationContext, long resyncPeriodInMillis) {
     ListerWatcher<T, L> listerWatcher = listerWatcherFor(apiTypeClass, apiListTypeClass);
-    SharedIndexInformer<T> informer = new DefaultSharedIndexInformer<>(apiTypeClass, listerWatcher, resyncPeriodInMillis, this.context.withPlural(getPluralFromKind(apiTypeClass.getSimpleName())).withOperationContext(operationContext), eventListeners);
+    SharedIndexInformer<T> informer = new DefaultSharedIndexInformer<>(apiTypeClass, listerWatcher, resyncPeriodInMillis, this.context.withApiGroupName(Utils.getAnnotationValue(apiTypeClass, ApiGroup.class))
+      .withApiGroupVersion(Utils.getAnnotationValue(apiTypeClass, ApiVersion.class))
+      .withPlural(getPluralFromKind(apiTypeClass.getSimpleName()))
+      .withOperationContext(operationContext), eventListeners);
     this.informers.put(apiTypeClass, informer);
     return informer;
   }

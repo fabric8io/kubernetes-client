@@ -16,6 +16,9 @@
 
 package io.fabric8.kubernetes.client.utils;
 
+import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.model.annotation.ApiGroup;
+import io.fabric8.kubernetes.model.annotation.ApiVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +26,7 @@ import java.io.Closeable;
 import java.io.Flushable;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.annotation.Annotation;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -358,6 +362,34 @@ public class Utils {
         pluralBuffer.append("s");
     }
     return pluralBuffer.toString();
+  }
+
+  /**
+   * Reads @Namespaced annotation in resource class to check whether
+   * resource is namespaced or not
+   *
+   * @param kubernetesResourceType class for resource
+   * @return boolean value indicating it's namespaced or not
+   */
+  public static boolean isResourceNamespaced(Class kubernetesResourceType) {
+    return Namespaced.class.isAssignableFrom(kubernetesResourceType);
+  }
+
+  public static String getAnnotationValue(Class kubernetesResourceType, Class annotationClass) {
+    Annotation annotation = getAnnotation(kubernetesResourceType, annotationClass);
+    if (annotation instanceof ApiGroup) {
+      return ((ApiGroup) annotation).value();
+    } else if (annotation instanceof ApiVersion) {
+      return ((ApiVersion) annotation).value();
+    }
+    return null;
+  }
+
+  private static Annotation getAnnotation(Class kubernetesResourceType, Class annotationClass) {
+    return Arrays.stream(kubernetesResourceType.getAnnotations())
+      .filter(annotation -> annotation.annotationType().equals(annotationClass))
+      .findFirst()
+      .orElse(null);
   }
 
   /**

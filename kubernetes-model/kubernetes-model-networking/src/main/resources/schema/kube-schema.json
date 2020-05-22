@@ -1117,7 +1117,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.networking.NetworkPolicy",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_networking_NetworkPolicyEgressRule": {
@@ -1372,7 +1373,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.Ingress",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_networking_v1beta1_IngressBackend": {

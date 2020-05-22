@@ -113,6 +113,8 @@ import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
+import static io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation.DEFAULT_PROPAGATION_POLICY;
+
 /**
  * Class for Default Kubernetes Client implementing KubernetesClient interface.
  * It is thread safe.
@@ -286,6 +288,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
       .withCrdContext(crdContext)
       .withType(resourceType)
       .withListType(listClass)
+      .withPropagationPolicy(DEFAULT_PROPAGATION_POLICY)
       .withDoneableType(doneClass));
   }
 
@@ -295,6 +298,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
       .withCrd(crd)
       .withType(resourceType)
       .withListType(listClass)
+      .withPropagationPolicy(DEFAULT_PROPAGATION_POLICY)
       .withDoneableType(doneClass));
   }
 

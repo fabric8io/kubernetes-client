@@ -26,17 +26,19 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import io.fabric8.kubernetes.api.model.DeleteOptions;
-import io.fabric8.kubernetes.api.model.KubernetesResource;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceConversionBuilder;
+import io.fabric8.kubernetes.api.model.ListOptions;
+import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.api.model.WatchEvent;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Rule;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
@@ -51,6 +53,8 @@ import io.fabric8.kubernetes.client.utils.Utils;
 
 @EnableRuleMigrationSupport
 public class CustomResourceTest {
+  private static final Long WATCH_EVENT_PERIOD = 5L;
+
   @Rule
   public KubernetesServer server = new KubernetesServer();
 
@@ -256,117 +260,153 @@ public class CustomResourceTest {
   }
 
   @Test
+  @DisplayName("Should be able to watch some resource in a namespace with null name, labelSelector and ListOptions")
   public void testWatchAllResource() throws IOException, InterruptedException {
     // Given
     server.expect().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?watch=true")
       .andUpgradeToWebSocket()
       .open()
-      .waitFor(1000)
+      .waitFor(WATCH_EVENT_PERIOD)
       .andEmit(new WatchEvent(null, "ADDED"))
       .done().always();
 
     KubernetesClient client = server.getClient();
 
-    AtomicBoolean anyEventReceived = new AtomicBoolean(false);
+    CountDownLatch anyEventReceived = new CountDownLatch(1);
     // When
     Watch watch = client.customResource(customResourceDefinitionContext)
-      .watch("ns1", null, null, null,
+      .watch("ns1", null, null, (ListOptions)null,
         new Watcher<String>() {
           @Override
-          public void eventReceived(Action action, String resource) { anyEventReceived.set(true); }
+          public void eventReceived(Action action, String resource) { anyEventReceived.countDown(); }
           @Override
           public void onClose(KubernetesClientException cause) { }
         });
 
-    Thread.sleep(5 * 1000L);
-
     // Then
-    assertTrue(anyEventReceived.get());
+    assertTrue(anyEventReceived.await(1, TimeUnit.SECONDS));
+    watch.close();
   }
 
   @Test
+  @DisplayName("Should be able to watch a single resource with some name")
   public void testWatchSingleResource() throws IOException, InterruptedException {
     // Given
     server.expect().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos"+ "?fieldSelector=" + Utils.toUrlEncoded("metadata.name=example-hello")+"&watch=true")
       .andUpgradeToWebSocket()
       .open()
-      .waitFor(1000)
+      .waitFor(WATCH_EVENT_PERIOD)
       .andEmit( new WatchEvent(null, "ADDED"))
       .done().always();
 
     KubernetesClient client = server.getClient();
 
-    AtomicBoolean anyEventReceieved = new AtomicBoolean(false);
+    CountDownLatch anyEventReceieved = new CountDownLatch(1);
     // When
     Watch watch = client.customResource(customResourceDefinitionContext)
-      .watch("ns1", "example-hello", null, null,
+      .watch("ns1", "example-hello", null, (ListOptions)null,
         new Watcher<String>() {
           @Override
-          public void eventReceived(Action action, String resource) { anyEventReceieved.set(true); }
+          public void eventReceived(Action action, String resource) { anyEventReceieved.countDown(); }
           @Override
           public void onClose(KubernetesClientException cause) { }
         });
 
-    Thread.sleep(5 * 1000L);
     // Then
-    assertTrue(anyEventReceieved.get());
+    assertTrue(anyEventReceieved.await(1, TimeUnit.SECONDS));
+    watch.close();
   }
 
   @Test
+  @DisplayName("Should be able to watch with labelSelectors")
   public void testWatchWithLabels() throws IOException, InterruptedException {
     // Given
     server.expect().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?labelSelector="+ Utils.toUrlEncoded("foo=bar")+ "&watch=true")
       .andUpgradeToWebSocket()
       .open()
-      .waitFor(1000)
+      .waitFor(WATCH_EVENT_PERIOD)
       .andEmit(new WatchEvent(null, "ADDED"))
       .done().always();
 
     KubernetesClient client = server.getClient();
 
-    AtomicBoolean anyEventReceived = new AtomicBoolean(false);
+    CountDownLatch anyEventReceived = new CountDownLatch(1);
     // When
     Watch watch = client.customResource(customResourceDefinitionContext)
-      .watch("ns1", null, Collections.singletonMap("foo", "bar"), null,
+      .watch("ns1", null, Collections.singletonMap("foo", "bar"), (ListOptions)null,
         new Watcher<String>() {
           @Override
-          public void eventReceived(Action action, String resource) { anyEventReceived.set(true); }
+          public void eventReceived(Action action, String resource) { anyEventReceived.countDown(); }
           @Override
           public void onClose(KubernetesClientException cause) { }
         });
 
-    Thread.sleep(5 * 1000L);
     // Then
-    assertTrue(anyEventReceived.get());
+    assertTrue(anyEventReceived.await(1, TimeUnit.SECONDS));
+    watch.close();
   }
 
   @Test
+  @DisplayName("Should be able to test watch with some specific resourceVersion")
   public void testWatchSomeResourceVersion() throws IOException, InterruptedException {
     // Given
     String watchResourceVersion = "1001";
-    server.expect().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?resourceVersion=" + watchResourceVersion + "&watch=true")
+    server.expect().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?watch=true&resourceVersion=" + watchResourceVersion)
       .andUpgradeToWebSocket()
       .open()
-      .waitFor(1000)
+      .waitFor(WATCH_EVENT_PERIOD)
       .andEmit(new WatchEvent(null, "ADDED"))
       .done().always();
 
     KubernetesClient client = server.getClient();
 
-    AtomicBoolean anyEventReceived = new AtomicBoolean(false);
+    CountDownLatch anyEventReceived = new CountDownLatch(1);
 
     // When
     Watch watch = client.customResource(customResourceDefinitionContext)
       .watch("ns1", null, null, watchResourceVersion,
         new Watcher<String>() {
           @Override
-          public void eventReceived(Action action, String resource) { anyEventReceived.set(true); }
+          public void eventReceived(Action action, String resource) { anyEventReceived.countDown(); }
           @Override
           public void onClose(KubernetesClientException cause) { }
         });
 
-    Thread.sleep(5 * 1000L);
     // Then
-    assertTrue(anyEventReceived.get());
+    assertTrue(anyEventReceived.await(1, TimeUnit.SECONDS));
+    watch.close();
+  }
+
+  @Test
+  @DisplayName("Should be able to test watch with ListOptions provided")
+  public void testWatchWithListOptions() throws IOException, InterruptedException {
+    // Given
+    server.expect().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?timeoutSeconds=30&allowWatchBookmarks=true&watch=true&resourceVersion=1003")
+      .andUpgradeToWebSocket()
+      .open()
+      .waitFor(WATCH_EVENT_PERIOD)
+      .andEmit(new WatchEvent(null, "ADDED"))
+      .done().always();
+
+    KubernetesClient client = server.getClient();
+
+    CountDownLatch anyEventReceived = new CountDownLatch(1);
+    // When
+    Watch watch = client.customResource(customResourceDefinitionContext)
+      .watch("ns1", null, null, new ListOptionsBuilder()
+          .withTimeoutSeconds(30L)
+          .withResourceVersion("1003")
+          .withAllowWatchBookmarks(true)
+          .build(),
+        new Watcher<String>() {
+          @Override
+          public void eventReceived(Action action, String resource) { anyEventReceived.countDown(); }
+          @Override
+          public void onClose(KubernetesClientException cause) { }
+        });
+
+    // Then
+    assertTrue(anyEventReceived.await(1, TimeUnit.SECONDS));
+    watch.close();
   }
 }

@@ -981,7 +981,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.authentication.TokenReview",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_authentication_TokenReviewSpec": {
@@ -5014,7 +5015,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.Role",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_authorization_RoleBinding": {
@@ -5069,7 +5071,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.RoleBinding",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_authorization_RoleBindingList": {
@@ -5136,7 +5139,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.RoleBindingRestriction",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_authorization_RoleBindingRestrictionSpec": {
@@ -5463,7 +5467,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.Build",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_build_BuildCondition": {
@@ -5533,7 +5538,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.BuildConfig",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_build_BuildConfigList": {
@@ -5829,7 +5835,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.BuildRequest",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_build_BuildSource": {
@@ -6947,7 +6954,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.ClusterVersion",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_config_ClusterVersionList": {
@@ -7295,7 +7303,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.DeploymentConfig",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_deploy_DeploymentConfigList": {
@@ -7804,7 +7813,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.Image",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_image_ImageImportSpec": {
@@ -8002,7 +8012,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.ImageSignature",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_image_ImageStream": {
@@ -8037,7 +8048,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.ImageStream",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_image_ImageStreamImport": {
@@ -8072,7 +8084,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.ImageStreamImport",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_image_ImageStreamImportSpec": {
@@ -8273,7 +8286,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.ImageStreamTag",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_image_ImageStreamTagList": {
@@ -8684,7 +8698,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.NetNamespace",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_network_NetNamespaceList": {
@@ -8820,7 +8835,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.OAuthAccessToken",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_oauth_OAuthAccessTokenList": {
@@ -8925,7 +8941,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.OAuthAuthorizeToken",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_oauth_OAuthAuthorizeTokenList": {
@@ -9035,7 +9052,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.OAuthClient",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_oauth_OAuthClientAuthorization": {
@@ -9083,7 +9101,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.OAuthClientAuthorization",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_oauth_OAuthClientAuthorizationList": {
@@ -9214,7 +9233,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.Project",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_project_ProjectList": {
@@ -9285,7 +9305,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.ProjectRequest",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_project_ProjectSpec": {
@@ -9364,7 +9385,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.Route",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_route_RouteIngress": {
@@ -9884,7 +9906,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.SecurityContextConstraints",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_security_SecurityContextConstraintsList": {
@@ -10040,7 +10063,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.Template",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_template_TemplateList": {
@@ -10111,7 +10135,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.Group",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_user_GroupList": {
@@ -10195,7 +10220,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.Identity",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_user_IdentityList": {
@@ -10278,7 +10304,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.User",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_user_UserList": {

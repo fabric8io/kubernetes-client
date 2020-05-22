@@ -17,12 +17,12 @@
 package io.fabric8.openshift.client;
 
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class OpenShiftExtensionAdapterTest {
+class OpenShiftExtensionAdapterTest {
 
   @Test
-  public void testHasCustomConfig() {
+  void testHasCustomConfig() {
     OpenShiftConfig config = new OpenShiftConfigBuilder()
       .withMasterUrl("http://host1:80")
       .build();

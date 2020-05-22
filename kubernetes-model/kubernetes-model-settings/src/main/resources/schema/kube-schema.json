@@ -2526,7 +2526,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.settings.PodPreset",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_settings_PodPresetList": {

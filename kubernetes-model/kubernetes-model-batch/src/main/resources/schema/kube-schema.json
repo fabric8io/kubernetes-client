@@ -996,7 +996,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.batch.CronJob",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_batch_CronJobList": {
@@ -1131,7 +1132,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.batch.Job",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_batch_JobCondition": {
@@ -3350,7 +3352,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.PodTemplate",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_core_PodTemplateSpec": {

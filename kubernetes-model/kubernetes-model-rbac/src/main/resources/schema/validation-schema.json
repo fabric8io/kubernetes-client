@@ -1198,7 +1198,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.rbac.Role",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_rbac_v1_RoleBinding": {
@@ -1238,7 +1239,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.rbac.RoleBinding",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_rbac_v1_RoleBindingList": {

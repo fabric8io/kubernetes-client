@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.handlers;
 
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import java.util.function.Predicate;
@@ -105,6 +106,11 @@ public class KubernetesListHandler implements ResourceHandler<KubernetesList, Ku
 
   @Override
   public Watch watch(OkHttpClient client, Config config, String namespace, KubernetesList item, String resourceVersion, Watcher<KubernetesList> watcher) {
+    throw new UnsupportedOperationException("Watch is not supported on KubernetesList.");
+  }
+
+  @Override
+  public Watch watch(OkHttpClient client, Config config, String namespace, KubernetesList item, ListOptions listOptions, Watcher<KubernetesList> watcher) {
     throw new UnsupportedOperationException("Watch is not supported on KubernetesList.");
   }
 

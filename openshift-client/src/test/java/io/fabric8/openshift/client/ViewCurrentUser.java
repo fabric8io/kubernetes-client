@@ -17,15 +17,15 @@ package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.openshift.api.model.User;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertNotNull;
 
 /**
  */
-public class ViewCurrentUser {
+class ViewCurrentUser {
     @Test
-    public void testShowCurrentUser() throws Exception {
+    void testShowCurrentUser() throws Exception {
         OpenShiftClient client = new DefaultOpenShiftClient();
         User user = client.currentUser();
 

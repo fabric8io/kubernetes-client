@@ -926,7 +926,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.coordination.v1.Lease",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata"
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_coordination_LeaseList": {

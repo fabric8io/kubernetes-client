@@ -15,12 +15,13 @@
  */
 package io.fabric8.kubernetes.examples.crds;
 
+import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.CustomResource;
 
 /**
  */
-public class Dummy extends CustomResource {
+public class Dummy extends CustomResource implements Namespaced {
   private DummySpec spec;
 
 

@@ -3,10 +3,12 @@
 ### 4.10-SNAPSHOT
 #### Bugs
 * Fix #2205: Event model classes from core v1 have been lost
+* Fix #2226: SharedIndexInformer for non-namespaced resources not working
 * Fix #2201: Uberjar doesn't contain model classes anymore
 * Fix #2066: Uber Jar includes merged service entry for multiple implementations of the same interface
 * Fix #2195: Annotation processors and build time dependencies transitive
 * Fix #1760: The bundle version of kubernetes-client is missing ServiceLoader files
+* Fix #2218: Uberjar: Package rewrite issues in `META-INF/services`
 * Fix #2212: JDK8 always uses http/1.1 protocol (Prevent OkHttp from wrongly enabling http/2)
 
 #### Improvements
@@ -17,6 +19,7 @@
 #### New Features
 * Added DSL support for `admissionregistration.k8s.io/v1beta1` resources
 * Add support for Namespaced SharedInformers, fixed probelms with OperationContext argument
+* Fix #1821: ListOptions now supported when watching a Kubernetes Resource
 
 ### 4.10.1 (2020-05-06)
 #### Bugs
