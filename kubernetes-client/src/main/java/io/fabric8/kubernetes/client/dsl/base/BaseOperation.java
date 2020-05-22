@@ -1092,7 +1092,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
     WaitForConditionWatcher<T> watcher = new WaitForConditionWatcher<>(condition);
     Watch watch = item == null
-      ? watch(null, watcher)
+      ? watch(new ListOptionsBuilder()
+          .withResourceVersion(null)
+          .build(), watcher)
       : watch(item.getMetadata().getResourceVersion(), watcher);
 
     try {
