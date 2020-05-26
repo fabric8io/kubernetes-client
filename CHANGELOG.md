@@ -13,6 +13,7 @@
 
 #### Improvements
 * Fix #2199: KubernetesClient#customResources now accepts CustomResourceDefinitionContext
+* Adds basic support for Pod Eviction API
 
 #### Dependency Upgrade
 

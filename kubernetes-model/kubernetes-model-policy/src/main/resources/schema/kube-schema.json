@@ -1079,6 +1079,38 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_policy_Eviction": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "policy/v1beta1",
+          "required": true
+        },
+        "deleteOptions": {
+          "$ref": "#/definitions/kubernetes_apimachinery_DeleteOptions",
+          "javaType": "io.fabric8.kubernetes.api.model.DeleteOptions"
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "Eviction",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.policy.Eviction",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
     "kubernetes_policy_FSGroupStrategyOptions": {
       "type": "object",
       "description": "",
@@ -1644,6 +1676,10 @@
     "DeleteOptions": {
       "$ref": "#/definitions/kubernetes_apimachinery_DeleteOptions",
       "javaType": "io.fabric8.kubernetes.api.model.DeleteOptions"
+    },
+    "Eviction": {
+      "$ref": "#/definitions/kubernetes_policy_Eviction",
+      "javaType": "io.fabric8.kubernetes.api.model.policy.Eviction"
     },
     "GetOptions": {
       "$ref": "#/definitions/kubernetes_apimachinery_GetOptions",
