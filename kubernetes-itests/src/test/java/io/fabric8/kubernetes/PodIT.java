@@ -19,12 +19,20 @@ package io.fabric8.kubernetes;
 import com.google.common.io.Files;
 import io.fabric8.commons.ReadyEntity;
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.LabelSelectorBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.api.model.PodSpec;
+import io.fabric8.kubernetes.api.model.PodSpecBuilder;
+import io.fabric8.kubernetes.api.model.policy.PodDisruptionBudget;
+import io.fabric8.kubernetes.api.model.policy.PodDisruptionBudgetBuilder;
+import io.fabric8.kubernetes.api.model.policy.PodDisruptionBudgetSpecBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
+import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import okhttp3.Response;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.RandomStringUtils;
@@ -58,6 +66,7 @@ import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -82,8 +91,14 @@ public class PodIT {
     currentNamespace = session.getNamespace();
     client.pods().inNamespace(currentNamespace).delete();
 
+    String suffix =  RandomStringUtils.randomAlphanumeric(6).toLowerCase(Locale.ROOT);
+    String pdbScope = "test-" + suffix;
+
     pod1 = new PodBuilder()
-      .withNewMetadata().withName("pod1-" + RandomStringUtils.randomAlphanumeric(6).toLowerCase(Locale.ROOT)).endMetadata()
+      .withNewMetadata()
+      .withName("pod1-" + suffix)
+      .addToLabels("pdb-scope", pdbScope)
+      .endMetadata()
       .withNewSpec()
       .addNewContainer()
       .withName("busybox")
@@ -129,7 +144,61 @@ public class PodIT {
   }
 
   @Test
-  public void evict() {
+  public void evict() throws InterruptedException {
+    String pdbScope = pod1.getMetadata().getLabels().get("pdb-scope");
+    assertNotNull("pdb-scope label is null. is pod1 misconfigured?", pdbScope);
+
+    PodDisruptionBudget pdb = new PodDisruptionBudgetBuilder()
+      .withNewMetadata()
+      .withName("test-pdb")
+      .endMetadata()
+      .withSpec(
+        new PodDisruptionBudgetSpecBuilder()
+          .withMinAvailable(new IntOrString(1))
+          .withNewSelector()
+          .addToMatchLabels("pdb-scope", pdbScope)
+          .endSelector()
+          .build()
+      )
+      .build();
+
+    Pod pod2 = new PodBuilder()
+      .withNewMetadata()
+      .withName("pod2")
+      .addToLabels("pdb-scope", pdbScope)
+      .endMetadata()
+      .withSpec(pod1.getSpec())
+      .build();
+
+    Pod pod3 = new PodBuilder()
+      .withNewMetadata()
+      .withName("pod3")
+      .addToLabels("pdb-scope", pdbScope)
+      .endMetadata()
+      .withSpec(pod1.getSpec())
+      .build();
+
+    client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName())
+      .waitUntilReady(30, TimeUnit.SECONDS);
+
+    client.pods().inNamespace(currentNamespace).createOrReplace(pod2);
+    client.pods().inNamespace(currentNamespace).withName(pod2.getMetadata().getName())
+      .waitUntilReady(30, TimeUnit.SECONDS);
+
+    client.policy().podDisruptionBudget().inNamespace(currentNamespace).createOrReplace(pdb);
+
+    assertTrue(client.pods().inNamespace(currentNamespace).withName(pod2.getMetadata().getName()).evict());
+    // cant evict because only one left
+    assertFalse(client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).evict());
+    // ensure it really is still up
+    assertTrue(Readiness.isReady(client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).fromServer().get()));
+
+    // create another pod to satisfy PDB
+    client.pods().inNamespace(currentNamespace).createOrReplace(pod3);
+    client.pods().inNamespace(currentNamespace).withName(pod3.getMetadata().getName())
+      .waitUntilReady(30, TimeUnit.SECONDS);
+
+    // can now evict
     assertTrue(client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).evict());
   }
 
