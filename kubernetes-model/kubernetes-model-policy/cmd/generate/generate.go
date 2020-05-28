@@ -62,6 +62,7 @@ type Schema struct {
   KubernetesRunAsUserStrategyOptions       policy.RunAsUserStrategyOptions
   PodDisruptionBudget                      policy.PodDisruptionBudget
   PodDisruptionBudgetList                  policy.PodDisruptionBudgetList
+  Eviction                                 policy.Eviction
 }
 
 func main() {

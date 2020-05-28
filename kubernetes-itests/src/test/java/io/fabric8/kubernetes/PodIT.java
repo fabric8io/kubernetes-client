@@ -129,6 +129,11 @@ public class PodIT {
   }
 
   @Test
+  public void evict() {
+    assertTrue(client.pods().inNamespace(currentNamespace).withName(pod1.getMetadata().getName()).evict());
+  }
+
+  @Test
   public void log() throws InterruptedException {
     // Wait for resources to get ready
     ReadyEntity<Pod> podReady = new ReadyEntity<Pod>(Pod.class, client, pod1.getMetadata().getName(), currentNamespace);

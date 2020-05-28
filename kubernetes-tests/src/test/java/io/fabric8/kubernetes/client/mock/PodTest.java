@@ -30,6 +30,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
@@ -44,6 +45,9 @@ import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
+import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.PodResource;
+import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import io.fabric8.kubernetes.client.server.mock.OutputStreamMessage;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -59,6 +63,7 @@ import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableRuleMigrationSupport
@@ -171,7 +176,6 @@ public class PodTest {
     assertTrue(deleted);
   }
 
-
   @Test
   public void testDeleteMulti() {
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
@@ -211,6 +215,38 @@ public class PodTest {
 
     Boolean deleted = client.pods().inNamespace("test").withName("pod1").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
     assertTrue(deleted);
+  }
+
+  @Test
+  void testEvict() {
+    server.expect().withPath("/api/v1/namespaces/test/pods/pod1/eviction").andReturn(200, new PodBuilder().build()).once();
+    server.expect().withPath("/api/v1/namespaces/ns1/pods/pod2/eviction").andReturn(200, new PodBuilder().build()).once();
+    server.expect().withPath("/api/v1/namespaces/ns1/pods/pod3/eviction").andReturn(PodOperationsImpl.HTTP_TOO_MANY_REQUESTS, new PodBuilder().build()).once();
+    server.expect().withPath("/api/v1/namespaces/ns1/pods/pod3/eviction").andReturn(200, new PodBuilder().build()).once();
+    server.expect().withPath("/api/v1/namespaces/ns1/pods/pod4/eviction").andReturn(500, new PodBuilder().build()).once();
+
+    KubernetesClient client = server.getClient();
+
+    Boolean deleted = client.pods().withName("pod1").evict();
+    assertTrue(deleted);
+
+    // not found
+    deleted = client.pods().withName("pod2").evict();
+    assertFalse(deleted);
+
+    deleted = client.pods().inNamespace("ns1").withName("pod2").evict();
+    assertTrue(deleted);
+
+    // too many requests
+    deleted = client.pods().inNamespace("ns1").withName("pod3").evict();
+    assertFalse(deleted);
+
+    deleted = client.pods().inNamespace("ns1").withName("pod3").evict();
+    assertTrue(deleted);
+
+    // unhandled error
+    PodResource<Pod, DoneablePod> resource = client.pods().inNamespace("ns1").withName("pod4");
+    assertThrows(KubernetesClientException.class, resource::evict);
   }
 
   @Test
