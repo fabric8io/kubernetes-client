@@ -16,34 +16,24 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>io.fabric8</groupId>
-    <artifactId>kubernetes-client-project</artifactId>
+    <artifactId>kubernetes-model-generator</artifactId>
     <version>4.10-SNAPSHOT</version>
   </parent>
 
-  <artifactId>model-annotator</artifactId>
+  <artifactId>kubernetes-model-annotator</artifactId>
   <packaging>jar</packaging>
-  <name>Fabric8 :: Kubernetes :: Model Annotator</name>
+  <name>Fabric8 :: Kubernetes Model Annotator</name>
 
   <dependencies>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-common</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.module</groupId>
-      <artifactId>jackson-module-jaxb-annotations</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jsonschema2pojo</groupId>
-      <artifactId>jsonschema2pojo-core</artifactId>
-      <version>${jsonschema2pojo.version}</version>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -59,6 +49,11 @@
       <groupId>io.sundr</groupId>
       <artifactId>transform-annotations</artifactId>
       <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jsonschema2pojo</groupId>
+      <artifactId>jsonschema2pojo-core</artifactId>
+      <version>${jsonschema2pojo.version}</version>
     </dependency>
   </dependencies>
 

@@ -1,0 +1,126 @@
+<!--
+
+    Copyright (C) 2015 Red Hat, Inc.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.fabric8</groupId>
+    <artifactId>kubernetes-model-generator</artifactId>
+    <version>4.10-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>model-generator-app</artifactId>
+
+  <name>Fabric8 :: Origin and Kubernetes Model Generator</name>
+  <description>
+        This app generates a JSON Schema based on updated go package dependencies from [Origin](https://github.com/openshift/origin) and [Kubernetes](https://github.com/GoogleCloudPlatform/kubernetes), which in turn is used to generate model Java types which on successful testing the binary is released to maven central.
+  </description>
+
+  <properties>
+    <arquillian.version>1.1.5.Final</arquillian.version>
+    <fabric8.version>2.0.19</fabric8.version>
+
+    <fabric8.generateJson>false</fabric8.generateJson>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.jboss.arquillian.junit</groupId>
+        <artifactId>arquillian-junit-container</artifactId>
+        <version>${arquillian.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>arquillian-fabric8</artifactId>
+        <version>${fabric8.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-assertions</artifactId>
+        <version>${fabric8.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/fabric8</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>fabric8-maven-plugin</artifactId>
+        <version>${fabric8.version}</version>
+        <executions>
+          <execution>
+            <id>json</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>json</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>zip</id>
+            <phase>package</phase>
+            <goals>
+              <goal>zip</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <replaceReadmeLinksPrefix>/apps/</replaceReadmeLinksPrefix>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.jboss.arquillian.junit</groupId>
+      <artifactId>arquillian-junit-container</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>arquillian-fabric8</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-assertions</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-migrationsupport</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>

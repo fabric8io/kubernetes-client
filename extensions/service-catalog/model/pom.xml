@@ -49,12 +49,6 @@
     <dependency>
       <groupId>io.sundr</groupId>
       <artifactId>builder-annotations</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>com.sun</groupId>
-          <artifactId>tools</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>io.sundr</groupId>
@@ -86,7 +80,6 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <scope>provided</scope>
     </dependency>
   </dependencies>
 

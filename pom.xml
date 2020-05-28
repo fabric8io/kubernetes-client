@@ -25,11 +25,11 @@
   <artifactId>kubernetes-client-project</artifactId>
   <version>4.10-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>Fabric8 :: Kubernetes :: Project</name>
 
+  <name>Fabric8 :: Kubernetes :: Project</name>
+  <description>Java client for Kubernetes and OpenShift</description>
   <url>http://fabric8.io/</url>
   <inceptionYear>2015</inceptionYear>
-  <description>Java client for Kubernetes and OpenShift</description>
 
   <organization>
     <name>Red Hat</name>
@@ -167,7 +167,7 @@
 
   <modules>
     <module>model-annotator</module>
-    <module>kubernetes-model</module>
+    <module>kubernetes-model-generator</module>
     <module>kubernetes-client</module>
     <module>kubernetes-server-mock</module>
     <module>openshift-client</module>
@@ -182,101 +182,106 @@
   <dependencyManagement>
     <dependencies>
       <!-- Internal -->
-        <dependency>
-          <groupId>io.fabric8</groupId>
-          <artifactId>kubernetes-model-core</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>io.fabric8</groupId>
-          <artifactId>kubernetes-model-rbac</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>io.fabric8</groupId>
-          <artifactId>kubernetes-model-admissionregistration</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>io.fabric8</groupId>
-          <artifactId>kubernetes-model-apps</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>io.fabric8</groupId>
-          <artifactId>kubernetes-model-autoscaling</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>io.fabric8</groupId>
-          <artifactId>kubernetes-model-apiextensions</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>io.fabric8</groupId>
-          <artifactId>kubernetes-model-batch</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>io.fabric8</groupId>
-          <artifactId>kubernetes-model-certificates</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>io.fabric8</groupId>
-          <artifactId>kubernetes-model-coordination</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>io.fabric8</groupId>
-          <artifactId>kubernetes-model-discovery</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>io.fabric8</groupId>
-          <artifactId>kubernetes-model-events</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>io.fabric8</groupId>
-          <artifactId>kubernetes-model-extensions</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>io.fabric8</groupId>
-          <artifactId>kubernetes-model-networking</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>io.fabric8</groupId>
-          <artifactId>kubernetes-model-metrics</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>io.fabric8</groupId>
-          <artifactId>kubernetes-model-policy</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>io.fabric8</groupId>
-          <artifactId>kubernetes-model-scheduling</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>io.fabric8</groupId>
-          <artifactId>kubernetes-model-settings</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>io.fabric8</groupId>
-          <artifactId>kubernetes-model-storageclass</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>io.fabric8</groupId>
-          <artifactId>openshift-model</artifactId>
-          <version>${project.version}</version>
-        </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-model-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-model-common</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-model-rbac</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-model-admissionregistration</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-model-apps</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-model-autoscaling</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-model-apiextensions</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-model-batch</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-model-certificates</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-model-coordination</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-model-discovery</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-model-events</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-model-extensions</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-model-networking</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-model-metrics</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-model-policy</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-model-scheduling</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-model-settings</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-model-storageclass</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>openshift-model</artifactId>
+        <version>${project.version}</version>
+      </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-client</artifactId>
@@ -342,13 +347,13 @@
         <groupId>io.sundr</groupId>
         <artifactId>builder-annotations</artifactId>
         <version>${sundrio.version}</version>
+        <scope>provided</scope>
         <exclusions>
           <exclusion>
             <groupId>com.sun</groupId>
             <artifactId>tools</artifactId>
           </exclusion>
         </exclusions>
-        <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>io.sundr</groupId>
@@ -360,16 +365,12 @@
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
         <version>${lombok.version}</version>
+        <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
         <version>${slf4j.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.jsonschema2pojo</groupId>
-        <artifactId>jsonschema2pojo-core</artifactId>
-        <version>${jsonschema2pojo.version}</version>
       </dependency>
 
       <!-- Testing and Mocking -->
@@ -377,6 +378,7 @@
         <groupId>io.dekorate</groupId>
         <artifactId>mockwebserver</artifactId>
         <version>${mockwebserver.version}</version>
+        <scope>test</scope>
       </dependency>
 
       <dependency>

@@ -193,20 +193,14 @@
     <dependency>
       <groupId>io.sundr</groupId>
       <artifactId>builder-annotations</artifactId>
-      <scope>compile</scope>
-      <optional>true</optional>
-      <exclusions>
-        <exclusion>
-          <groupId>com.sun</groupId>
-          <artifactId>tools</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>io.sundr</groupId>
       <artifactId>transform-annotations</artifactId>
-      <scope>compile</scope>
-      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.felix</groupId>
@@ -214,11 +208,6 @@
       <version>${scr.annotations.version}</version>
       <scope>compile</scope>
       <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <scope>provided</scope>
     </dependency>
 
     <!-- Testing Dependencies -->
