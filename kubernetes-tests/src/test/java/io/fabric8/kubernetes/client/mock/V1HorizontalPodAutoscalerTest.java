@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscaler;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscalerList;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscalerBuilder;
@@ -29,6 +30,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -39,6 +42,19 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 public class V1HorizontalPodAutoscalerTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
+
+  @Test
+  void testLoadAsPlainList() {
+    KubernetesClient client = server.getClient();
+    List<HasMetadata> itemsList = client.load(getClass().getResourceAsStream("/test-horizontalpodautoscaler.yml")).get();
+
+    assertNotNull(itemsList);
+    assertEquals(1, itemsList.size());
+    HorizontalPodAutoscaler horizontalPodAutoscaler = (HorizontalPodAutoscaler) itemsList.get(0);
+    assertEquals("php-apache", horizontalPodAutoscaler.getMetadata().getName());
+    assertEquals(10, horizontalPodAutoscaler.getSpec().getMaxReplicas());
+    assertEquals(1, horizontalPodAutoscaler.getSpec().getMinReplicas());
+  }
 
   @Test
   public void testList() {

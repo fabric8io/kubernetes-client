@@ -15,8 +15,13 @@
  */
 package io.fabric8.kubernetes.model.util;
 
+import io.fabric8.kubernetes.model.annotation.ApiGroup;
+import io.fabric8.kubernetes.model.annotation.ApiVersion;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.annotation.Annotation;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Helper {
@@ -29,4 +34,22 @@ public class Helper {
             throw new RuntimeException(e);
         }
     }
+
+
+  public static String getAnnotationValue(Class kubernetesResourceType, Class annotationClass) {
+    Annotation annotation = getAnnotation(kubernetesResourceType, annotationClass);
+    if (annotation instanceof ApiGroup) {
+      return ((ApiGroup) annotation).value();
+    } else if (annotation instanceof ApiVersion) {
+      return ((ApiVersion) annotation).value();
+    }
+    return null;
+  }
+
+  private static Annotation getAnnotation(Class kubernetesResourceType, Class annotationClass) {
+    return Arrays.stream(kubernetesResourceType.getAnnotations())
+      .filter(annotation -> annotation.annotationType().equals(annotationClass))
+      .findFirst()
+      .orElse(null);
+  }
 }

@@ -2,6 +2,7 @@
 
 ### 4.10-SNAPSHOT
 #### Bugs
+* Fix #2251: Modify KubernetesDeserializer for handling classes with same name but different apiVersions 
 * Fix #2205: Event model classes from core v1 have been lost
 * Fix #2226: SharedIndexInformer for non-namespaced resources not working
 * Fix #2201: Uberjar doesn't contain model classes anymore
