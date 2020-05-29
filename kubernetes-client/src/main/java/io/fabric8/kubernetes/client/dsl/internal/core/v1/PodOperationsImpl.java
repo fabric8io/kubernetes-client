@@ -82,7 +82,7 @@ import okhttp3.ResponseBody;
 
 public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, DoneablePod, PodResource<Pod, DoneablePod>> implements PodResource<Pod, DoneablePod>,CopyOrReadable<Boolean,InputStream, Boolean> {
 
-    public static final int HTTP_TOO_MANY_REQUESTS = 529;
+    public static final int HTTP_TOO_MANY_REQUESTS = 429;
     private static final String[] EMPTY_COMMAND = {"/bin/sh", "-i"};
 
     private final String containerId;
