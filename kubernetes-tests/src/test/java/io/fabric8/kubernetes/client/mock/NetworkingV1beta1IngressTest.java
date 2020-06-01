@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.networking.v1beta1.Ingress;
 import io.fabric8.kubernetes.api.model.networking.v1beta1.IngressBuilder;
 import io.fabric8.kubernetes.api.model.networking.v1beta1.IngressList;
@@ -28,6 +29,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -38,6 +41,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class NetworkingV1beta1IngressTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
+
+  @Test
+  void testLoad() {
+    KubernetesClient client = server.getClient();
+    List<HasMetadata> itemList = client.load(getClass().getResourceAsStream("/test-v1beta1-ingress.yml")).get();
+
+    assertEquals(1, itemList.size());
+    Ingress ingress = (Ingress) itemList.get(0);
+    assertEquals("tls-example-ingress", ingress.getMetadata().getName());
+    assertEquals(1, ingress.getSpec().getTls().size());
+  }
 
   @Test
   public void testList() {

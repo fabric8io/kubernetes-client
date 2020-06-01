@@ -39,6 +39,9 @@ import io.fabric8.kubernetes.api.KubernetesResourceMappingProvider;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.model.annotation.ApiGroup;
+import io.fabric8.kubernetes.model.annotation.ApiVersion;
+import io.fabric8.kubernetes.model.util.Helper;
 
 public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource> {
 
@@ -125,18 +128,26 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
         private static final String KEY_SEPARATOR = "#";
         private static final String[] PACKAGES = {
                 "io.fabric8.kubernetes.api.model.",
-                "io.fabric8.kubernetes.api.model.admissionregistration.",
+                "io.fabric8.kubernetes.api.model.admission",
+                "io.fabric8.kubernetes.api.model.admissionregistration.v1.",
+                "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.",
                 "io.fabric8.kubernetes.api.model.apiextensions.",
                 "io.fabric8.kubernetes.api.model.apps.",
                 "io.fabric8.kubernetes.api.model.authentication.",
                 "io.fabric8.kubernetes.api.model.authorization.",
+                "io.fabric8.kubernetes.api.model.autoscaling.",
+                "io.fabric8.kubernetes.api.model.autoscaling.v1.",
+                "io.fabric8.kubernetes.api.model.autoscaling.v2beta1.",
+                "io.fabric8.kubernetes.api.model.autoscaling.v2beta2.",
                 "io.fabric8.kubernetes.api.model.batch.",
                 "io.fabric8.kubernetes.api.model.certificates.",
                 "io.fabric8.kubernetes.api.model.coordination.",
+                "io.fabric8.kubernetes.api.model.coordination.v1.",
                 "io.fabric8.kubernetes.api.model.discovery.",
                 "io.fabric8.kubernetes.api.model.extensions.",
                 "io.fabric8.kubernetes.api.model.events.",
                 "io.fabric8.kubernetes.api.model.networking.",
+                "io.fabric8.kubernetes.api.model.networking.v1beta1.",
                 "io.fabric8.kubernetes.api.model.policy.",
                 "io.fabric8.kubernetes.api.model.rbac.",
                 "io.fabric8.kubernetes.api.model.storage.",
@@ -159,7 +170,7 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
         	if (clazz != null) {
         		return clazz; 
         	} 
-    		clazz = getInternalTypeForName(getClassName(key));
+    		clazz = getInternalTypeForName(key);
     		if (clazz != null) {
 				mappings.put(key, clazz);
 			}
@@ -221,15 +232,42 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
             }
         }
 
-        private Class<? extends KubernetesResource> getInternalTypeForName(String name) {
+        private Class<? extends KubernetesResource> getInternalTypeForName(String key) {
+            String name = getClassName(key);
+            List<Class<? extends KubernetesResource>> possibleResults = new ArrayList<>();
+
+            // First pass, check if there are more than one class of same name
             for (String aPackage : PACKAGES) {
                 Class<? extends KubernetesResource> result = loadClassIfExists(aPackage + name);
                 if (result != null) {
+                    possibleResults.add(result);
+                }
+            }
+
+            // If only one class found, return it
+            if (possibleResults.size() == 1) {
+                return possibleResults.get(0);
+            }
+
+            // Compare with apiVersions being compared for set of classes found
+            for (Class<? extends KubernetesResource> result : possibleResults) {
+                String defaultKeyFromClass = getKeyFromClass(result);
+                if (key.equals(defaultKeyFromClass)) {
                     return result;
                 }
             }
             return null;
         }
+
+        private String getKeyFromClass(Class<? extends KubernetesResource> clazz) {
+          String apiGroup = Helper.getAnnotationValue(clazz, ApiGroup.class);
+          String apiVersion = Helper.getAnnotationValue(clazz, ApiVersion.class);
+          if (apiGroup != null && !apiGroup.isEmpty() && apiVersion != null && !apiVersion.isEmpty()) {
+            return createKey(apiGroup + "/" + apiVersion, clazz.getSimpleName());
+          }
+          return clazz.getSimpleName();
+        }
+
 
         private Class<? extends KubernetesResource> loadClassIfExists(String className) {
             try {

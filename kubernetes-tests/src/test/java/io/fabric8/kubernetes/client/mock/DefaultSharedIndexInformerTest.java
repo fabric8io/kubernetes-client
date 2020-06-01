@@ -214,6 +214,7 @@ class DefaultSharedIndexInformerTest {
     factory.startAllRegisteredInformers();
 
     relistSuccessful.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
+    waitUntilResourceVersionSynced();
     assertEquals(0, relistSuccessful.getCount());
     assertEquals(endResourceVersion, podInformer.lastSyncResourceVersion());
 
