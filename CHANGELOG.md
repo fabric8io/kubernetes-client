@@ -1,5 +1,14 @@
 ## CHANGELOG
 
+### 4.10-SNAPSHOT
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
 ### 4.10.2 (2020-06-02)
 #### Bugs
 * Fix #2251: Modify KubernetesDeserializer for handling classes with same name but different apiVersions 
