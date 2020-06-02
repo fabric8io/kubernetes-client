@@ -332,7 +332,7 @@ public interface KubernetesClient extends Client {
   /**
    * API entrypoint for getting events in Kubernetes. Events (core/v1)
    *
-   * @deprecated Use {@link #v1().events() } instead.
+   * @deprecated Use KubernetesClient#v1#events instead.
    * @return MixedOperation object for doing operations for Events
    */
   MixedOperation<Event, EventList, DoneableEvent, Resource<Event, DoneableEvent>> events();
