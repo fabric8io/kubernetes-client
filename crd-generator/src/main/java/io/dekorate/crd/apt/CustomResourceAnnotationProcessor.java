@@ -16,9 +16,7 @@
 package io.dekorate.crd.apt;
 
 
-import io.dekorate.crd.generator.CustomResourceGenerator;
-import io.dekorate.processor.AbstractAnnotationProcessor;
-import io.sundr.codegen.CodegenContext;
+import java.util.Set;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
@@ -26,7 +24,20 @@ import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import java.util.Set;
+
+import io.dekorate.config.AnnotationConfiguration;
+import io.dekorate.crd.adapter.CustomResourceConfigAdapter;
+import io.dekorate.crd.annotation.CustomResource;
+import io.dekorate.crd.confg.Keys;
+import io.dekorate.crd.config.CustomResourceConfig;
+import io.dekorate.crd.config.CustomResourceConfigBuilder;
+import io.dekorate.crd.configurator.AddClassNameConfigurator;
+import io.dekorate.crd.generator.CustomResourceGenerator;
+import io.dekorate.processor.AbstractAnnotationProcessor;
+import io.sundr.codegen.CodegenContext;
+import io.sundr.codegen.functions.ElementTo;
+import io.sundr.codegen.model.TypeDef;
+import io.sundr.codegen.utils.ModelUtils;
 
 @SupportedAnnotationTypes({"io.dekorate.crd.annotation.CustomResource"})
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
@@ -44,5 +55,18 @@ public class CustomResourceAnnotationProcessor extends AbstractAnnotationProcess
       }
     }
     return false;
+  }
+
+  @Override
+  public void add(Element element) {
+    CustomResource customResource = element.getAnnotation(CustomResource.class);
+    if (element instanceof TypeElement) {
+      TypeDef definition = ElementTo.TYPEDEF.apply((TypeElement) element);
+      String className = ModelUtils.getClassName(element);
+
+      on(customResource != null
+        ? new AnnotationConfiguration<CustomResourceConfig>(CustomResourceConfigAdapter.newBuilder(customResource).addToAttributes(Keys.TYPE_DEFINITION, definition).accept(new AddClassNameConfigurator(className)))
+        : new AnnotationConfiguration<CustomResourceConfig>(new CustomResourceConfigBuilder().addToAttributes(Keys.TYPE_DEFINITION, definition).accept(new AddClassNameConfigurator(className))));
+    }
   }
 }

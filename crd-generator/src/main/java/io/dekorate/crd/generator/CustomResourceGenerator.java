@@ -40,20 +40,7 @@ public interface CustomResourceGenerator extends Generator, WithSession {
 
   @Override
   default void add(Map map) {
-    on(new PropertyConfiguration<>(CustomResourceConfigAdapter.newBuilder(propertiesMap(map, CustomResource.class))));
-  }
-
-  @Override
-  default void add(Element element) {
-    CustomResource customResource = element.getAnnotation(CustomResource.class);
-    if (element instanceof TypeElement) {
-      TypeDef definition = ElementTo.TYPEDEF.apply((TypeElement) element);
-      String className = ModelUtils.getClassName(element);
-
-      on(customResource != null
-        ? new AnnotationConfiguration<CustomResourceConfig>(CustomResourceConfigAdapter.newBuilder(customResource).addToAttributes(Keys.TYPE_DEFINITION, definition).accept(new AddClassNameConfigurator(className)))
-        : new AnnotationConfiguration<CustomResourceConfig>(new CustomResourceConfigBuilder().addToAttributes(Keys.TYPE_DEFINITION, definition).accept(new AddClassNameConfigurator(className))));
-    }
+    on(new PropertyConfiguration<>(CustomResourceConfigAdapter.newBuilder(propertiesMap(map, CustomResourceConfig.class))));
   }
 
   default void on(ConfigurationSupplier<CustomResourceConfig> config) {
