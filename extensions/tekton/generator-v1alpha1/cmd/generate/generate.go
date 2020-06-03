@@ -36,7 +36,6 @@ func main() {
 		reflect.TypeOf(v1alpha1.TaskList{}):        schemagen.Namespaced,
 		reflect.TypeOf(v1alpha1.TaskRunList{}):     schemagen.Namespaced,
 		reflect.TypeOf(v1alpha1.ClusterTaskList{}): schemagen.Cluster,
-
 		reflect.TypeOf(resource.PipelineResourceList{}): schemagen.Namespaced,
 	}
 
