@@ -17,3 +17,4 @@
 io.fabric8.kubernetes.client.URLFromEnvVarsImpl
 io.fabric8.kubernetes.client.URLFromIngressImpl
 io.fabric8.kubernetes.client.URLFromNodePortImpl
+io.fabric8.kubernetes.client.URLFromClusterIPImpl

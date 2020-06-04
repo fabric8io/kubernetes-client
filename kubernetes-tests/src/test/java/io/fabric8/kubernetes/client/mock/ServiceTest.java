@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.mock;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
+import io.fabric8.kubernetes.api.model.extensions.IngressListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -26,6 +27,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
+import java.net.HttpURLConnection;
 import java.util.Collections;
 
 import static junit.framework.TestCase.assertNotNull;
@@ -138,5 +140,34 @@ class ServiceTest {
 
     assertNotNull(responseFromServer);
     assertEquals("bar", responseFromServer.getMetadata().getLabels().get("foo"));
+  }
+
+  @Test
+  void testGetUrlFromClusterIPService() {
+    // Given
+    Service service = new ServiceBuilder()
+      .withNewMetadata().withName("svc1").endMetadata()
+      .withNewSpec()
+      .withClusterIP("187.30.14.32")
+      .addNewPort()
+      .withName("http")
+      .withPort(8080)
+      .withProtocol("TCP")
+      .withNewTargetPort().withIntVal(8080).endTargetPort()
+      .endPort()
+      .withType("ClusterIP")
+      .endSpec()
+      .build();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/services/svc1")
+      .andReturn(HttpURLConnection.HTTP_OK, service).always();
+    server.expect().get().withPath("/apis/extensions/v1beta1/namespaces/ns1/ingresses")
+      .andReturn(HttpURLConnection.HTTP_OK, new IngressListBuilder().build()).always();
+    KubernetesClient client = server.getClient();
+
+    // When
+    String url = client.services().inNamespace("ns1").withName("svc1").getURL("http");
+
+    // Then
+    assertEquals("tcp://187.30.14.32:8080", url);
   }
 }
