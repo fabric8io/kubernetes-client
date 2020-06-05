@@ -4,6 +4,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #2233: client.service().getUrl(..) should be able to fetch URL for ClusterIP based services
 
 #### Dependency Upgrade
 

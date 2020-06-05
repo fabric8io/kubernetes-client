@@ -13,25 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.api.model.Service;
+import io.fabric8.kubernetes.api.model.ServicePort;
+import io.fabric8.kubernetes.client.utils.URLFromServiceUtil;
 
-public interface ServiceToURLProvider {
-  enum ServiceToUrlImplPriority {
-    FIRST(0), SECOND(1), THIRD(2), FOURTH(3), FIFTH(4);
-
-    private final int value;
-
-    ServiceToUrlImplPriority(final int newVal) {
-      value = newVal;
-    }
-
-    public int getValue() { return value; }
+public class URLFromClusterIPImpl implements ServiceToURLProvider {
+  @Override
+  public int getPriority() {
+    return ServiceToUrlImplPriority.FIFTH.getValue();
   }
 
-  int getPriority();
-
-  String getURL(Service service, String portName, String namespace, KubernetesClient client);
+  @Override
+  public String getURL(Service service, String portName, String namespace, KubernetesClient client) {
+    ServicePort port = URLFromServiceUtil.getServicePortByName(service, portName);
+    if (port != null && service.getSpec().getType().equals("ClusterIP")) {
+      return port.getProtocol().toLowerCase() + "://" + service.getSpec().getClusterIP() + ":" + port.getPort();
+    }
+    return null;
+  }
 }
