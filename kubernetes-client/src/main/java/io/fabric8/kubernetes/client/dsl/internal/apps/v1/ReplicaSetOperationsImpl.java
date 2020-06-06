@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.dsl.internal.apps.v1;
 
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.ContainerBuilder;
 import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.OwnerReference;
 import io.fabric8.kubernetes.api.model.Pod;
@@ -24,7 +23,6 @@ import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.apps.DoneableReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
-import io.fabric8.kubernetes.api.model.apps.ReplicaSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Config;
@@ -46,6 +44,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, RollableScalableResource<ReplicaSet, DoneableReplicaSet>>
@@ -78,23 +77,57 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
     ReplicaSet oldRC = get();
 
     if (oldRC == null) {
-      throw new KubernetesClientException("Existing replica set doesn't exist");
+      throw new KubernetesClientException("Existing replication controller doesn't exist");
     }
     if (oldRC.getSpec().getTemplate().getSpec().getContainers().size() > 1) {
       throw new KubernetesClientException("Image update is not supported for multicontainer pods");
     }
-    if (oldRC.getSpec().getTemplate().getSpec().getContainers().size() == 0) {
+    if (oldRC.getSpec().getTemplate().getSpec().getContainers().isEmpty()) {
       throw new KubernetesClientException("Pod has no containers!");
     }
 
-    Container updatedContainer = new ContainerBuilder(oldRC.getSpec().getTemplate().getSpec().getContainers().iterator().next()).withImage(image).build();
+    Container container = oldRC.getSpec().getTemplate().getSpec().getContainers().iterator().next();
+    return updateImage(Collections.singletonMap(container.getName(), image));
+  }
 
-    ReplicaSetBuilder newRCBuilder = new ReplicaSetBuilder(oldRC);
-    newRCBuilder.editMetadata().withResourceVersion(null).endMetadata()
-      .editSpec().editTemplate().editSpec().withContainers(Collections.singletonList(updatedContainer))
-      .endSpec().endTemplate().endSpec();
+  @Override
+  public ReplicaSet updateImage(Map<String, String> containerToImageMap) {
+    ReplicaSet replicationController = get();
+    if (replicationController == null) {
+      throw new KubernetesClientException("Existing replica set doesn't exist");
+    }
+    if (replicationController.getSpec().getTemplate().getSpec().getContainers().isEmpty()) {
+      throw new KubernetesClientException("Pod has no containers!");
+    }
 
-    return new ReplicaSetRollingUpdater(client, config, namespace).rollUpdate(oldRC, newRCBuilder.build());
+    List<Container> containers = replicationController.getSpec().getTemplate().getSpec().getContainers();
+    for (Container container : containers) {
+      if (containerToImageMap.containsKey(container.getName())) {
+        container.setImage(containerToImageMap.get(container.getName()));
+      }
+    }
+    replicationController.getSpec().getTemplate().getSpec().setContainers(containers);
+    return sendPatchedObject(get(), replicationController);
+  }
+
+  @Override
+  public ReplicaSet pause() {
+    throw new UnsupportedOperationException(context.getPlural() + " \"" + name + "\" pausing is not supported");
+  }
+
+  @Override
+  public ReplicaSet resume() {
+    throw new UnsupportedOperationException(context.getPlural() + " \"" + name + "\" resuming is not supported");
+  }
+
+  @Override
+  public ReplicaSet restart() {
+    throw new UnsupportedOperationException(context.getPlural() + " \"" + name + "\" restarting is not supported");
+  }
+
+  @Override
+  public ReplicaSet undo() {
+    throw new UnsupportedOperationException("no rollbacker has been implemented for \"" + get().getKind() +"\"");
   }
 
   @Override

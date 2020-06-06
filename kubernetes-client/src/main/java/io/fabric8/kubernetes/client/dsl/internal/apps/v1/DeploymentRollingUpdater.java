@@ -85,8 +85,7 @@ class DeploymentRollingUpdater extends RollingUpdater<Deployment, DeploymentList
   @Override
   protected void updateDeploymentKey(DoneableDeployment obj, String hash) {
     obj.editSpec()
-      .editSelector().addToMatchLabels(DEPLOYMENT_KEY, hash).endSelector()
-      .editTemplate().editMetadata().addToLabels(DEPLOYMENT_KEY, hash).endMetadata().endTemplate()
+      .editTemplate().editMetadata().addToAnnotations(DEPLOYMENT_KEY, hash).endMetadata().endTemplate()
       .endSpec();
   }
 

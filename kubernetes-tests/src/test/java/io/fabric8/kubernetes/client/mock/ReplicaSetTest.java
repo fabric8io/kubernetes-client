@@ -23,12 +23,17 @@ import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
+import java.net.HttpURLConnection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -264,4 +269,80 @@ public class ReplicaSetTest {
     client.resource(repl1).inNamespace("test").createOrReplace();
   }
 
+  @Test
+  @DisplayName("Should update image based in single argument")
+  void testRolloutUpdateSingleImage() throws InterruptedException {
+    // Given
+    String imageToUpdate = "nginx:latest";
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/replicasets/replicaset1")
+      .andReturn(HttpURLConnection.HTTP_OK, getReplicaSetBuilder().build()).times(3);
+    server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/replicasets/replicaset1")
+      .andReturn(HttpURLConnection.HTTP_OK, getReplicaSetBuilder()
+        .editSpec().editTemplate().editSpec().editContainer(0)
+        .withImage(imageToUpdate)
+        .endContainer().endSpec().endTemplate().endSpec()
+        .build()).times(2);
+    KubernetesClient client = server.getClient();
+
+    // When
+    ReplicaSet replicationController = client.apps().replicaSets().inNamespace("ns1").withName("replicaset1")
+      .rolling().updateImage(imageToUpdate);
+
+    // Then
+    assertNotNull(replicationController);
+    assertEquals(imageToUpdate, replicationController.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
+    RecordedRequest recordedRequest = server.getLastRequest();
+    assertEquals("PATCH", recordedRequest.getMethod());
+    assertTrue(recordedRequest.getBody().readUtf8().contains(imageToUpdate));
+  }
+
+  @Test
+  @DisplayName("Should update image based in map based argument")
+  void testRolloutUpdateImage() throws InterruptedException {
+    // Given
+    Map<String, String> containerToImageMap = Collections.singletonMap("nginx", "nginx:latest");
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/replicasets/replicaset1")
+      .andReturn(HttpURLConnection.HTTP_OK, getReplicaSetBuilder().build()).times(3);
+    server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/replicasets/replicaset1")
+      .andReturn(HttpURLConnection.HTTP_OK, getReplicaSetBuilder()
+        .editSpec().editTemplate().editSpec().editContainer(0)
+        .withImage(containerToImageMap.get("nginx"))
+        .endContainer().endSpec().endTemplate().endSpec()
+        .build()).once();
+    KubernetesClient client = server.getClient();
+
+    // When
+    ReplicaSet replicationController = client.apps().replicaSets().inNamespace("ns1").withName("replicaset1")
+      .rolling().updateImage(containerToImageMap);
+
+    // Then
+    assertNotNull(replicationController);
+    assertEquals(containerToImageMap.get("nginx"), replicationController.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
+    RecordedRequest recordedRequest = server.getLastRequest();
+    assertEquals("PATCH", recordedRequest.getMethod());
+    assertTrue(recordedRequest.getBody().readUtf8().contains(containerToImageMap.get("nginx")));
+  }
+
+  private ReplicaSetBuilder getReplicaSetBuilder() {
+    return new ReplicaSetBuilder()
+      .withNewMetadata()
+      .withName("replicaset1")
+      .addToLabels("app", "nginx")
+      .addToAnnotations("app", "nginx")
+      .endMetadata()
+      .withNewSpec()
+      .withReplicas(1)
+      .withNewTemplate()
+      .withNewMetadata().addToLabels("app", "nginx").endMetadata()
+      .withNewSpec()
+      .addNewContainer()
+      .withName("nginx")
+      .withImage("nginx:1.7.9")
+      .addNewPort().withContainerPort(80).endPort()
+      .endContainer()
+      .endSpec()
+      .endTemplate()
+      .endSpec();
+
+  }
 }

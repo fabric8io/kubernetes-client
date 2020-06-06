@@ -16,15 +16,16 @@
 package io.fabric8.kubernetes.client.dsl.internal.apps.v1;
 
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.ContainerBuilder;
 import io.fabric8.kubernetes.api.model.DoneablePod;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.OwnerReference;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.Status;
-import io.fabric8.kubernetes.api.model.apps.DoneableStatefulSet;
+import io.fabric8.kubernetes.api.model.apps.ControllerRevision;
+import io.fabric8.kubernetes.api.model.apps.ControllerRevisionList;
 import io.fabric8.kubernetes.api.model.apps.StatefulSet;
-import io.fabric8.kubernetes.api.model.apps.StatefulSetBuilder;
+import io.fabric8.kubernetes.api.model.apps.DoneableStatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetList;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Config;
@@ -41,11 +42,14 @@ import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import okhttp3.OkHttpClient;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 public class StatefulSetOperationsImpl extends RollableScalableResourceOperation<StatefulSet, StatefulSetList, DoneableStatefulSet, RollableScalableResource<StatefulSet, DoneableStatefulSet>>
@@ -106,6 +110,26 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
   }
 
   @Override
+  public StatefulSet updateImage(Map<String, String> containerToImageMap) {
+    StatefulSet statefulSet = get();
+    if (statefulSet == null) {
+      throw new KubernetesClientException("Existing replica set doesn't exist");
+    }
+    if (statefulSet.getSpec().getTemplate().getSpec().getContainers().isEmpty()) {
+      throw new KubernetesClientException("Pod has no containers!");
+    }
+
+    List<Container> containers = statefulSet.getSpec().getTemplate().getSpec().getContainers();
+    for (Container container : containers) {
+      if (containerToImageMap.containsKey(container.getName())) {
+        container.setImage(containerToImageMap.get(container.getName()));
+      }
+    }
+    statefulSet.getSpec().getTemplate().getSpec().setContainers(containers);
+    return sendPatchedObject(get(), statefulSet);
+  }
+
+  @Override
   public StatefulSet updateImage(String image) {
     StatefulSet oldRC = get();
 
@@ -115,18 +139,12 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
     if (oldRC.getSpec().getTemplate().getSpec().getContainers().size() > 1) {
       throw new KubernetesClientException("Image update is not supported for multicontainer pods");
     }
-    if (oldRC.getSpec().getTemplate().getSpec().getContainers().size() == 0) {
+    if (oldRC.getSpec().getTemplate().getSpec().getContainers().isEmpty()) {
       throw new KubernetesClientException("Pod has no containers!");
     }
 
-    Container updatedContainer = new ContainerBuilder(oldRC.getSpec().getTemplate().getSpec().getContainers().iterator().next()).withImage(image).build();
-
-    StatefulSetBuilder newRCBuilder = new StatefulSetBuilder(oldRC);
-    newRCBuilder.editMetadata().withResourceVersion(null).endMetadata()
-      .editSpec().editTemplate().editSpec().withContainers(Collections.singletonList(updatedContainer))
-      .endSpec().endTemplate().endSpec();
-
-    return new StatefulSetRollingUpdater(client, config, namespace).rollUpdate(oldRC, newRCBuilder.build());
+    Container container = oldRC.getSpec().getTemplate().getSpec().getContainers().iterator().next();
+    return updateImage(Collections.singletonMap(container.getName(), image));
   }
 
   @Override
@@ -210,5 +228,66 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
       return podResources.get(0).watchLog(out);
     }
     return null;
+  }
+
+  @Override
+  public StatefulSet pause() {
+    return sendPatchedStatefulSet(RollingUpdater.requestPayLoadForRolloutPause());
+  }
+
+  @Override
+  public StatefulSet resume() {
+    return sendPatchedStatefulSet(RollingUpdater.requestPayLoadForRolloutResume());
+  }
+
+  @Override
+  public StatefulSet restart() {
+    return sendPatchedStatefulSet(RollingUpdater.requestPayLoadForRolloutRestart());
+  }
+
+  @Override
+  public StatefulSet undo() {
+    List<ControllerRevision> controllerRevisions = getControllerRevisionListForStatefulSet(get()).getItems();
+    if (controllerRevisions.size() < 2) {
+      throw new IllegalStateException("No revision to rollback to!");
+    }
+
+    // Sort list of replicaSets based on revision annotation
+    controllerRevisions.sort((o1, o2) -> {
+      Long revision2 = o2.getRevision();
+      Long revision1 = o1.getRevision();
+      if (revision1 != null && revision2 != null) {
+        return revision2.intValue() - revision1.intValue();
+      } else if (revision1 != null) {
+        return revision1.intValue();
+      } else if (revision2 != null) {
+        return revision2.intValue();
+      } else {
+        return 0;
+      }
+    });
+    ControllerRevision previousControllerRevision = controllerRevisions.get(1);
+
+    return sendPatchedStatefulSetData(previousControllerRevision.getData());
+  }
+
+  private StatefulSet sendPatchedStatefulSet(Map<String, Object> patchedUpdate) {
+    StatefulSet oldStatefulSet = get();
+    try {
+      return handlePatch(oldStatefulSet, patchedUpdate);
+    } catch (InterruptedException interruptedException) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(interruptedException);
+    } catch (ExecutionException | IOException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+
+  private StatefulSet sendPatchedStatefulSetData(HasMetadata patchedUpdate) {
+    return sendPatchedStatefulSet(getObjectValueAsMap(patchedUpdate));
+  }
+
+  private ControllerRevisionList getControllerRevisionListForStatefulSet(StatefulSet statefulSet) {
+    return new ControllerRevisionOperationsImpl(client, config, getNamespace()).withLabels(statefulSet.getSpec().getSelector().getMatchLabels()).list();
   }
 }

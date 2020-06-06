@@ -47,6 +47,10 @@ This document contains common usages of different resources using Fabric8 Kubern
   * [Initializing Tekton Client](#initializing-tekton-client)
   * [Tekton Client DSL Usage](#tekton-client-dsl-usage)
 
+* [Knative Client](#knative-client)
+  * [Initializing Knative Client](#initializing-knative-client)
+  * [Knative Client DSL Usage](#knative-client-dsl-usage)
+
 ### Initializing Kubernetes Client
 Typically, we create Kubernetes Client like this:
 ```
@@ -343,18 +347,54 @@ Deployment updatedDeploy = client.apps().deployments().inNamespace("default")
       .withName("deployment1").edit()
       .editSpec().withReplicas(2).endSpec().done();
 ```
-- Rolling update a `Deployment`:
+- Update single container image inside `Deployment`:
 ```
-// Not sure about state of this, but this way should work. Otherwise it's a bug
-client.apps().deployments().inNamespace("default").withName("ngix-controller")
+Deployment updatedDeployment = client.apps().deployments().inNamespace("default").withName("ngix-controller")
 			.rolling().updateImage("docker.io/nginx:latest");
+```
+- Update multiple container images inside `Deployment`:
+```
+Map<String, String> containerToImageMap = new HashMap<>();
+containerToImageMap.put("nginx", "nginx:perl");
+containerToImageMap.put("sidecar", "someImage:someVersion");
+Deployment updatedDeployment = client.apps().deployments()
+      .inNamespace("default")
+      .withName("nginx-deployment")
+      .rolling()
+      .updateImage(containerToImageMap);
 
-// Workaround specified in https://github.com/fabric8io/kubernetes-client/issues/1868#issuecomment-569908949
-client.apps().deployments().inNamespace("default").withName("nginx-controller")
-  .edit().editSpec().editTemplate().editMetadata()
-  .addToAnnotations("dummy", "du_"+System.currentTimeMillis())
-  .endMetadata().endTemplate().endSpec()
-  .done();
+```
+- Rollout restart a `Deployment`:
+```
+Deployment deployment = client.apps().deployments()
+      .inNamespace("default")
+      .withName("nginx-deployment")
+      .rolling()
+      .restart();
+```
+- Pause Rollout of a `Deployment`:
+```
+Deployment deployment = client.apps().deployments()
+      .inNamespace("default")
+      .withName("nginx-deployment")
+      .rolling()
+      .pause();
+```
+- Resume Rollout of a `Deployment`:
+```
+Deployment deployment = client.apps().deployments()
+      .inNamespace("default")
+      .withName("nginx-deployment")
+      .rolling()
+      .resume();
+```
+- Undo Rollout of a `Deployment`:
+```
+Deployment deployment = client.apps().deployments()
+      .inNamespace("default")
+      .withName("nginx-deployment")
+      .rolling()
+      .undo();
 ```
 - Deleting a `Deployment`:
 ```
@@ -502,6 +542,25 @@ client.apps().replicaSets().inNamespace("default").watch(new Watcher<ReplicaSet>
 // Scale to 3 replicas
 client.apps().replicaSets().inNamespace("default").withName("nginx-rs").scale(3);
 ```
+- Update Image in `ReplicaSet`
+```
+ReplicaSet replicaSet = client.apps().replicaSets()
+            .inNamespace("default")
+            .withName("soaktestrs")
+            .rolling()
+            .updateImage("nickchase/soaktest");
+```
+- Update multiple Images in `ReplicaSet`:
+```
+Map<String, String> containerToImageMap = new HashMap<>();
+containerToImageMap.put("c1", "image1");
+containerToImageMap.put("c2", "image2");
+ReplicaSet replicaSet = client.apps().replicaSets()
+            .inNamespace("default")
+            .withName("soaktestrs")
+            .rolling()
+            .updateImage(containerToImageMap);
+```
 
 ### ReplicationController
 
@@ -584,6 +643,25 @@ client.replicationControllers().inNamespace(currentNamespace).watch(new Watcher<
 - Scale `ReplicationController`:
 ```
 ReplicationController rc = client.replicationControllers().inNamespace("default").withName("nginx-controller").scale(2);
+```
+- Update image in `ReplicationController`:
+```
+ReplicationController rc = client.replicationControllers()
+       .inNamespace("default")
+       .withName("nginx")
+       .rolling()
+       .updateImage("nginx:latest");
+```
+- Update multiple images in `ReplicationController`:
+```
+Map<String, String> containerToImageMap = new HashMap<>();
+containerToImageMap.put("c1", "image1");
+containerToImageMap.put("c2", "image2");
+ReplicationController rc = client.replicationControllers()
+       .inNamespace("default")
+       .withName("nginx")
+       .rolling()
+       .updateImage(controllerToImageMap);
 ```
 
 ### ConfigMap
@@ -1140,6 +1218,57 @@ client.apps().statefulSets().inNamespace("default").withName("ss1").watch(new Wa
 
   }
 })
+```
+- Update Image in `StatefulSet`:
+```
+StatefulSet statefulSet = client.apps().statefulSets()
+      .inNamespace("default")
+      .withName("web")
+      .rolling()
+      .updateImage("nginx:1.19");
+```
+- Updated multiple containers in `StatefulSet`:
+```
+Map<String, String> containerToImageMap = new HashMap<>();
+containerToImageMap("container1", "nginx:1.9");
+containerToImageMap("container2", "busybox:latest");
+Statefulset statefulSet = client.apps().statefulSets()
+      .inNamespace("default")
+      .withName("web")
+      .rolling()
+      .updateImage(params);
+```
+- Restart Rollout for `StatefulSet`:
+```
+StatefulSet ss = client.apps().statefulSets()
+        .inNamespace("default")
+        .withName("web")
+        .rolling()
+        .restart();
+```
+- Pause Rollout for `StatefulSet`:
+```
+StatefulSet ss = client.apps().statefulSets()
+         .inNamespace("default")
+         .withName("web")
+         .rolling()
+         .pause();
+```
+- Resume Rollout for `StatefulSet`:
+```
+StatefulSet ss = client.apps().statefulSets()
+         .inNamespace("default")
+         .withName("web")
+         .rolling()
+         .resume();
+```
+- Undo Rollout for `StatefulSet`:
+```
+StatefulSet ss = client.apps().statefulSets()
+     .inNamespace("default")
+     .withName("web")
+     .rolling()
+     .undo();
 ```
 
 ### DaemonSet
@@ -2352,4 +2481,56 @@ PipelineRun pipelineRun = new PipelineRunBuilder()
         .build();
 
 tektonClient.v1beta1().pipelineRuns().inNamespace("default").create(pipelineRun);
+```
+
+### Knative Client
+Fabric8 Kubernetes Client also has an extension for Knative.
+It is pretty much the same as Kubernetes Client but has support for some additional Knative resources.
+
+#### Initializing Knative Client
+Initializing Knative client is the same as Kubernetes Client. 
+```
+try (final KnativeClient client = new DefaultKnativeClient()) {
+  // Do stuff with client
+}
+```
+This would pick up default settings, reading your `kubeconfig` file from `~/.kube/config` directory or whatever is defined inside `KUBECONFIG` environment variable.
+But if you want to customize creation of client, you can also pass a `Config` object inside `DefaultKnativeClient`.
+You can also create `KnativeClient` from an existing instance of `KubernetesClient`. 
+There is a method called `adapt(..)` for this.
+Here is an example:
+```
+KubernetesClient client = new DefaultKubernetesClient();
+KnativeClient knativeClient = client.adapt(KnativeClient.class);
+```
+
+#### Knative Client DSL Usage
+The usage of the resources follows the same pattern as for K8s resources like Pods or Deployments.
+Here are some common examples:
+
+- Listing all `Service` objects in some specific namespace:
+```
+ServiceList list = knativeClient.services().inNamespace("default").list();
+```
+- Create a `Service`:
+```
+try (KnativeClient kn = new DefaultKnativeClient()) {
+    // Create Service object
+    Service service = new ServiceBuilder()
+            .withNewMetadata().withName("helloworld-go").endMetadata()
+            .withNewSpec()
+            .withNewTemplate()
+            .withNewSpec()
+            .addToContainers(new ContainerBuilder()
+                    .withImage("gcr.io/knative-samples/helloworld-go")
+                    .addNewEnv().withName("TARGET").withValue("Go Sample V1").endEnv()
+                    .build())
+            .endSpec()
+            .endTemplate()
+            .endSpec()
+            .build();
+
+    // Apply it onto Kubernetes Server
+    kn.services().inNamespace("default").createOrReplace(service);
+}
 ```
