@@ -2,6 +2,8 @@
 
 ### 4.10-SNAPSHOT
 #### Bugs
+* Fix Raw CustomResource API path generation to not having trailing slash
+* Fix KubernetesAttributesExctractor to extract metadata from unregistered custom resources, such when using Raw CustomResource API 
 
 #### Improvements
 * Fix #2233: client.service().getUrl(..) should be able to fetch URL for ClusterIP based services
