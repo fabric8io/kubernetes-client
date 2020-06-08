@@ -79,7 +79,7 @@ public class CustomResourceTest {
     String jsonObject = "{\"apiVersion\": \"test.fabric8.io/v1alpha1\",\"kind\": \"Hello\"," +
       "\"metadata\": {\"name\": \"example-hello\"},\"spec\": {\"size\": 3}}";
 
-    server.expect().post().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/").andReturn(HttpURLConnection.HTTP_CREATED, jsonObject).once();
+    server.expect().post().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos").andReturn(HttpURLConnection.HTTP_CREATED, jsonObject).once();
     KubernetesClient client = server.getClient();
 
     Map<String, Object> resource = client.customResource(customResourceDefinitionContext).create("ns1", jsonObject);
@@ -91,7 +91,7 @@ public class CustomResourceTest {
     String jsonObject = "{\"apiVersion\": \"test.fabric8.io/v1alpha1\",\"kind\": \"Hello\"," +
       "\"metadata\": {\"resourceVersion\":\"1\", \"name\": \"example-hello\"},\"spec\": {\"size\": 3}}";
 
-    server.expect().post().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/").andReturn(HttpURLConnection.HTTP_CREATED, jsonObject).once();
+    server.expect().post().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos").andReturn(HttpURLConnection.HTTP_CREATED, jsonObject).once();
     server.expect().get().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello").andReturn(HttpURLConnection.HTTP_OK, jsonObject).once();
     server.expect().put().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello").andReturn(HttpURLConnection.HTTP_OK, jsonObject).once();
     KubernetesClient client = server.getClient();
@@ -108,7 +108,7 @@ public class CustomResourceTest {
     String jsonObject = "{\"metadata\":{\"continue\":\"\",\"resourceVersion\":\"539617\",\"selfLink\":\"test.fabric8.io/v1alpha1/namespaces/ns1/hellos/\"},\"apiVersion\":\"test.fabric8.io/v1alpha1\",\"kind\":\"HelloList\",\"items\":[{\"apiVersion\": \"test.fabric8.io/v1alpha1\",\"kind\": \"Hello\"," +
       "\"metadata\": {\"name\": \"example-hello\"},\"spec\": {\"size\": 3},\"uid\":\"3525437a-6a56-11e9-8787-525400b18c1d\"}]}";
 
-    server.expect().get().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/").andReturn(HttpURLConnection.HTTP_CREATED, jsonObject).once();
+    server.expect().get().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos").andReturn(HttpURLConnection.HTTP_CREATED, jsonObject).once();
     KubernetesClient client = server.getClient();
 
     Map<String, Object> list = client.customResource(customResourceDefinitionContext).list("ns1");
