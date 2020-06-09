@@ -28,7 +28,7 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
  */
 // Override the default KubernetesSerializer so that it doesn't try to deserialize into registered types
 @JsonDeserialize(using = None.class)
-public class RawHasMetadata implements HasMetadata {
+public class FallbackHasMetadata implements HasMetadata {
 
   private String apiVersion;
   private String kind;
@@ -38,10 +38,10 @@ public class RawHasMetadata implements HasMetadata {
    * No args constructor for use in serialization
    *
    */
-  public RawHasMetadata() {
+  public FallbackHasMetadata() {
   }
 
-  public RawHasMetadata(String apiVersion, String kind, ObjectMeta metadata) {
+  public FallbackHasMetadata(String apiVersion, String kind, ObjectMeta metadata) {
     this.apiVersion = apiVersion;
     this.kind = kind;
     this.metadata = metadata;

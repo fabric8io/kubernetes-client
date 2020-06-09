@@ -254,7 +254,7 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
 
   private static HasMetadata toRawHasMetadata(String s) {
     try (InputStream stream = new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8.name()))) {
-      return Serialization.jsonMapper().readValue(stream, RawHasMetadata.class);
+      return Serialization.jsonMapper().readValue(stream, FallbackHasMetadata.class);
     } catch (Exception e) {
       return null;
     }
