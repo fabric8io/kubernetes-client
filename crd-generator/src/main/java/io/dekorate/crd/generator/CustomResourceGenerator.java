@@ -15,31 +15,26 @@
  */
 package io.dekorate.crd.generator;
 
-import io.dekorate.Generator;
-import io.dekorate.Session;
-import io.dekorate.WithSession;
-import io.dekorate.config.ConfigurationSupplier;
-import io.dekorate.config.AnnotationConfiguration;
-import io.dekorate.config.PropertyConfiguration;
-import io.dekorate.crd.adapter.CustomResourceConfigAdapter;
-import io.dekorate.crd.annotation.CustomResource;
-import io.dekorate.crd.confg.Keys;
-import io.dekorate.crd.config.CustomResourceConfig;
-import io.dekorate.crd.config.CustomResourceConfigBuilder;
-import io.dekorate.crd.configurator.AddClassNameConfigurator;
-import io.dekorate.crd.handler.CustomResourceHandler;
-import io.sundr.codegen.functions.ElementTo;
-import io.sundr.codegen.model.TypeDef;
-import io.sundr.codegen.utils.ModelUtils;
-
-import javax.lang.model.element.Element;
-import javax.lang.model.element.TypeElement;
 import java.util.Map;
 
-public interface CustomResourceGenerator extends Generator, WithSession {
+import io.dekorate.Generator;
+import io.dekorate.Session;
+import io.dekorate.config.AnnotationConfiguration;
+import io.dekorate.config.ConfigurationSupplier;
+import io.dekorate.config.PropertyConfiguration;
+import io.dekorate.crd.adapter.CustomResourceConfigAdapter;
+import io.dekorate.crd.config.CustomResourceConfig;
+import io.dekorate.crd.handler.CustomResourceHandler;
+
+public interface CustomResourceGenerator extends Generator  {
 
   @Override
-  default void add(Map map) {
+  default void addAnnotationConfiguration(Map map) {
+    on(new AnnotationConfiguration<>(CustomResourceConfigAdapter.newBuilder(propertiesMap(map, CustomResourceConfig.class))));
+  }
+
+  @Override
+  default void addPropertyConfiguration(Map map) {
     on(new PropertyConfiguration<>(CustomResourceConfigAdapter.newBuilder(propertiesMap(map, CustomResourceConfig.class))));
   }
 
