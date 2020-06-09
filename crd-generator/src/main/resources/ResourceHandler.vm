@@ -13,14 +13,14 @@ package ${model.packageName}.handler;
 
 import java.util.function.Predicate;
 
-import io.dekorate.deps.kubernetes.client.Config;
-import io.dekorate.deps.kubernetes.client.ResourceHandler;
-import io.dekorate.deps.kubernetes.client.Watch;
-import io.dekorate.deps.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ResourceHandler;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import ${model.packageName}.${kind};
 import ${model.packageName}.operation.${kind}OperationsImpl;
 
-import io.dekorate.deps.okhttp3.OkHttpClient;
+import okhttp3.OkHttpClient;
 
 import ${model.fullyQualifiedName};
 import ${model.fullyQualifiedName}Builder;

@@ -15,8 +15,8 @@
  */
 package io.dekorate.crd.util;
 
-import io.dekorate.deps.kubernetes.api.model.apiextensions.JSONSchemaProps;
-import io.dekorate.deps.kubernetes.api.model.apiextensions.JSONSchemaPropsBuilder;
+import io.fabric8.kubernetes.api.model.apiextensions.JSONSchemaProps;
+import io.fabric8.kubernetes.api.model.apiextensions.JSONSchemaPropsBuilder;
 import io.sundr.builder.internal.functions.TypeAs;
 import io.sundr.builder.internal.utils.BuilderUtils;
 import io.sundr.codegen.functions.ClassTo;

@@ -21,7 +21,7 @@ import io.dekorate.crd.confg.Keys;
 import io.dekorate.crd.config.CustomResourceConfig;
 import io.dekorate.crd.config.EditableCustomResourceConfig;
 import io.dekorate.crd.util.JsonSchema;
-import io.dekorate.deps.kubernetes.api.model.apiextensions.CustomResourceDefinitionBuilder;
+import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionBuilder;
 import io.dekorate.kubernetes.config.Configuration;
 import io.sundr.codegen.model.TypeDef;
 
