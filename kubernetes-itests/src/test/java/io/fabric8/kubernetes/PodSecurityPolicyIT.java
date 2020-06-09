@@ -139,6 +139,6 @@ public class PodSecurityPolicyIT {
   public void cleanup() {
     client.policy().podSecurityPolicies().withName("test-example").delete();
     DeleteEntity<PodSecurityPolicy> deleteEntity = new DeleteEntity<>(PodSecurityPolicy.class, client, "test-example", null);
-    await().atMost(30, TimeUnit.SECONDS).until(deleteEntity);
+    await().atMost(60, TimeUnit.SECONDS).until(deleteEntity);
   }
 }

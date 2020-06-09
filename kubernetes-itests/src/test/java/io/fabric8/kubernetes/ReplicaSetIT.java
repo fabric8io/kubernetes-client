@@ -150,8 +150,5 @@ public class ReplicaSetIT {
     if (client.apps().replicaSets().inNamespace(currentNamespace).list().getItems().size()!= 0) {
       client.apps().replicaSets().inNamespace(currentNamespace).delete();
     }
-    // Wait for resources to get destroyed
-    DeleteEntity<ReplicaSet> replicaSetDelete = new DeleteEntity<>(ReplicaSet.class, client, "replicaset1", currentNamespace);
-    await().atMost(30, TimeUnit.SECONDS).until(replicaSetDelete);
   }
 }

@@ -143,6 +143,6 @@ public class StatefulSetIT {
     }
     // Wait for resources to get destroyed
     DeleteEntity<StatefulSet> statefulSetDelete = new DeleteEntity<>(StatefulSet.class, client, "ss1", currentNamespace);
-    await().atMost(30, TimeUnit.SECONDS).until(statefulSetDelete);
+    await().atMost(60, TimeUnit.SECONDS).until(statefulSetDelete);
   }
 }

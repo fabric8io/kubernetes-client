@@ -108,7 +108,7 @@ public class SecretIT {
     }
     // Wait for resources to get destroyed
     DeleteEntity<Secret> secretDelete = new DeleteEntity<>(Secret.class, client, "secret1", currentNamespace);
-    await().atMost(30, TimeUnit.SECONDS).until(secretDelete);
+    await().atMost(60, TimeUnit.SECONDS).until(secretDelete);
   }
 
   @Test

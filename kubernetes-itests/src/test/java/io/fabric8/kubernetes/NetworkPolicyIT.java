@@ -184,6 +184,6 @@ public class NetworkPolicyIT {
       client.network().networkPolicies().delete();
     }
     DeleteEntity<NetworkPolicy> networkPolicyDelete = new DeleteEntity<>(NetworkPolicy.class, client, "networkpolicy", currentNamespace);
-    await().atMost(30, TimeUnit.SECONDS).until(networkPolicyDelete);
+    await().atMost(60, TimeUnit.SECONDS).until(networkPolicyDelete);
   }
 }

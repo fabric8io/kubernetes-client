@@ -30,8 +30,6 @@ import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.*;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -54,8 +52,6 @@ public class DeploymentIT {
   private Deployment deployment1;
 
   private String currentNamespace;
-
-  private static final Logger logger = LoggerFactory.getLogger(DeploymentIT.class);
 
   @Before
   public void init() {
@@ -95,7 +91,6 @@ public class DeploymentIT {
 
   @Test
   public void load() {
-
     Deployment aDeployment = client.apps().deployments().inNamespace(currentNamespace).load(getClass().getResourceAsStream("/test-deployments.yml")).get();
     assertThat(aDeployment).isNotNull();
     assertEquals("nginx-deployment", aDeployment.getMetadata().getName());
@@ -117,28 +112,22 @@ public class DeploymentIT {
 
   @Test
   public void update() {
-    ReadyEntity<Deployment> deploymentReady = new ReadyEntity<>(Deployment.class, client, "deployment1", currentNamespace);
     deployment1 = client.apps().deployments().inNamespace(currentNamespace).withName("deployment1").edit()
       .editSpec().withReplicas(2).endSpec().done();
-    await().atMost(30, TimeUnit.SECONDS).until(deploymentReady);
     assertThat(deployment1).isNotNull();
     assertEquals(2, deployment1.getSpec().getReplicas().intValue());
   }
 
   @Test
-  public void delete() throws InterruptedException {
-    // Usually creation, deletion of things like Deployments take some time. So let's wait for a while:
-    // Wait for resources to get ready
-    ReadyEntity<Deployment> deploymentReady = new ReadyEntity<>(Deployment.class, client, "deployment1", currentNamespace);
-    await().atMost(30, TimeUnit.SECONDS).until(deploymentReady);
+  public void delete() {
     assertTrue(client.apps().deployments().inNamespace(currentNamespace).delete(deployment1));
   }
 
   @Test
-  public void waitTest() throws InterruptedException {
+  public void waitTest() {
     // Wait for resources to get ready
     ReadyEntity<Deployment> deploymentReady = new ReadyEntity<>(Deployment.class, client, "deployment1", currentNamespace);
-    await().atMost(30, TimeUnit.SECONDS).until(deploymentReady);
+    await().atMost(60, TimeUnit.SECONDS).until(deploymentReady);
     Deployment deploymentOne = client.apps().deployments()
       .inNamespace(currentNamespace).withName("deployment1").get();
     assertTrue(Readiness.isDeploymentReady(deploymentOne));
@@ -146,9 +135,6 @@ public class DeploymentIT {
 
   @Test
   public void listFromServer() {
-    ReadyEntity<Deployment> deploymentReady = new ReadyEntity<>(Deployment.class, client, "deployment1", currentNamespace);
-    await().atMost(30, TimeUnit.SECONDS).until(deploymentReady);
-
     List<HasMetadata> resources = client.resourceList(deployment1).inNamespace(currentNamespace).fromServer().get();
 
     assertNotNull(resources);
@@ -163,7 +149,7 @@ public class DeploymentIT {
   }
 
   @After
-  public void cleanup() throws InterruptedException {
+  public void cleanup() {
     int attempts = 0;
     do {
       try {
@@ -172,11 +158,10 @@ public class DeploymentIT {
         }
         // Wait for resources to get destroyed
         DeleteEntity<Deployment> deploymentDelete = new DeleteEntity<>(Deployment.class, client, "deployment1", currentNamespace);
-        await().atMost(30, TimeUnit.SECONDS).until(deploymentDelete);
+        await().atMost(60, TimeUnit.SECONDS).until(deploymentDelete);
         return;
       } catch(NullPointerException exception) {
         attempts++;
-        continue;
       }
     } while (attempts < 5);
   }

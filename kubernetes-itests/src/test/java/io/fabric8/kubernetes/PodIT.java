@@ -20,12 +20,9 @@ import com.google.common.io.Files;
 import io.fabric8.commons.ReadyEntity;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.LabelSelectorBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
-import io.fabric8.kubernetes.api.model.PodSpec;
-import io.fabric8.kubernetes.api.model.PodSpecBuilder;
 import io.fabric8.kubernetes.api.model.policy.PodDisruptionBudget;
 import io.fabric8.kubernetes.api.model.policy.PodDisruptionBudgetBuilder;
 import io.fabric8.kubernetes.api.model.policy.PodDisruptionBudgetSpecBuilder;
@@ -33,6 +30,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
+import okhttp3.OkHttpClient;
 import okhttp3.Response;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.RandomStringUtils;
@@ -44,8 +42,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -59,6 +55,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -84,10 +82,11 @@ public class PodIT {
 
   private String currentNamespace;
 
-  private static final Logger logger = LoggerFactory.getLogger(PodIT.class);
+  private static Logger logger = Logger.getLogger(PodIT.class.getName());
 
   @Before
   public void init() {
+    Logger.getLogger(OkHttpClient.class.getName()).setLevel(Level.FINE);
     currentNamespace = session.getNamespace();
     client.pods().inNamespace(currentNamespace).delete();
 

@@ -38,7 +38,6 @@ import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeFalse;
 
 @RunWith(ArquillianConditionalRunner.class)
 @RequiresKubernetes
@@ -179,7 +178,7 @@ public class RoleBindingIT {
     assertTrue(deleted);
 
     DeleteEntity<RoleBinding> deleteEntity = new DeleteEntity<>(RoleBinding.class, client, "read-jobs", currentNamespace);
-    await().atMost(30, TimeUnit.SECONDS).until(deleteEntity);
+    await().atMost(60, TimeUnit.SECONDS).until(deleteEntity);
 
     RoleBindingList roleBindingList = client.rbac().roleBindings().inNamespace(currentNamespace).list();
     assertEquals(initialCountBeforeDeletion - 1,roleBindingList.getItems().size());

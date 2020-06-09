@@ -115,7 +115,7 @@ public class ServiceAccountIT {
     DeleteEntity<ServiceAccount> serviceAccount1Delete = new DeleteEntity<>(ServiceAccount.class, client, "serviceaccount1", currentNamespace);
     DeleteEntity<ServiceAccount> serviceAccount2Delete = new DeleteEntity<>(ServiceAccount.class, client, "serviceaccount2", currentNamespace);
 
-    await().atMost(30, TimeUnit.SECONDS).until(serviceAccount1Delete);
-    await().atMost(30, TimeUnit.SECONDS).until(serviceAccount2Delete);
+    await().atMost(60, TimeUnit.SECONDS).until(serviceAccount1Delete);
+    await().atMost(60, TimeUnit.SECONDS).until(serviceAccount2Delete);
   }
 }

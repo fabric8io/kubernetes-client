@@ -18,11 +18,11 @@ package io.fabric8.kubernetes;
 
 import io.fabric8.commons.DeleteEntity;
 import io.fabric8.commons.ReadyEntity;
-import io.fabric8.kubernetes.api.model.*;
-import io.fabric8.kubernetes.api.model.extensions.Ingress;
+import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.Service;
+import io.fabric8.kubernetes.api.model.ServiceBuilder;
+import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.openshift.api.model.RouteBuilder;
-import io.fabric8.openshift.client.OpenShiftClient;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
@@ -139,51 +139,19 @@ public class ServiceIT {
     assertTrue(bDeleted);
   }
 
-  @Test
-  public void getURL() {
-    // Testing NodePort Impl
-    String url = client.services().inNamespace(currentNamespace).withName("svc1").getURL("http");
-    assertNotNull(url);
 
-    // Testing Ingress Impl
-    Ingress ingress = client.extensions().ingresses().load(getClass().getResourceAsStream("/test-ingress.yml")).get();
-    client.extensions().ingresses().inNamespace(currentNamespace).create(ingress);
-
-    url = client.services().inNamespace(currentNamespace).withName("svc2").getURL("80");
-    assertNotNull(url);
-
-    // Testing OpenShift Route Impl
-    Service svc3 = client.services().inNamespace(currentNamespace).create(new ServiceBuilder()
-        .withNewMetadata().withName("svc3").endMetadata()
-        .withNewSpec()
-        .addNewPort().withName("80").withProtocol("TCP").withPort(80).endPort()
-        .endSpec()
-        .build());
-
-    OpenShiftClient openshiftClient = client.adapt(OpenShiftClient.class);
-    openshiftClient.routes().inNamespace(currentNamespace).create(new RouteBuilder()
-      .withNewMetadata().withName(svc3.getMetadata().getName()).endMetadata()
-      .withNewSpec()
-      .withHost("www.example.com")
-      .withNewTo().withName(svc3.getMetadata().getName()).withKind("Service").endTo()
-      .endSpec()
-      .build());
-
-    url = client.services().inNamespace(currentNamespace).withName("svc3").getURL("80");
-    assertNotNull(url);
-  }
 
   @After
-  public void cleanup() throws InterruptedException {
+  public void cleanup() {
     if (client.services().inNamespace(currentNamespace).list().getItems().size()!= 0) {
       client.services().inNamespace(currentNamespace).delete();
     }
 
     // Wait for resources to get destroyed
     DeleteEntity<Service> service1Delete = new DeleteEntity<>(Service.class, client, "svc1", currentNamespace);
-    await().atMost(30, TimeUnit.SECONDS).until(service1Delete);
+    await().atMost(60, TimeUnit.SECONDS).until(service1Delete);
 
     DeleteEntity<Service> service2Delete = new DeleteEntity<>(Service.class, client, "svc2", currentNamespace);
-    await().atMost(30, TimeUnit.SECONDS).until(service2Delete);
+    await().atMost(60, TimeUnit.SECONDS).until(service2Delete);
   }
 }

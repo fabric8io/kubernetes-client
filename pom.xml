@@ -925,5 +925,34 @@
         <maven.compiler.release>8</maven.compiler.release>
       </properties>
     </profile>
+    <profile>
+      <id>javadoc-test</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+              <includeDependencySources>${javadoc.include.deps}</includeDependencySources>
+              <dependencySourceIncludes>
+                <dependencySourceInclude>${javadoc.source.includes}</dependencySourceInclude>
+              </dependencySourceIncludes>
+              <excludePackageNames>${javadoc.package.excludes}</excludePackageNames>
+            </configuration>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+                <configuration>
+                  <additionalparam>${javadoc.opts}</additionalparam>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 </project>

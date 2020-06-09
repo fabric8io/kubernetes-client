@@ -218,7 +218,7 @@ public class ClusterRoleIT {
   public void cleanup() {
     client.rbac().clusterRoles().withName("node-reader").delete();
     DeleteEntity<ClusterRole> deleteEntity = new DeleteEntity<>(ClusterRole.class, client, "node-reader", null);
-    await().atMost(30, TimeUnit.SECONDS).until(deleteEntity);
+    await().atMost(60, TimeUnit.SECONDS).until(deleteEntity);
   }
 
 }

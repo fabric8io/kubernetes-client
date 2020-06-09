@@ -112,6 +112,6 @@ public class ReplicationControllerIT {
     }
     // Wait for resources to get destroyed
     DeleteEntity<ReplicationController> replicationControllerDelete = new DeleteEntity<>(ReplicationController.class, client, "nginx-controller", currentNamespace);
-    await().atMost(30, TimeUnit.SECONDS).until(replicationControllerDelete);
+    await().atMost(60, TimeUnit.SECONDS).until(replicationControllerDelete);
   }
 }

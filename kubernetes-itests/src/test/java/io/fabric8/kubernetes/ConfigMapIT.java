@@ -128,6 +128,6 @@ public class ConfigMapIT {
       client.configMaps().inNamespace(currentNamespace).delete();
     }
     DeleteEntity<ConfigMap> configMapDelete = new DeleteEntity<>(ConfigMap.class, client, "configmap1", currentNamespace);
-    await().atMost(30, TimeUnit.SECONDS).until(configMapDelete);
+    await().atMost(60, TimeUnit.SECONDS).until(configMapDelete);
   }
 }

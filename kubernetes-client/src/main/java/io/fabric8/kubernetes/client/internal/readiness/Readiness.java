@@ -114,7 +114,7 @@ public class Readiness {
     }
 
     return spec.getReplicas().intValue() == status.getReplicas() &&
-      spec.getReplicas().intValue() <= status.getAvailableReplicas();
+      spec.getReplicas() <= status.getAvailableReplicas();
   }
 
 
