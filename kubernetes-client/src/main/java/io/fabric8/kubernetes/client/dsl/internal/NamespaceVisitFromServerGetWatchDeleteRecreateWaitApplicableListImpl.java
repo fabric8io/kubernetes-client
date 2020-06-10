@@ -227,7 +227,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
         this.explicitNamespace = explicitNamespace;
         this.fromServer = fromServer;
         this.deletingExisting = deletingExisting;
-        this.visitors = visitors != null ? new ArrayList<>(visitors) : new ArrayList<Visitor>();
+        this.visitors = visitors != null ? new ArrayList<>(visitors) : new ArrayList<>();
         this.watchRetryInitialBackoffMillis = watchRetryInitialBackoffMillis;
         this.watchRetryBackoffMultiplier = watchRetryBackoffMultiplier;
 

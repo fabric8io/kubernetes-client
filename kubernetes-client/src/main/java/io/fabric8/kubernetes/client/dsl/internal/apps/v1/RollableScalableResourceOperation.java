@@ -41,7 +41,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Operations for resources that represent scalable, rolling-updatable sets of Pods.
  */
-public abstract class RollableScalableResourceOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
+public abstract class RollableScalableResourceOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>, R extends Resource<T, D>>
   extends HasMetadataOperation<T, L, D, R> implements RollableScalableResource<T, D> {
 
   private final Logger Log = LoggerFactory.getLogger(this.getClass());

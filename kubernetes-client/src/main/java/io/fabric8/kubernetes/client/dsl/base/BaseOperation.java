@@ -76,7 +76,7 @@ import java.util.function.Predicate;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 
-public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
+public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>, R extends Resource<T, D>>
   extends OperationSupport
   implements
   OperationInfo,
@@ -718,7 +718,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public T updateStatus(T item) throws KubernetesClientException {
+  public T updateStatus(T item) {
     try {
       return handleStatusUpdate(item, getType());
     } catch (InterruptedException | ExecutionException | IOException e) {
@@ -730,7 +730,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return newInstance(context.withItem(item));
   }
 
-  void deleteThis() throws KubernetesClientException {
+  void deleteThis() {
     try {
       if (item != null) {
         updateApiVersionResource(item);
@@ -743,7 +743,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     }
   }
 
-  void deleteList() throws KubernetesClientException {
+  void deleteList() {
     delete(list().getItems());
   }
 

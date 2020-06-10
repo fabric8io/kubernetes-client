@@ -24,6 +24,7 @@ import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
@@ -555,5 +556,38 @@ public class ResourceTest {
     HasMetadata response = client.resource(pod).fromServer().get();
     assertEquals(pod, response);
   }
+
+  @Test
+  @DisplayName("resource().waitUntilCondition(), resource forced to be reloaded from server even if condition is met by local version")
+  void testFromServerWaitUntilConditionAlwaysGetsResourceFromServer() throws Exception {
+    // Given
+    final Pod conditionNotMetPod = new PodBuilder().withNewMetadata()
+      .withName("pod")
+      .withNamespace("test")
+      .addToLabels("CONDITION", "NOT_MET")
+      .endMetadata().build();
+    final Pod conditionMetPod = new PodBuilder().withNewMetadata()
+      .withName("pod")
+      .withNamespace("test")
+      .withResourceVersion("1")
+      .addToLabels("CONDITION", "MET")
+      .endMetadata()
+      .build();
+    server.expect().get().withPath("/api/v1/namespaces/test/pods/pod").andReturn(200, conditionNotMetPod).once();
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod&watch=true")
+      .andUpgradeToWebSocket().open()
+      .immediately().andEmit(new WatchEvent(conditionNotMetPod, "MODIFIED"))
+      .waitFor(10).andEmit(new WatchEvent(conditionMetPod, "MODIFIED"))
+      .done()
+      .once();
+    // When
+    HasMetadata response = server.getClient()
+      .resource(new PodBuilder(conditionMetPod).build())
+      .waitUntilCondition(p -> "MET".equals(p.getMetadata().getLabels().get("CONDITION")), 1, TimeUnit.SECONDS);
+    // Then
+    assertEquals(conditionMetPod, response);
+    assertEquals(2, server.getMockServer().getRequestCount());
+  }
+
 }
 

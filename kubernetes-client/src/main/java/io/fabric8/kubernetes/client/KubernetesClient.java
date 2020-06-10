@@ -109,7 +109,7 @@ public interface KubernetesClient extends Client {
    * @param <D> D type represents DoneableCustomResource type
    * @return returns a MixedOperation object with which you can do basic CustomResource operations
    */
-  <T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResources(CustomResourceDefinitionContext crdContext, Class<T> resourceType, Class<L> listClass, Class<D> doneClass);
+  <T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResources(CustomResourceDefinitionContext crdContext, Class<T> resourceType, Class<L> listClass, Class<D> doneClass);
 
   /**
    * Typed API for managing CustomResources. You would need to provide POJOs for
@@ -129,7 +129,7 @@ public interface KubernetesClient extends Client {
    * @return returns a MixedOperation object with which you can do basic CustomResource operations
    */
   @Deprecated
-  <T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResources(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass);
+  <T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResources(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass);
 
   /**
    * Old API for dealing with CustomResources.
@@ -146,7 +146,7 @@ public interface KubernetesClient extends Client {
    * @param <D> template argument for doneable resource
    * @return Kubernetes client object for manipulating custom resource.
    */
-  <T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResource(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass);
+  <T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResource(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass);
 
   /**
    * Extensions API entrypoint for APIGroup extensions/v1beta1
@@ -320,7 +320,7 @@ public interface KubernetesClient extends Client {
    *
    * @return MixedOperation object for doing operations for Binding
    */
-  MixedOperation<Binding, KubernetesResourceList, DoneableBinding, Resource<Binding, DoneableBinding>> bindings();
+  MixedOperation<Binding, KubernetesResourceList<Binding>, DoneableBinding, Resource<Binding, DoneableBinding>> bindings();
 
   /**
    * API entrypoint for Endpoints with APIGroup core/v1

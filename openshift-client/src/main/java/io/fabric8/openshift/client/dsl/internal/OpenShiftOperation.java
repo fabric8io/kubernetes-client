@@ -31,7 +31,7 @@ import io.fabric8.openshift.client.OpenShiftConfigBuilder;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
+public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>, R extends Resource<T, D>>
   extends HasMetadataOperation<T, L, D, R> {
 
   public OpenShiftOperation(OperationContext ctx) {

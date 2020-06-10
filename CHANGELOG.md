@@ -5,6 +5,7 @@
 
 #### Improvements
 * Fix #2233: client.service().getUrl(..) should be able to fetch URL for ClusterIP based services
+* Fix #2278: Added type parameters for KubernetesList in KubernetesClient + test verifying waitUntilCondition **always** retrieves resource from server
 
 #### Dependency Upgrade
 
