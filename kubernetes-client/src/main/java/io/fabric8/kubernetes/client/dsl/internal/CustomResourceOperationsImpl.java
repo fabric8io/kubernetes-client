@@ -30,7 +30,7 @@ import okhttp3.OkHttpClient;
 
 /**
  */
-public class CustomResourceOperationsImpl<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>> extends HasMetadataOperation<T, L, D,
+public class CustomResourceOperationsImpl<T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>> extends HasMetadataOperation<T, L, D,
     Resource<T, D>> implements MixedOperation<T, L, D, Resource<T, D>> {
 
   private final boolean resourceNamespaced;

@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.core.v1;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import io.fabric8.kubernetes.api.model.Binding;
 import io.fabric8.kubernetes.api.model.DoneableBinding;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
@@ -24,7 +25,7 @@ import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
 
-public class BindingOperationsImpl extends HasMetadataOperation<Binding, KubernetesResourceList, DoneableBinding, Resource<Binding, DoneableBinding>> {
+public class BindingOperationsImpl extends HasMetadataOperation<Binding, KubernetesResourceList<Binding>, DoneableBinding, Resource<Binding, DoneableBinding>> {
   public BindingOperationsImpl(OkHttpClient client, Config config) {
     this(client, config, null);
   }
@@ -38,7 +39,7 @@ public class BindingOperationsImpl extends HasMetadataOperation<Binding, Kuberne
       .withApiGroupVersion("v1")
       .withPlural("bindings"));
     this.type = Binding.class;
-    this.listType = KubernetesResourceList.class;
+    this.listType = (Class<KubernetesResourceList<Binding>>)new TypeReference<KubernetesResourceList<Binding>>(){}.getType();
     this.doneableType = DoneableBinding.class;
   }
 
