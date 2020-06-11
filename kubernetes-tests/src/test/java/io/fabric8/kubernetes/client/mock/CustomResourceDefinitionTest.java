@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.mock;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionBuilder;
@@ -30,6 +31,7 @@ import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 
 import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.assertEquals;
@@ -68,9 +70,17 @@ class CustomResourceDefinitionTest {
   @Test
   void testLoad() {
     KubernetesClient client = server.getClient();
-    CustomResourceDefinition customResourceDefinition = client.customResourceDefinitions().load(getClass().getResourceAsStream("/sparkapplication-crd.yml")).get();
+    List<HasMetadata> crdList = client.load(getClass().getResourceAsStream("/crd-list.yml")).get();
+    assertNotNull(crdList);
+    assertEquals(5, crdList.size());
+  }
+
+  @Test
+  void testLoadWithJsonSchemaPropsOrBool() {
+    KubernetesClient client = server.getClient();
+    CustomResourceDefinition customResourceDefinition = client.customResourceDefinitions().load(getClass().getResourceAsStream("/kafka-crd.yml")).get();
     assertNotNull(customResourceDefinition);
-    assertEquals("sparkapplications.sparkoperator.k8s.io", customResourceDefinition.getMetadata().getName());
+    assertEquals("kafkatopics.kafka.test", customResourceDefinition.getMetadata().getName());
   }
 
   @Test
