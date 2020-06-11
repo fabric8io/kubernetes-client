@@ -32,7 +32,6 @@ import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.mockwebserver.crud.Attribute;
 import io.fabric8.mockwebserver.crud.AttributeSet;
-import io.fabric8.zjsonpatch.internal.guava.Lists;
 
 public class KubernetesAttributesExtractorTest {
 
@@ -92,10 +91,23 @@ public class KubernetesAttributesExtractorTest {
 		expected = expected.add(new Attribute("namespace", "myns"));
 		expected = expected.add(new Attribute("name", "mypod"));
 		assertTrue(attributes.matches(expected));
-
 	}
 
-	@Test
+  @Test
+  void shouldHandleRawResource() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    String resource = "{\"metadata\":{\"name\":\"myresource\",\"namespace\":\"myns\"}, \"kind\":\"raw\", \"apiVersion\":\"v1\"}";
+
+    AttributeSet attributes = extractor.extract(resource);
+
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("kind", "raw"));
+    expected = expected.add(new Attribute("namespace", "myns"));
+    expected = expected.add(new Attribute("name", "myresource"));
+    assertTrue(attributes.matches(expected));
+  }
+
+  @Test
 	public void shouldHandleResourceWithLabel() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 		Map<String, String> labels = new HashMap<>();

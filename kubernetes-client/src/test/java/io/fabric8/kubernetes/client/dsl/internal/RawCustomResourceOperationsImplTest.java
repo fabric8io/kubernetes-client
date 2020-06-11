@@ -20,17 +20,27 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.utils.Utils;
+import okhttp3.Call;
 import okhttp3.HttpUrl;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+
+import org.bouncycastle.cert.ocsp.Req;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 public class RawCustomResourceOperationsImplTest {
   private OkHttpClient mockClient;
@@ -38,7 +48,7 @@ public class RawCustomResourceOperationsImplTest {
   private CustomResourceDefinitionContext customResourceDefinitionContext;
 
   @BeforeEach
-  public void setUp() {
+  public void setUp() throws IOException {
     this.mockClient = Mockito.mock(OkHttpClient.class, Mockito.RETURNS_DEEP_STUBS);
     this.config = new ConfigBuilder().withMasterUrl("https://localhost:8443/").build();
     this.customResourceDefinitionContext = new CustomResourceDefinitionContext.Builder()
@@ -48,6 +58,60 @@ public class RawCustomResourceOperationsImplTest {
       .withScope("Namespaced")
       .withVersion("v1alpha1")
       .build();
+
+    Call mockCall = mock(Call.class);
+    Response mockResponse = mock(Response.class);
+    when(mockResponse.isSuccessful()).thenReturn(true);
+    when(mockResponse.body()).thenReturn(ResponseBody.create(MediaType.get("application/json"), ""));
+    when(mockCall.execute())
+      .thenReturn(mockResponse);
+    when(mockClient.newCall(any())).thenReturn(mockCall);
+  }
+
+  @Test
+  void testCreateOrReplaceUrl() throws IOException {
+    // Given
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+    String resourceAsString = "{\"metadata\":{\"name\":\"myresource\",\"namespace\":\"myns\"}, \"kind\":\"raw\", \"apiVersion\":\"v1\"}";
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    // When
+    rawCustomResourceOperations.createOrReplace(resourceAsString);
+    rawCustomResourceOperations.createOrReplace("myns", resourceAsString);
+
+    // Then
+    verify(mockClient, times(2)).newCall(captor.capture());
+    assertEquals(2, captor.getAllValues().size());
+    assertEquals("/apis/test.fabric8.io/v1alpha1/hellos", captor.getAllValues().get(0).url().encodedPath());
+    assertEquals("/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos", captor.getAllValues().get(1).url().encodedPath());
+  }
+
+  @Test
+  void testGetUrl() {
+    // Given
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    // When
+    rawCustomResourceOperations.get("myns", "myresource");
+
+    // Then
+    verify(mockClient).newCall(captor.capture());
+    assertEquals("/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/myresource", captor.getValue().url().encodedPath());
+  }
+
+  @Test
+  void testDeleteUrl() throws IOException {
+    // Given
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    // When
+    rawCustomResourceOperations.delete("myns", "myresource");
+
+    // Then
+    verify(mockClient).newCall(captor.capture());
+    assertEquals("/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/myresource", captor.getValue().url().encodedPath());
   }
 
   @Test

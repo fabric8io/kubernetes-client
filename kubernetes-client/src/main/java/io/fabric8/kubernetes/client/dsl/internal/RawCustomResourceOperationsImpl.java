@@ -324,7 +324,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws KubernetesClientException in case any failure from Kubernetes APIs
    */
   public Map<String, Object> updateStatus(String name, Map<String, Object> objectAsMap) throws IOException, KubernetesClientException {
-    return validateAndSubmitRequest(fetchUrl(null, null) + (name != null ? name : "") + "/status", objectMapper.writeValueAsString(objectAsMap), HttpCallMethod.PUT);
+    return validateAndSubmitRequest(fetchUrl(null, name, null) + "/status", objectMapper.writeValueAsString(objectAsMap), HttpCallMethod.PUT);
   }
 
   /**
@@ -338,7 +338,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws KubernetesClientException in case any failure from Kubernetes APIs
    */
   public Map<String, Object> updateStatus(String name, String objectAsJsonString) throws IOException, KubernetesClientException {
-    return validateAndSubmitRequest(fetchUrl(null, null) + (name != null ? name : "") + "/status", objectAsJsonString, HttpCallMethod.PUT);
+    return validateAndSubmitRequest(fetchUrl(null, name, null) + "/status", objectAsJsonString, HttpCallMethod.PUT);
   }
 
   /**
@@ -353,7 +353,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws KubernetesClientException in case any failure from Kubernetes APIs
    */
   public Map<String, Object> updateStatus(String namespace, String name, Map<String, Object> objectAsMap) throws IOException, KubernetesClientException {
-    return validateAndSubmitRequest(fetchUrl(namespace, null) + (name != null ? name : "") + "/status", objectMapper.writeValueAsString(objectAsMap), HttpCallMethod.PUT);
+    return validateAndSubmitRequest(fetchUrl(namespace, name, null) + "/status", objectMapper.writeValueAsString(objectAsMap), HttpCallMethod.PUT);
   }
 
   /**
@@ -367,7 +367,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws KubernetesClientException in case any failure from Kubernetes APIs
    */
   public Map<String, Object> updateStatus(String name, InputStream objectAsStream) throws IOException, KubernetesClientException {
-    return validateAndSubmitRequest(fetchUrl(null, null) + (name != null ? name : "") + "/status", IOHelpers.readFully(objectAsStream), HttpCallMethod.PUT);
+    return validateAndSubmitRequest(fetchUrl(null, name, null) + "/status", IOHelpers.readFully(objectAsStream), HttpCallMethod.PUT);
   }
 
   /**
@@ -382,7 +382,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws KubernetesClientException in case any failure from Kubernetes APIs
    */
   public Map<String, Object> updateStatus(String namespace, String name, InputStream objectAsStream) throws IOException, KubernetesClientException {
-    return validateAndSubmitRequest(fetchUrl(namespace, null) + (name != null ? name : "") + "/status", IOHelpers.readFully(objectAsStream), HttpCallMethod.PUT);
+    return validateAndSubmitRequest(fetchUrl(namespace, name, null) + "/status", IOHelpers.readFully(objectAsStream), HttpCallMethod.PUT);
   }
 
   /**
@@ -397,7 +397,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws KubernetesClientException in case any failure from Kubernetes APIs
    */
   public Map<String, Object> updateStatus(String namespace, String name, String objectAsJsonString) throws IOException, KubernetesClientException {
-    return validateAndSubmitRequest(fetchUrl(namespace, null) + (name != null ? name : "") + "/status", objectAsJsonString, HttpCallMethod.PUT);
+    return validateAndSubmitRequest(fetchUrl(namespace, name, null) + "/status", objectAsJsonString, HttpCallMethod.PUT);
   }
 
   /**
@@ -407,7 +407,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @return Object as HashMap
    */
   public Map<String, Object> get(String name) {
-    return makeCall(fetchUrl(null, null) + name, null, HttpCallMethod.GET);
+    return makeCall(fetchUrl(null, name, null), null, HttpCallMethod.GET);
   }
 
   /**
@@ -418,7 +418,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @return Object as HashMap
    */
   public Map<String, Object> get(String namespace, String name) {
-      return makeCall(fetchUrl(namespace, null) + name, null, HttpCallMethod.GET);
+      return makeCall(fetchUrl(namespace, name, null), null, HttpCallMethod.GET);
   }
 
   /**
@@ -427,7 +427,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @return list of custom resources as HashMap
    */
   public Map<String, Object> list() {
-    return makeCall(fetchUrl(null, null), null, HttpCallMethod.GET);
+    return makeCall(fetchUrl(null, null, null), null, HttpCallMethod.GET);
   }
 
   /**
@@ -437,7 +437,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @return list of custom resources as HashMap
    */
   public Map<String, Object> list(String namespace) {
-    return makeCall(fetchUrl(namespace, null), null, HttpCallMethod.GET);
+    return makeCall(fetchUrl(namespace, null, null), null, HttpCallMethod.GET);
   }
 
   /**
@@ -448,7 +448,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @return list of custom resources as HashMap
    */
   public Map<String, Object> list(String namespace, Map<String, String> labels) {
-    return makeCall(fetchUrl(namespace, labels), null, HttpCallMethod.GET);
+    return makeCall(fetchUrl(namespace, null, labels), null, HttpCallMethod.GET);
   }
 
   /**
@@ -458,7 +458,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @return deleted objects as HashMap
    */
   public Map<String, Object> delete(String namespace) {
-    return makeCall(fetchUrl(namespace, null), null, HttpCallMethod.DELETE);
+    return makeCall(fetchUrl(namespace, null, null), null, HttpCallMethod.DELETE);
   }
 
   /**
@@ -471,7 +471,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of any network/parsing exception
    */
   public Map<String, Object> delete(String namespace, boolean cascading) throws IOException {
-    return makeCall(fetchUrl(namespace, null), objectMapper.writeValueAsString(fetchDeleteOptions(cascading, null)), HttpCallMethod.DELETE);
+    return makeCall(fetchUrl(namespace, null, null), objectMapper.writeValueAsString(fetchDeleteOptions(cascading, null)), HttpCallMethod.DELETE);
   }
 
   /**
@@ -484,7 +484,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of any network/object parse problems
    */
   public Map<String, Object> delete(String namespace, DeleteOptions deleteOptions) throws IOException {
-    return makeCall(fetchUrl(namespace, null), objectMapper.writeValueAsString(deleteOptions), HttpCallMethod.DELETE);
+    return makeCall(fetchUrl(namespace, null, null), objectMapper.writeValueAsString(deleteOptions), HttpCallMethod.DELETE);
   }
 
   /**
@@ -495,7 +495,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @return object as HashMap
    */
   public Map<String, Object> delete(String namespace, String name) throws IOException {
-    return makeCall(fetchUrl(namespace, null) + name, objectMapper.writeValueAsString(fetchDeleteOptions(false, DeletionPropagation.BACKGROUND.toString())), HttpCallMethod.DELETE);
+    return makeCall(fetchUrl(namespace, name, null), objectMapper.writeValueAsString(fetchDeleteOptions(false, DeletionPropagation.BACKGROUND.toString())), HttpCallMethod.DELETE);
   }
 
   /**
@@ -509,7 +509,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException exception related to network/object parsing
    */
   public Map<String, Object> delete(String namespace, String name, boolean cascading) throws IOException {
-    return makeCall(fetchUrl(namespace, null) + name, objectMapper.writeValueAsString(fetchDeleteOptions(cascading, null)), HttpCallMethod.DELETE);
+    return makeCall(fetchUrl(namespace, name, null), objectMapper.writeValueAsString(fetchDeleteOptions(cascading, null)), HttpCallMethod.DELETE);
   }
 
   /**
@@ -528,7 +528,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of network/object parse exception
    */
   public Map<String, Object> delete(String namespace, String name, String propagationPolicy) throws IOException {
-    return makeCall(fetchUrl(namespace, null) + name, objectMapper.writeValueAsString(fetchDeleteOptions(false, propagationPolicy)) , HttpCallMethod.DELETE);
+    return makeCall(fetchUrl(namespace, name, null), objectMapper.writeValueAsString(fetchDeleteOptions(false, propagationPolicy)) , HttpCallMethod.DELETE);
   }
 
   /**
@@ -542,7 +542,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of any network/object parse exception
    */
   public Map<String, Object> delete(String namespace, String name, DeleteOptions deleteOptions) throws IOException {
-    return makeCall(fetchUrl(namespace, null) + name, objectMapper.writeValueAsString(deleteOptions), HttpCallMethod.DELETE);
+    return makeCall(fetchUrl(namespace, name, null), objectMapper.writeValueAsString(deleteOptions), HttpCallMethod.DELETE);
   }
 
   /**
@@ -720,7 +720,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
   }
 
   protected HttpUrl.Builder fetchWatchUrl(String namespace, String name, Map<String, String> labels, ListOptions options) throws MalformedURLException {
-    String resourceUrl = fetchUrl(namespace, labels);
+    String resourceUrl = fetchUrl(namespace, null, labels);
     if (resourceUrl.endsWith("/")) {
       resourceUrl = resourceUrl.substring(0, resourceUrl.length() - 1);
     }
@@ -735,7 +735,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
     return httpUrlBuilder;
   }
 
-  private String fetchUrl(String namespace, Map<String, String> labels) {
+  private String fetchUrl(String namespace, String name, Map<String, String> labels) {
     if (config.getMasterUrl() == null) {
       return null;
     }
@@ -752,9 +752,11 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
     if(customResourceDefinition.getScope().equals("Namespaced") && namespace != null) {
       urlBuilder.append("namespaces/").append(namespace).append("/");
     }
-    urlBuilder.append(customResourceDefinition.getPlural()).append("/");
+    urlBuilder.append(customResourceDefinition.getPlural());
+    if (name != null) {
+      urlBuilder.append("/").append(name);
+    }
     if(labels != null) {
-      urlBuilder.deleteCharAt(urlBuilder.lastIndexOf("/"));
       urlBuilder.append("?labelSelector").append("=").append(getLabelsQueryParam(labels));
     }
     return urlBuilder.toString();
@@ -789,7 +791,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
   }
 
   private Map<String, Object> validateAndSubmitRequest(String namespace, String name, String objectAsString, HttpCallMethod httpCallMethod) throws IOException {
-    return validateAndSubmitRequest(fetchUrl(namespace, null) + (name != null ? name : ""), objectAsString, httpCallMethod);
+    return validateAndSubmitRequest(fetchUrl(namespace, name, null), objectAsString, httpCallMethod);
   }
 
   private Map<String, Object> validateAndSubmitRequest(String resourceUrl, String objectAsString, HttpCallMethod httpCallMethod) throws IOException {
