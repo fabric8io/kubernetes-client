@@ -51,14 +51,14 @@ public class KubeConfigUtils {
    * @param config Config object
    * @return returns context in config if found, otherwise null
    */
-  public static Context getCurrentContext(Config config) {
+  public static NamedContext getCurrentContext(Config config) {
     String contextName = config.getCurrentContext();
     if (contextName != null) {
       List<NamedContext> contexts = config.getContexts();
       if (contexts != null) {
         for (NamedContext context : contexts) {
           if (contextName.equals(context.getName())) {
-            return context.getContext();
+            return context;
           }
         }
       }
