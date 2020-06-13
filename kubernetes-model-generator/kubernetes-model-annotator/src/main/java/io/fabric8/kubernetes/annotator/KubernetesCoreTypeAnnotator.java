@@ -15,16 +15,28 @@
  */
 package io.fabric8.kubernetes.annotator;
 
+import java.lang.annotation.Annotation;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.regex.Pattern;
+
+import org.jsonschema2pojo.Jackson2Annotator;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.sun.codemodel.JAnnotationArrayMember;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
+import com.sun.codemodel.JExpressionImpl;
 import com.sun.codemodel.JFieldVar;
+import com.sun.codemodel.JFormatter;
+
 import io.fabric8.kubernetes.model.annotation.ApiGroup;
 import io.fabric8.kubernetes.model.annotation.ApiVersion;
 import io.fabric8.kubernetes.model.annotation.PackageSuffix;
@@ -34,12 +46,6 @@ import io.sundr.transform.annotations.VelocityTransformation;
 import io.sundr.transform.annotations.VelocityTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.jsonschema2pojo.Jackson2Annotator;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.regex.Pattern;
 
 public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
   protected static final String ANNOTATION_VALUE = "value";
@@ -66,9 +72,6 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
       }
     }
 
-    //We just want to make sure we avoid infinite loops
-    clazz.annotate(JsonDeserialize.class)
-      .param("using", JsonDeserializer.None.class);
     clazz.annotate(ToString.class);
     clazz.annotate(EqualsAndHashCode.class);
     processBuildable(clazz);
@@ -113,7 +116,35 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
     if (moduleName == null) {
       moduleName = schema.get("$module").textValue();
     }
+
+    if (schema.has("serializer")) {
+      annotateSerde(clazz, JsonSerialize.class, schema.get("serializer").asText());
+    }
+
+    if (schema.has("deserializer")) {
+      annotateSerde(clazz, JsonDeserialize.class, schema.get("deserializer").asText());
+    } else {
+      clazz.annotate(JsonDeserialize.class).param("using", JsonDeserializer.None.class);
+    }
+
     super.propertyInclusion(clazz, schema);
+  }
+
+  private void annotateSerde(JDefinedClass clazz, Class<? extends Annotation> annotation, String usingClassName) {
+    if (!usingClassName.endsWith(".class")) {
+      usingClassName = usingClassName + ".class";
+    }
+
+    clazz.annotate(annotation).param("using", literalExpression(usingClassName));
+  }
+
+  private JExpressionImpl literalExpression(String literal) {
+    return new JExpressionImpl() {
+      @Override
+      public void generate(JFormatter f) {
+        f.p(literal);
+      }
+    };
   }
 
   @Override

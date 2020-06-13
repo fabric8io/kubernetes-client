@@ -15,52 +15,87 @@
  */
 package io.fabric8.kubernetes.api.model.apiextensions;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.stream.Collectors;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
-import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
-import static net.javacrumbs.jsonunit.core.Option.TREATING_NULL_AS_ABSENT;
-import static net.javacrumbs.jsonunit.fluent.JsonFluentAssert.assertThatJson;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 class JSONSchemaPropsOrStringArrayTest {
-  private ObjectMapper objectMapper = new ObjectMapper();
-
   @Test
-  void testLoadFromSchema() throws JsonProcessingException {
-    // Given
-    String jsonString = "{" +
-      "\"description\": \"APIVersion defines the versioned schema of this representation\\nof an object. Servers should convert recognized schemas to the latest\\ninternal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources\"," +
-      "\"type\": \"string\"" +
-      "}";
+  void itDeserializesAdditionalPropertiesTrue() throws IOException {
+    InputStream resourceAsStream = getClass().getResourceAsStream("/dependencies_array.json");
+    JSONSchemaProps props = new ObjectMapper().readValue(resourceAsStream, JSONSchemaProps.class);
 
-    // When
-    JSONSchemaPropsOrStringArray result = objectMapper.readValue(jsonString, JSONSchemaPropsOrStringArray.class);
-    final String serializedJson = objectMapper.writeValueAsString(result);
-
-    // Then
-    assertNotNull(result);
-    assertEquals("string", result.getSchema().getType());
-    assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
-      .isEqualTo(jsonString);
+    Assertions.assertEquals(props, new JSONSchemaPropsBuilder()
+      .withType("object")
+      .addToDependencies(
+        "foo",
+        new JSONSchemaPropsOrStringArrayBuilder()
+          .withProperty("a", "b")
+          .build())
+      .build());
   }
 
   @Test
-  void testLoadFromArray() throws JsonProcessingException {
-    // Given
-    String jsonString = "[\"one\", \"two\"]";
+  void itSerializesAdditionalPropertiesTrue() throws JsonProcessingException {
+    String expectedJson = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/dependencies_array.json"), StandardCharsets.UTF_8))
+      .lines()
+      .collect(Collectors.joining("\n"));
 
-    // When
-    JSONSchemaPropsOrStringArray result = objectMapper.readValue(jsonString, JSONSchemaPropsOrStringArray.class);
-    final String serializedJson = objectMapper.writeValueAsString(result);
+    String outputJson = new ObjectMapper().writeValueAsString(new JSONSchemaPropsBuilder()
+      .withType("object")
+      .addToDependencies(
+        "foo",
+        new JSONSchemaPropsOrStringArrayBuilder()
+          .withProperty("a", "b")
+          .build())
+      .build());
 
-    // Then
-    assertNotNull(result);
-    assertEquals(2, result.getProperty().size());
-    assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
-      .isEqualTo(jsonString);
+    Assertions.assertEquals(expectedJson, outputJson);
+  }
+
+  @Test
+  void itDeserializesAdditionalPropertiesTyped() throws IOException {
+    InputStream resourceAsStream = getClass().getResourceAsStream("/dependencies_typed.json");
+    JSONSchemaProps props = new ObjectMapper().readValue(resourceAsStream, JSONSchemaProps.class);
+
+    Assertions.assertEquals(props, new JSONSchemaPropsBuilder()
+      .withType("object")
+      .addToDependencies(
+        "foo",
+        new JSONSchemaPropsOrStringArrayBuilder()
+          .withNewSchema()
+          .withType("object")
+          .endSchema()
+          .build())
+      .build());
+  }
+
+  @Test
+  void itSerializesAdditionalPropertiesTyped() throws JsonProcessingException {
+    String expectedJson = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/dependencies_typed.json"), StandardCharsets.UTF_8))
+      .lines()
+      .collect(Collectors.joining("\n"));
+
+    String outputJson = new ObjectMapper().writeValueAsString(new JSONSchemaPropsBuilder()
+      .withType("object")
+      .addToDependencies(
+        "foo",
+        new JSONSchemaPropsOrStringArrayBuilder()
+          .withNewSchema()
+          .withType("object")
+          .endSchema()
+          .build())
+      .build());
+
+    Assertions.assertEquals(expectedJson, outputJson);
   }
 }

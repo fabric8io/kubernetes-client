@@ -717,7 +717,9 @@
       "javaType": "io.fabric8.kubernetes.api.model.apiextensions.JSONSchemaPropsOrArray",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
+      ],
+      "serializer": "JSONSchemaPropsOrArraySerDe.Serializer.class",
+      "deserializer": "JSONSchemaPropsOrArraySerDe.Deserializer.class"
     },
     "kubernetes_apiextensions_JSONSchemaPropsOrBool": {
       "type": "object",
@@ -736,7 +738,9 @@
       "javaType": "io.fabric8.kubernetes.api.model.apiextensions.JSONSchemaPropsOrBool",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
+      ],
+      "serializer": "JSONSchemaPropsOrBoolSerDe.Serializer.class",
+      "deserializer": "JSONSchemaPropsOrBoolSerDe.Deserializer.class"
     },
     "kubernetes_apiextensions_JSONSchemaPropsOrStringArray": {
       "type": "object",
@@ -759,7 +763,9 @@
       "javaType": "io.fabric8.kubernetes.api.model.apiextensions.JSONSchemaPropsOrStringArray",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
+      ],
+      "serializer": "JSONSchemaPropsOrStringArraySerDe.Serializer.class",
+      "deserializer": "JSONSchemaPropsOrStringArraySerDe.Deserializer.class"
     },
     "kubernetes_apiextensions_ServiceReference": {
       "type": "object",
