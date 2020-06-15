@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!--
 
     Copyright (C) 2015 Red Hat, Inc.
@@ -16,8 +16,7 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.fabric8</groupId>
@@ -26,24 +25,51 @@
     </parent>
 
     <artifactId>kudo-model</artifactId>
-    <packaging>jar</packaging>
-    <name>Fabric8 :: KUDO :: Model</name>
+    <packaging>bundle</packaging>
+    <name>Fabric8 :: Kudo :: Model</name>
 
     <dependencies>
         <dependency>
-            <groupId>io.fabric8</groupId>
-            <artifactId>kudo-model-annotator</artifactId>
-            <version>${project.version}</version>
+            <groupId>io.sundr</groupId>
+            <artifactId>builder-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.sundr</groupId>
+            <artifactId>transform-annotations</artifactId>
         </dependency>
         <dependency>
             <groupId>io.fabric8</groupId>
-            <artifactId>kubernetes-model</artifactId>
-            <version>4.9.1</version>
+            <artifactId>kubernetes-model-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-jaxb-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-migrationsupport</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.skyscreamer</groupId>
+            <artifactId>jsonassert</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <version>4.10.0</version>
+            <artifactId>kudo-model-annotator</artifactId>
         </dependency>
     </dependencies>
 
@@ -54,20 +80,19 @@
                 <artifactId>jsonschema2pojo-maven-plugin</artifactId>
                 <version>${jsonschema2pojo.version}</version>
                 <configuration>
-                    <sourcePaths>
-                        <sourcePath>${project.basedir}/src/main/resources/schema/kudo-schema.json</sourcePath>
-                    </sourcePaths>
+                    <sourceDirectory>${project.basedir}/src/main/resources/schema</sourceDirectory>
                     <targetPackage>io.fabric8.kudo.api.model</targetPackage>
                     <includeConstructors>true</includeConstructors>
                     <includeJsr303Annotations>false</includeJsr303Annotations>
                     <includeToString>false</includeToString>
                     <includeHashcodeAndEquals>false</includeHashcodeAndEquals>
                     <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
-                    <customAnnotator>io.fabric8.kudo.KudoTypeAnnotator</customAnnotator>
-                    <annotationStyle>none</annotationStyle>
+                    <customAnnotator>io.fabric8.kubernetes.ModelAnnotator</customAnnotator>
                 </configuration>
                 <executions>
                     <execution>
+                        <id>generate</id>
+                        <phase>generate-sources</phase>
                         <goals>
                             <goal>generate</goal>
                         </goals>
@@ -76,7 +101,7 @@
                 <dependencies>
                     <dependency>
                         <groupId>io.fabric8</groupId>
-                        <artifactId>kudo-model-annotator</artifactId>
+                        <artifactId>model-annotator</artifactId>
                         <version>${project.version}</version>
                     </dependency>
                 </dependencies>
@@ -88,12 +113,10 @@
                         <phase>generate-sources</phase>
                         <configuration>
                             <target>
-                                <echo>removing the duplicate generated class</echo>
-                                <delete verbose="true">
-                                    <fileset dir="${project.build.directory}/generated-sources">
-                                        <include name="*.java"/>
-                                    </fileset>
-                                </delete>
+                                <!-- removing the generated Schema class -->
+                                <delete
+                                        file="${project.build.directory}/generated-sources/io/fabric8/kudo/api/model/KudoSchema.java"
+                                        verbose="true"/>
                             </target>
                         </configuration>
                         <goals>
@@ -103,29 +126,9 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-                <version>${maven.bundle.plugin.version}</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <instructions>
-                        <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
-                        <Import-Package>*</Import-Package>
-                        <Private-Package>io.fabric8.kudo.api.model</Private-Package>
-                        <Export-Package>
-                            io.fabric8.kudo.api.model**
-                        </Export-Package>
-                        <Include-Resource>
-                            {maven-resources},
-                            /kudo.properties=target/classes/kudo.properties,
-                        </Include-Resource>
-                    </instructions>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>${maven.buildhelper.plugin.version}</version>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <id>attach-artifacts</id>
@@ -148,6 +151,15 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
             </plugin>
         </plugins>
     </build>

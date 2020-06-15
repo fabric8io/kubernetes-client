@@ -14,6 +14,6 @@
 # limitations under the License.
 #
 
-io.fabric8.knative.client.KnativeExtensionAdapter
-io.fabric8.knative.client.serving.v1beta1.ServingV1Beta1ExtensionAdapter
-io.fabric8.knative.client.serving.v1.ServingV1ExtensionAdapter
+io.fabric8.kudo.client.KudoExtensionAdapter
+io.fabric8.kudo.client.serving.v1beta1.ServingV1Beta1ExtensionAdapter
+io.fabric8.kudo.client.serving.v1.ServingV1ExtensionAdapter

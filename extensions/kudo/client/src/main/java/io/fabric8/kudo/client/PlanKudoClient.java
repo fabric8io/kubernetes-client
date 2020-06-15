@@ -16,9 +16,14 @@
 package io.fabric8.kudo.client;
 
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kudo.v1beta1.*;
+import io.fabric8.kudo.v1beta1.Plan;
+import io.fabric8.kudo.v1beta1.PhaseStatus;
+import io.fabric8.kudo.v1beta1.Instance;
+import io.fabric8.kudo.v1beta1.StepStatus;
+import io.fabric8.kudo.v1beta1.OperatorVersion;
 import io.fabric8.kudo.v1beta1.PlanExecutionBuilder;
 import io.fabric8.kudo.client.entity.Tree;
+import io.fabric8.kudo.v1beta1.PlanStatus;
 
 import java.util.Date;
 import java.util.HashMap;

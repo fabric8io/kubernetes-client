@@ -30,7 +30,6 @@ import okhttp3.OkHttpClient;
  * @author pangms
  * @date 2020/4/21
  */
-// public class OperatorOperationsImpl extends HasMetadataOperation<Operator, OperatorList, DoneableOperator, Resource<Operator, DoneableOperator>>  {
 public class OperatorOperationsImpl extends HasMetadataOperation<Operator, OperatorList, DoneableOperator, Resource<Operator, DoneableOperator>>  {
   public OperatorOperationsImpl(OkHttpClient client, Config config) {
     this(new OperationContext().withOkhttpClient(client).withConfig(config));

@@ -20,8 +20,9 @@ import io.fabric8.kudo.client.Constance;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kudo.v1beta1.*;
 import io.fabric8.kudo.v1beta1.DoneableOperatorVersion;
+import io.fabric8.kudo.v1beta1.OperatorVersion;
+import io.fabric8.kudo.v1beta1.OperatorVersionList;
 import okhttp3.OkHttpClient;
 
 /**

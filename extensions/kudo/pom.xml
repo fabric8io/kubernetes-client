@@ -26,14 +26,10 @@
 
   <artifactId>kudo-extension-pom</artifactId>
   <packaging>pom</packaging>
-  <name>Fabric8 :: KUDO :: Extension</name>
-
-  <properties>
-    <fabric-version>4.10-SNAPSHOT</fabric-version>
-  </properties>
+  <name>Fabric8 :: Kudo :: Extension</name>
 
   <modules>
-    <module>annotator</module>
+    <!--<module>annotator</module>-->
     <module>model</module>
     <module>client</module>
     <module>mock</module>

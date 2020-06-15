@@ -4,6 +4,7 @@ require (
 	contrib.go.opencensus.io/exporter/ocagent v0.6.0 // indirect
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0 // indirect
 	contrib.go.opencensus.io/exporter/stackdriver v0.13.0 // indirect
+	github.com/fabric8io/kubernetes-client/generator v0.0.0-20200611165302-9a5ae2a2d55a // indirect
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
 	github.com/google/go-containerregistry v0.0.0-20190623150931-ca8b66cb1b79 // indirect
 	github.com/gregjones/httpcache v0.0.0-20190611155906-901d90724c79 // indirect
@@ -20,6 +21,7 @@ require (
 	gomodules.xyz/jsonpatch/v2 v2.0.1 // indirect
 	google.golang.org/api v0.17.0 // indirect
 	gotest.tools v2.2.0+incompatible // indirect
+	k8s.io/apimachinery v0.17.3
 	k8s.io/cli-runtime v0.17.3 // indirect
 )
 

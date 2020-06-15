@@ -26,5 +26,5 @@
   #end
 #end
 
-io.fabric8.knative.client.${group}.${apiVersion}.handlers.${m.name}Handler
+io.fabric8.kudo.client.${group}.${apiVersion}.handlers.${m.name}Handler
 #end

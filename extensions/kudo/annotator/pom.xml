@@ -26,7 +26,7 @@
 
   <artifactId>kudo-model-annotator</artifactId>
   <packaging>jar</packaging>
-  <name>Fabric8 :: KUDO :: Model :: Annotator</name>
+  <name>Fabric8 :: Kudo :: Model :: Annotator</name>
 
   <dependencies>
     <dependency>
@@ -56,6 +56,11 @@
       <groupId>io.sundr</groupId>
       <artifactId>transform-annotations</artifactId>
       <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <artifactId>model-annotator</artifactId>
+      <groupId>io.fabric8</groupId>
+      <version>${project.version}</version>
     </dependency>
   </dependencies>
 

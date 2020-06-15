@@ -21,7 +21,6 @@ package io.fabric8.kudo.client;
  */
 public class Constance {
   public final static String ApiGroupName = "kudo.dev";
-  // public final static String ApiGroupVersion = "v1beta1";
   public final static String ApiGroupVersion = "kudo.dev/v1beta1";
 
   public final static String InstancesPlural = "instances";

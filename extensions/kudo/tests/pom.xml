@@ -26,7 +26,7 @@
 
   <artifactId>kudo-tests</artifactId>
   <packaging>jar</packaging>
-  <name>Fabric8 :: KUDO :: Tests</name>
+  <name>Fabric8 :: Kudo :: Tests</name>
 
   <dependencies>
     <dependency>

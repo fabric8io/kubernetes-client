@@ -26,7 +26,7 @@
 
   <artifactId>kudo-client</artifactId>
   <packaging>jar</packaging>
-  <name>Fabric8 :: KUDO :: Client</name>
+  <name>Fabric8 :: Kudo :: Client</name>
 
   <dependencies>
     <dependency>

@@ -33,20 +33,17 @@ import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JEnumConstant;
 import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JMethod;
+import io.fabric8.kubernetes.ModelAnnotator;
 import io.fabric8.kubernetes.model.annotation.ApiGroup;
 import io.fabric8.kubernetes.model.annotation.ApiVersion;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.Inline;
 import io.sundr.transform.annotations.VelocityTransformation;
 import io.sundr.transform.annotations.VelocityTransformations;
-import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.jsonschema2pojo.Jackson2Annotator;
 
-public class KudoTypeAnnotator extends Jackson2Annotator {
-  private final String nameIsDNS1123LabelPattern = "[a-z0-9]([-a-z0-9]*[a-z0-9])?";
-
+public class KudoTypeAnnotator extends ModelAnnotator {
   private final Map<String, JDefinedClass> pendingResources = new HashMap<>();
   private final Map<String, JDefinedClass> pendingLists = new HashMap<>();
 
@@ -70,35 +67,15 @@ public class KudoTypeAnnotator extends Jackson2Annotator {
     clazz.annotate(ToString.class);
     clazz.annotate(EqualsAndHashCode.class);
     try {
-      /**
-       *             JAnnotationUse buildable = clazz.annotate(Buildable.class)
-       *                     .param("editableEnabled", false)
-       *                     .param("validationEnabled", false)
-       *                     .param("generateBuilderPackage", false)
-       *                     .param("builderPackage", "io.fabric8.kubernetes.api.builder");
-       *                     buildable.paramArray("inline").annotate(Inline.class)
-       *                     .param("type", new JCodeModel()._class("io.fabric8.kubernetes.api.model.Doneable"))
-       *                     .param("prefix", "Doneable")
-       *                     .param("value", "done");
-       */
       JAnnotationUse buildable = clazz.annotate(Buildable.class)
         .param("editableEnabled", false)
         .param("validationEnabled", false)
         .param("generateBuilderPackage", true)
-        // .param("lazyCollectionInitEnabled", false)
         .param("builderPackage", "io.fabric8.kubernetes.api.builder")
         .annotationParam("inline", Inline.class)
         .param("type", new JCodeModel()._class("io.fabric8.kubernetes.api.model.Doneable"))
         .param("prefix", "Doneable")
         .param("value", "done");
-
-/*
-      JAnnotationArrayMember arrayMember = buildable.paramArray("refs");
-      arrayMember.annotate(BuildableReference.class).param("value", new JCodeModel()._class("io.fabric8.kubernetes.api.model.ObjectMeta"));
-      arrayMember.annotate(BuildableReference.class).param("value", new JCodeModel()._class("io.fabric8.kubernetes.api.model.Volume"));
-      arrayMember.annotate(BuildableReference.class).param("value", new JCodeModel()._class("io.fabric8.kubernetes.api.model.Container"));
-*/
-
     } catch (JClassAlreadyExistsException e) {
       e.printStackTrace();
     }
