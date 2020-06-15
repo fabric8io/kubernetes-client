@@ -56,7 +56,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -128,7 +127,7 @@ class DefaultSharedIndexInformerTest {
     String startResourceVersion = "1000", endResourceVersion = "1001";
 
     server.expect().withPath("/api/v1/namespaces/test/pods")
-      .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata().withItems(Arrays.asList()).build()).once();
+      .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata().withItems(Collections.emptyList()).build()).once();
     server.expect().withPath("/api/v1/namespaces/test/pods?resourceVersion=" + startResourceVersion + "&watch=true")
       .andUpgradeToWebSocket()
       .open()
@@ -225,7 +224,7 @@ class DefaultSharedIndexInformerTest {
   void testHasSynced() throws InterruptedException {
     String startResourceVersion = "1000", endResourceVersion = "1001";
     server.expect().withPath("/api/v1/namespaces/test/pods")
-      .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata().withItems(Arrays.asList()).build()).once();
+      .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata().withItems(Collections.emptyList()).build()).once();
     server.expect().withPath("/api/v1/namespaces/test/pods?resourceVersion=" + startResourceVersion + "&watch=true")
       .andUpgradeToWebSocket()
       .open()
@@ -293,7 +292,7 @@ class DefaultSharedIndexInformerTest {
     String startResourceVersion = "1000", endResourceVersion = "1001";
 
     server.expect().withPath("/api/v1/namespaces")
-      .andReturn(200, new NamespaceListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata().withItems(Arrays.asList()).build()).once();
+      .andReturn(200, new NamespaceListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata().withItems(Collections.emptyList()).build()).once();
     server.expect().withPath("/api/v1/namespaces?resourceVersion=" + startResourceVersion + "&watch=true")
       .andUpgradeToWebSocket()
       .open()
@@ -340,7 +339,7 @@ class DefaultSharedIndexInformerTest {
     String startResourceVersion = "1000", endResourceVersion = "1001";
 
     server.expect().withPath("/apis/rbac.authorization.k8s.io/v1beta1/clusterrolebindings")
-      .andReturn(200, new ClusterRoleBindingListBuilder().withMetadata(new ListMetaBuilder().withResourceVersion(startResourceVersion).build()).withItems(Arrays.asList()).build()).once();
+      .andReturn(200, new ClusterRoleBindingListBuilder().withMetadata(new ListMetaBuilder().withResourceVersion(startResourceVersion).build()).withItems(Collections.emptyList()).build()).once();
     server.expect().withPath("/apis/rbac.authorization.k8s.io/v1beta1/clusterrolebindings?resourceVersion=" + startResourceVersion + "&watch=true")
       .andUpgradeToWebSocket()
       .open()
@@ -386,7 +385,7 @@ class DefaultSharedIndexInformerTest {
     String startResourceVersion = "1000", endResourceVersion = "1001";
 
     server.expect().withPath("/apis/apps/v1/namespaces/ns1/deployments")
-      .andReturn(200, new DeploymentListBuilder().withMetadata(new ListMetaBuilder().withResourceVersion(startResourceVersion).build()).withItems(Arrays.asList()).build()).once();
+      .andReturn(200, new DeploymentListBuilder().withMetadata(new ListMetaBuilder().withResourceVersion(startResourceVersion).build()).withItems(Collections.emptyList()).build()).once();
     server.expect().withPath("/apis/apps/v1/namespaces/ns1/deployments?resourceVersion=" + startResourceVersion + "&watch=true")
       .andUpgradeToWebSocket()
       .open()
@@ -433,7 +432,7 @@ class DefaultSharedIndexInformerTest {
     String startResourceVersion = "1000", endResourceVersion = "1001";
 
     server.expect().withPath("/api/v1/namespaces/ns1/pods")
-      .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata().withItems(Arrays.asList()).build()).once();
+      .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata().withItems(Collections.emptyList()).build()).once();
     server.expect().withPath("/api/v1/namespaces/ns1/pods?resourceVersion=" + startResourceVersion + "&watch=true")
       .andUpgradeToWebSocket()
       .open()
@@ -468,6 +467,7 @@ class DefaultSharedIndexInformerTest {
     factory.startAllRegisteredInformers();
 
     foundExistingPod.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
+    waitUntilResourceVersionSynced();
     assertEquals(0, foundExistingPod.getCount());
     assertEquals(endResourceVersion, podInformer.lastSyncResourceVersion());
 
@@ -500,7 +500,7 @@ class DefaultSharedIndexInformerTest {
       .build();
 
     SharedInformerFactory sharedInformerFactory = client.informers();
-    SharedIndexInformer<PodSet> podSetSharedIndexInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(crdContext, PodSet.class, PodSetList.class, new OperationContext().withNamespace("ns1"), 1 * 60 * WATCH_EVENT_EMIT_TIME);
+    SharedIndexInformer<PodSet> podSetSharedIndexInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(crdContext, PodSet.class, PodSetList.class, new OperationContext().withNamespace("ns1"), 60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingPodSet = new CountDownLatch(1);
     podSetSharedIndexInformer.addEventHandler(
       new ResourceEventHandler<PodSet>() {

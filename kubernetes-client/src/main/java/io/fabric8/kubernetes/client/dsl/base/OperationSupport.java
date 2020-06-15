@@ -55,6 +55,7 @@ public class OperationSupport {
 
   public static final MediaType JSON = MediaType.parse("application/json");
   public static final MediaType JSON_PATCH = MediaType.parse("application/json-patch+json");
+  public static final MediaType STRATEGIC_MERGE_JSON_PATCH = MediaType.parse("application/strategic-merge-patch+json");
   protected static final ObjectMapper JSON_MAPPER = Serialization.jsonMapper();
   protected static final ObjectMapper YAML_MAPPER = Serialization.yamlMapper();
   private static final String CLIENT_STATUS_FLAG = "CLIENT_STATUS_FLAG";
@@ -313,6 +314,26 @@ public class OperationSupport {
     JsonNode diff = JsonDiff.asJson(patchMapper().valueToTree(current), patchMapper().valueToTree(updated));
     RequestBody body = RequestBody.create(JSON_PATCH, JSON_MAPPER.writeValueAsString(diff));
     Request.Builder requestBuilder = new Request.Builder().patch(body).url(getResourceUrl(checkNamespace(updated), checkName(updated)));
+    return handleResponse(requestBuilder, type, Collections.<String, String>emptyMap());
+  }
+
+  /**
+   * Send an http patch and handle the response.
+   *
+   * @param current current object
+   * @param patchForUpdate updated object spec as json string
+   * @param type type of object
+   * @param <T> template argument provided
+   *
+   * @return returns de-serialized version of api server response
+   * @throws ExecutionException Execution Exception
+   * @throws InterruptedException Interrupted Exception
+   * @throws KubernetesClientException KubernetesClientException
+   * @throws IOException IOException
+   */
+  protected <T> T handlePatch(T current, Map<String, Object> patchForUpdate, Class<T> type) throws ExecutionException, InterruptedException, IOException {
+    RequestBody body = RequestBody.create(STRATEGIC_MERGE_JSON_PATCH, JSON_MAPPER.writeValueAsString(patchForUpdate));
+    Request.Builder requestBuilder = new Request.Builder().patch(body).url(getResourceUrl(checkNamespace(current), checkName(current)));
     return handleResponse(requestBuilder, type, Collections.<String, String>emptyMap());
   }
 
@@ -587,6 +608,10 @@ public class OperationSupport {
 
   protected static <T> T unmarshal(InputStream is, TypeReference<T> type) throws KubernetesClientException {
    return Serialization.unmarshal(is, type);
+  }
+
+  protected static <T> Map getObjectValueAsMap(T object) {
+    return JSON_MAPPER.convertValue(object, Map.class);
   }
 
   public Config getConfig() {

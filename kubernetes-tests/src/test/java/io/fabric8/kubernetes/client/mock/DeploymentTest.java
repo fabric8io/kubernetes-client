@@ -37,14 +37,16 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 
 import io.fabric8.kubernetes.client.utils.Utils;
+import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Rule;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import java.util.Arrays;
+import java.net.HttpURLConnection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -152,7 +154,7 @@ public class DeploymentTest {
       .endSpec()
       .withNewStatus()
       .withReplicas(1)
-      .withObservedGeneration(1l)
+      .withObservedGeneration(1L)
       .endStatus()
       .build();
 
@@ -170,7 +172,7 @@ public class DeploymentTest {
       .endSpec()
       .withNewStatus()
       .withReplicas(1)
-      .withObservedGeneration(1l)
+      .withObservedGeneration(1L)
       .endStatus()
       .build();
 
@@ -188,7 +190,7 @@ public class DeploymentTest {
       .endSpec()
       .withNewStatus()
       .withReplicas(1)
-      .withObservedGeneration(1l)
+      .withObservedGeneration(1L)
       .endStatus()
       .build();
 
@@ -228,7 +230,7 @@ public class DeploymentTest {
       .endSpec()
       .withNewStatus()
       .withReplicas(1)
-      .withObservedGeneration(1l)
+      .withObservedGeneration(1L)
       .endStatus()
       .build();
 
@@ -243,7 +245,7 @@ public class DeploymentTest {
       .endSpec()
       .withNewStatus()
       .withReplicas(1)
-      .withObservedGeneration(1l)
+      .withObservedGeneration(1L)
       .endStatus()
       .build();
 
@@ -257,7 +259,7 @@ public class DeploymentTest {
     server.expect().withPath("/apis/apps/v1/namespaces/test/deployments/deployment1").andReturn(200, new DeploymentBuilder(deployment1)
       .editStatus()
       .withReplicas(0)
-      .withObservedGeneration(2l)
+      .withObservedGeneration(2L)
       .endStatus()
       .build()).times(5);
 
@@ -265,7 +267,7 @@ public class DeploymentTest {
     server.expect().withPath("/apis/apps/v1/namespaces/ns1/deployments/deployment2").andReturn(200, new DeploymentBuilder(deployment2)
       .editStatus()
       .withReplicas(0)
-      .withObservedGeneration(2l)
+      .withObservedGeneration(2L)
       .endStatus()
       .build()).times(5);
 
@@ -297,7 +299,6 @@ public class DeploymentTest {
   public void testCreateWithNameMismatch() {
     assertThrows(KubernetesClientException.class, () -> {
       Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test").and().build();
-      Deployment deployment2 = new DeploymentBuilder().withNewMetadata().withName("deployment2").withNamespace("ns1").and().build();
       KubernetesClient client = server.getClient();
 
       client.apps().deployments().inNamespace("test1").withName("mydeployment1").create(deployment1);
@@ -331,7 +332,7 @@ public class DeploymentTest {
         .withName("nginx")
         .withImage("nginx:1.10.2")
         .withImagePullPolicy("IfNotPresent")
-        .withPorts(Arrays.asList(new ContainerPortBuilder().withContainerPort(80).build()))
+        .withPorts(Collections.singletonList(new ContainerPortBuilder().withContainerPort(80).build()))
         .build())
       .endSpec()
       .endTemplate()
@@ -433,7 +434,7 @@ public class DeploymentTest {
   public void testRollback() {
     DeploymentRollback deploymentRollback = new DeploymentRollbackBuilder()
       .withName("deployment1")
-      .withNewRollbackTo().withRevision(1l).endRollbackTo()
+      .withNewRollbackTo().withRevision(1L).endRollbackTo()
       .withUpdatedAnnotations(Collections.singletonMap("foo", "bar"))
       .build();
 
@@ -490,4 +491,219 @@ public class DeploymentTest {
 
     assertEquals("Too many items to create.", exception.getMessage());
   }
+
+  @Test
+  @DisplayName("Should update image based in single argument")
+  void testRolloutUpdateSingleImage() throws InterruptedException {
+    // Given
+    String imageToUpdate = "nginx:latest";
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
+      .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build()).times(3);
+    server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
+      .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder()
+        .editSpec().editTemplate().editSpec().editContainer(0)
+          .withImage(imageToUpdate)
+        .endContainer().endSpec().endTemplate().endSpec()
+        .build()).once();
+    KubernetesClient client = server.getClient();
+
+    // When
+    Deployment deployment = client.apps().deployments().inNamespace("ns1").withName("deploy1")
+      .rolling().updateImage(imageToUpdate);
+
+    // Then
+    assertNotNull(deployment);
+    assertEquals(imageToUpdate, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
+    RecordedRequest recordedRequest = server.getLastRequest();
+    assertEquals("PATCH", recordedRequest.getMethod());
+    assertTrue(recordedRequest.getBody().readUtf8().contains(imageToUpdate));
+  }
+
+  @Test
+  @DisplayName("Should update image based in map based argument")
+  void testRolloutUpdateImage() throws InterruptedException {
+    // Given
+    Map<String, String> containerToImageMap = Collections.singletonMap("nginx", "nginx:latest");
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
+      .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build()).times(3);
+    server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
+      .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder()
+        .editSpec().editTemplate().editSpec().editContainer(0)
+        .withImage(containerToImageMap.get("nginx"))
+        .endContainer().endSpec().endTemplate().endSpec()
+        .build()).once();
+    KubernetesClient client = server.getClient();
+
+    // When
+    Deployment deployment = client.apps().deployments().inNamespace("ns1").withName("deploy1")
+      .rolling().updateImage(containerToImageMap);
+
+    // Then
+    assertNotNull(deployment);
+    assertEquals(containerToImageMap.get("nginx"), deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
+    RecordedRequest recordedRequest = server.getLastRequest();
+    assertEquals("PATCH", recordedRequest.getMethod());
+    assertTrue(recordedRequest.getBody().readUtf8().contains(containerToImageMap.get("nginx")));
+  }
+
+  @Test
+  @DisplayName("Should pause resource")
+  void testRolloutPause() throws InterruptedException {
+    // Given
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
+      .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build()).times(3);
+    server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
+      .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build()).once();
+    KubernetesClient client = server.getClient();
+
+    // When
+    Deployment deployment = client.apps().deployments().inNamespace("ns1").withName("deploy1")
+      .rolling().pause();
+
+    // Then
+    RecordedRequest recordedRequest = server.getLastRequest();
+    assertNotNull(deployment);
+    assertEquals("PATCH", recordedRequest.getMethod());
+    assertEquals("{\"spec\":{\"paused\":true}}", recordedRequest.getBody().readUtf8());
+  }
+
+  @Test
+  @DisplayName("Should resume rollout")
+  void testRolloutResume() throws InterruptedException {
+    // Given
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
+      .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build()).times(3);
+    server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
+      .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build()).once();
+    KubernetesClient client = server.getClient();
+
+    // When
+    Deployment deployment = client.apps().deployments().inNamespace("ns1").withName("deploy1")
+      .rolling().resume();
+
+    // Then
+    RecordedRequest recordedRequest = server.getLastRequest();
+    assertNotNull(deployment);
+    assertEquals("PATCH", recordedRequest.getMethod());
+    assertEquals("{\"spec\":{\"paused\":null}}", recordedRequest.getBody().readUtf8());
+  }
+
+  @Test
+  @DisplayName("Should restart rollout")
+  void testRolloutRestart() throws InterruptedException {
+    // Given
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
+      .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build()).times(3);
+    server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
+      .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build()).once();
+    KubernetesClient client = server.getClient();
+
+    // When
+    Deployment deployment = client.apps().deployments().inNamespace("ns1").withName("deploy1")
+      .rolling().restart();
+
+    // Then
+    RecordedRequest recordedRequest = server.getLastRequest();
+    assertNotNull(deployment);
+    assertEquals("PATCH", recordedRequest.getMethod());
+    assertTrue(recordedRequest.getBody().readUtf8().contains("kubectl.kubernetes.io/restartedAt"));
+  }
+
+  @Test
+  @DisplayName("Should undo rollout")
+  void testRolloutUndo() throws InterruptedException {
+    // Given
+    ReplicaSet replicaSetRevision1 = new ReplicaSetBuilder()
+      .withNewMetadata()
+      .addToAnnotations("deployment.kubernetes.io/revision", "1")
+      .withName("rs1")
+      .endMetadata()
+      .withNewSpec()
+      .withReplicas(0)
+      .withNewSelector().addToMatchLabels("app", "nginx").endSelector()
+      .withNewTemplate()
+      .withNewMetadata()
+      .addToAnnotations("kubectl.kubernetes.io/restartedAt", "2020-06-08T11:52:50.022")
+      .addToAnnotations("app", "rs1")
+      .addToLabels("app", "nginx")
+      .endMetadata()
+      .withNewSpec()
+      .addNewContainer()
+      .withName("nginx")
+      .withImage("nginx:perl")
+      .addNewPort().withContainerPort(80).endPort()
+      .endContainer()
+      .endSpec()
+      .endTemplate()
+      .endSpec()
+      .build();
+    ReplicaSet replicaSetRevision2 = new ReplicaSetBuilder()
+      .withNewMetadata()
+      .addToAnnotations("deployment.kubernetes.io/revision", "2")
+      .withName("rs2")
+      .endMetadata()
+      .withNewSpec()
+      .withReplicas(1)
+      .withNewSelector().addToMatchLabels("app", "nginx").endSelector()
+      .withNewTemplate()
+      .withNewMetadata()
+      .addToAnnotations("kubectl.kubernetes.io/restartedAt", "2020-06-08T11:52:50.022")
+      .addToAnnotations("app", "rs2")
+      .addToLabels("app", "nginx")
+      .endMetadata()
+      .withNewSpec()
+      .addNewContainer()
+      .withName("nginx")
+      .withImage("nginx:1.19")
+      .addNewPort().withContainerPort(80).endPort()
+      .endContainer()
+      .endSpec()
+      .endTemplate()
+      .endSpec()
+      .build();
+
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/replicasets?labelSelector=" + Utils.toUrlEncoded("app=nginx"))
+      .andReturn(HttpURLConnection.HTTP_OK, new ReplicaSetListBuilder().withItems(replicaSetRevision1, replicaSetRevision2).build()).once();
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
+      .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build()).times(3);
+    server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
+      .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build()).once();
+    KubernetesClient client = server.getClient();
+
+    // When
+    Deployment deployment = client.apps().deployments().inNamespace("ns1").withName("deploy1")
+      .rolling().undo();
+
+    // Then
+    RecordedRequest recordedRequest = server.getLastRequest();
+    assertNotNull(deployment);
+    assertEquals("PATCH", recordedRequest.getMethod());
+    assertTrue(recordedRequest.getBody().readUtf8().contains("\"app\":\"rs1\""));
+  }
+
+  private DeploymentBuilder getDeploymentBuilder() {
+    return new DeploymentBuilder()
+      .withNewMetadata()
+      .withName("deploy1")
+      .addToLabels("app", "nginx")
+      .addToAnnotations("app", "nginx")
+      .endMetadata()
+      .withNewSpec()
+      .withReplicas(1)
+      .withNewSelector()
+      .addToMatchLabels("app", "nginx")
+      .endSelector()
+      .withNewTemplate()
+      .withNewMetadata().addToLabels("app", "nginx").endMetadata()
+      .withNewSpec()
+      .addNewContainer()
+      .withName("nginx")
+      .withImage("nginx:1.7.9")
+      .addNewPort().withContainerPort(80).endPort()
+      .endContainer()
+      .endSpec()
+      .endTemplate()
+      .endSpec();
+  }
+
 }

@@ -13,6 +13,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Fix #1868: Add Support for rolling update
 
 ### 4.10.2 (2020-06-02)
 #### Bugs
