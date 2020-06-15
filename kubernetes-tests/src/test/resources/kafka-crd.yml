@@ -1,0 +1,132 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: kafkatopics.kafka.test
+spec:
+  group: kafka.test
+  names:
+    kind: KafkaTopic
+    listKind: KafkaTopicList
+    plural: kafkatopics
+    singular: kafkatopic
+  scope: Namespaced
+  subresources:
+    status: {}
+  validation:
+    openAPIV3Schema:
+      description: KafkaTopic is the Schema for the kafkatopics API
+      properties:
+        apiVersion:
+          description: 'APIVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'Kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          description: KafkaTopicSpec defines the desired state of KafkaTopic
+          properties:
+            configs:
+              additionalProperties: true
+              description: Topic specific configuration properties
+              type: object
+            name:
+              description: 'The actual name of the topic. The CR will be rejected
+              if a topic with this name already exists on the cluster.'
+              type: string
+            partitions:
+              description: Number of partitions
+              format: int32
+              minimum: 0
+              type: integer
+            replicationFactor:
+              description: Replication factor
+              minimum: 0
+              format: int16
+              type: integer
+            tls:
+              description: TLS settings to be used in order to connect to the cluster
+              properties:
+                clientCertificate:
+                  description: Client certificate
+                  properties:
+                    certificate:
+                      description: The name of the key from the secret holding the
+                        client certificate
+                      type: string
+                    key:
+                      description: The name of the key from the secret holding the
+                        private key
+                      type: string
+                    secretName:
+                      description: The name of the secret holding the client certificate
+                      type: string
+                  required:
+                    - certificate
+                    - key
+                    - secretName
+                  type: object
+                rootCA:
+                  description: Root CA
+                  properties:
+                    certificate:
+                      description: The name of the key from the secret holding the
+                        CA certificate
+                      type: string
+                    secretName:
+                      description: The name of the secret holding the CA
+                      type: string
+                  required:
+                    - certificate
+                    - secretName
+                  type: object
+              required:
+                - clientCertificate
+                - rootCA
+              type: object
+          required:
+            - name
+            - partitions
+            - replicationFactor
+          type: object
+        status:
+          description: KafkaTopicStatus defines the observed state of KafkaTopic
+          properties:
+            lastUpdate:
+              format: date-time
+              type: string
+            reason:
+              type: string
+            status:
+              enum:
+                - Success
+                - Failure
+              type: string
+          type: object
+      type: object
+  version: v1beta1
+  versions:
+    - name: v1beta1
+      served: true
+      storage: true

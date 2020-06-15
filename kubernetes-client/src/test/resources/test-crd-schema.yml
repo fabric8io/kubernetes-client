@@ -59,15 +59,13 @@ spec:
               type: "object"
             edgeTemplates:
               items:
-                JSONSchemas: []
-                type: "object"
                 properties:
                   name:
-                    type: "string"
                     pattern: "^edge-"
+                    type: "string"
                   spiky:
-                    type: "boolean"
                     default: true
+                    type: "boolean"
               type: "array"
           required:
           - "builderName"

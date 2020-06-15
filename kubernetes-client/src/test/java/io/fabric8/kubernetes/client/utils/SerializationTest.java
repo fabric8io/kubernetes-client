@@ -20,10 +20,9 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.JSONSchemaProps;
-import io.fabric8.kubernetes.api.model.apiextensions.JSONSchemaPropsOrArray;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -31,14 +30,12 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import com.fasterxml.jackson.databind.node.BooleanNode;
@@ -51,9 +48,7 @@ public class SerializationTest {
   @Test
   void unmarshalCRDWithSchema() throws Exception {
     final String input = readYamlToString("/test-crd-schema.yml");
-    System.out.println("yml: " + input);
     final CustomResourceDefinition crd = Serialization.unmarshal(input, CustomResourceDefinition.class);
-    System.out.println("CRD: " + crd);
     JSONSchemaProps spec = crd.getSpec()
       .getValidation()
       .getOpenAPIV3Schema()
@@ -75,8 +70,7 @@ public class SerializationTest {
     assertEquals(properties.get("dimensions").getProperties().get("x").getDefault(), new IntNode(10));
 
     String output = Serialization.asYaml(crd);
-    System.out.println(output);
-    assertEquals(output.trim(), input.trim());
+    assertEquals(input.trim(), output.trim());
   }
 
   @Test
