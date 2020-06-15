@@ -15,10 +15,14 @@
  */
 package io.fabric8.kubernetes;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
-import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
@@ -28,13 +32,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 
 @RunWith(ArquillianConditionalRunner.class)
 @RequiresKubernetes
@@ -85,12 +87,20 @@ public class RawCustomResourceIT {
     // Test Create via file
     Map<String, Object> object = client.customResource(customResourceDefinitionContext).create(currentNamespace, getClass().getResourceAsStream("/test-rawcustomresource.yml"));
     assertThat(((HashMap<String, String>)object.get("metadata")).get("name")).isEqualTo("otter");
+
     // Test Create via raw json string
     String rawJsonCustomResourceObj = "{\"apiVersion\":\"jungle.example.com/v1\"," +
       "\"kind\":\"Animal\",\"metadata\": {\"name\": \"walrus\"}," +
       "\"spec\": {\"image\": \"my-awesome-walrus-image\"}}";
-    object = client.customResource(customResourceDefinitionContext).create(currentNamespace, rawJsonCustomResourceObj);
+    object = client.customResource(customResourceDefinitionContext).createOrReplace(currentNamespace, rawJsonCustomResourceObj);
     assertThat(((HashMap<String, String>)object.get("metadata")).get("name")).isEqualTo("walrus");
+    assertThat(((HashMap<String, String>)object.get("spec")).get("image")).isEqualTo("my-awesome-walrus-image");
+
+    // Test replace with object
+    ((HashMap<String, String>)object.get("spec")).put("image", "new-walrus-image");
+    object = client.customResource(customResourceDefinitionContext).createOrReplace(currentNamespace, object);
+    assertThat(((HashMap<String, String>)object.get("metadata")).get("name")).isEqualTo("walrus");
+    assertThat(((HashMap<String, String>)object.get("spec")).get("image")).isEqualTo("new-walrus-image");
 
     // Test Get:
     object = client.customResource(customResourceDefinitionContext).get(currentNamespace, "otter");

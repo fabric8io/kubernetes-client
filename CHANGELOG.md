@@ -2,6 +2,7 @@
 
 ### 4.10-SNAPSHOT
 #### Bugs
+* Fix #2285: Raw CustomResource API createOrReplace does not propagate exceptions from create
 * Fix Raw CustomResource API path generation to not having trailing slash
 * Fix #2131: Failing to parse CustomResourceDefinition with OpenAPIV3Schema using JSONSchemaPropOr\* fields
 * Fix KubernetesAttributesExctractor to extract metadata from unregistered custom resources, such when using Raw CustomResource API 
