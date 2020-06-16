@@ -38,6 +38,12 @@ public class CustomResourceHandler implements Handler<CustomResourceConfig> {
     return 400;
   }
 
+
+  @Override
+  public String getKey() {
+    return "crd";
+  }
+
   @Override
   public void handle(CustomResourceConfig config) {
     TypeDef def = config.getAttribute(Keys.TYPE_DEFINITION);
