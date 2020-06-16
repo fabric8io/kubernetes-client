@@ -33,7 +33,7 @@ import (
 
   "os"
 
-  "github.com/fabric8io/kubernetes-client/kubernetes-model/pkg/schemagen"
+  "github.com/fabric8io/kubernetes-client/kubernetes-model-generator/pkg/schemagen"
 )
 
 type Schema struct {
@@ -67,11 +67,6 @@ type Schema struct {
 }
 
 func main() {
-  customTypeNames := map[string]string{
-    "K8sSubjectAccessReview": "SubjectAccessReview",
-    "K8sLocalSubjectAccessReview":  "LocalSubjectAccessReview",
-    "JSONSchemaPropsorStringArray": "JSONSchemaPropsOrStringArray",
-  }
   packages := []schemagen.PackageDescriptor{
     {"k8s.io/apimachinery/pkg/util/intstr", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_pkg_util_intstr_"},
     {"k8s.io/apimachinery/pkg/runtime", "", "io.fabric8.kubernetes.api.model.runtime", "kubernetes_apimachinery_pkg_runtime_"},
@@ -84,7 +79,7 @@ func main() {
     reflect.TypeOf(time.Time{}): reflect.TypeOf(""),
     reflect.TypeOf(struct{}{}):  reflect.TypeOf(""),
   }
-  schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, customTypeNames, "rbac")
+  schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, map[reflect.Type]string{},"rbac")
   if err != nil {
     fmt.Fprintf(os.Stderr, "An error occurred: %v", err)
     return

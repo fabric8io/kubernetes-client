@@ -455,7 +455,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.apiextensions.JSON",
+      "javaType": "com.fasterxml.jackson.databind.JsonNode",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -499,6 +499,7 @@
           }
         },
         "default": {
+          "$ref": "#/definitions/kubernetes_apiextensions_JSON",
           "javaType": "com.fasterxml.jackson.databind.JsonNode"
         },
         "definitions": {
@@ -528,10 +529,12 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
+            "$ref": "#/definitions/kubernetes_apiextensions_JSON",
             "javaType": "com.fasterxml.jackson.databind.JsonNode"
           }
         },
         "example": {
+          "$ref": "#/definitions/kubernetes_apiextensions_JSON",
           "javaType": "com.fasterxml.jackson.databind.JsonNode"
         },
         "exclusiveMaximum": {
@@ -1770,7 +1773,7 @@
       "$ref": "#/definitions/kubernetes_apimachinery_pkg_version_Info",
       "javaType": "io.fabric8.kubernetes.api.model.version.Info"
     },
-    "JSONSchemaPropsorStringArray": {
+    "JSONSchemaPropsOrStringArray": {
       "$ref": "#/definitions/kubernetes_apiextensions_JSONSchemaPropsOrStringArray",
       "javaType": "io.fabric8.kubernetes.api.model.apiextensions.JSONSchemaPropsOrStringArray"
     },

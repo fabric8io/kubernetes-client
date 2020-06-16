@@ -19,6 +19,7 @@ import (
   "bytes"
   "encoding/json"
   "fmt"
+
   // Dependencies of rbac
   metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
   "k8s.io/apimachinery/pkg/api/resource"
@@ -34,7 +35,7 @@ import (
 
   "os"
 
-  "github.com/fabric8io/kubernetes-client/kubernetes-model/pkg/schemagen"
+  "github.com/fabric8io/kubernetes-client/kubernetes-model-generator/pkg/schemagen"
 )
 
 type Schema struct {
@@ -65,15 +66,10 @@ type Schema struct {
   CustomResourceDefinitionStatus           apiextensions.CustomResourceDefinitionStatus
   // Added JSONSchemaPropsorStringArray here because of
   // https://github.com/joelittlejohn/jsonschema2pojo/issues/866
-  JSONSchemaPropsorStringArray             apiextensions.JSONSchemaPropsOrStringArray
+  JSONSchemaPropsOrStringArray             apiextensions.JSONSchemaPropsOrStringArray
 }
 
 func main() {
-  customTypeNames := map[string]string{
-    "K8sSubjectAccessReview": "SubjectAccessReview",
-    "K8sLocalSubjectAccessReview":  "LocalSubjectAccessReview",
-    "JSONSchemaPropsorStringArray": "JSONSchemaPropsOrStringArray",
-  }
   packages := []schemagen.PackageDescriptor{
     {"k8s.io/apimachinery/pkg/util/intstr", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_pkg_util_intstr_"},
     {"k8s.io/apimachinery/pkg/runtime", "", "io.fabric8.kubernetes.api.model.runtime", "kubernetes_apimachinery_pkg_runtime_"},
@@ -87,7 +83,12 @@ func main() {
     reflect.TypeOf(time.Time{}): reflect.TypeOf(""),
     reflect.TypeOf(struct{}{}):  reflect.TypeOf(""),
   }
-  schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, customTypeNames, "apiextensions")
+
+  // overwriting some times
+  manualTypeMapping := map[reflect.Type]string{
+    reflect.TypeOf(apiextensions.JSON{}): "com.fasterxml.jackson.databind.JsonNode",
+  }
+  schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, manualTypeMapping, "apiextensions")
   if err != nil {
     fmt.Fprintf(os.Stderr, "An error occurred: %v", err)
     return
@@ -104,16 +105,6 @@ func main() {
   }
   result := string(b)
   result = strings.Replace(result, "\"additionalProperty\":", "\"additionalProperties\":", -1)
-
-  /**
-   * Hack to fix https://github.com/fabric8io/kubernetes-client/issues/1565 and https://github.com/fabric8io/kubernetes-client/issues/2144
-   *
-   * The source golang code uses a type JSON which has a custom serializer and deserializer to ensure that it gets properly
-   * translated to and from a string. This gets compiled into a JSON.java class which does not have any such serialization support.
-   * This JSON type sounds a lot like JsonNode, which encapsulates any json value. Use that instead.
-   */
-  result = strings.Replace(result, "{\"$ref\":\"#/definitions/kubernetes_apiextensions_JSON\",\"javaType\":\"io.fabric8.kubernetes.api.model.apiextensions.JSON\"}",
-  "{\"javaType\":\"com.fasterxml.jackson.databind.JsonNode\"}", -1)
 
   var out bytes.Buffer
   err = json.Indent(&out, []byte(result), "", "  ")
