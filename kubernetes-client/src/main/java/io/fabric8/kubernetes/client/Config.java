@@ -488,7 +488,7 @@ public class Config {
     }
     File kubeConfigFile = new File(getKubeconfigFilename());
     if (!kubeConfigFile.isFile()) {
-      LOGGER.debug("Did not find Kubernetes config at: ["+kubeConfigFile.getPath()+"]. Ignoring.");
+      LOGGER.debug("Did not find Kubernetes config at: [{}]. Ignoring.", kubeConfigFile.getPath());
       return false;
     }
     LOGGER.debug("Found for Kubernetes config at: [{}].", kubeConfigFile.getPath());
@@ -615,7 +615,7 @@ public class Config {
           }
 
           config.getErrorMessages().put(401, "Unauthorized! Token may have expired! Please log-in again.");
-          config.getErrorMessages().put(403, "Forbidden! User "+currentContext.getUser()+ " doesn't have permission.");
+          config.getErrorMessages().put(403, "Forbidden! User " + (currentContext != null? currentContext.getUser() : "") + " doesn't have permission.");
         }
         return true;
       }
@@ -1171,6 +1171,13 @@ public class Config {
     this.customHeaders = customHeaders;
   }
 
+  /**
+   * Returns all the {@link NamedContext}s that exist in the kube config
+   * 
+   * @return all the contexts
+   * 
+   * @see NamedContext
+   */
   public List<NamedContext> getContexts() {
     return contexts;
   }
@@ -1179,6 +1186,13 @@ public class Config {
     this.contexts = contexts;
   }
 
+  /**
+   * Returns the current context that's defined in the kube config. Returns {@code null} if there's none
+   * 
+   * @return the current context
+   * 
+   * @see NamedContext
+   */
   public NamedContext getCurrentContext() {
     return currentContext;
   }

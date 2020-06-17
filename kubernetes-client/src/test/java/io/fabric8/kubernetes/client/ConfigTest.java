@@ -41,6 +41,7 @@ import java.util.Map;
 
 import static okhttp3.TlsVersion.TLS_1_1;
 import static okhttp3.TlsVersion.TLS_1_2;
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -58,6 +59,9 @@ public class ConfigTest {
   private static final String TEST_TOKEN_GENERATOR_FILE = Utils.filePath(ConfigTest.class.getResource("/token-generator"));
 
   private static final String TEST_KUBECONFIG_EXEC_WIN_FILE = Utils.filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-win"));
+
+  private static final String TEST_KUBECONFIG_NO_CURRENT_CONTEXT_FILE = Utils.filePath(ConfigTest.class.getResource("/test-kubeconfig-nocurrentctxt.yml"));
+  
   @BeforeEach
   public void setUp() {
     System.getProperties().remove(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY);
@@ -333,6 +337,18 @@ public class ConfigTest {
   }
 
   @Test
+  public void testWithKubeConfigAndNoContext() {
+    System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_NO_CURRENT_CONTEXT_FILE);
+    Config config = new Config();
+    assertNotNull(config);
+
+    assertNull(config.getCurrentContext());
+    assertEquals(3, config.getContexts().size());
+    assertEquals(Config.DEFAULT_MASTER_URL + "/", config.getMasterUrl());
+    assertNull(config.getNamespace());
+  }
+
+  @Test
   public void testWithNamespacePathAndSytemPropertiesAndBuilder() {
     System.setProperty(Config.KUBERNETES_NAMESPACE_FILE, TEST_NAMESPACE_FILE);
     System.setProperty(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY, "http://somehost:80");
@@ -346,7 +362,6 @@ public class ConfigTest {
     assertEquals("http://somehost:80/", config.getMasterUrl());
     assertEquals("testns2", config.getNamespace());
   }
-
 
   @Test
   public void testWithCustomHeader() {
