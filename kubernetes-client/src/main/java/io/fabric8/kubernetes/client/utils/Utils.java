@@ -95,7 +95,7 @@ public class Utils {
     return getSystemPropertyOrEnvVar(systemPropertyName, (String) null);
   }
 
-  public static Boolean getSystemPropertyOrEnvVar(String systemPropertyName, Boolean defaultValue) {
+  public static boolean getSystemPropertyOrEnvVar(String systemPropertyName, Boolean defaultValue) {
     String result = getSystemPropertyOrEnvVar(systemPropertyName, defaultValue.toString());
     return Boolean.parseBoolean(result);
   }
