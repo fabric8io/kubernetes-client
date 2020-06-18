@@ -16,3 +16,4 @@
 #foreach ($m in ${model.values()})
 io.fabric8.openshift.client.handlers.${m.name}Handler
 #end
+io.fabric8.openshift.client.handlers.ProjectRequestHandler
