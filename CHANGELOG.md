@@ -17,6 +17,7 @@
 * Fix #2278: Added type parameters for KubernetesList in KubernetesClient + test verifying waitUntilCondition **always** retrieves resource from server
 * Fix #2320: Added JUnit5 extension for mocking KubernetesClient in tests using @EnableKubernetesMockClient
 * Fix #2332: Added PodExecOptions model
+* Improve error handling on stream closing errors in S2I binary builds(#2032)
 
 #### Dependency Upgrade
 

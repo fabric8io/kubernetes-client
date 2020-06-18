@@ -143,7 +143,7 @@ public class BuildConfigTest {
     File warFile = new File("target/test.war");
     warFile.createNewFile();
 
-    server.expect().post().withPath("/apis/build.openshift.io/v1/namespaces/ns1/buildconfigs/bc2/instantiatebinary?commit=&asFile=" + warFile.getName())
+    server.expect().post().withPath("/apis/build.openshift.io/v1/namespaces/ns1/buildconfigs/bc2/instantiatebinary?name=bc2&namespace=ns1&asFile=" + warFile.getName())
       .andReturn(201, new BuildBuilder()
       .withNewMetadata().withName("bc2").endMetadata().build()).once();
 
@@ -155,6 +155,8 @@ public class BuildConfigTest {
       .instantiateBinary()
       .asFile(warFile.getName())
       .fromFile(warFile);
+    assertNotNull(build);
+    assertEquals("bc2", build.getMetadata().getName());
   }
 
   // TODO Add delay to mockwebserver. Disabled as too dependent on timing issues right now.

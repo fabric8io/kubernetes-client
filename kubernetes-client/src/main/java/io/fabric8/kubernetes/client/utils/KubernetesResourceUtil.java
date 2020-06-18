@@ -16,11 +16,13 @@
 
 package io.fabric8.kubernetes.client.utils;
 
+import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.OwnerReference;
 
+import java.time.Instant;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -28,6 +30,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 public class KubernetesResourceUtil {
+  private KubernetesResourceUtil() {}
 
   public static final Pattern KUBERNETES_DNS1123_LABEL_REGEX = Pattern.compile("[a-z0-9]([-a-z0-9]*[a-z0-9])?");
 
@@ -232,7 +235,7 @@ public class KubernetesResourceUtil {
         return labels;
       }
     }
-    return Collections.EMPTY_MAP;
+    return Collections.emptyMap();
   }
 
   /**
@@ -298,5 +301,16 @@ public class KubernetesResourceUtil {
       }
     }
     return null;
+  }
+
+  public static void sortEventListBasedOnTimestamp(List<Event> eventList) {
+    if (eventList != null) {
+      // Sort to get latest events in begining
+      eventList.sort((o1, o2) -> {
+          Instant d1 = Instant.parse(o1.getLastTimestamp());
+          Instant d2 = Instant.parse(o2.getLastTimestamp());
+          return (int) (d2.getEpochSecond() - d1.getEpochSecond());
+      });
+    }
   }
 }
