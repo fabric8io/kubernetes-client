@@ -15,7 +15,17 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.fabric8.kubernetes.api.model.DeleteOptions;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.ListOptions;
@@ -38,14 +48,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
 /**
  * This class simple does basic operations for custom defined resources without
  * demanding the POJOs for custom resources. It is serializing/deserializing
@@ -55,6 +57,9 @@ import java.util.concurrent.TimeUnit;
  *
  */
 public class RawCustomResourceOperationsImpl extends OperationSupport {
+  
+  private static final String METADATA = "metadata";
+  private static final String RESOURCE_VERSION = "resourceVersion";
   private OkHttpClient client;
   private Config config;
   private CustomResourceDefinitionContext customResourceDefinition;
@@ -174,7 +179,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of network/serializiation failures or failures from Kuberntes API
    */
   public Map<String, Object> createOrReplace(String objectAsString) throws IOException {
-    return createOrReplaceJsonStringObject(null, objectAsString);
+    return createOrReplaceObject(null, load(objectAsString));
   }
 
   /**
@@ -185,7 +190,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of network/serialization failures or failures from Kubernetes API
    */
   public Map<String, Object> createOrReplace(Map<String, Object> customResourceObject) throws IOException {
-    return createOrReplace(objectMapper.writeValueAsString(customResourceObject));
+    return createOrReplaceObject(null, customResourceObject);
   }
 
   /**
@@ -196,7 +201,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of network/serialization failures or failures from Kubernetes API
    */
   public Map<String, Object> createOrReplace(InputStream inputStream) throws IOException {
-    return createOrReplace(IOHelpers.readFully(inputStream));
+    return createOrReplaceObject(null, load(inputStream));
   }
 
   /**
@@ -208,7 +213,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of network/serialization failures or failures from Kubernetes API
    */
   public Map<String, Object> createOrReplace(String namespace, String objectAsString) throws IOException {
-    return createOrReplaceJsonStringObject(namespace, objectAsString);
+    return createOrReplaceObject(namespace, load(objectAsString));
   }
 
   /**
@@ -220,19 +225,19 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of network/serialization failures or failures from Kubernetes API
    */
   public Map<String, Object> createOrReplace(String namespace, Map<String, Object> customResourceObject) throws IOException {
-    return createOrReplace(namespace, objectMapper.writeValueAsString(customResourceObject));
+    return createOrReplaceObject(namespace, customResourceObject);
   }
 
   /**
    * Create or replace a custom resource which is namespaced object.
    *
    * @param namespace desired namespace
-   * @param objectAsString object as file input stream
+   * @param objectAsStream object as file input stream
    * @return Object as HashMap
    * @throws IOException in case of network/serialization failures or failures from Kubernetes API
    */
-  public Map<String, Object> createOrReplace(String namespace, InputStream objectAsString) throws IOException {
-    return createOrReplace(namespace, IOHelpers.readFully(objectAsString));
+  public Map<String, Object> createOrReplace(String namespace, InputStream objectAsStream) throws IOException {
+    return createOrReplaceObject(namespace, load(objectAsStream));
   }
 
   /**
@@ -680,22 +685,39 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
 
   }
 
-  private Map<String, Object> createOrReplaceJsonStringObject(String namespace, String objectAsString) throws IOException {
+  private Map<String, Object> createOrReplaceObject(String namespace, Map<String, Object> objectAsMap) throws IOException {
+    Map<String, Object> metadata = (Map<String, Object>) objectAsMap.get(METADATA);
+    if (metadata == null) {
+      throw KubernetesClientException.launderThrowable(new IllegalStateException("Invalid object provided -- metadata is required."));
+    }
+
     Map<String, Object> ret;
+
+    // can't include resourceVersion in create calls
+    String originalResourceVersion = (String) metadata.get(RESOURCE_VERSION);
+    metadata.remove(RESOURCE_VERSION);
+
     try {
       if(namespace != null) {
-        ret = create(namespace, objectAsString);
+        ret = create(namespace, objectAsMap);
       } else {
-        ret = create(objectAsString);
+        ret = create(objectAsMap);
       }
     } catch (KubernetesClientException exception) {
+      if (exception.getCode() != HttpURLConnection.HTTP_CONFLICT) {
+        throw exception;
+      }
+
       try {
-        Map<String, Object> objectMap = load(objectAsString);
-        String name = ((Map<String, Object>) objectMap.get("metadata")).get("name").toString();
-        ret =  namespace != null ?
-          edit(namespace, name, objectAsString) : edit(name, objectAsString);
+        // re-add for edit call
+        if (originalResourceVersion != null) {
+          metadata.put(RESOURCE_VERSION, originalResourceVersion);
+        }
+        String name = (String) metadata.get("name");
+        ret = namespace != null ?
+          edit(namespace, name, objectAsMap) : edit(name, objectAsMap);
       } catch (NullPointerException nullPointerException) {
-        throw KubernetesClientException.launderThrowable(new IllegalStateException("Invalid json string provided."));
+        throw KubernetesClientException.launderThrowable(new IllegalStateException("Invalid object provided -- metadata.name is required."));
       }
     }
     return ret;
@@ -832,10 +854,10 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
 
   private String appendResourceVersionInObject(String namespace, String customResourceName, String customResourceAsJsonString) throws IOException {
     Map<String, Object> oldObject = get(namespace, customResourceName);
-    String resourceVersion = ((Map<String, Object>)oldObject.get("metadata")).get("resourceVersion").toString();
+    String resourceVersion = ((Map<String, Object>)oldObject.get(METADATA)).get(RESOURCE_VERSION).toString();
 
     Map<String, Object> newObject = convertJsonOrYamlStringToMap(customResourceAsJsonString);
-    ((Map<String, Object>)newObject.get("metadata")).put("resourceVersion", resourceVersion);
+    ((Map<String, Object>)newObject.get(METADATA)).put(RESOURCE_VERSION, resourceVersion);
 
     return objectMapper.writeValueAsString(newObject);
   }
