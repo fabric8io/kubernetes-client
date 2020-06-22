@@ -20,6 +20,7 @@ metadata:
   name: crontabs.stable.example.com
 spec:
   group: stable.example.com
+  version: v1
   versions:
     - name: v1
       served: true

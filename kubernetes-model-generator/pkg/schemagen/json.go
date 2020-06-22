@@ -71,8 +71,14 @@ type JSONPropertyDescriptor struct {
 	*JSONMapDescriptor
 	*JavaTypeDescriptor
 	*JavaInterfacesDescriptor
+	*JavaSerDeDescriptor
 }
 
 type JSONMapDescriptor struct {
 	MapValueType JSONPropertyDescriptor `json:"additionalProperty"`
+}
+
+type JavaSerDeDescriptor struct {
+  Serializer string `json:"serializer,omitempty"`
+  Deserializer string `json:"deserializer,omitempty"`
 }

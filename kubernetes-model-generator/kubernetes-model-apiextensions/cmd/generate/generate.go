@@ -93,6 +93,27 @@ func main() {
     return
   }
 
+  serdes := map[string]*schemagen.JavaSerDeDescriptor{
+		"kubernetes_apiextensions_JSONSchemaPropsOrBool": &schemagen.JavaSerDeDescriptor{
+				Serializer: "JSONSchemaPropsOrBoolSerDe.Serializer.class",
+				Deserializer: "JSONSchemaPropsOrBoolSerDe.Deserializer.class",
+		},
+		"kubernetes_apiextensions_JSONSchemaPropsOrArray": &schemagen.JavaSerDeDescriptor{
+				Serializer: "JSONSchemaPropsOrArraySerDe.Serializer.class",
+				Deserializer: "JSONSchemaPropsOrArraySerDe.Deserializer.class",
+		},
+		"kubernetes_apiextensions_JSONSchemaPropsOrStringArray": &schemagen.JavaSerDeDescriptor{
+			Serializer: "JSONSchemaPropsOrStringArraySerDe.Serializer.class",
+			Deserializer: "JSONSchemaPropsOrStringArraySerDe.Deserializer.class",
+		},
+}
+
+  for definitionKey, descriptor := range serdes {
+		val := schema.Definitions[definitionKey]
+		val.JavaSerDeDescriptor = descriptor
+		schema.Definitions[definitionKey] = val
+  }
+
   args := os.Args[1:]
   if len(args) < 1 || args[0] != "validation" {
     schema.Resources = nil
