@@ -32,7 +32,7 @@ type PackageDescriptor struct {
 type schemaGenerator struct {
 	types           map[reflect.Type]*JSONObjectDescriptor
 	typeNames       map[reflect.Type]string
-	customTypeNames map[string]string
+	manualTypeMap   map[reflect.Type]string
 	packages        map[string]PackageDescriptor
 	typeMap         map[reflect.Type]reflect.Type
 }
@@ -44,12 +44,12 @@ const (
 	Cluster    CrdScope = iota
 )
 
-func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, customTypeNames map[string]string, moduleName string) (*JSONSchema, error) {
-	g := newSchemaGenerator(packages, typeMap, customTypeNames)
+func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, manualTypeMapping map[reflect.Type]string, moduleName string) (*JSONSchema, error) {
+	g := newSchemaGenerator(packages, typeMap, manualTypeMapping)
 	return g.generate(t, moduleName)
 }
 
-func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, customTypeNames map[string]string) *schemaGenerator {
+func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, manualTypeMap map[reflect.Type]string) *schemaGenerator {
 	pkgMap := make(map[string]PackageDescriptor)
 	for _, p := range packages {
 		pkgMap[p.GoPackage] = p
@@ -57,7 +57,7 @@ func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]r
 	g := schemaGenerator{
 		types:           make(map[reflect.Type]*JSONObjectDescriptor),
 		typeNames:       make(map[reflect.Type]string),
-		customTypeNames: customTypeNames,
+		manualTypeMap:   manualTypeMap,
 		packages:        pkgMap,
 		typeMap:         typeMap,
 	}
@@ -153,6 +153,11 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 	}
 	pkgDesc, ok := g.packages[pkgPath(t)]
 
+	manualType, isFound := g.manualTypeMap[t];
+	if isFound {
+		return manualType
+	}
+
 	//Added a special case for RunAsUserStrategyOptions
 	//If i don't add a prefix it get conflict with
 	//openShift RunAsUserStrategyOptions and project give compilation error
@@ -229,12 +234,7 @@ func (g *schemaGenerator) javaInterfaces(t reflect.Type) []string {
 func (g *schemaGenerator) initializeTypeNames(t reflect.Type) {
 	for it := 0; it < t.NumField(); it++ {
 		field := t.Field(it)
-		fieldName, isCustomized := g.customTypeNames[field.Name]
-		if isCustomized {
-			g.typeNames[field.Type] = fieldName
-		} else {
-			g.typeNames[field.Type] = field.Name
-		}
+		g.typeNames[field.Type] = field.Name
 	}
 }
 

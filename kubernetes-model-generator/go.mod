@@ -1,4 +1,4 @@
-module github.com/fabric8io/kubernetes-client/kubernetes-model
+module github.com/fabric8io/kubernetes-client/kubernetes-model-generator
 
 go 1.14
 
