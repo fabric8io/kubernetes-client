@@ -3,6 +3,190 @@
   "$schema": "http://json-schema.org/schema#",
   "$module": "core",
   "definitions": {
+    "kubernetes_aggregator_APIService": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "apiregistration.k8s.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "APIService",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/kubernetes_aggregator_APIServiceSpec",
+          "javaType": "io.fabric8.kubernetes.api.model.APIServiceSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/kubernetes_aggregator_APIServiceStatus",
+          "javaType": "io.fabric8.kubernetes.api.model.APIServiceStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.APIService",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "kubernetes_aggregator_APIServiceCondition": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "lastTransitionTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_Time",
+          "javaType": "String"
+        },
+        "message": {
+          "type": "string",
+          "description": ""
+        },
+        "reason": {
+          "type": "string",
+          "description": ""
+        },
+        "status": {
+          "type": "string",
+          "description": ""
+        },
+        "type": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.APIServiceCondition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_aggregator_APIServiceList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "apiregistration.k8s.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/kubernetes_aggregator_APIService",
+            "javaType": "io.fabric8.kubernetes.api.model.APIService"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "APIServiceList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_ListMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.APIServiceList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.APIService\u003e"
+      ]
+    },
+    "kubernetes_aggregator_APIServiceSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "caBundle": {
+          "type": "string",
+          "description": ""
+        },
+        "group": {
+          "type": "string",
+          "description": ""
+        },
+        "groupPriorityMinimum": {
+          "type": "integer",
+          "description": ""
+        },
+        "insecureSkipTLSVerify": {
+          "type": "boolean",
+          "description": ""
+        },
+        "service": {
+          "$ref": "#/definitions/kubernetes_aggregator_ServiceReference",
+          "javaType": "io.fabric8.kubernetes.api.model.ServiceReference"
+        },
+        "version": {
+          "type": "string",
+          "description": ""
+        },
+        "versionPriority": {
+          "type": "integer",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.APIServiceSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_aggregator_APIServiceStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_aggregator_APIServiceCondition",
+            "javaType": "io.fabric8.kubernetes.api.model.APIServiceCondition"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.APIServiceStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_aggregator_ServiceReference": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "namespace": {
+          "type": "string",
+          "description": ""
+        },
+        "port": {
+          "type": "integer",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.ServiceReference",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_apimachinery_pkg_apis_APIGroup": {
       "type": "object",
       "description": "",
@@ -8134,6 +8318,14 @@
       "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_APIGroupList",
       "javaType": "io.fabric8.kubernetes.api.model.APIGroupList"
     },
+    "APIService": {
+      "$ref": "#/definitions/kubernetes_aggregator_APIService",
+      "javaType": "io.fabric8.kubernetes.api.model.APIService"
+    },
+    "APIServiceList": {
+      "$ref": "#/definitions/kubernetes_aggregator_APIServiceList",
+      "javaType": "io.fabric8.kubernetes.api.model.APIServiceList"
+    },
     "BaseKubernetesList": {
       "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_List",
       "javaType": "io.fabric8.kubernetes.api.model.BaseKubernetesList"
@@ -8437,6 +8629,136 @@
           "description": "",
           "default": "APIGroupList",
           "required": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "apiservice": {
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "apiregistration.k8s.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "APIService",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/kubernetes_aggregator_APIServiceSpec",
+          "javaType": "io.fabric8.kubernetes.api.model.APIServiceSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/kubernetes_aggregator_APIServiceStatus",
+          "javaType": "io.fabric8.kubernetes.api.model.APIServiceStatus"
+        }
+      },
+      "additionalProperties": true
+    },
+    "apiservicecondition": {
+      "properties": {
+        "lastTransitionTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_Time",
+          "javaType": "String"
+        },
+        "message": {
+          "type": "string",
+          "description": ""
+        },
+        "reason": {
+          "type": "string",
+          "description": ""
+        },
+        "status": {
+          "type": "string",
+          "description": ""
+        },
+        "type": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true
+    },
+    "apiservicelist": {
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "apiregistration.k8s.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/kubernetes_aggregator_APIService",
+            "javaType": "io.fabric8.kubernetes.api.model.APIService"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "APIServiceList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_ListMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true
+    },
+    "apiservicespec": {
+      "properties": {
+        "caBundle": {
+          "type": "string",
+          "description": ""
+        },
+        "group": {
+          "type": "string",
+          "description": ""
+        },
+        "groupPriorityMinimum": {
+          "type": "integer",
+          "description": ""
+        },
+        "insecureSkipTLSVerify": {
+          "type": "boolean",
+          "description": ""
+        },
+        "service": {
+          "$ref": "#/definitions/kubernetes_aggregator_ServiceReference",
+          "javaType": "io.fabric8.kubernetes.api.model.ServiceReference"
+        },
+        "version": {
+          "type": "string",
+          "description": ""
+        },
+        "versionPriority": {
+          "type": "integer",
+          "description": ""
+        }
+      },
+      "additionalProperties": true
+    },
+    "apiservicestatus": {
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_aggregator_APIServiceCondition",
+            "javaType": "io.fabric8.kubernetes.api.model.APIServiceCondition"
+          }
         }
       },
       "additionalProperties": true
@@ -14219,6 +14541,23 @@
         "targetPort": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_util_intstr_IntOrString",
           "javaType": "io.fabric8.kubernetes.api.model.IntOrString"
+        }
+      },
+      "additionalProperties": true
+    },
+    "servicereference": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "namespace": {
+          "type": "string",
+          "description": ""
+        },
+        "port": {
+          "type": "integer",
+          "description": ""
         }
       },
       "additionalProperties": true
