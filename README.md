@@ -464,6 +464,7 @@ All the resource objects used here will be according to OpenShift 3.9.0  and Kub
   - [Kubernetes Pipeline Plugin (Jenkins)](https://github.com/jenkinsci/kubernetes-pipeline-plugin)
   - [OpenShift Sync Plugin (Jenkins)](https://github.com/openshift/jenkins-sync-plugin)
   - [Kubernetes Plugin (Teamcity from Jetbrains)](https://github.com/JetBrains/teamcity-kubernetes-plugin)
+  - [Kubernetes Agents for Bamboo (WindTunnel Technologies)](https://marketplace.atlassian.com/apps/1222674/kubernetes-agents-for-bamboo)
   
   Build Tools:
   - [Fabric8 Maven Plugin](https://github.com/fabric8io/fabric8-maven-plugin)
