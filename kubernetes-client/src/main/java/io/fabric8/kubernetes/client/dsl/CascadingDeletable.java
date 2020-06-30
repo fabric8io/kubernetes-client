@@ -18,5 +18,5 @@ package io.fabric8.kubernetes.client.dsl;
 /**
  * Created by iocanel on 9/15/16.
  */
-public interface CascadingDeletable extends Deletable, Cascading<Deletable> {
+public interface CascadingDeletable<T> extends Deletable, Cascading<Deletable>, Recreateable<Applicable<T>> {
 }

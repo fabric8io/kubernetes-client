@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.DeleteOptions;
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
@@ -33,6 +35,7 @@ import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRe
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.Assert;
@@ -117,6 +120,30 @@ class ResourceTest {
       assertEquals("/api/v1/namespaces/ns1/pods", request.getPath());
       assertEquals("POST", request.getMethod());
     }
+
+  @Test
+  void itPassesPropagationPolicyWithDeleteExisting() throws InterruptedException {
+    Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
+
+    server.expect().delete().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(HttpURLConnection.HTTP_OK, pod1).once();
+    server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(HttpURLConnection.HTTP_CREATED, pod1).once();
+
+    KubernetesClient client = server.getClient();
+    HasMetadata response = client.resource(pod1).inNamespace("ns1").withPropagationPolicy(DeletionPropagation.FOREGROUND).deletingExisting().createOrReplace();
+    assertEquals(pod1, response);
+
+    assertEquals(2, server.getMockServer().getRequestCount());
+
+    RecordedRequest deleteRequest = server.getMockServer().takeRequest();
+    assertEquals("/api/v1/namespaces/ns1/pods/pod1", deleteRequest.getPath());
+    assertEquals("DELETE", deleteRequest.getMethod());
+    DeleteOptions deleteOptions = Serialization.unmarshal(deleteRequest.getBody().readUtf8(), DeleteOptions.class);
+    assertEquals("Foreground", deleteOptions.getPropagationPolicy());
+
+    RecordedRequest postRequest = server.getLastRequest();
+    assertEquals("/api/v1/namespaces/ns1/pods", postRequest.getPath());
+    assertEquals("POST", postRequest.getMethod());
+  }
 
   @Test
   void testCreateOrReplaceWithDeleteExistingWithCreateFailed() {

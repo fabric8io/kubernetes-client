@@ -25,9 +25,9 @@ import io.fabric8.kubernetes.client.Watcher;
 
 public interface VisitFromServerGetWatchDeleteRecreateWaitApplicable<T> extends Visitable<VisitFromServerGetWatchDeleteRecreateWaitApplicable<T>>,
   FromServerGettable<T>, RecreateApplicable<T, T>,
-  CascadingDeletable,
+  CascadingDeletable<T>,
   Watchable<Watcher<T>>,
   Waitable<T, T>,
-  GracePeriodConfigurable<CascadingDeletable>,
-  PropagationPolicyConfigurable<CascadingDeletable> {
+  GracePeriodConfigurable<CascadingDeletable<T>>,
+  PropagationPolicyConfigurable<CascadingDeletable<T>> {
 }
