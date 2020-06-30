@@ -74,8 +74,10 @@ public class KubernetesMockServerExtension implements AfterEachCallback, AfterAl
           f.setAccessible(true);
           if (isStatic) {
             f.set(null, client);
-          } else if (context.getTestInstance().isPresent()) {
-            f.set(context.getTestInstance().get(), client);
+          } else {
+            Optional<Object> optTestInstance = context.getTestInstance();
+            if (optTestInstance.isPresent())
+              f.set(optTestInstance.get(), client);
           }
         }
       }
