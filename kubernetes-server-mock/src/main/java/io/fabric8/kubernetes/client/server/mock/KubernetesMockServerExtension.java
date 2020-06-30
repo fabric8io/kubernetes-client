@@ -39,14 +39,14 @@ public class KubernetesMockServerExtension implements AfterEachCallback, AfterAl
 
   @Override
   public void afterEach(ExtensionContext context) throws Exception {
-    mock.destroy();
-    client.close();
+    context.getTestClass()
+      .flatMap(testClass -> findKubernetesClientField(testClass, false))
+      .ifPresent(field -> destroy());
   }
 
   @Override
   public void afterAll(ExtensionContext context) throws Exception {
-    mock.destroy();
-    client.close();
+    destroy();
   }
 
   @Override
@@ -62,23 +62,44 @@ public class KubernetesMockServerExtension implements AfterEachCallback, AfterAl
   private void setKubernetesClientField(ExtensionContext context, boolean isStatic) throws IllegalAccessException {
     Optional<Class<?>> optClass = context.getTestClass();
     if (optClass.isPresent()) {
-      Field[] fields = optClass.get().getDeclaredFields();
-      for (Field f : fields) {
-        if (f.getType() == KubernetesClient.class && Modifier.isStatic(f.getModifiers()) == isStatic) {
-          EnableKubernetesMockClient a = optClass.get().getAnnotation(EnableKubernetesMockClient.class);
-          mock = a.crud()
-                  ? new KubernetesMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(), a.https())
-                  : new KubernetesMockServer(a.https());
-          mock.init();
-          client = mock.createClient();
-          f.setAccessible(true);
-          if (isStatic) {
-            f.set(null, client);
-          } else if (context.getTestInstance().isPresent()) {
-            f.set(context.getTestInstance().get(), client);
+      Class<?> testClass = optClass.get();
+      Optional<Field> optField = findKubernetesClientField(testClass, isStatic);
+      if (optField.isPresent()) {
+        Field field = optField.get();
+        createAndInitClient(testClass);
+        if (isStatic) {
+          field.set(null, client);
+        } else {
+          Optional<Object> optTestInstance = context.getTestInstance();
+          if (optTestInstance.isPresent()) {
+            field.set(optTestInstance.get(), client);
           }
         }
       }
     }
+  }
+
+  private void createAndInitClient(Class<?> testClass) {
+    EnableKubernetesMockClient a = testClass.getAnnotation(EnableKubernetesMockClient.class);
+    mock = a.crud()
+      ? new KubernetesMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(), a.https())
+      : new KubernetesMockServer(a.https());
+    mock.init();
+    client = mock.createClient();
+  }
+
+  private Optional<Field> findKubernetesClientField(Class<?> testClass, boolean isStatic) {
+    Field[] fields = testClass.getDeclaredFields();
+    for (Field f : fields) {
+      if (f.getType() == KubernetesClient.class && Modifier.isStatic(f.getModifiers()) == isStatic) {
+        return Optional.of(f);
+      }
+    }
+    return Optional.empty();
+  }
+
+  private void destroy() {
+    mock.destroy();
+    client.close();
   }
 }
