@@ -43,14 +43,18 @@ public class KubernetesMockServerExtension implements AfterEachCallback, AfterAl
 
   @Override
   public void afterEach(ExtensionContext context) throws Exception {
-    mock.destroy();
-    client.close();
+    Optional<Class<?>> optClass = context.getTestClass();
+    if (optClass.isPresent()) {
+      Class<?> testClass = optClass.get();
+      if (findField(testClass, true) == null) {
+        destroy();
+      }
+    }
   }
 
   @Override
   public void afterAll(ExtensionContext context) throws Exception {
-    mock.destroy();
-    client.close();
+    destroy();
   }
 
   @Override
@@ -91,6 +95,21 @@ public class KubernetesMockServerExtension implements AfterEachCallback, AfterAl
       : new KubernetesMockServer(a.https());
     mock.init();
     client = mock.createClient();
+  }
+
+  private void destroy() {
+    mock.destroy();
+    client.close();
+  }
+
+  private Field findField(Class<?> testClass, boolean isStatic) {
+    Field[] fields = testClass.getDeclaredFields();
+    for (Field f : fields) {
+      if (f.getType() == KubernetesClient.class && Modifier.isStatic(f.getModifiers()) == isStatic) {
+        return f;
+      }
+    }
+    return null;
   }
 
 }
