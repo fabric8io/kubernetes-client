@@ -16,23 +16,20 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.DeleteEntity;
+import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.ReadyEntity;
-import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.apps.StatefulSet;
-import io.fabric8.kubernetes.api.model.apps.StatefulSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 import static junit.framework.TestCase.assertNotNull;
@@ -52,56 +49,14 @@ public class StatefulSetIT {
 
   private StatefulSet ss1;
 
-  private String currentNamespace;
-
-  @Before
-  public void init() {
-    currentNamespace = session.getNamespace();
-    ss1 = new StatefulSetBuilder()
-      .withNewMetadata().withName("ss1").endMetadata()
-      .withNewSpec()
-      .withReplicas(2)
-      .withNewSelector().withMatchLabels(Collections.singletonMap("app", "nginx")).endSelector()
-      .withNewTemplate()
-      .withNewMetadata()
-      .addToLabels("app", "nginx")
-      .endMetadata()
-      .withNewSpec()
-      .addNewContainer()
-      .withName("nginx")
-      .withImage("nginx")
-      .addNewPort()
-      .withContainerPort(80)
-      .withName("web")
-      .endPort()
-      .addNewVolumeMount()
-      .withName("www")
-      .withMountPath("/usr/share/nginx/html")
-      .endVolumeMount()
-      .endContainer()
-      .endSpec()
-      .endTemplate()
-      .addNewVolumeClaimTemplate()
-      .withNewMetadata()
-      .withName("www")
-      .endMetadata()
-      .withNewSpec()
-      .addToAccessModes("ReadWriteOnce")
-      .withNewResources()
-      .withRequests(Collections.singletonMap("storage", new Quantity("1Gi")))
-      .endResources()
-      .endSpec()
-      .endVolumeClaimTemplate()
-      .endSpec()
-      .build();
-
-    client.apps().statefulSets().inNamespace(currentNamespace).create(ss1);
+  @BeforeClass
+  public static void init() {
+    ClusterEntity.apply(StatefulSetIT.class.getResourceAsStream("/statefulset-it.yml"));
   }
 
   @Test
   public void load() {
-    String currentNamespace = session.getNamespace();
-    StatefulSet aStatefulSet = client.apps().statefulSets().inNamespace(currentNamespace)
+    StatefulSet aStatefulSet = client.apps().statefulSets().inNamespace(session.getNamespace())
       .load(getClass().getResourceAsStream("/test-statefulset.yml")).get();
     assertThat(aStatefulSet).isNotNull();
     assertEquals("web", aStatefulSet.getMetadata().getName());
@@ -109,40 +64,36 @@ public class StatefulSetIT {
 
   @Test
   public void get() {
-    ss1 = client.apps().statefulSets().inNamespace(currentNamespace).withName("ss1").get();
+    ss1 = client.apps().statefulSets().inNamespace(session.getNamespace()).withName("ss-get").get();
     assertNotNull(ss1);
   }
 
   @Test
   public void list() {
-    StatefulSetList statefulSetList = client.apps().statefulSets().inNamespace(currentNamespace).list();
+    StatefulSetList statefulSetList = client.apps().statefulSets().inNamespace(session.getNamespace()).list();
     assertThat(statefulSetList).isNotNull();
-    assertEquals(1, statefulSetList.getItems().size());
+    assertTrue(statefulSetList.getItems().size() >= 1);
   }
 
   @Test
   public void update() {
-    ReadyEntity<StatefulSet> statefulSetReady = new ReadyEntity<>(StatefulSet.class, client, "ss1", currentNamespace);
-    ss1 = client.apps().statefulSets().inNamespace(currentNamespace).withName("ss1").scale(5);
+    ReadyEntity<StatefulSet> statefulSetReady = new ReadyEntity<>(StatefulSet.class, client, "ss-update", session.getNamespace());
+    ss1 = client.apps().statefulSets().inNamespace(session.getNamespace()).withName("ss-update").scale(5);
     await().atMost(30, TimeUnit.SECONDS).until(statefulSetReady);
     assertEquals(5, ss1.getSpec().getReplicas().intValue());
   }
 
   @Test
   public void delete() {
-    ReadyEntity<StatefulSet> statefulSetReady = new ReadyEntity<>(StatefulSet.class, client, "ss1", currentNamespace);
+    ReadyEntity<StatefulSet> statefulSetReady = new ReadyEntity<>(StatefulSet.class, client, "ss-delete", session.getNamespace());
     await().atMost(30, TimeUnit.SECONDS).until(statefulSetReady);
-    boolean bDeleted = client.apps().statefulSets().inNamespace(currentNamespace).withName("ss1").delete();
+    boolean bDeleted = client.apps().statefulSets().inNamespace(session.getNamespace()).withName("ss-delete ").delete();
     assertTrue(bDeleted);
   }
 
-  @After
-  public void cleanup() throws InterruptedException {
-    if (client.apps().statefulSets().inNamespace(currentNamespace).list().getItems().size()!= 0) {
-      client.apps().statefulSets().inNamespace(currentNamespace).delete();
-    }
-    // Wait for resources to get destroyed
-    DeleteEntity<StatefulSet> statefulSetDelete = new DeleteEntity<>(StatefulSet.class, client, "ss1", currentNamespace);
-    await().atMost(60, TimeUnit.SECONDS).until(statefulSetDelete);
+  @AfterClass
+  public static void cleanup() {
+    ClusterEntity.remove(StatefulSetIT.class.getResourceAsStream("/statefulset-it.yml"));
   }
+
 }

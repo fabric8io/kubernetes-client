@@ -16,16 +16,23 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.DeleteEntity;
+import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.ReadyEntity;
-import io.fabric8.kubernetes.api.model.*;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodBuilder;
+import io.fabric8.kubernetes.api.model.Secret;
+import io.fabric8.kubernetes.api.model.SecretBuilder;
+import io.fabric8.kubernetes.api.model.SecretList;
+import io.fabric8.kubernetes.api.model.SecretVolumeSource;
+import io.fabric8.kubernetes.api.model.SecretVolumeSourceBuilder;
+import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -50,16 +57,9 @@ public class SecretIT {
 
   private String currentNamespace;
 
-  @Before
-  public void init() {
-    currentNamespace = session.getNamespace();
-    secret1 = new SecretBuilder()
-      .withNewMetadata().withName("secret1").endMetadata()
-      .addToData("username", "guccifer")
-      .addToData("password", "shadowgovernment")
-      .build();
-
-    client.secrets().inNamespace(currentNamespace).createOrReplace(secret1);
+  @BeforeClass
+  public static void init() {
+    ClusterEntity.apply(SecretIT.class.getResourceAsStream("/secret-it.yml"));
   }
 
   @Test
@@ -71,7 +71,7 @@ public class SecretIT {
 
   @Test
   public void get() {
-    secret1 = client.secrets().inNamespace(currentNamespace).withName("secret1").get();
+    secret1 = client.secrets().inNamespace(currentNamespace).withName("secret-get").get();
     assertNotNull(secret1);
   }
 
@@ -79,36 +79,25 @@ public class SecretIT {
   public void list() {
     SecretList aSecretList = client.secrets().inNamespace(currentNamespace).list();
     assertNotNull(aSecretList);
-    assertTrue(aSecretList.getItems().size() > 1);
+    assertTrue(aSecretList.getItems().size() >= 1);
   }
 
   @Test
   public void update() {
-    ReadyEntity<Secret> secretReady = new ReadyEntity<>(Secret.class, client, "secret1", currentNamespace);
-    secret1 = client.secrets().inNamespace(currentNamespace).withName("secret1").edit()
-      .withType("Opaque")
+    ReadyEntity<Secret> secretReady = new ReadyEntity<>(Secret.class, client, "secret-update", currentNamespace);
+    secret1 = client.secrets().inNamespace(currentNamespace).withName("secret-update").edit()
+      .editOrNewMetadata().addToLabels("foo", "bar").endMetadata()
       .done();
     await().atMost(30, TimeUnit.SECONDS).until(secretReady);
     assertThat(secret1).isNotNull();
-    assertEquals("Opaque", secret1.getType());
+    assertEquals("bar", secret1.getMetadata().getLabels().get("foo"));
   }
 
   @Test
-  public void delete()
-  {
-    ReadyEntity<Secret> secretReady = new ReadyEntity<>(Secret.class, client, "secret1", currentNamespace);
+  public void delete() {
+    ReadyEntity<Secret> secretReady = new ReadyEntity<>(Secret.class, client, "secret-delete", currentNamespace);
     await().atMost(30, TimeUnit.SECONDS).until(secretReady);
-    assertTrue(client.secrets().inNamespace(currentNamespace).withName("secret1").delete());
-  }
-
-  @After
-  public void cleanup() throws InterruptedException {
-    if (client.secrets().inNamespace(currentNamespace).list().getItems().size()!= 0) {
-      client.secrets().inNamespace(currentNamespace).withName("secret1").delete();
-    }
-    // Wait for resources to get destroyed
-    DeleteEntity<Secret> secretDelete = new DeleteEntity<>(Secret.class, client, "secret1", currentNamespace);
-    await().atMost(60, TimeUnit.SECONDS).until(secretDelete);
+    assertTrue(client.secrets().inNamespace(currentNamespace).withName("secret-delete").delete());
   }
 
   @Test
@@ -126,7 +115,7 @@ public class SecretIT {
       .build();
 
     Pod pod1 = client.pods().inNamespace(currentNamespace).create(new PodBuilder()
-      .withNewMetadata().withName("pod1").endMetadata()
+      .withNewMetadata().withName("pod-secret1").endMetadata()
       .withNewSpec()
       .addNewContainer().withName("mysql").withImage("openshift/mysql-55-centos7").endContainer()
       .addNewVolume().withName("foo").withSecret(secretVolumeSource).endVolume()
@@ -139,5 +128,10 @@ public class SecretIT {
     Secret fetchedSecret = client.secrets().inNamespace(currentNamespace)
       .withName(aVolume.getSecret().getSecretName()).get();
     assertThat(fetchedSecret).isNotNull();
+  }
+
+  @AfterClass
+  public static void cleanup() {
+    ClusterEntity.remove(SecretIT.class.getResourceAsStream("/secret-it.yml"));
   }
 }

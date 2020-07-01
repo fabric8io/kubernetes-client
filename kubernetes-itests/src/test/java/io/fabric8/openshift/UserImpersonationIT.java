@@ -17,7 +17,13 @@ package io.fabric8.openshift;
 
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountBuilder;
-import io.fabric8.kubernetes.api.model.rbac.*;
+import io.fabric8.kubernetes.api.model.rbac.ClusterRole;
+import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBinding;
+import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBindingBuilder;
+import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBuilder;
+import io.fabric8.kubernetes.api.model.rbac.PolicyRuleBuilder;
+import io.fabric8.kubernetes.api.model.rbac.RoleRefBuilder;
+import io.fabric8.kubernetes.api.model.rbac.SubjectBuilder;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.openshift.api.model.ProjectRequest;
@@ -113,10 +119,9 @@ public class UserImpersonationIT {
     .withImpersonateGroups("system:authenticated", "system:authenticated:oauth")
     .withImpersonateExtras(Collections.singletonMap("scopes", Arrays.asList("cn=jane","ou=engineers","dc=example","dc=com"))).build();
 
-    User user = client.withRequestConfig(requestConfig).call(c-> c.currentUser());
+    User user = client.withRequestConfig(requestConfig).call(OpenShiftClient::currentUser);
     assertThat(user.getMetadata().getName()).isEqualTo(SERVICE_ACCOUNT);
   }
-
 
   @Test
   public void should_be_able_to_create_a_project_impersonating_service_account() {
@@ -144,7 +149,7 @@ public class UserImpersonationIT {
     // Reset original authentication
     RequestConfig requestConfig = client.getConfiguration().getRequestConfig();
     requestConfig.setImpersonateUsername(null);
-    requestConfig.setImpersonateGroups(null);
+    requestConfig.setImpersonateGroups((String) null);
 
     // DeleteEntity Cluster Role
     client.rbac().clusterRoles().inNamespace(currentNamespace).delete(impersonatorRole);

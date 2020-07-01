@@ -15,20 +15,18 @@
  */
 package io.fabric8.kubernetes;
 
+import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.DeleteEntity;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBinding;
-import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBindingBuilder;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBindingList;
 
-import io.fabric8.kubernetes.api.model.rbac.RoleRefBuilder;
-import io.fabric8.kubernetes.api.model.rbac.SubjectBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -38,7 +36,6 @@ import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeFalse;
 
 @RunWith(ArquillianConditionalRunner.class)
 @RequiresKubernetes
@@ -52,44 +49,20 @@ public class ClusterRoleBindingIT {
 
   private ClusterRoleBinding clusterRoleBinding;
 
-  @Before
-  public void init() {
-
-    // Do not run tests on opeshift 3.6.0 and 3.6.1
-    assumeFalse(client.getVersion().getMajor().equalsIgnoreCase("1")
-      && client.getVersion().getMinor().startsWith("6"));
-
-    clusterRoleBinding = new ClusterRoleBindingBuilder()
-      .withNewMetadata()
-      .withName("read-nodes")
-      .endMetadata()
-      .addToSubjects(0, new SubjectBuilder()
-        .withApiGroup("rbac.authorization.k8s.io")
-        .withKind("User")
-        .withName("jane")
-        .withNamespace("default")
-        .build()
-      )
-      .withRoleRef(new RoleRefBuilder()
-        .withApiGroup("rbac.authorization.k8s.io")
-        .withKind("ClusterRole")
-        .withName("node-reader")
-        .build()
-      )
-      .build();
-
-    client.rbac().clusterRoleBindings().createOrReplace(clusterRoleBinding);
+  @BeforeClass
+  public static void init() {
+    ClusterEntity.apply(ClusterRoleBindingIT.class.getResourceAsStream("/clusterrolebinding-it.yml"));
   }
 
   @Test
   public void get() {
 
-    clusterRoleBinding = client.rbac().clusterRoleBindings().withName("read-nodes").get();
+    clusterRoleBinding = client.rbac().clusterRoleBindings().withName("read-nodes-get").get();
 
     assertNotNull(clusterRoleBinding);
     assertEquals("ClusterRoleBinding", clusterRoleBinding.getKind());
     assertNotNull(clusterRoleBinding.getMetadata());
-    assertEquals("read-nodes", clusterRoleBinding.getMetadata().getName());
+    assertEquals("read-nodes-get", clusterRoleBinding.getMetadata().getName());
     assertNotNull(clusterRoleBinding.getSubjects());
     assertEquals(1, clusterRoleBinding.getSubjects().size());
     assertEquals("rbac.authorization.k8s.io", clusterRoleBinding.getSubjects().get(0).getApiGroup());
@@ -98,7 +71,7 @@ public class ClusterRoleBindingIT {
     assertEquals("default", clusterRoleBinding.getSubjects().get(0).getNamespace());
     assertNotNull(clusterRoleBinding.getRoleRef());
     assertEquals("ClusterRole", clusterRoleBinding.getRoleRef().getKind());
-    assertEquals("node-reader", clusterRoleBinding.getRoleRef().getName());
+    assertEquals("secret-reader", clusterRoleBinding.getRoleRef().getName());
     assertEquals("rbac.authorization.k8s.io", clusterRoleBinding.getRoleRef().getApiGroup());
   }
 
@@ -133,10 +106,10 @@ public class ClusterRoleBindingIT {
     assertNotNull(clusterRoleBindingList.getItems());
 
     for (ClusterRoleBinding clusterRoleBinding : clusterRoleBindingList.getItems())  {
-      if (clusterRoleBinding.getMetadata().getName().equals("read-nodes"))  {
+      if (clusterRoleBinding.getMetadata().getName().equals("read-nodes-list"))  {
         assertEquals("ClusterRoleBinding", clusterRoleBinding.getKind());
         assertNotNull(clusterRoleBinding.getMetadata());
-        assertEquals("read-nodes", clusterRoleBinding.getMetadata().getName());
+        assertEquals("read-nodes-list", clusterRoleBinding.getMetadata().getName());
         assertNotNull(clusterRoleBinding.getSubjects());
         assertEquals(1, clusterRoleBinding.getSubjects().size());
         assertEquals("rbac.authorization.k8s.io", clusterRoleBinding.getSubjects().get(0).getApiGroup());
@@ -145,26 +118,25 @@ public class ClusterRoleBindingIT {
         assertEquals("default", clusterRoleBinding.getSubjects().get(0).getNamespace());
         assertNotNull(clusterRoleBinding.getRoleRef());
         assertEquals("ClusterRole", clusterRoleBinding.getRoleRef().getKind());
-        assertEquals("node-reader", clusterRoleBinding.getRoleRef().getName());
+        assertEquals("secret-reader", clusterRoleBinding.getRoleRef().getName());
 
         found = true;
       }
     }
 
-    assertEquals(true, found);
-
+    assertTrue(found);
   }
 
   @Test
   public void update() {
 
-    clusterRoleBinding = client.rbac().clusterRoleBindings().withName("read-nodes").edit()
+    clusterRoleBinding = client.rbac().clusterRoleBindings().withName("read-nodes-update").edit()
       .editSubject(0).withName("jane-new").endSubject().done();
 
     assertNotNull(clusterRoleBinding);
     assertEquals("ClusterRoleBinding", clusterRoleBinding.getKind());
     assertNotNull(clusterRoleBinding.getMetadata());
-    assertEquals("read-nodes", clusterRoleBinding.getMetadata().getName());
+    assertEquals("read-nodes-update", clusterRoleBinding.getMetadata().getName());
     assertNotNull(clusterRoleBinding.getSubjects());
     assertEquals(1, clusterRoleBinding.getSubjects().size());
     assertEquals("rbac.authorization.k8s.io", clusterRoleBinding.getSubjects().get(0).getApiGroup());
@@ -173,16 +145,15 @@ public class ClusterRoleBindingIT {
     assertEquals("default", clusterRoleBinding.getSubjects().get(0).getNamespace());
     assertNotNull(clusterRoleBinding.getRoleRef());
     assertEquals("ClusterRole", clusterRoleBinding.getRoleRef().getKind());
-    assertEquals("node-reader", clusterRoleBinding.getRoleRef().getName());
+    assertEquals("secret-reader", clusterRoleBinding.getRoleRef().getName());
     assertEquals("rbac.authorization.k8s.io", clusterRoleBinding.getRoleRef().getApiGroup());
   }
 
   @Test
   public void delete() {
-
     ClusterRoleBindingList clusterRoleBindingListBefore = client.rbac().clusterRoleBindings().list();
 
-    boolean deleted = client.rbac().clusterRoleBindings().withName("read-nodes").delete();
+    boolean deleted = client.rbac().clusterRoleBindings().withName("read-nodes-delete").delete();
     assertTrue(deleted);
 
     DeleteEntity<ClusterRoleBinding> clusterRoleBindingDeleteEntity = new DeleteEntity<>(ClusterRoleBinding.class, client, "read-nodes", null);
@@ -190,12 +161,10 @@ public class ClusterRoleBindingIT {
 
     ClusterRoleBindingList clusterRoleBindingListAfter = client.rbac().clusterRoleBindings().list();
     assertEquals(clusterRoleBindingListBefore.getItems().size()-1,clusterRoleBindingListAfter.getItems().size());
-
   }
 
-  @After
-  public void cleanup() {
-    client.rbac().clusterRoleBindings().withName("read-nodes").delete();
+  @AfterClass
+  public static void cleanup() {
+    ClusterEntity.remove(ClusterRoleBindingIT.class.getResourceAsStream("/clusterrolebinding-it.yml"));
   }
-
 }

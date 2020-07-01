@@ -16,11 +16,10 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.DeleteEntity;
+import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.ReadyEntity;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
-import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.apps.DeploymentList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
@@ -51,91 +50,54 @@ public class DeploymentIT {
 
   private Deployment deployment1;
 
-  private String currentNamespace;
-
-  @Before
-  public void init() {
-
-    currentNamespace = session.getNamespace();
-
-    client.apps().deployments().inNamespace(currentNamespace).delete();
-    client.pods().inNamespace(currentNamespace).delete();
-
-    deployment1 = new DeploymentBuilder()
-      .withNewMetadata()
-        .withName("deployment1")
-        .addToLabels("test", "deployment")
-      .endMetadata()
-      .withNewSpec()
-        .withReplicas(1)
-        .withNewTemplate()
-          .withNewMetadata()
-          .addToLabels("app", "httpd")
-          .endMetadata()
-          .withNewSpec()
-            .addNewContainer()
-              .withName("busybox")
-              .withImage("busybox")
-              .withCommand("sleep","36000")
-            .endContainer()
-          .endSpec()
-        .endTemplate()
-        .withNewSelector()
-          .addToMatchLabels("app","httpd")
-        .endSelector()
-      .endSpec()
-      .build();
-
-    client.apps().deployments().inNamespace(currentNamespace).create(deployment1);
+  @BeforeClass
+  public static void init() {
+    ClusterEntity.apply(DeploymentIT.class.getResourceAsStream("/deployment-it.yml"));
   }
 
   @Test
   public void load() {
-    Deployment aDeployment = client.apps().deployments().inNamespace(currentNamespace).load(getClass().getResourceAsStream("/test-deployments.yml")).get();
+    Deployment aDeployment = client.apps().deployments().inNamespace(session.getNamespace()).load(getClass().getResourceAsStream("/test-deployments.yml")).get();
     assertThat(aDeployment).isNotNull();
     assertEquals("nginx-deployment", aDeployment.getMetadata().getName());
   }
 
   @Test
   public void get() {
-    deployment1 = client.apps().deployments().inNamespace(currentNamespace)
-      .withName("deployment1").get();
+    deployment1 = client.apps().deployments().inNamespace(session.getNamespace())
+      .withName("deployment-standard").get();
     assertNotNull(deployment1);
   }
 
   @Test
   public void list() {
-    DeploymentList aDeploymentList = client.apps().deployments().inNamespace(currentNamespace).list();
+    DeploymentList aDeploymentList = client.apps().deployments().inNamespace(session.getNamespace()).list();
     assertThat(aDeploymentList).isNotNull();
-    assertEquals(1, aDeploymentList.getItems().size());
+    assertTrue(aDeploymentList.getItems().size() >= 1);
   }
 
   @Test
   public void update() {
-    deployment1 = client.apps().deployments().inNamespace(currentNamespace).withName("deployment1").edit()
-      .editSpec().withReplicas(2).endSpec().done();
+    deployment1 = client.apps().deployments().inNamespace(session.getNamespace()).withName("deployment-standard")
+      .edit().editMetadata().addToAnnotations("updated", "true").endMetadata().done();
     assertThat(deployment1).isNotNull();
-    assertEquals(2, deployment1.getSpec().getReplicas().intValue());
-  }
-
-  @Test
-  public void delete() {
-    assertTrue(client.apps().deployments().inNamespace(currentNamespace).delete(deployment1));
+    assertEquals("true", deployment1.getMetadata().getAnnotations().get("updated"));
   }
 
   @Test
   public void waitTest() {
     // Wait for resources to get ready
-    ReadyEntity<Deployment> deploymentReady = new ReadyEntity<>(Deployment.class, client, "deployment1", currentNamespace);
-    await().atMost(60, TimeUnit.SECONDS).until(deploymentReady);
+    ReadyEntity<Deployment> deploymentReady = new ReadyEntity<>(Deployment.class, client, "deployment-wait", session.getNamespace());
+    await().atMost(120, TimeUnit.SECONDS).until(deploymentReady);
     Deployment deploymentOne = client.apps().deployments()
-      .inNamespace(currentNamespace).withName("deployment1").get();
+      .inNamespace(session.getNamespace()).withName("deployment-wait").get();
     assertTrue(Readiness.isDeploymentReady(deploymentOne));
   }
 
   @Test
   public void listFromServer() {
-    List<HasMetadata> resources = client.resourceList(deployment1).inNamespace(currentNamespace).fromServer().get();
+    deployment1 = client.apps().deployments().inNamespace(session.getNamespace()).withName("deployment-standard").get();
+    List<HasMetadata> resources = client.resourceList(deployment1).inNamespace(session.getNamespace()).fromServer().get();
 
     assertNotNull(resources);
     assertEquals(1, resources.size());
@@ -144,25 +106,17 @@ public class DeploymentIT {
     HasMetadata fromServerPod = resources.get(0);
 
     assertEquals(deployment1.getKind(), fromServerPod.getKind());
-    assertEquals(currentNamespace, fromServerPod.getMetadata().getNamespace());
+    assertEquals(session.getNamespace(), fromServerPod.getMetadata().getNamespace());
     assertEquals(deployment1.getMetadata().getName(), fromServerPod.getMetadata().getName());
   }
 
-  @After
-  public void cleanup() {
-    int attempts = 0;
-    do {
-      try {
-        if (client.apps().deployments().inNamespace(currentNamespace).list().getItems().size() != 0) {
-          client.apps().deployments().inNamespace(currentNamespace).delete();
-        }
-        // Wait for resources to get destroyed
-        DeleteEntity<Deployment> deploymentDelete = new DeleteEntity<>(Deployment.class, client, "deployment1", currentNamespace);
-        await().atMost(60, TimeUnit.SECONDS).until(deploymentDelete);
-        return;
-      } catch(NullPointerException exception) {
-        attempts++;
-      }
-    } while (attempts < 5);
+  @Test
+  public void delete() {
+    assertTrue(client.apps().deployments().inNamespace(session.getNamespace()).withName("deployment-delete").delete());
+  }
+
+  @AfterClass
+  public static void cleanup() {
+    ClusterEntity.remove(ClusterRoleBindingIT.class.getResourceAsStream("/deployment-it.yml"));
   }
 }

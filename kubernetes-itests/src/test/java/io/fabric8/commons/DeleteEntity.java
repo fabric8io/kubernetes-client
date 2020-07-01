@@ -45,6 +45,8 @@ public class DeleteEntity<T> implements Callable<Boolean> {
         return isDeleted(((OpenShiftClient)this.client).templates().inNamespace(this.namespace).list().getItems());
       case "ImageStream":
         return isDeleted(((OpenShiftClient)this.client).imageStreams().inNamespace(this.namespace).list().getItems());
+      case "ImageStreamTag":
+        return isDeleted(((OpenShiftClient)this.client).imageStreamTags().inNamespace(this.namespace).withName(this.name).get());
       case "DeploymentConfig":
         return isDeleted(((OpenShiftClient)this.client).deploymentConfigs().inNamespace(this.namespace).list().getItems());
       case "BuildConfig":
@@ -66,7 +68,7 @@ public class DeleteEntity<T> implements Callable<Boolean> {
       case "ReplicaSet":
         return isDeleted(this.client.apps().replicaSets().inNamespace(this.namespace).list().getItems());
       case "NetworkPolicy":
-        return isDeleted(this.client.network().networkPolicies().inNamespace(this.namespace).list().getItems());
+        return isDeleted(this.client.network().networkPolicies().inNamespace(this.namespace).withName(name).get());
       case "SecurityContextConstraints":
         return isDeleted(((OpenShiftClient)this.client).securityContextConstraints().withName(this.name).get());
       case "ClusterRoleBinding":

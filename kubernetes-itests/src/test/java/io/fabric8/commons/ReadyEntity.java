@@ -41,12 +41,16 @@ public class ReadyEntity<T> implements Callable<Boolean> {
         return ((OpenShiftClient)this.client).templates().inNamespace(this.namespace).withName(this.name).get() != null;
       case "ImageStream":
         return ((OpenShiftClient)this.client).imageStreams().inNamespace(this.namespace).withName(this.name).get()!= null;
+      case "ImageStreamTag":
+        return ((OpenShiftClient)this.client).imageStreamTags().inNamespace(this.namespace).withName(this.name).get() != null;
       case "DeploymentConfig":
         return ((OpenShiftClient)this.client).deploymentConfigs().inNamespace(this.namespace).withName(this.name).get()!= null;
       case "BuildConfig":
         return ((OpenShiftClient)this.client).buildConfigs().inNamespace(this.namespace).withName(this.name).get()!= null;
       case "ConfigMap":
         return this.client.configMaps().inNamespace(this.namespace).withName(this.name).get()!= null;
+      case "CustomResourceDefinition":
+        return this.client.customResourceDefinitions().withName(this.namespace).get() != null;
       case "StatefulSet":
         return this.client.apps().statefulSets().inNamespace(this.namespace).withName(this.name).get()!= null;
       case "Deployment":

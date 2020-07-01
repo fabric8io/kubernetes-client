@@ -16,18 +16,16 @@
 
 package io.fabric8.openshift;
 
-import io.fabric8.commons.DeleteEntity;
+import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.ReadyEntity;
 import io.fabric8.openshift.api.model.ImageStream;
-import io.fabric8.openshift.api.model.ImageStreamBuilder;
 import io.fabric8.openshift.api.model.ImageStreamList;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -48,46 +46,14 @@ public class ImageStreamIT {
   @ArquillianResource
   Session session;
 
-  private ImageStream imageStream1, imageStream2;
-
-  private String currentNamespace;
-
-  @Before
-  public void init() {
-    currentNamespace = session.getNamespace();
-    imageStream1 = new ImageStreamBuilder()
-      .withNewMetadata()
-      .withName("example-camel-cdi")
-      .endMetadata()
-      .withNewSpec()
-      .addNewTag()
-      .withName("latest")
-      .endTag()
-      .withDockerImageRepository("fabric8/example-camel-cdi")
-      .endSpec()
-      .withNewStatus().withDockerImageRepository("").endStatus()
-      .build();
-
-    imageStream2 = new ImageStreamBuilder()
-      .withNewMetadata()
-      .withName("java-sti")
-      .endMetadata()
-      .withNewSpec()
-      .addNewTag()
-      .withName("latest")
-      .endTag()
-      .withDockerImageRepository("fabric8/java-sti")
-      .endSpec()
-      .withNewStatus().withDockerImageRepository("").endStatus()
-      .build();
-
-    client.imageStreams().inNamespace(currentNamespace).createOrReplace(imageStream1);
-    client.imageStreams().inNamespace(currentNamespace).createOrReplace(imageStream2);
+  @BeforeClass
+  public static void init() {
+    ClusterEntity.apply(ImageStreamIT.class.getResourceAsStream("/imagestream-it.yml"));
   }
 
   @Test
   public void load() {
-    ImageStream aImageStream = client.imageStreams().inNamespace(currentNamespace)
+    ImageStream aImageStream = client.imageStreams().inNamespace(session.getNamespace())
       .load(getClass().getResourceAsStream("/test-imagestream.yml")).get();
     assertThat(aImageStream).isNotNull();
     assertEquals("my-ruby", aImageStream.getMetadata().getName());
@@ -95,22 +61,21 @@ public class ImageStreamIT {
 
   @Test
   public void get() {
-    assertNotNull(client.imageStreams().inNamespace(currentNamespace).withName("example-camel-cdi").get());
-    assertNotNull(client.imageStreams().inNamespace(currentNamespace).withName("java-sti").get());
+    assertNotNull(client.imageStreams().inNamespace(session.getNamespace()).withName("is-get").get());
   }
 
   @Test
   public void list() {
-    ImageStreamList aImageStreamList = client.imageStreams().inNamespace(currentNamespace).list();
+    ImageStreamList aImageStreamList = client.imageStreams().inNamespace(session.getNamespace()).list();
     assertThat(aImageStreamList).isNotNull();
-    assertEquals(2, aImageStreamList.getItems().size());
+    assertTrue(aImageStreamList.getItems().size() >= 1);
   }
 
   @Test
   public void update() {
-    ReadyEntity<ImageStream> imageStreamReady = new ReadyEntity<>(ImageStream.class, client, "java-sti", this.currentNamespace);
+    ReadyEntity<ImageStream> imageStreamReady = new ReadyEntity<>(ImageStream.class, client, "is-update", this.session.getNamespace());
     await().atMost(30, TimeUnit.SECONDS).until(imageStreamReady);
-    imageStream1 = client.imageStreams().inNamespace(currentNamespace).withName("java-sti").edit()
+    ImageStream imageStream1 = client.imageStreams().inNamespace(session.getNamespace()).withName("is-update").edit()
       .editSpec().withDockerImageRepository("fabric8/s2i-java").endSpec()
       .done();
     assertThat(imageStream1).isNotNull();
@@ -119,21 +84,10 @@ public class ImageStreamIT {
 
   @Test
   public void delete() {
-    ReadyEntity<ImageStream> imageStreamReady = new ReadyEntity<>(ImageStream.class, client, "example-camel-cdi", this.currentNamespace);
+    ReadyEntity<ImageStream> imageStreamReady = new ReadyEntity<>(ImageStream.class, client, "is-delete", this.session.getNamespace());
     await().atMost(30, TimeUnit.SECONDS).until(imageStreamReady);
-    boolean bDeleted = client.imageStreams().inNamespace(currentNamespace).withName("example-camel-cdi").delete();
+    boolean bDeleted = client.imageStreams().inNamespace(session.getNamespace()).withName("is-delete").delete();
     assertTrue(bDeleted);
   }
 
-  @After
-  public void cleanup() throws InterruptedException {
-    if (client.imageStreams().inNamespace(currentNamespace).list().getItems().size()!= 0) {
-      client.imageStreams().inNamespace(currentNamespace).delete();
-    }
-
-    DeleteEntity<ImageStream> imageStream1Delete = new DeleteEntity<>(ImageStream.class, client, "java-sti", this.currentNamespace);
-    DeleteEntity<ImageStream> imageStream2Delete = new DeleteEntity<>(ImageStream.class, client, "example-camel-cdi", this.currentNamespace);
-    await().atMost(30, TimeUnit.SECONDS).until(imageStream1Delete);
-    await().atMost(30, TimeUnit.SECONDS).until(imageStream2Delete);
-  }
 }

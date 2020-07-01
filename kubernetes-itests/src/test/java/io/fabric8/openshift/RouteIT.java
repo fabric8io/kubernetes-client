@@ -16,18 +16,17 @@
 
 package io.fabric8.openshift;
 
-import io.fabric8.commons.DeleteEntity;
+import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.ReadyEntity;
 import io.fabric8.openshift.api.model.Route;
-import io.fabric8.openshift.api.model.RouteBuilder;
 import io.fabric8.openshift.api.model.RouteList;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -48,24 +47,13 @@ public class RouteIT {
   @ArquillianResource
   Session session;
 
-  private Route route1, route2;
+  private Route route1;
 
   private String currentNamespace;
 
-  @Before
-  public void init() {
-    currentNamespace = session.getNamespace();
-    route1 = new RouteBuilder()
-      .withNewMetadata().withName("route1").endMetadata()
-      .withNewSpec().withHost("www.example.com").withNewTo().withKind("Service").withName("service-name1").endTo().endSpec()
-      .build();
-    route2 = new RouteBuilder()
-      .withNewMetadata().withName("route2").endMetadata()
-      .withNewSpec().withNewTo().withKind("Service").withName("service-name2").endTo().endSpec()
-      .build();
-
-    client.routes().inNamespace(currentNamespace).create(route1);
-    client.routes().inNamespace(currentNamespace).create(route2);
+  @BeforeClass
+  public static void init() {
+    ClusterEntity.apply(RouteIT.class.getResourceAsStream("/route-it.yml"));
   }
 
   @Test
@@ -77,23 +65,21 @@ public class RouteIT {
 
   @Test
   public void get() {
-    route1 = client.routes().inNamespace(currentNamespace).withName("route1").get();
+    route1 = client.routes().inNamespace(currentNamespace).withName("route-get").get();
     assertNotNull(route1);
-    route2 = client.routes().inNamespace(currentNamespace).withName("route2").get();
-    assertNotNull(route2);
   }
 
   @Test
   public void list() {
     RouteList aRouteList = client.routes().inNamespace(currentNamespace).list();
     assertThat(aRouteList).isNotNull();
-    assertEquals(2, aRouteList.getItems().size());
+    assertTrue(aRouteList.getItems().size() >= 1);
   }
 
   @Test
   public void update() {
-    ReadyEntity<Route> route1Ready = new ReadyEntity<>(Route.class, client, "route1", this.currentNamespace);
-    route1 = client.routes().inNamespace(currentNamespace).withName("route1").edit()
+    ReadyEntity<Route> route1Ready = new ReadyEntity<>(Route.class, client, "route-update", this.currentNamespace);
+    route1 = client.routes().inNamespace(currentNamespace).withName("route-update").edit()
       .editSpec().withPath("/test").endSpec().done();
     await().atMost(30, TimeUnit.SECONDS).until(route1Ready);
     assertThat(route1).isNotNull();
@@ -102,23 +88,10 @@ public class RouteIT {
 
   @Test
   public void delete() {
-    ReadyEntity<Route> route1Ready = new ReadyEntity<>(Route.class, client, "route1", this.currentNamespace);
+    ReadyEntity<Route> route1Ready = new ReadyEntity<>(Route.class, client, "route-delete", this.currentNamespace);
     await().atMost(30, TimeUnit.SECONDS).until(route1Ready);
-    boolean bDeleted = client.routes().inNamespace(currentNamespace).withName("route1").delete();
+    boolean bDeleted = client.routes().inNamespace(currentNamespace).withName("route-delete").delete();
     assertTrue(bDeleted);
-
   }
 
-  @After
-  public void cleanup() throws InterruptedException {
-    if(client.routes().inNamespace(currentNamespace).list().getItems().size() != 0) {
-      client.routes().inNamespace(currentNamespace).delete();
-    }
-
-    DeleteEntity<Route> route1Delete = new DeleteEntity<>(Route.class, client, "route1", currentNamespace);
-    DeleteEntity<Route> route2Delete = new DeleteEntity<>(Route.class, client, "route2", currentNamespace);
-
-    await().atMost(30, TimeUnit.SECONDS).until(route1Delete);
-    await().atMost(30, TimeUnit.SECONDS).until(route2Delete);
-  }
 }
