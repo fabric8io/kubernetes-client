@@ -346,7 +346,36 @@ Then you can use the server like:
       assertTrue(closeLatch.await(1, TimeUnit.MINUTES));
     }
 
+### JUnit5 support through extension
 
+You can use KubernetesClient mocking mechanism with JUnit5. Since it doesn't support `@Rule` and `@ClassRule` there is dedicated annotation `@EnableKubernetesMockClient`.
+If you would like to create instance of mocked `KubernetesClient` for each test (JUnit4 `@Rule`) you need to declare instance of `KubernetesClient` as shown below.
+
+    @EnableKubernetesMockClient
+    class ExampleTest {
+    
+        KubernetesClient client;
+    
+        @Test
+        public void testInStandardMode() {
+            ...
+        }
+    }
+
+In case you would like to define static instance of mocked server per all the test (JUnit4 `@ClassRule`) you need to declare instance of `KubernetesClient` as shown below.
+You can also enable crudMode by using annotation field `crud`.
+
+    @EnableKubernetesMockClient(crud = true)
+    class ExampleTest {
+    
+        static KubernetesClient client;
+    
+        @Test
+        public void testInCrudMode() {
+            ...
+        }
+    }
+    
 ## Compatibility Matrix
 
 |                           | Kubernetes 1.4.9 | Kubernetes 1.6.0 | Kubernetes 1.7.0  | Kubernetes 1.9.0  | Kubernetes 1.10.0 | Kubernetes 1.11.0 | Kubernetes 1.12.0 | Kubernetes 1.14.2 | Kubernetes 1.15.3 | Kubernetes 1.17.0 |
