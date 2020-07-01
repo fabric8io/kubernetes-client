@@ -25,6 +25,10 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+/**
+ * Annotation that is used for enabling KubernetesMockServerExtension JUnit5 extension.
+ * You may set here two parameters of `KubernetesServer`: crudMode and https
+ */
 @Target({ TYPE, METHOD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
 @ExtendWith(KubernetesMockServerExtension.class)

@@ -31,7 +31,11 @@ import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
-
+/**
+ * The class that implements JUnit5 extension mechanism. You can use it directly in your JUnit test
+ * by annotating it with `@ExtendWith(KubernetesMockServerExtension.class)` or through
+ * @EnableKubernetesMockClient annotation
+ */
 public class KubernetesMockServerExtension implements AfterEachCallback, AfterAllCallback, BeforeEachCallback, BeforeAllCallback {
 
   private KubernetesMockServer mock;
@@ -62,15 +66,11 @@ public class KubernetesMockServerExtension implements AfterEachCallback, AfterAl
   private void setKubernetesClientField(ExtensionContext context, boolean isStatic) throws IllegalAccessException {
     Optional<Class<?>> optClass = context.getTestClass();
     if (optClass.isPresent()) {
-      Field[] fields = optClass.get().getDeclaredFields();
+      Class<?> testClass = optClass.get();
+      Field[] fields = testClass.getDeclaredFields();
       for (Field f : fields) {
         if (f.getType() == KubernetesClient.class && Modifier.isStatic(f.getModifiers()) == isStatic) {
-          EnableKubernetesMockClient a = optClass.get().getAnnotation(EnableKubernetesMockClient.class);
-          mock = a.crud()
-                  ? new KubernetesMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(), a.https())
-                  : new KubernetesMockServer(a.https());
-          mock.init();
-          client = mock.createClient();
+          createKubernetesClient(testClass);
           f.setAccessible(true);
           if (isStatic) {
             f.set(null, client);
@@ -83,4 +83,14 @@ public class KubernetesMockServerExtension implements AfterEachCallback, AfterAl
       }
     }
   }
+
+  private void createKubernetesClient(Class<?> testClass) {
+    EnableKubernetesMockClient a = testClass.getAnnotation(EnableKubernetesMockClient.class);
+    mock = a.crud()
+      ? new KubernetesMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(), a.https())
+      : new KubernetesMockServer(a.https());
+    mock.init();
+    client = mock.createClient();
+  }
+
 }
