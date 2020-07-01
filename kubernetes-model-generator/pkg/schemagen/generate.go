@@ -567,7 +567,8 @@ func (g *schemaGenerator) crdScope(t reflect.Type) CrdScope {
 		"ClusterRoleBinding",
 		"ClusterRole",
 		"PriorityClass",
-		"StorageClass":
+		"StorageClass",
+		"APIService":
 		return Cluster
 	default:
 		return Namespaced

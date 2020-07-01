@@ -17,6 +17,7 @@
 
 #### New Features
 * Fix #1868: Add Support for rolling update
+* Fix #2266: Support for APIServices in Kubernetes Client
 
 ### 4.10.2 (2020-06-02)
 #### Bugs

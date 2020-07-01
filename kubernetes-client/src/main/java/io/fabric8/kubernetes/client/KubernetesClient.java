@@ -16,8 +16,11 @@
 
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.api.model.APIService;
+import io.fabric8.kubernetes.api.model.APIServiceList;
 import io.fabric8.kubernetes.api.model.Binding;
 import io.fabric8.kubernetes.api.model.Doneable;
+import io.fabric8.kubernetes.api.model.DoneableAPIService;
 import io.fabric8.kubernetes.api.model.DoneableBinding;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
@@ -406,6 +409,13 @@ public interface KubernetesClient extends Client {
    * @return MixedOperation object for ServiceAccount related operations.
    */
   MixedOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, Resource<ServiceAccount, DoneableServiceAccount>> serviceAccounts();
+
+  /**
+   * API entrypoint for APIService related operations. APIService (apiregistration.k8s.io/v1)
+   *
+   * @return MixedOperation object for APIService related operations
+   */
+  MixedOperation<APIService, APIServiceList, DoneableAPIService, Resource<APIService, DoneableAPIService>> apiServices();
 
   /**
    * List related operations.

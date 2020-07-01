@@ -29,6 +29,7 @@ import (
   kapi "k8s.io/api/core/v1"
   watch "k8s.io/kubernetes/pkg/watch/json"
   configapi "k8s.io/client-go/tools/clientcmd/api/v1"
+  aggregator "k8s.io/kube-aggregator/pkg/apis/apiregistration/v1"
 
   "os"
 
@@ -94,6 +95,8 @@ type Schema struct {
   TopologySelectorTerm                     kapi.TopologySelectorTerm
   WatchEvent                               watch.WatchEvent
   Config                                   configapi.Config
+  APIService                               aggregator.APIService
+  APIServiceList                           aggregator.APIServiceList
 }
 
 func main() {
@@ -110,6 +113,7 @@ func main() {
     {"k8s.io/client-go/tools/clientcmd/api/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_config_"},
     {"k8s.io/kubernetes/pkg/api/unversioned", "", "io.fabric8.kubernetes.api.model", "api_"},
     {"k8s.io/api/authentication/v1", "authentication.k8s.io", "io.fabric8.kubernetes.api.model.authentication", "kubernetes_authentication_"},
+    {"k8s.io/kube-aggregator/pkg/apis/apiregistration/v1", "apiregistration.k8s.io", "io.fabric8.kubernetes.api.model", "kubernetes_aggregator_"},
   }
 
   typeMap := map[reflect.Type]reflect.Type{
