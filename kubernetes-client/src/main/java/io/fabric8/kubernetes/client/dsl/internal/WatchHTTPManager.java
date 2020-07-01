@@ -16,6 +16,19 @@
 
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import static java.net.HttpURLConnection.HTTP_GONE;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
@@ -40,18 +53,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import okio.BufferedSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
-import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import static java.net.HttpURLConnection.HTTP_GONE;
 
 public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourceList<T>> extends AbstractWatchManager<T> {
   private static final Logger logger = LoggerFactory.getLogger(WatchHTTPManager.class);
@@ -101,8 +102,6 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
   }
 
   private void runWatch() {
-    logger.debug("Watching via HTTP GET ... {}", this);
-
     HttpUrl.Builder httpUrlBuilder = HttpUrl.get(requestUrl).newBuilder();
     String labelQueryParam = baseOperation.getLabelQueryParam();
     if (Utils.isNotNullOrEmpty(labelQueryParam)) {
@@ -112,17 +111,11 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
     String fieldQueryString = baseOperation.getFieldQueryParam();
     String name = baseOperation.getName();
 
-    // for API groups we can use the name in the path rather than a fieldSelector
-    // which is more likely to work well for API Groups
     if (name != null && name.length() > 0) {
-      if (baseOperation.isApiGroup()) {
-        httpUrlBuilder.addPathSegment(name);
-      } else {
-        if (fieldQueryString.length() > 0) {
-          fieldQueryString += ",";
-        }
-        fieldQueryString += "metadata.name=" + name;
+      if (fieldQueryString.length() > 0) {
+        fieldQueryString += ",";
       }
+      fieldQueryString += "metadata.name=" + name;
     }
 
     if (Utils.isNotNullOrEmpty(fieldQueryString)) {
@@ -133,12 +126,16 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
     HttpClientUtils.appendListOptionParams(httpUrlBuilder, listOptions);
     String origin = requestUrl.getProtocol() + "://" + requestUrl.getHost();
     if (requestUrl.getPort() != -1) {
-        origin += ":" + requestUrl.getPort();
+      origin += ":" + requestUrl.getPort();
     }
+
+    HttpUrl url = httpUrlBuilder.build();
+
+    logger.debug("Watching via HTTP GET {}", url);
 
     final Request request = new Request.Builder()
       .get()
-      .url(httpUrlBuilder.build())
+      .url(url)
       .addHeader("Origin", origin)
       .build();
 
@@ -146,15 +143,16 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
       @Override
       public void onFailure(Call call, IOException e) {
         logger.info("Watch connection failed. reason: {}", e.getMessage());
-        scheduleReconnect();
+        scheduleReconnect(true);
       }
 
       @Override
       public void onResponse(Call call, Response response) throws IOException {
         if (!response.isSuccessful()) {
-          throw OperationSupport.requestFailure(request,
-            OperationSupport.createStatus(response.code(), response.message()));
+          onStatus(OperationSupport.createStatus(response.code(), response.message()));
         }
+
+        boolean shouldBackoff = true;
 
         try {
           BufferedSource source = response.body().source();
@@ -162,6 +160,9 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
             String message = source.readUtf8LineStrict();
             onMessage(message);
           }
+          // the normal operation of a long poll get is to return once a response is available.
+          // in that case we should reconnect immediately.
+          shouldBackoff = false;
         } catch (Exception e) {
           logger.info("Watch terminated unexpectedly. reason: {}", e.getMessage());
         }
@@ -171,12 +172,13 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
         if (response != null) {
           response.body().close();
         }
-        scheduleReconnect();
+
+        scheduleReconnect(shouldBackoff);
       }
     });
   }
 
-  private void scheduleReconnect() {
+  private void scheduleReconnect(boolean shouldBackoff) {
     if (forceClosed.get()) {
       logger.warn("Ignoring error for already closed/closing connection");
       return;
@@ -188,6 +190,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
     }
 
     logger.debug("Submitting reconnect task to the executor");
+
     // make sure that whichever thread calls this method, the tasks are
     // performed serially in the executor.
     submit(() -> {
@@ -199,6 +202,11 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
         // actual reconnect only after the back-off time has passed, without
         // blocking the thread
         logger.debug("Scheduling reconnect task");
+
+        long delay = shouldBackoff
+          ? nextReconnectInterval()
+          : 0;
+
         schedule(() -> {
           try {
             WatchHTTPManager.this.runWatch();
@@ -209,7 +217,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
             close();
             watcher.onClose(new WatcherException("Unhandled exception in reconnect attempt", e));
           }
-        }, nextReconnectInterval(), TimeUnit.MILLISECONDS);
+        }, delay, TimeUnit.MILLISECONDS);
       } catch (RejectedExecutionException e) {
         // This is a standard exception if we close the scheduler. We should not print it
         if (!forceClosed.get()) {
@@ -243,18 +251,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
           }
         }
       } else if (object instanceof Status) {
-        Status status = (Status) object;
-        // The resource version no longer exists - this has to be handled by the caller.
-        if (status.getCode() == HTTP_GONE) {
-          // exception
-          // shut down executor, etc.
-          close();
-          watcher.onClose(new WatcherException(status.getMessage(), new KubernetesClientException(status)));
-          return;
-        }
-
-        watcher.eventReceived(Action.ERROR, null);
-        logger.error("Error received: {}", status);
+        onStatus((Status) object);
       } else {
         logger.error("Unknown message received: {}", messageSource);
       }
@@ -264,6 +261,21 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
       logger.error("Invalid event type", e);
     }
   }
+
+  private void onStatus(Status status) {
+    // The resource version no longer exists - this has to be handled by the caller.
+    if (status.getCode() == HTTP_GONE) {
+      // exception
+      // shut down executor, etc.
+      close();
+      watcher.onClose(new WatcherException(status.getMessage(), new KubernetesClientException(status)));
+      return;
+    }
+
+    watcher.eventReceived(Action.ERROR, null);
+    logger.error("Error received: {}", status.toString());
+  }
+
 
   protected static WatchEvent readWatchEvent(String messageSource) {
     WatchEvent event = Serialization.unmarshal(messageSource, WatchEvent.class);
