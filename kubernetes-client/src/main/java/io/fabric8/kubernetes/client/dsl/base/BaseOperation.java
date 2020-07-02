@@ -998,7 +998,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withPropagationPolicy(DeletionPropagation propagationPolicy)
+  public EditReplacePatchDeletable<T, T, D, Boolean> withPropagationPolicy(DeletionPropagation propagationPolicy)
   {
     return newInstance(context.withPropagationPolicy(propagationPolicy));
   }

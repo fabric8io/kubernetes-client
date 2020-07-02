@@ -16,11 +16,9 @@
 package io.fabric8.kubernetes.client.dsl;
 
 import io.fabric8.kubernetes.client.GracePeriodConfigurable;
-import io.fabric8.kubernetes.client.PropagationPolicyConfigurable;
 
 public interface WatchListDeletable<T, L, B, H, W> extends VersionWatchable<H, W>, Listable<L>, Deletable<B>,
                                                            GracePeriodConfigurable<Deletable<B>>,
-                                                           StatusUpdatable<T>,
-                                                           PropagationPolicyConfigurable<Deletable<B>>
+                                                           StatusUpdatable<T>
 {
 }

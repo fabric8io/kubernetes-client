@@ -9,6 +9,7 @@
 * Fix #2328: Failure in deserialization while watching events
 * Fix KubernetesAttributesExctractor to extract metadata from unregistered custom resources, such when using Raw CustomResource API 
 * Fix #2296: No adapter available for type:interface io.fabric8.kubernetes.client.dsl.V1APIGroupDSL
+* Fix #2269: Setting a grace period when deleting resource using `withPropagationPolicy()`
 
 #### Improvements
 * Fix #2233: client.service().getUrl(..) should be able to fetch URL for ClusterIP based services
