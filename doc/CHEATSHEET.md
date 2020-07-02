@@ -2050,6 +2050,10 @@ Boolean isDeleted = client.apps().deployments().inNamespace("default").withName(
 ```
 Boolean isDeleted = client.apps().deployments().inNamespace("default").withName("nginx-deploy").withPropagationPolicy("Foreground").delete();
 ```
+- Specifying grace period for deletion:
+```
+Boolean isDeleted = client.apps().deployments().inNamespace("ns1").withName("mydeployment").withPropagationPolicy(DeletionPropagation.FOREGROUND).withGracePeriod(10).delete();
+```
 
 ### Watch Options
 Kubernetes Client provides namely three different ways of using `Watch`:

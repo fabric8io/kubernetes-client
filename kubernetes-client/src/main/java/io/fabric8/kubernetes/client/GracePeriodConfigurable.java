@@ -17,5 +17,14 @@ package io.fabric8.kubernetes.client;
 
 public interface GracePeriodConfigurable<T>
 {
+  /**
+   * The duration in seconds before the object should be deleted. Value must be non-negative integer.
+   * The value zero indicates delete immediately. If this value is nil, the default grace period for
+   * the specified type will be used. Defaults to a per object value if not specified. zero means
+   * delete immediately.
+   *
+   * @param gracePeriodSeconds grace period integer value in seconds
+   * @return the object for which grace period is configured
+   */
     T withGracePeriod(long gracePeriodSeconds);
 }

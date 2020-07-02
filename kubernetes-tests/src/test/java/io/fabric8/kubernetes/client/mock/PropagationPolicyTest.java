@@ -190,6 +190,23 @@ class PropagationPolicyTest {
   }
 
   @Test
+  @DisplayName("Should delete a Deployment with explicitly set PropagationPolicy And Grace Period")
+  void testDeleteDeploymentWithExplicitPropagationPolicyAndGracePeriod() throws InterruptedException {
+    // Given
+    server.expect().delete().withPath("/apis/apps/v1/namespaces/ns1/deployments/mydeployment")
+      .andReturn(HttpURLConnection.HTTP_OK, new DeploymentBuilder().build())
+      .once();
+    KubernetesClient client = server.getClient();
+
+    // When
+    Boolean isDeleted = client.apps().deployments().inNamespace("ns1").withName("mydeployment").withPropagationPolicy(DeletionPropagation.FOREGROUND).withGracePeriod(10).delete();
+
+    // Then
+    assertTrue(isDeleted);
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"gracePeriodSeconds\":10,\"propagationPolicy\":\"" + DeletionPropagation.FOREGROUND + "\"}", server.getLastRequest().getBody().readUtf8());
+  }
+
+  @Test
   @DisplayName("Should delete a StatefulSet with PropagationPolicy=Background")
   void testDeleteStatefulSet() throws InterruptedException {
     // Given

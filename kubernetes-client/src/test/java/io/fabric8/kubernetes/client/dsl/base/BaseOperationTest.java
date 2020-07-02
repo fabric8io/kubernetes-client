@@ -21,6 +21,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -32,6 +33,7 @@ import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import org.junit.jupiter.api.Test;
@@ -90,14 +92,9 @@ public class BaseOperationTest {
   @Test
   public void testChainingGracePeriodAndPropagationPolicy() {
     final BaseOperation operation = new BaseOperation(new OperationContext());
-    FilterWatchListDeletable<?, ?, Boolean, Watch, Watcher<?>> operationWithGracePeriod = operation.withGracePeriod(10L);
-    FilterWatchListDeletable<?, ?, Boolean, Watch, Watcher<?>> operationWithPropagationPolicy = operation.withPropagationPolicy(DeletionPropagation.FOREGROUND);
-
-    Object chainedGracePeriod = operationWithPropagationPolicy.withGracePeriod(10);
-    Object chainedPropagationPolicy = operationWithGracePeriod.withPropagationPolicy(DeletionPropagation.FOREGROUND);
-
-    assertThat(chainedGracePeriod, is(notNullValue()));
-    assertThat(chainedPropagationPolicy, is(notNullValue()));
+    EditReplacePatchDeletable<?, ?, ?, Boolean> operationWithPropagationPolicy = operation.withPropagationPolicy(DeletionPropagation.FOREGROUND);
+    assertThat(operationWithPropagationPolicy, is(notNullValue()));
+    assertNotNull(operationWithPropagationPolicy.withGracePeriod(10));
   }
 
   @Test
