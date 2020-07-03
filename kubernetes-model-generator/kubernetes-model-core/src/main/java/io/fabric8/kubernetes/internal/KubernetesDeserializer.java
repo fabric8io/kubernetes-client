@@ -264,10 +264,11 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
           String apiVersion = Helper.getAnnotationValue(clazz, ApiVersion.class);
           if (apiGroup != null && !apiGroup.isEmpty() && apiVersion != null && !apiVersion.isEmpty()) {
             return createKey(apiGroup + "/" + apiVersion, clazz.getSimpleName());
+          } else if (apiVersion != null && !apiVersion.isEmpty()) {
+            return createKey(apiVersion, clazz.getSimpleName());
           }
           return clazz.getSimpleName();
         }
-
 
         private Class<? extends KubernetesResource> loadClassIfExists(String className) {
             try {
