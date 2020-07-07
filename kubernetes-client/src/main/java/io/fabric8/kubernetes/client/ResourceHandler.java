@@ -16,7 +16,6 @@
 
 package io.fabric8.kubernetes.client;
 
-
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
