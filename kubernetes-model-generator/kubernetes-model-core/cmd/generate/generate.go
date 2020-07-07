@@ -60,6 +60,7 @@ type Schema struct {
 
   PodList                                  kapi.PodList
   PodTemplateList                          kapi.PodTemplateList
+  PodExecOptions                           kapi.PodExecOptions
   ReplicationControllerList                kapi.ReplicationControllerList
   ServiceList                              kapi.ServiceList
   EndpointPort                             kapi.EndpointPort
