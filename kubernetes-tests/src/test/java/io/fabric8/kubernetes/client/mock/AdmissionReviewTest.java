@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.PodExecOptions;
 import io.fabric8.kubernetes.api.model.admission.AdmissionReview;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.DisplayName;
@@ -51,6 +52,18 @@ public class AdmissionReviewTest {
     InputStream jsonStream = getClass().getResourceAsStream("/admissionreview-withpatchoptions.json");
     AdmissionReview admissionReview = Serialization.unmarshal(jsonStream, AdmissionReview.class);
     assertEquals("PATCH", admissionReview.getRequest().getOperation());
+    assertRequest(admissionReview);
+  }
+
+  @Test
+  @DisplayName("Should be able to deserialize from AdmissionRequest object set to PodExecOptions")
+  public void testJacksonParsingWithPodExecOptions() throws IOException {
+    InputStream jsonStream = getClass().getResourceAsStream("/admissionreview-withconnectexec.json");
+    AdmissionReview admissionReview = Serialization.unmarshal(jsonStream, AdmissionReview.class);
+    assertEquals("CONNECT", admissionReview.getRequest().getOperation());
+    PodExecOptions podExecOptions = (PodExecOptions) admissionReview.getRequest().getObject();
+    assertEquals("PodExecOptions", podExecOptions.getKind());
+    assertEquals("myContainer", podExecOptions.getContainer());
     assertRequest(admissionReview);
   }
 

@@ -24,7 +24,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.GroupVersionKind;
 import io.fabric8.kubernetes.api.model.GroupVersionResource;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.authentication.UserInfo;
 import lombok.EqualsAndHashCode;
@@ -75,13 +74,13 @@ public class AdmissionRequest implements KubernetesResource
    * Object is the object from the incoming request.
    */
   @JsonProperty("object")
-  private HasMetadata object;
+  private KubernetesResource object;
 
   /*
    * OldObject is the existing object. Only populated for DELETE and UPDATE requests.
    */
   @JsonProperty("oldObject")
-  private HasMetadata oldObject;
+  private KubernetesResource oldObject;
 
   /*
    * Operation is the operation being performed. This may be different than the operation
@@ -164,7 +163,7 @@ public class AdmissionRequest implements KubernetesResource
   public AdmissionRequest() {
   }
 
-  public AdmissionRequest(Boolean dryRun, GroupVersionKind kind, String name, String namespace, HasMetadata object, HasMetadata oldObject, String operation, HasMetadata options, GroupVersionKind requestKind, GroupVersionResource requestResource, String requestSubResource, GroupVersionResource resource, String subResource, String uid, UserInfo userInfo) {
+  public AdmissionRequest(Boolean dryRun, GroupVersionKind kind, String name, String namespace, KubernetesResource object, KubernetesResource oldObject, String operation, KubernetesResource options, GroupVersionKind requestKind, GroupVersionResource requestResource, String requestSubResource, GroupVersionResource resource, String subResource, String uid, UserInfo userInfo) {
     this.dryRun = dryRun;
     this.kind = kind;
     this.name = name;
@@ -267,7 +266,7 @@ public class AdmissionRequest implements KubernetesResource
    * @return The object
    */
   @JsonProperty("object")
-  public HasMetadata getObject() {
+  public KubernetesResource getObject() {
     return object;
   }
 
@@ -277,7 +276,7 @@ public class AdmissionRequest implements KubernetesResource
    * @param object The object
    */
   @JsonProperty("object")
-  public void setObject(HasMetadata object) {
+  public void setObject(KubernetesResource object) {
     this.object = object;
   }
 
@@ -287,7 +286,7 @@ public class AdmissionRequest implements KubernetesResource
    * @return The oldObject
    */
   @JsonProperty("oldObject")
-  public HasMetadata getOldObject() {
+  public KubernetesResource getOldObject() {
     return oldObject;
   }
 
@@ -297,7 +296,7 @@ public class AdmissionRequest implements KubernetesResource
    * @param oldObject The oldObject
    */
   @JsonProperty("oldObject")
-  public void setOldObject(HasMetadata oldObject) {
+  public void setOldObject(KubernetesResource oldObject) {
     this.oldObject = oldObject;
   }
 
