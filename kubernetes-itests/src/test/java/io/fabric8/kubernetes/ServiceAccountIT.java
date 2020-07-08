@@ -16,7 +16,7 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.DeleteEntity;
+import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.ReadyEntity;
 import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -24,8 +24,8 @@ import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -43,31 +43,18 @@ public class ServiceAccountIT {
   KubernetesClient client;
 
   @ArquillianResource
-
   Session session;
 
-  private ServiceAccount serviceAccount1, serviceAccount2;
+  private ServiceAccount serviceAccount1;
 
-  private String currentNamespace;
-
-  @Before
-  public void init() {
-    currentNamespace = session.getNamespace();
-    serviceAccount1 = new ServiceAccountBuilder()
-      .withNewMetadata().withName("serviceaccount1").endMetadata()
-      .build();
-    serviceAccount2 = new ServiceAccountBuilder()
-      .withNewMetadata().withName("serviceaccount2").endMetadata()
-      .withAutomountServiceAccountToken(false)
-      .build();
-
-    client.serviceAccounts().inNamespace(currentNamespace).create(serviceAccount1);
-    client.serviceAccounts().inNamespace(currentNamespace).create(serviceAccount2);
+  @BeforeClass
+  public static void init() {
+    ClusterEntity.apply(ServiceAccountIT.class.getResourceAsStream("/serviceaccount-it.yml"));
   }
 
   @Test
   public void load() {
-    ServiceAccount svcAccount = client.serviceAccounts().inNamespace(currentNamespace)
+    ServiceAccount svcAccount = client.serviceAccounts().inNamespace(session.getNamespace())
       .load(getClass().getResourceAsStream("/test-serviceaccount.yml")).get();
     assertThat(svcAccount).isNotNull();
     assertThat(svcAccount.getMetadata().getName()).isNotNull();
@@ -75,24 +62,22 @@ public class ServiceAccountIT {
 
   @Test
   public void get() {
-    serviceAccount1 = client.serviceAccounts().inNamespace(currentNamespace).withName("serviceaccount1").get();
+    serviceAccount1 = client.serviceAccounts().inNamespace(session.getNamespace()).withName("sa-get").get();
     assertNotNull(serviceAccount1);
-    serviceAccount2 = client.serviceAccounts().inNamespace(currentNamespace).withName("serviceaccount2").get();
-    assertNotNull(serviceAccount2);
   }
 
   @Test
   public void list() {
-    ServiceAccountList svcAccountList = client.serviceAccounts().inNamespace(currentNamespace).list();
+    ServiceAccountList svcAccountList = client.serviceAccounts().inNamespace(session.getNamespace()).list();
     assertThat(svcAccountList).isNotNull();
     // Every namespace has a default service account resource.
-    assertTrue(svcAccountList.getItems().size() >= 2);
+    assertTrue(svcAccountList.getItems().size() >= 1);
   }
 
   @Test
   public void update() {
-    ReadyEntity<ServiceAccount> serviceAccountReady = new ReadyEntity<>(ServiceAccount.class, client, "serviceaccount1", currentNamespace);
-    serviceAccount1 = client.serviceAccounts().inNamespace(currentNamespace).withName("serviceaccount1").edit()
+    ReadyEntity<ServiceAccount> serviceAccountReady = new ReadyEntity<>(ServiceAccount.class, client, "sa-update", session.getNamespace());
+    serviceAccount1 = client.serviceAccounts().inNamespace(session.getNamespace()).withName("sa-update").edit()
       .addNewSecret().withName("default-token-uudp").endSecret()
       .addNewImagePullSecret().withName("myregistrykey").endImagePullSecret()
       .done();
@@ -102,20 +87,14 @@ public class ServiceAccountIT {
 
   @Test
   public void delete() {
-    ReadyEntity<ServiceAccount> serviceAccountReady = new ReadyEntity<>(ServiceAccount.class, client, "serviceaccount1", currentNamespace);
+    ReadyEntity<ServiceAccount> serviceAccountReady = new ReadyEntity<>(ServiceAccount.class, client, "sa-delete", session.getNamespace());
     await().atMost(30, TimeUnit.SECONDS).until(serviceAccountReady);
-    boolean bDeleted = client.serviceAccounts().inNamespace(currentNamespace).withName("serviceaccount1").delete();
+    boolean bDeleted = client.serviceAccounts().inNamespace(session.getNamespace()).withName("sa-delete").delete();
     assertTrue(bDeleted);
   }
 
-  @After
-  public void cleanup() throws InterruptedException {
-    client.serviceAccounts().inNamespace(currentNamespace).delete();
-    // Wait for resources to get destroyed
-    DeleteEntity<ServiceAccount> serviceAccount1Delete = new DeleteEntity<>(ServiceAccount.class, client, "serviceaccount1", currentNamespace);
-    DeleteEntity<ServiceAccount> serviceAccount2Delete = new DeleteEntity<>(ServiceAccount.class, client, "serviceaccount2", currentNamespace);
-
-    await().atMost(30, TimeUnit.SECONDS).until(serviceAccount1Delete);
-    await().atMost(30, TimeUnit.SECONDS).until(serviceAccount2Delete);
+  @AfterClass
+  public static void cleanup() {
+    ClusterEntity.remove(ServiceAccountIT.class.getResourceAsStream("/serviceaccount-it.yml"));
   }
 }

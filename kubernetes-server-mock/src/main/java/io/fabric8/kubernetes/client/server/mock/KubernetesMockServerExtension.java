@@ -34,7 +34,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 /**
  * The class that implements JUnit5 extension mechanism. You can use it directly in your JUnit test
  * by annotating it with `@ExtendWith(KubernetesMockServerExtension.class)` or through
- * @EnableKubernetesMockClient annotation
+ * \@EnableKubernetesMockClient annotation
  */
 public class KubernetesMockServerExtension implements AfterEachCallback, AfterAllCallback, BeforeEachCallback, BeforeAllCallback {
 

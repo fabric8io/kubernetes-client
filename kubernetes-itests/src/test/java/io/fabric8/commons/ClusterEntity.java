@@ -1,0 +1,76 @@
+/**
+ * Copyright (C) 2015 Red Hat, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.fabric8.commons;
+
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.Namespace;
+import io.fabric8.kubernetes.api.model.NamespaceList;
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.openshift.client.DefaultOpenShiftClient;
+import io.fabric8.openshift.client.OpenShiftClient;
+
+import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
+
+public class ClusterEntity {
+
+  public static final String FRAMEWORK = "framework";
+  public static final String ARQUILLIAN = "arquillian";
+
+  public static void apply(InputStream inputStream) {
+    try (KubernetesClient client = new DefaultKubernetesClient()) {
+      String namespace = getArquillianNamespace();
+      if (namespace != null) {
+        client.load(inputStream).inNamespace(namespace).createOrReplace();
+      }
+    }
+  }
+
+  public static void remove(InputStream inputStream) {
+    try (KubernetesClient client = new DefaultKubernetesClient()) {
+      List<HasMetadata> items = client.load(inputStream).get();
+      client.resourceList(items).inNamespace(getArquillianNamespace()).withPropagationPolicy(DeletionPropagation.BACKGROUND).delete();
+    }
+  }
+
+  public static String getArquillianNamespace() {
+    try (KubernetesClient client = new DefaultKubernetesClient()) {
+      NamespaceList namespaceList = client.namespaces().list();
+      for (Namespace namespace : namespaceList.getItems()) {
+
+        // Namespace should not be in terminating state and it should have
+        // labels.
+        if (namespace.getMetadata().getDeletionTimestamp() == null) {
+          if (namespace.getMetadata().getLabels() != null) {
+            Map<String, String> labels = namespace.getMetadata().getLabels();
+            if (labels.containsKey(FRAMEWORK) &&
+              labels.get(FRAMEWORK).equals(ARQUILLIAN)) {
+              return namespace.getMetadata().getName();
+            }
+          }
+
+          if (namespace.getMetadata().getName().startsWith("itest-")) {
+            return namespace.getMetadata().getName();
+          }
+        }
+      }
+    }
+    return null;
+  }
+}

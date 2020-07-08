@@ -15,16 +15,24 @@
  */
 package io.fabric8.openshift;
 
+import io.fabric8.commons.ClusterEntity;
+import io.fabric8.commons.DeleteEntity;
+import io.fabric8.commons.ReadyEntity;
 import io.fabric8.openshift.api.model.*;
+import io.fabric8.openshift.api.model.ImageStreamTagBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
+import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+
+import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.*;
 
 @RunWith(ArquillianConditionalRunner.class)
@@ -34,27 +42,16 @@ public class ImageStreamTagIT {
   @ArquillianResource
   OpenShiftClient client;
 
-  @Before
-  public void init() throws InterruptedException {
+  @ArquillianResource
+  Session session;
 
-    ImageStreamTag istag = new ImageStreamTagBuilder().withNewMetadata().withName("bar1:1.0.12").endMetadata()
-      .withNewTag()
-      .withNewFrom()
-      .withKind("DockerImage")
-      .withName("openshift/wildfly-81-centos7:latest")
-      .endFrom()
-      .endTag()
-      .build();
-
-    client.imageStreamTags().create(istag);
-
-    Thread.sleep(20000);
-
+  @BeforeClass
+  public static void init() {
+    ClusterEntity.apply(ImageStreamTagIT.class.getResourceAsStream("/imagestreamtag-it.yml"));
   }
 
   @Test
   public void load() {
-
     ImageStreamTag loadedIST = client.imageStreamTags()
       .load(getClass().getResourceAsStream("/test-ist.yml")).get();
 
@@ -67,61 +64,62 @@ public class ImageStreamTagIT {
   @Test
   public void get() {
 
-    ImageStreamTag getIST = client.imageStreamTags()
-      .withName("bar1:1.0.12").get();
+    ReadyEntity<ImageStreamTag> imageStreamTagReadyEntity = new ReadyEntity<>(ImageStreamTag.class, client, "get:1.0.12", session.getNamespace());
+    await().atMost(30, TimeUnit.SECONDS).until(imageStreamTagReadyEntity);
+    ImageStreamTag getIST = client.imageStreamTags().inNamespace(session.getNamespace())
+      .withName("get:1.0.12").get();
 
     assertNotNull(getIST);
-    assertEquals("bar1:1.0.12", getIST.getMetadata().getName());
+    assertEquals("get:1.0.12", getIST.getMetadata().getName());
     assertEquals("DockerImage", getIST.getTag().getFrom().getKind());
-    assertEquals("openshift/wildfly-81-centos7:latest", getIST.getTag().getFrom().getName());
+    assertEquals("busybox:latest", getIST.getTag().getFrom().getName());
 
   }
 
   @Test
   public void list() {
 
-    ImageStreamTagList istagList = client.imageStreamTags().list();
+    ImageStreamTagList istagList = client.imageStreamTags().inNamespace(session.getNamespace()).list();
 
     assertNotNull(istagList);
-    assertEquals(1,istagList.getItems().size());
-    assertEquals("bar1:1.0.12", istagList.getItems().get(0).getMetadata().getName());
-    assertEquals("DockerImage", istagList.getItems().get(0).getTag().getFrom().getKind());
-    assertEquals("openshift/wildfly-81-centos7:latest", istagList.getItems().get(0).getTag().getFrom().getName());
+    assertTrue(istagList.getItems().size() >= 1);
+    Optional<ImageStreamTag> imageStreamTag = istagList.getItems().stream().filter(i -> i.getMetadata().getName().equalsIgnoreCase("list:1.0.12")).findFirst();
+    assertTrue(imageStreamTag.isPresent());
+    assertEquals("list:1.0.12", imageStreamTag.get().getMetadata().getName());
+    assertEquals("DockerImage", imageStreamTag.get().getTag().getFrom().getKind());
+    assertEquals("busybox:latest", imageStreamTag.get().getTag().getFrom().getName());
   }
 
   @Test
-  public void update(){
+  public void update() {
 
-    ImageStreamTag istag2 = new ImageStreamTagBuilder().withNewMetadata().withName("bar1:1.0.12").endMetadata()
+    ReadyEntity<ImageStreamTag> imageStreamTagReadyEntity = new ReadyEntity<>(ImageStreamTag.class, client, "update:1.0.12", session.getNamespace());
+    await().atMost(30, TimeUnit.SECONDS).until(imageStreamTagReadyEntity);
+    ImageStreamTag istag2 = new ImageStreamTagBuilder().withNewMetadata().withName("update:1.0.12").endMetadata()
       .withNewTag()
       .withNewFrom()
       .withKind("DockerImage")
-      .withName("openshift/wildfly-81-centos:latest")
+      .withName("busybox:latest")
       .endFrom()
       .endTag()
       .build();
-    ImageStreamTag istag = client.imageStreamTags().withName("bar1:1.0.12").patch(istag2);
+    ImageStreamTag istag = client.imageStreamTags().inNamespace(session.getNamespace()).withName("update:1.0.12").patch(istag2);
 
     assertNotNull(istag);
-    assertEquals("bar1:1.0.12", istag.getMetadata().getName());
+    assertEquals("update:1.0.12", istag.getMetadata().getName());
     assertEquals("DockerImage", istag.getTag().getFrom().getKind());
-    assertEquals("openshift/wildfly-81-centos:latest", istag.getTag().getFrom().getName());
+    assertEquals("busybox:latest", istag.getTag().getFrom().getName());
   }
 
   @Test
-  public void delete(){
-
-    boolean deleted = client.imageStreamTags().withName("bar1:1.0.12").delete();
+  public void delete() {
+    ReadyEntity<ImageStreamTag> imageStreamTagReadyEntity = new ReadyEntity<>(ImageStreamTag.class, client, "delete:1.0.12", session.getNamespace());
+    await().atMost(30, TimeUnit.SECONDS).until(imageStreamTagReadyEntity);
+    ImageStreamTagList imageStreamTagListOld = client.imageStreamTags().inNamespace(session.getNamespace()).list();
+    boolean deleted = client.imageStreamTags().inNamespace(session.getNamespace()).withName("delete:1.0.12").delete();
     assertTrue(deleted);
-    ImageStreamTagList istagList = client.imageStreamTags().list();
-    assertEquals(0, istagList.getItems().size());
-  }
-
-
-  @After
-  public void cleanup() {
-
-    client.imageStreamTags().withName("bar1:1.0.12").delete();
+    DeleteEntity<ImageStreamTag> deleteEntity = new DeleteEntity<>(ImageStreamTag.class, client, "delete:1.0.12", session.getNamespace());
+    await().atMost(30, TimeUnit.SECONDS).until(deleteEntity);
   }
 
 }

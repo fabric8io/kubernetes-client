@@ -16,24 +16,21 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.DeleteEntity;
-import io.fabric8.commons.ReadyEntity;
+import io.fabric8.commons.ClusterEntity;
 import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.concurrent.TimeUnit;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -48,70 +45,47 @@ public class ReplicationControllerIT {
 
   private ReplicationController rc1;
 
-  private String currentNamespace;
-
-  @Before
-  public void init() {
-    currentNamespace = session.getNamespace();
-    rc1 = new ReplicationControllerBuilder()
-      .withNewMetadata().withName("nginx-controller").addToLabels("server", "nginx").endMetadata()
-      .withNewSpec().withReplicas(3)
-      .withNewTemplate()
-      .withNewMetadata().addToLabels("server", "nginx").endMetadata()
-      .withNewSpec()
-      .addNewContainer().withName("nginx").withImage("nginx")
-      .addNewPort().withContainerPort(80).endPort()
-      .endContainer()
-      .endSpec()
-      .endTemplate()
-      .endSpec().build();
-
-    client.replicationControllers().inNamespace(currentNamespace).createOrReplace(rc1);
+  @BeforeClass
+  public static void init() {
+    ClusterEntity.apply(ReplicationControllerIT.class.getResourceAsStream("/replicationcontroller-it.yml"));
   }
 
   @Test
   public void load() {
-    ReplicationController aReplicationController = client.replicationControllers().inNamespace(currentNamespace)
+    ReplicationController aReplicationController = client.replicationControllers().inNamespace(session.getNamespace())
       .load(getClass().getResourceAsStream("/test-replicationcontroller.yml")).get();
 
     assertThat(aReplicationController).isNotNull();
     assertEquals("nginx", aReplicationController.getMetadata().getName());
-    assertEquals(3, aReplicationController.getSpec().getReplicas().intValue());
+    assertEquals(3, (int) aReplicationController.getSpec().getReplicas());
   }
 
   @Test
   public void get() {
-    rc1 = client.replicationControllers().inNamespace(currentNamespace).withName("nginx-controller").get();
+    rc1 = client.replicationControllers().inNamespace(session.getNamespace()).withName("rc-get").get();
     assertNotNull(rc1);
   }
 
   @Test
   public void list() {
-    ReplicationControllerList aRcList = client.replicationControllers().inNamespace(currentNamespace).list();
+    ReplicationControllerList aRcList = client.replicationControllers().inNamespace(session.getNamespace()).list();
     assertThat(aRcList).isNotNull();
-    assertEquals(1, aRcList.getItems().size());
+    assertTrue(aRcList.getItems().size() >= 1);
   }
 
   @Test
   public void update() {
-    ReadyEntity<ReplicationController> replicationControllerReady = new ReadyEntity<>(ReplicationController.class, client, "nginx-controller", currentNamespace);
-    rc1 = client.replicationControllers().inNamespace(currentNamespace).withName("nginx-controller").scale(5);
+    rc1 = client.replicationControllers().inNamespace(session.getNamespace()).withName("rc-update").scale(5);
     assertEquals(5, rc1.getSpec().getReplicas().intValue());
   }
 
   @Test
   public void delete() {
-    ReadyEntity<ReplicationController> replicationControllerReady = new ReadyEntity<>(ReplicationController.class, client, "nginx-controller", currentNamespace);
-    assertTrue(client.replicationControllers().inNamespace(currentNamespace).withName("nginx-controller").delete());
+    assertTrue(client.replicationControllers().inNamespace(session.getNamespace()).withName("rc-delete").delete());
   }
 
-  @After
-  public void cleanup() throws InterruptedException {
-    if (client.replicationControllers().inNamespace(currentNamespace).list().getItems().size()!= 0) {
-      client.replicationControllers().inNamespace(currentNamespace).delete();
-    }
-    // Wait for resources to get destroyed
-    DeleteEntity<ReplicationController> replicationControllerDelete = new DeleteEntity<>(ReplicationController.class, client, "nginx-controller", currentNamespace);
-    await().atMost(30, TimeUnit.SECONDS).until(replicationControllerDelete);
+  @AfterClass
+  public static void cleanup() {
+    ClusterEntity.remove(ReplicationControllerIT.class.getResourceAsStream("/replicationcontroller-it.yml"));
   }
 }

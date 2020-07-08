@@ -16,18 +16,16 @@
 
 package io.fabric8.openshift;
 
-import io.fabric8.commons.DeleteEntity;
+import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.ReadyEntity;
 import io.fabric8.openshift.api.model.DeploymentConfig;
-import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -48,37 +46,14 @@ public class DeploymentConfigIT {
   @ArquillianResource
   Session session;
 
-  private DeploymentConfig deploymentConfig1;
-
-  private String currentNamespace;
-
-  @Before
-  public void init() {
-    currentNamespace = session.getNamespace();
-    deploymentConfig1 = new DeploymentConfigBuilder()
-      .withNewMetadata().withName("deploymentconfig1").endMetadata()
-      .withNewSpec()
-      .withReplicas(2)
-      .withNewTemplate()
-      .withNewMetadata()
-      .addToLabels("app", "database")
-      .endMetadata()
-      .withNewSpec()
-      .addNewContainer()
-      .withName("mysql")
-      .withImage("openshift/mysql-55-centos7")
-      .endContainer()
-      .endSpec()
-      .endTemplate()
-      .endSpec()
-      .build();
-
-    client.deploymentConfigs().inNamespace(currentNamespace).create(deploymentConfig1);
+  @BeforeClass
+  public static void init() {
+    ClusterEntity.apply(DeploymentConfigIT.class.getResourceAsStream("/deploymentconfig-it.yml"));
   }
 
   @Test
   public void load() {
-    DeploymentConfig deploymentConfig = client.deploymentConfigs().inNamespace(currentNamespace)
+    DeploymentConfig deploymentConfig = client.deploymentConfigs().inNamespace(session.getNamespace())
       .load(getClass().getResourceAsStream("/test-deploymentconfig.yml")).get();
     assertThat(deploymentConfig).isNotNull();
     assertEquals("frontend", deploymentConfig.getMetadata().getName());
@@ -86,20 +61,20 @@ public class DeploymentConfigIT {
 
   @Test
   public void get() {
-    assertNotNull(client.deploymentConfigs().inNamespace(currentNamespace).withName("deploymentconfig1").get());
+    assertNotNull(client.deploymentConfigs().inNamespace(session.getNamespace()).withName("dc-get").get());
   }
 
   @Test
   public void list() {
-    DeploymentConfigList aDeploymentConfigList = client.deploymentConfigs().inNamespace(currentNamespace).list();
+    DeploymentConfigList aDeploymentConfigList = client.deploymentConfigs().inNamespace(session.getNamespace()).list();
     assertThat(aDeploymentConfigList).isNotNull();
-    assertEquals(1, aDeploymentConfigList.getItems().size());
+    assertTrue(aDeploymentConfigList.getItems().size() >= 1);
   }
 
   @Test
   public void update() {
-    ReadyEntity<DeploymentConfig> deploymentConfigReady = new ReadyEntity<>(DeploymentConfig.class, client, "deploymentconfig1", currentNamespace);
-    deploymentConfig1 = client.deploymentConfigs().inNamespace(currentNamespace).withName("deploymentconfig1").edit()
+    ReadyEntity<DeploymentConfig> deploymentConfigReady = new ReadyEntity<>(DeploymentConfig.class, client, "dc-update", session.getNamespace());
+    DeploymentConfig deploymentConfig1 = client.deploymentConfigs().inNamespace(session.getNamespace()).withName("dc-update").edit()
       .editSpec().withReplicas(3).endSpec().done();
     await().atMost(60, TimeUnit.SECONDS).until(deploymentConfigReady);
     assertThat(deploymentConfig1).isNotNull();
@@ -107,18 +82,11 @@ public class DeploymentConfigIT {
   }
 
   @Test
-  public void delete() throws InterruptedException {
-    ReadyEntity<DeploymentConfig> deploymentConfigReady = new ReadyEntity<>(DeploymentConfig.class, client, "deploymentconfig1", currentNamespace);
+  public void delete() {
+    ReadyEntity<DeploymentConfig> deploymentConfigReady = new ReadyEntity<>(DeploymentConfig.class, client, "dc-delete", session.getNamespace());
     await().atMost(30, TimeUnit.SECONDS).until(deploymentConfigReady);
-    boolean bDeleted = client.deploymentConfigs().inNamespace(currentNamespace).withName("deploymentconfig1").delete();
+    boolean bDeleted = client.deploymentConfigs().inNamespace(session.getNamespace()).withName("dc-delete").delete();
     assertTrue(bDeleted);
   }
 
-  @After
-  public void cleanup() throws InterruptedException {
-    client.deploymentConfigs().inNamespace(currentNamespace).delete();
-
-    DeleteEntity<DeploymentConfig> deploymentConfigDelete = new DeleteEntity<>(DeploymentConfig.class, client, "deploymentconfig1", currentNamespace);
-    await().atMost(90, TimeUnit.SECONDS).until(deploymentConfigDelete);
-  }
 }

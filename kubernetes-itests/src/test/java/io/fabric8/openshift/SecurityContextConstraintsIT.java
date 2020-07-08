@@ -16,23 +16,19 @@
 package io.fabric8.openshift;
 
 
-import io.fabric8.commons.DeleteEntity;
+import io.fabric8.commons.ClusterEntity;
 import io.fabric8.openshift.api.model.SecurityContextConstraints;
-import io.fabric8.openshift.api.model.SecurityContextConstraintsBuilder;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsList;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Collections;
-import java.util.concurrent.TimeUnit;
 
-import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.*;
 
 @RunWith(ArquillianConditionalRunner.class)
@@ -44,31 +40,9 @@ public class SecurityContextConstraintsIT {
 
   private SecurityContextConstraints scc;
 
-  @Before
-  public void init(){
-
-    scc = new SecurityContextConstraintsBuilder()
-      .withNewMetadata().withName("test-scc")
-      .addToLabels("foo","bar")
-      .endMetadata()
-      .withAllowPrivilegedContainer(true)
-      .withNewRunAsUser()
-      .withType("RunAsAny")
-      .endRunAsUser()
-      .withNewSeLinuxContext()
-      .withType("RunAsAny")
-      .endSeLinuxContext()
-      .withNewFsGroup()
-      .withType("RunAsAny")
-      .endFsGroup()
-      .withNewSupplementalGroups()
-      .withType("RunAsAny")
-      .endSupplementalGroups()
-      .addToUsers("admin")
-      .addToGroups("admin-group")
-      .build();
-
-    scc = client.securityContextConstraints().create(scc);
+  @BeforeClass
+  public static void init() {
+    ClusterEntity.apply(SecurityContextConstraintsIT.class.getResourceAsStream("/securitycontextconstraints-it.yml"));
   }
 
   @Test
@@ -92,9 +66,9 @@ public class SecurityContextConstraintsIT {
   public void get() {
 
     SecurityContextConstraints getSCC = client.securityContextConstraints()
-      .withName("test-scc").get();
+      .withName("scc-get").get();
     assertNotNull(getSCC);
-    assertEquals("test-scc",getSCC.getMetadata().getName());
+    assertEquals("scc-get",getSCC.getMetadata().getName());
     assertTrue(getSCC.getAllowPrivilegedContainer());
     assertEquals("RunAsAny",getSCC.getRunAsUser().getType());
     assertEquals("RunAsAny",getSCC.getFsGroup().getType());
@@ -114,7 +88,7 @@ public class SecurityContextConstraintsIT {
 
     assertNotNull(sccList);
     assertEquals(1,sccList.getItems().size());
-    assertEquals("test-scc",sccList.getItems().get(0).getMetadata().getName());
+    assertEquals("scc-list",sccList.getItems().get(0).getMetadata().getName());
     assertTrue(sccList.getItems().get(0).getAllowPrivilegedContainer());
     assertEquals("RunAsAny",sccList.getItems().get(0).getRunAsUser().getType());
     assertEquals("RunAsAny",sccList.getItems().get(0).getFsGroup().getType());
@@ -129,12 +103,12 @@ public class SecurityContextConstraintsIT {
   @Test
   public void update(){
 
-    scc = client.securityContextConstraints().withName("test-scc").edit()
+    scc = client.securityContextConstraints().withName("scc-update").edit()
       .withAllowPrivilegedContainer(false)
       .done();
 
     assertNotNull(scc);
-    assertEquals("test-scc",scc.getMetadata().getName());
+    assertEquals("scc-update",scc.getMetadata().getName());
     assertFalse(scc.getAllowPrivilegedContainer());
     assertEquals("RunAsAny",scc.getRunAsUser().getType());
     assertEquals("RunAsAny",scc.getFsGroup().getType());
@@ -147,22 +121,12 @@ public class SecurityContextConstraintsIT {
   }
 
   @Test
-  public void delete(){
+  public void delete() {
 
+    scc = client.securityContextConstraints().withName("scc-delete").get();
     boolean deleted = client.securityContextConstraints().delete(scc);
     assertTrue(deleted);
     SecurityContextConstraintsList sccList = client.securityContextConstraints().list();
     assertFalse(sccList.getItems().contains(scc));
   }
-
-  @After
-  public void cleanup() {
-    if (client.securityContextConstraints().list().getItems().size()!= 0) {
-      client.securityContextConstraints().withName("test-scc").delete();
-    }
-
-    DeleteEntity<SecurityContextConstraints> sccDelete = new DeleteEntity<>(SecurityContextConstraints.class, client, "test-scc", null);
-    await().atMost(30, TimeUnit.SECONDS).until(sccDelete);
-  }
-
 }

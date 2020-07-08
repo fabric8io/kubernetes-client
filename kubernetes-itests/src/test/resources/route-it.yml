@@ -14,28 +14,43 @@
 # limitations under the License.
 #
 
-apiVersion: kafka.strimzi.io/v1beta1
-kind: Kafka
+---
+apiVersion: v1
+kind: Route
 metadata:
-  name: kafka-single
+  name: route-get
 spec:
-  kafka:
-    version: 2.1.1
-    replicas: 1
-    listeners:
-      plain: {}
-      tls: {}
-    config:
-      offsets.topic.replication.factor: 1
-      transaction.state.log.replication.factor: 1
-      transaction.state.log.min.isr: 1
-      log.message.format.version: "2.1"
-    storage:
-      type: ephemeral
-  zookeeper:
-    replicas: 1
-    storage:
-      type: ephemeral
-  entityOperator:
-    topicOperator: {}
-    userOperator: {}
+  host: www.example.com
+  to:
+    kind: Service
+    name: service-name
+---
+apiVersion: v1
+kind: Route
+metadata:
+  name: route-list
+spec:
+  host: www.example.com
+  to:
+    kind: Service
+    name: service-name
+---
+apiVersion: v1
+kind: Route
+metadata:
+  name: route-update
+spec:
+  host: www.example.com
+  to:
+    kind: Service
+    name: service-name
+---
+apiVersion: v1
+kind: Route
+metadata:
+  name: route-delete
+spec:
+  host: www.example.com
+  to:
+    kind: Service
+    name: service-name

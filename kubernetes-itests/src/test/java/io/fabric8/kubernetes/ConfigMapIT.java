@@ -16,24 +16,20 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.DeleteEntity;
-import io.fabric8.commons.ReadyEntity;
+import io.fabric8.commons.ClusterEntity;
 import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.concurrent.TimeUnit;
-
 import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -46,88 +42,49 @@ public class ConfigMapIT {
   @ArquillianResource
   Session session;
 
-  private ConfigMap configMap1, configMap2;
+  private ConfigMap configMap;
 
-  private String currentNamespace;
-
-  @Before
-  public void init() {
-    currentNamespace = session.getNamespace();
-    configMap1 = new ConfigMapBuilder()
-      .withNewMetadata().withName("configmap1").endMetadata()
-      .addToData("1", "one")
-      .addToData("2", "two")
-      .addToData("3", "three")
-      .build();
-    configMap2 = new ConfigMapBuilder()
-      .withNewMetadata().withName("configmap2").endMetadata()
-      .addToData("PostgreSQL", "Free Open Source Enterprise Database")
-      .addToData("DB2", "Enterprise Database , It's expensive")
-      .addToData("Oracle", "Enterprise Database , It's expensive")
-      .addToData("MySQL", "Free Open SourceDatabase")
-      .build();
-    client.configMaps().inNamespace(currentNamespace).create(configMap1);
-    client.configMaps().inNamespace(currentNamespace).create(configMap2);
+  @BeforeClass
+  public static void init() {
+    ClusterEntity.apply(ConfigMapIT.class.getResourceAsStream("/configmap-it.yml"));
   }
 
   @Test
   public void load() {
-    ConfigMap aConfigMap = client.configMaps().inNamespace(currentNamespace).load(getClass().getResourceAsStream("/test-configmap.yml")).get();
+    ConfigMap aConfigMap = client.configMaps().inNamespace(session.getNamespace()).load(getClass().getResourceAsStream("/test-configmap.yml")).get();
     assertThat(aConfigMap).isNotNull();
     assertEquals("game-config", aConfigMap.getMetadata().getName());
   }
 
   @Test
   public void get() {
-    configMap1 = client.configMaps().inNamespace(currentNamespace).withName("configmap1").get();
-    assertThat(configMap1).isNotNull();
-    configMap2 = client.configMaps().inNamespace(currentNamespace).withName("configmap2").get();
-    assertThat(configMap2).isNotNull();
+    configMap = client.configMaps().inNamespace(session.getNamespace()).withName("configmap-get").get();
+    assertThat(configMap).isNotNull();
   }
 
   @Test
   public void list() {
-    ConfigMapList aConfigMapList = client.configMaps().inNamespace(currentNamespace).list();
+    ConfigMapList aConfigMapList = client.configMaps().inNamespace(session.getNamespace()).list();
     assertNotNull(aConfigMapList);
-    assertEquals(2, aConfigMapList.getItems().size());
+    assertTrue(aConfigMapList.getItems().size() >= 1);
   }
 
   @Test
   public void update() {
-    ReadyEntity<ConfigMap> configMap1Ready = new ReadyEntity<>(ConfigMap.class, client, "configmap1", currentNamespace);
-    ReadyEntity<ConfigMap> configMap2Ready = new ReadyEntity<>(ConfigMap.class, client, "configmap2", currentNamespace);
-
-    configMap1 = client.configMaps().inNamespace(currentNamespace).withName("configmap1").edit()
-      .addToData("4", "four").done();
-
-    configMap2 = client.configMaps().inNamespace(currentNamespace).withName("configmap2").edit()
+    configMap = client.configMaps().inNamespace(session.getNamespace()).withName("configmap-update").edit()
       .addToData("MSSQL", "Microsoft Database").done();
 
-    await().atMost(30, TimeUnit.SECONDS).until(configMap1Ready);
-    await().atMost(30, TimeUnit.SECONDS).until(configMap2Ready);
-    assertNotNull(configMap1);
-    assertNotNull(configMap2);
-    assertEquals("four", configMap1.getData().get("4"));
-    assertEquals("Microsoft Database", configMap2.getData().get("MSSQL"));
+    assertNotNull(configMap);
+    assertEquals("Microsoft Database", configMap.getData().get("MSSQL"));
   }
 
   @Test
   public void delete() {
-    ReadyEntity<ConfigMap> configMap1Ready = new ReadyEntity<>(ConfigMap.class, client, "configmap1", currentNamespace);
-    await().atMost(30, TimeUnit.SECONDS).until(configMap1Ready);
-    assertTrue(client.configMaps().inNamespace(currentNamespace).withName("configmap1").delete());
-
-    ReadyEntity<ConfigMap> configMap2Ready = new ReadyEntity<>(ConfigMap.class, client, "configmap2", currentNamespace);
-    await().atMost(30, TimeUnit.SECONDS).until(configMap2Ready);
-    assertTrue(client.configMaps().inNamespace(currentNamespace).withName("configmap2").delete());
+    assertTrue(client.configMaps().inNamespace(session.getNamespace()).withName("configmap-delete").delete());
   }
 
-  @After
-  public void cleanup() throws InterruptedException {
-    if (client.configMaps().inNamespace(currentNamespace).list().getItems().size()!= 0) {
-      client.configMaps().inNamespace(currentNamespace).delete();
-    }
-    DeleteEntity<ConfigMap> configMapDelete = new DeleteEntity<>(ConfigMap.class, client, "configmap1", currentNamespace);
-    await().atMost(30, TimeUnit.SECONDS).until(configMapDelete);
+  @AfterClass
+  public static void cleanup() {
+    ClusterEntity.remove(ConfigMapIT.class.getResourceAsStream("/configmap-it.yml"));
   }
 }

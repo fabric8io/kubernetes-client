@@ -139,8 +139,8 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
   /**
    * Patches the specified object to the in-memory db.
    *
-   * @param path
-   * @param s
+   * @param path path of resource
+   * @param s object
    * @return The {@link MockResponse}
    */
   @Override

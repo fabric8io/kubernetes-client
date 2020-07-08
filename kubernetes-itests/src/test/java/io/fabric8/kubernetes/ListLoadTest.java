@@ -48,11 +48,12 @@ public class ListLoadTest {
 
   @Test
   public void test() {
+    DeploymentList deploymentListOld = client.apps().deployments().inNamespace(currentNamespace).list();
     client.load(getClass().getResourceAsStream("/test-list.json")).createOrReplace();
 
-    DeploymentList aDeploymentList = client.apps().deployments().inNamespace(currentNamespace).list();
-    assertThat(aDeploymentList).isNotNull();
-    assertEquals(1, aDeploymentList.getItems().size());
+    DeploymentList deploymentListNew = client.apps().deployments().inNamespace(currentNamespace).list();
+    assertThat(deploymentListNew).isNotNull();
+    assertEquals(deploymentListOld.getItems().size() + 1, deploymentListNew.getItems().size());
   }
 
 }
