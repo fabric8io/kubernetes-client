@@ -62,7 +62,7 @@ If everything works well, you would have model upgraded to specified Kubernetes/
  - `cmd/generate/generate.go` contains the main entry point and the descriptor of the schema.
    Add new entries to the `Schema` struct and `schemagen.PackageDescriptor` to generate
    an entry for any additional Go structs.
- - `pkg/schemage` package contains the source files with the logic to generate the schema.
+ - `pkg/schemagen` package contains the source files with the logic to generate the schema.
  
  ### Kubernetes-Model-Annotator
  
