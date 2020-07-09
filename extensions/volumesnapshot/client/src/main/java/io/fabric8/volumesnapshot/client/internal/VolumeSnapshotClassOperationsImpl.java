@@ -1,0 +1,64 @@
+/**
+ * Copyright (C) 2015 Red Hat, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.fabric8.volumesnapshot.client.internal;
+
+import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
+import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.volumesnapshot.api.model.DoneableVolumeSnapshotClass;
+import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClass;
+import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClassList;
+import io.fabric8.volumesnapshot.api.model.VolumeSnapshotList;
+import okhttp3.OkHttpClient;
+
+import java.util.HashMap;
+import java.util.Map;
+
+
+public class VolumeSnapshotClassOperationsImpl extends HasMetadataOperation<VolumeSnapshotClass, VolumeSnapshotClassList, DoneableVolumeSnapshotClass, VolumeSnapshotClassResource> implements VolumeSnapshotClassResource {
+
+  public VolumeSnapshotClassOperationsImpl(OkHttpClient client, Config config) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config));
+  }
+
+  public VolumeSnapshotClassOperationsImpl(OperationContext context) {
+      super(context.withApiGroupName("snapshot.storage.k8s.io").withApiGroupVersion("v1beta1").withPlural("volumesnapshotclasses"));
+        this.type=VolumeSnapshotClass.class;
+        this.listType= VolumeSnapshotClassList.class;
+        this.doneableType= DoneableVolumeSnapshotClass.class;
+  }
+
+    @Override
+    public BaseOperation<VolumeSnapshotClass, VolumeSnapshotClassList, DoneableVolumeSnapshotClass, VolumeSnapshotClassResource> newInstance(OperationContext context) {
+        return new VolumeSnapshotClassOperationsImpl(context);
+    }
+
+    @Override
+  public boolean isResourceNamespaced() {
+    return false;
+  }
+
+  @Override
+  public VolumeSnapshotList listSnapshots() {
+    VolumeSnapshotClass item = get();
+    Map<String, String> fields = new HashMap<>();
+    fields.put("spec.volumeSnapshotClassName", item.getMetadata().getName());
+    return new VolumeSnapshotOperationsImpl(context.withName(null))
+      .withFields(fields)
+      .list();
+  }
+}
