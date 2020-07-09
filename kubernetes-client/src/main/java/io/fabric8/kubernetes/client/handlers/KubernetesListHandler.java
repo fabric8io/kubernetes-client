@@ -44,9 +44,11 @@ public class KubernetesListHandler implements ResourceHandler<KubernetesList, Ku
 
   private static final Logger LOGGER = LoggerFactory.getLogger(KubernetesListHandler.class);
 
+  private static final String KIND = new KubernetesList().getKind();
+  
   @Override
   public String getKind() {
-    return Service.class.getSimpleName();
+    return KIND;
   }
 
   @Override
