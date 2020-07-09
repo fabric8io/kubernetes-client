@@ -42,6 +42,7 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.Parameter;
 import io.fabric8.openshift.api.model.Template;
 
+import java.util.concurrent.RejectedExecutionException;
 import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
@@ -87,7 +88,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
   @Override
   public List<HasMetadata> waitUntilReady(final long amount, final TimeUnit timeUnit) throws InterruptedException {
     List<HasMetadata> items = acceptVisitors(asHasMetadata(item, true), visitors);
-    if (items.size() == 0) {
+    if (items.isEmpty()) {
       return Collections.emptyList();
     }
 
@@ -100,26 +101,28 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
       final CountDownLatch latch = new CountDownLatch(size);
       for (final HasMetadata meta : items) {
         final ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
-        executor.submit(() -> {
-          try {
-            result.add(h.waitUntilReady(client, config, meta.getMetadata().getNamespace(), meta, amount, timeUnit));
-          } catch (InterruptedException | IllegalArgumentException interruptedException) {
-            // We may get here if waiting is interrupted or resource doesn't support concept of readiness.
-            // We don't want to wait for items that will never become ready
-            // Skip that resource then.
-            LOGGER.info(meta.getKind() + " " + meta.getMetadata().getName() + " does not support readiness. skipping..");
-            latch.countDown();
-          } catch (IllegalStateException t) {
-            LOGGER.warn("Error while waiting for: [" + meta.getKind() + "] with name: [" + meta.getMetadata().getName() + "] in namespace: [" + meta.getMetadata().getNamespace() + "]: " + t.getMessage()+ ". The resource will be considered not ready.");
-            LOGGER.debug("The error stack trace:", t);
-          } finally {
-            // Resource got ready and was returned properly
-            latch.countDown();
-          }
-        });
+        if (!executor.isShutdown()) {
+          executor.submit(() -> {
+            try {
+              result.add(h.waitUntilReady(client, config, meta.getMetadata().getNamespace(), meta, amount, timeUnit));
+            } catch (InterruptedException | IllegalArgumentException interruptedException) {
+              // We may get here if waiting is interrupted or resource doesn't support concept of readiness.
+              // We don't want to wait for items that will never become ready
+              // Skip that resource then.
+              LOGGER.info("{} {} does not support readiness. skipping..", meta.getKind(), meta.getMetadata().getName());
+              latch.countDown();
+            } catch (IllegalStateException t) {
+              LOGGER.warn("Error while waiting for: [{}] with name: [{}] in namespace: [{}]: {}. The resource will be considered not ready.", meta.getKind(), meta.getMetadata().getName(), meta.getMetadata().getNamespace(), t.getMessage());
+              LOGGER.debug("The error stack trace:", t);
+            } finally {
+              // Resource got ready and was returned properly
+              latch.countDown();
+            }
+          });
+        }
       }
       latch.await(amount, timeUnit);
-      if(latch.getCount() == 0) {
+      if (latch.getCount() == 0) {
         return result;
       } else {
         throw new KubernetesClientTimeoutException(itemsWithConditionNotMatched, amount, timeUnit);
@@ -147,22 +150,24 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
       final CountDownLatch latch = new CountDownLatch(size);
       for (final HasMetadata meta : items) {
         final ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
-        executor.submit(() -> {
-          try {
-            result.add(h.waitUntilCondition(client, config, meta.getMetadata().getNamespace(), meta, condition, amount, timeUnit));
-            conditionMatched.incrementAndGet();
-            itemsWithConditionNotMatched.remove(meta);
-          } catch (Throwable t) {
-            //consider all errors as not ready.
-            LOGGER.warn("Error while waiting for: [" + meta.getKind() + "] with name: [" + meta.getMetadata().getName() + "] in namespace: [" + meta.getMetadata().getNamespace() + "]: " + t.getMessage()+ ". The resource will be considered not ready.");
-            LOGGER.debug("The error stack trace:", t);
-          } finally {
-            //We don't want to wait for items that will never become ready
-            latch.countDown();
-          }
-        });
+        if (!executor.isShutdown()) {
+          executor.submit(() -> {
+            try {
+              result.add(h.waitUntilCondition(client, config, meta.getMetadata().getNamespace(), meta, condition, amount, timeUnit));
+              conditionMatched.incrementAndGet();
+              itemsWithConditionNotMatched.remove(meta);
+            } catch (Throwable t) {
+              //consider all errors as not ready.
+              LOGGER.warn("Error while waiting for: [{}] with name: [{}] in namespace: [{}]: {}. The resource will be considered not ready.", meta.getKind(), meta.getMetadata().getName(), meta.getMetadata().getNamespace(), t.getMessage());
+              LOGGER.debug("The error stack trace:", t);
+            } finally {
+              //We don't want to wait for items that will never become ready
+              latch.countDown();
+            }
+          });
+        }
       }
-      if(checkConditionMetForAll(latch, size, conditionMatched, amount, timeUnit)) {
+      if (checkConditionMetForAll(latch, size, conditionMatched, amount, timeUnit)) {
         return result;
       } else {
         throw new KubernetesClientTimeoutException(itemsWithConditionNotMatched, amount, timeUnit);

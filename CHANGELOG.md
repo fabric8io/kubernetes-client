@@ -7,6 +7,7 @@
 * Fix #2131: Failing to parse CustomResourceDefinition with OpenAPIV3Schema using JSONSchemaPropOr\* fields
 * Fix #2297: Resuscitate ProjectRequestHandler in openshift-client
 * Fix #2328: Failure in deserialization while watching events
+* Fix #2299: Improve error handling of RejectedExecutionException from ExecutorService
 * Fix KubernetesAttributesExctractor to extract metadata from unregistered custom resources, such when using Raw CustomResource API 
 * Fix #2296: No adapter available for type:interface io.fabric8.kubernetes.client.dsl.V1APIGroupDSL
 * Fix #2269: Setting a grace period when deleting resource using `withPropagationPolicy()`

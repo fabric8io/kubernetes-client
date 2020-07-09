@@ -198,9 +198,11 @@ public class SharedInformerFactory extends BaseOperation {
       return;
     }
 
-    informers.forEach(
-      (informerType, informer) ->
+    if (!informerExecutor.isShutdown()) {
+      informers.forEach(
+        (informerType, informer) ->
           startedInformers.computeIfAbsent(informerType, key -> informerExecutor.submit(informer::run)));
+    }
   }
 
   /**
