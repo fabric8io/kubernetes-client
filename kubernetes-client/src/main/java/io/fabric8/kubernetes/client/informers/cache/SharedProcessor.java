@@ -93,7 +93,9 @@ public class SharedProcessor<T> {
         return;
       }
       for (ProcessorListener<T> listener : listeners) {
-        executorService.submit(listener);
+        if (!executorService.isShutdown()) {
+          executorService.submit(listener);
+        }
       }
     } finally {
       lock.readLock().unlock();

@@ -34,7 +34,6 @@ import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -155,9 +154,12 @@ public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
          cleanUp();
          response.close();
        });
+
+      if (!executorService.isShutdown()) {
         executorService.submit(pumper);
         started.set(true);
         queue.add(true);
+      }
 
     }
 }
