@@ -31,7 +31,7 @@ This client provides access to the full [Kubernetes](http://kubernetes.io/) &
 - [Mocking Kubernetes](#mocking-kubernetes)
 - [Who Uses Fabric8 Kubernetes Client?](#who-uses-kubernetes--openshift-java-client)
 - [Kubernetes and Red Hat OpenShift Compatibility Matrix](#compatibility-matrix)
-- [Kuberntes Client CHEAT SHEET](https://github.com/fabric8io/kubernetes-client/blob/master/doc/CHEATSHEET.md)
+- [Kubernetes Client CHEAT SHEET](https://github.com/fabric8io/kubernetes-client/blob/master/doc/CHEATSHEET.md)
 
 ## Usage
 
