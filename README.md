@@ -234,7 +234,7 @@ For example lets read a pod, from a yml file and work with it:
 
 ### Passing a reference of a resource to the client
 
-In the same spirit you can use an object created externally (either a a reference or using its string representation.
+In the same spirit you can use an object created externally (either a reference or using its string representation).
 
 For example:
 

@@ -5714,6 +5714,57 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_core_PodExecOptions": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "v1",
+          "required": true
+        },
+        "command": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "container": {
+          "type": "string",
+          "description": ""
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "PodExecOptions",
+          "required": true
+        },
+        "stderr": {
+          "type": "boolean",
+          "description": ""
+        },
+        "stdin": {
+          "type": "boolean",
+          "description": ""
+        },
+        "stdout": {
+          "type": "boolean",
+          "description": ""
+        },
+        "tty": {
+          "type": "boolean",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.PodExecOptions",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_core_PodIP": {
       "type": "object",
       "description": "",
@@ -8469,6 +8520,10 @@
     "PersistentVolumeList": {
       "$ref": "#/definitions/kubernetes_core_PersistentVolumeList",
       "javaType": "io.fabric8.kubernetes.api.model.PersistentVolumeList"
+    },
+    "PodExecOptions": {
+      "$ref": "#/definitions/kubernetes_core_PodExecOptions",
+      "javaType": "io.fabric8.kubernetes.api.model.PodExecOptions"
     },
     "PodList": {
       "$ref": "#/definitions/kubernetes_core_PodList",
