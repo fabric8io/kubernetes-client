@@ -22,7 +22,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-client-project</artifactId>
-    <version>4.10.3</version>
+    <version>4.10-SNAPSHOT</version>
   </parent>
 
   <artifactId>model-annotator</artifactId>

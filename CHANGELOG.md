@@ -2,6 +2,15 @@
 
 ### 4.10-SNAPSHOT
 #### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+### 4.10.3 (2020-07-14)
+#### Bugs
 * Fix #2285: Raw CustomResource API createOrReplace does not propagate exceptions from create
 * Fix Raw CustomResource API path generation to not having trailing slash
 * Fix #2131: Failing to parse CustomResourceDefinition with OpenAPIV3Schema using JSONSchemaPropOr\* fields
