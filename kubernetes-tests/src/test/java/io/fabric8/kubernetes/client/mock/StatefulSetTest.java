@@ -17,6 +17,10 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
+import io.fabric8.kubernetes.api.model.OwnerReferenceBuilder;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodBuilder;
+import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.api.model.apps.ControllerRevision;
 import io.fabric8.kubernetes.api.model.apps.ControllerRevisionBuilder;
 import io.fabric8.kubernetes.api.model.apps.ControllerRevisionListBuilder;
@@ -452,10 +456,48 @@ public class StatefulSetTest {
     assertTrue(recordedRequest.getBody().readUtf8().contains("\"app\":\"rs1\""));
   }
 
+  @Test
+  @DisplayName("Should test get logs from statefulset")
+  void testGetLogStatefulSet() {
+    // Given
+    Pod jobPod = new PodBuilder()
+      .withNewMetadata()
+      .withOwnerReferences(new OwnerReferenceBuilder().withApiVersion("batch/v1")
+        .withBlockOwnerDeletion(true)
+        .withController(true)
+        .withKind("Job")
+        .withName("pi")
+        .withUid("3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
+        .build())
+      .withName("job1-hk9nf").addToLabels("controller-uid", "3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
+      .endMetadata()
+      .build();
+
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
+      .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build())
+      .always();
+
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods/statefulset1?labelSelector=app%3Dnginx")
+      .andReturn(HttpURLConnection.HTTP_OK, new PodListBuilder().withItems(jobPod).build())
+      .once();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods/job1-hk9nf/log?pretty=false")
+      .andReturn(HttpURLConnection.HTTP_OK, "hello")
+      .once();
+    KubernetesClient client = server.getClient();
+
+    // When
+    String log = client.apps().statefulSets().inNamespace("ns1").withName("statefulset1").getLog();
+
+    // Then
+    assertNotNull(log);
+    assertEquals("hello", log);
+  }
+
   private StatefulSetBuilder getStatefulSetBuilder() {
     return new StatefulSetBuilder()
       .withNewMetadata()
       .withName("statefulset1")
+      .withUid("3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
       .addToLabels("app", "nginx")
       .addToAnnotations("app", "nginx")
       .endMetadata()

@@ -315,7 +315,13 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
     Deployment deployment = fromServer().get();
     String rcUid = deployment.getMetadata().getUid();
 
-    ReplicaSetOperationsImpl rsOperations = new ReplicaSetOperationsImpl((RollingOperationContext) context);
+    ReplicaSetOperationsImpl rsOperations = new ReplicaSetOperationsImpl(
+      new RollingOperationContext(context.getClient(), context.getConfig(), context.getPlural(), context.getNamespace(),
+        null, context.getApiGroupName(), context.getApiGroupVersion(), context.getCascading(), null, context.getLabels(),
+        context.getLabelsNot(), context.getLabelsIn(), context.getLabelsNotIn(), context.getFields(), context.getFieldsNot(),
+        context.getResourceVersion(), context.getReloadingFromServer(), context.getGracePeriodSeconds(), context.getPropagationPolicy(),
+        context.getWatchRetryInitialBackoffMillis(), context.getWatchRetryBackoffMultiplier(), false, 0, null
+        ));
     ReplicaSetList rcList = rsOperations.withLabels(deployment.getSpec().getTemplate().getMetadata().getLabels()).list();
 
     for (ReplicaSet rs : rcList.getItems()) {

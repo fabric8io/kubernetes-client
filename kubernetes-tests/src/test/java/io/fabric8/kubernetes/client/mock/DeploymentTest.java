@@ -19,6 +19,10 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ContainerBuilder;
 import io.fabric8.kubernetes.api.model.ContainerPortBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
+import io.fabric8.kubernetes.api.model.OwnerReferenceBuilder;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodBuilder;
+import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
@@ -681,10 +685,72 @@ public class DeploymentTest {
     assertTrue(recordedRequest.getBody().readUtf8().contains("\"app\":\"rs1\""));
   }
 
+  @Test
+  @DisplayName("Should get logs for a Deployment")
+  void testDeploymentGetLog() {
+    // Given
+    ReplicaSet replicaSet = new ReplicaSetBuilder()
+      .withNewMetadata()
+      .withOwnerReferences(
+        new OwnerReferenceBuilder()
+        .withApiVersion("apps/v1")
+        .withBlockOwnerDeletion(true)
+        .withController(true)
+        .withKind("Deployment")
+        .withName("deploy1")
+        .withUid("136581bf-82c2-4675-af05-63c55500b378")
+        .build()
+      )
+      .withName("deploy1-hk9nf")
+      .addToLabels("app", "nginx")
+      .withUid("3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
+      .endMetadata()
+      .build();
+
+    Pod deployPod = new PodBuilder()
+      .withNewMetadata()
+      .withOwnerReferences(new OwnerReferenceBuilder().withApiVersion("apps/v1")
+        .withBlockOwnerDeletion(true)
+        .withController(true)
+        .withKind("ReplicaSet")
+        .withName("1")
+        .withUid("3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
+        .build())
+      .withName("deploy1-hk9nf").addToLabels("controller-uid", "3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
+      .endMetadata()
+      .build();
+
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
+      .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build())
+      .always();
+
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/replicasets?labelSelector=app%3Dnginx")
+      .andReturn(HttpURLConnection.HTTP_OK, new ReplicaSetListBuilder().withItems(replicaSet).build())
+      .once();
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/replicasets/deploy1-hk9nf")
+      .andReturn(HttpURLConnection.HTTP_OK, replicaSet)
+      .once();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?labelSelector=app%3Dnginx")
+      .andReturn(HttpURLConnection.HTTP_OK, new PodListBuilder().withItems(deployPod).build())
+      .once();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods/deploy1-hk9nf/log?pretty=false")
+      .andReturn(HttpURLConnection.HTTP_OK, "hello")
+      .once();
+    KubernetesClient client = server.getClient();
+
+    // When
+    String log = client.apps().deployments().inNamespace("ns1").withName("deploy1").getLog();
+
+    // Then
+    assertNotNull(log);
+    assertEquals("hello", log);
+  }
+
   private DeploymentBuilder getDeploymentBuilder() {
     return new DeploymentBuilder()
       .withNewMetadata()
       .withName("deploy1")
+      .withUid("136581bf-82c2-4675-af05-63c55500b378")
       .addToLabels("app", "nginx")
       .addToAnnotations("app", "nginx")
       .endMetadata()
