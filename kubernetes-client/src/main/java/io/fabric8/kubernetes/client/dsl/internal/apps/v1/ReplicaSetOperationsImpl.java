@@ -195,7 +195,7 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
     String rcUid = replicaSet.getMetadata().getUid();
 
     PodOperationsImpl podOperations = new PodOperationsImpl(new PodOperationContext(context.getClient(),
-      context.getConfig(), context.getPlural(), context.getNamespace(), context.getName(), null,
+      context.getConfig(), context.getPlural(), context.getNamespace(), null, null,
       "v1", context.getCascading(), context.getItem(), context.getLabels(), context.getLabelsNot(),
       context.getLabelsIn(), context.getLabelsNotIn(), context.getFields(), context.getFieldsNot(), context.getResourceVersion(),
       context.getReloadingFromServer(), context.getGracePeriodSeconds(), context.getPropagationPolicy(),
