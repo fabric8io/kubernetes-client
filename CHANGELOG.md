@@ -21,19 +21,28 @@
 * Fix #2296: No adapter available for type:interface io.fabric8.kubernetes.client.dsl.V1APIGroupDSL
 * Fix #2269: Setting a grace period when deleting resource using `withPropagationPolicy()`
 * Fix #2342: watchLogs for deployment is broken
+* Fix #2309: Move HasMetadataComparator to exported package
 
 #### Improvements
 * Fix #2233: client.service().getUrl(..) should be able to fetch URL for ClusterIP based services
 * Fix #2278: Added type parameters for KubernetesList in KubernetesClient + test verifying waitUntilCondition **always** retrieves resource from server
+* Fix #2336: Test and fix for the wrong "Kind" declared on KubernetesListHandle
 * Fix #2320: Added JUnit5 extension for mocking KubernetesClient in tests using @EnableKubernetesMockClient
 * Fix #2332: Added PodExecOptions model
 * Improve error handling on stream closing errors in S2I binary builds(#2032)
+* Fix #2288: Adds configurable serializers and deserializers to json schema codegen
 
 #### Dependency Upgrade
+* Fix #2333: bump bouncycastle.version from 1.65 to 1.66
+* Fix #2262: bump maven-shade-plugin from 3.2.3 to 3.2.4
+* Fix #2261: bump exec-maven-plugin from 1.6.0 to 3.0.0
+* Fix #2345: bump mockito-core from 3.3.3 to 3.4.0
+* Fix #2260: bump tektoncd pipeline to v0.12.1
 
 #### New Features
 * Fix #1868: Add Support for rolling update
 * Fix #2266: Support for APIServices in Kubernetes Client
+* Fix #2215: `io.fabric8.kubernetes.client.Config` should expose all and the current context defined in kubeconfig
 
 ### 4.10.2 (2020-06-02)
 #### Bugs
