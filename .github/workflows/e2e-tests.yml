@@ -35,12 +35,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        kubernetes: [v1.18.3,v1.12.0]
+        kubernetes: [v1.18.6,v1.12.0]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup Minikube-Kubernetes
-        uses: manusa/actions-setup-minikube@v1.0.2
+        uses: manusa/actions-setup-minikube@v1.1.0
         with:
           minikube version: v1.9.2
           kubernetes version: ${{ matrix.kubernetes }}
@@ -66,7 +66,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup OpenShift
-        uses: manusa/actions-setup-openshift@v1.0.3
+        uses: manusa/actions-setup-openshift@v1.0.5
         with:
           oc version: ${{ matrix.openshift }}
           github token: ${{ secrets.GITHUB_TOKEN }}
