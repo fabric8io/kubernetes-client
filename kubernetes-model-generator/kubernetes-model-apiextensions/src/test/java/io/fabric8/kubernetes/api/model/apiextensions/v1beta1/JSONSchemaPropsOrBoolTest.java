@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.api.model.apiextensions;
+package io.fabric8.kubernetes.api.model.apiextensions.v1beta1;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,6 +23,9 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsBuilder;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrBoolBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

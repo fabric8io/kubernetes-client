@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.base;
 
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 
 public class CustomResourceDefinitionContext {
   private String name;
