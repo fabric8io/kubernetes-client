@@ -8,6 +8,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* CSI Volume Snapshot extension
 
 ### 4.10.3 (2020-07-14)
 #### Bugs
