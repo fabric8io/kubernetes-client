@@ -48,7 +48,7 @@ public class VolumeSnapshotMockServer extends KubernetesMockServer {
 
   @Override
   public String[] getRootPaths() {
-    return new String[]{"/api","/apis/snapshot.storage.k8s.io"};
+    return new String[]{"/api", "/apis/snapshot.storage.k8s.io"};
   }
 
   public VolumeSnapshotClient createVolumeSnapshot() {

@@ -42,24 +42,24 @@ public class VolumeSnapshotClassTest {
     VolumeSnapshotClient client = server.get();
     VolumeSnapshotClass vsc1 = new VolumeSnapshotClassBuilder()
       .withNewMetadata()
-        .withName("csi-snapclass1")
-        .addToLabels("key1", "value1")
+      .withName("csi-snapclass1")
+      .addToLabels("key1", "value1")
       .endMetadata()
       .withDriver("foo.csi.k8s.io")
       .withDeletionPolicy("Delete")
       .build();
     VolumeSnapshotClass vsc2 = new VolumeSnapshotClassBuilder()
       .withNewMetadata()
-        .withName("csi-snapclass2")
-        .addToLabels("key2", "value2")
+      .withName("csi-snapclass2")
+      .addToLabels("key2", "value2")
       .endMetadata()
       .withDriver("foo.csi.k8s.io")
       .withDeletionPolicy("Delete")
       .build();
     VolumeSnapshotClass vsc3 = new VolumeSnapshotClassBuilder()
       .withNewMetadata()
-        .withName("csi-snapclass3")
-        .addToLabels("key3", "value3")
+      .withName("csi-snapclass3")
+      .addToLabels("key3", "value3")
       .endMetadata()
       .withDriver("foo.csi.k8s.io")
       .withDeletionPolicy("Delete")
@@ -82,7 +82,7 @@ public class VolumeSnapshotClassTest {
     //Update
     VolumeSnapshotClass u1 = client.volumeSnapshotClasses().withName("csi-snapclass2").edit()
       .editMetadata()
-        .addToLabels("updated", "true")
+      .addToLabels("updated", "true")
       .endMetadata()
       .done();
 

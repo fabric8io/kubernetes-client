@@ -15,6 +15,5 @@
  */
 package io.fabric8.volumesnapshot.client;
 
-public interface NamespacedVolumeSnapshotClient extends io.fabric8.volumesnapshot.client.VolumeSnapshotClient,
-  io.fabric8.volumesnapshot.client.GenericVolumeSnapshotClient<NamespacedVolumeSnapshotClient> {
+public interface NamespacedVolumeSnapshotClient extends VolumeSnapshotClient, GenericVolumeSnapshotClient<NamespacedVolumeSnapshotClient> {
 }

@@ -15,57 +15,34 @@
  */
 package io.fabric8.volumesnapshot.client;
 
-import io.fabric8.kubernetes.api.model.RootPaths;
+import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
 import okhttp3.OkHttpClient;
 
 import java.net.URL;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-public class VolumeSnapshotExtensionAdapter implements ExtensionAdapter<VolumeSnapshotClient> {
+public class VolumeSnapshotExtensionAdapter extends ExtensionAdapterSupport implements ExtensionAdapter<VolumeSnapshotClient> {
 
-    static final ConcurrentMap<URL, Boolean> IS_SERVICE_CATALOG = new ConcurrentHashMap<>();
-    static final ConcurrentMap<URL, Boolean> USES_SERVICE_CATALOG_APIGROUPS = new ConcurrentHashMap<>();
+  static final ConcurrentMap<URL, Boolean> IS_VOLUME_SNAPSHOT = new ConcurrentHashMap<>();
+  static final ConcurrentMap<URL, Boolean> USES_VOLUME_SNAPSHOT_APIGROUPS = new ConcurrentHashMap<>();
+  public static final String API_GROUP = "snapshot.storage.k8s.io";
 
-	@Override
-	public Class<VolumeSnapshotClient> getExtensionType() {
-		return VolumeSnapshotClient.class;
-	}
+  @Override
+  public Class<VolumeSnapshotClient> getExtensionType() {
+    return VolumeSnapshotClient.class;
+  }
 
-	@Override
-	public Boolean isAdaptable(Client client) {
-		return isServiceCatalogAvailable(client);
-	}
+  @Override
+  public Boolean isAdaptable(Client client) {
+    return isAdaptable(client, IS_VOLUME_SNAPSHOT, USES_VOLUME_SNAPSHOT_APIGROUPS, API_GROUP);
+  }
 
-	@Override
-	public VolumeSnapshotClient adapt(Client client) {
-            return new DefaultVolumeSnapshotClient(client.adapt(OkHttpClient.class), client.getConfiguration());
-	}
+  @Override
+  public VolumeSnapshotClient adapt(Client client) {
+    return new DefaultVolumeSnapshotClient(client.adapt(OkHttpClient.class), client.getConfiguration());
+  }
 
-	private boolean isServiceCatalogAvailable(Client client) {
-        URL masterUrl = client.getMasterUrl();
-        if (IS_SERVICE_CATALOG.containsKey(masterUrl)) {
-            return IS_SERVICE_CATALOG.get(masterUrl);
-        } else {
-            RootPaths rootPaths = client.rootPaths();
-            if (rootPaths != null) {
-                List<String> paths = rootPaths.getPaths();
-                if (paths != null) {
-                    for (String path : paths) {
-                        // lets detect the new API Groups APIs for OpenShift
-                        if (path.endsWith("servicecatalog.k8s.io") || path.contains("servicecatalog.k8s.io/")) {
-                            USES_SERVICE_CATALOG_APIGROUPS.putIfAbsent(masterUrl, true);
-                            IS_SERVICE_CATALOG.putIfAbsent(masterUrl, true);
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        IS_SERVICE_CATALOG.putIfAbsent(masterUrl, false);
-        return false;
-    }
 }

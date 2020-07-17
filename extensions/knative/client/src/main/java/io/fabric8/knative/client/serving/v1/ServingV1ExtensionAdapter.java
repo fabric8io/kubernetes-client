@@ -15,17 +15,16 @@
  */
 package io.fabric8.knative.client.serving.v1;
 
+import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
 import okhttp3.OkHttpClient;
 
 import java.net.URL;
-import java.util.List;
-import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
-public class ServingV1ExtensionAdapter implements ExtensionAdapter<ServingV1Client> {
+public class ServingV1ExtensionAdapter extends ExtensionAdapterSupport implements ExtensionAdapter<ServingV1Client> {
 
     static final ConcurrentMap<URL, Boolean> IS_KNATIVE = new ConcurrentHashMap<>();
     static final ConcurrentMap<URL, Boolean> USES_KNATIVE_APIGROUPS = new ConcurrentHashMap<>();
@@ -37,35 +36,11 @@ public class ServingV1ExtensionAdapter implements ExtensionAdapter<ServingV1Clie
 
 	@Override
 	public Boolean isAdaptable(Client client) {
-		return isServingV1Available(client);
+		return isAdaptable(client, IS_KNATIVE, USES_KNATIVE_APIGROUPS, "knative.dev");
 	}
 
 	@Override
 	public ServingV1Client adapt(Client client) {
     return new DefaultServingV1Client(client.adapt(OkHttpClient.class), client.getConfiguration());
 	}
-
-	private boolean isServingV1Available(Client client) {
-        URL masterUrl = client.getMasterUrl();
-        if (IS_KNATIVE.containsKey(masterUrl)) {
-            return IS_KNATIVE.get(masterUrl);
-        } else {
-            RootPaths rootPaths = client.rootPaths();
-            if (rootPaths != null) {
-                List<String> paths = rootPaths.getPaths();
-                if (paths != null) {
-                    for (String path : paths) {
-                        // lets detect the new API Groups APIs for OpenShift
-                        if (path.endsWith("knative.dev") || path.contains("knative.dev/")) {
-                            USES_KNATIVE_APIGROUPS.putIfAbsent(masterUrl, true);
-                            IS_KNATIVE.putIfAbsent(masterUrl, true);
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        IS_KNATIVE.putIfAbsent(masterUrl, false);
-        return false;
-    }
 }

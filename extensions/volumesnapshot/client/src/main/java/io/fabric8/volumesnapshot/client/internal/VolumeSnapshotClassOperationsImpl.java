@@ -36,18 +36,18 @@ public class VolumeSnapshotClassOperationsImpl extends HasMetadataOperation<Volu
   }
 
   public VolumeSnapshotClassOperationsImpl(OperationContext context) {
-      super(context.withApiGroupName("snapshot.storage.k8s.io").withApiGroupVersion("v1beta1").withPlural("volumesnapshotclasses"));
-        this.type=VolumeSnapshotClass.class;
-        this.listType= VolumeSnapshotClassList.class;
-        this.doneableType= DoneableVolumeSnapshotClass.class;
+    super(context.withApiGroupName("snapshot.storage.k8s.io").withApiGroupVersion("v1beta1").withPlural("volumesnapshotclasses"));
+    this.type = VolumeSnapshotClass.class;
+    this.listType = VolumeSnapshotClassList.class;
+    this.doneableType = DoneableVolumeSnapshotClass.class;
   }
 
-    @Override
-    public BaseOperation<VolumeSnapshotClass, VolumeSnapshotClassList, DoneableVolumeSnapshotClass, VolumeSnapshotClassResource> newInstance(OperationContext context) {
-        return new VolumeSnapshotClassOperationsImpl(context);
-    }
+  @Override
+  public BaseOperation<VolumeSnapshotClass, VolumeSnapshotClassList, DoneableVolumeSnapshotClass, VolumeSnapshotClassResource> newInstance(OperationContext context) {
+    return new VolumeSnapshotClassOperationsImpl(context);
+  }
 
-    @Override
+  @Override
   public boolean isResourceNamespaced() {
     return false;
   }

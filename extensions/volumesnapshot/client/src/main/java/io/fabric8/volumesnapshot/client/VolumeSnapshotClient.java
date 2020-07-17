@@ -34,9 +34,9 @@ import io.fabric8.volumesnapshot.client.internal.VolumeSnapshotResource;
 
 public interface VolumeSnapshotClient extends Client {
 
-    NonNamespaceOperation<VolumeSnapshotClass, VolumeSnapshotClassList, DoneableVolumeSnapshotClass, VolumeSnapshotClassResource> volumeSnapshotClasses();
+  NonNamespaceOperation<VolumeSnapshotClass, VolumeSnapshotClassList, DoneableVolumeSnapshotClass, VolumeSnapshotClassResource> volumeSnapshotClasses();
 
-    NonNamespaceOperation<VolumeSnapshotContent, VolumeSnapshotContentList, DoneableVolumeSnapshotContent, VolumeSnapshotContentResource> volumeSnapshotContents();
+  NonNamespaceOperation<VolumeSnapshotContent, VolumeSnapshotContentList, DoneableVolumeSnapshotContent, VolumeSnapshotContentResource> volumeSnapshotContents();
 
-    MixedOperation<VolumeSnapshot, VolumeSnapshotList, DoneableVolumeSnapshot, VolumeSnapshotResource> volumeSnapshots();
+  MixedOperation<VolumeSnapshot, VolumeSnapshotList, DoneableVolumeSnapshot, VolumeSnapshotResource> volumeSnapshots();
 }
