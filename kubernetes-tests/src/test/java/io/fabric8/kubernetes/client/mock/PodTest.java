@@ -327,6 +327,7 @@ public class PodTest {
     execLatch.await(10, TimeUnit.MINUTES);
     assertNotNull(watch);
     assertEquals(expectedOutput, baos.toString());
+    watch.close();
   }
 
 
@@ -375,6 +376,7 @@ public class PodTest {
     });
 
     assertTrue(deleteLatch.await(10, TimeUnit.MINUTES));
+    watch.close();
   }
 
 
