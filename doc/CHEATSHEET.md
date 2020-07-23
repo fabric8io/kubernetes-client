@@ -1706,6 +1706,8 @@ spec:
   image: my-awesome-cron-image
 ```
 For a CustomResource like this one, we should have a `CronTab` java class like this:
+
+**Note:** Please make sure that your CustomResource POJO is implementing `Namespaced` interface if it's a namespaced resource. Otherwise it would be considered a Cluster scoped resource.
 ```
 /**
  * Copyright (C) 2015 Red Hat, Inc.
@@ -1907,7 +1909,7 @@ Kubernetes Client also provides `SharedInformer` support in order to stay update
 ```
 SharedInformerFactory sharedInformerFactory = client.informers();
 ```
-- Create `SharedIndexInformer` for some Kubernetes Resource(requires resource's class, resource's list class, and resync period(when to check with server again while watching something):
+- Create `SharedIndexInformer` for some Kubernetes Resource(requires resource's class, resource's list class, and resync period(when to check with server again while watching something).  By default it watches in all namespaces.:
 ```
 SharedIndexInformer<Pod> podInformer = sharedInformerFactory.sharedIndexInformerFor(Pod.class, PodList.class, 30 * 1000L);
 podInformer.addEventHandler(new ResourceEventHandler<Pod>() {
@@ -1927,26 +1929,31 @@ podInformer.addEventHandler(new ResourceEventHandler<Pod>() {
   }
 });
 ```
-- Create `SharedIndexInformer` for some Custom Resource(in our case, `Dummy` resource provided in our [examples](https://github.com/fabric8io/kubernetes-client/tree/master/kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/crds):
+- Create `SharedIndexInformer` for some Custom Resource(in our case, `Dummy` resource provided in our [examples](https://github.com/fabric8io/kubernetes-client/tree/master/kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/crds) . By default it watches in all namespaces.
 ```
+CustomResourceDefinitionContext crdContext = new CustomResourceDefinitionContext.Builder()
+    .withVersion("v1")
+    .withScope("Namespaced")
+    .withGroup("demo.fabric8.io")
+    .withPlural("dummies")
+    .build();
 SharedIndexInformer<Dummy> dummyInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(crdContext, Dummy.class, DummyList.class, 1 * 60 * 1000);
 dummyInformer.addEventHandler(new ResourceEventHandler<Dummy>() {
   @Override
-  public void onAdd(Dummy pod) {
-    System.out.printf("%s dummy added\n", pod.getMetadata().getName());
+  public void onAdd(Dummy dummy) {
+    System.out.printf("%s dummy added\n", dummy.getMetadata().getName());
   }
 
   @Override
-  public void onUpdate(Dummy oldPod, Dummy newPod) {
-    System.out.printf("%s dummy updated\n", oldPod.getMetadata().getName());
+  public void onUpdate(Dummy oldDummy, Dummy newDummy) {
+    System.out.printf("%s dummy updated\n", oldDummy.getMetadata().getName());
   }
 
   @Override
-  public void onDelete(Dummy pod, boolean deletedFinalStateUnknown) {
-    System.out.printf("%s dummy deleted \n", pod.getMetadata().getName());
+  public void onDelete(Dummy dummy, boolean deletedFinalStateUnknown) {
+    System.out.printf("%s dummy deleted \n", dummy.getMetadata().getName());
   }
 });
-
 ```
 - Create namespaced `SharedIndexInformer` (informers specific to a particular `Namespace`):
 ```
@@ -1975,6 +1982,37 @@ podInformer.addEventHandler(new ResourceEventHandler<Pod>() {
     }
 });
 ```
+- Create Namespaced Informer for a Custom Resource(**Note:** Your CustomResource POJO must implement `Namespaced` interface like the one used in this example: [Dummy.java](https://github.com/fabric8io/kubernetes-client/blob/master/kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/crds/Dummy.java))
+```
+CustomResourceDefinitionContext crdContext = new CustomResourceDefinitionContext.Builder()
+    .withVersion("v1")
+    .withScope("Namespaced")
+    .withGroup("demo.fabric8.io")
+    .withPlural("dummies")
+    .build();
+SharedIndexInformer<Dummy> dummyInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(crdContext,
+    Dummy.class,
+    DummyList.class,
+    new OperationContext().withNamespace("default"), // Namespace to watch
+    1 * 60 * 1000);
+dummyInformer.addEventHandler(new ResourceEventHandler<Dummy>() {
+  @Override
+  public void onAdd(Dummy dummy) {
+    System.out.printf("%s dummy added\n", dummy.getMetadata().getName());
+  }
+
+  @Override
+  public void onUpdate(Dummy oldDummy, Dummy newDummy) {
+    System.out.printf("%s dummy updated\n", oldDummy.getMetadata().getName());
+  }
+
+  @Override
+  public void onDelete(Dummy dummy, boolean deletedFinalStateUnknown) {
+    System.out.printf("%s dummy deleted \n", dummy.getMetadata().getName());
+  }
+});
+```
+
 - Start all registered informers:
 ```
 sharedInformerFactory.startAllRegisteredInformers();
