@@ -33,6 +33,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
+import java.net.HttpURLConnection;
+import java.util.Collections;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -172,6 +175,51 @@ class PersistentVolumeClaimTest {
     KubernetesClient client = server.getClient();
     persistentVolumeClaim = client.persistentVolumeClaims().inNamespace("test").withName("test-pv-claim").get();
     assertNotNull(persistentVolumeClaim);
+  }
+
+  @Test
+  void testCreateOrReplaceIgnoreWhenNoChange() {
+    // Given
+    PersistentVolumeClaim pvcOrignal = new PersistentVolumeClaimBuilder()
+      .withNewMetadata().withName("my-pvc").endMetadata()
+      .withNewSpec()
+      .withAccessModes("ReadWriteOnce")
+      .withNewResources()
+      .withRequests(Collections.singletonMap("storage", new Quantity("20Gi")))
+      .endResources()
+      .endSpec()
+      .build();
+    PersistentVolumeClaim pvcFromServer = new PersistentVolumeClaimBuilder()
+      .withNewMetadata()
+      .withName("my-pvc")
+      .withCreationTimestamp("2020-07-27T11:02:15Z")
+      .addToFinalizers("kubernetes.io/pvc-protection")
+      .withNamespace("default")
+      .withResourceVersion("203697")
+      .withSelfLink("/api/v1/namespaces/default/persistentvolumeclaims/my-pvc")
+      .withUid("60817eaa-19d8-41ba-adb4-3ea75860e1f8")
+      .endMetadata()
+      .withNewSpec()
+      .withAccessModes("ReadWriteOnce")
+      .withNewResources()
+      .withRequests(Collections.singletonMap("storage", new Quantity("20Gi")))
+      .endResources()
+      .withStorageClassName("standard")
+      .withVolumeMode("Filesystem")
+      .withVolumeName("pvc-60817eaa-19d8-41ba-adb4-3ea75860e1f8")
+      .endSpec()
+      .build();
+    server.expect().post().withPath("/api/v1/namespaces/ns1/persistentvolumeclaims")
+      .andReturn(HttpURLConnection.HTTP_CONFLICT, pvcFromServer).once();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/persistentvolumeclaims/my-pvc")
+      .andReturn(HttpURLConnection.HTTP_OK, pvcFromServer).once();
+    KubernetesClient client = server.getClient();
+
+    // When
+    PersistentVolumeClaim pvcResult = client.persistentVolumeClaims().inNamespace("ns1").createOrReplace(pvcOrignal);
+
+    // Then
+    assertNotNull(pvcResult);
   }
 
 }

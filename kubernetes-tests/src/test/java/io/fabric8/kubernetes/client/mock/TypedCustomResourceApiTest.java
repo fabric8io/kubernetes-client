@@ -30,6 +30,7 @@ import io.fabric8.kubernetes.client.mock.crd.PodSetStatus;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import okhttp3.mockwebserver.RecordedRequest;
 
+import java.net.HttpURLConnection;
 import java.util.Collections;
 
 import org.junit.Rule;
@@ -92,8 +93,9 @@ class TypedCustomResourceApiTest {
 
   @Test
   void createOrReplace() {
-    server.expect().get().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/test/podsets/example-podset").andReturn(200, getPodSet()).times(2);
-    server.expect().put().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/test/podsets/example-podset").andReturn(200, getPodSet()).once();
+    server.expect().get().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/test/podsets/example-podset").andReturn(HttpURLConnection.HTTP_OK, getPodSet()).times(2);
+    server.expect().post().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/test/podsets").andReturn(HttpURLConnection.HTTP_CONFLICT, getPodSet()).times(2);
+    server.expect().put().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/test/podsets/example-podset").andReturn(HttpURLConnection.HTTP_OK, getPodSet()).once();
 
     podSetClient = server.getClient().customResources(crdContext, PodSet.class, PodSetList.class, DoneablePodSet.class);
     PodSet returnedPodSet = podSetClient.inNamespace("test").createOrReplace(getPodSet());

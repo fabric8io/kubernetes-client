@@ -29,6 +29,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
+import java.net.HttpURLConnection;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -200,6 +201,29 @@ public class NetworkingV1beta1IngressTest {
     assertNotNull(items);
     assertEquals(1, items.size());
     assertTrue(items.get(0) instanceof Ingress);
+  }
+
+  void testCreateOrReplaceWhenAnnotationUpdated() {
+    // Given
+    Ingress ingressFromServer = new IngressBuilder().withNewMetadata().withName("ing1").endMetadata().build();
+    Ingress ingressUpdated = new IngressBuilder(ingressFromServer).editOrNewMetadata()
+      .addToAnnotations("nginx.ingress.kubernetes.io/rewrite-target", "/")
+      .endMetadata().build();
+    server.expect().post().withPath("/apis/networking.k8s.io/v1beta1/namespaces/ns1/ingresses")
+      .andReturn(HttpURLConnection.HTTP_CONFLICT, ingressFromServer).once();
+    server.expect().get().withPath("/apis/networking.k8s.io/v1beta1/namespaces/ns1/ingresses/ing1")
+      .andReturn(HttpURLConnection.HTTP_OK, ingressFromServer).times(2);
+    server.expect().put().withPath("/apis/networking.k8s.io/v1beta1/namespaces/ns1/ingresses/ing1")
+      .andReturn(HttpURLConnection.HTTP_OK, ingressUpdated).once();
+    KubernetesClient client = server.getClient();
+
+    // When
+    ingressUpdated = client.network().ingresses().inNamespace("ns1").createOrReplace(ingressUpdated);
+
+    // Then
+    assertNotNull(ingressUpdated);
+    assertNotNull(ingressUpdated.getMetadata());
+    assertTrue(ingressUpdated.getMetadata().getAnnotations().containsKey("nginx.ingress.kubernetes.io/rewrite-target"));
   }
 
 }

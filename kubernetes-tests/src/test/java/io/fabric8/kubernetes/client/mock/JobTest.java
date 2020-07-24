@@ -16,7 +16,6 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.OwnerReference;
 import io.fabric8.kubernetes.api.model.OwnerReferenceBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
@@ -242,7 +241,6 @@ public class JobTest {
   public void testCreateWithNameMismatch() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       Job job1 = new JobBuilder().withNewMetadata().withName("job1").withNamespace("test").and().build();
-      Job job2 = new JobBuilder().withNewMetadata().withName("job2").withNamespace("ns1").and().build();
       KubernetesClient client = server.getClient();
 
       client.batch().jobs().inNamespace("test1").withName("myjob1").create(job1);
@@ -265,9 +263,11 @@ public class JobTest {
       .build();
 
     server.expect().get().withPath("/apis/batch/v1/namespaces/test/jobs/job1")
-      .andReturn(200, jobExistingInServer).always();
+      .andReturn(HttpURLConnection.HTTP_OK, jobExistingInServer).always();
+    server.expect().post().withPath("/apis/batch/v1/namespaces/test/jobs")
+      .andReturn(HttpURLConnection.HTTP_CONFLICT, jobExistingInServer).once();
     server.expect().put().withPath("/apis/batch/v1/namespaces/test/jobs/job1")
-      .andReturn(200, getJobBuilder()
+      .andReturn(HttpURLConnection.HTTP_OK, getJobBuilder()
         .editOrNewMetadata().addToLabels("foo", "bar").addToLabels("foo1", "bar1").endMetadata()
         .editSpec()
         .editOrNewTemplate().editOrNewMetadata()

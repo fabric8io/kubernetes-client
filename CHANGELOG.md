@@ -11,6 +11,7 @@
 * Fix #2360: bump mockito-core from 3.4.0 to 3.4.2
 * Fix #2355: bump jandex from 2.1.3.Final to 2.2.0.Final 
 * Fix #2353: chore: bump workflow action-setup versions + kubernetes to 1.18.6
+* Fix #2292: Update createOrReplace to do replace when create fails with conflict
 
 #### New Features
 * Fix #2287: Add support for V1 and V1Beta1 CustomResourceDefinition
