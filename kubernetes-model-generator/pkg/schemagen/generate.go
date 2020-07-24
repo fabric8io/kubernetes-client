@@ -483,6 +483,12 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 					if ok && pkgDesc.ApiGroup != "" {
 						apiGroup = pkgDesc.ApiGroup
 					}
+                                        /*
+                                         * ApiGroup for apiextensions is apiextensions.k8s.io
+                                         */
+                                        if apiGroup == "apiextensions" {
+                                            apiGroup = "apiextensions.k8s.io"
+                                        }
 
 					/*
 					 * Skip appending apiGroup in apiVersion for case of core and meta resources since

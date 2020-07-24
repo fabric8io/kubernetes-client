@@ -6,8 +6,11 @@
 #### Improvements
 
 #### Dependency Upgrade
+* Fix #2355: bump jandex from 2.1.3.Final to 2.2.0.Final
+* Fix #2353: bump workflow action-setup-* versions + kubernetes to 1.18.6
 
 #### New Features
+* Fix #2287: Add support for V1 and V1Beta1 CustomResourceDefinition
 
 ### 4.10.3 (2020-07-14)
 #### Bugs

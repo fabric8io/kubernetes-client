@@ -13,46 +13,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.api.model.apiextensions;
+package io.fabric8.kubernetes.api.model.apiextensions.v1;
 
 import java.io.IOException;
+import java.util.List;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
-public class JSONSchemaPropsOrBoolSerDe {
-
-  private JSONSchemaPropsOrBoolSerDe() {
+public class JSONSchemaPropsOrStringArraySerDe {
+  private JSONSchemaPropsOrStringArraySerDe() {
   }
 
-  public static class Serializer extends JsonSerializer<JSONSchemaPropsOrBool> {
+  public static class Serializer extends JsonSerializer<JSONSchemaPropsOrStringArray> {
     @Override
-    public void serialize(JSONSchemaPropsOrBool jsonSchemaPropsOrBool,
+    public void serialize(JSONSchemaPropsOrStringArray jsonSchemaPropsOrStringArray,
                           JsonGenerator jsonGenerator,
                           SerializerProvider serializerProvider) throws IOException {
-      if (jsonSchemaPropsOrBool.getSchema() != null) {
-        jsonGenerator.writeObject(jsonSchemaPropsOrBool.getSchema());
+      if (jsonSchemaPropsOrStringArray.getProperty() != null && !jsonSchemaPropsOrStringArray.getProperty().isEmpty()) {
+        jsonGenerator.writeStartArray();
+        for (String property : jsonSchemaPropsOrStringArray.getProperty()) {
+          jsonGenerator.writeObject(property);
+        }
+        jsonGenerator.writeEndArray();
       } else {
-        jsonGenerator.writeBoolean(jsonSchemaPropsOrBool.getAllows());
+        jsonGenerator.writeObject(jsonSchemaPropsOrStringArray.getSchema());
       }
     }
   }
 
-  public static class Deserializer extends JsonDeserializer<JSONSchemaPropsOrBool> {
+  public static class Deserializer extends JsonDeserializer<JSONSchemaPropsOrStringArray> {
 
     @Override
-    public JSONSchemaPropsOrBool deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-      JSONSchemaPropsOrBoolBuilder builder = new JSONSchemaPropsOrBoolBuilder();
+    public JSONSchemaPropsOrStringArray deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+      JSONSchemaPropsOrStringArrayBuilder builder = new JSONSchemaPropsOrStringArrayBuilder();
       if (jsonParser.isExpectedStartObjectToken()) {
         builder.withSchema(
           jsonParser.readValueAs(JSONSchemaProps.class));
-        builder.withAllows(true);
-      } else {
-        builder.withAllows(jsonParser.getBooleanValue());
+      } else if (jsonParser.isExpectedStartArrayToken()) {
+        builder.withProperty(jsonParser.<List<String>>readValueAs(new TypeReference<List<String>>() {}));
       }
       return builder.build();
     }
