@@ -42,9 +42,10 @@ jobs:
       - name: Setup Minikube-Kubernetes
         uses: manusa/actions-setup-minikube@v1.1.0
         with:
-          minikube version: v1.9.2
+          minikube version: v1.12.1
           kubernetes version: ${{ matrix.kubernetes }}
           github token: ${{ secrets.GITHUB_TOKEN }}
+          start args: --force
       - name: Setup Java 11
         uses: actions/setup-java@v1
         with:
