@@ -76,16 +76,22 @@ public class CustomResourceTest {
     assertEquals("example-hello", ((Map<String, Object>)customResource.get("metadata")).get("name").toString());
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   public void testCreate() throws IOException {
-    String jsonObject = "{\"apiVersion\": \"test.fabric8.io/v1alpha1\",\"kind\": \"Hello\"," +
+    final String createResponse = "{\"apiVersion\": \"test.fabric8.io/v1alpha1\",\"kind\": \"Hello\"," +
+      "\"metadata\": {\"name\": \"example-hello\", \"resourceVersion\": \"1\"},\"spec\": {\"size\": 3, \"creationTimestamp\": \"19851026T090000Z\"}}";
+    server.expect().post().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos")
+      .andReturn(HttpURLConnection.HTTP_CREATED, createResponse).once();
+
+    final String newCrdObject = "{\"apiVersion\": \"test.fabric8.io/v1alpha1\",\"kind\": \"Hello\"," +
       "\"metadata\": {\"name\": \"example-hello\"},\"spec\": {\"size\": 3}}";
+    Map<String, Object> resource = server.getClient().customResource(customResourceDefinitionContext).create("ns1", newCrdObject);
 
-    server.expect().post().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos").andReturn(HttpURLConnection.HTTP_CREATED, jsonObject).once();
-    KubernetesClient client = server.getClient();
-
-    Map<String, Object> resource = client.customResource(customResourceDefinitionContext).create("ns1", jsonObject);
-    assertEquals("example-hello", ((Map<String, Object>)resource.get("metadata")).get("name").toString());
+    final Map<String, String> metadata = (Map<String, String>)resource.get("metadata");
+    assertEquals("example-hello", metadata.get("name"));
+    assertEquals("1", metadata.get("resourceVersion"));
+    assertEquals("19851026T090000Z", ((Map<String, String>)resource.get("spec")).get("creationTimestamp"));
   }
 
   @Test
