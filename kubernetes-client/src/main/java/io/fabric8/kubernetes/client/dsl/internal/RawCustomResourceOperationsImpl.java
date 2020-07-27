@@ -274,6 +274,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of network/serialization failures or failures from Kubernetes API
    */
   public Map<String, Object> edit(String namespace, String name, Map<String, Object> object) throws IOException {
+    object = appendResourceVersionInObject(namespace, name, object);
     return validateAndSubmitRequest(namespace, name, objectMapper.writeValueAsString(object), HttpCallMethod.PUT);
   }
 
@@ -853,13 +854,18 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
   }
 
   private String appendResourceVersionInObject(String namespace, String customResourceName, String customResourceAsJsonString) throws IOException {
+    Map<String, Object> newObject = convertJsonOrYamlStringToMap(customResourceAsJsonString);
+
+    return objectMapper.writeValueAsString(appendResourceVersionInObject(namespace, customResourceName, newObject));
+  }
+
+  private Map<String, Object> appendResourceVersionInObject(String namespace, String customResourceName, Map<String, Object> customResource) throws IOException {
     Map<String, Object> oldObject = get(namespace, customResourceName);
     String resourceVersion = ((Map<String, Object>)oldObject.get(METADATA)).get(RESOURCE_VERSION).toString();
 
-    Map<String, Object> newObject = convertJsonOrYamlStringToMap(customResourceAsJsonString);
-    ((Map<String, Object>)newObject.get(METADATA)).put(RESOURCE_VERSION, resourceVersion);
+    ((Map<String, Object>)customResource.get(METADATA)).put(RESOURCE_VERSION, resourceVersion);
 
-    return objectMapper.writeValueAsString(newObject);
+    return customResource;
   }
 
   private DeleteOptions fetchDeleteOptions(boolean cascading, String propagationPolicy) {
