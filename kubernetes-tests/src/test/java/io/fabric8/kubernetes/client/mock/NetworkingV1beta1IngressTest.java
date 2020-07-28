@@ -54,7 +54,7 @@ public class NetworkingV1beta1IngressTest {
   }
 
   @Test
-  public void testList() {
+  void testList() {
     server.expect().withPath("/apis/networking.k8s.io/v1beta1/namespaces/test/ingresses").andReturn(200, new IngressListBuilder().build()).once();
     server.expect().withPath("/apis/networking.k8s.io/v1beta1/namespaces/ns1/ingresses").andReturn(200, new IngressListBuilder()
       .addNewItem().and()
@@ -82,7 +82,7 @@ public class NetworkingV1beta1IngressTest {
   }
 
   @Test
-  public void testListWithLables() {
+  void testListWithLables() {
     server.expect().withPath("/apis/networking.k8s.io/v1beta1/namespaces/test/ingresses?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new IngressListBuilder().build()).always();
     server.expect().withPath("/apis/networking.k8s.io/v1beta1/namespaces/test/ingresses?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new IngressListBuilder()
       .addNewItem().and()
@@ -112,7 +112,7 @@ public class NetworkingV1beta1IngressTest {
 
 
   @Test
-  public void testGet() {
+  void testGet() {
     server.expect().withPath("/apis/networking.k8s.io/v1beta1/namespaces/test/ingresses/ingress1").andReturn(200, new IngressBuilder().build()).once();
     server.expect().withPath("/apis/networking.k8s.io/v1beta1/namespaces/ns1/ingresses/ingress2").andReturn(200, new IngressBuilder().build()).once();
 
@@ -130,7 +130,7 @@ public class NetworkingV1beta1IngressTest {
 
 
   @Test
-  public void testDelete() {
+  void testDelete() {
     server.expect().withPath("/apis/networking.k8s.io/v1beta1/namespaces/test/ingresses/ingress1").andReturn(200, new IngressBuilder().build()).once();
     server.expect().withPath("/apis/networking.k8s.io/v1beta1/namespaces/ns1/ingresses/ingress2").andReturn(200, new IngressBuilder().build()).once();
 
@@ -148,7 +148,7 @@ public class NetworkingV1beta1IngressTest {
 
 
   @Test
-  public void testDeleteMulti() {
+  void testDeleteMulti() {
     Ingress ingress1 = new IngressBuilder().withNewMetadata().withName("ingress1").withNamespace("test").and().build();
     Ingress ingress2 = new IngressBuilder().withNewMetadata().withName("ingress2").withNamespace("ns1").and().build();
     Ingress ingress3 = new IngressBuilder().withNewMetadata().withName("ingress3").withNamespace("any").and().build();
@@ -166,7 +166,7 @@ public class NetworkingV1beta1IngressTest {
   }
 
   @Test
-  public void testDeleteWithNamespaceMismatch() {
+  void testDeleteWithNamespaceMismatch() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       Ingress ingress1 = new IngressBuilder().withNewMetadata().withName("ingress1").withNamespace("test").and().build();
       Ingress ingress2 = new IngressBuilder().withNewMetadata().withName("ingress2").withNamespace("ns1").and().build();
@@ -178,7 +178,7 @@ public class NetworkingV1beta1IngressTest {
   }
 
   @Test
-  public void testCreateWithNameMismatch() {
+  void testCreateWithNameMismatch() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       Ingress ingress1 = new IngressBuilder().withNewMetadata().withName("ingress1").withNamespace("test").and().build();
       Ingress ingress2 = new IngressBuilder().withNewMetadata().withName("ingress2").withNamespace("ns1").and().build();
@@ -186,6 +186,20 @@ public class NetworkingV1beta1IngressTest {
 
       client.network().ingress().inNamespace("test1").withName("myingress1").create(ingress1);
     });
+  }
+
+  @Test
+  void testIngressLoadWithoutApiVersion() {
+    // Given
+    KubernetesClient client = server.getClient();
+
+    // When
+    List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-ingress-no-apiversion.yml")).get();
+
+    // Then
+    assertNotNull(items);
+    assertEquals(1, items.size());
+    assertTrue(items.get(0) instanceof Ingress);
   }
 
 }

@@ -41,6 +41,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 
 import io.fabric8.kubernetes.client.utils.Utils;
+import io.fabric8.kubernetes.model.util.Helper;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Rule;
 import org.junit.jupiter.api.DisplayName;
@@ -770,6 +771,22 @@ public class DeploymentTest {
       .endSpec()
       .endTemplate()
       .endSpec();
+  }
+
+  @Test
+  void testDeploymentLoadWithoutApiVersion() {
+    // Given
+    KubernetesClient client = server.getClient();
+
+    // When
+    List<HasMetadata> list = client.load(getClass().getResourceAsStream("/valid-deployment-without-apiversion.json")).get();
+    Deployment deployment = (Deployment) list.get(0);
+
+    // Then
+    assertNotNull(deployment);
+    assertEquals("test", deployment.getMetadata().getName());
+    assertEquals(1, deployment.getSpec().getReplicas());
+    assertEquals(1, deployment.getSpec().getTemplate().getSpec().getContainers().size());
   }
 
 }
