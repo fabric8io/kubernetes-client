@@ -126,6 +126,9 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
     static class Mapping {
 
         private static final String KEY_SEPARATOR = "#";
+
+        // n.b. Packages sorted in order of precedence, deserialization of resources with no
+        // specific version will default to first available Class in one of these packages:
         private static final String[] PACKAGES = {
                 "io.fabric8.kubernetes.api.model.",
                 "io.fabric8.kubernetes.api.model.admission",
@@ -145,7 +148,6 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
                 "io.fabric8.kubernetes.api.model.coordination.",
                 "io.fabric8.kubernetes.api.model.coordination.v1.",
                 "io.fabric8.kubernetes.api.model.discovery.",
-                "io.fabric8.kubernetes.api.model.extensions.",
                 "io.fabric8.kubernetes.api.model.events.",
                 "io.fabric8.kubernetes.api.model.networking.",
                 "io.fabric8.kubernetes.api.model.networking.v1beta1.",
@@ -154,7 +156,8 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
                 "io.fabric8.kubernetes.api.model.storage.",
                 "io.fabric8.kubernetes.api.model.scheduling.",
                 "io.fabric8.kubernetes.api.model.settings.",
-                "io.fabric8.openshift.api.model."
+                "io.fabric8.openshift.api.model.",
+                "io.fabric8.kubernetes.api.model.extensions."
         };
 
         private Map<String, Class<? extends KubernetesResource>> mappings = new ConcurrentHashMap<>();
@@ -248,16 +251,18 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
             // If only one class found, return it
             if (possibleResults.size() == 1) {
                 return possibleResults.get(0);
-            }
-
-            // Compare with apiVersions being compared for set of classes found
-            for (Class<? extends KubernetesResource> result : possibleResults) {
+            } else if (possibleResults.size() > 1) {
+              // Compare with apiVersions being compared for set of classes found
+              for (Class<? extends KubernetesResource> result : possibleResults) {
                 String defaultKeyFromClass = getKeyFromClass(result);
                 if (key.equals(defaultKeyFromClass)) {
-                    return result;
+                  return result;
                 }
+              }
+              return possibleResults.get(0);
+            } else {
+              return null;
             }
-            return null;
         }
 
         private String getKeyFromClass(Class<? extends KubernetesResource> clazz) {

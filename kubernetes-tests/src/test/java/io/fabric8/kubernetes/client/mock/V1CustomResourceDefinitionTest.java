@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Rule;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
@@ -122,6 +123,20 @@ public class V1CustomResourceDefinitionTest {
 
     Boolean deleted = client.apiextensions().v1().customResourceDefinitions().withName("sparkclusters.radanalytics.io").delete();
     assertTrue(deleted);
+  }
+
+  @Test
+  void testCustomResourceDefinitionTest() {
+    // Given
+    KubernetesClient client = server.getClient();
+
+    // When
+    List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-crd-no-apiversion.yml")).get();
+
+    // Then
+    Assertions.assertNotNull(items);
+    Assertions.assertEquals(1, items.size());
+    Assertions.assertTrue(items.get(0) instanceof CustomResourceDefinition);
   }
 
   JSONSchemaProps readSchema() throws IOException {

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package io.fabric8.kubernetes.client.mock;
+
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhookBuilder;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhookConfiguration;
@@ -25,6 +26,8 @@ import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Rule;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -110,6 +113,20 @@ public class V1ValidatingWebhookConfigurationTest {
 
     // Then
     assertTrue(isDeleted);
+  }
+
+  @Test
+  void testValidatingWebhookConfigurationLoadWithNoApiVersion() {
+    // Given
+    KubernetesClient client = server.getClient();
+
+    // When
+    List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-vwc-no-apiversion.yml")).get();
+
+    // Then
+    assertNotNull(items);
+    assertEquals(1, items.size());
+    assertTrue(items.get(0) instanceof ValidatingWebhookConfiguration);
   }
 
   public ValidatingWebhookConfiguration getValidatingWebhookConfigurationSample() {
