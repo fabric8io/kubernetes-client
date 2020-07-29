@@ -373,6 +373,7 @@ class DefaultSharedIndexInformerTest {
     factory.startAllRegisteredInformers();
 
     foundExistingClusterRoleBinding.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
+    waitUntilResourceVersionSynced();
     assertEquals(0, foundExistingClusterRoleBinding.getCount());
     assertEquals(endResourceVersion, clusterRoleBindingSharedIndexInformer.lastSyncResourceVersion());
 
