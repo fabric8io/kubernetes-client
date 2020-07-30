@@ -211,14 +211,39 @@ public class Config {
    */
   private Map<String,String> customHeaders = null;
 
+  private Boolean autoConfigure = Boolean.FALSE;
+
   /**
    * @deprecated use {@link #autoConfigure(String)} or {@link ConfigBuilder} instead
    */
   @Deprecated
   public Config() {
-    if (!Utils.getSystemPropertyOrEnvVar(KUBERNETES_DISABLE_AUTO_CONFIG_SYSTEM_PROPERTY, false)) {
+    this(!Utils.getSystemPropertyOrEnvVar(KUBERNETES_DISABLE_AUTO_CONFIG_SYSTEM_PROPERTY, false));
+  }
+
+  private Config(Boolean autoConfigure) {
+    if (Boolean.TRUE.equals(autoConfigure)) {
+      this.autoConfigure = Boolean.TRUE;
       autoConfigure(this, null);
     }
+  }
+
+  /**
+   * Create an empty {@link Config} class without any automatic configuration
+   * (i.e. reading system properties/environment variables to load defaults.)
+   * You can also reuse this object to build your own {@link Config} object
+   * without any auto configuration like this:
+   *
+   * <pre>{@code
+   * Config configFromBuilder = new ConfigBuilder(Config.empty())
+   *                                // ...
+   *                               .build();
+   * }</pre>
+   *
+   * @return a Config object without any automatic configuration
+   */
+  public static Config empty() {
+    return new Config(false);
   }
 
   /**
@@ -1169,6 +1194,10 @@ public class Config {
 
   public void setCustomHeaders(Map<String, String> customHeaders) {
     this.customHeaders = customHeaders;
+  }
+
+  public Boolean getAutoConfigure() {
+    return autoConfigure;
   }
 
   /**

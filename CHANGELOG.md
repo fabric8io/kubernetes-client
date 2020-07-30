@@ -14,6 +14,7 @@
 
 #### New Features
 * Fix #2287: Add support for V1 and V1Beta1 CustomResourceDefinition
+* Fix #2319: Create Config without using auto-configure functionality or setting env variables
 
 ### 4.10.3 (2020-07-14)
 #### Bugs
