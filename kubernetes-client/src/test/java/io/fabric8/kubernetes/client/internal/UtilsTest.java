@@ -65,16 +65,21 @@ import io.fabric8.kubernetes.api.model.storage.VolumeAttachment;
 import io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver;
 import io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode;
 import io.fabric8.kubernetes.client.utils.Utils;
+import org.apache.commons.lang.SystemUtils;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 class UtilsTest {
@@ -103,12 +108,12 @@ class UtilsTest {
 
   @Test
   void existingEnvVarShouldReturnBooleanValueFromConvertedSysPropName() {
-    assertEquals(true, Utils.getSystemPropertyOrEnvVar("env.var.exists.boolean", false));
+    Assertions.assertTrue(Utils.getSystemPropertyOrEnvVar("env.var.exists.boolean", false));
   }
 
   @Test
   void missingEnvVarShouldReturnDefaultValue() {
-    assertEquals(true, Utils.getSystemPropertyOrEnvVar("DONT_EXIST", true));
+    Assertions.assertTrue(Utils.getSystemPropertyOrEnvVar("DONT_EXIST", true));
   }
 
   @Test
@@ -338,5 +343,32 @@ class UtilsTest {
 
     // Then
     assertTrue(result);
+  }
+
+  @Test
+  @DisplayName("test getting system path")
+  void testGetSystemPathVariable() {
+    // When
+    String pathVariable = Utils.getSystemPathVariable();
+
+    // Then
+    assertNotNull(pathVariable);
+    assertTrue(pathVariable.contains(File.pathSeparator));
+  }
+
+  @Test
+  @DisplayName("Should get command prefix")
+  void testGetCommandPlatformPrefix() {
+    List<String> commandPrefix = Utils.getCommandPlatformPrefix();
+
+    assertNotNull(commandPrefix);
+    assertEquals(2, commandPrefix.size());
+    if (SystemUtils.IS_OS_WINDOWS) {
+      assertEquals("cmd.exe", commandPrefix.get(0));
+      assertEquals("/c", commandPrefix.get(1));
+    } else {
+      assertEquals("sh", commandPrefix.get(0));
+      assertEquals("-c", commandPrefix.get(1));
+    }
   }
 }

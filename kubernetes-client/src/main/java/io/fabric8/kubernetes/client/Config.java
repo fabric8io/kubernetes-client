@@ -600,41 +600,11 @@ public class Config {
           } else if (config.getOauthTokenProvider() == null) {  // https://kubernetes.io/docs/reference/access-authn-authz/authentication/#client-go-credential-plugins
             ExecConfig exec = currentAuthInfo.getExec();
             if (exec != null) {
-              String apiVersion = exec.getApiVersion();
-              if ("client.authentication.k8s.io/v1alpha1".equals(apiVersion) || "client.authentication.k8s.io/v1beta1".equals(apiVersion)) {
-                List<String> argv = new ArrayList<String>();
-                String command = exec.getCommand();
-                if (command.contains("/") && !command.startsWith("/") && kubeconfigPath != null && !kubeconfigPath.isEmpty()) {
-                  // Appears to be a relative path; normalize. Spec is vague about how to detect this situation.
-                  command = Paths.get(kubeconfigPath).resolveSibling(command).normalize().toString();
-                }
-                argv.add(command);
-                List<String> args = exec.getArgs();
-                if (args != null) {
-                  argv.addAll(args);
-                }
-                ProcessBuilder pb = new ProcessBuilder(argv);
-                List<ExecEnvVar> env = exec.getEnv();
-                if (env != null) {
-                  Map<String, String> environment = pb.environment();
-                  env.forEach(var -> environment.put(var.getName(), var.getValue()));
-                }
-                // TODO check behavior of tty & stdin
-                Process p = pb.start();
-                if (p.waitFor() != 0) {
-                  LOGGER.warn(IOHelpers.readFully(p.getErrorStream()));
-                }
-                ExecCredential ec = Serialization.unmarshal(p.getInputStream(), ExecCredential.class);
-                if (!apiVersion.equals(ec.apiVersion)) {
-                  LOGGER.warn("Wrong apiVersion {} vs. {}", ec.apiVersion, apiVersion);
-                }
-                if (ec.status != null && ec.status.token != null) {
-                  config.setOauthToken(ec.status.token);
-                } else {
-                  LOGGER.warn("No token returned");
-                }
-              } else { // TODO v1beta1?
-                LOGGER.warn("Unsupported apiVersion: {}", apiVersion);
+              ExecCredential ec = getExecCredentialFromExecConfig(exec, kubeconfigPath);
+              if (ec != null && ec.status != null && ec.status.token != null) {
+                config.setOauthToken(ec.status.token);
+              } else {
+                LOGGER.warn("No token returned");
               }
             }
           }
@@ -649,6 +619,61 @@ public class Config {
     }
 
     return false;
+  }
+
+  protected static ExecCredential getExecCredentialFromExecConfig(ExecConfig exec, String kubeconfigPath) throws IOException, InterruptedException {
+    String apiVersion = exec.getApiVersion();
+    if ("client.authentication.k8s.io/v1alpha1".equals(apiVersion) || "client.authentication.k8s.io/v1beta1".equals(apiVersion)) {
+      List<ExecEnvVar> env = exec.getEnv();
+      // TODO check behavior of tty & stdin
+      ProcessBuilder pb = new ProcessBuilder(getAuthenticatorCommandFromExecConfig(exec, kubeconfigPath, Utils.getSystemPathVariable()));
+      if (env != null) {
+        Map<String, String> environment = pb.environment();
+        env.forEach(var -> environment.put(var.getName(), var.getValue()));
+      }
+      Process p = pb.start();
+      if (p.waitFor() != 0) {
+        LOGGER.warn(IOHelpers.readFully(p.getErrorStream()));
+      }
+      ExecCredential ec = Serialization.unmarshal(p.getInputStream(), ExecCredential.class);
+      if (!apiVersion.equals(ec.apiVersion)) {
+        LOGGER.warn("Wrong apiVersion {} vs. {}", ec.apiVersion, apiVersion);
+      } else {
+        return ec;
+      }
+    } else { // TODO v1beta1?
+      LOGGER.warn("Unsupported apiVersion: {}", apiVersion);
+    }
+    return null;
+  }
+
+  protected static List<String> getAuthenticatorCommandFromExecConfig(ExecConfig exec, String kubeconfigPath, String systemPathValue) {
+    String command = exec.getCommand();
+    if (command.contains(File.separator) && !command.startsWith(File.separator) && kubeconfigPath != null && !kubeconfigPath.isEmpty()) {
+      // Appears to be a relative path; normalize. Spec is vague about how to detect this situation.
+      command = Paths.get(kubeconfigPath).resolveSibling(command).normalize().toString();
+    }
+    List<String> argv = new ArrayList<>(Utils.getCommandPlatformPrefix());
+    command = getCommandWithFullyQualifiedPath(command, systemPathValue);
+    List<String> args = exec.getArgs();
+    if (args != null) {
+      argv.add(command + " " + String.join( " ", args));
+    }
+    return argv;
+  }
+
+  protected static String getCommandWithFullyQualifiedPath(String command, String pathValue) {
+    String[] pathParts = pathValue.split(File.pathSeparator);
+
+    // Iterate through path in order to find executable file
+    for (String pathPart : pathParts) {
+      File commandFile = new File(pathPart + File.separator + command);
+      if (commandFile.exists()) {
+        return commandFile.getAbsolutePath();
+      }
+    }
+
+    return command;
   }
 
   private static Context setCurrentContext(String context, Config config, io.fabric8.kubernetes.api.model.Config kubeConfig) {

@@ -3,6 +3,7 @@
 ### 4.10-SNAPSHOT
 #### Bugs
 * Fix #2373: Unable to create a Template on OCP3
+* Fix #2308: Fix kubernetes client `Config` loading KUBECONFIG with external authentication command
 * Fix #2316: Cannot load resource from stream without apiVersion
 * Fix #2354: Fix NullPointerException in ResourceCompare when no resource is returned from fromServer.get()
 * Fix #2389: KubernetesServer does not use value from https in crud mode
