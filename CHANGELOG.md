@@ -2,6 +2,7 @@
 
 ### 4.10-SNAPSHOT
 #### Bugs
+* Fix #2373: Unable to create a Template on OCP3
 * Fix #2316: Cannot load resource from stream without apiVersion
 
 #### Improvements

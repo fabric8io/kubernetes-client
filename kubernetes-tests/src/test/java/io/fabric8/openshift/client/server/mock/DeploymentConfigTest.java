@@ -38,6 +38,7 @@ import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.api.model.DeploymentConfigListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 
+import java.net.HttpURLConnection;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @EnableRuleMigrationSupport
@@ -46,7 +47,7 @@ public class DeploymentConfigTest {
   public OpenShiftServer server = new OpenShiftServer();
 
   @Test
-  public void testList() {
+  void testList() {
    server.expect().withPath("/apis/apps.openshift.io/v1/namespaces/test/deploymentconfigs").andReturn(200, new DeploymentConfigListBuilder().build()).once();
    server.expect().withPath("/apis").andReturn(200, new APIGroupListBuilder()
       .addNewGroup()
@@ -84,7 +85,7 @@ public class DeploymentConfigTest {
   }
 
   @Test
-  public void testGet() {
+  void testGet() {
    server.expect().withPath("/apis/apps.openshift.io/v1/namespaces/test/deploymentconfigs/dc1").andReturn(200, new DeploymentConfigBuilder()
       .withNewMetadata().withName("dc1").endMetadata()
       .build()).once();
@@ -108,7 +109,7 @@ public class DeploymentConfigTest {
   }
 
   @Test
-  public void testDelete() throws InterruptedException {
+  void testDelete() throws InterruptedException {
     DeploymentConfig dc1 = new DeploymentConfigBuilder()
       .withNewMetadata()
         .withName("dc1")
@@ -165,7 +166,7 @@ public class DeploymentConfigTest {
   }
 
   @Test
-  public void testDeleteWithPropagationPolicy() throws InterruptedException {
+  void testDeleteWithPropagationPolicy() throws InterruptedException {
     server.expect().delete()
       .withPath("/apis/apps.openshift.io/v1/namespaces/test/deploymentconfigs/dc1")
       .andReturn(200, new DeploymentConfigBuilder().build())
@@ -179,7 +180,7 @@ public class DeploymentConfigTest {
   }
 
   @Test
-	public void testDeployingLatest() {
+	void testDeployingLatest() {
 		server.expect().withPath("/apis/apps.openshift.io/v1/namespaces/test/deploymentconfigs/dc1")
 				.andReturn(200, new DeploymentConfigBuilder().withNewMetadata().withName("dc1").endMetadata()
 						.withNewStatus().withLatestVersion(1L).endStatus().build())
@@ -194,11 +195,11 @@ public class DeploymentConfigTest {
 
 		DeploymentConfig deploymentConfig = client.deploymentConfigs().withName("dc1").deployLatest();
 		assertNotNull(deploymentConfig);
-		assertEquals(new Long(2), deploymentConfig.getStatus().getLatestVersion());
+		assertEquals(Long.valueOf(2), deploymentConfig.getStatus().getLatestVersion());
 	}
 
   @Test
-  public void testDeployingLatestHandlesMissingLatestVersion() {
+  void testDeployingLatestHandlesMissingLatestVersion() {
     server.expect().withPath("/apis/apps.openshift.io/v1/namespaces/test/deploymentconfigs/dc1")
       .andReturn(200, new DeploymentConfigBuilder().withNewMetadata().withName("dc1").endMetadata()
         .withNewStatus().endStatus().build())
@@ -213,43 +214,15 @@ public class DeploymentConfigTest {
 
     DeploymentConfig deploymentConfig = client.deploymentConfigs().withName("dc1").deployLatest();
     assertNotNull(deploymentConfig);
-    assertEquals(new Long(1), deploymentConfig.getStatus().getLatestVersion());
+    assertEquals(Long.valueOf(1), deploymentConfig.getStatus().getLatestVersion());
   }
 
   //This is a test that verifies a recent fix (sundrio #135).
   //According to this issue when editing a list of buildables using predicates, the object visitors get overwrriten.
   @Test
-  public void testDeploymentConfigVisitor() {
+  void testDeploymentConfigVisitor() {
    AtomicBoolean visitedContainer = new AtomicBoolean();
-
-   DeploymentConfig dc1 = new DeploymentConfigBuilder()
-      .withNewMetadata()
-        .withName("dc1")
-      .endMetadata()
-      .withNewSpec()
-        .withReplicas(1)
-        .addToSelector("name", "dc1")
-        .addNewTrigger()
-        .withType("ImageChange")
-        .withNewImageChangeParams()
-        .withAutomatic(true)
-        .withContainerNames("container")
-        .withNewFrom()
-        .withKind("ImageStreamTag")
-        .withName("image:1.0")
-        .endFrom()
-        .endImageChangeParams()
-        .endTrigger()
-        .withNewTemplate()
-          .withNewSpec()
-            .addNewContainer()
-              .withName("container")
-              .withImage("image")
-            .endContainer()
-          .endSpec()
-        .endTemplate()
-      .endSpec()
-      .build();
+   DeploymentConfig dc1 = getDeploymentConfig().build();
 
    DeploymentConfig dc2 = new DeploymentConfigBuilder(dc1)
      .accept(new TypedVisitor<DeploymentConfigSpecFluent<?>>() {
@@ -268,6 +241,54 @@ public class DeploymentConfigTest {
 
        }
      }).build();
+   assertNotNull(dc2);
    assertTrue(visitedContainer.get());
+  }
+
+  @Test
+  void testCreateOrReplaceOnOpenShift3() {
+    // Given
+    DeploymentConfig deploymentConfig = getDeploymentConfig().build();
+    server.expect().post().withPath("/oapi/v1/namespaces/ns1/deploymentconfigs")
+      .andReturn(HttpURLConnection.HTTP_OK, deploymentConfig)
+      .once();
+    OpenShiftClient client = server.getOpenshiftClient();
+
+    // When
+    deploymentConfig = client.deploymentConfigs().inNamespace("ns1").createOrReplace(deploymentConfig);
+
+    // Then
+    assertNotNull(deploymentConfig);
+    assertEquals("dc1", deploymentConfig.getMetadata().getName());
+  }
+
+  private DeploymentConfigBuilder getDeploymentConfig() {
+    return new DeploymentConfigBuilder()
+      .withNewMetadata()
+      .withName("dc1")
+      .endMetadata()
+      .withNewSpec()
+      .withReplicas(1)
+      .addToSelector("name", "dc1")
+      .addNewTrigger()
+      .withType("ImageChange")
+      .withNewImageChangeParams()
+      .withAutomatic(true)
+      .withContainerNames("container")
+      .withNewFrom()
+      .withKind("ImageStreamTag")
+      .withName("image:1.0")
+      .endFrom()
+      .endImageChangeParams()
+      .endTrigger()
+      .withNewTemplate()
+      .withNewSpec()
+      .addNewContainer()
+      .withName("container")
+      .withImage("image")
+      .endContainer()
+      .endSpec()
+      .endTemplate()
+      .endSpec();
   }
 }
