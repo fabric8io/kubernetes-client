@@ -84,25 +84,34 @@ class ServiceTest {
   void testReplace() throws InterruptedException {
     Service serviceFromServer = new ServiceBuilder(service)
       .editOrNewSpec().withClusterIP("10.96.129.1").endSpec().build();
+    Service serviceUpdated = new ServiceBuilder(service)
+      .editOrNewSpec().withClusterIP("10.96.129.1").endSpec()
+      .editMetadata().addToAnnotations("foo", "bar").endMetadata()
+      .build();
 
     server.expect().get()
       .withPath("/api/v1/namespaces/test/services/httpbin")
-      .andReturn(200, serviceFromServer)
+      .andReturn(HttpURLConnection.HTTP_OK, serviceFromServer)
       .times(3);
+
+    server.expect().post()
+      .withPath("/api/v1/namespaces/test/services")
+      .andReturn(HttpURLConnection.HTTP_CONFLICT, serviceFromServer)
+      .once();
 
     server.expect().put()
       .withPath("/api/v1/namespaces/test/services/httpbin")
-      .andReturn(200, serviceFromServer)
+      .andReturn(HttpURLConnection.HTTP_OK, serviceUpdated)
       .once();
 
     KubernetesClient client = server.getClient();
-    Service responseSvc = client.services().inNamespace("test").createOrReplace(service);
+    Service responseSvc = client.services().inNamespace("test").createOrReplace(serviceUpdated);
     assertNotNull(responseSvc);
     assertEquals("httpbin", responseSvc.getMetadata().getName());
 
     RecordedRequest recordedRequest = server.getLastRequest();
     assertEquals("PUT", recordedRequest.getMethod());
-    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"Service\",\"metadata\":{\"labels\":{\"app\":\"httpbin\"},\"name\":\"httpbin\"},\"spec\":{\"clusterIP\":\"10.96.129.1\",\"ports\":[{\"name\":\"http\",\"port\":5511,\"targetPort\":8080}],\"selector\":{\"deploymentconfig\":\"httpbin\"}}}",
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"Service\",\"metadata\":{\"annotations\":{\"foo\":\"bar\"},\"labels\":{\"app\":\"httpbin\"},\"name\":\"httpbin\"},\"spec\":{\"clusterIP\":\"10.96.129.1\",\"ports\":[{\"name\":\"http\",\"port\":5511,\"targetPort\":8080}],\"selector\":{\"deploymentconfig\":\"httpbin\"}}}",
       recordedRequest.getBody().readUtf8());
   }
 

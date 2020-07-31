@@ -28,6 +28,8 @@ import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 
 import okhttp3.mockwebserver.RecordedRequest;
@@ -35,10 +37,12 @@ import org.junit.Rule;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
+import java.net.HttpURLConnection;
 import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -73,11 +77,10 @@ public class ResourceListTest {
 
 
   @Test
-  public void testCreateOrReplace() {
+  void testCreateOrReplace() {
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
 
-    server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(404, "").once();
-    server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(201, pod1).once();
+    server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(HttpURLConnection.HTTP_CREATED, pod1).once();
 
     KubernetesClient client = server.getClient();
     List<HasMetadata> response = client.resourceList(new PodListBuilder().addToItems(pod1).build()).createOrReplace();
@@ -85,11 +88,22 @@ public class ResourceListTest {
   }
 
   @Test
-  public void testCreateWithExplicitNamespace() {
+  void testCreateOrReplaceFailedCreate() {
+    // Given
+    Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
+    server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(HttpURLConnection.HTTP_UNAVAILABLE, pod1).once();
+    KubernetesClient client = server.getClient();
+    NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> listOp = client.resourceList(new PodListBuilder().addToItems(pod1).build());
+
+    // When
+    assertThrows(KubernetesClientException.class, listOp::createOrReplace);
+  }
+
+  @Test
+  void testCreateWithExplicitNamespace() {
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
 
-    server.expect().get().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(404, "").once();
-    server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(201, pod1).once();
+    server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(HttpURLConnection.HTTP_CREATED, pod1).once();
 
     KubernetesClient client = server.getClient();
     List<HasMetadata> response = client.resourceList(new PodListBuilder().addToItems(pod1).build()).inNamespace("ns1").apply();
@@ -97,15 +111,15 @@ public class ResourceListTest {
   }
 
   @Test
-  public void testDelete() {
+  void testDelete() {
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
     Pod pod2 = new PodBuilder().withNewMetadata().withName("pod2").withNamespace("ns1").and().build();
     Pod pod3 = new PodBuilder().withNewMetadata().withName("pod3").withNamespace("any").and().build();
 
 
-    server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, pod1).times(2);
-    server.expect().withPath("/api/v1/namespaces/ns1/pods/pod2").andReturn(200, pod2).times(2);
-    server.expect().withPath("/api/v1/namespaces/any/pods/pod3").andReturn(200, pod3).times(1);
+    server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(HttpURLConnection.HTTP_OK, pod1).times(2);
+    server.expect().withPath("/api/v1/namespaces/ns1/pods/pod2").andReturn(HttpURLConnection.HTTP_OK, pod2).times(2);
+    server.expect().withPath("/api/v1/namespaces/any/pods/pod3").andReturn(HttpURLConnection.HTTP_OK, pod3).times(1);
 
     KubernetesClient client = server.getClient();
 
@@ -119,37 +133,41 @@ public class ResourceListTest {
   }
 
   @Test
-  public void testCreateOrReplaceWithoutDeleteExisting() throws Exception {
-    server.expect().get().withPath("/api/v1/namespaces/ns1/services/my-service").andReturn(200 , service).times(2);
-    server.expect().get().withPath("/api/v1/namespaces/ns1/configmaps/my-configmap").andReturn(200, configMap).times(2);
-    server.expect().put().withPath("/api/v1/namespaces/ns1/services/my-service").andReturn(200, updatedService).once();
-    server.expect().put().withPath("/api/v1/namespaces/ns1/configmaps/my-configmap").andReturn(200, updatedConfigMap).once();
+  void testCreateOrReplaceWithoutDeleteExisting() throws Exception {
+    server.expect().post().withPath("/api/v1/namespaces/ns1/services").andReturn(HttpURLConnection.HTTP_CONFLICT, service).once();
+    server.expect().post().withPath("/api/v1/namespaces/ns1/configmaps").andReturn(HttpURLConnection.HTTP_CONFLICT, configMap).once();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/services/my-service").andReturn(HttpURLConnection.HTTP_OK , service).times(2);
+    server.expect().get().withPath("/api/v1/namespaces/ns1/configmaps/my-configmap").andReturn(HttpURLConnection.HTTP_OK, configMap).times(2);
+    server.expect().put().withPath("/api/v1/namespaces/ns1/services/my-service").andReturn(HttpURLConnection.HTTP_OK, updatedService).once();
+    server.expect().put().withPath("/api/v1/namespaces/ns1/configmaps/my-configmap").andReturn(HttpURLConnection.HTTP_OK, updatedConfigMap).once();
 
     KubernetesClient client = server.getClient();
     KubernetesList list = new KubernetesListBuilder().withItems(updatedService, updatedConfigMap).build();
     client.resourceList(list).inNamespace("ns1").createOrReplace();
 
-    assertEquals(6, server.getMockServer().getRequestCount());
+    assertEquals(8, server.getMockServer().getRequestCount());
     RecordedRequest request = server.getLastRequest();
     assertEquals("/api/v1/namespaces/ns1/configmaps/my-configmap", request.getPath());
     assertEquals("PUT", request.getMethod());
   }
 
   @Test
-  public void testCreateOrReplaceWithDeleteExisting() throws Exception {
-    server.expect().get().withPath("/api/v1/namespaces/ns1/services/my-service").andReturn(200, service).once();
-    server.expect().get().withPath("/api/v1/namespaces/ns1/configmaps/my-configmap").andReturn(200, configMap).once();
-    server.expect().delete().withPath("/api/v1/namespaces/ns1/services/my-service").andReturn(200 , service).once();
-    server.expect().delete().withPath("/api/v1/namespaces/ns1/configmaps/my-configmap").andReturn(200, configMap).once();
-    server.expect().post().withPath("/api/v1/namespaces/ns1/services").andReturn(200, updatedService).once();
-    server.expect().post().withPath("/api/v1/namespaces/ns1/configmaps").andReturn(200, updatedConfigMap).once();
+  void testCreateOrReplaceWithDeleteExisting() throws Exception {
+    server.expect().post().withPath("/api/v1/namespaces/ns1/services").andReturn(HttpURLConnection.HTTP_CONFLICT, service).once();
+    server.expect().post().withPath("/api/v1/namespaces/ns1/configmaps").andReturn(HttpURLConnection.HTTP_CONFLICT, configMap).once();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/services/my-service").andReturn(HttpURLConnection.HTTP_OK , service).once();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/configmaps/my-configmap").andReturn(HttpURLConnection.HTTP_OK, configMap).once();
+    server.expect().delete().withPath("/api/v1/namespaces/ns1/services/my-service").andReturn(HttpURLConnection.HTTP_OK , service).once();
+    server.expect().delete().withPath("/api/v1/namespaces/ns1/configmaps/my-configmap").andReturn(HttpURLConnection.HTTP_OK, configMap).once();
+    server.expect().post().withPath("/api/v1/namespaces/ns1/services").andReturn(HttpURLConnection.HTTP_OK, updatedService).once();
+    server.expect().post().withPath("/api/v1/namespaces/ns1/configmaps").andReturn(HttpURLConnection.HTTP_OK, updatedConfigMap).once();
 
     KubernetesClient client = server.getClient();
     KubernetesList list = new KubernetesListBuilder().withItems(updatedService, updatedConfigMap).build();
     client.resourceList(list).inNamespace("ns1").deletingExisting().createOrReplace();
 
 
-    assertEquals(6, server.getMockServer().getRequestCount());
+    assertEquals(8, server.getMockServer().getRequestCount());
     RecordedRequest request = server.getLastRequest();
     assertEquals("/api/v1/namespaces/ns1/configmaps", request.getPath());
     assertEquals("POST", request.getMethod());

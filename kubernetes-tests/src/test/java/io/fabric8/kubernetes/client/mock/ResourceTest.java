@@ -16,9 +16,13 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.ResourceNotFoundException;
+import io.fabric8.kubernetes.client.dsl.Applicable;
+import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
+import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.base.WaitForConditionWatcher;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Assert;
@@ -47,6 +51,7 @@ import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -58,62 +63,87 @@ public class ResourceTest {
   public KubernetesServer server = new KubernetesServer();
 
 
+  @Test
+  void testCreateOrReplace() {
+    // Given
+    Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
+    server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(HttpURLConnection.HTTP_CREATED, pod1).once();
+    KubernetesClient client = server.getClient();
+
+    // When
+    HasMetadata response = client.resource(pod1).createOrReplace();
+
+    // Then
+    assertEquals(pod1, response);
+  }
+
+  @Test
+  void testCreateOrReplaceWhenCreateFails() {
+    // Given
+    Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
+    server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(HttpURLConnection.HTTP_BAD_REQUEST, pod1).once();
+    KubernetesClient client = server.getClient();
+    NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<Pod, Boolean> podOperation = client.resource(pod1);
+
+    // When
+    assertThrows(KubernetesClientException.class, podOperation::createOrReplace);
+  }
+
     @Test
-    public void testCreateOrReplace() {
+    void testCreateWithExplicitNamespace() {
         Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
 
-        server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(404, "").once();
-        server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(201, pod1).once();
+        server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(HttpURLConnection.HTTP_CREATED, pod1).once();
 
         KubernetesClient client = server.getClient();
-        HasMetadata response = client.resource(pod1).createOrReplace();
+        HasMetadata response = client.resource(pod1).inNamespace("ns1").createOrReplace();
         assertEquals(pod1, response);
     }
 
     @Test
-    public void testCreateWithExplicitNamespace() {
-        Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
-
-        server.expect().get().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(404, "").once();
-        server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(201, pod1).once();
-
-        KubernetesClient client = server.getClient();
-        HasMetadata response = client.resource(pod1).inNamespace("ns1").apply();
-        assertEquals(pod1, response);
-    }
-
-    @Test
-    public void testCreateOrReplaceWithDeleteExisting() throws Exception {
+    void testCreateOrReplaceWithDeleteExisting() throws Exception {
       Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
 
-      server.expect().get().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(200, pod1).once();
-      server.expect().delete().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(200, pod1).once();
-      server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(201, pod1).once();
+      server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(HttpURLConnection.HTTP_CONFLICT, pod1).once();
+      server.expect().get().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(HttpURLConnection.HTTP_OK, pod1).once();
+      server.expect().delete().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(HttpURLConnection.HTTP_OK, pod1).once();
+      server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(HttpURLConnection.HTTP_CREATED, pod1).once();
 
       KubernetesClient client = server.getClient();
       HasMetadata response = client.resource(pod1).inNamespace("ns1").deletingExisting().createOrReplace();
       assertEquals(pod1, response);
 
       RecordedRequest request = server.getLastRequest();
-      assertEquals(3, server.getMockServer().getRequestCount());
+      assertEquals(4, server.getMockServer().getRequestCount());
       assertEquals("/api/v1/namespaces/ns1/pods", request.getPath());
       assertEquals("POST", request.getMethod());
     }
 
+  @Test
+  void testCreateOrReplaceWithDeleteExistingWithCreateFailed() {
+    // Given
+    Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
+    server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(HttpURLConnection.HTTP_CONFLICT, pod1).once();
+    server.expect().delete().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(HttpURLConnection.HTTP_OK, pod1).once();
+    server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(HttpURLConnection.HTTP_BAD_REQUEST, pod1).once();
+    KubernetesClient client = server.getClient();
+    Applicable<Pod> podOperation = client.resource(pod1).inNamespace("ns1").deletingExisting();
+
+    // When
+    assertThrows(KubernetesClientException.class, podOperation::createOrReplace);
+  }
+
     @Test
-    public void testRequire() {
-      Assertions.assertThrows(ResourceNotFoundException.class, () -> {
-        Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test1").and().build();
+    void testRequire() {
+      server.expect().get().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(HttpURLConnection.HTTP_NOT_FOUND, "").once();
+      KubernetesClient client = server.getClient();
+      PodResource<Pod, DoneablePod> podOp = client.pods().inNamespace("ns1").withName("pod1");
 
-        server.expect().get().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(HttpURLConnection.HTTP_NOT_FOUND, "").once();
-
-        KubernetesClient client = server.getClient();
-        client.pods().inNamespace("ns1").withName("pod1").require();
-      });
+      Assertions.assertThrows(ResourceNotFoundException.class, podOp::require);
     }
 
   @Test
-  public void testDelete() {
+  void testDelete() {
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
     Pod pod2 = new PodBuilder().withNewMetadata().withName("pod2").withNamespace("ns1").and().build();
     Pod pod3 = new PodBuilder().withNewMetadata().withName("pod3").withNamespace("any").and().build();
@@ -133,7 +163,7 @@ public class ResourceTest {
 
 
   @Test
-  public void testWatch() throws InterruptedException {
+  void testWatch() throws InterruptedException {
     Pod pod1 = new PodBuilder().withNewMetadata()
         .withName("pod1")
         .withResourceVersion("1")
@@ -168,7 +198,7 @@ public class ResourceTest {
 
 
   @Test
-  public void testWaitUntilReady() throws InterruptedException {
+  void testWaitUntilReady() throws InterruptedException {
     Pod pod1 = new PodBuilder().withNewMetadata()
       .withName("pod1")
       .withResourceVersion("1")
@@ -205,7 +235,7 @@ public class ResourceTest {
   }
 
   @Test
-  public void testWaitUntilExistsThenReady() throws InterruptedException {
+  void testWaitUntilExistsThenReady() throws InterruptedException {
     Pod pod1 = new PodBuilder().withNewMetadata()
       .withName("pod1")
       .withResourceVersion("1")
@@ -246,7 +276,7 @@ public class ResourceTest {
   }
 
   @Test
-  public void testWaitUntilCondition() throws InterruptedException {
+  void testWaitUntilCondition() throws InterruptedException {
     Pod pod1 = new PodBuilder().withNewMetadata()
       .withName("pod1")
       .withResourceVersion("1")
@@ -502,7 +532,7 @@ public class ResourceTest {
   }
 
   @Test
-  public void testCreateAndWaitUntilReady() throws InterruptedException {
+  void testCreateAndWaitUntilReady() throws InterruptedException {
     Pod pod1 = new PodBuilder().withNewMetadata()
       .withName("pod1")
       .withResourceVersion("1")
@@ -542,7 +572,7 @@ public class ResourceTest {
   }
 
   @Test
-  public void testFromServerGet() {
+  void testFromServerGet() {
     Pod pod = new PodBuilder().withNewMetadata()
       .withName("pod1")
       .withNamespace("test")

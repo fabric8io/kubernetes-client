@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.dsl.base;
 
+import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
+import io.fabric8.kubernetes.client.utils.ResourceCompare;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -395,24 +397,40 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public T createOrReplace(T... items) {
-    T item = getItem();
+    T itemToCreateOrReplace = getItem();
     if (items.length > 1) {
       throw new IllegalArgumentException("Too many items to create.");
     } else if (items.length == 1) {
-      item = items[0];
+      itemToCreateOrReplace = items[0];
     }
 
-    if (item == null) {
+    if (itemToCreateOrReplace == null) {
       throw new IllegalArgumentException("Nothing to create.");
     }
 
-    if (Utils.isNullOrEmpty(name) && item instanceof HasMetadata) {
-      return withName(((HasMetadata)item).getMetadata().getName()).createOrReplace(item);
+    if (Utils.isNullOrEmpty(name)) {
+
+      return withName(itemToCreateOrReplace.getMetadata().getName()).createOrReplace(itemToCreateOrReplace);
     }
-    if (fromServer().get() == null) {
-      return create(item);
-    } else {
-      return replace(item);
+
+    try {
+      // Create
+      KubernetesResourceUtil.setResourceVersion(itemToCreateOrReplace, null);
+      return create(itemToCreateOrReplace);
+    } catch (KubernetesClientException exception) {
+      if (exception.getCode() != HttpURLConnection.HTTP_CONFLICT) {
+        throw exception;
+      }
+
+      // Conflict; Do Replace
+      T itemFromServer = fromServer().get();
+      if (ResourceCompare.equals(itemFromServer, itemToCreateOrReplace)) {
+        // Nothing changed, ignore
+        return itemToCreateOrReplace;
+      } else {
+        KubernetesResourceUtil.setResourceVersion(itemToCreateOrReplace, KubernetesResourceUtil.getResourceVersion(itemFromServer));
+        return replace(itemToCreateOrReplace);
+      }
     }
   }
 

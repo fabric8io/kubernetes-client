@@ -34,6 +34,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
+import java.net.HttpURLConnection;
 import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
@@ -91,8 +92,9 @@ class TypedClusterScopeCustomResourceApiTest {
 
     @Test
     void createOrReplace() {
-      server.expect().get().withPath("/apis/example.crd.com/v1alpha1/stars/sun").andReturn(200, getStar()).times(2);
-      server.expect().put().withPath("/apis/example.crd.com/v1alpha1/stars/sun").andReturn(200, getStar()).once();
+      server.expect().get().withPath("/apis/example.crd.com/v1alpha1/stars/sun").andReturn(HttpURLConnection.HTTP_OK, getStar()).times(2);
+      server.expect().post().withPath("/apis/example.crd.com/v1alpha1/stars").andReturn(HttpURLConnection.HTTP_CONFLICT, getStar()).times(2);
+      server.expect().put().withPath("/apis/example.crd.com/v1alpha1/stars/sun").andReturn(HttpURLConnection.HTTP_OK, getStar()).once();
 
       starClient = server.getClient().customResources(crdContext, Star.class, StarList.class, DoneableStar.class);
       Star returnedStar = starClient.inNamespace("test").createOrReplace(getStar());

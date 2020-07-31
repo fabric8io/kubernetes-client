@@ -130,7 +130,6 @@ public class ResourceIT {
     client.resourceList(list).inNamespace(session.getNamespace()).createOrReplace();
 
     // Modify
-    service = client.services().inNamespace(session.getNamespace()).withName("my-service").get();
     service.getSpec().getPorts().get(0).setTargetPort(new IntOrString(9998));
     configMap.getData().put("test", "createOrReplace");
     configMap.getData().put("io", "fabric8");

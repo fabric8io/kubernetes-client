@@ -36,12 +36,14 @@ import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.handlers.KubernetesListHandler;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
+import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.ResourceCompare;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.Parameter;
 import io.fabric8.openshift.api.model.Template;
 
+import java.net.HttpURLConnection;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
@@ -261,30 +263,31 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
     List<HasMetadata> result = new ArrayList<>();
     for (HasMetadata meta : acceptVisitors(asHasMetadata(item, true), visitors)) {
       ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
-      HasMetadata r = h.reload(client, config, meta.getMetadata().getNamespace(), meta);
       String namespaceToUse =  meta.getMetadata().getNamespace();
 
-      if (r == null) {
-        HasMetadata created = h.create(client, config, namespaceToUse, meta);
-        if (created != null) {
-          result.add(created);
-        }
-      } else if(deletingExisting) {
-        Boolean deleted = h.delete(client, config, namespaceToUse, propagationPolicy, meta);
-        if (!deleted) {
-          throw new KubernetesClientException("Failed to delete existing item:" + meta);
+      String resourceVersion = KubernetesResourceUtil.getResourceVersion(meta);
+      try {
+        // Create
+        KubernetesResourceUtil.setResourceVersion(meta, null);
+        result.add(h.create(client, config, namespaceToUse, meta));
+      } catch (KubernetesClientException exception) {
+        if (exception.getCode() != HttpURLConnection.HTTP_CONFLICT) {
+          throw exception;
         }
 
-        HasMetadata created = h.create(client, config, namespaceToUse, meta);
-        if (created != null) {
-          result.add(created);
-        }
-      } else if (ResourceCompare.equals(r, meta)) {
-        LOGGER.debug("Item has not changed. Skipping");
-      } else {
-        HasMetadata replaced = h.replace(client, config, namespaceToUse, meta);
-        if (replaced != null) {
-          result.add(replaced);
+        // Conflict; check deleteExisting flag otherwise replace
+        HasMetadata r = h.reload(client, config, meta.getMetadata().getNamespace(), meta);
+        if (Boolean.TRUE.equals(deletingExisting)) {
+          Boolean deleted = h.delete(client, config, namespaceToUse, propagationPolicy, meta);
+          if (Boolean.FALSE.equals(deleted)) {
+            throw new KubernetesClientException("Failed to delete existing item:" + meta);
+          }
+          result.add(h.create(client, config, namespaceToUse, meta));
+        } else if (ResourceCompare.equals(r, meta)) {
+          LOGGER.debug("Item has not changed. Skipping");
+        } else {
+          KubernetesResourceUtil.setResourceVersion(meta, resourceVersion);
+          result.add(h.replace(client, config, namespaceToUse, meta));
         }
       }
     }
