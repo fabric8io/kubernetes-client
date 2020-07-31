@@ -203,6 +203,7 @@ public class NetworkingV1beta1IngressTest {
     assertTrue(items.get(0) instanceof Ingress);
   }
 
+  @Test
   void testCreateOrReplaceWhenAnnotationUpdated() {
     // Given
     Ingress ingressFromServer = new IngressBuilder().withNewMetadata().withName("ing1").endMetadata().build();
