@@ -29,12 +29,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableRuleMigrationSupport
-public class RouteTest {
+class RouteCrudTest {
   @Rule
   public KnativeServer server = new KnativeServer(true, true);
 
   @Test
-  public void shouldReturnEmptyList() {
+  void shouldReturnEmptyList() {
     // Given
     KnativeClient client = server.getKnativeClient();
 
@@ -47,7 +47,7 @@ public class RouteTest {
   }
 
   @Test
-  public void shouldListAndGetRoute() {
+  void shouldListAndGetRoute() {
     // Given
     KnativeClient client = server.getKnativeClient();
     Route Route2 = new RouteBuilder().withNewMetadata().withName("Route2").endMetadata()
@@ -71,7 +71,7 @@ public class RouteTest {
   }
 
   @Test
-  public void shouldDeleteARoute() {
+  void shouldDeleteARoute() {
     // Given
     KnativeClient client = server.getKnativeClient();
     Route route3 = new RouteBuilder().withNewMetadata().withName("route3").endMetadata().build();
