@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.api.model.apiextensions;
+package io.fabric8.kubernetes.api.model.apiextensions.v1;
 
 import java.io.IOException;
 import java.util.List;

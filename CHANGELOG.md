@@ -2,13 +2,22 @@
 
 ### 4.10-SNAPSHOT
 #### Bugs
+* Fix #2373: Unable to create a Template on OCP3
+* Fix #2316: Cannot load resource from stream without apiVersion
 
 #### Improvements
+* Fix #2331: Fixed documentation for namespaced informer for all custom types implementing `Namespaced` interface
 
 #### Dependency Upgrade
+* Fix #2360: bump mockito-core from 3.4.0 to 3.4.2
+* Fix #2355: bump jandex from 2.1.3.Final to 2.2.0.Final 
+* Fix #2353: chore: bump workflow action-setup versions + kubernetes to 1.18.6
+* Fix #2292: Update createOrReplace to do replace when create fails with conflict
 
 #### New Features
 * CSI Volume Snapshot extension
+* Fix #2287: Add support for V1 and V1Beta1 CustomResourceDefinition
+* Fix #2319: Create Config without using auto-configure functionality or setting env variables
 
 ### 4.10.3 (2020-07-14)
 #### Bugs

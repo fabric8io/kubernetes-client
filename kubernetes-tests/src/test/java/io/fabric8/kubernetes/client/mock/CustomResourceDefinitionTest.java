@@ -18,10 +18,10 @@ package io.fabric8.kubernetes.client.mock;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionBuilder;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionList;
-import io.fabric8.kubernetes.api.model.apiextensions.JSONSchemaProps;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionBuilder;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Rule;
@@ -78,7 +78,7 @@ class CustomResourceDefinitionTest {
   @Test
   void testLoadWithJsonSchemaPropsOrBool() {
     KubernetesClient client = server.getClient();
-    CustomResourceDefinition customResourceDefinition = client.customResourceDefinitions().load(getClass().getResourceAsStream("/kafka-crd.yml")).get();
+    CustomResourceDefinition customResourceDefinition = client.apiextensions().v1beta1().customResourceDefinitions().load(getClass().getResourceAsStream("/kafka-crd.yml")).get();
     assertNotNull(customResourceDefinition);
     assertEquals("kafkatopics.kafka.test", customResourceDefinition.getMetadata().getName());
   }
@@ -88,7 +88,7 @@ class CustomResourceDefinitionTest {
     server.expect().get().withPath("/apis/apiextensions.k8s.io/v1beta1/customresourcedefinitions/sparkclusters.radanalytics.io").andReturn(200, customResourceDefinition).once();
     KubernetesClient client = server.getClient();
 
-    CustomResourceDefinition crd = client.customResourceDefinitions().withName("sparkclusters.radanalytics.io").get();
+    CustomResourceDefinition crd = client.apiextensions().v1beta1().customResourceDefinitions().withName("sparkclusters.radanalytics.io").get();
     assertNotNull(crd);
     assertEquals("sparkclusters.radanalytics.io", crd.getMetadata().getName());
   }
@@ -98,7 +98,7 @@ class CustomResourceDefinitionTest {
     server.expect().post().withPath("/apis/apiextensions.k8s.io/v1beta1/customresourcedefinitions").andReturn(200, customResourceDefinition).once();
     KubernetesClient client = server.getClient();
 
-    CustomResourceDefinition crd = client.customResourceDefinitions().createOrReplace(customResourceDefinition);
+    CustomResourceDefinition crd = client.apiextensions().v1beta1().customResourceDefinitions().createOrReplace(customResourceDefinition);
     assertNotNull(crd);
     assertEquals("sparkclusters.radanalytics.io", crd.getMetadata().getName());
     // Assertion to test behavior in https://github.com/fabric8io/kubernetes-client/issues/1486
@@ -110,7 +110,7 @@ class CustomResourceDefinitionTest {
     server.expect().get().withPath("/apis/apiextensions.k8s.io/v1beta1/customresourcedefinitions").andReturn(200, new KubernetesListBuilder().withItems(customResourceDefinition).build()).once();
     KubernetesClient client = server.getClient();
 
-    CustomResourceDefinitionList crdList = client.customResourceDefinitions().list();
+    CustomResourceDefinitionList crdList = client.apiextensions().v1beta1().customResourceDefinitions().list();
     assertNotNull(crdList);
     assertEquals(1, crdList.getItems().size());
     assertEquals("sparkclusters.radanalytics.io", crdList.getItems().get(0).getMetadata().getName());
@@ -121,7 +121,7 @@ class CustomResourceDefinitionTest {
     server.expect().delete().withPath("/apis/apiextensions.k8s.io/v1beta1/customresourcedefinitions/sparkclusters.radanalytics.io").andReturn(200, customResourceDefinition).once();
     KubernetesClient client = server.getClient();
 
-    Boolean deleted = client.customResourceDefinitions().withName("sparkclusters.radanalytics.io").delete();
+    Boolean deleted = client.apiextensions().v1beta1().customResourceDefinitions().withName("sparkclusters.radanalytics.io").delete();
     assertTrue(deleted);
   }
 

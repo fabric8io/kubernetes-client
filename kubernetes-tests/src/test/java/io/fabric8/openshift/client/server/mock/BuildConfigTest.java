@@ -36,6 +36,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeUnit;
 
@@ -198,6 +199,50 @@ public class BuildConfigTest {
 
     deleted = client.buildConfigs().inNamespace("ns1").withName("bc2").delete();
     assertTrue(deleted);
+  }
+
+  @Test
+  void testCreateOrReplaceOpenShift3() {
+    // Given
+    BuildConfig buildConfig = getBuildConfig();
+    server.expect().post().withPath("/oapi/v1/namespaces/ns1/buildconfigs")
+      .andReturn(HttpURLConnection.HTTP_OK, buildConfig)
+      .once();
+    OpenShiftClient client = server.getOpenshiftClient();
+
+    // When
+    buildConfig = client.buildConfigs().inNamespace("ns1").createOrReplace(buildConfig);
+
+    // Then
+    assertNotNull(buildConfig);
+    assertEquals("ruby-sample-build", buildConfig.getMetadata().getName());
+  }
+
+  private BuildConfig getBuildConfig() {
+    return new BuildConfigBuilder()
+      .withNewMetadata().withName("ruby-sample-build").endMetadata()
+      .withNewSpec()
+      .withRunPolicy("Serial")
+      .addNewTrigger().withType("GitHub").withNewGithub().withSecret("secret101").endGithub().endTrigger()
+      .addNewTrigger().withType("Generic").withNewGeneric().withSecret("secret101").endGeneric().endTrigger()
+      .addNewTrigger().withType("ImageChange").endTrigger()
+      .withNewSource()
+      .withNewGit().withUri("https://github.com/openshift/ruby-hello-world").endGit()
+      .endSource()
+      .withNewStrategy()
+      .withNewSourceStrategy()
+      .withNewFrom()
+      .withKind("ImageStreamTag")
+      .withName("ruby-20-centos7:latest")
+      .endFrom()
+      .endSourceStrategy()
+      .endStrategy()
+      .withNewOutput()
+      .withNewTo().withKind("ImageStreamTag").withName("origin-ruby-sample:latest").endTo()
+      .endOutput()
+      .withNewPostCommit().withScript("bundle exec rake test").endPostCommit()
+      .endSpec()
+      .build();
   }
 
 }

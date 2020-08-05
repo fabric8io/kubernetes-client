@@ -27,6 +27,7 @@ import (
   kapi "k8s.io/api/core/v1"
 
   apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
+  v1apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 
   "log"
   "reflect"
@@ -67,6 +68,16 @@ type Schema struct {
   // Added JSONSchemaPropsorStringArray here because of
   // https://github.com/joelittlejohn/jsonschema2pojo/issues/866
   JSONSchemaPropsOrStringArray             apiextensions.JSONSchemaPropsOrStringArray
+
+  V1CustomResourceDefinition                 v1apiextensions.CustomResourceDefinition
+  V1CustomResourceDefinitionList             v1apiextensions.CustomResourceDefinitionList
+  V1CustomResourceDefinitionSpec             v1apiextensions.CustomResourceDefinitionSpec
+  V1CustomResourceDefinitionNames            v1apiextensions.CustomResourceDefinitionNames
+  V1CustomResourceDefinitionCondition        v1apiextensions.CustomResourceDefinitionCondition
+  V1CustomResourceDefinitionStatus           v1apiextensions.CustomResourceDefinitionStatus
+  // Added JSONSchemaPropsorStringArray here because of
+  // https://github.com/joelittlejohn/jsonschema2pojo/issues/866
+  V1JSONSchemaPropsOrStringArray             v1apiextensions.JSONSchemaPropsOrStringArray
 }
 
 func main() {
@@ -76,7 +87,8 @@ func main() {
     {"k8s.io/apimachinery/pkg/version", "", "io.fabric8.kubernetes.api.model.version", "kubernetes_apimachinery_pkg_version_"},
     {"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_"},
     {"k8s.io/api/core/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_core_"},
-    {"k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1", "", "io.fabric8.kubernetes.api.model.apiextensions", "kubernetes_apiextensions_"},
+    {"k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1", "", "io.fabric8.kubernetes.api.model.apiextensions.v1beta1", "kubernetes_apiextensions_v1beta1_"},
+    {"k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1", "", "io.fabric8.kubernetes.api.model.apiextensions.v1", "kubernetes_apiextensions_v1_"},
   }
 
   typeMap := map[reflect.Type]reflect.Type{
@@ -87,6 +99,7 @@ func main() {
   // overwriting some times
   manualTypeMapping := map[reflect.Type]string{
     reflect.TypeOf(apiextensions.JSON{}): "com.fasterxml.jackson.databind.JsonNode",
+    reflect.TypeOf(v1apiextensions.JSON{}): "com.fasterxml.jackson.databind.JsonNode",
   }
   schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, manualTypeMapping, "apiextensions")
   if err != nil {
@@ -95,17 +108,29 @@ func main() {
   }
 
   serdes := map[string]*schemagen.JavaSerDeDescriptor{
-		"kubernetes_apiextensions_JSONSchemaPropsOrBool": &schemagen.JavaSerDeDescriptor{
-				Serializer: "JSONSchemaPropsOrBoolSerDe.Serializer.class",
-				Deserializer: "JSONSchemaPropsOrBoolSerDe.Deserializer.class",
+		"kubernetes_apiextensions_v1beta1_JSONSchemaPropsOrBool": &schemagen.JavaSerDeDescriptor{
+				Serializer: "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrBoolSerDe.Serializer.class",
+				Deserializer: "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrBoolSerDe.Deserializer.class",
 		},
-		"kubernetes_apiextensions_JSONSchemaPropsOrArray": &schemagen.JavaSerDeDescriptor{
-				Serializer: "JSONSchemaPropsOrArraySerDe.Serializer.class",
-				Deserializer: "JSONSchemaPropsOrArraySerDe.Deserializer.class",
+		"kubernetes_apiextensions_v1beta1_JSONSchemaPropsOrArray": &schemagen.JavaSerDeDescriptor{
+				Serializer: "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrArraySerDe.Serializer.class",
+				Deserializer: "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrArraySerDe.Deserializer.class",
 		},
-		"kubernetes_apiextensions_JSONSchemaPropsOrStringArray": &schemagen.JavaSerDeDescriptor{
-			Serializer: "JSONSchemaPropsOrStringArraySerDe.Serializer.class",
-			Deserializer: "JSONSchemaPropsOrStringArraySerDe.Deserializer.class",
+		"kubernetes_apiextensions_v1beta1_JSONSchemaPropsOrStringArray": &schemagen.JavaSerDeDescriptor{
+			Serializer: "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrStringArraySerDe.Serializer.class",
+			Deserializer: "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrStringArraySerDe.Deserializer.class",
+		},
+		"kubernetes_apiextensions_v1_JSONSchemaPropsOrBool": &schemagen.JavaSerDeDescriptor{
+				Serializer: "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrBoolSerDe.Serializer.class",
+				Deserializer: "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrBoolSerDe.Deserializer.class",
+		},
+		"kubernetes_apiextensions_v1_JSONSchemaPropsOrArray": &schemagen.JavaSerDeDescriptor{
+				Serializer: "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrArraySerDe.Serializer.class",
+				Deserializer: "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrArraySerDe.Deserializer.class",
+		},
+		"kubernetes_apiextensions_v1_JSONSchemaPropsOrStringArray": &schemagen.JavaSerDeDescriptor{
+			Serializer: "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrStringArraySerDe.Serializer.class",
+			Deserializer: "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrStringArraySerDe.Deserializer.class",
 		},
 }
 

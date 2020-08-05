@@ -56,6 +56,21 @@ public class KubernetesResourceUtil {
   }
 
   /**
+   * Set resource version of a kubernetes resource
+   *
+   * @param entity entity provided
+   * @param resourceVersion updated resource version
+   */
+  public static void setResourceVersion(HasMetadata entity, String resourceVersion) {
+    if (entity != null) {
+      ObjectMeta metadata = entity.getMetadata();
+      if (metadata != null) {
+        metadata.setResourceVersion(resourceVersion);
+      }
+    }
+  }
+
+  /**
    * Returns the kind of the entity
    *
    * @param entity provided entity

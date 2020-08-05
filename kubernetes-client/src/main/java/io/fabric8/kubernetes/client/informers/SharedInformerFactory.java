@@ -81,8 +81,8 @@ public class SharedInformerFactory extends BaseOperation {
    * @param apiTypeClass apiType class
    * @param apiListTypeClass api list type class
    * @param resyncPeriodInMillis resync period in milliseconds
-   * @param <T> the type parameter
-   * @param <L> the type's list parameter
+   * @param <T> the type parameter (should extend {@link io.fabric8.kubernetes.api.model.HasMetadata} and implement {@link io.fabric8.kubernetes.api.model.Namespaced})
+   * @param <L> the type's list parameter (should extend {@link io.fabric8.kubernetes.api.model.KubernetesResourceList}
    * @return the shared index informer
    */
   public synchronized <T extends HasMetadata, L extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerFor(Class<T> apiTypeClass, Class<L> apiListTypeClass, long resyncPeriodInMillis) {
@@ -98,8 +98,8 @@ public class SharedInformerFactory extends BaseOperation {
    * @param apiTypeClass apiType class
    * @param apiListTypeClass api list type class
    * @param resyncPeriodInMillis resync period in milliseconds
-   * @param <T> the type parameter
-   * @param <L> the type's list parameter
+   * @param <T> the type parameter (should extend {@link io.fabric8.kubernetes.api.model.HasMetadata} and implement {@link io.fabric8.kubernetes.api.model.Namespaced})
+   * @param <L> the type's list parameter (should extend {@link io.fabric8.kubernetes.api.model.KubernetesResourceList}
    * @return the shared index informer
    */
   public synchronized <T extends HasMetadata, L extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerForCustomResource(CustomResourceDefinitionContext customResourceContext, Class<T> apiTypeClass, Class<L> apiListTypeClass, long resyncPeriodInMillis) {
@@ -116,8 +116,8 @@ public class SharedInformerFactory extends BaseOperation {
    * @param apiListTypeClass api list type class
    * @param operationContext operation context
    * @param resyncPeriodInMillis resync period in milliseconds
-   * @param <T> the type parameter
-   * @param <L> the type's list parameter
+   * @param <T> the type parameter (should extend {@link io.fabric8.kubernetes.api.model.HasMetadata} and implement {@link io.fabric8.kubernetes.api.model.Namespaced})
+   * @param <L> the type's list parameter (should extend {@link io.fabric8.kubernetes.api.model.KubernetesResourceList}
    * @return the shared index informer
    */
   public synchronized <T extends HasMetadata, L extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerForCustomResource(CustomResourceDefinitionContext customResourceContext, Class<T> apiTypeClass, Class<L> apiListTypeClass, OperationContext operationContext, long resyncPeriodInMillis) {
@@ -135,8 +135,8 @@ public class SharedInformerFactory extends BaseOperation {
    * @param apiListTypeClass api list type class
    * @param operationContext operation context
    * @param resyncPeriodInMillis resync period in milliseconds
-   * @param <T> the type parameter
-   * @param <L> the type's list parameter
+   * @param <T> the type parameter (should extend {@link io.fabric8.kubernetes.api.model.HasMetadata} and implement {@link io.fabric8.kubernetes.api.model.Namespaced})
+   * @param <L> the type's list parameter (should extend {@link io.fabric8.kubernetes.api.model.KubernetesResourceList}
    * @return the shared index informer
    */
   public synchronized <T extends HasMetadata, L extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerFor(Class<T> apiTypeClass, Class<L> apiListTypeClass, OperationContext operationContext, long resyncPeriodInMillis) {

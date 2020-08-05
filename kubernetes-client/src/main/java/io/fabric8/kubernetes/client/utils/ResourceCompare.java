@@ -18,45 +18,116 @@ package io.fabric8.kubernetes.client.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.fabric8.kubernetes.api.model.KubernetesList;
 
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ResourceCompare {
+  private ResourceCompare() {}
 
-    private static TypeReference<HashMap<String, Object>> TYPE_REF = new TypeReference<HashMap<String, Object>>(){};
+  private static TypeReference<HashMap<String, Object>> TYPE_REF = new TypeReference<HashMap<String, Object>>(){};
 
-    private static final String METADATA = "metadata";
-    private static final String STATUS = "status";
-    private static final String LABELS = "labels";
+  private static final String METADATA = "metadata";
+  private static final String SPEC = "spec";
+  private static final String ITEMS = "items";
 
 
-    public static <T>  boolean equals(T left, T right) {
-        ObjectMapper jsonMapper = Serialization.jsonMapper();
-        Map<String, Object> leftJson = (Map<String, Object>) jsonMapper.convertValue(left, TYPE_REF);
-        Map<String, Object> rightJson = (Map<String, Object>) jsonMapper.convertValue(right, TYPE_REF);
+  /**
+   * This method returns true when left Kubernetes resource contains
+   * all data that's present in right Kubernetes resource, this method
+   * won't consider fields that are missing in right parameters. Values
+   * which are present in right would only be compared.
+   *
+   * @param left kubernetes resource (fetched from cluster)
+   * @param right kubernetes resource (provided as input by user)
+   * @param <T> type for kubernetes resource
+   *
+   * @return boolean value whether both resources are actually equal or not
+   */
+  public static <T>  boolean equals(T left, T right) {
+    ObjectMapper jsonMapper = Serialization.jsonMapper();
+    Map<String, Object> leftJson = jsonMapper.convertValue(left, TYPE_REF);
+    Map<String, Object> rightJson = jsonMapper.convertValue(right, TYPE_REF);
 
-        Map<String, Object> leftLabels = fetchLabels(leftJson);
-        Map<String, Object> rightLabels = fetchLabels(rightJson);
-
-        HashMap<String, Object> leftMap = trim(leftJson);
-        HashMap<String, Object> rightMap = trim(rightJson);
-
-        return leftMap.equals(rightMap) && leftLabels.equals(rightLabels);
+    if (left instanceof KubernetesList) {
+      return compareKubernetesList(leftJson, rightJson);
+    } else {
+      return compareKubernetesResource(leftJson, rightJson);
     }
+  }
 
-    private static HashMap<String, Object> trim(Map<String, Object> map) {
-        HashMap<String, Object> result = new HashMap<>(map);
-        result.remove(STATUS);
-        result.remove(METADATA);
-        return result;
-    }
+  public static boolean compareKubernetesList(Map<String, Object> leftJson, Map<String, Object> rightJson) {
+    List<Map<String, Object>> leftItems = (List<Map<String, Object>>)leftJson.get(ITEMS);
+    List<Map<String, Object>> rightItems = (List<Map<String, Object>>)rightJson.get(ITEMS);
 
-    private static Map<String, Object> fetchLabels(Map<String, Object> map){
-        if (!map.containsKey(METADATA) || !((Map<Object, Object>)map.get(METADATA)).containsKey(LABELS)){
-            return Collections.emptyMap();
+    if (leftItems != null && rightItems != null) {
+      if (leftItems.size() != rightItems.size()) {
+        return false;
+      }
+
+      for (int i = 0; i < rightItems.size(); i++) {
+        if (!compareKubernetesResource(leftItems.get(i), rightItems.get(i))) {
+          return false;
         }
-        return (Map<String, Object>) ((Map<Object, Object>)map.get(METADATA)).get(LABELS);
+      }
+    } else return leftItems != null;
+    return true;
+  }
+
+  public static boolean compareKubernetesResource(Map<String, Object> leftJson, Map<String, Object> rightJson) {
+    return isEqualMetadata(leftJson, rightJson) &&
+      isEqualSpec(leftJson, rightJson);
+  }
+
+  private static boolean isEqualMetadata(Map<String, Object> leftMap, Map<String, Object> rightMap) {
+    Map<String, Object> leftMetadata = (Map<String, Object>) leftMap.get(METADATA);
+    Map<String, Object> rightMetadata = (Map<String, Object>) rightMap.get(METADATA);
+
+    if (leftMetadata == null && rightMetadata == null) {
+      return true;
+    } else if (leftMetadata != null && rightMetadata == null) {
+      return true;
+    } else if (leftMetadata == null) {
+      return false;
     }
+
+    return isLeftMapSupersetOfRight(leftMetadata, rightMetadata);
+  }
+
+  private static boolean isEqualSpec(Map<String, Object> leftMap, Map<String, Object> rightMap) {
+    Map<String, Object> leftSpec = (Map<String, Object>) leftMap.get(SPEC);
+    Map<String, Object> rightSpec = (Map<String, Object>) rightMap.get(SPEC);
+
+    if (leftSpec == null && rightSpec == null) {
+      return true;
+    } else if (leftSpec != null && rightSpec == null) {
+      return true;
+    } else if (leftSpec == null) {
+      return false;
+    }
+
+    return isLeftMapSupersetOfRight(leftSpec, rightSpec);
+  }
+
+  /**
+   * Iterates via keys of right map to see if they are present in left map
+   *
+   * @param leftMap a hashmap of string, object
+   * @param rightMap a hashmap of string, object
+   * @return boolean value indicating whether left contains all keys and values of right map or not
+   */
+  private static boolean isLeftMapSupersetOfRight(Map<String, Object> leftMap, Map<String, Object> rightMap) {
+    for (Map.Entry<String, Object> entry : rightMap.entrySet()) {
+      if (!leftMap.containsKey(entry.getKey())) {
+        return false;
+      }
+
+      if (!leftMap.get(entry.getKey()).equals(entry.getValue())) {
+        return false;
+      }
+    }
+    return true;
+  }
 }

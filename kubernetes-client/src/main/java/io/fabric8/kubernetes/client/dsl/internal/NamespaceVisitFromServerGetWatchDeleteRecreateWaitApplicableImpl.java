@@ -17,7 +17,10 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.ListOptions;
+import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Utils;
+
+import java.net.HttpURLConnection;
 import java.util.function.Predicate;
 
 import org.slf4j.Logger;
@@ -137,22 +140,33 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
   public HasMetadata createOrReplace() {
     HasMetadata meta = acceptVisitors(asHasMetadata(item), visitors);
     ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
-    HasMetadata r = h.reload(client, config, meta.getMetadata().getNamespace(), meta);
     String namespaceToUse = meta.getMetadata().getNamespace();
 
-    if (r == null) {
+    String resourceVersion = KubernetesResourceUtil.getResourceVersion(meta);
+    try {
+      // Create
+      KubernetesResourceUtil.setResourceVersion(meta, null);
       return h.create(client, config, namespaceToUse, meta);
-    } else if (deletingExisting) {
-      Boolean deleted = h.delete(client, config, namespaceToUse, propagationPolicy, meta);
-      if (!deleted) {
-        throw new KubernetesClientException("Failed to delete existing item:" + meta);
+    } catch (KubernetesClientException exception) {
+      if (exception.getCode() != HttpURLConnection.HTTP_CONFLICT) {
+        throw exception;
       }
-      return h.create(client, config, namespaceToUse, meta);
-    } else if (ResourceCompare.equals(r, meta)) {
-      LOGGER.debug("Item has not changed. Skipping");
-      return meta;
-    } else {
-      return h.replace(client, config, namespaceToUse, meta);
+
+      // Conflict; check deleteExisting flag otherwise replace
+      HasMetadata r = h.reload(client, config, meta.getMetadata().getNamespace(), meta);
+      if (Boolean.TRUE.equals(deletingExisting)) {
+        Boolean deleted = h.delete(client, config, namespaceToUse, propagationPolicy, meta);
+        if (Boolean.FALSE.equals(deleted)) {
+          throw new KubernetesClientException("Failed to delete existing item:" + meta);
+        }
+        return h.create(client, config, namespaceToUse, meta);
+      } else if (ResourceCompare.equals(r, meta)) {
+        LOGGER.debug("Item has not changed. Skipping");
+        return meta;
+      } else {
+        KubernetesResourceUtil.setResourceVersion(meta, resourceVersion);
+        return h.replace(client, config, namespaceToUse, meta);
+      }
     }
   }
 
