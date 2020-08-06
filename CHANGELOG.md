@@ -4,6 +4,7 @@
 #### Bugs
 * Fix #2373: Unable to create a Template on OCP3
 * Fix #2316: Cannot load resource from stream without apiVersion
+* Fix #2389: KubernetesServer does not use value from https in crud mode
 
 #### Improvements
 * Fix #2331: Fixed documentation for namespaced informer for all custom types implementing `Namespaced` interface
