@@ -711,7 +711,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     boolean deleted = true;
     if (items != null) {
       for (T item : items) {
-        if (null == item) {
+        if (item == null) {
           continue;
         }
         updateApiVersionResource(item);
