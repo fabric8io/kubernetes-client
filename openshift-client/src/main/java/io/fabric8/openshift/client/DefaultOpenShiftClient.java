@@ -73,7 +73,6 @@ import io.fabric8.openshift.api.model.DoneableOAuthClient;
 import io.fabric8.openshift.api.model.DoneableClusterRoleBinding;
 import io.fabric8.openshift.api.model.DoneableRole;
 import io.fabric8.openshift.api.model.DoneableRoleBinding;
-import io.fabric8.openshift.api.model.DoneableProject;
 import io.fabric8.openshift.api.model.DoneableRoute;
 import io.fabric8.openshift.api.model.DoneableSecurityContextConstraints;
 import io.fabric8.openshift.api.model.DoneableTemplate;
@@ -96,8 +95,6 @@ import io.fabric8.openshift.api.model.Role;
 import io.fabric8.openshift.api.model.RoleBinding;
 import io.fabric8.openshift.api.model.RoleBindingList;
 import io.fabric8.openshift.api.model.RoleList;
-import io.fabric8.openshift.api.model.Project;
-import io.fabric8.openshift.api.model.ProjectList;
 import io.fabric8.openshift.api.model.Route;
 import io.fabric8.openshift.api.model.RouteList;
 import io.fabric8.openshift.api.model.SecurityContextConstraints;
@@ -434,7 +431,7 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public NonNamespaceOperation<Project, ProjectList, DoneableProject, Resource<Project, DoneableProject>> projects() {
+  public ProjectOperation projects() {
     return new ProjectOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 

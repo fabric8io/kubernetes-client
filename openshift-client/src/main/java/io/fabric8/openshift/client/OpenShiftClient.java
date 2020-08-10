@@ -32,7 +32,6 @@ import io.fabric8.openshift.api.model.DoneableImageStreamTag;
 import io.fabric8.openshift.api.model.DoneableOAuthAccessToken;
 import io.fabric8.openshift.api.model.DoneableOAuthAuthorizeToken;
 import io.fabric8.openshift.api.model.DoneableOAuthClient;
-import io.fabric8.openshift.api.model.DoneableProject;
 import io.fabric8.openshift.api.model.DoneableRole;
 import io.fabric8.openshift.api.model.DoneableRoleBinding;
 import io.fabric8.openshift.api.model.DoneableRoute;
@@ -85,7 +84,7 @@ public interface OpenShiftClient extends KubernetesClient {
 
   NonNamespaceOperation<OAuthClient, OAuthClientList, DoneableOAuthClient, Resource<OAuthClient, DoneableOAuthClient>> oAuthClients();
 
-  NonNamespaceOperation<Project, ProjectList, DoneableProject, Resource<Project, DoneableProject>> projects();
+  ProjectOperation projects();
 
   ProjectRequestOperation projectrequests();
 

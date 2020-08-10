@@ -15,21 +15,34 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.rbac.RoleBinding;
+import io.fabric8.kubernetes.api.model.rbac.RoleBindingBuilder;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
+import io.fabric8.openshift.api.model.ProjectBuilder;
+import io.fabric8.openshift.client.dsl.ProjectOperation;
 import okhttp3.OkHttpClient;
 import io.fabric8.openshift.api.model.DoneableProject;
 import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.ProjectList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.ArrayList;
+import java.util.List;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.PROJECT;
 
 public class ProjectOperationsImpl extends OpenShiftOperation<Project, ProjectList, DoneableProject,
-  Resource<Project, DoneableProject>> {
+  Resource<Project, DoneableProject>> implements ProjectOperation {
+  public static final String OPENSHIFT_IO_DESCRIPTION_ANNOTATION = "openshift.io/description";
+  public static final String OPENSHIFT_IO_DISPLAY_NAME_ANNOTATION = "openshift.io/display-name";
+  public static final String OPENSHIFT_IO_REQUESTER_ANNOTATION = "openshift.io/requester";
+  public static final String RBAC_AUTHORIZATION_APIGROUP = "rbac.authorization.k8s.io";
+  public static final String CLUSTER_ROLE = "ClusterRole";
+
 
   public ProjectOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
     this(new OperationContext().withOkhttpClient(client).withConfig(config));
@@ -50,5 +63,114 @@ public class ProjectOperationsImpl extends OpenShiftOperation<Project, ProjectLi
   @Override
   public boolean isResourceNamespaced() {
     return false;
+  }
+
+  @Override
+  public List<HasMetadata> createProjectAndRoleBindings(String name, String description, String displayName, String adminUser, String requestingUser) {
+    List<HasMetadata> result = new ArrayList<>();
+    Project project = initProject(name, description, displayName, requestingUser);
+    List<HasMetadata> projectRoleBindings = initRoleBindings(name, adminUser);
+
+    // Create Project
+    result.add(create(project));
+
+    // Create Role Bindings
+    NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl listOp = new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, getNamespace(), null, false, false, new ArrayList<>(), projectRoleBindings, null, DeletionPropagation.BACKGROUND, true) {};
+    result.addAll(listOp.createOrReplace());
+
+    return result;
+  }
+
+  private Project initProject(String name, String description, String displayName, String requestingUser) {
+    return new ProjectBuilder()
+      .withNewMetadata()
+      .addToAnnotations(OPENSHIFT_IO_DESCRIPTION_ANNOTATION, description)
+      .addToAnnotations(OPENSHIFT_IO_DISPLAY_NAME_ANNOTATION, displayName)
+      .addToAnnotations(OPENSHIFT_IO_REQUESTER_ANNOTATION, requestingUser)
+      .withName(name)
+      .endMetadata()
+      .build();
+  }
+
+  private List<HasMetadata> initRoleBindings(String name, String adminUser) {
+    RoleBinding roleBindingPuller = new RoleBindingBuilder()
+      .withNewMetadata()
+      .addToAnnotations(OPENSHIFT_IO_DESCRIPTION_ANNOTATION, "Allows all pods in this namespace to pull images from this namespace.  It is auto-managed by a controller; remove subjects to disable.")
+      .withName("system:image-pullers")
+      .withNamespace(name)
+      .endMetadata()
+      .withNewRoleRef()
+      .withApiGroup(RBAC_AUTHORIZATION_APIGROUP)
+      .withKind(CLUSTER_ROLE)
+      .withName("system:image-puller")
+      .endRoleRef()
+      .addNewSubject()
+      .withApiGroup(RBAC_AUTHORIZATION_APIGROUP)
+      .withKind("Group")
+      .withName("system:serviceaccounts:" + name)
+      .endSubject()
+      .build();
+    RoleBinding roleBindingBuilder = new RoleBindingBuilder()
+      .withNewMetadata()
+      .addToAnnotations(OPENSHIFT_IO_DESCRIPTION_ANNOTATION, "Allows builds in this namespace to push images to" +
+        "this namespace.  It is auto-managed by a controller; remove subjects to disable.")
+      .withName("system:image-builders")
+      .withNamespace(name)
+      .endMetadata()
+      .withNewRoleRef()
+      .withApiGroup(RBAC_AUTHORIZATION_APIGROUP)
+      .withKind(CLUSTER_ROLE)
+      .withName("system:image-builder")
+      .endRoleRef()
+      .addNewSubject()
+      .withKind("ServiceAccount")
+      .withName("builder")
+      .withNamespace(name)
+      .endSubject()
+      .build();
+    RoleBinding roleBindingDeployer = new RoleBindingBuilder()
+      .withNewMetadata()
+      .addToAnnotations(OPENSHIFT_IO_DESCRIPTION_ANNOTATION, " Allows deploymentconfigs in this namespace to rollout" +
+        " pods in this namespace.  It is auto-managed by a controller; remove subjects" +
+        " to disable.")
+      .withName("system:deployers")
+      .withNamespace(name)
+      .endMetadata()
+      .withNewRoleRef()
+      .withApiGroup(RBAC_AUTHORIZATION_APIGROUP)
+      .withKind(CLUSTER_ROLE)
+      .withName("system:deployer")
+      .endRoleRef()
+      .addNewSubject()
+      .withKind("ServiceAccount")
+      .withName("deployer")
+      .withNamespace(name)
+      .endSubject()
+      .build();
+
+    RoleBinding roleBindingAdmin = new RoleBindingBuilder()
+      .withNewMetadata()
+      .withName("admin")
+      .withNamespace(name)
+      .endMetadata()
+      .withNewRoleRef()
+      .withApiGroup(RBAC_AUTHORIZATION_APIGROUP)
+      .withKind(CLUSTER_ROLE)
+      .withName("admin")
+      .endRoleRef()
+      .addNewSubject()
+      .withApiGroup(RBAC_AUTHORIZATION_APIGROUP)
+      .withKind("User")
+      .withName(adminUser)
+      .endSubject()
+      .build();
+
+    List<HasMetadata> resources = new ArrayList<>();
+    resources.add(roleBindingPuller);
+    resources.add(roleBindingBuilder);
+    resources.add(roleBindingDeployer);
+    resources.add(roleBindingAdmin);
+
+    return resources;
   }
 }

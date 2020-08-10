@@ -33,5 +33,5 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: '11'
-      - name: Check License Headers
+      - name: Check Java Docs
         run: mvn clean install javadoc:jar -DskipTests -Pjavadoc-test
