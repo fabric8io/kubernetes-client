@@ -25,6 +25,7 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.WritableByteChannel;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -228,14 +229,8 @@ public class PortForwarderWebsocket implements PortForwarder {
       @Override
       public void onMessage(WebSocket webSocket, String text) {
         LOG.debug("{}: onMessage(String)", logPrefix);
-        try {
-          onMessage(webSocket, ByteBuffer.wrap(text.getBytes("UTF-8")));
-        } catch (IOException e) {
-          serverThrowables.add(e);
-          LOG.error("Error while converting string to byte buffer", e);
-          closeBothWays(webSocket, 1002, "Protocol error");
-        }
-      }
+        onMessage(webSocket, ByteBuffer.wrap(text.getBytes(StandardCharsets.UTF_8)));
+	  }
 
       @Override
       public void onMessage(WebSocket webSocket, ByteString bytes) {

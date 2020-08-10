@@ -19,6 +19,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 public class URLUtils {
 
@@ -152,6 +153,6 @@ public class URLUtils {
   }
 
   public static String encodeToUTF(String url) throws UnsupportedEncodingException {
-	  return URLEncoder.encode(url, "UTF-8");
+	  return URLEncoder.encode(url, StandardCharsets.UTF_8.displayName());
   }
 }
