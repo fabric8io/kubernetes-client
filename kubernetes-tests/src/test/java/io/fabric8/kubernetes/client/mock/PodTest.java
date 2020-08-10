@@ -25,6 +25,7 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.WritableByteChannel;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -508,7 +509,7 @@ public class PodTest {
       }
     }
 
-    String got = new String(out.toByteArray(), "UTF-8");
+    String got = new String(out.toByteArray(), StandardCharsets.UTF_8);
     assertEquals("Hello World!", got);
   }
 
@@ -581,11 +582,11 @@ public class PodTest {
 
   private static String portForwardEncode(boolean dataChannel, String str) {
     try {
-      byte[] data = str.getBytes("UTF-8");
+      byte[] data = str.getBytes(StandardCharsets.UTF_8);
       byte[] msg = new byte[data.length + 1];
       System.arraycopy(data, 0, msg, 1, data.length);
       msg[0] = dataChannel ? (byte) 0 : (byte) 1;
-      return new String(msg, "UTF-8");
+      return new String(msg, StandardCharsets.UTF_8);
     } catch (Exception e) {
       throw new IllegalStateException(e);
     }
