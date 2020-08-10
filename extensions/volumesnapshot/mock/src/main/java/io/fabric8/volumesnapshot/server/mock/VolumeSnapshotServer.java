@@ -45,6 +45,7 @@ public class VolumeSnapshotServer extends ExternalResource {
     this.crudMode = crudMode;
   }
 
+  @Override
   public void before() {
     mock = crudMode
       ? new VolumeSnapshotMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(), true)
@@ -53,32 +54,17 @@ public class VolumeSnapshotServer extends ExternalResource {
     client = mock.createVolumeSnapshot();
   }
 
+  @Override
   public void after() {
     mock.destroy();
     client.close();
   }
 
-
   public VolumeSnapshotClient get() {
     return client;
   }
 
-
   public MockServerExpectation expect() {
     return mock.expect();
-  }
-
-  @Deprecated
-  public <T> void expectAndReturnAsJson(String path, int code, T body) {
-    expect().withPath(path).andReturn(code, body).always();
-  }
-
-  @Deprecated
-  public void expectAndReturnAsString(String path, int code, String body) {
-    expect().withPath(path).andReturn(code, body).always();
-  }
-
-  public MockWebServer getMockServer() {
-    return mock.getServer();
   }
 }

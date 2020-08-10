@@ -31,13 +31,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @EnableRuleMigrationSupport
-public class VolumeSnapshotTest {
+class VolumeSnapshotTest {
 
   @Rule
   public VolumeSnapshotServer server = new VolumeSnapshotServer(true, true);
 
   @Test
-  public void testCrud() {
+  void testCrud() {
     VolumeSnapshotClient client = server.get();
     VolumeSnapshot vs1 = new VolumeSnapshotBuilder()
       .withNewMetadata()

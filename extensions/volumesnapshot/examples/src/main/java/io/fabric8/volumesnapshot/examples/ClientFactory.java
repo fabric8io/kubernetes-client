@@ -35,6 +35,7 @@ import io.fabric8.volumesnapshot.client.VolumeSnapshotClient;
 
 
 public class ClientFactory {
+  private ClientFactory() {}
 
   public static VolumeSnapshotClient newClient(String[] args) {
     ConfigBuilder config = new ConfigBuilder();
@@ -65,7 +66,7 @@ public class ClientFactory {
     return new DefaultVolumeSnapshotClient(config.build());
   }
 
-  public static String getOptions(String args[], String name, String defaultValue) {
+  public static String getOptions(String[] args, String name, String defaultValue) {
     for (int i = 0; i < args.length - 1; i++) {
       String key = args[i];
       String value = args[i + 1];

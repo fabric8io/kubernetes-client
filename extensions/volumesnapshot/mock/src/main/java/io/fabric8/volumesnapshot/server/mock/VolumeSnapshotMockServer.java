@@ -32,8 +32,6 @@ import java.util.Queue;
 import static okhttp3.TlsVersion.TLS_1_0;
 
 public class VolumeSnapshotMockServer extends KubernetesMockServer {
-  private boolean disableApiGroupCheck = true;
-
   public VolumeSnapshotMockServer() {
     super();
   }

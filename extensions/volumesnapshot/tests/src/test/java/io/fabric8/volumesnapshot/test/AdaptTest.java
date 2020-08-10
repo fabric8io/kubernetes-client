@@ -29,7 +29,7 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableRuleMigrationSupport
-public class AdaptTest {
+class AdaptTest {
 
   private VolumeSnapshotMockServer mock = new VolumeSnapshotMockServer();
 
@@ -44,7 +44,7 @@ public class AdaptTest {
   }
 
   @Test
-  public void testAdapt() {
+  void testAdapt() {
     VolumeSnapshotClient sc = mock.createVolumeSnapshot();
     KubernetesClient kc = new DefaultKubernetesClient(sc.getConfiguration());
     assertNotNull(kc.adapt(VolumeSnapshotClient.class));
