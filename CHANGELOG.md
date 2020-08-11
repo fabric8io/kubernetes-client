@@ -16,6 +16,7 @@
 
 #### New Features
 * CSI Volume Snapshot extension
+* Fix #2311: Add Support for creating bootstrap project template
 * Fix #2287: Add support for V1 and V1Beta1 CustomResourceDefinition
 * Fix #2319: Create Config without using auto-configure functionality or setting env variables
 
