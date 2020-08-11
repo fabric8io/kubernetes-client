@@ -14,8 +14,24 @@
 # limitations under the License.
 #
 
-echo $SETTINGS_XML | base64 --decode > $HOME/.m2/settings.xml
-echo $PUBRING | base64 --decode > $HOME/.gnupg/pubring.gpg
-echo $SEC_JENKINS |  base64 --decode > $HOME/.gnupg/sec_jenkins.gpg
-echo $SECRING | base64 --decode > $HOME/.gnupg/secring.gpg
-echo $TRUSTDB | base64 --decode > $HOME/.gnupg/trustdb.gpg
+name: JavaDocs
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  javadoc:
+    name: JavaDocs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Java 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: '11'
+      - name: Check Java Docs
+        run: mvn clean install javadoc:jar -DskipTests -Pjavadoc-test

@@ -91,7 +91,7 @@ public class ResourceIT {
   @Test
   public void list() {
     Pod listPod1 = new PodBuilder()
-      .withNewMetadata().withName("pod3").endMetadata()
+      .withNewMetadata().withName("resource-pod-list-pod3").endMetadata()
       .withNewSpec()
       .addNewContainer().withName("nginx").withImage("nginx").endContainer()
       .endSpec()
@@ -100,7 +100,7 @@ public class ResourceIT {
       .inNamespace(session.getNamespace())
       .createOrReplace();
 
-    Assert.assertNotNull(client.pods().inNamespace(session.getNamespace()).withName("pod3"));
+    Assert.assertNotNull(client.pods().inNamespace(session.getNamespace()).withName("resource-pod-list-pod3"));
 
     boolean bDeleted = client.resourceList(new PodListBuilder().withItems(listPod1).build())
       .inNamespace(session.getNamespace())

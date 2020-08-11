@@ -30,6 +30,7 @@ import java.lang.annotation.Annotation;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.AbstractMap;
 import java.util.Arrays;
@@ -333,7 +334,7 @@ public class Utils {
    */
   public static final String toUrlEncoded(String str) {
     try {
-      return URLEncoder.encode(str, "UTF-8");
+      return URLEncoder.encode(str, StandardCharsets.UTF_8.displayName());
     } catch (UnsupportedEncodingException exception) {
       // Ignore
     }
