@@ -137,6 +137,11 @@ public class AutoAdaptableKubernetesClient extends DefaultKubernetesClient {
   }
 
   @Override
+  public AuthorizationAPIGroupDSL authorization() {
+    return delegate.authorization();
+  }
+
+  @Override
   public NetworkAPIGroupDSL network() { return delegate.network(); }
 
   @Override
@@ -249,11 +254,6 @@ public class AutoAdaptableKubernetesClient extends DefaultKubernetesClient {
   @Override
   public MixedOperation<ConfigMap, ConfigMapList, DoneableConfigMap, Resource<ConfigMap, DoneableConfigMap>> configMaps() {
     return delegate.configMaps();
-  }
-
-  @Override
-  public SubjectAccessReviewDSL subjectAccessReviewAuth() {
-    return delegate.subjectAccessReviewAuth();
   }
 
   @Override

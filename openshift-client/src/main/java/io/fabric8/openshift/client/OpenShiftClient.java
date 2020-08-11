@@ -101,7 +101,9 @@ public interface OpenShiftClient extends KubernetesClient {
 
   NonNamespaceOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, Resource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints();
 
-  SubjectAccessReviewOperation<CreateableSubjectAccessReview, CreateableLocalSubjectAccessReview, CreateableSelfSubjectAccessReview, CreateableSelfSubjectRulesReview> subjectAccessReviews();
+  OpenshiftSubjectAccessOperations<SubjectAccessReview> subjectAccessReviews();
+
+  OpenShiftLocalSubjectAccessReviewOperationsImpl localSubjectAccessReviews();
 
   MixedOperation<ClusterRoleBinding, ClusterRoleBindingList, DoneableClusterRoleBinding, Resource<ClusterRoleBinding, DoneableClusterRoleBinding>> clusterRoleBindings();
 

@@ -98,7 +98,6 @@ import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.ReplicationControllerOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.ServiceOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.SubjectAccessReviewDSLImpl;
 import io.fabric8.kubernetes.client.dsl.internal.coordination.v1.LeaseOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.BindingOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.ConfigMapOperationsImpl;
@@ -303,6 +302,11 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   @Override
+  public AuthorizationAPIGroupDSL authorization() {
+    return adapt(AuthorizationAPIGroupClient.class);
+  }
+
+  @Override
   public <T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResources(CustomResourceDefinitionContext crdContext, Class<T> resourceType, Class<L> listClass, Class<D> doneClass) {
     return new CustomResourceOperationsImpl<>(new CustomResourceOperationContext().withOkhttpClient(httpClient).withConfig(getConfiguration())
       .withCrdContext(crdContext)
@@ -400,11 +404,6 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public SettingsAPIGroupDSL settings() { return adapt(SettingsAPIGroupClient.class); }
-
-  @Override
-  public SubjectAccessReviewDSL subjectAccessReviewAuth() {
-    return new SubjectAccessReviewDSLImpl(httpClient, getConfiguration());
-  }
 
   @Override
   public SharedInformerFactory informers() {

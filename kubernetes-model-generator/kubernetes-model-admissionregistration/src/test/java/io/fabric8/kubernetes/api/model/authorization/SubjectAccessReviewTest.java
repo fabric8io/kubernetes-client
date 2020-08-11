@@ -15,6 +15,9 @@
  */
 package io.fabric8.kubernetes.api.model.authorization;
 
+import io.fabric8.kubernetes.api.model.authorization.v1.SubjectAccessReview;
+import io.fabric8.kubernetes.api.model.authorization.v1.SubjectAccessReviewBuilder;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class SubjectAccessReviewTest {
   @Test
   public void testBuilder() {
-    SubjectAccessReview sar = new io.fabric8.kubernetes.api.model.authorization.SubjectAccessReviewBuilder()
+    SubjectAccessReview sar = new SubjectAccessReviewBuilder()
       .withNewMetadata().withName("test-sar").endMetadata()
       .withNewSpec()
       .withNewResourceAttributes()

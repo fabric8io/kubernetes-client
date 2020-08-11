@@ -24,6 +24,10 @@ This document contains common usages of different resources using Fabric8 Kubern
   * [PersistentVolume](#persistentvolume)
   * [NetworkPolicy](#networkpolicy)
   * [PodDisruptionBudget](#poddisruptionbudget)
+  * [SelfSubjectAccessReview](#selfsubjectaccessreview)
+  * [SubjectAccessReview](#subjectaccessreview)
+  * [LocalSubjectAccessReview](#localsubjectaccessreview)
+  * [SelfSubjectRulesReview](#selfsubjectrulesreview)
   * [Top/Metrics](#fetching-metrics)
   * [Generic Resource API](#resource-api)
   * [Generic ResourceList API](#resourcelist-api)
@@ -1564,6 +1568,87 @@ PodDisruptionBudgetList pdbList = client.policy().podDisruptionBudget().inNamesp
 - Delete `PodDisruptionBudget`:
 ```
 Boolean deleted = client.policy().podDisruptionBudget().inNamespace("default").withName("poddisruptionbudget1").delete();
+```
+
+### SelfSubjectAccessReview
+- Create `SelfSubjectAccessReview`(equivalent of `kubectl auth can-i create deployments --namespace dev`):
+```
+try (KubernetesClient client = new DefaultKubernetesClient()) {
+    SelfSubjectAccessReview ssar = new SelfSubjectAccessReviewBuilder()
+            .withNewSpec()
+            .withNewResourceAttributes()
+            .withGroup("apps")
+            .withResource("deployments")
+            .withVerb("create")
+            .withNamespace("dev")
+            .endResourceAttributes()
+            .endSpec()
+            .build();
+
+    ssar = client.authorization().v1().selfSubjectAccessReview().create(ssar);
+
+    System.out.println("Allowed: "+  ssar.getStatus().getAllowed());
+}
+```
+
+### SubjectAccessReview
+- Create `SubjectAccessReview`:
+```
+try (KubernetesClient client = new DefaultKubernetesClient()) {
+    SubjectAccessReview sar = new SubjectAccessReviewBuilder()
+            .withNewSpec()
+            .withNewResourceAttributes()
+            .withGroup("apps")
+            .withResource("deployments")
+            .withVerb("create")
+            .withNamespace("default")
+            .endResourceAttributes()
+            .withUser("kubeadmin")
+            .endSpec()
+            .build();
+
+    sar = client.authorization().v1().subjectAccessReview().create(sar);
+
+    System.out.println("Allowed: "+  sar.getStatus().getAllowed());
+}
+```
+### LocalSubjectAccessReview
+- Create `LocalSubjectAccessReview`:
+```
+try (KubernetesClient client = new DefaultKubernetesClient()) {
+    LocalSubjectAccessReview lsar = new LocalSubjectAccessReviewBuilder()
+            .withNewMetadata().withNamespace("default").endMetadata()
+            .withNewSpec()
+            .withUser("foo")
+            .withNewResourceAttributes()
+            .withNamespace("default")
+            .withVerb("get")
+            .withGroup("apps")
+            .withResource("pods")
+            .endResourceAttributes()
+            .endSpec()
+            .build();
+     lsar = client.authorization().v1().localSubjectAccessReview().inNamespace("default").create(lsar);
+     System.out.println(lsar.getStatus().getAllowed());
+}
+```
+
+### SelfSubjectRulesReview
+- Create `SelfSubjectRulesReview`:
+```
+try (KubernetesClient client = new DefaultKubernetesClient()) {
+    SelfSubjectRulesReview selfSubjectRulesReview = new SelfSubjectRulesReviewBuilder()
+            .withNewMetadata().withName("foo").endMetadata()
+            .withNewSpec()
+            .withNamespace("default")
+            .endSpec()
+            .build();
+
+    selfSubjectRulesReview = client.authorization().v1().selfSubjectRulesReview().create(selfSubjectRulesReview);
+    System.out.println(selfSubjectRulesReview.getStatus().getIncomplete());
+    System.out.println("non resource rules: " + selfSubjectRulesReview.getStatus().getNonResourceRules().size());
+    System.out.println("resource rules: " + selfSubjectRulesReview.getStatus().getResourceRules().size());
+}
 ```
 
 ### Fetching Metrics

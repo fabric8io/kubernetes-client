@@ -13,18 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.fabric8.kubernetes.client.dsl;
 
-package io.fabric8.openshift.client.dsl;
+import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.V1AuthorizationAPIGroupDSL;
+import io.fabric8.kubernetes.client.V1beta1AuthorizationAPIGroupDSL;
 
-import io.fabric8.kubernetes.api.model.Doneable;
-import io.fabric8.kubernetes.client.dsl.Createable;
-import io.fabric8.openshift.api.model.SubjectAccessReview;
-import io.fabric8.openshift.api.model.SubjectAccessReviewFluentImpl;
-import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
+public interface AuthorizationAPIGroupDSL extends Client {
+  /**
+   * DSL for authorization.k8s.io/v1 api group.
+   *
+   * @return V1 Authorization API DSL object
+   */
+  V1AuthorizationAPIGroupDSL v1();
 
-public abstract class CreateableSubjectAccessReview extends
-  SubjectAccessReviewFluentImpl<CreateableSubjectAccessReview>
-  implements
-  Doneable<SubjectAccessReviewResponse>,
-  Createable<SubjectAccessReview, SubjectAccessReviewResponse, CreateableSubjectAccessReview> {
+  /**
+   * DSL for authorization.k8s.io/v1beta1 api group
+   *
+   * @return V1beta1 Authorization API DSL object
+   */
+  V1beta1AuthorizationAPIGroupDSL v1beta1();
 }

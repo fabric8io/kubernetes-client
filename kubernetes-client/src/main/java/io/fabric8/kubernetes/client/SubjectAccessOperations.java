@@ -13,18 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.fabric8.kubernetes.client;
 
-package io.fabric8.openshift.client.dsl;
-
-import io.fabric8.kubernetes.api.model.Doneable;
-import io.fabric8.kubernetes.api.model.authorization.SelfSubjectAccessReview;
-import io.fabric8.kubernetes.api.model.authorization.SelfSubjectAccessReviewFluentImpl;
 import io.fabric8.kubernetes.client.dsl.Createable;
-import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
 
-public abstract class CreateableSelfSubjectAccessReview extends
-  SelfSubjectAccessReviewFluentImpl<CreateableSelfSubjectAccessReview>
-  implements
-  Doneable<SubjectAccessReviewResponse>,
-  Createable<SelfSubjectAccessReview, SubjectAccessReviewResponse, CreateableSelfSubjectAccessReview> {
+public interface SubjectAccessOperations<T, D> extends Createable<T, T, D> {
 }

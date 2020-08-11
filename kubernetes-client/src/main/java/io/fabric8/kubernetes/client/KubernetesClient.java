@@ -457,11 +457,11 @@ public interface KubernetesClient extends Client {
   MixedOperation<LimitRange, LimitRangeList, DoneableLimitRange, Resource<LimitRange, DoneableLimitRange>> limitRanges();
 
   /**
-   * SubjectAccessReview operations. (authorization/v1)
+   * Authorization operations. (authorization.k8s.io/v1 and authorization.k8s.io/v1beta1)
    *
-   * @return SubjectAccessReviewDSL object for dealing with SubjectAccessReviewOperations
+   * @return AuthorizationAPIGroupDSL object for dealing with Authorization objects
    */
-  SubjectAccessReviewDSL subjectAccessReviewAuth();
+  AuthorizationAPIGroupDSL authorization();
 
   /**
    * Get an instance of Kubernetes Client informer factory. It allows you to construct and
