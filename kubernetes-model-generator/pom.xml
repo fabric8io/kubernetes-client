@@ -53,6 +53,10 @@
     <module>kubernetes-model-settings</module>
     <module>kubernetes-model-storageclass</module>
     <module>openshift-model</module>
+    <module>openshift-model-operator</module>
+    <module>openshift-model-operatorhub</module>
+    <module>openshift-model-monitoring</module>
+    <module>openshift-model-console</module>
   </modules>
 
   <properties>

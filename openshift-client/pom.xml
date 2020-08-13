@@ -48,6 +48,22 @@
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-client</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-operator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-operatorhub</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-monitoring</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-console</artifactId>
+    </dependency>
 
     <!-- Compile Only Dependencies -->
     <dependency>

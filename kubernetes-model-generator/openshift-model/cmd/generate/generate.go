@@ -32,6 +32,7 @@ import (
   templateapi "github.com/openshift/api/template/v1"
   userapi "github.com/openshift/api/user/v1"
   authenticationapi "k8s.io/api/authentication/v1"
+  quotaapi "github.com/openshift/api/quota/v1"
   rbac "k8s.io/api/rbac/v1" // depends
   "k8s.io/apimachinery/pkg/api/resource"
   metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -56,6 +57,11 @@ type Schema struct {
   TypeMeta                                 metav1.TypeMeta
   SecurityContextConstraints               securityapi.SecurityContextConstraints
   SecurityContextConstraintsList           securityapi.SecurityContextConstraintsList
+  PodSecurityPolicyReview                  securityapi.PodSecurityPolicyReview
+  PodSecurityPolicySelfSubjectReview       securityapi.PodSecurityPolicySelfSubjectReview
+  PodSecurityPolicySubjectReview           securityapi.PodSecurityPolicySubjectReview
+  RangeAllocation                          securityapi.RangeAllocation
+  RangeAllocationList                      securityapi.RangeAllocationList
   Status                                   metav1.Status
   Patch                                    metav1.Patch
   ListOptions                              metav1.ListOptions
@@ -70,9 +76,13 @@ type Schema struct {
   BuildList                                buildapi.BuildList
   BuildConfigList                          buildapi.BuildConfigList
   ImageList                                imageapi.ImageList
+  ImageTag                                 imageapi.ImageTag
+  ImageTagList                             imageapi.ImageTagList
   ImageStreamList                          imageapi.ImageStreamList
   ImageStreamTagList                       imageapi.ImageStreamTagList
   ImageStreamImport                        imageapi.ImageStreamImport
+  ImageStreamImage                         imageapi.ImageStreamImage
+  ImageStreamMapping                       imageapi.ImageStreamMapping
   DeploymentConfig                         appsapi.DeploymentConfig
   DeploymentConfigList                     appsapi.DeploymentConfigList
   Route                                    routeapi.Route
@@ -97,8 +107,12 @@ type Schema struct {
   OpenshiftRoleBindingRestriction          authapi.RoleBindingRestriction
   OpenshiftRoleBindingRestrictionSpec      authapi.RoleBindingRestrictionSpec
   LocalSubjectAccessReview                 authapi.LocalSubjectAccessReview
+  LocalResourceAccessReview                authapi.LocalResourceAccessReview
+  ResourceAccessReview                     authapi.ResourceAccessReview
   SubjectAccessReview                      authapi.SubjectAccessReview
   SubjectAccessReviewResponse              authapi.SubjectAccessReviewResponse
+  SubjectRulesReview                       authapi.SubjectRulesReview
+  SelfSubjectRulesReview                   authapi.SelfSubjectRulesReview
   OpenshiftClusterRole                     authapi.ClusterRole
   OpenshiftClusterRoleList                 authapi.ClusterRoleList
   OpenshiftClusterRoleBinding              authapi.ClusterRoleBinding
@@ -119,8 +133,36 @@ type Schema struct {
   AggregationRule                          rbac.AggregationRule
   NetNamespace                             networkapi.NetNamespace
   NetNamespaceList                         networkapi.NetNamespaceList
+  ClusterNetwork                           networkapi.ClusterNetwork
+  ClusterNetworkList                       networkapi.ClusterNetworkList
+  EgressNetworkPolicy                      networkapi.EgressNetworkPolicy
+  EgressNetworkPolicyList                  networkapi.EgressNetworkPolicyList
+  DNSZone                                  openshiftconfigapi.DNSZone
   ClusterVersion                           openshiftconfigapi.ClusterVersion
   ClusterVersionList                       openshiftconfigapi.ClusterVersionList
+  SecretNameReference                      openshiftconfigapi.SecretNameReference
+  ConfigMapFileReference                   openshiftconfigapi.ConfigMapFileReference
+  APIServer                                openshiftconfigapi.APIServer
+  APIServerList                            openshiftconfigapi.APIServerList
+  ClusterOperator                          openshiftconfigapi.ClusterOperator
+  ClusterOperatorList                      openshiftconfigapi.ClusterOperatorList
+  FeatureGate                              openshiftconfigapi.FeatureGate
+  FeatureGateList                          openshiftconfigapi.FeatureGateList
+  Infrastructure                           openshiftconfigapi.Infrastructure
+  InfrastructureList                       openshiftconfigapi.InfrastructureList
+  OAuth                                    openshiftconfigapi.OAuth
+  OAuthList                                openshiftconfigapi.OAuthList
+  OperatorHub                              openshiftconfigapi.OperatorHub
+  OperatorHubList                          openshiftconfigapi.OperatorHubList
+  Proxy                                    openshiftconfigapi.Proxy
+  ProxyList                                openshiftconfigapi.ProxyList
+  Scheduler                                openshiftconfigapi.Scheduler
+  SchedulerList                            openshiftconfigapi.SchedulerList
+  TLSProfileSpec                           openshiftconfigapi.TLSProfileSpec
+  AppliedClusterResourceQuota              quotaapi.AppliedClusterResourceQuota
+  AppliedClusterResourceQuotaList          quotaapi.AppliedClusterResourceQuotaList
+  ClusterResourceQuota                     quotaapi.ClusterResourceQuota
+  ClusterResourceQuotaList                 quotaapi.ClusterResourceQuotaList
 }
 
 func main() {
@@ -145,6 +187,7 @@ func main() {
     {"github.com/openshift/api/security/v1", "", "io.fabric8.openshift.api.model", "os_security_"},
     {"github.com/openshift/api/network/v1", "", "io.fabric8.openshift.api.model", "os_network_"},
     {"github.com/openshift/api/config/v1", "", "io.fabric8.openshift.api.model", "os_config_"},
+    {"github.com/openshift/api/quota/v1", "", "io.fabric8.openshift.api.model", "os_quota_"},
     {"k8s.io/kubernetes/pkg/api/unversioned", "", "io.fabric8.kubernetes.api.model", "api_"},
     {"k8s.io/api/authentication/v1", "authentication.k8s.io", "io.fabric8.kubernetes.api.model.authentication", "kubernetes_authentication_"},
     {"k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1", "", "io.fabric8.kubernetes.api.model.apiextensions", "kubernetes_apiextensions_"},

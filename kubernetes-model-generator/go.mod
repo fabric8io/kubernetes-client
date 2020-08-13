@@ -3,11 +3,13 @@ module github.com/fabric8io/kubernetes-client/kubernetes-model-generator
 go 1.14
 
 require (
-	github.com/openshift/api v0.0.0-20200413201024-c6e8c9b6eb9a
-	k8s.io/api v0.18.0
-	k8s.io/apiextensions-apiserver v0.18.0
-	k8s.io/apimachinery v0.18.0
-	k8s.io/client-go v0.18.0
+	github.com/coreos/prometheus-operator v0.41.1 // indirect
+	github.com/openshift/api v0.0.0-20200803131051-87466835fcc0
+	github.com/operator-framework/api v0.3.12
+	k8s.io/api v0.19.0-rc.2
+	k8s.io/apiextensions-apiserver v0.18.2
+	k8s.io/apimachinery v0.19.0-rc.2
+	k8s.io/client-go v0.18.3
 	k8s.io/kubernetes v1.18.0
 	k8s.io/metrics v0.18.0
 )
