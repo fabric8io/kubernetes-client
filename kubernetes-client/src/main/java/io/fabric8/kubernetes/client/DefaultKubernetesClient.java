@@ -76,12 +76,15 @@ import io.fabric8.kubernetes.api.model.DoneableServiceAccount;
 import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequest;
 import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestList;
 import io.fabric8.kubernetes.api.model.certificates.DoneableCertificateSigningRequest;
+import io.fabric8.kubernetes.api.model.authentication.DoneableTokenReview;
+import io.fabric8.kubernetes.api.model.authentication.TokenReview;
 import io.fabric8.kubernetes.api.model.coordination.v1.DoneableLease;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
 import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.ClusterOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.CreateOnlyResourceOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.apiextensions.v1beta1.CustomResourceDefinitionOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.CustomResourceOperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.CustomResourceOperationsImpl;
@@ -111,6 +114,7 @@ import io.fabric8.kubernetes.client.dsl.internal.core.v1.EventOperationsImpl;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
+import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.OkHttpClient;
 
 import java.io.InputStream;
@@ -304,6 +308,11 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   @Override
   public AuthorizationAPIGroupDSL authorization() {
     return adapt(AuthorizationAPIGroupClient.class);
+  }
+
+  @Override
+  public Createable<TokenReview, TokenReview, DoneableTokenReview> tokenReviews() {
+    return new CreateOnlyResourceOperationsImpl<>(httpClient, getConfiguration(), "authentication.k8s.io", "v1", Utils.getPluralFromKind(TokenReview.class.getSimpleName()), TokenReview.class);
   }
 
   @Override

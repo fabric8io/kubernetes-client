@@ -17,9 +17,11 @@ package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.Createable;
 import io.fabric8.kubernetes.client.dsl.Namespaceable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
+import io.fabric8.openshift.api.model.DoneableLocalSubjectAccessReview;
 import io.fabric8.openshift.api.model.LocalSubjectAccessReview;
 import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
 import okhttp3.OkHttpClient;
@@ -27,16 +29,13 @@ import okhttp3.OkHttpClient;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
-public class OpenShiftLocalSubjectAccessReviewOperationsImpl extends OperationSupport implements OpenshiftSubjectAccessOperations<LocalSubjectAccessReview>, Namespaceable<OpenShiftLocalSubjectAccessReviewOperationsImpl> {
-  private String subjectAccessApiGroupName;
-  private String subjectAccessApiGroupVersion;
-  private String plural;
+public class OpenShiftLocalSubjectAccessReviewOperationsImpl extends OperationSupport implements Createable<LocalSubjectAccessReview, SubjectAccessReviewResponse, DoneableLocalSubjectAccessReview>, Namespaceable<OpenShiftLocalSubjectAccessReviewOperationsImpl> {
+  private final String subjectAccessApiGroupName;
+  private final String subjectAccessApiGroupVersion;
+  private final String plural;
 
   public OpenShiftLocalSubjectAccessReviewOperationsImpl(OkHttpClient client, Config config, String apiGroupName, String apiGroupVersion, String plural) {
     this(new OperationContext().withOkhttpClient(client).withConfig(config), apiGroupName, apiGroupVersion, plural);
-    this.subjectAccessApiGroupName = apiGroupName;
-    this.subjectAccessApiGroupVersion = apiGroupVersion;
-    this.plural = plural;
   }
 
   public OpenShiftLocalSubjectAccessReviewOperationsImpl(OperationContext context, String apiGroupName, String apiGroupVersion, String plural) {
@@ -46,6 +45,26 @@ public class OpenShiftLocalSubjectAccessReviewOperationsImpl extends OperationSu
     this.subjectAccessApiGroupName = apiGroupName;
     this.subjectAccessApiGroupVersion = apiGroupVersion;
     this.plural = plural;
+  }
+
+  @Override
+  public SubjectAccessReviewResponse create(LocalSubjectAccessReview... resources) {
+    try {
+      if (resources.length > 1) {
+        throw new IllegalArgumentException("Too many items to create.");
+      } else if (resources.length == 1) {
+        return handleCreate(updateApiVersion(resources[0]), SubjectAccessReviewResponse.class);
+      } else if (getItem() == null) {
+        throw new IllegalArgumentException("Nothing to create.");
+      } else {
+        return handleCreate(updateApiVersion(getItem()), SubjectAccessReviewResponse.class);
+      }
+    } catch (ExecutionException | IOException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    } catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(ie);
+    }
   }
 
   @Override
@@ -61,10 +80,25 @@ public class OpenShiftLocalSubjectAccessReviewOperationsImpl extends OperationSu
   }
 
   @Override
+  public DoneableLocalSubjectAccessReview createNew() {
+    throw new IllegalStateException("This operation is not currently supported");
+  }
+
+  @Override
   public OpenShiftLocalSubjectAccessReviewOperationsImpl inNamespace(String namespace) {
     this.namespace = namespace;
     return new OpenShiftLocalSubjectAccessReviewOperationsImpl(context.withNamespace(namespace), subjectAccessApiGroupName, subjectAccessApiGroupVersion, this.plural);
   }
 
+  private LocalSubjectAccessReview updateApiVersion(LocalSubjectAccessReview p) {
+    if (p.getApiVersion() == null) {
+      p.setApiVersion(this.apiGroupVersion);
+    }
+    return p;
+  }
+
+  public LocalSubjectAccessReview getItem() {
+    return (LocalSubjectAccessReview) context.getItem();
+  }
 }
 

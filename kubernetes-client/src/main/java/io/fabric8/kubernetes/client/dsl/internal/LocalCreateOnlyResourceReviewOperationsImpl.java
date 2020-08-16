@@ -20,13 +20,13 @@ import io.fabric8.kubernetes.client.dsl.Namespaceable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
 
-public class LocalSubjectAccessReviewOperationsImpl<T, D> extends SubjectAccessOperationsImpl<T, D> implements Namespaceable<LocalSubjectAccessReviewOperationsImpl<T, D>> {
+public class LocalCreateOnlyResourceReviewOperationsImpl<T, D> extends CreateOnlyResourceOperationsImpl<T, D> implements Namespaceable<LocalCreateOnlyResourceReviewOperationsImpl<T, D>> {
   private Class<T> subjectAccessRequestClass;
   private String subjectAccessApiGroupName;
   private String subjectAccessApiGroupVersion;
   private String plural;
 
-  public LocalSubjectAccessReviewOperationsImpl(OkHttpClient client, Config config, String subjectAccessApiGroupName, String subjectAccessApiGroupVersion, String plural, Class<T> subjectAccessRequestClass) {
+  public LocalCreateOnlyResourceReviewOperationsImpl(OkHttpClient client, Config config, String subjectAccessApiGroupName, String subjectAccessApiGroupVersion, String plural, Class<T> subjectAccessRequestClass) {
     super(client, config, subjectAccessApiGroupName, subjectAccessApiGroupVersion, plural, subjectAccessRequestClass);
     this.subjectAccessRequestClass = subjectAccessRequestClass;
     this.subjectAccessApiGroupName = subjectAccessApiGroupName;
@@ -34,7 +34,7 @@ public class LocalSubjectAccessReviewOperationsImpl<T, D> extends SubjectAccessO
     this.plural = plural;
   }
 
-  public LocalSubjectAccessReviewOperationsImpl(OperationContext context, String subjectAccessApiGroupName, String subjectAccessApiGroupVersion, String plural, Class<T> subjectAccessRequestClass) {
+  public LocalCreateOnlyResourceReviewOperationsImpl(OperationContext context, String subjectAccessApiGroupName, String subjectAccessApiGroupVersion, String plural, Class<T> subjectAccessRequestClass) {
     super(context, subjectAccessApiGroupName, subjectAccessApiGroupVersion, plural, subjectAccessRequestClass);
     this.subjectAccessRequestClass = subjectAccessRequestClass;
     this.subjectAccessApiGroupName = subjectAccessApiGroupName;
@@ -43,9 +43,9 @@ public class LocalSubjectAccessReviewOperationsImpl<T, D> extends SubjectAccessO
   }
 
   @Override
-  public LocalSubjectAccessReviewOperationsImpl<T, D> inNamespace(String namespace) {
+  public LocalCreateOnlyResourceReviewOperationsImpl<T, D> inNamespace(String namespace) {
     this.namespace = namespace;
-    return new LocalSubjectAccessReviewOperationsImpl<>(context.withNamespace(namespace), subjectAccessApiGroupName, subjectAccessApiGroupVersion, plural, subjectAccessRequestClass);
+    return new LocalCreateOnlyResourceReviewOperationsImpl<>(context.withNamespace(namespace), subjectAccessApiGroupName, subjectAccessApiGroupVersion, plural, subjectAccessRequestClass);
   }
 
   @Override

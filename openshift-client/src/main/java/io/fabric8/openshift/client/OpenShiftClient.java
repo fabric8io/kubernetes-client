@@ -36,6 +36,7 @@ import io.fabric8.openshift.api.model.DoneableRole;
 import io.fabric8.openshift.api.model.DoneableRoleBinding;
 import io.fabric8.openshift.api.model.DoneableRoute;
 import io.fabric8.openshift.api.model.DoneableSecurityContextConstraints;
+import io.fabric8.openshift.api.model.DoneableSubjectAccessReview;
 import io.fabric8.openshift.api.model.DoneableTemplate;
 import io.fabric8.openshift.api.model.DoneableUser;
 import io.fabric8.openshift.client.dsl.*;
@@ -101,7 +102,7 @@ public interface OpenShiftClient extends KubernetesClient {
 
   NonNamespaceOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, Resource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints();
 
-  OpenshiftSubjectAccessOperations<SubjectAccessReview> subjectAccessReviews();
+  Createable<SubjectAccessReview, SubjectAccessReviewResponse, DoneableSubjectAccessReview> subjectAccessReviews();
 
   OpenShiftLocalSubjectAccessReviewOperationsImpl localSubjectAccessReviews();
 

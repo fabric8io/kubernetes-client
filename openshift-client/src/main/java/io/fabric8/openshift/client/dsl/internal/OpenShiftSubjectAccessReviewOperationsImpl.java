@@ -17,18 +17,19 @@ package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.Createable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
+import io.fabric8.openshift.api.model.DoneableSubjectAccessReview;
 import io.fabric8.openshift.api.model.SubjectAccessReview;
 import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
-import io.fabric8.openshift.client.OpenshiftSubjectAccessOperations;
 import okhttp3.OkHttpClient;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 
-public class OpenShiftSubjectAccessReviewOperationsImpl extends OperationSupport implements OpenshiftSubjectAccessOperations<SubjectAccessReview> {
+public class OpenShiftSubjectAccessReviewOperationsImpl extends OperationSupport implements Createable<SubjectAccessReview, SubjectAccessReviewResponse, DoneableSubjectAccessReview> {
 
   public OpenShiftSubjectAccessReviewOperationsImpl(OkHttpClient client, Config config, String apiGroupName, String apiGroupVersion, String plural) {
     this(new OperationContext().withOkhttpClient(client).withConfig(config), apiGroupName, apiGroupVersion, plural);
@@ -38,6 +39,26 @@ public class OpenShiftSubjectAccessReviewOperationsImpl extends OperationSupport
     super(context.withApiGroupName(apiGroupName)
       .withApiGroupVersion(apiGroupVersion)
       .withPlural(plural));
+  }
+
+  @Override
+  public SubjectAccessReviewResponse create(SubjectAccessReview... resources) {
+    try {
+      if (resources.length > 1) {
+        throw new IllegalArgumentException("Too many items to create.");
+      } else if (resources.length == 1) {
+        return handleCreate(updateApiVersion(resources[0]), SubjectAccessReviewResponse.class);
+      } else if (getItem() == null) {
+        throw new IllegalArgumentException("Nothing to create.");
+      } else {
+        return handleCreate(updateApiVersion(getItem()), SubjectAccessReviewResponse.class);
+      }
+    } catch (ExecutionException | IOException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    } catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(ie);
+    }
   }
 
   @Override
@@ -53,7 +74,23 @@ public class OpenShiftSubjectAccessReviewOperationsImpl extends OperationSupport
   }
 
   @Override
+  public DoneableSubjectAccessReview createNew() {
+    throw new IllegalStateException("This operation is not currently supported");
+  }
+
+  @Override
   public boolean isResourceNamespaced() {
     return false;
+  }
+
+  private SubjectAccessReview updateApiVersion(SubjectAccessReview p) {
+    if (p.getApiVersion() == null) {
+      p.setApiVersion(this.apiGroupVersion);
+    }
+    return p;
+  }
+
+  public SubjectAccessReview getItem() {
+    return (SubjectAccessReview) context.getItem();
   }
 }

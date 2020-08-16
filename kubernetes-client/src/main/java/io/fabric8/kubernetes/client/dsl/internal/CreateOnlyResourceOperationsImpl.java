@@ -17,7 +17,6 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.SubjectAccessOperations;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import okhttp3.OkHttpClient;
@@ -25,15 +24,14 @@ import okhttp3.OkHttpClient;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
-public class SubjectAccessOperationsImpl<T, D> extends OperationSupport implements SubjectAccessOperations<T, D> {
-  private Class<T> subjectAccessRequestClass;
+public class CreateOnlyResourceOperationsImpl<T, D> extends OperationSupport implements io.fabric8.kubernetes.client.dsl.Createable<T, T, D> {
+  private final Class<T> subjectAccessRequestClass;
 
-  public SubjectAccessOperationsImpl(OkHttpClient client, Config config, String apiGroupName, String apiGroupVersion, String plural, Class<T> subjectAccessRequestClass) {
+  public CreateOnlyResourceOperationsImpl(OkHttpClient client, Config config, String apiGroupName, String apiGroupVersion, String plural, Class<T> subjectAccessRequestClass) {
     this(new OperationContext().withOkhttpClient(client).withConfig(config), apiGroupName, apiGroupVersion, plural, subjectAccessRequestClass);
-    this.subjectAccessRequestClass = subjectAccessRequestClass;
   }
 
-  public SubjectAccessOperationsImpl(OperationContext context, String apiGroupName, String apiGroupVersion, String plural, Class<T> subjectAccessRequestClass) {
+  public CreateOnlyResourceOperationsImpl(OperationContext context, String apiGroupName, String apiGroupVersion, String plural, Class<T> subjectAccessRequestClass) {
     super(context.withApiGroupName(apiGroupName)
       .withApiGroupVersion(apiGroupVersion)
       .withPlural(plural));
