@@ -23,8 +23,6 @@ import io.fabric8.kubernetes.api.model.OwnerReferenceBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
-import io.fabric8.kubernetes.api.model.Status;
-import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.apps.DeploymentList;
@@ -32,8 +30,6 @@ import io.fabric8.kubernetes.api.model.apps.DeploymentListBuilder;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetListBuilder;
-import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
-import io.fabric8.kubernetes.api.model.extensions.DeploymentRollbackBuilder;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.ScaleBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -41,7 +37,6 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 
 import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.kubernetes.model.util.Helper;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Rule;
 import org.junit.jupiter.api.DisplayName;
@@ -433,24 +428,6 @@ public class DeploymentTest {
 
     Scale scaleResponse  = client.apps().deployments().inNamespace("test").withName("deployment1").scale(scaleObj);
     assertEquals("bar", scaleResponse.getMetadata().getLabels().get("foo"));
-  }
-
-  @Test
-  public void testRollback() {
-    DeploymentRollback deploymentRollback = new DeploymentRollbackBuilder()
-      .withName("deployment1")
-      .withNewRollbackTo().withRevision(1L).endRollbackTo()
-      .withUpdatedAnnotations(Collections.singletonMap("foo", "bar"))
-      .build();
-
-    Status status = new StatusBuilder().build();
-    KubernetesClient client = server.getClient();
-    server.expect()
-      .post()
-      .withPath("/apis/extensions/v1beta1/namespaces/test/deployments/deployment1/rollback")
-      .andReturn(201, status).once();
-
-    client.extensions().deployments().inNamespace("test").withName("deployment1").rollback(deploymentRollback);
   }
 
   @Test
