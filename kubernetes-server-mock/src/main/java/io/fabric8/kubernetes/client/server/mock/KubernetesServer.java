@@ -53,7 +53,7 @@ public class KubernetesServer extends ExternalResource {
 
   public void before() {
     mock = crudMode
-      ? new KubernetesMockServer(new Context(), new MockWebServer(), new HashMap<ServerRequest, Queue<ServerResponse>>(), new KubernetesCrudDispatcher(), true)
+      ? new KubernetesMockServer(new Context(), new MockWebServer(), new HashMap<ServerRequest, Queue<ServerResponse>>(), new KubernetesCrudDispatcher(), https)
       : new KubernetesMockServer(https);
     mock.init();
     client = mock.createClient();
