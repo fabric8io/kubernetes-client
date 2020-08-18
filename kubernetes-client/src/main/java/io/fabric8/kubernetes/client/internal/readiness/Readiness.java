@@ -48,6 +48,7 @@ public class Readiness {
 
   public static boolean isReadinessApplicable(Class<? extends HasMetadata> itemClass) {
     return Deployment.class.isAssignableFrom(itemClass)
+      || io.fabric8.kubernetes.api.model.extensions.Deployment.class.isAssignableFrom(itemClass)
       || ReplicaSet.class.isAssignableFrom(itemClass)
       || Pod.class.isAssignableFrom(itemClass)
       || DeploymentConfig.class.isAssignableFrom(itemClass)
