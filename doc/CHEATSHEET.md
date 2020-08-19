@@ -2181,7 +2181,7 @@ Pod myPod;
 
 String myPodAsYaml = SerializationUtils.dumpAsYaml(myPod);
 // Your pod might have some state that you don't really care about, to remove it:
-String myPodAsYamlWithoutRuntimeState = dumpWithoutRuntimeStateAsYaml(myPod);
+String myPodAsYamlWithoutRuntimeState = SerializationUtils.dumpWithoutRuntimeStateAsYaml(myPod);
 ```
 
 ### OpenShift Client DSL Usage
