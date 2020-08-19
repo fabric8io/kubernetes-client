@@ -34,6 +34,7 @@ This document contains common usages of different resources using Fabric8 Kubern
   * [List Options](#list-options)
   * [Delete Options](#delete-options)
   * [Watch Options](#watch-options)
+  * [Serializing to yaml](#serializing-to-yaml)
 
 * [OpenShift Client DSL Usage](#openshift-client-dsl-usage)  
   * [Initializing OpenShift Client](#initializing-openshift-client)
@@ -2171,6 +2172,16 @@ client.pods().watch(new ListOptionsBuilder().withTimeoutSeconds(30L).build(), ne
   @Override
   public void onClose(KubernetesClientException cause) { }
 });
+```
+
+#### Serializing to yaml
+Resources can be exported to a yaml String via the `SerializationUtils` class:
+```
+Pod myPod;
+
+String myPodAsYaml = SerializationUtils.dumpAsYaml(myPod);
+// Your pod might have some state that you don't really care about, to remove it:
+String myPodAsYamlWithoutRuntimeState = dumpWithoutRuntimeStateAsYaml(myPod);
 ```
 
 ### OpenShift Client DSL Usage

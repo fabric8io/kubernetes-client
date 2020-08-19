@@ -8,6 +8,7 @@
 
 #### Improvements
 * Fix #2331: Fixed documentation for namespaced informer for all custom types implementing `Namespaced` interface
+* Fix #2406: Add documentation for serializing resources to YAML
 
 #### Dependency Upgrade
 * Fix #2360: bump mockito-core from 3.4.0 to 3.4.2
