@@ -38,8 +38,6 @@ import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 
-import java.net.HttpURLConnection;
-import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,17 +45,24 @@ import org.slf4j.LoggerFactory;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
+
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl extends OperationSupport implements ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean>,
 Waitable<List<HasMetadata>, HasMetadata>, Readiable {
@@ -74,7 +79,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
     private final List<Visitor> visitors;
     private final long watchRetryInitialBackoffMillis;
     private final double watchRetryBackoffMultiplier;
-  private final Object item;
+    private final Object item;
     private final InputStream inputStream;
 
     private final long gracePeriodSeconds;
@@ -108,8 +113,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
               LOGGER.info("{} {} does not support readiness. skipping..", meta.getKind(), meta.getMetadata().getName());
               latch.countDown();
             } catch (IllegalStateException t) {
-              LOGGER.warn("Error while waiting for: [{}] with name: [{}] in namespace: [{}]: {}. The resource will be considered not ready.", meta.getKind(), meta.getMetadata().getName(), meta.getMetadata().getNamespace(), t.getMessage());
-              LOGGER.debug("The error stack trace:", t);
+              logAsNotReady(t, meta);
             } finally {
               // Resource got ready and was returned properly
               latch.countDown();
@@ -154,8 +158,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
               itemsWithConditionNotMatched.remove(meta);
             } catch (Throwable t) {
               //consider all errors as not ready.
-              LOGGER.warn("Error while waiting for: [{}] with name: [{}] in namespace: [{}]: {}. The resource will be considered not ready.", meta.getKind(), meta.getMetadata().getName(), meta.getMetadata().getNamespace(), t.getMessage());
-              LOGGER.debug("The error stack trace:", t);
+              logAsNotReady(t, meta);
             } finally {
               //We don't want to wait for items that will never become ready
               latch.countDown();
@@ -172,6 +175,79 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
       executor.shutdown();
     }
 
+  }
+
+  @Override
+  public List<HasMetadata> waitUntilCondition(Predicate<HasMetadata> condition,
+                                              String resourceVersion,
+                                              Duration timeout) throws InterruptedException {
+    List<HasMetadata> items = acceptVisitors(asHasMetadata(item, true), visitors);
+    if (items.isEmpty()) {
+      return Collections.emptyList();
+    }
+
+    final List<CompletableFuture<HasMetadata>> futures = new ArrayList<>(items.size());
+    final ExecutorService executor = Executors.newFixedThreadPool(items.size());
+
+    try {
+      for (final HasMetadata meta : items) {
+        final ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
+        futures.add(CompletableFuture.supplyAsync(() -> {
+          try {
+            return h.waitUntilCondition(client, config, meta.getMetadata().getNamespace(), meta, condition, resourceVersion, timeout);
+          } catch (InterruptedException e) {
+            // Don't forget that this thread was interrupted.
+            Thread.currentThread().interrupt();
+
+            //consider all errors as not ready.
+            logAsNotReady(e, meta);
+            return null;
+          } catch (Exception e) {
+            //consider all errors as not ready.
+            logAsNotReady(e, meta);
+            return null;
+          }
+        }, executor));
+      }
+
+      // Wait for all futures to complete, remembering that every future
+      // has been given the same timeout value.
+      CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+    } finally {
+      executor.shutdown();
+    }
+
+    final List<HasMetadata> results = new ArrayList<>();
+    final List<HasMetadata> itemsWithConditionNotMatched = new ArrayList<>();
+
+    // Iterate over the items because we don't know what kind of List it is.
+    // But the futures use an ArrayList, so accessing by index is efficient.
+    int i = 0;
+    for (final HasMetadata meta : items) {
+      try {
+        HasMetadata result = futures.get(i).get();
+        if (result != null) {
+          results.add(result);
+        } else {
+          itemsWithConditionNotMatched.add(meta);
+        }
+      } catch (ExecutionException e) {
+        itemsWithConditionNotMatched.add(meta);
+        logAsNotReady(e.getCause(), meta);
+      }
+      ++i;
+    }
+
+    if (!itemsWithConditionNotMatched.isEmpty()) {
+      throw new KubernetesClientTimeoutException(itemsWithConditionNotMatched, timeout.toMillis(), MILLISECONDS);
+    }
+
+    return results;
+  }
+
+  private static void logAsNotReady(Throwable t, HasMetadata meta) {
+    LOGGER.warn("Error while waiting for: [{}] with name: [{}] in namespace: [{}]: {}. The resource will be considered not ready.", meta.getKind(), meta.getMetadata().getName(), meta.getMetadata().getNamespace(), t.getMessage());
+    LOGGER.debug("The error stack trace:", t);
   }
 
   @Override

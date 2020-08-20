@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.client;
 
+import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
@@ -178,4 +179,6 @@ public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
   T waitUntilReady(OkHttpClient client, Config config, String namespace, T item, long amount, TimeUnit timeUnit) throws InterruptedException;
 
   T waitUntilCondition(OkHttpClient client, Config config, String namespace, T item, Predicate<T> condition, long amount, TimeUnit timeUnit) throws InterruptedException;
+
+  T waitUntilCondition(OkHttpClient client, Config config, String namespace, T item, Predicate<T> condition, String resourceVersion, Duration timeout) throws InterruptedException;
 }

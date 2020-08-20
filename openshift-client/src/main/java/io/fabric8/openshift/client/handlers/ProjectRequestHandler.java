@@ -20,6 +20,8 @@ import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+
+import java.time.Duration;
 import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.client.Config;
@@ -93,6 +95,11 @@ public class ProjectRequestHandler implements ResourceHandler<ProjectRequest, Pr
 
   @Override
   public ProjectRequest waitUntilCondition(OkHttpClient client, Config config, String namespace, ProjectRequest item, Predicate<ProjectRequest> condition, long amount, TimeUnit timeUnit) throws InterruptedException {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public ProjectRequest waitUntilCondition(OkHttpClient client, Config config, String namespace, ProjectRequest item, Predicate<ProjectRequest> condition, String resourceVersion, Duration timeout) throws InterruptedException {
     throw new UnsupportedOperationException();
   }
 }

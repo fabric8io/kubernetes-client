@@ -17,13 +17,23 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.DoneablePod;
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
+import io.fabric8.kubernetes.api.model.WatchEvent;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.ResourceNotFoundException;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.Applicable;
 import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.base.WaitForConditionWatcher;
+import io.fabric8.kubernetes.client.internal.readiness.Readiness;
+import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -33,21 +43,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
+import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 
-import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.PodBuilder;
-import io.fabric8.kubernetes.api.model.WatchEvent;
-import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.client.internal.readiness.Readiness;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-
+import static java.net.HttpURLConnection.HTTP_GONE;
+import static java.time.Duration.ofSeconds;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -190,7 +194,7 @@ public class ResourceTest {
 
       }
     });
-    Assert.assertTrue(latch.await(5000, TimeUnit.MILLISECONDS));
+    Assert.assertTrue(latch.await(5000, MILLISECONDS));
     watch.close();
   }
 
@@ -202,22 +206,8 @@ public class ResourceTest {
       .withResourceVersion("1")
       .withNamespace("test").and().build();
 
-
-    Pod noReady = new PodBuilder(pod1).withNewStatus()
-      .addNewCondition()
-          .withType("Ready")
-          .withStatus("False")
-        .endCondition()
-      .endStatus()
-      .build();
-
-    Pod ready = new PodBuilder(pod1).withNewStatus()
-        .addNewCondition()
-          .withType("Ready")
-          .withStatus("True")
-        .endCondition()
-      .endStatus()
-      .build();
+    Pod noReady = createReadyFrom(pod1, "False");
+    Pod ready = createReadyFrom(pod1, "True");
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, noReady).once();
 
@@ -228,7 +218,7 @@ public class ResourceTest {
       .always();
 
     KubernetesClient client = server.getClient();
-    Pod p = client.resource(noReady).waitUntilReady(5, TimeUnit.SECONDS);
+    Pod p = client.resource(noReady).waitUntilReady(5, SECONDS);
     Assert.assertTrue(Readiness.isPodReady(p));
   }
 
@@ -239,22 +229,8 @@ public class ResourceTest {
       .withResourceVersion("1")
       .withNamespace("test").and().build();
 
-
-    Pod noReady = new PodBuilder(pod1).withNewStatus()
-      .addNewCondition()
-          .withType("Ready")
-          .withStatus("False")
-        .endCondition()
-      .endStatus()
-      .build();
-
-    Pod ready = new PodBuilder(pod1).withNewStatus()
-        .addNewCondition()
-          .withType("Ready")
-          .withStatus("True")
-        .endCondition()
-      .endStatus()
-      .build();
+    Pod noReady = createReadyFrom(pod1, "False");
+    Pod ready = createReadyFrom(pod1, "True");
 
     // so that "waitUntilExists" actually has some waiting to do
     server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(404, "").times(2);
@@ -269,7 +245,7 @@ public class ResourceTest {
       .always();
 
     KubernetesClient client = server.getClient();
-    Pod p = client.pods().withName("pod1").waitUntilReady(5, TimeUnit.SECONDS);
+    Pod p = client.pods().withName("pod1").waitUntilReady(5, SECONDS);
     Assert.assertTrue(Readiness.isPodReady(p));
   }
 
@@ -280,22 +256,8 @@ public class ResourceTest {
       .withResourceVersion("1")
       .withNamespace("test").and().build();
 
-
-    Pod noReady = new PodBuilder(pod1).withNewStatus()
-      .addNewCondition()
-      .withType("Ready")
-      .withStatus("False")
-      .endCondition()
-      .endStatus()
-      .build();
-
-    Pod ready = new PodBuilder(pod1).withNewStatus()
-      .addNewCondition()
-      .withType("Ready")
-      .withStatus("True")
-      .endCondition()
-      .endStatus()
-      .build();
+    Pod noReady = createReadyFrom(pod1, "False");
+    Pod ready = createReadyFrom(pod1, "True");
 
     Pod withConditionBeingFalse = new PodBuilder(pod1).withNewStatus()
       .addNewCondition()
@@ -337,12 +299,69 @@ public class ResourceTest {
       r -> r.getStatus().getConditions()
             .stream()
             .anyMatch(c -> "Dummy".equals(c.getType()) && "True".equals(c.getStatus())),
-      8, TimeUnit.SECONDS
+      8, SECONDS
     );
 
     assertThat(p.getStatus().getConditions())
       .extracting("type", "status")
       .containsExactly(tuple("Ready", "True"), tuple("Dummy", "True"));
+  }
+
+  @Test
+  void testWaitUntilConditionWhenResourceVersionTooOld() throws InterruptedException {
+    Pod pod1 = new PodBuilder().withNewMetadata()
+      .withName("pod1")
+      .withResourceVersion("1")
+      .withNamespace("test").and().build();
+
+    Pod noReady = createReadyFrom(pod1, "False");
+    Pod ready = createReadyFrom(pod1, "True");
+
+    // The pod is never ready if you request it directly.
+    server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, noReady).always();
+
+    Status gone = new StatusBuilder()
+      .withCode(HTTP_GONE)
+      .build();
+
+    // Watches with the pod's own resource version fail with 410 "GONE".
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true")
+      .andUpgradeToWebSocket()
+      .open()
+      .waitFor(500).andEmit(new WatchEvent(gone, "ERROR"))
+      .done()
+      .once();
+
+    // Watches with a later resource version will return the "ready" pod.
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=2&watch=true")
+      .andUpgradeToWebSocket()
+      .open()
+      .waitFor(500).andEmit(new WatchEvent(ready, "MODIFIED"))
+      .done()
+      .once();
+
+    Predicate<Pod> isReady = p -> p.getStatus().getConditions().stream()
+      .anyMatch(c -> "True".equals(c.getStatus()));
+
+    try (KubernetesClient client = server.getClient()) {
+      final String podResourceVersion = pod1.getMetadata().getResourceVersion();
+      final PodResource<Pod, DoneablePod> ops = client.pods().withName("pod1");
+      final Duration timeout = ofSeconds(4);
+      KubernetesClientException ex = assertThrows(KubernetesClientException.class, () ->
+        ops.waitUntilCondition(isReady, podResourceVersion, timeout)
+      );
+      assertThat(ex)
+        .hasCauseExactlyInstanceOf(WaitForConditionWatcher.WatchException.class);
+      assertThat(ex.getCause())
+        .hasCauseExactlyInstanceOf(KubernetesClientException.class)
+        .hasMessage("Watcher closed");
+
+      Pod pod = client.pods().withName("pod1")
+        .waitUntilCondition(isReady, "2", ofSeconds(4));
+      assertThat(pod.getMetadata().getName()).isEqualTo("pod1");
+      assertThat(pod.getMetadata().getResourceVersion()).isEqualTo("1");
+      assertTrue(isReady.test(pod));
+    }
   }
 
   @Test
@@ -352,22 +371,8 @@ public class ResourceTest {
       .withResourceVersion("1")
       .withNamespace("test").and().build();
 
-
-    Pod noReady = new PodBuilder(pod1).withNewStatus()
-      .addNewCondition()
-      .withType("Ready")
-      .withStatus("False")
-      .endCondition()
-      .endStatus()
-      .build();
-
-    Pod ready = new PodBuilder(pod1).withNewStatus()
-      .addNewCondition()
-      .withType("Ready")
-      .withStatus("True")
-      .endCondition()
-      .endStatus()
-      .build();
+    Pod noReady = createReadyFrom(pod1, "False");
+    Pod ready = createReadyFrom(pod1, "True");
 
     Status status = new StatusBuilder()
       .withCode(HttpURLConnection.HTTP_FORBIDDEN)
@@ -385,7 +390,7 @@ public class ResourceTest {
       .once();
 
     KubernetesClient client = server.getClient();
-    Pod p = client.resource(noReady).waitUntilReady(5, TimeUnit.SECONDS);
+    Pod p = client.resource(noReady).waitUntilReady(5, SECONDS);
     Assert.assertTrue(Readiness.isPodReady(p));
   }
 
@@ -396,21 +401,8 @@ public class ResourceTest {
       .withResourceVersion("1")
       .withNamespace("test").and().build();
 
-    Pod noReady = new PodBuilder(pod1).withNewStatus()
-      .addNewCondition()
-      .withType("Ready")
-      .withStatus("False")
-      .endCondition()
-      .endStatus()
-      .build();
-
-    Pod ready = new PodBuilder(pod1).withNewStatus()
-      .addNewCondition()
-      .withType("Ready")
-      .withStatus("True")
-      .endCondition()
-      .endStatus()
-      .build();
+    Pod noReady = createReadyFrom(pod1, "False");
+    Pod ready = createReadyFrom(pod1, "True");
 
     Status status = new StatusBuilder()
       .withCode(HttpURLConnection.HTTP_FORBIDDEN)
@@ -432,7 +424,7 @@ public class ResourceTest {
       .once();
 
     KubernetesClient client = server.getClient();
-    Pod p = client.resource(noReady).waitUntilReady(5, TimeUnit.SECONDS);
+    Pod p = client.resource(noReady).waitUntilReady(5, SECONDS);
     Assert.assertTrue(Readiness.isPodReady(p));
   }
 
@@ -443,28 +435,14 @@ public class ResourceTest {
       .withResourceVersion("1")
       .withNamespace("test").and().build();
 
-
-    Pod noReady = new PodBuilder(pod1).withNewStatus()
-      .addNewCondition()
-      .withType("Ready")
-      .withStatus("False")
-      .endCondition()
-      .endStatus()
-      .build();
-
-    Pod ready = new PodBuilder(pod1).withNewStatus()
-      .addNewCondition()
-      .withType("Ready")
-      .withStatus("True")
-      .endCondition()
-      .endStatus()
-      .build();
+    Pod noReady = createReadyFrom(pod1, "False");
+    Pod ready = createReadyFrom(pod1, "True");
 
     // once not ready, to begin watch
     server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, ready).once();
 
     KubernetesClient client = server.getClient();
-    Pod p = client.resource(noReady).waitUntilReady(5, TimeUnit.SECONDS);
+    Pod p = client.resource(noReady).waitUntilReady(5, SECONDS);
     Assert.assertTrue(Readiness.isPodReady(p));
   }
 
@@ -482,7 +460,7 @@ public class ResourceTest {
       .build();
 
     Status status = new StatusBuilder()
-      .withCode(HttpURLConnection.HTTP_GONE)
+      .withCode(HTTP_GONE)
       .build();
 
     // once not ready, to begin watch
@@ -496,7 +474,7 @@ public class ResourceTest {
 
     KubernetesClient client = server.getClient();
     try {
-      client.resource(noReady).waitUntilReady(5, TimeUnit.SECONDS);
+      client.resource(noReady).waitUntilReady(5, SECONDS);
       fail("should have thrown KubernetesClientException");
     } catch (KubernetesClientException e) {
       assertTrue(e.getCause() instanceof WaitForConditionWatcher.WatchException);
@@ -525,7 +503,7 @@ public class ResourceTest {
       .once();
 
     KubernetesClient client = server.getClient();
-    Pod p = client.pods().withName("pod1").waitUntilCondition(Objects::isNull,8, TimeUnit.SECONDS);
+    Pod p = client.pods().withName("pod1").waitUntilCondition(Objects::isNull,8, SECONDS);
     assertNull(p);
   }
 
@@ -536,22 +514,8 @@ public class ResourceTest {
       .withResourceVersion("1")
       .withNamespace("test").and().build();
 
-
-    Pod noReady = new PodBuilder(pod1).withNewStatus()
-      .addNewCondition()
-      .withType("Ready")
-      .withStatus("False")
-      .endCondition()
-      .endStatus()
-      .build();
-
-    Pod ready = new PodBuilder(pod1).withNewStatus()
-      .addNewCondition()
-      .withType("Ready")
-      .withStatus("True")
-      .endCondition()
-      .endStatus()
-      .build();
+    Pod noReady = createReadyFrom(pod1, "False");
+    Pod ready = createReadyFrom(pod1, "True");
 
     // once so that "waitUntilExists" successfully ends
     // and again so that "periodicWatchUntilReady" successfully begins
@@ -565,7 +529,7 @@ public class ResourceTest {
       .always();
 
     KubernetesClient client = server.getClient();
-    Pod p = client.resource(noReady).createOrReplaceAnd().waitUntilReady(10, TimeUnit.SECONDS);
+    Pod p = client.resource(noReady).createOrReplaceAnd().waitUntilReady(10, SECONDS);
     Assert.assertTrue(Readiness.isPodReady(p));
   }
 
@@ -611,11 +575,21 @@ public class ResourceTest {
     // When
     HasMetadata response = server.getClient()
       .resource(new PodBuilder(conditionMetPod).build())
-      .waitUntilCondition(p -> "MET".equals(p.getMetadata().getLabels().get("CONDITION")), 1, TimeUnit.SECONDS);
+      .waitUntilCondition(p -> "MET".equals(p.getMetadata().getLabels().get("CONDITION")), 1, SECONDS);
     // Then
     assertEquals(conditionMetPod, response);
     assertEquals(2, server.getMockServer().getRequestCount());
   }
 
+  private static Pod createReadyFrom(Pod pod, String status) {
+    return new PodBuilder(pod)
+      .withNewStatus()
+        .addNewCondition()
+          .withType("Ready")
+          .withStatus(status)
+        .endCondition()
+      .endStatus()
+      .build();
+  }
 }
 

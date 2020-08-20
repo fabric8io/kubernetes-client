@@ -66,6 +66,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -78,6 +79,8 @@ import java.util.function.Predicate;
 
 import okhttp3.HttpUrl;
 import okhttp3.Request;
+
+import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>, R extends Resource<T, D>>
   extends OperationSupport
@@ -1077,40 +1080,60 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   private T waitUntilConditionWithRetries(Predicate<T> condition, long timeoutNanos, long backoffMillis)
     throws InterruptedException {
+    return waitUntilConditionWithRetries(condition, null, timeoutNanos, backoffMillis);
+  }
 
-    T item = fromServer().get();
-    if (condition.test(item)) {
-      return item;
-    }
+  @Override
+  public T waitUntilCondition(Predicate<T> condition, String resourceVersion, Duration timeout)
+    throws InterruptedException {
+    ListOptions options = createListOptions(resourceVersion);
+    return waitUntilConditionWithRetries(condition, options, timeout.toNanos(), watchRetryInitialBackoffMillis);
+  }
 
-    long end = System.nanoTime() + timeoutNanos;
+  private T waitUntilConditionWithRetries(Predicate<T> condition, ListOptions options, long timeoutNanos, long backoffMillis)
+    throws InterruptedException {
+    long currentBackOff = backoffMillis;
+    long remainingNanosToWait = timeoutNanos;
+    while (remainingNanosToWait > 0) {
 
-    WaitForConditionWatcher<T> watcher = new WaitForConditionWatcher<>(condition);
-    Watch watch = item == null
-      ? watch(new ListOptionsBuilder()
-      .withResourceVersion(null)
-      .build(), watcher)
-      : watch(item.getMetadata().getResourceVersion(), watcher);
-
-    try {
-      return watcher.getFuture()
-        .get(timeoutNanos, TimeUnit.NANOSECONDS);
-    } catch (ExecutionException e) {
-      if (e.getCause() instanceof WatchException && ((WatchException) e.getCause()).isShouldRetry()) {
-        watch.close();
-        LOG.debug("retryable watch exception encountered, retrying after {} millis", backoffMillis, e.getCause());
-        Thread.sleep(backoffMillis);
-        long newTimeout = end - System.nanoTime();
-        long newBackoff = (long) (backoffMillis * watchRetryBackoffMultiplier);
-        return waitUntilConditionWithRetries(condition, newTimeout, newBackoff);
+      T item = fromServer().get();
+      if (condition.test(item)) {
+        return item;
+      } else if (options == null) {
+        options = createListOptions(getResourceVersion(item));
       }
-      throw KubernetesClientException.launderThrowable(e.getCause());
-    } catch (TimeoutException e) {
-      LOG.debug("ran out of time waiting for watcher, wait condition not met");
-      throw new IllegalArgumentException(type.getSimpleName() + " with name:[" + name + "] in namespace:[" + namespace + "] matching condition not found!");
-    } finally {
-      watch.close();
+
+      final WaitForConditionWatcher<T> watcher = new WaitForConditionWatcher<>(condition);
+      final long startTime = System.nanoTime();
+      try (Watch ignored = watch(options, watcher)) {
+        return watcher.getFuture().get(remainingNanosToWait, NANOSECONDS);
+      } catch (ExecutionException e) {
+        Throwable cause = e.getCause();
+        if (cause instanceof WatchException && ((WatchException) cause).isShouldRetry()) {
+          LOG.debug("retryable watch exception encountered, retrying after {} millis", currentBackOff, cause);
+          Thread.sleep(currentBackOff);
+          currentBackOff *= watchRetryBackoffMultiplier;
+          remainingNanosToWait -= (System.nanoTime() - startTime);
+        } else {
+          throw KubernetesClientException.launderThrowable(cause);
+        }
+      } catch (TimeoutException e) {
+        break;
+      }
     }
+
+    LOG.debug("ran out of time waiting for watcher, wait condition not met");
+    throw new IllegalArgumentException(type.getSimpleName() + " with name:[" + name + "] in namespace:[" + namespace + "] matching condition not found!");
+  }
+
+  private static String getResourceVersion(HasMetadata item) {
+    return (item == null) ? null : item.getMetadata().getResourceVersion();
+  }
+
+  private static ListOptions createListOptions(String resourceVersion) {
+    return new ListOptionsBuilder()
+      .withResourceVersion(resourceVersion)
+      .build();
   }
 
   public void setType(Class<T> type) {

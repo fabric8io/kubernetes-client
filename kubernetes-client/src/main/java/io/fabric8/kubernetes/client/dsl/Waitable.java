@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
@@ -26,6 +27,8 @@ public interface Waitable<T, P> {
   T waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException;
 
   T waitUntilCondition(Predicate<P> condition, long amount, TimeUnit timeUnit) throws InterruptedException;
+
+  T waitUntilCondition(Predicate<P> condition, String resourceVersion, Duration timeout) throws InterruptedException;
 
   /**
    * Configure the backoff strategy to use when waiting for conditions, in case the watcher encounters a retryable error.

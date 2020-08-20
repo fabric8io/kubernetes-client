@@ -17,26 +17,26 @@ package io.fabric8.kubernetes.client.handlers;
 
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.ListOptions;
-import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
-import java.util.function.Predicate;
-import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
-import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.HasMetadataVisitiableBuilder;
 import io.fabric8.kubernetes.client.ResourceHandler;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.internal.KubernetesListOperationsImpl;
+import okhttp3.OkHttpClient;
 import org.apache.felix.scr.annotations.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 
 @Component
 @org.apache.felix.scr.annotations.Service
@@ -123,6 +123,11 @@ public class KubernetesListHandler implements ResourceHandler<KubernetesList, Ku
 
   @Override
   public KubernetesList waitUntilCondition(OkHttpClient client, Config config, String namespace, KubernetesList item, Predicate<KubernetesList> condition, long amount, TimeUnit timeUnit) throws InterruptedException {
+    throw new UnsupportedOperationException("Watch is not supported on KubernetesList.");
+  }
+
+  @Override
+  public KubernetesList waitUntilCondition(OkHttpClient client, Config config, String namespace, KubernetesList item, Predicate<KubernetesList> condition, String resourceVersion, Duration timeout) throws InterruptedException {
     throw new UnsupportedOperationException("Watch is not supported on KubernetesList.");
   }
 }
