@@ -84,7 +84,7 @@
     <okhttp.bundle.version>3.12.1_1</okhttp.bundle.version>
     <okio.version>1.15.0</okio.version>
     <okio.bundle.version>1.15.0_1</okio.bundle.version>
-    <jackson.version>2.10.3</jackson.version>
+    <jackson.version>2.11.2</jackson.version>
     <mockwebserver.version>0.1.8</mockwebserver.version>
 
     <!-- API versions -->
@@ -111,7 +111,7 @@
     <slf4j.version>1.7.30</slf4j.version>
     <mockito.version>3.5.2</mockito.version>
     <lombok.version>1.18.12</lombok.version>
-    <snakeyaml.version>1.24</snakeyaml.version>
+    <snakeyaml.version>1.26</snakeyaml.version>
     <bouncycastle.version>1.66</bouncycastle.version>
     <commons-codec.version>1.14</commons-codec.version>
     <commons-compress.version>1.20</commons-compress.version>
