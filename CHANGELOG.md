@@ -4,6 +4,7 @@
 #### Bugs
 * Fix #2373: Unable to create a Template on OCP3
 * Fix #2316: Cannot load resource from stream without apiVersion
+* Fix #2354: Fix NullPointerException in ResourceCompare when no resource is returned from fromServer.get()
 * Fix #2389: KubernetesServer does not use value from https in crud mode
 * Fix #2306: Make KubernetesServer CRUD mode work with informers
 

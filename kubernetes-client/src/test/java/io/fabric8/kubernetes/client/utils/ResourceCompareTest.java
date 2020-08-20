@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.utils;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -24,6 +25,8 @@ import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
+import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.Service;
@@ -32,6 +35,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
+import java.util.List;
 
 public class ResourceCompareTest {
 
@@ -130,4 +134,20 @@ public class ResourceCompareTest {
     assertTrue(result);
   }
 
+  @Test
+  void testEqualsWhenOneResourceIsNull() {
+    // Given
+    Pod pod2 = new PodBuilder().withNewMetadata().withName("foo").endMetadata().build();
+
+    // When
+    boolean result = ResourceCompare.equals(null, pod2);
+
+    // Then
+    assertFalse(result);
+  }
+
+  @Test
+  void testEqualsWhenBothNull() {
+    assertTrue(ResourceCompare.equals(null, null));
+  }
 }
