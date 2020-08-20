@@ -15,17 +15,16 @@
  */
 package io.fabric8.tekton.client;
 
+import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
 import okhttp3.OkHttpClient;
 
 import java.net.URL;
-import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class TektonExtensionAdapter implements ExtensionAdapter<TektonClient> {
+public class TektonExtensionAdapter extends ExtensionAdapterSupport implements ExtensionAdapter<TektonClient> {
 
     static final ConcurrentMap<URL, Boolean> IS_TEKTON = new ConcurrentHashMap<>();
     static final ConcurrentMap<URL, Boolean> USES_TEKTON_APIGROUPS = new ConcurrentHashMap<>();
@@ -37,35 +36,11 @@ public class TektonExtensionAdapter implements ExtensionAdapter<TektonClient> {
 
 	@Override
 	public Boolean isAdaptable(Client client) {
-		return isTektonAvailable(client);
+		return isAdaptable(client, IS_TEKTON, USES_TEKTON_APIGROUPS, "tekton.dev");
 	}
 
 	@Override
 	public TektonClient adapt(Client client) {
             return new DefaultTektonClient(client.adapt(OkHttpClient.class), client.getConfiguration());
 	}
-
-	private boolean isTektonAvailable(Client client) {
-        URL masterUrl = client.getMasterUrl();
-        if (IS_TEKTON.containsKey(masterUrl)) {
-            return IS_TEKTON.get(masterUrl);
-        } else {
-            RootPaths rootPaths = client.rootPaths();
-            if (rootPaths != null) {
-                List<String> paths = rootPaths.getPaths();
-                if (paths != null) {
-                    for (String path : paths) {
-                        // lets detect the new API Groups APIs for OpenShift
-                        if (path.endsWith("tekton.dev") || path.contains("tekton.dev/")) {
-                            USES_TEKTON_APIGROUPS.putIfAbsent(masterUrl, true);
-                            IS_TEKTON.putIfAbsent(masterUrl, true);
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        IS_TEKTON.putIfAbsent(masterUrl, false);
-        return false;
-    }
 }

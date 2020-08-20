@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.knative.client.serving.v1;
+package io.fabric8.volumesnapshot.client;
 
 import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
 import io.fabric8.kubernetes.client.Client;
@@ -24,23 +24,25 @@ import java.net.URL;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-public class ServingV1ExtensionAdapter extends ExtensionAdapterSupport implements ExtensionAdapter<ServingV1Client> {
+public class VolumeSnapshotExtensionAdapter extends ExtensionAdapterSupport implements ExtensionAdapter<VolumeSnapshotClient> {
 
-    static final ConcurrentMap<URL, Boolean> IS_KNATIVE = new ConcurrentHashMap<>();
-    static final ConcurrentMap<URL, Boolean> USES_KNATIVE_APIGROUPS = new ConcurrentHashMap<>();
-    
-	@Override
-	public Class<ServingV1Client> getExtensionType() {
-		return ServingV1Client.class;
-	}
+  static final ConcurrentMap<URL, Boolean> IS_VOLUME_SNAPSHOT = new ConcurrentHashMap<>();
+  static final ConcurrentMap<URL, Boolean> USES_VOLUME_SNAPSHOT_APIGROUPS = new ConcurrentHashMap<>();
+  public static final String API_GROUP = "snapshot.storage.k8s.io";
 
-	@Override
-	public Boolean isAdaptable(Client client) {
-		return isAdaptable(client, IS_KNATIVE, USES_KNATIVE_APIGROUPS, "knative.dev");
-	}
+  @Override
+  public Class<VolumeSnapshotClient> getExtensionType() {
+    return VolumeSnapshotClient.class;
+  }
 
-	@Override
-	public ServingV1Client adapt(Client client) {
-    return new DefaultServingV1Client(client.adapt(OkHttpClient.class), client.getConfiguration());
-	}
+  @Override
+  public Boolean isAdaptable(Client client) {
+    return isAdaptable(client, IS_VOLUME_SNAPSHOT, USES_VOLUME_SNAPSHOT_APIGROUPS, API_GROUP);
+  }
+
+  @Override
+  public VolumeSnapshotClient adapt(Client client) {
+    return new DefaultVolumeSnapshotClient(client.adapt(OkHttpClient.class), client.getConfiguration());
+  }
+
 }

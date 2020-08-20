@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2015 Red Hat, Inc.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.fabric8</groupId>
+    <artifactId>volumesnapshot</artifactId>
+    <version>4.10-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>volumesnapshot-client</artifactId>
+  <packaging>bundle</packaging>
+  <name>Fabric8 :: Volume Snapshot :: Client</name>
+
+  <properties>
+    <useIncrementalCompilation>false</useIncrementalCompilation>
+    <osgi.import>
+      io.fabric8.kubernetes.api.builder,
+      !io.fabric8.volumesnapshot.client.*,
+      *
+    </osgi.import>
+    <osgi.export>
+      io.fabric8.volumesnapshot.client.*
+    </osgi.export>
+    <osgi.include.resources>
+      /META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter=target/classes/META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter,
+      /META-INF/services/io.fabric8.kubernetes.client.ResourceHandler=target/classes/META-INF/services/io.fabric8.kubernetes.client.ResourceHandler
+    </osgi.include.resources>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>volumesnapshot-model</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-client</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>io.sundr</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.module</groupId>
+      <artifactId>jackson-module-jaxb-annotations</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.sundr</groupId>
+      <artifactId>builder-annotations</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.sundr</groupId>
+      <artifactId>transform-annotations</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-migrationsupport</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <configuration>
+          <passphrase>4uds0n</passphrase>
+          <useAgent>true</useAgent>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>io.sundr</groupId>
+        <artifactId>sundr-maven-plugin</artifactId>
+        <version>${sundrio.version}</version>
+        <configuration>
+          <boms>
+            <bom>
+              <artifactId>volumesnapshot-java-api-bom</artifactId>
+              <name>Snowdrop :: Volume Snapshot ::Bom</name>
+              <properties>
+                <skipStagingRepositoryClose>true</skipStagingRepositoryClose>
+              </properties>
+            </bom>
+            <bom>
+              <artifactId>volumesnapshot-java-api-bom-with-deps</artifactId>
+              <name>Snowdrop :: Volume Snapshot ::Bom with Dependencies</name>
+              <dependencies>
+                <includes>
+                  <include>com.squareup*:*</include>
+                  <include>com.fasterxml.jackson*:*</include>
+                </includes>
+              </dependencies>
+              <properties>
+                <skipStagingRepositoryClose>true</skipStagingRepositoryClose>
+              </properties>
+            </bom>
+          </boms>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate-bom</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
+        <version>${buildnumber.plugin.version}</version>
+        <executions>
+          <execution>
+            <id>get-build-timestamp</id>
+            <phase>initialize</phase>
+            <goals>
+              <goal>create-timestamp</goal>
+            </goals>
+            <configuration>
+              <!-- Example date: Wed, 4 Jul 2001 12:08:56 -0700 -->
+              <timestampFormat>EEE, d MMM yyyy HH:mm:ss Z</timestampFormat>
+              <timestampPropertyName>build.datetime</timestampPropertyName>
+            </configuration>
+          </execution>
+          <execution>
+            <id>get-scm-revision</id>
+            <phase>initialize</phase>
+            <goals>
+              <goal>create</goal>
+            </goals>
+            <configuration>
+              <doCheck>false</doCheck>
+              <doUpdate>false</doUpdate>
+              <revisionOnScmFailure>UNKNOWN</revisionOnScmFailure>
+              <getRevisionOnlyOnce>true</getRevisionOnlyOnce>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <configuration>
+          <nonFilteredFileExtensions>
+            <nonFilteredFileExtension>zip</nonFilteredFileExtension>
+            <nonFilteredFileExtension>gz</nonFilteredFileExtension>
+            <nonFilteredFileExtension>jar</nonFilteredFileExtension>
+          </nonFilteredFileExtensions>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

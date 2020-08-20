@@ -1,0 +1,440 @@
+{
+  "id": "http://fabric8.io/csi/VolumeSnapshotSchema#",
+  "$schema": "http://json-schema.org/schema#",
+  "definitions": {
+    "github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshot": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "snapshot.storage.k8s.io/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "VolumeSnapshot",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotSpec",
+          "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotStatus",
+          "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotStatus"
+        }
+      },
+      "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshot",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotClass": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "snapshot.storage.k8s.io/v1beta1",
+          "required": true
+        },
+        "deletionPolicy": {
+          "type": "string",
+          "description": ""
+        },
+        "driver": {
+          "type": "string",
+          "description": ""
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "VolumeSnapshotClass",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "parameters": {
+          "type": "object",
+          "description": "",
+          "javaType": "java.util.Map\u003cString,String\u003e"
+        }
+      },
+      "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotClass",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotClassList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "snapshot.storage.k8s.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotClass",
+            "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotClass"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "VolumeSnapshotClassList",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotClassList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.volumesnapshot.api.model.VolumeSnapshotClass\u003e"
+      ]
+    },
+    "github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotContent": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "snapshot.storage.k8s.io/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "VolumeSnapshotContent",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotContentSpec",
+          "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotContentSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotContentStatus",
+          "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotContentStatus"
+        }
+      },
+      "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotContent",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotContentList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "snapshot.storage.k8s.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotContent",
+            "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotContent"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "VolumeSnapshotContentList",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotContentList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.volumesnapshot.api.model.VolumeSnapshotContent\u003e"
+      ]
+    },
+    "github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotContentSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "snapshotHandle": {
+          "type": "string",
+          "description": "",
+          "javaType": "String"
+        },
+        "volumeHandle": {
+          "type": "string",
+          "description": "",
+          "javaType": "String"
+        }
+      },
+      "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotContentSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotContentSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "deletionPolicy": {
+          "type": "string",
+          "description": ""
+        },
+        "driver": {
+          "type": "string",
+          "description": ""
+        },
+        "source": {
+          "$ref": "#/definitions/github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotContentSource",
+          "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotContentSource"
+        },
+        "volumeSnapshotClassName": {
+          "type": "string",
+          "description": "",
+          "javaType": "String"
+        },
+        "volumeSnapshotRef": {
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        }
+      },
+      "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotContentSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotContentStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "creationTime": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "error": {
+          "$ref": "#/definitions/github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotError",
+          "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotError"
+        },
+        "readyToUse": {
+          "type": "boolean",
+          "description": "",
+          "javaType": "Boolean"
+        },
+        "restoreSize": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "snapshotHandle": {
+          "type": "string",
+          "description": "",
+          "javaType": "String"
+        }
+      },
+      "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotContentStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotError": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "message": {
+          "type": "string",
+          "description": "",
+          "javaType": "String"
+        },
+        "time": {
+          "javaType": "java.lang.String"
+        }
+      },
+      "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotError",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "snapshot.storage.k8s.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshot",
+            "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshot"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "VolumeSnapshotList",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.volumesnapshot.api.model.VolumeSnapshot\u003e"
+      ]
+    },
+    "github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "persistentVolumeClaimName": {
+          "type": "string",
+          "description": "",
+          "javaType": "String"
+        },
+        "volumeSnapshotContentName": {
+          "type": "string",
+          "description": "",
+          "javaType": "String"
+        }
+      },
+      "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "source": {
+          "$ref": "#/definitions/github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotSource",
+          "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotSource"
+        },
+        "volumeSnapshotClassName": {
+          "type": "string",
+          "description": "",
+          "javaType": "String"
+        }
+      },
+      "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "boundVolumeSnapshotContentName": {
+          "type": "string",
+          "description": "",
+          "javaType": "String"
+        },
+        "creationTime": {
+          "javaType": "java.lang.String"
+        },
+        "error": {
+          "$ref": "#/definitions/github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotError",
+          "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotError"
+        },
+        "readyToUse": {
+          "type": "boolean",
+          "description": "",
+          "javaType": "Boolean"
+        },
+        "restoreSize": {
+          "javaType": "io.fabric8.kubernetes.api.model.Quantity"
+        }
+      },
+      "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshot": {
+      "$ref": "#/definitions/github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshot",
+      "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshot"
+    },
+    "github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotClass": {
+      "$ref": "#/definitions/github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotClass",
+      "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotClass"
+    },
+    "github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotClassList": {
+      "$ref": "#/definitions/github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotClassList",
+      "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotClassList"
+    },
+    "github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotContent": {
+      "$ref": "#/definitions/github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotContent",
+      "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotContent"
+    },
+    "github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotContentList": {
+      "$ref": "#/definitions/github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotContentList",
+      "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotContentList"
+    },
+    "github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotContentSource": {
+      "$ref": "#/definitions/github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotContentSource",
+      "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotContentSource"
+    },
+    "github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotContentSpec": {
+      "$ref": "#/definitions/github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotContentSpec",
+      "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotContentSpec"
+    },
+    "github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotContentStatus": {
+      "$ref": "#/definitions/github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotContentStatus",
+      "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotContentStatus"
+    },
+    "github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotError": {
+      "$ref": "#/definitions/github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotError",
+      "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotError"
+    },
+    "github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotList": {
+      "$ref": "#/definitions/github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotList",
+      "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotList"
+    },
+    "github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotSource": {
+      "$ref": "#/definitions/github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotSource",
+      "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotSource"
+    },
+    "github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotSpec": {
+      "$ref": "#/definitions/github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotSpec",
+      "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotSpec"
+    },
+    "github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotStatus": {
+      "$ref": "#/definitions/github_com_kubernetes-csi_external-snapshotter_v2_pkg_apis_volumesnapshot_v1beta1_VolumeSnapshotStatus",
+      "javaType": "io.fabric8.volumesnapshot.api.model.VolumeSnapshotStatus"
+    }
+  },
+  "additionalProperties": false
+}

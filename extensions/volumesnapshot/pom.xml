@@ -16,23 +16,25 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>kubernetes-client-project</artifactId>
+    <artifactId>kubernetes-extensions</artifactId>
     <groupId>io.fabric8</groupId>
     <version>4.10-SNAPSHOT</version>
   </parent>
 
-  <artifactId>kubernetes-extensions</artifactId>
+  <artifactId>volumesnapshot</artifactId>
   <packaging>pom</packaging>
-  <name>Fabric8 :: Kubernetes :: Extensions</name>
+  <name>Fabric8 :: Volume Snapshot :: Extension</name>
 
   <modules>
-    <module>knative</module>
-    <module>tekton</module>
-    <module>service-catalog</module>
-    <module>volumesnapshot</module>
+    <module>model</module>
+    <module>client</module>
+    <module>mock</module>
+    <module>examples</module>
+    <module>tests</module>
   </modules>
 
 </project>
