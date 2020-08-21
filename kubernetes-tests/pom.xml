@@ -101,6 +101,10 @@
       <version>${assertj.core.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.awaitility</groupId>
+      <artifactId>awaitility</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>org.bouncycastle</groupId>
