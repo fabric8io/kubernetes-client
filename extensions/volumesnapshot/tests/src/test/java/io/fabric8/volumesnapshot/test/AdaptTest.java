@@ -24,14 +24,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import java.io.IOException;
-
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableRuleMigrationSupport
 class AdaptTest {
 
-  private VolumeSnapshotMockServer mock = new VolumeSnapshotMockServer();
+  private final VolumeSnapshotMockServer mock = new VolumeSnapshotMockServer();
 
   @BeforeEach
   public void setUp() {
@@ -39,7 +37,7 @@ class AdaptTest {
   }
 
   @AfterEach
-  public void tearDown() throws IOException {
+  public void tearDown() {
     mock.destroy();
   }
 

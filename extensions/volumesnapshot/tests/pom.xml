@@ -27,7 +27,7 @@
 
   <artifactId>volumesnapshot-tests</artifactId>
   <packaging>jar</packaging>
-  <name>Fabric8 :: Service Catalog :: Tests</name>
+  <name>Fabric8 :: Volume Snapshot :: Tests</name>
 
   <dependencies>
     <dependency>
