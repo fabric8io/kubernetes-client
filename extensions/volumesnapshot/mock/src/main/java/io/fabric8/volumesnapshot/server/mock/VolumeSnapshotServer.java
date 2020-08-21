@@ -29,8 +29,8 @@ public class VolumeSnapshotServer extends ExternalResource {
   protected VolumeSnapshotMockServer mock;
   private VolumeSnapshotClient client;
 
-  private boolean https;
-  private boolean crudMode;
+  private final boolean https;
+  private final boolean crudMode;
 
   public VolumeSnapshotServer() {
     this(true, false);
