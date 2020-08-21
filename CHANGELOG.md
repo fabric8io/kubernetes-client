@@ -82,6 +82,9 @@
 * Add support for Namespaced SharedInformers, fixed probelms with OperationContext argument
 * Fix #1821: ListOptions now supported when watching a Kubernetes Resource
 
+_**Note**_: Some classes have been renamed:
+- `io.fabric8.tekton.pipeline.v1beta1.WorkspacePipelineDeclaration` is now `io.fabric8.tekton.pipeline.v1beta1.PipelineWorkspaceDeclaration`
+
 ### 4.10.1 (2020-05-06)
 #### Bugs
 * Fix #2189: Change package names of Resource Operation classes in order to avoid duplicates Operation classes
