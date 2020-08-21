@@ -57,6 +57,7 @@ import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.client.utils.WatcherToggle;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -75,6 +76,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Predicate;
+
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 
@@ -83,7 +85,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   implements
   OperationInfo,
   MixedOperation<T, L, D, R>,
-  Resource<T,D> {
+  Resource<T, D> {
 
   private static final Logger LOG = LoggerFactory.getLogger(BaseOperation.class);
 
@@ -134,8 +136,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
    * @param item  The item.
    * @param name  The name to check.
    * @param <T>
-     * @return
-     */
+   * @return
+   */
   private static <T> String name(T item, String name) {
     if (name != null && !name.isEmpty()) {
       return name;
@@ -147,7 +149,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
 
-  public BaseOperation<T,L,D,R> newInstance(OperationContext context) {
+  public BaseOperation<T, L, D, R> newInstance(OperationContext context) {
     return new BaseOperation<T, L, D, R>(context);
   }
 
@@ -178,7 +180,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   private void addQueryStringParam(HttpUrl.Builder requestUrlBuilder, String name, String value) {
-    if(Utils.isNotNullOrEmpty(value)) {
+    if (Utils.isNotNullOrEmpty(value)) {
       requestUrlBuilder.addQueryParameter(name, value);
     }
   }
@@ -236,12 +238,12 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     } catch (KubernetesClientException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("get"), e);
       //if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
-     //   throw e;
+      //   throw e;
       //} else {
       //  String resourceType = type != null ? type.getSimpleName() : "Resource";
       //  String msg = resourceType + " with name: [" + getName() + "]  not found in namespace: [" + (Utils.isNotNullOrEmpty(getNamespace()) ? getName() : getConfig().getNamespace()) + "]";
-     //   throw new KubernetesClientException(msg, HttpURLConnection.HTTP_NOT_FOUND, new StatusBuilder().withCode(HttpURLConnection.HTTP_NOT_FOUND).withMessage(msg).build());
-     // }
+      //   throw new KubernetesClientException(msg, HttpURLConnection.HTTP_NOT_FOUND, new StatusBuilder().withCode(HttpURLConnection.HTTP_NOT_FOUND).withMessage(msg).build());
+      // }
     } catch (InterruptedException | ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("get"), e);
     }
@@ -577,9 +579,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         }
         Map.Entry<String, String> entry = iter.next();
         if (entry.getValue() != null) {
-            sb.append(entry.getKey()).append("=").append(entry.getValue());
+          sb.append(entry.getKey()).append("=").append(entry.getValue());
         } else {
-            sb.append(entry.getKey());
+          sb.append(entry.getKey());
         }
       }
     }
@@ -598,7 +600,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
             sb.append(entry.getKey()).append("!=").append(entry.getValue()[i]);
           }
         } else {
-            sb.append('!').append(entry.getKey());
+          sb.append('!').append(entry.getKey());
         }
       }
     }
@@ -709,6 +711,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     boolean deleted = true;
     if (items != null) {
       for (T item : items) {
+        if (item == null) {
+          continue;
+        }
         updateApiVersionResource(item);
 
         try {
@@ -717,7 +722,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
           if (item instanceof HasMetadata
             && ((HasMetadata) item).getMetadata() != null
             && ((HasMetadata) item).getMetadata().getName() != null
-            && !((HasMetadata) item).getMetadata().getName().isEmpty())  {
+            && !((HasMetadata) item).getMetadata().getName().isEmpty()) {
             op = (R) inNamespace(checkNamespace(item)).withName(((HasMetadata) item).getMetadata().getName());
           } else {
             op = (R) withItem(item);
@@ -744,7 +749,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     }
   }
 
-  public BaseOperation<T,L,D,R> withItem(T item) {
+  public BaseOperation<T, L, D, R> withItem(T item) {
     return newInstance(context.withItem(item));
   }
 
@@ -805,7 +810,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     } catch (KubernetesClientException ke) {
 
       if (ke.getCode() != 200) {
-        if(watch != null){
+        if (watch != null) {
           //release the watch
           watch.close();
         }
@@ -813,7 +818,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         throw ke;
       }
 
-      if(watch != null){
+      if (watch != null) {
         //release the watch after disabling the watcher (to avoid premature call to onClose)
         watcherToggle.disable();
         watch.close();
@@ -1010,14 +1015,12 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withGracePeriod(long gracePeriodSeconds)
-  {
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withGracePeriod(long gracePeriodSeconds) {
     return newInstance(context.withGracePeriodSeconds(gracePeriodSeconds));
   }
 
   @Override
-  public EditReplacePatchDeletable<T, T, D, Boolean> withPropagationPolicy(DeletionPropagation propagationPolicy)
-  {
+  public EditReplacePatchDeletable<T, T, D, Boolean> withPropagationPolicy(DeletionPropagation propagationPolicy) {
     return newInstance(context.withPropagationPolicy(propagationPolicy));
   }
 
@@ -1100,7 +1103,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public Boolean isReady() {
     T i = get();
-    return i instanceof HasMetadata && Readiness.isReady((HasMetadata)i);
+    return i instanceof HasMetadata && Readiness.isReady((HasMetadata) i);
   }
 
   @Override
@@ -1127,8 +1130,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     WaitForConditionWatcher<T> watcher = new WaitForConditionWatcher<>(condition);
     Watch watch = item == null
       ? watch(new ListOptionsBuilder()
-          .withResourceVersion(null)
-          .build(), watcher)
+      .withResourceVersion(null)
+      .build(), watcher)
       : watch(item.getMetadata().getResourceVersion(), watcher);
 
     try {
