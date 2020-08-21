@@ -62,6 +62,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.awaitility.Awaitility.await;
 
 @EnableRuleMigrationSupport
 class DefaultSharedIndexInformerTest {
@@ -73,10 +74,10 @@ class DefaultSharedIndexInformerTest {
       "401: The event in requested index is outdated and cleared (the requested history has been cleared [3/1]) [2]")
     .build();
   static final WatchEvent outdatedEvent = new WatchEventBuilder().withStatusObject(outdatedStatus).build();
-  static final Long WATCH_EVENT_EMIT_TIME = 1000L;
-  static final Long OUTDATED_WATCH_EVENT_EMIT_TIME = 2000L;
-  static final long RESYNC_PERIOD = 4000L;
-  static final int LATCH_AWAIT_PERIOD_IN_SECONDS = 30;
+  static final Long WATCH_EVENT_EMIT_TIME = 1L;
+  static final Long OUTDATED_WATCH_EVENT_EMIT_TIME = 1L;
+  static final long RESYNC_PERIOD = 5L;
+  static final int LATCH_AWAIT_PERIOD_IN_SECONDS = 10;
 
   @Test
   void testNamespacedPodInformer() throws InterruptedException {
@@ -115,8 +116,9 @@ class DefaultSharedIndexInformerTest {
     factory.startAllRegisteredInformers();
 
     foundExistingPod.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
-    waitUntilResourceVersionSynced();
     assertEquals(0L, foundExistingPod.getCount());
+    await().atMost(1, TimeUnit.SECONDS)
+      .until(() -> podInformer.lastSyncResourceVersion().equals(endResourceVersion));
     assertEquals(endResourceVersion, podInformer.lastSyncResourceVersion());
 
     factory.stopAllRegisteredInformers();
@@ -213,15 +215,13 @@ class DefaultSharedIndexInformerTest {
     factory.startAllRegisteredInformers();
 
     relistSuccessful.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
-    waitUntilResourceVersionSynced();
     assertEquals(0, relistSuccessful.getCount());
-    assertEquals(endResourceVersion, podInformer.lastSyncResourceVersion());
 
     factory.stopAllRegisteredInformers();
   }
 
   @Test
-  void testHasSynced() throws InterruptedException {
+  void testHasSynced() {
     String startResourceVersion = "1000", endResourceVersion = "1001";
     server.expect().withPath("/api/v1/namespaces/test/pods")
       .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata().withItems(Collections.emptyList()).build()).once();
@@ -250,8 +250,7 @@ class DefaultSharedIndexInformerTest {
       });
     factory.startAllRegisteredInformers();
 
-    // Wait for resync period of pass
-    Thread.sleep(RESYNC_PERIOD);
+    await().atMost(1, TimeUnit.SECONDS).until(() -> !podInformer.hasSynced());
     assertFalse(podInformer.hasSynced());
 
     factory.stopAllRegisteredInformers();
@@ -279,7 +278,6 @@ class DefaultSharedIndexInformerTest {
     factory.addSharedInformerEventListener(exception -> failureCallbackReceived.countDown());
     factory.startAllRegisteredInformers();
 
-    // Wait for resync period of pass
     failureCallbackReceived.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
     assertEquals(0, failureCallbackReceived.getCount());
 
@@ -327,8 +325,6 @@ class DefaultSharedIndexInformerTest {
 
     foundExistingNamespace.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
     assertEquals(0, foundExistingNamespace.getCount());
-    waitUntilResourceVersionSynced();
-    assertEquals(endResourceVersion, namespaceSharedIndexInformer.lastSyncResourceVersion());
 
     factory.stopAllRegisteredInformers();
   }
@@ -373,9 +369,7 @@ class DefaultSharedIndexInformerTest {
     factory.startAllRegisteredInformers();
 
     foundExistingClusterRoleBinding.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
-    waitUntilResourceVersionSynced();
     assertEquals(0, foundExistingClusterRoleBinding.getCount());
-    assertEquals(endResourceVersion, clusterRoleBindingSharedIndexInformer.lastSyncResourceVersion());
 
     factory.stopAllRegisteredInformers();
   }
@@ -421,9 +415,7 @@ class DefaultSharedIndexInformerTest {
     factory.startAllRegisteredInformers();
 
     foundExistingDeployment.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
-    waitUntilResourceVersionSynced();
     assertEquals(0, foundExistingDeployment.getCount());
-    assertEquals(endResourceVersion, deploymentSharedIndexInformer.lastSyncResourceVersion());
 
     factory.stopAllRegisteredInformers();
   }
@@ -468,9 +460,7 @@ class DefaultSharedIndexInformerTest {
     factory.startAllRegisteredInformers();
 
     foundExistingPod.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
-    waitUntilResourceVersionSynced();
     assertEquals(0, foundExistingPod.getCount());
-    assertEquals(endResourceVersion, podInformer.lastSyncResourceVersion());
 
     factory.stopAllRegisteredInformers();
   }
@@ -521,9 +511,7 @@ class DefaultSharedIndexInformerTest {
     sharedInformerFactory.startAllRegisteredInformers();
 
     foundExistingPodSet.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
-    waitUntilResourceVersionSynced();
     assertEquals(0, foundExistingPodSet.getCount());
-    assertEquals(endResourceVersion, podSetSharedIndexInformer.lastSyncResourceVersion());
 
     sharedInformerFactory.stopAllRegisteredInformers();
   }
@@ -574,9 +562,7 @@ class DefaultSharedIndexInformerTest {
     sharedInformerFactory.startAllRegisteredInformers();
 
     foundExistingStar.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
-    waitUntilResourceVersionSynced();
     assertEquals(0, foundExistingStar.getCount());
-    assertEquals(endResourceVersion, starSharedIndexInformer.lastSyncResourceVersion());
 
     sharedInformerFactory.stopAllRegisteredInformers();
   }
@@ -605,7 +591,4 @@ class DefaultSharedIndexInformerTest {
     return podSet;
   }
 
-  public void waitUntilResourceVersionSynced() throws InterruptedException {
-    Thread.sleep(5000L);
-  }
 }
