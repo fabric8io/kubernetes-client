@@ -254,15 +254,15 @@ class UtilsTest {
     assertTrue(Utils.isResourceNamespaced(Deployment.class));
     assertTrue(Utils.isResourceNamespaced(ReplicaSet.class));
     assertTrue(Utils.isResourceNamespaced(StatefulSet.class));
-    assertTrue(Utils.isResourceNamespaced(TokenReview.class));
+    assertFalse(Utils.isResourceNamespaced(TokenReview.class));
     assertTrue(Utils.isResourceNamespaced(LocalSubjectAccessReview.class));
-    assertTrue(Utils.isResourceNamespaced(SelfSubjectAccessReview.class));
-    assertTrue(Utils.isResourceNamespaced(SelfSubjectRulesReview.class));
-    assertTrue(Utils.isResourceNamespaced(SubjectAccessReview.class));
+    assertFalse(Utils.isResourceNamespaced(SelfSubjectAccessReview.class));
+    assertFalse(Utils.isResourceNamespaced(SelfSubjectRulesReview.class));
+    assertFalse(Utils.isResourceNamespaced(SubjectAccessReview.class));
     assertTrue(Utils.isResourceNamespaced(HorizontalPodAutoscaler.class));
     assertTrue(Utils.isResourceNamespaced(CronJob.class));
     assertTrue(Utils.isResourceNamespaced(Job.class));
-    assertTrue(Utils.isResourceNamespaced(CertificateSigningRequest.class));
+    assertFalse(Utils.isResourceNamespaced(CertificateSigningRequest.class));
     assertTrue(Utils.isResourceNamespaced(Lease.class));
     assertTrue(Utils.isResourceNamespaced(EndpointSlice.class));
     assertTrue(Utils.isResourceNamespaced(Ingress.class));
@@ -274,8 +274,8 @@ class UtilsTest {
     assertTrue(Utils.isResourceNamespaced(RoleBinding.class));
     assertTrue(Utils.isResourceNamespaced(Role.class));
     assertFalse(Utils.isResourceNamespaced(PriorityClass.class));
-    assertTrue(Utils.isResourceNamespaced(CSIDriver.class));
-    assertTrue(Utils.isResourceNamespaced(CSINode.class));
+    assertFalse(Utils.isResourceNamespaced(CSIDriver.class));
+    assertFalse(Utils.isResourceNamespaced(CSINode.class));
     assertFalse(Utils.isResourceNamespaced(StorageClass.class));
     assertTrue(Utils.isResourceNamespaced(VolumeAttachment.class));
   }

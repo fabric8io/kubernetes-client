@@ -8,6 +8,7 @@
 * Fix #2354: Fix NullPointerException in ResourceCompare when no resource is returned from fromServer.get()
 * Fix #2389: KubernetesServer does not use value from https in crud mode
 * Fix #2306: Make KubernetesServer CRUD mode work with informers
+* Fix #2418: CertificateSigningRequest doesn't implement Namespaced
 
 #### Improvements
 * Fix #2331: Fixed documentation for namespaced informer for all custom types implementing `Namespaced` interface

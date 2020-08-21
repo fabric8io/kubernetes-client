@@ -73,6 +73,9 @@ import io.fabric8.kubernetes.api.model.DoneableService;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.DoneableServiceAccount;
+import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequest;
+import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestList;
+import io.fabric8.kubernetes.api.model.certificates.DoneableCertificateSigningRequest;
 import io.fabric8.kubernetes.api.model.coordination.v1.DoneableLease;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
@@ -83,6 +86,7 @@ import io.fabric8.kubernetes.client.dsl.internal.apiextensions.v1beta1.CustomRes
 import io.fabric8.kubernetes.client.dsl.internal.CustomResourceOperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.CustomResourceOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.KubernetesListOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.certificates.v1beta1.CertificateSigningRequestOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.APIServiceOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.ComponentStatusOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.NamespaceOperationsImpl;
@@ -291,6 +295,11 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   @Override
   public ApiextensionsAPIGroupDSL apiextensions() {
     return adapt(ApiextensionsAPIGroupClient.class);
+  }
+
+  @Override
+  public NonNamespaceOperation<CertificateSigningRequest, CertificateSigningRequestList, DoneableCertificateSigningRequest, Resource<CertificateSigningRequest, DoneableCertificateSigningRequest>> certificateSigningRequests() {
+    return new CertificateSigningRequestOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override

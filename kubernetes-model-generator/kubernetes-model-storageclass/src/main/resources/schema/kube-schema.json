@@ -2330,8 +2330,7 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata",
-        "io.fabric8.kubernetes.api.model.Namespaced"
+        "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
     },
     "kubernetes_storageclass_v1beta1_CSIDriverList": {
@@ -2426,8 +2425,7 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata",
-        "io.fabric8.kubernetes.api.model.Namespaced"
+        "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
     },
     "kubernetes_storageclass_v1beta1_CSINodeDriver": {
