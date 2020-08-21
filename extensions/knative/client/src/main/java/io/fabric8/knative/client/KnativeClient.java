@@ -52,23 +52,84 @@ import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 
+/**
+ * Main interface for Knative Client.
+ */
 public interface KnativeClient extends Client {
 
-    // Serving
+  // Serving
+  /**
+   * API entrypoint for Service(serving.knative.dev/v1)
+   *
+   * @return MixedOperation for Service class
+   */
   MixedOperation<Service, ServiceList, DoneableService, Resource<Service, DoneableService>> services();
+
+  /**
+   * API entrypoint for Route(serving.knative.dev/v1)
+   *
+   * @return MixedOperation for Route class
+   */
   MixedOperation<Route, RouteList, DoneableRoute, Resource<Route, DoneableRoute>> routes();
+
+  /**
+   * API entrypoint for Revision(serving.knative.dev/v1)
+   *
+   * @return MixedOperation for Revision class
+   */
   MixedOperation<Revision, RevisionList, DoneableRevision, Resource<Revision, DoneableRevision>> revisions();
+
+  /**
+   * API entrypoint for Configuration(serving.knative.dev/v1)
+   *
+   * @return MixedOperation for Configuration class
+   */
   MixedOperation<Configuration, ConfigurationList, DoneableConfiguration, Resource<Configuration, DoneableConfiguration>> configurations();
 
 
-    //Eventing
+  //Eventing
+  /**
+   * API entrypoint for Broker(eventing.knative.dev/v1alpha1)
+   *
+   * @return MixedOperation for Broker class
+   */
   MixedOperation<Broker, BrokerList, DoneableBroker, Resource<Broker, DoneableBroker>> brokers();
+  /**
+   * API entrypoint for Trigger(eventing.knative.dev/v1alpha1)
+   *
+   * @return MixedOperation for Trigger class
+   */
   MixedOperation<Trigger, TriggerList, DoneableTrigger, Resource<Trigger, DoneableTrigger>> triggers();
-  MixedOperation<Channel, ChannelList, DoneableChannel, Resource<Channel, DoneableChannel>> channels();
-  MixedOperation<Subscription, SubscriptionList, DoneableSubscription, Resource<Subscription, DoneableSubscription>> subscriptions();
+  /**
+   * API entrypoint for EventType(eventing.knative.dev/v1alpha1)
+   *
+   * @return MixedOperation for EventType class
+   */
   MixedOperation<EventType, EventTypeList, DoneableEventType, Resource<EventType, DoneableEventType>> eventTypes();
 
-    //Messaging
+  //Messaging
+  /**
+   * API entrypoint for Channel(messaging.knative.dev/v1alpha1)
+   *
+   * @return MixedOperation for Channel class
+   */
+  MixedOperation<Channel, ChannelList, DoneableChannel, Resource<Channel, DoneableChannel>> channels();
+  /**
+   * API entrypoint for Subscription(messaging.knative.dev/v1alpha1)
+   *
+   * @return MixedOperation for Subscription class
+   */
+  MixedOperation<Subscription, SubscriptionList, DoneableSubscription, Resource<Subscription, DoneableSubscription>> subscriptions();
+  /**
+   * API entrypoint for Sequence(messaging.knative.dev/v1alpha1)
+   *
+   * @return MixedOperation for Sequence class
+   */
   MixedOperation<Sequence, SequenceList, DoneableSequence, Resource<Sequence, DoneableSequence>> sequences();
+  /**
+   * API entrypoint for InMemoryChannel(messaging.knative.dev/v1alpha1)
+   *
+   * @return MixedOperation for InMemoryChannel class
+   */
   MixedOperation<InMemoryChannel, InMemoryChannelList, DoneableInMemoryChannel, Resource<InMemoryChannel, DoneableInMemoryChannel>> inMemoryChannels();
 }

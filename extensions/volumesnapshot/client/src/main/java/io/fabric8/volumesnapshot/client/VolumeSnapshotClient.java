@@ -32,11 +32,29 @@ import io.fabric8.volumesnapshot.client.internal.VolumeSnapshotClassResource;
 import io.fabric8.volumesnapshot.client.internal.VolumeSnapshotContentResource;
 import io.fabric8.volumesnapshot.client.internal.VolumeSnapshotResource;
 
+/**
+ * Main interface for VolumeSnapshot Client library.
+ */
 public interface VolumeSnapshotClient extends Client {
 
+  /**
+   * API entrypoint for dealing with VolumeSnapshotClass(snapshot.storage.k8s.io/v1beta1)
+   *
+   * @return NonNamespaceOperation for VolumeSnapshotClass class
+   */
   NonNamespaceOperation<VolumeSnapshotClass, VolumeSnapshotClassList, DoneableVolumeSnapshotClass, VolumeSnapshotClassResource> volumeSnapshotClasses();
 
+  /**
+   * API entrypoint for dealing with VolumeSnapshotContent(snapshot.storage.k8s.io/v1beta1)
+   *
+   * @return NonNamespaceOperation for VolumeSnapshotContent class
+   */
   NonNamespaceOperation<VolumeSnapshotContent, VolumeSnapshotContentList, DoneableVolumeSnapshotContent, VolumeSnapshotContentResource> volumeSnapshotContents();
 
+  /**
+   * API entrypoint for dealing with VolumeSnapshot(snapshot.storage.k8s.io/v1beta1)
+   *
+   * @return MixedOperation for VolumeSnapshot class
+   */
   MixedOperation<VolumeSnapshot, VolumeSnapshotList, DoneableVolumeSnapshot, VolumeSnapshotResource> volumeSnapshots();
 }
