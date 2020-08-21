@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.api.model.ExecConfig;
+import io.fabric8.kubernetes.api.model.ExecConfigBuilder;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.OkHttpClient;
@@ -28,8 +30,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -576,5 +578,54 @@ public class ConfigTest {
     assertEquals("truststorePassphrase", config.getTrustStorePassphrase());
     assertEquals("/path/to/keystore", config.getKeyStoreFile());
     assertEquals("keystorePassphrase", config.getKeyStorePassphrase());
+  }
+
+  @Test
+  void testGetAuthenticatorCommandFromExecConfig() throws IOException {
+    // Given
+    File commandFolder = Files.createTempDirectory("test").toFile();
+    File commandFile = new File(commandFolder, "aws");
+    boolean isNewFileCreated = commandFile.createNewFile();
+    String systemPathValue = getTestPathValue(commandFolder);
+    ExecConfig execConfig = new ExecConfigBuilder()
+      .withApiVersion("client.authentication.k8s.io/v1alpha1")
+      .addToArgs("--region", "us-west2", "eks", "get-token", "--cluster-name", "api-eks.example.com")
+      .withCommand("aws")
+      .build();
+
+    // When
+    List<String> processBuilderArgs = Config.getAuthenticatorCommandFromExecConfig(execConfig, "~/.kube/config", systemPathValue);
+
+    // Then
+    assertTrue(isNewFileCreated);
+    assertNotNull(processBuilderArgs);
+    assertEquals(3, processBuilderArgs.size());
+    assertPlatformPrefixes(processBuilderArgs);
+    List<String> commandParts = Arrays.asList(processBuilderArgs.get(2).split(" "));
+    assertEquals(commandFile.getAbsolutePath(), commandParts.get(0));
+    assertEquals("--region", commandParts.get(1));
+    assertEquals("us-west2", commandParts.get(2));
+    assertEquals("eks", commandParts.get(3));
+    assertEquals("get-token", commandParts.get(4));
+    assertEquals("--cluster-name", commandParts.get(5));
+    assertEquals("api-eks.example.com", commandParts.get(6));
+  }
+
+  private void assertPlatformPrefixes(List<String> processBuilderArgs) {
+    List<String> platformArgsExpected = Utils.getCommandPlatformPrefix();
+    assertEquals(platformArgsExpected.get(0), processBuilderArgs.get(0));
+    assertEquals(platformArgsExpected.get(1), processBuilderArgs.get(1));
+  }
+
+  private String getTestPathValue(File commandFolder) {
+    if (Utils.isWindowsOperatingSystem()) {
+      return "C:\\Program Files\\Java\\jdk14.0_23\\bin" + File.pathSeparator +
+        commandFolder.getAbsolutePath() + File.pathSeparator +
+        "C:\\Program Files\\Apache Software Foundation\\apache-maven-3.3.1";
+    } else {
+      return "/usr/java/jdk-14.0.1/bin" + File.pathSeparator +
+        commandFolder.getAbsolutePath() + File.pathSeparator +
+        "/opt/apache-maven/bin";
+    }
   }
 }
