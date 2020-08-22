@@ -147,6 +147,13 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
         futures.add(CompletableFuture.supplyAsync(() -> {
           try {
             return h.waitUntilCondition(client, config, meta.getMetadata().getNamespace(), meta, condition, amount, timeUnit);
+          } catch (InterruptedException e) {
+            // Don't forget that this thread was interrupted.
+            Thread.currentThread().interrupt();
+
+            //consider all errors as not ready.
+            logAsNotReady(e, meta);
+            return null;
           } catch (Exception e) {
             //consider all errors as not ready.
             logAsNotReady(e, meta);
