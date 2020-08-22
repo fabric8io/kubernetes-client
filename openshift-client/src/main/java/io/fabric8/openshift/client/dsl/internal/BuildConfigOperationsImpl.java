@@ -18,11 +18,8 @@ package io.fabric8.openshift.client.dsl.internal;
 import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.Triggerable;
 import io.fabric8.kubernetes.client.dsl.Typeable;
-import io.fabric8.kubernetes.client.dsl.Watchable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.EventOperationsImpl;
@@ -167,7 +164,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
   }
 
   @Override
-  public Watchable<Watch, Watcher<BuildConfig>> withResourceVersion(String resourceVersion) {
+  public BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build> withResourceVersion(String resourceVersion) {
     return new BuildConfigOperationsImpl(getContext().withResourceVersion(resourceVersion));
   }
 

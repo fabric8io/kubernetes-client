@@ -15,6 +15,5 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface VersionWatchable<H, W> extends Watchable<H, W>, Versionable<Watchable<H, W>> {
-
+public interface VersionWatchAndWaitable<H, T> extends WatchAndWaitable<H, T>, Versionable<WatchAndWaitable<H, T>> {
 }

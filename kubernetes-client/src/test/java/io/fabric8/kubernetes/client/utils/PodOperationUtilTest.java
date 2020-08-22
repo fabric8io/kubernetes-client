@@ -29,7 +29,8 @@ import io.fabric8.kubernetes.client.dsl.Deletable;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
-import io.fabric8.kubernetes.client.dsl.Watchable;
+import io.fabric8.kubernetes.client.dsl.Waitable;
+import io.fabric8.kubernetes.client.dsl.WatchAndWaitable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,6 +41,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -107,7 +109,7 @@ class PodOperationUtilTest {
     // Given
     String controllerUid = "some-uid";
     Map<String, String> selectorLabels = Collections.singletonMap("foo", "bar");
-    FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>> filterWatchListDeletable = getMockPodFilterOperation(controllerUid);
+    FilterWatchListDeletable<Pod, PodList, Boolean, Watch> filterWatchListDeletable = getMockPodFilterOperation(controllerUid);
     when(podOperations.withLabels(any())).thenReturn(filterWatchListDeletable);
 
     // When
@@ -134,8 +136,8 @@ class PodOperationUtilTest {
       .build();
   }
 
-  private FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>> getMockPodFilterOperation(String controllerUid) {
-    return new FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>>() {
+  private FilterWatchListDeletable<Pod, PodList, Boolean, Watch> getMockPodFilterOperation(String controllerUid) {
+    return new FilterWatchListDeletable<Pod, PodList, Boolean, Watch>() {
       @Override
       public Deletable<Boolean> withGracePeriod(long gracePeriodSeconds) { return null; }
 
@@ -143,43 +145,43 @@ class PodOperationUtilTest {
       public Boolean delete() { return null; }
 
       @Override
-      public FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>> withLabels(Map<String, String> labels) { return null; }
+      public FilterWatchListDeletable<Pod, PodList, Boolean, Watch> withLabels(Map<String, String> labels) { return null; }
 
       @Override
-      public FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>> withoutLabels(Map<String, String> labels) { return null; }
+      public FilterWatchListDeletable<Pod, PodList, Boolean, Watch> withoutLabels(Map<String, String> labels) { return null; }
 
       @Override
-      public FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>> withLabelIn(String key, String... values) { return null; }
+      public FilterWatchListDeletable<Pod, PodList, Boolean, Watch> withLabelIn(String key, String... values) { return null; }
 
       @Override
-      public FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>> withLabelNotIn(String key, String... values) { return null; }
+      public FilterWatchListDeletable<Pod, PodList, Boolean, Watch> withLabelNotIn(String key, String... values) { return null; }
 
       @Override
-      public FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>> withLabel(String key, String value) { return null; }
+      public FilterWatchListDeletable<Pod, PodList, Boolean, Watch> withLabel(String key, String value) { return null; }
 
       @Override
-      public FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>> withLabel(String key) { return null; }
+      public FilterWatchListDeletable<Pod, PodList, Boolean, Watch> withLabel(String key) { return null; }
 
       @Override
-      public FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>> withoutLabel(String key, String value) { return null; }
+      public FilterWatchListDeletable<Pod, PodList, Boolean, Watch> withoutLabel(String key, String value) { return null; }
 
       @Override
-      public FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>> withoutLabel(String key) { return null; }
+      public FilterWatchListDeletable<Pod, PodList, Boolean, Watch> withoutLabel(String key) { return null; }
 
       @Override
-      public FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>> withFields(Map<String, String> labels) { return null; }
+      public FilterWatchListDeletable<Pod, PodList, Boolean, Watch> withFields(Map<String, String> labels) { return null; }
 
       @Override
-      public FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>> withField(String key, String value) { return null; }
+      public FilterWatchListDeletable<Pod, PodList, Boolean, Watch> withField(String key, String value) { return null; }
 
       @Override
-      public FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>> withoutFields(Map<String, String> fields) { return null; }
+      public FilterWatchListDeletable<Pod, PodList, Boolean, Watch> withoutFields(Map<String, String> fields) { return null; }
 
       @Override
-      public FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>> withoutField(String key, String value) { return null; }
+      public FilterWatchListDeletable<Pod, PodList, Boolean, Watch> withoutField(String key, String value) { return null; }
 
       @Override
-      public FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>> withLabelSelector(LabelSelector selector) { return null; }
+      public FilterWatchListDeletable<Pod, PodList, Boolean, Watch> withLabelSelector(LabelSelector selector) { return null; }
 
       @Override
       public FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>> withInvolvedObject(ObjectReference objectReference) { return null; }
@@ -197,7 +199,16 @@ class PodOperationUtilTest {
       public Pod updateStatus(Pod item) { return null; }
 
       @Override
-      public Watchable<Watch, Watcher<Pod>> withResourceVersion(String resourceVersion) { return null; }
+      public WatchAndWaitable<Watch, Pod> withResourceVersion(String resourceVersion) { return null; }
+
+      @Override
+      public Pod waitUntilReady(long amount, TimeUnit timeUnit) { return null; }
+
+      @Override
+      public Pod waitUntilCondition(Predicate<Pod> condition, long amount, TimeUnit timeUnit) { return null; }
+
+      @Override
+      public Waitable<Pod, Pod> withWaitRetryBackoff(long initialBackoff, TimeUnit backoffUnit, double backoffMultiplier) { return null; }
 
       @Override
       public Watch watch(Watcher<Pod> watcher) { return null; }

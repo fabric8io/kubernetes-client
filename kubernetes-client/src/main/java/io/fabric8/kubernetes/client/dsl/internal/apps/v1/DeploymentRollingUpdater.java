@@ -25,7 +25,6 @@ import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.apps.DeploymentList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.Operation;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
@@ -57,7 +56,7 @@ class DeploymentRollingUpdater extends RollingUpdater<Deployment, DeploymentList
 
   @Override
   protected PodList listSelectedPods(Deployment obj) {
-    FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>> podLister = pods().inNamespace(namespace);
+    FilterWatchListDeletable<Pod, PodList, Boolean, Watch> podLister = pods().inNamespace(namespace);
     if (obj.getSpec().getSelector().getMatchLabels() != null) {
       podLister.withLabels(obj.getSpec().getSelector().getMatchLabels());
     }

@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.dsl;
 
 import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
 
 /**
  * The entry point to client operations that are either "cross namespace resources", or are available in the invocation chain
@@ -28,7 +27,7 @@ import io.fabric8.kubernetes.client.Watcher;
  */
 public interface NonNamespaceOperation<T, L, D, R> extends
   Nameable<R>,
-  FilterWatchListMultiDeletable<T, L, Boolean, Watch, Watcher<T>>,
+  FilterWatchListMultiDeletable<T, L, Boolean, Watch>,
   Createable<T, T, D>,
   CreateOrReplaceable<T, T, D>,
   Loadable<R> {

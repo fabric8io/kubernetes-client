@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.dsl;
 
 import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
 
 /**
  * The entry point to client operations.
@@ -27,8 +26,8 @@ import io.fabric8.kubernetes.client.Watcher;
  */
 public interface Operation<T, L, D, R>
   extends
-  AnyNamespaceable<FilterWatchListMultiDeletable<T, L, Boolean, Watch, Watcher<T>>>,
+  AnyNamespaceable<FilterWatchListMultiDeletable<T, L, Boolean, Watch>>,
   Namespaceable<NonNamespaceOperation<T, L, D, R>>,
-  FilterWatchListMultiDeletable<T, L, Boolean, Watch, Watcher<T>>,
+  FilterWatchListMultiDeletable<T, L, Boolean, Watch>,
   Loadable<R> {
 }
