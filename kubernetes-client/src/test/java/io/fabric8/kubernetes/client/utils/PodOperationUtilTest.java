@@ -184,7 +184,7 @@ class PodOperationUtilTest {
       public FilterWatchListDeletable<Pod, PodList, Boolean, Watch> withLabelSelector(LabelSelector selector) { return null; }
 
       @Override
-      public FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>> withInvolvedObject(ObjectReference objectReference) { return null; }
+      public FilterWatchListDeletable<Pod, PodList, Boolean, Watch> withInvolvedObject(ObjectReference objectReference) { return null; }
 
       @Override
       public PodList list() { return getMockPodList(controllerUid); }

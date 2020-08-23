@@ -38,8 +38,6 @@ import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 
-import java.net.HttpURLConnection;
-import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +45,7 @@ import org.slf4j.LoggerFactory;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,12 +53,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.TimeoutException;
+import java.util.function.Predicate;
 
 public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl extends OperationSupport implements ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean>,
 Waitable<List<HasMetadata>, HasMetadata>, Readiable {
@@ -139,34 +140,27 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
     }
 
     final List<CompletableFuture<HasMetadata>> futures = new ArrayList<>(items.size());
-    final ExecutorService executor = Executors.newFixedThreadPool(items.size());
+    for (final HasMetadata meta : items) {
+      final ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
+      futures.add(CompletableFuture.supplyAsync(() -> {
+        try {
+          return h.waitUntilCondition(client, config, meta.getMetadata().getNamespace(), meta, condition, amount, timeUnit);
+        } catch (Exception e) {
+          //consider all errors as not ready.
+          logAsNotReady(e, meta);
+          return null;
+        }
+      }));
+    }
 
     try {
-      for (final HasMetadata meta : items) {
-        final ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
-        futures.add(CompletableFuture.supplyAsync(() -> {
-          try {
-            return h.waitUntilCondition(client, config, meta.getMetadata().getNamespace(), meta, condition, amount, timeUnit);
-          } catch (InterruptedException e) {
-            // Don't forget that this thread was interrupted.
-            Thread.currentThread().interrupt();
-
-            //consider all errors as not ready.
-            logAsNotReady(e, meta);
-            return null;
-          } catch (Exception e) {
-            //consider all errors as not ready.
-            logAsNotReady(e, meta);
-            return null;
-          }
-        }, executor));
-      }
-
-      // Wait for all futures to complete, remembering that every future
-      // has been given the same timeout value.
-      CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
-    } finally {
-      executor.shutdown();
+      // All of the individual futures have the same timeout period,
+      // but they may not all necessarily start executing together.
+      CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).get(amount, timeUnit);
+    } catch (TimeoutException | ExecutionException e) {
+      // We don't allow individual futures to complete with an exception,
+      // which means we should never catch ExecutionException here.
+      LOGGER.debug("Global timeout reached", e);
     }
 
     final List<HasMetadata> results = new ArrayList<>();
@@ -177,13 +171,19 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
     int i = 0;
     for (final HasMetadata meta : items) {
       try {
-        HasMetadata result = futures.get(i).get();
+        CompletableFuture<HasMetadata> future = futures.get(i);
+        HasMetadata result = future.getNow(null);
         if (result != null) {
           results.add(result);
         } else {
+          // Cancel this future, just in case it never had
+          // an opportunity to execute in the first place.
+          future.cancel(true);
           itemsWithConditionNotMatched.add(meta);
         }
-      } catch (ExecutionException e) {
+      } catch (CompletionException e) {
+        // We should never reach here, because individual futures
+        // aren't allowed to complete with an exception.
         itemsWithConditionNotMatched.add(meta);
         logAsNotReady(e.getCause(), meta);
       }
@@ -455,26 +455,4 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
       throw new IllegalArgumentException("Could not find a registered handler for item: [" + item + "].");
     }
   }
-
-  /**
-   * Waits until the latch reaches to zero and then checks if the expected result
-   * @param latch       The latch.
-   * @param expected    The expected number.
-   * @param actual      The actual number.
-   * @param amount      The amount of time to wait.
-   * @param timeUnit    The timeUnit.
-   * @return
-   */
-  private static boolean checkConditionMetForAll(CountDownLatch latch, int expected, AtomicInteger actual, long amount, TimeUnit timeUnit) {
-    try {
-      if (latch.await(amount, timeUnit)) {
-        return actual.intValue() == expected;
-      }
-      return false;
-    } catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      return false;
-    }
-  }
-
 }

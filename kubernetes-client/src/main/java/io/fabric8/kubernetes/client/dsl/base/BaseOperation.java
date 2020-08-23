@@ -524,7 +524,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withInvolvedObject(ObjectReference objectReference) {
+  public FilterWatchListDeletable<T, L, Boolean, Watch> withInvolvedObject(ObjectReference objectReference) {
     if (objectReference != null) {
       if (objectReference.getName() != null) {
         fields.put(INVOLVED_OBJECT_NAME, objectReference.getName());
