@@ -43,6 +43,7 @@ import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
+import io.fabric8.kubernetes.client.utils.PodGeneratorImpl;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import io.fabric8.openshift.api.model.*;
@@ -497,6 +498,11 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public V1APIGroupDSL v1() {
     return delegate.v1();
+  }
+
+  @Override
+  public PodGeneratorImpl run() {
+    return delegate.run();
   }
 
   @Override

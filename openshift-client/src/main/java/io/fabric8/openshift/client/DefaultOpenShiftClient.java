@@ -57,7 +57,9 @@ import io.fabric8.kubernetes.client.dsl.internal.coordination.v1.LeaseOperations
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.ComponentStatusOperationsImpl;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
 import io.fabric8.kubernetes.client.utils.BackwardsCompatibilityInterceptor;
+import io.fabric8.kubernetes.client.utils.GeneratorRunConfigBuilder;
 import io.fabric8.kubernetes.client.utils.ImpersonatorInterceptor;
+import io.fabric8.kubernetes.client.utils.PodGeneratorImpl;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -522,6 +524,11 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public V1APIGroupDSL v1() {
     return adapt(V1APIGroupClient.class);
+  }
+
+  @Override
+  public PodGeneratorImpl run() {
+    return new PodGeneratorImpl(httpClient, getConfiguration(), getNamespace(), new GeneratorRunConfigBuilder());
   }
 
   @Override

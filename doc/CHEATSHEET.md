@@ -40,6 +40,7 @@ This document contains common usages of different resources using Fabric8 Kubern
   * [Delete Options](#delete-options)
   * [Watch Options](#watch-options)
   * [Serializing to yaml](#serializing-to-yaml)
+  * [Running a Pod](#running-a-pod)
 
 * [OpenShift Client DSL Usage](#openshift-client-dsl-usage)  
   * [Initializing OpenShift Client](#initializing-openshift-client)
@@ -2286,6 +2287,31 @@ Pod myPod;
 String myPodAsYaml = SerializationUtils.dumpAsYaml(myPod);
 // Your pod might have some state that you don't really care about, to remove it:
 String myPodAsYamlWithoutRuntimeState = SerializationUtils.dumpWithoutRuntimeStateAsYaml(myPod);
+```
+
+#### Running a Pod
+Kubernetes Client also provides mechanism similar to `kubectl run` in which you can spin a `Pod` just by specifying it's image and name:
+- Running a `Pod` by just providing image and name:
+```
+try (KubernetesClient client = new DefaultKubernetesClient()) {
+    client.run().inNamespace("default")
+            .withName("hazelcast")
+            .withImage("hazelcast/hazelcast:3.12.9")
+            .done();
+}
+```
+- You can also provide slighly complex configuration with `withGeneratorConfig` method in which you can specify labels, environment variables, ports etc:
+```
+try (KubernetesClient client = new DefaultKubernetesClient()) {
+    client.run().inNamespace("default")
+            .withRunConfig(new GeneratorRunConfigBuilder()
+                    .withName("nginx")
+                    .withImage("nginx:latest")
+                    .withLabels(Collections.singletonMap("foo", "bar"))
+                    .withEnv(Collections.singletonMap("KUBERNETES_TEST", "fabric8"))
+                    .build())
+            .done();
+}
 ```
 
 ### OpenShift Client DSL Usage
