@@ -75,6 +75,8 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.DoneableCustomResou
 import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequest;
 import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestList;
 import io.fabric8.kubernetes.api.model.certificates.DoneableCertificateSigningRequest;
+import io.fabric8.kubernetes.api.model.authentication.DoneableTokenReview;
+import io.fabric8.kubernetes.api.model.authentication.TokenReview;
 import io.fabric8.kubernetes.api.model.coordination.v1.DoneableLease;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
@@ -94,8 +96,10 @@ import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.VersionInfo;
 import io.fabric8.kubernetes.client.dsl.ApiextensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.AppsAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.AuthorizationAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.AutoscalingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.BatchAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.Createable;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.KubernetesListMixedOperation;
@@ -115,7 +119,6 @@ import io.fabric8.kubernetes.client.dsl.SchedulingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.ServiceResource;
 import io.fabric8.kubernetes.client.dsl.SettingsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.SubjectAccessReviewDSL;
 import io.fabric8.kubernetes.client.dsl.V1APIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
@@ -343,11 +346,6 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
     return delegate.nodes();
   }
 
-  @Override
-  public SubjectAccessReviewDSL subjectAccessReviewAuth() {
-    return delegate.subjectAccessReviewAuth();
-  }
-
   public MixedOperation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, Resource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> persistentVolumeClaims() {
     return delegate.persistentVolumeClaims();
   }
@@ -437,6 +435,16 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   @Override
   public NonNamespaceOperation<CertificateSigningRequest, CertificateSigningRequestList, DoneableCertificateSigningRequest, Resource<CertificateSigningRequest, DoneableCertificateSigningRequest>> certificateSigningRequests() {
     return delegate.certificateSigningRequests();
+  }
+
+  @Override
+  public AuthorizationAPIGroupDSL authorization() {
+    return delegate.authorization();
+  }
+
+  @Override
+  public Createable<TokenReview, TokenReview, DoneableTokenReview> tokenReviews() {
+    return delegate.tokenReviews();
   }
 
   @Override

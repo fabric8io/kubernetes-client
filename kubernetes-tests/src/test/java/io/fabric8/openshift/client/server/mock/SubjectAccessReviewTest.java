@@ -16,7 +16,6 @@
 
 package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
 import io.fabric8.openshift.api.model.LocalSubjectAccessReviewBuilder;
 import io.fabric8.openshift.api.model.SubjectAccessReviewBuilder;
 import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
@@ -44,7 +43,8 @@ public class SubjectAccessReviewTest {
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
-    SubjectAccessReviewResponse response = client.inAnyNamespace().subjectAccessReviews().create(new SubjectAccessReviewBuilder().build());
+    SubjectAccessReviewResponse response = client.inAnyNamespace().subjectAccessReviews().create(new SubjectAccessReviewBuilder()
+      .build());
     assertNotNull(response);
     assertEquals("r1", response.getReason());
   }
@@ -56,10 +56,10 @@ public class SubjectAccessReviewTest {
       .withReason("r2")
       .build()).once();
 
-
     NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
-    SubjectAccessReviewResponse response = client.inAnyNamespace().subjectAccessReviews().createNew().withUser("user").withVerb("verb").done();
+    SubjectAccessReviewResponse response = client.inAnyNamespace().subjectAccessReviews()
+      .create(new SubjectAccessReviewBuilder().build());
     assertNotNull(response);
     assertEquals("r2", response.getReason());
   }
@@ -67,13 +67,17 @@ public class SubjectAccessReviewTest {
 
   @Test
   public void testCreateLocal() {
-   server.expect().withPath("/apis/authorization.openshift.io/v1/namespaces/test/subjectaccessreviews").andReturn(201, new SubjectAccessReviewResponseBuilder()
+   server.expect().withPath("/apis/authorization.openshift.io/v1/namespaces/test/localsubjectaccessreviews").andReturn(201, new SubjectAccessReviewResponseBuilder()
       .withReason("r1")
       .build()).once();
 
     OpenShiftClient client = server.getOpenshiftClient();
 
-    SubjectAccessReviewResponse response = client.subjectAccessReviews().inNamespace("test").create(new LocalSubjectAccessReviewBuilder().build());
+    SubjectAccessReviewResponse response = client.localSubjectAccessReviews().inNamespace("test").create(new LocalSubjectAccessReviewBuilder()
+      .withNamespace("test")
+      .withVerb("get")
+      .withGroups("test.fabric8.io")
+      .build());
     assertNotNull(response);
     assertEquals("r1", response.getReason());
   }
@@ -81,13 +85,16 @@ public class SubjectAccessReviewTest {
 
   @Test
   public void testCreateLocalInLine() {
-   server.expect().withPath("/apis/authorization.openshift.io/v1/namespaces/test/subjectaccessreviews").andReturn( 201, new SubjectAccessReviewResponseBuilder()
+   server.expect().withPath("/apis/authorization.openshift.io/v1/namespaces/test/localsubjectaccessreviews").andReturn( 201, new SubjectAccessReviewResponseBuilder()
       .withReason("r2")
       .build()).once();
 
     OpenShiftClient client = server.getOpenshiftClient();
 
-    SubjectAccessReviewResponse response = client.subjectAccessReviews().inNamespace("test").createNew().withUser("user").withVerb("verb").done();
+    SubjectAccessReviewResponse response = client.localSubjectAccessReviews().inNamespace("test").create(new LocalSubjectAccessReviewBuilder()
+      .withUser("user")
+      .withVerb("verb")
+      .build());
     assertNotNull(response);
     assertEquals("r2", response.getReason());
   }

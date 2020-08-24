@@ -29,6 +29,8 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.DoneableCustomResou
 import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequest;
 import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestList;
 import io.fabric8.kubernetes.api.model.certificates.DoneableCertificateSigningRequest;
+import io.fabric8.kubernetes.api.model.authentication.DoneableTokenReview;
+import io.fabric8.kubernetes.api.model.authentication.TokenReview;
 import io.fabric8.kubernetes.api.model.coordination.v1.DoneableLease;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
@@ -46,10 +48,12 @@ import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import io.fabric8.openshift.api.model.*;
 import io.fabric8.openshift.api.model.DoneableRole;
 import io.fabric8.openshift.api.model.DoneableRoleBinding;
+import io.fabric8.openshift.api.model.DoneableSubjectAccessReview;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
+import io.fabric8.openshift.client.OpenShiftLocalSubjectAccessReviewOperationsImpl;
 import io.fabric8.openshift.client.dsl.*;
 import org.apache.felix.scr.annotations.*;
 import org.apache.felix.scr.annotations.Service;
@@ -271,11 +275,6 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public SubjectAccessReviewOperation<CreateableSubjectAccessReview, CreateableLocalSubjectAccessReview, CreateableSelfSubjectAccessReview, CreateableSelfSubjectRulesReview> subjectAccessReviews() {
-    return delegate.subjectAccessReviews();
-  }
-
-  @Override
   public MixedOperation<ClusterRoleBinding, ClusterRoleBindingList, DoneableClusterRoleBinding, Resource<ClusterRoleBinding, DoneableClusterRoleBinding>> clusterRoleBindings() {
     return delegate.clusterRoleBindings();
   }
@@ -406,11 +405,6 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public SubjectAccessReviewDSL subjectAccessReviewAuth() {
-    return delegate.subjectAccessReviewAuth();
-  }
-
-  @Override
   public <T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResources(CustomResourceDefinitionContext crdContext, Class<T> resourceType, Class<L> listClass, Class<D> doneClass) {
     return delegate.customResources(crdContext, resourceType, listClass, doneClass);
   }
@@ -438,6 +432,16 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public NonNamespaceOperation<CertificateSigningRequest, CertificateSigningRequestList, DoneableCertificateSigningRequest, Resource<CertificateSigningRequest, DoneableCertificateSigningRequest>> certificateSigningRequests() {
     return delegate.certificateSigningRequests();
+  }
+
+  @Override
+  public AuthorizationAPIGroupDSL authorization() {
+    return delegate.authorization();
+  }
+
+  @Override
+  public Createable<TokenReview, TokenReview, DoneableTokenReview> tokenReviews() {
+    return delegate.tokenReviews();
   }
 
   @Override
@@ -533,6 +537,16 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
 
   @Override
   public SettingsAPIGroupDSL settings() { return delegate.settings(); }
+
+  @Override
+  public Createable<SubjectAccessReview, SubjectAccessReviewResponse, DoneableSubjectAccessReview> subjectAccessReviews() {
+    return delegate.subjectAccessReviews();
+  }
+
+  @Override
+  public OpenShiftLocalSubjectAccessReviewOperationsImpl localSubjectAccessReviews() {
+    return delegate.localSubjectAccessReviews();
+  }
 
   @Override
   public SharedInformerFactory informers() { return delegate.informers(); }

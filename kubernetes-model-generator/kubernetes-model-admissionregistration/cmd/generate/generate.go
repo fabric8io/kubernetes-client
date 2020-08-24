@@ -29,6 +29,7 @@ import (
   admissionregistrationv1 "k8s.io/api/admissionregistration/v1"
   admissionregistration "k8s.io/api/admissionregistration/v1beta1"
   k8sauthapi "k8s.io/api/authorization/v1"
+  k8sauthapiv1beta1 "k8s.io/api/authorization/v1beta1"
 
   "log"
   "reflect"
@@ -73,17 +74,21 @@ type Schema struct {
   MutatingWebhookConfigurationList         admissionregistration.MutatingWebhookConfigurationList
   RuleWithOperations                       admissionregistration.RuleWithOperations
   ServiceReference                         admissionregistration.ServiceReference
-  V1Rule                                     admissionregistrationv1.Rule
-  V1ValidatingWebhookConfiguration           admissionregistrationv1.ValidatingWebhookConfiguration
-  V1ValidatingWebhookConfigurationList       admissionregistrationv1.ValidatingWebhookConfigurationList
-  V1MutatingWebhookConfiguration             admissionregistrationv1.MutatingWebhookConfiguration
-  V1MutatingWebhookConfigurationList         admissionregistrationv1.MutatingWebhookConfigurationList
-  V1RuleWithOperations                       admissionregistrationv1.RuleWithOperations
-  V1ServiceReference                         admissionregistrationv1.ServiceReference
+  V1Rule                                   admissionregistrationv1.Rule
+  V1ValidatingWebhookConfiguration         admissionregistrationv1.ValidatingWebhookConfiguration
+  V1ValidatingWebhookConfigurationList     admissionregistrationv1.ValidatingWebhookConfigurationList
+  V1MutatingWebhookConfiguration           admissionregistrationv1.MutatingWebhookConfiguration
+  V1MutatingWebhookConfigurationList       admissionregistrationv1.MutatingWebhookConfigurationList
+  V1RuleWithOperations                     admissionregistrationv1.RuleWithOperations
+  V1ServiceReference                       admissionregistrationv1.ServiceReference
   K8sSubjectAccessReview                   k8sauthapi.SubjectAccessReview
   K8sLocalSubjectAccessReview              k8sauthapi.LocalSubjectAccessReview
   SelfSubjectRulesReview                   k8sauthapi.SelfSubjectRulesReview
   SelfSubjectAccessReview                  k8sauthapi.SelfSubjectAccessReview
+  V1beta1K8sSubjectAccessReview            k8sauthapiv1beta1.SubjectAccessReview
+  V1beta1K8sLocalSubjectAccessReview       k8sauthapiv1beta1.LocalSubjectAccessReview
+  V1beta1SelfSubjectRulesReview            k8sauthapiv1beta1.SelfSubjectRulesReview
+  V1beta1SelfSubjectAccessReview           k8sauthapiv1beta1.SelfSubjectAccessReview
 }
 
 func main() {
@@ -96,7 +101,8 @@ func main() {
     {"k8s.io/apimachinery/pkg/runtime", "", "io.fabric8.kubernetes.api.model.runtime", "kubernetes_apimachinery_pkg_runtime_"},
     {"k8s.io/apimachinery/pkg/version", "", "io.fabric8.kubernetes.api.model.version", "kubernetes_apimachinery_pkg_version_"},
     {"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_"},
-    {"k8s.io/api/authorization/v1", "authorization.k8s.io", "io.fabric8.kubernetes.api.model.authorization", "kubernetes_authorization_"},
+    {"k8s.io/api/authorization/v1", "authorization.k8s.io", "io.fabric8.kubernetes.api.model.authorization.v1", "kubernetes_authorization_v1_"},
+    {"k8s.io/api/authorization/v1beta1", "authorization.k8s.io", "io.fabric8.kubernetes.api.model.authorization.v1beta1", "kubernetes_authorization_v1beta1_"},
   }
 
   typeMap := map[reflect.Type]reflect.Type{

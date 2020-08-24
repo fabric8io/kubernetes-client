@@ -9,6 +9,7 @@
 * Fix #2389: KubernetesServer does not use value from https in crud mode
 * Fix #2306: Make KubernetesServer CRUD mode work with informers
 * Fix #2418: CertificateSigningRequest doesn't implement Namespaced
+* Fix #2265: InAnyNamespace uses invalid api endpoint for SelfSubjectAccessReviews
 
 #### Improvements
 * Fix #2331: Fixed documentation for namespaced informer for all custom types implementing `Namespaced` interface
@@ -26,6 +27,10 @@
 * Fix #2311: Add Support for creating bootstrap project template
 * Fix #2287: Add support for V1 and V1Beta1 CustomResourceDefinition
 * Fix #2319: Create Config without using auto-configure functionality or setting env variables
+
+_**Note**_: Some classes have been moved to other packages:
+- CustomResourceDefinition has been moved to `io.fabric8.kubernetes.api.model.apiextensions.v1` and `io.fabric8.kubernetes.api.model.apiextensions.v1beta1`
+- SubjectAccessReview, SelfSubjectAccessReview, LocalSubjectAccessReview and SelfSubjectRulesReview have been moved to `io.fabric8.kubernetes.api.model.authorization.v1` and `io.fabric8.kubernetes.api.model.authorization.v1beta1`
 
 ### 4.10.3 (2020-07-14)
 #### Bugs

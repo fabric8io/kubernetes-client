@@ -72,6 +72,8 @@ import io.fabric8.kubernetes.api.model.DoneableServiceAccount;
 import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequest;
 import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestList;
 import io.fabric8.kubernetes.api.model.certificates.DoneableCertificateSigningRequest;
+import io.fabric8.kubernetes.api.model.authentication.DoneableTokenReview;
+import io.fabric8.kubernetes.api.model.authentication.TokenReview;
 import io.fabric8.kubernetes.api.model.coordination.v1.DoneableLease;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
@@ -457,11 +459,18 @@ public interface KubernetesClient extends Client {
   MixedOperation<LimitRange, LimitRangeList, DoneableLimitRange, Resource<LimitRange, DoneableLimitRange>> limitRanges();
 
   /**
-   * SubjectAccessReview operations. (authorization/v1)
+   * Authorization operations. (authorization.k8s.io/v1 and authorization.k8s.io/v1beta1)
    *
-   * @return SubjectAccessReviewDSL object for dealing with SubjectAccessReviewOperations
+   * @return AuthorizationAPIGroupDSL object for dealing with Authorization objects
    */
-  SubjectAccessReviewDSL subjectAccessReviewAuth();
+  AuthorizationAPIGroupDSL authorization();
+
+  /**
+   * API for creating authentication.k8s.io/v1 TokenReviews
+   *
+   * @return CreateOnlyResourceOperations instance for creating TokenReview object
+   */
+  Createable<TokenReview, TokenReview, DoneableTokenReview> tokenReviews();
 
   /**
    * Get an instance of Kubernetes Client informer factory. It allows you to construct and
