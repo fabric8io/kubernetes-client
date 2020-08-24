@@ -69,6 +69,9 @@ import io.fabric8.kubernetes.api.model.DoneableService;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.DoneableServiceAccount;
+import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequest;
+import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestList;
+import io.fabric8.kubernetes.api.model.certificates.DoneableCertificateSigningRequest;
 import io.fabric8.kubernetes.api.model.coordination.v1.DoneableLease;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
@@ -105,6 +108,13 @@ public interface KubernetesClient extends Client {
    * @return ApiextensionsAPIGroupDSL which routes to v1 or v1beta1
    */
   ApiextensionsAPIGroupDSL apiextensions();
+
+  /**
+   * API entrypoint for using CertificateSigningRequest(certificates.k8s.io/v1beta1)
+   *
+   * @return {@link NonNamespaceOperation} for CertificateSigningRequest class
+   */
+  NonNamespaceOperation<CertificateSigningRequest, CertificateSigningRequestList, DoneableCertificateSigningRequest, Resource<CertificateSigningRequest, DoneableCertificateSigningRequest>> certificateSigningRequests();
 
   /**
    * Typed API for managing CustomResources. You would need to provide POJOs for

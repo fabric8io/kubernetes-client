@@ -574,6 +574,13 @@ func (g *schemaGenerator) crdScope(t reflect.Type) CrdScope {
 		"ClusterRole",
 		"PriorityClass",
 		"StorageClass",
+		"TokenReview",
+		"SelfSubjectAccessReview",
+		"SelfSubjectRulesReview",
+		"SubjectAccessReview",
+		"CertificateSigningRequest",
+		"CSIDriver",
+		"CSINode",
 		"APIService":
 		return Cluster
 	default:

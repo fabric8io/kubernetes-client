@@ -26,6 +26,9 @@ import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.DoneableCustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequest;
+import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestList;
+import io.fabric8.kubernetes.api.model.certificates.DoneableCertificateSigningRequest;
 import io.fabric8.kubernetes.api.model.coordination.v1.DoneableLease;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
@@ -430,6 +433,11 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public ApiextensionsAPIGroupDSL apiextensions() {
     return delegate.apiextensions();
+  }
+
+  @Override
+  public NonNamespaceOperation<CertificateSigningRequest, CertificateSigningRequestList, DoneableCertificateSigningRequest, Resource<CertificateSigningRequest, DoneableCertificateSigningRequest>> certificateSigningRequests() {
+    return delegate.certificateSigningRequests();
   }
 
   @Override
