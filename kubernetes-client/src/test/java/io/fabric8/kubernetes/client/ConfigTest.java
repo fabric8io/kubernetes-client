@@ -225,6 +225,7 @@ public class ConfigTest {
     Config config = Config.autoConfigure(null);
     assertNotNull(config);
     assertEquals("https://10.0.0.1:443/", config.getMasterUrl());
+    assertEquals(null, config.getFile());
   }
 
   @Test
@@ -235,6 +236,7 @@ public class ConfigTest {
     Config config = Config.autoConfigure(null);
     assertNotNull(config);
     assertEquals("https://[2001:db8:1f70::999:de8:7648:6e8]:443/", config.getMasterUrl());
+    assertEquals(null, config.getFile());
   }
 
   @Test
@@ -248,6 +250,7 @@ public class ConfigTest {
     assertEquals("token", config.getOauthToken());
     assertTrue(config.getCaCertFile().endsWith("testns/ca.pem".replace("/", File.separator)));
     assertTrue(new File(config.getCaCertFile()).isAbsolute());
+    assertEquals(new File(TEST_KUBECONFIG_FILE), config.getFile());
   }
 
   @Test
@@ -287,6 +290,7 @@ public class ConfigTest {
     assertEquals("http://somehost:80/", config.getMasterUrl());
     assertEquals("testns", config.getNamespace());
     assertEquals("token", config.getOauthToken());
+    assertEquals(new File(TEST_KUBECONFIG_FILE), config.getFile());
   }
 
   @Test
@@ -594,7 +598,7 @@ public class ConfigTest {
       .build();
 
     // When
-    List<String> processBuilderArgs = Config.getAuthenticatorCommandFromExecConfig(execConfig, "~/.kube/config", systemPathValue);
+    List<String> processBuilderArgs = Config.getAuthenticatorCommandFromExecConfig(execConfig, new File("~/.kube/config"), systemPathValue);
 
     // Then
     assertTrue(isNewFileCreated);
