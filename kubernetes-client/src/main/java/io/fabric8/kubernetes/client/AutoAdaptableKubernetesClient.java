@@ -64,7 +64,7 @@ import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
-import io.fabric8.kubernetes.client.utils.PodGeneratorImpl;
+import io.fabric8.kubernetes.client.extended.run.RunOperations;
 import okhttp3.OkHttpClient;
 
 import java.io.InputStream;
@@ -263,7 +263,7 @@ public class AutoAdaptableKubernetesClient extends DefaultKubernetesClient {
   }
 
   @Override
-  public PodGeneratorImpl run() {
+  public RunOperations run() {
     return delegate.run();
   }
 

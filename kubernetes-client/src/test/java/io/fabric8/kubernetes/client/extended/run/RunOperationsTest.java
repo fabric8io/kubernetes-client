@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.utils;
+package io.fabric8.kubernetes.client.extended.run;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.Quantity;
@@ -31,7 +31,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class PodGeneratorImplTest {
+class RunOperationsTest {
   private OkHttpClient mockClient;
   private Config config;
 
@@ -53,7 +53,7 @@ class PodGeneratorImplTest {
     Map<String, String> labels = new HashMap<>();
     labels.put("first", "FIRST");
     labels.put("second", "SECOND");
-    GeneratorRunConfigBuilder generatorRunConfig = new GeneratorRunConfigBuilder()
+    RunConfigBuilder generatorRunConfig = new RunConfigBuilder()
       .withName("test")
       .withImage("test:latest")
       .withLabels(labels)
@@ -64,7 +64,7 @@ class PodGeneratorImplTest {
       .withPort(5701)
       .withLimits(limits)
       .withRequests(requests);
-    PodGeneratorImpl deploymentGenerator = new PodGeneratorImpl(mockClient, config, "ns1", generatorRunConfig);
+    RunOperations deploymentGenerator = new RunOperations(mockClient, config, "ns1", generatorRunConfig);
 
     // When
     Pod pod = deploymentGenerator.convertRunConfigIntoPod();
