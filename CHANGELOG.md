@@ -27,6 +27,7 @@
 * Fix #2311: Add Support for creating bootstrap project template
 * Fix #2287: Add support for V1 and V1Beta1 CustomResourceDefinition
 * Fix #2319: Create Config without using auto-configure functionality or setting env variables
+* Fix #2284: Supports create and run a particular image in a pod operation using client
 
 _**Note**_: Some classes have been moved to other packages:
 - CustomResourceDefinition has been moved to `io.fabric8.kubernetes.api.model.apiextensions.v1` and `io.fabric8.kubernetes.api.model.apiextensions.v1beta1`

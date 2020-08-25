@@ -124,6 +124,8 @@ import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
+import io.fabric8.kubernetes.client.utils.GeneratorRunConfigBuilder;
+import io.fabric8.kubernetes.client.utils.PodGeneratorImpl;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.ConfigurationPolicy;
@@ -556,5 +558,10 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   @Override
   public FunctionCallable<NamespacedKubernetesClient> withRequestConfig(RequestConfig requestConfig) {
     return delegate.withRequestConfig(requestConfig);
+  }
+
+  @Override
+  public PodGeneratorImpl run() {
+    return new PodGeneratorImpl(httpClient, getConfiguration(), getNamespace(), new GeneratorRunConfigBuilder());
   }
 }

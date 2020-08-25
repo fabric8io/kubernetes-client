@@ -85,6 +85,7 @@ import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
+import io.fabric8.kubernetes.client.utils.PodGeneratorImpl;
 
 import java.io.InputStream;
 import java.util.Collection;
@@ -514,4 +515,11 @@ public interface KubernetesClient extends Client {
    * @return V1APIGroupDSL DSL object for core v1 resources
    */
   V1APIGroupDSL v1();
+
+  /**
+   * Run a Pod (core/v1)
+   *
+   * @return returns {@link PodGeneratorImpl} that allows you to run a pod based on few parameters(e.g. name, image etc)
+   */
+  PodGeneratorImpl run();
 }
