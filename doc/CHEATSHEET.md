@@ -49,6 +49,12 @@ This document contains common usages of different resources using Fabric8 Kubern
   * [Route](#route)
   * [Project](#project)
   * [ImageStream](#imagestream)
+  * [CatalogSource](#catalogsource)
+  * [PrometheusRule](#prometheusrule)
+  * [ServiceMonitor](#servicemonitor)
+  * [CluserResourceQuota](#clusterresourcequota)
+  * [ClusterVersion](#clusterversion)
+  * [EgressNetworkPolicy](#egressnetworkpolicy)
 
 * [Tekton Client](#tekton-client)
   * [Initializing Tekton Client](#initializing-tekton-client)
@@ -2616,6 +2622,217 @@ ImageStreamList isList = client.imageStreams().inNamespace("default").withLabel(
 - Delete `ImageStream`:
 ```
 Boolean bDeleted = client.imageStreams().inNamespace("default").withName("example-camel-cdi").delete();
+```
+#### CatalogSource
+`CatalogSource` is available for usage in OpenShift Client via `client.operatorHub().catalogSources()`. Here are some common examples of it's usage:
+- Load `CatalogSource` from YAML:
+```
+CatalogSource cs = client.operatorHub().catalogSources()
+  .load(new FileInputStream("/test-catalogsource.yml").get();
+```
+- Create `CatalogSource`:
+```
+CatalogSource cs = new CatalogSourceBuilder()
+  .withNewMetadata().withName("foo").endMetadata()
+  .withNewSpec()
+  .withSourceType("Foo")
+  .withImage("nginx:latest")
+  .withDisplayName("Foo Bar")
+  .withPublisher("Fabric8")
+  .endSpec()
+  .build();
+client.operatorHub().catalogSources().inNamespace("default").createOrReplace(cs);
+```
+- List `CatalogSource` in some namespace:
+```
+CatalogSourceList csList = client.operatorHub().catalogSources().inNamespace("ns1").list();
+```
+- List `CatalogSource` in any namespace:
+```
+CatalogSourceList csList = client.operatorHub().catalogSources().inAnyNamespace().list();
+```
+- List `CatalogSource` in some namespace with some labels:
+```
+CatalogSourceList csList = client.operatorHub().catalogSources().inNamespace("default").withLabel("foo", "bar").list();
+```
+- Delete `CatalogSource`:
+```
+client.operatorHub().catalogSources().inNamespace("default").withName("foo").delete();
+```
+
+#### PrometheusRule
+`PrometheusRule` is available for usage in OpenShift Client via `client.monitoring().prometheusRules()`. Here are some common examples of it's usage:
+- Load `PrometheusRule` from YAML:
+```
+PrometheusRule prometheusRule = client.monitoring().prometheusRules()
+  .load(new FileInputStream("/test-prometheusrule.yml").get();
+```
+- Create `PrometheusRule`:
+```
+PrometheusRule prometheusRule = new PrometheusRuleBuilder()
+    .withNewMetadata().withName("foo").endMetadata()
+    .withNewSpec()
+    .addNewGroup()
+    .withName("./example-rules")
+    .addNewRule()
+    .withAlert("ExampleAlert")
+    .withNewExpr().withStrVal("vector(1)").endExpr()
+    .endRule()
+    .endGroup()
+    .endSpec()
+    .build();
+client.monitoring().prometheusRules().inNamespace("default").createOrReplace(prometheusRule);
+```
+- List `PrometheusRule` in some namespace:
+```
+PrometheusRuleList prList = client.monitoring().prometheusRules().inNamespace("ns1").list();
+```
+- List `PrometheusRule` in any namespace:
+```
+PrometheusRuleList prList = client.monitoring().prometheusRules().inAnyNamespace().list();
+```
+- List `PrometheusRule` in some namespace with some labels:
+```
+PrometheusRuleList prList = client.monitoring().prometheusRules().inNamespace("default").withLabel("foo", "bar").list();
+```
+- Delete `PrometheusRule`:
+```
+client.monitoring().prometheusRules().inNamespace("default").withName("foo").delete();
+```
+
+#### ServiceMonitor
+`ServiceMonitor` is available for usage in OpenShift Client via `client.monitoring().serviceMonitors()`. Here are some common examples of it's usage:
+- Load `ServiceMonitor` from YAML:
+```
+ServiceMonitor serviceMonitor = client.monitoring().serviceMonitors()
+  .load(new FileInputStream("/test-servicemonitor.yml").get();
+```
+- Create `ServiceMonitor`:
+```
+ServiceMonitor serviceMonitor = new ServiceMonitorBuilder()
+    .withNewMetadata()
+    .withName("foo")
+    .addToLabels("prometheus", "frontend")
+    .endMetadata()
+    .withNewSpec()
+    .withNewNamespaceSelector().withAny(true).endNamespaceSelector()
+    .withNewSelector()
+    .addToMatchLabels("prometheus", "frontend")
+    .endSelector()
+    .addNewEndpoint()
+    .withPort("http-metric")
+    .withInterval("15s")
+    .endEndpoint()
+    .endSpec()
+    .build();
+
+client.monitoring().serviceMonitors().inNamespace("rokumar").createOrReplace(serviceMonitor)
+```
+- List `ServiceMonitor` in some namespace:
+```
+ServiceMonitorList serviceMonitorList = client.monitoring().serviceMonitors().inNamespace("ns1").list();
+```
+- List `ServiceMonitor` in any namespace:
+```
+ServiceMonitorList serviceMonitorList = client.monitoring().serviceMonitors().inAnyNamespace().list();
+```
+- List `ServiceMonitor` in some namespace with some labels:
+```
+ServiceMonitorList serviceMonitorList = client.monitoring().catalogSources().inNamespace("default").withLabel("foo", "bar").list();
+```
+- Delete `ServiceMonitor`:
+```
+client.operatorHub().monitoring().inNamespace("default").withName("foo").delete();
+```
+
+#### ClusterResourceQuota
+- Create `ClusterResourceQuota`:
+```
+try (OpenShiftClient client = new DefaultOpenShiftClient()) {
+    Map<String, Quantity> hard = new HashMap<>();
+    hard.put("pods", new Quantity("10"));
+    hard.put("secrets", new Quantity("20"));
+    ClusterResourceQuota acrq = new ClusterResourceQuotaBuilder()
+            .withNewMetadata().withName("foo").endMetadata()
+            .withNewSpec()
+            .withNewSelector()
+            .addToAnnotations("openshift.io/requester", "foo-user")
+            .endSelector()
+            .withQuota(new ResourceQuotaSpecBuilder()
+                    .withHard(hard)
+                    .build())
+            .endSpec()
+            .build();
+
+    client.quotas().clusterResourceQuotas().createOrReplace(acrq);
+}
+```
+- List `ClusterResourceQuota` from server:
+```
+ClusterResourceQuotaList clusterResourceQuotaList = client.quotas().clusterResourceQuotas().list();
+```
+- Delete `ClusterResourceQuota`:
+```
+client.quotas().clusterResourceQuotas().withName("foo").delete();
+```
+
+#### ClusterVersion
+- Fetch Cluster Version:
+```
+try (OpenShiftClient client = new DefaultOpenShiftClient()) {
+    ClusterVersion clusterVersion = client.config().clusterVersions().withName("version").get();
+    System.out.println("Cluster Version: " + clusterVersion.getStatus().getDesired().getVersion());
+}
+```
+
+### EgressNetworkPolicy
+`EgressNetworkPolicy` is available for usage in OpenShift Client via `client..egressNetworkPolicys()`. Here are some common examples of it's usage:
+- Load `EgressNetworkPolicy` from YAML:
+```
+EgressNetworkPolicy egressNetworkPolicy = client.egressNetworkPolicies()
+  .load(new FileInputStream("/test-enp.yml").get();
+```
+- Create `EgressNetworkPolicy`:
+```
+try (OpenShiftClient client = new DefaultOpenShiftClient()) {
+    EgressNetworkPolicy enp = new EgressNetworkPolicyBuilder()
+            .withNewMetadata()
+            .withName("foo")
+            .withNamespace("default")
+            .endMetadata()
+            .withNewSpec()
+            .addNewEgress()
+            .withType("Allow")
+            .withNewTo()
+            .withCidrSelector("1.2.3.0/24")
+            .endTo()
+            .endEgress()
+            .addNewEgress()
+            .withType("Allow")
+            .withNewTo()
+            .withDnsName("www.foo.com")
+            .endTo()
+            .endEgress()
+            .endSpec()
+            .build();
+    client.egressNetworkPolicies().inNamespace("default").createOrReplace(enp);
+}
+```
+- List `EgressNetworkPolicy` in some namespace:
+```
+EgressNetworkPolicyList egressNetworkPolicyList = client.egressNetworkPolicies().inNamespace("default").list();
+```
+- List `EgressNetworkPolicy` in any namespace:
+```
+EgressNetworkPolicyList egressNetworkPolicyList = client.egressNetworkPolicies().inAnyNamespace().list();
+```
+- List `EgressNetworkPolicy` in some namespace with some labels:
+```
+EgressNetworkPolicyList egressNetworkPolicyList = client.egressNetworkPolicies().inNamespace("default").withLabel("foo", "bar").list();
+```
+- Delete `EgressNetworkPolicy`:
+```
+client.egressNetworkPolicies().inNamespace("default").withName("foo").delete();
 ```
 
 ### Tekton Client

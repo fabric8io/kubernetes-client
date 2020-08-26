@@ -10,6 +10,8 @@
 * Fix #2306: Make KubernetesServer CRUD mode work with informers
 * Fix #2418: CertificateSigningRequest doesn't implement Namespaced
 * Fix #2265: InAnyNamespace uses invalid api endpoint for SelfSubjectAccessReviews
+* Fix #2404: Readiness.isReady doesn't handle extensions/v1beta1 Deployment
+* Fix #2389: KubernetesServer JUnit rule ignores value of https when using crud mode
 
 #### Improvements
 * Fix #2331: Fixed documentation for namespaced informer for all custom types implementing `Namespaced` interface
@@ -21,6 +23,8 @@
 * Fix #2353: chore: bump workflow action-setup versions + kubernetes to 1.18.6
 * Fix #2292: Update createOrReplace to do replace when create fails with conflict
 * Fix: Bump SnakeYaml to version 1.26 (as required for OSGi bundle for jackson-dataformat-yaml)
+* Fix #2401: bump maven-resources-plugin from 3.1.0 to 3.2.0
+* Fix #2405: bump mockito-core from 3.4.4 to 3.5.0
 
 #### New Features
 * CSI Volume Snapshot extension
@@ -28,11 +32,12 @@
 * Fix #2287: Add support for V1 and V1Beta1 CustomResourceDefinition
 * Fix #2319: Create Config without using auto-configure functionality or setting env variables
 * Fix #2284: Supports create and run a particular image in a pod operation using client
+* Fix #2321: Add Support for new resources in OpenShift Model
 
 _**Note**_: Some classes have been moved to other packages:
 - CustomResourceDefinition has been moved to `io.fabric8.kubernetes.api.model.apiextensions.v1` and `io.fabric8.kubernetes.api.model.apiextensions.v1beta1`
 - SubjectAccessReview, SelfSubjectAccessReview, LocalSubjectAccessReview and SelfSubjectRulesReview have been moved to `io.fabric8.kubernetes.api.model.authorization.v1` and `io.fabric8.kubernetes.api.model.authorization.v1beta1`
-
+- `io.fabric8.tekton.pipeline.v1beta1.WorkspacePipelineDeclaration` is now `io.fabric8.tekton.pipeline.v1beta1.PipelineWorkspaceDeclaration`
 ### 4.10.3 (2020-07-14)
 #### Bugs
 * Fix #2285: Raw CustomResource API createOrReplace does not propagate exceptions from create

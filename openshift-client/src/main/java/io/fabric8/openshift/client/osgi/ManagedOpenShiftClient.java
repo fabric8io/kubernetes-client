@@ -47,6 +47,12 @@ import io.fabric8.kubernetes.client.utils.PodGeneratorImpl;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import io.fabric8.openshift.api.model.*;
+import io.fabric8.openshift.api.model.DoneableClusterNetwork;
+import io.fabric8.openshift.api.model.DoneableEgressNetworkPolicy;
+import io.fabric8.openshift.api.model.DoneableImage;
+import io.fabric8.openshift.api.model.DoneableImageTag;
+import io.fabric8.openshift.api.model.DoneableNetNamespace;
+import io.fabric8.openshift.api.model.DoneableRangeAllocation;
 import io.fabric8.openshift.api.model.DoneableRole;
 import io.fabric8.openshift.api.model.DoneableRoleBinding;
 import io.fabric8.openshift.api.model.DoneableSubjectAccessReview;
@@ -191,6 +197,26 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
+  public OpenShiftConfigAPIGroupDSL config() {
+    return delegate.config();
+  }
+
+  @Override
+  public OpenShiftConsoleAPIGroupDSL console() {
+    return delegate.console();
+  }
+
+  @Override
+  public OpenShiftOperatorAPIGroupDSL operator() {
+    return delegate.operator();
+  }
+
+  @Override
+  public OpenShiftOperatorHubAPIGroupDSL operatorHub() {
+    return delegate.operatorHub();
+  }
+
+  @Override
   public MixedOperation<Build, BuildList, DoneableBuild, BuildResource<Build, DoneableBuild, String, LogWatch>> builds() {
     return delegate.builds();
   }
@@ -216,6 +242,17 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
+  public NonNamespaceOperation<Image, ImageList, DoneableImage, Resource<Image, DoneableImage>> images() {
+    return delegate.images();
+  }
+
+  @Override
+  public MixedOperation<ImageTag, ImageTagList, DoneableImageTag, Resource<ImageTag, DoneableImageTag>> imageTags() {
+    return delegate.imageTags();
+  }
+
+
+  @Override
   public MixedOperation<ImageStream, ImageStreamList, DoneableImageStream, Resource<ImageStream, DoneableImageStream>> imageStreams() {
     return delegate.imageStreams();
   }
@@ -238,6 +275,11 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public NonNamespaceOperation<OAuthClient, OAuthClientList, DoneableOAuthClient, Resource<OAuthClient, DoneableOAuthClient>> oAuthClients() {
     return delegate.oAuthClients();
+  }
+
+  @Override
+  public OpenShiftQuotaAPIGroupDSL quotas() {
+    return delegate.quotas();
   }
 
   @Override
@@ -391,6 +433,11 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
+  public NonNamespaceOperation<RangeAllocation, RangeAllocationList, DoneableRangeAllocation, Resource<RangeAllocation, DoneableRangeAllocation>> rangeAllocations() {
+    return delegate.rangeAllocations();
+  }
+
+  @Override
   public NonNamespaceOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, Resource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints() {
     return delegate.securityContextConstraints();
   }
@@ -518,6 +565,26 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public AutoscalingAPIGroupDSL autoscaling() {
     return delegate.autoscaling();
+  }
+
+  @Override
+  public OpenShiftMonitoringAPIGroupDSL monitoring() {
+    return delegate.monitoring();
+  }
+
+  @Override
+  public NonNamespaceOperation<NetNamespace, NetNamespaceList, DoneableNetNamespace, Resource<NetNamespace, DoneableNetNamespace>> netNamespaces() {
+    return delegate.netNamespaces();
+  }
+
+  @Override
+  public NonNamespaceOperation<ClusterNetwork, ClusterNetworkList, DoneableClusterNetwork, Resource<ClusterNetwork, DoneableClusterNetwork>> clusterNetworks() {
+    return delegate.clusterNetworks();
+  }
+
+  @Override
+  public MixedOperation<EgressNetworkPolicy, EgressNetworkPolicyList, DoneableEgressNetworkPolicy, Resource<EgressNetworkPolicy, DoneableEgressNetworkPolicy>> egressNetworkPolicies() {
+    return delegate.egressNetworkPolicies();
   }
 
   @Override
