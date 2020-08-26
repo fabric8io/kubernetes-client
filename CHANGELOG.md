@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 4.10-SNAPSHOT
+### 4.11.0 (2020-08-26)
 #### Bugs
 * Fix #2373: Unable to create a Template on OCP3
 * Fix #2308: Fix kubernetes client `Config` loading KUBECONFIG with external authentication command
@@ -38,6 +38,7 @@ _**Note**_: Some classes have been moved to other packages:
 - CustomResourceDefinition has been moved to `io.fabric8.kubernetes.api.model.apiextensions.v1` and `io.fabric8.kubernetes.api.model.apiextensions.v1beta1`
 - SubjectAccessReview, SelfSubjectAccessReview, LocalSubjectAccessReview and SelfSubjectRulesReview have been moved to `io.fabric8.kubernetes.api.model.authorization.v1` and `io.fabric8.kubernetes.api.model.authorization.v1beta1`
 - `io.fabric8.tekton.pipeline.v1beta1.WorkspacePipelineDeclaration` is now `io.fabric8.tekton.pipeline.v1beta1.PipelineWorkspaceDeclaration`
+
 ### 4.10.3 (2020-07-14)
 #### Bugs
 * Fix #2285: Raw CustomResource API createOrReplace does not propagate exceptions from create
