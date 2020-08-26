@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.internal.patchmixins;
+package io.fabric8.openshift.client.internal.patchmixins;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.fabric8.openshift.api.model.Build;
