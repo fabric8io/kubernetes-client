@@ -123,9 +123,9 @@ import io.fabric8.kubernetes.client.dsl.V1APIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
+import io.fabric8.kubernetes.client.extended.run.RunConfigBuilder;
+import io.fabric8.kubernetes.client.extended.run.RunOperations;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
-import io.fabric8.kubernetes.client.utils.GeneratorRunConfigBuilder;
-import io.fabric8.kubernetes.client.utils.PodGeneratorImpl;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.ConfigurationPolicy;
@@ -561,7 +561,7 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   @Override
-  public PodGeneratorImpl run() {
-    return new PodGeneratorImpl(httpClient, getConfiguration(), getNamespace(), new GeneratorRunConfigBuilder());
+  public RunOperations run() {
+    return new RunOperations(httpClient, getConfiguration(), getNamespace(), new RunConfigBuilder());
   }
 }

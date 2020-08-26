@@ -112,8 +112,8 @@ import io.fabric8.kubernetes.client.dsl.internal.core.v1.SecretOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.ServiceAccountOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.EventOperationsImpl;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
-import io.fabric8.kubernetes.client.utils.GeneratorRunConfigBuilder;
-import io.fabric8.kubernetes.client.utils.PodGeneratorImpl;
+import io.fabric8.kubernetes.client.extended.run.RunConfigBuilder;
+import io.fabric8.kubernetes.client.extended.run.RunOperations;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -443,7 +443,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   @Override
-  public PodGeneratorImpl run() {
-    return new PodGeneratorImpl(httpClient, getConfiguration(), getNamespace(), new GeneratorRunConfigBuilder());
+  public RunOperations run() {
+    return new RunOperations(httpClient, getConfiguration(), getNamespace(), new RunConfigBuilder());
   }
 }

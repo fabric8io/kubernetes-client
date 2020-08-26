@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.utils;
+package io.fabric8.kubernetes.client.extended.run;
 
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
@@ -25,21 +25,22 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class GeneratorRunConfigUtilTest {
+class RunConfigUtilTest {
   @Test
   void testGetObjectMetadataFromRunConfig() {
     // Given
-    GeneratorRunConfig config = new GeneratorRunConfigBuilder()
+    RunConfig config = new RunConfigBuilder()
       .withName("test")
       .withLabels(Collections.singletonMap("foo", "bar"))
       .build();
 
     // When
-    ObjectMeta objectMeta = GeneratorRunConfigUtil.getObjectMetadataFromRunConfig(config);
+    ObjectMeta objectMeta = RunConfigUtil.getObjectMetadataFromRunConfig(config);
 
     // Then
     assertNotNull(objectMeta);
@@ -51,7 +52,7 @@ class GeneratorRunConfigUtilTest {
   @Test
   void testGetPodSpecFromRunConfig() {
     // Given
-    GeneratorRunConfig config = new GeneratorRunConfigBuilder()
+    RunConfig config = new RunConfigBuilder()
       .withName("test")
       .withImage("test:latest")
       .withEnv(Collections.singletonMap("TEST_KEY", "TEST_VALUE"))
@@ -60,7 +61,7 @@ class GeneratorRunConfigUtilTest {
       .build();
 
     // When
-    PodSpec podSpec = GeneratorRunConfigUtil.getPodSpecFromRunConfig(config);
+    PodSpec podSpec = RunConfigUtil.getPodSpecFromRunConfig(config);
 
     // Then
     assertNotNull(podSpec);
@@ -75,18 +76,20 @@ class GeneratorRunConfigUtilTest {
   }
 
   @Test
-  void testGetContainersFromRunConfig() {
+  void testContainerFromConfig() {
     // Given
-    GeneratorRunConfig config = getCompleteGeneratorRunConfig();
+    RunConfig config = initMockRunConfigBuilder().build();
 
     // When
-    Container container = GeneratorRunConfigUtil.getContainersFromRunConfig(config);
+    Container container = RunConfigUtil.containerFromConfig(config);
 
     // Then
     assertNotNull(container);
     assertEquals("test", container.getName());
     assertEquals("IfNotPresent", container.getImagePullPolicy());
     assertEquals("test:latest", container.getImage());
+    assertEquals(Collections.emptyList(), container.getArgs());
+    assertEquals(Collections.emptyList(), container.getCommand());
     assertEquals(1, container.getEnv().size());
     assertEquals(1, container.getPorts().size());
     assertEquals(5701, container.getPorts().get(0).getContainerPort());
@@ -98,6 +101,51 @@ class GeneratorRunConfigUtilTest {
     assertEquals(new Quantity("64Mi"), container.getResources().getRequests().get("memory"));
   }
 
+  @Test
+  void testContainerFromConfigWithArgs() {
+    // Given
+    final RunConfig runConfig = initMockRunConfigBuilder()
+      .withArgs("arg1", "arg2")
+      .build();
+    // When
+    final Container result = RunConfigUtil.containerFromConfig(runConfig);
+    // Then
+    assertThat(result)
+      .hasFieldOrPropertyWithValue("command", Collections.emptyList())
+      .extracting(Container::getArgs)
+      .asList().containsExactly("arg1", "arg2");
+  }
+
+  @Test
+  void testContainerFromConfigWithCommand() {
+    // Given
+    final RunConfig runConfig = initMockRunConfigBuilder()
+      .withCommand("/bin/sh")
+      .build();
+    // When
+    final Container result = RunConfigUtil.containerFromConfig(runConfig);
+    // Then
+    assertThat(result)
+      .hasFieldOrPropertyWithValue("args", Collections.emptyList())
+      .extracting(Container::getCommand)
+      .asList().containsExactly("/bin/sh");
+  }
+
+  @Test
+  void testContainerFromConfigWithCommandAndArgs() {
+    // Given
+    final RunConfig runConfig = initMockRunConfigBuilder()
+      .withCommand("/bin/sh")
+      .withArgs("-c", "echo hello")
+      .build();
+    // When
+    final Container result = RunConfigUtil.containerFromConfig(runConfig);
+    // Then
+    assertThat(result)
+      .hasFieldOrPropertyWithValue("args", Collections.emptyList())
+      .extracting(Container::getCommand)
+      .asList().containsExactly("/bin/sh", "-c", "echo hello");
+  }
 
   private Map<String, Quantity> getLimits() {
     Map<String, Quantity> limits = new HashMap<>();
@@ -113,16 +161,14 @@ class GeneratorRunConfigUtilTest {
     return requests;
   }
 
-  private GeneratorRunConfig getCompleteGeneratorRunConfig() {
-    return new GeneratorRunConfigBuilder()
+  private RunConfigBuilder initMockRunConfigBuilder() {
+    return new RunConfigBuilder()
       .withName("test")
       .withImage("test:latest")
-      .withReplicas(1)
       .withEnv(Collections.singletonMap("TEST_KEY", "TEST_VALUE"))
       .withImagePullPolicy("IfNotPresent")
       .withPort(5701)
       .withLimits(getLimits())
-      .withRequests(getRequests())
-      .build();
+      .withRequests(getRequests());
   }
 }

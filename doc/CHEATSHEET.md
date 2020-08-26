@@ -2310,7 +2310,7 @@ try (KubernetesClient client = new DefaultKubernetesClient()) {
 ```
 try (KubernetesClient client = new DefaultKubernetesClient()) {
     client.run().inNamespace("default")
-            .withRunConfig(new GeneratorRunConfigBuilder()
+            .withRunConfig(new RunConfigBuilder()
                     .withName("nginx")
                     .withImage("nginx:latest")
                     .withLabels(Collections.singletonMap("foo", "bar"))

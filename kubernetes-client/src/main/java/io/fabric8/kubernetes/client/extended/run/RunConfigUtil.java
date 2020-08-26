@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.utils;
+package io.fabric8.kubernetes.client.extended.run;
 
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerBuilder;
@@ -22,12 +22,20 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.PodSpec;
 import io.fabric8.kubernetes.api.model.PodSpecBuilder;
+import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 
-public class GeneratorRunConfigUtil {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
+import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
+
+public class RunConfigUtil {
   private static final String DEFAULT_RESTART_POLICY = "Always";
-  private GeneratorRunConfigUtil() { }
+  private RunConfigUtil() { }
 
-  public static ObjectMeta getObjectMetadataFromRunConfig(GeneratorRunConfig generatorRunConfig) {
+  public static ObjectMeta getObjectMetadataFromRunConfig(RunConfig generatorRunConfig) {
     ObjectMetaBuilder objectMetaBuilder = new ObjectMetaBuilder();
     if (generatorRunConfig.getName() != null) {
       objectMetaBuilder.withName(generatorRunConfig.getName());
@@ -41,7 +49,7 @@ public class GeneratorRunConfigUtil {
     return objectMetaBuilder.build();
   }
 
-  public static PodSpec getPodSpecFromRunConfig(GeneratorRunConfig generatorRunConfig) {
+  public static PodSpec getPodSpecFromRunConfig(RunConfig generatorRunConfig) {
     PodSpecBuilder podSpecBuilder = new PodSpecBuilder();
     if (generatorRunConfig.getRestartPolicy() != null) {
       podSpecBuilder.withRestartPolicy(generatorRunConfig.getRestartPolicy());
@@ -53,46 +61,58 @@ public class GeneratorRunConfigUtil {
       podSpecBuilder.withServiceAccountName(generatorRunConfig.getServiceAccount());
     }
 
-    podSpecBuilder.addToContainers(getContainersFromRunConfig(generatorRunConfig));
+    podSpecBuilder.addToContainers(containerFromConfig(generatorRunConfig));
 
     return podSpecBuilder.build();
   }
 
-  public static Container getContainersFromRunConfig(GeneratorRunConfig generatorRunConfig) {
-    ContainerBuilder containerBuilder = new ContainerBuilder();
-    if (generatorRunConfig.getName() != null) {
-      containerBuilder.withName(generatorRunConfig.getName());
+  static Container containerFromConfig(RunConfig runConfig) {
+    final ContainerBuilder containerBuilder = new ContainerBuilder();
+    containerBuilder.withName(runConfig.getName());
+    containerBuilder.withImage(runConfig.getImage());
+    containerBuilder.withImagePullPolicy(runConfig.getImagePullPolicy());
+    containerBuilder.withArgs(argsFromConfig(runConfig));
+    containerBuilder.withCommand(commandFromConfig(runConfig));
+
+    if (runConfig.getEnv() != null) {
+      containerBuilder.withEnv(KubernetesResourceUtil.convertMapToEnvVarList(runConfig.getEnv()));
     }
 
-    if (generatorRunConfig.getImage() != null) {
-      containerBuilder.withImage(generatorRunConfig.getImage());
-    }
-
-    if (generatorRunConfig.getImagePullPolicy() != null) {
-      containerBuilder.withImagePullPolicy(generatorRunConfig.getImagePullPolicy());
-    }
-
-    if (generatorRunConfig.getEnv() != null) {
-      containerBuilder.withEnv(KubernetesResourceUtil.convertMapToEnvVarList(generatorRunConfig.getEnv()));
-    }
-
-    if (generatorRunConfig.getPort() > 0) {
+    if (runConfig.getPort() > 0) {
       containerBuilder.withPorts(new ContainerPortBuilder()
-        .withContainerPort(generatorRunConfig.getPort())
+        .withContainerPort(runConfig.getPort())
         .build());
     }
 
-    if (generatorRunConfig.getLimits() != null) {
+    if (runConfig.getLimits() != null) {
       containerBuilder.editOrNewResources()
-        .addToLimits(generatorRunConfig.getLimits())
+        .addToLimits(runConfig.getLimits())
         .endResources();
     }
 
-    if (generatorRunConfig.getRequests() != null) {
+    if (runConfig.getRequests() != null) {
       containerBuilder.editOrNewResources()
-        .addToRequests(generatorRunConfig.getRequests())
+        .addToRequests(runConfig.getRequests())
         .endResources();
     }
     return containerBuilder.build();
+  }
+
+  private static String[] argsFromConfig(RunConfig runConfig) {
+    if (isNullOrEmpty(runConfig.getCommand()) && runConfig.getArgs() != null) {
+      return runConfig.getArgs().toArray(new String[0]);
+    }
+    return new String[0];
+  }
+
+  private static String[] commandFromConfig(RunConfig runConfig) {
+    if (isNotNullOrEmpty(runConfig.getCommand())) {
+      final List<String> command = new ArrayList<>(Collections.singletonList(runConfig.getCommand()));
+      if (runConfig.getArgs() != null) {
+        command.addAll(runConfig.getArgs());
+      }
+      return command.toArray(new String[0]);
+    }
+    return new String[0];
   }
 }

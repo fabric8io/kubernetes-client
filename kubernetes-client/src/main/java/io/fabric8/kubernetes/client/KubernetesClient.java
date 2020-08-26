@@ -84,8 +84,8 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.DoneableCustomResou
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
+import io.fabric8.kubernetes.client.extended.run.RunOperations;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
-import io.fabric8.kubernetes.client.utils.PodGeneratorImpl;
 
 import java.io.InputStream;
 import java.util.Collection;
@@ -519,7 +519,7 @@ public interface KubernetesClient extends Client {
   /**
    * Run a Pod (core/v1)
    *
-   * @return returns {@link PodGeneratorImpl} that allows you to run a pod based on few parameters(e.g. name, image etc)
+   * @return returns {@link RunOperations} that allows you to run a pod based on few parameters(e.g. name, image etc)
    */
-  PodGeneratorImpl run();
+  RunOperations run();
 }
