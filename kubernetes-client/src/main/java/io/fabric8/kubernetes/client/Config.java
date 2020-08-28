@@ -530,7 +530,7 @@ public class Config {
     return true;
   }
 
-  private static String getKubeconfigFilename() {
+  public static String getKubeconfigFilename() {
     String fileName = Utils.getSystemPropertyOrEnvVar(KUBERNETES_KUBECONFIG_FILE, new File(getHomeDir(), ".kube" + File.separator + "config").toString());
 
     // if system property/env var contains multiple files take the first one based on the environment
