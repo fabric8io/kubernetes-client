@@ -170,10 +170,15 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       L answer = handleResponse(requestBuilder, listType);
       updateApiVersion(answer);
       return answer;
-    } catch (InterruptedException | ExecutionException | IOException e) {
+    } catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(forOperationType("list"), ie);
+    } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
     }
-  }
+
+
+ }
 
   protected URL fetchListUrl(URL url, ListOptions listOptions) throws MalformedURLException {
     return new URL(HttpClientUtils.appendListOptionParams(HttpUrl.get(url.toString()).newBuilder(), listOptions).toString());
@@ -235,19 +240,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     try {
       URL requestUrl = getCompleteResourceUrl();
       return handleGet(requestUrl);
-    } catch (KubernetesClientException e) {
-      throw KubernetesClientException.launderThrowable(forOperationType("get"), e);
-      //if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
-      //   throw e;
-      //} else {
-      //  String resourceType = type != null ? type.getSimpleName() : "Resource";
-      //  String msg = resourceType + " with name: [" + getName() + "]  not found in namespace: [" + (Utils.isNotNullOrEmpty(getNamespace()) ? getName() : getConfig().getNamespace()) + "]";
-      //   throw new KubernetesClientException(msg, HttpURLConnection.HTTP_NOT_FOUND, new StatusBuilder().withCode(HttpURLConnection.HTTP_NOT_FOUND).withMessage(msg).build());
-      // }
-    } catch (InterruptedException | ExecutionException | IOException e) {
+    } catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(forOperationType("get"), ie);
+    } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("get"), e);
     }
-  }
+ }
 
   public RootPaths getRootPaths() {
     try {
@@ -259,10 +258,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         throw e;
       }
       return null;
-    } catch (InterruptedException | ExecutionException | IOException e) {
+    } catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(ie);
+    } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
-  }
+ }
 
   @Override
   public D edit() throws KubernetesClientException {
@@ -344,9 +346,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       } else {
         return handleCreate(getItem());
       }
-    } catch (InterruptedException | ExecutionException | IOException e) {
+    }  catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(forOperationType("create"), ie);
+    } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("create"), e);
     }
+
   }
 
   @Override
@@ -357,9 +363,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       } else {
         throw new IllegalArgumentException("Nothing to create.");
       }
-    } catch (InterruptedException | ExecutionException | IOException e) {
+    }  catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(forOperationType("create"), ie);
+    } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("create"), e);
     }
+
   }
 
   @Override
@@ -744,9 +754,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   public T updateStatus(T item) {
     try {
       return handleStatusUpdate(item, getType());
-    } catch (InterruptedException | ExecutionException | IOException e) {
+    } catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(forOperationType("statusUpdate"), ie);
+    } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("statusUpdate"), e);
     }
+
   }
 
   public BaseOperation<T, L, D, R> withItem(T item) {
@@ -896,17 +910,25 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   protected Scale handleScale(Scale scaleParam) {
     try {
       return handleScale(getCompleteResourceUrl().toString(), scaleParam);
-    } catch (InterruptedException | ExecutionException | IOException e) {
+    }  catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(forOperationType("scale"), ie);
+    } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("scale"), e);
     }
+
   }
 
   protected Status handleDeploymentRollback(DeploymentRollback deploymentRollback) {
     try {
       return handleDeploymentRollback(getCompleteResourceUrl().toString(), deploymentRollback);
-    } catch (InterruptedException | ExecutionException | IOException e) {
+    }  catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(forOperationType("rollback"), ie);
+    } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("rollback"), e);
     }
+
   }
 
   protected T handleGet(URL resourceUrl) throws InterruptedException, ExecutionException, IOException {
@@ -1167,3 +1189,4 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     this.namespace = namespace;
   }
 }
+
