@@ -3,6 +3,7 @@
 ### 4.11-SNAPSHOT
 
 #### Bugs
+* Fix #2445: ConfigMap and other resources are replaced
 
 #### Improvements
 
