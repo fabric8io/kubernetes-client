@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Enable user to select custom address and port for KubernetesMockServer
 
 #### Dependency Upgrade
 
