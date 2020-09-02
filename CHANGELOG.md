@@ -1,15 +1,19 @@
 ## CHANGELOG
 
-### 4.11.1 (2020-09-02)
+### 4.11-SNAPSHOT
 
 #### Bugs
-* Fix #2445: ConfigMap and other resources are replaced
 
 #### Improvements
 
 #### Dependency Upgrade
 
 #### New Features
+
+### 4.11.1 (2020-09-02)
+
+#### Bugs
+* Fix #2445: ConfigMap and other resources are replaced
 
 ### 4.11.0 (2020-08-26)
 #### Bugs
