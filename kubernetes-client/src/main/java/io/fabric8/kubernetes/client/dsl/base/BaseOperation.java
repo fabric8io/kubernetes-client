@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.dsl.base;
 
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
-import io.fabric8.kubernetes.client.utils.ResourceCompare;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -131,26 +130,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     this.watchRetryBackoffMultiplier = ctx.getWatchRetryBackoffMultiplier();
   }
 
-  /**
-   * Returns the name and falls back to the item name.
-   * @param item  The item.
-   * @param name  The name to check.
-   * @param <T>
-   * @return
-   */
-  private static <T> String name(T item, String name) {
-    if (name != null && !name.isEmpty()) {
-      return name;
-    } else if (item instanceof HasMetadata) {
-      HasMetadata h = (HasMetadata) item;
-      return h.getMetadata() != null ? h.getMetadata().getName() : null;
-    }
-    return null;
-  }
-
-
   public BaseOperation<T, L, D, R> newInstance(OperationContext context) {
-    return new BaseOperation<T, L, D, R>(context);
+    return new BaseOperation<>(context);
   }
 
   /**
@@ -193,14 +174,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public T get() {
     try {
-      T answer = getMandatory();
-      if (answer instanceof HasMetadata) {
-        HasMetadata hasMetadata = (HasMetadata) answer;
-        updateApiVersion(hasMetadata);
-      } else if (answer instanceof KubernetesResourceList) {
-        KubernetesResourceList list = (KubernetesResourceList) answer;
-        updateApiVersion(list);
-      }
+      final T answer = getMandatory();
+      updateApiVersion(answer);
       return answer;
     } catch (KubernetesClientException e) {
       if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
@@ -211,19 +186,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public T require() throws ResourceNotFoundException {
+  public T require() {
     try {
       T answer = getMandatory();
       if (answer == null) {
         throw new ResourceNotFoundException("The resource you request doesn't exist or couldn't be fetched.");
       }
-      if (answer instanceof HasMetadata) {
-        HasMetadata hasMetadata = (HasMetadata) answer;
-        updateApiVersion(hasMetadata);
-      } else if (answer instanceof KubernetesResourceList) {
-        KubernetesResourceList list = (KubernetesResourceList) answer;
-        updateApiVersion(list);
-      }
+      updateApiVersion(answer);
       return answer;
     } catch (KubernetesClientException e) {
       if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
@@ -267,7 +236,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
  }
 
   @Override
-  public D edit() throws KubernetesClientException {
+  public D edit() {
     throw new KubernetesClientException("Cannot edit read-only resources");
   }
 
@@ -334,8 +303,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return newInstance(context.withReloadingFromServer(true));
   }
 
+  @SafeVarargs
   @Override
-  public T create(T... resources) throws KubernetesClientException {
+  public final T create(T... resources) {
     try {
       if (resources.length > 1) {
         throw new IllegalArgumentException("Too many items to create.");
@@ -373,7 +343,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public D createNew() throws KubernetesClientException {
+  public D createNew() {
     final Function<T, T> visitor = resource -> {
       try {
         return create(resource);
@@ -391,7 +361,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
 
   @Override
-  public D createOrReplaceWithNew() throws KubernetesClientException {
+  public D createOrReplaceWithNew() {
     final Function<T, T> visitor = resource -> {
       try {
         return createOrReplace(resource);
@@ -407,8 +377,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     }
   }
 
+  @SafeVarargs
   @Override
-  public T createOrReplace(T... items) {
+  public final T createOrReplace(T... items) {
     T itemToCreateOrReplace = getItem();
     if (items.length > 1) {
       throw new IllegalArgumentException("Too many items to create.");
@@ -433,16 +404,10 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       if (exception.getCode() != HttpURLConnection.HTTP_CONFLICT) {
         throw exception;
       }
-
       // Conflict; Do Replace
-      T itemFromServer = fromServer().get();
-      if (ResourceCompare.equals(itemFromServer, itemToCreateOrReplace)) {
-        // Nothing changed, ignore
-        return itemToCreateOrReplace;
-      } else {
-        KubernetesResourceUtil.setResourceVersion(itemToCreateOrReplace, KubernetesResourceUtil.getResourceVersion(itemFromServer));
-        return replace(itemToCreateOrReplace);
-      }
+      final T itemFromServer = fromServer().get();
+      KubernetesResourceUtil.setResourceVersion(itemToCreateOrReplace, KubernetesResourceUtil.getResourceVersion(itemFromServer));
+      return replace(itemToCreateOrReplace);
     }
   }
 
@@ -484,29 +449,28 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return this;
   }
 
-  // Deprecated as the underlying implementation does not align with the arguments anymore.
-  // It is possible to negate multiple values with the same key, e.g.:
-  // foo != bar , foo != baz
-  // To support this a multi-value map is needed, as a regular map would override the key with the new value.
+  /**
+   * @deprecated as the underlying implementation does not align with the arguments anymore.
+   *    It is possible to negate multiple values with the same key, e.g.:
+   *    foo != bar , foo != baz
+   *    To support this a multi-value map is needed, as a regular map would override the key with the new value.
+   */
   @Override
   @Deprecated
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withoutLabels(Map<String, String> labels) throws
-    KubernetesClientException {
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withoutLabels(Map<String, String> labels) {
     // Re-use "withoutLabel" to convert values from String to String[]
     labels.forEach(this::withoutLabel);
     return this;
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withLabelIn(String key, String... values) throws
-    KubernetesClientException {
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withLabelIn(String key, String... values) {
     labelsIn.put(key, values);
     return this;
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withLabelNotIn(String key, String... values) throws
-    KubernetesClientException {
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withLabelNotIn(String key, String... values) {
     labelsNotIn.put(key, values);
     return this;
   }
@@ -550,16 +514,17 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return this;
   }
 
-  // Deprecated as the underlying implementation does not align with the arguments fully.
-  // Method is created to have a similar API as `withoutLabels`, but should eventually be replaced with something
-  // better for the same reasons.
-  // It is possible to negate multiple values with the same key, e.g.:
-  // foo != bar , foo != baz
-  // To support this a multi-value map is needed, as a regular map would override the key with the new value.
+  /**
+   * @deprecated as the underlying implementation does not align with the arguments fully.
+   *    Method is created to have a similar API as `withoutLabels`, but should eventually be replaced
+   *    with something better for the same reasons.
+   *    It is possible to negate multiple values with the same key, e.g.:
+   *    foo != bar , foo != baz
+   *    To support this a multi-value map is needed, as a regular map would override the key with the new value.
+   */
   @Override
   @Deprecated
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withoutFields(Map<String, String> fields) throws
-    KubernetesClientException {
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withoutFields(Map<String, String> fields) {
     // Re-use "withoutField" to convert values from String to String[]
     labels.forEach(this::withoutField);
     return this;
@@ -665,7 +630,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return sb.toString();
   }
 
-  public L list() throws KubernetesClientException {
+  public L list() {
     try {
       return listRequestHelper(getResourceUrl(namespace, name));
     } catch (IOException e) {
@@ -710,9 +675,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     }
   }
 
-
+  @SafeVarargs
   @Override
-  public Boolean delete(T... items) {
+  public final Boolean delete(T... items) {
     return delete(Arrays.asList(items));
   }
 
@@ -720,25 +685,20 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   public Boolean delete(List<T> items) {
     boolean deleted = true;
     if (items != null) {
-      for (T item : items) {
-        if (item == null) {
+      for (T toDelete : items) {
+        if (toDelete == null) {
           continue;
         }
-        updateApiVersionResource(item);
+        updateApiVersion(toDelete);
 
         try {
-          R op;
-
-          if (item instanceof HasMetadata
-            && ((HasMetadata) item).getMetadata() != null
-            && ((HasMetadata) item).getMetadata().getName() != null
-            && !((HasMetadata) item).getMetadata().getName().isEmpty()) {
-            op = (R) inNamespace(checkNamespace(item)).withName(((HasMetadata) item).getMetadata().getName());
+          if (toDelete.getMetadata() != null
+            && toDelete.getMetadata().getName() != null
+            && !toDelete.getMetadata().getName().isEmpty()) {
+            deleted &= inNamespace(checkNamespace(toDelete)).withName(toDelete.getMetadata().getName()).delete();
           } else {
-            op = (R) withItem(item);
+            deleted &= withItem(toDelete).delete();
           }
-
-          deleted &= op.delete();
         } catch (KubernetesClientException e) {
           if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
             throw e;
@@ -770,7 +730,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   void deleteThis() {
     try {
       if (item != null) {
-        updateApiVersionResource(item);
+        updateApiVersion(item);
         handleDelete(item, gracePeriodSeconds, propagationPolicy, cascading);
       } else {
         handleDelete(getResourceUrl(), gracePeriodSeconds, propagationPolicy, cascading);
@@ -872,27 +832,27 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return Utils.isResourceNamespaced(getType());
   }
 
-  protected T handleResponse(Request.Builder requestBuilder) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+  protected T handleResponse(Request.Builder requestBuilder) throws ExecutionException, InterruptedException, IOException {
     return handleResponse(requestBuilder, getType());
   }
 
-  protected T handleCreate(T resource) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    updateApiVersionResource(resource);
+  protected T handleCreate(T resource) throws ExecutionException, InterruptedException, IOException {
+    updateApiVersion(resource);
     return handleCreate(resource, getType());
   }
 
-  protected T handleReplace(T updated) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    updateApiVersionResource(updated);
+  protected T handleReplace(T updated) throws ExecutionException, InterruptedException, IOException {
+    updateApiVersion(updated);
     return handleReplace(updated, getType());
   }
 
-  protected T handlePatch(T current, T updated) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    updateApiVersionResource(updated);
+  protected T handlePatch(T current, T updated) throws ExecutionException, InterruptedException, IOException {
+    updateApiVersion(updated);
     return handlePatch(current, updated, getType());
   }
 
   protected T handlePatch(T current, Map<String, Object> patchedUpdate) throws ExecutionException, InterruptedException, IOException {
-    updateApiVersionResource(current);
+    updateApiVersion(current);
     return handlePatch(current, patchedUpdate, getType());
   }
 
@@ -933,7 +893,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   protected T handleGet(URL resourceUrl) throws InterruptedException, ExecutionException, IOException {
     T answer = handleGet(resourceUrl, getType());
-    updateApiVersionResource(answer);
+    updateApiVersion(answer);
     return answer;
   }
 
@@ -1056,40 +1016,17 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   /**
-   * Updates the list or single item if it has a missing or incorrect apiGroupVersion
-   *
-   * @param resource resource object
-   */
-  protected void updateApiVersionResource(Object resource) {
-    if (resource instanceof HasMetadata) {
-      HasMetadata hasMetadata = (HasMetadata) resource;
-      updateApiVersion(hasMetadata);
-    } else if (resource instanceof KubernetesResourceList) {
-      KubernetesResourceList list = (KubernetesResourceList) resource;
-      updateApiVersion(list);
-    }
-  }
-
-  /**
    * Updates the list items if they have missing or default apiGroupVersion values and the resource is currently
    * using API Groups with custom version strings
    *
    * @param list Kubernetes resource list
    */
-  protected void updateApiVersion(KubernetesResourceList list) {
+  protected void updateApiVersion(KubernetesResourceList<T> list) {
     String version = getApiVersion();
-    if (list != null && version != null && version.length() > 0) {
-      List items = list.getItems();
-      if (items != null) {
-        for (Object item : items) {
-          if (item instanceof HasMetadata) {
-            updateApiVersion((HasMetadata) item);
-          }
-        }
-      }
+    if (list != null && version != null && version.length() > 0 && list.getItems() != null) {
+      list.getItems().forEach(this::updateApiVersion);
     }
   }
-
 
   /**
    * Updates the resource if it has missing or default apiGroupVersion values and the resource is currently
@@ -1124,8 +1061,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public Boolean isReady() {
-    T i = get();
-    return i instanceof HasMetadata && Readiness.isReady((HasMetadata) i);
+    return Readiness.isReady(get());
   }
 
   @Override

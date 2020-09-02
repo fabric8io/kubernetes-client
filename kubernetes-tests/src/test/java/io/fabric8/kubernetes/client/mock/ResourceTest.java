@@ -62,7 +62,6 @@ public class ResourceTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
 
-
   @Test
   void testCreateOrReplace() {
     // Given
@@ -91,13 +90,13 @@ public class ResourceTest {
 
     @Test
     void testCreateWithExplicitNamespace() {
-        Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
+      Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
 
-        server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(HttpURLConnection.HTTP_CREATED, pod1).once();
+      server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(HttpURLConnection.HTTP_CREATED, pod1).once();
 
-        KubernetesClient client = server.getClient();
-        HasMetadata response = client.resource(pod1).inNamespace("ns1").createOrReplace();
-        assertEquals(pod1, response);
+      KubernetesClient client = server.getClient();
+      HasMetadata response = client.resource(pod1).inNamespace("ns1").createOrReplace();
+      assertEquals(pod1, response);
     }
 
     @Test
@@ -105,7 +104,6 @@ public class ResourceTest {
       Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
 
       server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(HttpURLConnection.HTTP_CONFLICT, pod1).once();
-      server.expect().get().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(HttpURLConnection.HTTP_OK, pod1).once();
       server.expect().delete().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(HttpURLConnection.HTTP_OK, pod1).once();
       server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(HttpURLConnection.HTTP_CREATED, pod1).once();
 
@@ -114,7 +112,7 @@ public class ResourceTest {
       assertEquals(pod1, response);
 
       RecordedRequest request = server.getLastRequest();
-      assertEquals(4, server.getMockServer().getRequestCount());
+      assertEquals(3, server.getMockServer().getRequestCount());
       assertEquals("/api/v1/namespaces/ns1/pods", request.getPath());
       assertEquals("POST", request.getMethod());
     }
