@@ -631,15 +631,24 @@ public class Config {
         Map<String, String> environment = pb.environment();
         env.forEach(var -> environment.put(var.getName(), var.getValue()));
       }
+      pb.redirectErrorStream(true);
       Process p = pb.start();
-      if (p.waitFor() != 0) {
-        LOGGER.warn(IOHelpers.readFully(p.getErrorStream()));
+      StringBuilder sb = new StringBuilder();
+      try (BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
+        String s;
+        while ((s = br.readLine()) != null) {
+          sb.append(s);
+        }
       }
-      ExecCredential ec = Serialization.unmarshal(p.getInputStream(), ExecCredential.class);
-      if (!apiVersion.equals(ec.apiVersion)) {
-        LOGGER.warn("Wrong apiVersion {} vs. {}", ec.apiVersion, apiVersion);
+      if (p.waitFor() != 0) {
+        LOGGER.warn(sb.toString());
       } else {
-        return ec;
+        ExecCredential ec = Serialization.unmarshal(sb.toString(), ExecCredential.class);
+        if (!apiVersion.equals(ec.apiVersion)) {
+          LOGGER.warn("Wrong apiVersion {} vs. {}", ec.apiVersion, apiVersion);
+        } else {
+          return ec;
+        }
       }
     } else { // TODO v1beta1?
       LOGGER.warn("Unsupported apiVersion: {}", apiVersion);
