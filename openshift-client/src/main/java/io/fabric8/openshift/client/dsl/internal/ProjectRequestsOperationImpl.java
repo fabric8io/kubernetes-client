@@ -87,10 +87,15 @@ public class ProjectRequestsOperationImpl extends OperationSupport implements Pr
       } else {
         return handleCreate(updateApiVersion(getItem()), ProjectRequest.class);
       }
-    } catch (InterruptedException | ExecutionException | IOException e) {
+    }  catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(ie);
+    } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
+    
   }
+
 
   @Override
   public ProjectRequest create(ProjectRequest resource) {
@@ -114,7 +119,10 @@ public class ProjectRequestsOperationImpl extends OperationSupport implements Pr
       URL requestUrl = getNamespacedUrl();
       Request.Builder requestBuilder = new Request.Builder().get().url(requestUrl);
       return handleResponse(requestBuilder, Status.class);
-    } catch (InterruptedException | ExecutionException | IOException e) {
+    }  catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(ie);
+    } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
   }
@@ -156,7 +164,10 @@ public class ProjectRequestsOperationImpl extends OperationSupport implements Pr
       }
       Request.Builder requestBuilder = new Request.Builder().get().url(urlBuilder.build());
       return handleResponse(requestBuilder, Status.class);
-    } catch (InterruptedException | ExecutionException | IOException e) {
+    }  catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(ie);
+    } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
   }
