@@ -3,6 +3,7 @@
 ### 4.11-SNAPSHOT
 
 #### Bugs
+* Fix #2458: Creating new instance of the DefaultKubernetesClient is hanging
 
 #### Improvements
 
