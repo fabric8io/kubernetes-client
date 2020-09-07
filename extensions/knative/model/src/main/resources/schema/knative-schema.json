@@ -2,14 +2,99 @@
   "id": "http://fabric8.io/knative/KnativeSchema#",
   "$schema": "http://json-schema.org/schema#",
   "definitions": {
-    "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_Broker": {
+    "knative_dev_eventing_pkg_apis_duck_v1_DeliverySpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "backoffDelay": {
+          "type": "string",
+          "description": "",
+          "javaType": "String"
+        },
+        "backoffPolicy": {
+          "type": "string",
+          "description": "",
+          "javaType": "String"
+        },
+        "deadLetterSink": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Destination",
+          "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Destination"
+        },
+        "retry": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Integer"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.DeliverySpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_eventing_pkg_apis_duck_v1_SubscriberSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "delivery": {
+          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1_DeliverySpec",
+          "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.DeliverySpec"
+        },
+        "generation": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "replyUri": {
+          "javaType": "java.lang.String"
+        },
+        "subscriberUri": {
+          "javaType": "java.lang.String"
+        },
+        "uid": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.SubscriberSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_eventing_pkg_apis_duck_v1_SubscriberStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "message": {
+          "type": "string",
+          "description": ""
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "ready": {
+          "type": "string",
+          "description": ""
+        },
+        "uid": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.SubscriberStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_eventing_pkg_apis_eventing_v1_Broker": {
       "type": "object",
       "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "eventing.knative.dev/v1alpha1",
+          "default": "eventing.knative.dev/v1",
           "required": true
         },
         "kind": {
@@ -22,36 +107,36 @@
           "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/github_com_knative_eventing_pkg_apis_eventing_v1alpha1_BrokerSpec",
-          "javaType": "io.fabric8.knative.eventing.v1alpha1.BrokerSpec"
+          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_eventing_v1_BrokerSpec",
+          "javaType": "io.fabric8.knative.eventing.v1.BrokerSpec"
         },
         "status": {
-          "$ref": "#/definitions/github_com_knative_eventing_pkg_apis_eventing_v1alpha1_BrokerStatus",
-          "javaType": "io.fabric8.knative.eventing.v1alpha1.BrokerStatus"
+          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_eventing_v1_BrokerStatus",
+          "javaType": "io.fabric8.knative.eventing.v1.BrokerStatus"
         }
       },
-      "javaType": "io.fabric8.knative.eventing.v1alpha1.Broker",
+      "javaType": "io.fabric8.knative.eventing.v1.Broker",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.HasMetadata",
         "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
-    "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_BrokerList": {
+    "knative_dev_eventing_pkg_apis_eventing_v1_BrokerList": {
       "type": "object",
       "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "eventing.knative.dev/v1alpha1",
+          "default": "eventing.knative.dev/v1",
           "required": true
         },
         "items": {
           "type": "array",
           "description": "",
           "items": {
-            "$ref": "#/definitions/github_com_knative_eventing_pkg_apis_eventing_v1alpha1_Broker",
-            "javaType": "io.fabric8.knative.eventing.v1alpha1.Broker"
+            "$ref": "#/definitions/knative_dev_eventing_pkg_apis_eventing_v1_Broker",
+            "javaType": "io.fabric8.knative.eventing.v1.Broker"
           }
         },
         "kind": {
@@ -64,167 +149,43 @@
           "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
-      "javaType": "io.fabric8.knative.eventing.v1alpha1.BrokerList",
+      "javaType": "io.fabric8.knative.eventing.v1.BrokerList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.eventing.v1alpha1.Broker\u003e"
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.eventing.v1.Broker\u003e"
       ]
     },
-    "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_BrokerSpec": {
+    "knative_dev_eventing_pkg_apis_eventing_v1_BrokerSpec": {
       "type": "object",
       "description": "",
       "properties": {
-        "channelTemplateSpec": {
-          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1beta1_ChannelTemplateSpec",
-          "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.messaging.v1beta1.ChannelTemplateSpec"
-        },
         "config": {
           "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_KReference",
           "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.KReference"
         },
         "delivery": {
-          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1beta1_DeliverySpec",
-          "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1beta1.DeliverySpec"
+          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1_DeliverySpec",
+          "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.DeliverySpec"
         }
       },
-      "javaType": "io.fabric8.knative.eventing.v1alpha1.BrokerSpec",
+      "javaType": "io.fabric8.knative.eventing.v1.BrokerSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_BrokerStatus": {
+    "knative_dev_eventing_pkg_apis_eventing_v1_BrokerStatus": {
       "type": "object",
       "description": "",
       "properties": {
         "address": {
-          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_Addressable",
-          "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.Addressable"
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Addressable",
+          "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable"
         },
-        "conditions": {
-          "type": "array",
+        "annotations": {
+          "type": "object",
           "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
-            "javaType": "io.fabric8.knative.internal.pkg.apis.Condition"
-          }
+          "javaType": "java.util.Map\u003cString,String\u003e"
         },
-        "observedGeneration": {
-          "type": "integer",
-          "description": "",
-          "javaType": "Long"
-        },
-        "triggerChannel": {
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
-        }
-      },
-      "javaType": "io.fabric8.knative.eventing.v1alpha1.BrokerStatus",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_EventType": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "apiVersion": {
-          "type": "string",
-          "description": "",
-          "default": "eventing.knative.dev/v1alpha1",
-          "required": true
-        },
-        "kind": {
-          "type": "string",
-          "description": "",
-          "default": "EventType",
-          "required": true
-        },
-        "metadata": {
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
-        },
-        "spec": {
-          "$ref": "#/definitions/github_com_knative_eventing_pkg_apis_eventing_v1alpha1_EventTypeSpec",
-          "javaType": "io.fabric8.knative.eventing.v1alpha1.EventTypeSpec"
-        },
-        "status": {
-          "$ref": "#/definitions/github_com_knative_eventing_pkg_apis_eventing_v1alpha1_EventTypeStatus",
-          "javaType": "io.fabric8.knative.eventing.v1alpha1.EventTypeStatus"
-        }
-      },
-      "javaType": "io.fabric8.knative.eventing.v1alpha1.EventType",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata",
-        "io.fabric8.kubernetes.api.model.Namespaced"
-      ]
-    },
-    "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_EventTypeList": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "apiVersion": {
-          "type": "string",
-          "description": "",
-          "default": "eventing.knative.dev/v1alpha1",
-          "required": true
-        },
-        "items": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "$ref": "#/definitions/github_com_knative_eventing_pkg_apis_eventing_v1alpha1_EventType",
-            "javaType": "io.fabric8.knative.eventing.v1alpha1.EventType"
-          }
-        },
-        "kind": {
-          "type": "string",
-          "description": "",
-          "default": "EventTypeList",
-          "required": true
-        },
-        "metadata": {
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
-        }
-      },
-      "javaType": "io.fabric8.knative.eventing.v1alpha1.EventTypeList",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.eventing.v1alpha1.EventType\u003e"
-      ]
-    },
-    "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_EventTypeSpec": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "broker": {
-          "type": "string",
-          "description": ""
-        },
-        "description": {
-          "type": "string",
-          "description": ""
-        },
-        "schema": {
-          "type": "string",
-          "description": ""
-        },
-        "source": {
-          "type": "string",
-          "description": ""
-        },
-        "type": {
-          "type": "string",
-          "description": ""
-        }
-      },
-      "javaType": "io.fabric8.knative.eventing.v1alpha1.EventTypeSpec",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_EventTypeStatus": {
-      "type": "object",
-      "description": "",
-      "properties": {
         "conditions": {
           "type": "array",
           "description": "",
@@ -240,19 +201,19 @@
           "javaType": "Long"
         }
       },
-      "javaType": "io.fabric8.knative.eventing.v1alpha1.EventTypeStatus",
+      "javaType": "io.fabric8.knative.eventing.v1.BrokerStatus",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_Trigger": {
+    "knative_dev_eventing_pkg_apis_eventing_v1_Trigger": {
       "type": "object",
       "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "eventing.knative.dev/v1alpha1",
+          "default": "eventing.knative.dev/v1",
           "required": true
         },
         "kind": {
@@ -265,21 +226,21 @@
           "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/github_com_knative_eventing_pkg_apis_eventing_v1alpha1_TriggerSpec",
-          "javaType": "io.fabric8.knative.eventing.v1alpha1.TriggerSpec"
+          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_eventing_v1_TriggerSpec",
+          "javaType": "io.fabric8.knative.eventing.v1.TriggerSpec"
         },
         "status": {
-          "$ref": "#/definitions/github_com_knative_eventing_pkg_apis_eventing_v1alpha1_TriggerStatus",
-          "javaType": "io.fabric8.knative.eventing.v1alpha1.TriggerStatus"
+          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_eventing_v1_TriggerStatus",
+          "javaType": "io.fabric8.knative.eventing.v1.TriggerStatus"
         }
       },
-      "javaType": "io.fabric8.knative.eventing.v1alpha1.Trigger",
+      "javaType": "io.fabric8.knative.eventing.v1.Trigger",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.HasMetadata",
         "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
-    "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_TriggerFilter": {
+    "knative_dev_eventing_pkg_apis_eventing_v1_TriggerFilter": {
       "type": "object",
       "description": "",
       "properties": {
@@ -287,51 +248,29 @@
           "type": "object",
           "description": "",
           "javaType": "java.util.Map\u003cString,String\u003e"
-        },
-        "sourceAndType": {
-          "$ref": "#/definitions/github_com_knative_eventing_pkg_apis_eventing_v1alpha1_TriggerFilterSourceAndType",
-          "javaType": "io.fabric8.knative.eventing.v1alpha1.TriggerFilterSourceAndType"
         }
       },
-      "javaType": "io.fabric8.knative.eventing.v1alpha1.TriggerFilter",
+      "javaType": "io.fabric8.knative.eventing.v1.TriggerFilter",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_TriggerFilterSourceAndType": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "source": {
-          "type": "string",
-          "description": ""
-        },
-        "type": {
-          "type": "string",
-          "description": ""
-        }
-      },
-      "javaType": "io.fabric8.knative.eventing.v1alpha1.TriggerFilterSourceAndType",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_TriggerList": {
+    "knative_dev_eventing_pkg_apis_eventing_v1_TriggerList": {
       "type": "object",
       "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "eventing.knative.dev/v1alpha1",
+          "default": "eventing.knative.dev/v1",
           "required": true
         },
         "items": {
           "type": "array",
           "description": "",
           "items": {
-            "$ref": "#/definitions/github_com_knative_eventing_pkg_apis_eventing_v1alpha1_Trigger",
-            "javaType": "io.fabric8.knative.eventing.v1alpha1.Trigger"
+            "$ref": "#/definitions/knative_dev_eventing_pkg_apis_eventing_v1_Trigger",
+            "javaType": "io.fabric8.knative.eventing.v1.Trigger"
           }
         },
         "kind": {
@@ -344,13 +283,13 @@
           "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
-      "javaType": "io.fabric8.knative.eventing.v1alpha1.TriggerList",
+      "javaType": "io.fabric8.knative.eventing.v1.TriggerList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.eventing.v1alpha1.Trigger\u003e"
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.eventing.v1.Trigger\u003e"
       ]
     },
-    "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_TriggerSpec": {
+    "knative_dev_eventing_pkg_apis_eventing_v1_TriggerSpec": {
       "type": "object",
       "description": "",
       "properties": {
@@ -359,23 +298,28 @@
           "description": ""
         },
         "filter": {
-          "$ref": "#/definitions/github_com_knative_eventing_pkg_apis_eventing_v1alpha1_TriggerFilter",
-          "javaType": "io.fabric8.knative.eventing.v1alpha1.TriggerFilter"
+          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_eventing_v1_TriggerFilter",
+          "javaType": "io.fabric8.knative.eventing.v1.TriggerFilter"
         },
         "subscriber": {
           "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Destination",
           "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Destination"
         }
       },
-      "javaType": "io.fabric8.knative.eventing.v1alpha1.TriggerSpec",
+      "javaType": "io.fabric8.knative.eventing.v1.TriggerSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_TriggerStatus": {
+    "knative_dev_eventing_pkg_apis_eventing_v1_TriggerStatus": {
       "type": "object",
       "description": "",
       "properties": {
+        "annotations": {
+          "type": "object",
+          "description": "",
+          "javaType": "java.util.Map\u003cString,String\u003e"
+        },
         "conditions": {
           "type": "array",
           "description": "",
@@ -390,16 +334,880 @@
           "description": "",
           "javaType": "Long"
         },
-        "subscriberURI": {
+        "subscriberUri": {
           "javaType": "java.lang.String"
         }
       },
-      "javaType": "io.fabric8.knative.eventing.v1alpha1.TriggerStatus",
+      "javaType": "io.fabric8.knative.eventing.v1.TriggerStatus",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_knative_serving_pkg_apis_serving_v1_Configuration": {
+    "knative_dev_eventing_pkg_apis_eventing_v1beta1_EventType": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "eventing.knative.dev/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "EventType",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_eventing_v1beta1_EventTypeSpec",
+          "javaType": "io.fabric8.knative.eventing.v1beta1.EventTypeSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_eventing_v1beta1_EventTypeStatus",
+          "javaType": "io.fabric8.knative.eventing.v1beta1.EventTypeStatus"
+        }
+      },
+      "javaType": "io.fabric8.knative.eventing.v1beta1.EventType",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "knative_dev_eventing_pkg_apis_eventing_v1beta1_EventTypeList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "eventing.knative.dev/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/knative_dev_eventing_pkg_apis_eventing_v1beta1_EventType",
+            "javaType": "io.fabric8.knative.eventing.v1beta1.EventType"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "EventTypeList",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.knative.eventing.v1beta1.EventTypeList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.eventing.v1beta1.EventType\u003e"
+      ]
+    },
+    "knative_dev_eventing_pkg_apis_eventing_v1beta1_EventTypeSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "broker": {
+          "type": "string",
+          "description": ""
+        },
+        "description": {
+          "type": "string",
+          "description": ""
+        },
+        "schema": {
+          "javaType": "java.lang.String"
+        },
+        "schemaData": {
+          "type": "string",
+          "description": ""
+        },
+        "source": {
+          "javaType": "java.lang.String"
+        },
+        "type": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.knative.eventing.v1beta1.EventTypeSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_eventing_pkg_apis_eventing_v1beta1_EventTypeStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "annotations": {
+          "type": "object",
+          "description": "",
+          "javaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
+            "javaType": "io.fabric8.knative.internal.pkg.apis.Condition"
+          }
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        }
+      },
+      "javaType": "io.fabric8.knative.eventing.v1beta1.EventTypeStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_eventing_pkg_apis_flows_v1_Sequence": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "eventing.knative.dev/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "Sequence",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_flows_v1_SequenceSpec",
+          "javaType": "io.fabric8.knative.flows.v1.SequenceSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_flows_v1_SequenceStatus",
+          "javaType": "io.fabric8.knative.flows.v1.SequenceStatus"
+        }
+      },
+      "javaType": "io.fabric8.knative.flows.v1.Sequence",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "knative_dev_eventing_pkg_apis_flows_v1_SequenceChannelStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "channel": {
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        },
+        "ready": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
+          "javaType": "io.fabric8.knative.internal.pkg.apis.Condition"
+        }
+      },
+      "javaType": "io.fabric8.knative.flows.v1.SequenceChannelStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_eventing_pkg_apis_flows_v1_SequenceList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "eventing.knative.dev/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/knative_dev_eventing_pkg_apis_flows_v1_Sequence",
+            "javaType": "io.fabric8.knative.flows.v1.Sequence"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "SequenceList",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.knative.flows.v1.SequenceList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.flows.v1.Sequence\u003e"
+      ]
+    },
+    "knative_dev_eventing_pkg_apis_flows_v1_SequenceSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "channelTemplate": {
+          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1_ChannelTemplateSpec",
+          "javaType": "io.fabric8.knative.messaging.v1.ChannelTemplateSpec"
+        },
+        "reply": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Destination",
+          "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Destination"
+        },
+        "steps": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/knative_dev_eventing_pkg_apis_flows_v1_SequenceStep",
+            "javaType": "io.fabric8.knative.flows.v1.SequenceStep"
+          }
+        }
+      },
+      "javaType": "io.fabric8.knative.flows.v1.SequenceSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_eventing_pkg_apis_flows_v1_SequenceStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "address": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Addressable",
+          "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable"
+        },
+        "annotations": {
+          "type": "object",
+          "description": "",
+          "javaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "channelStatuses": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/knative_dev_eventing_pkg_apis_flows_v1_SequenceChannelStatus",
+            "javaType": "io.fabric8.knative.flows.v1.SequenceChannelStatus"
+          }
+        },
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
+            "javaType": "io.fabric8.knative.internal.pkg.apis.Condition"
+          }
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "subscriptionStatuses": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/knative_dev_eventing_pkg_apis_flows_v1_SequenceSubscriptionStatus",
+            "javaType": "io.fabric8.knative.flows.v1.SequenceSubscriptionStatus"
+          }
+        }
+      },
+      "javaType": "io.fabric8.knative.flows.v1.SequenceStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_eventing_pkg_apis_flows_v1_SequenceStep": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "delivery": {
+          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1_DeliverySpec",
+          "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.DeliverySpec"
+        },
+        "ref": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_KReference",
+          "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.KReference"
+        },
+        "uri": {
+          "javaType": "java.lang.String"
+        }
+      },
+      "javaType": "io.fabric8.knative.flows.v1.SequenceStep",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_eventing_pkg_apis_flows_v1_SequenceSubscriptionStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "ready": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
+          "javaType": "io.fabric8.knative.internal.pkg.apis.Condition"
+        },
+        "subscription": {
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        }
+      },
+      "javaType": "io.fabric8.knative.flows.v1.SequenceSubscriptionStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_eventing_pkg_apis_messaging_v1_Channel": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "messaging.knative.dev/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "Channel",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1_ChannelSpec",
+          "javaType": "io.fabric8.knative.messaging.v1.ChannelSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1_ChannelStatus",
+          "javaType": "io.fabric8.knative.messaging.v1.ChannelStatus"
+        }
+      },
+      "javaType": "io.fabric8.knative.messaging.v1.Channel",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "knative_dev_eventing_pkg_apis_messaging_v1_ChannelList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "messaging.knative.dev/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1_Channel",
+            "javaType": "io.fabric8.knative.messaging.v1.Channel"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "ChannelList",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.knative.messaging.v1.ChannelList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.messaging.v1.Channel\u003e"
+      ]
+    },
+    "knative_dev_eventing_pkg_apis_messaging_v1_ChannelSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "channelTemplate": {
+          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1_ChannelTemplateSpec",
+          "javaType": "io.fabric8.knative.messaging.v1.ChannelTemplateSpec"
+        },
+        "delivery": {
+          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1_DeliverySpec",
+          "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.DeliverySpec"
+        },
+        "subscribers": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1_SubscriberSpec",
+            "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.SubscriberSpec"
+          }
+        }
+      },
+      "javaType": "io.fabric8.knative.messaging.v1.ChannelSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_eventing_pkg_apis_messaging_v1_ChannelStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "address": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Addressable",
+          "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable"
+        },
+        "annotations": {
+          "type": "object",
+          "description": "",
+          "javaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "channel": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_KReference",
+          "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.KReference"
+        },
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
+            "javaType": "io.fabric8.knative.internal.pkg.apis.Condition"
+          }
+        },
+        "deadLetterChannel": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_KReference",
+          "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.KReference"
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "subscribers": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1_SubscriberStatus",
+            "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.SubscriberStatus"
+          }
+        }
+      },
+      "javaType": "io.fabric8.knative.messaging.v1.ChannelStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_eventing_pkg_apis_messaging_v1_ChannelTemplateSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": ""
+        },
+        "kind": {
+          "type": "string",
+          "description": ""
+        },
+        "spec": {
+          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+        }
+      },
+      "javaType": "io.fabric8.knative.messaging.v1.ChannelTemplateSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_eventing_pkg_apis_messaging_v1_InMemoryChannel": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "messaging.knative.dev/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "InMemoryChannel",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1_InMemoryChannelSpec",
+          "javaType": "io.fabric8.knative.messaging.v1.InMemoryChannelSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1_InMemoryChannelStatus",
+          "javaType": "io.fabric8.knative.messaging.v1.InMemoryChannelStatus"
+        }
+      },
+      "javaType": "io.fabric8.knative.messaging.v1.InMemoryChannel",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "knative_dev_eventing_pkg_apis_messaging_v1_InMemoryChannelList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "messaging.knative.dev/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1_InMemoryChannel",
+            "javaType": "io.fabric8.knative.messaging.v1.InMemoryChannel"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "InMemoryChannelList",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.knative.messaging.v1.InMemoryChannelList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.messaging.v1.InMemoryChannel\u003e"
+      ]
+    },
+    "knative_dev_eventing_pkg_apis_messaging_v1_InMemoryChannelSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "delivery": {
+          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1_DeliverySpec",
+          "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.DeliverySpec"
+        },
+        "subscribers": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1_SubscriberSpec",
+            "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.SubscriberSpec"
+          }
+        }
+      },
+      "javaType": "io.fabric8.knative.messaging.v1.InMemoryChannelSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_eventing_pkg_apis_messaging_v1_InMemoryChannelStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "address": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Addressable",
+          "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable"
+        },
+        "annotations": {
+          "type": "object",
+          "description": "",
+          "javaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
+            "javaType": "io.fabric8.knative.internal.pkg.apis.Condition"
+          }
+        },
+        "deadLetterChannel": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_KReference",
+          "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.KReference"
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "subscribers": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1_SubscriberStatus",
+            "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.SubscriberStatus"
+          }
+        }
+      },
+      "javaType": "io.fabric8.knative.messaging.v1.InMemoryChannelStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_eventing_pkg_apis_messaging_v1_Subscription": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "messaging.knative.dev/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "Subscription",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1_SubscriptionSpec",
+          "javaType": "io.fabric8.knative.messaging.v1.SubscriptionSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1_SubscriptionStatus",
+          "javaType": "io.fabric8.knative.messaging.v1.SubscriptionStatus"
+        }
+      },
+      "javaType": "io.fabric8.knative.messaging.v1.Subscription",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "knative_dev_eventing_pkg_apis_messaging_v1_SubscriptionList": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": "",
+          "default": "messaging.knative.dev/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1_Subscription",
+            "javaType": "io.fabric8.knative.messaging.v1.Subscription"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "description": "",
+          "default": "SubscriptionList",
+          "required": true
+        },
+        "metadata": {
+          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.knative.messaging.v1.SubscriptionList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.messaging.v1.Subscription\u003e"
+      ]
+    },
+    "knative_dev_eventing_pkg_apis_messaging_v1_SubscriptionSpec": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "channel": {
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        },
+        "delivery": {
+          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1_DeliverySpec",
+          "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.DeliverySpec"
+        },
+        "reply": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Destination",
+          "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Destination"
+        },
+        "subscriber": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Destination",
+          "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Destination"
+        }
+      },
+      "javaType": "io.fabric8.knative.messaging.v1.SubscriptionSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_eventing_pkg_apis_messaging_v1_SubscriptionStatus": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "annotations": {
+          "type": "object",
+          "description": "",
+          "javaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "conditions": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
+            "javaType": "io.fabric8.knative.internal.pkg.apis.Condition"
+          }
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "description": "",
+          "javaType": "Long"
+        },
+        "physicalSubscription": {
+          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1_SubscriptionStatusPhysicalSubscription",
+          "javaType": "io.fabric8.knative.messaging.v1.SubscriptionStatusPhysicalSubscription"
+        }
+      },
+      "javaType": "io.fabric8.knative.messaging.v1.SubscriptionStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_eventing_pkg_apis_messaging_v1_SubscriptionStatusPhysicalSubscription": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "deadLetterSinkUri": {
+          "javaType": "java.lang.String"
+        },
+        "replyUri": {
+          "javaType": "java.lang.String"
+        },
+        "subscriberUri": {
+          "javaType": "java.lang.String"
+        }
+      },
+      "javaType": "io.fabric8.knative.messaging.v1.SubscriptionStatusPhysicalSubscription",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_pkg_apis_Condition": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "lastTransitionTime": {
+          "javaType": "java.lang.String"
+        },
+        "message": {
+          "type": "string",
+          "description": "human-readable message indicating details about last transition"
+        },
+        "reason": {
+          "type": "string",
+          "description": "one-word CamelCase reason for the condition's last transition"
+        },
+        "severity": {
+          "type": "string",
+          "description": "how to interpret failures of this condition"
+        },
+        "status": {
+          "type": "string",
+          "description": "status of the condition"
+        },
+        "type": {
+          "type": "string",
+          "description": "type of status condition"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.Condition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1_Addressable": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "url": {
+          "javaType": "java.lang.String"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1_Destination": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "ref": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_KReference",
+          "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.KReference"
+        },
+        "uri": {
+          "javaType": "java.lang.String"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Destination",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1_KReference": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "description": ""
+        },
+        "kind": {
+          "type": "string",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "namespace": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.KReference",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_serving_pkg_apis_serving_v1_Configuration": {
       "type": "object",
       "description": "",
       "properties": {
@@ -419,11 +1227,11 @@
           "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_ConfigurationSpec",
+          "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_ConfigurationSpec",
           "javaType": "io.fabric8.knative.serving.v1.ConfigurationSpec"
         },
         "status": {
-          "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_ConfigurationStatus",
+          "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_ConfigurationStatus",
           "javaType": "io.fabric8.knative.serving.v1.ConfigurationStatus"
         }
       },
@@ -433,7 +1241,7 @@
         "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
-    "github_com_knative_serving_pkg_apis_serving_v1_ConfigurationList": {
+    "knative_dev_serving_pkg_apis_serving_v1_ConfigurationList": {
       "type": "object",
       "description": "",
       "properties": {
@@ -447,7 +1255,7 @@
           "type": "array",
           "description": "",
           "items": {
-            "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_Configuration",
+            "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_Configuration",
             "javaType": "io.fabric8.knative.serving.v1.Configuration"
           }
         },
@@ -467,12 +1275,12 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.serving.v1.Configuration\u003e"
       ]
     },
-    "github_com_knative_serving_pkg_apis_serving_v1_ConfigurationSpec": {
+    "knative_dev_serving_pkg_apis_serving_v1_ConfigurationSpec": {
       "type": "object",
       "description": "",
       "properties": {
         "template": {
-          "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_RevisionTemplateSpec",
+          "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_RevisionTemplateSpec",
           "javaType": "io.fabric8.knative.serving.v1.RevisionTemplateSpec"
         }
       },
@@ -481,10 +1289,15 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_knative_serving_pkg_apis_serving_v1_ConfigurationStatus": {
+    "knative_dev_serving_pkg_apis_serving_v1_ConfigurationStatus": {
       "type": "object",
       "description": "",
       "properties": {
+        "annotations": {
+          "type": "object",
+          "description": "",
+          "javaType": "java.util.Map\u003cString,String\u003e"
+        },
         "conditions": {
           "type": "array",
           "description": "",
@@ -513,7 +1326,25 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_knative_serving_pkg_apis_serving_v1_Revision": {
+    "knative_dev_serving_pkg_apis_serving_v1_ContainerStatuses": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "imageDigest": {
+          "type": "string",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "javaType": "io.fabric8.knative.serving.v1.ContainerStatuses",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_serving_pkg_apis_serving_v1_Revision": {
       "type": "object",
       "description": "",
       "properties": {
@@ -533,11 +1364,11 @@
           "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_RevisionSpec",
+          "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_RevisionSpec",
           "javaType": "io.fabric8.knative.serving.v1.RevisionSpec"
         },
         "status": {
-          "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_RevisionStatus",
+          "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_RevisionStatus",
           "javaType": "io.fabric8.knative.serving.v1.RevisionStatus"
         }
       },
@@ -547,7 +1378,7 @@
         "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
-    "github_com_knative_serving_pkg_apis_serving_v1_RevisionList": {
+    "knative_dev_serving_pkg_apis_serving_v1_RevisionList": {
       "type": "object",
       "description": "",
       "properties": {
@@ -561,7 +1392,7 @@
           "type": "array",
           "description": "",
           "items": {
-            "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_Revision",
+            "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_Revision",
             "javaType": "io.fabric8.knative.serving.v1.Revision"
           }
         },
@@ -581,7 +1412,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.serving.v1.Revision\u003e"
       ]
     },
-    "github_com_knative_serving_pkg_apis_serving_v1_RevisionSpec": {
+    "knative_dev_serving_pkg_apis_serving_v1_RevisionSpec": {
       "type": "object",
       "description": "",
       "properties": {
@@ -779,10 +1610,15 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_knative_serving_pkg_apis_serving_v1_RevisionStatus": {
+    "knative_dev_serving_pkg_apis_serving_v1_RevisionStatus": {
       "type": "object",
       "description": "",
       "properties": {
+        "annotations": {
+          "type": "object",
+          "description": "",
+          "javaType": "java.util.Map\u003cString,String\u003e"
+        },
         "conditions": {
           "type": "array",
           "description": "",
@@ -790,6 +1626,15 @@
           "items": {
             "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
             "javaType": "io.fabric8.knative.internal.pkg.apis.Condition"
+          }
+        },
+        "containerStatuses": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_ContainerStatuses",
+            "javaType": "io.fabric8.knative.serving.v1.ContainerStatuses"
           }
         },
         "imageDigest": {
@@ -815,7 +1660,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_knative_serving_pkg_apis_serving_v1_RevisionTemplateSpec": {
+    "knative_dev_serving_pkg_apis_serving_v1_RevisionTemplateSpec": {
       "type": "object",
       "description": "",
       "properties": {
@@ -823,7 +1668,7 @@
           "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_RevisionSpec",
+          "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_RevisionSpec",
           "javaType": "io.fabric8.knative.serving.v1.RevisionSpec"
         }
       },
@@ -832,7 +1677,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_knative_serving_pkg_apis_serving_v1_Route": {
+    "knative_dev_serving_pkg_apis_serving_v1_Route": {
       "type": "object",
       "description": "",
       "properties": {
@@ -852,11 +1697,11 @@
           "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_RouteSpec",
+          "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_RouteSpec",
           "javaType": "io.fabric8.knative.serving.v1.RouteSpec"
         },
         "status": {
-          "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_RouteStatus",
+          "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_RouteStatus",
           "javaType": "io.fabric8.knative.serving.v1.RouteStatus"
         }
       },
@@ -866,7 +1711,7 @@
         "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
-    "github_com_knative_serving_pkg_apis_serving_v1_RouteList": {
+    "knative_dev_serving_pkg_apis_serving_v1_RouteList": {
       "type": "object",
       "description": "",
       "properties": {
@@ -880,7 +1725,7 @@
           "type": "array",
           "description": "",
           "items": {
-            "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_Route",
+            "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_Route",
             "javaType": "io.fabric8.knative.serving.v1.Route"
           }
         },
@@ -900,7 +1745,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.serving.v1.Route\u003e"
       ]
     },
-    "github_com_knative_serving_pkg_apis_serving_v1_RouteSpec": {
+    "knative_dev_serving_pkg_apis_serving_v1_RouteSpec": {
       "type": "object",
       "description": "",
       "properties": {
@@ -909,7 +1754,7 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_TrafficTarget",
+            "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_TrafficTarget",
             "javaType": "io.fabric8.knative.serving.v1.TrafficTarget"
           }
         }
@@ -919,13 +1764,18 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_knative_serving_pkg_apis_serving_v1_RouteStatus": {
+    "knative_dev_serving_pkg_apis_serving_v1_RouteStatus": {
       "type": "object",
       "description": "",
       "properties": {
         "address": {
           "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Addressable",
           "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable"
+        },
+        "annotations": {
+          "type": "object",
+          "description": "",
+          "javaType": "java.util.Map\u003cString,String\u003e"
         },
         "conditions": {
           "type": "array",
@@ -946,7 +1796,7 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_TrafficTarget",
+            "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_TrafficTarget",
             "javaType": "io.fabric8.knative.serving.v1.TrafficTarget"
           }
         },
@@ -959,7 +1809,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_knative_serving_pkg_apis_serving_v1_Service": {
+    "knative_dev_serving_pkg_apis_serving_v1_Service": {
       "type": "object",
       "description": "",
       "properties": {
@@ -979,11 +1829,11 @@
           "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_ServiceSpec",
+          "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_ServiceSpec",
           "javaType": "io.fabric8.knative.serving.v1.ServiceSpec"
         },
         "status": {
-          "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_ServiceStatus",
+          "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_ServiceStatus",
           "javaType": "io.fabric8.knative.serving.v1.ServiceStatus"
         }
       },
@@ -993,7 +1843,7 @@
         "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
-    "github_com_knative_serving_pkg_apis_serving_v1_ServiceList": {
+    "knative_dev_serving_pkg_apis_serving_v1_ServiceList": {
       "type": "object",
       "description": "",
       "properties": {
@@ -1007,7 +1857,7 @@
           "type": "array",
           "description": "",
           "items": {
-            "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_Service",
+            "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_Service",
             "javaType": "io.fabric8.knative.serving.v1.Service"
           }
         },
@@ -1027,12 +1877,12 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.serving.v1.Service\u003e"
       ]
     },
-    "github_com_knative_serving_pkg_apis_serving_v1_ServiceSpec": {
+    "knative_dev_serving_pkg_apis_serving_v1_ServiceSpec": {
       "type": "object",
       "description": "",
       "properties": {
         "template": {
-          "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_RevisionTemplateSpec",
+          "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_RevisionTemplateSpec",
           "javaType": "io.fabric8.knative.serving.v1.RevisionTemplateSpec"
         },
         "traffic": {
@@ -1040,7 +1890,7 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_TrafficTarget",
+            "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_TrafficTarget",
             "javaType": "io.fabric8.knative.serving.v1.TrafficTarget"
           }
         }
@@ -1050,13 +1900,18 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_knative_serving_pkg_apis_serving_v1_ServiceStatus": {
+    "knative_dev_serving_pkg_apis_serving_v1_ServiceStatus": {
       "type": "object",
       "description": "",
       "properties": {
         "address": {
           "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Addressable",
           "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable"
+        },
+        "annotations": {
+          "type": "object",
+          "description": "",
+          "javaType": "java.util.Map\u003cString,String\u003e"
         },
         "conditions": {
           "type": "array",
@@ -1085,7 +1940,7 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_TrafficTarget",
+            "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_TrafficTarget",
             "javaType": "io.fabric8.knative.serving.v1.TrafficTarget"
           }
         },
@@ -1098,7 +1953,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_knative_serving_pkg_apis_serving_v1_TrafficTarget": {
+    "knative_dev_serving_pkg_apis_serving_v1_TrafficTarget": {
       "type": "object",
       "description": "",
       "properties": {
@@ -1133,7 +1988,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "github_com_knative_serving_pkg_apis_serving_v1beta1_Configuration": {
+    "knative_dev_serving_pkg_apis_serving_v1beta1_Configuration": {
       "type": "object",
       "description": "",
       "properties": {
@@ -1154,11 +2009,11 @@
         },
         "spec": {
           "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_ConfigurationSpec",
-          "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.ConfigurationSpec"
+          "javaType": "io.fabric8.knative.serving.v1.ConfigurationSpec"
         },
         "status": {
           "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_ConfigurationStatus",
-          "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.ConfigurationStatus"
+          "javaType": "io.fabric8.knative.serving.v1.ConfigurationStatus"
         }
       },
       "javaType": "io.fabric8.knative.serving.v1beta1.Configuration",
@@ -1167,7 +2022,7 @@
         "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
-    "github_com_knative_serving_pkg_apis_serving_v1beta1_ConfigurationList": {
+    "knative_dev_serving_pkg_apis_serving_v1beta1_ConfigurationList": {
       "type": "object",
       "description": "",
       "properties": {
@@ -1181,7 +2036,7 @@
           "type": "array",
           "description": "",
           "items": {
-            "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1beta1_Configuration",
+            "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1beta1_Configuration",
             "javaType": "io.fabric8.knative.serving.v1beta1.Configuration"
           }
         },
@@ -1201,7 +2056,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.serving.v1beta1.Configuration\u003e"
       ]
     },
-    "github_com_knative_serving_pkg_apis_serving_v1beta1_Revision": {
+    "knative_dev_serving_pkg_apis_serving_v1beta1_Revision": {
       "type": "object",
       "description": "",
       "properties": {
@@ -1222,11 +2077,11 @@
         },
         "spec": {
           "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_RevisionSpec",
-          "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.RevisionSpec"
+          "javaType": "io.fabric8.knative.serving.v1.RevisionSpec"
         },
         "status": {
           "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_RevisionStatus",
-          "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.RevisionStatus"
+          "javaType": "io.fabric8.knative.serving.v1.RevisionStatus"
         }
       },
       "javaType": "io.fabric8.knative.serving.v1beta1.Revision",
@@ -1235,7 +2090,7 @@
         "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
-    "github_com_knative_serving_pkg_apis_serving_v1beta1_RevisionList": {
+    "knative_dev_serving_pkg_apis_serving_v1beta1_RevisionList": {
       "type": "object",
       "description": "",
       "properties": {
@@ -1249,7 +2104,7 @@
           "type": "array",
           "description": "",
           "items": {
-            "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1beta1_Revision",
+            "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1beta1_Revision",
             "javaType": "io.fabric8.knative.serving.v1beta1.Revision"
           }
         },
@@ -1269,7 +2124,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.serving.v1beta1.Revision\u003e"
       ]
     },
-    "github_com_knative_serving_pkg_apis_serving_v1beta1_Route": {
+    "knative_dev_serving_pkg_apis_serving_v1beta1_Route": {
       "type": "object",
       "description": "",
       "properties": {
@@ -1290,11 +2145,11 @@
         },
         "spec": {
           "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_RouteSpec",
-          "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.RouteSpec"
+          "javaType": "io.fabric8.knative.serving.v1.RouteSpec"
         },
         "status": {
           "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_RouteStatus",
-          "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.RouteStatus"
+          "javaType": "io.fabric8.knative.serving.v1.RouteStatus"
         }
       },
       "javaType": "io.fabric8.knative.serving.v1beta1.Route",
@@ -1303,7 +2158,7 @@
         "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
-    "github_com_knative_serving_pkg_apis_serving_v1beta1_RouteList": {
+    "knative_dev_serving_pkg_apis_serving_v1beta1_RouteList": {
       "type": "object",
       "description": "",
       "properties": {
@@ -1317,7 +2172,7 @@
           "type": "array",
           "description": "",
           "items": {
-            "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1beta1_Route",
+            "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1beta1_Route",
             "javaType": "io.fabric8.knative.serving.v1beta1.Route"
           }
         },
@@ -1337,7 +2192,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.serving.v1beta1.Route\u003e"
       ]
     },
-    "github_com_knative_serving_pkg_apis_serving_v1beta1_Service": {
+    "knative_dev_serving_pkg_apis_serving_v1beta1_Service": {
       "type": "object",
       "description": "",
       "properties": {
@@ -1358,11 +2213,11 @@
         },
         "spec": {
           "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_ServiceSpec",
-          "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.ServiceSpec"
+          "javaType": "io.fabric8.knative.serving.v1.ServiceSpec"
         },
         "status": {
           "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_ServiceStatus",
-          "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.ServiceStatus"
+          "javaType": "io.fabric8.knative.serving.v1.ServiceStatus"
         }
       },
       "javaType": "io.fabric8.knative.serving.v1beta1.Service",
@@ -1371,7 +2226,7 @@
         "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
-    "github_com_knative_serving_pkg_apis_serving_v1beta1_ServiceList": {
+    "knative_dev_serving_pkg_apis_serving_v1beta1_ServiceList": {
       "type": "object",
       "description": "",
       "properties": {
@@ -1385,7 +2240,7 @@
           "type": "array",
           "description": "",
           "items": {
-            "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1beta1_Service",
+            "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1beta1_Service",
             "javaType": "io.fabric8.knative.serving.v1beta1.Service"
           }
         },
@@ -1404,1569 +2259,157 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource",
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.serving.v1beta1.Service\u003e"
       ]
-    },
-    "knative_dev_eventing_pkg_apis_duck_v1alpha1_Subscribable": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "subscribers": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1alpha1_SubscriberSpec",
-            "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1alpha1.SubscriberSpec"
-          }
-        }
-      },
-      "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1alpha1.Subscribable",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_eventing_pkg_apis_duck_v1alpha1_SubscribableStatus": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "subscribers": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1alpha1_SubscriberStatus",
-            "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1alpha1.SubscriberStatus"
-          }
-        }
-      },
-      "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1alpha1.SubscribableStatus",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_eventing_pkg_apis_duck_v1alpha1_SubscriberSpec": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "deadLetterSink": {
-          "javaType": "java.lang.String"
-        },
-        "delivery": {
-          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1beta1_DeliverySpec",
-          "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1beta1.DeliverySpec"
-        },
-        "generation": {
-          "type": "integer",
-          "description": "",
-          "javaType": "Long"
-        },
-        "replyURI": {
-          "javaType": "java.lang.String"
-        },
-        "subscriberURI": {
-          "javaType": "java.lang.String"
-        },
-        "uid": {
-          "type": "string",
-          "description": ""
-        }
-      },
-      "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1alpha1.SubscriberSpec",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_eventing_pkg_apis_duck_v1alpha1_SubscriberStatus": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "message": {
-          "type": "string",
-          "description": ""
-        },
-        "observedGeneration": {
-          "type": "integer",
-          "description": "",
-          "javaType": "Long"
-        },
-        "ready": {
-          "type": "string",
-          "description": ""
-        },
-        "uid": {
-          "type": "string",
-          "description": ""
-        }
-      },
-      "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1alpha1.SubscriberStatus",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_eventing_pkg_apis_duck_v1beta1_DeliverySpec": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "backoffDelay": {
-          "type": "string",
-          "description": "",
-          "javaType": "String"
-        },
-        "backoffPolicy": {
-          "type": "string",
-          "description": "",
-          "javaType": "String"
-        },
-        "deadLetterSink": {
-          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Destination",
-          "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Destination"
-        },
-        "retry": {
-          "type": "integer",
-          "description": "",
-          "javaType": "Integer"
-        }
-      },
-      "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1beta1.DeliverySpec",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_eventing_pkg_apis_flows_v1alpha1_Sequence": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "apiVersion": {
-          "type": "string",
-          "description": "",
-          "default": "eventing.knative.dev/v1alpha1",
-          "required": true
-        },
-        "kind": {
-          "type": "string",
-          "description": "",
-          "default": "Sequence",
-          "required": true
-        },
-        "metadata": {
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
-        },
-        "spec": {
-          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_flows_v1alpha1_SequenceSpec",
-          "javaType": "io.fabric8.knative.flows.v1alpha1.SequenceSpec"
-        },
-        "status": {
-          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_flows_v1alpha1_SequenceStatus",
-          "javaType": "io.fabric8.knative.flows.v1alpha1.SequenceStatus"
-        }
-      },
-      "javaType": "io.fabric8.knative.flows.v1alpha1.Sequence",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata",
-        "io.fabric8.kubernetes.api.model.Namespaced"
-      ]
-    },
-    "knative_dev_eventing_pkg_apis_flows_v1alpha1_SequenceChannelStatus": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "channel": {
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
-        },
-        "ready": {
-          "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
-          "javaType": "io.fabric8.knative.internal.pkg.apis.Condition"
-        }
-      },
-      "javaType": "io.fabric8.knative.flows.v1alpha1.SequenceChannelStatus",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_eventing_pkg_apis_flows_v1alpha1_SequenceList": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "apiVersion": {
-          "type": "string",
-          "description": "",
-          "default": "eventing.knative.dev/v1alpha1",
-          "required": true
-        },
-        "items": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "$ref": "#/definitions/knative_dev_eventing_pkg_apis_flows_v1alpha1_Sequence",
-            "javaType": "io.fabric8.knative.flows.v1alpha1.Sequence"
-          }
-        },
-        "kind": {
-          "type": "string",
-          "description": "",
-          "default": "SequenceList",
-          "required": true
-        },
-        "metadata": {
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
-        }
-      },
-      "javaType": "io.fabric8.knative.flows.v1alpha1.SequenceList",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.flows.v1alpha1.Sequence\u003e"
-      ]
-    },
-    "knative_dev_eventing_pkg_apis_flows_v1alpha1_SequenceSpec": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "channelTemplate": {
-          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1beta1_ChannelTemplateSpec",
-          "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.messaging.v1beta1.ChannelTemplateSpec"
-        },
-        "reply": {
-          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Destination",
-          "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Destination"
-        },
-        "steps": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "$ref": "#/definitions/knative_dev_eventing_pkg_apis_flows_v1alpha1_SequenceStep",
-            "javaType": "io.fabric8.knative.flows.v1alpha1.SequenceStep"
-          }
-        }
-      },
-      "javaType": "io.fabric8.knative.flows.v1alpha1.SequenceSpec",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_eventing_pkg_apis_flows_v1alpha1_SequenceStatus": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "address": {
-          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Addressable",
-          "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable"
-        },
-        "channelStatuses": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "$ref": "#/definitions/knative_dev_eventing_pkg_apis_flows_v1alpha1_SequenceChannelStatus",
-            "javaType": "io.fabric8.knative.flows.v1alpha1.SequenceChannelStatus"
-          }
-        },
-        "conditions": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
-            "javaType": "io.fabric8.knative.internal.pkg.apis.Condition"
-          }
-        },
-        "observedGeneration": {
-          "type": "integer",
-          "description": "",
-          "javaType": "Long"
-        },
-        "subscriptionStatuses": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "$ref": "#/definitions/knative_dev_eventing_pkg_apis_flows_v1alpha1_SequenceSubscriptionStatus",
-            "javaType": "io.fabric8.knative.flows.v1alpha1.SequenceSubscriptionStatus"
-          }
-        }
-      },
-      "javaType": "io.fabric8.knative.flows.v1alpha1.SequenceStatus",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_eventing_pkg_apis_flows_v1alpha1_SequenceStep": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "delivery": {
-          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1beta1_DeliverySpec",
-          "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1beta1.DeliverySpec"
-        },
-        "ref": {
-          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_KReference",
-          "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.KReference"
-        },
-        "uri": {
-          "javaType": "java.lang.String"
-        }
-      },
-      "javaType": "io.fabric8.knative.flows.v1alpha1.SequenceStep",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_eventing_pkg_apis_flows_v1alpha1_SequenceSubscriptionStatus": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "ready": {
-          "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
-          "javaType": "io.fabric8.knative.internal.pkg.apis.Condition"
-        },
-        "subscription": {
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
-        }
-      },
-      "javaType": "io.fabric8.knative.flows.v1alpha1.SequenceSubscriptionStatus",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_eventing_pkg_apis_messaging_v1alpha1_Channel": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "apiVersion": {
-          "type": "string",
-          "description": "",
-          "default": "messaging.knative.dev/v1alpha1",
-          "required": true
-        },
-        "kind": {
-          "type": "string",
-          "description": "",
-          "default": "Channel",
-          "required": true
-        },
-        "metadata": {
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
-        },
-        "spec": {
-          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1alpha1_ChannelSpec",
-          "javaType": "io.fabric8.knative.messaging.v1alpha1.ChannelSpec"
-        },
-        "status": {
-          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1alpha1_ChannelStatus",
-          "javaType": "io.fabric8.knative.messaging.v1alpha1.ChannelStatus"
-        }
-      },
-      "javaType": "io.fabric8.knative.messaging.v1alpha1.Channel",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata",
-        "io.fabric8.kubernetes.api.model.Namespaced"
-      ]
-    },
-    "knative_dev_eventing_pkg_apis_messaging_v1alpha1_ChannelList": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "apiVersion": {
-          "type": "string",
-          "description": "",
-          "default": "messaging.knative.dev/v1alpha1",
-          "required": true
-        },
-        "items": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1alpha1_Channel",
-            "javaType": "io.fabric8.knative.messaging.v1alpha1.Channel"
-          }
-        },
-        "kind": {
-          "type": "string",
-          "description": "",
-          "default": "ChannelList",
-          "required": true
-        },
-        "metadata": {
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
-        }
-      },
-      "javaType": "io.fabric8.knative.messaging.v1alpha1.ChannelList",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.messaging.v1alpha1.Channel\u003e"
-      ]
-    },
-    "knative_dev_eventing_pkg_apis_messaging_v1alpha1_ChannelSpec": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "channelTemplate": {
-          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1beta1_ChannelTemplateSpec",
-          "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.messaging.v1beta1.ChannelTemplateSpec"
-        },
-        "delivery": {
-          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1beta1_DeliverySpec",
-          "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1beta1.DeliverySpec"
-        },
-        "subscribable": {
-          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1alpha1_Subscribable",
-          "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1alpha1.Subscribable"
-        }
-      },
-      "javaType": "io.fabric8.knative.messaging.v1alpha1.ChannelSpec",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_eventing_pkg_apis_messaging_v1alpha1_ChannelStatus": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "address": {
-          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_Addressable",
-          "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.Addressable"
-        },
-        "channel": {
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
-        },
-        "conditions": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
-            "javaType": "io.fabric8.knative.internal.pkg.apis.Condition"
-          }
-        },
-        "observedGeneration": {
-          "type": "integer",
-          "description": "",
-          "javaType": "Long"
-        },
-        "subscribableStatus": {
-          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1alpha1_SubscribableStatus",
-          "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1alpha1.SubscribableStatus"
-        }
-      },
-      "javaType": "io.fabric8.knative.messaging.v1alpha1.ChannelStatus",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_eventing_pkg_apis_messaging_v1alpha1_InMemoryChannel": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "apiVersion": {
-          "type": "string",
-          "description": "",
-          "default": "messaging.knative.dev/v1alpha1",
-          "required": true
-        },
-        "kind": {
-          "type": "string",
-          "description": "",
-          "default": "InMemoryChannel",
-          "required": true
-        },
-        "metadata": {
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
-        },
-        "spec": {
-          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1alpha1_InMemoryChannelSpec",
-          "javaType": "io.fabric8.knative.messaging.v1alpha1.InMemoryChannelSpec"
-        },
-        "status": {
-          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1alpha1_InMemoryChannelStatus",
-          "javaType": "io.fabric8.knative.messaging.v1alpha1.InMemoryChannelStatus"
-        }
-      },
-      "javaType": "io.fabric8.knative.messaging.v1alpha1.InMemoryChannel",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata",
-        "io.fabric8.kubernetes.api.model.Namespaced"
-      ]
-    },
-    "knative_dev_eventing_pkg_apis_messaging_v1alpha1_InMemoryChannelList": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "apiVersion": {
-          "type": "string",
-          "description": "",
-          "default": "messaging.knative.dev/v1alpha1",
-          "required": true
-        },
-        "items": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1alpha1_InMemoryChannel",
-            "javaType": "io.fabric8.knative.messaging.v1alpha1.InMemoryChannel"
-          }
-        },
-        "kind": {
-          "type": "string",
-          "description": "",
-          "default": "InMemoryChannelList",
-          "required": true
-        },
-        "metadata": {
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
-        }
-      },
-      "javaType": "io.fabric8.knative.messaging.v1alpha1.InMemoryChannelList",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.messaging.v1alpha1.InMemoryChannel\u003e"
-      ]
-    },
-    "knative_dev_eventing_pkg_apis_messaging_v1alpha1_InMemoryChannelSpec": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "delivery": {
-          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1beta1_DeliverySpec",
-          "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1beta1.DeliverySpec"
-        },
-        "subscribable": {
-          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1alpha1_Subscribable",
-          "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1alpha1.Subscribable"
-        }
-      },
-      "javaType": "io.fabric8.knative.messaging.v1alpha1.InMemoryChannelSpec",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_eventing_pkg_apis_messaging_v1alpha1_InMemoryChannelStatus": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "address": {
-          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_Addressable",
-          "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.Addressable"
-        },
-        "conditions": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
-            "javaType": "io.fabric8.knative.internal.pkg.apis.Condition"
-          }
-        },
-        "observedGeneration": {
-          "type": "integer",
-          "description": "",
-          "javaType": "Long"
-        },
-        "subscribableStatus": {
-          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1alpha1_SubscribableStatus",
-          "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1alpha1.SubscribableStatus"
-        }
-      },
-      "javaType": "io.fabric8.knative.messaging.v1alpha1.InMemoryChannelStatus",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_eventing_pkg_apis_messaging_v1alpha1_Subscription": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "apiVersion": {
-          "type": "string",
-          "description": "",
-          "default": "messaging.knative.dev/v1alpha1",
-          "required": true
-        },
-        "kind": {
-          "type": "string",
-          "description": "",
-          "default": "Subscription",
-          "required": true
-        },
-        "metadata": {
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
-        },
-        "spec": {
-          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1alpha1_SubscriptionSpec",
-          "javaType": "io.fabric8.knative.messaging.v1alpha1.SubscriptionSpec"
-        },
-        "status": {
-          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1alpha1_SubscriptionStatus",
-          "javaType": "io.fabric8.knative.messaging.v1alpha1.SubscriptionStatus"
-        }
-      },
-      "javaType": "io.fabric8.knative.messaging.v1alpha1.Subscription",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata",
-        "io.fabric8.kubernetes.api.model.Namespaced"
-      ]
-    },
-    "knative_dev_eventing_pkg_apis_messaging_v1alpha1_SubscriptionList": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "apiVersion": {
-          "type": "string",
-          "description": "",
-          "default": "messaging.knative.dev/v1alpha1",
-          "required": true
-        },
-        "items": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1alpha1_Subscription",
-            "javaType": "io.fabric8.knative.messaging.v1alpha1.Subscription"
-          }
-        },
-        "kind": {
-          "type": "string",
-          "description": "",
-          "default": "SubscriptionList",
-          "required": true
-        },
-        "metadata": {
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
-        }
-      },
-      "javaType": "io.fabric8.knative.messaging.v1alpha1.SubscriptionList",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.messaging.v1alpha1.Subscription\u003e"
-      ]
-    },
-    "knative_dev_eventing_pkg_apis_messaging_v1alpha1_SubscriptionSpec": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "channel": {
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
-        },
-        "delivery": {
-          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1beta1_DeliverySpec",
-          "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1beta1.DeliverySpec"
-        },
-        "generation": {
-          "type": "integer",
-          "description": "",
-          "javaType": "Long"
-        },
-        "reply": {
-          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Destination",
-          "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Destination"
-        },
-        "subscriber": {
-          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Destination",
-          "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Destination"
-        }
-      },
-      "javaType": "io.fabric8.knative.messaging.v1alpha1.SubscriptionSpec",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_eventing_pkg_apis_messaging_v1alpha1_SubscriptionStatus": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "conditions": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
-            "javaType": "io.fabric8.knative.internal.pkg.apis.Condition"
-          }
-        },
-        "observedGeneration": {
-          "type": "integer",
-          "description": "",
-          "javaType": "Long"
-        },
-        "physicalSubscription": {
-          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1alpha1_SubscriptionStatusPhysicalSubscription",
-          "javaType": "io.fabric8.knative.messaging.v1alpha1.SubscriptionStatusPhysicalSubscription"
-        }
-      },
-      "javaType": "io.fabric8.knative.messaging.v1alpha1.SubscriptionStatus",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_eventing_pkg_apis_messaging_v1alpha1_SubscriptionStatusPhysicalSubscription": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "deadLetterSinkURI": {
-          "javaType": "java.lang.String"
-        },
-        "replyURI": {
-          "javaType": "java.lang.String"
-        },
-        "subscriberURI": {
-          "javaType": "java.lang.String"
-        }
-      },
-      "javaType": "io.fabric8.knative.messaging.v1alpha1.SubscriptionStatusPhysicalSubscription",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_eventing_pkg_apis_messaging_v1beta1_ChannelTemplateSpec": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "apiVersion": {
-          "type": "string",
-          "description": ""
-        },
-        "kind": {
-          "type": "string",
-          "description": ""
-        },
-        "spec": {
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
-        }
-      },
-      "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.messaging.v1beta1.ChannelTemplateSpec",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_pkg_apis_Condition": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "lastTransitionTime": {
-          "javaType": "java.lang.String"
-        },
-        "message": {
-          "type": "string",
-          "description": "human-readable message indicating details about last transition"
-        },
-        "reason": {
-          "type": "string",
-          "description": "one-word CamelCase reason for the condition's last transition"
-        },
-        "severity": {
-          "type": "string",
-          "description": "how to interpret failures of this condition"
-        },
-        "status": {
-          "type": "string",
-          "description": "status of the condition"
-        },
-        "type": {
-          "type": "string",
-          "description": "type of status condition"
-        }
-      },
-      "javaType": "io.fabric8.knative.internal.pkg.apis.Condition",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_pkg_apis_duck_v1_Addressable": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "url": {
-          "javaType": "java.lang.String"
-        }
-      },
-      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_pkg_apis_duck_v1_Destination": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "ref": {
-          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_KReference",
-          "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.KReference"
-        },
-        "uri": {
-          "javaType": "java.lang.String"
-        }
-      },
-      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Destination",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_pkg_apis_duck_v1_KReference": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "apiVersion": {
-          "type": "string",
-          "description": ""
-        },
-        "kind": {
-          "type": "string",
-          "description": ""
-        },
-        "name": {
-          "type": "string",
-          "description": ""
-        },
-        "namespace": {
-          "type": "string",
-          "description": ""
-        }
-      },
-      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.KReference",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_pkg_apis_duck_v1alpha1_Addressable": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "hostname": {
-          "type": "string",
-          "description": ""
-        },
-        "url": {
-          "javaType": "java.lang.String"
-        }
-      },
-      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.Addressable",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_serving_pkg_apis_serving_v1_ConfigurationSpec": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "template": {
-          "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_RevisionTemplateSpec",
-          "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.RevisionTemplateSpec"
-        }
-      },
-      "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.ConfigurationSpec",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_serving_pkg_apis_serving_v1_ConfigurationStatus": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "conditions": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
-            "javaType": "io.fabric8.knative.internal.pkg.apis.Condition"
-          }
-        },
-        "latestCreatedRevisionName": {
-          "type": "string",
-          "description": ""
-        },
-        "latestReadyRevisionName": {
-          "type": "string",
-          "description": ""
-        },
-        "observedGeneration": {
-          "type": "integer",
-          "description": "",
-          "javaType": "Long"
-        }
-      },
-      "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.ConfigurationStatus",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_serving_pkg_apis_serving_v1_RevisionSpec": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "activeDeadlineSeconds": {
-          "type": "integer",
-          "description": "",
-          "javaType": "Long"
-        },
-        "affinity": {
-          "javaType": "io.fabric8.kubernetes.api.model.Affinity"
-        },
-        "automountServiceAccountToken": {
-          "type": "boolean",
-          "description": "",
-          "javaType": "Boolean"
-        },
-        "containerConcurrency": {
-          "type": "integer",
-          "description": "",
-          "javaType": "Long"
-        },
-        "containers": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "javaType": "io.fabric8.kubernetes.api.model.Container"
-          }
-        },
-        "dnsConfig": {
-          "javaType": "io.fabric8.kubernetes.api.model.PodDNSConfig"
-        },
-        "dnsPolicy": {
-          "type": "string",
-          "description": ""
-        },
-        "enableServiceLinks": {
-          "type": "boolean",
-          "description": "",
-          "javaType": "Boolean"
-        },
-        "ephemeralContainers": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "javaType": "io.fabric8.kubernetes.api.model.EphemeralContainer"
-          }
-        },
-        "hostAliases": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "javaType": "io.fabric8.kubernetes.api.model.HostAlias"
-          }
-        },
-        "hostIPC": {
-          "type": "boolean",
-          "description": ""
-        },
-        "hostNetwork": {
-          "type": "boolean",
-          "description": ""
-        },
-        "hostPID": {
-          "type": "boolean",
-          "description": ""
-        },
-        "hostname": {
-          "type": "string",
-          "description": ""
-        },
-        "imagePullSecrets": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "javaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
-          }
-        },
-        "initContainers": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "javaType": "io.fabric8.kubernetes.api.model.Container"
-          }
-        },
-        "nodeName": {
-          "type": "string",
-          "description": ""
-        },
-        "nodeSelector": {
-          "type": "object",
-          "description": "",
-          "javaType": "java.util.Map\u003cString,String\u003e"
-        },
-        "overhead": {
-          "type": "object",
-          "description": "",
-          "javaType": "java.util.Map\u003cString,io.fabric8.kubernetes.api.model.Quantity\u003e"
-        },
-        "preemptionPolicy": {
-          "type": "string",
-          "description": "",
-          "javaType": "String"
-        },
-        "priority": {
-          "type": "integer",
-          "description": "",
-          "javaType": "Integer"
-        },
-        "priorityClassName": {
-          "type": "string",
-          "description": ""
-        },
-        "readinessGates": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "javaType": "io.fabric8.kubernetes.api.model.PodReadinessGate"
-          }
-        },
-        "restartPolicy": {
-          "type": "string",
-          "description": ""
-        },
-        "runtimeClassName": {
-          "type": "string",
-          "description": "",
-          "javaType": "String"
-        },
-        "schedulerName": {
-          "type": "string",
-          "description": ""
-        },
-        "securityContext": {
-          "javaType": "io.fabric8.kubernetes.api.model.PodSecurityContext"
-        },
-        "serviceAccount": {
-          "type": "string",
-          "description": ""
-        },
-        "serviceAccountName": {
-          "type": "string",
-          "description": ""
-        },
-        "shareProcessNamespace": {
-          "type": "boolean",
-          "description": "",
-          "javaType": "Boolean"
-        },
-        "subdomain": {
-          "type": "string",
-          "description": ""
-        },
-        "terminationGracePeriodSeconds": {
-          "type": "integer",
-          "description": "",
-          "javaType": "Long"
-        },
-        "timeoutSeconds": {
-          "type": "integer",
-          "description": "",
-          "javaType": "Long"
-        },
-        "tolerations": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "javaType": "io.fabric8.kubernetes.api.model.Toleration"
-          }
-        },
-        "topologySpreadConstraints": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "javaType": "io.fabric8.kubernetes.api.model.TopologySpreadConstraint"
-          }
-        },
-        "volumes": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "javaType": "io.fabric8.kubernetes.api.model.Volume"
-          }
-        }
-      },
-      "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.RevisionSpec",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_serving_pkg_apis_serving_v1_RevisionStatus": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "conditions": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
-            "javaType": "io.fabric8.knative.internal.pkg.apis.Condition"
-          }
-        },
-        "imageDigest": {
-          "type": "string",
-          "description": ""
-        },
-        "logUrl": {
-          "type": "string",
-          "description": ""
-        },
-        "observedGeneration": {
-          "type": "integer",
-          "description": "",
-          "javaType": "Long"
-        },
-        "serviceName": {
-          "type": "string",
-          "description": ""
-        }
-      },
-      "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.RevisionStatus",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_serving_pkg_apis_serving_v1_RevisionTemplateSpec": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "metadata": {
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
-        },
-        "spec": {
-          "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_RevisionSpec",
-          "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.RevisionSpec"
-        }
-      },
-      "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.RevisionTemplateSpec",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_serving_pkg_apis_serving_v1_RouteSpec": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "traffic": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_TrafficTarget",
-            "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.TrafficTarget"
-          }
-        }
-      },
-      "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.RouteSpec",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_serving_pkg_apis_serving_v1_RouteStatus": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "address": {
-          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Addressable",
-          "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable"
-        },
-        "conditions": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
-            "javaType": "io.fabric8.knative.internal.pkg.apis.Condition"
-          }
-        },
-        "observedGeneration": {
-          "type": "integer",
-          "description": "",
-          "javaType": "Long"
-        },
-        "traffic": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_TrafficTarget",
-            "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.TrafficTarget"
-          }
-        },
-        "url": {
-          "javaType": "java.lang.String"
-        }
-      },
-      "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.RouteStatus",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_serving_pkg_apis_serving_v1_ServiceSpec": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "template": {
-          "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_RevisionTemplateSpec",
-          "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.RevisionTemplateSpec"
-        },
-        "traffic": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_TrafficTarget",
-            "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.TrafficTarget"
-          }
-        }
-      },
-      "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.ServiceSpec",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_serving_pkg_apis_serving_v1_ServiceStatus": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "address": {
-          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Addressable",
-          "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable"
-        },
-        "conditions": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
-            "javaType": "io.fabric8.knative.internal.pkg.apis.Condition"
-          }
-        },
-        "latestCreatedRevisionName": {
-          "type": "string",
-          "description": ""
-        },
-        "latestReadyRevisionName": {
-          "type": "string",
-          "description": ""
-        },
-        "observedGeneration": {
-          "type": "integer",
-          "description": "",
-          "javaType": "Long"
-        },
-        "traffic": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_TrafficTarget",
-            "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.TrafficTarget"
-          }
-        },
-        "url": {
-          "javaType": "java.lang.String"
-        }
-      },
-      "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.ServiceStatus",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_serving_pkg_apis_serving_v1_TrafficTarget": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "configurationName": {
-          "type": "string",
-          "description": ""
-        },
-        "latestRevision": {
-          "type": "boolean",
-          "description": "",
-          "javaType": "Boolean"
-        },
-        "percent": {
-          "type": "integer",
-          "description": "",
-          "javaType": "Long"
-        },
-        "revisionName": {
-          "type": "string",
-          "description": ""
-        },
-        "tag": {
-          "type": "string",
-          "description": ""
-        },
-        "url": {
-          "javaType": "java.lang.String"
-        }
-      },
-      "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.TrafficTarget",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
     }
   },
   "type": "object",
   "properties": {
-    "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_Broker": {
-      "$ref": "#/definitions/github_com_knative_eventing_pkg_apis_eventing_v1alpha1_Broker",
-      "javaType": "io.fabric8.knative.eventing.v1alpha1.Broker"
-    },
-    "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_BrokerList": {
-      "$ref": "#/definitions/github_com_knative_eventing_pkg_apis_eventing_v1alpha1_BrokerList",
-      "javaType": "io.fabric8.knative.eventing.v1alpha1.BrokerList"
-    },
-    "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_BrokerSpec": {
-      "$ref": "#/definitions/github_com_knative_eventing_pkg_apis_eventing_v1alpha1_BrokerSpec",
-      "javaType": "io.fabric8.knative.eventing.v1alpha1.BrokerSpec"
-    },
-    "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_BrokerStatus": {
-      "$ref": "#/definitions/github_com_knative_eventing_pkg_apis_eventing_v1alpha1_BrokerStatus",
-      "javaType": "io.fabric8.knative.eventing.v1alpha1.BrokerStatus"
-    },
-    "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_EventType": {
-      "$ref": "#/definitions/github_com_knative_eventing_pkg_apis_eventing_v1alpha1_EventType",
-      "javaType": "io.fabric8.knative.eventing.v1alpha1.EventType"
-    },
-    "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_EventTypeList": {
-      "$ref": "#/definitions/github_com_knative_eventing_pkg_apis_eventing_v1alpha1_EventTypeList",
-      "javaType": "io.fabric8.knative.eventing.v1alpha1.EventTypeList"
-    },
-    "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_EventTypeSpec": {
-      "$ref": "#/definitions/github_com_knative_eventing_pkg_apis_eventing_v1alpha1_EventTypeSpec",
-      "javaType": "io.fabric8.knative.eventing.v1alpha1.EventTypeSpec"
-    },
-    "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_EventTypeStatus": {
-      "$ref": "#/definitions/github_com_knative_eventing_pkg_apis_eventing_v1alpha1_EventTypeStatus",
-      "javaType": "io.fabric8.knative.eventing.v1alpha1.EventTypeStatus"
-    },
-    "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_Trigger": {
-      "$ref": "#/definitions/github_com_knative_eventing_pkg_apis_eventing_v1alpha1_Trigger",
-      "javaType": "io.fabric8.knative.eventing.v1alpha1.Trigger"
-    },
-    "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_TriggerFilter": {
-      "$ref": "#/definitions/github_com_knative_eventing_pkg_apis_eventing_v1alpha1_TriggerFilter",
-      "javaType": "io.fabric8.knative.eventing.v1alpha1.TriggerFilter"
-    },
-    "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_TriggerFilterSourceAndType": {
-      "$ref": "#/definitions/github_com_knative_eventing_pkg_apis_eventing_v1alpha1_TriggerFilterSourceAndType",
-      "javaType": "io.fabric8.knative.eventing.v1alpha1.TriggerFilterSourceAndType"
-    },
-    "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_TriggerList": {
-      "$ref": "#/definitions/github_com_knative_eventing_pkg_apis_eventing_v1alpha1_TriggerList",
-      "javaType": "io.fabric8.knative.eventing.v1alpha1.TriggerList"
-    },
-    "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_TriggerSpec": {
-      "$ref": "#/definitions/github_com_knative_eventing_pkg_apis_eventing_v1alpha1_TriggerSpec",
-      "javaType": "io.fabric8.knative.eventing.v1alpha1.TriggerSpec"
-    },
-    "github_com_knative_eventing_pkg_apis_eventing_v1alpha1_TriggerStatus": {
-      "$ref": "#/definitions/github_com_knative_eventing_pkg_apis_eventing_v1alpha1_TriggerStatus",
-      "javaType": "io.fabric8.knative.eventing.v1alpha1.TriggerStatus"
-    },
-    "github_com_knative_serving_pkg_apis_serving_v1_Configuration": {
-      "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_Configuration",
-      "javaType": "io.fabric8.knative.serving.v1.Configuration"
-    },
-    "github_com_knative_serving_pkg_apis_serving_v1_ConfigurationList": {
-      "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_ConfigurationList",
-      "javaType": "io.fabric8.knative.serving.v1.ConfigurationList"
-    },
-    "github_com_knative_serving_pkg_apis_serving_v1_ConfigurationSpec": {
-      "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_ConfigurationSpec",
-      "javaType": "io.fabric8.knative.serving.v1.ConfigurationSpec"
-    },
-    "github_com_knative_serving_pkg_apis_serving_v1_ConfigurationStatus": {
-      "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_ConfigurationStatus",
-      "javaType": "io.fabric8.knative.serving.v1.ConfigurationStatus"
-    },
-    "github_com_knative_serving_pkg_apis_serving_v1_Revision": {
-      "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_Revision",
-      "javaType": "io.fabric8.knative.serving.v1.Revision"
-    },
-    "github_com_knative_serving_pkg_apis_serving_v1_RevisionList": {
-      "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_RevisionList",
-      "javaType": "io.fabric8.knative.serving.v1.RevisionList"
-    },
-    "github_com_knative_serving_pkg_apis_serving_v1_RevisionSpec": {
-      "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_RevisionSpec",
-      "javaType": "io.fabric8.knative.serving.v1.RevisionSpec"
-    },
-    "github_com_knative_serving_pkg_apis_serving_v1_RevisionStatus": {
-      "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_RevisionStatus",
-      "javaType": "io.fabric8.knative.serving.v1.RevisionStatus"
-    },
-    "github_com_knative_serving_pkg_apis_serving_v1_RevisionTemplateSpec": {
-      "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_RevisionTemplateSpec",
-      "javaType": "io.fabric8.knative.serving.v1.RevisionTemplateSpec"
-    },
-    "github_com_knative_serving_pkg_apis_serving_v1_Route": {
-      "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_Route",
-      "javaType": "io.fabric8.knative.serving.v1.Route"
-    },
-    "github_com_knative_serving_pkg_apis_serving_v1_RouteList": {
-      "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_RouteList",
-      "javaType": "io.fabric8.knative.serving.v1.RouteList"
-    },
-    "github_com_knative_serving_pkg_apis_serving_v1_RouteSpec": {
-      "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_RouteSpec",
-      "javaType": "io.fabric8.knative.serving.v1.RouteSpec"
-    },
-    "github_com_knative_serving_pkg_apis_serving_v1_RouteStatus": {
-      "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_RouteStatus",
-      "javaType": "io.fabric8.knative.serving.v1.RouteStatus"
-    },
-    "github_com_knative_serving_pkg_apis_serving_v1_Service": {
-      "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_Service",
-      "javaType": "io.fabric8.knative.serving.v1.Service"
-    },
-    "github_com_knative_serving_pkg_apis_serving_v1_ServiceList": {
-      "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_ServiceList",
-      "javaType": "io.fabric8.knative.serving.v1.ServiceList"
-    },
-    "github_com_knative_serving_pkg_apis_serving_v1_ServiceSpec": {
-      "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_ServiceSpec",
-      "javaType": "io.fabric8.knative.serving.v1.ServiceSpec"
-    },
-    "github_com_knative_serving_pkg_apis_serving_v1_ServiceStatus": {
-      "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_ServiceStatus",
-      "javaType": "io.fabric8.knative.serving.v1.ServiceStatus"
-    },
-    "github_com_knative_serving_pkg_apis_serving_v1_TrafficTarget": {
-      "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1_TrafficTarget",
-      "javaType": "io.fabric8.knative.serving.v1.TrafficTarget"
-    },
-    "github_com_knative_serving_pkg_apis_serving_v1beta1_Configuration": {
-      "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1beta1_Configuration",
-      "javaType": "io.fabric8.knative.serving.v1beta1.Configuration"
-    },
-    "github_com_knative_serving_pkg_apis_serving_v1beta1_ConfigurationList": {
-      "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1beta1_ConfigurationList",
-      "javaType": "io.fabric8.knative.serving.v1beta1.ConfigurationList"
-    },
-    "github_com_knative_serving_pkg_apis_serving_v1beta1_Revision": {
-      "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1beta1_Revision",
-      "javaType": "io.fabric8.knative.serving.v1beta1.Revision"
-    },
-    "github_com_knative_serving_pkg_apis_serving_v1beta1_RevisionList": {
-      "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1beta1_RevisionList",
-      "javaType": "io.fabric8.knative.serving.v1beta1.RevisionList"
-    },
-    "github_com_knative_serving_pkg_apis_serving_v1beta1_Route": {
-      "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1beta1_Route",
-      "javaType": "io.fabric8.knative.serving.v1beta1.Route"
-    },
-    "github_com_knative_serving_pkg_apis_serving_v1beta1_RouteList": {
-      "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1beta1_RouteList",
-      "javaType": "io.fabric8.knative.serving.v1beta1.RouteList"
-    },
-    "github_com_knative_serving_pkg_apis_serving_v1beta1_Service": {
-      "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1beta1_Service",
-      "javaType": "io.fabric8.knative.serving.v1beta1.Service"
-    },
-    "github_com_knative_serving_pkg_apis_serving_v1beta1_ServiceList": {
-      "$ref": "#/definitions/github_com_knative_serving_pkg_apis_serving_v1beta1_ServiceList",
-      "javaType": "io.fabric8.knative.serving.v1beta1.ServiceList"
-    },
-    "knative_dev_eventing_pkg_apis_duck_v1alpha1_Subscribable": {
-      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1alpha1_Subscribable",
-      "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1alpha1.Subscribable"
-    },
-    "knative_dev_eventing_pkg_apis_duck_v1alpha1_SubscribableStatus": {
-      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1alpha1_SubscribableStatus",
-      "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1alpha1.SubscribableStatus"
-    },
-    "knative_dev_eventing_pkg_apis_duck_v1alpha1_SubscriberSpec": {
-      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1alpha1_SubscriberSpec",
-      "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1alpha1.SubscriberSpec"
-    },
-    "knative_dev_eventing_pkg_apis_duck_v1alpha1_SubscriberStatus": {
-      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1alpha1_SubscriberStatus",
-      "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1alpha1.SubscriberStatus"
-    },
-    "knative_dev_eventing_pkg_apis_duck_v1beta1_DeliverySpec": {
-      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1beta1_DeliverySpec",
-      "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1beta1.DeliverySpec"
-    },
-    "knative_dev_eventing_pkg_apis_flows_v1alpha1_Sequence": {
-      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_flows_v1alpha1_Sequence",
-      "javaType": "io.fabric8.knative.flows.v1alpha1.Sequence"
-    },
-    "knative_dev_eventing_pkg_apis_flows_v1alpha1_SequenceChannelStatus": {
-      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_flows_v1alpha1_SequenceChannelStatus",
-      "javaType": "io.fabric8.knative.flows.v1alpha1.SequenceChannelStatus"
-    },
-    "knative_dev_eventing_pkg_apis_flows_v1alpha1_SequenceList": {
-      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_flows_v1alpha1_SequenceList",
-      "javaType": "io.fabric8.knative.flows.v1alpha1.SequenceList"
-    },
-    "knative_dev_eventing_pkg_apis_flows_v1alpha1_SequenceSpec": {
-      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_flows_v1alpha1_SequenceSpec",
-      "javaType": "io.fabric8.knative.flows.v1alpha1.SequenceSpec"
-    },
-    "knative_dev_eventing_pkg_apis_flows_v1alpha1_SequenceStatus": {
-      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_flows_v1alpha1_SequenceStatus",
-      "javaType": "io.fabric8.knative.flows.v1alpha1.SequenceStatus"
-    },
-    "knative_dev_eventing_pkg_apis_flows_v1alpha1_SequenceStep": {
-      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_flows_v1alpha1_SequenceStep",
-      "javaType": "io.fabric8.knative.flows.v1alpha1.SequenceStep"
-    },
-    "knative_dev_eventing_pkg_apis_flows_v1alpha1_SequenceSubscriptionStatus": {
-      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_flows_v1alpha1_SequenceSubscriptionStatus",
-      "javaType": "io.fabric8.knative.flows.v1alpha1.SequenceSubscriptionStatus"
-    },
-    "knative_dev_eventing_pkg_apis_messaging_v1alpha1_Channel": {
-      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1alpha1_Channel",
-      "javaType": "io.fabric8.knative.messaging.v1alpha1.Channel"
-    },
-    "knative_dev_eventing_pkg_apis_messaging_v1alpha1_ChannelList": {
-      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1alpha1_ChannelList",
-      "javaType": "io.fabric8.knative.messaging.v1alpha1.ChannelList"
-    },
-    "knative_dev_eventing_pkg_apis_messaging_v1alpha1_ChannelSpec": {
-      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1alpha1_ChannelSpec",
-      "javaType": "io.fabric8.knative.messaging.v1alpha1.ChannelSpec"
-    },
-    "knative_dev_eventing_pkg_apis_messaging_v1alpha1_ChannelStatus": {
-      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1alpha1_ChannelStatus",
-      "javaType": "io.fabric8.knative.messaging.v1alpha1.ChannelStatus"
-    },
-    "knative_dev_eventing_pkg_apis_messaging_v1alpha1_InMemoryChannel": {
-      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1alpha1_InMemoryChannel",
-      "javaType": "io.fabric8.knative.messaging.v1alpha1.InMemoryChannel"
-    },
-    "knative_dev_eventing_pkg_apis_messaging_v1alpha1_InMemoryChannelList": {
-      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1alpha1_InMemoryChannelList",
-      "javaType": "io.fabric8.knative.messaging.v1alpha1.InMemoryChannelList"
-    },
-    "knative_dev_eventing_pkg_apis_messaging_v1alpha1_InMemoryChannelSpec": {
-      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1alpha1_InMemoryChannelSpec",
-      "javaType": "io.fabric8.knative.messaging.v1alpha1.InMemoryChannelSpec"
-    },
-    "knative_dev_eventing_pkg_apis_messaging_v1alpha1_InMemoryChannelStatus": {
-      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1alpha1_InMemoryChannelStatus",
-      "javaType": "io.fabric8.knative.messaging.v1alpha1.InMemoryChannelStatus"
-    },
-    "knative_dev_eventing_pkg_apis_messaging_v1alpha1_Subscription": {
-      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1alpha1_Subscription",
-      "javaType": "io.fabric8.knative.messaging.v1alpha1.Subscription"
-    },
-    "knative_dev_eventing_pkg_apis_messaging_v1alpha1_SubscriptionList": {
-      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1alpha1_SubscriptionList",
-      "javaType": "io.fabric8.knative.messaging.v1alpha1.SubscriptionList"
-    },
-    "knative_dev_eventing_pkg_apis_messaging_v1alpha1_SubscriptionSpec": {
-      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1alpha1_SubscriptionSpec",
-      "javaType": "io.fabric8.knative.messaging.v1alpha1.SubscriptionSpec"
-    },
-    "knative_dev_eventing_pkg_apis_messaging_v1alpha1_SubscriptionStatus": {
-      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1alpha1_SubscriptionStatus",
-      "javaType": "io.fabric8.knative.messaging.v1alpha1.SubscriptionStatus"
-    },
-    "knative_dev_eventing_pkg_apis_messaging_v1alpha1_SubscriptionStatusPhysicalSubscription": {
-      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1alpha1_SubscriptionStatusPhysicalSubscription",
-      "javaType": "io.fabric8.knative.messaging.v1alpha1.SubscriptionStatusPhysicalSubscription"
-    },
-    "knative_dev_eventing_pkg_apis_messaging_v1beta1_ChannelTemplateSpec": {
-      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1beta1_ChannelTemplateSpec",
-      "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.messaging.v1beta1.ChannelTemplateSpec"
+    "knative_dev_eventing_pkg_apis_duck_v1_DeliverySpec": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1_DeliverySpec",
+      "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.DeliverySpec"
+    },
+    "knative_dev_eventing_pkg_apis_duck_v1_SubscriberSpec": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1_SubscriberSpec",
+      "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.SubscriberSpec"
+    },
+    "knative_dev_eventing_pkg_apis_duck_v1_SubscriberStatus": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1_SubscriberStatus",
+      "javaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.SubscriberStatus"
+    },
+    "knative_dev_eventing_pkg_apis_eventing_v1_Broker": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_eventing_v1_Broker",
+      "javaType": "io.fabric8.knative.eventing.v1.Broker"
+    },
+    "knative_dev_eventing_pkg_apis_eventing_v1_BrokerList": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_eventing_v1_BrokerList",
+      "javaType": "io.fabric8.knative.eventing.v1.BrokerList"
+    },
+    "knative_dev_eventing_pkg_apis_eventing_v1_BrokerSpec": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_eventing_v1_BrokerSpec",
+      "javaType": "io.fabric8.knative.eventing.v1.BrokerSpec"
+    },
+    "knative_dev_eventing_pkg_apis_eventing_v1_BrokerStatus": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_eventing_v1_BrokerStatus",
+      "javaType": "io.fabric8.knative.eventing.v1.BrokerStatus"
+    },
+    "knative_dev_eventing_pkg_apis_eventing_v1_Trigger": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_eventing_v1_Trigger",
+      "javaType": "io.fabric8.knative.eventing.v1.Trigger"
+    },
+    "knative_dev_eventing_pkg_apis_eventing_v1_TriggerFilter": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_eventing_v1_TriggerFilter",
+      "javaType": "io.fabric8.knative.eventing.v1.TriggerFilter"
+    },
+    "knative_dev_eventing_pkg_apis_eventing_v1_TriggerList": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_eventing_v1_TriggerList",
+      "javaType": "io.fabric8.knative.eventing.v1.TriggerList"
+    },
+    "knative_dev_eventing_pkg_apis_eventing_v1_TriggerSpec": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_eventing_v1_TriggerSpec",
+      "javaType": "io.fabric8.knative.eventing.v1.TriggerSpec"
+    },
+    "knative_dev_eventing_pkg_apis_eventing_v1_TriggerStatus": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_eventing_v1_TriggerStatus",
+      "javaType": "io.fabric8.knative.eventing.v1.TriggerStatus"
+    },
+    "knative_dev_eventing_pkg_apis_eventing_v1beta1_EventType": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_eventing_v1beta1_EventType",
+      "javaType": "io.fabric8.knative.eventing.v1beta1.EventType"
+    },
+    "knative_dev_eventing_pkg_apis_eventing_v1beta1_EventTypeList": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_eventing_v1beta1_EventTypeList",
+      "javaType": "io.fabric8.knative.eventing.v1beta1.EventTypeList"
+    },
+    "knative_dev_eventing_pkg_apis_eventing_v1beta1_EventTypeSpec": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_eventing_v1beta1_EventTypeSpec",
+      "javaType": "io.fabric8.knative.eventing.v1beta1.EventTypeSpec"
+    },
+    "knative_dev_eventing_pkg_apis_eventing_v1beta1_EventTypeStatus": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_eventing_v1beta1_EventTypeStatus",
+      "javaType": "io.fabric8.knative.eventing.v1beta1.EventTypeStatus"
+    },
+    "knative_dev_eventing_pkg_apis_flows_v1_Sequence": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_flows_v1_Sequence",
+      "javaType": "io.fabric8.knative.flows.v1.Sequence"
+    },
+    "knative_dev_eventing_pkg_apis_flows_v1_SequenceChannelStatus": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_flows_v1_SequenceChannelStatus",
+      "javaType": "io.fabric8.knative.flows.v1.SequenceChannelStatus"
+    },
+    "knative_dev_eventing_pkg_apis_flows_v1_SequenceList": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_flows_v1_SequenceList",
+      "javaType": "io.fabric8.knative.flows.v1.SequenceList"
+    },
+    "knative_dev_eventing_pkg_apis_flows_v1_SequenceSpec": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_flows_v1_SequenceSpec",
+      "javaType": "io.fabric8.knative.flows.v1.SequenceSpec"
+    },
+    "knative_dev_eventing_pkg_apis_flows_v1_SequenceStatus": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_flows_v1_SequenceStatus",
+      "javaType": "io.fabric8.knative.flows.v1.SequenceStatus"
+    },
+    "knative_dev_eventing_pkg_apis_flows_v1_SequenceStep": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_flows_v1_SequenceStep",
+      "javaType": "io.fabric8.knative.flows.v1.SequenceStep"
+    },
+    "knative_dev_eventing_pkg_apis_flows_v1_SequenceSubscriptionStatus": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_flows_v1_SequenceSubscriptionStatus",
+      "javaType": "io.fabric8.knative.flows.v1.SequenceSubscriptionStatus"
+    },
+    "knative_dev_eventing_pkg_apis_messaging_v1_Channel": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1_Channel",
+      "javaType": "io.fabric8.knative.messaging.v1.Channel"
+    },
+    "knative_dev_eventing_pkg_apis_messaging_v1_ChannelList": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1_ChannelList",
+      "javaType": "io.fabric8.knative.messaging.v1.ChannelList"
+    },
+    "knative_dev_eventing_pkg_apis_messaging_v1_ChannelSpec": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1_ChannelSpec",
+      "javaType": "io.fabric8.knative.messaging.v1.ChannelSpec"
+    },
+    "knative_dev_eventing_pkg_apis_messaging_v1_ChannelStatus": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1_ChannelStatus",
+      "javaType": "io.fabric8.knative.messaging.v1.ChannelStatus"
+    },
+    "knative_dev_eventing_pkg_apis_messaging_v1_ChannelTemplateSpec": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1_ChannelTemplateSpec",
+      "javaType": "io.fabric8.knative.messaging.v1.ChannelTemplateSpec"
+    },
+    "knative_dev_eventing_pkg_apis_messaging_v1_InMemoryChannel": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1_InMemoryChannel",
+      "javaType": "io.fabric8.knative.messaging.v1.InMemoryChannel"
+    },
+    "knative_dev_eventing_pkg_apis_messaging_v1_InMemoryChannelList": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1_InMemoryChannelList",
+      "javaType": "io.fabric8.knative.messaging.v1.InMemoryChannelList"
+    },
+    "knative_dev_eventing_pkg_apis_messaging_v1_InMemoryChannelSpec": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1_InMemoryChannelSpec",
+      "javaType": "io.fabric8.knative.messaging.v1.InMemoryChannelSpec"
+    },
+    "knative_dev_eventing_pkg_apis_messaging_v1_InMemoryChannelStatus": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1_InMemoryChannelStatus",
+      "javaType": "io.fabric8.knative.messaging.v1.InMemoryChannelStatus"
+    },
+    "knative_dev_eventing_pkg_apis_messaging_v1_Subscription": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1_Subscription",
+      "javaType": "io.fabric8.knative.messaging.v1.Subscription"
+    },
+    "knative_dev_eventing_pkg_apis_messaging_v1_SubscriptionList": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1_SubscriptionList",
+      "javaType": "io.fabric8.knative.messaging.v1.SubscriptionList"
+    },
+    "knative_dev_eventing_pkg_apis_messaging_v1_SubscriptionSpec": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1_SubscriptionSpec",
+      "javaType": "io.fabric8.knative.messaging.v1.SubscriptionSpec"
+    },
+    "knative_dev_eventing_pkg_apis_messaging_v1_SubscriptionStatus": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1_SubscriptionStatus",
+      "javaType": "io.fabric8.knative.messaging.v1.SubscriptionStatus"
+    },
+    "knative_dev_eventing_pkg_apis_messaging_v1_SubscriptionStatusPhysicalSubscription": {
+      "$ref": "#/definitions/knative_dev_eventing_pkg_apis_messaging_v1_SubscriptionStatusPhysicalSubscription",
+      "javaType": "io.fabric8.knative.messaging.v1.SubscriptionStatusPhysicalSubscription"
     },
     "knative_dev_pkg_apis_Condition": {
       "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
@@ -2984,49 +2427,113 @@
       "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_KReference",
       "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.KReference"
     },
-    "knative_dev_pkg_apis_duck_v1alpha1_Addressable": {
-      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_Addressable",
-      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.Addressable"
+    "knative_dev_serving_pkg_apis_serving_v1_Configuration": {
+      "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_Configuration",
+      "javaType": "io.fabric8.knative.serving.v1.Configuration"
+    },
+    "knative_dev_serving_pkg_apis_serving_v1_ConfigurationList": {
+      "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_ConfigurationList",
+      "javaType": "io.fabric8.knative.serving.v1.ConfigurationList"
     },
     "knative_dev_serving_pkg_apis_serving_v1_ConfigurationSpec": {
       "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_ConfigurationSpec",
-      "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.ConfigurationSpec"
+      "javaType": "io.fabric8.knative.serving.v1.ConfigurationSpec"
     },
     "knative_dev_serving_pkg_apis_serving_v1_ConfigurationStatus": {
       "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_ConfigurationStatus",
-      "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.ConfigurationStatus"
+      "javaType": "io.fabric8.knative.serving.v1.ConfigurationStatus"
+    },
+    "knative_dev_serving_pkg_apis_serving_v1_ContainerStatuses": {
+      "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_ContainerStatuses",
+      "javaType": "io.fabric8.knative.serving.v1.ContainerStatuses"
+    },
+    "knative_dev_serving_pkg_apis_serving_v1_Revision": {
+      "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_Revision",
+      "javaType": "io.fabric8.knative.serving.v1.Revision"
+    },
+    "knative_dev_serving_pkg_apis_serving_v1_RevisionList": {
+      "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_RevisionList",
+      "javaType": "io.fabric8.knative.serving.v1.RevisionList"
     },
     "knative_dev_serving_pkg_apis_serving_v1_RevisionSpec": {
       "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_RevisionSpec",
-      "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.RevisionSpec"
+      "javaType": "io.fabric8.knative.serving.v1.RevisionSpec"
     },
     "knative_dev_serving_pkg_apis_serving_v1_RevisionStatus": {
       "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_RevisionStatus",
-      "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.RevisionStatus"
+      "javaType": "io.fabric8.knative.serving.v1.RevisionStatus"
     },
     "knative_dev_serving_pkg_apis_serving_v1_RevisionTemplateSpec": {
       "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_RevisionTemplateSpec",
-      "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.RevisionTemplateSpec"
+      "javaType": "io.fabric8.knative.serving.v1.RevisionTemplateSpec"
+    },
+    "knative_dev_serving_pkg_apis_serving_v1_Route": {
+      "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_Route",
+      "javaType": "io.fabric8.knative.serving.v1.Route"
+    },
+    "knative_dev_serving_pkg_apis_serving_v1_RouteList": {
+      "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_RouteList",
+      "javaType": "io.fabric8.knative.serving.v1.RouteList"
     },
     "knative_dev_serving_pkg_apis_serving_v1_RouteSpec": {
       "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_RouteSpec",
-      "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.RouteSpec"
+      "javaType": "io.fabric8.knative.serving.v1.RouteSpec"
     },
     "knative_dev_serving_pkg_apis_serving_v1_RouteStatus": {
       "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_RouteStatus",
-      "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.RouteStatus"
+      "javaType": "io.fabric8.knative.serving.v1.RouteStatus"
+    },
+    "knative_dev_serving_pkg_apis_serving_v1_Service": {
+      "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_Service",
+      "javaType": "io.fabric8.knative.serving.v1.Service"
+    },
+    "knative_dev_serving_pkg_apis_serving_v1_ServiceList": {
+      "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_ServiceList",
+      "javaType": "io.fabric8.knative.serving.v1.ServiceList"
     },
     "knative_dev_serving_pkg_apis_serving_v1_ServiceSpec": {
       "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_ServiceSpec",
-      "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.ServiceSpec"
+      "javaType": "io.fabric8.knative.serving.v1.ServiceSpec"
     },
     "knative_dev_serving_pkg_apis_serving_v1_ServiceStatus": {
       "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_ServiceStatus",
-      "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.ServiceStatus"
+      "javaType": "io.fabric8.knative.serving.v1.ServiceStatus"
     },
     "knative_dev_serving_pkg_apis_serving_v1_TrafficTarget": {
       "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_TrafficTarget",
-      "javaType": "io.fabric8.knative.internal.serving.pkg.apis.serving.v1.TrafficTarget"
+      "javaType": "io.fabric8.knative.serving.v1.TrafficTarget"
+    },
+    "knative_dev_serving_pkg_apis_serving_v1beta1_Configuration": {
+      "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1beta1_Configuration",
+      "javaType": "io.fabric8.knative.serving.v1beta1.Configuration"
+    },
+    "knative_dev_serving_pkg_apis_serving_v1beta1_ConfigurationList": {
+      "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1beta1_ConfigurationList",
+      "javaType": "io.fabric8.knative.serving.v1beta1.ConfigurationList"
+    },
+    "knative_dev_serving_pkg_apis_serving_v1beta1_Revision": {
+      "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1beta1_Revision",
+      "javaType": "io.fabric8.knative.serving.v1beta1.Revision"
+    },
+    "knative_dev_serving_pkg_apis_serving_v1beta1_RevisionList": {
+      "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1beta1_RevisionList",
+      "javaType": "io.fabric8.knative.serving.v1beta1.RevisionList"
+    },
+    "knative_dev_serving_pkg_apis_serving_v1beta1_Route": {
+      "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1beta1_Route",
+      "javaType": "io.fabric8.knative.serving.v1beta1.Route"
+    },
+    "knative_dev_serving_pkg_apis_serving_v1beta1_RouteList": {
+      "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1beta1_RouteList",
+      "javaType": "io.fabric8.knative.serving.v1beta1.RouteList"
+    },
+    "knative_dev_serving_pkg_apis_serving_v1beta1_Service": {
+      "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1beta1_Service",
+      "javaType": "io.fabric8.knative.serving.v1beta1.Service"
+    },
+    "knative_dev_serving_pkg_apis_serving_v1beta1_ServiceList": {
+      "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1beta1_ServiceList",
+      "javaType": "io.fabric8.knative.serving.v1beta1.ServiceList"
     }
   },
   "additionalProperties": false

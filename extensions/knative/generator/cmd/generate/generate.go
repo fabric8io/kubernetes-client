@@ -18,12 +18,13 @@ package main
 import (
 	"fmt"
 	"github.com/fabric8io/kubernetes-client/generator/pkg/schemagen"
-	eventing_v1alpha1 "github.com/knative/eventing/pkg/apis/eventing/v1alpha1"
-	serving_v1 "github.com/knative/serving/pkg/apis/serving/v1"
-	serving_v1beta1 "github.com/knative/serving/pkg/apis/serving/v1beta1"
+	eventing_v1 "knative.dev/eventing/pkg/apis/eventing/v1"
+	eventing_v1beta1 "knative.dev/eventing/pkg/apis/eventing/v1beta1"
+	serving_v1 "knative.dev/serving/pkg/apis/serving/v1"
+	serving_v1beta1 "knative.dev/serving/pkg/apis/serving/v1beta1"
 	"k8s.io/apimachinery/pkg/runtime"
-	flows_v1alpha1 "knative.dev/eventing/pkg/apis/flows/v1alpha1"
-	messaging_v1alpha1 "knative.dev/eventing/pkg/apis/messaging/v1alpha1"
+	flows_v1 "knative.dev/eventing/pkg/apis/flows/v1"
+	messaging_v1 "knative.dev/eventing/pkg/apis/messaging/v1"
 	"knative.dev/pkg/apis"
 	"reflect"
 )
@@ -45,18 +46,20 @@ func main() {
 		reflect.TypeOf(serving_v1beta1.RevisionList{}):      schemagen.Namespaced,
 		reflect.TypeOf(serving_v1beta1.ConfigurationList{}): schemagen.Namespaced,
 
-		// eventing v1alpha1
-		reflect.TypeOf(eventing_v1alpha1.BrokerList{}):    schemagen.Namespaced,
-		reflect.TypeOf(eventing_v1alpha1.TriggerList{}):   schemagen.Namespaced,
-		reflect.TypeOf(eventing_v1alpha1.EventTypeList{}): schemagen.Namespaced,
+		// eventing v1
+		reflect.TypeOf(eventing_v1.BrokerList{}):    schemagen.Namespaced,
+		reflect.TypeOf(eventing_v1.TriggerList{}):   schemagen.Namespaced,
 
-		// messaging v1alpha1
-		reflect.TypeOf(messaging_v1alpha1.ChannelList{}):         schemagen.Namespaced,
-		reflect.TypeOf(messaging_v1alpha1.SubscriptionList{}):    schemagen.Namespaced,
-		reflect.TypeOf(messaging_v1alpha1.InMemoryChannelList{}): schemagen.Namespaced,
+		// eventing v1beta1
+		reflect.TypeOf(eventing_v1beta1.EventTypeList{}): schemagen.Namespaced,
 
-		// flows v1alpha1
-		reflect.TypeOf(flows_v1alpha1.SequenceList{}): schemagen.Namespaced,
+		// messaging v1
+		reflect.TypeOf(messaging_v1.ChannelList{}):         schemagen.Namespaced,
+		reflect.TypeOf(messaging_v1.SubscriptionList{}):    schemagen.Namespaced,
+		reflect.TypeOf(messaging_v1.InMemoryChannelList{}): schemagen.Namespaced,
+
+		// flows v1
+		reflect.TypeOf(flows_v1.SequenceList{}): schemagen.Namespaced,
 	}
 
 	// constraints and patterns for fields
@@ -77,11 +80,12 @@ func main() {
 	// mapping of go packages of this module to the resulting java package
 	// optional ApiGroup and ApiVersion for the go package (which is added to the generated java class)
 	packageMapping := map[string]schemagen.PackageInformation{
-		"github.com/knative/serving/pkg/apis/serving/v1":         {JavaPackage: "io.fabric8.knative.serving.v1", ApiGroup: "serving.knative.dev", ApiVersion: "v1"},
-		"github.com/knative/serving/pkg/apis/serving/v1beta1":    {JavaPackage: "io.fabric8.knative.serving.v1beta1", ApiGroup: "serving.knative.dev", ApiVersion: "v1beta1"},
-		"github.com/knative/eventing/pkg/apis/eventing/v1alpha1": {JavaPackage: "io.fabric8.knative.eventing.v1alpha1", ApiGroup: "eventing.knative.dev", ApiVersion: "v1alpha1"},
-		"knative.dev/eventing/pkg/apis/messaging/v1alpha1":       {JavaPackage: "io.fabric8.knative.messaging.v1alpha1", ApiGroup: "messaging.knative.dev", ApiVersion: "v1alpha1"},
-		"knative.dev/eventing/pkg/apis/flows/v1alpha1":           {JavaPackage: "io.fabric8.knative.flows.v1alpha1", ApiGroup: "eventing.knative.dev", ApiVersion: "v1alpha1"},
+		"knative.dev/serving/pkg/apis/serving/v1":         {JavaPackage: "io.fabric8.knative.serving.v1", ApiGroup: "serving.knative.dev", ApiVersion: "v1"},
+		"knative.dev/serving/pkg/apis/serving/v1beta1":    {JavaPackage: "io.fabric8.knative.serving.v1beta1", ApiGroup: "serving.knative.dev", ApiVersion: "v1beta1"},
+		"knative.dev/eventing/pkg/apis/eventing/v1": {JavaPackage: "io.fabric8.knative.eventing.v1", ApiGroup: "eventing.knative.dev", ApiVersion: "v1"},
+		"knative.dev/eventing/pkg/apis/eventing/v1beta1": {JavaPackage: "io.fabric8.knative.eventing.v1beta1", ApiGroup: "eventing.knative.dev", ApiVersion: "v1beta1"},
+		"knative.dev/eventing/pkg/apis/messaging/v1":       {JavaPackage: "io.fabric8.knative.messaging.v1", ApiGroup: "messaging.knative.dev", ApiVersion: "v1"},
+		"knative.dev/eventing/pkg/apis/flows/v1":           {JavaPackage: "io.fabric8.knative.flows.v1", ApiGroup: "eventing.knative.dev", ApiVersion: "v1"},
 	}
 
 	// converts all packages starting with <key> to a java package using an automated scheme:

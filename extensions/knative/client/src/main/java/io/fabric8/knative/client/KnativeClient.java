@@ -15,27 +15,27 @@
  */
 package io.fabric8.knative.client;
 
-import io.fabric8.knative.eventing.v1alpha1.Broker;
-import io.fabric8.knative.eventing.v1alpha1.BrokerList;
-import io.fabric8.knative.eventing.v1alpha1.DoneableBroker;
-import io.fabric8.knative.eventing.v1alpha1.DoneableEventType;
-import io.fabric8.knative.eventing.v1alpha1.DoneableTrigger;
-import io.fabric8.knative.eventing.v1alpha1.EventType;
-import io.fabric8.knative.eventing.v1alpha1.EventTypeList;
-import io.fabric8.knative.eventing.v1alpha1.Trigger;
-import io.fabric8.knative.eventing.v1alpha1.TriggerList;
-import io.fabric8.knative.flows.v1alpha1.DoneableSequence;
-import io.fabric8.knative.flows.v1alpha1.Sequence;
-import io.fabric8.knative.flows.v1alpha1.SequenceList;
-import io.fabric8.knative.messaging.v1alpha1.Channel;
-import io.fabric8.knative.messaging.v1alpha1.ChannelList;
-import io.fabric8.knative.messaging.v1alpha1.DoneableChannel;
-import io.fabric8.knative.messaging.v1alpha1.DoneableInMemoryChannel;
-import io.fabric8.knative.messaging.v1alpha1.DoneableSubscription;
-import io.fabric8.knative.messaging.v1alpha1.InMemoryChannel;
-import io.fabric8.knative.messaging.v1alpha1.InMemoryChannelList;
-import io.fabric8.knative.messaging.v1alpha1.Subscription;
-import io.fabric8.knative.messaging.v1alpha1.SubscriptionList;
+import io.fabric8.knative.eventing.v1.Broker;
+import io.fabric8.knative.eventing.v1.BrokerList;
+import io.fabric8.knative.eventing.v1.DoneableBroker;
+import io.fabric8.knative.eventing.v1.DoneableTrigger;
+import io.fabric8.knative.eventing.v1.Trigger;
+import io.fabric8.knative.eventing.v1.TriggerList;
+import io.fabric8.knative.eventing.v1beta1.DoneableEventType;
+import io.fabric8.knative.eventing.v1beta1.EventType;
+import io.fabric8.knative.eventing.v1beta1.EventTypeList;
+import io.fabric8.knative.flows.v1.DoneableSequence;
+import io.fabric8.knative.flows.v1.Sequence;
+import io.fabric8.knative.flows.v1.SequenceList;
+import io.fabric8.knative.messaging.v1.Channel;
+import io.fabric8.knative.messaging.v1.ChannelList;
+import io.fabric8.knative.messaging.v1.DoneableChannel;
+import io.fabric8.knative.messaging.v1.DoneableInMemoryChannel;
+import io.fabric8.knative.messaging.v1.DoneableSubscription;
+import io.fabric8.knative.messaging.v1.InMemoryChannel;
+import io.fabric8.knative.messaging.v1.InMemoryChannelList;
+import io.fabric8.knative.messaging.v1.Subscription;
+import io.fabric8.knative.messaging.v1.SubscriptionList;
 import io.fabric8.knative.serving.v1.Configuration;
 import io.fabric8.knative.serving.v1.ConfigurationList;
 import io.fabric8.knative.serving.v1.DoneableConfiguration;
@@ -89,19 +89,19 @@ public interface KnativeClient extends Client {
 
   //Eventing
   /**
-   * API entrypoint for Broker(eventing.knative.dev/v1alpha1)
+   * API entrypoint for Broker(eventing.knative.dev/v1)
    *
    * @return MixedOperation for Broker class
    */
   MixedOperation<Broker, BrokerList, DoneableBroker, Resource<Broker, DoneableBroker>> brokers();
   /**
-   * API entrypoint for Trigger(eventing.knative.dev/v1alpha1)
+   * API entrypoint for Trigger(eventing.knative.dev/v1)
    *
    * @return MixedOperation for Trigger class
    */
   MixedOperation<Trigger, TriggerList, DoneableTrigger, Resource<Trigger, DoneableTrigger>> triggers();
   /**
-   * API entrypoint for EventType(eventing.knative.dev/v1alpha1)
+   * API entrypoint for EventType(eventing.knative.dev/v1)
    *
    * @return MixedOperation for EventType class
    */
@@ -109,25 +109,25 @@ public interface KnativeClient extends Client {
 
   //Messaging
   /**
-   * API entrypoint for Channel(messaging.knative.dev/v1alpha1)
+   * API entrypoint for Channel(messaging.knative.dev/v1)
    *
    * @return MixedOperation for Channel class
    */
   MixedOperation<Channel, ChannelList, DoneableChannel, Resource<Channel, DoneableChannel>> channels();
   /**
-   * API entrypoint for Subscription(messaging.knative.dev/v1alpha1)
+   * API entrypoint for Subscription(messaging.knative.dev/v1)
    *
    * @return MixedOperation for Subscription class
    */
   MixedOperation<Subscription, SubscriptionList, DoneableSubscription, Resource<Subscription, DoneableSubscription>> subscriptions();
   /**
-   * API entrypoint for Sequence(messaging.knative.dev/v1alpha1)
+   * API entrypoint for Sequence(messaging.knative.dev/v1)
    *
    * @return MixedOperation for Sequence class
    */
   MixedOperation<Sequence, SequenceList, DoneableSequence, Resource<Sequence, DoneableSequence>> sequences();
   /**
-   * API entrypoint for InMemoryChannel(messaging.knative.dev/v1alpha1)
+   * API entrypoint for InMemoryChannel(messaging.knative.dev/v1)
    *
    * @return MixedOperation for InMemoryChannel class
    */
