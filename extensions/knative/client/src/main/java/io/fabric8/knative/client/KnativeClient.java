@@ -15,6 +15,36 @@
  */
 package io.fabric8.knative.client;
 
+import io.fabric8.knative.eventing.contrib.awssqs.v1alpha1.AwsSqsSource;
+import io.fabric8.knative.eventing.contrib.awssqs.v1alpha1.AwsSqsSourceList;
+import io.fabric8.knative.eventing.contrib.awssqs.v1alpha1.DoneableAwsSqsSource;
+import io.fabric8.knative.eventing.contrib.couchdb.v1alpha1.CouchDbSource;
+import io.fabric8.knative.eventing.contrib.couchdb.v1alpha1.CouchDbSourceList;
+import io.fabric8.knative.eventing.contrib.couchdb.v1alpha1.DoneableCouchDbSource;
+import io.fabric8.knative.eventing.contrib.github.v1alpha1.DoneableGitHubBinding;
+import io.fabric8.knative.eventing.contrib.github.v1alpha1.DoneableGitHubSource;
+import io.fabric8.knative.eventing.contrib.github.v1alpha1.GitHubBinding;
+import io.fabric8.knative.eventing.contrib.github.v1alpha1.GitHubBindingList;
+import io.fabric8.knative.eventing.contrib.github.v1alpha1.GitHubSource;
+import io.fabric8.knative.eventing.contrib.github.v1alpha1.GitHubSourceList;
+import io.fabric8.knative.eventing.contrib.gitlab.v1alpha1.DoneableGitLabBinding;
+import io.fabric8.knative.eventing.contrib.gitlab.v1alpha1.DoneableGitLabSource;
+import io.fabric8.knative.eventing.contrib.gitlab.v1alpha1.GitLabBinding;
+import io.fabric8.knative.eventing.contrib.gitlab.v1alpha1.GitLabBindingList;
+import io.fabric8.knative.eventing.contrib.gitlab.v1alpha1.GitLabSource;
+import io.fabric8.knative.eventing.contrib.gitlab.v1alpha1.GitLabSourceList;
+import io.fabric8.knative.eventing.contrib.kafka.v1beta1.DoneableKafkaBinding;
+import io.fabric8.knative.eventing.contrib.kafka.v1beta1.DoneableKafkaChannel;
+import io.fabric8.knative.eventing.contrib.kafka.v1beta1.DoneableKafkaSource;
+import io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaBinding;
+import io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaBindingList;
+import io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaChannel;
+import io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaChannelList;
+import io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaSource;
+import io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaSourceList;
+import io.fabric8.knative.eventing.contrib.prometheus.v1alpha1.DoneablePrometheusSource;
+import io.fabric8.knative.eventing.contrib.prometheus.v1alpha1.PrometheusSource;
+import io.fabric8.knative.eventing.contrib.prometheus.v1alpha1.PrometheusSourceList;
 import io.fabric8.knative.eventing.v1.Broker;
 import io.fabric8.knative.eventing.v1.BrokerList;
 import io.fabric8.knative.eventing.v1.DoneableBroker;
@@ -48,6 +78,18 @@ import io.fabric8.knative.serving.v1.Route;
 import io.fabric8.knative.serving.v1.RouteList;
 import io.fabric8.knative.serving.v1.Service;
 import io.fabric8.knative.serving.v1.ServiceList;
+import io.fabric8.knative.sources.v1beta1.ApiServerSource;
+import io.fabric8.knative.sources.v1beta1.ApiServerSourceList;
+import io.fabric8.knative.sources.v1beta1.ContainerSource;
+import io.fabric8.knative.sources.v1beta1.ContainerSourceList;
+import io.fabric8.knative.sources.v1beta1.DoneableApiServerSource;
+import io.fabric8.knative.sources.v1beta1.DoneableContainerSource;
+import io.fabric8.knative.sources.v1beta1.DoneablePingSource;
+import io.fabric8.knative.sources.v1beta1.DoneableSinkBinding;
+import io.fabric8.knative.sources.v1beta1.PingSource;
+import io.fabric8.knative.sources.v1beta1.PingSourceList;
+import io.fabric8.knative.sources.v1beta1.SinkBinding;
+import io.fabric8.knative.sources.v1beta1.SinkBindingList;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -132,4 +174,82 @@ public interface KnativeClient extends Client {
    * @return MixedOperation for InMemoryChannel class
    */
   MixedOperation<InMemoryChannel, InMemoryChannelList, DoneableInMemoryChannel, Resource<InMemoryChannel, DoneableInMemoryChannel>> inMemoryChannels();
+
+  // Eventing Sources
+
+  /**
+   * API entrypoint for PingSource(sources.knative.dev/v1beta1)
+   * @return MixedOperation for PingSource class
+   */
+  MixedOperation<PingSource, PingSourceList, DoneablePingSource, Resource<PingSource, DoneablePingSource>> pingSources();
+
+  /**
+   * API entrypoint for SinkBinding(sources.knative.dev/v1beta1)
+   * @return MixedOperation for SinkBinding class
+   */
+  MixedOperation<SinkBinding, SinkBindingList, DoneableSinkBinding, Resource<SinkBinding, DoneableSinkBinding>> sinkBindings();
+
+  /**
+   * API entrypoint for ContainerSource(sources.knative.dev/v1beta1)
+   * @return MixedOperation for ContainerSource class
+   */
+  MixedOperation<ContainerSource, ContainerSourceList, DoneableContainerSource, Resource<ContainerSource, DoneableContainerSource>> containerSources();
+  /**
+   * API entrypoint for ApiServerSource(sources.knative.dev/v1beta1)
+   * @return MixedOperation for ApiServerSource class
+   */
+  MixedOperation<ApiServerSource, ApiServerSourceList, DoneableApiServerSource, Resource<ApiServerSource, DoneableApiServerSource>> apiServerSources();
+
+
+  // Eventing Contrib
+  /**
+   * API entrypoint for AwsSqsSource(sources.knative.dev/v1alpha1)
+   * @return MixedOperation for AwsSqsSource class
+   */
+  MixedOperation<AwsSqsSource, AwsSqsSourceList, DoneableAwsSqsSource, Resource<AwsSqsSource, DoneableAwsSqsSource>> awsSqsSources();
+  /**
+   * API entrypoint for CouchDbSource(sources.knative.dev/v1alpha1)
+   * @return MixedOperation for CouchDbSource class
+   */
+  MixedOperation<CouchDbSource, CouchDbSourceList, DoneableCouchDbSource, Resource<CouchDbSource, DoneableCouchDbSource>> couchDbSources();
+  /**
+   * API entrypoint for GitHubSource(sources.knative.dev/v1alpha1)
+   * @return MixedOperation for GitHubSource class
+   */
+  MixedOperation<GitHubSource, GitHubSourceList, DoneableGitHubSource, Resource<GitHubSource, DoneableGitHubSource>> gitHubSources();
+  /**
+   * API entrypoint for GitHubBinding(bindings.knative.dev/v1alpha1)
+   * @return MixedOperation for GitHubBinding class
+   */
+  MixedOperation<GitHubBinding, GitHubBindingList, DoneableGitHubBinding, Resource<GitHubBinding, DoneableGitHubBinding>> gitHubBindings();
+  /**
+   * API entrypoint for GitLabSource(sources.knative.dev/v1alpha1)
+   * @return MixedOperation for GitLabSource class
+   */
+  MixedOperation<GitLabSource, GitLabSourceList, DoneableGitLabSource, Resource<GitLabSource, DoneableGitLabSource>> gitLabSources();
+  /**
+   * API entrypoint for GitLabBinding(bindings.knative.dev/v1alpha1)
+   * @return MixedOperation for GitLabBinding class
+   */
+  MixedOperation<GitLabBinding, GitLabBindingList, DoneableGitLabBinding, Resource<GitLabBinding, DoneableGitLabBinding>> gitLabBindings();
+  /**
+   * API entrypoint for PrometheusSource(sources.knative.dev/v1alpha1)
+   * @return MixedOperation for PrometheusSource class
+   */
+  MixedOperation<PrometheusSource, PrometheusSourceList, DoneablePrometheusSource, Resource<PrometheusSource, DoneablePrometheusSource>> prometheusSources();
+  /**
+   * API entrypoint for KafkaChannel(messaging.knative.dev/v1beta)
+   * @return MixedOperation for KafkaChannel class
+   */
+  MixedOperation<KafkaChannel, KafkaChannelList, DoneableKafkaChannel, Resource<KafkaChannel, DoneableKafkaChannel>> kafkaChannels();
+  /**
+   * API entrypoint for KafkaSource(sources.knative.dev/v1beta1)
+   * @return MixedOperation for KafkaSource class
+   */
+  MixedOperation<KafkaSource, KafkaSourceList, DoneableKafkaSource, Resource<KafkaSource, DoneableKafkaSource>> kafkasSources();
+  /**
+   * API entrypoint for KafkaBinding(bindings.knative.dev/v1beta1)
+   * @return MixedOperation for KafkaBinding class
+   */
+  MixedOperation<KafkaBinding, KafkaBindingList, DoneableKafkaBinding, Resource<KafkaBinding, DoneableKafkaBinding>> kafkaBindings();
 }
