@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #2473: Removed unused ValidationMessages.properties
 
 #### Dependency Upgrade
 
