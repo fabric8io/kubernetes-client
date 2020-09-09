@@ -113,7 +113,7 @@
     <lombok.version>1.18.12</lombok.version>
     <snakeyaml.version>1.26</snakeyaml.version>
     <bouncycastle.version>1.66</bouncycastle.version>
-    <commons-codec.version>1.14</commons-codec.version>
+    <commons-codec.version>1.15</commons-codec.version>
     <commons-compress.version>1.20</commons-compress.version>
     <scr.annotations.version>1.12.0</scr.annotations.version>
     <jsonschema2pojo.version>0.4.23</jsonschema2pojo.version>
