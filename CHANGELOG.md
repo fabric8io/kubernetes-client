@@ -6,6 +6,7 @@
 * Fix: #2442: Wrong resource kind in `ProjectRequestHandler` causes ClassCastException when handling Project resources.
 * Fix #2467: OpenShiftClient cannot replace existing resource with API version =! v1
 * Fix: #2474: Config.fromKubeconfig throws NullPointerException
+* Fix #2399: Cannot change the type of the Service from ClusterIP to ExternalName
 
 #### Improvements
 * Fix #2473: Removed unused ValidationMessages.properties
