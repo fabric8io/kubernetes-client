@@ -782,8 +782,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     } catch (MalformedURLException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("watch"), e);
     } catch (KubernetesClientException ke) {
-
-      if (ke.getCode() != 200) {
+      List<Integer> furtherProcessedCodes = Arrays.asList(200, 503);
+      if (! furtherProcessedCodes.contains(ke.getCode())) {
         if (watch != null) {
           //release the watch
           watch.close();
@@ -798,7 +798,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         watch.close();
       }
 
-      // If the HTTP return code is 200, we retry the watch again using a persistent hanging
+      // If the HTTP return code is 200 or 503, we retry the watch again using a persistent hanging
       // HTTP GET. This is meant to handle cases like kubectl local proxy which does not support
       // websockets. Issue: https://github.com/kubernetes/kubernetes/issues/25126
       try {
