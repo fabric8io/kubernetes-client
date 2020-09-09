@@ -18,6 +18,10 @@ package io.fabric8.kubernetes.client.dsl;
 
 public interface Timestampable<T> {
 
+  /**
+   * Include timestamps on each line in the log output
+   * @return returns pod log operation with specified PodLogOption configured
+   */
     T usingTimestamps();
 
 }

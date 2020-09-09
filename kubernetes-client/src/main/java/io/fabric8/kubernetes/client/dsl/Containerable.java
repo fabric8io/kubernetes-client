@@ -17,5 +17,10 @@ package io.fabric8.kubernetes.client.dsl;
 
 public interface Containerable<I, T> {
 
+  /**
+   * Get logs of a specific container
+   * @param id container for which we want logs
+   * @return returns pod log operation with specified PodLogOption configured
+   */
     T inContainer(I id);
 }
