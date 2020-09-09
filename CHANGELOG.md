@@ -13,6 +13,7 @@
 
 #### New Features
 * Fix #2340: Adding support for Knative Eventing Contrib 
+* Fix #2043: Support for Tekton Triggers
 
 ### 4.11.1 (2020-09-02)
 
