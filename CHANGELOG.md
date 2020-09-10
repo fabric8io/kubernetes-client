@@ -3,6 +3,7 @@
 ### 4.11-SNAPSHOT
 
 #### Bugs
+* Fix: #2442: Wrong resource kind in `ProjectRequestHandler` causes ClassCastException when handling Project resources.
 
 #### Improvements
 * Fix #2473: Removed unused ValidationMessages.properties
