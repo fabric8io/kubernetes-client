@@ -9,8 +9,10 @@
 * Fix #2473: Removed unused ValidationMessages.properties
 
 #### Dependency Upgrade
+* Bump Knative Serving to v0.17.2 & Knative Eventing to v0.17.3 
 
 #### New Features
+* Fix #2340: Adding support for Knative Eventing Contrib 
 
 ### 4.11.1 (2020-09-02)
 
