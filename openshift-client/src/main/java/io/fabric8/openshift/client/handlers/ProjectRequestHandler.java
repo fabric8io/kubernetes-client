@@ -24,7 +24,6 @@ import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
-import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.ProjectRequest;
 import io.fabric8.openshift.api.model.ProjectRequestBuilder;
 import io.fabric8.openshift.client.OpenShiftConfig;
@@ -39,7 +38,7 @@ import java.util.concurrent.TimeUnit;
 public class ProjectRequestHandler implements ResourceHandler<ProjectRequest, ProjectRequestBuilder> {
   @Override
   public String getKind() {
-    return Project.class.getSimpleName();
+    return ProjectRequest.class.getSimpleName();
   }
 
   @Override

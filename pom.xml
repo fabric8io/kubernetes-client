@@ -91,7 +91,7 @@
     <jsr305.version>3.0.2</jsr305.version>
 
     <!-- Testing versions -->
-    <assertj.core.version>3.17.1</assertj.core.version>
+    <assertj.core.version>3.17.2</assertj.core.version>
     <arquillian.core.version>1.2.0.Final</arquillian.core.version>
     <awaitility.version>4.0.3</awaitility.version>
     <jsonassert.version>1.5.0</jsonassert.version>
@@ -109,11 +109,11 @@
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
     <arquillian.cube.version>1.18.2</arquillian.cube.version>
     <slf4j.version>1.7.30</slf4j.version>
-    <mockito.version>3.5.7</mockito.version>
+    <mockito.version>3.5.10</mockito.version>
     <lombok.version>1.18.12</lombok.version>
     <snakeyaml.version>1.26</snakeyaml.version>
     <bouncycastle.version>1.66</bouncycastle.version>
-    <commons-codec.version>1.14</commons-codec.version>
+    <commons-codec.version>1.15</commons-codec.version>
     <commons-compress.version>1.20</commons-compress.version>
     <scr.annotations.version>1.12.0</scr.annotations.version>
     <jsonschema2pojo.version>0.4.23</jsonschema2pojo.version>

@@ -180,9 +180,10 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
 
         // We do not expect a 200 in response to the websocket connection. If it occurs, we throw
         // an exception and try the watch via a persistent HTTP Get.
-        if (response != null && response.code() == HTTP_OK) {
+        // Newer Kubernetes might also return 503 Service Unavailable in case WebSockets are not supported
+        if (response != null && (response.code() == HTTP_OK || response.code() == 503)) {
           queue.clear();
-          queue.offer(new KubernetesClientException("Received 200 on websocket",
+          queue.offer(new KubernetesClientException("Received " + response.code() + " on websocket",
             response.code(), null));
           response.body().close();
           return;
