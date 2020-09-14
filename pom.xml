@@ -103,6 +103,8 @@
     <generex.bundle.version>1.0.1_1</generex.bundle.version>
     <automaton.version>1.11-8</automaton.version>
     <automaton.bundle.version>1.11-8_1</automaton.bundle.version>
+    <aries-spifly.bundle.version>1.3.0</aries-spifly.bundle.version>
+    <asm.bundle.version>8.0.1</asm.bundle.version>
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
     <junit.version>5.7.0</junit.version>
     <junit.compatible-with-arquillian.version>4.13</junit.compatible-with-arquillian.version>
@@ -158,6 +160,8 @@
     <osgi.export />
     <osgi.private />
     <osgi.dynamic.import />
+    <osgi.require-capability />
+    <osgi.provide-capability />
     <osgi.bundles />
     <osgi.activator />
     <osgi.export.service />
@@ -646,6 +650,8 @@
             <Export-Package>${osgi.export}</Export-Package>
             <Import-Package>${osgi.import}</Import-Package>
             <DynamicImport-Package>${osgi.dynamic.import}</DynamicImport-Package>
+            <Require-Capability>${osgi.require-capability}</Require-Capability>
+            <Provide-Capability>${osgi.provide-capability}</Provide-Capability>
             <Private-Package>${osgi.private}</Private-Package>
             <Require-Bundle>${osgi.bundles}</Require-Bundle>
             <Bundle-Activator>${osgi.activator}</Bundle-Activator>

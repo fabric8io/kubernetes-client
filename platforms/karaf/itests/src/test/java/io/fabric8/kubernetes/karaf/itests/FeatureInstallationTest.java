@@ -15,29 +15,22 @@
  */
 package io.fabric8.kubernetes.karaf.itests;
 
-import java.io.File;
-import javax.inject.Inject;
-
+import org.apache.karaf.features.Feature;
 import org.apache.karaf.features.FeaturesService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.PaxExam;
-import org.ops4j.pax.exam.karaf.container.internal.JavaVersionUtil;
-import org.ops4j.pax.exam.karaf.options.LogLevelOption;
-import org.ops4j.pax.exam.options.MavenArtifactUrlReference;
-import org.ops4j.pax.exam.options.extra.VMOption;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
 
-import static org.ops4j.pax.exam.CoreOptions.maven;
-import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.configureSecurity;
-import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.editConfigurationFileExtend;
+import javax.inject.Inject;
+import java.util.Collections;
+import java.util.stream.Stream;
+
+import static org.junit.Assert.assertTrue;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.editConfigurationFilePut;
-import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
-import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.logLevel;
 
 
 @RunWith(PaxExam.class)
@@ -51,67 +44,25 @@ public class FeatureInstallationTest extends TestBase {
     public void testKubernetesClientFeature() throws Exception {
         featuresService.addRepository(getFeaturesFile().toURI());
         featuresService.installFeature("kubernetes-client");
+        assertTrue(Stream.of(featuresService.listInstalledFeatures())
+          .map(Feature::getName).anyMatch(name -> name.equals("kubernetes-client")));
     }
 
     @Test
     public void testOpenshiftClient() throws Exception {
         featuresService.addRepository(getFeaturesFile().toURI());
         featuresService.installFeature("openshift-client");
+        assertTrue(Stream.of(featuresService.listInstalledFeatures())
+          .map(Feature::getName).anyMatch(name -> name.equals("openshift-client")));
     }
 
     @Configuration
     public Option[] config() {
-        MavenArtifactUrlReference karafUrl = maven().groupId("org.apache.karaf").artifactId("apache-karaf-minimal").versionAsInProject().type("tar.gz");
-        if (JavaVersionUtil.getMajorVersion() >= 9) {
-            return new Option[]{
-                                karafDistributionConfiguration().frameworkUrl(karafUrl).name("Apache Karaf").unpackDirectory(new File("target/exam")),
-                                configureSecurity().disableKarafMBeanServerBuilder(),
-                                keepRuntimeFolder(),
-                                editConfigurationFilePut("etc/system.properties", "features.xml", System.getProperty("features.xml")),
-                                editConfigurationFileExtend(
-                                    "etc/org.ops4j.pax.url.mvn.cfg",
-                                    "org.ops4j.pax.url.mvn.repositories",
-                                  "https://repo1.maven.org/maven2/"),
-                                logLevel(LogLevelOption.LogLevel.INFO),new VMOption("--add-reads=java.xml=java.logging"),
-                                new VMOption("--add-exports=java.base/"
-                                    + "org.apache.karaf.specs.locator=java.xml,ALL-UNNAMED"),
-                                new VMOption("--patch-module"),
-                                new VMOption("java.base=lib/endorsed/org.apache.karaf.specs.locator-" 
-                                + System.getProperty("karaf.version", "4.2.2-SNAPSHOT") + ".jar"),
-                                new VMOption("--patch-module"),
-                                new VMOption("java.xml=lib/endorsed/org.apache.karaf.specs.java.xml-" 
-                                + System.getProperty("karaf.version", "4.2.2-SNAPSHOT") + ".jar"),
-                                new VMOption("--add-opens"),
-                                new VMOption("java.base/java.security=ALL-UNNAMED"),
-                                new VMOption("--add-opens"),
-                                new VMOption("java.base/java.net=ALL-UNNAMED"),
-                                new VMOption("--add-opens"),
-                                new VMOption("java.base/java.lang=ALL-UNNAMED"),
-                                new VMOption("--add-opens"),
-                                new VMOption("java.base/java.util=ALL-UNNAMED"),
-                                new VMOption("--add-opens"),
-                                new VMOption("java.naming/javax.naming.spi=ALL-UNNAMED"),
-                                new VMOption("--add-opens"),
-                                new VMOption("java.rmi/sun.rmi.transport.tcp=ALL-UNNAMED"),
-                                new VMOption("--add-exports=java.base/sun.net.www.protocol.http=ALL-UNNAMED"),
-                                new VMOption("--add-exports=java.base/sun.net.www.protocol.https=ALL-UNNAMED"),
-                                new VMOption("--add-exports=java.base/sun.net.www.protocol.jar=ALL-UNNAMED"),
-                                new VMOption("--add-exports=jdk.naming.rmi/com.sun.jndi.url.rmi=ALL-UNNAMED"),
-                                new VMOption("-classpath"),
-                                new VMOption("lib/jdk9plus/*" + File.pathSeparator + "lib/boot/*")
-                            };
-        } else {
-            return new Option[]{
-                karafDistributionConfiguration().frameworkUrl(karafUrl).name("Apache Karaf").unpackDirectory(new File("target/exam")),
-                configureSecurity().disableKarafMBeanServerBuilder(),
-                keepRuntimeFolder(),
-                editConfigurationFilePut("etc/system.properties", "features.xml", System.getProperty("features.xml")),
-                editConfigurationFileExtend(
-                    "etc/org.ops4j.pax.url.mvn.cfg",
-                    "org.ops4j.pax.url.mvn.repositories",
-                  "https://repo1.maven.org/maven2/"),
-                logLevel(LogLevelOption.LogLevel.INFO),
-            };
-        }
+      return baseConfiguration(
+        null,
+        Collections.singletonList(
+          editConfigurationFilePut("etc/system.properties", "features.xml", System.getProperty("features.xml"))
+        )
+      );
     }
 }
