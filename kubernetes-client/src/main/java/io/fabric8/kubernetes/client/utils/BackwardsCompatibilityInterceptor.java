@@ -24,6 +24,7 @@ import okhttp3.Response;
 import okio.Buffer;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -134,7 +135,7 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
     Response response = chain.proceed(request);
     if (isOpenshiftApiRequest(request)) {
       return handleOpenshiftRequests(request, response, chain);
-    } else if (!response.isSuccessful() && responseCodeToTransformations.keySet().contains(response.code())) {
+    } else if (!response.isSuccessful() && responseCodeToTransformations.containsKey(response.code())) {
       String url = request.url().toString();
       Matcher matcher = getMatcher(url);
       ResourceKey key = getKey(matcher);
@@ -170,7 +171,7 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
   }
 
   private static Response handleOpenshiftRequests(Request request, Response response, Chain chain) throws IOException{
-    if (!response.isSuccessful()) {
+    if (!response.isSuccessful() && response.code() == HttpURLConnection.HTTP_NOT_FOUND) {
       ResourceKey target = getResourceKeyFromRequest(request);
       if (target != null) {
         String requestUrl = request.url().toString();

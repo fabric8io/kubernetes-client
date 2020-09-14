@@ -20,12 +20,12 @@ import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.ReadyEntity;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigList;
+import io.fabric8.openshift.api.model.BuildSourceBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -87,5 +87,24 @@ public class BuildConfigIT {
     await().atMost(30, TimeUnit.SECONDS).until(buildConfigReady);
     boolean bDeleted = client.buildConfigs().inNamespace(session.getNamespace()).withName("bc-delete").delete();
     assertTrue(bDeleted);
+  }
+
+  @Test
+  public void createOrReplace() {
+    // Given
+    BuildConfig buildConfig = client.buildConfigs().inNamespace(session.getNamespace()).withName("bc-createorreplace").get();
+
+    // When
+    buildConfig.getSpec().setSource(new BuildSourceBuilder()
+      .withNewGit()
+      .withUri("https://github.com/openshift/test2")
+      .endGit()
+      .build());
+    buildConfig = client.buildConfigs().inNamespace(session.getNamespace()).createOrReplace(buildConfig);
+
+    // Then
+    assertNotNull(buildConfig);
+    assertEquals("bc-createorreplace", buildConfig.getMetadata().getName());
+    assertEquals("https://github.com/openshift/test2", buildConfig.getSpec().getSource().getGit().getUri());
   }
 }

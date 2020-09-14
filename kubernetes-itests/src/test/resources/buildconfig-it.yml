@@ -130,3 +130,33 @@ spec:
     to:
       kind: "ImageStreamTag"
       name: "origin-ruby-sample:latest"
+---
+kind: "BuildConfig"
+apiVersion: "v1"
+metadata:
+  name: bc-createorreplace
+spec:
+  triggers:
+    - type: "GitHub"
+      github:
+        secret: "secret101"
+    - type: "Generic"
+      generic:
+        secret: "secret101"
+    - type: "ImageChange"
+  source:
+    type: "Git"
+    git:
+      uri: "https://github.com/openshift/ruby-hello-world"
+    dockerfile: "FROM openshift/ruby-22-centos7\nUSER example"
+  strategy:
+    type: "Source"
+    sourceStrategy:
+      from:
+        kind: "ImageStreamTag"
+        name: "ruby-20-centos7:latest"
+  output:
+    to:
+      kind: "ImageStreamTag"
+      name: "origin-ruby-sample:latest"
+
