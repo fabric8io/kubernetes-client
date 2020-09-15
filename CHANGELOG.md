@@ -3,13 +3,24 @@
 ### 4.11-SNAPSHOT
 
 #### Bugs
+* Fix: #2442: Wrong resource kind in `ProjectRequestHandler` causes ClassCastException when handling Project resources.
+* Fix #2467: OpenShiftClient cannot replace existing resource with API version =! v1
 
 #### Improvements
+* Fix #2473: Removed unused ValidationMessages.properties
+* Fix #2408: Add documentation for Pod log options
 * Enable user to select custom address and port for KubernetesMockServer
 
 #### Dependency Upgrade
+* Bump Knative Serving to v0.17.2 & Knative Eventing to v0.17.3 
 
 #### New Features
+* Fix #2340: Adding support for Knative Eventing Contrib 
+
+### 4.11.1 (2020-09-02)
+
+#### Bugs
+* Fix #2445: ConfigMap and other resources are replaced
 
 ### 4.11.0 (2020-08-26)
 #### Bugs

@@ -33,7 +33,10 @@ public class TektonServer extends ExternalResource {
   private TektonClient client;
 
   private boolean https;
-  private boolean curdMode;
+  // In this mode the mock web server will store, read, update and delete
+  // kubernetes resources using an in memory map and will appear as a real api
+  // server.
+  private boolean crudMode;
 
   public TektonServer() {
     this(true, false);
@@ -43,13 +46,13 @@ public class TektonServer extends ExternalResource {
     this(https, false);
   }
 
-  public TektonServer(boolean https, boolean curdMode) {
+  public TektonServer(boolean https, boolean crudMode) {
     this.https = https;
-    this.curdMode = curdMode;
+    this.crudMode = crudMode;
   }
 
   public void before() {
-    mock = curdMode
+    mock = crudMode
       ? new TektonMockServer(new Context(), new MockWebServer(), new HashMap<ServerRequest, Queue<ServerResponse>>(), new KubernetesCrudDispatcher(), true)
       : new TektonMockServer(https);
     mock.init();

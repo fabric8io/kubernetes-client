@@ -37,14 +37,12 @@ import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.handlers.KubernetesListHandler;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
-import io.fabric8.kubernetes.client.utils.ResourceCompare;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.Parameter;
 import io.fabric8.openshift.api.model.Template;
 
 import java.net.HttpURLConnection;
-import java.util.concurrent.RejectedExecutionException;
 import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
@@ -276,15 +274,12 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
         }
 
         // Conflict; check deleteExisting flag otherwise replace
-        HasMetadata r = h.reload(client, config, meta.getMetadata().getNamespace(), meta);
         if (Boolean.TRUE.equals(deletingExisting)) {
           Boolean deleted = h.delete(client, config, namespaceToUse, propagationPolicy, meta);
           if (Boolean.FALSE.equals(deleted)) {
             throw new KubernetesClientException("Failed to delete existing item:" + meta);
           }
           result.add(h.create(client, config, namespaceToUse, meta));
-        } else if (ResourceCompare.equals(r, meta)) {
-          LOGGER.debug("Item has not changed. Skipping");
         } else {
           KubernetesResourceUtil.setResourceVersion(meta, resourceVersion);
           result.add(h.replace(client, config, namespaceToUse, meta));
@@ -298,7 +293,6 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
   public Waitable<List<HasMetadata>, HasMetadata> createOrReplaceAnd() {
     return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, deletingExisting, visitors, createOrReplace(), inputStream, null, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
-
 
   @Override
     public Boolean delete() {

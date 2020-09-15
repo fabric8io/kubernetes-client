@@ -425,6 +425,7 @@ You can also enable crudMode by using annotation field `crud`.
 | kubernetes-client 4.10.2  | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 |
 | kubernetes-client 4.10.3  | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 |
 | kubernetes-client 4.11.0  | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 |
+| kubernetes-client 4.11.1  | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 |
 
 |                           | OpenShift  3.6.0 | OpenShift  3.7.0  | OpenShift  3.9.0  | OpenShift 3.10.0 | OpenShift 3.11.0 | OpenShift 4.1.0 | OpenShift 4.2.0 |
 |---------------------------|------------------|-------------------|-------------------|------------------|------------------|-----------------|-----------------|
@@ -466,6 +467,7 @@ You can also enable crudMode by using annotation field `crud`.
 | openshift-client 4.10.2   | -                | -                 | ✓                 | ✓                | ✓                | ✓                | ✓              |
 | openshift-client 4.10.3   | -                | -                 | ✓                 | ✓                | ✓                | ✓                | ✓              |
 | openshift-client 4.11.0   | -                | -                 | ✓                 | ✓                | ✓                | ✓                | ✓              |
+| openshift-client 4.11.1   | -                | -                 | ✓                 | ✓                | ✓                | ✓                | ✓              |
 
 ## Major Changes in Kubernetes Client 4.0.0
 All the resource objects used here will be according to OpenShift 3.9.0  and Kubernetes 1.9.0. All the resource objects will give all the fields according to OpenShift 3.9.0 and Kubernetes 1.9.0

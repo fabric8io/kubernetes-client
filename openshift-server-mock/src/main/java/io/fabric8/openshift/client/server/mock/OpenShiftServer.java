@@ -37,7 +37,10 @@ public class OpenShiftServer extends ExternalResource {
   private NamespacedOpenShiftClient client;
 
   private boolean https;
-  private boolean curdMode;
+  // In this mode the mock web server will store, read, update and delete
+  // kubernetes resources using an in memory map and will appear as a real api
+  // server.
+  private boolean crudMode;
 
   public OpenShiftServer() {
     this(true, false);
@@ -47,13 +50,13 @@ public class OpenShiftServer extends ExternalResource {
     this(https, false);
   }
 
-  public OpenShiftServer(boolean https, boolean curdMode) {
+  public OpenShiftServer(boolean https, boolean crudMode) {
     this.https = https;
-    this.curdMode = curdMode;
+    this.crudMode = crudMode;
   }
 
   public void before() {
-    mock = curdMode
+    mock = crudMode
       ? new OpenShiftMockServer(new Context(), new MockWebServer(), new HashMap<ServerRequest, Queue<ServerResponse>>(), new KubernetesCrudDispatcher(), true)
       : new OpenShiftMockServer(https);
     mock.init();

@@ -39,6 +39,7 @@ This document contains common usages of different resources using Fabric8 Kubern
   * [List Options](#list-options)
   * [Delete Options](#delete-options)
   * [Watch Options](#watch-options)
+  * [Log Options](#log-options)
   * [Serializing to yaml](#serializing-to-yaml)
   * [Running a Pod](#running-a-pod)
 
@@ -2283,6 +2284,40 @@ client.pods().watch(new ListOptionsBuilder().withTimeoutSeconds(30L).build(), ne
   @Override
   public void onClose(KubernetesClientException cause) { }
 });
+```
+
+### Log Options
+- Get logs with pretty output:
+```
+client.pods().inNamespace("test").withName("foo").withPrettyOutput().getLog();
+```
+- Get logs of a specific container:
+```
+client.pods().inNamespace("test").withName("foo").inContainer("container1").getLog();
+```
+- Get logs for the previous instance of the container in a pod if it exists:
+```
+client.pods().inNamespace("test").withName("foo").terminated().getLog();
+```
+- Only return logs after a specific date (RFC3339):
+```
+client.pods().inNamespace("test").withName("foo").sinceTime("2020-09-10T12:53:30.154148788Z").getLog();
+```
+- Get logs after a duration of seconds:
+```
+client.pods().inNamespace("test").withName("foo").sinceSeconds(10).getLog();
+```
+- Get logs lines of recent log file to display.
+```
+client.pods().inNamespace("test").withName("foo").tailingLines(10).getLog();
+```
+- Configure Maximum bytes of logs to return. Defaults to no limit.
+```
+client.pods().inNamespace("test").withName("foo").limitBytes(102).getLog();
+```
+- Include timestamps on each line in the log output
+```
+client.pods().inNamespace("test").withName("foo").usingTimestamps().getLog();
 ```
 
 #### Serializing to yaml

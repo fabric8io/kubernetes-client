@@ -170,7 +170,7 @@ class WatchTest {
     // accept watch and disconnect
     server.expect().withPath(path).andUpgradeToWebSocket().open().done().once();
     // refuse reconnect attempts 6 times
-    server.expect().withPath(path).andReturn(503, new StatusBuilder().withCode(503).build()).times(6);
+    server.expect().withPath(path).andReturn(HttpURLConnection.HTTP_NOT_FOUND, new StatusBuilder().withCode(HttpURLConnection.HTTP_NOT_FOUND).build()).times(6);
     // accept next reconnect and send outdated event to stop the watch
     server.expect().withPath(path).andUpgradeToWebSocket().open(outdatedEvent()).done().once();
     final CountDownLatch closeLatch = new CountDownLatch(1);

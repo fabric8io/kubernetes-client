@@ -23,9 +23,6 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import java.net.HttpURLConnection;
 import java.util.function.Predicate;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,15 +55,12 @@ import io.fabric8.kubernetes.client.dsl.Waitable;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.handlers.KubernetesListHandler;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
-import io.fabric8.kubernetes.client.utils.ResourceCompare;
 import okhttp3.OkHttpClient;
 
 public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl extends OperationSupport implements
   NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean>,
   Waitable<HasMetadata, HasMetadata>,
   Readiable {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl.class);
 
   private final String fallbackNamespace;
   private final String explicitNamespace;
@@ -153,16 +147,12 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
       }
 
       // Conflict; check deleteExisting flag otherwise replace
-      HasMetadata r = h.reload(client, config, meta.getMetadata().getNamespace(), meta);
       if (Boolean.TRUE.equals(deletingExisting)) {
         Boolean deleted = h.delete(client, config, namespaceToUse, propagationPolicy, meta);
         if (Boolean.FALSE.equals(deleted)) {
           throw new KubernetesClientException("Failed to delete existing item:" + meta);
         }
         return h.create(client, config, namespaceToUse, meta);
-      } else if (ResourceCompare.equals(r, meta)) {
-        LOGGER.debug("Item has not changed. Skipping");
-        return meta;
       } else {
         KubernetesResourceUtil.setResourceVersion(meta, resourceVersion);
         return h.replace(client, config, namespaceToUse, meta);

@@ -30,6 +30,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 import static junit.framework.TestCase.assertNotNull;
@@ -92,6 +93,23 @@ public class RouteIT {
     await().atMost(30, TimeUnit.SECONDS).until(route1Ready);
     boolean bDeleted = client.routes().inNamespace(currentNamespace).withName("route-delete").delete();
     assertTrue(bDeleted);
+  }
+
+  @Test
+  public void createOrReplace() {
+    // Given
+    Route route = client.routes().inNamespace(currentNamespace).withName("route-createorreplace").get();
+
+    // When
+    route.getMetadata().setAnnotations(Collections.singletonMap("foo", "bar"));
+    route.getSpec().setHost("test.fabric8.io");
+    route = client.routes().inNamespace(currentNamespace).createOrReplace(route);
+
+    // Then
+    assertNotNull(route);
+    assertEquals("route-createorreplace", route.getMetadata().getName());
+    assertEquals("bar", route.getMetadata().getAnnotations().get("foo"));
+    assertEquals("test.fabric8.io", route.getSpec().getHost());
   }
 
 }
