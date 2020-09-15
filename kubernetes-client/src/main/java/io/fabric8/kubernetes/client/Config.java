@@ -633,15 +633,23 @@ public class Config {
       List<ExecEnvVar> env = exec.getEnv();
       // TODO check behavior of tty & stdin
       ProcessBuilder pb = new ProcessBuilder(getAuthenticatorCommandFromExecConfig(exec, configFile, Utils.getSystemPathVariable()));
+      pb.redirectErrorStream(true);
       if (env != null) {
         Map<String, String> environment = pb.environment();
         env.forEach(var -> environment.put(var.getName(), var.getValue()));
       }
       Process p = pb.start();
-      if (p.waitFor() != 0) {
-        LOGGER.warn(IOHelpers.readFully(p.getErrorStream()));
+      StringBuilder sb = new StringBuilder();
+      try (BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
+        String line;
+        while ((line = in.readLine()) != null) {
+          sb.append(line);
+        }
       }
-      ExecCredential ec = Serialization.unmarshal(p.getInputStream(), ExecCredential.class);
+      if (p.waitFor() != 0) {
+        LOGGER.warn(sb.toString());
+      }
+      ExecCredential ec = Serialization.unmarshal(sb.toString(), ExecCredential.class);
       if (!apiVersion.equals(ec.apiVersion)) {
         LOGGER.warn("Wrong apiVersion {} vs. {}", ec.apiVersion, apiVersion);
       } else {
