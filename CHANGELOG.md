@@ -7,9 +7,9 @@
 * Fix #2467: OpenShiftClient cannot replace existing resource with API version =! v1
 
 #### Improvements
+* Enable user to select custom address and port for KubernetesMockServer
 * Fix #2473: Removed unused ValidationMessages.properties
 * Fix #2408: Add documentation for Pod log options
-* Enable user to select custom address and port for KubernetesMockServer
 
 #### Dependency Upgrade
 * Bump Knative Serving to v0.17.2 & Knative Eventing to v0.17.3 
