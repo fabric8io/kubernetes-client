@@ -131,24 +131,26 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
         // specific version will default to first available Class in one of these packages:
         private static final String[] PACKAGES = {
                 "io.fabric8.kubernetes.api.model.",
-                "io.fabric8.kubernetes.api.model.admission",
+                "io.fabric8.kubernetes.api.model.admission.",
                 "io.fabric8.kubernetes.api.model.admissionregistration.v1.",
                 "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.",
+                "io.fabric8.kubernetes.api.model.authentication.",
+                "io.fabric8.kubernetes.api.model.authorization.v1.",
+                "io.fabric8.kubernetes.api.model.authorization.v1beta1.",
                 "io.fabric8.kubernetes.api.model.apiextensions.v1.",
                 "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.",
                 "io.fabric8.kubernetes.api.model.apps.",
-                "io.fabric8.kubernetes.api.model.authentication.",
-                "io.fabric8.kubernetes.api.model.authorization.",
-                "io.fabric8.kubernetes.api.model.autoscaling.",
                 "io.fabric8.kubernetes.api.model.autoscaling.v1.",
+                "io.fabric8.kubernetes.api.model.autoscaling.",
                 "io.fabric8.kubernetes.api.model.autoscaling.v2beta1.",
                 "io.fabric8.kubernetes.api.model.autoscaling.v2beta2.",
                 "io.fabric8.kubernetes.api.model.batch.",
                 "io.fabric8.kubernetes.api.model.certificates.",
-                "io.fabric8.kubernetes.api.model.coordination.",
                 "io.fabric8.kubernetes.api.model.coordination.v1.",
+                "io.fabric8.kubernetes.api.model.coordination.",
                 "io.fabric8.kubernetes.api.model.discovery.",
                 "io.fabric8.kubernetes.api.model.events.",
+                "io.fabric8.kubernetes.api.model.metrics.v1beta1.",
                 "io.fabric8.kubernetes.api.model.networking.",
                 "io.fabric8.kubernetes.api.model.networking.v1beta1.",
                 "io.fabric8.kubernetes.api.model.policy.",
@@ -156,15 +158,19 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
                 "io.fabric8.kubernetes.api.model.storage.",
                 "io.fabric8.kubernetes.api.model.scheduling.",
                 "io.fabric8.kubernetes.api.model.settings.",
+                "io.fabric8.kubernetes.api.model.storage.",
+                "io.fabric8.kubernetes.api.model.storage.v1beta1.",
                 "io.fabric8.openshift.api.model.",
+                "io.fabric8.openshift.api.model.runtime.",
                 "io.fabric8.openshift.api.model.console.v1.",
                 "io.fabric8.openshift.api.model.monitoring.v1.",
+                "io.fabric8.openshift.api.model.operator.",
                 "io.fabric8.openshift.api.model.operator.v1.",
                 "io.fabric8.openshift.api.model.operator.v1alpha1.",
                 "io.fabric8.openshift.api.model.imageregistry.v1.",
+                "io.fabric8.openshift.api.model.operatorhub.manifests.",
                 "io.fabric8.openshift.api.model.operatorhub.v1.",
                 "io.fabric8.openshift.api.model.operatorhub.v1alpha1.",
-                "io.fabric8.openshift.api.model.operatorhub.manifests.",
                 "io.fabric8.kubernetes.api.model.extensions."
         };
 
@@ -173,24 +179,24 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
         Mapping() {
         	registerAllProviders();
         }
-        
+
         public Class<? extends KubernetesResource> getForKey(String key) {
-        	if (key == null) {
-        		return null;
-        	}
-        	Class<? extends KubernetesResource> clazz = mappings.get(key);
-        	if (clazz != null) {
-        		return clazz; 
-        	} 
-    		clazz = getInternalTypeForName(key);
-    		if (clazz != null) {
-				mappings.put(key, clazz);
-			}
-    		return clazz;
+            if (key == null) {
+                return null;
+            }
+            Class<? extends KubernetesResource> clazz = mappings.get(key);
+            if (clazz != null) {
+                return clazz;
+            }
+            clazz = getInternalTypeForName(key);
+            if (clazz != null) {
+                mappings.put(key, clazz);
+            }
+            return clazz;
         }
 
         public void registerKind(String apiVersion, String kind, Class<? extends KubernetesResource> clazz) {
-        	mappings.put(createKey(apiVersion, kind), clazz);
+          mappings.put(createKey(apiVersion, kind), clazz);
         }
 
         public void registerProvider(KubernetesResourceMappingProvider provider) {
