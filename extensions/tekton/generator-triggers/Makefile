@@ -14,13 +14,15 @@
 # limitations under the License.
 #
 
-declare -a modules=("generator-v1alpha1" "generator-v1beta1" "generator-triggers"
-)
+SHELL := /bin/bash
 
-for module in ${modules[*]}
-do
-    echo "Compiling ${module}"
-    cd $module
-    make
-    cd ..
-done    
+all: build
+
+build: gobuild
+	pushd ../model-triggers && \
+	mvn clean install -o && \
+	popd
+
+gobuild:
+	go mod vendor
+	CGO_ENABLED=0 GO111MODULE=on GO15VENDOREXPERIMENT=1 go run -mod=vendor -a ./cmd/generate/generate.go > ../model-triggers/src/main/resources/schema/tekton-schema-triggers.json
