@@ -17,12 +17,16 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
+import io.fabric8.kubernetes.api.model.PodBuilder;
+import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.api.model.ReplicationControllerListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
@@ -43,12 +47,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @EnableRuleMigrationSupport
-public class ReplicationControllerTest {
+class ReplicationControllerTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
 
   @Test
-  public void testList() {
+  void testList() {
    server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers").andReturn(200, new ReplicationControllerListBuilder().build()).once();
    server.expect().withPath("/api/v1/namespaces/ns1/replicationcontrollers").andReturn(200,  new ReplicationControllerListBuilder()
       .addNewItem().and()
@@ -67,7 +71,7 @@ public class ReplicationControllerTest {
 
 
   @Test
-  public void testGet() {
+  void testGet() {
    server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers/repl1").andReturn(200, new ReplicationControllerBuilder().build()).once();
    server.expect().withPath("/api/v1/namespaces/ns1/replicationcontrollers/repl2").andReturn(200, new ReplicationControllerBuilder().build()).once();
 
@@ -85,7 +89,7 @@ public class ReplicationControllerTest {
 
 
   @Test
-  public void testDelete() {
+  void testDelete() {
    server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers/repl1").andReturn(200, new ReplicationControllerBuilder() .withNewMetadata()
       .withName("repl1")
       .withResourceVersion("1")
@@ -147,7 +151,7 @@ public class ReplicationControllerTest {
   }
 
   @Test
-  public void testScale() {
+  void testScale() {
    server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers/repl1").andReturn(200, new ReplicationControllerBuilder()
       .withNewMetadata()
       .withName("repl1")
@@ -170,7 +174,7 @@ public class ReplicationControllerTest {
   }
 
   @Test
-  public void testScaleAndWait() {
+  void testScaleAndWait() {
    server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers/repl1").andReturn(200, new ReplicationControllerBuilder()
       .withNewMetadata()
       .withName("repl1")
@@ -207,7 +211,7 @@ public class ReplicationControllerTest {
 
   @Disabled
   @Test
-  public void testUpdate() {
+  void testUpdate() {
     ReplicationController repl1 = new ReplicationControllerBuilder()
       .withNewMetadata()
       .withName("repl1")
@@ -295,14 +299,37 @@ public class ReplicationControllerTest {
     assertTrue(recordedRequest.getBody().readUtf8().contains(containerToImageMap.get("nginx")));
   }
 
+  @Test
+  void testGetLog() {
+    // Given
+    ReplicationController replicationController = getReplicationControllerBuilder().build();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/replicationcontrollers/replicationcontroller1")
+      .andReturn(HttpURLConnection.HTTP_OK, replicationController).times(3);
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?labelSelector=" + Utils.toUrlEncoded("app=nginx"))
+      .andReturn(HttpURLConnection.HTTP_OK, getReplicationControllerPodList(replicationController)).once();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods/pod1/log?pretty=true")
+      .andReturn(HttpURLConnection.HTTP_OK, "testlog").once();
+    KubernetesClient client = server.getClient();
+
+    // When
+    String log = client.replicationControllers().inNamespace("ns1").withName("replicationcontroller1").getLog(true);
+
+    // Then
+    assertNotNull(log);
+    assertEquals("testlog", log);
+  }
+
   private ReplicationControllerBuilder getReplicationControllerBuilder() {
     return new ReplicationControllerBuilder()
       .withNewMetadata()
       .withName("replicationcontroller1")
+      .withUid("0a133177-0c55-49de-82bb-0d97d9444cb2")
       .addToLabels("app", "nginx")
+      .addToLabels("foo", "bar")
       .addToAnnotations("app", "nginx")
       .endMetadata()
       .withNewSpec()
+      .addToSelector("app", "nginx")
       .withReplicas(1)
       .withNewTemplate()
       .withNewMetadata().addToLabels("app", "nginx").endMetadata()
@@ -315,7 +342,21 @@ public class ReplicationControllerTest {
       .endSpec()
       .endTemplate()
       .endSpec();
+  }
 
+  private PodList getReplicationControllerPodList(ReplicationController rc) {
+    return new PodListBuilder()
+      .addToItems(new PodBuilder().withNewMetadata()
+        .withName("pod1")
+        .addToLabels("app", "nginx")
+        .addNewOwnerReference()
+        .withApiVersion("v1")
+        .withController(true)
+        .withUid(rc.getMetadata().getUid())
+        .endOwnerReference()
+        .endMetadata()
+        .build())
+      .build();
   }
 
 }

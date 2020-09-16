@@ -17,12 +17,17 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
+import io.fabric8.kubernetes.api.model.PodBuilder;
+import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.api.model.PodListBuilder;
+import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
@@ -43,12 +48,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @EnableRuleMigrationSupport
-public class ReplicaSetTest {
+class ReplicaSetTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
 
   @Test
-  public void testList() {
+  void testList() {
    server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets").andReturn(200, new ReplicaSetListBuilder().build()).once();
    server.expect().withPath("/apis/apps/v1/namespaces/ns1/replicasets").andReturn(200,  new ReplicaSetListBuilder()
       .addNewItem().and()
@@ -67,7 +72,7 @@ public class ReplicaSetTest {
 
 
   @Test
-  public void testGet() {
+  void testGet() {
    server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1").andReturn(200, new ReplicaSetBuilder().build()).once();
    server.expect().withPath("/apis/apps/v1/namespaces/ns1/replicasets/repl2").andReturn(200, new ReplicaSetBuilder().build()).once();
 
@@ -85,7 +90,7 @@ public class ReplicaSetTest {
 
 
   @Test
-  public void testDelete() {
+  void testDelete() {
    server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1").andReturn(200, new ReplicaSetBuilder() .withNewMetadata()
       .withName("repl1")
       .withResourceVersion("1")
@@ -147,7 +152,7 @@ public class ReplicaSetTest {
   }
 
   @Test
-  public void testScale() {
+  void testScale() {
    server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1").andReturn(200, new ReplicaSetBuilder()
       .withNewMetadata()
       .withName("repl1")
@@ -170,7 +175,7 @@ public class ReplicaSetTest {
   }
 
   @Test
-  public void testScaleAndWait() {
+  void testScaleAndWait() {
    server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1").andReturn(200, new ReplicaSetBuilder()
       .withNewMetadata()
       .withName("repl1")
@@ -207,7 +212,7 @@ public class ReplicaSetTest {
 
   @Disabled
   @Test
-  public void testUpdate() {
+  void testUpdate() {
     ReplicaSet repl1 = new ReplicaSetBuilder()
       .withNewMetadata()
       .withName("repl1")
@@ -242,7 +247,7 @@ public class ReplicaSetTest {
   }
 
   @Test
-  public void testDeprecatedApiVersion() {
+  void testDeprecatedApiVersion() {
     io.fabric8.kubernetes.api.model.extensions.ReplicaSet repl1 = new io.fabric8.kubernetes.api.model.extensions.ReplicaSetBuilder()
       .withApiVersion("extensions/v1beta1")
       .withNewMetadata()
@@ -323,14 +328,37 @@ public class ReplicaSetTest {
     assertTrue(recordedRequest.getBody().readUtf8().contains(containerToImageMap.get("nginx")));
   }
 
+  @Test
+  void testGetLog() {
+    ReplicaSet replicaSet = getReplicaSetBuilder().build();
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/replicasets/replicaset1")
+      .andReturn(HttpURLConnection.HTTP_OK, replicaSet).times(3);
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?labelSelector=" + Utils.toUrlEncoded("app=nginx"))
+      .andReturn(HttpURLConnection.HTTP_OK, getReplicaSetPodList(replicaSet)).once();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods/pod1/log?pretty=true")
+      .andReturn(HttpURLConnection.HTTP_OK, "testlog").once();
+    KubernetesClient client = server.getClient();
+
+    // When
+    String log = client.apps().replicaSets().inNamespace("ns1").withName("replicaset1").getLog(true);
+
+    // Then
+    assertNotNull(log);
+    assertEquals("testlog", log);
+  }
+
   private ReplicaSetBuilder getReplicaSetBuilder() {
     return new ReplicaSetBuilder()
       .withNewMetadata()
       .withName("replicaset1")
       .addToLabels("app", "nginx")
       .addToAnnotations("app", "nginx")
+      .withUid("0a133177-0c55-49de-82bb-0d97d9444cb2")
       .endMetadata()
       .withNewSpec()
+      .withNewSelector()
+      .addToMatchLabels("app", "nginx")
+      .endSelector()
       .withReplicas(1)
       .withNewTemplate()
       .withNewMetadata().addToLabels("app", "nginx").endMetadata()
@@ -343,6 +371,20 @@ public class ReplicaSetTest {
       .endSpec()
       .endTemplate()
       .endSpec();
+  }
 
+  private PodList getReplicaSetPodList(ReplicaSet rc) {
+    return new PodListBuilder()
+      .addToItems(new PodBuilder().withNewMetadata()
+        .withName("pod1")
+        .addToLabels("app", "nginx")
+        .addNewOwnerReference()
+        .withApiVersion("v1")
+        .withController(true)
+        .withUid(rc.getMetadata().getUid())
+        .endOwnerReference()
+        .endMetadata()
+        .build())
+      .build();
   }
 }

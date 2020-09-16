@@ -16,6 +16,7 @@
 
 package io.fabric8.openshift.client.server.mock;
 
+import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -26,6 +27,10 @@ import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
 import io.fabric8.kubernetes.api.model.ContainerFluent;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.api.model.PodBuilder;
+import io.fabric8.kubernetes.api.model.PodListBuilder;
+import io.fabric8.kubernetes.client.dsl.LogWatch;
+import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.DeploymentConfigSpecFluent;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Rule;
@@ -38,7 +43,9 @@ import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.api.model.DeploymentConfigListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 
+import java.io.ByteArrayOutputStream;
 import java.net.HttpURLConnection;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @EnableRuleMigrationSupport
@@ -260,6 +267,55 @@ public class DeploymentConfigTest {
     // Then
     assertNotNull(deploymentConfig);
     assertEquals("dc1", deploymentConfig.getMetadata().getName());
+  }
+
+  @Test
+  void testGetLog() {
+    // Given
+    server.expect().get().withPath("/apis/apps.openshift.io/v1/namespaces/ns1/deploymentconfigs/dc1/log")
+      .andReturn(HttpURLConnection.HTTP_OK, "testlog")
+      .times(2);
+    OpenShiftClient client = server.getOpenshiftClient();
+
+    // When
+    String log = client.deploymentConfigs().inNamespace("ns1").withName("dc1").getLog();
+
+    // Then
+    assertNotNull(log);
+    assertEquals("testlog", log);
+  }
+
+  @Test
+  void testWatchLog() {
+    // Given
+    server.expect().get().withPath("/apis/apps.openshift.io/v1/namespaces/ns1/deploymentconfigs/dc1")
+      .andReturn(HttpURLConnection.HTTP_OK, getDeploymentConfig().build())
+      .times(2);
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?labelSelector=" + Utils.toUrlEncoded("openshift.io/deployment-config.name=dc1"))
+      .andReturn(HttpURLConnection.HTTP_OK, new PodListBuilder()
+        .addToItems(new PodBuilder()
+          .withNewStatus()
+          .addNewCondition()
+          .withType("Ready")
+          .endCondition()
+          .endStatus()
+          .build())
+        .build())
+      .always();
+    server.expect().get().withPath("/apis/apps.openshift.io/v1/namespaces/ns1/deploymentconfigs/dc1/log?follow=true")
+      .andReturn(HttpURLConnection.HTTP_OK, "testlog")
+      .once();
+    OpenShiftClient client = server.getOpenshiftClient();
+    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+    // When
+    LogWatch logWatch = client.deploymentConfigs().inNamespace("ns1").withName("dc1").watchLog(byteArrayOutputStream);
+
+    // Then
+    await().atMost(2, TimeUnit.SECONDS).until(() -> byteArrayOutputStream.toString().length() > 0);
+    assertNotNull(byteArrayOutputStream.toString());
+    assertEquals("testlog", byteArrayOutputStream.toString());
+    logWatch.close();
   }
 
   private DeploymentConfigBuilder getDeploymentConfig() {
