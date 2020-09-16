@@ -42,3 +42,10 @@ metadata:
   name: "is-delete"
 spec:
   dockerImageRepository: "docker.io/openshift/ruby-20-centos7"
+---
+apiVersion: "v1"
+kind: "ImageStream"
+metadata:
+  name: "is-createorreplace"
+spec:
+  dockerImageRepository: "docker.io/openshift/ruby-20-centos7"

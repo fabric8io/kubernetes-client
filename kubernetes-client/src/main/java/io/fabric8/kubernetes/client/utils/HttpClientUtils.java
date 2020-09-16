@@ -15,9 +15,11 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
+import io.fabric8.kubernetes.api.model.AuthInfo;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.internal.KubeConfigUtils;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
 import okhttp3.*;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -28,6 +30,8 @@ import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import java.io.File;
+import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.Proxy;
@@ -148,6 +152,7 @@ public class HttpClientUtils {
             }
             return chain.proceed(request);
           }).addInterceptor(new ImpersonatorInterceptor(config))
+            .addInterceptor(new OIDCTokenRefreshInterceptor(config))
             .addInterceptor(new BackwardsCompatibilityInterceptor());
 
             Logger reqLogger = LoggerFactory.getLogger(HttpLoggingInterceptor.class);

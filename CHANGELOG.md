@@ -4,15 +4,19 @@
 
 #### Bugs
 * Fix: #2442: Wrong resource kind in `ProjectRequestHandler` causes ClassCastException when handling Project resources.
+* Fix #2467: OpenShiftClient cannot replace existing resource with API version =! v1
+* Fix: #2474: Config.fromKubeconfig throws NullPointerException
 
 #### Improvements
 * Fix #2473: Removed unused ValidationMessages.properties
+* Fix #2408: Add documentation for Pod log options
 
 #### Dependency Upgrade
 * Bump Knative Serving to v0.17.2 & Knative Eventing to v0.17.3 
 
 #### New Features
 * Fix #2340: Adding support for Knative Eventing Contrib 
+* Fix #2111: Support automatic refreshing for expired OIDC tokens
 * Fix #2043: Support for Tekton Triggers
 
 ### 4.11.1 (2020-09-02)

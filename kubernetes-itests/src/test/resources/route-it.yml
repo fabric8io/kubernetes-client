@@ -54,3 +54,13 @@ spec:
   to:
     kind: Service
     name: service-name
+---
+apiVersion: v1
+kind: Route
+metadata:
+  name: route-createorreplace
+spec:
+  host: www.example.com
+  to:
+    kind: Service
+    name: service-name

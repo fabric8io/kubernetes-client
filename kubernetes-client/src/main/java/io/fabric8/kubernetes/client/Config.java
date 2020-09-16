@@ -505,7 +505,8 @@ public class Config {
   public static Config fromKubeconfig(String context, String kubeconfigContents, String kubeconfigPath) {
     // we allow passing context along here, since downstream accepts it
     Config config = new Config();
-    config.file = new File(kubeconfigPath);
+    if(kubeconfigPath != null)
+      config.file = new File(kubeconfigPath);
     loadFromKubeconfig(config, context, kubeconfigContents);
     return config;
   }
@@ -530,7 +531,7 @@ public class Config {
     return true;
   }
 
-  private static String getKubeconfigFilename() {
+  public static String getKubeconfigFilename() {
     String fileName = Utils.getSystemPropertyOrEnvVar(KUBERNETES_KUBECONFIG_FILE, new File(getHomeDir(), ".kube" + File.separator + "config").toString());
 
     // if system property/env var contains multiple files take the first one based on the environment
