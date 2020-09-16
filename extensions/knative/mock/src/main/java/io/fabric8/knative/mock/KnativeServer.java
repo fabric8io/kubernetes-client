@@ -33,7 +33,10 @@ public class KnativeServer extends ExternalResource {
   private KnativeClient client;
 
   private boolean https;
-  private boolean curdMode;
+  // In this mode the mock web server will store, read, update and delete
+  // kubernetes resources using an in memory map and will appear as a real api
+  // server.
+  private boolean crudMode;
 
   public KnativeServer() {
     this(true, false);
@@ -43,13 +46,13 @@ public class KnativeServer extends ExternalResource {
     this(https, false);
   }
 
-  public KnativeServer(boolean https, boolean curdMode) {
+  public KnativeServer(boolean https, boolean crudMode) {
     this.https = https;
-    this.curdMode = curdMode;
+    this.crudMode = crudMode;
   }
 
   public void before() {
-    mock = curdMode
+    mock = crudMode
       ? new KnativeMockServer(new Context(), new MockWebServer(), new HashMap<ServerRequest, Queue<ServerResponse>>(), new KubernetesCrudDispatcher(), true)
       : new KnativeMockServer(https);
     mock.init();

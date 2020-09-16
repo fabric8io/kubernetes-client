@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes.client.utils;
 
+import io.fabric8.kubernetes.api.model.EnvVar;
+import io.fabric8.kubernetes.api.model.EnvVarBuilder;
 import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
@@ -23,6 +25,7 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.OwnerReference;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -327,5 +330,18 @@ public class KubernetesResourceUtil {
           return (int) (d2.getEpochSecond() - d1.getEpochSecond());
       });
     }
+  }
+
+  public static List<EnvVar> convertMapToEnvVarList(Map<String, String> envVarMap) {
+    List<EnvVar> envVars = new ArrayList<>();
+    for (Map.Entry<String, String> entry : envVarMap.entrySet()) {
+      if (entry.getKey() != null && entry.getValue() != null) {
+        envVars.add(new EnvVarBuilder()
+          .withName(entry.getKey())
+          .withValue(entry.getValue())
+          .build());
+      }
+    }
+    return envVars;
   }
 }

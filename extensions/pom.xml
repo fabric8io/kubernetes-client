@@ -21,7 +21,7 @@
   <parent>
     <artifactId>kubernetes-client-project</artifactId>
     <groupId>io.fabric8</groupId>
-    <version>4.10-SNAPSHOT</version>
+    <version>4.11-SNAPSHOT</version>
   </parent>
 
   <artifactId>kubernetes-extensions</artifactId>
@@ -32,6 +32,7 @@
     <module>knative</module>
     <module>tekton</module>
     <module>service-catalog</module>
+    <module>volumesnapshot</module>
   </modules>
 
 </project>

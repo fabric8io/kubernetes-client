@@ -90,4 +90,19 @@ public class ImageStreamIT {
     assertTrue(bDeleted);
   }
 
+  @Test
+  public void createOrReplace() {
+    // Given
+    ImageStream imageStream = client.imageStreams().inNamespace(session.getNamespace()).withName("is-createorreplace").get();
+
+    // When
+    imageStream.getSpec().setDockerImageRepository("docker.io/openshift/ruby-centos-2");
+    imageStream = client.imageStreams().inNamespace(session.getNamespace()).createOrReplace(imageStream);
+
+    // Then
+    assertNotNull(imageStream);
+    assertEquals("is-createorreplace", imageStream.getMetadata().getName());
+    assertEquals("docker.io/openshift/ruby-centos-2", imageStream.getSpec().getDockerImageRepository());
+  }
+
 }

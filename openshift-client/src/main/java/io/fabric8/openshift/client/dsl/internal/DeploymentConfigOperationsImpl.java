@@ -15,25 +15,32 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
-import io.fabric8.kubernetes.api.model.OwnerReference;
-import io.fabric8.kubernetes.api.model.apps.DoneableReplicaSet;
-import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
-import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
+import io.fabric8.kubernetes.api.model.DoneablePod;
+import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
-import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
+import io.fabric8.kubernetes.client.dsl.Loggable;
+import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.dsl.internal.apps.v1.ReplicaSetOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.LogWatchCallback;
+import io.fabric8.kubernetes.client.utils.PodOperationUtil;
 import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
-import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
+import io.fabric8.kubernetes.client.utils.URLUtils;
+import okhttp3.HttpUrl;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Reader;
-import java.util.ArrayList;
+import java.net.MalformedURLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -57,7 +64,9 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
   DeployableScalableResource<DeploymentConfig, DoneableDeploymentConfig>> implements DeployableScalableResource<DeploymentConfig, DoneableDeploymentConfig> {
 
   private static final Logger LOG = LoggerFactory.getLogger(DeploymentConfigOperationsImpl.class);
-  private static final String DEPLOYMENT_CONFIG_REF = "openshift.io/deployment-config.name";
+  private static final Integer DEFAULT_POD_LOG_WAIT_TIMEOUT = 5;
+  public static final String OPENSHIFT_IO_DEPLOYMENT_CONFIG_NAME = "openshift.io/deployment-config.name";
+  private Integer podLogWaitTimeout;
 
   public DeploymentConfigOperationsImpl(OkHttpClient client, Config config) {
     this(new RollingOperationContext().withOkhttpClient(client).withConfig(config).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
@@ -68,6 +77,11 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
     this.type = DeploymentConfig.class;
     this.listType = DeploymentConfigList.class;
     this.doneableType = DoneableDeploymentConfig.class;
+  }
+
+  private DeploymentConfigOperationsImpl(RollingOperationContext context, Integer podLogWaitTimeout) {
+    this(context);
+    this.podLogWaitTimeout = podLogWaitTimeout;
   }
 
   @Override
@@ -147,7 +161,7 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
    * Lets wait until there are enough Ready pods of the given Deployment
    */
   private void waitUntilDeploymentConfigIsScaled(final int count) {
-    final BlockingQueue<Object> queue = new ArrayBlockingQueue<Object>(1);
+    final BlockingQueue<Object> queue = new ArrayBlockingQueue<>(1);
     final AtomicReference<Integer> replicasRef = new AtomicReference<>(0);
 
     final String name = checkName(getItem());
@@ -200,29 +214,24 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
   }
 
   public String getLog(Boolean isPretty) {
-    StringBuilder stringBuilder = new StringBuilder();
-    List<RollableScalableResource<ReplicaSet, DoneableReplicaSet>> rcList = doGetLog();
-    for (RollableScalableResource<ReplicaSet, DoneableReplicaSet> rcOperation : rcList) {
-      stringBuilder.append(rcOperation.getLog(isPretty));
+    try(ResponseBody body = doGetLog(isPretty)) {
+      return doGetLog(isPretty).string();
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(forOperationType("getLog"), e);
     }
-    return stringBuilder.toString();
   }
 
-  private List<RollableScalableResource<ReplicaSet, DoneableReplicaSet>> doGetLog() {
-    List<RollableScalableResource<ReplicaSet, DoneableReplicaSet>> rcs = new ArrayList<>();
-    DeploymentConfig deploymentConfig = fromServer().get();
-    String rcUid = deploymentConfig.getMetadata().getUid();
-
-    ReplicaSetOperationsImpl rsOperations = new ReplicaSetOperationsImpl((RollingOperationContext) context);
-    ReplicaSetList rcList = rsOperations.withLabels(deploymentConfig.getMetadata().getLabels()).list();
-
-    for (ReplicaSet rs : rcList.getItems()) {
-      OwnerReference ownerReference = KubernetesResourceUtil.getControllerUid(rs);
-      if (ownerReference != null && ownerReference.getUid().equals(rcUid)) {
-        rcs.add(rsOperations.withName(rs.getMetadata().getName()));
-      }
+  private ResponseBody doGetLog(Boolean isPretty) {
+    try {
+      Request.Builder requestBuilder = new Request.Builder().get().url(getResourceLogUrl(isPretty, false));
+      Request request = requestBuilder.build();
+      Response response = client.newCall(request).execute();
+      ResponseBody body = response.body();
+      assertResponseCode(request, response);
+      return body;
+    } catch (Throwable t) {
+      throw KubernetesClientException.launderThrowable(forOperationType("doGetLog"), t);
     }
-    return rcs;
   }
 
   /**
@@ -231,13 +240,7 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
    */
   @Override
   public Reader getLogReader() {
-    List<RollableScalableResource<ReplicaSet, DoneableReplicaSet>> podResources = doGetLog();
-    if (podResources.size() > 1) {
-      throw new KubernetesClientException("Reading logs is not supported for multicontainer jobs");
-    } else if (podResources.size() == 1) {
-      return podResources.get(0).getLogReader();
-    }
-    return null;
+    return doGetLog(false).charStream();
   }
 
   @Override
@@ -247,12 +250,54 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
 
   @Override
   public LogWatch watchLog(OutputStream out) {
-    List<RollableScalableResource<ReplicaSet, DoneableReplicaSet>> podResources = doGetLog();
-    if (podResources.size() > 1) {
-      throw new KubernetesClientException("Watching logs is not supported for multicontainer jobs");
-    } else if (podResources.size() == 1) {
-      return podResources.get(0).watchLog(out);
+    try {
+      // In case of DeploymentConfig we directly get logs at DeploymentConfig Url, but we need to wait for Pods
+      waitUntilDeploymentConfigPodBecomesReady(fromServer().get());
+      Request request = new Request.Builder().url(getResourceLogUrl(false, true)).get().build();
+      final LogWatchCallback callback = new LogWatchCallback(out);
+      OkHttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
+      clone.newCall(request).enqueue(callback);
+      callback.waitUntilReady();
+      return callback;
+    } catch (Throwable t) {
+      throw KubernetesClientException.launderThrowable(forOperationType("watchLog"), t);
     }
-    return null;
+  }
+
+  private HttpUrl getResourceLogUrl(Boolean withPrettyOutput, Boolean follow) throws MalformedURLException {
+    HttpUrl.Builder requestUrlBuilder = HttpUrl.get(URLUtils.join(getResourceUrl().toString(), "log")).newBuilder();
+    if (Boolean.TRUE.equals(withPrettyOutput)) {
+      requestUrlBuilder.addQueryParameter("pretty", withPrettyOutput.toString());
+    }
+    if (Boolean.TRUE.equals(follow)) {
+      requestUrlBuilder.addQueryParameter("follow", "true");
+    }
+    return requestUrlBuilder.build();
+  }
+
+  @Override
+  public Loggable<String, LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
+    return new DeploymentConfigOperationsImpl((RollingOperationContext)context, podLogWaitTimeout);
+  }
+
+  private void waitUntilDeploymentConfigPodBecomesReady(DeploymentConfig deploymentConfig) {
+    List<PodResource<Pod, DoneablePod>> podOps = PodOperationUtil.getPodOperationsForController(context, deploymentConfig.getMetadata().getUid(),
+      getDeploymentConfigPodLabels(deploymentConfig), false, podLogWaitTimeout);
+
+    waitForBuildPodToBecomeReady(podOps, podLogWaitTimeout != null ? podLogWaitTimeout : DEFAULT_POD_LOG_WAIT_TIMEOUT);
+  }
+
+  private static void waitForBuildPodToBecomeReady(List<PodResource<Pod, DoneablePod>> podOps, Integer podLogWaitTimeout) {
+    for (PodResource<Pod, DoneablePod> podOp : podOps) {
+      PodOperationUtil.waitUntilReadyBeforeFetchingLogs(podOp, podLogWaitTimeout);
+    }
+  }
+
+  static Map<String, String> getDeploymentConfigPodLabels(DeploymentConfig deploymentConfig) {
+    Map<String, String> labels = new HashMap<>();
+    if (deploymentConfig != null && deploymentConfig.getMetadata() != null) {
+      labels.put(OPENSHIFT_IO_DEPLOYMENT_CONFIG_NAME, deploymentConfig.getMetadata().getName());
+    }
+    return labels;
   }
 }

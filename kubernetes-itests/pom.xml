@@ -22,7 +22,7 @@
   <parent>
     <artifactId>kubernetes-client-project</artifactId>
     <groupId>io.fabric8</groupId>
-    <version>4.10-SNAPSHOT</version>
+    <version>4.11-SNAPSHOT</version>
   </parent>
 
   <artifactId>kubernetes-itests</artifactId>
@@ -61,14 +61,10 @@
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>${assertj.core.version}</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.awaitility</groupId>
       <artifactId>awaitility</artifactId>
-      <version>${awaitility.version}</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 

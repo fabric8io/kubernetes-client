@@ -27,6 +27,7 @@ import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.apps.DeploymentList;
 import io.fabric8.kubernetes.api.model.apps.DeploymentListBuilder;
+import io.fabric8.kubernetes.api.model.apps.DoneableDeployment;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetListBuilder;
@@ -34,6 +35,8 @@ import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.ScaleBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -57,12 +60,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @EnableRuleMigrationSupport
-public class DeploymentTest {
+class DeploymentTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
 
   @Test
-  public void testList() {
+  void testList() {
     server.expect().withPath("/apis/apps/v1/namespaces/test/deployments").andReturn(200, new DeploymentListBuilder().build()).once();
     server.expect().withPath("/apis/apps/v1/namespaces/ns1/deployments").andReturn(200, new DeploymentListBuilder()
       .addNewItem().and()
@@ -90,7 +93,7 @@ public class DeploymentTest {
   }
 
   @Test
-  public void testListWithLabels() {
+  void testListWithLabels() {
     server.expect().withPath("/apis/apps/v1/namespaces/test/deployments?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new DeploymentListBuilder().build()).always();
     server.expect().withPath("/apis/apps/v1/namespaces/test/deployments?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new DeploymentListBuilder()
       .addNewItem().and()
@@ -120,7 +123,7 @@ public class DeploymentTest {
 
 
   @Test
-  public void testGet() {
+  void testGet() {
     server.expect().withPath("/apis/apps/v1/namespaces/test/deployments/deployment1").andReturn(200, new DeploymentBuilder().build()).once();
     server.expect().withPath("/apis/apps/v1/namespaces/ns1/deployments/deployment2").andReturn(200, new DeploymentBuilder().build()).once();
 
@@ -138,7 +141,7 @@ public class DeploymentTest {
 
 
   @Test
-  public void testDelete() {
+  void testDelete() {
 
     Deployment deployment1 = new DeploymentBuilder().withNewMetadata()
       .withName("deployment1")
@@ -218,7 +221,7 @@ public class DeploymentTest {
 
 
   @Test
-  public void testDeleteMulti() {
+  void testDeleteMulti() {
     Deployment deployment1 = new DeploymentBuilder().withNewMetadata()
       .withNamespace("test")
       .withName("deployment1")
@@ -281,32 +284,31 @@ public class DeploymentTest {
   }
 
   @Test
-  public void testDeleteWithNamespaceMismatch() {
-    assertThrows(KubernetesClientException.class, () -> {
-      Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test").endMetadata()
-        .withNewSpec()
-        .withReplicas(1)
-        .endSpec()
-        .build();
-      KubernetesClient client = server.getClient();
-
-      Boolean deleted = client.apps().deployments().inNamespace("test1").delete(deployment1);
-      assertFalse(deleted);
-    });
+  void testDeleteWithNamespaceMismatch() {
+    Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test").endMetadata()
+      .withNewSpec()
+      .withReplicas(1)
+      .endSpec()
+      .build();
+    KubernetesClient client = server.getClient();
+    NonNamespaceOperation<Deployment, DeploymentList, DoneableDeployment, RollableScalableResource<Deployment, DoneableDeployment>> deployOp =
+      client.apps().deployments().inNamespace("test1");
+    assertThrows(KubernetesClientException.class, () -> deployOp.delete(deployment1));
   }
 
   @Test
-  public void testCreateWithNameMismatch() {
-    assertThrows(KubernetesClientException.class, () -> {
-      Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test").and().build();
-      KubernetesClient client = server.getClient();
-
-      client.apps().deployments().inNamespace("test1").withName("mydeployment1").create(deployment1);
-    });
+  void testCreateWithNameMismatch() {
+    Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test").and().build();
+    KubernetesClient client = server.getClient();
+    RollableScalableResource<Deployment, DoneableDeployment> deployOp = client
+      .apps().deployments()
+      .inNamespace("test1")
+      .withName("mydeployment1");
+    assertThrows(KubernetesClientException.class, () -> deployOp.create(deployment1));
   }
 
   @Test
-  public void testRollingUpdate() {
+  void testRollingUpdate() {
     Deployment deployment = new DeploymentBuilder()
       .withNewMetadata()
       .withName("deployment1")
@@ -352,7 +354,7 @@ public class DeploymentTest {
   }
 
   @Test
-  public void testListFromServer() {
+  void testListFromServer() {
     DeploymentBuilder deploymentBuilder = new DeploymentBuilder()
       .withNewMetadata()
         .withNamespace("test")
@@ -396,7 +398,7 @@ public class DeploymentTest {
   }
 
   @Test
-  public void testScaleGet() {
+  void testScaleGet() {
     Scale scaleObj = new ScaleBuilder()
       .withNewMetadata().addToLabels("foo", "bar").endMetadata()
       .withNewSpec().withReplicas(Integer.parseInt("2")).endSpec()
@@ -413,7 +415,7 @@ public class DeploymentTest {
   }
 
   @Test
-  public void testScaleUpdate() {
+  void testScaleUpdate() {
     Scale scaleObj = new ScaleBuilder()
       .withNewMetadata().addToLabels("foo", "bar").endMetadata()
       .withNewSpec().withReplicas(Integer.parseInt("2")).endSpec()
@@ -431,7 +433,7 @@ public class DeploymentTest {
   }
 
   @Test
-  public void testCreate() {
+  void testCreate() {
     Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test").endMetadata()
       .withNewSpec()
       .withReplicas(1)
@@ -449,27 +451,27 @@ public class DeploymentTest {
   }
 
   @Test
-  public void testCreateMulti() {
-    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-      Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test").endMetadata()
-        .withNewSpec()
-        .withReplicas(1)
-        .endSpec()
-        .build();
-      Deployment deployment2 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test").endMetadata()
-        .withNewSpec()
-        .withReplicas(1)
-        .endSpec()
-        .build();
+  void testCreateMulti() {
+    Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test").endMetadata()
+      .withNewSpec()
+      .withReplicas(1)
+      .endSpec()
+      .build();
+    Deployment deployment2 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test").endMetadata()
+      .withNewSpec()
+      .withReplicas(1)
+      .endSpec()
+      .build();
 
-      server.expect().post().withPath("/apis/apps/v1/namespaces/test/deployments")
-        .andReturn(200, deployment1)
-        .once();
+    server.expect().post().withPath("/apis/apps/v1/namespaces/test/deployments")
+      .andReturn(200, deployment1)
+      .once();
 
-      KubernetesClient client = server.getClient();
-      // Will throw exception
-      client.apps().deployments().inNamespace("test").create(deployment1, deployment2);
-    });
+    KubernetesClient client = server.getClient();
+    NonNamespaceOperation<Deployment, DeploymentList, DoneableDeployment, RollableScalableResource<Deployment, DoneableDeployment>> deployOp =
+      client.apps().deployments().inNamespace("test");
+    // Will throw exception
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> deployOp.create(deployment1, deployment2));
 
     assertEquals("Too many items to create.", exception.getMessage());
   }

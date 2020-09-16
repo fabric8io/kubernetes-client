@@ -36,7 +36,7 @@ public class RouteCrudTest {
   public OpenShiftServer server = new OpenShiftServer(true, true);
 
   @Test
-  public void testCrud() {
+  void testCrud() {
     OpenShiftClient client = server.getOpenshiftClient();
 
     Route route1 = new RouteBuilder().withNewMetadata().withName("route1")

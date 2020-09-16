@@ -24,16 +24,24 @@ This document contains common usages of different resources using Fabric8 Kubern
   * [PersistentVolume](#persistentvolume)
   * [NetworkPolicy](#networkpolicy)
   * [PodDisruptionBudget](#poddisruptionbudget)
+  * [SelfSubjectAccessReview](#selfsubjectaccessreview)
+  * [SubjectAccessReview](#subjectaccessreview)
+  * [LocalSubjectAccessReview](#localsubjectaccessreview)
+  * [SelfSubjectRulesReview](#selfsubjectrulesreview)
   * [Top/Metrics](#fetching-metrics)
   * [Generic Resource API](#resource-api)
   * [Generic ResourceList API](#resourcelist-api)
   * [CustomResourceDefinition](#customresourcedefinition)
   * [CustomResource Typed API](#customresource-typed-api)
   * [CustomResource Typeless API](#customresource-typeless-api)
+  * [CertificateSigningRequest](#certificatesigningrequest)
   * [SharedInformers](#sharedinformers)
   * [List Options](#list-options)
   * [Delete Options](#delete-options)
   * [Watch Options](#watch-options)
+  * [Log Options](#log-options)
+  * [Serializing to yaml](#serializing-to-yaml)
+  * [Running a Pod](#running-a-pod)
 
 * [OpenShift Client DSL Usage](#openshift-client-dsl-usage)  
   * [Initializing OpenShift Client](#initializing-openshift-client)
@@ -42,6 +50,12 @@ This document contains common usages of different resources using Fabric8 Kubern
   * [Route](#route)
   * [Project](#project)
   * [ImageStream](#imagestream)
+  * [CatalogSource](#catalogsource)
+  * [PrometheusRule](#prometheusrule)
+  * [ServiceMonitor](#servicemonitor)
+  * [CluserResourceQuota](#clusterresourcequota)
+  * [ClusterVersion](#clusterversion)
+  * [EgressNetworkPolicy](#egressnetworkpolicy)
 
 * [Tekton Client](#tekton-client)
   * [Initializing Tekton Client](#initializing-tekton-client)
@@ -1564,6 +1578,87 @@ PodDisruptionBudgetList pdbList = client.policy().podDisruptionBudget().inNamesp
 Boolean deleted = client.policy().podDisruptionBudget().inNamespace("default").withName("poddisruptionbudget1").delete();
 ```
 
+### SelfSubjectAccessReview
+- Create `SelfSubjectAccessReview`(equivalent of `kubectl auth can-i create deployments --namespace dev`):
+```
+try (KubernetesClient client = new DefaultKubernetesClient()) {
+    SelfSubjectAccessReview ssar = new SelfSubjectAccessReviewBuilder()
+            .withNewSpec()
+            .withNewResourceAttributes()
+            .withGroup("apps")
+            .withResource("deployments")
+            .withVerb("create")
+            .withNamespace("dev")
+            .endResourceAttributes()
+            .endSpec()
+            .build();
+
+    ssar = client.authorization().v1().selfSubjectAccessReview().create(ssar);
+
+    System.out.println("Allowed: "+  ssar.getStatus().getAllowed());
+}
+```
+
+### SubjectAccessReview
+- Create `SubjectAccessReview`:
+```
+try (KubernetesClient client = new DefaultKubernetesClient()) {
+    SubjectAccessReview sar = new SubjectAccessReviewBuilder()
+            .withNewSpec()
+            .withNewResourceAttributes()
+            .withGroup("apps")
+            .withResource("deployments")
+            .withVerb("create")
+            .withNamespace("default")
+            .endResourceAttributes()
+            .withUser("kubeadmin")
+            .endSpec()
+            .build();
+
+    sar = client.authorization().v1().subjectAccessReview().create(sar);
+
+    System.out.println("Allowed: "+  sar.getStatus().getAllowed());
+}
+```
+### LocalSubjectAccessReview
+- Create `LocalSubjectAccessReview`:
+```
+try (KubernetesClient client = new DefaultKubernetesClient()) {
+    LocalSubjectAccessReview lsar = new LocalSubjectAccessReviewBuilder()
+            .withNewMetadata().withNamespace("default").endMetadata()
+            .withNewSpec()
+            .withUser("foo")
+            .withNewResourceAttributes()
+            .withNamespace("default")
+            .withVerb("get")
+            .withGroup("apps")
+            .withResource("pods")
+            .endResourceAttributes()
+            .endSpec()
+            .build();
+     lsar = client.authorization().v1().localSubjectAccessReview().inNamespace("default").create(lsar);
+     System.out.println(lsar.getStatus().getAllowed());
+}
+```
+
+### SelfSubjectRulesReview
+- Create `SelfSubjectRulesReview`:
+```
+try (KubernetesClient client = new DefaultKubernetesClient()) {
+    SelfSubjectRulesReview selfSubjectRulesReview = new SelfSubjectRulesReviewBuilder()
+            .withNewMetadata().withName("foo").endMetadata()
+            .withNewSpec()
+            .withNamespace("default")
+            .endSpec()
+            .build();
+
+    selfSubjectRulesReview = client.authorization().v1().selfSubjectRulesReview().create(selfSubjectRulesReview);
+    System.out.println(selfSubjectRulesReview.getStatus().getIncomplete());
+    System.out.println("non resource rules: " + selfSubjectRulesReview.getStatus().getNonResourceRules().size());
+    System.out.println("resource rules: " + selfSubjectRulesReview.getStatus().getResourceRules().size());
+}
+```
+
 ### Fetching Metrics
 Kubernetes Client also supports fetching metrics from API server if metrics are enabled on it. You can access metrics via `client.top()`. Here are some examples of its usage:
 - Get `NodeMetrics` for all nodes:
@@ -1903,6 +1998,24 @@ Map<String, Object> result = client.customResource(customResourceDefinitionConte
   closeLatch.await(10, TimeUnit.MINUTES);
 ```
 
+### CertificateSigningRequest
+Kubernetes Client provides using `CertificateSigningRequest` via the `client.certificateSigningRequests()` DSL interface. Here is an example of creating `CertificateSigningRequest` using Fabric8 Kubernetes Client:
+```
+try (KubernetesClient client = new DefaultKubernetesClient()) {
+    CertificateSigningRequest csr = new CertificateSigningRequestBuilder()
+            .withNewMetadata().withName("test-k8s-csr").endMetadata()
+            .withNewSpec()
+            .addNewGroup("system:authenticated")
+            .withRequest("LS0tLS1CRUdJTiBDRVJUSUZJQ0FURSBSRVFVRVNULS0tLS0KTUlJRWJqQ0NBbFlDQVFBd0tURVBNQTBHQTFVRUF3d0dhMmxrYjI1bk1SWXdGQVlEVlFRS0RBMWtZWFJoTFdWdQpaMmx1WldWeU1JSUNJakFOQmdrcWhraUc5dzBCQVFFRkFBT0NBZzhBTUlJQ0NnS0NBZ0VBc2dVZXl0S0F6ZDkyClN1S2pZL1RqbmRsZ0lkSFVVYWFxbHJIVW1nbTloKzY2RTJCNGs0TSt6Q0tOQmovemlMdWV6NFNUeHJ6SFk3RlUKNGUxWElBU3lMS0dmRGNPaks5NThURThwcXBRM21VdlpWMmxnK25BTVF5dlZUYWdZSmFId2JWUzVlNHgvRmpKcQoxTWpQZ1VoSGFXeEdIYTQrQnZYQU9Kdk5BdnV4alpZaVJET251dGxHVzloQkRKRlhoUk5jOGFKNnFiZWVBWnNiCmozWUFMaUcydWp1VmhoTUVRNEJxdFVHVGZCMzBQNGhRK2t2bWVKc2ZUU3Vsb2xiWFdIdVZGWnh1d0FJek5RbmQKMTd4VHd2cU04OGZFb3ZJazBJV0ZCWTk2aHRvaUVNdThZUms4SEZ6QkJralhsZGlkbVNNSHkwK0plcFRONmdQTQpEYVVsd1cxS0lCcW9TbnZNcjY4cFRVWEVhZVRjc040anMxTUIwK3FwR0JBS1puWWVxM0JmMkxVVFBNaG1VZ2VVCmFUTFlqODI2WVorZjJrOWJ1cngwK1NOSmVZbWoxVTl0N3A2YWM0dDIzZHVYQ1BzYkNrUFNKeGtrU3dudUlVVzkKdmJVVGtJNGtVMlFVMnE0NzRaMW1uMlkvejF2TEdQdEpsTDFYUVFVNEdsb2hrQkVkM1BsUTRtOGU1WGZSRkV6ZgpYZnhMRXFRczFTeEg1ekhjcnVaOWxJdnBkeEw5Tkc5WlR6M0tmT0tIbCtSUzdxMGdKaExac0RubUJKNXZab3p4CldXci9IRW9PamFYbGh0VitDN3M4TUg5Y0lKZENZNnpjcFVrZis1NmZ0Z1FuN0YrT1RYdDI0UVJQYWNFZnRFOTkKVERPb2luTGtOMm1kckxiMTgxQUZNUWJ0bTFLc1k2MENBd0VBQWFBQU1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQwpBUUNQYU1WdDd4YWhkZlF1L1BySFVTTW5LK2I0SlJScEdEYlpWUXk4aUtkSmdHM0VrYnNBZ21qQmN4Q1IvL2t1CkVhU0plSGNWK20xVlFUTEp1ZFU3ZHFUeFBLOVFCNlB2aHlBbCttNnFaQkt1Q25VM1BKc2k5azBYSE5GWXBqRmYKVFNwTlpJSnRuanVEQWVtT05kcjJYMm1rODZmSmpWTEUvYnA1KzM5dFBkN0xjL3dZR2JoRU0xcExtUGpQK0Z6eQpzZnBiYW5PcmZFSG5NMmlsRFpGZURVSEpYL3F5Ykt1RC9BRmdoZk1Ua0x3ODNLNkNRdCtDQm05djRCeEtCS2xqCkdBWEQyUEhUTWlzektUbGpBM3czYUphanZzU0FwQXFCWnFocjB3QzdOb1dYM1h6S0p3ck9MaWVxemo3SXlpUGEKTEI5SmJveFpOQTdBSU5ucEdsa1hDZlRGT2RManZtQkVRQXV5Ym9wLzdqV2RiSzJHRkZKS2UwdlVlbWNUeGdHVwp5c0ZyV2pqMUlvdVBVNFZ6ck82QVBVQnZCZUFtdU1Bbm9yVng5emc4akhlT1pkd2RWdFRnOUwrK0VnWjlxK0htCjVtUlJGVHlZOWo4WVVvd2J6TzRlRUZnaVN0di84T1p0YmtOeDFROWFQWHJ3VUV1Q1I0SUthWG0wNlJUYXJOYXUKTWFsbk5oZm9WYi9Bc1R5d1ArNlc1dGErcTBpckR5cnVkZk5pRkFWbkRMZEU5a2hWZzVrU0lPRzhYbEZUMklwSQpkdVNpcUl0NlNUTlY3UmdaRzBGTFN5akxoc3laWnY2bitpUzl3Ky9OOFpoUzgvalViUUVidG1VTnNJU3Z5WS9JCmZqcHNZQUdleExvVW5mN2pDaUhkbTVhSnJ5SU1kdmZ2akJsMDhIVk5nWG1McVE9PQotLS0tLUVORCBDRVJUSUZJQ0FURSBSRVFVRVNULS0tLS0K")
+            .addNewUsage("client auth")
+            .endSpec()
+            .build();
+
+    client.certificateSigningRequests().create(csr);
+}
+```
+
+
 ### SharedInformers
 Kubernetes Client also provides `SharedInformer` support in order to stay updated to events happening to your resource inside Kubernetes. It's implementation is just list and watch operations after a certain interval of time. Here are some of the common usages:
 - Get `SharedInformerFactory`:
@@ -2171,6 +2284,75 @@ client.pods().watch(new ListOptionsBuilder().withTimeoutSeconds(30L).build(), ne
   @Override
   public void onClose(KubernetesClientException cause) { }
 });
+```
+
+### Log Options
+- Get logs with pretty output:
+```
+client.pods().inNamespace("test").withName("foo").withPrettyOutput().getLog();
+```
+- Get logs of a specific container:
+```
+client.pods().inNamespace("test").withName("foo").inContainer("container1").getLog();
+```
+- Get logs for the previous instance of the container in a pod if it exists:
+```
+client.pods().inNamespace("test").withName("foo").terminated().getLog();
+```
+- Only return logs after a specific date (RFC3339):
+```
+client.pods().inNamespace("test").withName("foo").sinceTime("2020-09-10T12:53:30.154148788Z").getLog();
+```
+- Get logs after a duration of seconds:
+```
+client.pods().inNamespace("test").withName("foo").sinceSeconds(10).getLog();
+```
+- Get logs lines of recent log file to display.
+```
+client.pods().inNamespace("test").withName("foo").tailingLines(10).getLog();
+```
+- Configure Maximum bytes of logs to return. Defaults to no limit.
+```
+client.pods().inNamespace("test").withName("foo").limitBytes(102).getLog();
+```
+- Include timestamps on each line in the log output
+```
+client.pods().inNamespace("test").withName("foo").usingTimestamps().getLog();
+```
+
+#### Serializing to yaml
+Resources can be exported to a yaml String via the `SerializationUtils` class:
+```
+Pod myPod;
+
+String myPodAsYaml = SerializationUtils.dumpAsYaml(myPod);
+// Your pod might have some state that you don't really care about, to remove it:
+String myPodAsYamlWithoutRuntimeState = SerializationUtils.dumpWithoutRuntimeStateAsYaml(myPod);
+```
+
+#### Running a Pod
+Kubernetes Client also provides mechanism similar to `kubectl run` in which you can spin a `Pod` just by specifying it's image and name:
+- Running a `Pod` by just providing image and name:
+```
+try (KubernetesClient client = new DefaultKubernetesClient()) {
+    client.run().inNamespace("default")
+            .withName("hazelcast")
+            .withImage("hazelcast/hazelcast:3.12.9")
+            .done();
+}
+```
+- You can also provide slighly complex configuration with `withGeneratorConfig` method in which you can specify labels, environment variables, ports etc:
+```
+try (KubernetesClient client = new DefaultKubernetesClient()) {
+    client.run().inNamespace("default")
+            .withRunConfig(new RunConfigBuilder()
+                    .withName("nginx")
+                    .withImage("nginx:latest")
+                    .withLabels(Collections.singletonMap("foo", "bar"))
+                    .withEnv(Collections.singletonMap("KUBERNETES_TEST", "fabric8"))
+                    .build())
+            .done();
+}
 ```
 
 ### OpenShift Client DSL Usage
@@ -2475,6 +2657,217 @@ ImageStreamList isList = client.imageStreams().inNamespace("default").withLabel(
 - Delete `ImageStream`:
 ```
 Boolean bDeleted = client.imageStreams().inNamespace("default").withName("example-camel-cdi").delete();
+```
+#### CatalogSource
+`CatalogSource` is available for usage in OpenShift Client via `client.operatorHub().catalogSources()`. Here are some common examples of it's usage:
+- Load `CatalogSource` from YAML:
+```
+CatalogSource cs = client.operatorHub().catalogSources()
+  .load(new FileInputStream("/test-catalogsource.yml").get();
+```
+- Create `CatalogSource`:
+```
+CatalogSource cs = new CatalogSourceBuilder()
+  .withNewMetadata().withName("foo").endMetadata()
+  .withNewSpec()
+  .withSourceType("Foo")
+  .withImage("nginx:latest")
+  .withDisplayName("Foo Bar")
+  .withPublisher("Fabric8")
+  .endSpec()
+  .build();
+client.operatorHub().catalogSources().inNamespace("default").createOrReplace(cs);
+```
+- List `CatalogSource` in some namespace:
+```
+CatalogSourceList csList = client.operatorHub().catalogSources().inNamespace("ns1").list();
+```
+- List `CatalogSource` in any namespace:
+```
+CatalogSourceList csList = client.operatorHub().catalogSources().inAnyNamespace().list();
+```
+- List `CatalogSource` in some namespace with some labels:
+```
+CatalogSourceList csList = client.operatorHub().catalogSources().inNamespace("default").withLabel("foo", "bar").list();
+```
+- Delete `CatalogSource`:
+```
+client.operatorHub().catalogSources().inNamespace("default").withName("foo").delete();
+```
+
+#### PrometheusRule
+`PrometheusRule` is available for usage in OpenShift Client via `client.monitoring().prometheusRules()`. Here are some common examples of it's usage:
+- Load `PrometheusRule` from YAML:
+```
+PrometheusRule prometheusRule = client.monitoring().prometheusRules()
+  .load(new FileInputStream("/test-prometheusrule.yml").get();
+```
+- Create `PrometheusRule`:
+```
+PrometheusRule prometheusRule = new PrometheusRuleBuilder()
+    .withNewMetadata().withName("foo").endMetadata()
+    .withNewSpec()
+    .addNewGroup()
+    .withName("./example-rules")
+    .addNewRule()
+    .withAlert("ExampleAlert")
+    .withNewExpr().withStrVal("vector(1)").endExpr()
+    .endRule()
+    .endGroup()
+    .endSpec()
+    .build();
+client.monitoring().prometheusRules().inNamespace("default").createOrReplace(prometheusRule);
+```
+- List `PrometheusRule` in some namespace:
+```
+PrometheusRuleList prList = client.monitoring().prometheusRules().inNamespace("ns1").list();
+```
+- List `PrometheusRule` in any namespace:
+```
+PrometheusRuleList prList = client.monitoring().prometheusRules().inAnyNamespace().list();
+```
+- List `PrometheusRule` in some namespace with some labels:
+```
+PrometheusRuleList prList = client.monitoring().prometheusRules().inNamespace("default").withLabel("foo", "bar").list();
+```
+- Delete `PrometheusRule`:
+```
+client.monitoring().prometheusRules().inNamespace("default").withName("foo").delete();
+```
+
+#### ServiceMonitor
+`ServiceMonitor` is available for usage in OpenShift Client via `client.monitoring().serviceMonitors()`. Here are some common examples of it's usage:
+- Load `ServiceMonitor` from YAML:
+```
+ServiceMonitor serviceMonitor = client.monitoring().serviceMonitors()
+  .load(new FileInputStream("/test-servicemonitor.yml").get();
+```
+- Create `ServiceMonitor`:
+```
+ServiceMonitor serviceMonitor = new ServiceMonitorBuilder()
+    .withNewMetadata()
+    .withName("foo")
+    .addToLabels("prometheus", "frontend")
+    .endMetadata()
+    .withNewSpec()
+    .withNewNamespaceSelector().withAny(true).endNamespaceSelector()
+    .withNewSelector()
+    .addToMatchLabels("prometheus", "frontend")
+    .endSelector()
+    .addNewEndpoint()
+    .withPort("http-metric")
+    .withInterval("15s")
+    .endEndpoint()
+    .endSpec()
+    .build();
+
+client.monitoring().serviceMonitors().inNamespace("rokumar").createOrReplace(serviceMonitor)
+```
+- List `ServiceMonitor` in some namespace:
+```
+ServiceMonitorList serviceMonitorList = client.monitoring().serviceMonitors().inNamespace("ns1").list();
+```
+- List `ServiceMonitor` in any namespace:
+```
+ServiceMonitorList serviceMonitorList = client.monitoring().serviceMonitors().inAnyNamespace().list();
+```
+- List `ServiceMonitor` in some namespace with some labels:
+```
+ServiceMonitorList serviceMonitorList = client.monitoring().catalogSources().inNamespace("default").withLabel("foo", "bar").list();
+```
+- Delete `ServiceMonitor`:
+```
+client.operatorHub().monitoring().inNamespace("default").withName("foo").delete();
+```
+
+#### ClusterResourceQuota
+- Create `ClusterResourceQuota`:
+```
+try (OpenShiftClient client = new DefaultOpenShiftClient()) {
+    Map<String, Quantity> hard = new HashMap<>();
+    hard.put("pods", new Quantity("10"));
+    hard.put("secrets", new Quantity("20"));
+    ClusterResourceQuota acrq = new ClusterResourceQuotaBuilder()
+            .withNewMetadata().withName("foo").endMetadata()
+            .withNewSpec()
+            .withNewSelector()
+            .addToAnnotations("openshift.io/requester", "foo-user")
+            .endSelector()
+            .withQuota(new ResourceQuotaSpecBuilder()
+                    .withHard(hard)
+                    .build())
+            .endSpec()
+            .build();
+
+    client.quotas().clusterResourceQuotas().createOrReplace(acrq);
+}
+```
+- List `ClusterResourceQuota` from server:
+```
+ClusterResourceQuotaList clusterResourceQuotaList = client.quotas().clusterResourceQuotas().list();
+```
+- Delete `ClusterResourceQuota`:
+```
+client.quotas().clusterResourceQuotas().withName("foo").delete();
+```
+
+#### ClusterVersion
+- Fetch Cluster Version:
+```
+try (OpenShiftClient client = new DefaultOpenShiftClient()) {
+    ClusterVersion clusterVersion = client.config().clusterVersions().withName("version").get();
+    System.out.println("Cluster Version: " + clusterVersion.getStatus().getDesired().getVersion());
+}
+```
+
+### EgressNetworkPolicy
+`EgressNetworkPolicy` is available for usage in OpenShift Client via `client..egressNetworkPolicys()`. Here are some common examples of it's usage:
+- Load `EgressNetworkPolicy` from YAML:
+```
+EgressNetworkPolicy egressNetworkPolicy = client.egressNetworkPolicies()
+  .load(new FileInputStream("/test-enp.yml").get();
+```
+- Create `EgressNetworkPolicy`:
+```
+try (OpenShiftClient client = new DefaultOpenShiftClient()) {
+    EgressNetworkPolicy enp = new EgressNetworkPolicyBuilder()
+            .withNewMetadata()
+            .withName("foo")
+            .withNamespace("default")
+            .endMetadata()
+            .withNewSpec()
+            .addNewEgress()
+            .withType("Allow")
+            .withNewTo()
+            .withCidrSelector("1.2.3.0/24")
+            .endTo()
+            .endEgress()
+            .addNewEgress()
+            .withType("Allow")
+            .withNewTo()
+            .withDnsName("www.foo.com")
+            .endTo()
+            .endEgress()
+            .endSpec()
+            .build();
+    client.egressNetworkPolicies().inNamespace("default").createOrReplace(enp);
+}
+```
+- List `EgressNetworkPolicy` in some namespace:
+```
+EgressNetworkPolicyList egressNetworkPolicyList = client.egressNetworkPolicies().inNamespace("default").list();
+```
+- List `EgressNetworkPolicy` in any namespace:
+```
+EgressNetworkPolicyList egressNetworkPolicyList = client.egressNetworkPolicies().inAnyNamespace().list();
+```
+- List `EgressNetworkPolicy` in some namespace with some labels:
+```
+EgressNetworkPolicyList egressNetworkPolicyList = client.egressNetworkPolicies().inNamespace("default").withLabel("foo", "bar").list();
+```
+- Delete `EgressNetworkPolicy`:
+```
+client.egressNetworkPolicies().inNamespace("default").withName("foo").delete();
 ```
 
 ### Tekton Client

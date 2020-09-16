@@ -2,9 +2,9 @@
 This client provides access to the full [Kubernetes](http://kubernetes.io/) &
 [OpenShift](http://openshift.org/) REST APIs via a fluent DSL.
 
-[![Build](https://github.com/fabric8io/kubernetes-client/workflows/Sonar%20Scanner/badge.svg)](https://github.com/fabric8io/kubernetes-client/actions)
-[![CircleCI](https://img.shields.io/circleci/project/github/fabric8io/kubernetes-client/master.svg)](https://circleci.com/gh/fabric8io/kubernetes-client)
-![E2E Tests](https://github.com/fabric8io/kubernetes-client/workflows/E2E%20Tests/badge.svg)
+[![Build](https://github.com/fabric8io/kubernetes-client/workflows/Build/badge.svg)](https://github.com/fabric8io/kubernetes-client/actions?query=workflow%3ABuild)
+[![Sonar Scanner](https://github.com/fabric8io/kubernetes-client/workflows/Sonar%20Scanner/badge.svg)](https://github.com/fabric8io/kubernetes-client/actions?query=workflow%3A%22Sonar+Scanner%22)
+[![E2E Tests](https://github.com/fabric8io/kubernetes-client/workflows/E2E%20Tests/badge.svg)](https://github.com/fabric8io/kubernetes-client/actions?query=workflow%3A%22E2E+Tests%22)
 [![Release](https://img.shields.io/github/v/release/fabric8io/kubernetes-client)](https://search.maven.org/search?q=g:io.fabric8%20a:kubernetes-client)
 [![Twitter](https://img.shields.io/twitter/follow/fabric8io?style=social)](https://twitter.com/fabric8io)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=fabric8io_kubernetes-client&metric=bugs)](https://sonarcloud.io/dashboard?id=fabric8io_kubernetes-client)
@@ -424,6 +424,8 @@ You can also enable crudMode by using annotation field `crud`.
 | kubernetes-client 4.10.1  | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 |
 | kubernetes-client 4.10.2  | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 |
 | kubernetes-client 4.10.3  | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 |
+| kubernetes-client 4.11.0  | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 |
+| kubernetes-client 4.11.1  | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 |
 
 |                           | OpenShift  3.6.0 | OpenShift  3.7.0  | OpenShift  3.9.0  | OpenShift 3.10.0 | OpenShift 3.11.0 | OpenShift 4.1.0 | OpenShift 4.2.0 |
 |---------------------------|------------------|-------------------|-------------------|------------------|------------------|-----------------|-----------------|
@@ -464,6 +466,8 @@ You can also enable crudMode by using annotation field `crud`.
 | openshift-client 4.10.1   | -                | -                 | ✓                 | ✓                | ✓                | ✓                | ✓              |
 | openshift-client 4.10.2   | -                | -                 | ✓                 | ✓                | ✓                | ✓                | ✓              |
 | openshift-client 4.10.3   | -                | -                 | ✓                 | ✓                | ✓                | ✓                | ✓              |
+| openshift-client 4.11.0   | -                | -                 | ✓                 | ✓                | ✓                | ✓                | ✓              |
+| openshift-client 4.11.1   | -                | -                 | ✓                 | ✓                | ✓                | ✓                | ✓              |
 
 ## Major Changes in Kubernetes Client 4.0.0
 All the resource objects used here will be according to OpenShift 3.9.0  and Kubernetes 1.9.0. All the resource objects will give all the fields according to OpenShift 3.9.0 and Kubernetes 1.9.0

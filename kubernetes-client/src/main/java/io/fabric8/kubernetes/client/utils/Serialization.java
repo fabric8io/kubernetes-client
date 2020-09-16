@@ -39,6 +39,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Serialization {
+  private Serialization() { }
 
   private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
   static {
@@ -55,7 +56,7 @@ public class Serialization {
     return YAML_MAPPER;
   }
 
-  public static <T> String asJson(T object) throws KubernetesClientException {
+  public static <T> String asJson(T object) {
     try {
       return JSON_MAPPER.writeValueAsString(object);
     } catch (JsonProcessingException e) {
@@ -63,7 +64,7 @@ public class Serialization {
     }
   }
 
-  public static <T> String asYaml(T object) throws KubernetesClientException {
+  public static <T> String asYaml(T object) {
     try {
       return YAML_MAPPER.writeValueAsString(object);
     } catch (JsonProcessingException e) {
@@ -80,7 +81,7 @@ public class Serialization {
    * @return returns de-serialized object
    * @throws KubernetesClientException KubernetesClientException
    */
-  public static <T> T unmarshal(InputStream is) throws KubernetesClientException {
+  public static <T> T unmarshal(InputStream is) {
     return unmarshal(is, JSON_MAPPER);
   }
 
@@ -162,7 +163,7 @@ public class Serialization {
    * @return returns de-serialized object
    * @throws KubernetesClientException KubernetesClientException
    */
-  public static <T> T unmarshal(String str, final Class<T> type, Map<String, String> parameters) throws KubernetesClientException {
+  public static <T> T unmarshal(String str, final Class<T> type, Map<String, String> parameters) {
     try (InputStream is = new ByteArrayInputStream(str.getBytes(StandardCharsets.UTF_8))) {
       return unmarshal(is, new TypeReference<T>() {
         @Override
@@ -195,7 +196,7 @@ public class Serialization {
    * @return returns de-serialized object
    * @throws KubernetesClientException KubernetesClientException
    */
-  public static <T> T unmarshal(InputStream is, final Class<T> type, Map<String, String> parameters) throws KubernetesClientException {
+  public static <T> T unmarshal(InputStream is, final Class<T> type, Map<String, String> parameters) {
     return unmarshal(is, new TypeReference<T>() {
       @Override
       public Type getType() {

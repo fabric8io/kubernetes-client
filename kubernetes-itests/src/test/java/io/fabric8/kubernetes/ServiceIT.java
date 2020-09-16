@@ -20,11 +20,13 @@ import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.ReadyEntity;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.Service;
+import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
+import org.assertj.core.internal.bytebuddy.build.ToStringPlugin;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -92,6 +94,135 @@ public class ServiceIT {
     await().atMost(30, TimeUnit.SECONDS).until(serviceReady);
     boolean bDeleted = client.services().inNamespace(session.getNamespace()).withName("service-delete").delete();
     assertTrue(bDeleted);
+  }
+
+  @Test
+  public void testChangeServiceType() {
+    // Given
+    Service svc = client.services().inNamespace(session.getNamespace()).withName("service-change-service-type").get();
+
+    // When
+    svc.getSpec().setType("ExternalName");
+    svc.getSpec().setExternalName("my.database.example.com");
+    svc.getSpec().setClusterIP("");
+    svc = client.services().inNamespace(session.getNamespace()).createOrReplace(svc);
+
+    // Then
+    assertNotNull(svc);
+    assertEquals("ExternalName", svc.getSpec().getType());
+    assertEquals("my.database.example.com", svc.getSpec().getExternalName());
+  }
+
+  @Test
+  public void testClusterIPCreateOrReplace() {
+    // Given
+    Service clusterIPSvc = new ServiceBuilder()
+      .withNewMetadata().withName("serviceit-clusterip-createorreplace").endMetadata()
+      .withNewSpec()
+      .addToSelector("app", "myapp")
+      .addNewPort()
+      .withName("http")
+      .withProtocol("TCP")
+      .withPort(80)
+      .withTargetPort(new IntOrString(9376))
+      .endPort()
+      .endSpec()
+      .build();
+
+    // When
+    // Create resource
+    client.services().inNamespace(session.getNamespace()).createOrReplace(clusterIPSvc);
+    // Modify resource
+    clusterIPSvc.getSpec().getPorts().get(0).setTargetPort(new IntOrString(9380));
+    // Do createOrReplace again; resource should get updated
+    clusterIPSvc = client.services().inNamespace(session.getNamespace()).createOrReplace(clusterIPSvc);
+
+    // Then
+    assertNotNull(clusterIPSvc);
+    assertEquals("ClusterIP", clusterIPSvc.getSpec().getType());
+    assertEquals(9380, clusterIPSvc.getSpec().getPorts().get(0).getTargetPort().getIntVal().intValue());
+  }
+
+  @Test
+  public void testNodePortCreateOrReplace() {
+    // Given
+    Service clusterIPSvc = new ServiceBuilder()
+      .withNewMetadata().withName("serviceit-nodeport-createorreplace").endMetadata()
+      .withNewSpec()
+      .withType("NodePort")
+      .addToSelector("app", "myapp")
+      .addNewPort()
+      .withPort(80)
+      .withTargetPort(new IntOrString(80))
+      .endPort()
+      .endSpec()
+      .build();
+
+    // When
+    // Create resource
+    client.services().inNamespace(session.getNamespace()).createOrReplace(clusterIPSvc);
+    // Modify resource
+    clusterIPSvc.getSpec().getPorts().get(0).setTargetPort(new IntOrString(81));
+    // Do createOrReplace again; resource should get updated
+    clusterIPSvc = client.services().inNamespace(session.getNamespace()).createOrReplace(clusterIPSvc);
+
+    // Then
+    assertNotNull(clusterIPSvc);
+    assertEquals("NodePort", clusterIPSvc.getSpec().getType());
+    assertEquals(81, clusterIPSvc.getSpec().getPorts().get(0).getTargetPort().getIntVal().intValue());
+  }
+
+  @Test
+  public void testLoadBalancerCreateOrReplace() {
+    // Given
+    Service clusterIPSvc = new ServiceBuilder()
+      .withNewMetadata().withName("serviceit-loadbalancer-createorreplace").endMetadata()
+      .withNewSpec()
+      .withType("LoadBalancer")
+      .addToSelector("app", "myapp")
+      .addNewPort()
+      .withProtocol("TCP")
+      .withPort(80)
+      .withTargetPort(new IntOrString(9376))
+      .endPort()
+      .endSpec()
+      .build();
+
+    // When
+    // Create resource
+    client.services().inNamespace(session.getNamespace()).createOrReplace(clusterIPSvc);
+    // Modify resource
+    clusterIPSvc.getSpec().getPorts().get(0).setTargetPort(new IntOrString(9380));
+    // Do createOrReplace again; resource should get updated
+    clusterIPSvc = client.services().inNamespace(session.getNamespace()).createOrReplace(clusterIPSvc);
+
+    // Then
+    assertNotNull(clusterIPSvc);
+    assertEquals("LoadBalancer", clusterIPSvc.getSpec().getType());
+    assertEquals(9380, clusterIPSvc.getSpec().getPorts().get(0).getTargetPort().getIntVal().intValue());
+  }
+
+  @Test
+  public void testExternalNameCreateOrReplace() {
+    // Given
+    Service service = new ServiceBuilder()
+      .withNewMetadata().withName("serviceit-externalname-createorreplace").endMetadata()
+      .withNewSpec()
+      .withType("ExternalName")
+      .withExternalName("my.database.example.com")
+      .endSpec()
+      .build();
+
+    // When
+    client.services().inNamespace(session.getNamespace()).createOrReplace(service);
+    service.getSpec().setExternalName("his.database.example.com");
+    service = client.services().inNamespace(session.getNamespace()).createOrReplace(service);
+
+    // Then
+    assertNotNull(service);
+    assertEquals("serviceit-externalname-createorreplace", service.getMetadata().getName());
+    assertEquals("ExternalName", service.getSpec().getType());
+    assertEquals("his.database.example.com", service.getSpec().getExternalName());
   }
 
   @AfterClass

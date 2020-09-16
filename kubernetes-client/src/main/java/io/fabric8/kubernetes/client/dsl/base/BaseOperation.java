@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.dsl.base;
 
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
-import io.fabric8.kubernetes.client.utils.ResourceCompare;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,6 +56,7 @@ import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.client.utils.WatcherToggle;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -75,6 +75,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Predicate;
+
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 
@@ -83,7 +84,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   implements
   OperationInfo,
   MixedOperation<T, L, D, R>,
-  Resource<T,D> {
+  Resource<T, D> {
 
   private static final Logger LOG = LoggerFactory.getLogger(BaseOperation.class);
 
@@ -129,26 +130,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     this.watchRetryBackoffMultiplier = ctx.getWatchRetryBackoffMultiplier();
   }
 
-  /**
-   * Returns the name and falls back to the item name.
-   * @param item  The item.
-   * @param name  The name to check.
-   * @param <T>
-     * @return
-     */
-  private static <T> String name(T item, String name) {
-    if (name != null && !name.isEmpty()) {
-      return name;
-    } else if (item instanceof HasMetadata) {
-      HasMetadata h = (HasMetadata) item;
-      return h.getMetadata() != null ? h.getMetadata().getName() : null;
-    }
-    return null;
-  }
-
-
-  public BaseOperation<T,L,D,R> newInstance(OperationContext context) {
-    return new BaseOperation<T, L, D, R>(context);
+  public BaseOperation<T, L, D, R> newInstance(OperationContext context) {
+    return new BaseOperation<>(context);
   }
 
   /**
@@ -168,17 +151,22 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       L answer = handleResponse(requestBuilder, listType);
       updateApiVersion(answer);
       return answer;
-    } catch (InterruptedException | ExecutionException | IOException e) {
+    } catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(forOperationType("list"), ie);
+    } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
     }
-  }
+
+
+ }
 
   protected URL fetchListUrl(URL url, ListOptions listOptions) throws MalformedURLException {
     return new URL(HttpClientUtils.appendListOptionParams(HttpUrl.get(url.toString()).newBuilder(), listOptions).toString());
   }
 
   private void addQueryStringParam(HttpUrl.Builder requestUrlBuilder, String name, String value) {
-    if(Utils.isNotNullOrEmpty(value)) {
+    if (Utils.isNotNullOrEmpty(value)) {
       requestUrlBuilder.addQueryParameter(name, value);
     }
   }
@@ -186,14 +174,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public T get() {
     try {
-      T answer = getMandatory();
-      if (answer instanceof HasMetadata) {
-        HasMetadata hasMetadata = (HasMetadata) answer;
-        updateApiVersion(hasMetadata);
-      } else if (answer instanceof KubernetesResourceList) {
-        KubernetesResourceList list = (KubernetesResourceList) answer;
-        updateApiVersion(list);
-      }
+      final T answer = getMandatory();
+      updateApiVersion(answer);
       return answer;
     } catch (KubernetesClientException e) {
       if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
@@ -204,19 +186,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public T require() throws ResourceNotFoundException {
+  public T require() {
     try {
       T answer = getMandatory();
       if (answer == null) {
         throw new ResourceNotFoundException("The resource you request doesn't exist or couldn't be fetched.");
       }
-      if (answer instanceof HasMetadata) {
-        HasMetadata hasMetadata = (HasMetadata) answer;
-        updateApiVersion(hasMetadata);
-      } else if (answer instanceof KubernetesResourceList) {
-        KubernetesResourceList list = (KubernetesResourceList) answer;
-        updateApiVersion(list);
-      }
+      updateApiVersion(answer);
       return answer;
     } catch (KubernetesClientException e) {
       if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
@@ -233,19 +209,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     try {
       URL requestUrl = getCompleteResourceUrl();
       return handleGet(requestUrl);
-    } catch (KubernetesClientException e) {
-      throw KubernetesClientException.launderThrowable(forOperationType("get"), e);
-      //if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
-     //   throw e;
-      //} else {
-      //  String resourceType = type != null ? type.getSimpleName() : "Resource";
-      //  String msg = resourceType + " with name: [" + getName() + "]  not found in namespace: [" + (Utils.isNotNullOrEmpty(getNamespace()) ? getName() : getConfig().getNamespace()) + "]";
-     //   throw new KubernetesClientException(msg, HttpURLConnection.HTTP_NOT_FOUND, new StatusBuilder().withCode(HttpURLConnection.HTTP_NOT_FOUND).withMessage(msg).build());
-     // }
-    } catch (InterruptedException | ExecutionException | IOException e) {
+    } catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(forOperationType("get"), ie);
+    } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("get"), e);
     }
-  }
+ }
 
   public RootPaths getRootPaths() {
     try {
@@ -257,13 +227,16 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         throw e;
       }
       return null;
-    } catch (InterruptedException | ExecutionException | IOException e) {
+    } catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(ie);
+    } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
-  }
+ }
 
   @Override
-  public D edit() throws KubernetesClientException {
+  public D edit() {
     throw new KubernetesClientException("Cannot edit read-only resources");
   }
 
@@ -330,8 +303,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return newInstance(context.withReloadingFromServer(true));
   }
 
+  @SafeVarargs
   @Override
-  public T create(T... resources) throws KubernetesClientException {
+  public final T create(T... resources) {
     try {
       if (resources.length > 1) {
         throw new IllegalArgumentException("Too many items to create.");
@@ -342,9 +316,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       } else {
         return handleCreate(getItem());
       }
-    } catch (InterruptedException | ExecutionException | IOException e) {
+    }  catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(forOperationType("create"), ie);
+    } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("create"), e);
     }
+
   }
 
   @Override
@@ -355,13 +333,17 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       } else {
         throw new IllegalArgumentException("Nothing to create.");
       }
-    } catch (InterruptedException | ExecutionException | IOException e) {
+    }  catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(forOperationType("create"), ie);
+    } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("create"), e);
     }
+
   }
 
   @Override
-  public D createNew() throws KubernetesClientException {
+  public D createNew() {
     final Function<T, T> visitor = resource -> {
       try {
         return create(resource);
@@ -379,7 +361,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
 
   @Override
-  public D createOrReplaceWithNew() throws KubernetesClientException {
+  public D createOrReplaceWithNew() {
     final Function<T, T> visitor = resource -> {
       try {
         return createOrReplace(resource);
@@ -395,8 +377,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     }
   }
 
+  @SafeVarargs
   @Override
-  public T createOrReplace(T... items) {
+  public final T createOrReplace(T... items) {
     T itemToCreateOrReplace = getItem();
     if (items.length > 1) {
       throw new IllegalArgumentException("Too many items to create.");
@@ -421,16 +404,10 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       if (exception.getCode() != HttpURLConnection.HTTP_CONFLICT) {
         throw exception;
       }
-
       // Conflict; Do Replace
-      T itemFromServer = fromServer().get();
-      if (ResourceCompare.equals(itemFromServer, itemToCreateOrReplace)) {
-        // Nothing changed, ignore
-        return itemToCreateOrReplace;
-      } else {
-        KubernetesResourceUtil.setResourceVersion(itemToCreateOrReplace, KubernetesResourceUtil.getResourceVersion(itemFromServer));
-        return replace(itemToCreateOrReplace);
-      }
+      final T itemFromServer = fromServer().get();
+      KubernetesResourceUtil.setResourceVersion(itemToCreateOrReplace, KubernetesResourceUtil.getResourceVersion(itemFromServer));
+      return replace(itemToCreateOrReplace);
     }
   }
 
@@ -472,29 +449,28 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return this;
   }
 
-  // Deprecated as the underlying implementation does not align with the arguments anymore.
-  // It is possible to negate multiple values with the same key, e.g.:
-  // foo != bar , foo != baz
-  // To support this a multi-value map is needed, as a regular map would override the key with the new value.
+  /**
+   * @deprecated as the underlying implementation does not align with the arguments anymore.
+   *    It is possible to negate multiple values with the same key, e.g.:
+   *    foo != bar , foo != baz
+   *    To support this a multi-value map is needed, as a regular map would override the key with the new value.
+   */
   @Override
   @Deprecated
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withoutLabels(Map<String, String> labels) throws
-    KubernetesClientException {
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withoutLabels(Map<String, String> labels) {
     // Re-use "withoutLabel" to convert values from String to String[]
     labels.forEach(this::withoutLabel);
     return this;
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withLabelIn(String key, String... values) throws
-    KubernetesClientException {
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withLabelIn(String key, String... values) {
     labelsIn.put(key, values);
     return this;
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withLabelNotIn(String key, String... values) throws
-    KubernetesClientException {
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withLabelNotIn(String key, String... values) {
     labelsNotIn.put(key, values);
     return this;
   }
@@ -538,16 +514,17 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return this;
   }
 
-  // Deprecated as the underlying implementation does not align with the arguments fully.
-  // Method is created to have a similar API as `withoutLabels`, but should eventually be replaced with something
-  // better for the same reasons.
-  // It is possible to negate multiple values with the same key, e.g.:
-  // foo != bar , foo != baz
-  // To support this a multi-value map is needed, as a regular map would override the key with the new value.
+  /**
+   * @deprecated as the underlying implementation does not align with the arguments fully.
+   *    Method is created to have a similar API as `withoutLabels`, but should eventually be replaced
+   *    with something better for the same reasons.
+   *    It is possible to negate multiple values with the same key, e.g.:
+   *    foo != bar , foo != baz
+   *    To support this a multi-value map is needed, as a regular map would override the key with the new value.
+   */
   @Override
   @Deprecated
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withoutFields(Map<String, String> fields) throws
-    KubernetesClientException {
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withoutFields(Map<String, String> fields) {
     // Re-use "withoutField" to convert values from String to String[]
     labels.forEach(this::withoutField);
     return this;
@@ -577,9 +554,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         }
         Map.Entry<String, String> entry = iter.next();
         if (entry.getValue() != null) {
-            sb.append(entry.getKey()).append("=").append(entry.getValue());
+          sb.append(entry.getKey()).append("=").append(entry.getValue());
         } else {
-            sb.append(entry.getKey());
+          sb.append(entry.getKey());
         }
       }
     }
@@ -598,7 +575,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
             sb.append(entry.getKey()).append("!=").append(entry.getValue()[i]);
           }
         } else {
-            sb.append('!').append(entry.getKey());
+          sb.append('!').append(entry.getKey());
         }
       }
     }
@@ -653,7 +630,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return sb.toString();
   }
 
-  public L list() throws KubernetesClientException {
+  public L list() {
     try {
       return listRequestHelper(getResourceUrl(namespace, name));
     } catch (IOException e) {
@@ -698,9 +675,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     }
   }
 
-
+  @SafeVarargs
   @Override
-  public Boolean delete(T... items) {
+  public final Boolean delete(T... items) {
     return delete(Arrays.asList(items));
   }
 
@@ -708,22 +685,20 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   public Boolean delete(List<T> items) {
     boolean deleted = true;
     if (items != null) {
-      for (T item : items) {
-        updateApiVersionResource(item);
+      for (T toDelete : items) {
+        if (toDelete == null) {
+          continue;
+        }
+        updateApiVersion(toDelete);
 
         try {
-          R op;
-
-          if (item instanceof HasMetadata
-            && ((HasMetadata) item).getMetadata() != null
-            && ((HasMetadata) item).getMetadata().getName() != null
-            && !((HasMetadata) item).getMetadata().getName().isEmpty())  {
-            op = (R) inNamespace(checkNamespace(item)).withName(((HasMetadata) item).getMetadata().getName());
+          if (toDelete.getMetadata() != null
+            && toDelete.getMetadata().getName() != null
+            && !toDelete.getMetadata().getName().isEmpty()) {
+            deleted &= inNamespace(checkNamespace(toDelete)).withName(toDelete.getMetadata().getName()).delete();
           } else {
-            op = (R) withItem(item);
+            deleted &= withItem(toDelete).delete();
           }
-
-          deleted &= op.delete();
         } catch (KubernetesClientException e) {
           if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
             throw e;
@@ -739,19 +714,23 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   public T updateStatus(T item) {
     try {
       return handleStatusUpdate(item, getType());
-    } catch (InterruptedException | ExecutionException | IOException e) {
+    } catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(forOperationType("statusUpdate"), ie);
+    } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("statusUpdate"), e);
     }
+
   }
 
-  public BaseOperation<T,L,D,R> withItem(T item) {
+  public BaseOperation<T, L, D, R> withItem(T item) {
     return newInstance(context.withItem(item));
   }
 
   void deleteThis() {
     try {
       if (item != null) {
-        updateApiVersionResource(item);
+        updateApiVersion(item);
         handleDelete(item, gracePeriodSeconds, propagationPolicy, cascading);
       } else {
         handleDelete(getResourceUrl(), gracePeriodSeconds, propagationPolicy, cascading);
@@ -803,9 +782,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     } catch (MalformedURLException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("watch"), e);
     } catch (KubernetesClientException ke) {
-
-      if (ke.getCode() != 200) {
-        if(watch != null){
+      List<Integer> furtherProcessedCodes = Arrays.asList(200, 503);
+      if (! furtherProcessedCodes.contains(ke.getCode())) {
+        if (watch != null) {
           //release the watch
           watch.close();
         }
@@ -813,13 +792,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         throw ke;
       }
 
-      if(watch != null){
+      if (watch != null) {
         //release the watch after disabling the watcher (to avoid premature call to onClose)
         watcherToggle.disable();
         watch.close();
       }
 
-      // If the HTTP return code is 200, we retry the watch again using a persistent hanging
+      // If the HTTP return code is 200 or 503, we retry the watch again using a persistent hanging
       // HTTP GET. This is meant to handle cases like kubectl local proxy which does not support
       // websockets. Issue: https://github.com/kubernetes/kubernetes/issues/25126
       try {
@@ -853,27 +832,27 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return Utils.isResourceNamespaced(getType());
   }
 
-  protected T handleResponse(Request.Builder requestBuilder) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+  protected T handleResponse(Request.Builder requestBuilder) throws ExecutionException, InterruptedException, IOException {
     return handleResponse(requestBuilder, getType());
   }
 
-  protected T handleCreate(T resource) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    updateApiVersionResource(resource);
+  protected T handleCreate(T resource) throws ExecutionException, InterruptedException, IOException {
+    updateApiVersion(resource);
     return handleCreate(resource, getType());
   }
 
-  protected T handleReplace(T updated) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    updateApiVersionResource(updated);
+  protected T handleReplace(T updated) throws ExecutionException, InterruptedException, IOException {
+    updateApiVersion(updated);
     return handleReplace(updated, getType());
   }
 
-  protected T handlePatch(T current, T updated) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    updateApiVersionResource(updated);
+  protected T handlePatch(T current, T updated) throws ExecutionException, InterruptedException, IOException {
+    updateApiVersion(updated);
     return handlePatch(current, updated, getType());
   }
 
   protected T handlePatch(T current, Map<String, Object> patchedUpdate) throws ExecutionException, InterruptedException, IOException {
-    updateApiVersionResource(current);
+    updateApiVersion(current);
     return handlePatch(current, patchedUpdate, getType());
   }
 
@@ -891,22 +870,30 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   protected Scale handleScale(Scale scaleParam) {
     try {
       return handleScale(getCompleteResourceUrl().toString(), scaleParam);
-    } catch (InterruptedException | ExecutionException | IOException e) {
+    }  catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(forOperationType("scale"), ie);
+    } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("scale"), e);
     }
+
   }
 
   protected Status handleDeploymentRollback(DeploymentRollback deploymentRollback) {
     try {
       return handleDeploymentRollback(getCompleteResourceUrl().toString(), deploymentRollback);
-    } catch (InterruptedException | ExecutionException | IOException e) {
+    }  catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(forOperationType("rollback"), ie);
+    } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("rollback"), e);
     }
+
   }
 
   protected T handleGet(URL resourceUrl) throws InterruptedException, ExecutionException, IOException {
     T answer = handleGet(resourceUrl, getType());
-    updateApiVersionResource(answer);
+    updateApiVersion(answer);
     return answer;
   }
 
@@ -1010,14 +997,12 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withGracePeriod(long gracePeriodSeconds)
-  {
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withGracePeriod(long gracePeriodSeconds) {
     return newInstance(context.withGracePeriodSeconds(gracePeriodSeconds));
   }
 
   @Override
-  public EditReplacePatchDeletable<T, T, D, Boolean> withPropagationPolicy(DeletionPropagation propagationPolicy)
-  {
+  public EditReplacePatchDeletable<T, T, D, Boolean> withPropagationPolicy(DeletionPropagation propagationPolicy) {
     return newInstance(context.withPropagationPolicy(propagationPolicy));
   }
 
@@ -1031,40 +1016,17 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   /**
-   * Updates the list or single item if it has a missing or incorrect apiGroupVersion
-   *
-   * @param resource resource object
-   */
-  protected void updateApiVersionResource(Object resource) {
-    if (resource instanceof HasMetadata) {
-      HasMetadata hasMetadata = (HasMetadata) resource;
-      updateApiVersion(hasMetadata);
-    } else if (resource instanceof KubernetesResourceList) {
-      KubernetesResourceList list = (KubernetesResourceList) resource;
-      updateApiVersion(list);
-    }
-  }
-
-  /**
    * Updates the list items if they have missing or default apiGroupVersion values and the resource is currently
    * using API Groups with custom version strings
    *
    * @param list Kubernetes resource list
    */
-  protected void updateApiVersion(KubernetesResourceList list) {
+  protected void updateApiVersion(KubernetesResourceList<T> list) {
     String version = getApiVersion();
-    if (list != null && version != null && version.length() > 0) {
-      List items = list.getItems();
-      if (items != null) {
-        for (Object item : items) {
-          if (item instanceof HasMetadata) {
-            updateApiVersion((HasMetadata) item);
-          }
-        }
-      }
+    if (list != null && version != null && version.length() > 0 && list.getItems() != null) {
+      list.getItems().forEach(this::updateApiVersion);
     }
   }
-
 
   /**
    * Updates the resource if it has missing or default apiGroupVersion values and the resource is currently
@@ -1099,8 +1061,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public Boolean isReady() {
-    T i = get();
-    return i instanceof HasMetadata && Readiness.isReady((HasMetadata)i);
+    return Readiness.isReady(get());
   }
 
   @Override
@@ -1127,8 +1088,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     WaitForConditionWatcher<T> watcher = new WaitForConditionWatcher<>(condition);
     Watch watch = item == null
       ? watch(new ListOptionsBuilder()
-          .withResourceVersion(null)
-          .build(), watcher)
+      .withResourceVersion(null)
+      .build(), watcher)
       : watch(item.getMetadata().getResourceVersion(), watcher);
 
     try {
@@ -1164,3 +1125,4 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     this.namespace = namespace;
   }
 }
+

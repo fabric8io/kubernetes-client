@@ -48,6 +48,7 @@ public class Readiness {
 
   public static boolean isReadinessApplicable(Class<? extends HasMetadata> itemClass) {
     return Deployment.class.isAssignableFrom(itemClass)
+      || io.fabric8.kubernetes.api.model.extensions.Deployment.class.isAssignableFrom(itemClass)
       || ReplicaSet.class.isAssignableFrom(itemClass)
       || Pod.class.isAssignableFrom(itemClass)
       || DeploymentConfig.class.isAssignableFrom(itemClass)
@@ -61,6 +62,8 @@ public class Readiness {
   public static boolean isReady(HasMetadata item) {
     if (item instanceof Deployment) {
       return isDeploymentReady((Deployment) item);
+    } else if (item instanceof io.fabric8.kubernetes.api.model.extensions.Deployment) {
+      return isExtensionsDeploymentReady((io.fabric8.kubernetes.api.model.extensions.Deployment) item);
     } else if (item instanceof ReplicaSet) {
       return isReplicaSetReady((ReplicaSet) item);
     } else if (item instanceof Pod) {
@@ -103,6 +106,25 @@ public class Readiness {
     Utils.checkNotNull(d, "Deployment can't be null.");
     DeploymentSpec spec = d.getSpec();
     DeploymentStatus status = d.getStatus();
+
+    if (status == null || status.getReplicas() == null || status.getAvailableReplicas() == null) {
+      return false;
+    }
+
+    //Can be true in testing, so handle it to make test writing easier.
+    if (spec == null || spec.getReplicas() == null) {
+      return false;
+    }
+
+    return spec.getReplicas().intValue() == status.getReplicas() &&
+      spec.getReplicas() <= status.getAvailableReplicas();
+  }
+
+
+  public static boolean isExtensionsDeploymentReady(io.fabric8.kubernetes.api.model.extensions.Deployment d) {
+    Utils.checkNotNull(d, "Deployment can't be null.");
+    io.fabric8.kubernetes.api.model.extensions.DeploymentSpec spec = d.getSpec();
+    io.fabric8.kubernetes.api.model.extensions.DeploymentStatus status = d.getStatus();
 
     if (status == null || status.getReplicas() == null || status.getAvailableReplicas() == null) {
       return false;

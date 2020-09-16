@@ -42,10 +42,10 @@ import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSet;
 import io.fabric8.kubernetes.api.model.authentication.TokenReview;
-import io.fabric8.kubernetes.api.model.authorization.LocalSubjectAccessReview;
-import io.fabric8.kubernetes.api.model.authorization.SelfSubjectAccessReview;
-import io.fabric8.kubernetes.api.model.authorization.SelfSubjectRulesReview;
-import io.fabric8.kubernetes.api.model.authorization.SubjectAccessReview;
+import io.fabric8.kubernetes.api.model.authorization.v1.LocalSubjectAccessReview;
+import io.fabric8.kubernetes.api.model.authorization.v1.SelfSubjectAccessReview;
+import io.fabric8.kubernetes.api.model.authorization.v1.SelfSubjectRulesReview;
+import io.fabric8.kubernetes.api.model.authorization.v1.SubjectAccessReview;
 import io.fabric8.kubernetes.api.model.batch.CronJob;
 import io.fabric8.kubernetes.api.model.batch.Job;
 import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequest;
@@ -65,16 +65,21 @@ import io.fabric8.kubernetes.api.model.storage.VolumeAttachment;
 import io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver;
 import io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode;
 import io.fabric8.kubernetes.client.utils.Utils;
+import org.apache.commons.lang.SystemUtils;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 class UtilsTest {
@@ -103,12 +108,12 @@ class UtilsTest {
 
   @Test
   void existingEnvVarShouldReturnBooleanValueFromConvertedSysPropName() {
-    assertEquals(true, Utils.getSystemPropertyOrEnvVar("env.var.exists.boolean", false));
+    Assertions.assertTrue(Utils.getSystemPropertyOrEnvVar("env.var.exists.boolean", false));
   }
 
   @Test
   void missingEnvVarShouldReturnDefaultValue() {
-    assertEquals(true, Utils.getSystemPropertyOrEnvVar("DONT_EXIST", true));
+    Assertions.assertTrue(Utils.getSystemPropertyOrEnvVar("DONT_EXIST", true));
   }
 
   @Test
@@ -249,15 +254,15 @@ class UtilsTest {
     assertTrue(Utils.isResourceNamespaced(Deployment.class));
     assertTrue(Utils.isResourceNamespaced(ReplicaSet.class));
     assertTrue(Utils.isResourceNamespaced(StatefulSet.class));
-    assertTrue(Utils.isResourceNamespaced(TokenReview.class));
+    assertFalse(Utils.isResourceNamespaced(TokenReview.class));
     assertTrue(Utils.isResourceNamespaced(LocalSubjectAccessReview.class));
-    assertTrue(Utils.isResourceNamespaced(SelfSubjectAccessReview.class));
-    assertTrue(Utils.isResourceNamespaced(SelfSubjectRulesReview.class));
-    assertTrue(Utils.isResourceNamespaced(SubjectAccessReview.class));
+    assertFalse(Utils.isResourceNamespaced(SelfSubjectAccessReview.class));
+    assertFalse(Utils.isResourceNamespaced(SelfSubjectRulesReview.class));
+    assertFalse(Utils.isResourceNamespaced(SubjectAccessReview.class));
     assertTrue(Utils.isResourceNamespaced(HorizontalPodAutoscaler.class));
     assertTrue(Utils.isResourceNamespaced(CronJob.class));
     assertTrue(Utils.isResourceNamespaced(Job.class));
-    assertTrue(Utils.isResourceNamespaced(CertificateSigningRequest.class));
+    assertFalse(Utils.isResourceNamespaced(CertificateSigningRequest.class));
     assertTrue(Utils.isResourceNamespaced(Lease.class));
     assertTrue(Utils.isResourceNamespaced(EndpointSlice.class));
     assertTrue(Utils.isResourceNamespaced(Ingress.class));
@@ -269,8 +274,8 @@ class UtilsTest {
     assertTrue(Utils.isResourceNamespaced(RoleBinding.class));
     assertTrue(Utils.isResourceNamespaced(Role.class));
     assertFalse(Utils.isResourceNamespaced(PriorityClass.class));
-    assertTrue(Utils.isResourceNamespaced(CSIDriver.class));
-    assertTrue(Utils.isResourceNamespaced(CSINode.class));
+    assertFalse(Utils.isResourceNamespaced(CSIDriver.class));
+    assertFalse(Utils.isResourceNamespaced(CSINode.class));
     assertFalse(Utils.isResourceNamespaced(StorageClass.class));
     assertTrue(Utils.isResourceNamespaced(VolumeAttachment.class));
   }
@@ -338,5 +343,32 @@ class UtilsTest {
 
     // Then
     assertTrue(result);
+  }
+
+  @Test
+  @DisplayName("test getting system path")
+  void testGetSystemPathVariable() {
+    // When
+    String pathVariable = Utils.getSystemPathVariable();
+
+    // Then
+    assertNotNull(pathVariable);
+    assertTrue(pathVariable.contains(File.pathSeparator));
+  }
+
+  @Test
+  @DisplayName("Should get command prefix")
+  void testGetCommandPlatformPrefix() {
+    List<String> commandPrefix = Utils.getCommandPlatformPrefix();
+
+    assertNotNull(commandPrefix);
+    assertEquals(2, commandPrefix.size());
+    if (SystemUtils.IS_OS_WINDOWS) {
+      assertEquals("cmd.exe", commandPrefix.get(0));
+      assertEquals("/c", commandPrefix.get(1));
+    } else {
+      assertEquals("sh", commandPrefix.get(0));
+      assertEquals("-c", commandPrefix.get(1));
+    }
   }
 }

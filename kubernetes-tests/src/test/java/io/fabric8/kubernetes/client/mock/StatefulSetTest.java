@@ -462,14 +462,14 @@ public class StatefulSetTest {
     // Given
     Pod jobPod = new PodBuilder()
       .withNewMetadata()
-      .withOwnerReferences(new OwnerReferenceBuilder().withApiVersion("batch/v1")
+      .withOwnerReferences(new OwnerReferenceBuilder().withApiVersion("apps/v1")
         .withBlockOwnerDeletion(true)
         .withController(true)
-        .withKind("Job")
+        .withKind("StatefulSet")
         .withName("pi")
         .withUid("3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
         .build())
-      .withName("job1-hk9nf").addToLabels("controller-uid", "3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
+      .withName("ss-hk9nf").addToLabels("controller-uid", "3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
       .endMetadata()
       .build();
 
@@ -477,10 +477,10 @@ public class StatefulSetTest {
       .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build())
       .always();
 
-    server.expect().get().withPath("/api/v1/namespaces/ns1/pods/statefulset1?labelSelector=app%3Dnginx")
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?labelSelector=app%3Dnginx")
       .andReturn(HttpURLConnection.HTTP_OK, new PodListBuilder().withItems(jobPod).build())
       .once();
-    server.expect().get().withPath("/api/v1/namespaces/ns1/pods/job1-hk9nf/log?pretty=false")
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods/ss-hk9nf/log?pretty=false")
       .andReturn(HttpURLConnection.HTTP_OK, "hello")
       .once();
     KubernetesClient client = server.getClient();

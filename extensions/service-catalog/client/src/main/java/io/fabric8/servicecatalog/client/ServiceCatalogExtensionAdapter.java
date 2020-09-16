@@ -15,17 +15,16 @@
  */
 package io.fabric8.servicecatalog.client;
 
-import io.fabric8.kubernetes.api.model.RootPaths;
+import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
 import okhttp3.OkHttpClient;
 
 import java.net.URL;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-public class ServiceCatalogExtensionAdapter implements ExtensionAdapter<ServiceCatalogClient> {
+public class ServiceCatalogExtensionAdapter extends ExtensionAdapterSupport implements ExtensionAdapter<ServiceCatalogClient> {
 
     static final ConcurrentMap<URL, Boolean> IS_SERVICE_CATALOG = new ConcurrentHashMap<>();
     static final ConcurrentMap<URL, Boolean> USES_SERVICE_CATALOG_APIGROUPS = new ConcurrentHashMap<>();
@@ -37,35 +36,11 @@ public class ServiceCatalogExtensionAdapter implements ExtensionAdapter<ServiceC
 
 	@Override
 	public Boolean isAdaptable(Client client) {
-		return isServiceCatalogAvailable(client);
+		return isAdaptable(client, IS_SERVICE_CATALOG, USES_SERVICE_CATALOG_APIGROUPS, "servicecatalog.k8s.io");
 	}
 
 	@Override
 	public ServiceCatalogClient adapt(Client client) {
             return new DefaultServiceCatalogClient(client.adapt(OkHttpClient.class), client.getConfiguration());
 	}
-
-	private boolean isServiceCatalogAvailable(Client client) {
-        URL masterUrl = client.getMasterUrl();
-        if (IS_SERVICE_CATALOG.containsKey(masterUrl)) {
-            return IS_SERVICE_CATALOG.get(masterUrl);
-        } else {
-            RootPaths rootPaths = client.rootPaths();
-            if (rootPaths != null) {
-                List<String> paths = rootPaths.getPaths();
-                if (paths != null) {
-                    for (String path : paths) {
-                        // lets detect the new API Groups APIs for OpenShift
-                        if (path.endsWith("servicecatalog.k8s.io") || path.contains("servicecatalog.k8s.io/")) {
-                            USES_SERVICE_CATALOG_APIGROUPS.putIfAbsent(masterUrl, true);
-                            IS_SERVICE_CATALOG.putIfAbsent(masterUrl, true);
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        IS_SERVICE_CATALOG.putIfAbsent(masterUrl, false);
-        return false;
-    }
 }

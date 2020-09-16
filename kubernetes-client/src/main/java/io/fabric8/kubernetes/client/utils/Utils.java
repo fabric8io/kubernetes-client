@@ -33,6 +33,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -54,6 +55,10 @@ public class Utils {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(Utils.class);
   private static final String ALL_CHARS = "abcdefghijklmnopqrstuvwxyz0123456789";
+  public static final String WINDOWS = "win";
+  public static final String OS_NAME = "os.name";
+  public static final String PATH_WINDOWS = "Path";
+  public static final String PATH_UNIX = "PATH";
 
   private Utils() {
   }
@@ -102,7 +107,7 @@ public class Utils {
   }
 
   public static int getSystemPropertyOrEnvVar(String systemPropertyName, int defaultValue) {
-    String result = getSystemPropertyOrEnvVar(systemPropertyName, new Integer(defaultValue).toString());
+    String result = getSystemPropertyOrEnvVar(systemPropertyName, Integer.toString(defaultValue));
     return Integer.parseInt(result);
   }
 
@@ -187,7 +192,7 @@ public class Utils {
       if (LOGGER.isDebugEnabled()) {
         List<Runnable> tasks = executorService.shutdownNow();
         if (!tasks.isEmpty()) {
-          LOGGER.debug("ExecutorService was not cleanly shutdown, after waiting for 10 seconds. Number of remaining tasks:" + tasks.size());
+          LOGGER.debug("ExecutorService was not cleanly shutdown, after waiting for 10 seconds. Number of remaining tasks: {}", tasks.size());
         }
       }
     } catch (InterruptedException e) {
@@ -214,7 +219,7 @@ public class Utils {
           c.close();
         }
       } catch (IOException e) {
-        LOGGER.debug("Error closing:" + c);
+        LOGGER.debug("Error closing: {}", c);
       }
     }
   }
@@ -332,7 +337,7 @@ public class Utils {
    * @param str Url as string
    * @return returns encoded string
    */
-  public static final String toUrlEncoded(String str) {
+  public static String toUrlEncoded(String str) {
     try {
       return URLEncoder.encode(str, StandardCharsets.UTF_8.displayName());
     } catch (UnsupportedEncodingException exception) {
@@ -342,7 +347,7 @@ public class Utils {
   }
 
   public static String getPluralFromKind(String kind) {
-    StringBuffer pluralBuffer = new StringBuffer(kind.toLowerCase(Locale.ROOT));
+    StringBuilder pluralBuffer = new StringBuilder(kind.toLowerCase(Locale.ROOT));
     switch (kind) {
       case "ComponentStatus":
       case "Ingress":
@@ -425,5 +430,45 @@ public class Utils {
       .map(explodedParam -> (Function<String, String>) s -> s.replace(explodedParam.getKey(), explodedParam.getValue()))
       .reduce(Function.identity(), Function::andThen)
       .apply(Objects.requireNonNull(templateInput, "templateInput is required"));
+  }
+
+  /**
+   * Check whether platform is windows or not
+   *
+   * @return boolean value indicating whether OS is Windows or not.
+   */
+  public static boolean isWindowsOperatingSystem() {
+    return getOperatingSystemFromSystemProperty().toLowerCase().contains(WINDOWS);
+  }
+
+  /**
+   * Get system PATH variable
+   *
+   * @return a string containing value of PATH
+   */
+  public static String getSystemPathVariable() {
+    return System.getenv(isWindowsOperatingSystem() ? PATH_WINDOWS : PATH_UNIX);
+  }
+
+  /**
+   * Returns prefixes needed to invoke specified command
+   * in a subprocess.
+   *
+   * @return a list of strings containing prefixes
+   */
+  public static List<String> getCommandPlatformPrefix() {
+    List<String> platformPrefixParts = new ArrayList<>();
+    if (Utils.isWindowsOperatingSystem()) {
+      platformPrefixParts.add("cmd.exe");
+      platformPrefixParts.add("/c");
+    } else {
+      platformPrefixParts.add("sh");
+      platformPrefixParts.add("-c");
+    }
+    return platformPrefixParts;
+  }
+
+  private static String getOperatingSystemFromSystemProperty() {
+    return System.getProperty(OS_NAME);
   }
 }

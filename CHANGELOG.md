@@ -1,23 +1,68 @@
 ## CHANGELOG
 
-### 4.10-SNAPSHOT
+### 4.11-SNAPSHOT
+
+#### Bugs
+* Fix: #2442: Wrong resource kind in `ProjectRequestHandler` causes ClassCastException when handling Project resources.
+* Fix #2467: OpenShiftClient cannot replace existing resource with API version =! v1
+* Fix: #2474: Config.fromKubeconfig throws NullPointerException
+* Fix #2399: Cannot change the type of the Service from ClusterIP to ExternalName
+
+#### Improvements
+* Fix #2473: Removed unused ValidationMessages.properties
+* Fix #2408: Add documentation for Pod log options
+
+#### Dependency Upgrade
+* Bump Knative Serving to v0.17.2 & Knative Eventing to v0.17.3 
+
+#### New Features
+* Fix #2340: Adding support for Knative Eventing Contrib 
+* Fix #2111: Support automatic refreshing for expired OIDC tokens
+* Fix #2314: Fetch logs should wait for the job's associated pod to be ready
+
+### 4.11.1 (2020-09-02)
+
+#### Bugs
+* Fix #2445: ConfigMap and other resources are replaced
+
+### 4.11.0 (2020-08-26)
 #### Bugs
 * Fix #2373: Unable to create a Template on OCP3
+* Fix #2308: Fix kubernetes client `Config` loading KUBECONFIG with external authentication command
 * Fix #2316: Cannot load resource from stream without apiVersion
+* Fix #2354: Fix NullPointerException in ResourceCompare when no resource is returned from fromServer.get()
+* Fix #2389: KubernetesServer does not use value from https in crud mode
+* Fix #2306: Make KubernetesServer CRUD mode work with informers
+* Fix #2418: CertificateSigningRequest doesn't implement Namespaced
+* Fix #2265: InAnyNamespace uses invalid api endpoint for SelfSubjectAccessReviews
+* Fix #2404: Readiness.isReady doesn't handle extensions/v1beta1 Deployment
+* Fix #2389: KubernetesServer JUnit rule ignores value of https when using crud mode
 
 #### Improvements
 * Fix #2331: Fixed documentation for namespaced informer for all custom types implementing `Namespaced` interface
+* Fix #2406: Add documentation for serializing resources to YAML
 
 #### Dependency Upgrade
 * Fix #2360: bump mockito-core from 3.4.0 to 3.4.2
 * Fix #2355: bump jandex from 2.1.3.Final to 2.2.0.Final 
 * Fix #2353: chore: bump workflow action-setup versions + kubernetes to 1.18.6
 * Fix #2292: Update createOrReplace to do replace when create fails with conflict
+* Fix: Bump SnakeYaml to version 1.26 (as required for OSGi bundle for jackson-dataformat-yaml)
+* Fix #2401: bump maven-resources-plugin from 3.1.0 to 3.2.0
+* Fix #2405: bump mockito-core from 3.4.4 to 3.5.0
 
 #### New Features
+* CSI Volume Snapshot extension
 * Fix #2311: Add Support for creating bootstrap project template
 * Fix #2287: Add support for V1 and V1Beta1 CustomResourceDefinition
 * Fix #2319: Create Config without using auto-configure functionality or setting env variables
+* Fix #2284: Supports create and run a particular image in a pod operation using client
+* Fix #2321: Add Support for new resources in OpenShift Model
+
+_**Note**_: Some classes have been moved to other packages:
+- CustomResourceDefinition has been moved to `io.fabric8.kubernetes.api.model.apiextensions.v1` and `io.fabric8.kubernetes.api.model.apiextensions.v1beta1`
+- SubjectAccessReview, SelfSubjectAccessReview, LocalSubjectAccessReview and SelfSubjectRulesReview have been moved to `io.fabric8.kubernetes.api.model.authorization.v1` and `io.fabric8.kubernetes.api.model.authorization.v1beta1`
+- `io.fabric8.tekton.pipeline.v1beta1.WorkspacePipelineDeclaration` is now `io.fabric8.tekton.pipeline.v1beta1.PipelineWorkspaceDeclaration`
 
 ### 4.10.3 (2020-07-14)
 #### Bugs
@@ -76,6 +121,9 @@
 * Added DSL support for `admissionregistration.k8s.io/v1beta1` resources
 * Add support for Namespaced SharedInformers, fixed probelms with OperationContext argument
 * Fix #1821: ListOptions now supported when watching a Kubernetes Resource
+
+_**Note**_: Some classes have been renamed:
+- `io.fabric8.tekton.pipeline.v1beta1.WorkspacePipelineDeclaration` is now `io.fabric8.tekton.pipeline.v1beta1.PipelineWorkspaceDeclaration`
 
 ### 4.10.1 (2020-05-06)
 #### Bugs

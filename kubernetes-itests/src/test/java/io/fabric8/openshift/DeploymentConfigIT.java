@@ -89,4 +89,19 @@ public class DeploymentConfigIT {
     assertTrue(bDeleted);
   }
 
+  @Test
+  public void createOrReplace() {
+    // Given
+    DeploymentConfig deploymentConfig = client.deploymentConfigs().inNamespace(session.getNamespace()).withName("dc-createorreplace").get();
+
+    // When
+    deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).setImage("openshift/hello-openshift:v3.8");
+    deploymentConfig = client.deploymentConfigs().inNamespace(session.getNamespace()).createOrReplace(deploymentConfig);
+
+    // Then
+    assertNotNull(deploymentConfig);
+    assertEquals("dc-createorreplace", deploymentConfig.getMetadata().getName());
+    assertEquals("openshift/hello-openshift:v3.8", deploymentConfig.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
+  }
+
 }

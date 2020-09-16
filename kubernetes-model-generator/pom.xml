@@ -23,7 +23,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-client-project</artifactId>
-    <version>4.10-SNAPSHOT</version>
+    <version>4.11-SNAPSHOT</version>
   </parent>
 
   <artifactId>kubernetes-model-generator</artifactId>
@@ -53,6 +53,10 @@
     <module>kubernetes-model-settings</module>
     <module>kubernetes-model-storageclass</module>
     <module>openshift-model</module>
+    <module>openshift-model-operator</module>
+    <module>openshift-model-operatorhub</module>
+    <module>openshift-model-monitoring</module>
+    <module>openshift-model-console</module>
   </modules>
 
   <properties>

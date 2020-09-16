@@ -41,6 +41,7 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -58,6 +59,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
 
   static final transient Logger LOG = LoggerFactory.getLogger(DeploymentOperationsImpl.class);
   public static final String DEPLOYMENT_KUBERNETES_IO_REVISION = "deployment.kubernetes.io/revision";
+  private Integer podLogWaitTimeout;
 
   public DeploymentOperationsImpl(OkHttpClient client, Config config) {
     this(client, config, null);
@@ -77,6 +79,11 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
     this.type = Deployment .class;
     this.listType = DeploymentList.class;
     this.doneableType = DoneableDeployment.class;
+  }
+
+  private DeploymentOperationsImpl(RollingOperationContext context, Integer podLogWaitTimeout) {
+    this(context);
+    this.podLogWaitTimeout = podLogWaitTimeout;
   }
 
   @Override
@@ -321,8 +328,8 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
         context.getLabelsNot(), context.getLabelsIn(), context.getLabelsNotIn(), context.getFields(), context.getFieldsNot(),
         context.getResourceVersion(), context.getReloadingFromServer(), context.getGracePeriodSeconds(), context.getPropagationPolicy(),
         context.getWatchRetryInitialBackoffMillis(), context.getWatchRetryBackoffMultiplier(), false, 0, null
-        ));
-    ReplicaSetList rcList = rsOperations.withLabels(deployment.getSpec().getTemplate().getMetadata().getLabels()).list();
+        ), podLogWaitTimeout);
+    ReplicaSetList rcList = rsOperations.withLabels(getDeploymentSelectorLabels(deployment)).list();
 
     for (ReplicaSet rs : rcList.getItems()) {
       OwnerReference ownerReference = KubernetesResourceUtil.getControllerUid(rs);
@@ -364,6 +371,11 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
     return null;
   }
 
+  @Override
+  public Loggable<String, LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
+    return new DeploymentOperationsImpl(((RollingOperationContext)context), logWaitTimeout);
+  }
+
   private Deployment sendPatchedDeployment(Map<String, Object> patchedUpdate) {
     Deployment oldDeployment = get();
     try {
@@ -378,5 +390,15 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
 
   private ReplicaSetList getReplicaSetListForDeployment(Deployment deployment) {
     return new ReplicaSetOperationsImpl(client, config, getNamespace()).withLabels(deployment.getSpec().getSelector().getMatchLabels()).list();
+  }
+
+  static Map<String, String> getDeploymentSelectorLabels(Deployment deployment) {
+    Map<String, String> labels = new HashMap<>();
+    if (deployment != null && deployment.getSpec() != null &&
+      deployment.getSpec().getTemplate() != null &&
+      deployment.getSpec().getTemplate().getMetadata() != null) {
+      labels.putAll(deployment.getSpec().getTemplate().getMetadata().getLabels());
+    }
+    return labels;
   }
 }

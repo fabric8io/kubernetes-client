@@ -20,6 +20,7 @@ io.fabric8.kubernetes.client.V1AdmissionRegistrationAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.V1beta1AdmissionRegistrationAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.AutoscalingAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.ApiextensionsAPIGroupExtensionAdapter
+io.fabric8.kubernetes.client.AuthorizationAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.V1AutoscalingAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.V2beta1AutoscalingAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.V2beta2AutoscalingAPIGroupExtensionAdapter
@@ -35,3 +36,5 @@ io.fabric8.kubernetes.client.StorageAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.V1APIGroupExtensionAdapter
 io.fabric8.kubernetes.client.V1ApiextensionsAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.V1beta1ApiextensionsAPIGroupExtensionAdapter
+io.fabric8.kubernetes.client.V1AuthorizationAPIGroupExtensionAdapter
+io.fabric8.kubernetes.client.V1beta1AuthorizationAPIGroupExtensionAdapter
