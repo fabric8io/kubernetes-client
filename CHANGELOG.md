@@ -5,6 +5,7 @@
 #### Bugs
 * Fix: #2442: Wrong resource kind in `ProjectRequestHandler` causes ClassCastException when handling Project resources.
 * Fix #2467: OpenShiftClient cannot replace existing resource with API version =! v1
+* Fix: #2474: Config.fromKubeconfig throws NullPointerException
 
 #### Improvements
 * Fix #2473: Removed unused ValidationMessages.properties

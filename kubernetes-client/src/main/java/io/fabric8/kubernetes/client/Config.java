@@ -505,7 +505,8 @@ public class Config {
   public static Config fromKubeconfig(String context, String kubeconfigContents, String kubeconfigPath) {
     // we allow passing context along here, since downstream accepts it
     Config config = new Config();
-    config.file = new File(kubeconfigPath);
+    if(kubeconfigPath != null)
+      config.file = new File(kubeconfigPath);
     loadFromKubeconfig(config, context, kubeconfigContents);
     return config;
   }
