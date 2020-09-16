@@ -104,7 +104,7 @@
     <automaton.version>1.11-8</automaton.version>
     <automaton.bundle.version>1.11-8_1</automaton.bundle.version>
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
-    <junit.version>5.6.2</junit.version>
+    <junit.version>5.7.0</junit.version>
     <junit.compatible-with-arquillian.version>4.13</junit.compatible-with-arquillian.version>
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
     <arquillian.cube.version>1.18.2</arquillian.cube.version>
