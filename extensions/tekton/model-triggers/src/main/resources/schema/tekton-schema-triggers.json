@@ -2,23 +2,6 @@
   "id": "http://fabric8.io/tekton/triggers/TektonSchema#",
   "$schema": "http://json-schema.org/schema#",
   "definitions": {
-    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Param": {
-      "type": "object",
-      "description": "",
-      "properties": {
-        "name": {
-          "type": "string",
-          "description": ""
-        },
-        "value": {
-          "javaType": "io.fabric8.tekton.triggers.internal.pipeline.pkg.apis.pipeline.v1beta1.ArrayOrString"
-        }
-      },
-      "javaType": "io.fabric8.tekton.triggers.internal.pipeline.pkg.apis.pipeline.v1beta1.Param",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_BitbucketInterceptor": {
       "type": "object",
       "description": "",
@@ -760,8 +743,7 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Param",
-            "javaType": "io.fabric8.tekton.triggers.internal.pipeline.pkg.apis.pipeline.v1beta1.Param"
+            "javaType": "io.fabric8.tekton.pipeline.v1beta1.Param"
           }
         },
         "objectRef": {
@@ -840,10 +822,6 @@
   },
   "type": "object",
   "properties": {
-    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Param": {
-      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Param",
-      "javaType": "io.fabric8.tekton.triggers.internal.pipeline.pkg.apis.pipeline.v1beta1.Param"
-    },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_BitbucketInterceptor": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_BitbucketInterceptor",
       "javaType": "io.fabric8.tekton.triggers.v1alpha1.BitbucketInterceptor"

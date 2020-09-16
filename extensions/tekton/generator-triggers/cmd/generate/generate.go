@@ -18,7 +18,6 @@ package main
 import (
 	"fmt"
 	"github.com/fabric8io/kubernetes-client/generator/pkg/schemagen"
-	"github.com/tektoncd/pipeline/pkg/apis/pipeline/v1beta1"
 	triggers "github.com/tektoncd/triggers/pkg/apis/triggers/v1alpha1"
 	machinery "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"knative.dev/pkg/apis"
@@ -40,15 +39,14 @@ func main() {
 	constraints := map[reflect.Type]map[string]*schemagen.Constraint{}
 
 	// types that are manually defined in the model
-	providedTypes := []schemagen.ProvidedType{
-		{GoType: reflect.TypeOf(v1beta1.ArrayOrString{}), JavaClass: "io.fabric8.tekton.triggers.internal.pipeline.pkg.apis.pipeline.v1beta1.ArrayOrString"},
-	}
+	providedTypes := []schemagen.ProvidedType{}
 
 	// go packages that are provided and where no generation is required and their corresponding java package
 	providedPackages := map[string]string{
 		// external
-		"k8s.io/api/core/v1":                   "io.fabric8.kubernetes.api.model",
-		"k8s.io/apimachinery/pkg/apis/meta/v1": "io.fabric8.kubernetes.api.model",
+		"k8s.io/api/core/v1":                                     "io.fabric8.kubernetes.api.model",
+		"k8s.io/apimachinery/pkg/apis/meta/v1":                   "io.fabric8.kubernetes.api.model",
+		"github.com/tektoncd/pipeline/pkg/apis/pipeline/v1beta1": "io.fabric8.tekton.pipeline.v1beta1",
 	}
 
 	// mapping of go packages of this module to the resulting java package
@@ -62,8 +60,7 @@ func main() {
 	//  - replace '/' with '.' for a valid java package name
 	// e.g. github.com/tektoncd/pipeline/pkg/apis/pipeline/pod/Template is mapped to "io.fabric8.tekton.internal.pipeline.pkg.apis.pipeline.pod.Template"
 	mappingSchema := map[string]string{
-		"knative.dev":                  "io.fabric8.tekton.triggers.internal.knative",
-		"github.com/tektoncd/pipeline": "io.fabric8.tekton.triggers.internal.pipeline",
+		"knative.dev": "io.fabric8.tekton.triggers.internal.knative",
 	}
 
 	// overwriting some times

@@ -59,6 +59,10 @@
       <artifactId>kubernetes-model-core</artifactId>
     </dependency>
     <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>tekton-model-v1beta1</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-jaxb-annotations</artifactId>
     </dependency>
