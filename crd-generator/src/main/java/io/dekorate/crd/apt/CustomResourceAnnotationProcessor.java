@@ -40,7 +40,6 @@ import io.sundr.codegen.model.TypeDef;
 import io.sundr.codegen.utils.ModelUtils;
 
 @SupportedAnnotationTypes({"io.dekorate.crd.annotation.CustomResource"})
-@SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class CustomResourceAnnotationProcessor extends AbstractAnnotationProcessor implements CustomResourceGenerator {
 
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
