@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @EnableRuleMigrationSupport
-public class DeploymentV1beta1Test {
+class DeploymentV1beta1Test {
   @Rule
   public KubernetesServer server = new KubernetesServer();
 
@@ -81,7 +81,7 @@ public class DeploymentV1beta1Test {
   }
 
   @Test
-  public void testRollback() {
+  void testRollback() {
     DeploymentRollback deploymentRollback = new DeploymentRollbackBuilder()
       .withName("deployment1")
       .withNewRollbackTo().withRevision(1L).endRollbackTo()

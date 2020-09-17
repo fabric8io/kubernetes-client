@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableRuleMigrationSupport
-public class ReplicaSetV1beta1Test {
+class ReplicaSetV1beta1Test {
 
   @Rule
   public KubernetesServer server = new KubernetesServer();

@@ -63,7 +63,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class DeploymentOperationsImpl extends RollableScalableResourceOperation<Deployment, DeploymentList, DoneableDeployment, RollableScalableResource<Deployment, DoneableDeployment>>
   implements TimeoutImageEditReplacePatchable<Deployment, Deployment, DoneableDeployment> {
 
-  static final transient Logger LOG = LoggerFactory.getLogger(io.fabric8.kubernetes.client.dsl.internal.apps.v1.DeploymentOperationsImpl.class);
+  static final transient Logger LOG = LoggerFactory.getLogger(DeploymentOperationsImpl.class);
   public static final String DEPLOYMENT_KUBERNETES_IO_REVISION = "deployment.kubernetes.io/revision";
   private Integer podLogWaitTimeout;
 
@@ -289,13 +289,13 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
           LOG.debug("Only {}/{} pods scheduled for Deployment: {} in namespace: {} seconds so waiting...",
             deployment.getStatus().getReplicas(), deployment.getSpec().getReplicas(), deployment.getMetadata().getName(), namespace);
         }
-      } catch (Throwable t) {
+      } catch (Exception t) {
         LOG.error("Error while waiting for Deployment to be scaled.", t);
       }
     };
 
     ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-    ScheduledFuture poller = executor.scheduleWithFixedDelay(deploymentPoller, 0, POLL_INTERVAL_MS, TimeUnit.MILLISECONDS);
+    ScheduledFuture<?> poller = executor.scheduleWithFixedDelay(deploymentPoller, 0, POLL_INTERVAL_MS, TimeUnit.MILLISECONDS);
     try {
       if (Utils.waitUntilReady(queue, getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS)) {
         LOG.debug("{}/{} pod(s) ready for Deployment: {} in namespace: {}.",
