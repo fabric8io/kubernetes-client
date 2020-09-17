@@ -31,7 +31,7 @@ spec:
           ports:
             - containerPort: 8080
               protocol: "TCP"
-  replicas: 5
+  replicas: 1
   selector:
     name: "frontend"
   triggers:
@@ -63,7 +63,7 @@ spec:
           ports:
             - containerPort: 8080
               protocol: "TCP"
-  replicas: 5
+  replicas: 1
   selector:
     name: "frontend"
   triggers:
@@ -95,7 +95,7 @@ spec:
           ports:
             - containerPort: 8080
               protocol: "TCP"
-  replicas: 5
+  replicas: 1
   selector:
     name: "frontend"
   triggers:
@@ -127,7 +127,7 @@ spec:
           ports:
             - containerPort: 8080
               protocol: "TCP"
-  replicas: 5
+  replicas: 1
   selector:
     name: "frontend"
   triggers:
@@ -159,7 +159,7 @@ spec:
           ports:
             - containerPort: 8080
               protocol: "TCP"
-  replicas: 5
+  replicas: 1
   selector:
     name: "frontend"
   triggers:
@@ -174,3 +174,25 @@ spec:
           name: "origin-ruby-sample:latest"
   strategy:
     type: "Rolling"
+---
+kind: "DeploymentConfig"
+apiVersion: "v1"
+metadata:
+  name: dc-waituntilready
+spec:
+  template:
+    metadata:
+      labels:
+        name: "frontend"
+    spec:
+      containers:
+        - name: "helloworld"
+          image: "openshift/hello-openshift:latest"
+          ports:
+            - containerPort: 8080
+              protocol: "TCP"
+  replicas: 1
+  selector:
+    name: "frontend"
+  triggers:
+    - type: ConfigChange

@@ -28,8 +28,10 @@ import io.fabric8.kubernetes.client.dsl.TimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.LogWatchCallback;
 import io.fabric8.kubernetes.client.utils.PodOperationUtil;
+import io.fabric8.kubernetes.client.internal.PatchUtils;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.openshift.client.dsl.BuildResource;
+import io.fabric8.openshift.client.internal.patchmixins.BuildMixIn;
 import okhttp3.OkHttpClient;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildList;
@@ -104,6 +106,7 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
     this.withPrettyOutput = context.isPrettyOutput();
     this.version = context.getVersion();
     this.limitBytes = context.getLimitBytes();
+    PatchUtils.addMixInToMapper(Build.class, BuildMixIn.class);
   }
 
   private BuildOperationsImpl(BuildOperationContext context, Integer podLogWaitTimeout) {

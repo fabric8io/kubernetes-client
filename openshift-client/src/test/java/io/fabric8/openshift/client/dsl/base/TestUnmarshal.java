@@ -13,26 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl.base;
+package io.fabric8.openshift.client.dsl.base;
 
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.openshift.api.model.Template;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestUnmarshal {
+class TestUnmarshal {
 
   @Test
-  public void testUnmarshalJSONTemplate() throws IOException {
-    Template t = new OperationSupport().unmarshal(getClass().getResourceAsStream("/test-template.json"), Template.class);
+  void testUnmarshalJSONTemplate() {
+    Template t = Serialization.unmarshal(getClass().getResourceAsStream("/test-template.json"), Template.class);
     assertEquals("eap6-basic-sti", t.getMetadata().getName());
   }
 
   @Test
-  public void testUnmarshalYAMLTemplate() throws IOException {
-   Template t = new OperationSupport().unmarshal(getClass().getResourceAsStream("/test-template.yml"), Template.class);
+  void testUnmarshalYAMLTemplate() {
+   Template t = Serialization.unmarshal(getClass().getResourceAsStream("/test-template.yml"), Template.class);
     assertEquals("eap6-basic-sti", t.getMetadata().getName());
   }
 
