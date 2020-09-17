@@ -13,6 +13,7 @@
 * Fix #2473: Removed unused ValidationMessages.properties
 * Fix #2408: Add documentation for Pod log options
 * Fix #2141: Decouple OpenShift Model from Kubernetes Client
+* Fix #2452: Make Readiness.isReady publicly available from a wrapper method in KubernetesResourceUtil
 
 #### Dependency Upgrade
 * Bump Knative Serving to v0.17.2 & Knative Eventing to v0.17.3 

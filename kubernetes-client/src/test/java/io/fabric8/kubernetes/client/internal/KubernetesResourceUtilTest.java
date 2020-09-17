@@ -22,6 +22,8 @@ import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
+import io.fabric8.kubernetes.api.model.apps.Deployment;
+import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -34,7 +36,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class KubernetesResourceUtilTest {
+class KubernetesResourceUtilTest {
   private ConfigMap configMap1;
 
   @BeforeEach
@@ -51,14 +53,14 @@ public class KubernetesResourceUtilTest {
   }
 
   @Test
-  public void testNullSafeOperationsForName() {
+  void testNullSafeOperationsForName() {
     String resourceName = KubernetesResourceUtil.getName(configMap1);
     assertNotNull(resourceName);
     assertEquals("configmap1", resourceName);
   }
 
   @Test
-  public void testNullSafeOperationsForNamespace() {
+  void testNullSafeOperationsForNamespace() {
     String namespace = KubernetesResourceUtil.getNamespace(configMap1);
     assertNotNull(namespace);
     assertEquals("ns1", namespace);
@@ -66,21 +68,21 @@ public class KubernetesResourceUtilTest {
   }
 
   @Test
-  public void testNullSafeOperationsForLabels() {
+  void testNullSafeOperationsForLabels() {
     Map<String, String> labels = KubernetesResourceUtil.getOrCreateLabels(configMap1);
     assertNotNull(labels);
     assertEquals(Collections.singletonMap("foo-label", "bar-label"), labels);
   }
 
   @Test
-  public void testNullSafeOperationsForAnnotations() {
+  void testNullSafeOperationsForAnnotations() {
     Map<String, String> annos = KubernetesResourceUtil.getOrCreateAnnotations(configMap1);
     assertNotNull(annos);
     assertEquals(Collections.singletonMap("foo", "bar"), annos);
   }
 
   @Test
-  public void testNames() {
+  void testNames() {
     assertTrue(KubernetesResourceUtil.isValidName(KubernetesResourceUtil.getName(configMap1)));
     assertFalse(KubernetesResourceUtil.isValidName("test.invalid.name"));
     assertTrue(KubernetesResourceUtil.isValidLabelOrAnnotation(KubernetesResourceUtil.getOrCreateAnnotations(configMap1)));
@@ -144,5 +146,43 @@ public class KubernetesResourceUtilTest {
 
     // Then
     assertEquals("1002", pod.getMetadata().getResourceVersion());
+  }
+
+  @Test
+  void testIsResourceReadyReturnsTrue() {
+    // Given
+    Deployment deployment = new DeploymentBuilder()
+      .withNewMetadata().withName("test").endMetadata()
+      .withNewSpec().withReplicas(1).endSpec()
+      .withNewStatus()
+      .withReplicas(1)
+      .withAvailableReplicas(1)
+      .endStatus()
+      .build();
+
+    // When
+    boolean result = KubernetesResourceUtil.isResourceReady(deployment);
+
+    // Then
+    assertTrue(result);
+  }
+
+  @Test
+  void testIsResourceReadyReturnsFalse() {
+    // Given
+    Deployment deployment = new DeploymentBuilder()
+      .withNewMetadata().withName("test").endMetadata()
+      .withNewSpec().withReplicas(2).endSpec()
+      .withNewStatus()
+      .withReplicas(1)
+      .withAvailableReplicas(1)
+      .endStatus()
+      .build();
+
+    // When
+    boolean result = KubernetesResourceUtil.isResourceReady(deployment);
+
+    // Then
+    assertFalse(result);
   }
 }
