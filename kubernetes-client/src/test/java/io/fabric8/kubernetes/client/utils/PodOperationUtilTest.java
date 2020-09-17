@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.utils;
 import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.ListOptions;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
@@ -179,6 +180,9 @@ class PodOperationUtilTest {
 
       @Override
       public FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>> withLabelSelector(LabelSelector selector) { return null; }
+
+      @Override
+      public FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>> withInvolvedObject(ObjectReference objectReference) { return null; }
 
       @Override
       public PodList list() { return getMockPodList(controllerUid); }
