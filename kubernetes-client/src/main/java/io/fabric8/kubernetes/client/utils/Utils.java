@@ -358,6 +358,7 @@ public class Utils {
         break;
       case "NetworkPolicy":
       case "PodSecurityPolicy":
+      case "ServiceEntry": // an Istio resource. Needed as getPluralFromKind is currently not configurable #2489
         // Delete last character
         pluralBuffer.deleteCharAt(pluralBuffer.length() - 1);
         pluralBuffer.append("ies");

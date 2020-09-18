@@ -71,6 +71,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -405,19 +406,36 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       return withName(itemToCreateOrReplace.getMetadata().getName()).createOrReplace(itemToCreateOrReplace);
     }
 
-    try {
-      // Create
-      KubernetesResourceUtil.setResourceVersion(itemToCreateOrReplace, null);
-      return create(itemToCreateOrReplace);
-    } catch (KubernetesClientException exception) {
-      if (exception.getCode() != HttpURLConnection.HTTP_CONFLICT) {
-        throw exception;
+    final CompletableFuture<T> future = new CompletableFuture<>();
+    while (!future.isDone()) {
+      try {
+        // Create
+        KubernetesResourceUtil.setResourceVersion(itemToCreateOrReplace, null);
+        future.complete(create(itemToCreateOrReplace));
+      } catch (KubernetesClientException exception) {
+        final T itemFromServer;
+        if (exception.getCode() == HttpURLConnection.HTTP_INTERNAL_ERROR) {
+          itemFromServer = fromServer().get();
+          if (itemFromServer == null) {
+            try {
+              Thread.sleep(200);
+            } catch (InterruptedException e) {
+              Thread.currentThread().interrupt();
+            }
+            continue;
+          }
+        } else if (exception.getCode() != HttpURLConnection.HTTP_CONFLICT) {
+          throw exception;
+        } else {
+          itemFromServer = fromServer().get();
+        }
+
+        // Conflict; Do Replace
+        KubernetesResourceUtil.setResourceVersion(itemToCreateOrReplace, KubernetesResourceUtil.getResourceVersion(itemFromServer));
+        future.complete(replace(itemToCreateOrReplace));
       }
-      // Conflict; Do Replace
-      final T itemFromServer = fromServer().get();
-      KubernetesResourceUtil.setResourceVersion(itemToCreateOrReplace, KubernetesResourceUtil.getResourceVersion(itemFromServer));
-      return replace(itemToCreateOrReplace);
     }
+    return future.join();
   }
 
   @Override
