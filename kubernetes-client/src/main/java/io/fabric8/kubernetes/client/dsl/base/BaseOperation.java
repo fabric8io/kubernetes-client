@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.base;
 
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,6 +88,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   Resource<T, D> {
 
   private static final Logger LOG = LoggerFactory.getLogger(BaseOperation.class);
+  private static final String INVOLVED_OBJECT_NAME = "involvedObject.name";
+  private static final String INVOLVED_OBJECT_NAMESPACE = "involvedObject.namespace";
+  private static final String INVOLVED_OBJECT_KIND = "involvedObject.kind";
+  private static final String INVOLVED_OBJECT_UID = "involvedObject.uid";
+  private static final String INVOLVED_OBJECT_RESOURCE_VERSION = "involvedObject.resourceVersion";
+  private static final String INVOLVED_OBJECT_API_VERSION = "involvedObject.apiVersion";
+  private static final String INVOLVED_OBJECT_FIELD_PATH = "involvedObject.fieldPath";
 
   private final Boolean cascading;
   private final T item;
@@ -513,6 +521,35 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     fields.put(key, value);
     return this;
   }
+
+  @Override
+  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withInvolvedObject(ObjectReference objectReference) {
+    if (objectReference != null) {
+      if (objectReference.getName() != null) {
+        fields.put(INVOLVED_OBJECT_NAME, objectReference.getName());
+      }
+      if (objectReference.getNamespace() != null) {
+        fields.put(INVOLVED_OBJECT_NAMESPACE, objectReference.getNamespace());
+      }
+      if (objectReference.getKind() != null) {
+        fields.put(INVOLVED_OBJECT_KIND, objectReference.getKind());
+      }
+      if (objectReference.getUid() != null) {
+        fields.put(INVOLVED_OBJECT_UID, objectReference.getUid());
+      }
+      if (objectReference.getResourceVersion() != null) {
+        fields.put(INVOLVED_OBJECT_RESOURCE_VERSION, objectReference.getResourceVersion());
+      }
+      if (objectReference.getApiVersion() != null) {
+        fields.put(INVOLVED_OBJECT_API_VERSION, objectReference.getApiVersion());
+      }
+      if (objectReference.getFieldPath() != null) {
+        fields.put(INVOLVED_OBJECT_FIELD_PATH, objectReference.getFieldPath());
+      }
+    }
+    return this;
+  }
+
 
   /**
    * @deprecated as the underlying implementation does not align with the arguments fully.
