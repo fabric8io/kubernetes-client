@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.OwnerReference;
+import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -343,5 +344,16 @@ public class KubernetesResourceUtil {
       }
     }
     return envVars;
+  }
+
+  /**
+   * Check whether a Kubernetes resource is Ready or not. Applicable only to
+   * Deployment, ReplicaSet, Pod, ReplicationController, Endpoints, Node and
+   * StatefulSet
+   * @param item item which needs to be checked
+   * @return boolean value indicating it's status
+   */
+  public static boolean isResourceReady(HasMetadata item) {
+    return Readiness.isReady(item);
   }
 }
