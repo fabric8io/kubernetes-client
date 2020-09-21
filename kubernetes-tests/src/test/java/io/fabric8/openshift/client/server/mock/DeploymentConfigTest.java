@@ -29,6 +29,7 @@ import io.fabric8.kubernetes.api.model.ContainerFluent;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
+import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.DeploymentConfigSpecFluent;
@@ -299,6 +300,29 @@ class DeploymentConfigTest {
     assertNotNull(byteArrayOutputStream.toString());
     assertEquals("testlog", byteArrayOutputStream.toString());
     logWatch.close();
+  }
+
+  @Test
+  void testWaitUntilReady() throws InterruptedException {
+    // Given
+    DeploymentConfig deploymentConfig = getDeploymentConfig().withNewStatus()
+      .addNewCondition()
+      .withType("Available")
+      .endCondition()
+      .withReplicas(1).withAvailableReplicas(1)
+      .endStatus().build();
+    server.expect().get().withPath("/apis/apps.openshift.io/v1/namespaces/ns1/deploymentconfigs/dc1")
+      .andReturn(HttpURLConnection.HTTP_OK, deploymentConfig)
+      .always();
+    OpenShiftClient client = server.getOpenshiftClient();
+
+    // When
+    deploymentConfig = client.deploymentConfigs().inNamespace("ns1").withName("dc1").waitUntilReady(10, TimeUnit.SECONDS);
+
+    // Then
+    assertNotNull(deploymentConfig);
+    assertEquals(1, deploymentConfig.getStatus().getAvailableReplicas().intValue());
+    assertTrue(deploymentConfig.getStatus().getConditions().stream().anyMatch(c -> c.getType().equals("Available")));
   }
 
   private DeploymentConfigBuilder getDeploymentConfig() {
