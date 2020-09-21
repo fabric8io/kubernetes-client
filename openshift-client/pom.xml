@@ -29,6 +29,14 @@
   <name>Fabric8 :: Openshift :: Java Client</name>
 
   <properties>
+    <osgi.require-capability>
+      osgi.extender;
+      filter:="(osgi.extender=osgi.serviceloader.registrar)"
+    </osgi.require-capability>
+    <osgi.provide-capability>
+      osgi.serviceloader;
+      osgi.serviceloader=io.fabric8.kubernetes.client.ResourceHandler
+    </osgi.provide-capability>
     <osgi.import>
       !org.junit*,
       *
@@ -48,7 +56,11 @@
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-client</artifactId>
     </dependency>
-    <dependency>
+   <dependency>
+     <groupId>io.fabric8</groupId>
+     <artifactId>openshift-model</artifactId>
+   </dependency>
+   <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>openshift-model-operator</artifactId>
     </dependency>
@@ -209,6 +221,8 @@
                 <Export-Package>${osgi.export}</Export-Package>
                 <Import-Package>${osgi.import}</Import-Package>
                 <DynamicImport-Package>${osgi.dynamic.import}</DynamicImport-Package>
+                <Require-Capability>${osgi.require-capability}</Require-Capability>
+                <Provide-Capability>${osgi.provide-capability}</Provide-Capability>
                 <Private-Package>${osgi.private}</Private-Package>
                 <Require-Bundle>${osgi.bundles}</Require-Bundle>
                 <Bundle-Activator>${osgi.activator}</Bundle-Activator>

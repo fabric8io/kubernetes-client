@@ -27,9 +27,12 @@ import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
+import io.fabric8.openshift.client.internal.readiness.OpenShiftReadiness;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>, R extends Resource<T, D>>
   extends HasMetadataOperation<T, L, D, R> {
@@ -98,7 +101,12 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
     }
   }
 
-  protected Class<? extends Config> getConfigType() {
+  @Override
+  public T waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
+    return waitUntilCondition(resource -> Objects.nonNull(resource) && OpenShiftReadiness.isReady(resource), amount, timeUnit);
+  }
+
+  protected Class<? extends Config> getConfigType()  {
     return OpenShiftConfig.class;
   }
 }

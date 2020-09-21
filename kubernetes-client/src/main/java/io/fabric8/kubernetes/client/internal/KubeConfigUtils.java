@@ -35,6 +35,8 @@ import java.util.List;
  * like <code>osc login</code> and <code>osc project myproject</code>
  */
 public class KubeConfigUtils {
+  private KubeConfigUtils() {}
+
   public static Config parseConfig(File file) throws IOException {
     ObjectMapper mapper = Serialization.yamlMapper();
     return mapper.readValue(file, Config.class);
@@ -67,8 +69,6 @@ public class KubeConfigUtils {
   }
 
   /**
-   */
-  /**
    * Returns the current user token for the config and current context
    *
    * @param config Config object
@@ -97,11 +97,11 @@ public class KubeConfigUtils {
       if (user != null) {
         List<NamedAuthInfo> users = config.getUsers();
         if (users != null) {
-          for (NamedAuthInfo namedAuthInfo : users) {
-            if (user.equals(namedAuthInfo.getName())) {
-              authInfo = namedAuthInfo.getUser();
-            }
-          }
+          authInfo = users.stream()
+            .filter(u -> u.getName().equals(user))
+            .findAny()
+            .map(NamedAuthInfo::getUser)
+            .orElse(null);
         }
       }
     }
@@ -122,14 +122,41 @@ public class KubeConfigUtils {
       if (clusterName != null) {
         List<NamedCluster> clusters = config.getClusters();
         if (clusters != null) {
-          for (NamedCluster namedCluster : clusters) {
-            if (clusterName.equals(namedCluster.getName())) {
-              cluster = namedCluster.getCluster();
-            }
-          }
+          cluster = clusters.stream()
+            .filter(c -> c.getName().equals(clusterName))
+            .findAny()
+            .map(NamedCluster::getCluster)
+            .orElse(null);
         }
       }
     }
     return cluster;
+  }
+
+  /**
+   * Get User index from Config object
+   *
+   * @param config {@link io.fabric8.kubernetes.api.model.Config} Kube Config
+   * @param userName username inside Config
+   * @return index of user in users array
+   */
+  public static int getNamedUserIndexFromConfig(Config config, String userName) {
+    for (int i = 0; i < config.getUsers().size(); i++) {
+      if (config.getUsers().get(i).getName().equals(userName)) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  /**
+   * Modify KUBECONFIG file
+   *
+   * @param kubeConfig modified {@link io.fabric8.kubernetes.api.model.Config} object
+   * @param kubeConfigPath path to KUBECONFIG
+   * @throws IOException in case of failure while writing to file
+   */
+  public static void persistKubeConfigIntoFile(Config kubeConfig, String kubeConfigPath) throws IOException {
+    Serialization.yamlMapper().writeValue(new File(kubeConfigPath), kubeConfig);
   }
 }

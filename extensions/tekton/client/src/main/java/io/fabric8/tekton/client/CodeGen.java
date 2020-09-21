@@ -27,7 +27,8 @@ import io.sundr.transform.annotations.VelocityTransformations;
         },
         resources = {
                 @ResourceSelector("tekton-v1alpha1.properties"),
-                @ResourceSelector("tekton-v1beta1.properties")
+                @ResourceSelector("tekton-v1beta1.properties"),
+                @ResourceSelector("tekton-triggers.properties")
         }
 )
 public class CodeGen {

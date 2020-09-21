@@ -16,14 +16,13 @@
 
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.openshift.api.model.ClusterVersion;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class VersionInfo {
-  public final class VERSION_KEYS {
+  public static final class VersionKeys {
+    private VersionKeys() {}
     public static final String BUILD_DATE = "buildDate";
     public static final String GIT_COMMIT = "gitCommit";
     public static final String GIT_VERSION = "gitVersion";
@@ -83,17 +82,6 @@ public class VersionInfo {
 
   private VersionInfo() { }
 
-  public static VersionInfo parseVersionInfoFromClusterVersion(ClusterVersion clusterVersion) throws ParseException {
-    String[] versionParts = clusterVersion.getStatus().getDesired().getVersion().split("\\.");
-    VersionInfo.Builder versionInfoBuilder = new VersionInfo.Builder();
-    if (versionParts.length == 3) {
-      versionInfoBuilder.withMajor(versionParts[0]);
-      versionInfoBuilder.withMinor(versionParts[1] + "." + versionParts[2]);
-    }
-    versionInfoBuilder.withBuildDate(clusterVersion.getMetadata().getCreationTimestamp());
-    return versionInfoBuilder.build();
-  }
-
   public static class Builder {
     private VersionInfo versionInfo = new VersionInfo();
 
@@ -114,7 +102,7 @@ public class VersionInfo {
     }
 
     public Builder withBuildDate(String buildDate) throws ParseException {
-      this.versionInfo.buildDate = new SimpleDateFormat(VERSION_KEYS.BUILD_DATE_FORMAT).parse(buildDate);
+      this.versionInfo.buildDate = new SimpleDateFormat(VersionKeys.BUILD_DATE_FORMAT).parse(buildDate);
       return this;
     }
 

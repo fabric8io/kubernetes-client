@@ -36,6 +36,8 @@ import java.util.concurrent.TimeUnit;
 
 public class ServiceOperationsImpl extends HasMetadataOperation<Service, ServiceList, DoneableService, ServiceResource<Service, DoneableService>> implements ServiceResource<Service, DoneableService> {
 
+  public static final String EXTERNAL_NAME = "ExternalName";
+
   public ServiceOperationsImpl(OkHttpClient client, Config config) {
     this(client, config, null);
   }
@@ -58,30 +60,21 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
 
   @Override
   public Service replace(Service item) {
-      try {
-        Service old = fromServer().get();
-        return super.replace(new ServiceBuilder(item)
-          .editSpec()
-          .withClusterIP(old.getSpec().getClusterIP())
-          .endSpec()
-          .build());
-      } catch (Exception e) {
-        throw KubernetesClientException.launderThrowable(forOperationType("replace"), e);
-      }
+    return super.replace(patchClusterIpIntoServiceAndReplace(item));
   }
 
   @Override
   public Service patch(Service item) {
-      try {
-        Service old = getMandatory();
-        return super.patch(new ServiceBuilder(item)
-          .editSpec()
-          .withClusterIP(old.getSpec().getClusterIP())
-          .endSpec()
-          .build());
-      } catch (Exception e) {
-        throw KubernetesClientException.launderThrowable(forOperationType("patch"), e);
-      }
+    try {
+      Service old = getMandatory();
+      return super.patch(new ServiceBuilder(item)
+        .editSpec()
+        .withClusterIP(old.getSpec().getClusterIP())
+        .endSpec()
+        .build());
+    } catch (Exception e) {
+      throw KubernetesClientException.launderThrowable(forOperationType("patch"), e);
+    }
   }
 
   @Override
@@ -160,5 +153,28 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
     public int compare(ServiceToURLProvider first, ServiceToURLProvider second) {
       return first.getPriority() - second.getPriority();
     }
+  }
+
+  private Service patchClusterIpIntoServiceAndReplace(Service item) {
+    if (!isExternalNameService(item)) {
+      try {
+        Service old = fromServer().get();
+        return new ServiceBuilder(item)
+          .editSpec()
+          .withClusterIP(old.getSpec().getClusterIP())
+          .endSpec()
+          .build();
+      } catch (Exception e) {
+        throw KubernetesClientException.launderThrowable(forOperationType("replace"), e);
+      }
+    }
+    return item;
+  }
+
+  private boolean isExternalNameService(Service item) {
+    if (item != null && item.getSpec() != null && item.getSpec().getType() != null) {
+      return item.getSpec().getType().equals(EXTERNAL_NAME);
+    }
+    return false;
   }
 }

@@ -309,6 +309,14 @@ public class ConfigTest {
   }
 
   @Test
+  void testFromKubeconfigContent() throws IOException {
+    File configFile = new File(TEST_KUBECONFIG_FILE);
+    final String configYAML = String.join("\n", Files.readAllLines(configFile.toPath()));
+    final Config config = Config.fromKubeconfig(configYAML);
+    assertEquals("https://172.28.128.4:8443", config.getMasterUrl());
+  }
+
+  @Test
   void testWithNamespacePath() {
     System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, "nokubeconfigfile");
     System.setProperty(Config.KUBERNETES_NAMESPACE_FILE, TEST_NAMESPACE_FILE);

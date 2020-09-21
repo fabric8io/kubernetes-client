@@ -3,19 +3,28 @@
 ### 4.11-SNAPSHOT
 
 #### Bugs
-* Fix: #2442: Wrong resource kind in `ProjectRequestHandler` causes ClassCastException when handling Project resources.
+* Fix #2442: Wrong resource kind in `ProjectRequestHandler` causes ClassCastException when handling Project resources.
 * Fix #2467: OpenShiftClient cannot replace existing resource with API version =! v1
 * Fix #2458: Creating new instance of the DefaultKubernetesClient is hanging
+* Fix #2474: Config.fromKubeconfig throws NullPointerException
+* Fix #2399: Cannot change the type of the Service from ClusterIP to ExternalName
+* Fix #2479: KuberentesDeserializer works on OSGi runtime environments
 
 #### Improvements
 * Fix #2473: Removed unused ValidationMessages.properties
 * Fix #2408: Add documentation for Pod log options
+* Fix #2141: Decouple OpenShift Model from Kubernetes Client
+* Fix #2452: Make Readiness.isReady publicly available from a wrapper method in KubernetesResourceUtil
 
 #### Dependency Upgrade
 * Bump Knative Serving to v0.17.2 & Knative Eventing to v0.17.3 
 
 #### New Features
 * Fix #2340: Adding support for Knative Eventing Contrib 
+* Fix #2111: Support automatic refreshing for expired OIDC tokens
+* Fix #2314: Fetch logs should wait for the job's associated pod to be ready
+* Fix #2043: Support for Tekton Triggers
+* Fix #2460: Querying for an event based on InvolvedObject fields 
 
 ### 4.11.1 (2020-09-02)
 

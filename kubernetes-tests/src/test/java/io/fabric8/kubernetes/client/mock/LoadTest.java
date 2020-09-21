@@ -30,13 +30,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableRuleMigrationSupport
-public class LoadTest {
+class LoadTest {
 
   @Rule
   public KubernetesServer server = new KubernetesServer();
 
   @Test
-  public void testResourceGetFromLoadWhenMultipleDocumentsWithDelimiter() throws Exception {
+  void testResourceGetFromLoadWhenMultipleDocumentsWithDelimiter() throws Exception {
     // given
     KubernetesClient client = server.getClient();
 
@@ -50,40 +50,6 @@ public class LoadTest {
     assertEquals("apps/v1", deploymentResource.getApiVersion());
     assertEquals("Deployment", deploymentResource.getKind());
     assertEquals("redis-master", deploymentResource.getMetadata().getName());
-  }
-
-  @Test
-  public void testResourceGetFromLoadWhenSingleDocumentsWithoutDelimiter() throws Exception {
-    // given
-    KubernetesClient client = server.getClient();
-
-    // when
-    List<HasMetadata> result = client.load(getClass().getResourceAsStream("/template-with-params.yml")).get();
-
-    // then
-    assertNotNull(result);
-    assertEquals(1, result.size());
-    HasMetadata deploymentResource = result.get(0);
-    assertEquals("v1", deploymentResource.getApiVersion());
-    assertEquals("Pod", deploymentResource.getKind());
-    assertEquals("example-pod", deploymentResource.getMetadata().getName());
-  }
-
-  @Test
-  public void testResourceGetFromLoadWhenSingleDocumentsWithStartingDelimiter() throws Exception {
-    // given
-    KubernetesClient client = server.getClient();
-
-    // when
-    List<HasMetadata> result = client.load(getClass().getResourceAsStream("/test-template.yml")).get();
-
-    // then
-    assertNotNull(result);
-    assertEquals(5, result.size());
-    HasMetadata deploymentResource = result.get(1);
-    assertEquals("v1", deploymentResource.getApiVersion());
-    assertEquals("ImageStream", deploymentResource.getKind());
-    assertEquals("eap-app", deploymentResource.getMetadata().getName());
   }
 
   @Test
