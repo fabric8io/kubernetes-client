@@ -128,14 +128,14 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
     openshiftOAPITransformations.put("imagestreams", new ResourceKey("ImageStream", "imagestreams", "image.openshift.io", "v1"));
     openshiftOAPITransformations.put("imagestreamtags", new ResourceKey("ImageStream", "imagestreamtags", "image.openshift.io", "v1"));
     openshiftOAPITransformations.put("securitycontextconstraints", new ResourceKey("SecurityContextConstraints", "securitycontextconstraints", "security.openshift.io", "v1"));
-}
+  }
 
   public Response intercept(Chain chain) throws IOException {
     Request request = chain.request();
     Response response = chain.proceed(request);
-    if (isOpenshiftApiRequest(request)) {
-      return handleOpenshiftRequests(request, response, chain);
-    } else if (!response.isSuccessful() && responseCodeToTransformations.containsKey(response.code())) {
+    if (isDeprecatedOpenshiftOapiRequest(request)) {
+      return handleOpenshiftOapiRequests(request, response, chain);
+    } else if (!response.isSuccessful() && responseCodeToTransformations.keySet().contains(response.code())) {
       String url = request.url().toString();
       Matcher matcher = getMatcher(url);
       ResourceKey key = getKey(matcher);
@@ -143,9 +143,9 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
       if (target != null) {
         response.close(); // At this point, we know we won't reuse or return the response; so close it to avoid a connection leak.
         String newUrl = new StringBuilder(url)
-            .replace(matcher.start(API_VERSION), matcher.end(API_VERSION), target.version) // Order matters: We need to substitute right to left, so that former substitution don't affect the indexes of later.
-            .replace(matcher.start(API_GROUP), matcher.end(API_GROUP), target.group)
-            .toString();
+          .replace(matcher.start(API_VERSION), matcher.end(API_VERSION), target.version) // Order matters: We need to substitute right to left, so that former substitution don't affect the indexes of later.
+          .replace(matcher.start(API_GROUP), matcher.end(API_GROUP), target.group)
+          .toString();
 
         return handleNewRequestAndProceed(request, newUrl, target, chain);
       }
@@ -170,26 +170,19 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
     return m != null ? new ResourceKey(null, m.group(PATH), m.group(API_GROUP), m.group(API_VERSION)) : null;
   }
 
-  private static Response handleOpenshiftRequests(Request request, Response response, Chain chain) throws IOException{
+  private static Response handleOpenshiftOapiRequests(Request request, Response response, Chain chain) throws IOException{
     if (!response.isSuccessful() && response.code() == HttpURLConnection.HTTP_NOT_FOUND) {
-      ResourceKey target = getResourceKeyFromRequest(request);
+      String requestUrl = request.url().toString();
+      // handle case when /oapi is not available
+      String[] parts = requestUrl.split("/");
+      String resourcePath = parts[parts.length - 1];
+      ResourceKey target = openshiftOAPITransformations.get(resourcePath);
       if (target != null) {
-        String requestUrl = request.url().toString();
-        requestUrl = isOpenShift4Request(requestUrl) ?
-          convertToOpenShiftOapiUrl(requestUrl, target) :
-          convertToOpenShift4Url(requestUrl, target);
+        requestUrl = requestUrl.replace("/oapi", "/apis/" + target.getGroup());
         return handleNewRequestAndProceed(request, requestUrl, target, chain);
       }
     }
     return response;
-  }
-
-  private static String convertToOpenShift4Url(String requestUrl, ResourceKey target) {
-    return requestUrl.replace("/oapi", "/apis/" + target.getGroup());
-  }
-
-  private static String convertToOpenShiftOapiUrl(String requestUrl, ResourceKey target) {
-    return requestUrl.replace("/apis/" + target.getGroup() + "/" + target.getVersion(), "/oapi/v1");
   }
 
   private static Response handleNewRequestAndProceed(Request request, String newUrl, ResourceKey target, Chain chain) throws IOException {
@@ -214,34 +207,10 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
     return chain.proceed(newRequest.build());
   }
 
-  private static boolean isOpenshiftApiRequest(Request request) {
-    if (request != null) {
-      String requestUrl = request.url().toString();
-      return isOpenshift3OapiRequest(requestUrl) || isOpenShift4Request(requestUrl);
+  private static boolean isDeprecatedOpenshiftOapiRequest(Request request) {
+    if (request != null && request.url() != null) {
+      return request.url().toString().contains("oapi");
     }
     return false;
-  }
-
-  private static boolean isOpenShift4Request(String requestUrl) {
-    return requestUrl.contains(".openshift.io");
-  }
-
-  private static boolean isOpenshift3OapiRequest(String requestUrl) {
-    return requestUrl.contains("oapi");
-  }
-
-  private static ResourceKey getResourceKeyFromRequest(Request request) {
-    String requestUrl = request.url().toString();
-    String resourcePath;
-    String[] parts = requestUrl.split("/");
-    if (parts.length > 2) {
-      if (request.method().equalsIgnoreCase("POST")) {
-        resourcePath = parts[parts.length - 1];
-      } else {
-        resourcePath = parts[parts.length - 2];
-      }
-      return openshiftOAPITransformations.get(resourcePath);
-    }
-    return null;
   }
 }

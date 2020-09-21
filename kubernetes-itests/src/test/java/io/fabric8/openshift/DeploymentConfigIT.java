@@ -91,7 +91,7 @@ public class DeploymentConfigIT {
 
   @Test
   public void testWaitUntilReady() throws InterruptedException {
-    DeploymentConfig deploymentConfig = client.deploymentConfigs().inNamespace(session.getNamespace()).withName("dc-waituntilready").waitUntilReady(2, TimeUnit.MINUTES);
+    DeploymentConfig deploymentConfig = client.deploymentConfigs().inNamespace(session.getNamespace()).withName("dc-waituntilready").waitUntilReady(15, TimeUnit.MINUTES);
     assertNotNull(deploymentConfig);
     assertEquals(1, deploymentConfig.getStatus().getAvailableReplicas().intValue());
     assertTrue(deploymentConfig.getStatus().getConditions().stream().anyMatch(c -> c.getType().equals("Available")));

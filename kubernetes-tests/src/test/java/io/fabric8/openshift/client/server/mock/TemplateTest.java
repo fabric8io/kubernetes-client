@@ -263,23 +263,6 @@ public class TemplateTest {
   }
 
   @Test
-  void testCreateOrReplaceOpenShift3() {
-    // Given
-    Template template = getTemplateBuilder().build();
-    server.expect().post().withPath("/oapi/v1/namespaces/ns1/templates")
-      .andReturn(HttpURLConnection.HTTP_OK, template)
-      .once();
-
-    OpenShiftClient client = server.getOpenshiftClient();
-
-    // When
-    template = client.templates().inNamespace("ns1").createOrReplace(template);
-
-    // Then
-    assertNotNull(template);
-  }
-
-  @Test
   void testCreateOrReplaceOpenShif4() {
     // Given
     Template template = getTemplateBuilder().build();

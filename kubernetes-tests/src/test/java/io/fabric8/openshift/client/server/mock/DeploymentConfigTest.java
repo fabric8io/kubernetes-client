@@ -49,7 +49,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @EnableRuleMigrationSupport
-public class DeploymentConfigTest {
+class DeploymentConfigTest {
   @Rule
   public OpenShiftServer server = new OpenShiftServer();
 
@@ -250,23 +250,6 @@ public class DeploymentConfigTest {
      }).build();
    assertNotNull(dc2);
    assertTrue(visitedContainer.get());
-  }
-
-  @Test
-  void testCreateOrReplaceOnOpenShift3() {
-    // Given
-    DeploymentConfig deploymentConfig = getDeploymentConfig().build();
-    server.expect().post().withPath("/oapi/v1/namespaces/ns1/deploymentconfigs")
-      .andReturn(HttpURLConnection.HTTP_OK, deploymentConfig)
-      .once();
-    OpenShiftClient client = server.getOpenshiftClient();
-
-    // When
-    deploymentConfig = client.deploymentConfigs().inNamespace("ns1").createOrReplace(deploymentConfig);
-
-    // Then
-    assertNotNull(deploymentConfig);
-    assertEquals("dc1", deploymentConfig.getMetadata().getName());
   }
 
   @Test

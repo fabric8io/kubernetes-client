@@ -41,6 +41,7 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
 
   public OpenShiftOperation(OperationContext ctx) {
     super(wrap(ctx));
+    updateApiVersion();
   }
 
   static OperationContext wrap(OperationContext context) {
@@ -106,7 +107,15 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
     return waitUntilCondition(resource -> Objects.nonNull(resource) && OpenShiftReadiness.isReady(resource), amount, timeUnit);
   }
 
-  protected Class<? extends Config> getConfigType()  {
+  private void updateApiVersion() {
+    if (apiGroupName != null && apiGroupVersion != null) {
+      this.apiVersion = apiGroupName + "/" + apiGroupVersion;
+    } else if (apiGroupVersion != null) {
+      this.apiVersion = apiGroupVersion;
+    }
+  }
+
+  protected Class<? extends Config> getConfigType() {
     return OpenShiftConfig.class;
   }
 }
