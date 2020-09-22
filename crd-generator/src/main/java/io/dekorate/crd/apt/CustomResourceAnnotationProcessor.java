@@ -15,13 +15,10 @@
  */
 package io.dekorate.crd.apt;
 
-
 import java.util.Set;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedSourceVersion;
-import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 
@@ -39,7 +36,7 @@ import io.sundr.codegen.functions.ElementTo;
 import io.sundr.codegen.model.TypeDef;
 import io.sundr.codegen.utils.ModelUtils;
 
-@SupportedAnnotationTypes({"io.dekorate.crd.annotation.CustomResource"})
+@SupportedAnnotationTypes({ "io.dekorate.crd.annotation.CustomResource" })
 public class CustomResourceAnnotationProcessor extends AbstractAnnotationProcessor implements CustomResourceGenerator {
 
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -64,8 +61,11 @@ public class CustomResourceAnnotationProcessor extends AbstractAnnotationProcess
       String className = ModelUtils.getClassName(element);
 
       on(customResource != null
-        ? new AnnotationConfiguration<CustomResourceConfig>(CustomResourceConfigAdapter.newBuilder(customResource).addToAttributes(Keys.TYPE_DEFINITION, definition).accept(new AddClassNameConfigurator(className)))
-        : new AnnotationConfiguration<CustomResourceConfig>(new CustomResourceConfigBuilder().addToAttributes(Keys.TYPE_DEFINITION, definition).accept(new AddClassNameConfigurator(className))));
+          ? new AnnotationConfiguration<CustomResourceConfig>(CustomResourceConfigAdapter.newBuilder(customResource)
+              .addToAttributes(Keys.TYPE_DEFINITION, definition).accept(new AddClassNameConfigurator(className)))
+          : new AnnotationConfiguration<CustomResourceConfig>(
+              new CustomResourceConfigBuilder().addToAttributes(Keys.TYPE_DEFINITION, definition)
+                  .accept(new AddClassNameConfigurator(className))));
     }
   }
 }

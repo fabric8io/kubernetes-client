@@ -21,8 +21,8 @@ import io.dekorate.crd.confg.Keys;
 import io.dekorate.crd.config.CustomResourceConfig;
 import io.dekorate.crd.config.EditableCustomResourceConfig;
 import io.dekorate.crd.util.JsonSchema;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionBuilder;
 import io.dekorate.kubernetes.config.Configuration;
+import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionBuilder;
 import io.sundr.codegen.model.TypeDef;
 
 public class CustomResourceHandler implements Handler<CustomResourceConfig> {
@@ -38,7 +38,6 @@ public class CustomResourceHandler implements Handler<CustomResourceConfig> {
     return 400;
   }
 
-
   @Override
   public String getKey() {
     return "crd";
@@ -49,25 +48,25 @@ public class CustomResourceHandler implements Handler<CustomResourceConfig> {
     TypeDef def = config.getAttribute(Keys.TYPE_DEFINITION);
 
     resources.add(new CustomResourceDefinitionBuilder()
-      .withApiVersion("apiextensions.k8s.io/v1beta1")
-      .withNewMetadata()
+        .withApiVersion("apiextensions.k8s.io/v1beta1")
+        .withNewMetadata()
         .withName(config.getPlural() + "." + config.getGroup())
-      .endMetadata()
-      .withNewSpec()
-      .withScope(config.getScope().name())
-      .withGroup(config.getGroup())
-      .withVersion(config.getVersion())
-      .withNewNames()
+        .endMetadata()
+        .withNewSpec()
+        .withScope(config.getScope().name())
+        .withGroup(config.getGroup())
+        .withVersion(config.getVersion())
+        .withNewNames()
         .withKind(config.getKind())
         .withShortNames(config.getShortName())
         .withPlural(config.getPlural())
         .withSingular(config.getKind().toLowerCase())
-      .endNames()
-      .withNewValidation()
+        .endNames()
+        .withNewValidation()
         .withOpenAPIV3Schema(JsonSchema.from(def))
-      .endValidation()
-      .endSpec()
-    .build());
+        .endValidation()
+        .endSpec()
+        .build());
   }
 
   @Override

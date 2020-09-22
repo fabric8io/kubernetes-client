@@ -15,13 +15,14 @@
  */
 package io.dekorate.crd.util;
 
-import io.fabric8.kubernetes.api.model.apiextensions.JSONSchemaProps;
-import io.dekorate.utils.Serialization;
-import io.sundr.codegen.functions.ClassTo;
-import io.sundr.codegen.model.TypeDef;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import io.dekorate.utils.Serialization;
+import io.fabric8.kubernetes.api.model.apiextensions.JSONSchemaProps;
+import io.sundr.codegen.functions.ClassTo;
+import io.sundr.codegen.model.TypeDef;
 
 class JsonSchemaTest {
 

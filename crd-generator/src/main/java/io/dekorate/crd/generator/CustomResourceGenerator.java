@@ -26,11 +26,12 @@ import io.dekorate.crd.adapter.CustomResourceConfigAdapter;
 import io.dekorate.crd.config.CustomResourceConfig;
 import io.dekorate.crd.handler.CustomResourceHandler;
 
-public interface CustomResourceGenerator extends Generator  {
+public interface CustomResourceGenerator extends Generator {
 
   @Override
   default void addAnnotationConfiguration(Map map) {
-    on(new AnnotationConfiguration<>(CustomResourceConfigAdapter.newBuilder(propertiesMap(map, CustomResourceConfig.class))));
+    on(new AnnotationConfiguration<>(
+        CustomResourceConfigAdapter.newBuilder(propertiesMap(map, CustomResourceConfig.class))));
   }
 
   @Override

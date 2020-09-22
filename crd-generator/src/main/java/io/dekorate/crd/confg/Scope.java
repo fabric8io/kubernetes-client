@@ -16,6 +16,5 @@
 package io.dekorate.crd.confg;
 
 public enum Scope {
-  Namespaced,
-  Cluster,
+  Namespaced, Cluster,
 }
