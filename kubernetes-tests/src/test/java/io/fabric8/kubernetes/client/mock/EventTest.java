@@ -17,20 +17,27 @@ package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventBuilder;
+import io.fabric8.kubernetes.api.model.EventList;
+import io.fabric8.kubernetes.api.model.EventListBuilder;
+import io.fabric8.kubernetes.api.model.ObjectReferenceBuilder;
 import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.Rule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
+import java.net.HttpURLConnection;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableRuleMigrationSupport
@@ -73,5 +80,32 @@ class EventTest {
     // Then
     assertTrue(eventReceivedLatch.await(1, TimeUnit.SECONDS));
     watch.close();
+  }
+
+  @Test
+  void testInvolvedObjectFieldQuery() {
+    // Given
+    server.expect().get().withPath("/api/v1/namespaces/ns1/events?fieldSelector="
+      + Utils.toUrlEncoded("involvedObject.name=foo," +
+      "involvedObject.uid=6d71451a-f8df-11ea-a8ac-0e13a02d8ebd," +
+      "involvedObject.namespace=ns1," +
+      "involvedObject.kind=Deployment"))
+      .andReturn(HttpURLConnection.HTTP_OK, new EventListBuilder().withItems(new EventBuilder()
+        .withNewMetadata().withName("foo-event").endMetadata()
+        .build())
+        .build()).once();
+    KubernetesClient client = server.getClient();
+
+    // When
+    EventList eventList = client.v1().events().inNamespace("ns1").withInvolvedObject(new ObjectReferenceBuilder()
+      .withName("foo")
+      .withNamespace("ns1")
+      .withKind("Deployment")
+      .withUid("6d71451a-f8df-11ea-a8ac-0e13a02d8ebd")
+      .build()).list();
+
+    // Then
+    assertNotNull(eventList);
+    assertEquals(1, eventList.getItems().size());
   }
 }

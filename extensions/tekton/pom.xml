@@ -31,6 +31,7 @@
   <modules>
     <module>model-v1alpha1</module>
     <module>model-v1beta1</module>
+    <module>model-triggers</module>
     <module>client</module>
     <module>mock</module>
     <module>examples</module>

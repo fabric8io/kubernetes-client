@@ -145,7 +145,7 @@ func (g *schemaGenerator) jsonDescriptor(t reflect.Type) *JSONDescriptor {
 	t = g.resolvePointer(t)
 
 	switch t.Kind() {
-	case reflect.Int, reflect.Int16, reflect.Int32, reflect.Int64:
+	case reflect.Int, reflect.Uint8, reflect.Int16, reflect.Int32, reflect.Int64:
 		return &JSONDescriptor{Type: "integer"}
 	case reflect.Bool:
 		return &JSONDescriptor{Type: "boolean"}
@@ -186,7 +186,7 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 		switch t.Kind() {
 		case reflect.Bool:
 			return "Boolean"
-		case reflect.Int, reflect.Int16, reflect.Int32:
+		case reflect.Int, reflect.Uint8, reflect.Int16, reflect.Int32:
 			return "Integer"
 		case reflect.String:
 			return "String"
@@ -463,7 +463,7 @@ func isSimpleJavaType(fieldType reflect.Type) bool {
 	switch fieldType.Kind() {
 	case reflect.Bool:
 		return true
-	case reflect.Int, reflect.Int16, reflect.Int32:
+	case reflect.Int, reflect.Uint8, reflect.Int16, reflect.Int32:
 		return true
 	case reflect.String:
 		return true
@@ -653,6 +653,21 @@ func (g *schemaGenerator) propertyDescriptorForObject(field reflect.StructField)
 func (g *schemaGenerator) propertyDescriptorForList(field reflect.StructField) JSONPropertyDescriptor {
 
 	listValueType := g.resolvePointer(field.Type.Elem())
+
+	if g.isManualType(listValueType) {
+		return JSONPropertyDescriptor{
+			JSONDescriptor: &JSONDescriptor{
+				Type:          "array",
+				JavaOmitEmpty: g.isOmitEmpty(field),
+			},
+			JSONArrayDescriptor: &JSONArrayDescriptor{
+				Items: JSONPropertyDescriptor{
+					JSONReferenceDescriptor: g.referenceDescriptor(listValueType),
+					JavaTypeDescriptor:      g.javaTypeDescriptor(listValueType),
+				},
+			},
+		}
+	}
 
 	// "type discovery"
 	g.handleType(listValueType)

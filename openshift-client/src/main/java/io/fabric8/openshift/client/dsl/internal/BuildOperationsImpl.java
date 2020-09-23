@@ -15,17 +15,23 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.model.DoneablePod;
+import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.Loggable;
+import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.PrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.LogWatchCallback;
+import io.fabric8.kubernetes.client.utils.PodOperationUtil;
+import io.fabric8.kubernetes.client.internal.PatchUtils;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.openshift.client.dsl.BuildResource;
+import io.fabric8.openshift.client.internal.patchmixins.BuildMixIn;
 import okhttp3.OkHttpClient;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildList;
@@ -42,6 +48,9 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.Reader;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.BUILD;
@@ -50,6 +59,7 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
   BuildResource<Build, DoneableBuild, String, LogWatch>> implements
   BuildResource<Build, DoneableBuild, String, LogWatch> {
 
+  public static final String OPENSHIFT_IO_BUILD_NAME = "openshift.io/build.name";
   private final InputStream in;
   private final OutputStream out;
   private final OutputStream err;
@@ -66,6 +76,8 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
   private final boolean withPrettyOutput;
   private final String version;
   private final Integer limitBytes;
+  private static final Integer DEFAULT_POD_LOG_WAIT_TIMEOUT = 5;
+  private Integer podLogWaitTimeout;
 
 
   public BuildOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
@@ -94,6 +106,12 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
     this.withPrettyOutput = context.isPrettyOutput();
     this.version = context.getVersion();
     this.limitBytes = context.getLimitBytes();
+    PatchUtils.addMixInToMapper(Build.class, BuildMixIn.class);
+  }
+
+  private BuildOperationsImpl(BuildOperationContext context, Integer podLogWaitTimeout) {
+    this(context);
+    this.podLogWaitTimeout = podLogWaitTimeout;
   }
 
   @Override
@@ -140,7 +158,7 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
       ResponseBody body = response.body();
       assertResponseCode(request, response);
       return body;
-    } catch (Throwable t) {
+    } catch (IOException t) {
       throw KubernetesClientException.launderThrowable(forOperationType("doGetLog"), t);
     }
   }
@@ -176,6 +194,8 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
   @Override
   public LogWatch watchLog(OutputStream out) {
     try {
+      // In case of Build we directly get logs at Build Url, but we need to wait for Pods
+      waitUntilBuildPodBecomesReady(fromServer().get());
       URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters() + "&follow=true"));
       Request request = new Request.Builder().url(url).get().build();
       final LogWatchCallback callback = new LogWatchCallback(out);
@@ -183,11 +203,15 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
       clone.newCall(request).enqueue(callback);
       callback.waitUntilReady();
       return callback;
-    } catch (Throwable t) {
+    } catch (IOException t) {
       throw KubernetesClientException.launderThrowable(forOperationType("watchLog"), t);
     }
   }
 
+  @Override
+  public Loggable<String, LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
+    return new BuildOperationsImpl((BuildOperationContext)context, logWaitTimeout);
+  }
 
   @Override
   public Loggable<String, LogWatch> withPrettyOutput() {
@@ -224,4 +248,24 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
     return new BuildOperationsImpl(getContext().withTimestamps(true));
   }
 
+  private void waitUntilBuildPodBecomesReady(Build build) {
+    List<PodResource<Pod, DoneablePod>> podOps = PodOperationUtil.getPodOperationsForController(context, build.getMetadata().getUid(),
+      getBuildPodLabels(build), withPrettyOutput, podLogWaitTimeout);
+
+    waitForBuildPodToBecomeReady(podOps, podLogWaitTimeout != null ? podLogWaitTimeout : DEFAULT_POD_LOG_WAIT_TIMEOUT);
+  }
+
+  private static void waitForBuildPodToBecomeReady(List<PodResource<Pod, DoneablePod>> podOps, Integer podLogWaitTimeout) {
+    for (PodResource<Pod, DoneablePod> podOp : podOps) {
+      PodOperationUtil.waitUntilReadyBeforeFetchingLogs(podOp, podLogWaitTimeout);
+    }
+  }
+
+  static Map<String, String> getBuildPodLabels(Build build) {
+    Map<String, String> labels = new HashMap<>();
+    if (build != null && build.getMetadata() != null) {
+      labels.put(OPENSHIFT_IO_BUILD_NAME, build.getMetadata().getName());
+    }
+    return labels;
+  }
 }

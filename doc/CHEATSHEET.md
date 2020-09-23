@@ -2897,6 +2897,8 @@ The Tekton client supports CRD API version `tekton.dev/v1alpha1` as well as `tek
 All `tekton.dev/v1alpha1` resources are available using the DSL `tektonClient.v1alpha1()`.
 `tekton.dev/v1beta1` includes the CRDs  `Pipeline`, `PipelineRun`, `Task`, `TaskRun` and `ClusterTask`.
 All `tekton.dev/v1beta1` resources are available using the DSL `tektonClient.v1beta1()`.
+In addition to the Tekton Pipelines CRDs, the client also supports Tekton Triggers. 
+`TriggerTemplate`, `TriggerBinding`, `EventListener` and `ClusterTriggerBinding` are available using the DSL `tektonClient.v1alpha1()`.
 
 The usage of the resources follows the same pattern as for K8s resources like Pods or Deployments.
 Here are some common examples:

@@ -68,6 +68,7 @@ import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.ExecWebSocketListener;
 import io.fabric8.kubernetes.client.dsl.internal.LogWatchCallback;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
+import io.fabric8.kubernetes.client.utils.PodOperationUtil;
 import io.fabric8.kubernetes.client.dsl.internal.PortForwarderWebsocket;
 import io.fabric8.kubernetes.client.dsl.internal.uploadable.PodUpload;
 import io.fabric8.kubernetes.client.utils.BlockingInputStreamPumper;
@@ -83,6 +84,7 @@ import okhttp3.ResponseBody;
 public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, DoneablePod, PodResource<Pod, DoneablePod>> implements PodResource<Pod, DoneablePod>,CopyOrReadable<Boolean,InputStream, Boolean> {
 
     public static final int HTTP_TOO_MANY_REQUESTS = 429;
+    private static final Integer DEFAULT_POD_LOG_WAIT_TIMEOUT = 5;
     private static final String[] EMPTY_COMMAND = {"/bin/sh", "-i"};
 
     private final String containerId;
@@ -185,8 +187,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
       ResponseBody body = response.body();
       assertResponseCode(request, response);
       return body;
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(forOperationType("doGetLog"), t);
+    } catch (IOException ioException) {
+      throw KubernetesClientException.launderThrowable(forOperationType("doGetLog"), ioException);
     }
   }
 
@@ -221,6 +223,9 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
   @Override
   public LogWatch watchLog(OutputStream out) {
     try {
+      PodOperationUtil.waitUntilReadyBeforeFetchingLogs(this, getContext().getLogWaitTimeout() != null ?
+        getContext().getLogWaitTimeout() : DEFAULT_POD_LOG_WAIT_TIMEOUT);
+      // Issue Pod Logs HTTP request
       URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters() + "&follow=true"));
       Request request = new Request.Builder().url(url).get().build();
       final LogWatchCallback callback = new LogWatchCallback(out);
@@ -228,9 +233,14 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
       clone.newCall(request).enqueue(callback);
       callback.waitUntilReady();
       return callback;
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(forOperationType("watchLog"), t);
+    } catch (IOException ioException) {
+      throw KubernetesClientException.launderThrowable(forOperationType("watchLog"), ioException);
     }
+  }
+
+  @Override
+  public Loggable<String, LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
+    return new PodOperationsImpl(getContext().withLogWaitTimeout(logWaitTimeout));
   }
 
   @Override

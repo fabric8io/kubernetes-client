@@ -18,20 +18,23 @@ package io.fabric8.kubernetes.client.internal;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.client.internal.patchmixins.BuildMixIn;
 import io.fabric8.kubernetes.client.internal.patchmixins.ObjectMetaMixIn;
-import io.fabric8.openshift.api.model.Build;
 
 public class PatchUtils {
+  private PatchUtils() { }
+
   private static class SingletonHolder {
     public static final ObjectMapper patchMapper;
 
     static {
       patchMapper = new ObjectMapper();
       patchMapper.addMixIn(ObjectMeta.class, ObjectMetaMixIn.class);
-      patchMapper.addMixIn(Build.class, BuildMixIn.class);
       patchMapper.setConfig(patchMapper.getSerializationConfig().without(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS));
     }
+  }
+
+  public static void addMixInToMapper(Class<?> target, Class<?> mixInSource) {
+    SingletonHolder.patchMapper.addMixIn(target, mixInSource);
   }
 
   public static ObjectMapper patchMapper() {

@@ -17,9 +17,7 @@ package io.fabric8.kubernetes.client.dsl.internal.apps.v1;
 
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.DoneablePod;
-import io.fabric8.kubernetes.api.model.OwnerReference;
 import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.apps.DoneableReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
@@ -29,26 +27,26 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
+import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
+import io.fabric8.kubernetes.client.utils.PodOperationUtil;
 import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
-import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
-import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import okhttp3.OkHttpClient;
 
 import java.io.OutputStream;
 import java.io.Reader;
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, RollableScalableResource<ReplicaSet, DoneableReplicaSet>>
   implements TimeoutImageEditReplacePatchable<ReplicaSet, ReplicaSet, DoneableReplicaSet> {
+  private Integer podLogWaitTimeout;
 
   public ReplicaSetOperationsImpl(OkHttpClient client, Config config) {
     this(client, config, null);
@@ -65,6 +63,11 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
     this.type = ReplicaSet.class;
     this.listType = ReplicaSetList.class;
     this.doneableType = DoneableReplicaSet.class;
+  }
+
+  public ReplicaSetOperationsImpl(RollingOperationContext context, Integer podLogWaitTimeout) {
+    this(context);
+    this.podLogWaitTimeout = podLogWaitTimeout;
   }
 
   @Override
@@ -190,27 +193,9 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
   }
 
   private List<PodResource<Pod, DoneablePod>> doGetLog(boolean isPretty) {
-    List<PodResource<Pod, DoneablePod>> pods = new ArrayList<>();
     ReplicaSet replicaSet = fromServer().get();
-    String rcUid = replicaSet.getMetadata().getUid();
-
-    PodOperationsImpl podOperations = new PodOperationsImpl(new PodOperationContext(context.getClient(),
-      context.getConfig(), context.getPlural(), context.getNamespace(), null, null,
-      "v1", context.getCascading(), context.getItem(), context.getLabels(), context.getLabelsNot(),
-      context.getLabelsIn(), context.getLabelsNotIn(), context.getFields(), context.getFieldsNot(), context.getResourceVersion(),
-      context.getReloadingFromServer(), context.getGracePeriodSeconds(), context.getPropagationPolicy(),
-      context.getWatchRetryInitialBackoffMillis(), context.getWatchRetryBackoffMultiplier(), null, null, null, null, null,
-      null, null, null, null, false, false, false, null, null,
-      null, isPretty, null, null, null, null, null));
-    PodList jobPodList = podOperations.withLabels(replicaSet.getMetadata().getLabels()).list();
-
-    for (Pod pod : jobPodList.getItems()) {
-      OwnerReference ownerReference = KubernetesResourceUtil.getControllerUid(pod);
-      if (ownerReference != null && ownerReference.getUid().equals(rcUid)) {
-        pods.add(podOperations.withName(pod.getMetadata().getName()));
-      }
-    }
-    return pods;
+    return PodOperationUtil.getPodOperationsForController(context, replicaSet.getMetadata().getUid(),
+      getReplicaSetSelectorLabels(replicaSet), isPretty, podLogWaitTimeout);
   }
 
   /**
@@ -242,5 +227,19 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
       return podResources.get(0).watchLog(out);
     }
     return null;
+  }
+
+  @Override
+  public Loggable<String, LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
+    return new ReplicaSetOperationsImpl(((RollingOperationContext)context), logWaitTimeout);
+  }
+
+  static Map<String, String> getReplicaSetSelectorLabels(ReplicaSet replicaSet) {
+    Map<String, String> labels = new HashMap<>();
+
+    if (replicaSet != null && replicaSet.getSpec() != null && replicaSet.getSpec().getSelector() != null) {
+      labels.putAll(replicaSet.getSpec().getSelector().getMatchLabels());
+    }
+    return labels;
   }
 }

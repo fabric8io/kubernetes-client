@@ -46,6 +46,7 @@ import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
+import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
@@ -158,12 +159,15 @@ class PodTest {
 
   @Test
   void testEditMissing() {
-    Assertions.assertThrows(KubernetesClientException.class, () -> {
-      server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(404, "error message from kubernetes").always();
-      KubernetesClient client = server.getClient();
+    // Given
+    server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(404, "error message from kubernetes").always();
+    KubernetesClient client = server.getClient();
 
-      client.pods().withName("pod1").edit();
-    });
+    // When
+    PodResource<Pod, DoneablePod> podOp = client.pods().withName("pod1");
+
+    // Then
+    Assertions.assertThrows(KubernetesClientException.class, podOp::edit);
   }
 
   @Test
@@ -200,13 +204,12 @@ class PodTest {
 
   @Test
   void testDeleteWithNamespaceMismatch() {
-    Assertions.assertThrows(KubernetesClientException.class, () -> {
-      Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
-      Pod pod2 = new PodBuilder().withNewMetadata().withName("pod2").withNamespace("ns1").and().build();
+    // Given
+    Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
 
-      Boolean deleted = client.pods().inNamespace("test1").delete(pod1);
-      assertFalse(deleted);
-    });
+    // When + Then
+    NonNamespaceOperation<Pod, PodList, DoneablePod, PodResource<Pod, DoneablePod>> podOp = client.pods().inNamespace("test1");
+    Assertions.assertThrows(KubernetesClientException.class, () -> podOp.delete(pod1));
   }
 
   @Test
@@ -250,12 +253,10 @@ class PodTest {
 
   @Test
   void testCreateWithNameMismatch() {
-    Assertions.assertThrows(KubernetesClientException.class, () -> {
-      Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
-      Pod pod2 = new PodBuilder().withNewMetadata().withName("pod2").withNamespace("ns1").and().build();
+    Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
 
-      client.pods().inNamespace("test1").withName("mypod1").create(pod1);
-    });
+    PodResource<Pod, DoneablePod> podOp = client.pods().inNamespace("test1").withName("mypod1");
+    Assertions.assertThrows(KubernetesClientException.class, () -> podOp.create(pod1));
   }
 
   @Test
@@ -326,7 +327,7 @@ class PodTest {
 
 
   @Test
-  public void testWatch() throws InterruptedException {
+  void testWatch() throws InterruptedException {
     // Given
     //We start with a list
     Pod pod1 = new PodBuilder()
@@ -371,22 +372,24 @@ class PodTest {
 
 
   @Test
-  public void testGetLogNotFound() {
-    Assertions.assertThrows(KubernetesClientException.class, () -> {
-      KubernetesClient client = server.getClient();
-      client.pods().withName("pod5").getLog(true);
-    });
+  void testGetLogNotFound() {
+    // Given
+    KubernetesClient client = server.getClient();
+    PodResource<Pod, DoneablePod> podOp = client.pods().withName("pod5");
+
+    // When + Then
+    Assertions.assertThrows(KubernetesClientException.class, () -> podOp.getLog(true));
   }
 
   @Test
-  public void testLoad() {
+  void testLoad() {
     KubernetesClient client = server.getClient();
     Pod pod = client.pods().load(getClass().getResourceAsStream("/test-pod.yml")).get();
     assertEquals("nginx", pod.getMetadata().getName());
   }
 
   @Test
-  public void testWait() throws InterruptedException {
+  void testWait() throws InterruptedException {
     Pod notReady = new PodBuilder()
       .withNewMetadata()
       .withName("pod1")
@@ -467,7 +470,7 @@ class PodTest {
   }
 
   @Test
-  public void testPortForwardWithChannel() throws InterruptedException, IOException {
+  void testPortForwardWithChannel() throws InterruptedException, IOException {
 
     server.expect().withPath("/api/v1/namespaces/test/pods/pod1/portforward?ports=123")
       .andUpgradeToWebSocket()
@@ -496,27 +499,28 @@ class PodTest {
   }
 
   @Test
-  public void testOptionalUpload() {
+  void testOptionalUpload() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       client.pods().inNamespace("ns1").withName("pod2").dir("/etc/hosts/dir").upload(temporaryFolder.newFolder().toPath());
     });
   }
 
   @Test
-  public void testOptionalCopy() {
+  void testOptionalCopy() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       client.pods().inNamespace("ns1").withName("pod2").file("/etc/hosts").copy(temporaryFolder.newFolder().toPath());
     });
   }
 
   @Test
-  public void testOptionalCopyDir() {
+  void testOptionalCopyDir() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       client.pods().inNamespace("ns1").withName("pod2").dir("/etc/hosts").copy(temporaryFolder.newFolder().toPath());
     });
   }
+
   @Test
-  public void testListFromServer() {
+  void testListFromServer() {
     PodBuilder podBuilder = new PodBuilder()
       .withNewMetadata()
         .withNamespace("test")

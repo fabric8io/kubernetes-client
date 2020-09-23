@@ -21,12 +21,7 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.tekton.client.dsl.V1alpha1APIGroupDSL;
-import io.fabric8.tekton.client.internal.v1alpha1.ConditionOperationsImpl;
-import io.fabric8.tekton.client.internal.v1alpha1.PipelineResourceOperationsImpl;
-import io.fabric8.tekton.client.internal.v1alpha1.ClusterTaskOperationsImpl;
-import io.fabric8.tekton.client.internal.v1alpha1.PipelineRunOperationsImpl;
-import io.fabric8.tekton.client.internal.v1alpha1.TaskOperationsImpl;
-import io.fabric8.tekton.client.internal.v1alpha1.TaskRunOperationsImpl;
+import io.fabric8.tekton.client.internal.v1alpha1.*;
 import io.fabric8.tekton.pipeline.v1alpha1.ClusterTask;
 import io.fabric8.tekton.pipeline.v1alpha1.ClusterTaskList;
 import io.fabric8.tekton.pipeline.v1alpha1.Condition;
@@ -48,7 +43,11 @@ import io.fabric8.tekton.pipeline.v1alpha1.TaskRunList;
 import io.fabric8.tekton.resource.v1alpha1.DoneablePipelineResource;
 import io.fabric8.tekton.resource.v1alpha1.PipelineResource;
 import io.fabric8.tekton.resource.v1alpha1.PipelineResourceList;
-import io.fabric8.tekton.client.internal.v1alpha1.PipelineOperationsImpl;
+import io.fabric8.tekton.triggers.v1alpha1.*;
+import io.fabric8.tekton.triggers.v1alpha1.DoneableClusterTriggerBinding;
+import io.fabric8.tekton.triggers.v1alpha1.DoneableEventListener;
+import io.fabric8.tekton.triggers.v1alpha1.DoneableTriggerBinding;
+import io.fabric8.tekton.triggers.v1alpha1.DoneableTriggerTemplate;
 import okhttp3.OkHttpClient;
 
 public class V1alpha1APIGroupClient extends BaseClient implements V1alpha1APIGroupDSL {
@@ -91,7 +90,27 @@ public class V1alpha1APIGroupClient extends BaseClient implements V1alpha1APIGro
   }
 
   @Override
+  public MixedOperation<TriggerTemplate, TriggerTemplateList, DoneableTriggerTemplate, Resource<TriggerTemplate, DoneableTriggerTemplate>> triggerTemplates() {
+    return new TriggerTemplateOperationsImpl(this.getHttpClient(),this.getConfiguration());
+  }
+
+  @Override
+  public MixedOperation<TriggerBinding, TriggerBindingList, DoneableTriggerBinding, Resource<TriggerBinding, DoneableTriggerBinding>> triggerBindings() {
+    return new TriggerBindingOperationsImpl(this.getHttpClient(),this.getConfiguration());
+  }
+
+  @Override
+  public MixedOperation<EventListener, EventListenerList, DoneableEventListener, Resource<EventListener, DoneableEventListener>> eventListeners() {
+    return new EventListenerOperationsImpl(this.getHttpClient(),this.getConfiguration());
+  }
+
+  @Override
   public NonNamespaceOperation<ClusterTask, ClusterTaskList, DoneableClusterTask, Resource<ClusterTask, DoneableClusterTask>> clusterTasks() {
     return new ClusterTaskOperationsImpl(this.getHttpClient(), this.getConfiguration());
+  }
+
+  @Override
+  public NonNamespaceOperation<ClusterTriggerBinding, ClusterTriggerBindingList, DoneableClusterTriggerBinding, Resource<ClusterTriggerBinding, DoneableClusterTriggerBinding>> clusterTriggerBindings() {
+    return new ClusterTriggerBindingOperationsImpl(this.getHttpClient(),this.getConfiguration());
   }
 }

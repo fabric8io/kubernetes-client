@@ -505,7 +505,8 @@ public class Config {
   public static Config fromKubeconfig(String context, String kubeconfigContents, String kubeconfigPath) {
     // we allow passing context along here, since downstream accepts it
     Config config = new Config();
-    config.file = new File(kubeconfigPath);
+    if(kubeconfigPath != null)
+      config.file = new File(kubeconfigPath);
     loadFromKubeconfig(config, context, kubeconfigContents);
     return config;
   }
@@ -530,7 +531,7 @@ public class Config {
     return true;
   }
 
-  private static String getKubeconfigFilename() {
+  public static String getKubeconfigFilename() {
     String fileName = Utils.getSystemPropertyOrEnvVar(KUBERNETES_KUBECONFIG_FILE, new File(getHomeDir(), ".kube" + File.separator + "config").toString());
 
     // if system property/env var contains multiple files take the first one based on the environment
@@ -639,17 +640,14 @@ public class Config {
         env.forEach(var -> environment.put(var.getName(), var.getValue()));
       }
       Process p = pb.start();
-      StringBuilder sb = new StringBuilder();
-      try (BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
-        String line;
-        while ((line = in.readLine()) != null) {
-          sb.append(line);
-        }
+      String output;
+      try (InputStream is = p.getInputStream()) {
+        output = IOHelpers.readFully(is);
       }
       if (p.waitFor() != 0) {
-        LOGGER.warn(sb.toString());
+        LOGGER.warn(output);
       }
-      ExecCredential ec = Serialization.unmarshal(sb.toString(), ExecCredential.class);
+      ExecCredential ec = Serialization.unmarshal(output, ExecCredential.class);
       if (!apiVersion.equals(ec.apiVersion)) {
         LOGGER.warn("Wrong apiVersion {} vs. {}", ec.apiVersion, apiVersion);
       } else {

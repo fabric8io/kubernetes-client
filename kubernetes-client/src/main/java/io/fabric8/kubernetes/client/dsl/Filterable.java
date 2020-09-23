@@ -16,8 +16,7 @@
 package io.fabric8.kubernetes.client.dsl;
 
 import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 
 import java.util.Map;
 
@@ -48,5 +47,12 @@ public interface Filterable<T> {
   T withoutField(String key, String value);
 
   T withLabelSelector(LabelSelector selector);
+
+  /**
+   * Filter with the object that this event is about.
+   * @param objectReference {@link ObjectReference} for providing information of referred object
+   * @return filtered resource
+   */
+  T withInvolvedObject(ObjectReference objectReference);
 }
 
