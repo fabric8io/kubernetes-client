@@ -17,16 +17,13 @@ package io.fabric8.kubernetes.client.server.mock;
 
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.mockwebserver.Context;
-import io.fabric8.mockwebserver.ServerRequest;
-import io.fabric8.mockwebserver.ServerResponse;
-import io.fabric8.mockwebserver.crud.CrudDispatcher;
 import io.fabric8.mockwebserver.dsl.MockServerExpectation;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.rules.ExternalResource;
 
+import java.net.InetAddress;
 import java.util.HashMap;
-import java.util.Queue;
 
 public class KubernetesServer extends ExternalResource {
 
@@ -37,9 +34,11 @@ public class KubernetesServer extends ExternalResource {
   // kubernetes resources using an in memory map and will appear as a real api
   // server.
   private boolean crudMode;
+  private final InetAddress address;
+  private int port;
 
   public KubernetesServer() {
-    this(true, false);
+    this(true);
   }
 
   public KubernetesServer(boolean https) {
@@ -47,15 +46,21 @@ public class KubernetesServer extends ExternalResource {
   }
 
   public KubernetesServer(boolean https, boolean crudMode) {
+    this(https, crudMode, InetAddress.getLoopbackAddress(), 0);
+  }
+
+  public KubernetesServer(boolean https, boolean crudMode, InetAddress address, int port) {
     this.https = https;
     this.crudMode = crudMode;
+    this.address = address;
+    this.port = port;
   }
 
   public void before() {
     mock = crudMode
-      ? new KubernetesMockServer(new Context(), new MockWebServer(), new HashMap<ServerRequest, Queue<ServerResponse>>(), new KubernetesCrudDispatcher(), https)
+      ? new KubernetesMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(), https)
       : new KubernetesMockServer(https);
-    mock.init();
+    mock.init(address, port);
     client = mock.createClient();
   }
 

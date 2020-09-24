@@ -10,6 +10,7 @@
 * Fix #2479: KuberentesDeserializer works on OSGi runtime environments
 
 #### Improvements
+* Enable user to select custom address and port for KubernetesMockServer
 * Fix #2473: Removed unused ValidationMessages.properties
 * Fix #2408: Add documentation for Pod log options
 * Fix #2141: Decouple OpenShift Model from Kubernetes Client
