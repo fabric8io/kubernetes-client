@@ -5,6 +5,7 @@
 #### Bugs
 * Fix #2442: Wrong resource kind in `ProjectRequestHandler` causes ClassCastException when handling Project resources.
 * Fix #2467: OpenShiftClient cannot replace existing resource with API version =! v1
+* Fix #2458: Creating new instance of the DefaultKubernetesClient is hanging
 * Fix #2474: Config.fromKubeconfig throws NullPointerException
 * Fix #2399: Cannot change the type of the Service from ClusterIP to ExternalName
 * Fix #2479: KuberentesDeserializer works on OSGi runtime environments
